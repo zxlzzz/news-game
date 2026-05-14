@@ -5,9 +5,6 @@
 
 import { NPC } from './NPC.js';
 
-// NPC颜色池（增加多样性）
-const COLORS = [0x1a1a1a, 0x222244, 0x331100, 0x004422, 0x221122, 0x333300];
-
 export class NPCManager {
   /**
    * @param {StickRenderer} renderer
@@ -18,17 +15,15 @@ export class NPCManager {
    * @param {number} config.nearScale - 近端缩放系数
    */
   constructor(renderer, config = {}) {
-    this.renderer = renderer;
-    this.farY = config.farY ?? 250;
-    this.nearY = config.nearY ?? 460;
-    this.farScale = config.farScale ?? 0.25;
-    this.nearScale = config.nearScale ?? 0.55;
+    this.renderer   = renderer;
+    this.farY       = config.farY   ?? 250;
+    this.nearY      = config.nearY  ?? 460;
+    this.farScale   = config.farScale  ?? 0.25;
+    this.nearScale  = config.nearScale ?? 0.55;
     this.npcs = [];
   }
 
-  /**
-   * 按Y坐标计算深度缩放系数
-   */
+  /** 按Y坐标计算深度缩放 */
   depthScale(y) {
     const t = Math.max(0, Math.min(1, (y - this.farY) / (this.nearY - this.farY)));
     return this.farScale + t * (this.nearScale - this.farScale);
@@ -36,52 +31,87 @@ export class NPCManager {
 
   /**
    * 生成初始NPC
-   * @param {number} worldWidth - 世界宽度
+   * @param {number} worldWidth
    */
   spawnInitial(worldWidth) {
-    const midY = (this.farY + this.nearY) / 2;
+    const { farY, nearY } = this;
+    const span = nearY - farY;
+
+    // 随机Y（带分段，保证各纵深都有人）
+    const yAt = (frac, jitter = 0.12) =>
+      farY + span * Math.max(0, Math.min(1, frac + (Math.random() - 0.5) * jitter));
+    const rv = (mag = 18) => (Math.random() - 0.5) * 2 * mag;
+
     const configs = [
-      // 走路的行人（分布在不同纵深）
-      { x: 200,  y: this.farY + 30,  animation: 'walk', direction:  1, speed: 40, vy:  14, tags: ['pedestrian'] },
-      { x: 600,  y: midY,            animation: 'walk', direction: -1, speed: 35, vy: -16, tags: ['pedestrian'] },
-      { x: 1000, y: this.nearY - 30, animation: 'walk', direction:  1, speed: 45, vy:  12, tags: ['pedestrian'] },
-      { x: 1400, y: midY - 30,       animation: 'walk', direction: -1, speed: 38, vy: -10, tags: ['pedestrian'] },
-      { x: 1750, y: this.farY + 60,  animation: 'walk', direction:  1, speed: 42, vy:  18, tags: ['pedestrian'] },
+      // ── 行人 pedestrian（最多，各纵深均有）──
+      { x:  130, y: yAt(0.10), animation: 'walk', direction:  1, speed: 38, vy: rv(16), tags: ['pedestrian'] },
+      { x:  460, y: yAt(0.45), animation: 'walk', direction: -1, speed: 33, vy: rv(18), tags: ['pedestrian'] },
+      { x:  790, y: yAt(0.75), animation: 'walk', direction:  1, speed: 41, vy: rv(15), tags: ['pedestrian'] },
+      { x: 1120, y: yAt(0.30), animation: 'walk', direction: -1, speed: 36, vy: rv(17), tags: ['pedestrian'] },
+      { x: 1450, y: yAt(0.60), animation: 'walk', direction:  1, speed: 44, vy: rv(16), tags: ['pedestrian'] },
+      { x: 1780, y: yAt(0.20), animation: 'walk', direction: -1, speed: 39, vy: rv(14), tags: ['pedestrian'] },
 
-      // 跑步的人
-      { x: 400,  y: midY + 40,       animation: 'run',  direction:  1, speed: 90, vy: -20, tags: ['runner'] },
-      { x: 1200, y: midY - 20,       animation: 'run',  direction: -1, speed: 85, vy:  15, tags: ['runner'] },
+      // ── 跑者 runner ──
+      { x:  320, y: yAt(0.55), animation: 'run',  direction:  1, speed: 94, vy: rv(12), tags: ['runner'] },
+      { x:  970, y: yAt(0.35), animation: 'run',  direction: -1, speed: 88, vy: rv(14), tags: ['runner'] },
+      { x: 1650, y: yAt(0.70), animation: 'run',  direction:  1, speed: 100, vy: rv(10), tags: ['runner'] },
 
-      // 站着的人
-      { x: 500,  y: this.nearY - 20, animation: 'idle', direction:  1, speed: 0,  vy:   8, tags: ['bystander'] },
-      { x: 800,  y: midY + 10,       animation: 'idle', direction: -1, speed: 0,  vy:  -6, tags: ['bystander'] },
-      { x: 1600, y: this.farY + 40,  animation: 'idle', direction:  1, speed: 0,  vy:  10, tags: ['bystander'] },
+      // ── 旁观者 bystander（基本静止，轻微漂移）──
+      { x:  580, y: yAt(0.82), animation: 'idle', direction:  1, speed: 0, vy: rv(7),  tags: ['bystander'] },
+      { x:  870, y: yAt(0.40), animation: 'idle', direction: -1, speed: 0, vy: rv(6),  tags: ['bystander'] },
+      { x: 1240, y: yAt(0.65), animation: 'idle', direction:  1, speed: 0, vy: rv(8),  tags: ['bystander'] },
+      { x: 1900, y: yAt(0.22), animation: 'idle', direction: -1, speed: 0, vy: rv(5),  tags: ['bystander'] },
+
+      // ── 警察 officer（缓慢巡逻）──
+      { x:  700, y: yAt(0.50), animation: 'walk', direction:  1, speed: 22, vy: rv(8),  tags: ['officer'] },
+      { x: 1550, y: yAt(0.38), animation: 'walk', direction: -1, speed: 20, vy: rv(7),  tags: ['officer'] },
+
+      // ── 小贩 vendor（几乎不动）──
+      { x: 1050, y: yAt(0.78), animation: 'idle', direction:  1, speed: 0, vy: rv(4),  tags: ['vendor'] },
+
+      // ── 游客 tourist（慢速闲逛，Y漂移大）──
+      { x:  240, y: yAt(0.62), animation: 'walk', direction:  1, speed: 18, vy: rv(22), tags: ['tourist'] },
+      { x: 1350, y: yAt(0.28), animation: 'walk', direction: -1, speed: 16, vy: rv(20), tags: ['tourist'] },
     ];
 
     for (const cfg of configs) {
-      cfg.minX = 50;
-      cfg.maxX = worldWidth - 50;
-      cfg.minY = this.farY;
-      cfg.maxY = this.nearY;
-      cfg.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      cfg.minX  = 50;
+      cfg.maxX  = worldWidth - 50;
+      cfg.minY  = this.farY;
+      cfg.maxY  = this.nearY;
+      cfg.color = this._colorForTag(cfg.tags[0]);
       const npc = new NPC(cfg);
       npc.frameIndex = Math.floor(Math.random() * 8);
       this.npcs.push(npc);
     }
   }
 
+  /** 根据标签返回带随机变化的服装颜色 */
+  _colorForTag(tag) {
+    const palettes = {
+      pedestrian: [0x1a1a2a, 0x22304a, 0x2a1810, 0x182818, 0x28201a, 0x101828],
+      runner:     [0x3a1800, 0x1a2a08, 0x0a1a30, 0x301020],
+      bystander:  [0x202020, 0x1a1a30, 0x181818, 0x281820, 0x202818],
+      officer:    [0x0a1840, 0x081838],  // 深蓝制服
+      vendor:     [0x3a1a00, 0x2a1000],  // 深褐
+      tourist:    [0x2a1c0c, 0x1a2010, 0x300a0a],
+    };
+    const colors = palettes[tag] || [0x1a1a1a];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
   /**
-   * 更新所有NPC，并同步深度缩放到 npc.scale（供 getBounds 使用）
+   * 更新所有NPC，并将深度缩放写入 npc.scale（供 getBounds 使用）
    */
   update(delta) {
     for (const npc of this.npcs) {
-      npc.scale = this.depthScale(npc.y); // 实时更新缩放，getBounds 依赖此值
+      npc.scale = this.depthScale(npc.y);
       npc.update(delta, this.renderer);
     }
   }
 
   /**
-   * 按Y深度排序后绘制所有NPC（Y小→远→先画）
+   * 按Y深度排序后绘制（Y小=远=先画，Y大=近=后画压前面）
    * @param {Phaser.GameObjects.Graphics} g
    */
   draw(g) {
@@ -99,9 +129,6 @@ export class NPCManager {
     }
   }
 
-  /**
-   * 获取所有存活的NPC列表
-   */
   getAlive() {
     return this.npcs.filter(n => n.alive);
   }
