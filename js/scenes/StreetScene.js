@@ -1,18 +1,29 @@
 /**
  * StreetScene
- * 主场景：2.5D俯视角街道 + NPC深度漫步 + 取景框 + 拍照/发布
+ * 主场景：2.5D俯视角街道 + 统一Entity系统 + 取景框 + 拍照/发布
+ *
+ * 渲染层次（从下到上）：
+ *   bgGraphics     — 静态地面（道路/人行道/树木），只绘制一次
+ *   entityGraphics — 所有 Entity（建筑、道具、NPC），每帧按Y排序重绘
+ *   vfGraphics     — 取景框 UI，最上层
  */
 
-import { StickRenderer } from '../StickRenderer.js';
-import { NPCManager } from '../NPCManager.js';
-import { Viewfinder } from '../Viewfinder.js';
+import { StickRenderer }   from '../StickRenderer.js';
+import { EntityManager }   from '../EntityManager.js';
+import { NPC }             from '../NPC.js';
+import { BuildingEntity }  from '../BuildingEntity.js';
+import { PropEntity }      from '../PropEntity.js';
+import { Viewfinder }      from '../Viewfinder.js';
 
 const WORLD_WIDTH  = 2000;
 const WORLD_HEIGHT = 500;
 
-// 地面纵深：FAR_Y=远端（画面上方小人小），NEAR_Y=近端（画面下方小人大）
+// 纵深范围：Y=FAR_Y 为远端（NPC小），Y=NEAR_Y 为近端（NPC大）
 const FAR_Y  = 252;
 const NEAR_Y = 458;
+
+// 建筑临街底边 Y
+const BUILDING_BASE_Y = 130;
 
 export class StreetScene extends Phaser.Scene {
   constructor() {
@@ -30,21 +41,28 @@ export class StreetScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
     this.cameras.main.setBackgroundColor(0xc8c3bc);
 
-    this.bgGraphics  = this.add.graphics();
-    this.npcGraphics = this.add.graphics();
-    this.vfGraphics  = this.add.graphics();
+    // 渲染层（建筑区背景色由 camera background 提供）
+    this.bgGraphics     = this.add.graphics();
+    this.entityGraphics = this.add.graphics();
+    this.vfGraphics     = this.add.graphics();
 
-    this.drawBackground();
+    // 静态地面（只绘制一次）
+    this._drawGround();
 
+    // 火柴人渲染器
     this.stickRenderer = new StickRenderer(this);
     this.stickRenderer.loadAnimation('walk', this.cache.json.get('anim_walk'));
     this.stickRenderer.loadAnimation('run',  this.cache.json.get('anim_run'));
     this.stickRenderer.loadAnimation('idle', this.cache.json.get('anim_idle'));
 
-    this.npcManager = new NPCManager(this.stickRenderer, {
+    // 统一 Entity 管理器
+    this.entityManager = new EntityManager({
       farY: FAR_Y, nearY: NEAR_Y, farScale: 0.24, nearScale: 0.60,
     });
-    this.npcManager.spawnInitial(WORLD_WIDTH);
+
+    this._spawnBuildings();
+    this._spawnProps();
+    this._spawnNPCs();
 
     this.viewfinder = new Viewfinder(this, {
       x: 310, y: 295, width: 210, height: 145,
@@ -60,7 +78,7 @@ export class StreetScene extends Phaser.Scene {
     const W = this.cameras.main.width;
     const H = this.cameras.main.height;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框捕捉NPC', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框捕捉目标', {
       fontFamily: '"JetBrains Mono", monospace',
       fontSize: '13px',
       color: '#555555',
@@ -112,20 +130,21 @@ export class StreetScene extends Phaser.Scene {
   // ─── 拍照 / 发布 ──────────────────────────────────────────────────────────────
 
   _takePhoto() {
-    const count = this.viewfinder.capturedNPCs.length;
+    const count = this.viewfinder.capturedEntities.length;
     if (count === 0) {
       this.captureText.setText('取景框内没有目标！').setColor('#cc2200');
       this.time.delayedCall(1500, () => this.captureText.setText(''));
       return;
     }
-    this.lastPhoto = { tags: this.viewfinder.getCapturedTags(), count };
-
+    this.lastPhoto = {
+      tags:  this.viewfinder.getCapturedTags(),
+      count,
+    };
     this.flashOverlay.setAlpha(0.80);
     this.tweens.add({ targets: this.flashOverlay, alpha: 0, duration: 220, ease: 'Power2' });
-
     this.btnPublish.setVisible(true);
     this.captureText
-      .setText(`已拍摄 ${count} 人  [${this.lastPhoto.tags.join('  ')}]`)
+      .setText(`已拍摄 ${count} 个目标  [${this.lastPhoto.tags.join('  ')}]`)
       .setColor('#226600');
   }
 
@@ -141,14 +160,14 @@ export class StreetScene extends Phaser.Scene {
   }
 
   _generateHeadline(tags, count) {
-    const subject = tags.join('与');
+    const subject = tags.filter(t => !['building', 'street-furniture'].includes(t)).join('与') || tags[0];
     const templates = [
-      `${count}名${subject}街头聚集，真相令人震惊`,
-      `独家现场：${subject}集会背后的秘密`,
+      `${count}个目标聚集现场，真相令人震惊`,
+      `独家现场：${subject}背后的秘密`,
       `记者深度揭秘：${subject}事件始末`,
       `突发！${subject}异动，专家紧急发声`,
-      `${subject}齐聚广场，舆论哗然`,
-      `疑云！${subject}街头事件完整记录`,
+      `${subject}事件曝光，舆论哗然`,
+      `疑云！${subject}现场完整记录`,
     ];
     return templates[Math.floor(Math.random() * templates.length)];
   }
@@ -162,26 +181,27 @@ export class StreetScene extends Phaser.Scene {
     if (this.cursors.left.isDown)       cam.scrollX -= spd;
     else if (this.cursors.right.isDown) cam.scrollX += spd;
 
-    const vfc = this.viewfinder.getCenter();
+    // 取景框靠近屏幕边缘时自动滚动
+    const vfc    = this.viewfinder.getCenter();
     const margin = 80;
-    if (vfc.x - cam.scrollX < margin)                cam.scrollX -= spd * 0.5;
-    else if (cam.scrollX + cam.width - vfc.x < margin) cam.scrollX += spd * 0.5;
+    if (vfc.x - cam.scrollX < margin)                    cam.scrollX -= spd * 0.5;
+    else if (cam.scrollX + cam.width - vfc.x < margin)   cam.scrollX += spd * 0.5;
 
-    this.npcManager.update(delta);
-    this.viewfinder.updateCapture(this.npcManager.getAlive());
+    this.entityManager.update(delta);
+    this.viewfinder.updateCapture(this.entityManager.getAlive());
 
-    this.npcGraphics.clear();
-    this.npcManager.draw(this.npcGraphics);
+    this.entityGraphics.clear();
+    this.entityManager.draw(this.entityGraphics);
 
     this.vfGraphics.clear();
     this.viewfinder.draw(this.vfGraphics);
 
-    // 取景框信息提示
+    // 取景框内容提示
     if (!this.lastPhoto) {
-      const captured = this.viewfinder.capturedNPCs;
+      const captured = this.viewfinder.capturedEntities;
       if (captured.length > 0) {
         this.captureText
-          .setText(`取景框内: ${captured.length} 人  [${this.viewfinder.getCapturedTags().join(', ')}]`)
+          .setText(`取景框内: ${captured.length} 个目标  [${this.viewfinder.getCapturedTags().join(', ')}]`)
           .setColor('#cc2200');
       } else if (this.captureText.style.color === 'rgb(204, 34, 0)') {
         this.captureText.setText('');
@@ -189,57 +209,54 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  // ─── 背景绘制 ─────────────────────────────────────────────────────────────────
+  // ─── 静态地面（bgGraphics，只绘一次） ────────────────────────────────────────
 
-  drawBackground() {
+  _drawGround() {
     const g = this.bgGraphics;
 
-    // 建筑区底色
+    // 建筑区底色（Y 0–BUILDING_BASE_Y）
     g.fillStyle(0xc8c3bc, 1);
-    g.fillRect(0, 0, WORLD_WIDTH, 130);
+    g.fillRect(0, 0, WORLD_WIDTH, BUILDING_BASE_Y);
 
-    // 远端人行道
+    // 远端人行道（Y BUILDING_BASE_Y–FAR_Y）
     g.fillStyle(0xd0cbc2, 1);
-    g.fillRect(0, 130, WORLD_WIDTH, FAR_Y - 130);
+    g.fillRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
 
-    // 道路沥青
+    // 道路（Y FAR_Y–NEAR_Y）
     g.fillStyle(0x797573, 1);
     g.fillRect(0, FAR_Y, WORLD_WIDTH, NEAR_Y - FAR_Y);
 
-    // 近端人行道
+    // 近端人行道（Y NEAR_Y–500）
     g.fillStyle(0xd4cfc6, 1);
     g.fillRect(0, NEAR_Y, WORLD_WIDTH, WORLD_HEIGHT - NEAR_Y);
 
-    this._drawRoadSurface(g);
-    this._drawPavement(g, 132, FAR_Y - 2, 48, 3);
-    this._drawPavement(g, NEAR_Y + 4, WORLD_HEIGHT, 52, 2);
-    this._drawBuildingTops(g);
+    this._drawRoadMarkings(g);
+    this._drawPavement(g, BUILDING_BASE_Y, FAR_Y,        48, 3);
+    this._drawPavement(g, NEAR_Y + 4,      WORLD_HEIGHT, 52, 2);
     this._drawTrees(g);
-    this._drawLampPosts(g);
-    this._drawBenches(g);
   }
 
-  _drawRoadSurface(g) {
-    // 透视横线：由近至远间距越来越小
-    let lineY = NEAR_Y - 10;
+  _drawRoadMarkings(g) {
+    // 透视横线：由近至远间距缩减，强化纵深感
+    let lineY   = NEAR_Y - 10;
     let spacing = 30;
     while (lineY > FAR_Y + 5 && spacing > 2.8) {
       g.lineStyle(1, 0x626060, 0.22);
       g.lineBetween(0, Math.round(lineY), WORLD_WIDTH, Math.round(lineY));
       spacing *= 0.80;
-      lineY -= spacing;
+      lineY   -= spacing;
     }
-
-    // 路边白实线（道路内侧）
-    g.lineStyle(3, 0xffffff, 0.45);
-    g.lineBetween(0, FAR_Y + 9,   WORLD_WIDTH, FAR_Y + 9);
-    g.lineBetween(0, NEAR_Y - 9,  WORLD_WIDTH, NEAR_Y - 9);
 
     // 路沿石
     g.fillStyle(0xe2ddd4, 1);
     g.fillRect(0, FAR_Y - 4, WORLD_WIDTH, 5);
     g.fillStyle(0xe8e3da, 1);
     g.fillRect(0, NEAR_Y,    WORLD_WIDTH, 5);
+
+    // 路边白实线（道路内侧）
+    g.lineStyle(3, 0xffffff, 0.45);
+    g.lineBetween(0, FAR_Y + 9,  WORLD_WIDTH, FAR_Y + 9);
+    g.lineBetween(0, NEAR_Y - 9, WORLD_WIDTH, NEAR_Y - 9);
 
     // 中心双黄虚线
     const midY = Math.round((FAR_Y + NEAR_Y) / 2);
@@ -249,35 +266,29 @@ export class StreetScene extends Phaser.Scene {
       g.lineBetween(x, midY + 2, x + 36, midY + 2);
     }
 
-    // 斑马线（梯形透视条纹）
+    // 梯形斑马线（近端宽远端窄，产生透视感）
     for (let cx = 220; cx < WORLD_WIDTH; cx += 380) {
       this._drawCrosswalk(g, cx);
     }
   }
 
-  // 梯形斑马线：近端条纹更宽更稀，产生透视感
   _drawCrosswalk(g, cx) {
-    const stripes   = 8;
-    const farSW     = 8,  nearSW  = 13; // 条纹宽度
-    const farGap    = 12, nearGap = 16; // 间距
-    const roadTop   = FAR_Y  + 10;
-    const roadBot   = NEAR_Y - 10;
-
+    const roadTop = FAR_Y  + 10;
+    const roadBot = NEAR_Y - 10;
     g.fillStyle(0xffffff, 0.50);
-    for (let i = 0; i < stripes; i++) {
-      const fx = cx + i * (farSW  + farGap);
-      const nx = cx + i * (nearSW + nearGap);
+    for (let i = 0; i < 8; i++) {
+      const fx = cx + i * (8  + 12); // 远端：条宽8，间隔12
+      const nx = cx + i * (13 + 16); // 近端：条宽13，间隔16
       g.beginPath();
-      g.moveTo(fx,         roadTop);
-      g.lineTo(fx + farSW, roadTop);
-      g.lineTo(nx + nearSW, roadBot);
-      g.lineTo(nx,          roadBot);
+      g.moveTo(fx,      roadTop);
+      g.lineTo(fx + 8,  roadTop);
+      g.lineTo(nx + 13, roadBot);
+      g.lineTo(nx,      roadBot);
       g.closePath();
       g.fillPath();
     }
   }
 
-  // 铺砖网格
   _drawPavement(g, topY, botY, colStep, rows) {
     g.lineStyle(1, 0xb5b0a6, 0.28);
     for (let x = 0; x < WORLD_WIDTH; x += colStep) {
@@ -289,77 +300,12 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  _drawBuildingTops(g) {
-    // 每栋建筑：从远侧（Y=130-depth）到近侧（Y=128）
-    const defs = [
-      { x: 15,   w: 115, depth: 80, color: 0x9e9590 },
-      { x: 152,  w:  88, depth: 62, color: 0x8a9098 },
-      { x: 263,  w: 148, depth: 87, color: 0xa08878, wt: true  },
-      { x: 430,  w:  82, depth: 58, color: 0x909898 },
-      { x: 534,  w: 126, depth: 73, color: 0x94887a },
-      { x: 684,  w: 106, depth: 68, color: 0x7e8898 },
-      { x: 813,  w: 158, depth: 90, color: 0xa09488, wt: true  },
-      { x: 992,  w:  88, depth: 60, color: 0x8c9890 },
-      { x: 1102, w: 134, depth: 78, color: 0x988a7e },
-      { x: 1258, w:  80, depth: 56, color: 0x8898a0 },
-      { x: 1362, w: 118, depth: 70, color: 0x9a9080 },
-      { x: 1505, w: 148, depth: 84, color: 0x7e8898, wt: true  },
-      { x: 1678, w:  92, depth: 64, color: 0x988890 },
-      { x: 1798, w: 126, depth: 74, color: 0xa09488 },
-    ];
-
-    for (const b of defs) {
-      const top = 130 - b.depth;
-      const bot = 128;
-
-      // 主体
-      g.fillStyle(b.color, 1);
-      g.fillRect(b.x, top, b.w, b.depth);
-
-      // 高光（背街侧）
-      g.fillStyle(0xffffff, 0.07);
-      g.fillRect(b.x, top, b.w, Math.floor(b.depth * 0.38));
-
-      // 阴影（临街侧）
-      g.fillStyle(0x000000, 0.13);
-      g.fillRect(b.x, top + b.depth * 0.62, b.w, b.depth * 0.38);
-
-      // 轮廓
-      g.lineStyle(1.5, 0x5c5850, 1);
-      g.strokeRect(b.x, top, b.w, b.depth);
-
-      // 屋顶中脊
-      g.lineStyle(1, 0x706860, 0.45);
-      g.lineBetween(b.x + b.w / 2, top, b.x + b.w / 2, bot);
-
-      // 临街阴影线
-      g.lineStyle(3, 0x403830, 0.55);
-      g.lineBetween(b.x, bot, b.x + b.w, bot);
-
-      // 水塔（部分楼有）
-      if (b.wt) {
-        const wx = b.x + b.w * 0.38;
-        const wy = top + b.depth * 0.35;
-        g.fillStyle(0x706858, 1);
-        g.fillCircle(wx, wy, 10);
-        g.lineStyle(1.5, 0x504840, 1);
-        g.strokeCircle(wx, wy, 10);
-        g.fillStyle(0x907858, 0.65);
-        g.fillCircle(wx, wy, 5);
-        // 水塔腿
-        g.lineStyle(1.5, 0x605048, 0.8);
-        g.lineBetween(wx - 6, wy + 8, wx - 6, wy + 14);
-        g.lineBetween(wx + 6, wy + 8, wx + 6, wy + 14);
-      }
-    }
-  }
-
   _drawTrees(g) {
-    // 远端人行道树（Y ≈ 170，较小）
+    // 远端人行道树（Y ≈ 168，较小）
     const farXs = [75, 238, 405, 572, 740, 908, 1076, 1244, 1412, 1580, 1748, 1916];
     for (const tx of farXs) {
       const ty = 168 + Math.sin(tx * 0.031) * 9;
-      const r  = 14 + Math.sin(tx * 0.071) * 3;
+      const r  = 14  + Math.sin(tx * 0.071) * 3;
       g.fillStyle(0x000000, 0.16);
       g.fillEllipse(tx + 5, ty + 7, r * 2.6, r * 1.5);
       g.fillStyle(0x4e7430, 1);
@@ -368,7 +314,7 @@ export class StreetScene extends Phaser.Scene {
       g.fillCircle(tx - 4, ty - 4, r * 0.44);
     }
 
-    // 近端人行道树（Y ≈ 479，较大）
+    // 近端人行道树（Y ≈ 480，较大）
     const nearXs = [140, 340, 540, 740, 940, 1140, 1340, 1540, 1740, 1940];
     for (const tx of nearXs) {
       const ty = 480;
@@ -382,55 +328,159 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  _drawLampPosts(g) {
-    // 远端路沿灯柱（灯臂朝道路方向=Y增大方向）
-    for (let x = 95; x < WORLD_WIDTH; x += 155) {
-      const px = x, py = FAR_Y - 3;
-      // 柱
-      g.lineStyle(2.5, 0x8a8880, 0.92);
-      g.lineBetween(px, py + 14, px, py - 6);
-      // 灯臂（斜向路面）
-      g.lineStyle(2, 0x8c8a84, 0.85);
-      g.lineBetween(px, py - 6, px + 16, py + 8);
-      // 灯头
-      g.fillStyle(0xdcd090, 0.95);
-      g.fillCircle(px + 16, py + 8, 5);
-      g.fillStyle(0xfffff8, 0.45);
-      g.fillCircle(px + 16, py + 8, 2.5);
-    }
+  // ─── 实体生成 ─────────────────────────────────────────────────────────────────
 
-    // 近端路沿灯柱（灯臂朝道路方向=Y减小方向）
-    for (let x = 172; x < WORLD_WIDTH; x += 155) {
-      const px = x, py = NEAR_Y + 5;
-      g.lineStyle(2.5, 0x8a8880, 0.92);
-      g.lineBetween(px, py - 12, px, py + 8);
-      g.lineStyle(2, 0x8c8a84, 0.85);
-      g.lineBetween(px, py - 12, px - 16, py - 5);
-      g.fillStyle(0xdcd090, 0.95);
-      g.fillCircle(px - 16, py - 5, 5);
-      g.fillStyle(0xfffff8, 0.45);
-      g.fillCircle(px - 16, py - 5, 2.5);
+  _spawnBuildings() {
+    // 每栋建筑：x=左边缘，y=临街底边(130)，带语义标签
+    const defs = [
+      { x: 15,   bWidth: 115, bDepth: 80, color: 0x9e9590, tags: ['office', 'building'] },
+      { x: 152,  bWidth:  88, bDepth: 62, color: 0x8a9098, tags: ['shop', 'retail', 'building'] },
+      { x: 263,  bWidth: 148, bDepth: 87, color: 0xa08878, tags: ['bank', 'finance', 'building'], waterTower: true },
+      { x: 430,  bWidth:  82, bDepth: 58, color: 0x909898, tags: ['shop', 'retail', 'building'] },
+      { x: 534,  bWidth: 126, bDepth: 73, color: 0x94887a, tags: ['restaurant', 'food', 'building'] },
+      { x: 684,  bWidth: 106, bDepth: 68, color: 0x7e8898, tags: ['office', 'building'] },
+      { x: 813,  bWidth: 158, bDepth: 90, color: 0xa09488, tags: ['hotel', 'building'],            waterTower: true },
+      { x: 992,  bWidth:  88, bDepth: 60, color: 0x8c9890, tags: ['shop', 'retail', 'building'] },
+      { x: 1102, bWidth: 134, bDepth: 78, color: 0x988a7e, tags: ['bank', 'finance', 'building'] },
+      { x: 1258, bWidth:  80, bDepth: 56, color: 0x8898a0, tags: ['apartment', 'residential', 'building'] },
+      { x: 1362, bWidth: 118, bDepth: 70, color: 0x9a9080, tags: ['office', 'building'] },
+      { x: 1505, bWidth: 148, bDepth: 84, color: 0x7e8898, tags: ['hotel', 'building'],            waterTower: true },
+      { x: 1678, bWidth:  92, bDepth: 64, color: 0x988890, tags: ['restaurant', 'food', 'building'] },
+      { x: 1798, bWidth: 126, bDepth: 74, color: 0xa09488, tags: ['shop', 'retail', 'building'] },
+    ];
+    for (const b of defs) {
+      this.entityManager.add(new BuildingEntity({ ...b, y: BUILDING_BASE_Y }));
     }
   }
 
-  _drawBenches(g) {
-    // 远端人行道长椅（Y ≈ 208）
-    for (let x = 135; x < WORLD_WIDTH; x += 290) {
-      const bx = x, by = 206;
-      const bw = 30, bh = 11;
-      // 椅面
-      g.fillStyle(0xb09868, 0.88);
-      g.fillRect(bx, by, bw, bh);
-      // 椅背（上方细条）
-      g.fillStyle(0x907848, 0.75);
-      g.fillRect(bx, by - 4, bw, 4);
-      // 轮廓
-      g.lineStyle(1, 0x7a6040, 0.8);
-      g.strokeRect(bx, by, bw, bh);
-      // 椅腿（阴影点）
-      g.fillStyle(0x605030, 0.55);
-      g.fillRect(bx + 4,        by + bh, 3, 4);
-      g.fillRect(bx + bw - 7,   by + bh, 3, 4);
+  _spawnProps() {
+    // 远端路沿路灯（每155px一盏）
+    for (let x = 95; x < WORLD_WIDTH; x += 155) {
+      this.entityManager.add(new PropEntity({
+        x, y: FAR_Y, width: 14, height: 14,
+        propType: 'lamp-far',
+        tags: ['lamp', 'street-furniture'],
+      }));
     }
+
+    // 近端路沿路灯（offset，与远端错开）
+    for (let x = 172; x < WORLD_WIDTH; x += 155) {
+      this.entityManager.add(new PropEntity({
+        x, y: NEAR_Y, width: 14, height: 14,
+        propType: 'lamp-near',
+        tags: ['lamp', 'street-furniture'],
+      }));
+    }
+
+    // 远端人行道长椅
+    for (let x = 135; x < WORLD_WIDTH; x += 290) {
+      this.entityManager.add(new PropEntity({
+        x, y: 216, width: 32, height: 12,
+        propType: 'bench',
+        tags: ['bench', 'street-furniture'],
+      }));
+    }
+
+    // 远端人行道垃圾桶
+    for (let x = 300; x < WORLD_WIDTH; x += 450) {
+      this.entityManager.add(new PropEntity({
+        x, y: 230, width: 12, height: 12,
+        propType: 'trash',
+        tags: ['trash-can', 'street-furniture'],
+      }));
+    }
+
+    // 近端人行道垃圾桶
+    for (let x = 210; x < WORLD_WIDTH; x += 380) {
+      this.entityManager.add(new PropEntity({
+        x, y: 472, width: 12, height: 12,
+        propType: 'trash',
+        tags: ['trash-can', 'street-furniture'],
+      }));
+    }
+
+    // 各建筑门口招牌（颜色和标签对应建筑类型）
+    const signs = [
+      { x:  72, propColor: 0x1a4488, tags: ['sign', 'office']     }, // office
+      { x: 196, propColor: 0xcc3322, tags: ['sign', 'retail']      }, // shop
+      { x: 337, propColor: 0x886600, tags: ['sign', 'finance']     }, // bank
+      { x: 471, propColor: 0x22aa55, tags: ['sign', 'retail']      }, // shop
+      { x: 597, propColor: 0xcc6622, tags: ['sign', 'food']        }, // restaurant
+      { x: 737, propColor: 0x336688, tags: ['sign', 'office']      }, // office
+      { x: 892, propColor: 0x7a3322, tags: ['sign', 'hotel']       }, // hotel
+      { x: 1036, propColor: 0xaa2288, tags: ['sign', 'retail']     }, // shop
+      { x: 1169, propColor: 0x886600, tags: ['sign', 'finance']    }, // bank
+      { x: 1421, propColor: 0x225588, tags: ['sign', 'office']     }, // office
+      { x: 1579, propColor: 0x7a3322, tags: ['sign', 'hotel']      }, // hotel
+      { x: 1724, propColor: 0xcc6622, tags: ['sign', 'food']       }, // restaurant
+      { x: 1861, propColor: 0xcc3322, tags: ['sign', 'retail']     }, // shop
+    ];
+    for (const s of signs) {
+      this.entityManager.add(new PropEntity({
+        x: s.x, y: BUILDING_BASE_Y + 1, width: 24, height: 14,
+        propType: 'sign',
+        propColor: s.propColor,
+        tags: s.tags,
+      }));
+    }
+  }
+
+  _spawnNPCs() {
+    const { farY, nearY } = this.entityManager;
+    const span = nearY - farY;
+    const yAt  = (f, j = 0.12) => farY + span * Math.max(0, Math.min(1, f + (Math.random() - 0.5) * j));
+    const rv   = (m = 18) => (Math.random() - 0.5) * 2 * m;
+
+    const configs = [
+      // 行人（pedestrian）—— 各纵深均有
+      { x:  130, y: yAt(0.10), animation: 'walk', direction:  1, speed: 38, vy: rv(16), tags: ['pedestrian'] },
+      { x:  460, y: yAt(0.45), animation: 'walk', direction: -1, speed: 33, vy: rv(18), tags: ['pedestrian'] },
+      { x:  790, y: yAt(0.75), animation: 'walk', direction:  1, speed: 41, vy: rv(15), tags: ['pedestrian'] },
+      { x: 1120, y: yAt(0.30), animation: 'walk', direction: -1, speed: 36, vy: rv(17), tags: ['pedestrian'] },
+      { x: 1450, y: yAt(0.60), animation: 'walk', direction:  1, speed: 44, vy: rv(16), tags: ['pedestrian'] },
+      { x: 1780, y: yAt(0.20), animation: 'walk', direction: -1, speed: 39, vy: rv(14), tags: ['pedestrian'] },
+      // 跑者（runner）
+      { x:  320, y: yAt(0.55), animation: 'run',  direction:  1, speed:  94, vy: rv(12), tags: ['runner'] },
+      { x:  970, y: yAt(0.35), animation: 'run',  direction: -1, speed:  88, vy: rv(14), tags: ['runner'] },
+      { x: 1650, y: yAt(0.70), animation: 'run',  direction:  1, speed: 100, vy: rv(10), tags: ['runner'] },
+      // 旁观者（bystander）—— 几乎静止
+      { x:  580, y: yAt(0.82), animation: 'idle', direction:  1, speed: 0, vy: rv(7),  tags: ['bystander'] },
+      { x:  870, y: yAt(0.40), animation: 'idle', direction: -1, speed: 0, vy: rv(6),  tags: ['bystander'] },
+      { x: 1240, y: yAt(0.65), animation: 'idle', direction:  1, speed: 0, vy: rv(8),  tags: ['bystander'] },
+      { x: 1900, y: yAt(0.22), animation: 'idle', direction: -1, speed: 0, vy: rv(5),  tags: ['bystander'] },
+      // 警察（officer）—— 缓慢巡逻
+      { x:  700, y: yAt(0.50), animation: 'walk', direction:  1, speed: 22, vy: rv(8),  tags: ['officer'] },
+      { x: 1550, y: yAt(0.38), animation: 'walk', direction: -1, speed: 20, vy: rv(7),  tags: ['officer'] },
+      // 小贩（vendor）—— 几乎不动
+      { x: 1050, y: yAt(0.78), animation: 'idle', direction:  1, speed: 0, vy: rv(4),  tags: ['vendor'] },
+      // 游客（tourist）—— 慢速，Y漂移大
+      { x:  240, y: yAt(0.62), animation: 'walk', direction:  1, speed: 18, vy: rv(22), tags: ['tourist'] },
+      { x: 1350, y: yAt(0.28), animation: 'walk', direction: -1, speed: 16, vy: rv(20), tags: ['tourist'] },
+    ];
+
+    for (const cfg of configs) {
+      cfg.renderer = this.stickRenderer;
+      cfg.minX     = 50;
+      cfg.maxX     = WORLD_WIDTH - 50;
+      cfg.minY     = farY;
+      cfg.maxY     = nearY;
+      cfg.color    = this._npcColorForTag(cfg.tags[0]);
+      const npc    = new NPC(cfg);
+      npc.frameIndex = Math.floor(Math.random() * 8);
+      this.entityManager.add(npc);
+    }
+  }
+
+  _npcColorForTag(tag) {
+    const palettes = {
+      pedestrian: [0x1a1a2a, 0x22304a, 0x2a1810, 0x182818, 0x28201a, 0x101828],
+      runner:     [0x3a1800, 0x1a2a08, 0x0a1a30, 0x301020],
+      bystander:  [0x202020, 0x1a1a30, 0x181818, 0x281820, 0x202818],
+      officer:    [0x0a1840, 0x081838],
+      vendor:     [0x3a1a00, 0x2a1000],
+      tourist:    [0x2a1c0c, 0x1a2010, 0x300a0a],
+    };
+    const colors = palettes[tag] || [0x1a1a1a];
+    return colors[Math.floor(Math.random() * colors.length)];
   }
 }
