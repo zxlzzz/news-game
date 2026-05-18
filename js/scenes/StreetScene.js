@@ -32,9 +32,18 @@ export class StreetScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.json('anim_walk', 'assets/animations/walk.json');
-    this.load.json('anim_run',  'assets/animations/run.json');
-    this.load.json('anim_idle', 'assets/animations/idle.json');
+    this.load.json('anim_walk',       'assets/animations/walk.json');
+    this.load.json('anim_run',        'assets/animations/run.json');
+    this.load.json('anim_idle',       'assets/animations/idle.json');
+    this.load.json('anim_jog',        'assets/animations/jog.json');
+    this.load.json('anim_phone',      'assets/animations/phone.json');
+    this.load.json('anim_bike',       'assets/animations/bike.json');
+    this.load.json('anim_mobile',     'assets/animations/mobile.json');
+    this.load.json('anim_chess',      'assets/animations/chess.json');
+    this.load.json('anim_dance',      'assets/animations/dance.json');
+    this.load.json('anim_dogwalk',    'assets/animations/dogwalk.json');
+    this.load.json('anim_squat_down', 'assets/animations/squat down.json');
+    this.load.json('anim_stand_up',   'assets/animations/stand up.json');
   }
 
   create() {
@@ -51,9 +60,18 @@ export class StreetScene extends Phaser.Scene {
 
     // 火柴人渲染器
     this.stickRenderer = new StickRenderer(this);
-    this.stickRenderer.loadAnimation('walk', this.cache.json.get('anim_walk'));
-    this.stickRenderer.loadAnimation('run',  this.cache.json.get('anim_run'));
-    this.stickRenderer.loadAnimation('idle', this.cache.json.get('anim_idle'));
+    this.stickRenderer.loadAnimation('walk',       this.cache.json.get('anim_walk'));
+    this.stickRenderer.loadAnimation('run',        this.cache.json.get('anim_run'));
+    this.stickRenderer.loadAnimation('idle',       this.cache.json.get('anim_idle'));
+    this.stickRenderer.loadAnimation('jog',        this.cache.json.get('anim_jog'));
+    this.stickRenderer.loadAnimation('phone',      this.cache.json.get('anim_phone'));
+    this.stickRenderer.loadAnimation('bike',       this.cache.json.get('anim_bike'));
+    this.stickRenderer.loadAnimation('mobile',     this.cache.json.get('anim_mobile'));
+    this.stickRenderer.loadAnimation('chess',      this.cache.json.get('anim_chess'));
+    this.stickRenderer.loadAnimation('dance',      this.cache.json.get('anim_dance'));
+    this.stickRenderer.loadAnimation('dogwalk',    this.cache.json.get('anim_dogwalk'));
+    this.stickRenderer.loadAnimation('squat_down', this.cache.json.get('anim_squat_down'));
+    this.stickRenderer.loadAnimation('stand_up',   this.cache.json.get('anim_stand_up'));
 
     // 统一 Entity 管理器
     this.entityManager = new EntityManager({
@@ -426,61 +444,172 @@ export class StreetScene extends Phaser.Scene {
   }
 
   _spawnNPCs() {
-    const { farY, nearY } = this.entityManager;
-    const span = nearY - farY;
-    const yAt  = (f, j = 0.12) => farY + span * Math.max(0, Math.min(1, f + (Math.random() - 0.5) * j));
-    const rv   = (m = 18) => (Math.random() - 0.5) * 2 * m;
-
-    const configs = [
-      // 行人（pedestrian）—— 各纵深均有
-      { x:  130, y: yAt(0.10), animation: 'walk', direction:  1, speed: 38, vy: rv(16), tags: ['pedestrian'] },
-      { x:  460, y: yAt(0.45), animation: 'walk', direction: -1, speed: 33, vy: rv(18), tags: ['pedestrian'] },
-      { x:  790, y: yAt(0.75), animation: 'walk', direction:  1, speed: 41, vy: rv(15), tags: ['pedestrian'] },
-      { x: 1120, y: yAt(0.30), animation: 'walk', direction: -1, speed: 36, vy: rv(17), tags: ['pedestrian'] },
-      { x: 1450, y: yAt(0.60), animation: 'walk', direction:  1, speed: 44, vy: rv(16), tags: ['pedestrian'] },
-      { x: 1780, y: yAt(0.20), animation: 'walk', direction: -1, speed: 39, vy: rv(14), tags: ['pedestrian'] },
-      // 跑者（runner）
-      { x:  320, y: yAt(0.55), animation: 'run',  direction:  1, speed:  94, vy: rv(12), tags: ['runner'] },
-      { x:  970, y: yAt(0.35), animation: 'run',  direction: -1, speed:  88, vy: rv(14), tags: ['runner'] },
-      { x: 1650, y: yAt(0.70), animation: 'run',  direction:  1, speed: 100, vy: rv(10), tags: ['runner'] },
-      // 旁观者（bystander）—— 几乎静止
-      { x:  580, y: yAt(0.82), animation: 'idle', direction:  1, speed: 0, vy: rv(7),  tags: ['bystander'] },
-      { x:  870, y: yAt(0.40), animation: 'idle', direction: -1, speed: 0, vy: rv(6),  tags: ['bystander'] },
-      { x: 1240, y: yAt(0.65), animation: 'idle', direction:  1, speed: 0, vy: rv(8),  tags: ['bystander'] },
-      { x: 1900, y: yAt(0.22), animation: 'idle', direction: -1, speed: 0, vy: rv(5),  tags: ['bystander'] },
-      // 警察（officer）—— 缓慢巡逻
-      { x:  700, y: yAt(0.50), animation: 'walk', direction:  1, speed: 22, vy: rv(8),  tags: ['officer'] },
-      { x: 1550, y: yAt(0.38), animation: 'walk', direction: -1, speed: 20, vy: rv(7),  tags: ['officer'] },
-      // 小贩（vendor）—— 几乎不动
-      { x: 1050, y: yAt(0.78), animation: 'idle', direction:  1, speed: 0, vy: rv(4),  tags: ['vendor'] },
-      // 游客（tourist）—— 慢速，Y漂移大
-      { x:  240, y: yAt(0.62), animation: 'walk', direction:  1, speed: 18, vy: rv(22), tags: ['tourist'] },
-      { x: 1350, y: yAt(0.28), animation: 'walk', direction: -1, speed: 16, vy: rv(20), tags: ['tourist'] },
-    ];
-
-    for (const cfg of configs) {
-      cfg.renderer = this.stickRenderer;
-      cfg.minX     = 50;
-      cfg.maxX     = WORLD_WIDTH - 50;
-      cfg.minY     = farY;
-      cfg.maxY     = nearY;
-      cfg.color    = this._npcColorForTag(cfg.tags[0]);
-      const npc    = new NPC(cfg);
-      npc.frameIndex = Math.floor(Math.random() * 8);
-      this.entityManager.add(npc);
-    }
-  }
-
-  _npcColorForTag(tag) {
-    const palettes = {
-      pedestrian: [0x1a1a2a, 0x22304a, 0x2a1810, 0x182818, 0x28201a, 0x101828],
-      runner:     [0x3a1800, 0x1a2a08, 0x0a1a30, 0x301020],
-      bystander:  [0x202020, 0x1a1a30, 0x181818, 0x281820, 0x202818],
-      officer:    [0x0a1840, 0x081838],
-      vendor:     [0x3a1a00, 0x2a1000],
-      tourist:    [0x2a1c0c, 0x1a2010, 0x300a0a],
+    const em   = this.entityManager;
+    const sr   = this.stickRenderer;
+    const farY = FAR_Y, nearY = NEAR_Y;
+    const span = nearY - farY;  // 206
+    const Y    = (f) => farY + span * f;
+    const rv   = (m = 16) => (Math.random() - 0.5) * 2 * m;
+    const npc  = (cfg) => {
+      cfg.renderer = sr;
+      cfg.minY = cfg.minY ?? farY;
+      cfg.maxY = cfg.maxY ?? nearY;
+      const n = new NPC(cfg);
+      n.frameIndex = Math.floor(Math.random() * (sr.getAnimation(cfg.animation)?.frameCount || 8));
+      return em.add(n);
     };
-    const colors = palettes[tag] || [0x1a1a1a];
-    return colors[Math.floor(Math.random() * colors.length)];
+
+    // ── 区域1：商业区 x 50–480 ──────────────────────────────────────
+    npc({ x: 130, y: Y(0.28), animation: 'walk',   direction:  1, speed: 35, vy: rv(12),
+          minX:  50, maxX: 490, color: 0x0a1840, tags: ['pedestrian', 'business'] });
+    npc({ x: 420, y: Y(0.65), animation: 'walk',   direction: -1, speed: 40, vy: rv(12),
+          minX:  50, maxX: 490, color: 0x1a1020, tags: ['pedestrian'] });
+    npc({ x: 260, y: Y(0.50), animation: 'phone',  direction:  1, speed: 18, vy: rv(8),
+          minX:  50, maxX: 490, color: 0x181828, tags: ['pedestrian', 'business'] });
+    npc({ x: 380, y: Y(0.40), animation: 'mobile', direction: -1, speed:  0, vy: rv(5),
+          minX:  50, maxX: 490, color: 0x201818, tags: ['pedestrian'] });
+    npc({ x: 200, y: Y(0.38), animation: 'walk',   direction:  1, speed: 22, vy: rv(8),
+          minX:  50, maxX: 490, color: 0x081838, tags: ['officer', 'authority'] });
+
+    // ── 区域2：广场 x 500–900 ────────────────────────────────────────
+    // 两位象棋玩家，面对面，同一 Y 深度
+    const chessY = Y(0.18);
+    const chessAnim = sr.getAnimation('chess');
+    const chessHalf = Math.floor(chessAnim.frameCount / 2);
+
+    const chessA = npc({
+      x: 592, y: chessY, animation: 'chess', direction:  1, speed: 0, vy: 0,
+      minX: 500, maxX: 900, color: 0x1a1018, tags: ['player', 'chess', 'bystander'],
+    });
+    chessA.frameIndex = 0;
+
+    const chessB = npc({
+      x: 640, y: chessY, animation: 'chess', direction: -1, speed: 0, vy: 0,
+      minX: 500, maxX: 900, color: 0x181a10, tags: ['player', 'chess', 'bystander'],
+    });
+    chessB.frameIndex = chessHalf;
+
+    // 旁观下棋
+    npc({ x: 556, y: chessY + 12, animation: 'idle', direction:  1, speed: 0, vy: 0,
+          minX: 500, maxX: 900, color: 0x20182a, tags: ['bystander'] });
+
+    // 遛狗者 + 狗（绑带系统）
+    const ownerY = Y(0.52);
+    const dogOwner = npc({
+      x: 750, y: ownerY, animation: 'walk', direction: 1, speed: 28, vy: rv(10),
+      minX: 500, maxX: 900, color: 0x1a1a10, tags: ['pedestrian', 'dog-owner'],
+    });
+
+    const dog = npc({
+      x: 800, y: ownerY, animation: 'dogwalk', direction: 1, speed: 0, vy: 0,
+      leashTarget: dogOwner, leashOffset: { x: 48, y: 0 },
+      minX: 500, maxX: 900, color: 0x7a5530, tags: ['dog', 'animal'],
+    });
+    dog.frameIndex = 0;
+
+    // 绳索：从主人手到狗颈
+    dogOwner.drawExtra = (g, ownerNpc) => {
+      if (!dog.alive) return;
+      g.lineStyle(1.5, 0x9a8060, 0.85);
+      g.lineBetween(
+        ownerNpc.x + 38 * ownerNpc.scale * ownerNpc.direction,
+        ownerNpc.y - 38 * ownerNpc.scale,
+        dog.x + 30 * dog.scale * dog.direction,
+        dog.y - 18 * dog.scale
+      );
+    };
+
+    // ── 区域3：健身区 x 900–1300 ─────────────────────────────────────
+    npc({ x:  960, y: Y(0.55), animation: 'jog',   direction:  1, speed: 65, vy: rv(14),
+          minX: 900, maxX: 1300, color: 0x1a0818, tags: ['jogger', 'athlete'] });
+    npc({ x: 1200, y: Y(0.35), animation: 'jog',   direction: -1, speed: 60, vy: rv(12),
+          minX: 900, maxX: 1300, color: 0x0a1808, tags: ['jogger', 'athlete'] });
+    npc({ x: 1060, y: Y(0.68), animation: 'dance', direction:  1, speed:  0, vy: rv(6),
+          minX: 900, maxX: 1300, color: 0x280a28, tags: ['dancer', 'pedestrian'] });
+
+    // 深蹲-站立循环（单次播放状态机）
+    const exerciser = npc({
+      x: 1140, y: Y(0.42), animation: 'squat_down', direction: -1, speed: 0, vy: 0,
+      playOnce: true,
+      minX: 900, maxX: 1300, color: 0x182810, tags: ['exerciser', 'athlete'],
+    });
+    exerciser.frameIndex = 0;
+    exerciser._waitMs = 0;
+    exerciser.customUpdate = (n, delta) => {
+      if (!n.animDone) return;
+      n._waitMs += delta;
+      if (n._waitMs >= 1200) {
+        n._waitMs   = 0;
+        n.animDone  = false;
+        n.frameIndex = 0;
+        n.frameTimer = 0;
+        n.animation  = (n.animation === 'squat_down') ? 'stand_up' : 'squat_down';
+      }
+    };
+
+    // ── 区域4：道路/交通 x 1300–1700 ────────────────────────────────
+    const drawBicycle = (g, n) => {
+      const s = n.scale, d = n.direction, bx = n.x, by = n.y;
+      const wR  = 22 * s;
+      const wCy = by - wR;
+      const rw  = bx - 20 * s * d;  // 后轮
+      const fw  = bx + 70 * s * d;  // 前轮
+      const jx  = bx + 20 * s * d;  // 车架节点
+      const jy  = wCy - 20 * s;
+      g.lineStyle(2 * s, 0x555555, 1);
+      g.strokeCircle(rw, wCy, wR);
+      g.strokeCircle(fw, wCy, wR);
+      g.lineStyle(2 * s, 0x333333, 1);
+      g.lineBetween(rw, wCy, jx, jy);
+      g.lineBetween(fw, wCy, jx, jy);
+      g.lineBetween(jx, jy, bx + 48 * s * d, wCy - 18 * s);  // 前叉
+      g.lineStyle(0.8 * s, 0x888888, 0.6);
+      g.lineBetween(rw, wCy, bx + 22 * s * d, wCy);           // 链条
+    };
+
+    const drawMotorbike = (g, n) => {
+      const s = n.scale, d = n.direction, bx = n.x, by = n.y;
+      const wR  = 26 * s;
+      const wCy = by - wR;
+      const rw  = bx - 18 * s * d;
+      const fw  = bx + 76 * s * d;
+      const lx  = Math.min(rw, fw);
+      g.lineStyle(3 * s, 0x333333, 1);
+      g.strokeCircle(rw, wCy, wR);
+      g.strokeCircle(fw, wCy, wR);
+      g.fillStyle(0x666666, 1);
+      g.fillRect(lx + 22 * s, wCy - 26 * s, 50 * s, 14 * s);   // 车身
+      g.lineStyle(2 * s, 0x444444, 1);
+      g.lineBetween(rw, wCy, bx + 20 * s * d, wCy - 22 * s);
+      g.lineBetween(bx + 20 * s * d, wCy - 22 * s, fw, wCy);
+    };
+
+    const cyclist1 = npc({
+      x: 1380, y: Y(0.52), animation: 'bike', direction:  1, speed: 105, vy: rv(6),
+      minX: 100, maxX: 1900, color: 0x0a2010, tags: ['cyclist', 'vehicle'],
+    });
+    cyclist1.drawExtra = drawBicycle;
+
+    const cyclist2 = npc({
+      x: 1560, y: Y(0.38), animation: 'bike', direction: -1, speed: 98, vy: rv(6),
+      minX: 100, maxX: 1900, color: 0x200a10, tags: ['cyclist', 'vehicle'],
+    });
+    cyclist2.drawExtra = drawBicycle;
+
+    const rider = npc({
+      x: 1460, y: Y(0.68), animation: 'bike', direction: 1, speed: 88, vy: rv(5),
+      minX: 100, maxX: 1900, color: 0x1a1000, tags: ['delivery', 'rider', 'vehicle'],
+    });
+    rider.drawExtra = drawMotorbike;
+
+    // ── 区域5：住宅区 x 1700–2000 ───────────────────────────────────
+    npc({ x: 1760, y: Y(0.35), animation: 'walk',   direction:  1, speed: 30, vy: rv(14),
+          minX: 1700, maxX: 1990, color: 0x201810, tags: ['pedestrian'] });
+    npc({ x: 1880, y: Y(0.60), animation: 'walk',   direction: -1, speed: 26, vy: rv(14),
+          minX: 1700, maxX: 1990, color: 0x182010, tags: ['pedestrian'] });
+    npc({ x: 1820, y: Y(0.48), animation: 'mobile', direction:  1, speed:  0, vy: rv(6),
+          minX: 1700, maxX: 1990, color: 0x100818, tags: ['pedestrian'] });
+    npc({ x: 1940, y: Y(0.30), animation: 'walk',   direction: -1, speed: 15, vy: rv(22),
+          minX: 1700, maxX: 1990, color: 0x2a1808, tags: ['tourist'] });
   }
 }
