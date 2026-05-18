@@ -32,6 +32,7 @@ export class StreetScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.json('scene_data',      'assets/scene.json');
     this.load.json('anim_walk',       'assets/animations/walk.json');
     this.load.json('anim_run',        'assets/animations/run.json');
     this.load.json('anim_idle',       'assets/animations/idle.json');
@@ -349,96 +350,26 @@ export class StreetScene extends Phaser.Scene {
   // ─── 实体生成 ─────────────────────────────────────────────────────────────────
 
   _spawnBuildings() {
-    // 每栋建筑：x=左边缘，y=临街底边(130)，带语义标签
-    const defs = [
-      { x: 15,   bWidth: 115, bDepth: 80, color: 0x9e9590, tags: ['office', 'building'] },
-      { x: 152,  bWidth:  88, bDepth: 62, color: 0x8a9098, tags: ['shop', 'retail', 'building'] },
-      { x: 263,  bWidth: 148, bDepth: 87, color: 0xa08878, tags: ['bank', 'finance', 'building'], waterTower: true },
-      { x: 430,  bWidth:  82, bDepth: 58, color: 0x909898, tags: ['shop', 'retail', 'building'] },
-      { x: 534,  bWidth: 126, bDepth: 73, color: 0x94887a, tags: ['restaurant', 'food', 'building'] },
-      { x: 684,  bWidth: 106, bDepth: 68, color: 0x7e8898, tags: ['office', 'building'] },
-      { x: 813,  bWidth: 158, bDepth: 90, color: 0xa09488, tags: ['hotel', 'building'],            waterTower: true },
-      { x: 992,  bWidth:  88, bDepth: 60, color: 0x8c9890, tags: ['shop', 'retail', 'building'] },
-      { x: 1102, bWidth: 134, bDepth: 78, color: 0x988a7e, tags: ['bank', 'finance', 'building'] },
-      { x: 1258, bWidth:  80, bDepth: 56, color: 0x8898a0, tags: ['apartment', 'residential', 'building'] },
-      { x: 1362, bWidth: 118, bDepth: 70, color: 0x9a9080, tags: ['office', 'building'] },
-      { x: 1505, bWidth: 148, bDepth: 84, color: 0x7e8898, tags: ['hotel', 'building'],            waterTower: true },
-      { x: 1678, bWidth:  92, bDepth: 64, color: 0x988890, tags: ['restaurant', 'food', 'building'] },
-      { x: 1798, bWidth: 126, bDepth: 74, color: 0xa09488, tags: ['shop', 'retail', 'building'] },
-    ];
+    const sceneData = this.cache.json.get('scene_data');
+    const defs = sceneData?.buildings ?? [];
+    const parseColor = c => parseInt(c.replace('#', ''), 16);
     for (const b of defs) {
-      this.entityManager.add(new BuildingEntity({ ...b, y: BUILDING_BASE_Y }));
+      this.entityManager.add(new BuildingEntity({
+        ...b,
+        y: BUILDING_BASE_Y,
+        color: parseColor(b.color),
+      }));
     }
   }
 
   _spawnProps() {
-    // 远端路沿路灯（每155px一盏）
-    for (let x = 95; x < WORLD_WIDTH; x += 155) {
+    const sceneData = this.cache.json.get('scene_data');
+    const defs = sceneData?.props ?? [];
+    const parseColor = c => c ? parseInt(c.replace('#', ''), 16) : 0x888888;
+    for (const p of defs) {
       this.entityManager.add(new PropEntity({
-        x, y: FAR_Y, width: 14, height: 14,
-        propType: 'lamp-far',
-        tags: ['lamp', 'street-furniture'],
-      }));
-    }
-
-    // 近端路沿路灯（offset，与远端错开）
-    for (let x = 172; x < WORLD_WIDTH; x += 155) {
-      this.entityManager.add(new PropEntity({
-        x, y: NEAR_Y, width: 14, height: 14,
-        propType: 'lamp-near',
-        tags: ['lamp', 'street-furniture'],
-      }));
-    }
-
-    // 远端人行道长椅
-    for (let x = 135; x < WORLD_WIDTH; x += 290) {
-      this.entityManager.add(new PropEntity({
-        x, y: 216, width: 32, height: 12,
-        propType: 'bench',
-        tags: ['bench', 'street-furniture'],
-      }));
-    }
-
-    // 远端人行道垃圾桶
-    for (let x = 300; x < WORLD_WIDTH; x += 450) {
-      this.entityManager.add(new PropEntity({
-        x, y: 230, width: 12, height: 12,
-        propType: 'trash',
-        tags: ['trash-can', 'street-furniture'],
-      }));
-    }
-
-    // 近端人行道垃圾桶
-    for (let x = 210; x < WORLD_WIDTH; x += 380) {
-      this.entityManager.add(new PropEntity({
-        x, y: 472, width: 12, height: 12,
-        propType: 'trash',
-        tags: ['trash-can', 'street-furniture'],
-      }));
-    }
-
-    // 各建筑门口招牌（颜色和标签对应建筑类型）
-    const signs = [
-      { x:  72, propColor: 0x1a4488, tags: ['sign', 'office']     }, // office
-      { x: 196, propColor: 0xcc3322, tags: ['sign', 'retail']      }, // shop
-      { x: 337, propColor: 0x886600, tags: ['sign', 'finance']     }, // bank
-      { x: 471, propColor: 0x22aa55, tags: ['sign', 'retail']      }, // shop
-      { x: 597, propColor: 0xcc6622, tags: ['sign', 'food']        }, // restaurant
-      { x: 737, propColor: 0x336688, tags: ['sign', 'office']      }, // office
-      { x: 892, propColor: 0x7a3322, tags: ['sign', 'hotel']       }, // hotel
-      { x: 1036, propColor: 0xaa2288, tags: ['sign', 'retail']     }, // shop
-      { x: 1169, propColor: 0x886600, tags: ['sign', 'finance']    }, // bank
-      { x: 1421, propColor: 0x225588, tags: ['sign', 'office']     }, // office
-      { x: 1579, propColor: 0x7a3322, tags: ['sign', 'hotel']      }, // hotel
-      { x: 1724, propColor: 0xcc6622, tags: ['sign', 'food']       }, // restaurant
-      { x: 1861, propColor: 0xcc3322, tags: ['sign', 'retail']     }, // shop
-    ];
-    for (const s of signs) {
-      this.entityManager.add(new PropEntity({
-        x: s.x, y: BUILDING_BASE_Y + 1, width: 24, height: 14,
-        propType: 'sign',
-        propColor: s.propColor,
-        tags: s.tags,
+        ...p,
+        propColor: parseColor(p.color),
       }));
     }
   }
