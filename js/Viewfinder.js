@@ -11,9 +11,21 @@ export class Viewfinder {
     this.width  = config.width  || 200;
     this.height = config.height || 160;
 
+    this.minWidth  = config.minWidth  || 90;
+    this.minHeight = config.minHeight || 70;
+    this.maxWidth  = config.maxWidth  || 520;
+    this.maxHeight = config.maxHeight || 380;
+
     this.dragging    = false;
+    this.resizing    = false;
     this.dragOffsetX = 0;
     this.dragOffsetY = 0;
+    this.resizeAnchorX = 0;  // 缩放时左上角锚点
+    this.resizeAnchorY = 0;
+    this.resizeGrabDx  = 0;  // 拖动手柄抓取偏移（让手柄不跳）
+    this.resizeGrabDy  = 0;
+
+    this.handleSize = 16;    // 右下角缩放手柄边长
 
     // 框内实体列表（Entity 的任意子类）
     this.capturedEntities = [];
@@ -21,10 +33,27 @@ export class Viewfinder {
     this._setupInput(scene);
   }
 
+  /** 判断点是否在右下角缩放手柄方块内 */
+  _isInHandle(wx, wy) {
+    const hx = this.x + this.width;
+    const hy = this.y + this.height;
+    const s  = this.handleSize;
+    return wx >= hx - s && wx <= hx + 4 && wy >= hy - s && wy <= hy + 4;
+  }
+
   _setupInput(scene) {
     scene.input.on('pointerdown', (pointer) => {
       const wx = pointer.worldX;
       const wy = pointer.worldY;
+      // 优先检测缩放手柄
+      if (this._isInHandle(wx, wy)) {
+        this.resizing = true;
+        this.resizeAnchorX = this.x;
+        this.resizeAnchorY = this.y;
+        this.resizeGrabDx  = (this.x + this.width)  - wx;
+        this.resizeGrabDy  = (this.y + this.height) - wy;
+        return;
+      }
       if (wx >= this.x && wx <= this.x + this.width &&
           wy >= this.y && wy <= this.y + this.height) {
         this.dragging    = true;
@@ -34,13 +63,22 @@ export class Viewfinder {
     });
 
     scene.input.on('pointermove', (pointer) => {
-      if (!this.dragging) return;
-      this.x = pointer.worldX - this.dragOffsetX;
-      this.y = pointer.worldY - this.dragOffsetY;
+      if (this.resizing) {
+        const newW = (pointer.worldX + this.resizeGrabDx) - this.resizeAnchorX;
+        const newH = (pointer.worldY + this.resizeGrabDy) - this.resizeAnchorY;
+        this.width  = Math.max(this.minWidth,  Math.min(this.maxWidth,  newW));
+        this.height = Math.max(this.minHeight, Math.min(this.maxHeight, newH));
+        return;
+      }
+      if (this.dragging) {
+        this.x = pointer.worldX - this.dragOffsetX;
+        this.y = pointer.worldY - this.dragOffsetY;
+      }
     });
 
     scene.input.on('pointerup', () => {
       this.dragging = false;
+      this.resizing = false;
     });
   }
 
@@ -98,6 +136,25 @@ export class Viewfinder {
     if (this.capturedEntities.length > 0) {
       g.fillStyle(0xff4444, 0.85);
       g.fillCircle(cx + cw - 8, cy + 8, 5);
+    }
+
+    // 右下角缩放手柄（白底红边小方块 + 三条斜纹）
+    this._drawResizeHandle(g, cx + cw, cy + ch);
+  }
+
+  _drawResizeHandle(g, hx, hy) {
+    const s = this.handleSize;
+    // 半透明白色方块
+    g.fillStyle(0xffffff, this.resizing ? 0.9 : 0.55);
+    g.fillRect(hx - s, hy - s, s + 2, s + 2);
+    // 红色边框
+    g.lineStyle(2, 0xff4444, 1);
+    g.strokeRect(hx - s, hy - s, s + 2, s + 2);
+    // 三条斜纹（表示可拖拽）
+    g.lineStyle(1.5, 0xcc2200, 0.95);
+    for (let i = 0; i < 3; i++) {
+      const off = 3 + i * 4;
+      g.lineBetween(hx - off, hy + 1, hx + 1, hy - off);
     }
   }
 

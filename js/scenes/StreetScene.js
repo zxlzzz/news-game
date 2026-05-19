@@ -13,7 +13,13 @@ import { EntityManager }   from '../EntityManager.js';
 import { BuildingEntity }  from '../BuildingEntity.js';
 import { PropEntity }      from '../PropEntity.js';
 import { Viewfinder }      from '../Viewfinder.js';
-import { WORLD_WIDTH, WORLD_HEIGHT, FAR_Y, NEAR_Y, BUILDING_BASE_Y } from '../SceneConfig.js';
+import {
+  WORLD_WIDTH, WORLD_HEIGHT, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
+  SHADE_BG, SHADE_FAR, SHADE_FAR_ALT, SHADE_ROAD, SHADE_NEAR, SHADE_CURB,
+  LINE_FAR_COLOR, LINE_FAR_WIDTH,
+  LINE_MID_COLOR, LINE_MID_WIDTH,
+  LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
+} from '../SceneConfig.js';
 import { spawnPedestrians } from '../npcs/Pedestrians.js';
 import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
@@ -44,7 +50,7 @@ export class StreetScene extends Phaser.Scene {
 
   create() {
     this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-    this.cameras.main.setBackgroundColor(0xc8c3bc);
+    this.cameras.main.setBackgroundColor(SHADE_BG);
 
     // 渲染层（建筑区背景色由 camera background 提供）
     this.bgGraphics     = this.add.graphics();
@@ -93,7 +99,7 @@ export class StreetScene extends Phaser.Scene {
     const W = this.cameras.main.width;
     const H = this.cameras.main.height;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框捕捉目标', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放', {
       fontFamily: '"JetBrains Mono", monospace',
       fontSize: '13px',
       color: '#555555',
@@ -229,53 +235,60 @@ export class StreetScene extends Phaser.Scene {
   _drawGround() {
     const g = this.bgGraphics;
 
-    // 建筑区底色（Y 0–BUILDING_BASE_Y）
-    g.fillStyle(0xc8c3bc, 1);
+    // 建筑区底色（Y 0–BUILDING_BASE_Y）— 远端，最浅
+    g.fillStyle(SHADE_BG, 1);
     g.fillRect(0, 0, WORLD_WIDTH, BUILDING_BASE_Y);
 
-    // 远端人行道（Y BUILDING_BASE_Y–FAR_Y）
-    g.fillStyle(0xd0cbc2, 1);
+    // 远端人行道（Y BUILDING_BASE_Y–FAR_Y）— 浅灰
+    g.fillStyle(SHADE_FAR, 1);
     g.fillRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
 
-    // 道路（Y FAR_Y–NEAR_Y）
-    g.fillStyle(0x797573, 1);
+    // 道路（Y FAR_Y–NEAR_Y）— 中灰
+    g.fillStyle(SHADE_ROAD, 1);
     g.fillRect(0, FAR_Y, WORLD_WIDTH, NEAR_Y - FAR_Y);
 
-    // 近端人行道（Y NEAR_Y–500）
-    g.fillStyle(0xd4cfc6, 1);
+    // 近端人行道（Y NEAR_Y–500）— 略深灰，制造前景压迫感
+    g.fillStyle(SHADE_NEAR, 1);
     g.fillRect(0, NEAR_Y, WORLD_WIDTH, WORLD_HEIGHT - NEAR_Y);
 
     this._drawRoadMarkings(g);
-    this._drawPavement(g, BUILDING_BASE_Y, FAR_Y,        48, 3);
-    this._drawPavement(g, NEAR_Y + 4,      WORLD_HEIGHT, 52, 2);
+    this._drawPavement(g, BUILDING_BASE_Y, FAR_Y,        48, 3, /*near=*/false);
+    this._drawPavement(g, NEAR_Y + 4,      WORLD_HEIGHT, 52, 2, /*near=*/true);
     this._drawTrees(g);
   }
 
   _drawRoadMarkings(g) {
-    // 透视横线：由近至远间距缩减，强化纵深感
+    // 透视横线：由近至远间距缩减、颜色由深变浅，强化纵深感
     let lineY   = NEAR_Y - 10;
     let spacing = 30;
     while (lineY > FAR_Y + 5 && spacing > 2.8) {
-      g.lineStyle(1, 0x626060, 0.22);
+      // 越靠近近端线越粗、越深；远端线变薄、变浅
+      const t = (NEAR_Y - lineY) / (NEAR_Y - FAR_Y); // 0=近, 1=远
+      const w = 1.4 - t * 0.9;
+      const c = Math.round(0x55 + t * 0x35);
+      g.lineStyle(w, (c << 16) | (c << 8) | c, 0.32);
       g.lineBetween(0, Math.round(lineY), WORLD_WIDTH, Math.round(lineY));
       spacing *= 0.80;
       lineY   -= spacing;
     }
 
-    // 路沿石
-    g.fillStyle(0xe2ddd4, 1);
-    g.fillRect(0, FAR_Y - 4, WORLD_WIDTH, 5);
-    g.fillStyle(0xe8e3da, 1);
-    g.fillRect(0, NEAR_Y,    WORLD_WIDTH, 5);
+    // 路沿石（远端薄浅、近端粗深）
+    g.fillStyle(SHADE_CURB, 1);
+    g.fillRect(0, FAR_Y - 3, WORLD_WIDTH, 4);
+    g.fillStyle(0xdcdcdc, 1);
+    g.fillRect(0, NEAR_Y,    WORLD_WIDTH, 6);
+    g.lineStyle(LINE_NEAR_WIDTH, LINE_NEAR_COLOR, 0.6);
+    g.lineBetween(0, NEAR_Y + 6, WORLD_WIDTH, NEAR_Y + 6);
 
-    // 路边白实线（道路内侧）
-    g.lineStyle(3, 0xffffff, 0.45);
+    // 路边白实线（道路内侧）— 远端淡，近端醒目
+    g.lineStyle(1.5, 0xffffff, 0.35);
     g.lineBetween(0, FAR_Y + 9,  WORLD_WIDTH, FAR_Y + 9);
+    g.lineStyle(3,   0xffffff, 0.55);
     g.lineBetween(0, NEAR_Y - 9, WORLD_WIDTH, NEAR_Y - 9);
 
-    // 中心双黄虚线
+    // 中心双虚线（白色，纯黑白灰风格不用黄）
     const midY = Math.round((FAR_Y + NEAR_Y) / 2);
-    g.lineStyle(2, 0xc8b040, 0.75);
+    g.lineStyle(2, 0xffffff, 0.55);
     for (let x = 0; x < WORLD_WIDTH; x += 68) {
       g.lineBetween(x, midY - 2, x + 36, midY - 2);
       g.lineBetween(x, midY + 2, x + 36, midY + 2);
@@ -290,7 +303,7 @@ export class StreetScene extends Phaser.Scene {
   _drawCrosswalk(g, cx) {
     const roadTop = FAR_Y  + 10;
     const roadBot = NEAR_Y - 10;
-    g.fillStyle(0xffffff, 0.50);
+    g.fillStyle(0xffffff, 0.55);
     for (let i = 0; i < 8; i++) {
       const fx = cx + i * (8  + 12); // 远端：条宽8，间隔12
       const nx = cx + i * (13 + 16); // 近端：条宽13，间隔16
@@ -304,8 +317,12 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  _drawPavement(g, topY, botY, colStep, rows) {
-    g.lineStyle(1, 0xb5b0a6, 0.28);
+  _drawPavement(g, topY, botY, colStep, rows, near) {
+    // 远端：薄浅；近端：粗深
+    const lineColor = near ? LINE_MID_COLOR : LINE_FAR_COLOR;
+    const lineWidth = near ? 1.2 : 0.8;
+    const alpha     = near ? 0.32 : 0.22;
+    g.lineStyle(lineWidth, lineColor, alpha);
     for (let x = 0; x < WORLD_WIDTH; x += colStep) {
       g.lineBetween(x, topY, x, botY);
     }
@@ -316,30 +333,42 @@ export class StreetScene extends Phaser.Scene {
   }
 
   _drawTrees(g) {
-    // 远端人行道树（Y ≈ 168，较小）
+    // 远端人行道树（Y ≈ 168，较小，浅灰薄线）
     const farXs = [75, 238, 405, 572, 740, 908, 1076, 1244, 1412, 1580, 1748, 1916];
     for (const tx of farXs) {
       const ty = 168 + Math.sin(tx * 0.031) * 9;
       const r  = 14  + Math.sin(tx * 0.071) * 3;
-      g.fillStyle(0x000000, 0.16);
-      g.fillEllipse(tx + 5, ty + 7, r * 2.6, r * 1.5);
-      g.fillStyle(0x4e7430, 1);
+      // 投影
+      g.fillStyle(0x000000, 0.12);
+      g.fillEllipse(tx + 4, ty + 6, r * 2.4, r * 1.3);
+      // 树冠浅灰
+      g.fillStyle(0xb4b4b4, 1);
       g.fillCircle(tx, ty, r);
-      g.fillStyle(0x72a848, 0.52);
-      g.fillCircle(tx - 4, ty - 4, r * 0.44);
+      // 高光（更浅）
+      g.fillStyle(0xdcdcdc, 0.55);
+      g.fillCircle(tx - 4, ty - 4, r * 0.46);
+      // 薄线轮廓
+      g.lineStyle(LINE_FAR_WIDTH, LINE_FAR_COLOR, 0.7);
+      g.strokeCircle(tx, ty, r);
     }
 
-    // 近端人行道树（Y ≈ 480，较大）
+    // 近端人行道树（Y ≈ 480，较大，深灰粗线）
     const nearXs = [140, 340, 540, 740, 940, 1140, 1340, 1540, 1740, 1940];
     for (const tx of nearXs) {
       const ty = 480;
       const r  = 17 + Math.sin(tx * 0.053) * 4;
-      g.fillStyle(0x000000, 0.13);
-      g.fillEllipse(tx + 6, ty + 8, r * 2.9, r * 1.6);
-      g.fillStyle(0x436228, 1);
+      // 投影
+      g.fillStyle(0x000000, 0.22);
+      g.fillEllipse(tx + 7, ty + 9, r * 2.9, r * 1.6);
+      // 树冠深灰
+      g.fillStyle(0x3a3a3a, 1);
       g.fillCircle(tx, ty, r);
-      g.fillStyle(0x628840, 0.48);
+      // 微高光
+      g.fillStyle(0x6a6a6a, 0.55);
       g.fillCircle(tx - 5, ty - 5, r * 0.42);
+      // 粗线轮廓
+      g.lineStyle(LINE_NEAR_WIDTH, LINE_NEAR_COLOR, 0.85);
+      g.strokeCircle(tx, ty, r);
     }
   }
 

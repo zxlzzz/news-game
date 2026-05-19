@@ -5,6 +5,14 @@
  */
 
 import { Entity } from './Entity.js';
+import { SIDEWALK_FAR_Y, NEAR_Y } from './SceneConfig.js';
+
+// NPC 按 Y 取灰度：远端浅灰（~0x70）→ 近端近黑（~0x08）
+function npcDepthGray(y) {
+  const t = Math.max(0, Math.min(1, (y - SIDEWALK_FAR_Y) / (NEAR_Y + 14 - SIDEWALK_FAR_Y)));
+  const v = Math.round(0x70 + t * (0x08 - 0x70));
+  return (v << 16) | (v << 8) | v;
+}
 
 export class NPC extends Entity {
   /**
@@ -118,7 +126,9 @@ export class NPC extends Entity {
     // 附加绘制（自行车、摩托、绳索等）在骨架之前，使其显示在角色后面
     if (this.drawExtra) this.drawExtra(g, this);
 
-    const color = this.inViewfinder ? 0xcc2200 : this.color;
+    // 纯黑白灰画风：忽略 config.color，按 Y 深度自动取灰度
+    // 取景框命中时仍用红色高亮（唯一保留的彩色，方便玩家定位捕获目标）
+    const color = this.inViewfinder ? 0xcc2200 : npcDepthGray(this.y);
     this.renderer.draw(
       g, this.animation, this.frameIndex,
       this.x, this.y, this.scale, this.direction,
