@@ -7,10 +7,10 @@
 import { Entity } from './Entity.js';
 import { SIDEWALK_FAR_Y, NEAR_Y } from './SceneConfig.js';
 
-// NPC 按 Y 取灰度：远端浅灰（~0x70）→ 近端近黑（~0x08）
+// NPC 按 Y 取灰度：远端中浅灰 → 近端中深灰（避免近端过黑）
 function npcDepthGray(y) {
   const t = Math.max(0, Math.min(1, (y - SIDEWALK_FAR_Y) / (NEAR_Y + 14 - SIDEWALK_FAR_Y)));
-  const v = Math.round(0x70 + t * (0x08 - 0x70));
+  const v = Math.round(0x78 + t * (0x32 - 0x78));
   return (v << 16) | (v << 8) | v;
 }
 

@@ -15,7 +15,7 @@ import { PropEntity }      from '../PropEntity.js';
 import { Viewfinder }      from '../Viewfinder.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
-  SHADE_BG, SHADE_FAR, SHADE_FAR_ALT, SHADE_ROAD, SHADE_NEAR, SHADE_CURB,
+  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB,
   LINE_FAR_COLOR, LINE_FAR_WIDTH,
   LINE_MID_COLOR, LINE_MID_WIDTH,
   LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
@@ -50,7 +50,7 @@ export class StreetScene extends Phaser.Scene {
 
   create() {
     this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-    this.cameras.main.setBackgroundColor(SHADE_BG);
+    this.cameras.main.setBackgroundColor(GRAY_SKY);
 
     // 渲染层（建筑区背景色由 camera background 提供）
     this.bgGraphics     = this.add.graphics();
@@ -235,58 +235,61 @@ export class StreetScene extends Phaser.Scene {
   _drawGround() {
     const g = this.bgGraphics;
 
-    // 建筑区底色（Y 0–BUILDING_BASE_Y）— 远端，最浅
-    g.fillStyle(SHADE_BG, 1);
+    // 建筑区底色 — 最浅
+    g.fillStyle(GRAY_SKY, 1);
     g.fillRect(0, 0, WORLD_WIDTH, BUILDING_BASE_Y);
 
-    // 远端人行道（Y BUILDING_BASE_Y–FAR_Y）— 浅灰
-    g.fillStyle(SHADE_FAR, 1);
+    // 远端人行道 — 浅灰
+    g.fillStyle(GRAY_FAR_PAVE, 1);
     g.fillRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
 
-    // 道路（Y FAR_Y–NEAR_Y）— 中灰
-    g.fillStyle(SHADE_ROAD, 1);
+    // 道路 — 中灰
+    g.fillStyle(GRAY_ROAD, 1);
     g.fillRect(0, FAR_Y, WORLD_WIDTH, NEAR_Y - FAR_Y);
 
-    // 近端人行道（Y NEAR_Y–500）— 略深灰，制造前景压迫感
-    g.fillStyle(SHADE_NEAR, 1);
+    // 近端人行道
+    g.fillStyle(GRAY_NEAR_PAVE, 1);
     g.fillRect(0, NEAR_Y, WORLD_WIDTH, WORLD_HEIGHT - NEAR_Y);
 
     this._drawRoadMarkings(g);
-    this._drawPavement(g, BUILDING_BASE_Y, FAR_Y,        48, 3, /*near=*/false);
-    this._drawPavement(g, NEAR_Y + 4,      WORLD_HEIGHT, 52, 2, /*near=*/true);
+    this._drawSidewalkTiles(g, BUILDING_BASE_Y + 4, FAR_Y - 4, /*near=*/false);
+    this._drawSidewalkTiles(g, NEAR_Y + 8,         WORLD_HEIGHT, /*near=*/true);
+    this._drawRoadPatches(g);
     this._drawTrees(g);
   }
 
   _drawRoadMarkings(g) {
-    // 透视横线：由近至远间距缩减、颜色由深变浅，强化纵深感
+    // 透视横线：远薄浅、近粗深
     let lineY   = NEAR_Y - 10;
     let spacing = 30;
     while (lineY > FAR_Y + 5 && spacing > 2.8) {
-      // 越靠近近端线越粗、越深；远端线变薄、变浅
       const t = (NEAR_Y - lineY) / (NEAR_Y - FAR_Y); // 0=近, 1=远
-      const w = 1.4 - t * 0.9;
+      const w = 1.3 - t * 0.85;
       const c = Math.round(0x55 + t * 0x35);
-      g.lineStyle(w, (c << 16) | (c << 8) | c, 0.32);
+      g.lineStyle(w, (c << 16) | (c << 8) | c, 0.30);
       g.lineBetween(0, Math.round(lineY), WORLD_WIDTH, Math.round(lineY));
       spacing *= 0.80;
       lineY   -= spacing;
     }
 
-    // 路沿石（远端薄浅、近端粗深）
-    g.fillStyle(SHADE_CURB, 1);
+    // 路沿石
+    g.fillStyle(GRAY_CURB, 1);
     g.fillRect(0, FAR_Y - 3, WORLD_WIDTH, 4);
-    g.fillStyle(0xdcdcdc, 1);
-    g.fillRect(0, NEAR_Y,    WORLD_WIDTH, 6);
-    g.lineStyle(LINE_NEAR_WIDTH, LINE_NEAR_COLOR, 0.6);
+    g.lineStyle(LINE_FAR_WIDTH, 0x7a7a7a, 0.7);
+    g.lineBetween(0, FAR_Y - 3, WORLD_WIDTH, FAR_Y - 3);
+
+    g.fillStyle(0xd8d8d8, 1);
+    g.fillRect(0, NEAR_Y, WORLD_WIDTH, 6);
+    g.lineStyle(LINE_NEAR_WIDTH, LINE_NEAR_COLOR, 0.65);
     g.lineBetween(0, NEAR_Y + 6, WORLD_WIDTH, NEAR_Y + 6);
 
-    // 路边白实线（道路内侧）— 远端淡，近端醒目
-    g.lineStyle(1.5, 0xffffff, 0.35);
+    // 路边白实线
+    g.lineStyle(1.2, 0xffffff, 0.32);
     g.lineBetween(0, FAR_Y + 9,  WORLD_WIDTH, FAR_Y + 9);
-    g.lineStyle(3,   0xffffff, 0.55);
+    g.lineStyle(2.8, 0xffffff, 0.55);
     g.lineBetween(0, NEAR_Y - 9, WORLD_WIDTH, NEAR_Y - 9);
 
-    // 中心双虚线（白色，纯黑白灰风格不用黄）
+    // 中心双虚线
     const midY = Math.round((FAR_Y + NEAR_Y) / 2);
     g.lineStyle(2, 0xffffff, 0.55);
     for (let x = 0; x < WORLD_WIDTH; x += 68) {
@@ -294,9 +297,35 @@ export class StreetScene extends Phaser.Scene {
       g.lineBetween(x, midY + 2, x + 36, midY + 2);
     }
 
-    // 梯形斑马线（近端宽远端窄，产生透视感）
+    // 斑马线
     for (let cx = 220; cx < WORLD_WIDTH; cx += 380) {
       this._drawCrosswalk(g, cx);
+    }
+  }
+
+  // ─── 路面补丁/破损（细节，给柏油路加点纹理） ────────────────────────────────
+  _drawRoadPatches(g) {
+    // 用稳定哈希散布，每帧不变
+    const rand = (i) => {
+      const s = Math.sin(i * 91.337) * 43758.5453;
+      return s - Math.floor(s);
+    };
+    // 沥青补丁：几个稍暗矩形
+    g.fillStyle(0x7a7a7a, 0.55);
+    for (let i = 0; i < 8; i++) {
+      const px = rand(i * 3 + 1) * WORLD_WIDTH;
+      const py = FAR_Y + 14 + rand(i * 3 + 2) * (NEAR_Y - FAR_Y - 30);
+      const pw = 28 + rand(i * 3 + 3) * 50;
+      const ph = 6  + rand(i * 3 + 4) * 8;
+      g.fillRect(px, py, pw, ph);
+    }
+    // 油渍/水渍：椭圆细线
+    g.lineStyle(0.5, 0x5a5a5a, 0.45);
+    for (let i = 0; i < 12; i++) {
+      const px = rand(i * 7 + 11) * WORLD_WIDTH;
+      const py = FAR_Y + 12 + rand(i * 7 + 12) * (NEAR_Y - FAR_Y - 24);
+      const pr = 4 + rand(i * 7 + 13) * 6;
+      g.strokeEllipse(px, py, pr * 2, pr * 0.9);
     }
   }
 
@@ -317,59 +346,89 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  _drawPavement(g, topY, botY, colStep, rows, near) {
-    // 远端：薄浅；近端：粗深
-    const lineColor = near ? LINE_MID_COLOR : LINE_FAR_COLOR;
-    const lineWidth = near ? 1.2 : 0.8;
-    const alpha     = near ? 0.32 : 0.22;
-    g.lineStyle(lineWidth, lineColor, alpha);
-    for (let x = 0; x < WORLD_WIDTH; x += colStep) {
+  // ─── 人行道地砖网格 ──────────────────────────────────────────────────────
+  _drawSidewalkTiles(g, topY, botY, near) {
+    // 近端：偏方形大砖（约 36×18），稍深线；远端：长条砖（约 48×10），细浅线
+    const tileW  = near ? 36 : 48;
+    const tileH  = near ? 18 : 10;
+    const color  = near ? 0x7a7a7a : 0xb0b0b0;
+    const alpha  = near ? 0.42 : 0.32;
+    const lineW  = near ? 0.8  : 0.5;
+    g.lineStyle(lineW, color, alpha);
+    // 竖向砖缝
+    for (let x = 0; x <= WORLD_WIDTH; x += tileW) {
       g.lineBetween(x, topY, x, botY);
     }
-    for (let r = 1; r < rows; r++) {
-      const ly = topY + (botY - topY) * r / rows;
-      g.lineBetween(0, ly, WORLD_WIDTH, ly);
+    // 横向砖缝（错缝排列）
+    let row = 0;
+    for (let y = topY; y <= botY; y += tileH) {
+      g.lineBetween(0, y, WORLD_WIDTH, y);
+      // 错缝：每行偏移 tileW/2 的竖线（让相邻行错开一半）
+      if (row % 2 === 1) {
+        for (let x = tileW / 2; x <= WORLD_WIDTH; x += tileW) {
+          g.lineBetween(x, y, x, Math.min(y + tileH, botY));
+        }
+      }
+      row++;
     }
   }
 
+  // ─── 树木（线条分叉，非实心圆） ───────────────────────────────────────────
   _drawTrees(g) {
-    // 远端人行道树（Y ≈ 168，较小，浅灰薄线）
+    // 远端：浅灰薄线小树
     const farXs = [75, 238, 405, 572, 740, 908, 1076, 1244, 1412, 1580, 1748, 1916];
     for (const tx of farXs) {
-      const ty = 168 + Math.sin(tx * 0.031) * 9;
-      const r  = 14  + Math.sin(tx * 0.071) * 3;
-      // 投影
-      g.fillStyle(0x000000, 0.12);
-      g.fillEllipse(tx + 4, ty + 6, r * 2.4, r * 1.3);
-      // 树冠浅灰
-      g.fillStyle(0xb4b4b4, 1);
-      g.fillCircle(tx, ty, r);
-      // 高光（更浅）
-      g.fillStyle(0xdcdcdc, 0.55);
-      g.fillCircle(tx - 4, ty - 4, r * 0.46);
-      // 薄线轮廓
-      g.lineStyle(LINE_FAR_WIDTH, LINE_FAR_COLOR, 0.7);
-      g.strokeCircle(tx, ty, r);
+      const ty = 172 + Math.sin(tx * 0.031) * 8;
+      const r  = 12 + Math.sin(tx * 0.071) * 3;
+      this._drawLineTree(g, tx, ty, r, 0.6, 0x808080, 0.85);
     }
-
-    // 近端人行道树（Y ≈ 480，较大，深灰粗线）
+    // 近端：深灰粗线大树
     const nearXs = [140, 340, 540, 740, 940, 1140, 1340, 1540, 1740, 1940];
     for (const tx of nearXs) {
-      const ty = 480;
-      const r  = 17 + Math.sin(tx * 0.053) * 4;
-      // 投影
-      g.fillStyle(0x000000, 0.22);
-      g.fillEllipse(tx + 7, ty + 9, r * 2.9, r * 1.6);
-      // 树冠深灰
-      g.fillStyle(0x3a3a3a, 1);
-      g.fillCircle(tx, ty, r);
-      // 微高光
-      g.fillStyle(0x6a6a6a, 0.55);
-      g.fillCircle(tx - 5, ty - 5, r * 0.42);
-      // 粗线轮廓
-      g.lineStyle(LINE_NEAR_WIDTH, LINE_NEAR_COLOR, 0.85);
-      g.strokeCircle(tx, ty, r);
+      const ty = 482;
+      const r  = 18 + Math.sin(tx * 0.053) * 4;
+      this._drawLineTree(g, tx, ty, r, 1.6, 0x1a1a1a, 0.95);
     }
+  }
+
+  /**
+   * 用分叉短线表示俯视的树冠（无实心圆）
+   * @param {number} cx 中心 X
+   * @param {number} cy 中心 Y
+   * @param {number} r  半径
+   * @param {number} lw 线宽
+   * @param {number} c  线条颜色
+   * @param {number} a  透明度
+   */
+  _drawLineTree(g, cx, cy, r, lw, c, a) {
+    // 投影（保留一点压地感）
+    g.fillStyle(0x000000, 0.12);
+    g.fillEllipse(cx + r * 0.25, cy + r * 0.35, r * 2.0, r * 0.9);
+
+    // 树干小十字
+    g.lineStyle(lw * 1.4, c, a);
+    g.lineBetween(cx - 2, cy, cx + 2, cy);
+    g.lineBetween(cx, cy - 2, cx, cy + 2);
+
+    // 8 条主干放射 + 每条末端分两叉
+    g.lineStyle(lw, c, a);
+    const branches = 8;
+    for (let i = 0; i < branches; i++) {
+      const ang = (i / branches) * Math.PI * 2 + (cx % 7) * 0.05;
+      const ex  = cx + Math.cos(ang) * r;
+      const ey  = cy + Math.sin(ang) * r;
+      g.lineBetween(cx, cy, ex, ey);
+      // 分叉点（距离中心 65%）
+      const fx = cx + Math.cos(ang) * r * 0.65;
+      const fy = cy + Math.sin(ang) * r * 0.65;
+      const a1 = ang + 0.5, a2 = ang - 0.5;
+      const sub = r * 0.4;
+      g.lineBetween(fx, fy, fx + Math.cos(a1) * sub, fy + Math.sin(a1) * sub);
+      g.lineBetween(fx, fy, fx + Math.cos(a2) * sub, fy + Math.sin(a2) * sub);
+    }
+    // 中间小内圈（描边圆，非填充）
+    g.lineStyle(lw * 0.7, c, a * 0.6);
+    g.strokeCircle(cx, cy, r * 0.32);
   }
 
   // ─── 实体生成 ─────────────────────────────────────────────────────────────────
