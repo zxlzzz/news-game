@@ -75,14 +75,62 @@ export class BuildingEntity extends Entity {
     g.lineStyle(1, 0x706860, 0.45);
     g.lineBetween(x + w / 2, top, x + w / 2, this.y);
 
-    // 临街重阴影线（加强立面感）
+    // 临街重阴影线
     g.lineStyle(3, 0x403830, 0.55);
     g.lineBetween(x, this.y, x + w, this.y);
 
     if (this.waterTower) this._drawWaterTower(g, top, d);
 
+    // ── 建筑前立面（面向道路的正面墙体） ──────────────────────────────
+    this._drawFacade(g, x, w);
+
     // 取景框高亮
     if (this.inViewfinder) this._drawViewfinderOutline(g);
+  }
+
+  _drawFacade(g, x, w) {
+    const FACADE_H = 34;
+    const fc = this.color;
+    // 正面墙比屋顶深约40%
+    const facadeColor = (
+      (Math.floor(((fc >> 16) & 0xff) * 0.58) << 16) |
+      (Math.floor(((fc >>  8) & 0xff) * 0.58) <<  8) |
+       Math.floor( (fc        & 0xff) * 0.58)
+    );
+
+    // 主墙体
+    g.fillStyle(facadeColor, 1);
+    g.fillRect(x, this.y, w, FACADE_H);
+
+    // 左侧窄阴影（立体边缘感）
+    g.fillStyle(0x000000, 0.14);
+    g.fillRect(x, this.y, 4, FACADE_H);
+
+    // 顶部高光条（屋檐投影）
+    g.fillStyle(0x000000, 0.22);
+    g.fillRect(x, this.y, w, 4);
+
+    // 底边线（落地线）
+    g.lineStyle(1.5, 0x201810, 0.60);
+    g.lineBetween(x, this.y + FACADE_H, x + w, this.y + FACADE_H);
+
+    // 窗户（均匀排布）
+    const winW = 7, winH = 10, winGap = 6;
+    const nWin = Math.max(1, Math.floor((w - 14) / (winW + winGap)));
+    const startX = x + Math.round((w - nWin * (winW + winGap) + winGap) / 2);
+    const winY   = this.y + 9;
+    for (let i = 0; i < nWin; i++) {
+      const wx = startX + i * (winW + winGap);
+      // 窗框
+      g.fillStyle(0x181410, 0.55);
+      g.fillRect(wx - 1, winY - 1, winW + 2, winH + 2);
+      // 玻璃（日间冷色）
+      g.fillStyle(0xc8d8b8, 0.50);
+      g.fillRect(wx, winY, winW, winH);
+      // 窗户反光
+      g.fillStyle(0xffffff, 0.20);
+      g.fillRect(wx, winY, 2, winH);
+    }
   }
 
   _drawWaterTower(g, roofTop, d) {
