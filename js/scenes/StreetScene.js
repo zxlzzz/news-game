@@ -360,68 +360,69 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  // ─── 树木（不规则椭圆轮廓 + 小树干，非对称非放射） ────────────────────────
+  // ─── 行道树（在路沿绿化带，远离建筑立面，避免穿模） ────────────────────────
   _drawTrees(g) {
-    // 远端：浅灰薄线小树 — 树冠 Y 不能侵入 FAR_Y - tree_r 区域
-    const farXs = [75, 238, 405, 572, 740, 908, 1076, 1244, 1412, 1580, 1748, 1916];
+    // 远端：路沿绿化带（FAR_Y=280 前方 y≈266），与远端路灯交错排布
+    // 远端路灯 x = 95,250,405,...（步长155）；树取其中点，互不重叠
+    const farXs = [172, 327, 482, 637, 792, 947, 1102, 1257, 1412, 1567, 1722, 1877];
     for (const tx of farXs) {
-      const ty = 178 + Math.sin(tx * 0.031) * 6;
-      const r  = 10 + Math.sin(tx * 0.071) * 2;
-      this._drawBlobTree(g, tx, ty, r, 0.7, 0x808080, 0.9);
+      const ty = 266 + Math.sin(tx * 0.05) * 2;
+      const r  = 9 + Math.sin(tx * 0.071) * 1.5;
+      this._drawBlobTree(g, tx, ty, r, 0.7, 0x787878, 0.9);
     }
-    // 近端：深灰粗线大树 — 远离路面（y=485），不会侵入路面
-    const nearXs = [140, 340, 540, 740, 940, 1140, 1340, 1540, 1740, 1940];
+    // 近端：近端人行道靠下边缘（y≈488），与近端路灯交错
+    const nearXs = [250, 405, 560, 715, 870, 1025, 1180, 1335, 1490, 1645, 1800, 1955];
     for (const tx of nearXs) {
-      const ty = 486;
+      const ty = 488;
       const r  = 13 + Math.sin(tx * 0.053) * 3;
       this._drawBlobTree(g, tx, ty, r, 1.5, 0x1c1c1c, 0.95);
     }
   }
 
   /**
-   * 不规则椭圆树冠 + 中心十字树干，每棵树轮廓略不同（用 cx 做种子）
+   * 俯视树冠：柔和起伏的分瓣轮廓（非对称、非放射），中心小十字树干，
+   * 内部几条短弧暗示叶丛。每棵以 cx 做种子轮廓略不同。
    */
   _drawBlobTree(g, cx, cy, r, lw, c, a) {
-    // 落地阴影（细椭圆）
+    // 落地阴影
     g.fillStyle(0x000000, 0.10);
-    g.fillEllipse(cx + r * 0.20, cy + r * 0.30, r * 1.9, r * 0.7);
+    g.fillEllipse(cx + r * 0.2, cy + r * 0.3, r * 1.8, r * 0.65);
 
-    // 不规则边缘：12 个点，半径加噪声
-    const N = 12;
+    // 6 瓣起伏轮廓
+    const lobes = 6;
+    const steps = lobes * 4;
     const pts = [];
-    for (let i = 0; i < N; i++) {
-      const ang = (i / N) * Math.PI * 2;
-      // 用 sin 多频组合制造稳定噪声
-      const n =
-        Math.sin(cx * 0.123 + i * 1.7) * 0.18 +
-        Math.sin(cx * 0.057 + i * 3.3) * 0.12;
-      const rad = r * (1 + n);
-      pts.push({
-        x: cx + Math.cos(ang) * rad,
-        // 椭圆压扁（y 方向乘 0.85），更像俯视投影
-        y: cy + Math.sin(ang) * rad * 0.85,
-      });
+    for (let i = 0; i < steps; i++) {
+      const ang  = (i / steps) * Math.PI * 2;
+      const lobe = 0.84 + 0.16 * Math.cos(ang * lobes);            // 柔和分瓣
+      const nz   = 1 + 0.06 * Math.sin(cx * 0.21 + i * 1.3);       // 每棵微噪声
+      const rad  = r * lobe * nz;
+      pts.push({ x: cx + Math.cos(ang) * rad, y: cy + Math.sin(ang) * rad * 0.82 });
     }
-    // 填充极浅一层让"树荫"成形
-    g.fillStyle(c, 0.10);
+    // 极浅填充成形
+    g.fillStyle(c, 0.08);
     g.beginPath();
     g.moveTo(pts[0].x, pts[0].y);
-    for (let i = 1; i < N; i++) g.lineTo(pts[i].x, pts[i].y);
+    for (let i = 1; i < steps; i++) g.lineTo(pts[i].x, pts[i].y);
     g.closePath();
     g.fillPath();
-
-    // 锯齿轮廓
+    // 轮廓
     g.lineStyle(lw, c, a);
     g.beginPath();
     g.moveTo(pts[0].x, pts[0].y);
-    for (let i = 1; i < N; i++) g.lineTo(pts[i].x, pts[i].y);
+    for (let i = 1; i < steps; i++) g.lineTo(pts[i].x, pts[i].y);
     g.closePath();
     g.strokePath();
 
-    // 树干：小十字（非圆）
-    g.lineStyle(lw * 1.2, c, a);
-    g.lineBetween(cx - 2, cy, cx + 2, cy);
-    g.lineBetween(cx, cy - 2, cx, cy + 2);
+    // 内部 2 条短弧（叶丛暗示）
+    g.lineStyle(lw * 0.7, c, a * 0.55);
+    g.strokeCircle(cx - r * 0.3, cy - r * 0.15, r * 0.3);
+    g.strokeCircle(cx + r * 0.28, cy + r * 0.12, r * 0.26);
+
+    // 树干小十字
+    g.lineStyle(lw * 1.1, c, a);
+    g.lineBetween(cx - 1.5, cy, cx + 1.5, cy);
+    g.lineBetween(cx, cy - 1.5, cx, cy + 1.5);
   }
 
   // ─── 实体生成 ─────────────────────────────────────────────────────────────────
