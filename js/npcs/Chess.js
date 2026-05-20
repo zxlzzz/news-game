@@ -9,6 +9,7 @@
 
 import { SIDEWALK_FAR_Y } from '../SceneConfig.js';
 import { makeNPC }        from './util.js';
+import { PropEntity }     from '../PropEntity.js';
 
 const WAIT_MS = 3500;
 
@@ -28,24 +29,39 @@ export function spawnChess(em, sr) {
   const Y     = SIDEWALK_FAR_Y;
   const state = { active: 'A', waiting: false, waitMs: 0 };
 
+  // ── 先布置棋桌 + 两把椅子（必须在棋手之前 add，保证棋手 draw 在上层） ──
+  const tableX = 634;
+  em.add(new PropEntity({
+    propType: 'chair', x: 612, y: Y, width: 14, height: 16, dir: +1,
+    tags: ['chair', 'street-furniture'],
+  }));
+  em.add(new PropEntity({
+    propType: 'chair', x: 656, y: Y, width: 14, height: 16, dir: -1,
+    tags: ['chair', 'street-furniture'],
+  }));
+  em.add(new PropEntity({
+    propType: 'chess-table', x: tableX, y: Y, width: 22, height: 18,
+    tags: ['chess-table', 'game', 'street-furniture'],
+  }));
+
   const chessA = makeNPC(em, sr, {
-    x: 610, y: Y, animation: 'chess', direction:  1,
+    x: 612, y: Y, animation: 'chess', direction:  1,
     speed: 0, vy: 0, minY: Y - 2, maxY: Y + 2,
     color: 0x1a1018, tags: ['player', 'chess', 'bystander'],
     playOnce: true,
   });
 
   const chessB = makeNPC(em, sr, {
-    x: 658, y: Y, animation: 'chess', direction: -1,
+    x: 656, y: Y, animation: 'chess', direction: -1,
     speed: 0, vy: 0, minY: Y - 2, maxY: Y + 2,
     color: 0x181a10, tags: ['player', 'chess', 'bystander'],
     playOnce: true,
   });
 
-  // 旁观者静止站立
+  // 旁观者静止站立（站在棋桌侧后方）
   makeNPC(em, sr, {
-    x: 576, y: Y + 10, animation: 'idle', direction: 1,
-    speed: 0, vy: 0, minY: Y + 8, maxY: Y + 12,
+    x: 584, y: Y + 6, animation: 'idle', direction: 1,
+    speed: 0, vy: 0, minY: Y + 4, maxY: Y + 8,
     color: 0x20182a, tags: ['bystander'],
   });
 

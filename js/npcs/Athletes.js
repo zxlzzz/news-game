@@ -1,40 +1,41 @@
 /**
- * Athletes — 健身区（x 900–1300）
- * 包含：远/近端慢跑者（透视对比）、舞者、深蹲运动员（状态机）
+ * Athletes — 健身人群（人行道上，不下马路）
+ * 远端慢跑者（小）/ 近端慢跑者（大）做透视对比，舞者 + 深蹲者在近端人行道。
  */
 
-import { roadY } from '../SceneConfig.js';
+import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
 
 export function spawnAthletes(em, sr) {
-  // 远端慢跑者（小）vs 近端慢跑者（大）—— 同类角色的透视对比
+  // 远端慢跑者（小）
   makeNPC(em, sr, {
-    x: 980, y: roadY(0.10), animation: 'jog', direction:  1, speed: 68, vy: 0,
-    minX: 900, maxX: 1300,
-    minY: roadY(0.06), maxY: roadY(0.14),
+    x: 980, y: SIDEWALK_FAR_Y, animation: 'jog', direction:  1, speed: 60, vy: 0,
+    minX: 850, maxX: 1320,
+    minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y + 2,
     color: 0x1a0818, tags: ['jogger', 'athlete'],
   });
+  // 近端慢跑者（大）—— 同类透视对比
   makeNPC(em, sr, {
-    x: 1220, y: roadY(0.88), animation: 'jog', direction: -1, speed: 62, vy: 0,
-    minX: 900, maxX: 1300,
-    minY: roadY(0.84), maxY: roadY(0.92),
+    x: 1220, y: SIDEWALK_NEAR_Y, animation: 'jog', direction: -1, speed: 66, vy: 0,
+    minX: 850, maxX: 1320,
+    minY: SIDEWALK_NEAR_Y - 2, maxY: SIDEWALK_NEAR_Y + 2,
     color: 0x0a1808, tags: ['jogger', 'athlete'],
   });
 
-  // 舞者（中段）
+  // 舞者（近端人行道，原地）
   makeNPC(em, sr, {
-    x: 1080, y: roadY(0.55), animation: 'dance', direction: 1, speed: 0, vy: 0,
-    minX: 900, maxX: 1300,
-    minY: roadY(0.52), maxY: roadY(0.58),
+    x: 1060, y: SIDEWALK_NEAR_Y + 2, animation: 'dance', direction: 1, speed: 0, vy: 0,
+    minX: 1000, maxX: 1120,
+    minY: SIDEWALK_NEAR_Y, maxY: SIDEWALK_NEAR_Y + 3,
     color: 0x280a28, tags: ['dancer', 'pedestrian'],
   });
 
-  // 深蹲–站立循环（单次播放状态机）
+  // 深蹲–站立循环（近端人行道，单次播放状态机）
   const exerciser = makeNPC(em, sr, {
-    x: 1160, y: roadY(0.38), animation: 'squat_down', direction: -1, speed: 0, vy: 0,
+    x: 1180, y: SIDEWALK_NEAR_Y - 1, animation: 'squat_down', direction: -1, speed: 0, vy: 0,
     playOnce: true,
-    minX: 900, maxX: 1300,
-    minY: roadY(0.35), maxY: roadY(0.41),
+    minX: 1140, maxX: 1240,
+    minY: SIDEWALK_NEAR_Y - 2, maxY: SIDEWALK_NEAR_Y,
     color: 0x182810, tags: ['exerciser', 'athlete'],
   });
   exerciser.frameIndex = 0;

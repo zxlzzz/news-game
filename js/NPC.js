@@ -5,11 +5,11 @@
  */
 
 import { Entity } from './Entity.js';
-import { SIDEWALK_FAR_Y, NEAR_Y } from './SceneConfig.js';
+import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y } from './SceneConfig.js';
 
 // NPC 按 Y 取灰度：远端中浅灰 → 近端中深灰（避免近端过黑）
 function npcDepthGray(y) {
-  const t = Math.max(0, Math.min(1, (y - SIDEWALK_FAR_Y) / (NEAR_Y + 14 - SIDEWALK_FAR_Y)));
+  const t = Math.max(0, Math.min(1, (y - SIDEWALK_FAR_Y) / (SIDEWALK_NEAR_Y - SIDEWALK_FAR_Y)));
   const v = Math.round(0x78 + t * (0x32 - 0x78));
   return (v << 16) | (v << 8) | v;
 }
@@ -129,9 +129,27 @@ export class NPC extends Entity {
     // 纯黑白灰画风：忽略 config.color，按 Y 深度自动取灰度
     // 取景框命中时仍用红色高亮（唯一保留的彩色，方便玩家定位捕获目标）
     const color = this.inViewfinder ? 0xcc2200 : npcDepthGray(this.y);
+
+    // steadyFoot：骑车等动画里"脚"是踏板而非落点，逐帧 footY 抖动会让身体上下蹿。
+    // 用全局最大 footY 做参考，保持身体恒定高度（踏板在轮心，由 drawExtra 对齐）。
+    let renderY = this.y;
+    if (this.steadyFoot) {
+      const anim = this.renderer.getAnimation(this.animation);
+      if (anim) {
+        if (anim._maxFootY === undefined) {
+          let m = 0;
+          for (const f of anim.frames) m = Math.max(m, f.l_foot[1], f.r_foot[1]);
+          anim._maxFootY = m;
+        }
+        const frame = anim.frames[this.frameIndex % anim.frameCount];
+        const frameMax = Math.max(frame.l_foot[1], frame.r_foot[1]);
+        renderY = this.y + (frameMax - anim._maxFootY) * this.scale;
+      }
+    }
+
     this.renderer.draw(
       g, this.animation, this.frameIndex,
-      this.x, this.y, this.scale, this.direction,
+      this.x, renderY, this.scale, this.direction,
       color, 1
     );
 

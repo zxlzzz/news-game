@@ -34,22 +34,25 @@ export class PropEntity extends Entity {
     super({ ...config, static: true });
     this.propType  = config.propType  || 'generic';
     this.propColor = config.propColor ?? 0x888888;
+    this.dir       = config.dir       ?? 1; // 部分道具（椅子）需要朝向
   }
 
   draw(g) {
     if (!this.visible) return;
     switch (this.propType) {
-      case 'lamp-far':  this._drawLampFar(g);  break;
-      case 'lamp-near': this._drawLampNear(g); break;
-      case 'bench':     this._drawBench(g);    break;
-      case 'trash':     this._drawTrash(g);    break;
-      case 'sign':      this._drawSign(g);     break;
-      case 'newsrack':  this._drawNewsRack(g); break;
-      case 'hydrant':   this._drawHydrant(g);  break;
-      case 'mailbox':   this._drawMailbox(g);  break;
-      case 'planter':   this._drawPlanter(g);  break;
-      case 'manhole':   this._drawManhole(g);  break;
-      case 'drain':     this._drawDrain(g);    break;
+      case 'lamp-far':    this._drawLampFar(g);    break;
+      case 'lamp-near':   this._drawLampNear(g);   break;
+      case 'bench':       this._drawBench(g);      break;
+      case 'trash':       this._drawTrash(g);      break;
+      case 'sign':        this._drawSign(g);       break;
+      case 'newsrack':    this._drawNewsRack(g);   break;
+      case 'hydrant':     this._drawHydrant(g);    break;
+      case 'mailbox':     this._drawMailbox(g);    break;
+      case 'planter':     this._drawPlanter(g);    break;
+      case 'manhole':     this._drawManhole(g);    break;
+      case 'drain':       this._drawDrain(g);      break;
+      case 'chair':       this._drawChair(g);      break;
+      case 'chess-table': this._drawChessTable(g); break;
     }
     if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
@@ -333,6 +336,67 @@ export class PropEntity extends Entity {
       const half = Math.sqrt(Math.max(0, t)) * rx * 0.78;
       g.lineBetween(x - half, ly, x + half, ly);
     }
+  }
+
+  // ─── 椅子（侧视，背靠 dir 反方向） ───────────────────────────────────────
+  // anchor (x, y) = 椅子脚着地的中心；dir=+1 表示坐者面向右 → 椅背在左
+  _drawChair(g) {
+    const x = this.x, y = this.y;
+    const d = this.dir; // +1 椅背在左, -1 椅背在右
+    // 椅面（坐板）：水平短线
+    const seatW = 14;
+    const seatY = y - 14;
+    const seatX1 = x - seatW / 2;
+    const seatX2 = x + seatW / 2;
+    g.lineStyle(1.2, 0x202020, 0.95);
+    g.lineBetween(seatX1, seatY, seatX2, seatY);
+    // 椅背（背在 -d 方向）
+    const backX = (d > 0) ? seatX1 : seatX2;
+    g.lineBetween(backX, seatY, backX, seatY - 12);
+    // 椅背顶端横头
+    g.lineBetween(backX - 2 * d, seatY - 12, backX + 1 * d, seatY - 12);
+    // 4 腿（向下到地面）
+    g.lineStyle(1, 0x202020, 0.9);
+    g.lineBetween(seatX1 + 1, seatY, seatX1 + 1, y);
+    g.lineBetween(seatX2 - 1, seatY, seatX2 - 1, y);
+    // 椅子坐垫提示（细横线）
+    g.lineStyle(0.5, 0x303030, 0.6);
+    g.lineBetween(seatX1 + 1, seatY + 1, seatX2 - 1, seatY + 1);
+  }
+
+  // ─── 棋桌（小方桌 + 棋盘 3×3 抽象 + 4 腿） ──────────────────────────────
+  _drawChessTable(g) {
+    const tw = this.width || 22;
+    const th = 10;            // 桌面厚度（视觉）
+    const x = this.x, y = this.y;
+    const topX = x - tw / 2;
+    const topY = y - 18;       // 桌面上沿
+    // 桌面
+    g.fillStyle(0xcfcfcf, 1);
+    g.fillRect(topX, topY, tw, th);
+    g.lineStyle(1, 0x1a1a1a, 0.95);
+    g.strokeRect(topX, topY, tw, th);
+    // 桌面顶部高光线
+    g.lineStyle(0.5, 0xfafafa, 0.85);
+    g.lineBetween(topX + 1, topY + 1, topX + tw - 1, topY + 1);
+    // 棋盘 3×3 网格（抽象）
+    g.lineStyle(0.6, 0x101010, 0.85);
+    for (let i = 1; i < 3; i++) {
+      const lx = topX + (tw * i / 3);
+      g.lineBetween(lx, topY + 2, lx, topY + th - 2);
+    }
+    for (let i = 1; i < 3; i++) {
+      const ly = topY + 2 + (th - 4) * i / 3;
+      g.lineBetween(topX + 2, ly, topX + tw - 2, ly);
+    }
+    // 4 腿
+    g.lineStyle(1, 0x1a1a1a, 0.95);
+    g.lineBetween(topX + 1,       topY + th, topX + 1,       y);
+    g.lineBetween(topX + tw - 1,  topY + th, topX + tw - 1,  y);
+    // 中后两条腿（细一点，制造透视）
+    g.lineStyle(0.7, 0x1a1a1a, 0.7);
+    g.lineBetween(topX + tw * 0.3, topY + th, topX + tw * 0.3, y - 1);
+    g.lineBetween(topX + tw * 0.7, topY + th, topX + tw * 0.7, y - 1);
   }
 
   // ─── 排水沟盖（路边长条，多条平行竖线） ───────────────────────────────────

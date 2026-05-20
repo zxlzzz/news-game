@@ -6,12 +6,14 @@
 export const WORLD_WIDTH     = 2000;
 export const WORLD_HEIGHT    = 500;
 
-export const FAR_Y           = 252;   // 道路远端（NPC最小Y）
-export const NEAR_Y          = 458;   // 道路近端（NPC最大Y）
+// 道路边界（窄化后）
+export const FAR_Y           = 280;   // 远端人行道/道路分界（curb）
+export const NEAR_Y          = 420;   // 道路/近端人行道分界（curb）
 export const BUILDING_BASE_Y = 130;   // 建筑临街底边Y
 
-/** 远端人行道上 NPC 的典型 Y 坐标 */
-export const SIDEWALK_FAR_Y  = 208;
+// 人行道步行带（NPC 在此 Y 走，避开静物 Y）
+export const SIDEWALK_FAR_Y  = 250;   // 远端人行道步行 Y（建筑 130 与 curb 280 之间偏下）
+export const SIDEWALK_NEAR_Y = 462;   // 近端人行道步行 Y（curb 420 与底边 500 之间偏上）
 
 /**
  * 按道路纵深分数换算世界 Y

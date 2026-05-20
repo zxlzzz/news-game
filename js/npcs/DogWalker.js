@@ -2,16 +2,16 @@
  * DogWalker — 遛狗者 + 狗（绳索绑带系统）
  */
 
-import { roadY } from '../SceneConfig.js';
+import { SIDEWALK_NEAR_Y } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
 
 export function spawnDogWalker(em, sr) {
-  const ownerY = roadY(0.50);
+  const ownerY = SIDEWALK_NEAR_Y;
 
   const owner = makeNPC(em, sr, {
-    x: 760, y: ownerY, animation: 'walk', direction: 1, speed: 28, vy: 2,
-    minX: 500, maxX: 900,
-    minY: roadY(0.40), maxY: roadY(0.60),
+    x: 760, y: ownerY, animation: 'walk', direction: 1, speed: 26, vy: 0,
+    minX: 600, maxX: 950,
+    minY: ownerY - 2, maxY: ownerY + 2,
     color: 0x1a1a10, tags: ['pedestrian', 'dog-owner'],
   });
 
