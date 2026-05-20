@@ -15,7 +15,7 @@ const SPOKE = 0x808080;
 
 function drawBicycle(g, n) {
   const s = n.scale, d = n.direction, bx = n.x, by = n.y;
-  const wR  = 16 * s;
+  const wR  = 25 * s;
   const wCy = by - wR;                 // 轮心（≈ 踏板/曲柄高度）
   const rwx = bx +  2 * s * d;          // 后轮（臀部下）
   const fwx = bx + 76 * s * d;          // 前轮（车把下）
@@ -48,7 +48,7 @@ function drawBicycle(g, n) {
 
 function drawMotorbike(g, n) {
   const s = n.scale, d = n.direction, bx = n.x, by = n.y;
-  const wR  = 18 * s;
+  const wR  = 20 * s;
   const wCy = by - wR;
   const rwx = bx -  4 * s * d;
   const fwx = bx + 80 * s * d;
