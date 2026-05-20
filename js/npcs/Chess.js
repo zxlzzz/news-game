@@ -34,12 +34,12 @@ export function spawnChess(em, sr) {
   // ── 1) 先建棋手对象（暂不入列），定好缩放与坐姿首帧，便于读锚点 ──
   const scale = em.depthScale(Y);
   const chessA = new NPC({
-    renderer: sr, x: 612, y: Y, animation: 'chess', direction:  1,
+    renderer: sr, x: 600, y: Y, animation: 'chess', direction:  1,
     speed: 0, vy: 0, minY: Y - 2, maxY: Y + 2,
     tags: ['player', 'chess', 'bystander'], playOnce: true,
   });
   const chessB = new NPC({
-    renderer: sr, x: 656, y: Y, animation: 'chess', direction: -1,
+    renderer: sr, x: 668, y: Y, animation: 'chess', direction: -1,
     speed: 0, vy: 0, minY: Y - 2, maxY: Y + 2,
     tags: ['player', 'chess', 'bystander'], playOnce: true,
   });
@@ -51,12 +51,12 @@ export function spawnChess(em, sr) {
   const handB = chessB.getAnchor('hand_r');
   const hipA  = chessA.getAnchor('hip');
   const hipB  = chessB.getAnchor('hip');
-  const boardMid = { x: (handA.x + handB.x) / 2, y: (handA.y + handB.y) / 2 };
+  const boardMid = { x: (handA.x + handB.x) / 2, y: (handA.y + handB.y-10) / 2 };
 
   // 棋桌：x 居中于双手，腿落到地面 Y，桌面高度 = 地面到双手高度
   em.add(new PropEntity({
     propType: 'chess-table', x: boardMid.x, y: Y,
-    width: Math.max(20, Math.abs(handA.x - handB.x) + 10), height: 18,
+    width: Math.max(20, Math.abs(handA.x - handB.x))-15, height: 18,
     topH: Math.max(10, Y - boardMid.y),
     tags: ['chess-table', 'game', 'street-furniture'],
   }));
