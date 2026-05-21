@@ -23,6 +23,7 @@ export class EntityManager {
 
   /** 添加一个实体，返回该实体（方便链式调用） */
   add(entity) {
+    entity.manager = this; // 反向引用，供 NPC.getTags() 做空间关系查询
     this.entities.push(entity);
     return entity;
   }

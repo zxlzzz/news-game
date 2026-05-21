@@ -8,6 +8,19 @@ import { Entity } from './Entity.js';
 import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y } from './SceneConfig.js';
 import { humanOffsetY, dogOffsetY } from './StickRenderer.js';
 
+// 行为状态 → 标签
+const STATE_TAGS = {
+  walk: 'walking', run: 'running', stand: 'standing',
+  sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling', talk: 'talking',
+};
+// 无状态机托管时按动画名推断标签（chess/cycle/dance 等专用场景）
+const ANIM_TAGS = {
+  walk: 'walking', run: 'running', jog: 'jogging', bike: 'cycling',
+  mobile: 'riding', idle: 'standing', single: 'standing', chess: 'sitting',
+  dance: 'dancing', sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling',
+  squat_down: 'squatting', stand_up: 'standing',
+};
+
 // NPC 按 Y 取灰度：远端中浅灰 → 近端中深灰（避免近端过黑）
 function npcDepthGray(y) {
   const t = Math.max(0, Math.min(1, (y - SIDEWALK_FAR_Y) / (SIDEWALK_NEAR_Y - SIDEWALK_FAR_Y)));
@@ -134,6 +147,49 @@ export class NPC extends Entity {
       x: this.x + jp[0] * s * dir,
       y: renderY + jp[1] * s + offsetY,
     };
+  }
+
+  // ─── 动态标签（供取景框 → 新闻生成） ─────────────────────────────────────
+  // = 自身属性 + 当前行为状态 + 叠加动作 + 空间关系 + 社交状态
+  getTags() {
+    const out = new Set();
+
+    // 1) 自身属性（生成时写死的 tags + npcType）
+    for (const t of this.tags) out.add(t);
+    if (this.npcType) out.add(this.npcType);
+
+    // 2) 当前行为状态（优先用状态机 state，否则按动画推断）
+    const stateTag = STATE_TAGS[this.state] ?? ANIM_TAGS[this.animation];
+    if (stateTag) out.add(stateTag);
+
+    // 3) 叠加动作
+    if (this.overlay) out.add(this.overlay);
+
+    // 4) 社交状态
+    if (this.bond) out.add('talking');
+
+    // 5) 空间关系（near:建筑类型 / near:道具）
+    if (this.manager) this._addSpatialTags(out);
+
+    return Array.from(out);
+  }
+
+  _addSpatialTags(out) {
+    for (const e of this.manager.entities) {
+      if (e === this || !e.alive || !e.visible) continue;
+      // 建筑：x 落在占地范围内 → near:<类型>
+      if (e.bWidth !== undefined) {
+        if (this.x >= e.x - 10 && this.x <= e.x + e.bWidth + 10) {
+          for (const t of e.tags) if (t !== 'building') out.add('near:' + t);
+        }
+      } else if (e.propType) {
+        // 道具：近距离 → near:<道具主标签>
+        if (Math.abs(e.x - this.x) < 36 && Math.abs(e.y - this.y) < 70) {
+          const main = (e.tags && e.tags[0]) || e.propType;
+          out.add('near:' + main);
+        }
+      }
+    }
   }
 
   update(delta) {

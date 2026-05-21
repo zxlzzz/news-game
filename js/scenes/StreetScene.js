@@ -10,6 +10,7 @@
 
 import { StickRenderer }   from '../StickRenderer.js';
 import { EntityManager }   from '../EntityManager.js';
+import { BehaviorManager } from '../BehaviorManager.js';
 import { BuildingEntity }  from '../BuildingEntity.js';
 import { PropEntity }      from '../PropEntity.js';
 import { Viewfinder }      from '../Viewfinder.js';
@@ -44,6 +45,11 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_dogwalk',    'assets/animations/dogwalk.json');
     this.load.json('anim_squat_down', 'assets/animations/squat down.json');
     this.load.json('anim_stand_up',   'assets/animations/stand up.json');
+    // 行为状态机第一批用到的姿态
+    this.load.json('anim_single',     'assets/animations/single.json');
+    this.load.json('anim_sit_bench',  'assets/animations/sit_bench.json');
+    this.load.json('anim_fall',       'assets/animations/fall.json');
+    this.load.json('anim_lie_ground', 'assets/animations/lie_ground.json');
   }
 
   create() {
@@ -71,6 +77,10 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('dogwalk',    this.cache.json.get('anim_dogwalk'));
     this.stickRenderer.loadAnimation('squat_down', this.cache.json.get('anim_squat_down'));
     this.stickRenderer.loadAnimation('stand_up',   this.cache.json.get('anim_stand_up'));
+    this.stickRenderer.loadAnimation('single',     this.cache.json.get('anim_single'));
+    this.stickRenderer.loadAnimation('sit_bench',  this.cache.json.get('anim_sit_bench'));
+    this.stickRenderer.loadAnimation('fall',       this.cache.json.get('anim_fall'));
+    this.stickRenderer.loadAnimation('lie_ground', this.cache.json.get('anim_lie_ground'));
 
     // 统一 Entity 管理器
     // 缩放参考用人行道带（远端步行带 → 近端步行带），让远小近大对比贯穿整个纵深
@@ -205,6 +215,8 @@ export class StreetScene extends Phaser.Scene {
     if (vfc.x - cam.scrollX < margin)                    cam.scrollX -= spd * 0.5;
     else if (cam.scrollX + cam.width - vfc.x < margin)   cam.scrollX += spd * 0.5;
 
+    // 行为状态机先决策（设状态/动画/速度/朝向），再由 EntityManager 推进位移与帧
+    this.behaviorManager.update(delta);
     this.entityManager.update(delta);
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
@@ -453,7 +465,11 @@ export class StreetScene extends Phaser.Scene {
   _spawnNPCs() {
     const em = this.entityManager;
     const sr = this.stickRenderer;
-    spawnPedestrians(em, sr);
+    // 普通行人交给行为状态机托管
+    const managedPeds = spawnPedestrians(em, sr);
+    this.behaviorManager = new BehaviorManager(em);
+    for (const p of managedPeds) this.behaviorManager.register(p);
+    // 其余专用场景仍由各自 spawner 自理（本轮不迁移）
     spawnChess(em, sr);
     spawnDogWalker(em, sr);
     spawnAthletes(em, sr);

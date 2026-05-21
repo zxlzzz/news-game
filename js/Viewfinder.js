@@ -167,7 +167,9 @@ export class Viewfinder {
   getCapturedTags() {
     const tags = new Set();
     for (const e of this.capturedEntities) {
-      for (const tag of e.tags) tags.add(tag);
+      // NPC 用动态 getTags()（含状态/叠加/空间/社交）；静态实体用其 tags
+      const list = (typeof e.getTags === 'function') ? e.getTags() : (e.tags || []);
+      for (const tag of list) tags.add(tag);
     }
     return Array.from(tags);
   }

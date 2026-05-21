@@ -11,44 +11,48 @@ import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, FAR_Y, NEAR_Y } from '../SceneConfig.j
 import { makeNPC } from './util.js';
 
 export function spawnPedestrians(em, sr) {
+  // 被 BehaviorManager 托管的普通行人（不含电动车骑手与横穿者）
+  const managed = [];
+
   // ── 远端人行道 ───────────────────────────────────────────────────────────
-  makeNPC(em, sr, {
+  managed.push(makeNPC(em, sr, {
     x: 160, y: SIDEWALK_FAR_Y - 2, animation: 'walk', direction:  1, speed: 28, vy: 0,
     minX:  20, maxX: 480, minY: SIDEWALK_FAR_Y - 3, maxY: SIDEWALK_FAR_Y + 1,
-    color: 0x0a1840, tags: ['pedestrian', 'business'],
-  });
+    color: 0x0a1840, tags: ['pedestrian', 'business'], npcType: 'businessman',
+  }));
+  // 电动车骑手（保持原样，不托管——不是普通步行）
   makeNPC(em, sr, {
     x: 920, y: SIDEWALK_FAR_Y, animation: 'mobile', direction: -1, speed: 0, vy: 0,
     minX: 820, maxX: 1020, minY: SIDEWALK_FAR_Y - 1, maxY: SIDEWALK_FAR_Y + 1,
     color: 0x201818, tags: ['pedestrian'],
   });
-  makeNPC(em, sr, {
+  managed.push(makeNPC(em, sr, {
     x: 1750, y: SIDEWALK_FAR_Y + 2, animation: 'walk', direction:  1, speed: 28, vy: 0,
     minX: 1500, maxX: 1980, minY: SIDEWALK_FAR_Y, maxY: SIDEWALK_FAR_Y + 3,
-    color: 0x201810, tags: ['pedestrian'],
-  });
-  makeNPC(em, sr, {
+    color: 0x201810, tags: ['pedestrian'], npcType: 'pedestrian',
+  }));
+  managed.push(makeNPC(em, sr, {
     x: 1100, y: SIDEWALK_FAR_Y - 1, animation: 'walk', direction: 1, speed: 16, vy: 0,
     minX: 1050, maxX: 1300, minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y,
-    color: 0x181828, tags: ['pedestrian', 'business'],
-  });
+    color: 0x181828, tags: ['pedestrian', 'business'], npcType: 'businessman',
+  }));
 
   // ── 近端人行道 ───────────────────────────────────────────────────────────
-  makeNPC(em, sr, {
+  managed.push(makeNPC(em, sr, {
     x: 320, y: SIDEWALK_NEAR_Y, animation: 'walk', direction: -1, speed: 32, vy: 0,
     minX:  50, maxX: 580, minY: SIDEWALK_NEAR_Y - 2, maxY: SIDEWALK_NEAR_Y + 2,
-    color: 0x1a1020, tags: ['pedestrian'],
-  });
-  makeNPC(em, sr, {
+    color: 0x1a1020, tags: ['pedestrian'], npcType: 'pedestrian',
+  }));
+  managed.push(makeNPC(em, sr, {
     x: 1450, y: SIDEWALK_NEAR_Y + 1, animation: 'walk', direction: -1, speed: 24, vy: 0,
     minX: 1300, maxX: 1700, minY: SIDEWALK_NEAR_Y - 1, maxY: SIDEWALK_NEAR_Y + 3,
-    color: 0x182010, tags: ['pedestrian'],
-  });
-  makeNPC(em, sr, {
+    color: 0x182010, tags: ['pedestrian'], npcType: 'pedestrian',
+  }));
+  managed.push(makeNPC(em, sr, {
     x: 1830, y: SIDEWALK_NEAR_Y, animation: 'walk', direction:  1, speed: 14, vy: 0,
     minX: 1700, maxX: 1990, minY: SIDEWALK_NEAR_Y - 2, maxY: SIDEWALK_NEAR_Y + 2,
-    color: 0x2a1808, tags: ['tourist'],
-  });
+    color: 0x2a1808, tags: ['tourist'], npcType: 'tourist',
+  }));
 
   // ── 斑马线横穿者：远端 → 近端往返（路面上唯一允许的行人） ────────────────
   // 用 customUpdate 让 NPC 走到斑马线 x 时切换垂直行进，过完路再水平行进
@@ -77,4 +81,6 @@ export function spawnPedestrians(em, sr) {
       if (n.y <= SIDEWALK_FAR_Y) { n.y = SIDEWALK_FAR_Y; n._stage = 'far'; }
     }
   };
+
+  return managed; // 交给 BehaviorManager 托管
 }
