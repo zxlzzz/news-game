@@ -28,7 +28,7 @@ export function spawnPedestrians(em, sr) {
     color: 0x201810, tags: ['pedestrian'],
   });
   makeNPC(em, sr, {
-    x: 1100, y: SIDEWALK_FAR_Y - 1, animation: 'phone', direction: 1, speed: 16, vy: 0,
+    x: 1100, y: SIDEWALK_FAR_Y - 1, animation: 'walk', direction: 1, speed: 16, vy: 0,
     minX: 1050, maxX: 1300, minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y,
     color: 0x181828, tags: ['pedestrian', 'business'],
   });

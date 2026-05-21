@@ -37,7 +37,6 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_run',        'assets/animations/run.json');
     this.load.json('anim_idle',       'assets/animations/idle.json');
     this.load.json('anim_jog',        'assets/animations/jog.json');
-    this.load.json('anim_phone',      'assets/animations/phone.json');
     this.load.json('anim_bike',       'assets/animations/bike.json');
     this.load.json('anim_mobile',     'assets/animations/mobile.json');
     this.load.json('anim_chess',      'assets/animations/chess.json');
@@ -65,7 +64,6 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('run',        this.cache.json.get('anim_run'));
     this.stickRenderer.loadAnimation('idle',       this.cache.json.get('anim_idle'));
     this.stickRenderer.loadAnimation('jog',        this.cache.json.get('anim_jog'));
-    this.stickRenderer.loadAnimation('phone',      this.cache.json.get('anim_phone'));
     this.stickRenderer.loadAnimation('bike',       this.cache.json.get('anim_bike'));
     this.stickRenderer.loadAnimation('mobile',     this.cache.json.get('anim_mobile'));
     this.stickRenderer.loadAnimation('chess',      this.cache.json.get('anim_chess'));

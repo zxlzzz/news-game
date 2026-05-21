@@ -92,15 +92,21 @@ export class StickRenderer {
   /**
    * 加载一个动画
    * @param {string} name - 动画名称
-   * @param {object} data - StickPuppet JSON { frames, fps?, globalBend?, skeleton? }
+   * @param {object} data - StickPuppet JSON
+   *   { frames, fps?, globalBend?, skeleton?, anchorMode?, canonicalDirection? }
    */
   loadAnimation(name, data) {
+    if (!data) return; // 防护：缺失的 JSON 不致整体崩溃
     this.animations[name] = {
       frames:     data.frames,
       fps:        data.fps        || 8,
       frameCount: data.frames.length,
       globalBend: data.globalBend ?? {},
       skeleton:   data.skeleton   || 'human',
+      // 定位模式：'foot'(默认,最低脚落 y) / 'hip'(body关节落 y) / 'back'(不做竖直偏移)
+      anchorMode: data.anchorMode || 'foot',
+      // 基准朝向：动画作画时面向 +1=右 / -1=左；渲染翻转 = direction * canonicalDirection
+      canonicalDirection: data.canonicalDirection || 1,
     };
   }
 
@@ -114,29 +120,32 @@ export class StickRenderer {
    * @param {Phaser.GameObjects.Graphics} g
    * @param {string} animName
    * @param {number} frameIndex
-   * @param {number} x         - 脚底世界坐标 X
-   * @param {number} y         - 脚底世界坐标 Y
+   * @param {number} x         - 锚点世界坐标 X
+   * @param {number} y         - 锚点世界坐标 Y（按 anchorMode 解释）
    * @param {number} scale
-   * @param {number} direction - 1=面右，-1=面左
+   * @param {number} direction - 1=面右，-1=面左（会再乘 canonicalDirection）
    * @param {number} color
    * @param {number} alpha
+   * @param {Object<string,[number,number]>} [jointOverrides] - 关节坐标覆盖（代码控制肢体）
    */
-  draw(g, animName, frameIndex, x, y, scale = 0.45, direction = 1, color = 0x1a1a1a, alpha = 1) {
+  draw(g, animName, frameIndex, x, y, scale = 0.45, direction = 1,
+       color = 0x1a1a1a, alpha = 1, jointOverrides = null) {
     const anim = this.animations[animName];
     if (!anim) return;
     const frame = anim.frames[frameIndex % anim.frameCount];
+    const dir   = direction * anim.canonicalDirection;
     if (anim.skeleton === 'dog') {
-      this._drawDog(g, anim, frame, x, y, scale, direction, color, alpha);
+      this._drawDog(g, anim, frame, x, y, scale, dir, color, alpha, jointOverrides);
     } else {
-      this._drawHuman(g, anim, frame, x, y, scale, direction, color, alpha);
+      this._drawHuman(g, anim, frame, x, y, scale, dir, color, alpha, jointOverrides);
     }
   }
 
-  _drawHuman(g, anim, frame, x, y, s, d, color, alpha) {
-    const footY   = Math.max(frame.l_foot[1], frame.r_foot[1]);
-    const offsetY = -footY * s;
-    const jx = (joint) => x + frame[joint][0] * s * d;
-    const jy = (joint) => y + frame[joint][1] * s + offsetY;
+  _drawHuman(g, anim, frame, x, y, s, d, color, alpha, ov) {
+    const coord   = (j) => (ov && ov[j]) ? ov[j] : frame[j];
+    const offsetY = humanOffsetY(anim, coord, s);
+    const jx = (j) => x + coord(j)[0] * s * d;
+    const jy = (j) => y + coord(j)[1] * s + offsetY;
 
     for (const [from, to, w] of BONES) {
       const bend = getBend(from, to, frame, anim.globalBend) * s * d;
@@ -148,14 +157,11 @@ export class StickRenderer {
     g.fillCircle(jx('head'), jy('head'), HEAD_RADIUS * s);
   }
 
-  _drawDog(g, anim, frame, x, y, s, d, color, alpha) {
-    const footY = Math.max(
-      frame.fl_lower[1], frame.fr_lower[1],
-      frame.bl_lower[1], frame.br_lower[1]
-    );
-    const offsetY = -footY * s;
-    const jx = (joint) => x + frame[joint][0] * s * d;
-    const jy = (joint) => y + frame[joint][1] * s + offsetY;
+  _drawDog(g, anim, frame, x, y, s, d, color, alpha, ov) {
+    const coord   = (j) => (ov && ov[j]) ? ov[j] : frame[j];
+    const offsetY = dogOffsetY(anim, coord, s);
+    const jx = (j) => x + coord(j)[0] * s * d;
+    const jy = (j) => y + coord(j)[1] * s + offsetY;
 
     for (const [from, to, w] of DOG_BONES) {
       const bend = getBend(from, to, frame, anim.globalBend) * s * d;
@@ -166,4 +172,20 @@ export class StickRenderer {
     g.fillStyle(color, alpha);
     g.fillCircle(jx('head'), jy('head'), DOG_HEAD_R * s);
   }
+}
+
+// ─── 按 anchorMode 计算竖直偏移（渲染器与 NPC.getAnchor 必须保持一致） ──────────
+export function humanOffsetY(anim, coord, s) {
+  if (anim.anchorMode === 'hip')  return -coord('body')[1] * s;
+  if (anim.anchorMode === 'back') return 0;
+  return -Math.max(coord('l_foot')[1], coord('r_foot')[1]) * s; // foot
+}
+
+export function dogOffsetY(anim, coord, s) {
+  if (anim.anchorMode === 'hip')  return -coord('body_back')[1] * s;
+  if (anim.anchorMode === 'back') return 0;
+  return -Math.max(
+    coord('fl_lower')[1], coord('fr_lower')[1],
+    coord('bl_lower')[1], coord('br_lower')[1]
+  ) * s; // foot
 }

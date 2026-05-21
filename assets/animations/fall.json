@@ -1,6 +1,7 @@
 {
   "name": "animation",
   "skeleton": "human",
+  "canonicalDirection": -1,
   "globalBend": {
     "body__neck": 0.3410561103068392
   },

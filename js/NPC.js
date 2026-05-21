@@ -6,6 +6,7 @@
 
 import { Entity } from './Entity.js';
 import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y } from './SceneConfig.js';
+import { humanOffsetY, dogOffsetY } from './StickRenderer.js';
 
 // NPC 按 Y 取灰度：远端中浅灰 → 近端中深灰（避免近端过黑）
 function npcDepthGray(y) {
@@ -67,6 +68,15 @@ export class NPC extends Entity {
     // 附加绘制 / 自定义更新
     this.drawExtra    = config.drawExtra    ?? null;
     this.customUpdate = config.customUpdate ?? null;
+
+    // 代码控制的肢体覆盖（{joint:[x,y]}），由行为/叠加动作每帧计算后赋值；null=不覆盖
+    this.overlayPose  = config.overlayPose  ?? null;
+
+    // 行为状态机字段（由 BehaviorManager 驱动；非托管 NPC 保持默认）
+    this.npcType   = config.npcType ?? null;   // 自身属性（businessman/tourist...）
+    this.state     = config.state   ?? null;   // 当前行为状态（walk/run/stand...）
+    this.overlay   = config.overlay ?? null;   // 叠加动作（phone_look...）
+    this.bond      = null;                      // 活跃社交关系（SocialBond）
   }
 
   getBounds() {
@@ -99,6 +109,7 @@ export class NPC extends Entity {
 
   /**
    * 返回命名锚点的世界坐标 {x, y}
+   * 与 StickRenderer 的变换（anchorMode/canonicalDirection/overlay）保持一致。
    * @param {string} name head|neck|hand_l|hand_r|hip|foot_l|foot_r（dog: neck|head|hip）
    */
   getAnchor(name) {
@@ -111,15 +122,17 @@ export class NPC extends Entity {
       : { head: 'head', neck: 'neck', hand_l: 'l_hand', hand_r: 'r_hand',
           hip: 'body', foot_l: 'l_foot', foot_r: 'r_foot' };
     const jn = map[name] || name;
-    const jp = frame[jn];
+    const ov = this.overlayPose;
+    const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
+    const jp = coord(jn);
     if (!jp) return { x: this.x, y: this.y };
-    const footY = isDog
-      ? Math.max(frame.fl_lower[1], frame.fr_lower[1], frame.bl_lower[1], frame.br_lower[1])
-      : Math.max(frame.l_foot[1], frame.r_foot[1]);
+    const s = this.scale;
+    const offsetY = isDog ? dogOffsetY(anim, coord, s) : humanOffsetY(anim, coord, s);
+    const dir = this.direction * (anim.canonicalDirection || 1);
     const renderY = this._renderY();
     return {
-      x: this.x + jp[0] * this.scale * this.direction,
-      y: renderY + jp[1] * this.scale - footY * this.scale,
+      x: this.x + jp[0] * s * dir,
+      y: renderY + jp[1] * s + offsetY,
     };
   }
 
@@ -177,7 +190,7 @@ export class NPC extends Entity {
     this.renderer.draw(
       g, this.animation, this.frameIndex,
       this.x, this._renderY(), this.scale, this.direction,
-      color, 1
+      color, 1, this.overlayPose
     );
 
     if (this.inViewfinder) this._drawViewfinderOutline(g);

@@ -1,6 +1,7 @@
 {
   "name": "animation",
   "skeleton": "human",
+  "anchorMode": "back",
   "globalBend": {},
   "frames": [
     {
