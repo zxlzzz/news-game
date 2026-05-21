@@ -32,8 +32,8 @@ export class StreetScene extends Phaser.Scene {
     this.lastPhoto = null;
   }
 
-  // 小公园占地（原餐厅地块缺口，y 覆盖远端人行道带）
-  static PARK = { x0: 522, y0: 132, x1: 683, y1: 278 };
+  // 小公园占地：建筑序列留出的缺口，草地落在人行道 Y 范围内（在建筑立面之下）
+  static PARK = { x0: 528, y0: 188, x1: 680, y1: 278 };
 
   preload() {
     this.load.json('scene_data',      'assets/scene.json');
@@ -265,19 +265,19 @@ export class StreetScene extends Phaser.Scene {
     this._drawTrees(g);
   }
 
-  // ─── 小公园（占用原餐厅地块的街区缺口，下棋者在此） ────────────────────────
+  // ─── 小公园（人行道层的一片草地，长椅/树作为道具放置） ────────────────────
   _drawPark(g) {
     const P = StreetScene.PARK;
     const w = P.x1 - P.x0, h = P.y1 - P.y0;
     const seed = (i) => { const s = Math.sin(i * 91.7) * 43758.5; return s - Math.floor(s); };
 
-    // 草地底色（区别于人行道/道路）
-    g.fillStyle(0xc6c6c6, 1);
+    // 草地：仅用略深的地色区分区域（不再画装饰边框）
+    g.fillStyle(0xcacaca, 1);
     g.fillRect(P.x0, P.y0, w, h);
 
-    // 草地纹理：散布的小草簇（短分叉竖线）
-    g.lineStyle(0.6, 0x8e8e8e, 0.45);
-    for (let i = 0; i < 120; i++) {
+    // 稀疏草簇纹理
+    g.lineStyle(0.6, 0x909090, 0.4);
+    for (let i = 0; i < 60; i++) {
       const gx = P.x0 + 6 + seed(i * 2 + 1) * (w - 12);
       const gy = P.y0 + 6 + seed(i * 2 + 2) * (h - 12);
       g.lineBetween(gx, gy, gx, gy - 3);
@@ -285,52 +285,30 @@ export class StreetScene extends Phaser.Scene {
       g.lineBetween(gx, gy - 1.5, gx + 1.5, gy - 3.5);
     }
 
-    // 步道：横向（与行走带对齐，y≈250）+ 通往喷泉的竖向小径
-    g.fillStyle(0xdedede, 1);
-    g.fillRect(P.x0, 244, w, 18);                       // 横向主路
-    const cx = Math.round((P.x0 + P.x1) / 2);
-    g.fillRect(cx - 9, P.y0 + 24, 18, 244 - (P.y0 + 24)); // 竖向支路通喷泉
-    g.lineStyle(0.6, 0xb0b0b0, 0.5);
-    g.strokeRect(P.x0, 244, w, 18);
-
-    // 喷泉（后部中央，同心椭圆描边 + 中心，无实心球）
-    const fx = cx, fy = P.y0 + 30;
-    g.lineStyle(1.2, 0x4a4a4a, 0.9);
-    g.strokeEllipse(fx, fy, 34, 16);
-    g.lineStyle(0.8, 0x5a5a5a, 0.8);
-    g.strokeEllipse(fx, fy, 22, 10);
-    g.lineStyle(0.8, 0x4a4a4a, 0.85);
-    g.lineBetween(fx, fy - 4, fx, fy + 4);
-    g.lineBetween(fx - 4, fy, fx + 4, fy);
-
-    // 园内两棵行道树（后部，分列喷泉两侧）
-    this._drawBlobTree(g, P.x0 + 24, P.y0 + 46, 11, 0.8, 0x6e6e6e, 0.9);
-    this._drawBlobTree(g, P.x1 - 24, P.y0 + 50, 12, 0.9, 0x666666, 0.9);
-
-    // 绿篱边框（小圆弧凸起，前侧留出入口）
-    this._drawHedge(g, P);
+    // 简易低矮栅栏：一根横向上栏 + 若干竖向栏杆（细线条），前侧中间留入口
+    this._drawFence(g, P);
   }
 
-  _drawHedge(g, P) {
+  _drawFence(g, P) {
     const cx = Math.round((P.x0 + P.x1) / 2);
-    const bump = 7;                       // 凸起间距
-    const gapL = cx - 12, gapR = cx + 12; // 前侧入口缺口
-    // 上/下边
-    for (let x = P.x0; x <= P.x1 - bump; x += bump) {
-      // 远端薄浅，近端粗深
-      g.lineStyle(0.9, 0x707070, 0.85);
-      g.strokeCircle(x + bump / 2, P.y0, bump * 0.6);
-      if (x + bump / 2 < gapL || x + bump / 2 > gapR) {  // 前侧留入口
-        g.lineStyle(1.4, 0x3a3a3a, 0.9);
-        g.strokeCircle(x + bump / 2, P.y1, bump * 0.7);
-      }
+    const post = 12;                       // 栏杆间距
+    g.lineStyle(1, 0x6a6a6a, 0.8);
+    // 后栏（横杆 + 竖杆）
+    g.lineBetween(P.x0, P.y0 + 2, P.x1, P.y0 + 2);
+    for (let x = P.x0; x <= P.x1; x += post) {
+      g.lineBetween(x, P.y0 - 2, x, P.y0 + 5);
     }
-    // 左/右边
-    for (let y = P.y0; y <= P.y1 - bump; y += bump) {
-      const t = (y - P.y0) / (P.y1 - P.y0);
-      g.lineStyle(0.9 + t * 0.6, (t > 0.5 ? 0x4a4a4a : 0x6a6a6a), 0.88);
-      g.strokeCircle(P.x0, y + bump / 2, bump * 0.6);
-      g.strokeCircle(P.x1, y + bump / 2, bump * 0.6);
+    // 左右侧栏（仅竖杆，靠下加粗一点点表近端）
+    for (let y = P.y0 + post; y < P.y1; y += post) {
+      g.lineBetween(P.x0, y - 3, P.x0, y + 3);
+      g.lineBetween(P.x1, y - 3, P.x1, y + 3);
+    }
+    // 前栏（横杆 + 竖杆，中间留入口）
+    g.lineStyle(1.2, 0x555555, 0.85);
+    g.lineBetween(P.x0, P.y1 - 1, cx - 14, P.y1 - 1);
+    g.lineBetween(cx + 14, P.y1 - 1, P.x1, P.y1 - 1);
+    for (let x = P.x0; x <= P.x1; x += post) {
+      if (x < cx - 14 || x > cx + 14) g.lineBetween(x, P.y1 - 6, x, P.y1 + 1);
     }
   }
 
@@ -367,29 +345,16 @@ export class StreetScene extends Phaser.Scene {
     return out;
   }
 
-  // ─── 路面补丁/破损（细节，给柏油路加点纹理） ────────────────────────────────
+  // ─── 路面纹理：仅少量低调沥青补丁矩形（不画椭圆，避免与井盖混淆） ──────────
   _drawRoadPatches(g) {
-    // 用稳定哈希散布，每帧不变
-    const rand = (i) => {
-      const s = Math.sin(i * 91.337) * 43758.5453;
-      return s - Math.floor(s);
-    };
-    // 沥青补丁：几个稍暗矩形
-    g.fillStyle(0x7a7a7a, 0.55);
-    for (let i = 0; i < 8; i++) {
-      const px = rand(i * 3 + 1) * WORLD_WIDTH;
-      const py = FAR_Y + 14 + rand(i * 3 + 2) * (NEAR_Y - FAR_Y - 30);
-      const pw = 28 + rand(i * 3 + 3) * 50;
-      const ph = 6  + rand(i * 3 + 4) * 8;
+    const rand = (i) => { const s = Math.sin(i * 91.337) * 43758.5453; return s - Math.floor(s); };
+    g.fillStyle(0x8a8a8a, 0.4);
+    for (let i = 0; i < 3; i++) {
+      const px = (i + 0.5) * WORLD_WIDTH / 3 + (rand(i + 1) - 0.5) * 200;
+      const py = FAR_Y + 18 + rand(i * 3 + 2) * (NEAR_Y - FAR_Y - 36);
+      const pw = 30 + rand(i * 3 + 3) * 40;
+      const ph = 6  + rand(i * 3 + 4) * 6;
       g.fillRect(px, py, pw, ph);
-    }
-    // 油渍/水渍：椭圆细线
-    g.lineStyle(0.5, 0x5a5a5a, 0.45);
-    for (let i = 0; i < 12; i++) {
-      const px = rand(i * 7 + 11) * WORLD_WIDTH;
-      const py = FAR_Y + 12 + rand(i * 7 + 12) * (NEAR_Y - FAR_Y - 24);
-      const pr = 4 + rand(i * 7 + 13) * 6;
-      g.strokeEllipse(px, py, pr * 2, pr * 0.9);
     }
   }
 
@@ -504,6 +469,13 @@ export class StreetScene extends Phaser.Scene {
 
   // ─── 实体生成 ─────────────────────────────────────────────────────────────────
 
+  // 建筑底边 Y 的稳定随机偏移（±8px），制造前后错落而非一条直线
+  static buildingBaseY(x) {
+    const s = Math.sin(x * 12.9898) * 43758.5453;
+    const r = s - Math.floor(s);          // 0..1
+    return BUILDING_BASE_Y + Math.round((r - 0.5) * 16);
+  }
+
   _spawnBuildings() {
     const sceneData = this.cache.json.get('scene_data');
     const defs = sceneData?.buildings ?? [];
@@ -511,21 +483,26 @@ export class StreetScene extends Phaser.Scene {
     for (const b of defs) {
       this.entityManager.add(new BuildingEntity({
         ...b,
-        y: BUILDING_BASE_Y,
+        y: StreetScene.buildingBaseY(b.x),
         color: parseColor(b.color),
       }));
     }
+    this._buildingDefs = defs; // 供招牌对齐查询
   }
 
   _spawnProps() {
     const sceneData = this.cache.json.get('scene_data');
     const defs = sceneData?.props ?? [];
+    const buildings = this._buildingDefs ?? [];
     const parseColor = c => c ? parseInt(c.replace('#', ''), 16) : 0x888888;
     for (const p of defs) {
-      this.entityManager.add(new PropEntity({
-        ...p,
-        propColor: parseColor(p.color),
-      }));
+      const cfg = { ...p, propColor: parseColor(p.color) };
+      // 招牌跟随其所属建筑的底边 Y（建筑错落后仍贴合楼顶）
+      if (p.propType === 'sign') {
+        const host = buildings.find(b => p.x >= b.x && p.x <= b.x + b.bWidth);
+        if (host) cfg.y = StreetScene.buildingBaseY(host.x) + 1;
+      }
+      this.entityManager.add(new PropEntity(cfg));
     }
   }
 

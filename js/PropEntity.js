@@ -56,6 +56,7 @@ export class PropEntity extends Entity {
       case 'drain':       this._drawDrain(g);      break;
       case 'chair':       this._drawChair(g);      break;
       case 'chess-table': this._drawChessTable(g); break;
+      case 'tree':        this._drawTree(g);       break;
     }
     if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
@@ -398,6 +399,40 @@ export class PropEntity extends Entity {
     g.lineStyle(0.7, 0x1a1a1a, 0.7);
     g.lineBetween(topX + tw * 0.3, topY + th, topX + tw * 0.3, y - 1);
     g.lineBetween(topX + tw * 0.7, topY + th, topX + tw * 0.7, y - 1);
+  }
+
+  // ─── 行道树（道具版，俯视分瓣树冠 + 小十字树干，深度自适应） ──────────────
+  _drawTree(g) {
+    const { x, y } = this;
+    const r  = (this.width || 22) / 2;
+    const lw = depthLineWidth(y, { wMin: 0.7, wMax: 1.5 });
+    const c  = depthLineColor(y, { light: 0x78, dark: 0x24 });
+    // 阴影
+    g.fillStyle(0x000000, 0.10);
+    g.fillEllipse(x + r * 0.2, y + r * 0.3, r * 1.7, r * 0.6);
+    // 分瓣轮廓
+    const lobes = 6, steps = lobes * 4, pts = [];
+    for (let i = 0; i < steps; i++) {
+      const ang  = (i / steps) * Math.PI * 2;
+      const lobe = 0.84 + 0.16 * Math.cos(ang * lobes);
+      const nz   = 1 + 0.06 * Math.sin(x * 0.21 + i * 1.3);
+      const rad  = r * lobe * nz;
+      pts.push({ x: x + Math.cos(ang) * rad, y: y + Math.sin(ang) * rad * 0.82 });
+    }
+    g.fillStyle(c, 0.08);
+    g.beginPath(); g.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < steps; i++) g.lineTo(pts[i].x, pts[i].y);
+    g.closePath(); g.fillPath();
+    g.lineStyle(lw, c, 0.9);
+    g.beginPath(); g.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < steps; i++) g.lineTo(pts[i].x, pts[i].y);
+    g.closePath(); g.strokePath();
+    // 内部叶丛短弧 + 树干十字
+    g.lineStyle(lw * 0.7, c, 0.5);
+    g.strokeCircle(x - r * 0.3, y - r * 0.15, r * 0.3);
+    g.lineStyle(lw * 1.1, c, 0.9);
+    g.lineBetween(x - 1.5, y, x + 1.5, y);
+    g.lineBetween(x, y - 1.5, x, y + 1.5);
   }
 
   // ─── 排水沟盖（路边长条，多条平行竖线） ───────────────────────────────────

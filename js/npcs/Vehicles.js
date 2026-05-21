@@ -65,33 +65,38 @@ function drawBicycle(g, n) {
   g.lineBetween(footR.x - 2 * s * d, footR.y, footR.x + 3 * s * d, footR.y);
 }
 
-// 摩托：同样围绕骑手锚点，加车体/脚踏板
-function drawMotorbike(g, n) {
+// 电动车（外卖电瓶车）：脚不蹬，脚踩低踏板；座后带外卖箱
+function drawEbike(g, n) {
   const s = n.scale, d = n.direction, ground = n.y;
   const hip   = n.getAnchor('hip');
   const bar   = forwardHand(n);
   const footL = n.getAnchor('foot_l');
   const footR = n.getAnchor('foot_r');
-  const crank = { x: (footL.x + footR.x) / 2, y: (footL.y + footR.y) / 2 };
-  const wCy = crank.y;
-  const wR  = Math.max(16 * s, (ground - crank.y) * 1.7);
-  const rwx = hip.x - 10 * s * d;
-  const fwx = bar.x + 12 * s * d;
+  const footMid = { x: (footL.x + footR.x) / 2, y: (footL.y + footR.y) / 2 };
+  const wR  = 12 * s;
+  const wCy = ground - wR;
+  const rwx = hip.x - 16 * s * d;
+  const fwx = bar.x  +  4 * s * d;
 
-  // 车轮（粗）
-  g.lineStyle(lw(s, 3), 0x1f1f1f, 1);
+  // 车轮
+  g.lineStyle(lw(s, 2.6), 0x1f1f1f, 1);
   g.strokeCircle(rwx, wCy, wR);
   g.strokeCircle(fwx, wCy, wR);
-  // 车体（座垫到油箱，连接臀与车把下方）
-  g.lineStyle(lw(s, 6), 0x595959, 1);
-  g.lineBetween(rwx + 4 * s * d, hip.y + 4 * s, fwx - 6 * s * d, bar.y + 8 * s);
-  // 前叉
-  g.lineStyle(lw(s, 2.4), 0x2a2a2a, 1);
+  // 低踏板（脚下平台，连接前后轮）
+  g.lineStyle(lw(s, 3), 0x4a4a4a, 1);
+  g.lineBetween(rwx + wR * 0.6, footMid.y + 2 * s, fwx - wR * 0.6, footMid.y + 2 * s);
+  // 座管：后轮 → 臀
+  g.lineStyle(lw(s, 2.2), 0x2a2a2a, 1);
+  g.lineBetween(rwx, wCy, hip.x, hip.y);
+  // 立管/前叉：前轮 → 车把
   g.lineBetween(fwx, wCy, bar.x, bar.y);
-  // 脚踏（脚落点）
-  g.lineStyle(lw(s, 2), 0x2a2a2a, 1);
-  g.lineBetween(footL.x - 3 * s * d, footL.y, footL.x + 3 * s * d, footL.y);
-  g.lineBetween(footR.x - 3 * s * d, footR.y, footR.x + 3 * s * d, footR.y);
+  // 外卖箱（座后）
+  const boxW = 12 * s, boxH = 11 * s;
+  const boxCx = hip.x - 18 * s * d;
+  g.fillStyle(0x707070, 1);
+  g.fillRect(boxCx - boxW / 2, hip.y - boxH, boxW, boxH);
+  g.lineStyle(lw(s, 1), 0x101010, 1);
+  g.strokeRect(boxCx - boxW / 2, hip.y - boxH, boxW, boxH);
 }
 
 export function spawnVehicles(em, sr) {
@@ -113,12 +118,11 @@ export function spawnVehicles(em, sr) {
   cyclist2.drawExtra = drawBicycle;
   cyclist2.steadyFoot = true;
 
-  // 外卖骑手（摩托，中间车道）
-  const rider = makeNPC(em, sr, {
-    x: 1450, y: roadY(0.50), animation: 'bike', direction:  1, speed: 130, vy: 0,
+  // 外卖电动车骑手（mobile：骑姿，脚不动；在路上行驶）
+  const ebiker = makeNPC(em, sr, {
+    x: 1450, y: roadY(0.50), animation: 'mobile', direction:  1, speed: 120, vy: 0,
     minX: 100, maxX: 1950, minY: roadY(0.46), maxY: roadY(0.54),
-    color: 0x1a1000, tags: ['delivery', 'rider', 'vehicle'],
+    color: 0x1a1000, tags: ['delivery', 'e-bike', 'vehicle'],
   });
-  rider.drawExtra = drawMotorbike;
-  rider.steadyFoot = true;
+  ebiker.drawExtra = drawEbike;
 }

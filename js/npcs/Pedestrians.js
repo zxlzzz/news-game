@@ -20,12 +20,6 @@ export function spawnPedestrians(em, sr) {
     minX:  20, maxX: 480, minY: SIDEWALK_FAR_Y - 3, maxY: SIDEWALK_FAR_Y + 1,
     color: 0x0a1840, tags: ['pedestrian', 'business'], npcType: 'businessman',
   }));
-  // 电动车骑手（保持原样，不托管——不是普通步行）
-  makeNPC(em, sr, {
-    x: 920, y: SIDEWALK_FAR_Y, animation: 'mobile', direction: -1, speed: 0, vy: 0,
-    minX: 820, maxX: 1020, minY: SIDEWALK_FAR_Y - 1, maxY: SIDEWALK_FAR_Y + 1,
-    color: 0x201818, tags: ['pedestrian'],
-  });
   managed.push(makeNPC(em, sr, {
     x: 1750, y: SIDEWALK_FAR_Y + 2, animation: 'walk', direction:  1, speed: 28, vy: 0,
     minX: 1500, maxX: 1980, minY: SIDEWALK_FAR_Y, maxY: SIDEWALK_FAR_Y + 3,
