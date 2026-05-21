@@ -32,6 +32,9 @@ export class StreetScene extends Phaser.Scene {
     this.lastPhoto = null;
   }
 
+  // 小公园占地（原餐厅地块缺口，y 覆盖远端人行道带）
+  static PARK = { x0: 522, y0: 132, x1: 683, y1: 278 };
+
   preload() {
     this.load.json('scene_data',      'assets/scene.json');
     this.load.json('anim_walk',       'assets/animations/walk.json');
@@ -41,10 +44,7 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_bike',       'assets/animations/bike.json');
     this.load.json('anim_mobile',     'assets/animations/mobile.json');
     this.load.json('anim_chess',      'assets/animations/chess.json');
-    this.load.json('anim_dance',      'assets/animations/dance.json');
     this.load.json('anim_dogwalk',    'assets/animations/dogwalk.json');
-    this.load.json('anim_squat_down', 'assets/animations/squat down.json');
-    this.load.json('anim_stand_up',   'assets/animations/stand up.json');
     // 行为状态机第一批用到的姿态
     this.load.json('anim_single',     'assets/animations/single.json');
     this.load.json('anim_sit_bench',  'assets/animations/sit_bench.json');
@@ -73,10 +73,7 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('bike',       this.cache.json.get('anim_bike'));
     this.stickRenderer.loadAnimation('mobile',     this.cache.json.get('anim_mobile'));
     this.stickRenderer.loadAnimation('chess',      this.cache.json.get('anim_chess'));
-    this.stickRenderer.loadAnimation('dance',      this.cache.json.get('anim_dance'));
     this.stickRenderer.loadAnimation('dogwalk',    this.cache.json.get('anim_dogwalk'));
-    this.stickRenderer.loadAnimation('squat_down', this.cache.json.get('anim_squat_down'));
-    this.stickRenderer.loadAnimation('stand_up',   this.cache.json.get('anim_stand_up'));
     this.stickRenderer.loadAnimation('single',     this.cache.json.get('anim_single'));
     this.stickRenderer.loadAnimation('sit_bench',  this.cache.json.get('anim_sit_bench'));
     this.stickRenderer.loadAnimation('fall',       this.cache.json.get('anim_fall'));
@@ -264,7 +261,77 @@ export class StreetScene extends Phaser.Scene {
     this._drawSidewalkTiles(g, BUILDING_BASE_Y + 4, FAR_Y - 4, /*near=*/false);
     this._drawSidewalkTiles(g, NEAR_Y + 8,         WORLD_HEIGHT, /*near=*/true);
     this._drawRoadPatches(g);
+    this._drawPark(g);
     this._drawTrees(g);
+  }
+
+  // ─── 小公园（占用原餐厅地块的街区缺口，下棋者在此） ────────────────────────
+  _drawPark(g) {
+    const P = StreetScene.PARK;
+    const w = P.x1 - P.x0, h = P.y1 - P.y0;
+    const seed = (i) => { const s = Math.sin(i * 91.7) * 43758.5; return s - Math.floor(s); };
+
+    // 草地底色（区别于人行道/道路）
+    g.fillStyle(0xc6c6c6, 1);
+    g.fillRect(P.x0, P.y0, w, h);
+
+    // 草地纹理：散布的小草簇（短分叉竖线）
+    g.lineStyle(0.6, 0x8e8e8e, 0.45);
+    for (let i = 0; i < 120; i++) {
+      const gx = P.x0 + 6 + seed(i * 2 + 1) * (w - 12);
+      const gy = P.y0 + 6 + seed(i * 2 + 2) * (h - 12);
+      g.lineBetween(gx, gy, gx, gy - 3);
+      g.lineBetween(gx, gy - 1.5, gx - 1.5, gy - 3.5);
+      g.lineBetween(gx, gy - 1.5, gx + 1.5, gy - 3.5);
+    }
+
+    // 步道：横向（与行走带对齐，y≈250）+ 通往喷泉的竖向小径
+    g.fillStyle(0xdedede, 1);
+    g.fillRect(P.x0, 244, w, 18);                       // 横向主路
+    const cx = Math.round((P.x0 + P.x1) / 2);
+    g.fillRect(cx - 9, P.y0 + 24, 18, 244 - (P.y0 + 24)); // 竖向支路通喷泉
+    g.lineStyle(0.6, 0xb0b0b0, 0.5);
+    g.strokeRect(P.x0, 244, w, 18);
+
+    // 喷泉（后部中央，同心椭圆描边 + 中心，无实心球）
+    const fx = cx, fy = P.y0 + 30;
+    g.lineStyle(1.2, 0x4a4a4a, 0.9);
+    g.strokeEllipse(fx, fy, 34, 16);
+    g.lineStyle(0.8, 0x5a5a5a, 0.8);
+    g.strokeEllipse(fx, fy, 22, 10);
+    g.lineStyle(0.8, 0x4a4a4a, 0.85);
+    g.lineBetween(fx, fy - 4, fx, fy + 4);
+    g.lineBetween(fx - 4, fy, fx + 4, fy);
+
+    // 园内两棵行道树（后部，分列喷泉两侧）
+    this._drawBlobTree(g, P.x0 + 24, P.y0 + 46, 11, 0.8, 0x6e6e6e, 0.9);
+    this._drawBlobTree(g, P.x1 - 24, P.y0 + 50, 12, 0.9, 0x666666, 0.9);
+
+    // 绿篱边框（小圆弧凸起，前侧留出入口）
+    this._drawHedge(g, P);
+  }
+
+  _drawHedge(g, P) {
+    const cx = Math.round((P.x0 + P.x1) / 2);
+    const bump = 7;                       // 凸起间距
+    const gapL = cx - 12, gapR = cx + 12; // 前侧入口缺口
+    // 上/下边
+    for (let x = P.x0; x <= P.x1 - bump; x += bump) {
+      // 远端薄浅，近端粗深
+      g.lineStyle(0.9, 0x707070, 0.85);
+      g.strokeCircle(x + bump / 2, P.y0, bump * 0.6);
+      if (x + bump / 2 < gapL || x + bump / 2 > gapR) {  // 前侧留入口
+        g.lineStyle(1.4, 0x3a3a3a, 0.9);
+        g.strokeCircle(x + bump / 2, P.y1, bump * 0.7);
+      }
+    }
+    // 左/右边
+    for (let y = P.y0; y <= P.y1 - bump; y += bump) {
+      const t = (y - P.y0) / (P.y1 - P.y0);
+      g.lineStyle(0.9 + t * 0.6, (t > 0.5 ? 0x4a4a4a : 0x6a6a6a), 0.88);
+      g.strokeCircle(P.x0, y + bump / 2, bump * 0.6);
+      g.strokeCircle(P.x1, y + bump / 2, bump * 0.6);
+    }
   }
 
   _drawRoadMarkings(g) {
@@ -374,7 +441,7 @@ export class StreetScene extends Phaser.Scene {
   _drawTrees(g) {
     // 远端：路沿绿化带（FAR_Y=280 前方 y≈266），与远端路灯交错排布
     // 远端路灯 x = 95,250,405,...（步长155）；树取其中点，互不重叠
-    const farXs = [172, 327, 482, 637, 792, 947, 1102, 1257, 1412, 1567, 1722, 1877];
+    const farXs = [172, 327, 482, 792, 947, 1102, 1257, 1412, 1567, 1722, 1877];
     for (const tx of farXs) {
       const ty = 266 + Math.sin(tx * 0.05) * 2;
       const r  = 9 + Math.sin(tx * 0.071) * 1.5;

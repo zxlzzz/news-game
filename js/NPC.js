@@ -17,8 +17,7 @@ const STATE_TAGS = {
 const ANIM_TAGS = {
   walk: 'walking', run: 'running', jog: 'jogging', bike: 'cycling',
   mobile: 'riding', idle: 'standing', single: 'standing', chess: 'sitting',
-  dance: 'dancing', sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling',
-  squat_down: 'squatting', stand_up: 'standing',
+  sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling',
 };
 
 // NPC 按 Y 取灰度：远端中浅灰 → 近端中深灰（避免近端过黑）
