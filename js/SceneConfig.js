@@ -6,14 +6,22 @@
 export const WORLD_WIDTH     = 2000;
 export const WORLD_HEIGHT    = 500;
 
-// 道路边界（窄化后）
-export const FAR_Y           = 280;   // 远端人行道/道路分界（curb）
-export const NEAR_Y          = 420;   // 道路/近端人行道分界（curb）
-export const BUILDING_BASE_Y = 130;   // 建筑临街底边Y
+// ─── 纵向分带（轻微俯视 2.5D，Y 越大越靠近镜头）──────────────────────────────
+//   天空      0   – 95     纯装饰（蓝天白云→灰度）
+//   建筑街墙  95  – 232    连续建筑带（底层店铺 + 上层住宅，盒子加高多层窗）
+//   建筑前人行道 232 – 292  短街，行人/树/垃圾桶/长椅
+//   双行道    292 – 346    机动车（公交/出租/私家/摩托/电动）
+//   公园广场  346 – 500    NPC 主活动区（喷泉/滑梯/野餐/小摊/树）
+export const SKY_Y           = 95;    // 天空区底边
+export const BUILDING_BASE_Y = 232;   // 建筑街墙底边（= 前人行道顶边）
+export const FAR_Y           = 292;   // 前人行道 / 道路 分界（curb）
+export const NEAR_Y          = 346;   // 道路 / 公园 分界（curb）
+export const PARK_TOP        = 346;   // 公园广场顶边
+export const PARK_BOTTOM     = WORLD_HEIGHT;
 
-// 人行道步行带（NPC 在此 Y 走，避开静物 Y）
-export const SIDEWALK_FAR_Y  = 250;   // 远端人行道步行 Y（建筑 130 与 curb 280 之间偏下）
-export const SIDEWALK_NEAR_Y = 462;   // 近端人行道步行 Y（curb 420 与底边 500 之间偏上）
+// 步行带（NPC 典型 Y）
+export const SIDEWALK_FAR_Y  = 264;   // 建筑前人行道步行 Y
+export const SIDEWALK_NEAR_Y = 470;   // 公园主步行 Y（近镜头）
 
 /**
  * 按道路纵深分数换算世界 Y
@@ -59,7 +67,7 @@ export const BUILDING_FILL_DARK  = GRAY_BUILDING_LO;
  */
 export function depthGray(y, opts = {}) {
   const minY  = opts.minY  ?? BUILDING_BASE_Y;
-  const maxY  = opts.maxY  ?? (NEAR_Y + 14);
+  const maxY  = opts.maxY  ?? PARK_BOTTOM;
   const light = opts.light ?? 0xb0;
   const dark  = opts.dark  ?? 0x2c;
   const t = Math.max(0, Math.min(1, (y - minY) / (maxY - minY)));
@@ -70,7 +78,7 @@ export function depthGray(y, opts = {}) {
 /** 按 Y 取线宽（远薄近粗） */
 export function depthLineWidth(y, opts = {}) {
   const minY = opts.minY ?? BUILDING_BASE_Y;
-  const maxY = opts.maxY ?? (NEAR_Y + 14);
+  const maxY = opts.maxY ?? PARK_BOTTOM;
   const wMin = opts.wMin ?? 0.8;
   const wMax = opts.wMax ?? 2.2;
   const t = Math.max(0, Math.min(1, (y - minY) / (maxY - minY)));
@@ -80,7 +88,7 @@ export function depthLineWidth(y, opts = {}) {
 /** 按 Y 取线条颜色（远浅近深） */
 export function depthLineColor(y, opts = {}) {
   const minY = opts.minY ?? BUILDING_BASE_Y;
-  const maxY = opts.maxY ?? (NEAR_Y + 14);
+  const maxY = opts.maxY ?? PARK_BOTTOM;
   const light = opts.light ?? 0x80;
   const dark  = opts.dark  ?? 0x10;
   const t = Math.max(0, Math.min(1, (y - minY) / (maxY - minY)));

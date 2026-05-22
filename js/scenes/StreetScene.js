@@ -15,9 +15,9 @@ import { BuildingEntity }  from '../BuildingEntity.js';
 import { PropEntity }      from '../PropEntity.js';
 import { Viewfinder }      from '../Viewfinder.js';
 import {
-  WORLD_WIDTH, WORLD_HEIGHT, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
-  SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
-  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB,
+  WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
+  PARK_TOP, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
+  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
 } from '../SceneConfig.js';
 import { spawnPedestrians } from '../npcs/Pedestrians.js';
@@ -31,9 +31,6 @@ export class StreetScene extends Phaser.Scene {
     super({ key: 'StreetScene' });
     this.lastPhoto = null;
   }
-
-  // 小公园占地：建筑序列留出的缺口，草地落在人行道 Y 范围内（在建筑立面之下）
-  static PARK = { x0: 528, y0: 188, x1: 680, y1: 278 };
 
   preload() {
     this.load.json('scene_data',      'assets/scene.json');
@@ -241,74 +238,71 @@ export class StreetScene extends Phaser.Scene {
   _drawGround() {
     const g = this.bgGraphics;
 
-    // 建筑区底色 — 最浅
+    // 天空（装饰）
     g.fillStyle(GRAY_SKY, 1);
-    g.fillRect(0, 0, WORLD_WIDTH, BUILDING_BASE_Y);
+    g.fillRect(0, 0, WORLD_WIDTH, SKY_Y);
+    this._drawClouds(g);
 
-    // 远端人行道 — 浅灰
+    // 建筑街墙背景（侧街缺口露出此色）
+    g.fillStyle(0xebebeb, 1);
+    g.fillRect(0, SKY_Y, WORLD_WIDTH, BUILDING_BASE_Y - SKY_Y);
+
+    // 建筑前人行道
     g.fillStyle(GRAY_FAR_PAVE, 1);
     g.fillRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
 
-    // 道路 — 中灰
+    // 双行道
     g.fillStyle(GRAY_ROAD, 1);
     g.fillRect(0, FAR_Y, WORLD_WIDTH, NEAR_Y - FAR_Y);
 
-    // 近端人行道
-    g.fillStyle(GRAY_NEAR_PAVE, 1);
-    g.fillRect(0, NEAR_Y, WORLD_WIDTH, WORLD_HEIGHT - NEAR_Y);
+    // 公园广场（草地）
+    g.fillStyle(0xcacaca, 1);
+    g.fillRect(0, PARK_TOP, WORLD_WIDTH, WORLD_HEIGHT - PARK_TOP);
 
     this._drawRoadMarkings(g);
-    this._drawSidewalkTiles(g, BUILDING_BASE_Y + 4, FAR_Y - 4, /*near=*/false);
-    this._drawSidewalkTiles(g, NEAR_Y + 8,         WORLD_HEIGHT, /*near=*/true);
+    this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, FAR_Y - 3, /*near=*/false);
     this._drawRoadPatches(g);
-    this._drawPark(g);
+    this._drawParkPlaza(g);
     this._drawTrees(g);
   }
 
-  // ─── 小公园（人行道层的一片草地，长椅/树作为道具放置） ────────────────────
-  _drawPark(g) {
-    const P = StreetScene.PARK;
-    const w = P.x1 - P.x0, h = P.y1 - P.y0;
+  // ─── 天空：几朵灰度云（软团 + 浅灰描边） ──────────────────────────────────
+  _drawClouds(g) {
+    const clouds = [[180, 38, 1.0], [560, 26, 0.8], [1000, 46, 1.15], [1500, 30, 0.9], [1840, 40, 1.0]];
+    for (const [cx, cy, s] of clouds) {
+      g.fillStyle(0xffffff, 0.92);
+      g.fillEllipse(cx,         cy,        70 * s, 26 * s);
+      g.fillEllipse(cx - 28 * s, cy + 6 * s, 44 * s, 20 * s);
+      g.fillEllipse(cx + 30 * s, cy + 5 * s, 48 * s, 20 * s);
+      g.lineStyle(0.8, 0xd2d2d2, 0.6);
+      g.strokeEllipse(cx, cy, 70 * s, 26 * s);
+    }
+  }
+
+  // ─── 公园广场：草簇纹理 + 横向主路 + 对齐斑马线的竖向小径 ──────────────────
+  _drawParkPlaza(g) {
+    const top = PARK_TOP, bot = WORLD_HEIGHT;
     const seed = (i) => { const s = Math.sin(i * 91.7) * 43758.5; return s - Math.floor(s); };
-
-    // 草地：仅用略深的地色区分区域（不再画装饰边框）
-    g.fillStyle(0xcacaca, 1);
-    g.fillRect(P.x0, P.y0, w, h);
-
-    // 稀疏草簇纹理
-    g.lineStyle(0.6, 0x909090, 0.4);
-    for (let i = 0; i < 60; i++) {
-      const gx = P.x0 + 6 + seed(i * 2 + 1) * (w - 12);
-      const gy = P.y0 + 6 + seed(i * 2 + 2) * (h - 12);
+    // 草簇
+    g.lineStyle(0.6, 0x969696, 0.32);
+    for (let i = 0; i < 260; i++) {
+      const gx = seed(i * 2 + 1) * WORLD_WIDTH;
+      const gy = top + 8 + seed(i * 2 + 2) * (bot - top - 14);
       g.lineBetween(gx, gy, gx, gy - 3);
       g.lineBetween(gx, gy - 1.5, gx - 1.5, gy - 3.5);
       g.lineBetween(gx, gy - 1.5, gx + 1.5, gy - 3.5);
     }
-
-    // 简易低矮栅栏：一根横向上栏 + 若干竖向栏杆（细线条），前侧中间留入口
-    this._drawFence(g, P);
-  }
-
-  _drawFence(g, P) {
-    const cx = Math.round((P.x0 + P.x1) / 2);
-    const post = 12;                       // 栏杆间距
-    g.lineStyle(1, 0x6a6a6a, 0.8);
-    // 后栏（横杆 + 竖杆）
-    g.lineBetween(P.x0, P.y0 + 2, P.x1, P.y0 + 2);
-    for (let x = P.x0; x <= P.x1; x += post) {
-      g.lineBetween(x, P.y0 - 2, x, P.y0 + 5);
-    }
-    // 左右侧栏（仅竖杆，靠下加粗一点点表近端）
-    for (let y = P.y0 + post; y < P.y1; y += post) {
-      g.lineBetween(P.x0, y - 3, P.x0, y + 3);
-      g.lineBetween(P.x1, y - 3, P.x1, y + 3);
-    }
-    // 前栏（横杆 + 竖杆，中间留入口）
-    g.lineStyle(1.2, 0x555555, 0.85);
-    g.lineBetween(P.x0, P.y1 - 1, cx - 14, P.y1 - 1);
-    g.lineBetween(cx + 14, P.y1 - 1, P.x1, P.y1 - 1);
-    for (let x = P.x0; x <= P.x1; x += post) {
-      if (x < cx - 14 || x > cx + 14) g.lineBetween(x, P.y1 - 6, x, P.y1 + 1);
+    // 横向主路（紧贴公园上沿，承接过马路下来的人流）
+    g.fillStyle(0xdedede, 1);
+    g.fillRect(0, top + 4, WORLD_WIDTH, 22);
+    g.lineStyle(0.6, 0xb4b4b4, 0.5);
+    g.lineBetween(0, top + 4, WORLD_WIDTH, top + 4);
+    g.lineBetween(0, top + 26, WORLD_WIDTH, top + 26);
+    // 竖向小径（对齐斑马线，通向广场深处）
+    g.fillStyle(0xdedede, 1);
+    for (const sx of StreetScene.crosswalkStarts()) {
+      const cx = sx + 60;
+      g.fillRect(cx - 9, top + 4, 18, bot - (top + 4));
     }
   }
 
@@ -402,22 +396,21 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  // ─── 行道树（在路沿绿化带，远离建筑立面，避免穿模） ────────────────────────
+  // ─── 行道树：建筑前人行道一排（小）+ 公园广场后排（中） ────────────────────
   _drawTrees(g) {
-    // 远端：路沿绿化带（FAR_Y=280 前方 y≈266），与远端路灯交错排布
-    // 远端路灯 x = 95,250,405,...（步长155）；树取其中点，互不重叠
-    const farXs = [172, 327, 482, 792, 947, 1102, 1257, 1412, 1567, 1722, 1877];
-    for (const tx of farXs) {
-      const ty = 266 + Math.sin(tx * 0.05) * 2;
-      const r  = 9 + Math.sin(tx * 0.071) * 1.5;
-      this._drawBlobTree(g, tx, ty, r, 0.7, 0x787878, 0.9);
+    // 建筑前人行道（y≈284，贴近路沿），与街灯交错
+    const walkXs = [172, 327, 482, 792, 947, 1102, 1257, 1412, 1567, 1722, 1877];
+    for (const tx of walkXs) {
+      const ty = 284 + Math.sin(tx * 0.05) * 2;
+      const r  = 8 + Math.sin(tx * 0.071) * 1.5;
+      this._drawBlobTree(g, tx, ty, r, 0.7, 0x808080, 0.9);
     }
-    // 近端：近端人行道靠下边缘（y≈488），与近端路灯交错
-    const nearXs = [250, 405, 560, 715, 870, 1025, 1180, 1335, 1490, 1645, 1800, 1955];
-    for (const tx of nearXs) {
-      const ty = 488;
-      const r  = 13 + Math.sin(tx * 0.053) * 3;
-      this._drawBlobTree(g, tx, ty, r, 1.5, 0x1c1c1c, 0.95);
+    // 公园广场后排（y≈372，承上启下，远离喷泉/活动区中心）
+    const parkXs = [120, 300, 470, 980, 1160, 1640, 1820, 1960];
+    for (const tx of parkXs) {
+      const ty = 372;
+      const r  = 12 + Math.sin(tx * 0.053) * 3;
+      this._drawBlobTree(g, tx, ty, r, 1.1, 0x4a4a4a, 0.92);
     }
   }
 
@@ -469,25 +462,17 @@ export class StreetScene extends Phaser.Scene {
 
   // ─── 实体生成 ─────────────────────────────────────────────────────────────────
 
-  // 建筑底边 Y 的稳定随机偏移（±8px），制造前后错落而非一条直线
-  static buildingBaseY(x) {
-    const s = Math.sin(x * 12.9898) * 43758.5453;
-    const r = s - Math.floor(s);          // 0..1
-    return BUILDING_BASE_Y + Math.round((r - 0.5) * 16);
-  }
-
   _spawnBuildings() {
     const sceneData = this.cache.json.get('scene_data');
     const defs = sceneData?.buildings ?? [];
     const parseColor = c => parseInt(c.replace('#', ''), 16);
     for (const b of defs) {
-      this.entityManager.add(new BuildingEntity({
-        ...b,
-        y: StreetScene.buildingBaseY(b.x),
-        color: parseColor(b.color),
-      }));
+      const e = new BuildingEntity({ ...b, y: BUILDING_BASE_Y, color: parseColor(b.color) });
+      // 立面底边对齐到街墙底边（连续街墙：各楼底边齐平，靠 facadeH/bDepth 形成天际线起伏）
+      e.y = BUILDING_BASE_Y - e.style.facadeH;
+      this.entityManager.add(e);
     }
-    this._buildingDefs = defs; // 供招牌对齐查询
+    this._buildingDefs = defs;
   }
 
   _spawnProps() {
@@ -497,10 +482,10 @@ export class StreetScene extends Phaser.Scene {
     const parseColor = c => c ? parseInt(c.replace('#', ''), 16) : 0x888888;
     for (const p of defs) {
       const cfg = { ...p, propColor: parseColor(p.color) };
-      // 招牌跟随其所属建筑的底边 Y（建筑错落后仍贴合楼顶）
+      // 招牌贴在底层店铺位置（人行道之上）
       if (p.propType === 'sign') {
         const host = buildings.find(b => p.x >= b.x && p.x <= b.x + b.bWidth);
-        if (host) cfg.y = StreetScene.buildingBaseY(host.x) + 1;
+        if (host) cfg.y = BUILDING_BASE_Y - 8;
       }
       this.entityManager.add(new PropEntity(cfg));
     }
