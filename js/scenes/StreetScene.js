@@ -443,17 +443,17 @@ export class StreetScene extends Phaser.Scene {
 
   // ─── 行道树：建筑前人行道一排（小）+ 公园广场后排（中） ────────────────────
   _drawTrees(g) {
-    // 建筑前人行道（y≈284，贴近路沿），与街灯交错
+    // 建筑前人行道（y≈244，贴近路沿），与街灯交错
     const walkXs = [172, 327, 482, 792, 947, 1102, 1257, 1412, 1567, 1722, 1877];
     for (const tx of walkXs) {
-      const ty = 284 + Math.sin(tx * 0.05) * 2;
+      const ty = 244 + Math.sin(tx * 0.05) * 2;
       const r  = 8 + Math.sin(tx * 0.071) * 1.5;
       this._drawBlobTree(g, tx, ty, r, 0.7, 0x808080, 0.9);
     }
-    // 公园广场后排（y≈372，承上启下，远离喷泉/活动区中心）
+    // 公园广场后排（y≈350，承上启下，远离喷泉/活动区中心）
     const parkXs = [120, 300, 470, 980, 1160, 1640, 1820, 1960];
     for (const tx of parkXs) {
-      const ty = 372;
+      const ty = 350;
       const r  = 12 + Math.sin(tx * 0.053) * 3;
       this._drawBlobTree(g, tx, ty, r, 1.1, 0x4a4a4a, 0.92);
     }

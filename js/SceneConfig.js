@@ -6,25 +6,25 @@
 export const WORLD_WIDTH     = 2000;
 export const WORLD_HEIGHT    = 500;
 
-// ─── 纵向分带（轻微俯视 2.5D，Y 越大越靠近镜头）──────────────────────────────
-//   天空      0   – 95     纯装饰（蓝天白云→灰度）
-//   建筑街墙  95  – 232    连续建筑带（底层店铺 + 上层住宅，盒子加高多层窗）
-//   建筑前人行道 232 – 292  短街，行人/树/垃圾桶/长椅
-//   双行道    292 – 346    机动车（公交/出租/私家/摩托/电动）
-//   公园广场  346 – 500    NPC 主活动区（喷泉/滑梯/野餐/小摊/树）
-export const SKY_Y           = 95;    // 天空区底边
-export const BUILDING_BASE_Y = 232;   // 建筑街墙底边（= 前人行道顶边）
-export const FAR_Y           = 292;   // 前人行道 / 道路 分界（curb）
-export const NEAR_Y          = 346;   // 道路 / 公园 分界（curb）
-export const PARK_TOP        = 346;   // 公园广场顶边
+// ─── 纵向分带（轻微俯视 2.5D ~30°，Y 越大越靠近镜头）──────────────────────────
+//   天空      0   – 100   纯装饰（蓝天白云→灰度，视差层）         1/5
+//   建筑街墙  100 – 210   连续街墙：4–5 层混合用途楼（底店铺+上阳台）
+//   建筑前人行道 210 – 250 短前街：行人/树/垃圾桶/长椅
+//   双行道    250 – 333   机动车（公交/出租/私家/摩托）           近景 1/3
+//   公园广场  333 – 500   NPC 主活动区（喷泉/滑梯/野餐/小摊/树）   近景 2/3
+export const SKY_Y           = 100;   // 天空区底边
+export const BUILDING_BASE_Y = 210;   // 建筑街墙底边（= 前人行道顶边）
+export const FAR_Y           = 250;   // 前人行道 / 道路 分界（curb）
+export const NEAR_Y          = 333;   // 道路 / 公园 分界（curb）
+export const PARK_TOP        = 333;   // 公园广场顶边
 export const PARK_BOTTOM     = WORLD_HEIGHT;
 
 // 步行带（NPC 典型 Y）
-export const SIDEWALK_FAR_Y  = 264;   // 建筑前人行道步行 Y
-export const SIDEWALK_NEAR_Y = 470;   // 公园主步行 Y（近镜头）
+export const SIDEWALK_FAR_Y  = 232;   // 建筑前人行道步行 Y
+export const SIDEWALK_NEAR_Y = 488;   // 公园主步行 Y（近镜头）
 
 // 公园里的白色广场（棋摊置于其中心）。StreetScene 画图与 Chess 定位共用同一来源。
-export const CHESS_PLAZA = { cx: 620, cy: 415, rx: 125, ry: 54 };
+export const CHESS_PLAZA = { cx: 620, cy: 420, rx: 130, ry: 56 };
 
 /**
  * 按道路纵深分数换算世界 Y
