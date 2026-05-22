@@ -54,11 +54,15 @@ export class StreetScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(GRAY_SKY);
 
     // 渲染层（建筑区背景色由 camera background 提供）
+    // skyGraphics 用较小 scrollFactor → 镜头平移时天空/云/远景慢于前景，制造纵深视差。
+    // 注意：取景框按世界坐标判定捕获，故只让"非交互装饰背景"做视差，建筑/人物保持 1:1。
+    this.skyGraphics    = this.add.graphics().setScrollFactor(0.45);
     this.bgGraphics     = this.add.graphics();
     this.entityGraphics = this.add.graphics();
     this.vfGraphics     = this.add.graphics();
 
-    // 静态地面（只绘制一次）
+    // 远景视差层 + 静态地面（只绘制一次）
+    this._drawSky();
     this._drawGround();
 
     // 火柴人渲染器
@@ -79,7 +83,7 @@ export class StreetScene extends Phaser.Scene {
     // 统一 Entity 管理器
     // 缩放参考用人行道带（远端步行带 → 近端步行带），让远小近大对比贯穿整个纵深
     this.entityManager = new EntityManager({
-      farY: SIDEWALK_FAR_Y, nearY: SIDEWALK_NEAR_Y, farScale: 0.26, nearScale: 0.74,
+      farY: SIDEWALK_FAR_Y, nearY: SIDEWALK_NEAR_Y, farScale: 0.26, nearScale: 0.62,
     });
 
     this._spawnBuildings();
@@ -238,12 +242,7 @@ export class StreetScene extends Phaser.Scene {
   _drawGround() {
     const g = this.bgGraphics;
 
-    // 天空（装饰）
-    g.fillStyle(GRAY_SKY, 1);
-    g.fillRect(0, 0, WORLD_WIDTH, SKY_Y);
-    this._drawClouds(g);
-
-    // 建筑街墙背景（侧街缺口露出此色）
+    // 建筑街墙背景（侧街缺口露出此色）。天空/云/远skyline 在 skyGraphics 视差层。
     g.fillStyle(0xebebeb, 1);
     g.fillRect(0, SKY_Y, WORLD_WIDTH, BUILDING_BASE_Y - SKY_Y);
 
@@ -290,40 +289,137 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  // ─── 竖向支路：建筑间隙(x≈519–685)里一条向纵深延伸的单行道小巷 ─────────────
-  // 顶端窄（远）、底端宽（近），承接主干道；中心单虚线 + 一个方向箭头标明单行。
+  // ─── 竖向支路：建筑间隙(x≈519–685)里一条向消失点收拢的伪3D凹巷（单行道）──────
+  //   一点透视：巷口(mouthY)宽、消失点(vpY)窄；两侧建筑侧墙向消失点收拢 + 远端back wall，
+  //   巷口往下接一段apron汇入主干道。深处更暗以强化纵深。
   _drawSideStreet(g) {
-    const cx     = 602;        // 间隙中心
-    const topY   = SKY_Y;      // 远端（建筑后方）
-    const botY   = NEAR_Y;     // 近端（汇入主干道 / 公园上沿）
-    const halfTop = 14;        // 远端半宽（窄）
-    const halfBot = 34;        // 近端半宽（宽）
-    const halfAt = (y) => {
-      const t = (y - topY) / (botY - topY);
-      return halfTop + (halfBot - halfTop) * t;
-    };
+    const cx       = 602;               // 间隙中心
+    const vpY      = 150;               // 消失点（巷子最深处，近建筑后沿）
+    const mouthY   = BUILDING_BASE_Y;   // 232，巷口（建筑立面底线）
+    const roadY2   = NEAR_Y;            // 346，汇入主干道处
+    const farHalf  = 9;                 // 远端地面半宽
+    const mouthHalf= 82;                // 巷口地面半宽（≈铺满间隙 519–685）
+    const botHalf  = 78;                // 汇入主干道处半宽
+    const hNear    = 40;                // 巷口墙高（≈相邻立面）
+    const hFar     = 12;                // 远端墙高（透视压缩）
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const floorHalf = (y) => lerp(farHalf, mouthHalf, (y - vpY) / (mouthY - vpY));
 
-    // 路面（梯形）
-    g.fillStyle(GRAY_ROAD, 1);
+    // 1) 巷内地面（远→巷口，深处压暗）
+    g.fillStyle(0x8c8c8c, 1);
     g.beginPath();
-    g.moveTo(cx - halfTop, topY);
-    g.lineTo(cx + halfTop, topY);
-    g.lineTo(cx + halfBot, botY);
-    g.lineTo(cx - halfBot, botY);
+    g.moveTo(cx - farHalf,   vpY);
+    g.lineTo(cx + farHalf,   vpY);
+    g.lineTo(cx + mouthHalf, mouthY);
+    g.lineTo(cx - mouthHalf, mouthY);
+    g.closePath();
+    g.fillPath();
+    // 深处阴影渐层（靠近消失点更暗）
+    g.fillStyle(0x000000, 0.22);
+    g.beginPath();
+    g.moveTo(cx - farHalf,            vpY);
+    g.lineTo(cx + farHalf,            vpY);
+    g.lineTo(cx + floorHalf(vpY + 46), vpY + 46);
+    g.lineTo(cx - floorHalf(vpY + 46), vpY + 46);
     g.closePath();
     g.fillPath();
 
-    // 两侧路缘实线（远浅近深、远细近粗）。单行道无中心分隔线。
-    g.lineStyle(LINE_FAR_WIDTH, 0x6a6a6a, 0.7);
-    g.lineBetween(cx - halfTop, topY, cx - halfBot, botY);
-    g.lineBetween(cx + halfTop, topY, cx + halfBot, botY);
+    // 2) apron：巷口→主干道（梯形铺面，承接车流）
+    g.fillStyle(GRAY_ROAD, 1);
+    g.beginPath();
+    g.moveTo(cx - mouthHalf, mouthY);
+    g.lineTo(cx + mouthHalf, mouthY);
+    g.lineTo(cx + botHalf,   roadY2);
+    g.lineTo(cx - botHalf,   roadY2);
+    g.closePath();
+    g.fillPath();
 
-    // 单行方向箭头（朝下，指向主干道，表明出巷方向）
-    const ay = 250, ah = halfAt(ay);
-    g.lineStyle(2.2, 0xffffff, 0.85);
-    g.lineBetween(cx, ay - 18, cx, ay + 10);
-    g.lineBetween(cx, ay + 10, cx - ah * 0.32, ay - 2);
-    g.lineBetween(cx, ay + 10, cx + ah * 0.32, ay - 2);
+    // 3) 左右建筑侧墙（向消失点收拢）。左墙背光更暗，右墙稍亮。
+    //    左墙
+    g.fillStyle(0x787878, 1);
+    g.beginPath();
+    g.moveTo(cx - farHalf,   vpY);
+    g.lineTo(cx - mouthHalf, mouthY);
+    g.lineTo(cx - mouthHalf, mouthY - hNear);
+    g.lineTo(cx - farHalf,   vpY - hFar);
+    g.closePath();
+    g.fillPath();
+    //    右墙
+    g.fillStyle(0xa2a2a2, 1);
+    g.beginPath();
+    g.moveTo(cx + farHalf,   vpY);
+    g.lineTo(cx + mouthHalf, mouthY);
+    g.lineTo(cx + mouthHalf, mouthY - hNear);
+    g.lineTo(cx + farHalf,   vpY - hFar);
+    g.closePath();
+    g.fillPath();
+    //    远端back wall
+    g.fillStyle(0x8a8a8a, 1);
+    g.fillRect(cx - farHalf, vpY - hFar, farHalf * 2, hFar);
+
+    // 墙上透视窗线（向消失点收拢，暗示楼层）
+    g.lineStyle(0.5, 0x303030, 0.5);
+    for (const f of [0.32, 0.62, 0.9]) {
+      // 左墙：墙顶到墙底之间一条沿进深的线
+      g.lineBetween(cx - farHalf,   vpY - hFar * (1 - f), cx - mouthHalf, mouthY - hNear * (1 - f));
+      g.lineBetween(cx + farHalf,   vpY - hFar * (1 - f), cx + mouthHalf, mouthY - hNear * (1 - f));
+    }
+
+    // 4) 墙脚 / 路缘轮廓
+    g.lineStyle(LINE_FAR_WIDTH, 0x3a3a3a, 0.8);
+    g.lineBetween(cx - farHalf, vpY, cx - mouthHalf, mouthY);
+    g.lineBetween(cx + farHalf, vpY, cx + mouthHalf, mouthY);
+    g.lineBetween(cx - mouthHalf, mouthY, cx - botHalf, roadY2);
+    g.lineBetween(cx + mouthHalf, mouthY, cx + botHalf, roadY2);
+    // 墙顶轮廓
+    g.lineStyle(LINE_FAR_WIDTH, 0x505050, 0.7);
+    g.lineBetween(cx - farHalf, vpY - hFar, cx - mouthHalf, mouthY - hNear);
+    g.lineBetween(cx + farHalf, vpY - hFar, cx + mouthHalf, mouthY - hNear);
+
+    // 5) 地面透视铺缝（横向，向消失点收拢）
+    g.lineStyle(0.5, 0xb8b8b8, 0.4);
+    for (const t of [0.35, 0.6, 0.82]) {
+      const y = lerp(vpY, mouthY, t), h = floorHalf(y);
+      g.lineBetween(cx - h, y, cx + h, y);
+    }
+
+    // 6) 单行方向箭头（在 apron 上朝下，指向主干道）
+    const ay = 286, ah = botHalf * 0.34;
+    g.lineStyle(2.4, 0xffffff, 0.82);
+    g.lineBetween(cx, ay - 16, cx, ay + 12);
+    g.lineBetween(cx, ay + 12, cx - ah, ay - 1);
+    g.lineBetween(cx, ay + 12, cx + ah, ay - 1);
+  }
+
+  // ─── 远景视差层（天空底色 + 远skyline剪影 + 云），随镜头慢移 ─────────────────
+  _drawSky() {
+    const g = this.skyGraphics;
+    g.clear();
+    // 天空底色（左右各留余量，保证视差到端点时仍铺满）
+    g.fillStyle(GRAY_SKY, 1);
+    g.fillRect(-300, 0, WORLD_WIDTH + 600, SKY_Y);
+    this._drawFarSkyline(g);
+    this._drawClouds(g);
+  }
+
+  // 远处天际线：一排淡灰剪影建筑，落在地平线(SKY_Y)之上、近景建筑之后
+  _drawFarSkyline(g) {
+    const seed = (i) => { const s = Math.sin(i * 73.13) * 43758.5; return s - Math.floor(s); };
+    for (let i = 0; i < 40; i++) {
+      const bx = i * 58 + seed(i) * 22;
+      const bw = 26 + seed(i + 9) * 26;
+      const bh = 12 + seed(i + 3) * 34;
+      g.fillStyle(0xe6e6e6, 0.92);
+      g.fillRect(bx, SKY_Y - bh, bw, bh);
+      g.lineStyle(0.5, 0xd2d2d2, 0.55);
+      g.strokeRect(bx, SKY_Y - bh, bw, bh);
+      // 几扇暗示窗的淡点
+      if (seed(i + 5) > 0.4) {
+        g.fillStyle(0xd8d8d8, 0.7);
+        g.fillRect(bx + bw * 0.3, SKY_Y - bh * 0.6, 2, 2);
+        g.fillRect(bx + bw * 0.6, SKY_Y - bh * 0.4, 2, 2);
+      }
+    }
   }
 
   // ─── 天空：几朵灰度云（软团 + 浅灰描边） ──────────────────────────────────
