@@ -261,7 +261,6 @@ export class StreetScene extends Phaser.Scene {
     this._drawRoadMarkings(g);
     this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, FAR_Y - 3, /*near=*/false);
     this._drawRoadPatches(g);
-    this._drawSideStreet(g);
     this._drawParkPlaza(g);
     this._drawChessPlaza(g);
     this._drawTrees(g);
@@ -287,108 +286,6 @@ export class StreetScene extends Phaser.Scene {
       const a = (i / 12) * Math.PI * 2;
       g.lineBetween(cx, cy, cx + Math.cos(a) * rx, cy + Math.sin(a) * ry);
     }
-  }
-
-  // ─── 竖向支路：建筑间隙(x≈519–685)里一条向消失点收拢的伪3D凹巷（单行道）──────
-  //   一点透视：巷口(mouthY)宽、消失点(vpY)窄；两侧建筑侧墙向消失点收拢 + 远端back wall，
-  //   巷口往下接一段apron汇入主干道。深处更暗以强化纵深。
-  _drawSideStreet(g) {
-    const cx       = 602;               // 间隙中心
-    const vpY      = 150;               // 消失点（巷子最深处，近建筑后沿）
-    const mouthY   = BUILDING_BASE_Y;   // 232，巷口（建筑立面底线）
-    const roadY2   = NEAR_Y;            // 346，汇入主干道处
-    const farHalf  = 9;                 // 远端地面半宽
-    const mouthHalf= 82;                // 巷口地面半宽（≈铺满间隙 519–685）
-    const botHalf  = 78;                // 汇入主干道处半宽
-    const hNear    = 40;                // 巷口墙高（≈相邻立面）
-    const hFar     = 12;                // 远端墙高（透视压缩）
-    const lerp = (a, b, t) => a + (b - a) * t;
-    const floorHalf = (y) => lerp(farHalf, mouthHalf, (y - vpY) / (mouthY - vpY));
-
-    // 1) 巷内地面（远→巷口，深处压暗）
-    g.fillStyle(0x8c8c8c, 1);
-    g.beginPath();
-    g.moveTo(cx - farHalf,   vpY);
-    g.lineTo(cx + farHalf,   vpY);
-    g.lineTo(cx + mouthHalf, mouthY);
-    g.lineTo(cx - mouthHalf, mouthY);
-    g.closePath();
-    g.fillPath();
-    // 深处阴影渐层（靠近消失点更暗）
-    g.fillStyle(0x000000, 0.22);
-    g.beginPath();
-    g.moveTo(cx - farHalf,            vpY);
-    g.lineTo(cx + farHalf,            vpY);
-    g.lineTo(cx + floorHalf(vpY + 46), vpY + 46);
-    g.lineTo(cx - floorHalf(vpY + 46), vpY + 46);
-    g.closePath();
-    g.fillPath();
-
-    // 2) apron：巷口→主干道（梯形铺面，承接车流）
-    g.fillStyle(GRAY_ROAD, 1);
-    g.beginPath();
-    g.moveTo(cx - mouthHalf, mouthY);
-    g.lineTo(cx + mouthHalf, mouthY);
-    g.lineTo(cx + botHalf,   roadY2);
-    g.lineTo(cx - botHalf,   roadY2);
-    g.closePath();
-    g.fillPath();
-
-    // 3) 左右建筑侧墙（向消失点收拢）。左墙背光更暗，右墙稍亮。
-    //    左墙
-    g.fillStyle(0x787878, 1);
-    g.beginPath();
-    g.moveTo(cx - farHalf,   vpY);
-    g.lineTo(cx - mouthHalf, mouthY);
-    g.lineTo(cx - mouthHalf, mouthY - hNear);
-    g.lineTo(cx - farHalf,   vpY - hFar);
-    g.closePath();
-    g.fillPath();
-    //    右墙
-    g.fillStyle(0xa2a2a2, 1);
-    g.beginPath();
-    g.moveTo(cx + farHalf,   vpY);
-    g.lineTo(cx + mouthHalf, mouthY);
-    g.lineTo(cx + mouthHalf, mouthY - hNear);
-    g.lineTo(cx + farHalf,   vpY - hFar);
-    g.closePath();
-    g.fillPath();
-    //    远端back wall
-    g.fillStyle(0x8a8a8a, 1);
-    g.fillRect(cx - farHalf, vpY - hFar, farHalf * 2, hFar);
-
-    // 墙上透视窗线（向消失点收拢，暗示楼层）
-    g.lineStyle(0.5, 0x303030, 0.5);
-    for (const f of [0.32, 0.62, 0.9]) {
-      // 左墙：墙顶到墙底之间一条沿进深的线
-      g.lineBetween(cx - farHalf,   vpY - hFar * (1 - f), cx - mouthHalf, mouthY - hNear * (1 - f));
-      g.lineBetween(cx + farHalf,   vpY - hFar * (1 - f), cx + mouthHalf, mouthY - hNear * (1 - f));
-    }
-
-    // 4) 墙脚 / 路缘轮廓
-    g.lineStyle(LINE_FAR_WIDTH, 0x3a3a3a, 0.8);
-    g.lineBetween(cx - farHalf, vpY, cx - mouthHalf, mouthY);
-    g.lineBetween(cx + farHalf, vpY, cx + mouthHalf, mouthY);
-    g.lineBetween(cx - mouthHalf, mouthY, cx - botHalf, roadY2);
-    g.lineBetween(cx + mouthHalf, mouthY, cx + botHalf, roadY2);
-    // 墙顶轮廓
-    g.lineStyle(LINE_FAR_WIDTH, 0x505050, 0.7);
-    g.lineBetween(cx - farHalf, vpY - hFar, cx - mouthHalf, mouthY - hNear);
-    g.lineBetween(cx + farHalf, vpY - hFar, cx + mouthHalf, mouthY - hNear);
-
-    // 5) 地面透视铺缝（横向，向消失点收拢）
-    g.lineStyle(0.5, 0xb8b8b8, 0.4);
-    for (const t of [0.35, 0.6, 0.82]) {
-      const y = lerp(vpY, mouthY, t), h = floorHalf(y);
-      g.lineBetween(cx - h, y, cx + h, y);
-    }
-
-    // 6) 单行方向箭头（在 apron 上朝下，指向主干道）
-    const ay = 286, ah = botHalf * 0.34;
-    g.lineStyle(2.4, 0xffffff, 0.82);
-    g.lineBetween(cx, ay - 16, cx, ay + 12);
-    g.lineBetween(cx, ay + 12, cx - ah, ay - 1);
-    g.lineBetween(cx, ay + 12, cx + ah, ay - 1);
   }
 
   // ─── 远景视差层（天空底色 + 远skyline剪影 + 云），随镜头慢移 ─────────────────
