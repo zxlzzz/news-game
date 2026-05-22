@@ -79,7 +79,7 @@ export class StreetScene extends Phaser.Scene {
     // 统一 Entity 管理器
     // 缩放参考用人行道带（远端步行带 → 近端步行带），让远小近大对比贯穿整个纵深
     this.entityManager = new EntityManager({
-      farY: SIDEWALK_FAR_Y, nearY: SIDEWALK_NEAR_Y, farScale: 0.26, nearScale: 0.92,
+      farY: SIDEWALK_FAR_Y, nearY: SIDEWALK_NEAR_Y, farScale: 0.26, nearScale: 0.74,
     });
 
     this._spawnBuildings();
@@ -262,8 +262,45 @@ export class StreetScene extends Phaser.Scene {
     this._drawRoadMarkings(g);
     this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, FAR_Y - 3, /*near=*/false);
     this._drawRoadPatches(g);
+    this._drawSideStreet(g);
     this._drawParkPlaza(g);
     this._drawTrees(g);
+  }
+
+  // ─── 竖向支路：建筑间隙(x≈519–685)里一条向纵深延伸的单行道小巷 ─────────────
+  // 顶端窄（远）、底端宽（近），承接主干道；中心单虚线 + 一个方向箭头标明单行。
+  _drawSideStreet(g) {
+    const cx     = 602;        // 间隙中心
+    const topY   = SKY_Y;      // 远端（建筑后方）
+    const botY   = NEAR_Y;     // 近端（汇入主干道 / 公园上沿）
+    const halfTop = 14;        // 远端半宽（窄）
+    const halfBot = 34;        // 近端半宽（宽）
+    const halfAt = (y) => {
+      const t = (y - topY) / (botY - topY);
+      return halfTop + (halfBot - halfTop) * t;
+    };
+
+    // 路面（梯形）
+    g.fillStyle(GRAY_ROAD, 1);
+    g.beginPath();
+    g.moveTo(cx - halfTop, topY);
+    g.lineTo(cx + halfTop, topY);
+    g.lineTo(cx + halfBot, botY);
+    g.lineTo(cx - halfBot, botY);
+    g.closePath();
+    g.fillPath();
+
+    // 两侧路缘实线（远浅近深、远细近粗）。单行道无中心分隔线。
+    g.lineStyle(LINE_FAR_WIDTH, 0x6a6a6a, 0.7);
+    g.lineBetween(cx - halfTop, topY, cx - halfBot, botY);
+    g.lineBetween(cx + halfTop, topY, cx + halfBot, botY);
+
+    // 单行方向箭头（朝下，指向主干道，表明出巷方向）
+    const ay = 250, ah = halfAt(ay);
+    g.lineStyle(2.2, 0xffffff, 0.85);
+    g.lineBetween(cx, ay - 18, cx, ay + 10);
+    g.lineBetween(cx, ay + 10, cx - ah * 0.32, ay - 2);
+    g.lineBetween(cx, ay + 10, cx + ah * 0.32, ay - 2);
   }
 
   // ─── 天空：几朵灰度云（软团 + 浅灰描边） ──────────────────────────────────
@@ -279,31 +316,25 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  // ─── 公园广场：草簇纹理 + 横向主路 + 对齐斑马线的竖向小径 ──────────────────
+  // ─── 城市大公园：整片连续草地 + 一条贴上沿的横向步道（不再切分草地） ───────
   _drawParkPlaza(g) {
     const top = PARK_TOP, bot = WORLD_HEIGHT;
     const seed = (i) => { const s = Math.sin(i * 91.7) * 43758.5; return s - Math.floor(s); };
-    // 草簇
+    // 草簇（铺满整片草地，无竖向小径分隔）
     g.lineStyle(0.6, 0x969696, 0.32);
-    for (let i = 0; i < 260; i++) {
+    for (let i = 0; i < 320; i++) {
       const gx = seed(i * 2 + 1) * WORLD_WIDTH;
-      const gy = top + 8 + seed(i * 2 + 2) * (bot - top - 14);
+      const gy = top + 30 + seed(i * 2 + 2) * (bot - top - 36);
       g.lineBetween(gx, gy, gx, gy - 3);
       g.lineBetween(gx, gy - 1.5, gx - 1.5, gy - 3.5);
       g.lineBetween(gx, gy - 1.5, gx + 1.5, gy - 3.5);
     }
-    // 横向主路（紧贴公园上沿，承接过马路下来的人流）
+    // 横向步道（紧贴公园上沿，承接过马路下来的人流），下方为整片草地
     g.fillStyle(0xdedede, 1);
     g.fillRect(0, top + 4, WORLD_WIDTH, 22);
     g.lineStyle(0.6, 0xb4b4b4, 0.5);
     g.lineBetween(0, top + 4, WORLD_WIDTH, top + 4);
     g.lineBetween(0, top + 26, WORLD_WIDTH, top + 26);
-    // 竖向小径（对齐斑马线，通向广场深处）
-    g.fillStyle(0xdedede, 1);
-    for (const sx of StreetScene.crosswalkStarts()) {
-      const cx = sx + 60;
-      g.fillRect(cx - 9, top + 4, 18, bot - (top + 4));
-    }
   }
 
   _drawRoadMarkings(g) {
@@ -332,11 +363,9 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  /** 各斑马线左起 X（NPC 横穿时对齐其中间） */
+  /** 斑马线左起 X（只保留一组，NPC 横穿时对齐其中间） */
   static crosswalkStarts() {
-    const out = [];
-    for (let sx = 220; sx < WORLD_WIDTH; sx += 380) out.push(sx);
-    return out;
+    return [220];
   }
 
   // ─── 路面纹理：仅少量低调沥青补丁矩形（不画椭圆，避免与井盖混淆） ──────────

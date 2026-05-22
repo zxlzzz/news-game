@@ -127,7 +127,7 @@ export class BehaviorManager {
         break;
 
       case 'run':
-        if (chance(0.0006)) { this._setState(npc, 'fall'); break; }
+        if (chance(0.00012)) { this._setState(npc, 'fall'); break; }
         if (npc.stateTimer >= npc.stateDur) this._setState(npc, 'walk');
         break;
 

@@ -9,11 +9,13 @@
  * 动画：两棋手轮流播放整套落子动画（playOnce），非活跃方冻结坐姿首帧。
  */
 
-import { SIDEWALK_FAR_Y } from '../SceneConfig.js';
 import { NPC }            from '../NPC.js';
 import { PropEntity }     from '../PropEntity.js';
 
 const WAIT_MS = 3500;
+
+// 棋摊位于城市大公园草地中（Y 越大越近）
+const CHESS_Y = 410;
 
 function startPlay(npc) {
   npc.playOnce   = true;
@@ -28,18 +30,21 @@ function freezeAt0(npc) {
 }
 
 export function spawnChess(em, sr) {
-  const Y     = SIDEWALK_FAR_Y;
+  const Y     = CHESS_Y;
   const state = { active: 'A', waiting: false, waitMs: 0 };
 
   // ── 1) 先建棋手对象（暂不入列），定好缩放与坐姿首帧，便于读锚点 ──
+  // 公园里景深更近 → scale 更大，两人间距按比例放宽，避免火柴人重叠
   const scale = em.depthScale(Y);
+  const gap   = Math.round(68 * scale / 0.26);   // 远端人行道(scale≈0.26,间距68)的等比放大
+  const cx    = 620;                              // 棋摊中心 X（公园内）
   const chessA = new NPC({
-    renderer: sr, x: 600, y: Y, animation: 'chess', direction:  1,
+    renderer: sr, x: cx - gap / 2, y: Y, animation: 'chess', direction:  1,
     speed: 0, vy: 0, minY: Y - 2, maxY: Y + 2,
     tags: ['player', 'chess', 'bystander'], playOnce: true,
   });
   const chessB = new NPC({
-    renderer: sr, x: 668, y: Y, animation: 'chess', direction: -1,
+    renderer: sr, x: cx + gap / 2, y: Y, animation: 'chess', direction: -1,
     speed: 0, vy: 0, minY: Y - 2, maxY: Y + 2,
     tags: ['player', 'chess', 'bystander'], playOnce: true,
   });
@@ -76,10 +81,12 @@ export function spawnChess(em, sr) {
   em.add(chessA);
   em.add(chessB);
 
-  // 旁观者站侧后方
+  // 旁观者站侧前方（y 略大 → 画在棋手前层）
+  const byX = chessA.x - 0.24 * gap;
+  const byY = Y + 14;
   const by = new NPC({
-    renderer: sr, x: 584, y: Y + 6, animation: 'idle', direction: 1,
-    speed: 0, vy: 0, minY: Y + 4, maxY: Y + 8,
+    renderer: sr, x: byX, y: byY, animation: 'idle', direction: 1,
+    speed: 0, vy: 0, minY: byY - 2, maxY: byY + 2,
     tags: ['bystander'],
   });
   by.scale = em.depthScale(by.y);
