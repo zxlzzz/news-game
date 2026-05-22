@@ -11,11 +11,9 @@
 
 import { NPC }            from '../NPC.js';
 import { PropEntity }     from '../PropEntity.js';
+import { CHESS_PLAZA }    from '../SceneConfig.js';
 
 const WAIT_MS = 3500;
-
-// 棋摊位于城市大公园草地中（Y 越大越近）
-const CHESS_Y = 410;
 
 function startPlay(npc) {
   npc.playOnce   = true;
@@ -30,14 +28,14 @@ function freezeAt0(npc) {
 }
 
 export function spawnChess(em, sr) {
-  const Y     = CHESS_Y;
+  const Y     = CHESS_PLAZA.cy;                   // 坐落在公园白色广场中心
   const state = { active: 'A', waiting: false, waitMs: 0 };
 
   // ── 1) 先建棋手对象（暂不入列），定好缩放与坐姿首帧，便于读锚点 ──
   // 公园里景深更近 → scale 更大，两人间距按比例放宽，避免火柴人重叠
   const scale = em.depthScale(Y);
   const gap   = Math.round(68 * scale / 0.26);   // 远端人行道(scale≈0.26,间距68)的等比放大
-  const cx    = 620;                              // 棋摊中心 X（公园内）
+  const cx    = CHESS_PLAZA.cx;                   // 棋摊中心 X（广场中心）
   const chessA = new NPC({
     renderer: sr, x: cx - gap / 2, y: Y, animation: 'chess', direction:  1,
     speed: 0, vy: 0, minY: Y - 2, maxY: Y + 2,

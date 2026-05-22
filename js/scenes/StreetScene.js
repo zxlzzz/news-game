@@ -16,7 +16,7 @@ import { PropEntity }      from '../PropEntity.js';
 import { Viewfinder }      from '../Viewfinder.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
-  PARK_TOP, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
+  PARK_TOP, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA,
   GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
 } from '../SceneConfig.js';
@@ -264,7 +264,30 @@ export class StreetScene extends Phaser.Scene {
     this._drawRoadPatches(g);
     this._drawSideStreet(g);
     this._drawParkPlaza(g);
+    this._drawChessPlaza(g);
     this._drawTrees(g);
+  }
+
+  // ─── 公园里的白色广场（棋摊就坐落在它中心，使"在公园里"一目了然） ──────────
+  _drawChessPlaza(g) {
+    const { cx, cy, rx, ry } = CHESS_PLAZA;
+    // 落地阴影
+    g.fillStyle(0x000000, 0.06);
+    g.fillEllipse(cx + 2, cy + 4, rx * 2, ry * 2);
+    // 白色铺装
+    g.fillStyle(0xf2f2f2, 1);
+    g.fillEllipse(cx, cy, rx * 2, ry * 2);
+    // 边缘描边 + 内圈
+    g.lineStyle(1.4, 0xc4c4c4, 0.95);
+    g.strokeEllipse(cx, cy, rx * 2, ry * 2);
+    g.lineStyle(0.8, 0xd6d6d6, 0.7);
+    g.strokeEllipse(cx, cy, rx * 1.62, ry * 1.62);
+    // 放射状铺砖缝（淡）
+    g.lineStyle(0.5, 0xcfcfcf, 0.45);
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      g.lineBetween(cx, cy, cx + Math.cos(a) * rx, cy + Math.sin(a) * ry);
+    }
   }
 
   // ─── 竖向支路：建筑间隙(x≈519–685)里一条向纵深延伸的单行道小巷 ─────────────

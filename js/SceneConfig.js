@@ -23,6 +23,9 @@ export const PARK_BOTTOM     = WORLD_HEIGHT;
 export const SIDEWALK_FAR_Y  = 264;   // 建筑前人行道步行 Y
 export const SIDEWALK_NEAR_Y = 470;   // 公园主步行 Y（近镜头）
 
+// 公园里的白色广场（棋摊置于其中心）。StreetScene 画图与 Chess 定位共用同一来源。
+export const CHESS_PLAZA = { cx: 620, cy: 415, rx: 125, ry: 54 };
+
 /**
  * 按道路纵深分数换算世界 Y
  * @param {number} f  0 = 道路远端, 1 = 道路近端
