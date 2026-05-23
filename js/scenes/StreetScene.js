@@ -270,16 +270,16 @@ export class StreetScene extends Phaser.Scene {
   // ─── 公园里的白色广场（棋摊就坐落在它中心，使"在公园里"一目了然） ──────────
   _drawChessPlaza(g) {
     const { cx, cy, rx, ry } = CHESS_PLAZA;
-    // 落地阴影
+    // 柔和地面投影（接地，不漂浮）
     g.fillStyle(0x000000, 0.06);
-    g.fillEllipse(cx + 2, cy + 4, rx * 2, ry * 2);
-    // 白色铺装
-    g.fillStyle(0xf2f2f2, 1);
-    g.fillEllipse(cx, cy, rx * 2, ry * 2);
-    // 边缘描边 + 内圈
-    g.lineStyle(1.4, 0xc4c4c4, 0.95);
+    g.fillEllipse(cx, cy + ry * 0.5, rx * 2.3, ry * 2.2);
+    // 白色铺装：外圈淡 → 内圈实，弱化生硬边
+    g.fillStyle(0xeaeaea, 0.4); g.fillEllipse(cx, cy, rx * 2.0, ry * 2.0);
+    g.fillStyle(0xf2f2f2, 0.92); g.fillEllipse(cx, cy, rx * 1.78, ry * 1.78);
+    // 边缘描边（弱）+ 内圈
+    g.lineStyle(1.0, 0xc4c4c4, 0.6);
     g.strokeEllipse(cx, cy, rx * 2, ry * 2);
-    g.lineStyle(0.8, 0xd6d6d6, 0.7);
+    g.lineStyle(0.8, 0xd6d6d6, 0.6);
     g.strokeEllipse(cx, cy, rx * 1.62, ry * 1.62);
     // 放射状铺砖缝（淡）
     g.lineStyle(0.5, 0xcfcfcf, 0.45);
@@ -395,6 +395,9 @@ export class StreetScene extends Phaser.Scene {
     g.lineStyle(LINE_FAR_WIDTH, 0x7a7a7a, 0.65);
     g.lineBetween(0, FAR_Y - 3, WORLD_WIDTH, FAR_Y - 3);
     g.lineBetween(0, FAR_Y,     WORLD_WIDTH, FAR_Y);
+    // 道路边缘线（人行道↔车道过渡软化）：4px 深灰
+    g.fillStyle(0x888888, 0.85);
+    g.fillRect(0, FAR_Y, WORLD_WIDTH, 4);
 
     g.fillStyle(0xd8d8d8, 1);
     g.fillRect(0, NEAR_Y, WORLD_WIDTH, 4);
@@ -449,30 +452,11 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  // ─── 人行道地砖网格 ──────────────────────────────────────────────────────
-  _drawSidewalkTiles(g, topY, botY, near) {
-    // 近端：偏方形大砖（约 36×18），稍深线；远端：长条砖（约 48×10），细浅线
-    const tileW  = near ? 36 : 48;
-    const tileH  = near ? 18 : 10;
-    const color  = near ? 0x7a7a7a : 0xb0b0b0;
-    const alpha  = near ? 0.42 : 0.32;
-    const lineW  = near ? 0.8  : 0.5;
-    g.lineStyle(lineW, color, alpha);
-    // 竖向砖缝
-    for (let x = 0; x <= WORLD_WIDTH; x += tileW) {
-      g.lineBetween(x, topY, x, botY);
-    }
-    // 横向砖缝（错缝排列）
-    let row = 0;
-    for (let y = topY; y <= botY; y += tileH) {
+  // ─── 人行道纹理：浅灰横线（每 20px 一条，opacity 0.3），过渡更柔和 ──────────
+  _drawSidewalkTiles(g, topY, botY, _near) {
+    g.lineStyle(0.8, 0xcccccc, 0.3);
+    for (let y = topY; y <= botY; y += 20) {
       g.lineBetween(0, y, WORLD_WIDTH, y);
-      // 错缝：每行偏移 tileW/2 的竖线（让相邻行错开一半）
-      if (row % 2 === 1) {
-        for (let x = tileW / 2; x <= WORLD_WIDTH; x += tileW) {
-          g.lineBetween(x, y, x, Math.min(y + tileH, botY));
-        }
-      }
-      row++;
     }
   }
 
@@ -546,10 +530,15 @@ export class StreetScene extends Phaser.Scene {
     const sceneData = this.cache.json.get('scene_data');
     const defs = sceneData?.buildings ?? [];
     const parseColor = c => parseInt(c.replace('#', ''), 16);
+    const seed = (n) => { const s = Math.sin(n * 12.9898) * 43758.5453; return s - Math.floor(s); };
     for (const b of defs) {
       const e = new BuildingEntity({ ...b, y: BUILDING_BASE_Y, color: parseColor(b.color) });
-      // 立面底边对齐到街墙底边（连续街墙：各楼底边齐平，靠 facadeH/bDepth 形成天际线起伏）
-      e.y = BUILDING_BASE_Y - e.facadeH;
+      // 底边随机偏移 ±6px，打破整排齐平、增加纵深
+      const off = Math.round((seed(b.x + 7) - 0.5) * 12);
+      e.baseY = BUILDING_BASE_Y + off;
+      e.y = e.baseY - e.facadeH;
+      // 左侧若有相邻楼贴合 → 画巷道暗缝
+      e.alleyLeft = defs.some(o => o !== b && Math.abs((o.x + o.bWidth) - b.x) <= 2);
       this.entityManager.add(e);
     }
     this._buildingDefs = defs;

@@ -100,6 +100,14 @@ export class BuildingEntity extends Entity {
     // ── 立面 ──
     this._facade(g, x, w);
 
+    // 巷道暗缝（与左邻楼之间），自屋顶贯通到地面，制造一栋栋分离的纵深
+    if (this.alleyLeft) {
+      g.fillStyle(0x555555, 0.5);
+      g.fillRect(x - 1, top, 8, base - top + 1);
+      g.fillStyle(0xffffff, 0.08);            // 右侧细高光，强调缝隙立体
+      g.fillRect(x + 7, top, 1.5, base - top + 1);
+    }
+
     if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
 

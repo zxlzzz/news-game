@@ -458,32 +458,31 @@ export class PropEntity extends Entity {
     }
   }
 
-  // ─── 公园喷泉（俯视椭圆水池 + 中央水柱） ───────────────────────────────────
+  // ─── 公园喷泉（俯视椭圆水池 + 中央水柱，柔和接地不漂浮） ───────────────────
   _drawFountain(g) {
     const { x, y } = this;
     const rx = (this.width || 60) / 2;
     const ry = rx * 0.42;
-    const lineW = depthLineWidth(y, { wMin: 1, wMax: 1.8 });
-    const lineC = depthLineColor(y, { light: 0x40, dark: 0x08 });
-    // 地面阴影
-    g.fillStyle(0x000000, 0.10); g.fillEllipse(x + 2, y + 2, rx * 2.1, ry * 2.1);
-    // 外池壁
-    g.fillStyle(0xbcbcbc, 1); g.fillEllipse(x, y, rx * 2, ry * 2);
-    g.lineStyle(lineW, lineC, 0.95); g.strokeEllipse(x, y, rx * 2, ry * 2);
-    // 内水面
-    g.fillStyle(0xdedede, 0.95); g.fillEllipse(x, y, rx * 1.6, ry * 1.6);
-    g.lineStyle(lineW * 0.7, lineC, 0.7); g.strokeEllipse(x, y, rx * 1.6, ry * 1.6);
-    // 水波纹（同心）
-    g.lineStyle(0.5, 0x9a9a9a, 0.6);
-    g.strokeEllipse(x, y, rx * 1.05, ry * 1.05);
-    g.strokeEllipse(x, y, rx * 0.55, ry * 0.55);
+    const lineC = depthLineColor(y, { light: 0x60, dark: 0x30 });
+    // 地面投影：比池子大、低透明度的柔和椭圆，让它"长"在地面上而非贴上去
+    g.fillStyle(0x000000, 0.08); g.fillEllipse(x, y + ry * 0.55, rx * 2.5, ry * 2.4);
+    // 池体：由外到内透明度渐增，外圈很淡 → 弱化生硬圆轮廓
+    g.fillStyle(0xbcbcbc, 0.15); g.fillEllipse(x, y, rx * 2.0, ry * 2.0);
+    g.fillStyle(0xc6c6c6, 0.35); g.fillEllipse(x, y, rx * 1.7, ry * 1.7);
+    g.fillStyle(0xd2d2d2, 0.6);  g.fillEllipse(x, y, rx * 1.4, ry * 1.4);
+    g.fillStyle(0xdedede, 0.92); g.fillEllipse(x, y, rx * 1.05, ry * 1.05);   // 水面
+    // 弱描边（不再强黑圈）
+    g.lineStyle(0.7, lineC, 0.45); g.strokeEllipse(x, y, rx * 2.0, ry * 2.0);
+    // 水波纹（内圈）
+    g.lineStyle(0.5, 0x9a9a9a, 0.5);
+    g.strokeEllipse(x, y, rx * 0.7, ry * 0.7);
+    g.strokeEllipse(x, y, rx * 0.4, ry * 0.4);
     // 中央台座 + 水柱
-    g.fillStyle(0xa8a8a8, 1); g.fillEllipse(x, y - 1, rx * 0.34, ry * 0.34);
-    g.lineStyle(lineW * 0.8, lineC, 0.85); g.strokeEllipse(x, y - 1, rx * 0.34, ry * 0.34);
-    g.lineStyle(0.8, 0xeaeaea, 0.85);
-    g.lineBetween(x, y - 2, x, y - ry * 2.2);
-    g.lineBetween(x, y - ry * 1.6, x - rx * 0.3, y - ry * 0.4);
-    g.lineBetween(x, y - ry * 1.6, x + rx * 0.3, y - ry * 0.4);
+    g.fillStyle(0xb0b0b0, 0.85); g.fillEllipse(x, y - 1, rx * 0.3, ry * 0.3);
+    g.lineStyle(0.9, 0xeaeaea, 0.85);
+    g.lineBetween(x, y - 2, x, y - ry * 2.0);
+    g.lineBetween(x, y - ry * 1.5, x - rx * 0.28, y - ry * 0.4);
+    g.lineBetween(x, y - ry * 1.5, x + rx * 0.28, y - ry * 0.4);
   }
 
   // ─── 儿童滑梯（侧视：梯子 + 平台 + 斜滑道） ────────────────────────────────
