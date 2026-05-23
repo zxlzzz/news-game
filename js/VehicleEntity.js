@@ -10,31 +10,44 @@ import { Entity } from './Entity.js';
 export class VehicleEntity extends Entity {
   constructor(cfg) {
     super({ ...cfg, static: false });
-    this.kind      = cfg.kind || 'car';
-    this.direction = cfg.direction || 1;
-    this.speed     = cfg.speed || 80;
-    this.minX      = cfg.minX ?? -240;
-    this.maxX      = cfg.maxX ?? 2240;
-    this.scale     = cfg.scale ?? 0.9;
-    this.scaleMul  = cfg.scaleMul ?? 4.0;
+    this.kind       = cfg.kind || 'car';
+    this.direction  = cfg.direction || 1;
+    this.speed      = cfg.speed || 80;
+    this.minX       = cfg.minX ?? -240;
+    this.maxX       = cfg.maxX ?? 2240;
+    this.baseScale  = cfg.scale ?? 0.9;
+    this.scale      = this.baseScale;
+    // scaleMul: Y 轴深度缩放倍率，1.0 = 不缩放
+    this.scaleMul   = cfg.scaleMul ?? 1.0;
+    this.roadCenterY = cfg.roadCenterY ?? 0;
+    this.roadHalfHeight = cfg.roadHalfHeight ?? 1;
     if (!this.tags || this.tags.length === 0) this.tags = ['vehicle', this.kind];
   }
 
   _dims() {
     switch (this.kind) {
-      case 'bus':  return { L: 94, H: 24, r: 5.5 };
-      case 'moto': return { L: 30, H: 16, r: 5 };
-      default:     return { L: 48, H: 13, r: 5 };   // car / taxi
+      case 'bus':  return { L: 900, H: 250, r: 30 };
+      case 'moto': return { L: 300, H: 200, r: 30 };
+      default:     return { L: 350, H: 230, r: 30 };   // car / taxi
     }
   }
 
   getBounds() {
     const s = this.scale, { L, H, r } = this._dims();
-    return { x: this.x - L * s / 2, y: this.y - (H + r) * s, width: L * s, height: (H + r) * s };
+    // 包含车厢凸出部分
+    const totalH = this.kind === 'moto' ? (H + r) * s : (H * 1.5 + r) * s;
+    return { x: this.x - L * s / 2, y: this.y - totalH, width: L * s, height: totalH };
   }
 
   update(delta) {
     if (!this.alive) return;
+
+    // Y 轴深度缩放
+    if (this.scaleMul !== 1.0 && this.roadHalfHeight > 0) {
+      const t = (this.y - this.roadCenterY) / this.roadHalfHeight;
+      this.scale = this.baseScale * (1 + t * (this.scaleMul - 1));
+    }
+
     this.x += this.direction * this.speed * (delta / 1000);
     if (this.direction > 0 && this.x > this.maxX) this.x = this.minX;
     else if (this.direction < 0 && this.x < this.minX) this.x = this.maxX;
@@ -95,15 +108,19 @@ export class VehicleEntity extends Entity {
 
   _taxi(g, body) {
     this._car(g, body ?? 0xb4b4b4);
-    // 顶灯牌 + 棋格条
+    // 顶灯牌 + 棋格条（自适应间距）
     const s = this.scale, x = this.x, y = this.y, { L, H, r } = this._dims();
     const top = y - r * s * 1.1 - H * s;
     g.fillStyle(0x2a2a2a, 1); g.fillRect(x - 4 * s, top - 3.5 * s, 8 * s, 3.5 * s);
     g.fillStyle(0xeaeaea, 0.9); g.fillRect(x - 3 * s, top - 2.8 * s, 6 * s, 1.4 * s);
-    // 车身棋格带
-    g.fillStyle(0x202020, 0.85);
+    // 车身棋格带（自适应间距）
     const left = x - L * s / 2;
-    for (let i = 0; i < 6; i++) g.fillRect(left + 4 * s + i * 7 * s, top + H * s * 0.5, 3 * s, 2 * s);
+    const checkCount = 6;
+    const checkW = (L * s - 8 * s) / checkCount;
+    g.fillStyle(0x202020, 0.85);
+    for (let i = 0; i < checkCount; i++) {
+      g.fillRect(left + 4 * s + i * checkW, top + H * s * 0.5, checkW * 0.45, 2 * s);
+    }
   }
 
   _bus(g, body) {
@@ -150,12 +167,13 @@ export class VehicleEntity extends Entity {
     g.lineStyle(Math.max(0.6, 1.2 * s), 0x222222, 1);
     const fx = d > 0 ? right - r * s : left + r * s;
     g.lineBetween(fx, wy - r * s * 0.4, fx + d * 3 * s, wy - r * s * 2.6);
-    // 简易骑手（坐姿小火柴）
-    const rx = x - d * 2 * s, hipY = wy - r * s * 1.9;
+    // 骑手（坐姿，方向修正：骑手偏向车身后方）
+    const rx = x + d * 2 * s;
+    const hipY = wy - r * s * 1.9;
     g.lineStyle(Math.max(0.7, 1.4 * s), 0x2a2a2a, 1);
-    g.lineBetween(rx, hipY, rx + d * 1.5 * s, hipY - 5 * s);            // 躯干
+    g.lineBetween(rx, hipY, rx + d * 1.5 * s, hipY - 5 * s);                       // 躯干
     g.lineBetween(rx + d * 1.5 * s, hipY - 5 * s, fx + d * 3 * s, wy - r * s * 2.6); // 臂→把
-    g.lineBetween(rx, hipY, fx - d * 1 * s, wy - r * s * 0.2);          // 腿
+    g.lineBetween(rx, hipY, fx - d * 1 * s, wy - r * s * 0.2);                     // 腿
     g.fillStyle(0x2a2a2a, 1); g.fillCircle(rx + d * 1.8 * s, hipY - 6.5 * s, 1.8 * s); // 头
   }
 }

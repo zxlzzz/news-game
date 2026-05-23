@@ -59,7 +59,7 @@ export function spawnChess(em, sr) {
   // 棋桌：x 居中于双手，腿落到地面 Y，桌面高度 = 地面到双手高度
   em.add(new PropEntity({
     propType: 'chess-table', x: boardMid.x, y: Y,
-    width: Math.max(20, Math.abs(handA.x - handB.x))-15, height: 18,
+    width: Math.max(20, Math.abs(handA.x - handB.x))-30, height: 18,
     topH: Math.max(10, Y - boardMid.y),
     tags: ['chess-table', 'game', 'street-furniture'],
   }));

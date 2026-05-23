@@ -462,30 +462,38 @@ export class PropEntity extends Entity {
 
   // ─── 公园喷泉（俯视椭圆水池 + 中央水柱，柔和接地不漂浮） ───────────────────
   _drawFountain(g) {
-    const { x, y } = this;
-    const rx = (this.width || 60) / 2;
-    const ry = rx * 0.42;
-    const lineC = depthLineColor(y, { light: 0x60, dark: 0x30 });
-    // 地面投影：比池子大、低透明度的柔和椭圆，让它"长"在地面上而非贴上去
-    g.fillStyle(0x000000, 0.08); g.fillEllipse(x, y + ry * 0.55, rx * 2.5, ry * 2.4);
-    // 池体：由外到内透明度渐增，外圈很淡 → 弱化生硬圆轮廓
-    g.fillStyle(0xbcbcbc, 0.15); g.fillEllipse(x, y, rx * 2.0, ry * 2.0);
-    g.fillStyle(0xc6c6c6, 0.35); g.fillEllipse(x, y, rx * 1.7, ry * 1.7);
-    g.fillStyle(0xd2d2d2, 0.6);  g.fillEllipse(x, y, rx * 1.4, ry * 1.4);
-    g.fillStyle(0xdedede, 0.92); g.fillEllipse(x, y, rx * 1.05, ry * 1.05);   // 水面
-    // 弱描边（不再强黑圈）
-    g.lineStyle(0.7, lineC, 0.45); g.strokeEllipse(x, y, rx * 2.0, ry * 2.0);
-    // 水波纹（内圈）
-    g.lineStyle(0.5, 0x9a9a9a, 0.5);
-    g.strokeEllipse(x, y, rx * 0.7, ry * 0.7);
-    g.strokeEllipse(x, y, rx * 0.4, ry * 0.4);
-    // 中央台座 + 水柱
-    g.fillStyle(0xb0b0b0, 0.85); g.fillEllipse(x, y - 1, rx * 0.3, ry * 0.3);
-    g.lineStyle(0.9, 0xeaeaea, 0.85);
-    g.lineBetween(x, y - 2, x, y - ry * 2.0);
-    g.lineBetween(x, y - ry * 1.5, x - rx * 0.28, y - ry * 0.4);
-    g.lineBetween(x, y - ry * 1.5, x + rx * 0.28, y - ry * 0.4);
-  }
+  const { x, y } = this;
+  const rx = (this.width || 60) / 2;
+  const ry = rx * 0.42;
+
+  // 极淡地面压痕
+  g.fillStyle(0x000000, 0.04);
+  g.fillEllipse(x, y + 4, rx * 1.9, ry * 1.3);
+
+  // 外圈地砖
+  g.fillStyle(0xe5e5e5, 1);
+  g.fillEllipse(x, y, rx * 1.55, ry * 1.55);
+
+  // 池边
+  g.lineStyle(1, 0xbcbcbc, 0.7);
+  g.strokeEllipse(x, y, rx * 1.2, ry * 1.2);
+
+  // 水面
+  g.fillStyle(0xd6d6d6, 0.9);
+  g.fillEllipse(x + 1, y - 1, rx * 0.92, ry * 0.92);
+
+  // 少量水波
+  g.lineStyle(0.5, 0xb0b0b0, 0.35);
+  g.strokeEllipse(x - 1, y, rx * 0.42, ry * 0.42);
+
+  // 中央小喷头
+  g.fillStyle(0xa8a8a8, 1);
+  g.fillCircle(x, y - 1, 2);
+
+  // 简化水线
+  g.lineStyle(0.8, 0xf0f0f0, 0.6);
+  g.lineBetween(x, y - 2, x, y - ry * 1.1);
+}
 
   // ─── 儿童滑梯（侧视：梯子 + 平台 + 斜滑道） ────────────────────────────────
   _drawSlide(g) {
