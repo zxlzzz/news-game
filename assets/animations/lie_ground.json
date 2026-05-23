@@ -1,52 +1,54 @@
 {
   "name": "animation",
   "skeleton": "human",
+  "anchorMode": "foot",
+  "canonicalDirection": -1,
   "globalBend": {},
   "frames": [
     {
       "body": [
-        0,
-        0
+        -17,
+        79
       ],
       "neck": [
-        0,
-        -50
+        -66,
+        82
       ],
       "head": [
-        0,
-        -75
+        -89,
+        72
       ],
       "l_elbow": [
-        -19,
-        -27
+        -97,
+        83
       ],
       "r_elbow": [
-        19,
-        -27
+        -95,
+        94
       ],
       "l_hand": [
-        -26,
-        -3
+        -75,
+        93
       ],
       "r_hand": [
-        26,
-        -3
+        -70,
+        93
       ],
       "l_knee": [
-        -9,
-        34
+        18,
+        74
       ],
       "r_knee": [
-        9,
-        34
+        16,
+        64
       ],
       "l_foot": [
-        -12,
-        69
+        52,
+        85
       ],
       "r_foot": [
-        12,
-        69
+        50,
+        68
       ]
     }
   ]
