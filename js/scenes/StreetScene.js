@@ -514,7 +514,7 @@ export class StreetScene extends Phaser.Scene {
     for (const b of defs) {
       const e = new BuildingEntity({ ...b, y: BUILDING_BASE_Y, color: parseColor(b.color) });
       // 立面底边对齐到街墙底边（连续街墙：各楼底边齐平，靠 facadeH/bDepth 形成天际线起伏）
-      e.y = BUILDING_BASE_Y - e.style.facadeH;
+      e.y = BUILDING_BASE_Y - e.facadeH;
       this.entityManager.add(e);
     }
     this._buildingDefs = defs;

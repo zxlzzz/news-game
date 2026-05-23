@@ -1,20 +1,22 @@
 {
   "buildings": [
-    { "x": 15,   "bWidth": 95,  "bDepth": 60,  "color": "#9e9590", "waterTower": false, "tags": ["office", "building"] },
-    { "x": 120,  "bWidth": 70,  "bDepth": 45,  "color": "#8a9098", "waterTower": false, "tags": ["shop", "retail", "building"] },
-    { "x": 200,  "bWidth": 58,  "bDepth": 40,  "color": "#a09894", "waterTower": false, "tags": ["cafe", "food", "building"] },
-    { "x": 268,  "bWidth": 175, "bDepth": 110, "color": "#a08878", "waterTower": true,  "tags": ["bank", "finance", "building"] },
-    { "x": 455,  "bWidth": 64,  "bDepth": 42,  "color": "#909898", "waterTower": false, "tags": ["shop", "retail", "building"] },
-    { "x": 685,  "bWidth": 110, "bDepth": 92,  "color": "#7e8898", "waterTower": false, "tags": ["office", "building"] },
-    { "x": 808,  "bWidth": 188, "bDepth": 118, "color": "#a09488", "waterTower": true,  "tags": ["hotel", "building"] },
-    { "x": 1008, "bWidth": 70,  "bDepth": 48,  "color": "#8c9890", "waterTower": false, "tags": ["shop", "retail", "building"] },
-    { "x": 1088, "bWidth": 92,  "bDepth": 55,  "color": "#9d9388", "waterTower": false, "tags": ["cafe", "food", "building"] },
-    { "x": 1192, "bWidth": 156, "bDepth": 102, "color": "#988a7e", "waterTower": false, "tags": ["bank", "finance", "building"] },
-    { "x": 1360, "bWidth": 88,  "bDepth": 80,  "color": "#8898a0", "waterTower": false, "tags": ["apartment", "residential", "building"] },
-    { "x": 1460, "bWidth": 124, "bDepth": 70,  "color": "#9a9080", "waterTower": false, "tags": ["office", "building"] },
-    { "x": 1596, "bWidth": 168, "bDepth": 108, "color": "#7e8898", "waterTower": true,  "tags": ["hotel", "building"] },
-    { "x": 1776, "bWidth": 78,  "bDepth": 50,  "color": "#988890", "waterTower": false, "tags": ["restaurant", "food", "building"] },
-    { "x": 1866, "bWidth": 116, "bDepth": 64,  "color": "#a09488", "waterTower": false, "tags": ["shop", "retail", "building"] }
+    { "x": 0,    "bWidth": 120, "bDepth": 22, "facadeH": 86, "color": "#808080", "waterTower": true,  "tags": ["bank", "finance", "residential", "building"] },
+    { "x": 120,  "bWidth": 100, "bDepth": 24, "facadeH": 80, "color": "#808080", "waterTower": false, "tags": ["supermarket", "shop", "residential", "building"] },
+    { "x": 220,  "bWidth": 90,  "bDepth": 26, "facadeH": 70, "color": "#808080", "waterTower": false, "tags": ["cafe", "food", "residential", "building"] },
+    { "x": 310,  "bWidth": 110, "bDepth": 22, "facadeH": 82, "color": "#808080", "waterTower": false, "tags": ["gym", "shop", "residential", "building"] },
+    { "x": 420,  "bWidth": 140, "bDepth": 24, "facadeH": 76, "color": "#808080", "waterTower": false, "tags": ["bookstore", "shop", "residential", "building"] },
+
+    { "x": 660,  "bWidth": 130, "bDepth": 22, "facadeH": 78, "color": "#808080", "waterTower": false, "tags": ["clinic", "shop", "residential", "building"] },
+    { "x": 790,  "bWidth": 150, "bDepth": 20, "facadeH": 88, "color": "#808080", "waterTower": true,  "tags": ["bank", "finance", "residential", "building"] },
+    { "x": 940,  "bWidth": 100, "bDepth": 28, "facadeH": 68, "color": "#808080", "waterTower": false, "tags": ["fruit", "shop", "residential", "building"] },
+    { "x": 1040, "bWidth": 110, "bDepth": 26, "facadeH": 72, "color": "#808080", "waterTower": false, "tags": ["convenience", "shop", "residential", "building"] },
+    { "x": 1150, "bWidth": 120, "bDepth": 24, "facadeH": 72, "color": "#808080", "waterTower": false, "tags": ["burger", "food", "residential", "building"] },
+    { "x": 1270, "bWidth": 110, "bDepth": 24, "facadeH": 74, "color": "#808080", "waterTower": false, "tags": ["restaurant", "food", "residential", "building"] },
+
+    { "x": 1480, "bWidth": 120, "bDepth": 24, "facadeH": 80, "color": "#808080", "waterTower": false, "tags": ["supermarket", "shop", "residential", "building"] },
+    { "x": 1600, "bWidth": 140, "bDepth": 22, "facadeH": 84, "color": "#808080", "waterTower": true,  "tags": ["gym", "shop", "residential", "building"] },
+    { "x": 1740, "bWidth": 130, "bDepth": 24, "facadeH": 76, "color": "#808080", "waterTower": false, "tags": ["bookstore", "shop", "residential", "building"] },
+    { "x": 1870, "bWidth": 120, "bDepth": 26, "facadeH": 70, "color": "#808080", "waterTower": false, "tags": ["cafe", "food", "residential", "building"] }
   ],
   "props": [
     { "propType": "lamp-far", "x": 95,   "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
@@ -85,7 +87,7 @@
     { "propType": "sign", "x": 1040, "y": 224, "width": 22, "height": 14, "color": "#aa2288", "tags": ["sign", "retail"] },
     { "propType": "sign", "x": 1130, "y": 224, "width": 22, "height": 14, "color": "#886633", "tags": ["sign", "cafe"] },
     { "propType": "sign", "x": 1265, "y": 224, "width": 28, "height": 14, "color": "#886600", "tags": ["sign", "finance"] },
-    { "propType": "sign", "x": 1404, "y": 224, "width": 22, "height": 14, "color": "#445588", "tags": ["sign", "residential"] },
+    { "propType": "sign", "x": 1340, "y": 224, "width": 22, "height": 14, "color": "#445588", "tags": ["sign", "residential"] },
     { "propType": "sign", "x": 1522, "y": 224, "width": 24, "height": 14, "color": "#225588", "tags": ["sign", "office"] },
     { "propType": "sign", "x": 1675, "y": 224, "width": 30, "height": 14, "color": "#7a3322", "tags": ["sign", "hotel"] },
     { "propType": "sign", "x": 1810, "y": 224, "width": 22, "height": 14, "color": "#cc6622", "tags": ["sign", "food"] },
