@@ -53,30 +53,30 @@ export function spawnPedestrians(em, sr) {
     }
   }
 
-  // ── 前人行道行人（窄带横向行走，不漫游） ─────────────────────────────────
+  // ── 前人行道行人（窄带横向行走，不漫游；建筑前方 → scaleMul 0.65 拉远） ──────
   managed.push(makeNPC(em, sr, {
     x: 160, y: SIDEWALK_FAR_Y - 2, animation: 'walk', direction: 1, speed: 28, vy: 0,
     minX: 20, maxX: 480, minY: SIDEWALK_FAR_Y - 3, maxY: SIDEWALK_FAR_Y + 1,
-    tags: ['pedestrian', 'business'], npcType: 'businessman',
+    tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
   }));
   managed.push(makeNPC(em, sr, {
     x: 1100, y: SIDEWALK_FAR_Y - 1, animation: 'walk', direction: 1, speed: 16, vy: 0,
     minX: 1050, maxX: 1300, minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y,
-    tags: ['pedestrian', 'business'], npcType: 'businessman',
+    tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
   }));
   managed.push(makeNPC(em, sr, {
     x: 1750, y: SIDEWALK_FAR_Y + 2, animation: 'walk', direction: 1, speed: 28, vy: 0,
     minX: 1500, maxX: 1980, minY: SIDEWALK_FAR_Y, maxY: SIDEWALK_FAR_Y + 3,
-    tags: ['pedestrian'], npcType: 'pedestrian',
+    tags: ['pedestrian'], npcType: 'pedestrian', scaleMul: 0.65,
   }));
 
-  // ── 斑马线横穿者：前人行道 → 公园往返（路面上唯一允许的行人） ─────────────
+  // ── 斑马线横穿者：前人行道 → 公园往返（路面上，道路对面 → scaleMul 0.55） ─────
   const crosserX = 290;
   const crosser = makeNPC(em, sr, {
     x: crosserX, y: SIDEWALK_FAR_Y, animation: 'walk', direction: 1, speed: 0, vy: 0,
     minX: crosserX - 4, maxX: crosserX + 4,
     minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_NEAR_Y + 2,
-    tags: ['pedestrian', 'crossing'],
+    tags: ['pedestrian', 'crossing'], scaleMul: 0.55,
   });
   crosser._stage = 'far';
   crosser._wait  = 0;

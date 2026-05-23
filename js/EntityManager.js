@@ -64,7 +64,7 @@ export class EntityManager {
     for (const e of this.entities) {
       if (!e.alive) continue;
       if (!e.static && 'scale' in e) {
-        e.scale = this.depthScale(e.y);
+        e.scale = this.depthScale(e.y) * (e.scaleMul ?? 1);
       }
       e.update(delta);
     }

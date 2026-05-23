@@ -61,6 +61,8 @@ export class PropEntity extends Entity {
       case 'slide':       this._drawSlide(g);      break;
       case 'picnic':      this._drawPicnic(g);     break;
       case 'stall':       this._drawStall(g);      break;
+      case 'vending':     this._drawVending(g);    break;
+      case 'phonebooth':  this._drawPhoneBooth(g); break;
     }
     if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
@@ -543,6 +545,57 @@ export class PropEntity extends Entity {
     g.fillStyle(0x8a8a8a, 1); g.fillRect(bx, by, 7, 5);
     g.lineStyle(0.7, lineC, 0.9); g.strokeRect(bx, by, 7, 5);
     g.lineBetween(bx, by, bx + 3.5, by - 3); g.lineBetween(bx + 7, by, bx + 3.5, by - 3); // 提手
+  }
+
+  // ─── 自动售货机（玻璃柜 + 商品格 + 取货口） ───────────────────────────────
+  _drawVending(g) {
+    const { x, y } = this;
+    const w = this.width || 16, h = w * 1.7;
+    const px = x - w / 2, py = y - h;
+    const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
+    const lineC = depthLineColor(y, { light: 0x40, dark: 0x08 });
+    g.fillStyle(0x000000, 0.10); g.fillEllipse(x, y, w * 1.1, 4);   // 接地影
+    // 机身
+    g.fillStyle(0xb0b0b0, 1); g.fillRect(px, py, w, h);
+    g.lineStyle(lineW, lineC, 0.95); g.strokeRect(px, py, w, h);
+    // 玻璃柜
+    const gx = px + 2, gy = py + 2, gw = w * 0.6, gh = h - 10;
+    g.fillStyle(0x3a3a3a, 0.6); g.fillRect(gx, gy, gw, gh);
+    g.fillStyle(0xffffff, 0.18); g.fillRect(gx + 1, gy + 1, gw - 2, gh * 0.4);
+    g.lineStyle(0.5, lineC, 0.8); g.strokeRect(gx, gy, gw, gh);
+    // 商品格横线
+    g.lineStyle(0.4, 0xcacaca, 0.6);
+    for (let i = 1; i < 5; i++) g.lineBetween(gx, gy + gh * i / 5, gx + gw, gy + gh * i / 5);
+    // 右侧操作面板
+    g.fillStyle(0x8a8a8a, 1); g.fillRect(px + gw + 3, gy, w - gw - 5, gh * 0.5);
+    g.lineStyle(0.5, lineC, 0.8); g.strokeRect(px + gw + 3, gy, w - gw - 5, gh * 0.5);
+    // 取货口
+    g.fillStyle(0x101010, 0.9); g.fillRect(px + 2, py + h - 6, w - 4, 3);
+  }
+
+  // ─── 电话亭（高玻璃亭 + 顶盖 + 听筒暗示） ─────────────────────────────────
+  _drawPhoneBooth(g) {
+    const { x, y } = this;
+    const w = this.width || 16, h = w * 2.1;
+    const px = x - w / 2, py = y - h;
+    const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
+    const lineC = depthLineColor(y, { light: 0x40, dark: 0x08 });
+    g.fillStyle(0x000000, 0.10); g.fillEllipse(x, y, w * 1.1, 4);   // 接地影
+    // 亭体（玻璃）
+    g.fillStyle(0x404040, 0.5); g.fillRect(px, py + 4, w, h - 4);
+    g.fillStyle(0xffffff, 0.16); g.fillRect(px + 1, py + 5, w - 2, (h - 4) * 0.45);
+    g.lineStyle(lineW, lineC, 0.95); g.strokeRect(px, py + 4, w, h - 4);
+    // 竖向窗框
+    g.lineStyle(0.5, lineC, 0.7);
+    g.lineBetween(px + w / 2, py + 5, px + w / 2, y - 1);
+    g.lineBetween(px + 2, py + (h - 4) * 0.5, px + w - 2, py + (h - 4) * 0.5);
+    // 顶盖
+    g.fillStyle(0x6a6a6a, 1); g.fillRect(px - 1, py, w + 2, 5);
+    g.lineStyle(lineW, lineC, 0.95); g.strokeRect(px - 1, py, w + 2, 5);
+    // 顶部标识条
+    g.fillStyle(0xeaeaea, 0.9); g.fillRect(px + 1, py + 1, w - 2, 2);
+    // 听筒/话机暗示（内侧小竖块）
+    g.fillStyle(0x202020, 0.7); g.fillRect(px + w - 5, py + 10, 2, 6);
   }
 
   // ─── 小摊贩亭（条纹遮阳棚 + 货台 + 货物） ──────────────────────────────────

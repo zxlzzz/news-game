@@ -266,6 +266,9 @@ export class StreetScene extends Phaser.Scene {
     g.fillStyle(0xebebeb, 1);
     g.fillRect(0, SKY_Y, WORLD_WIDTH, BUILDING_BASE_Y - SKY_Y);
 
+    // 建筑群间隙 → 巷道暗条 + 空调外机
+    this._drawAlleyGaps(g);
+
     // 建筑前人行道
     g.fillStyle(GRAY_FAR_PAVE, 1);
     g.fillRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
@@ -288,61 +291,58 @@ export class StreetScene extends Phaser.Scene {
   }
 
   // ─── 公园里的白色广场（棋摊就坐落在它中心，使"在公园里"一目了然） ──────────
+  // 建筑群之间的侧路缺口：8px 深色巷道竖条 + 一个空调外机矩形
+  _drawAlleyGaps(g) {
+    const defs = (this.cache.json.get('scene_data')?.buildings ?? [])
+      .slice().sort((a, b) => a.x - b.x);
+    for (let i = 0; i < defs.length - 1; i++) {
+      const a = defs[i], b = defs[i + 1];
+      const gapL = a.x + a.bWidth, gapR = b.x, gapW = gapR - gapL;
+      if (gapW < 24) continue;                       // 仅处理较宽的侧路缺口
+      const ax = Math.round((gapL + gapR) / 2 - 4);  // 8px 竖条居中
+      // 巷道暗条（自天际线下方贯通到街墙底）
+      g.fillStyle(0x555555, 1);
+      g.fillRect(ax, SKY_Y + 6, 8, BUILDING_BASE_Y - SKY_Y - 6);
+      g.fillStyle(0xffffff, 0.06);                   // 右沿微高光
+      g.fillRect(ax + 8, SKY_Y + 6, 1.5, BUILDING_BASE_Y - SKY_Y - 6);
+      // 空调外机（#666）挂在巷口一侧
+      const acY = BUILDING_BASE_Y - 60;
+      g.fillStyle(0x666666, 1);
+      g.fillRect(ax - 12, acY, 11, 7);
+      g.lineStyle(0.6, 0x303030, 0.9);
+      g.strokeRect(ax - 12, acY, 11, 7);
+      g.lineStyle(0.4, 0x404040, 0.7);
+      for (let k = 1; k < 4; k++) g.lineBetween(ax - 12 + 1, acY + k * 1.6, ax - 2, acY + k * 1.6);
+    }
+  }
+
+  // 左侧棋摊广场：保留边线轮廓（淡），扁平地面色，无阴影/发光
   _drawChessPlaza(g) {
     const { cx, cy, rx, ry } = CHESS_PLAZA;
-    // 柔和地面投影（接地，不漂浮）
-    g.fillStyle(0x000000, 0.06);
-    g.fillEllipse(cx, cy + ry * 0.5, rx * 2.3, ry * 2.2);
-    // 白色铺装：外圈淡 → 内圈实，弱化生硬边
-    g.fillStyle(0xeaeaea, 0.4); g.fillEllipse(cx, cy, rx * 2.0, ry * 2.0);
-    g.fillStyle(0xf2f2f2, 0.92); g.fillEllipse(cx, cy, rx * 1.78, ry * 1.78);
-    // 边缘描边（弱）+ 内圈
-    g.lineStyle(1.0, 0xc4c4c4, 0.6);
+    g.fillStyle(0xebebeb, 0.4);
+    g.fillEllipse(cx, cy, rx * 2, ry * 2);
+    g.lineStyle(1, 0xcccccc, 0.9);
     g.strokeEllipse(cx, cy, rx * 2, ry * 2);
-    g.lineStyle(0.8, 0xd6d6d6, 0.6);
-    g.strokeEllipse(cx, cy, rx * 1.62, ry * 1.62);
     // 放射状铺砖缝（淡）
-    g.lineStyle(0.5, 0xcfcfcf, 0.45);
+    g.lineStyle(0.5, 0xd4d4d4, 0.35);
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2;
       g.lineBetween(cx, cy, cx + Math.cos(a) * rx, cy + Math.sin(a) * ry);
     }
   }
 
-  // ─── 小公园游园区：带边界的园圃（喷泉居中、滑梯/野餐垫在其内） ─────────────
+  // 小公园游园区：去掉轮廓，仅以地面色差区分（无 stroke、无阴影）
   _drawMiniPark(g) {
     const { cx, cy, rx, ry } = MINI_PARK;
     const seed = (i) => { const s = Math.sin(i * 57.3) * 43758.5; return s - Math.floor(s); };
-    // 落地阴影
-    g.fillStyle(0x000000, 0.05); g.fillEllipse(cx + 2, cy + 4, rx * 2, ry * 2);
-    // 园圃草坪（比大公园略亮）
-    g.fillStyle(0xd6d6d6, 1); g.fillEllipse(cx, cy, rx * 2, ry * 2);
-    // 外圈步道（环园小径）
-    g.lineStyle(5, 0xe4e4e4, 0.9); g.strokeEllipse(cx, cy, rx * 1.92, ry * 1.92);
-    g.lineStyle(1.2, 0xbcbcbc, 0.8); g.strokeEllipse(cx, cy, rx * 2, ry * 2);
-    g.lineStyle(0.8, 0xc8c8c8, 0.7); g.strokeEllipse(cx, cy, rx * 1.84, ry * 1.84);
-    // 环喷泉的内圈小径
-    g.lineStyle(3, 0xe6e6e6, 0.85); g.strokeEllipse(cx, cy, rx * 0.46, ry * 0.46);
-    // 通向喷泉的十字小径
-    g.lineStyle(4, 0xe6e6e6, 0.7);
-    g.lineBetween(cx - rx * 0.9, cy, cx + rx * 0.9, cy);
-    g.lineBetween(cx, cy - ry * 0.9, cx, cy + ry * 0.9);
-    // 周边灌木丛（沿边界一圈小簇）
-    const n = 30;
-    for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 2;
-      const bx = cx + Math.cos(a) * rx * 0.97;
-      const by = cy + Math.sin(a) * ry * 0.97;
-      const s = 5 + seed(i) * 4;
-      g.fillStyle(0x9c9c9c, 0.5); g.fillEllipse(bx, by, s * 1.6, s);
-      g.lineStyle(0.5, 0x707070, 0.45); g.strokeEllipse(bx, by, s * 1.6, s);
-    }
-    // 草簇点缀
-    g.lineStyle(0.6, 0x8a8a8a, 0.3);
-    for (let i = 0; i < 60; i++) {
+    g.fillStyle(0xe8e8e8, 1);
+    g.fillEllipse(cx, cy, rx * 2, ry * 2);
+    // 少量草簇点缀（地面纹理，不画边线/小径/灌木）
+    g.lineStyle(0.6, 0x8a8a8a, 0.28);
+    for (let i = 0; i < 28; i++) {
       const a = seed(i * 2) * Math.PI * 2, rr = Math.sqrt(seed(i * 2 + 1));
-      const gx = cx + Math.cos(a) * rx * 0.8 * rr;
-      const gy = cy + Math.sin(a) * ry * 0.8 * rr;
+      const gx = cx + Math.cos(a) * rx * 0.82 * rr;
+      const gy = cy + Math.sin(a) * ry * 0.82 * rr;
       g.lineBetween(gx, gy, gx, gy - 3);
       g.lineBetween(gx, gy - 1.5, gx - 1.5, gy - 3.5);
       g.lineBetween(gx, gy - 1.5, gx + 1.5, gy - 3.5);
@@ -391,14 +391,23 @@ export class StreetScene extends Phaser.Scene {
   _drawParkPlaza(g) {
     const top = PARK_TOP, bot = WORLD_HEIGHT;
     const seed = (i) => { const s = Math.sin(i * 91.7) * 43758.5; return s - Math.floor(s); };
-    // 草簇（铺满整片草地，无竖向小径分隔）
-    g.lineStyle(0.6, 0x969696, 0.32);
-    for (let i = 0; i < 320; i++) {
-      const gx = seed(i * 2 + 1) * WORLD_WIDTH;
-      const gy = top + 30 + seed(i * 2 + 2) * (bot - top - 36);
-      g.lineBetween(gx, gy, gx, gy - 3);
-      g.lineBetween(gx, gy - 1.5, gx - 1.5, gy - 3.5);
-      g.lineBetween(gx, gy - 1.5, gx + 1.5, gy - 3.5);
+    // 草簇/小花（数量减半≈160，成簇不规则分布，非等间距）
+    g.lineStyle(0.6, 0x969696, 0.3);
+    const clusters = 22;
+    let drawn = 0;
+    for (let c = 0; c < clusters && drawn < 160; c++) {
+      const ccx = seed(c * 3 + 1) * WORLD_WIDTH;
+      const ccy = top + 28 + seed(c * 3 + 2) * (bot - top - 34);
+      const cn  = 3 + Math.floor(seed(c * 3 + 3) * 7);          // 每簇 3–9 株
+      const spread = 24 + seed(c * 5 + 1) * 60;
+      for (let k = 0; k < cn && drawn < 160; k++, drawn++) {
+        const gx = ccx + (seed(drawn * 2 + 7) - 0.5) * spread;
+        const gy = ccy + (seed(drawn * 2 + 8) - 0.5) * spread * 0.55;
+        if (gx < 4 || gx > WORLD_WIDTH - 4) continue;
+        g.lineBetween(gx, gy, gx, gy - 3);
+        g.lineBetween(gx, gy - 1.5, gx - 1.5, gy - 3.5);
+        g.lineBetween(gx, gy - 1.5, gx + 1.5, gy - 3.5);
+      }
     }
     // 横向步道（紧贴公园上沿，承接过马路下来的人流），下方为整片草地
     g.fillStyle(0xdedede, 1);
@@ -485,7 +494,7 @@ export class StreetScene extends Phaser.Scene {
     // 建筑前人行道（y≈244，贴近路沿），与街灯交错
     const walkXs = [172, 327, 482, 792, 947, 1102, 1257, 1412, 1567, 1722, 1877];
     for (const tx of walkXs) {
-      const ty = 244 + Math.sin(tx * 0.05) * 2;
+      const ty = 256 + Math.sin(tx * 0.05) * 2;
       const r  = 8 + Math.sin(tx * 0.071) * 1.5;
       this._drawBlobTree(g, tx, ty, r, 0.7, 0x808080, 0.9);
     }

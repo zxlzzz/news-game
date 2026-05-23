@@ -59,6 +59,7 @@ export class NPC extends Entity {
     this.speed     = config.speed     || 0;
     this.vy        = config.vy !== undefined ? config.vy : (Math.random() * 2 - 1) * 18;
     this.scale     = config.scale     ?? 0.45;
+    this.scaleMul  = config.scaleMul  ?? 1;   // 额外缩放系数（按所处带拉开远近差距）
     this.color     = config.color     ?? 0x1a1a1a;
 
     this.frameIndex = 0;
