@@ -83,7 +83,7 @@ export class StreetScene extends Phaser.Scene {
     // 统一 Entity 管理器
     // 缩放参考用人行道带（远端步行带 → 近端步行带），让远小近大对比贯穿整个纵深
     this.entityManager = new EntityManager({
-      farY: SIDEWALK_FAR_Y, nearY: SIDEWALK_NEAR_Y, farScale: 0.26, nearScale: 0.62,
+      farY: SIDEWALK_FAR_Y, nearY: SIDEWALK_NEAR_Y, farScale: 0.182, nearScale: 0.434,
     });
 
     this._spawnBuildings();

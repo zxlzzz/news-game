@@ -57,6 +57,10 @@ export class PropEntity extends Entity {
       case 'chair':       this._drawChair(g);      break;
       case 'chess-table': this._drawChessTable(g); break;
       case 'tree':        this._drawTree(g);       break;
+      case 'fountain':    this._drawFountain(g);   break;
+      case 'slide':       this._drawSlide(g);      break;
+      case 'picnic':      this._drawPicnic(g);     break;
+      case 'stall':       this._drawStall(g);      break;
     }
     if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
@@ -451,6 +455,131 @@ export class PropEntity extends Entity {
     for (let i = 1; i < slots; i++) {
       const lx = px + (w * i / slots);
       g.lineBetween(lx, py + 1, lx, py + h - 1);
+    }
+  }
+
+  // ─── 公园喷泉（俯视椭圆水池 + 中央水柱） ───────────────────────────────────
+  _drawFountain(g) {
+    const { x, y } = this;
+    const rx = (this.width || 60) / 2;
+    const ry = rx * 0.42;
+    const lineW = depthLineWidth(y, { wMin: 1, wMax: 1.8 });
+    const lineC = depthLineColor(y, { light: 0x40, dark: 0x08 });
+    // 地面阴影
+    g.fillStyle(0x000000, 0.10); g.fillEllipse(x + 2, y + 2, rx * 2.1, ry * 2.1);
+    // 外池壁
+    g.fillStyle(0xbcbcbc, 1); g.fillEllipse(x, y, rx * 2, ry * 2);
+    g.lineStyle(lineW, lineC, 0.95); g.strokeEllipse(x, y, rx * 2, ry * 2);
+    // 内水面
+    g.fillStyle(0xdedede, 0.95); g.fillEllipse(x, y, rx * 1.6, ry * 1.6);
+    g.lineStyle(lineW * 0.7, lineC, 0.7); g.strokeEllipse(x, y, rx * 1.6, ry * 1.6);
+    // 水波纹（同心）
+    g.lineStyle(0.5, 0x9a9a9a, 0.6);
+    g.strokeEllipse(x, y, rx * 1.05, ry * 1.05);
+    g.strokeEllipse(x, y, rx * 0.55, ry * 0.55);
+    // 中央台座 + 水柱
+    g.fillStyle(0xa8a8a8, 1); g.fillEllipse(x, y - 1, rx * 0.34, ry * 0.34);
+    g.lineStyle(lineW * 0.8, lineC, 0.85); g.strokeEllipse(x, y - 1, rx * 0.34, ry * 0.34);
+    g.lineStyle(0.8, 0xeaeaea, 0.85);
+    g.lineBetween(x, y - 2, x, y - ry * 2.2);
+    g.lineBetween(x, y - ry * 1.6, x - rx * 0.3, y - ry * 0.4);
+    g.lineBetween(x, y - ry * 1.6, x + rx * 0.3, y - ry * 0.4);
+  }
+
+  // ─── 儿童滑梯（侧视：梯子 + 平台 + 斜滑道） ────────────────────────────────
+  _drawSlide(g) {
+    const { x, y } = this;
+    const w = this.width || 30;
+    const h = w * 0.8;
+    const lineW = depthLineWidth(y, { wMin: 1, wMax: 1.7 });
+    const lineC = depthLineColor(y, { light: 0x38, dark: 0x08 });
+    const topY = y - h;
+    const ladderX = x - w / 2;     // 梯子在左
+    const slideEndX = x + w / 2;   // 滑道末端在右
+    // 平台立柱
+    g.lineStyle(lineW, lineC, 0.95);
+    g.lineBetween(ladderX, topY, ladderX, y);
+    g.lineBetween(x, topY, x, y);
+    // 平台
+    g.fillStyle(0xc4c4c4, 1); g.fillRect(ladderX, topY, w / 2, 3);
+    g.lineStyle(lineW, lineC, 0.95); g.strokeRect(ladderX, topY, w / 2, 3);
+    // 梯子横档
+    g.lineStyle(0.7, lineC, 0.9);
+    for (let i = 1; i <= 4; i++) g.lineBetween(ladderX, topY + (h * i / 5), ladderX + 5, topY + (h * i / 5));
+    g.lineBetween(ladderX + 5, topY, ladderX + 5, y);
+    // 护栏
+    g.lineStyle(0.7, lineC, 0.85);
+    g.lineBetween(ladderX, topY, ladderX, topY - 5);
+    g.lineBetween(x, topY, x, topY - 5);
+    g.lineBetween(ladderX, topY - 5, x, topY - 5);
+    // 斜滑道
+    g.lineStyle(lineW * 1.2, lineC, 0.95);
+    g.lineBetween(x, topY + 2, slideEndX, y - 2);
+    g.lineStyle(0.7, lineC, 0.8);
+    g.lineBetween(x, topY + 5, slideEndX - 2, y);
+    g.lineBetween(slideEndX, y - 2, slideEndX - 2, y); // 末端翘起
+  }
+
+  // ─── 野餐垫（俯视圆角席 + 格纹 + 篮子） ────────────────────────────────────
+  _drawPicnic(g) {
+    const { x, y } = this;
+    const rx = (this.width || 40) / 2;
+    const ry = rx * 0.6;
+    const lineC = depthLineColor(y, { light: 0x50, dark: 0x20 });
+    // 席面
+    g.fillStyle(0xd6d6d6, 0.95); g.fillEllipse(x, y, rx * 2, ry * 2);
+    g.lineStyle(0.8, lineC, 0.85); g.strokeEllipse(x, y, rx * 2, ry * 2);
+    // 格纹（裁剪在椭圆内的若干横竖线）
+    g.lineStyle(0.4, lineC, 0.45);
+    for (let i = -2; i <= 2; i++) {
+      const t = 1 - Math.pow(i / 2.6, 2); const half = Math.sqrt(Math.max(0, t));
+      g.lineBetween(x - rx * half, y + i * (ry * 0.4), x + rx * half, y + i * (ry * 0.4));
+    }
+    for (let i = -2; i <= 2; i++) {
+      const t = 1 - Math.pow(i / 2.6, 2); const half = Math.sqrt(Math.max(0, t));
+      g.lineBetween(x + i * (rx * 0.4), y - ry * half, x + i * (rx * 0.4), y + ry * half);
+    }
+    // 篮子
+    const bx = x + rx * 0.4, by = y - ry * 0.2;
+    g.fillStyle(0x8a8a8a, 1); g.fillRect(bx, by, 7, 5);
+    g.lineStyle(0.7, lineC, 0.9); g.strokeRect(bx, by, 7, 5);
+    g.lineBetween(bx, by, bx + 3.5, by - 3); g.lineBetween(bx + 7, by, bx + 3.5, by - 3); // 提手
+  }
+
+  // ─── 小摊贩亭（条纹遮阳棚 + 货台 + 货物） ──────────────────────────────────
+  _drawStall(g) {
+    const { x, y } = this;
+    const w = this.width || 36;
+    const h = w * 0.78;
+    const lineW = depthLineWidth(y, { wMin: 1, wMax: 1.7 });
+    const lineC = depthLineColor(y, { light: 0x38, dark: 0x08 });
+    const px = x - w / 2;
+    const counterY = y - h * 0.42;
+    // 立柱
+    g.lineStyle(lineW, lineC, 0.95);
+    g.lineBetween(px + 2, y, px + 2, y - h);
+    g.lineBetween(px + w - 2, y, px + w - 2, y - h);
+    // 条纹遮阳棚（梯形）
+    const aY = y - h, aH = 6;
+    g.fillStyle(0x707070, 1);
+    g.beginPath();
+    g.moveTo(px, aY + aH); g.lineTo(px + w, aY + aH);
+    g.lineTo(px + w + 3, aY); g.lineTo(px - 3, aY);
+    g.closePath(); g.fillPath();
+    g.lineStyle(lineW, lineC, 0.95); g.strokePath();
+    g.lineStyle(0.5, 0xdddddd, 0.7);
+    for (let i = 1; i < Math.floor(w / 6); i++) {
+      const sx = px - 3 + i * 6; g.lineBetween(sx, aY, sx + 1.5, aY + aH);
+    }
+    // 货台
+    g.fillStyle(0xc0c0c0, 1); g.fillRect(px + 1, counterY, w - 2, 4);
+    g.lineStyle(lineW, lineC, 0.95); g.strokeRect(px + 1, counterY, w - 2, 4);
+    // 货物（小方块/堆叠）
+    g.fillStyle(0x9a9a9a, 1);
+    for (let i = 0; i < 3; i++) {
+      const gx = px + 4 + i * ((w - 10) / 2);
+      g.fillRect(gx, counterY - 3, 4, 3);
+      g.lineStyle(0.4, lineC, 0.85); g.strokeRect(gx, counterY - 3, 4, 3);
     }
   }
 }
