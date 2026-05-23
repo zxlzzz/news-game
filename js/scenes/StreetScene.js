@@ -96,6 +96,7 @@ export class StreetScene extends Phaser.Scene {
 
     this._createUI();
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.input.keyboard.on('keydown-P', () => this._exportImage());
   }
 
   // ─── UI ──────────────────────────────────────────────────────────────────────
@@ -104,7 +105,7 @@ export class StreetScene extends Phaser.Scene {
     const W = this.cameras.main.width;
     const H = this.cameras.main.height;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放  |  P 导出图片', {
       fontFamily: '"JetBrains Mono", monospace',
       fontSize: '13px',
       color: '#555555',
@@ -151,6 +152,23 @@ export class StreetScene extends Phaser.Scene {
     btn.on('pointerover', () => btn.setAlpha(0.78));
     btn.on('pointerout',  () => btn.setAlpha(1.0));
     return btn;
+  }
+
+  // ─── 导出当前画面（按 P）：临时隐藏 HUD/取景框后抓帧下载为 PNG ────────────────
+  _exportImage() {
+    const hud = [this.uiText, this.captureText, this.headlinePanel,
+                 this.btnCapture, this.btnPublish, this.vfGraphics];
+    const prev = hud.map(o => o && o.visible);
+    hud.forEach(o => o && o.setVisible(false));
+    this.game.renderer.snapshot((image) => {
+      hud.forEach((o, i) => o && o.setVisible(prev[i]));
+      const a = document.createElement('a');
+      a.href = image.src;
+      a.download = `news-street-${Date.now()}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
   }
 
   // ─── 拍照 / 发布 ──────────────────────────────────────────────────────────────
