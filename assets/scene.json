@@ -1,22 +1,26 @@
 {
   "buildings": [
-    { "x": 0,    "bWidth": 120, "bDepth": 22, "facadeH": 86, "color": "#808080", "waterTower": true,  "tags": ["bank", "finance", "residential", "building"] },
-    { "x": 120,  "bWidth": 100, "bDepth": 24, "facadeH": 80, "color": "#808080", "waterTower": false, "tags": ["supermarket", "shop", "residential", "building"] },
-    { "x": 220,  "bWidth": 90,  "bDepth": 26, "facadeH": 70, "color": "#808080", "waterTower": false, "tags": ["cafe", "food", "residential", "building"] },
-    { "x": 310,  "bWidth": 110, "bDepth": 22, "facadeH": 82, "color": "#808080", "waterTower": false, "tags": ["gym", "shop", "residential", "building"] },
-    { "x": 420,  "bWidth": 140, "bDepth": 24, "facadeH": 76, "color": "#808080", "waterTower": false, "tags": ["bookstore", "shop", "residential", "building"] },
+    { "x": 0,    "bWidth": 120, "bDepth": 24, "facadeH": 116, "waterTower": true,  "solar": false, "billboard": false, "color": "#808080", "tags": ["resi", "residential", "building"] },
+    { "x": 120,  "bWidth": 72,  "bDepth": 20, "facadeH": 84,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["oldmix", "residential", "shop", "building"] },
+    { "x": 192,  "bWidth": 108, "bDepth": 22, "facadeH": 78,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["modern", "commercial", "building"] },
+    { "x": 300,  "bWidth": 98,  "bDepth": 24, "facadeH": 124, "waterTower": true,  "solar": true,  "billboard": false, "color": "#808080", "tags": ["resi", "residential", "building"] },
+    { "x": 398,  "bWidth": 70,  "bDepth": 16, "facadeH": 34,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["convenience", "shop", "building"] },
+    { "x": 468,  "bWidth": 72,  "bDepth": 18, "facadeH": 54,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["bookstore", "shop", "building"] },
 
-    { "x": 660,  "bWidth": 130, "bDepth": 22, "facadeH": 78, "color": "#808080", "waterTower": false, "tags": ["clinic", "shop", "residential", "building"] },
-    { "x": 790,  "bWidth": 150, "bDepth": 20, "facadeH": 88, "color": "#808080", "waterTower": true,  "tags": ["bank", "finance", "residential", "building"] },
-    { "x": 940,  "bWidth": 100, "bDepth": 28, "facadeH": 68, "color": "#808080", "waterTower": false, "tags": ["fruit", "shop", "residential", "building"] },
-    { "x": 1040, "bWidth": 110, "bDepth": 26, "facadeH": 72, "color": "#808080", "waterTower": false, "tags": ["convenience", "shop", "residential", "building"] },
-    { "x": 1150, "bWidth": 120, "bDepth": 24, "facadeH": 72, "color": "#808080", "waterTower": false, "tags": ["burger", "food", "residential", "building"] },
-    { "x": 1270, "bWidth": 110, "bDepth": 24, "facadeH": 74, "color": "#808080", "waterTower": false, "tags": ["restaurant", "food", "residential", "building"] },
+    { "x": 650,  "bWidth": 70,  "bDepth": 20, "facadeH": 92,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["oldmix", "residential", "shop", "building"] },
+    { "x": 720,  "bWidth": 122, "bDepth": 24, "facadeH": 104, "waterTower": true,  "solar": false, "billboard": false, "color": "#808080", "tags": ["resi", "residential", "building"] },
+    { "x": 842,  "bWidth": 74,  "bDepth": 18, "facadeH": 76,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["oldmix", "residential", "shop", "building"] },
+    { "x": 916,  "bWidth": 116, "bDepth": 22, "facadeH": 88,  "waterTower": false, "solar": false, "billboard": true,  "color": "#808080", "tags": ["modern", "commercial", "building"] },
+    { "x": 1032, "bWidth": 112, "bDepth": 26, "facadeH": 112, "waterTower": false, "solar": true,  "billboard": false, "color": "#808080", "tags": ["resi", "residential", "building"] },
+    { "x": 1144, "bWidth": 70,  "bDepth": 18, "facadeH": 72,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["oldmix", "residential", "shop", "building"] },
+    { "x": 1214, "bWidth": 96,  "bDepth": 24, "facadeH": 120, "waterTower": true,  "solar": false, "billboard": false, "color": "#808080", "tags": ["resi", "residential", "building"] },
+    { "x": 1310, "bWidth": 70,  "bDepth": 18, "facadeH": 50,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["clinic", "building"] },
 
-    { "x": 1480, "bWidth": 120, "bDepth": 24, "facadeH": 80, "color": "#808080", "waterTower": false, "tags": ["supermarket", "shop", "residential", "building"] },
-    { "x": 1600, "bWidth": 140, "bDepth": 22, "facadeH": 84, "color": "#808080", "waterTower": true,  "tags": ["gym", "shop", "residential", "building"] },
-    { "x": 1740, "bWidth": 130, "bDepth": 24, "facadeH": 76, "color": "#808080", "waterTower": false, "tags": ["bookstore", "shop", "residential", "building"] },
-    { "x": 1870, "bWidth": 120, "bDepth": 26, "facadeH": 70, "color": "#808080", "waterTower": false, "tags": ["cafe", "food", "residential", "building"] }
+    { "x": 1490, "bWidth": 124, "bDepth": 26, "facadeH": 108, "waterTower": true,  "solar": true,  "billboard": false, "color": "#808080", "tags": ["resi", "residential", "building"] },
+    { "x": 1614, "bWidth": 118, "bDepth": 22, "facadeH": 72,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["modern", "commercial", "building"] },
+    { "x": 1732, "bWidth": 76,  "bDepth": 18, "facadeH": 80,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["oldmix", "residential", "shop", "building"] },
+    { "x": 1808, "bWidth": 94,  "bDepth": 24, "facadeH": 116, "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["resi", "residential", "building"] },
+    { "x": 1902, "bWidth": 88,  "bDepth": 16, "facadeH": 32,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["convenience", "shop", "building"] }
   ],
   "props": [
     { "propType": "lamp-far", "x": 95,   "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },

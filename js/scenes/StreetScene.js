@@ -299,23 +299,17 @@ export class StreetScene extends Phaser.Scene {
     this._drawClouds(g);
   }
 
-  // 远处天际线：一排淡灰剪影建筑，落在地平线(SKY_Y)之上、近景建筑之后
+  // 远处天际线：一排极淡灰剪影建筑（更浅更简化），落在地平线之上、近景建筑之后
   _drawFarSkyline(g) {
     const seed = (i) => { const s = Math.sin(i * 73.13) * 43758.5; return s - Math.floor(s); };
     for (let i = 0; i < 40; i++) {
       const bx = i * 58 + seed(i) * 22;
       const bw = 26 + seed(i + 9) * 26;
-      const bh = 12 + seed(i + 3) * 34;
-      g.fillStyle(0xe6e6e6, 0.92);
+      const bh = 10 + seed(i + 3) * 30;
+      g.fillStyle(0xeeeeee, 0.95);
       g.fillRect(bx, SKY_Y - bh, bw, bh);
-      g.lineStyle(0.5, 0xd2d2d2, 0.55);
+      g.lineStyle(0.4, 0xdedede, 0.4);
       g.strokeRect(bx, SKY_Y - bh, bw, bh);
-      // 几扇暗示窗的淡点
-      if (seed(i + 5) > 0.4) {
-        g.fillStyle(0xd8d8d8, 0.7);
-        g.fillRect(bx + bw * 0.3, SKY_Y - bh * 0.6, 2, 2);
-        g.fillRect(bx + bw * 0.6, SKY_Y - bh * 0.4, 2, 2);
-      }
     }
   }
 
