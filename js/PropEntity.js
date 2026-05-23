@@ -65,43 +65,43 @@ export class PropEntity extends Entity {
     if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
 
-  // ─── 路灯：远端（细线，灯臂朝路） ─────────────────────────────────────────
+  // ─── 路灯：远端（细线，灯臂朝路，加高） ───────────────────────────────────
   _drawLampFar(g) {
     const { x, y } = this;
-    // 灯柱
-    g.lineStyle(1, 0x6a6a6a, 0.95);
-    g.lineBetween(x, y + 14, x, y - 8);
+    // 灯柱（加高约 1.7×）
+    g.lineStyle(1.1, 0x6a6a6a, 0.95);
+    g.lineBetween(x, y + 16, x, y - 28);
     // 灯臂
-    g.lineStyle(0.8, 0x6a6a6a, 0.9);
-    g.lineBetween(x, y - 8, x + 14, y + 6);
+    g.lineStyle(0.9, 0x6a6a6a, 0.9);
+    g.lineBetween(x, y - 28, x + 18, y - 12);
     // 灯罩（描边方块，非实心）
     g.fillStyle(0xf0f0f0, 1);
-    g.fillRect(x + 12, y + 4, 5, 5);
-    g.lineStyle(0.7, 0x202020, 1);
-    g.strokeRect(x + 12, y + 4, 5, 5);
+    g.fillRect(x + 15, y - 14, 7, 7);
+    g.lineStyle(0.8, 0x202020, 1);
+    g.strokeRect(x + 15, y - 14, 7, 7);
     // 灯柱底座
     g.fillStyle(0x4a4a4a, 1);
-    g.fillRect(x - 1, y + 13, 3, 3);
+    g.fillRect(x - 1.5, y + 14, 4, 4);
   }
 
-  // ─── 路灯：近端（粗线，灯臂朝路） ─────────────────────────────────────────
+  // ─── 路灯：近端（粗线，灯臂朝路，加高） ───────────────────────────────────
   _drawLampNear(g) {
     const { x, y } = this;
-    g.lineStyle(2.5, 0x1f1f1f, 1);
-    g.lineBetween(x, y - 14, x, y + 10);
-    g.lineStyle(2, 0x1f1f1f, 1);
-    g.lineBetween(x, y - 14, x - 17, y - 6);
+    g.lineStyle(2.8, 0x1f1f1f, 1);
+    g.lineBetween(x, y - 36, x, y + 12);
+    g.lineStyle(2.2, 0x1f1f1f, 1);
+    g.lineBetween(x, y - 36, x - 24, y - 24);
     // 灯罩（线条几何，非实心圆）
     g.fillStyle(0xfafafa, 1);
-    g.fillRect(x - 20, y - 9, 7, 7);
-    g.lineStyle(1.6, 0x101010, 1);
-    g.strokeRect(x - 20, y - 9, 7, 7);
+    g.fillRect(x - 29, y - 28, 10, 10);
+    g.lineStyle(1.8, 0x101010, 1);
+    g.strokeRect(x - 29, y - 28, 10, 10);
     // 罩内灯光横线（暗示亮）
-    g.lineStyle(0.7, 0xa0a0a0, 0.85);
-    g.lineBetween(x - 19, y - 5.5, x - 14, y - 5.5);
+    g.lineStyle(0.8, 0xa0a0a0, 0.85);
+    g.lineBetween(x - 27, y - 23, x - 21, y - 23);
     // 底座
     g.fillStyle(0x101010, 1);
-    g.fillRect(x - 2, y + 9, 5, 4);
+    g.fillRect(x - 3, y + 10, 6, 5);
   }
 
   // ─── 长椅：线条 ──────────────────────────────────────────────────────────

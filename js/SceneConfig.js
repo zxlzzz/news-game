@@ -26,6 +26,9 @@ export const SIDEWALK_NEAR_Y = 488;   // 公园主步行 Y（近镜头）
 // 公园里的白色广场（棋摊置于其中心）。StreetScene 画图与 Chess 定位共用同一来源。
 export const CHESS_PLAZA = { cx: 620, cy: 420, rx: 130, ry: 56 };
 
+// 大公园里的"小公园"游园区（喷泉居中、滑梯/野餐垫在其内）。
+export const MINI_PARK = { cx: 1150, cy: 430, rx: 210, ry: 78 };
+
 /**
  * 按道路纵深分数换算世界 Y
  * @param {number} f  0 = 道路远端, 1 = 道路近端

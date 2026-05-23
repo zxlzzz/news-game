@@ -16,7 +16,7 @@ import { PropEntity }      from '../PropEntity.js';
 import { Viewfinder }      from '../Viewfinder.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
-  PARK_TOP, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA,
+  PARK_TOP, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA, MINI_PARK,
   GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
 } from '../SceneConfig.js';
@@ -262,6 +262,7 @@ export class StreetScene extends Phaser.Scene {
     this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, FAR_Y - 3, /*near=*/false);
     this._drawRoadPatches(g);
     this._drawParkPlaza(g);
+    this._drawMiniPark(g);
     this._drawChessPlaza(g);
     this._drawTrees(g);
   }
@@ -285,6 +286,46 @@ export class StreetScene extends Phaser.Scene {
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2;
       g.lineBetween(cx, cy, cx + Math.cos(a) * rx, cy + Math.sin(a) * ry);
+    }
+  }
+
+  // ─── 小公园游园区：带边界的园圃（喷泉居中、滑梯/野餐垫在其内） ─────────────
+  _drawMiniPark(g) {
+    const { cx, cy, rx, ry } = MINI_PARK;
+    const seed = (i) => { const s = Math.sin(i * 57.3) * 43758.5; return s - Math.floor(s); };
+    // 落地阴影
+    g.fillStyle(0x000000, 0.05); g.fillEllipse(cx + 2, cy + 4, rx * 2, ry * 2);
+    // 园圃草坪（比大公园略亮）
+    g.fillStyle(0xd6d6d6, 1); g.fillEllipse(cx, cy, rx * 2, ry * 2);
+    // 外圈步道（环园小径）
+    g.lineStyle(5, 0xe4e4e4, 0.9); g.strokeEllipse(cx, cy, rx * 1.92, ry * 1.92);
+    g.lineStyle(1.2, 0xbcbcbc, 0.8); g.strokeEllipse(cx, cy, rx * 2, ry * 2);
+    g.lineStyle(0.8, 0xc8c8c8, 0.7); g.strokeEllipse(cx, cy, rx * 1.84, ry * 1.84);
+    // 环喷泉的内圈小径
+    g.lineStyle(3, 0xe6e6e6, 0.85); g.strokeEllipse(cx, cy, rx * 0.46, ry * 0.46);
+    // 通向喷泉的十字小径
+    g.lineStyle(4, 0xe6e6e6, 0.7);
+    g.lineBetween(cx - rx * 0.9, cy, cx + rx * 0.9, cy);
+    g.lineBetween(cx, cy - ry * 0.9, cx, cy + ry * 0.9);
+    // 周边灌木丛（沿边界一圈小簇）
+    const n = 30;
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2;
+      const bx = cx + Math.cos(a) * rx * 0.97;
+      const by = cy + Math.sin(a) * ry * 0.97;
+      const s = 5 + seed(i) * 4;
+      g.fillStyle(0x9c9c9c, 0.5); g.fillEllipse(bx, by, s * 1.6, s);
+      g.lineStyle(0.5, 0x707070, 0.45); g.strokeEllipse(bx, by, s * 1.6, s);
+    }
+    // 草簇点缀
+    g.lineStyle(0.6, 0x8a8a8a, 0.3);
+    for (let i = 0; i < 60; i++) {
+      const a = seed(i * 2) * Math.PI * 2, rr = Math.sqrt(seed(i * 2 + 1));
+      const gx = cx + Math.cos(a) * rx * 0.8 * rr;
+      const gy = cy + Math.sin(a) * ry * 0.8 * rr;
+      g.lineBetween(gx, gy, gx, gy - 3);
+      g.lineBetween(gx, gy - 1.5, gx - 1.5, gy - 3.5);
+      g.lineBetween(gx, gy - 1.5, gx + 1.5, gy - 3.5);
     }
   }
 
