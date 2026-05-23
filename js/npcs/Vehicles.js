@@ -128,12 +128,16 @@ export function spawnVehicles(em, sr) {
   ebiker.drawExtra = drawEbike;
 
   // ── 机动车（双行道循环行驶）：上行带向右、下行带向左 ──────────────────────
+  // baseScale 把放大后的车身基准尺寸（350~900）压到合适大小；scaleMul 按路深做远小近大。
+  const rc = roadY(0.5);                  // 道路纵深中心
+  const rh = roadY(1.0) - roadY(0.5);     // 半个道路纵深
+  const dep = { scaleMul: 1.5, roadCenterY: rc, roadHalfHeight: rh };
   // 上行带（y 偏上，dir +1）
-  em.add(new VehicleEntity({ kind: 'car',  x: 200,  y: roadY(0.28), direction: 1, speed: 95,  tags: ['car', 'vehicle'] }));
-  em.add(new VehicleEntity({ kind: 'moto', x: 950,  y: roadY(0.20), direction: 1, speed: 138, tags: ['motorcycle', 'vehicle'] }));
-  em.add(new VehicleEntity({ kind: 'car',  x: 1500, y: roadY(0.36), direction: 1, speed: 80,  tags: ['car', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'car',  x: 200,  y: roadY(0.28), direction: 1, speed: 95,  scale: 0.14, ...dep, tags: ['car', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'moto', x: 950,  y: roadY(0.20), direction: 1, speed: 138, scale: 0.13, ...dep, tags: ['motorcycle', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'car',  x: 1500, y: roadY(0.36), direction: 1, speed: 80,  scale: 0.14, ...dep, tags: ['car', 'vehicle'] }));
   // 下行带（y 偏下，dir -1）
-  em.add(new VehicleEntity({ kind: 'bus',  x: 1400, y: roadY(0.70), direction: -1, speed: 68, tags: ['bus', 'transit', 'vehicle'] }));
-  em.add(new VehicleEntity({ kind: 'taxi', x: 620,  y: roadY(0.82), direction: -1, speed: 92, tags: ['taxi', 'vehicle'] }));
-  em.add(new VehicleEntity({ kind: 'car',  x: 1850, y: roadY(0.62), direction: -1, speed: 104, tags: ['car', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'bus',  x: 1400, y: roadY(0.70), direction: -1, speed: 68, scale: 0.13, ...dep, tags: ['bus', 'transit', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'taxi', x: 620,  y: roadY(0.82), direction: -1, speed: 92, scale: 0.14, ...dep, tags: ['taxi', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'car',  x: 1850, y: roadY(0.62), direction: -1, speed: 104, scale: 0.14, ...dep, tags: ['car', 'vehicle'] }));
 }

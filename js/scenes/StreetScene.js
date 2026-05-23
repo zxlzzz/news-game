@@ -329,17 +329,31 @@ export class StreetScene extends Phaser.Scene {
     this._drawClouds(g);
   }
 
-  // 远处天际线：一排极淡灰剪影建筑（更浅更简化），落在地平线之上、近景建筑之后
+  // 远处天际线：成排较高的浅灰剪影楼（基线落在街墙底 210，高过最矮的近景房顶），
+  // 落在近景建筑之后做视差背景；侧路缺口处可见远楼而非空白。
   _drawFarSkyline(g) {
     const seed = (i) => { const s = Math.sin(i * 73.13) * 43758.5; return s - Math.floor(s); };
-    for (let i = 0; i < 40; i++) {
-      const bx = i * 58 + seed(i) * 22;
-      const bw = 26 + seed(i + 9) * 26;
-      const bh = 10 + seed(i + 3) * 30;
-      g.fillStyle(0xeeeeee, 0.95);
-      g.fillRect(bx, SKY_Y - bh, bw, bh);
-      g.lineStyle(0.4, 0xdedede, 0.4);
-      g.strokeRect(bx, SKY_Y - bh, bw, bh);
+    const base = BUILDING_BASE_Y;
+    // 远排（更浅更密，垫底连续）
+    for (let i = 0; i < 48; i++) {
+      const bx = i * 46 - 30 + seed(i) * 12;
+      const bw = 38 + seed(i + 9) * 26;
+      const bh = 78 + seed(i + 3) * 60;            // 78–138
+      g.fillStyle(0xf1f1f1, 1);
+      g.fillRect(bx, base - bh, bw, bh);
+    }
+    // 近排（略深更高，错落）
+    for (let i = 0; i < 32; i++) {
+      const bx = i * 70 - 20 + seed(i + 50) * 28;
+      const bw = 44 + seed(i + 60) * 36;
+      const bh = 110 + seed(i + 70) * 70;          // 110–180
+      g.fillStyle(0xe6e6e6, 1);
+      g.fillRect(bx, base - bh, bw, bh);
+      g.lineStyle(0.5, 0xd6d6d6, 0.5);
+      g.strokeRect(bx, base - bh, bw, bh);
+      // 极淡竖向窗缝
+      g.lineStyle(0.4, 0xdcdcdc, 0.4);
+      for (let k = 1; k < 3; k++) { const lx = bx + bw * k / 3; g.lineBetween(lx, base - bh + 6, lx, base - 4); }
     }
   }
 
