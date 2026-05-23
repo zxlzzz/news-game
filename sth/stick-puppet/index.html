@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>StickPuppet</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loadingOverlay" class="loading-overlay hidden">
+  <span id="loadingText">加载中...</span>
+</div>
+
+<header>
+  <h1>STICK PUPPET</h1>
+  <div class="toolbar">
+    <button onclick="app.undo()" title="Ctrl+Z">↩ 撤销</button>
+    <button onclick="app.redo()" title="Ctrl+Shift+Z">↪ 重做</button>
+    <button onclick="app.mirrorPose()" title="左右关节互换">↔ 左右互换</button>
+    <button onclick="app.resetPose()">重置姿势</button>
+    <button onclick="app.exportSpriteSheet()" class="green">导出 Sprite Sheet</button>
+  </div>
+</header>
+
+<div class="main-area">
+  <div class="canvas-wrap">
+    <canvas id="stage" width="500" height="500"></canvas>
+  </div>
+  
+  <div class="side-panel">
+    <div class="panel-section">
+      <h3>骨骼类型</h3>
+      <select id="skeletonSelect" onchange="app.switchSkeleton(this.value)" style="
+        width:100%; padding:4px 8px; font-size:12px;
+        font-family:'JetBrains Mono',monospace;
+        background:var(--bg); color:var(--fg);
+        border:1px solid var(--border); border-radius:4px;">
+        <option value="human">🧍 人</option>
+        <option value="child">🧒 小孩</option>
+        <option value="dog">🐕 狗</option>
+        <option value="cat">🐈 猫</option>
+      </select>
+    </div>
+    <div class="panel-section">
+      <h3>拖拽模式</h3>
+      <button id="lockBtn" onclick="app.toggleBoneLock()">🔒 骨骼锁定（旋转模式）</button>
+      <div class="mode-indicator mode-locked" id="modeIndicator">关节绕父骨骼旋转，长度固定</div>
+      <div class="check-row">
+        <label><input type="checkbox" id="onionSkin" checked onchange="app.render()"> 洋葱皮</label>
+      </div>
+      <div class="check-row">
+        <label><input type="checkbox" id="showLabels" onchange="app.render()"> 显示名称</label>
+      </div>
+      <div class="info" id="infoText">拖动红色关节点摆姿势</div>
+    </div>
+    
+    <div class="panel-section">
+      <h3>从图片提取姿势</h3>
+      <button onclick="document.getElementById('imageUpload').click()" class="blue" style="width:100%">
+        📷 上传图片提取
+      </button>
+      <input type="file" id="imageUpload" accept="image/*" onchange="app.handleImageUpload(event)">
+      <div class="drop-hint">支持 jpg/png，首次需加载模型(~5MB)</div>
+    </div>
+    
+    <div class="panel-section">
+      <h3>补帧插值</h3>
+      <div class="interp-row">
+        <label>从帧</label>
+        <input type="number" id="interpFrom" value="1" min="1">
+        <label>到帧</label>
+        <input type="number" id="interpTo" value="2" min="1">
+        <label>插入</label>
+        <input type="number" id="interpCount" value="4" min="1" max="30">
+        <label>帧</label>
+      </div>
+      <div class="btn-row" style="margin-top:6px">
+        <button onclick="app.interpolateFrames()" class="blue">生成补帧</button>
+      </div>
+    </div>
+    
+    <div class="panel-section">
+      <h3>当前帧坐标</h3>
+      <div id="coordsPanel" class="coords-panel"></div>
+    </div>
+
+    <div class="panel-section">
+      <h3>骨骼长度</h3>
+      <div id="boneLengthPanel" class="coords-panel"></div>
+    </div>
+    
+    <div class="json-area">
+      <h3>JSON 导入/导出</h3>
+      <textarea id="jsonInput" placeholder='粘贴动画 JSON...'></textarea>
+      <div class="btn-row">
+        <button onclick="app.loadJSON()" class="primary">载入</button>
+        <button onclick="app.exportJSON()">导出</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="timeline-controls">
+    <button onclick="app.addFrame()" class="primary">+ 添加帧</button>
+    <button onclick="app.dupFrame()">复制当前帧</button>
+    <button onclick="app.moveFrameLeft()">◀ 前移</button>
+    <button onclick="app.moveFrameRight()">▶ 后移</button>
+    <button onclick="app.delFrame()">删除当前帧</button>
+  </div>
+  <div class="frames-strip" id="framesStrip"></div>
+  <div class="play-controls">
+    <button id="playBtn" onclick="app.togglePlay()">▶ 播放</button>
+    <label>FPS</label>
+    <input type="number" id="fpsInput" value="8" min="1" max="30">
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
