@@ -105,7 +105,7 @@ export class StreetScene extends Phaser.Scene {
     const W = this.cameras.main.width;
     const H = this.cameras.main.height;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放  |  P 导出图片', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放  |  P 导出整条街长图', {
       fontFamily: '"JetBrains Mono", monospace',
       fontSize: '13px',
       color: '#555555',
@@ -154,20 +154,22 @@ export class StreetScene extends Phaser.Scene {
     return btn;
   }
 
-  // ─── 导出当前画面（按 P）：临时隐藏 HUD/取景框后抓帧下载为 PNG ────────────────
+  // ─── 导出整条街长图（按 P）：离屏合成 sky+bg+entity 三层（均为世界坐标），导出 PNG ──
+  // 不含 HUD/取景框；不打扰可见画布。三层合起来即完整 WORLD_WIDTH×WORLD_HEIGHT 场景。
   _exportImage() {
-    const hud = [this.uiText, this.captureText, this.headlinePanel,
-                 this.btnCapture, this.btnPublish, this.vfGraphics];
-    const prev = hud.map(o => o && o.visible);
-    hud.forEach(o => o && o.setVisible(false));
-    this.game.renderer.snapshot((image) => {
-      hud.forEach((o, i) => o && o.setVisible(prev[i]));
+    const key = '__pano_' + Date.now();
+    const dt = this.textures.addDynamicTexture(key, WORLD_WIDTH, WORLD_HEIGHT);
+    if (!dt) return;
+    dt.fill(GRAY_SKY, 1);                                  // 天空/建筑带底色
+    dt.draw([this.skyGraphics, this.bgGraphics, this.entityGraphics], 0, 0);
+    dt.snapshot((image) => {
       const a = document.createElement('a');
       a.href = image.src;
-      a.download = `news-street-${Date.now()}.png`;
+      a.download = `news-street-pano-${Date.now()}.png`;
       document.body.appendChild(a);
       a.click();
       a.remove();
+      this.textures.remove(key);
     });
   }
 
