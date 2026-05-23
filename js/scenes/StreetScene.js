@@ -262,13 +262,7 @@ export class StreetScene extends Phaser.Scene {
   _drawGround() {
     const g = this.bgGraphics;
 
-    // 建筑街墙背景（侧街缺口露出此色）。天空/云/远skyline 在 skyGraphics 视差层。
-    g.fillStyle(0xebebeb, 1);
-    g.fillRect(0, SKY_Y, WORLD_WIDTH, BUILDING_BASE_Y - SKY_Y);
-
-    // 建筑群间隙 → 巷道暗条 + 空调外机
-    this._drawAlleyGaps(g);
-
+    // 建筑街墙背后不再铺灰色背景：露出 skyGraphics 的天空底色 + 远景剪影（视差）。
     // 建筑前人行道
     g.fillStyle(GRAY_FAR_PAVE, 1);
     g.fillRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
@@ -291,31 +285,6 @@ export class StreetScene extends Phaser.Scene {
   }
 
   // ─── 公园里的白色广场（棋摊就坐落在它中心，使"在公园里"一目了然） ──────────
-  // 建筑群之间的侧路缺口：8px 深色巷道竖条 + 一个空调外机矩形
-  _drawAlleyGaps(g) {
-    const defs = (this.cache.json.get('scene_data')?.buildings ?? [])
-      .slice().sort((a, b) => a.x - b.x);
-    for (let i = 0; i < defs.length - 1; i++) {
-      const a = defs[i], b = defs[i + 1];
-      const gapL = a.x + a.bWidth, gapR = b.x, gapW = gapR - gapL;
-      if (gapW < 24) continue;                       // 仅处理较宽的侧路缺口
-      const ax = Math.round((gapL + gapR) / 2 - 4);  // 8px 竖条居中
-      // 巷道暗条（自天际线下方贯通到街墙底）
-      g.fillStyle(0x555555, 1);
-      g.fillRect(ax, SKY_Y + 6, 8, BUILDING_BASE_Y - SKY_Y - 6);
-      g.fillStyle(0xffffff, 0.06);                   // 右沿微高光
-      g.fillRect(ax + 8, SKY_Y + 6, 1.5, BUILDING_BASE_Y - SKY_Y - 6);
-      // 空调外机（#666）挂在巷口一侧
-      const acY = BUILDING_BASE_Y - 60;
-      g.fillStyle(0x666666, 1);
-      g.fillRect(ax - 12, acY, 11, 7);
-      g.lineStyle(0.6, 0x303030, 0.9);
-      g.strokeRect(ax - 12, acY, 11, 7);
-      g.lineStyle(0.4, 0x404040, 0.7);
-      for (let k = 1; k < 4; k++) g.lineBetween(ax - 12 + 1, acY + k * 1.6, ax - 2, acY + k * 1.6);
-    }
-  }
-
   // 左侧棋摊广场：保留边线轮廓（淡），扁平地面色，无阴影/发光
   _drawChessPlaza(g) {
     const { cx, cy, rx, ry } = CHESS_PLAZA;

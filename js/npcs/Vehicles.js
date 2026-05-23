@@ -9,6 +9,7 @@
 
 import { roadY } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
+import { VehicleEntity } from '../VehicleEntity.js';
 
 const FRAME = 0x2a2a2a;
 const SPOKE = 0x808080;
@@ -125,4 +126,14 @@ export function spawnVehicles(em, sr) {
     color: 0x1a1000, tags: ['delivery', 'e-bike', 'vehicle'],
   });
   ebiker.drawExtra = drawEbike;
+
+  // ── 机动车（双行道循环行驶）：上行带向右、下行带向左 ──────────────────────
+  // 上行带（y 偏上，dir +1）
+  em.add(new VehicleEntity({ kind: 'car',  x: 200,  y: roadY(0.28), direction: 1, speed: 95,  tags: ['car', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'moto', x: 950,  y: roadY(0.20), direction: 1, speed: 138, tags: ['motorcycle', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'car',  x: 1500, y: roadY(0.36), direction: 1, speed: 80,  tags: ['car', 'vehicle'] }));
+  // 下行带（y 偏下，dir -1）
+  em.add(new VehicleEntity({ kind: 'bus',  x: 1400, y: roadY(0.70), direction: -1, speed: 68, tags: ['bus', 'transit', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'taxi', x: 620,  y: roadY(0.82), direction: -1, speed: 92, tags: ['taxi', 'vehicle'] }));
+  em.add(new VehicleEntity({ kind: 'car',  x: 1850, y: roadY(0.62), direction: -1, speed: 104, tags: ['car', 'vehicle'] }));
 }
