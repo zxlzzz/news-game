@@ -78,10 +78,34 @@ export class BehaviorManager {
     npc.stateDur    = def.dur ? rand(def.dur[0], def.dur[1]) : Infinity;
     npc.animation   = def.anim;
     npc.speed       = def.speedK * (npc.walkSpeed || 26);
+    npc.vy          = 0;            // 纵深速度由漫游转向逐帧设定；非移动态归零防漂移
     npc.playOnce    = def.once;
     npc.animDone    = false;
     npc.frameIndex  = 0;
     npc.frameTimer  = 0;
+    // 漫游 NPC 每次进入 walk 重新挑选目标点 → 路径更自然多变
+    if (npc.roam && (state === 'walk' || state === 'run')) npc.roamTarget = null;
+  }
+
+  // ─── 二维漫游转向：把"朝目标点"的速度分解到水平 speed + 纵深 vy ────────────
+  //   NPC.update 会按 direction*speed 推进 X、按 vy 推进 Y，并夹在 roam 矩形内。
+  //   到达目标后另挑一个矩形内随机点，从而在公园/广场内自由游走（Y 变化触发缩放/排序）。
+  _steerRoam(npc) {
+    if (!npc.roamTarget) this._pickRoamTarget(npc);
+    const t = npc.roamTarget;
+    const dx = t.x - npc.x;
+    const dy = t.y - npc.y;
+    const dist = Math.hypot(dx, dy);
+    if (dist < 6) { this._pickRoamTarget(npc); return; }
+    const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
+    npc.direction = dx >= 0 ? 1 : -1;
+    npc.speed     = Math.abs(dx) / dist * total;
+    npc.vy        = dy / dist * total;
+  }
+
+  _pickRoamTarget(npc) {
+    const r = npc.roam;
+    npc.roamTarget = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
   }
 
   update(delta) {
@@ -104,6 +128,8 @@ export class BehaviorManager {
       if (!npc.alive || npc.bond) continue;
       npc.stateTimer += dt;
       this._tick(npc);
+      // 漫游 NPC 在 walk/run 态逐帧转向目标点
+      if (npc.roam && (npc.state === 'walk' || npc.state === 'run')) this._steerRoam(npc);
       this._tickOverlay(npc, dt);
     }
 
