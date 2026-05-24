@@ -130,7 +130,7 @@ news-game/
 - **NPC 间分离**：`BehaviorManager._separate(dt)` 对移动中（walk/run/jog）的自由 NPC 做 O(n²) 排斥（<24px 互推，越近越强）；跳过 Activity 锁定 / 静止 / leash 从属。
 - **sit_bench 道具对齐**：进入 sit_bench 时 `enterSitBench` 调 `nearestFreeBench`（以 `bench._occupiedBy` 判空闲）→ 标记占用 + snap 到椅心（夹在 NPC 自身 minX/maxX/minY/maxY 内）；无空椅回退 stand；离开 sit_bench/lie_bench 之外的状态时在 `setState` 释放占用。`lean_wall/lie_bench` 的 snap 留 TODO。
 - **长椅重画 + 放大 ~3× + 朝向**：`PropEntity` 构造里把 bench 宽×3、高=24；新增 `facing`（'up'/'down'/'left'/'right'=椅面朝向，scene.json 按邻路走向指定）。`_drawBench` 用局部 (u=椅长, w=椅背高) 坐标经 `P()` 按 facing 做轴对齐映射绘制（4 向均不产生斜矩形）；竖放(left/right)时碰撞椭圆长短轴互换。
-- **公园园路**：`StreetScene._drawParkPaths`（Catmull-Rom 平滑曲线 + 宽描边 width 26）画 4 条带弧度步道——A 棋摊广场右缘↔喷泉广场左缘、B 棋摊左缘向左、C 喷泉广场右缘向右、D 上沿步道↓接入 C。**端点落在广场/喷泉的椭圆边缘自然汇入（以 MINI_PARK rx210/ry78 为基准），不穿过广场中心**。每条路边缘各放一把长椅（朝向对应邻路：A/B/C 椅面朝上、D 椅面朝右），其余长椅已删；阻路的树/摊位已挪到草地（scene.json）。
+- **公园园路**：`StreetScene._drawParkPaths`（Catmull-Rom 平滑曲线 + 宽描边 width 26）画 4 条带弧度步道——A 棋摊广场(接入)↔喷泉广场左缘、B 棋摊左缘→画布左边缘(x0)、C 喷泉广场右缘→画布右边缘(x2000)、D 上沿步道↓接入 C。端点落在广场椭圆边缘自然汇入（MINI_PARK rx210/ry78），不穿过广场中心；B/C 拉到画布边缘。**3 把长椅**都在 A/B/C 路的**上方**、`facing:'down'`（椅背朝上、椅面朝下对着路）；D 路无长椅。阻路的树/摊位已挪到草地。
 - **未做（不急）**：NPC 尚未"沿路行走"——园路目前是地面贴图，NPC 只避开实体障碍、不偏好沿步道。若要做需把路网数据喂给行为层让 `pickRoamTarget` 偏向路点。
 - **未触碰**：SocialLayer/Activity、车辆、StickRenderer；不改 scene.json 道具位置/数量；无 A* 寻路（steering 足够）。
 
