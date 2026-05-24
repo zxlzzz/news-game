@@ -9,6 +9,7 @@
  */
 
 import { setState } from './BaseStateMachine.js';
+import { dlog }     from './DebugLog.js';
 
 const rand   = (a, b) => a + Math.random() * (b - a);
 const chance = (p) => Math.random() < p;
@@ -25,6 +26,16 @@ class Activity {
     this.timer = 0;
     this.subState = 'init';
     this.alive = true;
+    this._endReason = 'natural';
+  }
+
+  // 可读标签：如 chess#3
+  get label() { return `${this.type}#${this.id}`; }
+
+  // 查某 NPC 在本 Activity 里的角色
+  roleOf(npc) {
+    const p = this.participants.find(p => p.npc === npc);
+    return p ? p.role : null;
   }
 
   // 加入参与者：锁定 NPC，阻止 BaseStateMachine 接管
@@ -49,7 +60,7 @@ class Activity {
   update(dt) { return this.alive; }
 
   // 被外部打断（如掀棋盘）；子类可扩展
-  interrupt(reason) { this.alive = false; }
+  interrupt(reason) { this._endReason = reason || 'interrupt'; this.alive = false; }
 
   // 清理：释放所有参与者 + 道具
   destroy() {
@@ -103,12 +114,12 @@ class TalkActivity extends Activity {
     return this.timer < this.duration;
   }
 
-  interrupt(reason) { this.alive = false; }
+  interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
     for (const { npc } of this.participants) {
       npc.bond = null;
-      if (npc.alive) setState(npc, 'walk');
+      if (npc.alive) setState(npc, 'walk', 'activity-end');
     }
     super.destroy();
   }
@@ -191,11 +202,11 @@ class ChessActivity extends Activity {
     return true;
   }
 
-  interrupt(reason) { this.alive = false; }
+  interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
     for (const { npc } of this.participants) {
-      if (npc.alive) setState(npc, 'walk');
+      if (npc.alive) setState(npc, 'walk', 'activity-end');
     }
     super.destroy();
   }
@@ -221,10 +232,10 @@ class DogWalkActivity extends Activity {
     return true;
   }
 
-  interrupt(reason) { this.alive = false; }
+  interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
-    if (this.owner.alive) setState(this.owner, 'walk');
+    if (this.owner.alive) setState(this.owner, 'walk', 'activity-end');
     super.destroy();
   }
 }
@@ -237,6 +248,7 @@ export class SocialLayer {
     this.activities = [];
     this.talkScanTimer = 0;
     this._idSeq = 0;
+    this.lastScanInfo = { standers: 0, paired: 0 };   // 供 debug 面板展示
   }
 
   update(npcs, dt) {
@@ -245,6 +257,7 @@ export class SocialLayer {
       const act = this.activities[i];
       const alive = act.alive && act.update(dt);
       if (!alive) {
+        dlog(`[Activity ${act.label}] destroyed(reason=${act._endReason})`);
         act.destroy();
         this.activities.splice(i, 1);
       }
@@ -275,7 +288,10 @@ export class SocialLayer {
       const dog   = participants.find(p => p.role === 'dog').npc;
       act = new DogWalkActivity(id, owner, dog);
     }
-    if (act) this.activities.push(act);
+    if (act) {
+      this.activities.push(act);
+      dlog(`[Activity ${act.label}] created`);
+    }
     return act;
   }
 
@@ -290,6 +306,7 @@ export class SocialLayer {
     const standers = npcs.filter(n =>
       n.alive && !n._activity && n.state === 'stand' &&
       n._profile && n._profile.activities.includes('talk'));
+    let paired = 0;
     for (let i = 0; i < standers.length; i++) {
       for (let j = i + 1; j < standers.length; j++) {
         const a = standers[i], b = standers[j];
@@ -298,8 +315,10 @@ export class SocialLayer {
         const dy = Math.abs(a.y - b.y);
         if (dx < 70 && dx > 14 && dy < 24 && chance(0.5)) {
           this.createActivity('talk', [{ npc: a, role: 'speaker' }, { npc: b, role: 'speaker' }]);
+          paired++;
         }
       }
     }
+    this.lastScanInfo = { standers: standers.length, paired };
   }
 }

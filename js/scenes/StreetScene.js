@@ -14,6 +14,7 @@ import { BehaviorManager } from '../BehaviorManager.js';
 import { BuildingEntity }  from '../BuildingEntity.js';
 import { PropEntity }      from '../PropEntity.js';
 import { Viewfinder }      from '../Viewfinder.js';
+import { DebugOverlay }    from '../DebugOverlay.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
   PARK_TOP, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA, MINI_PARK,
@@ -95,8 +96,13 @@ export class StreetScene extends Phaser.Scene {
     });
 
     this._createUI();
+
+    // 行为系统可视调试层（按 D 切换；console 结构化日志由 localStorage 'npc-debug' 控制）
+    this.debugOverlay = new DebugOverlay(this, this.behaviorManager, this.entityManager);
+
     this.cursors = this.input.keyboard.createCursorKeys();
     this.input.keyboard.on('keydown-P', () => this._exportImage());
+    this.input.keyboard.on('keydown-D', () => this.debugOverlay.toggle());
   }
 
   // ─── UI ──────────────────────────────────────────────────────────────────────
@@ -105,7 +111,7 @@ export class StreetScene extends Phaser.Scene {
     const W = this.cameras.main.width;
     const H = this.cameras.main.height;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放  |  P 导出整条街长图', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放  |  P 导出长图  |  D 调试', {
       fontFamily: '"JetBrains Mono", monospace',
       fontSize: '13px',
       color: '#555555',
@@ -243,6 +249,9 @@ export class StreetScene extends Phaser.Scene {
 
     this.vfGraphics.clear();
     this.viewfinder.draw(this.vfGraphics);
+
+    // 调试浮标/面板（仅在开启时刷新）
+    this.debugOverlay.update();
 
     // 取景框内容提示
     if (!this.lastPhoto) {

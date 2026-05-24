@@ -19,6 +19,7 @@ import { tickBaseState, setState } from './behavior/BaseStateMachine.js';
 import { tickOverlay }          from './behavior/OverlayLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
 import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
+import { refreshDebugFlag }     from './behavior/DebugLog.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -44,6 +45,7 @@ export class BehaviorManager {
 
   update(delta) {
     const dt = delta / 1000;
+    refreshDebugFlag();   // 缓存当帧 npc-debug 开关，供各层日志使用
 
     // 1) Activity 层（tick 所有 Activity + 尝试新配对）
     this.socialLayer.update(this.npcs, dt);

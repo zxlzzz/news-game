@@ -48,7 +48,11 @@ news-game/
     ├── PropEntity.js         # 静态道具（propType 分发绘制）
     ├── VehicleEntity.js      # 机动车（car/taxi/bus/moto，按路深缩放、循环行驶）
     ├── EntityManager.js      # 统一管理：每帧写深度 scale、按 Y 排序绘制、矩形查询
-    ├── BehaviorManager.js    # 普通行人状态机（walk/run/stand/sit/talk + 二维漫游转向）
+    ├── BehaviorManager.js    # 行为系统薄协调器（组合 behavior/ 各层，register/update）
+    ├── behavior/             # 分层行为系统：NpcProfile / EnvironmentQuery /
+    │                         #   BaseStateMachine / OverlayLayer / SocialLayer(Activity) /
+    │                         #   CameraReactionLayer(占位) / DebugLog
+    ├── DebugOverlay.js       # 行为调试可视层（D 键切换；浮标 + 全局面板）
     ├── Viewfinder.js         # 取景框（拖拽/缩放、AABB 捕获、标签聚合）
     ├── npcs/                 # Pedestrians / Athletes / Chess / DogWalker / Vehicles / util
     └── scenes/StreetScene.js # 主场景：地面绘制、实体生成、相机、UI、导出
@@ -73,7 +77,8 @@ news-game/
 ## 关键交互
 
 - `← →` 滚动相机；拖动取景框、拖右下角缩放。
-- `P` 导出**整条街长图**：离屏 DynamicTexture 合成 sky+bg+entity 三层后 snapshot 成 PNG（不含 HUD）。
+- `P` 导出**整条街长图**：离屏 DynamicTexture 合成 sky+bg+entity 三层后 snapshot 成 PNG（不含 HUD/调试层）。
+- `D` 切换**行为调试 overlay**（见下文）。
 
 ## 动画数据（StickPuppet JSON）
 
@@ -154,6 +159,29 @@ news-game/
 - `Athletes.js`：`register('athlete')`。
 
 ### 约束与验证
-- 不改 NPC.js/Entity.js/EntityManager.js/StickRenderer.js/Viewfinder.js/VehicleEntity.js/SceneConfig.js（接入仅在 spawner/BehaviorManager）。
+- 不改 Entity.js/EntityManager.js/StickRenderer.js/Viewfinder.js/VehicleEntity.js/SceneConfig.js。NPC.js 仅新增 `id`（debug 引用用）。
 - 所有 Activity 子类都实现 `interrupt(reason)`，即使本次不触发。
 - 验证（`python -m http.server 8080` 后浏览器目测）：行人漫游/停/坐/跑/摔/看手机、前人行道横走、横穿、棋手轮流落子+观棋、遛狗跟随、运动者跑、两人靠近触发对话、取景框标签正常——表现与重构前一致，无新 bug。
+
+### 实施状态
+- [x] 步骤 1–8 已完成并推送（提交 d27fb39）：分层架构跑通，行为表现与重构前一致。
+- [x] 行为调试工具（见下文）已完成。
+
+---
+
+## 行为调试工具
+
+### D 键可视 overlay（`js/DebugOverlay.js`，默认关闭）
+- **NPC 头顶浮标**（世界坐标，随镜头平移）：`[profile] state | overlay | activity`，
+  例 `[pedestrian] walk | phone_look | -`、`[chess_player] - | - | chess#3(player_a)`。
+  自由 NPC 白字，被 Activity 锁定的黄字。遍历所有带 `renderer` 的实体（含骑行者）。
+- **左上角全局面板**（`setScrollFactor(0)`）：托管/自由/锁定计数、上次配对扫描结果
+  （`SocialLayer.lastScanInfo`）、活跃 Activity 列表（`chess#3: player_a=NPC12, ...`）。
+- 用 Phaser Text 对象池绘制；**不参与 P 键长图导出**（导出只合成 sky+bg+entity）。
+
+### console 结构化日志（`js/behavior/DebugLog.js`，localStorage 开关）
+- `localStorage.setItem('npc-debug','1')` 开启，默认关闭；Node 单测下自动禁用（无 localStorage）。
+- 状态转换（`BaseStateMachine.setState`）：`[NPC-12] walk → stand (dur=4.2s, trigger=timeout)`，
+  trigger ∈ timeout/rare-run/rare-fall/anim-done/activity-end。
+- Activity 生命周期（`SocialLayer`）：`[Activity chess#3] created` / `destroyed(reason=natural)`。
+- `BehaviorManager.update` 每帧调 `refreshDebugFlag()` 缓存开关，避免反复读 localStorage。

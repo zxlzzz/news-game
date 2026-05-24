@@ -9,6 +9,8 @@
  * 实际位移与帧推进仍由 NPC.update（经 EntityManager.update）执行。
  */
 
+import { dlog } from './DebugLog.js';
+
 const rand   = (a, b) => a + Math.random() * (b - a);
 const chance = (p) => Math.random() < p;
 
@@ -27,9 +29,10 @@ const STATE_DEFS = {
 export { STATE_DEFS };
 
 // ─── 进入某状态：设置动画/速度/计时/帧，重置漫游目标 ───────────────────────────
-export function setState(npc, state) {
+export function setState(npc, state, trigger = '?') {
   const def = STATE_DEFS[state];
   if (!def) return;
+  const prev = npc.state;
   npc.state      = state;
   npc.stateTimer = 0;
   npc.stateDur   = def.dur ? rand(def.dur[0], def.dur[1]) : Infinity;
@@ -42,6 +45,12 @@ export function setState(npc, state) {
   npc.frameTimer = 0;
   // 漫游 NPC 每次进入 walk/run 重新挑选目标点 → 路径更自然多变
   if (npc.roam && (state === 'walk' || state === 'run')) npc.roamTarget = null;
+
+  // 结构化日志：仅记录真正的状态切换（忽略 null→初始）
+  if (prev && prev !== state) {
+    const dur = npc.stateDur === Infinity ? '∞' : npc.stateDur.toFixed(1) + 's';
+    dlog(`[NPC-${npc.id}] ${prev} → ${state} (dur=${dur}, trigger=${trigger})`);
+  }
 }
 
 // ─── 按权重从 transitions 表选下一状态（含环境前置检查） ────────────────────────
@@ -92,14 +101,14 @@ export function tickBaseState(npc, profile, envQuery, dt) {
 
   // 特判：每帧极小概率的稀有转换 + 动画驱动的转换
   if (st === 'walk' && allowed.includes('run') && chance(0.0008)) {
-    setState(npc, 'run');
+    setState(npc, 'run', 'rare-run');
   } else if (st === 'run' && allowed.includes('fall') && chance(0.00012)) {
-    setState(npc, 'fall');
+    setState(npc, 'fall', 'rare-fall');
   } else if (st === 'fall') {
-    if (npc.animDone) setState(npc, 'lie_ground');
+    if (npc.animDone) setState(npc, 'lie_ground', 'anim-done');
   } else if (npc.stateTimer >= npc.stateDur) {
     const next = pickNext(npc, profile, envQuery);
-    if (next) setState(npc, next);
+    if (next) setState(npc, next, 'timeout');
   }
 
   // 漫游 NPC 在 walk/run 态逐帧转向目标点

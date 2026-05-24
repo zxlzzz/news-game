@@ -28,6 +28,8 @@ function npcDepthGray(y) {
 }
 
 export class NPC extends Entity {
+  static _nextId = 1;
+
   /**
    * @param {object}        config
    * @param {StickRenderer} config.renderer      - 火柴人渲染器（必须）
@@ -52,6 +54,8 @@ export class NPC extends Entity {
       height: 80,
       static: false,
     });
+
+    this.id = NPC._nextId++;   // 全局唯一稳定 id（供 debug overlay / 日志引用）
 
     this.renderer  = config.renderer;
     this.animation = config.animation || 'idle';
