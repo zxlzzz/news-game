@@ -58,8 +58,6 @@ export class PropEntity extends Entity {
       case 'chess-table': this._drawChessTable(g); break;
       case 'tree':        this._drawTree(g);       break;
       case 'fountain':    this._drawFountain(g);   break;
-      case 'slide':       this._drawSlide(g);      break;
-      case 'picnic':      this._drawPicnic(g);     break;
       case 'stall':       this._drawStall(g);      break;
       case 'vending':     this._drawVending(g);    break;
       case 'phonebooth':  this._drawPhoneBooth(g); break;
@@ -494,66 +492,6 @@ export class PropEntity extends Entity {
   g.lineStyle(0.8, 0xf0f0f0, 0.6);
   g.lineBetween(x, y - 2, x, y - ry * 1.1);
 }
-
-  // ─── 儿童滑梯（侧视：梯子 + 平台 + 斜滑道） ────────────────────────────────
-  _drawSlide(g) {
-    const { x, y } = this;
-    const w = this.width || 30;
-    const h = w * 0.8;
-    const lineW = depthLineWidth(y, { wMin: 1, wMax: 1.7 });
-    const lineC = depthLineColor(y, { light: 0x38, dark: 0x08 });
-    const topY = y - h;
-    const ladderX = x - w / 2;     // 梯子在左
-    const slideEndX = x + w / 2;   // 滑道末端在右
-    // 平台立柱
-    g.lineStyle(lineW, lineC, 0.95);
-    g.lineBetween(ladderX, topY, ladderX, y);
-    g.lineBetween(x, topY, x, y);
-    // 平台
-    g.fillStyle(0xc4c4c4, 1); g.fillRect(ladderX, topY, w / 2, 3);
-    g.lineStyle(lineW, lineC, 0.95); g.strokeRect(ladderX, topY, w / 2, 3);
-    // 梯子横档
-    g.lineStyle(0.7, lineC, 0.9);
-    for (let i = 1; i <= 4; i++) g.lineBetween(ladderX, topY + (h * i / 5), ladderX + 5, topY + (h * i / 5));
-    g.lineBetween(ladderX + 5, topY, ladderX + 5, y);
-    // 护栏
-    g.lineStyle(0.7, lineC, 0.85);
-    g.lineBetween(ladderX, topY, ladderX, topY - 5);
-    g.lineBetween(x, topY, x, topY - 5);
-    g.lineBetween(ladderX, topY - 5, x, topY - 5);
-    // 斜滑道
-    g.lineStyle(lineW * 1.2, lineC, 0.95);
-    g.lineBetween(x, topY + 2, slideEndX, y - 2);
-    g.lineStyle(0.7, lineC, 0.8);
-    g.lineBetween(x, topY + 5, slideEndX - 2, y);
-    g.lineBetween(slideEndX, y - 2, slideEndX - 2, y); // 末端翘起
-  }
-
-  // ─── 野餐垫（俯视圆角席 + 格纹 + 篮子） ────────────────────────────────────
-  _drawPicnic(g) {
-    const { x, y } = this;
-    const rx = (this.width || 40) / 2;
-    const ry = rx * 0.6;
-    const lineC = depthLineColor(y, { light: 0x50, dark: 0x20 });
-    // 席面
-    g.fillStyle(0xd6d6d6, 0.95); g.fillEllipse(x, y, rx * 2, ry * 2);
-    g.lineStyle(0.8, lineC, 0.85); g.strokeEllipse(x, y, rx * 2, ry * 2);
-    // 格纹（裁剪在椭圆内的若干横竖线）
-    g.lineStyle(0.4, lineC, 0.45);
-    for (let i = -2; i <= 2; i++) {
-      const t = 1 - Math.pow(i / 2.6, 2); const half = Math.sqrt(Math.max(0, t));
-      g.lineBetween(x - rx * half, y + i * (ry * 0.4), x + rx * half, y + i * (ry * 0.4));
-    }
-    for (let i = -2; i <= 2; i++) {
-      const t = 1 - Math.pow(i / 2.6, 2); const half = Math.sqrt(Math.max(0, t));
-      g.lineBetween(x + i * (rx * 0.4), y - ry * half, x + i * (rx * 0.4), y + ry * half);
-    }
-    // 篮子
-    const bx = x + rx * 0.4, by = y - ry * 0.2;
-    g.fillStyle(0x8a8a8a, 1); g.fillRect(bx, by, 7, 5);
-    g.lineStyle(0.7, lineC, 0.9); g.strokeRect(bx, by, 7, 5);
-    g.lineBetween(bx, by, bx + 3.5, by - 3); g.lineBetween(bx + 7, by, bx + 3.5, by - 3); // 提手
-  }
 
   // ─── 自动售货机（玻璃柜 + 商品格 + 取货口） ───────────────────────────────
   _drawVending(g) {
