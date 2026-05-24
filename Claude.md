@@ -125,10 +125,10 @@ news-game/
 
 修复 NPC 穿过道具、NPC 互相穿模、坐下不对齐长椅三个基础问题，并重画长椅。
 
-- **道具避障**：`PropEntity` 新增 `obstacle`（实心障碍类型集）+ `collisionRadius`（大型=max(w,h)/2、中型 16、小型 10）。`EnvironmentQuery` 加 `getObstacles / pointBlocked / raycastObstacle`（障碍静态 → 按 X 200px 分桶缓存一次）。`pickRoamTarget` 选点避开障碍（重试 5 次），`steerRoam` 加 seek + obstacle-avoidance steering（前方 ±60° 扇形排斥，过近硬推出碰撞体）。
+- **道具避障**：`PropEntity` 新增 `obstacle`（实心障碍类型集）+ `collisionRadius`（大型=max(w,h)/2、长椅=宽×0.32、中型 16、小型 10）。`EnvironmentQuery` 加 `getObstacles / pointBlocked / raycastObstacle`（障碍静态 → 按 X 200px 分桶缓存一次）。`pickRoamTarget` 选点避开障碍（重试 5 次），`steerRoam` 加 seek + obstacle-avoidance steering（前方 ±60° 扇形排斥，过近硬推出碰撞体）。**朝向迟滞**：水平分量 < 0.3×速度时不翻转 direction，避免纵向移动/避障摆动导致左右乱闪。
 - **NPC 间分离**：`BehaviorManager._separate(dt)` 对移动中（walk/run/jog）的自由 NPC 做 O(n²) 排斥（<24px 互推，越近越强）；跳过 Activity 锁定 / 静止 / leash 从属。
 - **sit_bench 道具对齐**：进入 sit_bench 时 `enterSitBench` 调 `nearestFreeBench`（以 `bench._occupiedBy` 判空闲）→ 标记占用 + snap 到椅心（夹在 NPC 自身 minX/maxX/minY/maxY 内）；无空椅回退 stand；离开 sit_bench/lie_bench 之外的状态时在 `setState` 释放占用。`lean_wall/lie_bench` 的 snap 留 TODO。
-- **长椅重画**：`_drawBench` 改为木条椅面（3 条带渐变）+ 后倾椅背 + 扶手 + 四腿带横撑，沿用 `depthLineWidth/Color` 远浅近深。
+- **长椅重画 + 放大 ~3×**：`PropEntity` 构造里把 bench 宽×3、高=24（绘制/包围盒/坐姿一致）；`_drawBench` 木条椅面（4 条带渐变）+ 后倾椅背 + 扶手 + 四腿带横撑，沿用 `depthLineWidth/Color` 远浅近深。
 - **未触碰**：SocialLayer/Activity、车辆、StickRenderer；不改 scene.json 道具位置/数量；无 A* 寻路（steering 足够）。
 
 ### 批次 1：路人基础行为完善（依据 `1.md`，已完成）
@@ -138,7 +138,7 @@ news-game/
 - **新增基础状态**（`STATE_DEFS` + 各 profile.transitions）：
   `squat`(蹲) / `sit_ground`(坐地，暂复用 squat 动画，TODO 待 `sit_ground.json`) / `lean_wall`(靠墙) / `lie_bench`(躺椅) / `get_up`(起身过渡)。
 - **环境前置**（pickNext 内检查，不满足回退 stand）：
-  `sit_bench` 需附近有椅；`sit_ground` 需附近无椅；`lean_wall` 需 `isNearWall`（仅前人行道带，公园行人永不触发=方案 B）；`lie_bench` 需 `sit_bench` 已持续 >12s。
+  `sit_bench` 需附近有椅；`sit_ground` 需附近无椅；`lean_wall` / `squat` 需 `isNearWall`（仅前人行道带，公园行人永不触发=方案 B；squat 权重也已调低）；`lie_bench` 需 `sit_bench` 已持续 >12s。
 - **动画驱动转换**：`fall→lie_ground`、`lie_ground→get_up→stand`（`get_up` 由 animDone 进 stand）。
 - **新增 overlay**：`phone_call`（与 phone_look 互斥）；`smoke`（需 `_traits.smoker`，`lean_wall` 时概率×2）；`hold_bag`（持久特征，由 spawner 按概率设 `npc.persistentOverlay`，空档时回退显示）。
 - **traits / 持久特征注入**：`Pedestrians.js` 按类型概率给 `_traits.smoker`、`persistentOverlay='hold_bag'`（前人行道带 smoker 概率调高以演示靠墙抽烟）。

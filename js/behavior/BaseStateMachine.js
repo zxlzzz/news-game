@@ -92,6 +92,7 @@ function pickNext(npc, profile, envQuery) {
   if (chosen === 'sit_bench'  && !envQuery.isNearBench(npc)) return 'stand'; // 需附近有长椅
   if (chosen === 'sit_ground' &&  envQuery.isNearBench(npc)) return 'stand'; // 附近有椅则不坐地上
   if (chosen === 'lean_wall'  && !envQuery.isNearWall(npc))  return 'stand'; // 需靠近建筑墙面
+  if (chosen === 'squat'      && !envQuery.isNearWall(npc))  return 'stand'; // 蹲下只在靠墙时
   if (chosen === 'lie_bench'  && npc.stateTimer < 12)        return 'stand'; // 需久坐后才躺下
   return chosen;
 }
@@ -126,7 +127,8 @@ function steerRoam(npc, envQuery) {
   const mag = Math.hypot(vx, vy) || 1;
   vx = vx / mag * total; vy = vy / mag * total;
 
-  npc.direction = vx >= 0 ? 1 : -1;
+  // 朝向迟滞：仅当水平分量足够大时才翻转，避免纵向移动/避障摆动时左右乱闪
+  if (Math.abs(vx) > total * 0.3) npc.direction = vx >= 0 ? 1 : -1;
   npc.speed     = Math.abs(vx);
   npc.vy        = vy;
 }

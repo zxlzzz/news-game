@@ -16,9 +16,9 @@
 
 // 路人共用的状态转换表（方案 B：lean_wall 由 isNearWall 自然过滤，公园行人不触发）
 const PED_TRANSITIONS = {
-  walk:       { stand: 0.55, sit_bench: 0.2, run: 0.08, squat: 0.05, sit_ground: 0.02 },
+  walk:       { stand: 0.6, sit_bench: 0.2, run: 0.08, squat: 0.01, sit_ground: 0.02 },
   run:        { walk: 0.9, fall: 0.1 },
-  stand:      { walk: 0.80, sit_bench: 0.1, sit_ground: 0.03, squat: 0.02, lean_wall: 0.05 },
+  stand:      { walk: 0.84, sit_bench: 0.1, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05 },
   sit_bench:  { stand: 0.97, lie_bench: 0.03 },   // lie_bench 需 sit_bench 已持续 >12s
   squat:      { stand: 1.0 },
   sit_ground: { stand: 1.0 },
@@ -75,8 +75,8 @@ const TOURIST = {
   name: 'tourist',
   transitions: {
     ...PED_TRANSITIONS,
-    walk:  { stand: 0.50, sit_bench: 0.18, run: 0.06, squat: 0.1, sit_ground: 0.05, lean_wall: 0.01 },
-    stand: { walk: 0.74, sit_bench: 0.08, sit_ground: 0.07, squat: 0.06, lean_wall: 0.05 },
+    walk:  { stand: 0.55, sit_bench: 0.18, run: 0.06, squat: 0.02, sit_ground: 0.05, lean_wall: 0.01 },
+    stand: { walk: 0.78, sit_bench: 0.08, sit_ground: 0.07, squat: 0.02, lean_wall: 0.05 },
   },
   overlays: {
     phone_look: { on: ['walk', 'stand', 'sit_ground', 'squat'], chance: 0.005, dur: [5, 25] },

@@ -45,6 +45,9 @@ export class PropEntity extends Entity {
     this.seatH     = config.seatH     ?? null; // 椅子：椅面距地
     this.topH      = config.topH      ?? null; // 棋桌：桌面距地
 
+    // 长椅整体放大 ~3×（scene.json 原尺寸偏小）；统一改宽高，使绘制/包围盒/坐姿对齐一致
+    if (this.propType === 'bench') { this.width *= 3; this.height = 24; }
+
     // 避障：NPC 不可穿越的实心障碍 + 圆形碰撞半径（批次 0）
     // 地面贴图/可穿越类型：lamp/sign/manhole/drain/chair（不设 obstacle）
     this.obstacle = OBSTACLE_TYPES.has(this.propType);
@@ -56,7 +59,9 @@ export class PropEntity extends Entity {
     switch (this.propType) {
       case 'fountain': case 'slide': case 'stall':
         return Math.max(w, h) * 0.5;                 // 大型：按尺寸
-      case 'tree': case 'bench': case 'vending': case 'phonebooth':
+      case 'bench':
+        return w * 0.32;                             // 长椅按宽度（放大后 ~29）
+      case 'tree': case 'vending': case 'phonebooth':
       case 'chess-table':
         return 16;                                   // 中型
       default:
@@ -132,60 +137,59 @@ export class PropEntity extends Entity {
   // ─── 公园长椅（侧偏俯视：木条椅面 + 后倾椅背 + 扶手 + 四腿带横撑） ───────────
   _drawBench(g) {
     const { x, y } = this;
-    const bw = this.width || 30;
-    const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.7 });
+    const bw = this.width || 90;
+    const lineW = depthLineWidth(y, { wMin: 1, wMax: 2 });
     const lineC = depthLineColor(y, { light: 0x38, dark: 0x08 });
     const bx = x - bw / 2;
 
-    const seatTop = y - 8;     // 椅面顶
-    const seatH   = 4;         // 椅面厚（含木条缝）
-    const backTop = y - 17;    // 椅背顶
+    const seatTop = y - 12;    // 椅面顶
+    const seatH   = 6;         // 椅面厚（含木条缝）
+    const backTop = y - 24;    // 椅背顶
 
     // 接地影
     g.fillStyle(0x000000, 0.10);
-    g.fillEllipse(x, y + 1, bw * 1.05, 4);
+    g.fillEllipse(x, y + 1, bw * 1.05, 6);
 
     // 椅腿：前两条直立、后两条微斜（透视），带横撑
     g.lineStyle(lineW, lineC, 0.95);
-    const legY = y;                       // 腿底（地面）
-    const fL = bx + 3, fR = bx + bw - 3;  // 前腿
-    g.lineBetween(fL, seatTop + seatH, fL, legY);
-    g.lineBetween(fR, seatTop + seatH, fR, legY);
+    const fL = bx + 5, fR = bx + bw - 5;  // 前腿
+    g.lineBetween(fL, seatTop + seatH, fL, y);
+    g.lineBetween(fR, seatTop + seatH, fR, y);
     // 后腿（微斜，靠椅背侧）
     g.lineStyle(lineW * 0.85, lineC, 0.85);
-    g.lineBetween(bx + 6,      seatTop + seatH, bx + 4,      legY - 1);
-    g.lineBetween(bx + bw - 6, seatTop + seatH, bx + bw - 4, legY - 1);
+    g.lineBetween(bx + 11,      seatTop + seatH, bx + 7,      y - 1);
+    g.lineBetween(bx + bw - 11, seatTop + seatH, bx + bw - 7, y - 1);
     // 横撑
     g.lineStyle(lineW * 0.7, lineC, 0.8);
-    g.lineBetween(fL, legY - 2, fR, legY - 2);
+    g.lineBetween(fL, y - 3, fR, y - 3);
 
-    // 椅面：3 条木条（圆角矩形），条间留缝 + 明暗渐变
-    const slatW = (bw - 4) / 3;
-    for (let i = 0; i < 3; i++) {
-      const sx = bx + 2 + i * slatW;
-      const shade = 0xdedede - i * 0x0e0e0e;        // 由前到后渐暗，木纹质感
+    // 椅面：4 条木条（圆角矩形），条间留缝 + 明暗渐变（木纹质感）
+    const n = 4, slatW = (bw - 6) / n;
+    for (let i = 0; i < n; i++) {
+      const sx = bx + 3 + i * slatW;
+      const shade = 0xe0e0e0 - i * 0x0a0a0a;
       g.fillStyle(shade, 0.95);
-      g.fillRoundedRect(sx, seatTop, slatW - 1.2, seatH, 1.2);
+      g.fillRoundedRect(sx, seatTop, slatW - 1.5, seatH, 1.5);
       g.lineStyle(lineW * 0.8, lineC, 0.9);
-      g.strokeRoundedRect(sx, seatTop, slatW - 1.2, seatH, 1.2);
+      g.strokeRoundedRect(sx, seatTop, slatW - 1.5, seatH, 1.5);
     }
 
-    // 椅背：比椅面窄、略后倾，2 条竖向木条
-    const backX = bx + 2, backW = bw - 6;
-    g.fillStyle(0xcfcfcf, 0.92);
-    g.fillRect(backX, backTop, backW, 3);             // 顶横档
+    // 椅背：比椅面窄、略后倾，竖向木条
+    const backX = bx + 4, backW = bw - 8;
+    g.fillStyle(0xd2d2d2, 0.92);
+    g.fillRect(backX, backTop, backW, 4);             // 顶横档
     g.lineStyle(lineW * 0.85, lineC, 0.9);
-    g.strokeRect(backX, backTop, backW, 3);
+    g.strokeRect(backX, backTop, backW, 4);
     g.lineStyle(lineW * 0.7, lineC, 0.85);
-    for (let i = 0; i <= 2; i++) {                     // 竖向背条（略左倾示后仰）
-      const vx = backX + (backW * i / 2);
-      g.lineBetween(vx, backTop + 3, vx + 1.5, seatTop);
+    for (let i = 0; i <= 4; i++) {                     // 竖向背条（略后仰）
+      const vx = backX + (backW * i / 4);
+      g.lineBetween(vx, backTop + 4, vx + 2, seatTop);
     }
 
     // 扶手：两端小弧
-    g.lineStyle(lineW * 0.8, lineC, 0.9);
-    g.beginPath(); g.arc(bx + 2,      seatTop - 1, 2.2, Math.PI, Math.PI * 1.6); g.strokePath();
-    g.beginPath(); g.arc(bx + bw - 2, seatTop - 1, 2.2, Math.PI * 1.4, Math.PI * 2); g.strokePath();
+    g.lineStyle(lineW * 0.85, lineC, 0.9);
+    g.beginPath(); g.arc(bx + 3,      seatTop - 1, 3, Math.PI, Math.PI * 1.6); g.strokePath();
+    g.beginPath(); g.arc(bx + bw - 3, seatTop - 1, 3, Math.PI * 1.4, Math.PI * 2); g.strokePath();
   }
 
   // ─── 垃圾桶：线条 ──────────────────────────────────────────────────────
