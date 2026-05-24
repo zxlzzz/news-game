@@ -575,14 +575,13 @@ export class StreetScene extends Phaser.Scene {
   _spawnNPCs() {
     const em = this.entityManager;
     const sr = this.stickRenderer;
-    // 普通行人交给行为状态机托管
-    const managedPeds = spawnPedestrians(em, sr);
+    // 所有 NPC 统一纳入行为系统：spawner 负责生成 + 指定 profile / 创建 Activity
     this.behaviorManager = new BehaviorManager(em);
-    for (const p of managedPeds) this.behaviorManager.register(p);
-    // 其余专用场景仍由各自 spawner 自理（本轮不迁移）
-    spawnChess(em, sr);
-    spawnDogWalker(em, sr);
-    spawnAthletes(em, sr);
+    const bm = this.behaviorManager;
+    spawnPedestrians(em, sr, bm);
+    spawnChess(em, sr, bm);
+    spawnDogWalker(em, sr, bm);
+    spawnAthletes(em, sr, bm);
     spawnVehicles(em, sr);
   }
 }
