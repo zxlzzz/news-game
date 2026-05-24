@@ -38,6 +38,13 @@ export function setState(npc, state, trigger = '?') {
   const def = STATE_DEFS[state];
   if (!def) return;
   const prev = npc.state;
+
+  // 释放长椅占用：离开 sit_bench/lie_bench 之外的状态时归还（两态间转换保持占用）
+  if (npc._bench && state !== 'sit_bench' && state !== 'lie_bench') {
+    npc._bench._occupiedBy = null;
+    npc._bench = null;
+  }
+
   npc.state      = state;
   npc.stateTimer = 0;
   npc.stateDur   = def.dur ? rand(def.dur[0], def.dur[1]) : Infinity;
@@ -89,23 +96,74 @@ function pickNext(npc, profile, envQuery) {
   return chosen;
 }
 
-// ─── 二维漫游转向：把"朝目标点"的速度分解到水平 speed + 纵深 vy ──────────────────
-function steerRoam(npc) {
-  if (!npc.roamTarget) pickRoamTarget(npc);
-  const t = npc.roamTarget;
-  const dx = t.x - npc.x;
-  const dy = t.y - npc.y;
-  const dist = Math.hypot(dx, dy);
-  if (dist < 6) { pickRoamTarget(npc); return; }
-  const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
-  npc.direction = dx >= 0 ? 1 : -1;
-  npc.speed     = Math.abs(dx) / dist * total;
-  npc.vy        = dy / dist * total;
+// ─── 进入 sit_bench：对齐到最近空闲长椅并标记占用；无空椅则回退 stand ──────────
+function enterSitBench(npc, envQuery) {
+  const bench = envQuery.nearestFreeBench(npc, 80);
+  if (!bench) { setState(npc, 'stand', 'timeout'); return; }
+  bench._occupiedBy = npc.id;
+  npc._bench = bench;
+  setState(npc, 'sit_bench', 'timeout');
+  // 对齐到椅心 / 椅脚线，但夹在 NPC 自身活动带内（防止前人行道行人被吸到墙边椅）
+  npc.x = Math.max(npc.minX, Math.min(npc.maxX, bench.x));
+  npc.y = Math.max(npc.minY, Math.min(npc.maxY, bench.y));
+  // TODO（批次 1+）：lean_wall / lie_bench 等也需按 propType 做类似 snap 对齐
 }
 
-function pickRoamTarget(npc) {
+// ─── 二维漫游转向：朝目标点的 seek + 障碍 avoidance（steering behavior）─────────────
+function steerRoam(npc, envQuery) {
+  if (!npc.roamTarget) pickRoamTarget(npc, envQuery);
+  const t = npc.roamTarget;
+  const dx = t.x - npc.x, dy = t.y - npc.y;
+  const dist = Math.hypot(dx, dy);
+  if (dist < 6) { pickRoamTarget(npc, envQuery); return; }
+
+  const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
+  // 期望速度（指向目标）+ 避障偏移
+  let vx = dx / dist * total, vy = dy / dist * total;
+  const av = avoidObstacles(npc, vx, vy, envQuery);
+  vx += av.x; vy += av.y;
+  // 归一回 total 大小，避免叠加后超速
+  const mag = Math.hypot(vx, vy) || 1;
+  vx = vx / mag * total; vy = vy / mag * total;
+
+  npc.direction = vx >= 0 ? 1 : -1;
+  npc.speed     = Math.abs(vx);
+  npc.vy        = vy;
+}
+
+// 前方扇形障碍规避：返回叠加到速度上的偏移向量；过近时直接把 NPC 推出碰撞体
+function avoidObstacles(npc, vx, vy, envQuery) {
+  let ax = 0, ay = 0;
+  const speed = Math.hypot(vx, vy) || 1;
+  const fx = vx / speed, fy = vy / speed;            // 前进单位向量
+  const base = npc.walkSpeed || 26;
+  for (const o of envQuery.getObstacles(npc.x, npc.y, 40)) {
+    let ox = npc.x - o.x, oy = npc.y - o.y;          // 障碍 → NPC
+    const d = Math.hypot(ox, oy) || 0.001;
+    const dot = (-ox / d) * fx + (-oy / d) * fy;     // NPC→障碍 与前进方向夹角
+    if (dot < 0.5) continue;                          // 不在前方 ±60° 内则忽略
+    const r = o.collisionRadius;
+    if (d < r + 8) {                                  // 已贴近/穿入：硬推出碰撞体外
+      npc.x = o.x + (ox / d) * (r + 8);
+      npc.y = o.y + (oy / d) * (r + 8);
+      ax += (ox / d) * base * 2; ay += (oy / d) * base * 2;
+    } else {                                          // 接近：反比强度的横向排斥
+      const strength = base * Math.max(0, 1 - (d - r) / 40);
+      ax += (ox / d) * strength; ay += (oy / d) * strength;
+    }
+  }
+  return { x: ax, y: ay };
+}
+
+function pickRoamTarget(npc, envQuery) {
   const r = npc.roam;
-  npc.roamTarget = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
+  let pt = null;
+  for (let i = 0; i < 5; i++) {                       // 最多重试 5 次避开障碍
+    const c = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
+    if (!envQuery.pointBlocked(c.x, c.y)) { pt = c; break; }
+    pt = c;                                           // 退而求其次：保留最后一次（steering 会绕开）
+  }
+  npc.roamTarget = pt;
 }
 
 // ─── 每帧推进单个 NPC 的基础状态 ──────────────────────────────────────────────
@@ -120,9 +178,10 @@ export function tickBaseState(npc, profile, envQuery, dt) {
     if (npc.animDone) setState(npc, 'stand', 'anim-done');
   } else if (npc.stateTimer >= npc.stateDur) {
     const next = pickNext(npc, profile, envQuery);
-    if (next) setState(npc, next, 'timeout');
+    if (next === 'sit_bench') enterSitBench(npc, envQuery);   // 需对齐长椅 + 占用
+    else if (next)            setState(npc, next, 'timeout');
   }
 
-  // 漫游 NPC 在 walk/run 态逐帧转向目标点
-  if (npc.roam && (npc.state === 'walk' || npc.state === 'run')) steerRoam(npc);
+  // 漫游 NPC 在 walk/run 态逐帧转向目标点（含避障）
+  if (npc.roam && (npc.state === 'walk' || npc.state === 'run')) steerRoam(npc, envQuery);
 }

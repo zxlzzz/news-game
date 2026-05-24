@@ -121,6 +121,16 @@ news-game/
 - spawner 分工：创建 NPC + 道具 → `register` 指定 profile → 需要协作的调 `socialLayer.createActivity(...)`。Chess/Dog/Athlete 已迁移，横穿者仍是 `customUpdate` 路径脚本。
 - 不改 StickRenderer/Entity/EntityManager/VehicleEntity/Viewfinder/SceneConfig。
 
+### 批次 0：移动基础修复（避障 / 分离 / 道具对齐，已完成）
+
+修复 NPC 穿过道具、NPC 互相穿模、坐下不对齐长椅三个基础问题，并重画长椅。
+
+- **道具避障**：`PropEntity` 新增 `obstacle`（实心障碍类型集）+ `collisionRadius`（大型=max(w,h)/2、中型 16、小型 10）。`EnvironmentQuery` 加 `getObstacles / pointBlocked / raycastObstacle`（障碍静态 → 按 X 200px 分桶缓存一次）。`pickRoamTarget` 选点避开障碍（重试 5 次），`steerRoam` 加 seek + obstacle-avoidance steering（前方 ±60° 扇形排斥，过近硬推出碰撞体）。
+- **NPC 间分离**：`BehaviorManager._separate(dt)` 对移动中（walk/run/jog）的自由 NPC 做 O(n²) 排斥（<24px 互推，越近越强）；跳过 Activity 锁定 / 静止 / leash 从属。
+- **sit_bench 道具对齐**：进入 sit_bench 时 `enterSitBench` 调 `nearestFreeBench`（以 `bench._occupiedBy` 判空闲）→ 标记占用 + snap 到椅心（夹在 NPC 自身 minX/maxX/minY/maxY 内）；无空椅回退 stand；离开 sit_bench/lie_bench 之外的状态时在 `setState` 释放占用。`lean_wall/lie_bench` 的 snap 留 TODO。
+- **长椅重画**：`_drawBench` 改为木条椅面（3 条带渐变）+ 后倾椅背 + 扶手 + 四腿带横撑，沿用 `depthLineWidth/Color` 远浅近深。
+- **未触碰**：SocialLayer/Activity、车辆、StickRenderer；不改 scene.json 道具位置/数量；无 A* 寻路（steering 足够）。
+
 ### 批次 1：路人基础行为完善（依据 `1.md`，已完成）
 
 在分层架构上扩展 pedestrian/businessman/tourist 的日常行为集：

@@ -57,7 +57,30 @@ export class BehaviorManager {
       tickOverlay(npc, npc._profile, dt);
     }
 
-    // 3) 镜头反应层（依赖社会稳定度系统，本次留空）
+    // 3) NPC 间分离：行走中的两人靠太近时互相推开，避免重叠穿模
+    this._separate(dt);
+
+    // 4) 镜头反应层（依赖社会稳定度系统，本次留空）
     // this.cameraLayer.update(this.npcs, viewfinder, stability, dt);
+  }
+
+  // 简单分离力：仅作用于移动中的自由 NPC（O(n²)，场景 NPC < 30 足够）
+  _separate(dt) {
+    const MOVING = new Set(['walk', 'run', 'jog']);
+    const movers = this.npcs.filter(n =>
+      n.alive && !n._activity && !n.leashTarget && MOVING.has(n.state));
+    for (let i = 0; i < movers.length; i++) {
+      for (let j = i + 1; j < movers.length; j++) {
+        const a = movers[i], b = movers[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d = Math.hypot(dx, dy);
+        if (d > 0 && d < 24) {
+          const f = ((24 - d) / 24) * 16 * dt;       // 越近推力越大
+          const ux = dx / d, uy = dy / d;
+          a.x += ux * f; a.y += uy * f;
+          b.x -= ux * f; b.y -= uy * f;
+        }
+      }
+    }
   }
 }
