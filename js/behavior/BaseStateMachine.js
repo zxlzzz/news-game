@@ -110,8 +110,8 @@ function enterSitBench(npc, envQuery) {
   // TODO（批次 1+）：lean_wall / lie_bench 等也需按 propType 做类似 snap 对齐
 }
 
-// ─── 二维漫游转向：朝目标点的 seek + 障碍 avoidance（steering behavior）─────────────
-function steerRoam(npc, envQuery) {
+// ─── 二维漫游转向：朝目标点的 seek + 切向避障（steering behavior）─────────────
+function steerRoam(npc, envQuery, dt) {
   if (!npc.roamTarget) pickRoamTarget(npc, envQuery);
   const t = npc.roamTarget;
   const dx = t.x - npc.x, dy = t.y - npc.y;
@@ -126,33 +126,51 @@ function steerRoam(npc, envQuery) {
   // 归一回 total 大小，避免叠加后超速
   const mag = Math.hypot(vx, vy) || 1;
   vx = vx / mag * total; vy = vy / mag * total;
+  npc.speed = Math.abs(vx);
+  npc.vy    = vy;
 
-  // 朝向迟滞：仅当水平分量足够大时才翻转，避免纵向移动/避障摆动时左右乱闪
-  if (Math.abs(vx) > total * 0.3) npc.direction = vx >= 0 ? 1 : -1;
-  npc.speed     = Math.abs(vx);
-  npc.vy        = vy;
+  // 朝向防抖：阈值 + 冷却。水平分量太小不翻；翻转后 0.45s 内不再翻，杜绝原地左右乱闪
+  npc._dirCD = (npc._dirCD || 0) - dt;
+  const desired = vx >= 0 ? 1 : -1;
+  if (Math.abs(vx) > total * 0.35 && desired !== npc.direction && npc._dirCD <= 0) {
+    npc.direction = desired;
+    npc._dirCD = 0.45;
+  }
 }
 
-// 前方扇形障碍规避：返回叠加到速度上的偏移向量；过近时直接把 NPC 推出碰撞体
+// 切向椭圆避障：在"归一化椭圆空间"里判断远近与法向，障碍在前方时沿其边缘绕行
+// （切向为主 + 少量径向保持距离），避免纯径向排斥与 seek 正面抵消导致原地抖动/卡死。
 function avoidObstacles(npc, vx, vy, envQuery) {
   let ax = 0, ay = 0;
   const speed = Math.hypot(vx, vy) || 1;
   const fx = vx / speed, fy = vy / speed;            // 前进单位向量
   const base = npc.walkSpeed || 26;
-  for (const o of envQuery.getObstacles(npc.x, npc.y, 40)) {
-    let ox = npc.x - o.x, oy = npc.y - o.y;          // 障碍 → NPC
+  const npcR = 12;
+  for (const o of envQuery.getObstacles(npc.x, npc.y, 46)) {
+    const ox = npc.x - o.x, oy = npc.y - o.y;        // 障碍 → NPC（世界空间）
+    // 椭圆归一化空间里的标量距离 sd：<1 在碰撞体内，1..1.8 为影响圈
+    const rx = o.collisionRX + npcR, ry = o.collisionRY + npcR;
+    const sd = Math.hypot(ox / rx, oy / ry) || 0.001;
+    if (sd > 1.8) continue;
+
+    // 已穿入：沿径向把 NPC 精确弹回椭圆表面（不论前后，保证不重叠）
+    if (sd < 1) { npc.x = o.x + ox / sd; npc.y = o.y + oy / sd; }
+
     const d = Math.hypot(ox, oy) || 0.001;
     const dot = (-ox / d) * fx + (-oy / d) * fy;     // NPC→障碍 与前进方向夹角
-    if (dot < 0.5) continue;                          // 不在前方 ±60° 内则忽略
-    const r = o.collisionRadius;
-    if (d < r + 8) {                                  // 已贴近/穿入：硬推出碰撞体外
-      npc.x = o.x + (ox / d) * (r + 8);
-      npc.y = o.y + (oy / d) * (r + 8);
-      ax += (ox / d) * base * 2; ay += (oy / d) * base * 2;
-    } else {                                          // 接近：反比强度的横向排斥
-      const strength = base * Math.max(0, 1 - (d - r) / 40);
-      ax += (ox / d) * strength; ay += (oy / d) * strength;
-    }
+    if (dot < 0.2) continue;                          // steering 只规避前方障碍
+
+    const prox = Math.max(0, 1 - (sd - 1) / 0.8);     // 越近越强（sd:1→1.8 映射 1→0）
+    if (prox <= 0) continue;
+
+    // 外法向（椭圆梯度方向，指向 NPC 外侧）
+    let gx = ox / (rx * rx), gy = oy / (ry * ry);
+    const gl = Math.hypot(gx, gy) || 1; gx /= gl; gy /= gl;
+    // 切向（垂直于法向，取与前进方向同侧 → 自然绕过）
+    let tx = -gy, ty = gx;
+    if (tx * fx + ty * fy < 0) { tx = -tx; ty = -ty; }
+    ax += (tx * 1.4 + gx * 0.6) * base * prox;
+    ay += (ty * 1.4 + gy * 0.6) * base * prox;
   }
   return { x: ax, y: ay };
 }
@@ -185,5 +203,5 @@ export function tickBaseState(npc, profile, envQuery, dt) {
   }
 
   // 漫游 NPC 在 walk/run 态逐帧转向目标点（含避障）
-  if (npc.roam && (npc.state === 'walk' || npc.state === 'run')) steerRoam(npc, envQuery);
+  if (npc.roam && (npc.state === 'walk' || npc.state === 'run')) steerRoam(npc, envQuery, dt);
 }

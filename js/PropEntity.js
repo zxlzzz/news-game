@@ -48,24 +48,33 @@ export class PropEntity extends Entity {
     // 长椅整体放大 ~3×（scene.json 原尺寸偏小）；统一改宽高，使绘制/包围盒/坐姿对齐一致
     if (this.propType === 'bench') { this.width *= 3; this.height = 24; }
 
-    // 避障：NPC 不可穿越的实心障碍 + 圆形碰撞半径（批次 0）
-    // 地面贴图/可穿越类型：lamp/sign/manhole/drain/chair（不设 obstacle）
+    // 避障：NPC 不可穿越的实心障碍 + 椭圆碰撞体（批次 0；扁宽道具如喷泉/长椅用椭圆，
+    // 避免圆形碰撞把整条公园纵带堵死）。地面贴图/可穿越类型不设 obstacle。
     this.obstacle = OBSTACLE_TYPES.has(this.propType);
-    this.collisionRadius = this.obstacle ? this._calcCollisionRadius() : 0;
+    if (this.obstacle) {
+      const [rx, ry] = this._calcCollision();
+      this.collisionRX = rx;
+      this.collisionRY = ry;
+      this.collisionRadius = Math.max(rx, ry);       // 广相（分桶/射线）用最大半轴
+    } else {
+      this.collisionRX = this.collisionRY = this.collisionRadius = 0;
+    }
   }
 
-  _calcCollisionRadius() {
+  // 返回 [半宽 rx, 半高 ry]（椭圆碰撞体的两个半轴）
+  _calcCollision() {
     const w = this.width || 20, h = this.height || 20;
     switch (this.propType) {
       case 'fountain': case 'slide': case 'stall':
-        return Math.max(w, h) * 0.5;                 // 大型：按尺寸
+        return [w * 0.5, h * 0.5];                   // 大型：贴合占地椭圆
       case 'bench':
-        return w * 0.32;                             // 长椅按宽度（放大后 ~29）
-      case 'tree': case 'vending': case 'phonebooth':
-      case 'chess-table':
-        return 16;                                   // 中型
+        return [w * 0.5, 8];                         // 长椅：长而扁
+      case 'tree':
+        return [15, 15];                             // 树冠：近圆
+      case 'vending': case 'phonebooth': case 'chess-table':
+        return [14, 12];                             // 中型
       default:
-        return 10;                                   // 小型：trash/hydrant/mailbox/newsrack/planter
+        return [10, 10];                             // 小型：trash/hydrant/mailbox/newsrack/planter
     }
   }
 

@@ -299,7 +299,55 @@ export class StreetScene extends Phaser.Scene {
     this._drawParkPlaza(g);
     this._drawMiniPark(g);
     this._drawChessPlaza(g);
+    this._drawParkPaths(g);
     this._drawTrees(g);
+  }
+
+  // ─── 公园园路：带弧度的步道，连接棋摊广场 / 喷泉 / 上沿人行道 ────────────────
+  // 四条：A 连两广场；B 棋摊向左；C 喷泉向右；D 上沿步道↓接入 C。各路放一把长椅。
+  _drawParkPaths(g) {
+    const paths = [
+      [[620, 420], [800, 406], [980, 440], [1150, 430]],   // A 棋摊 ↔ 喷泉
+      [[620, 420], [440, 434], [250, 416], [70, 428]],     // B 棋摊向左延伸
+      [[1150, 430], [1380, 416], [1620, 442], [1930, 430]],// C 喷泉向右延伸
+      [[1500, 350], [1496, 392], [1500, 430]],             // D 上沿步道 ↓ 接入 C
+    ];
+    for (const pts of paths) this._drawCurvedPath(g, pts, 18);
+  }
+
+  _drawCurvedPath(g, ctrl, width) {
+    const pts = this._catmullRom(ctrl, 10);
+    g.lineStyle(width, 0xdedede, 1);     this._strokePolyline(g, pts);  // 路面
+    g.lineStyle(width - 7, 0xe9e9e9, 1); this._strokePolyline(g, pts);  // 中央略亮
+    g.lineStyle(0.8, 0xb6b6b6, 0.6);     this._strokePolyline(g, pts);  // 边缘细线
+  }
+
+  _strokePolyline(g, pts) {
+    g.beginPath();
+    g.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+    g.strokePath();
+  }
+
+  // Catmull-Rom 平滑：每段插值 seg 个点，端点钳制
+  _catmullRom(ctrl, seg) {
+    const out = [];
+    const p = (i) => ctrl[Math.max(0, Math.min(ctrl.length - 1, i))];
+    for (let i = 0; i < ctrl.length - 1; i++) {
+      const p0 = p(i - 1), p1 = p(i), p2 = p(i + 1), p3 = p(i + 2);
+      for (let s = 0; s < seg; s++) {
+        const t = s / seg, t2 = t * t, t3 = t2 * t;
+        const x = 0.5 * (2 * p1[0] + (-p0[0] + p2[0]) * t +
+          (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 +
+          (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3);
+        const y = 0.5 * (2 * p1[1] + (-p0[1] + p2[1]) * t +
+          (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 +
+          (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3);
+        out.push([x, y]);
+      }
+    }
+    out.push(ctrl[ctrl.length - 1]);
+    return out;
   }
 
   // ─── 公园里的白色广场（棋摊就坐落在它中心，使"在公园里"一目了然） ──────────

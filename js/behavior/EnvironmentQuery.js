@@ -105,11 +105,13 @@ export class EnvironmentQuery {
     return out;
   }
 
-  /** 点 (x,y) 是否落在某障碍碰撞体内（含 npc 半径）；命中返回该障碍，否则 null */
+  /** 点 (x,y) 是否落在某障碍椭圆碰撞体内（含 npc 半径）；命中返回该障碍，否则 null */
   pointBlocked(x, y, npcRadius = 12) {
     for (const o of this._candidatesNear(x, 120)) {
       if (!o.alive) continue;
-      if (Math.hypot(o.x - x, o.y - y) < o.collisionRadius + npcRadius) return o;
+      const ex = (x - o.x) / (o.collisionRX + npcRadius);
+      const ey = (y - o.y) / (o.collisionRY + npcRadius);
+      if (ex * ex + ey * ey < 1) return o;
     }
     return null;
   }

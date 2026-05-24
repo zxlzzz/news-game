@@ -70,7 +70,7 @@ news-game/
 ## 场景内容速览
 
 - **建筑**（`BuildingEntity` + `scene.json`）：19 栋连续街墙，6 原型，高度/窗/招牌均不统一；屋顶可有水箱/太阳能/广告牌/空调；底边 ±6 抖动 + 巷道暗缝；两处侧路缺口。
-- **道具**（`PropEntity`）：路灯（加高）/长椅/垃圾桶/招牌/报刊架/消防栓/邮筒/花坛/井盖/排水沟/椅子/棋桌/树；公园 fountain/stall；前人行道新增 vending/phonebooth。（slide/picnic 已移除：仅贴图浮于地面致穿模，待后续做成实体）
+- **道具**（`PropEntity`）：路灯（加高）/长椅/垃圾桶/招牌/报刊架/消防栓/邮筒/花坛/井盖/排水沟/椅子/棋桌/树；公园 fountain/stall + 4 条园路（各 1 把长椅）；前人行道新增 vending/phonebooth。（slide/picnic 已移除：仅贴图浮于地面致穿模，待后续做成实体）
 - **车辆**：6 辆机动车循环行驶 + 自行车/外卖电动车火柴骑手。
 - **NPC**：公园 12 名自由漫游者（BehaviorManager 转向随机目标）+ 前人行道 3 名 + 横穿者 + 棋手/遛狗/运动者。
 
@@ -125,10 +125,12 @@ news-game/
 
 修复 NPC 穿过道具、NPC 互相穿模、坐下不对齐长椅三个基础问题，并重画长椅。
 
-- **道具避障**：`PropEntity` 新增 `obstacle`（实心障碍类型集）+ `collisionRadius`（大型=max(w,h)/2、长椅=宽×0.32、中型 16、小型 10）。`EnvironmentQuery` 加 `getObstacles / pointBlocked / raycastObstacle`（障碍静态 → 按 X 200px 分桶缓存一次）。`pickRoamTarget` 选点避开障碍（重试 5 次），`steerRoam` 加 seek + obstacle-avoidance steering（前方 ±60° 扇形排斥，过近硬推出碰撞体）。**朝向迟滞**：水平分量 < 0.3×速度时不翻转 direction，避免纵向移动/避障摆动导致左右乱闪。
+- **道具避障（椭圆碰撞）**：`PropEntity` 新增 `obstacle` + 椭圆碰撞体 `collisionRX/RY`（喷泉/摊位=占地半轴、长椅=长×0.5 & 高 8 的扁椭圆、树≈15、中型 14/12、小型 10；`collisionRadius`=最大半轴供广相）。扁宽道具用椭圆避免圆形把公园纵带堵死。`EnvironmentQuery` 加 `getObstacles / pointBlocked(椭圆) / raycastObstacle`（按 X 200px 分桶缓存）。`pickRoamTarget` 避开障碍（重试 5 次），`steerRoam` 用归一化椭圆空间做**切向绕行** steering（穿入则精确弹回椭圆表面，前方障碍切向为主+少量径向）。
+- **防左右乱闪**：①朝向冷却——翻转后 0.45s 内不再翻且水平分量需 > 0.35×速度；②漫游 NPC 到活动区边界只夹取位置、不再翻转 direction（`NPC.update` 中 `!this.roam` 才 bounce）；③切向避障消除"顶着障碍原地抖"。
 - **NPC 间分离**：`BehaviorManager._separate(dt)` 对移动中（walk/run/jog）的自由 NPC 做 O(n²) 排斥（<24px 互推，越近越强）；跳过 Activity 锁定 / 静止 / leash 从属。
 - **sit_bench 道具对齐**：进入 sit_bench 时 `enterSitBench` 调 `nearestFreeBench`（以 `bench._occupiedBy` 判空闲）→ 标记占用 + snap 到椅心（夹在 NPC 自身 minX/maxX/minY/maxY 内）；无空椅回退 stand；离开 sit_bench/lie_bench 之外的状态时在 `setState` 释放占用。`lean_wall/lie_bench` 的 snap 留 TODO。
 - **长椅重画 + 放大 ~3×**：`PropEntity` 构造里把 bench 宽×3、高=24（绘制/包围盒/坐姿一致）；`_drawBench` 木条椅面（4 条带渐变）+ 后倾椅背 + 扶手 + 四腿带横撑，沿用 `depthLineWidth/Color` 远浅近深。
+- **公园园路**：`StreetScene._drawParkPaths`（Catmull-Rom 平滑曲线 + 宽描边）画 4 条带弧度步道——A 棋摊广场↔喷泉、B 棋摊向左、C 喷泉向右、D 上沿步道↓接入 C；每条路放一把长椅，其余长椅已删（scene.json 仅剩 4 把）。
 - **未触碰**：SocialLayer/Activity、车辆、StickRenderer；不改 scene.json 道具位置/数量；无 A* 寻路（steering 足够）。
 
 ### 批次 1：路人基础行为完善（依据 `1.md`，已完成）

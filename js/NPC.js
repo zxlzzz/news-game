@@ -239,15 +239,17 @@ export class NPC extends Entity {
     }
 
     // 非绑带NPC：执行X/Y位移
+    // 漫游 NPC 的朝向/速度由 steerRoam 每帧决定，到边界只夹取位置、不翻转方向，
+    // 否则会在区域边界与转向逻辑互相打架，出现原地左右乱闪。
     if (!this.leashTarget) {
       if (this.speed > 0) {
         this.x += this.direction * this.speed * (delta / 1000);
-        if      (this.x > this.maxX) { this.x = this.maxX; this.direction = -1; }
-        else if (this.x < this.minX) { this.x = this.minX; this.direction =  1; }
+        if      (this.x > this.maxX) { this.x = this.maxX; if (!this.roam) this.direction = -1; }
+        else if (this.x < this.minX) { this.x = this.minX; if (!this.roam) this.direction =  1; }
       }
       this.y += this.vy * (delta / 1000);
-      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = -Math.abs(this.vy); }
-      else if (this.y < this.minY) { this.y = this.minY; this.vy =  Math.abs(this.vy); }
+      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = this.roam ? 0 : -Math.abs(this.vy); }
+      else if (this.y < this.minY) { this.y = this.minY; this.vy = this.roam ? 0 :  Math.abs(this.vy); }
     }
 
     if (this.customUpdate) this.customUpdate(this, delta);
