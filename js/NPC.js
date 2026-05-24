@@ -12,6 +12,13 @@ import { humanOffsetY, dogOffsetY } from './StickRenderer.js';
 const STATE_TAGS = {
   walk: 'walking', run: 'running', stand: 'standing',
   sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling', talk: 'talking',
+  // 批次 1 新增状态
+  lean_wall: 'leaning', squat: 'squatting', sit_ground: 'sitting',
+  lie_bench: 'lying', get_up: 'getting_up',
+};
+// overlay → 额外语义标签（overlay 名本身也会作为标签加入）
+const OVERLAY_EXTRA_TAGS = {
+  smoke: 'smoking', hold_bag: 'carrying',
 };
 // 无状态机托管时按动画名推断标签（chess/cycle/dance 等专用场景）
 const ANIM_TAGS = {
@@ -88,6 +95,9 @@ export class NPC extends Entity {
 
     // 代码控制的肢体覆盖（{joint:[x,y]}），由行为/叠加动作每帧计算后赋值；null=不覆盖
     this.overlayPose  = config.overlayPose  ?? null;
+
+    // 持久特征 overlay（如 hold_bag）：由 spawner 赋值，OverlayLayer 在空档回退显示
+    this.persistentOverlay = config.persistentOverlay ?? null;
 
     // 行为状态机字段（由 BehaviorManager 驱动；非托管 NPC 保持默认）
     this.npcType   = config.npcType ?? null;   // 自身属性（businessman/tourist...）
@@ -166,13 +176,20 @@ export class NPC extends Entity {
     const stateTag = STATE_TAGS[this.state] ?? ANIM_TAGS[this.animation];
     if (stateTag) out.add(stateTag);
 
-    // 3) 叠加动作
-    if (this.overlay) out.add(this.overlay);
+    // 3) 叠加动作（overlay 名 + 额外语义标签）
+    if (this.overlay) {
+      out.add(this.overlay);
+      const extra = OVERLAY_EXTRA_TAGS[this.overlay];
+      if (extra) out.add(extra);
+    }
 
-    // 4) 社交状态
+    // 4) 临时附加标签（随状态生灭，如躺椅时 resting/homeless）
+    if (this._extraTags) for (const t of this._extraTags) out.add(t);
+
+    // 5) 社交状态
     if (this.bond) out.add('talking');
 
-    // 5) 空间关系（near:建筑类型 / near:道具）
+    // 6) 空间关系（near:建筑类型 / near:道具）
     if (this.manager) this._addSpatialTags(out);
 
     return Array.from(out);

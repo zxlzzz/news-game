@@ -100,72 +100,41 @@ news-game/
 
 ---
 
-## NPC 行为系统重构计划（依据 `NPC BEHAVIOR SYSTEM.md`）
+## 分层行为系统（`js/behavior/`，依据 `NPC BEHAVIOR SYSTEM.md`）
 
-目标：把单体 `BehaviorManager` 重构为**分层 + Profile 驱动 + Activity 统一**的架构，所有 NPC 纳入同一框架。
-**本次只搭骨架、行为表现需与重构前完全一致；不新增任何尚未实现的状态，不实现镜头反应逻辑。**
+`BehaviorManager` 是薄协调器，行为差异全部由 **Profile 数据** 驱动，所有 NPC 共用同一引擎。
+每帧顺序：`behaviorManager.update()`（决策状态/动画/速度/朝向）→ `entityManager.update()`（推进位移/帧）。
 
-### 现状要点（实施前已确认）
-- `BehaviorManager.js`：含 `STATE_DEFS`、`SocialBond`、`_setState/_steerRoam/_pickRoamTarget/_tick/_tickOverlay/_nearBench/_tryPairTalk/_enterTalk`。每帧顺序 `behaviorManager.update()` → `entityManager.update()`。
-- `NPC.js`：已有字段 `state/overlay/bond/overlayPose/npcType/roam/roamTarget/customUpdate/leashTarget/leashOffset`。新增字段一律用下划线前缀（`_profile`/`_activity`）。`getTags()` 仍检查 `npc.bond`，须保留兼容。
-- `EntityManager`：暴露 `entities`、`depthScale(y)`、`queryRect`、`getAlive()`，无语义化空间查询 → 由 `EnvironmentQuery` 包装。
-- `Chess.js`：棋手行为用 `customUpdate` 硬编码（A/B 轮流 `startPlay/freezeAt0` + `WAIT_MS`）；桌椅道具用棋手锚点反推。
-- `DogWalker.js`：owner 走路，dog 用 `leashTarget`/`leashOffset` 跟随 + `drawExtra` 画绳。
-- `Athletes.js`：直接 `makeNPC`，未注册进 BehaviorManager（纯 jog 动画位移）。
-- `Pedestrians.js`：返回 `managed[]`，含公园漫游者(`roam=zone`)、前人行道行人、横穿者(`customUpdate` 路径脚本)。
-- `StreetScene._spawnNPCs()`：`spawnPedestrians` 后 new BehaviorManager 并 `register` 漫游者；chess/dog/athlete/vehicles 各自 spawn。
+| 模块 | 职责 |
+|------|------|
+| `NpcProfile.js` | `PROFILES` 字典 + `getProfile(name)`；每个 profile = `allowedStates / transitions(权重表) / overlays / activities / traits`。7 类：pedestrian/businessman/tourist/chess_player/chess_onlooker/dog_owner/athlete |
+| `BaseStateMachine.js` | `tickBaseState(npc,profile,envQuery,dt)` + `setState`。按 transitions 权重选下一状态，`allowedStates` 过滤，环境前置不满足则回退 stand。`STATE_DEFS` 定义每个状态的动画/速度/时长 |
+| `OverlayLayer.js` | `tickOverlay(npc,profile,dt)`：随机 overlay（计时触发/消失）+ 持久特征 overlay（`npc.persistentOverlay` 回退）+ trait 门控 + `chanceMultiplier` |
+| `EnvironmentQuery.js` | 语义空间查询：`isNearBench / isNearWall / nearestFreeBench / nearestProp / nearbyNPCs / findVacantProp`。道具占用标记用 `prop._occupiedBy` |
+| `SocialLayer.js` | Activity 统一模型：`Activity` 基类 + `TalkActivity / ChessActivity / DogWalkActivity`。`join` 锁定 NPC（`npc._activity`），`createActivity / interruptActivity`，周期 `_tryPairTalk` |
+| `CameraReactionLayer.js` | 镜头反应层，占位（待社会稳定度系统） |
+| `DebugLog.js` | localStorage 门控的结构化日志（见「行为调试工具」） |
 
-### 实施步骤（按依赖顺序，逐步验证）
+**关键约定**
+- NPC 上行为字段：`_profile / _activity / _traits / persistentOverlay / _extraTags`（下划线前缀，避免与既有字段冲突）；`npc.bond` 保留兼容 `getTags()`。
+- `register(npc, profileName)` 纳入框架；被 Activity 锁定的 NPC（`_activity` 非空）跳过 BaseStateMachine/OverlayLayer。
+- spawner 分工：创建 NPC + 道具 → `register` 指定 profile → 需要协作的调 `socialLayer.createActivity(...)`。Chess/Dog/Athlete 已迁移，横穿者仍是 `customUpdate` 路径脚本。
+- 不改 StickRenderer/Entity/EntityManager/VehicleEntity/Viewfinder/SceneConfig。
 
-**第 1 步 — 新建 `js/behavior/NpcProfile.js`（纯数据，无依赖）**
-- 导出 `PROFILES` 字典 + `getProfile(name)`（缺失回退 `pedestrian`）。
-- 定义 7 个 profile：`pedestrian/businessman/tourist/chess_player/chess_onlooker/dog_owner/athlete`，含 `allowedStates/transitions/overlays/activities/traits/cameraReaction`。
-- `transitions` 权重与 `overlays.phone_look`(chance 0.004, dur[5,25]) 复刻现有 `_tick/_tickOverlay` 概率，保证行为不变。
+### 批次 1：路人基础行为完善（依据 `1.md`，已完成）
 
-**第 2 步 — 新建 `js/behavior/EnvironmentQuery.js`（依赖 EntityManager）**
-- `constructor(entityManager)`；实现 `nearestProp/nearbyNPCs/isNearWall/isNearBench/findVacantProp`。
-- `isNearBench` 复刻现有 `_nearBench`（bench, |dx|<60, |dy|<80）。
-- 占用判定读 `prop._occupiedBy`（下划线，不在 PropEntity 上加公开属性）。
+在分层架构上扩展 pedestrian/businessman/tourist 的日常行为集：
 
-**第 3 步 — 新建 `js/behavior/BaseStateMachine.js`（依赖 Profile + EnvironmentQuery）**
-- 导出 `tickBaseState(npc, profile, envQuery, dt)` + 内部 `setState`（迁移 `_setState` 逻辑）。
-- 迁移 `_steerRoam/_pickRoamTarget`；状态转换按 `profile.transitions` 权重随机，`allowedStates` 过滤。
-- 前置条件：`sit_bench` 需 `envQuery.isNearBench` 否则回退 `stand`；`fall→lie_ground`(animDone)；`lie_ground→stand`(计时)；`run` 极低概率 `fall`。
-
-**第 4 步 — 新建 `js/behavior/OverlayLayer.js`（依赖 Profile）**
-- 导出 `tickOverlay(npc, profile, dt)`，读 `profile.overlays` 配置，复刻现有 `_tickOverlay`。
-
-**第 5 步 — 新建 `js/behavior/SocialLayer.js`（核心，依赖 EnvironmentQuery）**
-- `Activity` 基类：`join/release/update/interrupt/destroy`，`join` 设 `npc._activity=this`。
-- `TalkActivity`：复刻 `SocialBond`（faceEachOther + 计时），创建时同时设 `npc.bond` 兼容 `getTags()`。
-- `ChessActivity`：迁移 Chess.js 的 A/B 轮流落子 + WAIT_MS 子状态机；onlooker 子行为（站立↔走动↔观看）；`interrupt` 走 cleanup 释放参与者与道具。
-- `DogWalkActivity`：包装现有 leash 逻辑（owner 走/dog 跟随）。
-- `SocialLayer`：`update(npcs, dt)`（tick Activity + 周期 `_tryPairTalk`）、`createActivity/interruptActivity`；空棋桌配对本次留桩。
-
-**第 6 步 — 新建 `js/behavior/CameraReactionLayer.js`**
-- 仅空壳 `update(npcs, viewfinder, stability, dt) { /* TODO */ }`。
-
-**第 7 步 — 重构 `js/BehaviorManager.js` 为薄协调器**
-- import 上述各层；`constructor(em)` 组合 `envQuery/socialLayer/cameraLayer`。
-- `register(npc, profileName='pedestrian')`：设 `_profile/_activity`、初始化 `walkSpeed`、入列。
-- `update(delta)`：① socialLayer.update ② 自由 NPC(`!npc._activity`) 走 tickBaseState+tickOverlay ③ cameraLayer（留注释）。
-- 提供 `socialLayer` 访问入口供 spawner 调用 `createActivity`。
-
-**第 8 步 — 改 spawner**
-- `StreetScene._spawnNPCs()`：先 `this.behaviorManager = new BehaviorManager(em)`，再把它传给各 spawn 函数；删掉外层 `for...register`。
-- `Pedestrians.js`：生成后 `bm.register(npc, profileName)`（pedestrian/businessman/tourist）；横穿者保留 customUpdate 不注册。
-- `Chess.js`：保留桌椅道具创建；棋手 `register('chess_player')`、旁观者 `register('chess_onlooker')`，再 `socialLayer.createActivity('chess', ...)`；**删除 customUpdate**。
-- `DogWalker.js`：owner `register('dog_owner')`；dog 不注册；`createActivity('dog_walk', [owner, dog])`。
-- `Athletes.js`：`register('athlete')`。
-
-### 约束与验证
-- 不改 Entity.js/EntityManager.js/StickRenderer.js/Viewfinder.js/VehicleEntity.js/SceneConfig.js。NPC.js 仅新增 `id`（debug 引用用）。
-- 所有 Activity 子类都实现 `interrupt(reason)`，即使本次不触发。
-- 验证（`python -m http.server 8080` 后浏览器目测）：行人漫游/停/坐/跑/摔/看手机、前人行道横走、横穿、棋手轮流落子+观棋、遛狗跟随、运动者跑、两人靠近触发对话、取景框标签正常——表现与重构前一致，无新 bug。
-
-### 实施状态
-- [x] 步骤 1–8 已完成并推送（提交 d27fb39）：分层架构跑通，行为表现与重构前一致。
-- [x] 行为调试工具（见下文）已完成。
+- **新增基础状态**（`STATE_DEFS` + 各 profile.transitions）：
+  `squat`(蹲) / `sit_ground`(坐地，暂复用 squat 动画，TODO 待 `sit_ground.json`) / `lean_wall`(靠墙) / `lie_bench`(躺椅) / `get_up`(起身过渡)。
+- **环境前置**（pickNext 内检查，不满足回退 stand）：
+  `sit_bench` 需附近有椅；`sit_ground` 需附近无椅；`lean_wall` 需 `isNearWall`（仅前人行道带，公园行人永不触发=方案 B）；`lie_bench` 需 `sit_bench` 已持续 >12s。
+- **动画驱动转换**：`fall→lie_ground`、`lie_ground→get_up→stand`（`get_up` 由 animDone 进 stand）。
+- **新增 overlay**：`phone_call`（与 phone_look 互斥）；`smoke`（需 `_traits.smoker`，`lean_wall` 时概率×2）；`hold_bag`（持久特征，由 spawner 按概率设 `npc.persistentOverlay`，空档时回退显示）。
+- **traits / 持久特征注入**：`Pedestrians.js` 按类型概率给 `_traits.smoker`、`persistentOverlay='hold_bag'`（前人行道带 smoker 概率调高以演示靠墙抽烟）。
+- **标签**：新状态映射见 `NPC.js` 的 `STATE_TAGS`；overlay 额外标签 `smoke→smoking`、`hold_bag→carrying`；`lie_bench` 临时附加 `resting`（20% 叠加 `homeless`），存于 `npc._extraTags` 随状态生灭。
+- **仅置标志位**：phone_call/smoke/hold_bag 的视觉（overlayPose/drawExtra）留 TODO，未改关节。
+- **未触碰**：SocialLayer(talk) / CameraReactionLayer / Chess·Dog·Athlete 的 profile / 动画文件（缺的用替代+TODO）。
 
 ---
 
@@ -182,6 +151,6 @@ news-game/
 ### console 结构化日志（`js/behavior/DebugLog.js`，localStorage 开关）
 - `localStorage.setItem('npc-debug','1')` 开启，默认关闭；Node 单测下自动禁用（无 localStorage）。
 - 状态转换（`BaseStateMachine.setState`）：`[NPC-12] walk → stand (dur=4.2s, trigger=timeout)`，
-  trigger ∈ timeout/rare-run/rare-fall/anim-done/activity-end。
+  trigger ∈ timeout/anim-done/activity-end；进 `lie_bench` 时附 `extra_tags=[resting]`。
 - Activity 生命周期（`SocialLayer`）：`[Activity chess#3] created` / `destroyed(reason=natural)`。
 - `BehaviorManager.update` 每帧调 `refreshDebugFlag()` 缓存开关，避免反复读 localStorage。

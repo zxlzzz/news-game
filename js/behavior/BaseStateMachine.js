@@ -11,8 +11,7 @@
 
 import { dlog } from './DebugLog.js';
 
-const rand   = (a, b) => a + Math.random() * (b - a);
-const chance = (p) => Math.random() < p;
+const rand = (a, b) => a + Math.random() * (b - a);
 
 // 状态 → 动画 / 速度系数 / 是否单次播放 / 时长区间(秒, null=无计时/由动画驱动)
 const STATE_DEFS = {
@@ -23,6 +22,12 @@ const STATE_DEFS = {
   sit_bench:  { anim: 'sit_bench',  speedK: 0,   once: true,  dur: [8, 15] },
   fall:       { anim: 'fall',       speedK: 0,   once: true,  dur: null    },
   lie_ground: { anim: 'lie_ground', speedK: 0,   once: true,  dur: [4, 8]  },
+  // 批次 1 新增的路人基础状态
+  lean_wall:  { anim: 'lean_wall',  speedK: 0,   once: true,  dur: [8, 20] },
+  squat:      { anim: 'squat',      speedK: 0,   once: true,  dur: [5, 15] },
+  sit_ground: { anim: 'squat',      speedK: 0,   once: true,  dur: [8, 20] }, // TODO: 待制作 sit_ground.json，暂复用 squat
+  lie_bench:  { anim: 'lie_bench',  speedK: 0,   once: true,  dur: [15, 40] },
+  get_up:     { anim: 'get_up',     speedK: 0,   once: true,  dur: null    }, // 由 animDone 驱动
   talk:       { anim: 'single',     speedK: 0,   once: false, dur: null    },
 };
 
@@ -46,10 +51,17 @@ export function setState(npc, state, trigger = '?') {
   // 漫游 NPC 每次进入 walk/run 重新挑选目标点 → 路径更自然多变
   if (npc.roam && (state === 'walk' || state === 'run')) npc.roamTarget = null;
 
+  // 临时附加标签（随状态生灭）：躺长椅时 resting，小概率 homeless
+  npc._extraTags = null;
+  if (state === 'lie_bench') {
+    npc._extraTags = (Math.random() < 0.2) ? ['resting', 'homeless'] : ['resting'];
+  }
+
   // 结构化日志：仅记录真正的状态切换（忽略 null→初始）
   if (prev && prev !== state) {
     const dur = npc.stateDur === Infinity ? '∞' : npc.stateDur.toFixed(1) + 's';
-    dlog(`[NPC-${npc.id}] ${prev} → ${state} (dur=${dur}, trigger=${trigger})`);
+    const extra = npc._extraTags ? `, extra_tags=[${npc._extraTags.join(',')}]` : '';
+    dlog(`[NPC-${npc.id}] ${prev} → ${state} (dur=${dur}, trigger=${trigger}${extra})`);
   }
 }
 
@@ -69,8 +81,11 @@ function pickNext(npc, profile, envQuery) {
   if (!chosen) return null;
   // 不在允许集合内的状态丢弃
   if (!profile.allowedStates.includes(chosen)) return null;
-  // 环境前置：坐长椅需附近有长椅，否则回退站立
-  if (chosen === 'sit_bench' && !envQuery.isNearBench(npc)) return 'stand';
+  // 环境前置（不满足则回退站立）：
+  if (chosen === 'sit_bench'  && !envQuery.isNearBench(npc)) return 'stand'; // 需附近有长椅
+  if (chosen === 'sit_ground' &&  envQuery.isNearBench(npc)) return 'stand'; // 附近有椅则不坐地上
+  if (chosen === 'lean_wall'  && !envQuery.isNearWall(npc))  return 'stand'; // 需靠近建筑墙面
+  if (chosen === 'lie_bench'  && npc.stateTimer < 12)        return 'stand'; // 需久坐后才躺下
   return chosen;
 }
 
@@ -96,16 +111,13 @@ function pickRoamTarget(npc) {
 // ─── 每帧推进单个 NPC 的基础状态 ──────────────────────────────────────────────
 export function tickBaseState(npc, profile, envQuery, dt) {
   npc.stateTimer += dt;
-  const allowed = profile.allowedStates;
   const st = npc.state;
 
-  // 特判：每帧极小概率的稀有转换 + 动画驱动的转换
-  if (st === 'walk' && allowed.includes('run') && chance(0.0008)) {
-    setState(npc, 'run', 'rare-run');
-  } else if (st === 'run' && allowed.includes('fall') && chance(0.00012)) {
-    setState(npc, 'fall', 'rare-fall');
-  } else if (st === 'fall') {
+  // 特判：动画驱动的转换（fall/get_up 播完即切换），其余走计时 + 权重表
+  if (st === 'fall') {
     if (npc.animDone) setState(npc, 'lie_ground', 'anim-done');
+  } else if (st === 'get_up') {
+    if (npc.animDone) setState(npc, 'stand', 'anim-done');
   } else if (npc.stateTimer >= npc.stateDur) {
     const next = pickNext(npc, profile, envQuery);
     if (next) setState(npc, next, 'timeout');

@@ -48,6 +48,11 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_sit_bench',  'assets/animations/sit_bench.json');
     this.load.json('anim_fall',       'assets/animations/fall.json');
     this.load.json('anim_lie_ground', 'assets/animations/lie_ground.json');
+    // 批次 1：路人扩展状态（sit_ground 暂复用 squat）
+    this.load.json('anim_lean_wall',  'assets/animations/lean_wall.json');
+    this.load.json('anim_squat',      'assets/animations/squat.json');
+    this.load.json('anim_lie_bench',  'assets/animations/lie_bench.json');
+    this.load.json('anim_get_up',     'assets/animations/get_up.json');
   }
 
   create() {
@@ -80,6 +85,10 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('sit_bench',  this.cache.json.get('anim_sit_bench'));
     this.stickRenderer.loadAnimation('fall',       this.cache.json.get('anim_fall'));
     this.stickRenderer.loadAnimation('lie_ground', this.cache.json.get('anim_lie_ground'));
+    this.stickRenderer.loadAnimation('lean_wall',  this.cache.json.get('anim_lean_wall'));
+    this.stickRenderer.loadAnimation('squat',      this.cache.json.get('anim_squat'));
+    this.stickRenderer.loadAnimation('lie_bench',  this.cache.json.get('anim_lie_bench'));
+    this.stickRenderer.loadAnimation('get_up',     this.cache.json.get('anim_get_up'));
 
     // 统一 Entity 管理器
     // 缩放参考用人行道带（远端步行带 → 近端步行带），让远小近大对比贯穿整个纵深
