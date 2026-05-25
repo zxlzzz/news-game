@@ -11,7 +11,7 @@ export const WORLD_HEIGHT    = 500;
 //   建筑街墙  100 – 210   连续街墙：4–5 层混合用途楼（底店铺+上阳台）
 //   建筑前人行道 210 – 268 前人行道（加宽，缓冲带）：行人/树/邮箱/售货机/电话亭
 //   双行道    268 – 333   机动车（公交/出租/私家/摩托）
-//   公园广场  333 – 500   NPC 主活动区（喷泉/滑梯/野餐/小摊/树）   近景 2/3
+//   公园广场  333 – 500   NPC 主活动区（喷泉/小摊/树）             近景 2/3
 export const SKY_Y           = 100;   // 天空区底边
 export const BUILDING_BASE_Y = 210;   // 建筑街墙底边（= 前人行道顶边）
 export const FAR_Y           = 268;   // 前人行道 / 道路 分界（curb）
@@ -26,7 +26,7 @@ export const SIDEWALK_NEAR_Y = 488;   // 公园主步行 Y（近镜头）
 // 公园里的白色广场（棋摊置于其中心）。StreetScene 画图与 Chess 定位共用同一来源。
 export const CHESS_PLAZA = { cx: 620, cy: 420, rx: 130, ry: 56 };
 
-// 大公园里的"小公园"游园区（喷泉居中、滑梯/野餐垫在其内）。
+// 大公园里的"小公园"游园区（喷泉居中）。
 export const MINI_PARK = { cx: 1150, cy: 430, rx: 210, ry: 78 };
 
 /**

@@ -20,6 +20,12 @@
 import { Entity } from './Entity.js';
 import { depthGray, depthLineWidth, depthLineColor } from './SceneConfig.js';
 
+// NPC 不可穿越的实心障碍类型（其余类型可穿越 / 是地面贴图）
+const OBSTACLE_TYPES = new Set([
+  'fountain', 'slide', 'stall', 'tree', 'bench', 'trash', 'hydrant',
+  'mailbox', 'newsrack', 'planter', 'vending', 'phonebooth', 'chess-table',
+]);
+
 function toGrayBand(color, lightVal, darkVal) {
   const r = (color >> 16) & 0xff;
   const g = (color >> 8) & 0xff;
@@ -35,9 +41,45 @@ export class PropEntity extends Entity {
     this.propType  = config.propType  || 'generic';
     this.propColor = config.propColor ?? 0x888888;
     this.dir       = config.dir       ?? 1; // 部分道具（椅子）需要朝向
+    // 长椅朝向：'up'/'down'/'left'/'right'（椅面朝向）。由 scene.json 按邻路走向指定。
+    this.facing    = config.facing    ?? 'down';
     // 锚点驱动的视觉高度（椅面/桌面距地），由交互场景按 NPC 锚点反推后传入
     this.seatH     = config.seatH     ?? null; // 椅子：椅面距地
     this.topH      = config.topH      ?? null; // 棋桌：桌面距地
+
+    // 长椅整体放大 ~3×（scene.json 原尺寸偏小）；统一改宽高，使绘制/包围盒/坐姿对齐一致
+    if (this.propType === 'bench') { this.width *= 3; this.height = 24; }
+
+    // 避障：NPC 不可穿越的实心障碍 + 椭圆碰撞体（批次 0；扁宽道具如喷泉/长椅用椭圆，
+    // 避免圆形碰撞把整条公园纵带堵死）。地面贴图/可穿越类型不设 obstacle。
+    this.obstacle = OBSTACLE_TYPES.has(this.propType);
+    if (this.obstacle) {
+      const [rx, ry] = this._calcCollision();
+      this.collisionRX = rx;
+      this.collisionRY = ry;
+      this.collisionRadius = Math.max(rx, ry);       // 广相（分桶/射线）用最大半轴
+    } else {
+      this.collisionRX = this.collisionRY = this.collisionRadius = 0;
+    }
+  }
+
+  // 返回 [半宽 rx, 半高 ry]（椭圆碰撞体的两个半轴）
+  _calcCollision() {
+    const w = this.width || 20, h = this.height || 20;
+    switch (this.propType) {
+      case 'fountain': case 'slide': case 'stall':
+        return [w * 0.5, h * 0.5];                   // 大型：贴合占地椭圆
+      case 'bench': {                                // 长椅：长而扁；竖放(left/right)时长轴沿 Y
+        const half = w * 0.5;
+        return (this.facing === 'left' || this.facing === 'right') ? [8, half] : [half, 8];
+      }
+      case 'tree':
+        return [15, 15];                             // 树冠：近圆
+      case 'vending': case 'phonebooth': case 'chess-table':
+        return [14, 12];                             // 中型
+      default:
+        return [10, 10];                             // 小型：trash/hydrant/mailbox/newsrack/planter
+    }
   }
 
   draw(g) {
@@ -58,8 +100,6 @@ export class PropEntity extends Entity {
       case 'chess-table': this._drawChessTable(g); break;
       case 'tree':        this._drawTree(g);       break;
       case 'fountain':    this._drawFountain(g);   break;
-      case 'slide':       this._drawSlide(g);      break;
-      case 'picnic':      this._drawPicnic(g);     break;
       case 'stall':       this._drawStall(g);      break;
       case 'vending':     this._drawVending(g);    break;
       case 'phonebooth':  this._drawPhoneBooth(g); break;
@@ -107,33 +147,72 @@ export class PropEntity extends Entity {
   }
 
   // ─── 长椅：线条 ──────────────────────────────────────────────────────────
+  // ─── 公园长椅（木条椅面 + 后倾椅背 + 扶手 + 四腿带横撑） ────────────────────
+  // 朝向 facing（椅面朝向）决定绘制方向：以局部坐标 (u=沿椅长, w=椅背高方向,负向后上)
+  // 经 P() 映射到世界，四个朝向均为轴对齐变换（不产生斜矩形）。
   _drawBench(g) {
-    const bw = this.width;
-    const bh = 10;
-    const bx = this.x - bw / 2;
-    const by = this.y - bh;
-    const lineW = depthLineWidth(this.y, { wMin: 1, wMax: 1.6 });
-    const lineC = depthLineColor(this.y, { light: 0x40, dark: 0x10 });
-    // 椅面（描边为主）
-    g.fillStyle(0xdadada, 0.85);
-    g.fillRect(bx, by, bw, bh);
-    g.lineStyle(lineW, lineC, 0.95);
-    g.strokeRect(bx, by, bw, bh);
-    // 木条分隔
-    g.lineStyle(0.5, lineC, 0.75);
-    for (let i = 1; i < 4; i++) {
-      const lx = bx + (bw * i / 4);
-      g.lineBetween(lx, by, lx, by + bh);
+    const { x, y } = this;
+    const f = this.facing || 'down';
+    const L = this.width || 90;
+    const half = L / 2;
+    const lineW = depthLineWidth(y, { wMin: 1, wMax: 2 });
+    const lineC = depthLineColor(y, { light: 0x38, dark: 0x08 });
+
+    // 局部 (u,w) → 世界坐标
+    const P = (u, w) => {
+      switch (f) {
+        case 'up':    return [x + u, y - w];
+        case 'left':  return [x - w, y + u];
+        case 'right': return [x + w, y + u];
+        default:      return [x + u, y + w];   // down
+      }
+    };
+    const rect = (u0, w0, u1, w1, fill, fa, sw) => {
+      const a = P(u0, w0), b = P(u1, w1);
+      const rx = Math.min(a[0], b[0]), ry = Math.min(a[1], b[1]);
+      const rw = Math.abs(a[0] - b[0]), rh = Math.abs(a[1] - b[1]);
+      if (fill != null) { g.fillStyle(fill, fa ?? 1); g.fillRect(rx, ry, rw, rh); }
+      if (sw) { g.lineStyle(sw, lineC, 0.9); g.strokeRect(rx, ry, rw, rh); }
+    };
+    const line = (u0, w0, u1, w1, lw, al) => {
+      const a = P(u0, w0), b = P(u1, w1);
+      g.lineStyle(lw, lineC, al ?? 0.9);
+      g.lineBetween(a[0], a[1], b[0], b[1]);
+    };
+
+    // 接地影（沿椅长方向的扁椭圆）
+    g.fillStyle(0x000000, 0.10);
+    if (f === 'left' || f === 'right') g.fillEllipse(x, y, 12, L * 1.05);
+    else                               g.fillEllipse(x, y, L * 1.05, 8);
+
+    // 椅腿（前两条直立 + 后两条略短）+ 横撑
+    line(-(half - 5), -6, -(half - 5), 0, lineW, 0.95);
+    line( (half - 5), -6,  (half - 5), 0, lineW, 0.95);
+    line(-(half - 11), -6, -(half - 11), -0.5, lineW * 0.85, 0.85);
+    line( (half - 11), -6,  (half - 11), -0.5, lineW * 0.85, 0.85);
+    line(-(half - 5), -3, (half - 5), -3, lineW * 0.7, 0.8);
+
+    // 椅面：4 条木条（沿椅长分段，明暗渐变）
+    const n = 4, sw = (L - 6) / n;
+    for (let i = 0; i < n; i++) {
+      const u0 = -half + 3 + i * sw;
+      const shade = 0xe0e0e0 - i * 0x0a0a0a;
+      rect(u0, -12, u0 + sw - 1.5, -6, shade, 0.95, lineW * 0.8);
     }
-    // 椅背（薄长方形）
-    g.fillStyle(0xc0c0c0, 0.9);
-    g.fillRect(bx, by - 3, bw, 3);
-    g.lineStyle(lineW * 0.8, lineC, 0.9);
-    g.strokeRect(bx, by - 3, bw, 3);
-    // 椅腿（短竖线）
-    g.lineStyle(lineW, lineC, 0.9);
-    g.lineBetween(bx + 3,      by + bh, bx + 3,      by + bh + 4);
-    g.lineBetween(bx + bw - 3, by + bh, bx + bw - 3, by + bh + 4);
+
+    // 椅背：顶横档 + 竖条
+    rect(-half + 4, -24, half - 4, -20, 0xd2d2d2, 0.92, lineW * 0.85);
+    for (let i = 0; i <= 4; i++) {
+      const u = -half + 4 + (L - 8) * i / 4;
+      line(u, -20, u + 2, -12, lineW * 0.7, 0.85);
+    }
+
+    // 扶手（两端短折线，旋转安全）
+    for (const s of [-1, 1]) {
+      const u = s * (half - 3);
+      line(u, -13, u, -9, lineW * 0.85, 0.9);
+      line(u, -9, u - s * 3, -7, lineW * 0.85, 0.9);
+    }
   }
 
   // ─── 垃圾桶：线条 ──────────────────────────────────────────────────────
@@ -494,66 +573,6 @@ export class PropEntity extends Entity {
   g.lineStyle(0.8, 0xf0f0f0, 0.6);
   g.lineBetween(x, y - 2, x, y - ry * 1.1);
 }
-
-  // ─── 儿童滑梯（侧视：梯子 + 平台 + 斜滑道） ────────────────────────────────
-  _drawSlide(g) {
-    const { x, y } = this;
-    const w = this.width || 30;
-    const h = w * 0.8;
-    const lineW = depthLineWidth(y, { wMin: 1, wMax: 1.7 });
-    const lineC = depthLineColor(y, { light: 0x38, dark: 0x08 });
-    const topY = y - h;
-    const ladderX = x - w / 2;     // 梯子在左
-    const slideEndX = x + w / 2;   // 滑道末端在右
-    // 平台立柱
-    g.lineStyle(lineW, lineC, 0.95);
-    g.lineBetween(ladderX, topY, ladderX, y);
-    g.lineBetween(x, topY, x, y);
-    // 平台
-    g.fillStyle(0xc4c4c4, 1); g.fillRect(ladderX, topY, w / 2, 3);
-    g.lineStyle(lineW, lineC, 0.95); g.strokeRect(ladderX, topY, w / 2, 3);
-    // 梯子横档
-    g.lineStyle(0.7, lineC, 0.9);
-    for (let i = 1; i <= 4; i++) g.lineBetween(ladderX, topY + (h * i / 5), ladderX + 5, topY + (h * i / 5));
-    g.lineBetween(ladderX + 5, topY, ladderX + 5, y);
-    // 护栏
-    g.lineStyle(0.7, lineC, 0.85);
-    g.lineBetween(ladderX, topY, ladderX, topY - 5);
-    g.lineBetween(x, topY, x, topY - 5);
-    g.lineBetween(ladderX, topY - 5, x, topY - 5);
-    // 斜滑道
-    g.lineStyle(lineW * 1.2, lineC, 0.95);
-    g.lineBetween(x, topY + 2, slideEndX, y - 2);
-    g.lineStyle(0.7, lineC, 0.8);
-    g.lineBetween(x, topY + 5, slideEndX - 2, y);
-    g.lineBetween(slideEndX, y - 2, slideEndX - 2, y); // 末端翘起
-  }
-
-  // ─── 野餐垫（俯视圆角席 + 格纹 + 篮子） ────────────────────────────────────
-  _drawPicnic(g) {
-    const { x, y } = this;
-    const rx = (this.width || 40) / 2;
-    const ry = rx * 0.6;
-    const lineC = depthLineColor(y, { light: 0x50, dark: 0x20 });
-    // 席面
-    g.fillStyle(0xd6d6d6, 0.95); g.fillEllipse(x, y, rx * 2, ry * 2);
-    g.lineStyle(0.8, lineC, 0.85); g.strokeEllipse(x, y, rx * 2, ry * 2);
-    // 格纹（裁剪在椭圆内的若干横竖线）
-    g.lineStyle(0.4, lineC, 0.45);
-    for (let i = -2; i <= 2; i++) {
-      const t = 1 - Math.pow(i / 2.6, 2); const half = Math.sqrt(Math.max(0, t));
-      g.lineBetween(x - rx * half, y + i * (ry * 0.4), x + rx * half, y + i * (ry * 0.4));
-    }
-    for (let i = -2; i <= 2; i++) {
-      const t = 1 - Math.pow(i / 2.6, 2); const half = Math.sqrt(Math.max(0, t));
-      g.lineBetween(x + i * (rx * 0.4), y - ry * half, x + i * (rx * 0.4), y + ry * half);
-    }
-    // 篮子
-    const bx = x + rx * 0.4, by = y - ry * 0.2;
-    g.fillStyle(0x8a8a8a, 1); g.fillRect(bx, by, 7, 5);
-    g.lineStyle(0.7, lineC, 0.9); g.strokeRect(bx, by, 7, 5);
-    g.lineBetween(bx, by, bx + 3.5, by - 3); g.lineBetween(bx + 7, by, bx + 3.5, by - 3); // 提手
-  }
 
   // ─── 自动售货机（玻璃柜 + 商品格 + 取货口） ───────────────────────────────
   _drawVending(g) {

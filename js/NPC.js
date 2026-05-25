@@ -12,6 +12,13 @@ import { humanOffsetY, dogOffsetY } from './StickRenderer.js';
 const STATE_TAGS = {
   walk: 'walking', run: 'running', stand: 'standing',
   sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling', talk: 'talking',
+  // 批次 1 新增状态
+  lean_wall: 'leaning', squat: 'squatting', sit_ground: 'sitting',
+  lie_bench: 'lying', get_up: 'getting_up',
+};
+// overlay → 额外语义标签（overlay 名本身也会作为标签加入）
+const OVERLAY_EXTRA_TAGS = {
+  smoke: 'smoking', hold_bag: 'carrying',
 };
 // 无状态机托管时按动画名推断标签（chess/cycle/dance 等专用场景）
 const ANIM_TAGS = {
@@ -28,6 +35,8 @@ function npcDepthGray(y) {
 }
 
 export class NPC extends Entity {
+  static _nextId = 1;
+
   /**
    * @param {object}        config
    * @param {StickRenderer} config.renderer      - 火柴人渲染器（必须）
@@ -52,6 +61,8 @@ export class NPC extends Entity {
       height: 80,
       static: false,
     });
+
+    this.id = NPC._nextId++;   // 全局唯一稳定 id（供 debug overlay / 日志引用）
 
     this.renderer  = config.renderer;
     this.animation = config.animation || 'idle';
@@ -84,6 +95,9 @@ export class NPC extends Entity {
 
     // 代码控制的肢体覆盖（{joint:[x,y]}），由行为/叠加动作每帧计算后赋值；null=不覆盖
     this.overlayPose  = config.overlayPose  ?? null;
+
+    // 持久特征 overlay（如 hold_bag）：由 spawner 赋值，OverlayLayer 在空档回退显示
+    this.persistentOverlay = config.persistentOverlay ?? null;
 
     // 行为状态机字段（由 BehaviorManager 驱动；非托管 NPC 保持默认）
     this.npcType   = config.npcType ?? null;   // 自身属性（businessman/tourist...）
@@ -162,13 +176,20 @@ export class NPC extends Entity {
     const stateTag = STATE_TAGS[this.state] ?? ANIM_TAGS[this.animation];
     if (stateTag) out.add(stateTag);
 
-    // 3) 叠加动作
-    if (this.overlay) out.add(this.overlay);
+    // 3) 叠加动作（overlay 名 + 额外语义标签）
+    if (this.overlay) {
+      out.add(this.overlay);
+      const extra = OVERLAY_EXTRA_TAGS[this.overlay];
+      if (extra) out.add(extra);
+    }
 
-    // 4) 社交状态
+    // 4) 临时附加标签（随状态生灭，如躺椅时 resting/homeless）
+    if (this._extraTags) for (const t of this._extraTags) out.add(t);
+
+    // 5) 社交状态
     if (this.bond) out.add('talking');
 
-    // 5) 空间关系（near:建筑类型 / near:道具）
+    // 6) 空间关系（near:建筑类型 / near:道具）
     if (this.manager) this._addSpatialTags(out);
 
     return Array.from(out);
@@ -218,15 +239,17 @@ export class NPC extends Entity {
     }
 
     // 非绑带NPC：执行X/Y位移
+    // 漫游 NPC 的朝向/速度由 steerRoam 每帧决定，到边界只夹取位置、不翻转方向，
+    // 否则会在区域边界与转向逻辑互相打架，出现原地左右乱闪。
     if (!this.leashTarget) {
       if (this.speed > 0) {
         this.x += this.direction * this.speed * (delta / 1000);
-        if      (this.x > this.maxX) { this.x = this.maxX; this.direction = -1; }
-        else if (this.x < this.minX) { this.x = this.minX; this.direction =  1; }
+        if      (this.x > this.maxX) { this.x = this.maxX; if (!this.roam) this.direction = -1; }
+        else if (this.x < this.minX) { this.x = this.minX; if (!this.roam) this.direction =  1; }
       }
       this.y += this.vy * (delta / 1000);
-      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = -Math.abs(this.vy); }
-      else if (this.y < this.minY) { this.y = this.minY; this.vy =  Math.abs(this.vy); }
+      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = this.roam ? 0 : -Math.abs(this.vy); }
+      else if (this.y < this.minY) { this.y = this.minY; this.vy = this.roam ? 0 :  Math.abs(this.vy); }
     }
 
     if (this.customUpdate) this.customUpdate(this, delta);

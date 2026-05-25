@@ -25,16 +25,21 @@ const ROAM_ZONES = [
   [40, 360], [300, 660], [600, 960], [900, 1260], [1200, 1560], [1500, 1900],
 ];
 
+// npcType==profile 名；bagChance=携带 hold_bag 概率，smokerChance=smoker trait 概率
 const TYPES = [
-  { npcType: 'pedestrian', tags: ['pedestrian'] },
-  { npcType: 'businessman', tags: ['pedestrian', 'business'] },
-  { npcType: 'tourist',     tags: ['tourist'] },
-  { npcType: 'pedestrian',  tags: ['pedestrian'] },
+  { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
+  { npcType: 'businessman', tags: ['pedestrian', 'business'], bagChance: 0.5, smokerChance: 0.10 },
+  { npcType: 'tourist',     tags: ['tourist'],                bagChance: 0.4, smokerChance: 0.05 },
+  { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
 ];
 
-export function spawnPedestrians(em, sr) {
-  const managed = [];
+// 生成时注入持久特征：按概率给 smoker trait / hold_bag 持久 overlay
+function applyTraits(n, t) {
+  if (Math.random() < t.smokerChance) n._traits = { smoker: true };
+  if (Math.random() < t.bagChance)    n.persistentOverlay = 'hold_bag';
+}
 
+export function spawnPedestrians(em, sr, bm) {
   // ── 公园漫游者（高密度，二维自由游走） ───────────────────────────────────
   for (const [x0, x1] of ROAM_ZONES) {
     for (let k = 0; k < 2; k++) {
@@ -49,26 +54,32 @@ export function spawnPedestrians(em, sr) {
       });
       n.roam = zone;            // 标记为漫游者，交给 BehaviorManager 转向
       n.roamTarget = null;
-      managed.push(n);
+      applyTraits(n, t);
+      bm.register(n, t.npcType);
     }
   }
 
   // ── 前人行道行人（窄带横向行走，不漫游；建筑前方 → scaleMul 0.65 拉远） ──────
-  managed.push(makeNPC(em, sr, {
+  // 靠墙带：给较高 smoker 概率，便于演示"靠墙抽烟"（lean_wall + smoke）
+  const sidewalkT = { bagChance: 0.4, smokerChance: 0.4 };
+  const sw1 = makeNPC(em, sr, {
     x: 160, y: SIDEWALK_FAR_Y - 2, animation: 'walk', direction: 1, speed: 28, vy: 0,
     minX: 20, maxX: 480, minY: SIDEWALK_FAR_Y - 3, maxY: SIDEWALK_FAR_Y + 1,
     tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
-  }));
-  managed.push(makeNPC(em, sr, {
+  });
+  applyTraits(sw1, sidewalkT); bm.register(sw1, 'businessman');
+  const sw2 = makeNPC(em, sr, {
     x: 1100, y: SIDEWALK_FAR_Y - 1, animation: 'walk', direction: 1, speed: 16, vy: 0,
     minX: 1050, maxX: 1300, minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y,
     tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
-  }));
-  managed.push(makeNPC(em, sr, {
+  });
+  applyTraits(sw2, sidewalkT); bm.register(sw2, 'businessman');
+  const sw3 = makeNPC(em, sr, {
     x: 1750, y: SIDEWALK_FAR_Y + 2, animation: 'walk', direction: 1, speed: 28, vy: 0,
     minX: 1500, maxX: 1980, minY: SIDEWALK_FAR_Y, maxY: SIDEWALK_FAR_Y + 3,
     tags: ['pedestrian'], npcType: 'pedestrian', scaleMul: 0.65,
-  }));
+  });
+  applyTraits(sw3, sidewalkT); bm.register(sw3, 'pedestrian');
 
   // ── 斑马线横穿者：前人行道 → 公园往返（路面上，道路对面 → scaleMul 0.55） ─────
   const crosserX = 290;
@@ -96,6 +107,5 @@ export function spawnPedestrians(em, sr) {
       if (n.y <= SIDEWALK_FAR_Y) { n.y = SIDEWALK_FAR_Y; n._stage = 'far'; }
     }
   };
-
-  return managed;
+  // 横穿者是路径脚本（customUpdate），不纳入行为状态机
 }

@@ -14,6 +14,7 @@ import { BehaviorManager } from '../BehaviorManager.js';
 import { BuildingEntity }  from '../BuildingEntity.js';
 import { PropEntity }      from '../PropEntity.js';
 import { Viewfinder }      from '../Viewfinder.js';
+import { DebugOverlay }    from '../DebugOverlay.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
   PARK_TOP, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA, MINI_PARK,
@@ -47,6 +48,11 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_sit_bench',  'assets/animations/sit_bench.json');
     this.load.json('anim_fall',       'assets/animations/fall.json');
     this.load.json('anim_lie_ground', 'assets/animations/lie_ground.json');
+    // 批次 1：路人扩展状态（sit_ground 暂复用 squat）
+    this.load.json('anim_lean_wall',  'assets/animations/lean_wall.json');
+    this.load.json('anim_squat',      'assets/animations/squat.json');
+    this.load.json('anim_lie_bench',  'assets/animations/lie_bench.json');
+    this.load.json('anim_get_up',     'assets/animations/get_up.json');
   }
 
   create() {
@@ -79,6 +85,10 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('sit_bench',  this.cache.json.get('anim_sit_bench'));
     this.stickRenderer.loadAnimation('fall',       this.cache.json.get('anim_fall'));
     this.stickRenderer.loadAnimation('lie_ground', this.cache.json.get('anim_lie_ground'));
+    this.stickRenderer.loadAnimation('lean_wall',  this.cache.json.get('anim_lean_wall'));
+    this.stickRenderer.loadAnimation('squat',      this.cache.json.get('anim_squat'));
+    this.stickRenderer.loadAnimation('lie_bench',  this.cache.json.get('anim_lie_bench'));
+    this.stickRenderer.loadAnimation('get_up',     this.cache.json.get('anim_get_up'));
 
     // 统一 Entity 管理器
     // 缩放参考用人行道带（远端步行带 → 近端步行带），让远小近大对比贯穿整个纵深
@@ -95,8 +105,13 @@ export class StreetScene extends Phaser.Scene {
     });
 
     this._createUI();
+
+    // 行为系统可视调试层（按 D 切换；console 结构化日志由 localStorage 'npc-debug' 控制）
+    this.debugOverlay = new DebugOverlay(this, this.behaviorManager, this.entityManager);
+
     this.cursors = this.input.keyboard.createCursorKeys();
     this.input.keyboard.on('keydown-P', () => this._exportImage());
+    this.input.keyboard.on('keydown-D', () => this.debugOverlay.toggle());
   }
 
   // ─── UI ──────────────────────────────────────────────────────────────────────
@@ -105,7 +120,7 @@ export class StreetScene extends Phaser.Scene {
     const W = this.cameras.main.width;
     const H = this.cameras.main.height;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放  |  P 导出整条街长图', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放  |  P 导出长图  |  D 调试', {
       fontFamily: '"JetBrains Mono", monospace',
       fontSize: '13px',
       color: '#555555',
@@ -244,6 +259,9 @@ export class StreetScene extends Phaser.Scene {
     this.vfGraphics.clear();
     this.viewfinder.draw(this.vfGraphics);
 
+    // 调试浮标/面板（仅在开启时刷新）
+    this.debugOverlay.update();
+
     // 取景框内容提示
     if (!this.lastPhoto) {
       const captured = this.viewfinder.capturedEntities;
@@ -281,7 +299,55 @@ export class StreetScene extends Phaser.Scene {
     this._drawParkPlaza(g);
     this._drawMiniPark(g);
     this._drawChessPlaza(g);
+    this._drawParkPaths(g);
     this._drawTrees(g);
+  }
+
+  // ─── 公园园路：带弧度的步道，连接棋摊广场 / 喷泉 / 上沿人行道 ────────────────
+  // 端点落在广场/喷泉边缘（不穿过喷泉椭圆、不压广场中心）。各路边缘放一把长椅。
+  _drawParkPaths(g) {
+    const paths = [
+      [[720, 420], [820, 411], [890, 418], [940, 426]],    // A 棋摊广场(接入) → 喷泉广场左缘(椭圆边)
+      [[490, 422], [330, 434], [150, 420], [0, 426]],      // B 棋摊广场左缘 → 画布左边缘
+      [[1360, 430], [1540, 420], [1740, 438], [2000, 430]],// C 喷泉广场右缘 → 画布右边缘
+      [[1500, 350], [1498, 388], [1500, 422]],             // D 上沿步道 ↓ 接入 C
+    ];
+    for (const pts of paths) this._drawCurvedPath(g, pts, 26);
+  }
+
+  _drawCurvedPath(g, ctrl, width) {
+    const pts = this._catmullRom(ctrl, 10);
+    g.lineStyle(width, 0xdedede, 1);     this._strokePolyline(g, pts);  // 路面
+    g.lineStyle(width - 7, 0xe9e9e9, 1); this._strokePolyline(g, pts);  // 中央略亮
+    g.lineStyle(0.8, 0xb6b6b6, 0.6);     this._strokePolyline(g, pts);  // 边缘细线
+  }
+
+  _strokePolyline(g, pts) {
+    g.beginPath();
+    g.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+    g.strokePath();
+  }
+
+  // Catmull-Rom 平滑：每段插值 seg 个点，端点钳制
+  _catmullRom(ctrl, seg) {
+    const out = [];
+    const p = (i) => ctrl[Math.max(0, Math.min(ctrl.length - 1, i))];
+    for (let i = 0; i < ctrl.length - 1; i++) {
+      const p0 = p(i - 1), p1 = p(i), p2 = p(i + 1), p3 = p(i + 2);
+      for (let s = 0; s < seg; s++) {
+        const t = s / seg, t2 = t * t, t3 = t2 * t;
+        const x = 0.5 * (2 * p1[0] + (-p0[0] + p2[0]) * t +
+          (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 +
+          (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3);
+        const y = 0.5 * (2 * p1[1] + (-p0[1] + p2[1]) * t +
+          (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 +
+          (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3);
+        out.push([x, y]);
+      }
+    }
+    out.push(ctrl[ctrl.length - 1]);
+    return out;
   }
 
   // ─── 公园里的白色广场（棋摊就坐落在它中心，使"在公园里"一目了然） ──────────
@@ -575,14 +641,13 @@ export class StreetScene extends Phaser.Scene {
   _spawnNPCs() {
     const em = this.entityManager;
     const sr = this.stickRenderer;
-    // 普通行人交给行为状态机托管
-    const managedPeds = spawnPedestrians(em, sr);
+    // 所有 NPC 统一纳入行为系统：spawner 负责生成 + 指定 profile / 创建 Activity
     this.behaviorManager = new BehaviorManager(em);
-    for (const p of managedPeds) this.behaviorManager.register(p);
-    // 其余专用场景仍由各自 spawner 自理（本轮不迁移）
-    spawnChess(em, sr);
-    spawnDogWalker(em, sr);
-    spawnAthletes(em, sr);
+    const bm = this.behaviorManager;
+    spawnPedestrians(em, sr, bm);
+    spawnChess(em, sr, bm);
+    spawnDogWalker(em, sr, bm);
+    spawnAthletes(em, sr, bm);
     spawnVehicles(em, sr);
   }
 }

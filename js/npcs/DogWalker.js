@@ -5,7 +5,7 @@
 import { SIDEWALK_NEAR_Y } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
 
-export function spawnDogWalker(em, sr) {
+export function spawnDogWalker(em, sr, bm) {
   const ownerY = SIDEWALK_NEAR_Y;
 
   const owner = makeNPC(em, sr, {
@@ -33,4 +33,9 @@ export function spawnDogWalker(em, sr) {
     g.lineStyle(Math.max(0.8, 1.2 * o.scale), 0x6a6a6a, 0.85);
     g.lineBetween(hand.x, hand.y, neck.x, neck.y);
   };
+
+  // 纳入行为系统：owner 注册 dog_owner，dog 作为绑带从属交给 DogWalkActivity
+  bm.register(owner, 'dog_owner');
+  bm.socialLayer.createActivity('dog_walk',
+    [{ npc: owner, role: 'owner' }, { npc: dog, role: 'dog' }]);
 }
