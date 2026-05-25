@@ -116,7 +116,8 @@ export class DebugOverlay {
 
     for (const act of sl.activities) {
       const parts = act.participants.map(p => `${p.role}=NPC${p.npc.id}`);
-      lines.push(`  ${act.label}: ${parts.join(', ')}`);
+      const sub = act.subState && act.subState !== 'init' ? ` [${act.subState}]` : '';
+      lines.push(`  ${act.label}${sub}: ${parts.join(', ')}`);
     }
     return lines.join('\n');
   }

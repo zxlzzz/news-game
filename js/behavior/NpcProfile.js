@@ -56,6 +56,7 @@ const PEDESTRIAN = {
   activities: ['talk'],
   traits: {},
   cameraReaction: 'neutral',
+  socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
 };
 
 const BUSINESSMAN = {
@@ -67,6 +68,7 @@ const BUSINESSMAN = {
     smoke:      SMOKE,
     hold_bag:   HOLD_BAG,
   },
+  socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
 };
 
 // 游客：蹲下看地图/坐地上休息概率稍高
@@ -84,6 +86,7 @@ const TOURIST = {
     smoke:      SMOKE,
     hold_bag:   HOLD_BAG,
   },
+  socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
 };
 
 const CHESS_PLAYER = {

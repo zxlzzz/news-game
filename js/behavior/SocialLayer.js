@@ -16,6 +16,40 @@ const chance = (p) => Math.random() < p;
 
 const CHESS_WAIT_MS = 3500;
 
+// ─── TalkActivity 子事件配置 ──────────────────────────────────────────────────
+// deltaPose：相对于基准帧坐标的局部空间偏移（正 x = 朝向方向；正 y = 向下）
+// 基于 single.json 实测关节位：r_hand[-10,-18] l_hand[9,-19] r_elbow[14,-11] l_elbow[-14,-11]
+const SUB_EVENTS = {
+  // 推搡：A 双手前伸推 B；B 触发 fall 链路
+  push: {
+    aDelta: { r_hand: [55, -3], r_elbow: [8, -4], l_hand: [35, -2], l_elbow: [32, -4] },
+    bDelta: null,
+    reach: 0.4, hold: 0.2, release: 0.5,
+    aTags: ['conflict'], bTags: ['conflict', 'victim'],
+  },
+  // 递东西：A 右手前伸给，B 左手前伸接
+  give_item: {
+    aDelta: { r_hand: [50, -3], r_elbow: [8, -3] },
+    bDelta: { l_hand: [35, -3], l_elbow: [20, -3] },
+    reach: 0.5, holdRange: [1, 2], release: 0.5,
+    aTags: ['transaction', 'exchange'], bTags: ['transaction', 'exchange'],
+  },
+  // 握手：A 的 r_hand 与 B 的 l_hand 移向两人中点
+  handshake: {
+    aDelta: { r_hand: [40, -3], r_elbow: [6, -2] },
+    bDelta: { l_hand: [30, -3], l_elbow: [15, -2] },
+    reach: 0.5, hold: 1.5, release: 0.5,
+    aTags: null, bTags: null,   // 在 _startSubEvent 中随机选 greeting/agreement
+  },
+  // 指向：A 单臂水平指向前方，B 转头同向
+  point_at: {
+    aDelta: { r_hand: [60, -2], r_elbow: [10, -4] },
+    bDelta: { head: [-5, 2] },  // 负 x delta：B 面向 A（d=-1 时），负 x → 正世界 x = A 指向方向
+    reach: 0.4, holdRange: [2, 3], release: 0.4,
+    aTags: ['pointing', 'observing'], bTags: ['pointing', 'observing'],
+  },
+};
+
 // ─── Activity 基类 ────────────────────────────────────────────────────────────
 class Activity {
   constructor(id, type) {
@@ -71,7 +105,7 @@ class Activity {
   }
 }
 
-// ─── TalkActivity — 两人面对面对话（替代 SocialBond） ─────────────────────────
+// ─── TalkActivity — 两人面对面对话，计时结束后按概率触发子事件 ───────────────────
 class TalkActivity extends Activity {
   constructor(id, a, b) {
     super(id, 'talk');
@@ -87,6 +121,15 @@ class TalkActivity extends Activity {
     this._enterTalk(a);
     this._enterTalk(b);
     this._faceEachOther();
+
+    // 子事件状态
+    this._subEvent      = null;   // 'push'|'give_item'|'handshake'|'point_at'|null
+    this._subPhase      = null;   // 'reach'|'hold'|'release'
+    this._subTimer      = 0;
+    this._aBase         = null;   // A 的基准帧关节坐标快照
+    this._bBase         = null;   // B 的基准帧关节坐标快照
+    this._holdDur       = 0;
+    this._pushBReleased = false;  // push 子事件 B 已释放去 fall 链路
   }
 
   _enterTalk(npc) {
@@ -110,13 +153,145 @@ class TalkActivity extends Activity {
   update(dt) {
     if (!this.a.alive || !this.b.alive) return false;
     this.timer += dt;
-    this._faceEachOther();
-    return this.timer < this.duration;
+
+    if (this.subState === 'talking') {
+      this._faceEachOther();
+      if (this.timer >= this.duration) {
+        const type = this._selectSubEvent();
+        if (type) {
+          this._startSubEvent(type);
+          return this._subEvent !== null;  // 启动失败则自然结束
+        }
+        return false;  // 自然结束
+      }
+      return true;
+    }
+
+    return this._tickSubEvent(dt);
+  }
+
+  // 按 A 的 profile socialWeights 随机选子事件；返回类型字符串或 null
+  _selectSubEvent() {
+    const w = (this.a._profile && this.a._profile.socialWeights) || {};
+    const candidates = [
+      ['push',      w.push      ?? 0.04],
+      ['give_item', w.give_item ?? 0.05],
+      ['handshake', w.handshake ?? 0.06],
+      ['point_at',  w.point_at  ?? 0.05],
+    ];
+    for (const [type, p] of candidates) {
+      if (chance(p)) return type;
+    }
+    return null;
+  }
+
+  // 初始化子事件：捕获基准帧、设置计时和标签
+  _startSubEvent(type) {
+    const cfg = SUB_EVENTS[type];
+    if (!cfg) return;
+
+    this._subEvent      = type;
+    this._subPhase      = 'reach';
+    this._subTimer      = 0;
+    this._pushBReleased = false;
+
+    this._aBase = cfg.aDelta ? this._captureBasePose(this.a, Object.keys(cfg.aDelta)) : {};
+    this._bBase = cfg.bDelta ? this._captureBasePose(this.b, Object.keys(cfg.bDelta)) : {};
+
+    this._holdDur = cfg.holdRange
+      ? rand(cfg.holdRange[0], cfg.holdRange[1])
+      : (cfg.hold ?? 1.0);
+
+    // 设置临时标签
+    let aTags = cfg.aTags ? [...cfg.aTags] : [];
+    let bTags = cfg.bTags ? [...cfg.bTags] : [];
+    if (type === 'handshake') {
+      const tag = chance(0.5) ? 'greeting' : 'agreement';
+      aTags = [tag];
+      bTags = [tag];
+    }
+    this.a._extraTags = aTags.length > 0 ? aTags : null;
+    this.b._extraTags = bTags.length > 0 ? bTags : null;
+
+    this.subState = type;
+    dlog(`[Activity ${this.label}] sub-event: ${type}`);
+  }
+
+  // 每帧推进子事件（reach → hold → release → 结束）；返回 false = 销毁活动
+  _tickSubEvent(dt) {
+    const cfg = SUB_EVENTS[this._subEvent];
+    if (!cfg) return false;
+    this._subTimer += dt;
+
+    if (this._subPhase === 'reach') {
+      const t = Math.min(1, this._subTimer / cfg.reach);
+      this._applyLerpPose(this.a, this._aBase, cfg.aDelta, t);
+      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, cfg.bDelta, t);
+
+      if (this._subTimer >= cfg.reach) {
+        this._subPhase = 'hold';
+        this._subTimer = 0;
+
+        // push 到达 hold 时：释放 B 进入 fall 链路
+        if (this._subEvent === 'push' && !this._pushBReleased) {
+          this._pushBReleased = true;
+          this.release(this.b);
+          this.b.bond = null;
+          this.participants = this.participants.filter(p => p.npc !== this.b);
+          setState(this.b, 'fall', 'push');
+          // setState 会清空 _extraTags，重设以便取景框捕获
+          this.b._extraTags = ['conflict', 'victim'];
+        }
+      }
+    } else if (this._subPhase === 'hold') {
+      if (this._subTimer >= this._holdDur) {
+        this._subPhase = 'release';
+        this._subTimer = 0;
+      }
+    } else if (this._subPhase === 'release') {
+      const t = Math.max(0, 1 - this._subTimer / cfg.release);
+      this._applyLerpPose(this.a, this._aBase, cfg.aDelta, t);
+      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, cfg.bDelta, t);
+
+      if (this._subTimer >= cfg.release) {
+        this.a.overlayPose = null;
+        if (!this._pushBReleased) this.b.overlayPose = null;
+        return false;  // 子事件完成，触发 destroy
+      }
+    }
+
+    return true;
+  }
+
+  // 从 NPC 当前动画帧快照指定关节的局部坐标
+  _captureBasePose(npc, joints) {
+    const anim  = npc.renderer ? npc.renderer.getAnimation(npc.animation) : null;
+    const base  = {};
+    if (anim) {
+      const frame = anim.frames[npc.frameIndex % anim.frameCount];
+      for (const j of joints) base[j] = frame[j] ? [...frame[j]] : [0, 0];
+    }
+    return base;
+  }
+
+  // 将 basePose + deltaPose*t 写入 npc.overlayPose
+  _applyLerpPose(npc, basePose, deltaPose, t) {
+    if (!deltaPose) return;
+    const pose = {};
+    for (const [j, delta] of Object.entries(deltaPose)) {
+      const base = basePose[j] || [0, 0];
+      pose[j] = [base[0] + delta[0] * t, base[1] + delta[1] * t];
+    }
+    npc.overlayPose = pose;
   }
 
   interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
+    // 清理骨骼覆盖（push 时 B 已被释放，B 的 overlayPose 从未被设置过，跳过）
+    if (this.a.alive) this.a.overlayPose = null;
+    if (!this._pushBReleased && this.b.alive) this.b.overlayPose = null;
+
     for (const { npc } of this.participants) {
       npc.bond = null;
       if (npc.alive) setState(npc, 'walk', 'activity-end');
