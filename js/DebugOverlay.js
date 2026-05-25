@@ -70,7 +70,8 @@ export class DebugOverlay {
   // 组装单个 NPC 的浮标文本
   _floatText(npc) {
     const profile = npc._profile ? npc._profile.name : (npc.npcType || '--');
-    const state   = npc.state || npc.animation || '?';
+    const raw     = npc.state || npc.animation || '?';
+    const state   = (raw === 'loiter' && npc._microPhaseName) ? `loiter:${npc._microPhaseName}` : raw;
     const overlay = npc.overlay || '-';
     let activity  = '-';
     const act = npc._activity;

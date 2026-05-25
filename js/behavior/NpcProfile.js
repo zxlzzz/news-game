@@ -18,7 +18,7 @@
 const PED_TRANSITIONS = {
   walk:       { stand: 0.6, sit_bench: 0.2, run: 0.08, squat: 0.01, sit_ground: 0.02 },
   run:        { walk: 0.9, fall: 0.1 },
-  stand:      { walk: 0.84, sit_bench: 0.1, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05 },
+  stand:      { walk: 0.77, sit_bench: 0.1, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05, loiter: 0.07 },
   sit_bench:  { stand: 0.97, lie_bench: 0.03 },   // lie_bench 需 sit_bench 已持续 >12s
   squat:      { stand: 1.0 },
   sit_ground: { stand: 1.0 },
@@ -31,14 +31,14 @@ const PED_TRANSITIONS = {
 
 const PED_ALLOWED = [
   'walk', 'run', 'stand', 'sit_bench', 'fall', 'lie_ground',
-  'squat', 'sit_ground', 'get_up', 'lean_wall', 'lie_bench',
+  'squat', 'sit_ground', 'get_up', 'lean_wall', 'lie_bench', 'loiter',
 ];
 
 // 持久特征 hold_bag 的兼容状态（由 spawner 给 NPC 设 persistentOverlay 后生效）
-const HOLD_BAG = { on: ['walk', 'run', 'stand'], persistent: true };
+const HOLD_BAG = { on: ['walk', 'run', 'stand', 'loiter'], persistent: true };
 // 抽烟 overlay：需 smoker trait；靠墙时概率翻倍
 const SMOKE = {
-  on: ['stand', 'lean_wall', 'sit_bench'], chance: 0.002, dur: [15, 30],
+  on: ['stand', 'lean_wall', 'sit_bench', 'loiter'], chance: 0.002, dur: [15, 30],
   traitRequired: 'smoker', chanceMultiplier: { lean_wall: 2.0 },
 };
 // 抱臂 overlay：stand 状态下偶尔交叉双臂，数秒后恢复；pose 直接覆盖关节坐标
@@ -56,8 +56,8 @@ const PEDESTRIAN = {
   allowedStates: PED_ALLOWED,
   transitions: PED_TRANSITIONS,
   overlays: {
-    phone_look: { on: ['walk', 'stand'], chance: 0.004, dur: [5, 25] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench'], chance: 0.002, dur: [10, 20] },
+    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.004, dur: [5, 25] },
+    phone_call: { on: ['walk', 'stand', 'sit_bench', 'loiter'], chance: 0.002, dur: [10, 20] },
     smoke:      SMOKE,
     hold_bag:   HOLD_BAG,
     cross_arm:  CROSS_ARM,
@@ -66,19 +66,23 @@ const PEDESTRIAN = {
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
+  loiterChance: 0.25,
+  loiterDurationRange: [15, 45],
 };
 
 const BUSINESSMAN = {
   ...PEDESTRIAN,
   name: 'businessman',
   overlays: {
-    phone_look: { on: ['walk', 'stand'], chance: 0.006, dur: [5, 25] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall'], chance: 0.004, dur: [10, 20] },
+    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.006, dur: [5, 25] },
+    phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall', 'loiter'], chance: 0.004, dur: [10, 20] },
     smoke:      SMOKE,
     hold_bag:   HOLD_BAG,
     cross_arm:  CROSS_ARM,
   },
   socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
+  loiterChance: 0.12,
+  loiterDurationRange: [15, 40],
 };
 
 // 游客：蹲下看地图/坐地上休息概率稍高
@@ -88,16 +92,18 @@ const TOURIST = {
   transitions: {
     ...PED_TRANSITIONS,
     walk:  { stand: 0.55, sit_bench: 0.18, run: 0.06, squat: 0.02, sit_ground: 0.05, lean_wall: 0.01 },
-    stand: { walk: 0.78, sit_bench: 0.08, sit_ground: 0.07, squat: 0.02, lean_wall: 0.05 },
+    stand: { walk: 0.68, sit_bench: 0.08, sit_ground: 0.07, squat: 0.02, lean_wall: 0.05, loiter: 0.10 },
   },
   overlays: {
-    phone_look: { on: ['walk', 'stand', 'sit_ground', 'squat'], chance: 0.005, dur: [5, 25] },
-    phone_call: { on: ['walk', 'stand'], chance: 0.002, dur: [10, 20] },
+    phone_look: { on: ['walk', 'stand', 'sit_ground', 'squat', 'loiter'], chance: 0.005, dur: [5, 25] },
+    phone_call: { on: ['walk', 'stand', 'loiter'], chance: 0.002, dur: [10, 20] },
     smoke:      SMOKE,
     hold_bag:   HOLD_BAG,
     cross_arm:  CROSS_ARM,
   },
   socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
+  loiterChance: 0.40,
+  loiterDurationRange: [20, 60],
 };
 
 const CHESS_PLAYER = {

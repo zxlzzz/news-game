@@ -46,6 +46,7 @@ const STATE_DEFS = {
   lie_bench:  { anim: 'lie_bench',  speedK: 0,   once: true,  dur: [15, 40] },
   get_up:     { anim: 'get_up',     speedK: 0,   once: true,  dur: null     },
   talk:       { anim: 'single',     speedK: 0,   once: false, dur: null     },
+  loiter:     { anim: 'single',     speedK: 0,   once: false, dur: null     },
 };
 
 export { STATE_DEFS };
@@ -60,6 +61,12 @@ export function setState(npc, state, trigger = '?') {
   if (npc._bench && state !== 'sit_bench' && state !== 'lie_bench') {
     npc._bench._occupiedBy = null;
     npc._bench = null;
+  }
+
+  // 离开 loiter 时清理微行为遗留（朝向 + overlayPose）
+  if (prev === 'loiter' && state !== 'loiter') {
+    npc.overlayPose = null;
+    if (npc._loiterDir !== undefined) { npc.direction = npc._loiterDir; npc._loiterDir = undefined; }
   }
 
   npc.state      = state;
@@ -78,6 +85,13 @@ export function setState(npc, state, trigger = '?') {
   npc._extraTags = null;
   if (state === 'lie_bench') {
     npc._extraTags = (Math.random() < 0.2) ? ['resting', 'homeless'] : ['resting'];
+  }
+  if (state === 'loiter') {
+    npc._loiterDur     = null;   // _tickLoiter 首帧初始化
+    npc._loiterElapsed = 0;
+    npc._microPhase    = null;
+    npc._microTimer    = 0;
+    npc._extraTags     = ['standing', 'idle'];
   }
 
   if (prev && prev !== state) {
@@ -189,20 +203,117 @@ function _evaluateTransitions(npc, profile, envQuery) {
 }
 
 // ─── 当前状态的 per-frame 行为（纯行为，不含转换判断）────────────────────────
-function _tickState(npc, envQuery, dt) {
+function _tickState(npc, envQuery, profile, dt) {
   // walk/run：逐帧转向漫游目标点（含避障）
   if (npc.roam && (npc.state === 'walk' || npc.state === 'run')) {
-    steerRoam(npc, envQuery, dt);
+    steerRoam(npc, envQuery, profile, dt);
+  }
+  // loiter：驱动内部微行为循环
+  if (npc.state === 'loiter') {
+    _tickLoiter(npc, profile, dt);
   }
 }
 
+// ─── Loiter 微行为循环 ────────────────────────────────────────────────────────
+// phone-look pose：双手抬至胸前持机；bag-adjust pose：换手拎包（两组交替）
+const POSE_PHONE = { l_elbow: [-9, -8], r_elbow: [9, -8], l_hand: [-4, -18], r_hand: [4, -18] };
+const POSE_BAG_A = { r_elbow: [12, -8], r_hand: [16, -3] };
+const POSE_BAG_B = { l_elbow: [-12, -8], l_hand: [-16, -3] };
+
+function _getMicroActionDur(npc) {
+  const ov = npc._loiterOverlay;
+  if (ov === 'phone_call')                  return rand(3, 6);
+  if (ov === 'phone_look')                  return rand(5, 10);
+  if (npc._traits && npc._traits.smoker)    return rand(4, 6);
+  if (npc.persistentOverlay === 'hold_bag') return rand(2, 3);
+  if (npc._traits && npc._traits.walk_dog)  return rand(3, 5);  // TODO: 狗停下嗅地
+  return rand(5, 8);
+}
+
+function _updateLoiterExtraTags(npc) {
+  const base = ['standing', 'idle'];
+  if (npc._microPhase !== 1) { npc._extraTags = base.slice(); return; }
+  const ov = npc._loiterOverlay;
+  if      (ov === 'phone_call')                 npc._extraTags = [...base, 'phone_call', 'communicating'];
+  else if (ov === 'phone_look')                 npc._extraTags = [...base, 'phone_use', 'distracted'];
+  else if (npc._traits && npc._traits.smoker)   npc._extraTags = [...base, 'smoking'];
+  else if (npc._traits && npc._traits.walk_dog) npc._extraTags = [...base, 'dog_owner', 'watching'];
+  else                                          npc._extraTags = [...base, 'phone_use', 'distracted'];
+}
+
+function _applyLoiterVisuals(npc) {
+  if (npc._microPhase !== 1) { npc.overlayPose = null; return; }
+  const ov = npc._loiterOverlay;
+  if (ov === 'phone_call' || (npc._traits && npc._traits.smoker)) {
+    npc.overlayPose = null;       // 各自 overlay 负责视觉（TODO）
+  } else if (npc.persistentOverlay === 'hold_bag') {
+    npc.overlayPose = (Math.floor(npc._loiterElapsed * 2) % 2 === 0) ? POSE_BAG_A : POSE_BAG_B;
+  } else {
+    npc.overlayPose = POSE_PHONE; // phone_look / walk_dog / 默认：低头看手机
+  }
+}
+
+function _advanceMicroPhase(npc) {
+  // 离开 check_around 时还原朝向
+  if (npc._microPhase === 3 && npc._loiterDir !== undefined) {
+    npc.direction  = npc._loiterDir;
+    npc._loiterDir = undefined;
+  }
+  const next = (npc._microPhase + 1) % 4;
+  npc._microPhase     = next;
+  npc._microPhaseName = ['look_around', 'micro_action', 'look_around', 'check_around'][next];
+  switch (next) {
+    case 0: npc._microTimer = rand(3, 6);                break;
+    case 1: npc._microTimer = _getMicroActionDur(npc);   break;
+    case 2: npc._microTimer = rand(2, 4);                break;
+    case 3:
+      npc._microTimer = rand(1, 2);
+      npc._loiterDir  = npc.direction;
+      npc.direction   = -npc.direction;   // 短暂转身看另一个方向
+      break;
+  }
+  _updateLoiterExtraTags(npc);
+}
+
+function _tickLoiter(npc, profile, dt) {
+  // 首帧初始化（setState 将 _loiterDur 置 null 作为触发信号）
+  if (npc._loiterDur === null) {
+    const range         = profile.loiterDurationRange || [15, 45];
+    npc._loiterDur      = rand(range[0], range[1]);
+    npc._loiterElapsed  = 0;
+    npc._loiterOverlay  = npc.overlay;   // 快照进入时的 overlay，供 micro_action 分派
+    npc._microPhase     = 0;
+    npc._microPhaseName = 'look_around';
+    npc._microTimer     = rand(3, 6);
+    _updateLoiterExtraTags(npc);
+  }
+
+  npc._loiterElapsed += dt;
+
+  // 总时长耗尽 → 重新 walk
+  if (npc._loiterElapsed >= npc._loiterDur) {
+    setState(npc, 'walk', 'loiter-end');
+    return;
+  }
+
+  npc._microTimer -= dt;
+  if (npc._microTimer <= 0) _advanceMicroPhase(npc);
+
+  _applyLoiterVisuals(npc);
+}
+
 // ─── 二维漫游转向：朝目标点的 seek + 切向避障（steering behavior）─────────────
-function steerRoam(npc, envQuery, dt) {
+function steerRoam(npc, envQuery, profile, dt) {
   if (!npc.roamTarget) pickRoamTarget(npc, envQuery);
   const t = npc.roamTarget;
   const dx = t.x - npc.x, dy = t.y - npc.y;
   const dist = Math.hypot(dx, dy);
-  if (dist < 6) { pickRoamTarget(npc, envQuery); return; }
+  if (dist < 6) {
+    const lc = profile && profile.loiterChance;
+    if (lc && Math.random() < lc) { setState(npc, 'loiter', 'loiter-chance'); return; }
+    pickRoamTarget(npc, envQuery);
+    return;
+  }
 
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
   let vx = dx / dist * total, vy = dy / dist * total;
@@ -265,5 +376,5 @@ function pickRoamTarget(npc, envQuery) {
 export function tickBaseState(npc, profile, envQuery, dt) {
   npc.stateTimer += dt;
   _evaluateTransitions(npc, profile, envQuery);   // 转换求值（不含 setState 的纯行为）
-  _tickState(npc, envQuery, dt);                  // per-state 行为（steerRoam 等）
+  _tickState(npc, envQuery, profile, dt);         // per-state 行为（steerRoam 等）
 }

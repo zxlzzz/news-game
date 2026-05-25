@@ -15,6 +15,7 @@ const STATE_TAGS = {
   // 批次 1 新增状态
   lean_wall: 'leaning', squat: 'squatting', sit_ground: 'sitting',
   lie_bench: 'lying', get_up: 'getting_up',
+  loiter: 'loitering',
 };
 // overlay → 额外语义标签（overlay 名本身也会作为标签加入）
 const OVERLAY_EXTRA_TAGS = {
