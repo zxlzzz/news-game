@@ -2,98 +2,74 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>Anim Preview</title>
+<title>Animator Debugger</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <h1>ANIM PREVIEW</h1>
-  <div class="toolbar">
-    <button id="playBtn" onclick="app.togglePlay()" title="Space">▶ 播放</button>
-    <button onclick="app.stepFrame(-1)" title="←">◀ 帧退</button>
-    <button onclick="app.stepFrame(1)" title="→">帧进 ▶</button>
-    <span class="sep"></span>
-    <label>FPS</label>
-    <input type="number" id="fpsInput" value="8" min="1" max="60" title="帧率">
-    <span class="sep"></span>
-    <span id="frameInfo" class="frame-info">A:1/1  B:1/1</span>
-    <span class="sep"></span>
-    <button onclick="app.exportFrame()" class="green" title="导出当前帧所有关节坐标">📋 导出帧</button>
+  <span class="title">ANIMATOR DEBUGGER</span>
+  <span class="status-bar" id="statusBar">Ready</span>
+  <div class="header-actions">
+    <button class="sm green" onclick="app.exportAll()">📋 导出全部</button>
   </div>
 </header>
 
-<div class="main-area">
+<div class="main-layout">
 
-  <!-- 画布 + 时间轴 -->
-  <div class="canvas-col">
-    <div class="canvas-wrap">
-      <canvas id="stage"></canvas>
+  <!-- ─── 左栏：预览 + 控制 ─────────────────────────────────── -->
+  <div class="left-col">
+    <canvas id="previewCanvas" class="preview-canvas"></canvas>
+    <div class="controls-scroll" id="controlPanel">
+      <!-- 由 JS 动态生成 -->
     </div>
-    <div class="timeline-bar" id="timelineBar"></div>
   </div>
 
-  <!-- 侧面板 -->
-  <div class="side-panel">
-
-    <!-- 人物 A -->
-    <div class="panel-section puppet-a" id="sectionA">
-      <h3>人物 A</h3>
-      <div class="config-row">
-        <select id="animSelectA" onchange="app.loadAnim('a', this.value)"></select>
-        <button id="dirBtnA" onclick="app.toggleDir('a')" class="sm">→ 右</button>
-      </div>
-      <div class="overlay-header">
-        <span class="overlay-label">Overlay Pose JSON</span>
-        <select id="presetA" class="preset-select" onchange="app.applyPreset('a', this.value)">
-          <option value="">-- 预设 --</option>
-        </select>
-      </div>
-      <textarea id="overlayA" class="overlay-input"
-        placeholder='{"r_hand":[x,y],"r_elbow":[x,y]}'
-        oninput="app.updateOverlay('a', this.value)"></textarea>
-      <div class="btn-row-sm">
-        <button onclick="app.clearOverlay('a')">清除</button>
-        <button onclick="app.copyOverlay('a')" class="blue">复制</button>
+  <!-- ─── 右栏：Animation Graph ─────────────────────────────── -->
+  <div class="right-col">
+    <div class="graph-header">
+      <span class="graph-title">Animation Graph</span>
+      <div class="graph-toolbar">
+        <select id="graphProfile" onchange="app.graph.setProfile(this.value)"></select>
+        <label class="chk-label" title="显示转换概率标签">
+          <input type="checkbox" id="showEdgeLabels" checked onchange="app.graph.render()">
+          概率
+        </label>
       </div>
     </div>
-
-    <!-- 人物 B -->
-    <div class="panel-section puppet-b" id="sectionB">
-      <h3>人物 B</h3>
-      <div class="config-row">
-        <select id="animSelectB" onchange="app.loadAnim('b', this.value)"></select>
-        <button id="dirBtnB" onclick="app.toggleDir('b')" class="sm">← 左</button>
-      </div>
-      <div class="overlay-header">
-        <span class="overlay-label">Overlay Pose JSON</span>
-        <select id="presetB" class="preset-select" onchange="app.applyPreset('b', this.value)">
-          <option value="">-- 预设 --</option>
-        </select>
-      </div>
-      <textarea id="overlayB" class="overlay-input"
-        placeholder='{"r_hand":[x,y],"r_elbow":[x,y]}'
-        oninput="app.updateOverlay('b', this.value)"></textarea>
-      <div class="btn-row-sm">
-        <button onclick="app.clearOverlay('b')">清除</button>
-        <button onclick="app.copyOverlay('b')" class="blue">复制</button>
-      </div>
+    <svg id="animGraph" class="graph-svg"></svg>
+    <div class="graph-legend">
+      <span class="leg move">●移动</span>
+      <span class="leg idle">●闲置</span>
+      <span class="leg sit">●坐靠</span>
+      <span class="leg ground">●地面</span>
+      <span class="leg special">●特殊</span>
+      <span class="leg social">●社交</span>
     </div>
+  </div>
+</div>
 
-    <!-- 关节坐标 A -->
-    <div class="panel-section">
-      <h3>关节 A <span class="dim">（含 overlay）</span></h3>
-      <div id="coordsA" class="coords-panel"></div>
-    </div>
-
-    <!-- 关节坐标 B -->
-    <div class="panel-section">
-      <h3>关节 B <span class="dim">（含 overlay）</span></h3>
-      <div id="coordsB" class="coords-panel"></div>
-    </div>
-
-  </div><!-- /side-panel -->
-</div><!-- /main-area -->
+<!-- ─── 底部控制栏 ──────────────────────────────────────────── -->
+<footer class="bottom-bar">
+  <div class="pb-group">
+    <button id="playBtn" onclick="app.pb.toggle()" class="pb-btn">▶</button>
+    <button onclick="app.pb.step(-1)" class="pb-btn" title="Q / ←">◀</button>
+    <button onclick="app.pb.step(1)"  class="pb-btn" title="E / →">▶</button>
+  </div>
+  <span class="sep"></span>
+  <span class="bot-label">Frame</span>
+  <span id="frameInfo" class="frame-info">—</span>
+  <span class="sep"></span>
+  <span class="bot-label">Speed</span>
+  <div class="speed-btns" id="speedBtns">
+    <button class="spd" data-s="0.25" onclick="app.pb.setSpeed(0.25)">0.25×</button>
+    <button class="spd" data-s="0.5"  onclick="app.pb.setSpeed(0.5)">0.5×</button>
+    <button class="spd spd-act" data-s="1"    onclick="app.pb.setSpeed(1)">1×</button>
+    <button class="spd" data-s="2"    onclick="app.pb.setSpeed(2)">2×</button>
+  </div>
+  <span class="sep"></span>
+  <button onclick="app.pb.resetAllFrames()" class="sm">↺ 重置帧</button>
+</footer>
 
 <script type="module" src="js/app.js"></script>
 </body>
