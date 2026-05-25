@@ -41,6 +41,14 @@ const SMOKE = {
   on: ['stand', 'lean_wall', 'sit_bench'], chance: 0.002, dur: [15, 30],
   traitRequired: 'smoker', chanceMultiplier: { lean_wall: 2.0 },
 };
+// 抱臂 overlay：stand 状态下偶尔交叉双臂，数秒后恢复；pose 直接覆盖关节坐标
+const CROSS_ARM = {
+  on: ['stand'], chance: 0.003, dur: [5, 15],
+  pose: {
+    l_elbow: [-14, -11], r_elbow: [14, -11],
+    l_hand:  [9,  -19],  r_hand:  [-10, -18],
+  },
+};
 
 const PEDESTRIAN = {
   name: 'pedestrian',
@@ -52,6 +60,7 @@ const PEDESTRIAN = {
     phone_call: { on: ['walk', 'stand', 'sit_bench'], chance: 0.002, dur: [10, 20] },
     smoke:      SMOKE,
     hold_bag:   HOLD_BAG,
+    cross_arm:  CROSS_ARM,
   },
   activities: ['talk'],
   traits: {},
@@ -67,6 +76,7 @@ const BUSINESSMAN = {
     phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall'], chance: 0.004, dur: [10, 20] },
     smoke:      SMOKE,
     hold_bag:   HOLD_BAG,
+    cross_arm:  CROSS_ARM,
   },
   socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
 };
@@ -85,6 +95,7 @@ const TOURIST = {
     phone_call: { on: ['walk', 'stand'], chance: 0.002, dur: [10, 20] },
     smoke:      SMOKE,
     hold_bag:   HOLD_BAG,
+    cross_arm:  CROSS_ARM,
   },
   socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
 };
@@ -100,15 +111,25 @@ const CHESS_PLAYER = {
   cameraReaction: 'neutral',
 };
 
+// 观棋者：行为接近行人，但额外参与 chess_watch；便于将来与行人双向转换
 const CHESS_ONLOOKER = {
   name: 'chess_onlooker',
   initial: 'stand',
-  allowedStates: ['walk', 'stand'],
-  transitions: { walk: { stand: 1.0 }, stand: { walk: 1.0 } },
-  overlays: {},
-  activities: ['chess_watch'],
+  allowedStates: ['walk', 'stand', 'squat', 'sit_ground'],
+  transitions: {
+    walk:       { stand: 0.75, squat: 0.01, sit_ground: 0.01 },
+    stand:      { walk: 0.88, squat: 0.06, sit_ground: 0.06 },
+    squat:      { stand: 1.0 },
+    sit_ground: { stand: 1.0 },
+  },
+  overlays: {
+    phone_look: { on: ['walk', 'stand'], chance: 0.003, dur: [5, 20] },
+    cross_arm:  CROSS_ARM,
+  },
+  activities: ['talk', 'chess_watch'],
   traits: {},
   cameraReaction: 'neutral',
+  socialWeights: { push: 0.02, give_item: 0.04, handshake: 0.05, point_at: 0.04 },
 };
 
 const DOG_OWNER = {

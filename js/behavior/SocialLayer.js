@@ -345,13 +345,51 @@ class ChessActivity extends Activity {
     npc.playOnce   = true;
   }
 
-  // 旁观者站立看棋：保持 idle 循环动画，state 置 null → 'standing'
+  // 旁观者：播放 chess_onlookers 倾身动画后定格，定时小幅走动再回来
   _setupOnlooker(npc) {
-    npc.state      = null;
-    npc.animation  = 'idle';
-    npc.speed      = 0;
-    npc.vy         = 0;
-    npc.playOnce   = false;
+    npc.state       = null;
+    npc.animation   = 'chess_onlookers';
+    npc.speed       = 0;
+    npc.vy          = 0;
+    npc.playOnce    = true;
+    npc.animDone    = false;
+    npc.frameIndex  = 0;
+    npc.frameTimer  = 0;
+    npc._watchPhase = 'watch';
+    npc._watchTimer = 0;
+    npc._watchDur   = rand(6, 14);
+    npc._homeX      = npc.x;
+  }
+
+  // 旁观者 watch/stroll 循环
+  _tickOnlooker(npc, dt) {
+    npc._watchTimer += dt;
+    if (npc._watchPhase === 'watch') {
+      if (npc._watchTimer >= npc._watchDur) {
+        npc._watchPhase    = 'stroll';
+        npc._watchTimer    = 0;
+        npc._watchDur      = rand(2, 4);
+        const side         = Math.random() < 0.5 ? 1 : -1;
+        const dist         = 25 + Math.random() * 35;
+        npc._strollTargetX = npc._homeX + side * dist;
+        npc.animation      = 'walk';
+        npc.playOnce       = false;
+        npc.speed          = npc.walkSpeed || 26;
+        npc.direction      = npc._strollTargetX > npc.x ? 1 : -1;
+      }
+    } else {
+      npc.direction = npc._strollTargetX > npc.x ? 1 : -1;
+      if (Math.abs(npc._strollTargetX - npc.x) < 6 || npc._watchTimer >= npc._watchDur) {
+        npc._watchPhase = 'watch';
+        npc._watchTimer = 0;
+        npc._watchDur   = rand(6, 14);
+        npc.animation   = 'chess_onlookers';
+        npc.playOnce    = true;
+        npc.animDone    = false;
+        npc.frameIndex  = 0;
+        npc.speed       = 0;
+      }
+    }
   }
 
   update(dt) {
@@ -373,6 +411,9 @@ class ChessActivity extends Activity {
         startPlay(next);
         freezeAt0(prev);
       }
+    }
+    for (const o of this.onlookers) {
+      if (o.alive) this._tickOnlooker(o, dt);
     }
     return true;
   }

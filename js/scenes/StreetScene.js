@@ -48,11 +48,14 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_sit_bench',  'assets/animations/sit_bench.json');
     this.load.json('anim_fall',       'assets/animations/fall.json');
     this.load.json('anim_lie_ground', 'assets/animations/lie_ground.json');
-    // 批次 1：路人扩展状态（sit_ground 暂复用 squat）
-    this.load.json('anim_lean_wall',  'assets/animations/lean_wall.json');
-    this.load.json('anim_squat',      'assets/animations/squat.json');
-    this.load.json('anim_lie_bench',  'assets/animations/lie_bench.json');
-    this.load.json('anim_get_up',     'assets/animations/get_up.json');
+    // 批次 1：路人扩展状态
+    this.load.json('anim_lean_wall',       'assets/animations/lean_wall.json');
+    this.load.json('anim_squat',           'assets/animations/squat.json');
+    this.load.json('anim_sit_ground',      'assets/animations/sit_ground.json');
+    this.load.json('anim_lie_bench',       'assets/animations/lie_bench.json');
+    this.load.json('anim_get_up',          'assets/animations/get_up.json');
+    this.load.json('anim_chess_onlookers', 'assets/animations/chess_onlookers.json');
+    this.load.json('anim_cross_arm',       'assets/animations/cross_arm.json');
   }
 
   create() {
@@ -85,10 +88,13 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('sit_bench',  this.cache.json.get('anim_sit_bench'));
     this.stickRenderer.loadAnimation('fall',       this.cache.json.get('anim_fall'));
     this.stickRenderer.loadAnimation('lie_ground', this.cache.json.get('anim_lie_ground'));
-    this.stickRenderer.loadAnimation('lean_wall',  this.cache.json.get('anim_lean_wall'));
-    this.stickRenderer.loadAnimation('squat',      this.cache.json.get('anim_squat'));
-    this.stickRenderer.loadAnimation('lie_bench',  this.cache.json.get('anim_lie_bench'));
-    this.stickRenderer.loadAnimation('get_up',     this.cache.json.get('anim_get_up'));
+    this.stickRenderer.loadAnimation('lean_wall',       this.cache.json.get('anim_lean_wall'));
+    this.stickRenderer.loadAnimation('squat',           this.cache.json.get('anim_squat'));
+    this.stickRenderer.loadAnimation('sit_ground',      this.cache.json.get('anim_sit_ground'));
+    this.stickRenderer.loadAnimation('lie_bench',       this.cache.json.get('anim_lie_bench'));
+    this.stickRenderer.loadAnimation('get_up',          this.cache.json.get('anim_get_up'));
+    this.stickRenderer.loadAnimation('chess_onlookers', this.cache.json.get('anim_chess_onlookers'));
+    this.stickRenderer.loadAnimation('cross_arm',       this.cache.json.get('anim_cross_arm'));
 
     // 统一 Entity 管理器
     // 缩放参考用人行道带（远端步行带 → 近端步行带），让远小近大对比贯穿整个纵深
@@ -112,6 +118,7 @@ export class StreetScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.input.keyboard.on('keydown-P', () => this._exportImage());
     this.input.keyboard.on('keydown-D', () => this.debugOverlay.toggle());
+    this._setupZoom();
   }
 
   // ─── UI ──────────────────────────────────────────────────────────────────────
@@ -120,7 +127,7 @@ export class StreetScene extends Phaser.Scene {
     const W = this.cameras.main.width;
     const H = this.cameras.main.height;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放  |  P 导出长图  |  D 调试', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  滚轮缩放  Z 重置  |  拖动取景框 · 拖右下角缩放  |  P 导出长图  |  D 调试', {
       fontFamily: '"JetBrains Mono", monospace',
       fontSize: '13px',
       color: '#555555',
@@ -231,6 +238,43 @@ export class StreetScene extends Phaser.Scene {
       `疑云！${subject}现场完整记录`,
     ];
     return templates[Math.floor(Math.random() * templates.length)];
+  }
+
+  // ─── 滚轮缩放 ─────────────────────────────────────────────────────────────────
+
+  _setupZoom() {
+    const cam = this.cameras.main;
+    this.input.on('wheel', (pointer, _objs, _dx, deltaY) => {
+      const factor  = deltaY > 0 ? 0.9 : 1.1;
+      const newZoom = Phaser.Math.Clamp(cam.zoom * factor, 0.5, 2.0);
+      // 以鼠标位置为支点缩放（世界坐标不变）
+      const wx = cam.scrollX + pointer.x / cam.zoom;
+      const wy = cam.scrollY + pointer.y / cam.zoom;
+      cam.zoom = newZoom;
+      cam.scrollX = wx - pointer.x / newZoom;
+      cam.scrollY = wy - pointer.y / newZoom;
+      this._updateUIForZoom(newZoom);
+    });
+    this.input.keyboard.on('keydown-Z', () => {
+      cam.zoom = 1.0;
+      cam.scrollY = 0;
+      this._updateUIForZoom(1.0);
+    });
+  }
+
+  // 把所有 scrollFactor=0 的 UI 元素位置除以 zoom，抵消相机缩放导致的位移
+  _updateUIForZoom(zoom) {
+    const iz = 1 / zoom;
+    const W  = this.cameras.main.width;
+    const H  = this.cameras.main.height;
+    this.uiText.setPosition(10 * iz, 10 * iz);
+    this.captureText.setPosition(10 * iz, 36 * iz);
+    this.headlinePanel.setPosition(10 * iz, 64 * iz);
+    this.flashOverlay.setPosition(W / 2 * iz, H / 2 * iz);
+    this.flashOverlay.setDisplaySize(W * iz, H * iz);
+    this.btnCapture.setPosition((W - 126) * iz, (H - 50) * iz);
+    this.btnPublish.setPosition((W - 126) * iz, (H - 90) * iz);
+    if (this.debugOverlay) this.debugOverlay.panel.setPosition(10 * iz, 150 * iz);
   }
 
   // ─── 每帧更新 ─────────────────────────────────────────────────────────────────

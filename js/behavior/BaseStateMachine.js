@@ -25,7 +25,7 @@ const STATE_DEFS = {
   // 批次 1 新增的路人基础状态
   lean_wall:  { anim: 'lean_wall',  speedK: 0,   once: true,  dur: [8, 20] },
   squat:      { anim: 'squat',      speedK: 0,   once: true,  dur: [5, 15] },
-  sit_ground: { anim: 'squat',      speedK: 0,   once: true,  dur: [8, 20] }, // TODO: 待制作 sit_ground.json，暂复用 squat
+  sit_ground: { anim: 'sit_ground', speedK: 0,   once: true,  dur: [8, 20] },
   lie_bench:  { anim: 'lie_bench',  speedK: 0,   once: true,  dur: [15, 40] },
   get_up:     { anim: 'get_up',     speedK: 0,   once: true,  dur: null    }, // 由 animDone 驱动
   talk:       { anim: 'single',     speedK: 0,   once: false, dur: null    },

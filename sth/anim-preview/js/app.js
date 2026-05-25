@@ -15,9 +15,9 @@
 // ─── 动画文件清单 ──────────────────────────────────────────────────────────────
 // 对应 assets/animations/ 下所有 .json 文件
 const ANIM_FILES = [
-  'single', 'idle', 'walk', 'run', 'jog',
+  'single', 'cross_arm', 'idle', 'walk', 'run', 'jog',
   'fall', 'get_up', 'lie_ground',
-  'lean_wall', 'squat', 'squat down', 'stand up',
+  'lean_wall', 'squat', 'squat down', 'stand up', 'sit_ground',
   'sit_bench', 'lie_bench',
   'chess', 'chess_onlookers', 'dogwalk',
   'bike', 'mobile',
