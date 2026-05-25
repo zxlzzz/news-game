@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Anim Preview</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>ANIM PREVIEW</h1>
+  <div class="toolbar">
+    <button id="playBtn" onclick="app.togglePlay()" title="Space">▶ 播放</button>
+    <button onclick="app.stepFrame(-1)" title="←">◀ 帧退</button>
+    <button onclick="app.stepFrame(1)" title="→">帧进 ▶</button>
+    <span class="sep"></span>
+    <label>FPS</label>
+    <input type="number" id="fpsInput" value="8" min="1" max="60" title="帧率">
+    <span class="sep"></span>
+    <span id="frameInfo" class="frame-info">A:1/1  B:1/1</span>
+    <span class="sep"></span>
+    <button onclick="app.exportFrame()" class="green" title="导出当前帧所有关节坐标">📋 导出帧</button>
+  </div>
+</header>
+
+<div class="main-area">
+
+  <!-- 画布 + 时间轴 -->
+  <div class="canvas-col">
+    <div class="canvas-wrap">
+      <canvas id="stage"></canvas>
+    </div>
+    <div class="timeline-bar" id="timelineBar"></div>
+  </div>
+
+  <!-- 侧面板 -->
+  <div class="side-panel">
+
+    <!-- 人物 A -->
+    <div class="panel-section puppet-a" id="sectionA">
+      <h3>人物 A</h3>
+      <div class="config-row">
+        <select id="animSelectA" onchange="app.loadAnim('a', this.value)"></select>
+        <button id="dirBtnA" onclick="app.toggleDir('a')" class="sm">→ 右</button>
+      </div>
+      <div class="overlay-header">
+        <span class="overlay-label">Overlay Pose JSON</span>
+        <select id="presetA" class="preset-select" onchange="app.applyPreset('a', this.value)">
+          <option value="">-- 预设 --</option>
+        </select>
+      </div>
+      <textarea id="overlayA" class="overlay-input"
+        placeholder='{"r_hand":[x,y],"r_elbow":[x,y]}'
+        oninput="app.updateOverlay('a', this.value)"></textarea>
+      <div class="btn-row-sm">
+        <button onclick="app.clearOverlay('a')">清除</button>
+        <button onclick="app.copyOverlay('a')" class="blue">复制</button>
+      </div>
+    </div>
+
+    <!-- 人物 B -->
+    <div class="panel-section puppet-b" id="sectionB">
+      <h3>人物 B</h3>
+      <div class="config-row">
+        <select id="animSelectB" onchange="app.loadAnim('b', this.value)"></select>
+        <button id="dirBtnB" onclick="app.toggleDir('b')" class="sm">← 左</button>
+      </div>
+      <div class="overlay-header">
+        <span class="overlay-label">Overlay Pose JSON</span>
+        <select id="presetB" class="preset-select" onchange="app.applyPreset('b', this.value)">
+          <option value="">-- 预设 --</option>
+        </select>
+      </div>
+      <textarea id="overlayB" class="overlay-input"
+        placeholder='{"r_hand":[x,y],"r_elbow":[x,y]}'
+        oninput="app.updateOverlay('b', this.value)"></textarea>
+      <div class="btn-row-sm">
+        <button onclick="app.clearOverlay('b')">清除</button>
+        <button onclick="app.copyOverlay('b')" class="blue">复制</button>
+      </div>
+    </div>
+
+    <!-- 关节坐标 A -->
+    <div class="panel-section">
+      <h3>关节 A <span class="dim">（含 overlay）</span></h3>
+      <div id="coordsA" class="coords-panel"></div>
+    </div>
+
+    <!-- 关节坐标 B -->
+    <div class="panel-section">
+      <h3>关节 B <span class="dim">（含 overlay）</span></h3>
+      <div id="coordsB" class="coords-panel"></div>
+    </div>
+
+  </div><!-- /side-panel -->
+</div><!-- /main-area -->
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
