@@ -269,20 +269,14 @@ function _updateLoiterExtraTags(npc) {
 function _applyLoiterVisuals(npc) {
   npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
   if (npc._microPhase !== 1) return;
-  let joints = null;
-  const ov = npc._loiterOverlay;
-  if (ov === 'phone_call' || ov === 'phone_look' || npc.traits.includes('smoker')) {
-    joints = null; // 对应 held modifier 已存在，不额外叠加
-  } else if (npc.traits.includes('walk_dog')) {
-    joints = null; // walk_dog trait modifier 已控制左手，不覆盖
-  } else if (npc.traits.includes('hold_bag')) {
-    joints = (Math.floor(npc._loiterElapsed * 2) % 2 === 0) ? POSE_BAG_A : POSE_BAG_B;
-  } else {
-    joints = POSE_PHONE; // 默认：低头看手机
-  }
-  if (joints) npc.modifiers.push({
-    id: '_loiter_micro', kind: 'held', priority: 15, joints, timer: 999,
-  });
+  // 动态检查当前有效的用户级 held mod（比 _loiterOverlay 快照更可靠）
+  const hasActiveHeld = npc.modifiers.some(m => m.kind === 'held' && !m.id.startsWith('_'));
+  if (hasActiveHeld) return;           // held mod 自身已提供视觉，不额外叠加
+  if (npc.traits.includes('walk_dog')) return; // walk_dog trait mod 控制左手，不覆盖
+  const joints = npc.traits.includes('hold_bag')
+    ? ((Math.floor(npc._loiterElapsed * 2) % 2 === 0) ? POSE_BAG_A : POSE_BAG_B)
+    : POSE_PHONE;
+  npc.modifiers.push({ id: '_loiter_micro', kind: 'held', priority: 15, joints, timer: 999 });
 }
 
 function _advanceMicroPhase(npc) {
@@ -296,7 +290,11 @@ function _advanceMicroPhase(npc) {
   npc._microPhaseName = ['look_around', 'micro_action', 'look_around', 'check_around'][next];
   switch (next) {
     case 0: npc._microTimer = rand(3, 6);                break;
-    case 1: npc._microTimer = _getMicroActionDur(npc);   break;
+    case 1:
+      // 每次进入 micro_action 重新读取当前 held mod，避免使用过期快照
+      npc._loiterOverlay = npc.modifiers.find(m => m.kind === 'held' && !m.id.startsWith('_'))?.id ?? null;
+      npc._microTimer = _getMicroActionDur(npc);
+      break;
     case 2: npc._microTimer = rand(2, 4);                break;
     case 3:
       npc._microTimer = rand(1, 2);       // 短暂停顿（不翻转方向，避免叠加修饰器视觉跳变）
