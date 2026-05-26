@@ -139,8 +139,19 @@ function _resolveTimeout(npc, envQuery, profile) {
     // 对齐到椅心，夹在 NPC 自身活动带内（防人行道行人被吸到墙边椅）
     npc.x = Math.max(npc.minX, Math.min(npc.maxX, bench.x));
     npc.y = Math.max(npc.minY, Math.min(npc.maxY, bench.y));
-    // TODO：lean_wall / lie_bench 等也需按 propType 做类似 snap 对齐
     return 'sit_bench';
+  }
+  // lie_bench anchorMode='back'（无竖向偏移），sit_bench anchorMode='hip'（body 关节落 y）。
+  // 坐→躺转换时需重对齐：令 lie_bench body 关节与坐姿体心高度一致（均在 bench.y）。
+  if (next === 'lie_bench' && npc._bench) {
+    let bodyY = 79; // lie_bench body.y 默认值
+    if (npc.renderer) {
+      const anim = npc.renderer.getAnimation('lie_bench');
+      if (anim && anim.frames[0]) bodyY = anim.frames[0].body[1];
+    }
+    npc.y = Math.max(npc.minY, Math.min(npc.maxY,
+      npc._bench.y - Math.round(bodyY * (npc.scale || 0.45))
+    ));
   }
   return next;
 }
@@ -305,8 +316,12 @@ function _tickLoiter(npc, profile, dt) {
 
 // ─── 二维漫游转向：朝目标点的 seek + 切向避障（steering behavior）─────────────
 function steerRoam(npc, envQuery, profile, dt) {
-  // routing：直线奔赴目标槽位，不走随机漫游逻辑
+  // routing：直线奔赴目标，由此函数自行计算位移。
+  // 必须清零 speed/vy，防止 NPC.update() 的 "speed>0" 分支再叠加一次 x 位移
+  // 并触发边界反转方向（routing 时 roam=null，边界检查会翻 direction）。
   if (npc.state === 'routing') {
+    npc.speed = 0;
+    npc.vy    = 0;
     if (!npc._routeTarget) { setState(npc, 'walk', 'routing_no_target'); return; }
     const t  = npc._routeTarget;
     const dx = t.x - npc.x, dy = t.y - npc.y;
@@ -327,7 +342,7 @@ function steerRoam(npc, envQuery, profile, dt) {
       return;
     }
     npc.direction = dx > 0 ? 1 : -1;
-    const spd = npc.speed || 26;
+    const spd = npc.walkSpeed || 26;   // 用 walkSpeed；speed 已被清零不可用
     npc.x += (dx / dist) * spd * dt;
     npc.y += (dy / dist) * spd * dt;
     return;
