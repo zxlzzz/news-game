@@ -43,13 +43,20 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
 
   // 2) held 状态兼容性检查：状态切换后不再兼容的 held 移除
   //    _ 开头的内部修饰器豁免（由 BaseStateMachine / SocialLayer 自行管理）
+  //    被状态变化强制移除的 held 也触发冷却，防止换回该状态后立即重新触发
   const heldDefs = profile.heldPoses || {};
+  let removedByState = false;
   npc.modifiers = npc.modifiers.filter(m => {
     if (m.kind !== 'held') return true;
     if (m.id.startsWith('_')) return true;
     const def = heldDefs[m.id];
-    return def && def.on.includes(npc.state);
+    if (def && def.on.includes(npc.state)) return true;
+    removedByState = true;
+    return false;
   });
+  if (removedByState && !((npc._heldCooldown || 0) > 0)) {
+    npc._heldCooldown = rand(15, 35);
+  }
 
   // 3) 确保 trait 修饰器存在（trait 不会被步骤 1/2 移除，但若意外丢失则补回）
   for (const traitKey of npc.traits) {
