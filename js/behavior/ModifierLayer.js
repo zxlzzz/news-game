@@ -79,6 +79,7 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
     if (activeIds.has(name)) continue;
     if (!def.on.includes(npc.state)) continue;
     if (def.traitRequired && !npc.traits.includes(def.traitRequired)) continue;
+    if (def.traitExcludes?.some(t => npc.traits.includes(t))) continue;
     let p = def.chance;
     if (def.chanceMultiplier?.[npc.state]) p *= def.chanceMultiplier[npc.state];
     if (Math.random() < p) {

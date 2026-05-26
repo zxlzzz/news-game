@@ -36,9 +36,10 @@ const SMOKE = {
   on: ['stand', 'lean_wall', 'sit_bench', 'loiter'], chance: 0.0008, dur: [15, 30],
   traitRequired: 'smoker', chanceMultiplier: { lean_wall: 2.0 },
 };
-// 抱臂 held pose：stand 状态下偶尔交叉双臂
+// 抱臂 held pose：stand 状态下偶尔交叉双臂；持包/遛狗者手已被占用，排除
 const CROSS_ARM = {
   on: ['stand'], chance: 0.001, dur: [8, 20],
+  traitExcludes: ['hold_bag', 'walk_dog'],
 };
 
 const PEDESTRIAN = {

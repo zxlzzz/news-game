@@ -271,12 +271,14 @@ function _applyLoiterVisuals(npc) {
   if (npc._microPhase !== 1) return;
   let joints = null;
   const ov = npc._loiterOverlay;
-  if (ov === 'phone_call' || npc.traits.includes('smoker')) {
+  if (ov === 'phone_call' || ov === 'phone_look' || npc.traits.includes('smoker')) {
     joints = null; // 对应 held modifier 已存在，不额外叠加
+  } else if (npc.traits.includes('walk_dog')) {
+    joints = null; // walk_dog trait modifier 已控制左手，不覆盖
   } else if (npc.traits.includes('hold_bag')) {
     joints = (Math.floor(npc._loiterElapsed * 2) % 2 === 0) ? POSE_BAG_A : POSE_BAG_B;
   } else {
-    joints = POSE_PHONE; // phone_look / walk_dog / 默认：低头看手机
+    joints = POSE_PHONE; // 默认：低头看手机
   }
   if (joints) npc.modifiers.push({
     id: '_loiter_micro', kind: 'held', priority: 15, joints, timer: 999,
@@ -297,9 +299,7 @@ function _advanceMicroPhase(npc) {
     case 1: npc._microTimer = _getMicroActionDur(npc);   break;
     case 2: npc._microTimer = rand(2, 4);                break;
     case 3:
-      npc._microTimer = rand(1, 2);
-      npc._loiterDir  = npc.direction;
-      npc.direction   = -npc.direction;   // 短暂转身看另一个方向
+      npc._microTimer = rand(1, 2);       // 短暂停顿（不翻转方向，避免叠加修饰器视觉跳变）
       break;
   }
   _updateLoiterExtraTags(npc);
