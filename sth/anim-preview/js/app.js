@@ -305,20 +305,17 @@ class NpcInstance {
     this.frame       = 0;
     this.frameAcc    = 0;
     this.dir         = 1;
-    this.traits      = new Set();
-    this.overlayKey  = '';     // 当前下拉选中的 held pose key（仅 UI 跟踪用）
+    this.traits      = [];     // string[]，对应 npc.traits（数组，非 Set）
     this.modifiers   = [];     // Modifier[]，驱动实际渲染
-    this.overlayPose = {};     // custom pose textarea override
-    this.customPoseJson = '';
     this.collapsed   = false;
     this.interactPose = null;
   }
 
   get profile() { return PROFILES[this.profileKey] || PROFILES.pedestrian; }
 
-  // 与 NPC.resolveJoints() 一致：按 priority 升序合并所有 modifier joints
+  // 与 NPC.resolveJoints() 完全一致：按 priority 升序合并所有 modifier joints
   resolveJoints() {
-    if (!this.modifiers.length) return {};
+    if (!this.modifiers.length) return null;
     const out = {};
     for (const m of [...this.modifiers].sort((a, b) => a.priority - b.priority)) {
       if (m.joints) Object.assign(out, m.joints);
@@ -326,12 +323,9 @@ class NpcInstance {
     return out;
   }
 
-  // pose 优先级：interactPose > resolveJoints() + textarea override
   get resolvedPose() {
     if (this.interactPose) return this.interactPose;
-    const merged = this.resolveJoints();
-    Object.assign(merged, this.overlayPose);
-    return merged;
+    return this.resolveJoints() ?? {};
   }
 
   async loadAnimForState(stateName) {
@@ -743,48 +737,36 @@ class AnimatorDebugger {
     npc.dir = dir; this._renderFrame(); this._renderPanel();
   }
 
-  setOverlay(id, key) {
-    const npc = this._byId(id); if (!npc) return;
-    npc.modifiers = npc.modifiers.filter(m => m.kind !== 'held');
-    npc.overlayKey = key;
-    if (key) {
-      const poseDef = editedPoses.overlays[key];
-      if (poseDef) npc.modifiers.push({
-        id: key, kind: 'held', priority: 10, joints: poseDef.joints, timer: -1,
-      });
-    }
-    this._renderFrame(); this._renderPanel();
+  addHeldModifier(npcId, heldKey) {
+    const npc = this._byId(npcId); if (!npc) return;
+    if (npc.modifiers.some(m => m.id === heldKey)) return;
+    const poseDef = editedPoses.overlays[heldKey];
+    if (!poseDef) return;
+    npc.modifiers.push({ id: heldKey, kind: 'held', priority: 10, joints: poseDef.joints, timer: -1 });
+    this._renderPanel(); this._renderFrame();
+  }
+
+  removeModifier(npcId, modId) {
+    const npc = this._byId(npcId); if (!npc) return;
+    const mod = npc.modifiers.find(m => m.id === modId);
+    if (mod?.kind === 'trait') npc.traits = npc.traits.filter(t => t !== modId);
+    npc.modifiers = npc.modifiers.filter(m => m.id !== modId);
+    this._renderPanel(); this._renderFrame();
   }
 
   toggleTrait(id, traitKey, checked) {
     const npc = this._byId(id); if (!npc) return;
-    checked ? npc.traits.add(traitKey) : npc.traits.delete(traitKey);
+    if (checked) {
+      if (!npc.traits.includes(traitKey)) npc.traits.push(traitKey);
+    } else {
+      npc.traits = npc.traits.filter(t => t !== traitKey);
+    }
     npc.modifiers = npc.modifiers.filter(m => m.kind !== 'trait' || m.id !== traitKey);
     if (checked) {
       const tp = TRAIT_PROPS[traitKey];
       if (tp) npc.modifiers.push({ id: traitKey, kind: 'trait', priority: 5, joints: tp.joints, timer: -1 });
     }
     this._renderPanel();
-    this._renderFrame();
-  }
-
-  setPose(id, json) {
-    const npc = this._byId(id); if (!npc) return;
-    npc.customPoseJson = json;
-    const ta = document.getElementById(`pose-ta-${id}`);
-    if (!json.trim()) { npc.overlayPose = {}; ta?.classList.remove('err'); }
-    else {
-      try { npc.overlayPose = JSON.parse(json); ta?.classList.remove('err'); }
-      catch(_) { ta?.classList.add('err'); }
-    }
-    this._renderFrame();
-  }
-
-  clearPose(id) {
-    const npc = this._byId(id); if (!npc) return;
-    npc.overlayPose = {}; npc.customPoseJson = '';
-    const ta = document.getElementById(`pose-ta-${id}`);
-    if (ta) { ta.value = ''; ta.classList.remove('err'); }
     this._renderFrame();
   }
 
@@ -836,17 +818,18 @@ class AnimatorDebugger {
   // 将某个 overlay/loiter pose 立即应用到选中的 NPC 上（textarea 覆盖层）
   previewPoseOnNpc(section, key, sub) {
     const npc = this.interactA || this.npcs[0]; if (!npc) return;
-    const src = editedPoses[section][key];
-    let pose = sub ? (src?.[sub] ?? {}) : (src ?? {});
-    // overlays section: unwrap .joints for preview
-    if (section === 'overlays' && !sub && pose.joints) pose = pose.joints;
-    // 对 social delta → absolute
-    const abs = sub ? deltaToAbs(pose) : { ...pose };
-    npc.overlayPose = abs;
-    npc.customPoseJson = JSON.stringify(abs, null, 2);
-    const ta = document.getElementById(`pose-ta-${npc.id}`);
-    if (ta) ta.value = npc.customPoseJson;
-    this._renderFrame();
+    const src = editedPoses[section]?.[key]; if (!src) return;
+    if (section === 'overlays') {
+      npc.modifiers = npc.modifiers.filter(m => m.id !== key);
+      if (src.joints) npc.modifiers.push({ id: key, kind: 'held', priority: 10, joints: { ...src.joints }, timer: -1 });
+    } else if (section === 'loiter') {
+      npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_preview');
+      npc.modifiers.push({ id: '_loiter_preview', kind: 'held', priority: 15, joints: { ...src }, timer: -1 });
+    } else if (section === 'social') {
+      const pose = sub ? (src[sub] ?? {}) : {};
+      npc.interactPose = sub ? deltaToAbs(pose) : { ...pose };
+    }
+    this._renderPanel(); this._renderFrame();
   }
 
   async savePoseRegistry() {
@@ -936,11 +919,6 @@ class AnimatorDebugger {
     for (const npc of this.npcs) html += this._renderNpcCard(npc);
     html += '</div>';
     panel.innerHTML = html;
-
-    for (const npc of this.npcs) {
-      const ta = document.getElementById(`pose-ta-${npc.id}`);
-      if (ta && npc.customPoseJson) ta.value = npc.customPoseJson;
-    }
   }
 
   _renderGlobalSection() {
@@ -1087,23 +1065,19 @@ class AnimatorDebugger {
     const animOpts = ANIM_FILES.map(f =>
       `<option value="${f}" ${f===npc.animName?'selected':''}>${f}</option>`).join('');
 
-    // Overlay options: none + overlays that are valid for this NPC (trait-gated)
-    const overlayOpts = [{ key: '', label: '— 无 —' }];
-    for (const [key, meta] of Object.entries(OVERLAY_META)) {
-      if (meta.traitRequired && !npc.traits.has(meta.traitRequired)) continue;
-      overlayOpts.push({ key, label: meta.label });
-    }
-    const overlayOptsHtml = overlayOpts.map(o =>
-      `<option value="${o.key}" ${o.key===npc.overlayKey?'selected':''}>${o.label}</option>`).join('');
-
     const traitChips = TRAITS_DEF.map(t => {
-      const act = npc.traits.has(t.key) ? ' active' : '';
+      const act = npc.traits.includes(t.key) ? ' active' : '';
       return `<label class="trait-chip${act}" title="${t.desc}">
-        <input type="checkbox" ${npc.traits.has(t.key)?'checked':''}
+        <input type="checkbox" ${npc.traits.includes(t.key)?'checked':''}
           onchange="app.toggleTrait(${npc.id},'${t.key}',this.checked)">
         ${t.label}
       </label>`;
     }).join('');
+
+    const availHeld = Object.keys(editedPoses.overlays).filter(key => {
+      const meta = OVERLAY_META[key];
+      return !meta?.traitRequired || npc.traits.includes(meta.traitRequired);
+    });
 
     const activeMods = npc.modifiers.map(m => `${m.id}(${m.kind[0]})`).join(',');
     const badge = activeMods
@@ -1131,20 +1105,30 @@ class AnimatorDebugger {
           <span class="cp-label">Traits</span>
           <div class="trait-chips">${traitChips || '<span style="color:var(--fg3);font-size:10px">无</span>'}</div>
         </div>
-        <div class="cp-row">
-          <span class="cp-label">Overlay</span>
-          <select onchange="app.setOverlay(${npc.id},this.value)">${overlayOptsHtml}</select>
-        </div>
-        <details class="cp-detail">
-          <summary>自定义 Pose JSON（叠加在 overlay 上）</summary>
-          <div class="cp-row" style="margin-top:2px;gap:4px">
-            <button class="sm blue" onclick="app.copyPose(${npc.id})">复制</button>
-            <button class="sm" onclick="app.clearPose(${npc.id})">清</button>
+        <div class="cp-row" style="align-items:flex-start">
+          <span class="cp-label" style="padding-top:2px">Mods</span>
+          <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div>
+              <div style="font-size:9px;color:var(--fg3);margin-bottom:3px">+ 可添加</div>
+              ${availHeld.map(key => `<div style="display:flex;align-items:center;gap:3px;margin-bottom:2px">
+                <span style="flex:1;font-size:9px">${OVERLAY_META[key]?.label ?? key}</span>
+                <button class="sm green" onclick="app.addHeldModifier(${npc.id},'${key}')">+</button>
+              </div>`).join('')}
+              ${!availHeld.length ? '<span style="color:var(--fg3);font-size:9px">—</span>' : ''}
+            </div>
+            <div>
+              <div style="font-size:9px;color:var(--fg3);margin-bottom:3px">激活</div>
+              ${npc.modifiers.map(m => `<div style="display:flex;align-items:center;gap:3px;margin-bottom:2px">
+                <span style="flex:1;font-size:9px;background:rgba(255,154,74,0.18);padding:1px 3px;border-radius:2px">${m.id}(${m.kind[0]})</span>
+                ${!m.id.startsWith('_') ? `<button class="sm red" style="padding:0 3px;min-width:14px" onclick="app.removeModifier(${npc.id},'${m.id}')">✕</button>` : ''}
+              </div>`).join('')}
+              ${!npc.modifiers.length ? '<span style="color:var(--fg3);font-size:9px">无</span>' : ''}
+            </div>
           </div>
-          <textarea id="pose-ta-${npc.id}" class="pose-input"
-            placeholder='{"r_hand":[x,y]}'
-            oninput="app.setPose(${npc.id},this.value)"></textarea>
-        </details>
+        </div>
+        <div class="cp-row">
+          <button class="sm blue" onclick="app.copyPose(${npc.id})">📋 复制 Pose</button>
+        </div>
         <details class="cp-detail">
           <summary>关节坐标 (${npc.animName} F${npc.frameLabel})</summary>
           ${this._renderCoords(npc)}
