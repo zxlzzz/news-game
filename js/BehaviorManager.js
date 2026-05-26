@@ -75,6 +75,12 @@ export class BehaviorManager {
     this.socialLayer.update(this.npcs, dt);
 
     // 2) 自由 NPC（未被 Activity 锁定）走基础状态机 + 叠加动作
+    // 计算全局 held 比例，传入 ModifierLayer 做频率上限
+    const heldCount = this.npcs.filter(n =>
+      n.alive && n.modifiers?.some(m => m.kind === 'held' && !m.id.startsWith('_'))
+    ).length;
+    const globalHeldFrac = this.npcs.length > 0 ? heldCount / this.npcs.length : 0;
+
     for (const npc of this.npcs) {
       if (!npc.alive || npc._activity) continue;
 
@@ -88,7 +94,7 @@ export class BehaviorManager {
 
       tickBaseState(npc, npc._profile, this.envQuery, dt);
       // 离场中的 NPC 跳过 modifier 随机触发
-      if (!npc._departing) tickModifiers(npc, npc._profile, dt);
+      if (!npc._departing) tickModifiers(npc, npc._profile, dt, globalHeldFrac);
     }
 
     // 3) NPC 间分离：行走中的两人靠太近时互相推开，避免重叠穿模

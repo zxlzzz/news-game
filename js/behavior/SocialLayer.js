@@ -347,50 +347,25 @@ class ChessActivity extends Activity {
     npc.playOnce   = true;
   }
 
-  // 旁观者：播放 chess_onlookers 倾身动画后定格，定时小幅走动再回来
+  // 旁观者：播放 chess_onlookers 倾身动画后定格（移动逻辑后续扩展）
   _setupOnlooker(npc) {
-    npc.state       = null;
-    npc.animation   = 'chess_onlookers';
-    npc.speed       = 0;
-    npc.vy          = 0;
-    npc.playOnce    = true;
-    npc.animDone    = false;
-    npc.frameIndex  = 0;
-    npc.frameTimer  = 0;
-    npc._watchPhase = 'watch';
-    npc._watchTimer = 0;
-    npc._watchDur   = rand(6, 14);
-    npc._homeX      = npc.x;
+    npc.state      = null;
+    npc.animation  = 'chess_onlookers';
+    npc.speed      = 0;
+    npc.vy         = 0;
+    npc.playOnce   = true;
+    npc.animDone   = false;
+    npc.frameIndex = 0;
+    npc.frameTimer = 0;
   }
 
-  // 旁观者 watch/stroll 循环
+  // 旁观者保持倾身观棋姿势，暂不移动
   _tickOnlooker(npc, dt) {
-    npc._watchTimer += dt;
-    if (npc._watchPhase === 'watch') {
-      if (npc._watchTimer >= npc._watchDur) {
-        npc._watchPhase    = 'stroll';
-        npc._watchTimer    = 0;
-        npc._watchDur      = rand(2, 4);
-        const side         = Math.random() < 0.5 ? 1 : -1;
-        const dist         = 25 + Math.random() * 35;
-        npc._strollTargetX = npc._homeX + side * dist;
-        npc.animation      = 'walk';
-        npc.playOnce       = false;
-        npc.speed          = npc.walkSpeed || 26;
-        npc.direction      = npc._strollTargetX > npc.x ? 1 : -1;
-      }
-    } else {
-      npc.direction = npc._strollTargetX > npc.x ? 1 : -1;
-      if (Math.abs(npc._strollTargetX - npc.x) < 6 || npc._watchTimer >= npc._watchDur) {
-        npc._watchPhase = 'watch';
-        npc._watchTimer = 0;
-        npc._watchDur   = rand(6, 14);
-        npc.animation   = 'chess_onlookers';
-        npc.playOnce    = true;
-        npc.animDone    = false;
-        npc.frameIndex  = 0;
-        npc.speed       = 0;
-      }
+    // 动画播完后冻结首帧
+    if (npc.animDone) {
+      npc.animDone   = false;
+      npc.playOnce   = true;
+      npc.frameIndex = 0;
     }
   }
 

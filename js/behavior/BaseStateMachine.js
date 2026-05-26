@@ -145,16 +145,25 @@ function _resolveTimeout(npc, envQuery, profile) {
     return 'sit_bench';
   }
   // lie_bench anchorMode='back'（无竖向偏移），sit_bench anchorMode='hip'（body 关节落 npc.y）。
-  // 坐→躺转换时需重对齐：令 lie_bench body 关节落在椅面（bench.y - seatH）。
+  // 坐→躺转换时重对齐：令 lie_bench body 关节落在椅面（bench.y - seatH），
+  // 并横向修正使 body 关节 X 与椅面中心对齐（躺姿整体偏左，需向右偏移）。
   if (next === 'lie_bench' && npc._bench) {
-    let bodyY = 79; // lie_bench body.y 默认值
+    let bodyX = -46, bodyY = 79; // lie_bench body 关节默认值
     if (npc.renderer) {
       const anim = npc.renderer.getAnimation('lie_bench');
-      if (anim && anim.frames[0]) bodyY = anim.frames[0].body[1];
+      if (anim && anim.frames[0]) {
+        bodyX = anim.frames[0].body[0];
+        bodyY = anim.frames[0].body[1];
+      }
     }
+    const sc = npc.scale || 0.45;
     const seatY = npc._bench.y - (npc._bench.seatH ?? 12);
-    npc.y = Math.max(npc.minY, Math.min(npc.maxY,
-      seatY - Math.round(bodyY * (npc.scale || 0.45))
+    npc.y = Math.max(npc.minY, Math.min(npc.maxY, seatY - Math.round(bodyY * sc)));
+    // X 修正：body 关节应落在椅面中心 X，而非偏移
+    const canonDir = npc.renderer?.getAnimation('lie_bench')?.canonicalDirection || 1;
+    const dir = npc.direction * canonDir;
+    npc.x = Math.max(npc.minX, Math.min(npc.maxX,
+      npc._bench.x - Math.round(bodyX * sc * dir)
     ));
   }
   return next;

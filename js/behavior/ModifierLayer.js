@@ -8,6 +8,11 @@
  *
  * ID 以 _ 开头的修饰器（如 _loiter_micro、_talk_sub_event）由系统内部管理，
  * 跳过步骤 2 的 profile 兼容性检查。
+ *
+ * 频率限制：
+ *   - 同一 NPC 同时只能有一个用户级 held modifier（非内部/非 trait）
+ *   - held mod 到期后有 15~35s 冷却，冷却内不触发新动作
+ *   - 全局上限：当前有动作的 NPC 比例超过 30% 时停止新增
  */
 
 import { HELD_POSES }  from './PoseRegistry.js';
@@ -15,11 +20,26 @@ import { TRAIT_PROPS } from './PoseRegistry.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
-export function tickModifiers(npc, profile, dt) {
-  // 1) held 计时到期移除（timer < 0 = 永久；每帧递减，归零后移除）
-  npc.modifiers = npc.modifiers.filter(m =>
-    m.kind !== 'held' || m.timer < 0 || (m.timer -= dt) > 0
-  );
+/**
+ * @param {object} npc
+ * @param {object} profile
+ * @param {number} dt
+ * @param {number} [globalHeldFrac=0] - 全局已有 held 动作的 NPC 比例（由 BehaviorManager 传入）
+ */
+export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
+  // 1) held 计时到期移除；到期时对用户级 held 开启冷却期
+  npc.modifiers = npc.modifiers.filter(m => {
+    if (m.kind !== 'held') return true;
+    if (m.timer < 0) return true;       // 永久（负值）
+    m.timer -= dt;
+    if (m.timer > 0) return true;
+    // 到期：非内部 held 触发冷却
+    if (!m.id.startsWith('_')) npc._heldCooldown = rand(15, 35);
+    return false;
+  });
+
+  // 冷却倒计时
+  if ((npc._heldCooldown || 0) > 0) npc._heldCooldown -= dt;
 
   // 2) held 状态兼容性检查：状态切换后不再兼容的 held 移除
   //    _ 开头的内部修饰器豁免（由 BaseStateMachine / SocialLayer 自行管理）
@@ -40,7 +60,13 @@ export function tickModifiers(npc, profile, dt) {
     });
   }
 
-  // 4) 尝试触发新 held（同 id 不重复触发；每帧至多触发一个）
+  // 4) 尝试触发新 held
+  //    条件：全局比例 < 30%；无冷却；当前无用户级 held；每帧至多触发一个
+  if (globalHeldFrac >= 0.30) return;
+  if ((npc._heldCooldown || 0) > 0) return;
+  const hasUserHeld = npc.modifiers.some(m => m.kind === 'held' && !m.id.startsWith('_'));
+  if (hasUserHeld) return;
+
   const activeIds = new Set(npc.modifiers.map(m => m.id));
   for (const [name, def] of Object.entries(heldDefs)) {
     if (activeIds.has(name)) continue;

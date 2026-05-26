@@ -65,7 +65,7 @@ const PROFILE_LABELS = {
 const OVERLAY_META = {
   phone_look: { label: '📱 看手机' },
   phone_call: { label: '📞 打电话' },
-  smoke:      { label: '🚬 抽烟',   traitRequired: 'smoker' },
+  smoke:      { label: '🚬 抽烟' },   // traitRequired 仅游戏内约束，工具中不限
   cross_arm:  { label: '🤚 抱臂' },
 };
 
@@ -84,11 +84,10 @@ const SUB_EVENT_META = {
   point_at:  { label: '指向', icon: '👆', desc: 'A 指，B 侧头' },
 };
 
-// Trait 芯片定义
+// Trait 芯片定义（smoker 是内部游戏 spawn trait，工具中不暴露；smoke 动作由 Mods 面板添加）
 const TRAITS_DEF = [
-  { key: 'hold_bag', label: '👜 拿包',  desc: '拿包特征（永久 modifier）' },
-  { key: 'smoker',   label: '🚬 抽烟',  desc: '允许 smoke held pose' },
-  { key: 'walk_dog', label: '🐕 遛狗',  desc: '遛狗特征（TODO）' },
+  { key: 'hold_bag', label: '👜 拿包',  desc: '左手拿包（永久 modifier）' },
+  { key: 'walk_dog', label: '🐕 遛狗',  desc: '左手牵绳遛狗（永久 modifier）' },
 ];
 
 // Animation Graph 节点位置（0~1 相对坐标）
@@ -204,7 +203,8 @@ function generatePoseRegistryJS() {
  */
 
 export const TRAIT_PROPS = {
-  hold_bag: { joints: { r_elbow: [16, -5], r_hand: [18, 5] } },
+  hold_bag: { joints: { l_elbow: [-16, -5], l_hand: [-18, 5] } },
+  walk_dog: { joints: { l_elbow: [-10, -12], l_hand: [-18, -4] } },
 };
 
 export const HELD_POSES = ${serHeldPoses(editedPoses.overlays)};
@@ -258,7 +258,8 @@ function drawBone(ctx, x1, y1, x2, y2, bend) {
 
 function calcOffsetY(data, coord, isDog) {
   if (data.anchorMode === 'hip')  return -coord('body')[1];
-  if (data.anchorMode === 'back') return 0;
+  // 'back'（卧姿）：以 body 关节为锚，使躯干落在地面线上，头脚自然延伸
+  if (data.anchorMode === 'back') return -coord('body')[1];
   if (isDog) return -Math.max(
     coord('fl_lower')[1], coord('fr_lower')[1],
     coord('bl_lower')[1], coord('br_lower')[1]);
@@ -594,7 +595,10 @@ class PreviewCanvas {
     const s       = scale;
     const coord   = (j) => (pose[j] ? pose[j] : frameData[j]);
     const offsetY = calcOffsetY(animData, coord, isDog) * s;
-    const jx = (j) => cx + coord(j)[0] * s * d;
+    // 卧姿（anchorMode='back'）横向也以 body 关节居中，否则躺下的人会偏向一侧
+    const offsetX = (!isDog && animData.anchorMode === 'back' && coord('body'))
+      ? -coord('body')[0] * s * d : 0;
+    const jx = (j) => cx + coord(j)[0] * s * d + offsetX;
     const jy = (j) => groundY + coord(j)[1] * s + offsetY;
 
     ctx.save(); ctx.lineCap='round'; ctx.lineJoin='round';

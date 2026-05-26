@@ -33,12 +33,12 @@ const PED_ALLOWED = [
 
 // 抽烟 held pose：需 smoker trait；靠墙时概率翻倍
 const SMOKE = {
-  on: ['stand', 'lean_wall', 'sit_bench', 'loiter'], chance: 0.002, dur: [15, 30],
+  on: ['stand', 'lean_wall', 'sit_bench', 'loiter'], chance: 0.0008, dur: [15, 30],
   traitRequired: 'smoker', chanceMultiplier: { lean_wall: 2.0 },
 };
 // 抱臂 held pose：stand 状态下偶尔交叉双臂
 const CROSS_ARM = {
-  on: ['stand'], chance: 0.003, dur: [5, 15],
+  on: ['stand'], chance: 0.001, dur: [8, 20],
 };
 
 const PEDESTRIAN = {
@@ -47,8 +47,8 @@ const PEDESTRIAN = {
   allowedStates: PED_ALLOWED,
   transitions: PED_TRANSITIONS,
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.004, dur: [5, 25] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench', 'loiter'], chance: 0.002, dur: [10, 20] },
+    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.001, dur: [8, 30] },
+    phone_call: { on: ['walk', 'stand', 'sit_bench', 'loiter'], chance: 0.0008, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
   },
@@ -67,8 +67,8 @@ const BUSINESSMAN = {
   name: 'businessman',
   activities: ['talk'],
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.006, dur: [5, 25] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall', 'loiter'], chance: 0.004, dur: [10, 20] },
+    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.0015, dur: [8, 30] },
+    phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall', 'loiter'], chance: 0.001, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
   },
@@ -87,8 +87,8 @@ const TOURIST = {
     stand: { walk: 0.68, sit_bench: 0.08, sit_ground: 0.07, squat: 0.02, lean_wall: 0.05, loiter: 0.10 },
   },
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'sit_ground', 'squat', 'loiter'], chance: 0.005, dur: [5, 25] },
-    phone_call: { on: ['walk', 'stand', 'loiter'], chance: 0.002, dur: [10, 20] },
+    phone_look: { on: ['walk', 'stand', 'sit_ground', 'squat', 'loiter'], chance: 0.001, dur: [8, 30] },
+    phone_call: { on: ['walk', 'stand', 'loiter'], chance: 0.0008, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
   },
@@ -113,15 +113,14 @@ const CHESS_PLAYER = {
 const CHESS_ONLOOKER = {
   name: 'chess_onlooker',
   initial: 'stand',
-  allowedStates: ['walk', 'stand', 'squat', 'sit_ground'],
+  allowedStates: ['stand', 'squat', 'sit_ground'],
   transitions: {
-    walk:       { stand: 0.75, squat: 0.01, sit_ground: 0.01 },
-    stand:      { walk: 0.88, squat: 0.06, sit_ground: 0.06 },
+    stand:      { squat: 0.10, sit_ground: 0.06 },
     squat:      { stand: 1.0 },
     sit_ground: { stand: 1.0 },
   },
   heldPoses: {
-    phone_look: { on: ['walk', 'stand'], chance: 0.003, dur: [5, 20] },
+    phone_look: { on: ['stand'], chance: 0.001, dur: [8, 25] },
     cross_arm:  CROSS_ARM,
   },
   activities: ['talk', 'chess_watch'],
