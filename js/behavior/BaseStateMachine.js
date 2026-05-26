@@ -27,7 +27,8 @@
  *   99+   强制打断（animDone 驱动，fall/get_up 等不可被其他规则抢占）
  */
 
-import { dlog } from './DebugLog.js';
+import { dlog }        from './DebugLog.js';
+import { LOITER_POSES } from './PoseRegistry.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -230,10 +231,10 @@ function _tickState(npc, envQuery, profile, dt) {
 }
 
 // ─── Loiter 微行为循环 ────────────────────────────────────────────────────────
-// phone-look pose：双手抬至胸前持机；bag-adjust pose：换手拎包（两组交替）
-const POSE_PHONE = { l_elbow: [-9, -8], r_elbow: [9, -8], l_hand: [-4, -18], r_hand: [4, -18] };
-const POSE_BAG_A = { r_elbow: [12, -8], r_hand: [16, -3] };
-const POSE_BAG_B = { l_elbow: [-12, -8], l_hand: [-16, -3] };
+// pose 数据来自 PoseRegistry.js（单一来源，anim-preview 工具可实时编辑）
+const POSE_PHONE = LOITER_POSES.phone;
+const POSE_BAG_A = LOITER_POSES.bag_a;
+const POSE_BAG_B = LOITER_POSES.bag_b;
 
 function _getMicroActionDur(npc) {
   const ov = npc._loiterOverlay;

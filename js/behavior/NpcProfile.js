@@ -12,7 +12,11 @@
  *   - 新增 overlay：phone_call / smoke（需 smoker trait）/ hold_bag（持久特征）
  *   - 部分状态有环境前置（lean_wall 需靠墙、sit_ground 需附近无椅、lie_bench 需久坐）
  *     由 BaseStateMachine 在选中后检查，不满足则回退 stand。
+ *
+ * pose 数据集中在 PoseRegistry.js，本文件只引用。
  */
+
+import { OVERLAY_POSES } from './PoseRegistry.js';
 
 // 路人共用的状态转换表（方案 B：lean_wall 由 isNearWall 自然过滤，公园行人不触发）
 const PED_TRANSITIONS = {
@@ -41,13 +45,10 @@ const SMOKE = {
   on: ['stand', 'lean_wall', 'sit_bench', 'loiter'], chance: 0.002, dur: [15, 30],
   traitRequired: 'smoker', chanceMultiplier: { lean_wall: 2.0 },
 };
-// 抱臂 overlay：stand 状态下偶尔交叉双臂，数秒后恢复；pose 直接覆盖关节坐标
+// 抱臂 overlay：stand 状态下偶尔交叉双臂，数秒后恢复；pose 从 PoseRegistry 读取
 const CROSS_ARM = {
   on: ['stand'], chance: 0.003, dur: [5, 15],
-  pose: {
-    l_elbow: [-14, -11], r_elbow: [14, -11],
-    l_hand:  [9,  -19],  r_hand:  [-10, -18],
-  },
+  pose: OVERLAY_POSES.cross_arm,
 };
 
 const PEDESTRIAN = {

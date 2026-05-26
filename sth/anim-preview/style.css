@@ -297,6 +297,40 @@ details.cp-detail summary:hover { color: var(--fg); }
 }
 @keyframes fadeout { 0%,60%{opacity:1} 100%{opacity:0} }
 
+/* ── Pose Registry Editor ────────────────────────────────────────── */
+.pose-reg-body {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 6px 0 2px;
+}
+.pose-group {
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 5px 7px; background: var(--bg3);
+}
+.pose-group-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 4px;
+}
+.pose-key {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  font-weight: 600; color: var(--accent2);
+}
+.pose-sub-hdr {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--fg3); text-transform: uppercase; letter-spacing: 0.5px;
+  margin: 3px 0 2px; padding-left: 2px;
+}
+.pj {
+  display: flex; align-items: center; gap: 4px; margin-bottom: 2px;
+}
+.pj-name {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--fg2); min-width: 56px; flex-shrink: 0;
+}
+.pj-input {
+  width: 46px !important; font-size: 10px; padding: 2px 4px;
+  text-align: center;
+}
+
 /* ── Scrollbar ───────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg2); }

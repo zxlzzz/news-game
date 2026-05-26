@@ -8,8 +8,9 @@
  * 本次复刻重构前的：两人靠近自动对话、棋手轮流落子、遛狗者带狗。
  */
 
-import { setState } from './BaseStateMachine.js';
-import { dlog }     from './DebugLog.js';
+import { setState }       from './BaseStateMachine.js';
+import { dlog }           from './DebugLog.js';
+import { SUB_EVENT_POSES } from './PoseRegistry.js';
 
 const rand   = (a, b) => a + Math.random() * (b - a);
 const chance = (p) => Math.random() < p;
@@ -17,34 +18,30 @@ const chance = (p) => Math.random() < p;
 const CHESS_WAIT_MS = 3500;
 
 // ─── TalkActivity 子事件配置 ──────────────────────────────────────────────────
-// deltaPose：相对于基准帧坐标的局部空间偏移（正 x = 朝向方向；正 y = 向下）
-// 基于 single.json 实测关节位：r_hand[-10,-18] l_hand[9,-19] r_elbow[14,-11] l_elbow[-14,-11]
+// deltaPose 数据来自 PoseRegistry.js（单一来源，anim-preview 工具可实时编辑）
+// 参考帧（single.json F0）：r_hand[-10,-18] l_hand[9,-19] r_elbow[14,-11] l_elbow[-14,-11]
 const SUB_EVENTS = {
-  // 推搡：A 双手前伸推 B；B 触发 fall 链路
   push: {
-    aDelta: { r_hand: [55, -3], r_elbow: [8, -4], l_hand: [35, -2], l_elbow: [32, -4] },
-    bDelta: null,
+    aDelta: SUB_EVENT_POSES.push.aDelta,
+    bDelta: SUB_EVENT_POSES.push.bDelta,
     reach: 0.4, hold: 0.2, release: 0.5,
     aTags: ['conflict'], bTags: ['conflict', 'victim'],
   },
-  // 递东西：A 右手前伸给，B 左手前伸接
   give_item: {
-    aDelta: { r_hand: [50, -3], r_elbow: [8, -3] },
-    bDelta: { l_hand: [35, -3], l_elbow: [20, -3] },
+    aDelta: SUB_EVENT_POSES.give_item.aDelta,
+    bDelta: SUB_EVENT_POSES.give_item.bDelta,
     reach: 0.5, holdRange: [1, 2], release: 0.5,
     aTags: ['transaction', 'exchange'], bTags: ['transaction', 'exchange'],
   },
-  // 握手：A 的 r_hand 与 B 的 l_hand 移向两人中点
   handshake: {
-    aDelta: { r_hand: [40, -3], r_elbow: [6, -2] },
-    bDelta: { l_hand: [30, -3], l_elbow: [15, -2] },
+    aDelta: SUB_EVENT_POSES.handshake.aDelta,
+    bDelta: SUB_EVENT_POSES.handshake.bDelta,
     reach: 0.5, hold: 1.5, release: 0.5,
-    aTags: null, bTags: null,   // 在 _startSubEvent 中随机选 greeting/agreement
+    aTags: null, bTags: null,
   },
-  // 指向：A 单臂水平指向前方，B 转头同向
   point_at: {
-    aDelta: { r_hand: [60, -2], r_elbow: [10, -4] },
-    bDelta: { head: [-5, 2] },  // 负 x delta：B 面向 A（d=-1 时），负 x → 正世界 x = A 指向方向
+    aDelta: SUB_EVENT_POSES.point_at.aDelta,
+    bDelta: SUB_EVENT_POSES.point_at.bDelta,
     reach: 0.4, holdRange: [2, 3], release: 0.4,
     aTags: ['pointing', 'observing'], bTags: ['pointing', 'observing'],
   },
