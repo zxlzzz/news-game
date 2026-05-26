@@ -486,7 +486,16 @@ export class SocialLayer {
       this._tryPairTalk(npcs);
     }
 
-    // 3) 路人经过空棋桌 → 概率加入新棋局（后续实现，本次留桩）
+    // 3) 槽位等待超时（20s 内无第二个人到位） → 放弃，重新 walk
+    for (const npc of npcs) {
+      if (!npc.alive || npc._activity || !npc._slotWaitProp) continue;
+      npc._slotWaitTimer = (npc._slotWaitTimer || 0) + dt;
+      if (npc._slotWaitTimer > 20) {
+        this.envQuery.releaseSlotReservation(npc);
+        npc._slotWaitProp = null;
+        setState(npc, 'walk', 'slot_wait_timeout');
+      }
+    }
   }
 
   // 外部触发：创建指定类型的 Activity
@@ -515,6 +524,24 @@ export class SocialLayer {
   interruptActivity(activityId, reason) {
     const act = this.activities.find(a => a.id === activityId);
     if (act) act.interrupt(reason);
+  }
+
+  /** Smart Object 槽位到达：凑齐所有槽位即创建 Activity，否则原地站等 */
+  onSlotArrival(npc, prop, slot) {
+    slot.ready = true;
+    slot.npc   = npc;
+
+    const allReady = prop._slots.every(s => s.ready);
+    if (allReady) {
+      const participants = prop._slots.map(s => ({ npc: s.npc, role: s.role }));
+      this.createActivity(prop.smartDef.activityType, participants, [prop]);
+      for (const s of prop._slots) { s.reserved = null; s.ready = false; s.npc = null; }
+    } else {
+      setState(npc, 'stand', 'slot_wait');
+      npc.stateDur       = Infinity;   // 压制正常 stand 超时，等凑齐或 20s 放弃
+      npc._slotWaitTimer = 0;
+      npc._slotWaitProp  = prop;
+    }
   }
 
   // 扫描可配对的两名 stand 自由行人 → 随机生成 talk

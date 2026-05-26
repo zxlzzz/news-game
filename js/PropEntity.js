@@ -61,6 +61,18 @@ export class PropEntity extends Entity {
     } else {
       this.collisionRX = this.collisionRY = this.collisionRadius = 0;
     }
+
+    // Smart Object 槽位（可选）
+    if (config.smartDef) {
+      this.smartDef = config.smartDef;
+      this._slots = config.smartDef.slots.map((s, i) => ({
+        index:    i,
+        role:     s.role,
+        dx:       s.dx ?? 0,
+        dy:       s.dy ?? 0,
+        reserved: null,   // npc.id 预约中，null = 空闲
+      }));
+    }
   }
 
   // 返回 [半宽 rx, 半高 ry]（椭圆碰撞体的两个半轴）

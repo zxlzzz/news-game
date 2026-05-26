@@ -15,7 +15,7 @@
 
 import { getProfile }          from './behavior/NpcProfile.js';
 import { EnvironmentQuery }     from './behavior/EnvironmentQuery.js';
-import { tickBaseState, setState } from './behavior/BaseStateMachine.js';
+import { tickBaseState, setState, registerTransition } from './behavior/BaseStateMachine.js';
 import { tickOverlay }          from './behavior/OverlayLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
 import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
@@ -31,6 +31,29 @@ export class BehaviorManager {
     this.socialLayer = new SocialLayer(this.envQuery);
     this.cameraLayer = new CameraReactionLayer();
     this.npcs        = [];
+
+    // 注入 Smart Object routing 转换：行走中的 NPC 低概率发现空棋桌并前往
+    const sl = this.socialLayer;
+    registerTransition({
+      from: 'walk', to: 'routing', priority: 10,
+      trigger: 'smart-object',
+      condition: (npc, env, profile) => {
+        if (!profile?.activities?.includes('chess')) return false;
+        if (Math.random() > 0.003) return false;
+        const found = env.findAvailableSlot('chess', npc, 220);
+        if (!found) return false;
+        const { prop, slot } = found;
+        slot.reserved = npc.id;
+        npc._routeTarget = {
+          x: prop.x + slot.dx,
+          y: prop.y + slot.dy,
+          prop, slot,
+          abandonAfter: 25,
+          onArrive: (n) => sl.onSlotArrival(n, prop, slot),
+        };
+        return true;
+      },
+    });
   }
 
   /** 注册 NPC 并指定行为档案；返回该 NPC */

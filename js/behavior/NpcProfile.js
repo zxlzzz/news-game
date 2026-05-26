@@ -62,7 +62,7 @@ const PEDESTRIAN = {
     hold_bag:   HOLD_BAG,
     cross_arm:  CROSS_ARM,
   },
-  activities: ['talk'],
+  activities: ['talk', 'chess'],
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
@@ -73,6 +73,7 @@ const PEDESTRIAN = {
 const BUSINESSMAN = {
   ...PEDESTRIAN,
   name: 'businessman',
+  activities: ['talk'],          // 商人不在街边下棋
   overlays: {
     phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.006, dur: [5, 25] },
     phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall', 'loiter'], chance: 0.004, dur: [10, 20] },
@@ -101,6 +102,7 @@ const TOURIST = {
     hold_bag:   HOLD_BAG,
     cross_arm:  CROSS_ARM,
   },
+  activities: ['talk', 'chess'],
   socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
   loiterChance: 0.40,
   loiterDurationRange: [20, 60],

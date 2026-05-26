@@ -144,4 +144,31 @@ export class EnvironmentQuery {
     }
     return best;
   }
+
+  /**
+   * 在 radius 内找一个有空闲槽位的 Smart Object（按 activityType 过滤）。
+   * 空闲 = prop._occupiedBy == null && 至少有一个 slot.reserved == null。
+   * 返回 { prop, slot }（距离最近 prop 的第一个空闲槽位），或 null。
+   */
+  findAvailableSlot(activityType, npc, radius = 200) {
+    let best = null, bestD = radius;
+    for (const e of this.em.entities) {
+      if (!e.alive || e.smartDef?.activityType !== activityType) continue;
+      if (e._occupiedBy || !e._slots || !e._slots.some(s => s.reserved == null)) continue;
+      const d = Math.hypot(e.x - npc.x, e.y - npc.y);
+      if (d <= bestD) { bestD = d; best = e; }
+    }
+    if (!best) return null;
+    return { prop: best, slot: best._slots.find(s => s.reserved == null) };
+  }
+
+  /** 释放某 NPC 持有的所有槽位预约（NPC 途中放弃或超时时调用） */
+  releaseSlotReservation(npc) {
+    for (const e of this.em.entities) {
+      if (!e._slots) continue;
+      for (const s of e._slots) {
+        if (s.reserved === npc.id) s.reserved = null;
+      }
+    }
+  }
 }

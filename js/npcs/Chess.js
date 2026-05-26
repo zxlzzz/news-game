@@ -48,6 +48,13 @@ export function spawnChess(em, sr, bm) {
     width: Math.max(20, Math.abs(handA.x - handB.x))-30, height: 18,
     topH: Math.max(10, Y - boardMid.y),
     tags: ['chess-table', 'game', 'street-furniture'],
+    smartDef: {
+      activityType: 'chess',
+      slots: [
+        { role: 'player_a', dx: -(gap / 2), dy: 0 },
+        { role: 'player_b', dx:  (gap / 2), dy: 0 },
+      ],
+    },
   }));
   // 两把椅子：椅面 = 各自 hip 高度
   const chairA = em.add(new PropEntity({

@@ -71,7 +71,13 @@ export class DebugOverlay {
   _floatText(npc) {
     const profile = npc._profile ? npc._profile.name : (npc.npcType || '--');
     const raw     = npc.state || npc.animation || '?';
-    const state   = (raw === 'loiter' && npc._microPhaseName) ? `loiter:${npc._microPhaseName}` : raw;
+    let state     = raw;
+    if (raw === 'loiter' && npc._microPhaseName) {
+      state = `loiter:${npc._microPhaseName}`;
+    } else if (raw === 'routing' && npc._routeTarget) {
+      const t = npc._routeTarget;
+      state = `routing→(${Math.round(t.x)},${Math.round(t.y)})`;
+    }
     const overlay = npc.overlay || '-';
     let activity  = '-';
     const act = npc._activity;

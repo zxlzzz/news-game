@@ -47,6 +47,7 @@ const STATE_DEFS = {
   get_up:     { anim: 'get_up',     speedK: 0,   once: true,  dur: null     },
   talk:       { anim: 'single',     speedK: 0,   once: false, dur: null     },
   loiter:     { anim: 'single',     speedK: 0,   once: false, dur: null     },
+  routing:    { anim: 'walk',       speedK: 1.0, once: false, dur: null     },
 };
 
 export { STATE_DEFS };
@@ -204,8 +205,8 @@ function _evaluateTransitions(npc, profile, envQuery) {
 
 // ─── 当前状态的 per-frame 行为（纯行为，不含转换判断）────────────────────────
 function _tickState(npc, envQuery, profile, dt) {
-  // walk/run：逐帧转向漫游目标点（含避障）
-  if (npc.roam && (npc.state === 'walk' || npc.state === 'run')) {
+  // walk/run：逐帧转向漫游目标点（含避障）；routing：直奔槽位
+  if (npc.state === 'routing' || (npc.roam && (npc.state === 'walk' || npc.state === 'run'))) {
     steerRoam(npc, envQuery, profile, dt);
   }
   // loiter：驱动内部微行为循环
@@ -304,6 +305,33 @@ function _tickLoiter(npc, profile, dt) {
 
 // ─── 二维漫游转向：朝目标点的 seek + 切向避障（steering behavior）─────────────
 function steerRoam(npc, envQuery, profile, dt) {
+  // routing：直线奔赴目标槽位，不走随机漫游逻辑
+  if (npc.state === 'routing') {
+    if (!npc._routeTarget) { setState(npc, 'walk', 'routing_no_target'); return; }
+    const t  = npc._routeTarget;
+    const dx = t.x - npc.x, dy = t.y - npc.y;
+    const dist = Math.hypot(dx, dy);
+
+    if (npc.stateTimer > (t.abandonAfter ?? 30)) {
+      envQuery.releaseSlotReservation(npc);
+      npc._routeTarget = null;
+      setState(npc, 'walk', 'routing_timeout');
+      return;
+    }
+    if (dist < 8) {
+      npc.x = t.x; npc.y = t.y;
+      const cb = t.onArrive;
+      npc._routeTarget = null;
+      if (cb) cb(npc);
+      return;
+    }
+    npc.direction = dx > 0 ? 1 : -1;
+    const spd = npc.speed || 26;
+    npc.x += (dx / dist) * spd * dt;
+    npc.y += (dy / dist) * spd * dt;
+    return;
+  }
+
   if (!npc.roamTarget) pickRoamTarget(npc, envQuery);
   const t = npc.roamTarget;
   const dx = t.x - npc.x, dy = t.y - npc.y;
