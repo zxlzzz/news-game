@@ -21,6 +21,7 @@ import {
   GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
 } from '../SceneConfig.js';
+import { ExitRegistry }      from '../behavior/ExitRegistry.js';
 import { spawnPedestrians } from '../npcs/Pedestrians.js';
 import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
@@ -688,6 +689,20 @@ export class StreetScene extends Phaser.Scene {
     // 所有 NPC 统一纳入行为系统：spawner 负责生成 + 指定 profile / 创建 Activity
     this.behaviorManager = new BehaviorManager(em);
     const bm = this.behaviorManager;
+
+    // ── 出口注册表 ──────────────────────────────────────────────────────────
+    const exitRegistry = new ExitRegistry();
+    // 左右场景边缘（覆盖全部 Y 带）
+    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -30,              y: null, yZone: null, facing: -1 });
+    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 30, y: null, yZone: null, facing:  1 });
+    // 建筑入口（仅前人行道区域，Y 固定在建筑立面，NPC 走入后消失）
+    exitRegistry.register({ id: 'building_a', type: 'building', x: 200,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_b', type: 'building', x: 600,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_c', type: 'building', x: 1100, y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_d', type: 'building', x: 1700, y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    // TODO: 加静止车辆时在停车位处注册 type:'vehicle' 出口
+    bm.exitRegistry = exitRegistry;
+
     spawnPedestrians(em, sr, bm);
     spawnChess(em, sr, bm);
     spawnDogWalker(em, sr, bm);

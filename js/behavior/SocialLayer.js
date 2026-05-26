@@ -547,7 +547,7 @@ export class SocialLayer {
   // 扫描可配对的两名 stand 自由行人 → 随机生成 talk
   _tryPairTalk(npcs) {
     const standers = npcs.filter(n =>
-      n.alive && !n._activity && n.state === 'stand' &&
+      n.alive && !n._activity && !n._departing && n.state === 'stand' &&
       n._profile && n._profile.activities.includes('talk'));
     let paired = 0;
     for (let i = 0; i < standers.length; i++) {

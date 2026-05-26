@@ -82,7 +82,8 @@ export class DebugOverlay {
     let activity  = '-';
     const act = npc._activity;
     if (act) activity = `${act.label}(${act.roleOf(npc) || '?'})`;
-    return `[${profile}] ${state} | ${overlay} | ${activity}`;
+    const dept = npc._departing ? ' [DEPT]' : '';
+    return `[${profile}] ${state} | ${overlay} | ${activity}${dept}`;
   }
 
   update() {
@@ -110,13 +111,14 @@ export class DebugOverlay {
   _panelText() {
     const sl = this.bm.socialLayer;
     const npcs = this.bm.npcs;
-    const total  = npcs.length;
-    const locked = npcs.filter(n => n._activity).length;
-    const free   = total - locked;
+    const total    = npcs.length;
+    const locked   = npcs.filter(n => n._activity).length;
+    const departing = npcs.filter(n => n._departing).length;
+    const free     = total - locked;
 
     const lines = [];
     lines.push('— NPC DEBUG (D 切换) —');
-    lines.push(`托管 ${total}  |  自由 ${free}  |  锁定 ${locked}`);
+    lines.push(`托管 ${total}  |  自由 ${free}  |  锁定 ${locked}  |  离场 ${departing}`);
     const scan = sl.lastScanInfo || { standers: 0, paired: 0 };
     lines.push(`配对扫描: stand=${scan.standers}  新配对=${scan.paired}`);
     lines.push(`活跃 Activity: ${sl.activities.length}`);

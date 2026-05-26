@@ -311,6 +311,7 @@ function steerRoam(npc, envQuery, profile, dt) {
     const t  = npc._routeTarget;
     const dx = t.x - npc.x, dy = t.y - npc.y;
     const dist = Math.hypot(dx, dy);
+    const arriveThreshold = t.exitType === 'building' ? 20 : 8;
 
     if (npc.stateTimer > (t.abandonAfter ?? 30)) {
       envQuery.releaseSlotReservation(npc);
@@ -318,7 +319,7 @@ function steerRoam(npc, envQuery, profile, dt) {
       setState(npc, 'walk', 'routing_timeout');
       return;
     }
-    if (dist < 8) {
+    if (dist < arriveThreshold) {
       npc.x = t.x; npc.y = t.y;
       const cb = t.onArrive;
       npc._routeTarget = null;
@@ -400,9 +401,60 @@ function pickRoamTarget(npc, envQuery) {
   npc.roamTarget = pt;
 }
 
+// ─── 离场系统 ─────────────────────────────────────────────────────────────────
+/**
+ * 将 NPC 路由到出口；离场全程不可打断（abandonAfter=999），到达后 alive=false。
+ * 注意：调用前须确保 npc._departing = true 已设置。
+ */
+function _routeToExit(npc, exit) {
+  const tx = exit.x;
+  const ty = exit.y ?? npc.y;    // edge 出口跟随当前 Y，building 出口用固定 Y
+  if (exit.facing !== 0) npc.direction = exit.facing;
+  npc.roam = null;               // 关闭随机漫游
+  // 清除随机 overlay；持久特征 hold_bag 保留
+  if (npc.overlay && npc.overlay !== npc.persistentOverlay) npc.overlay = null;
+  setState(npc, 'routing', 'departure');
+  npc._routeTarget = {
+    x: tx, y: ty,
+    exitType: exit.type,         // 供 steerRoam 判断到达阈值（building=20，edge=8）
+    abandonAfter: 999,           // 离场不放弃
+    onArrive: (n) => { n.alive = false; },
+  };
+}
+
+/**
+ * 触发 NPC 离场：选出口 → 设 _departing → 进入 routing（或先站起再 routing）
+ * 找不到出口时延长寿命 30s 后重试。
+ * @param {object} exitRegistry - ExitRegistry 实例
+ */
+export function triggerDeparture(npc, exitRegistry) {
+  if (!exitRegistry) return;
+  const exit = exitRegistry.findExit(npc);
+  if (!exit) { npc._lifespan += 30; return; }  // 无出口：延长寿命
+
+  npc._departing = true;
+
+  // 坐着/躺着/蹲着：先站起来，下一帧再进 routing
+  if (['sit_bench', 'lie_bench', 'sit_ground', 'squat'].includes(npc.state)) {
+    setState(npc, 'stand', 'departure');
+    npc._pendingDeparture = exit;
+    return;
+  }
+  _routeToExit(npc, exit);
+}
+
 // ─── 对外主接口：每帧推进单个 NPC 的基础状态 ──────────────────────────────────
 export function tickBaseState(npc, profile, envQuery, dt) {
   npc.stateTimer += dt;
-  _evaluateTransitions(npc, profile, envQuery);   // 转换求值（不含 setState 的纯行为）
+
+  // 延迟离场：上帧进入 stand，本帧立即进入 routing
+  if (npc._pendingDeparture && npc.state === 'stand') {
+    const exit = npc._pendingDeparture;
+    npc._pendingDeparture = null;
+    _routeToExit(npc, exit);
+    return;
+  }
+
+  _evaluateTransitions(npc, profile, envQuery);   // 转换求值
   _tickState(npc, envQuery, profile, dt);         // per-state 行为（steerRoam 等）
 }

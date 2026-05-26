@@ -68,6 +68,7 @@ const PEDESTRIAN = {
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
   loiterChance: 0.25,
   loiterDurationRange: [15, 45],
+  departure: { lifespanRange: [90, 210], preferExitType: null },
 };
 
 const BUSINESSMAN = {
@@ -84,6 +85,7 @@ const BUSINESSMAN = {
   socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
   loiterChance: 0.12,
   loiterDurationRange: [15, 40],
+  departure: { lifespanRange: [90, 210], preferExitType: 'building' },
 };
 
 // 游客：蹲下看地图/坐地上休息概率稍高
@@ -106,6 +108,7 @@ const TOURIST = {
   socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
   loiterChance: 0.40,
   loiterDurationRange: [20, 60],
+  departure: { lifespanRange: [90, 210], preferExitType: null },
 };
 
 const CHESS_PLAYER = {

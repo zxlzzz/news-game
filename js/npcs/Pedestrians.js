@@ -56,6 +56,9 @@ export function spawnPedestrians(em, sr, bm) {
       n.roamTarget = null;
       applyTraits(n, t);
       bm.register(n, t.npcType);
+      n._ageTimer  = rand(0, 60);  // 错开各人入场时间，避免同时离场
+      n._lifespan  = rand(90, 210);
+      n._departing = false;
     }
   }
 
@@ -68,18 +71,21 @@ export function spawnPedestrians(em, sr, bm) {
     tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
   });
   applyTraits(sw1, sidewalkT); bm.register(sw1, 'businessman');
+  sw1._ageTimer = rand(0, 60); sw1._lifespan = rand(90, 210); sw1._departing = false;
   const sw2 = makeNPC(em, sr, {
     x: 1100, y: SIDEWALK_FAR_Y - 1, animation: 'walk', direction: 1, speed: 16, vy: 0,
     minX: 1050, maxX: 1300, minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y,
     tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
   });
   applyTraits(sw2, sidewalkT); bm.register(sw2, 'businessman');
+  sw2._ageTimer = rand(0, 60); sw2._lifespan = rand(90, 210); sw2._departing = false;
   const sw3 = makeNPC(em, sr, {
     x: 1750, y: SIDEWALK_FAR_Y + 2, animation: 'walk', direction: 1, speed: 28, vy: 0,
     minX: 1500, maxX: 1980, minY: SIDEWALK_FAR_Y, maxY: SIDEWALK_FAR_Y + 3,
     tags: ['pedestrian'], npcType: 'pedestrian', scaleMul: 0.65,
   });
   applyTraits(sw3, sidewalkT); bm.register(sw3, 'pedestrian');
+  sw3._ageTimer = rand(0, 60); sw3._lifespan = rand(90, 210); sw3._departing = false;
 
   // ── 斑马线横穿者：前人行道 → 公园往返（路面上，道路对面 → scaleMul 0.55） ─────
   const crosserX = 290;

@@ -15,7 +15,7 @@
 
 import { getProfile }          from './behavior/NpcProfile.js';
 import { EnvironmentQuery }     from './behavior/EnvironmentQuery.js';
-import { tickBaseState, setState, registerTransition } from './behavior/BaseStateMachine.js';
+import { tickBaseState, setState, registerTransition, triggerDeparture } from './behavior/BaseStateMachine.js';
 import { tickOverlay }          from './behavior/OverlayLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
 import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
@@ -38,6 +38,7 @@ export class BehaviorManager {
       from: 'walk', to: 'routing', priority: 10,
       trigger: 'smart-object',
       condition: (npc, env, profile) => {
+        if (npc._departing) return false;
         if (!profile?.activities?.includes('chess')) return false;
         if (Math.random() > 0.003) return false;
         const found = env.findAvailableSlot('chess', npc, 220);
@@ -76,8 +77,18 @@ export class BehaviorManager {
     // 2) 自由 NPC（未被 Activity 锁定）走基础状态机 + 叠加动作
     for (const npc of this.npcs) {
       if (!npc.alive || npc._activity) continue;
+
+      // 年龄计时 + 离场触发（仅对有 lifespan 的 NPC 生效，_departing 后不再计时）
+      if (!npc._departing && npc._lifespan != null) {
+        npc._ageTimer = (npc._ageTimer || 0) + dt;
+        if (npc._ageTimer >= npc._lifespan) {
+          triggerDeparture(npc, this.exitRegistry);
+        }
+      }
+
       tickBaseState(npc, npc._profile, this.envQuery, dt);
-      tickOverlay(npc, npc._profile, dt);
+      // 离场中的 NPC 跳过 overlay 随机触发
+      if (!npc._departing) tickOverlay(npc, npc._profile, dt);
     }
 
     // 3) NPC 间分离：行走中的两人靠太近时互相推开，避免重叠穿模
