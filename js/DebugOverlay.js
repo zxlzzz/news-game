@@ -78,12 +78,14 @@ export class DebugOverlay {
       const t = npc._routeTarget;
       state = `routing→(${Math.round(t.x)},${Math.round(t.y)})`;
     }
-    const overlay = npc.overlay || '-';
+    const modStr = npc.modifiers && npc.modifiers.length
+      ? npc.modifiers.map(m => `${m.id}(${m.kind[0]})`).join(',')
+      : '-';
     let activity  = '-';
     const act = npc._activity;
     if (act) activity = `${act.label}(${act.roleOf(npc) || '?'})`;
     const dept = npc._departing ? ' [DEPT]' : '';
-    return `[${profile}] ${state} | ${overlay} | ${activity}${dept}`;
+    return `[${profile}] ${state} | ${modStr} | ${activity}${dept}`;
   }
 
   update() {

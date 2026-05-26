@@ -95,17 +95,23 @@ export class NPC extends Entity {
     this.drawExtra    = config.drawExtra    ?? null;
     this.customUpdate = config.customUpdate ?? null;
 
-    // 代码控制的肢体覆盖（{joint:[x,y]}），由行为/叠加动作每帧计算后赋值；null=不覆盖
-    this.overlayPose  = config.overlayPose  ?? null;
-
-    // 持久特征 overlay（如 hold_bag）：由 spawner 赋值，OverlayLayer 在空档回退显示
-    this.persistentOverlay = config.persistentOverlay ?? null;
-
     // 行为状态机字段（由 BehaviorManager 驱动；非托管 NPC 保持默认）
     this.npcType   = config.npcType ?? null;   // 自身属性（businessman/tourist...）
     this.state     = config.state   ?? null;   // 当前行为状态（walk/run/stand...）
-    this.overlay   = config.overlay ?? null;   // 叠加动作（phone_look...）
     this.bond      = null;                      // 活跃社交关系（SocialBond）
+
+    // Modifier 系统（替代旧的 overlay / overlayPose / persistentOverlay）
+    this.traits    = config.traits ?? [];       // string[]，生成时赋值，之后不变
+    this.modifiers = [];                        // Modifier[]，运行时管理
+  }
+
+  resolveJoints() {
+    if (!this.modifiers.length) return null;
+    const out = {};
+    for (const m of [...this.modifiers].sort((a, b) => a.priority - b.priority)) {
+      if (m.joints) Object.assign(out, m.joints);
+    }
+    return out;
   }
 
   getBounds() {
@@ -151,7 +157,7 @@ export class NPC extends Entity {
       : { head: 'head', neck: 'neck', hand_l: 'l_hand', hand_r: 'r_hand',
           hip: 'body', foot_l: 'l_foot', foot_r: 'r_foot' };
     const jn = map[name] || name;
-    const ov = this.overlayPose;
+    const ov = this.resolveJoints();
     const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
     const jp = coord(jn);
     if (!jp) return { x: this.x, y: this.y };
@@ -178,10 +184,10 @@ export class NPC extends Entity {
     const stateTag = STATE_TAGS[this.state] ?? ANIM_TAGS[this.animation];
     if (stateTag) out.add(stateTag);
 
-    // 3) 叠加动作（overlay 名 + 额外语义标签）
-    if (this.overlay) {
-      out.add(this.overlay);
-      const extra = OVERLAY_EXTRA_TAGS[this.overlay];
+    // 3) 修饰器（id 名 + 额外语义标签）
+    for (const m of this.modifiers) {
+      out.add(m.id);
+      const extra = OVERLAY_EXTRA_TAGS[m.id];
       if (extra) out.add(extra);
     }
 
@@ -271,7 +277,7 @@ export class NPC extends Entity {
     this.renderer.draw(
       g, this.animation, this.frameIndex,
       this.x, this._renderY(), this.scale, this.direction,
-      color, 1, this.overlayPose
+      color, 1, this.resolveJoints()
     );
 
     if (this.inViewfinder) this._drawViewfinderOutline(g);

@@ -3,7 +3,7 @@
  *
  * 组合各行为层，对所有被托管的 NPC 每帧驱动：
  *   - SocialLayer：tick 所有 Activity（对话/下棋/遛狗）+ 周期性配对新对话
- *   - 自由 NPC（未被 Activity 锁定）：BaseStateMachine + OverlayLayer
+ *   - 自由 NPC（未被 Activity 锁定）：BaseStateMachine + ModifierLayer
  *   - CameraReactionLayer：镜头反应（本次留空）
  *
  * 行为差异由 NpcProfile 数据驱动；NPC 通过 register(npc, profileName) 纳入框架。
@@ -16,7 +16,7 @@
 import { getProfile }          from './behavior/NpcProfile.js';
 import { EnvironmentQuery }     from './behavior/EnvironmentQuery.js';
 import { tickBaseState, setState, registerTransition, triggerDeparture } from './behavior/BaseStateMachine.js';
-import { tickOverlay }          from './behavior/OverlayLayer.js';
+import { tickModifiers }        from './behavior/ModifierLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
 import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
 import { refreshDebugFlag }     from './behavior/DebugLog.js';
@@ -87,8 +87,8 @@ export class BehaviorManager {
       }
 
       tickBaseState(npc, npc._profile, this.envQuery, dt);
-      // 离场中的 NPC 跳过 overlay 随机触发
-      if (!npc._departing) tickOverlay(npc, npc._profile, dt);
+      // 离场中的 NPC 跳过 modifier 随机触发
+      if (!npc._departing) tickModifiers(npc, npc._profile, dt);
     }
 
     // 3) NPC 间分离：行走中的两人靠太近时互相推开，避免重叠穿模

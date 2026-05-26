@@ -138,7 +138,7 @@ class TalkActivity extends Activity {
     npc.animDone   = false;
     npc.frameIndex = 0;
     npc.frameTimer = 0;
-    npc.overlay    = null;
+    npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
   }
 
   _faceEachOther() {
@@ -251,8 +251,8 @@ class TalkActivity extends Activity {
       if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, cfg.bDelta, t);
 
       if (this._subTimer >= cfg.release) {
-        this.a.overlayPose = null;
-        if (!this._pushBReleased) this.b.overlayPose = null;
+        this.a.modifiers = this.a.modifiers.filter(m => m.id !== '_talk_sub_event');
+        if (!this._pushBReleased) this.b.modifiers = this.b.modifiers.filter(m => m.id !== '_talk_sub_event');
         return false;  // 子事件完成，触发 destroy
       }
     }
@@ -271,23 +271,28 @@ class TalkActivity extends Activity {
     return base;
   }
 
-  // 将 basePose + deltaPose*t 写入 npc.overlayPose
+  // 将 basePose + deltaPose*t 写入 _talk_sub_event modifier
   _applyLerpPose(npc, basePose, deltaPose, t) {
     if (!deltaPose) return;
-    const pose = {};
+    const joints = {};
     for (const [j, delta] of Object.entries(deltaPose)) {
       const base = basePose[j] || [0, 0];
-      pose[j] = [base[0] + delta[0] * t, base[1] + delta[1] * t];
+      joints[j] = [base[0] + delta[0] * t, base[1] + delta[1] * t];
     }
-    npc.overlayPose = pose;
+    let mod = npc.modifiers.find(m => m.id === '_talk_sub_event');
+    if (!mod) {
+      npc.modifiers.push({ id: '_talk_sub_event', kind: 'held', priority: 20, joints, timer: -1 });
+    } else {
+      mod.joints = joints;
+    }
   }
 
   interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
-    // 清理骨骼覆盖（push 时 B 已被释放，B 的 overlayPose 从未被设置过，跳过）
-    if (this.a.alive) this.a.overlayPose = null;
-    if (!this._pushBReleased && this.b.alive) this.b.overlayPose = null;
+    // 清理子事件 modifier（push 时 B 已被释放，B 无此 modifier，filter 无害）
+    if (this.a.alive) this.a.modifiers = this.a.modifiers.filter(m => m.id !== '_talk_sub_event');
+    if (!this._pushBReleased && this.b.alive) this.b.modifiers = this.b.modifiers.filter(m => m.id !== '_talk_sub_event');
 
     for (const { npc } of this.participants) {
       npc.bond = null;

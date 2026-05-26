@@ -65,9 +65,9 @@ export function setState(npc, state, trigger = '?') {
     npc._bench = null;
   }
 
-  // 离开 loiter 时清理微行为遗留（朝向 + overlayPose）
+  // 离开 loiter 时清理微行为遗留（朝向 + _loiter_micro modifier）
   if (prev === 'loiter' && state !== 'loiter') {
-    npc.overlayPose = null;
+    npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
     if (npc._loiterDir !== undefined) { npc.direction = npc._loiterDir; npc._loiterDir = undefined; }
   }
 
@@ -238,11 +238,11 @@ const POSE_BAG_B = LOITER_POSES.bag_b;
 
 function _getMicroActionDur(npc) {
   const ov = npc._loiterOverlay;
-  if (ov === 'phone_call')                  return rand(3, 6);
-  if (ov === 'phone_look')                  return rand(5, 10);
-  if (npc._traits && npc._traits.smoker)    return rand(4, 6);
-  if (npc.persistentOverlay === 'hold_bag') return rand(2, 3);
-  if (npc._traits && npc._traits.walk_dog)  return rand(3, 5);  // TODO: 狗停下嗅地
+  if (ov === 'phone_call')                        return rand(3, 6);
+  if (ov === 'phone_look')                        return rand(5, 10);
+  if (npc.traits && npc.traits.includes('smoker'))    return rand(4, 6);
+  if (npc.traits && npc.traits.includes('hold_bag'))  return rand(2, 3);
+  if (npc.traits && npc.traits.includes('walk_dog'))  return rand(3, 5);  // TODO: 狗停下嗅地
   return rand(5, 8);
 }
 
@@ -252,21 +252,26 @@ function _updateLoiterExtraTags(npc) {
   const ov = npc._loiterOverlay;
   if      (ov === 'phone_call')                 npc._extraTags = [...base, 'phone_call', 'communicating'];
   else if (ov === 'phone_look')                 npc._extraTags = [...base, 'phone_use', 'distracted'];
-  else if (npc._traits && npc._traits.smoker)   npc._extraTags = [...base, 'smoking'];
-  else if (npc._traits && npc._traits.walk_dog) npc._extraTags = [...base, 'dog_owner', 'watching'];
+  else if (npc.traits && npc.traits.includes('smoker'))    npc._extraTags = [...base, 'smoking'];
+  else if (npc.traits && npc.traits.includes('walk_dog'))  npc._extraTags = [...base, 'dog_owner', 'watching'];
   else                                          npc._extraTags = [...base, 'phone_use', 'distracted'];
 }
 
 function _applyLoiterVisuals(npc) {
-  if (npc._microPhase !== 1) { npc.overlayPose = null; return; }
+  npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
+  if (npc._microPhase !== 1) return;
+  let joints = null;
   const ov = npc._loiterOverlay;
-  if (ov === 'phone_call' || (npc._traits && npc._traits.smoker)) {
-    npc.overlayPose = null;       // 各自 overlay 负责视觉（TODO）
-  } else if (npc.persistentOverlay === 'hold_bag') {
-    npc.overlayPose = (Math.floor(npc._loiterElapsed * 2) % 2 === 0) ? POSE_BAG_A : POSE_BAG_B;
+  if (ov === 'phone_call' || npc.traits.includes('smoker')) {
+    joints = null; // 对应 held modifier 已存在，不额外叠加
+  } else if (npc.traits.includes('hold_bag')) {
+    joints = (Math.floor(npc._loiterElapsed * 2) % 2 === 0) ? POSE_BAG_A : POSE_BAG_B;
   } else {
-    npc.overlayPose = POSE_PHONE; // phone_look / walk_dog / 默认：低头看手机
+    joints = POSE_PHONE; // phone_look / walk_dog / 默认：低头看手机
   }
+  if (joints) npc.modifiers.push({
+    id: '_loiter_micro', kind: 'held', priority: 15, joints, timer: 999,
+  });
 }
 
 function _advanceMicroPhase(npc) {
@@ -297,7 +302,7 @@ function _tickLoiter(npc, profile, dt) {
     const range         = profile.loiterDurationRange || [15, 45];
     npc._loiterDur      = rand(range[0], range[1]);
     npc._loiterElapsed  = 0;
-    npc._loiterOverlay  = npc.overlay;   // 快照进入时的 overlay，供 micro_action 分派
+    npc._loiterOverlay  = npc.modifiers.find(m => m.kind === 'held' && !m.id.startsWith('_'))?.id ?? null;
     npc._microPhase     = 0;
     npc._microPhaseName = 'look_around';
     npc._microTimer     = rand(3, 6);
@@ -430,8 +435,8 @@ function _routeToExit(npc, exit) {
   const ty = exit.y ?? npc.y;    // edge 出口跟随当前 Y，building 出口用固定 Y
   if (exit.facing !== 0) npc.direction = exit.facing;
   npc.roam = null;               // 关闭随机漫游
-  // 清除随机 overlay；持久特征 hold_bag 保留
-  if (npc.overlay && npc.overlay !== npc.persistentOverlay) npc.overlay = null;
+  // 清除用户可见的 held modifier（trait 保留；tickModifiers 在 routing 状态下也会清 held）
+  npc.modifiers = npc.modifiers.filter(m => m.kind !== 'held');
   setState(npc, 'routing', 'departure');
   npc._routeTarget = {
     x: tx, y: ty,

@@ -33,10 +33,11 @@ const TYPES = [
   { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
 ];
 
-// 生成时注入持久特征：按概率给 smoker trait / hold_bag 持久 overlay
+// 生成时注入持久特征：按概率给 smoker / hold_bag trait
 function applyTraits(n, t) {
-  if (Math.random() < t.smokerChance) n._traits = { smoker: true };
-  if (Math.random() < t.bagChance)    n.persistentOverlay = 'hold_bag';
+  n.traits = [];
+  if (Math.random() < t.smokerChance) n.traits.push('smoker');
+  if (Math.random() < t.bagChance)    n.traits.push('hold_bag');
 }
 
 export function spawnPedestrians(em, sr, bm) {

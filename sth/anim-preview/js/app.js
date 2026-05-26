@@ -3,9 +3,10 @@
  *
  * 数据来源：直接 import 游戏源文件，不硬编码任何 pose / profile 数据。
  *   - PROFILES        ← js/behavior/NpcProfile.js
- *   - OVERLAY_POSES   ← js/behavior/PoseRegistry.js
+ *   - HELD_POSES      ← js/behavior/PoseRegistry.js
  *   - LOITER_POSES    ← js/behavior/PoseRegistry.js
  *   - SUB_EVENT_POSES ← js/behavior/PoseRegistry.js
+ *   - TRAIT_PROPS     ← js/behavior/PoseRegistry.js
  *
  * 编辑工作流：
  *   1. 在 "Pose Registry" 面板里修改关节坐标 → 预览立即更新
@@ -19,7 +20,7 @@
 
 import { PROFILES as _PROFILES }
   from '../../../js/behavior/NpcProfile.js';
-import { OVERLAY_POSES, LOITER_POSES, SUB_EVENT_POSES }
+import { HELD_POSES, LOITER_POSES, SUB_EVENT_POSES, TRAIT_PROPS }
   from '../../../js/behavior/PoseRegistry.js';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -60,13 +61,12 @@ const PROFILE_LABELS = {
   athlete:        ['运动员', 'ATH'],
 };
 
-// Overlay 显示元数据
+// Overlay 显示元数据（held poses；hold_bag 已移至 TRAITS_DEF）
 const OVERLAY_META = {
   phone_look: { label: '📱 看手机' },
   phone_call: { label: '📞 打电话' },
   smoke:      { label: '🚬 抽烟',   traitRequired: 'smoker' },
   cross_arm:  { label: '🤚 抱臂' },
-  hold_bag:   { label: '👜 拿包' },
 };
 
 // Loiter pose 显示名
@@ -86,8 +86,9 @@ const SUB_EVENT_META = {
 
 // Trait 芯片定义
 const TRAITS_DEF = [
-  { key: 'smoker',   label: '🚬 抽烟', desc: '允许 smoke overlay' },
-  { key: 'walk_dog', label: '🐕 遛狗', desc: '遛狗特征（TODO）' },
+  { key: 'hold_bag', label: '👜 拿包',  desc: '拿包特征（永久 modifier）' },
+  { key: 'smoker',   label: '🚬 抽烟',  desc: '允许 smoke held pose' },
+  { key: 'walk_dog', label: '🐕 遛狗',  desc: '遛狗特征（TODO）' },
 ];
 
 // Animation Graph 节点位置（0~1 相对坐标）
@@ -135,10 +136,10 @@ for (const [k, p] of Object.entries(_PROFILES)) {
   PROFILES[k] = { ...p, label, shortLabel, extraEdges: profileExtraEdges(p) };
 }
 
-// 从所有 profile.overlays 计算每个 overlay key 在哪些状态下有效（union）
+// 从所有 profile.heldPoses 计算每个 held pose key 在哪些状态下有效（union）
 const _overlayOnSets = {};
 for (const p of Object.values(_PROFILES)) {
-  for (const [key, def] of Object.entries(p.overlays ?? {})) {
+  for (const [key, def] of Object.entries(p.heldPoses ?? {})) {
     if (!_overlayOnSets[key]) _overlayOnSets[key] = new Set();
     for (const s of (def.on ?? [])) _overlayOnSets[key].add(s);
   }
@@ -151,8 +152,8 @@ for (const [k, s] of Object.entries(_overlayOnSets)) OVERLAY_ON[k] = [...s];
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const editedPoses = {
-  overlays: JSON.parse(JSON.stringify(OVERLAY_POSES)),
-  loiter:   JSON.parse(JSON.stringify(LOITER_POSES)),
+  overlays: JSON.parse(JSON.stringify(HELD_POSES)),   // { key: { joints: {...} } }
+  loiter:   JSON.parse(JSON.stringify(LOITER_POSES)),  // { key: { joint: [...] } }
   social:   JSON.parse(JSON.stringify(SUB_EVENT_POSES)),
 };
 
@@ -170,39 +171,51 @@ function deltaToAbs(delta) {
   return out;
 }
 
-// 从 editedPoses 生成 PoseRegistry.js 源码
+// 从 editedPoses 生成 PoseRegistry.js 源码（自包含，替换 data/ re-export 版本）
 function generatePoseRegistryJS() {
-  const serPose = (obj) => {
+  const serJoints = (obj) => {
     if (!obj) return 'null';
     const lines = Object.entries(obj).map(([k, v]) => `    ${k}: [${v[0]}, ${v[1]}]`);
     return `{\n${lines.join(',\n')}\n  }`;
   };
-  const serGroup = (obj) => {
-    const lines = Object.entries(obj).map(([k, v]) => `  ${k}: ${serPose(v)}`);
+  const serHeldPoses = (obj) => {
+    const lines = Object.entries(obj).map(([k, v]) =>
+      `  ${k}: { joints: ${serJoints(v.joints)} }`
+    );
+    return `{\n${lines.join(',\n')}\n}`;
+  };
+  const serFlatPoses = (obj) => {
+    const lines = Object.entries(obj).map(([k, v]) => `  ${k}: ${serJoints(v)}`);
     return `{\n${lines.join(',\n')}\n}`;
   };
   const serSocial = (obj) => {
     const lines = Object.entries(obj).map(([k, v]) => {
-      const a = v.aDelta ? serPose(v.aDelta).replace(/\n/g, '\n  ') : 'null';
-      const b = v.bDelta ? serPose(v.bDelta).replace(/\n/g, '\n  ') : 'null';
+      const a = v.aDelta ? serJoints(v.aDelta).replace(/\n/g, '\n  ') : 'null';
+      const b = v.bDelta ? serJoints(v.bDelta).replace(/\n/g, '\n  ') : 'null';
       return `  ${k}: {\n    aDelta: ${a},\n    bDelta: ${b},\n  }`;
     });
     return `{\n${lines.join(',\n')}\n}`;
   };
 
   return `/**
- * PoseRegistry — overlay / loiter / 社交子事件关节坐标（纯数据，无依赖）
+ * PoseRegistry — 由 anim-preview 工具自动生成（自包含版本）
  *
- * 由 anim-preview 工具自动生成。手动修改后请重新载入游戏。
+ * 覆盖 data/ re-export 版本。手动修改后请重新载入游戏。
  */
 
-export const OVERLAY_POSES = ${serGroup(editedPoses.overlays)};
+export const TRAIT_PROPS = {
+  hold_bag: { joints: { r_elbow: [16, -5], r_hand: [18, 5] } },
+};
 
-export const LOITER_POSES = ${serGroup(editedPoses.loiter)};
+export const HELD_POSES = ${serHeldPoses(editedPoses.overlays)};
+
+export const LOITER_POSES = ${serFlatPoses(editedPoses.loiter)};
 
 // 参考帧（single.json F0）：
 //   r_hand[-10,-18]  l_hand[9,-19]  r_elbow[14,-11]  l_elbow[-14,-11]  head[-6,-55]
 export const SUB_EVENT_POSES = ${serSocial(editedPoses.social)};
+
+export const GESTURE_CLIPS = {};
 `;
 }
 
@@ -293,8 +306,9 @@ class NpcInstance {
     this.frameAcc    = 0;
     this.dir         = 1;
     this.traits      = new Set();
-    this.overlayKey  = '';
-    this.overlayPose = {};   // custom pose textarea override
+    this.overlayKey  = '';     // 当前下拉选中的 held pose key（仅 UI 跟踪用）
+    this.modifiers   = [];     // Modifier[]，驱动实际渲染
+    this.overlayPose = {};     // custom pose textarea override
     this.customPoseJson = '';
     this.collapsed   = false;
     this.interactPose = null;
@@ -302,12 +316,20 @@ class NpcInstance {
 
   get profile() { return PROFILES[this.profileKey] || PROFILES.pedestrian; }
 
-  // pose 优先级：interactPose > editedPoses.overlays[overlayKey] + textarea override
+  // 与 NPC.resolveJoints() 一致：按 priority 升序合并所有 modifier joints
+  resolveJoints() {
+    if (!this.modifiers.length) return {};
+    const out = {};
+    for (const m of [...this.modifiers].sort((a, b) => a.priority - b.priority)) {
+      if (m.joints) Object.assign(out, m.joints);
+    }
+    return out;
+  }
+
+  // pose 优先级：interactPose > resolveJoints() + textarea override
   get resolvedPose() {
     if (this.interactPose) return this.interactPose;
-    const merged = {};
-    const base = editedPoses.overlays[this.overlayKey];
-    if (base) Object.assign(merged, base);
+    const merged = this.resolveJoints();
     Object.assign(merged, this.overlayPose);
     return merged;
   }
@@ -559,9 +581,10 @@ class PreviewCanvas {
         ? `${npc.pal.label}: ${npc.state}  F${npc.frameLabel}`
         : `${npc.pal.label}: (loading...)`;
       ctx.fillText(lbl, slotCx, GROUND_Y + 20);
-      if (npc.overlayKey) {
+      const heldMods = npc.modifiers.filter(m => m.kind === 'held');
+      if (heldMods.length) {
         ctx.fillStyle = '#ff9a4a'; ctx.globalAlpha = 0.75;
-        ctx.fillText(`[${npc.overlayKey}]`, slotCx, GROUND_Y + 32);
+        ctx.fillText(`[${heldMods.map(m => m.id).join(',')}]`, slotCx, GROUND_Y + 32);
       }
       ctx.restore();
     });
@@ -722,13 +745,27 @@ class AnimatorDebugger {
 
   setOverlay(id, key) {
     const npc = this._byId(id); if (!npc) return;
-    npc.overlayKey = key; this._renderFrame(); this._renderPanel();
+    npc.modifiers = npc.modifiers.filter(m => m.kind !== 'held');
+    npc.overlayKey = key;
+    if (key) {
+      const poseDef = editedPoses.overlays[key];
+      if (poseDef) npc.modifiers.push({
+        id: key, kind: 'held', priority: 10, joints: poseDef.joints, timer: -1,
+      });
+    }
+    this._renderFrame(); this._renderPanel();
   }
 
   toggleTrait(id, traitKey, checked) {
     const npc = this._byId(id); if (!npc) return;
     checked ? npc.traits.add(traitKey) : npc.traits.delete(traitKey);
+    npc.modifiers = npc.modifiers.filter(m => m.kind !== 'trait' || m.id !== traitKey);
+    if (checked) {
+      const tp = TRAIT_PROPS[traitKey];
+      if (tp) npc.modifiers.push({ id: traitKey, kind: 'trait', priority: 5, joints: tp.joints, timer: -1 });
+    }
     this._renderPanel();
+    this._renderFrame();
   }
 
   setPose(id, json) {
@@ -781,8 +818,17 @@ class AnimatorDebugger {
       if (!data[key][sub][joint]) data[key][sub][joint] = [0, 0];
       data[key][sub][joint][axis] = num;
     } else {
-      if (!data[key][joint]) data[key][joint] = [0, 0];
-      data[key][joint][axis] = num;
+      // overlays section uses nested .joints; loiter section is flat
+      const target = section === 'overlays' ? data[key].joints : data[key];
+      if (!target[joint]) target[joint] = [0, 0];
+      target[joint][axis] = num;
+    }
+    // Re-sync held modifiers on all NPCs that have this overlay active
+    if (section === 'overlays') {
+      for (const npc of this.npcs) {
+        const mod = npc.modifiers.find(m => m.id === key && m.kind === 'held');
+        if (mod) mod.joints = data[key].joints;
+      }
     }
     this._renderFrame();
   }
@@ -791,7 +837,9 @@ class AnimatorDebugger {
   previewPoseOnNpc(section, key, sub) {
     const npc = this.interactA || this.npcs[0]; if (!npc) return;
     const src = editedPoses[section][key];
-    const pose = sub ? (src?.[sub] ?? {}) : (src ?? {});
+    let pose = sub ? (src?.[sub] ?? {}) : (src ?? {});
+    // overlays section: unwrap .joints for preview
+    if (section === 'overlays' && !sub && pose.joints) pose = pose.joints;
     // 对 social delta → absolute
     const abs = sub ? deltaToAbs(pose) : { ...pose };
     npc.overlayPose = abs;
@@ -842,7 +890,7 @@ class AnimatorDebugger {
       out[`npc_${npc.pal.label}`] = {
         profile: npc.profileKey, state: npc.state, anim: npc.animName,
         frame: npc.frame, dir: npc.dir,
-        overlay: npc.overlayKey, joints: merged,
+        modifiers: npc.modifiers.filter(m => m.kind === 'held').map(m => m.id), joints: merged,
         pose: Object.keys(npc.resolvedPose).length ? npc.resolvedPose : undefined,
       };
     }
@@ -921,14 +969,14 @@ class AnimatorDebugger {
         <summary>Overlay Poses</summary>
         <div class="pose-reg-body">`;
 
-    for (const [key, pose] of Object.entries(editedPoses.overlays)) {
+    for (const [key, poseDef] of Object.entries(editedPoses.overlays)) {
       const meta = OVERLAY_META[key];
       html += `<div class="pose-group">
         <div class="pose-group-hdr">
           <span class="pose-key">${meta?.label ?? key}</span>
           <button class="sm ghost" onclick="app.previewPoseOnNpc('overlays','${key}',null)" title="应用到 NPC A">→ NPC</button>
         </div>`;
-      for (const [joint, [x, y]] of Object.entries(pose)) {
+      for (const [joint, [x, y]] of Object.entries(poseDef.joints)) {
         html += this._poseJointRow('overlays', key, null, joint, x, y);
       }
       html += `</div>`;
@@ -1057,8 +1105,9 @@ class AnimatorDebugger {
       </label>`;
     }).join('');
 
-    const badge = npc.overlayKey
-      ? `<span class="npc-state-badge">${npc.state} | ${npc.overlayKey}</span>`
+    const activeMods = npc.modifiers.map(m => `${m.id}(${m.kind[0]})`).join(',');
+    const badge = activeMods
+      ? `<span class="npc-state-badge">${npc.state} | ${activeMods}</span>`
       : `<span class="npc-state-badge">${npc.state}</span>`;
 
     const dirLabel = npc.dir > 0 ? '→ 右' : '← 左';
