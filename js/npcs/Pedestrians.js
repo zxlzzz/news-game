@@ -7,10 +7,10 @@
  *      由 BehaviorManager 接管（npc.roam = zone），可随机停下/交谈/坐长椅。
  *   2) 前人行道行人：建筑前短街上沿 Y 线横向行走（窄带，仅 X 往返）。
  *
- * 道路（FAR_Y..NEAR_Y）只允许 cyclist / 横穿斑马线的行人。
+ * 道路（FAR_Y..NEAR_Y）只允许 cyclist。
  */
 
-import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, PARK_TOP, PARK_BOTTOM } from '../SceneConfig.js';
+import { SIDEWALK_FAR_Y, PARK_TOP, PARK_BOTTOM } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -56,6 +56,9 @@ export function spawnPedestrians(em, sr, bm) {
       n.roamTarget = null;
       applyTraits(n, t);
       bm.register(n, t.npcType);
+      n._ageTimer  = rand(0, 60);  // 错开各人入场时间，避免同时离场
+      n._lifespan  = rand(90, 210);
+      n._departing = false;
     }
   }
 
@@ -68,44 +71,20 @@ export function spawnPedestrians(em, sr, bm) {
     tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
   });
   applyTraits(sw1, sidewalkT); bm.register(sw1, 'businessman');
+  sw1._ageTimer = rand(0, 60); sw1._lifespan = rand(90, 210); sw1._departing = false;
   const sw2 = makeNPC(em, sr, {
     x: 1100, y: SIDEWALK_FAR_Y - 1, animation: 'walk', direction: 1, speed: 16, vy: 0,
     minX: 1050, maxX: 1300, minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y,
     tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
   });
   applyTraits(sw2, sidewalkT); bm.register(sw2, 'businessman');
+  sw2._ageTimer = rand(0, 60); sw2._lifespan = rand(90, 210); sw2._departing = false;
   const sw3 = makeNPC(em, sr, {
     x: 1750, y: SIDEWALK_FAR_Y + 2, animation: 'walk', direction: 1, speed: 28, vy: 0,
     minX: 1500, maxX: 1980, minY: SIDEWALK_FAR_Y, maxY: SIDEWALK_FAR_Y + 3,
     tags: ['pedestrian'], npcType: 'pedestrian', scaleMul: 0.65,
   });
   applyTraits(sw3, sidewalkT); bm.register(sw3, 'pedestrian');
+  sw3._ageTimer = rand(0, 60); sw3._lifespan = rand(90, 210); sw3._departing = false;
 
-  // ── 斑马线横穿者：前人行道 → 公园往返（路面上，道路对面 → scaleMul 0.55） ─────
-  const crosserX = 290;
-  const crosser = makeNPC(em, sr, {
-    x: crosserX, y: SIDEWALK_FAR_Y, animation: 'walk', direction: 1, speed: 0, vy: 0,
-    minX: crosserX - 4, maxX: crosserX + 4,
-    minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_NEAR_Y + 2,
-    tags: ['pedestrian', 'crossing'], scaleMul: 0.55,
-  });
-  crosser._stage = 'far';
-  crosser._wait  = 0;
-  crosser.customUpdate = (n, delta) => {
-    const dt = delta / 1000;
-    if (n._stage === 'far') {
-      n._wait += dt;
-      if (n._wait > 1.5) { n._stage = 'crossingDown'; n._wait = 0; n.animation = 'walk'; n.direction = 1; }
-    } else if (n._stage === 'crossingDown') {
-      n.y += 60 * dt;
-      if (n.y >= SIDEWALK_NEAR_Y) { n.y = SIDEWALK_NEAR_Y; n._stage = 'near'; }
-    } else if (n._stage === 'near') {
-      n._wait += dt;
-      if (n._wait > 1.5) { n._stage = 'crossingUp'; n._wait = 0; }
-    } else if (n._stage === 'crossingUp') {
-      n.y -= 60 * dt;
-      if (n.y <= SIDEWALK_FAR_Y) { n.y = SIDEWALK_FAR_Y; n._stage = 'far'; }
-    }
-  };
-  // 横穿者是路径脚本（customUpdate），不纳入行为状态机
 }

@@ -8,13 +8,44 @@
  * 本次复刻重构前的：两人靠近自动对话、棋手轮流落子、遛狗者带狗。
  */
 
-import { setState } from './BaseStateMachine.js';
-import { dlog }     from './DebugLog.js';
+import { setState }       from './BaseStateMachine.js';
+import { dlog }           from './DebugLog.js';
+import { SUB_EVENT_POSES } from './PoseRegistry.js';
 
 const rand   = (a, b) => a + Math.random() * (b - a);
 const chance = (p) => Math.random() < p;
 
 const CHESS_WAIT_MS = 3500;
+
+// ─── TalkActivity 子事件配置 ──────────────────────────────────────────────────
+// deltaPose 数据来自 PoseRegistry.js（单一来源，anim-preview 工具可实时编辑）
+// 参考帧（single.json F0）：r_hand[-10,-18] l_hand[9,-19] r_elbow[14,-11] l_elbow[-14,-11]
+const SUB_EVENTS = {
+  push: {
+    aDelta: SUB_EVENT_POSES.push.aDelta,
+    bDelta: SUB_EVENT_POSES.push.bDelta,
+    reach: 0.4, hold: 0.2, release: 0.5,
+    aTags: ['conflict'], bTags: ['conflict', 'victim'],
+  },
+  give_item: {
+    aDelta: SUB_EVENT_POSES.give_item.aDelta,
+    bDelta: SUB_EVENT_POSES.give_item.bDelta,
+    reach: 0.5, holdRange: [1, 2], release: 0.5,
+    aTags: ['transaction', 'exchange'], bTags: ['transaction', 'exchange'],
+  },
+  handshake: {
+    aDelta: SUB_EVENT_POSES.handshake.aDelta,
+    bDelta: SUB_EVENT_POSES.handshake.bDelta,
+    reach: 0.5, hold: 1.5, release: 0.5,
+    aTags: null, bTags: null,
+  },
+  point_at: {
+    aDelta: SUB_EVENT_POSES.point_at.aDelta,
+    bDelta: SUB_EVENT_POSES.point_at.bDelta,
+    reach: 0.4, holdRange: [2, 3], release: 0.4,
+    aTags: ['pointing', 'observing'], bTags: ['pointing', 'observing'],
+  },
+};
 
 // ─── Activity 基类 ────────────────────────────────────────────────────────────
 class Activity {
@@ -71,7 +102,7 @@ class Activity {
   }
 }
 
-// ─── TalkActivity — 两人面对面对话（替代 SocialBond） ─────────────────────────
+// ─── TalkActivity — 两人面对面对话，计时结束后按概率触发子事件 ───────────────────
 class TalkActivity extends Activity {
   constructor(id, a, b) {
     super(id, 'talk');
@@ -87,6 +118,15 @@ class TalkActivity extends Activity {
     this._enterTalk(a);
     this._enterTalk(b);
     this._faceEachOther();
+
+    // 子事件状态
+    this._subEvent      = null;   // 'push'|'give_item'|'handshake'|'point_at'|null
+    this._subPhase      = null;   // 'reach'|'hold'|'release'
+    this._subTimer      = 0;
+    this._aBase         = null;   // A 的基准帧关节坐标快照
+    this._bBase         = null;   // B 的基准帧关节坐标快照
+    this._holdDur       = 0;
+    this._pushBReleased = false;  // push 子事件 B 已释放去 fall 链路
   }
 
   _enterTalk(npc) {
@@ -110,13 +150,145 @@ class TalkActivity extends Activity {
   update(dt) {
     if (!this.a.alive || !this.b.alive) return false;
     this.timer += dt;
-    this._faceEachOther();
-    return this.timer < this.duration;
+
+    if (this.subState === 'talking') {
+      this._faceEachOther();
+      if (this.timer >= this.duration) {
+        const type = this._selectSubEvent();
+        if (type) {
+          this._startSubEvent(type);
+          return this._subEvent !== null;  // 启动失败则自然结束
+        }
+        return false;  // 自然结束
+      }
+      return true;
+    }
+
+    return this._tickSubEvent(dt);
+  }
+
+  // 按 A 的 profile socialWeights 随机选子事件；返回类型字符串或 null
+  _selectSubEvent() {
+    const w = (this.a._profile && this.a._profile.socialWeights) || {};
+    const candidates = [
+      ['push',      w.push      ?? 0.04],
+      ['give_item', w.give_item ?? 0.05],
+      ['handshake', w.handshake ?? 0.06],
+      ['point_at',  w.point_at  ?? 0.05],
+    ];
+    for (const [type, p] of candidates) {
+      if (chance(p)) return type;
+    }
+    return null;
+  }
+
+  // 初始化子事件：捕获基准帧、设置计时和标签
+  _startSubEvent(type) {
+    const cfg = SUB_EVENTS[type];
+    if (!cfg) return;
+
+    this._subEvent      = type;
+    this._subPhase      = 'reach';
+    this._subTimer      = 0;
+    this._pushBReleased = false;
+
+    this._aBase = cfg.aDelta ? this._captureBasePose(this.a, Object.keys(cfg.aDelta)) : {};
+    this._bBase = cfg.bDelta ? this._captureBasePose(this.b, Object.keys(cfg.bDelta)) : {};
+
+    this._holdDur = cfg.holdRange
+      ? rand(cfg.holdRange[0], cfg.holdRange[1])
+      : (cfg.hold ?? 1.0);
+
+    // 设置临时标签
+    let aTags = cfg.aTags ? [...cfg.aTags] : [];
+    let bTags = cfg.bTags ? [...cfg.bTags] : [];
+    if (type === 'handshake') {
+      const tag = chance(0.5) ? 'greeting' : 'agreement';
+      aTags = [tag];
+      bTags = [tag];
+    }
+    this.a._extraTags = aTags.length > 0 ? aTags : null;
+    this.b._extraTags = bTags.length > 0 ? bTags : null;
+
+    this.subState = type;
+    dlog(`[Activity ${this.label}] sub-event: ${type}`);
+  }
+
+  // 每帧推进子事件（reach → hold → release → 结束）；返回 false = 销毁活动
+  _tickSubEvent(dt) {
+    const cfg = SUB_EVENTS[this._subEvent];
+    if (!cfg) return false;
+    this._subTimer += dt;
+
+    if (this._subPhase === 'reach') {
+      const t = Math.min(1, this._subTimer / cfg.reach);
+      this._applyLerpPose(this.a, this._aBase, cfg.aDelta, t);
+      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, cfg.bDelta, t);
+
+      if (this._subTimer >= cfg.reach) {
+        this._subPhase = 'hold';
+        this._subTimer = 0;
+
+        // push 到达 hold 时：释放 B 进入 fall 链路
+        if (this._subEvent === 'push' && !this._pushBReleased) {
+          this._pushBReleased = true;
+          this.release(this.b);
+          this.b.bond = null;
+          this.participants = this.participants.filter(p => p.npc !== this.b);
+          setState(this.b, 'fall', 'push');
+          // setState 会清空 _extraTags，重设以便取景框捕获
+          this.b._extraTags = ['conflict', 'victim'];
+        }
+      }
+    } else if (this._subPhase === 'hold') {
+      if (this._subTimer >= this._holdDur) {
+        this._subPhase = 'release';
+        this._subTimer = 0;
+      }
+    } else if (this._subPhase === 'release') {
+      const t = Math.max(0, 1 - this._subTimer / cfg.release);
+      this._applyLerpPose(this.a, this._aBase, cfg.aDelta, t);
+      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, cfg.bDelta, t);
+
+      if (this._subTimer >= cfg.release) {
+        this.a.overlayPose = null;
+        if (!this._pushBReleased) this.b.overlayPose = null;
+        return false;  // 子事件完成，触发 destroy
+      }
+    }
+
+    return true;
+  }
+
+  // 从 NPC 当前动画帧快照指定关节的局部坐标
+  _captureBasePose(npc, joints) {
+    const anim  = npc.renderer ? npc.renderer.getAnimation(npc.animation) : null;
+    const base  = {};
+    if (anim) {
+      const frame = anim.frames[npc.frameIndex % anim.frameCount];
+      for (const j of joints) base[j] = frame[j] ? [...frame[j]] : [0, 0];
+    }
+    return base;
+  }
+
+  // 将 basePose + deltaPose*t 写入 npc.overlayPose
+  _applyLerpPose(npc, basePose, deltaPose, t) {
+    if (!deltaPose) return;
+    const pose = {};
+    for (const [j, delta] of Object.entries(deltaPose)) {
+      const base = basePose[j] || [0, 0];
+      pose[j] = [base[0] + delta[0] * t, base[1] + delta[1] * t];
+    }
+    npc.overlayPose = pose;
   }
 
   interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
+    // 清理骨骼覆盖（push 时 B 已被释放，B 的 overlayPose 从未被设置过，跳过）
+    if (this.a.alive) this.a.overlayPose = null;
+    if (!this._pushBReleased && this.b.alive) this.b.overlayPose = null;
+
     for (const { npc } of this.participants) {
       npc.bond = null;
       if (npc.alive) setState(npc, 'walk', 'activity-end');
@@ -170,13 +342,51 @@ class ChessActivity extends Activity {
     npc.playOnce   = true;
   }
 
-  // 旁观者站立看棋：保持 idle 循环动画，state 置 null → 'standing'
+  // 旁观者：播放 chess_onlookers 倾身动画后定格，定时小幅走动再回来
   _setupOnlooker(npc) {
-    npc.state      = null;
-    npc.animation  = 'idle';
-    npc.speed      = 0;
-    npc.vy         = 0;
-    npc.playOnce   = false;
+    npc.state       = null;
+    npc.animation   = 'chess_onlookers';
+    npc.speed       = 0;
+    npc.vy          = 0;
+    npc.playOnce    = true;
+    npc.animDone    = false;
+    npc.frameIndex  = 0;
+    npc.frameTimer  = 0;
+    npc._watchPhase = 'watch';
+    npc._watchTimer = 0;
+    npc._watchDur   = rand(6, 14);
+    npc._homeX      = npc.x;
+  }
+
+  // 旁观者 watch/stroll 循环
+  _tickOnlooker(npc, dt) {
+    npc._watchTimer += dt;
+    if (npc._watchPhase === 'watch') {
+      if (npc._watchTimer >= npc._watchDur) {
+        npc._watchPhase    = 'stroll';
+        npc._watchTimer    = 0;
+        npc._watchDur      = rand(2, 4);
+        const side         = Math.random() < 0.5 ? 1 : -1;
+        const dist         = 25 + Math.random() * 35;
+        npc._strollTargetX = npc._homeX + side * dist;
+        npc.animation      = 'walk';
+        npc.playOnce       = false;
+        npc.speed          = npc.walkSpeed || 26;
+        npc.direction      = npc._strollTargetX > npc.x ? 1 : -1;
+      }
+    } else {
+      npc.direction = npc._strollTargetX > npc.x ? 1 : -1;
+      if (Math.abs(npc._strollTargetX - npc.x) < 6 || npc._watchTimer >= npc._watchDur) {
+        npc._watchPhase = 'watch';
+        npc._watchTimer = 0;
+        npc._watchDur   = rand(6, 14);
+        npc.animation   = 'chess_onlookers';
+        npc.playOnce    = true;
+        npc.animDone    = false;
+        npc.frameIndex  = 0;
+        npc.speed       = 0;
+      }
+    }
   }
 
   update(dt) {
@@ -198,6 +408,9 @@ class ChessActivity extends Activity {
         startPlay(next);
         freezeAt0(prev);
       }
+    }
+    for (const o of this.onlookers) {
+      if (o.alive) this._tickOnlooker(o, dt);
     }
     return true;
   }
@@ -270,7 +483,16 @@ export class SocialLayer {
       this._tryPairTalk(npcs);
     }
 
-    // 3) 路人经过空棋桌 → 概率加入新棋局（后续实现，本次留桩）
+    // 3) 槽位等待超时（20s 内无第二个人到位） → 放弃，重新 walk
+    for (const npc of npcs) {
+      if (!npc.alive || npc._activity || !npc._slotWaitProp) continue;
+      npc._slotWaitTimer = (npc._slotWaitTimer || 0) + dt;
+      if (npc._slotWaitTimer > 20) {
+        this.envQuery.releaseSlotReservation(npc);
+        npc._slotWaitProp = null;
+        setState(npc, 'walk', 'slot_wait_timeout');
+      }
+    }
   }
 
   // 外部触发：创建指定类型的 Activity
@@ -301,10 +523,28 @@ export class SocialLayer {
     if (act) act.interrupt(reason);
   }
 
+  /** Smart Object 槽位到达：凑齐所有槽位即创建 Activity，否则原地站等 */
+  onSlotArrival(npc, prop, slot) {
+    slot.ready = true;
+    slot.npc   = npc;
+
+    const allReady = prop._slots.every(s => s.ready);
+    if (allReady) {
+      const participants = prop._slots.map(s => ({ npc: s.npc, role: s.role }));
+      this.createActivity(prop.smartDef.activityType, participants, [prop]);
+      for (const s of prop._slots) { s.reserved = null; s.ready = false; s.npc = null; }
+    } else {
+      setState(npc, 'stand', 'slot_wait');
+      npc.stateDur       = Infinity;   // 压制正常 stand 超时，等凑齐或 20s 放弃
+      npc._slotWaitTimer = 0;
+      npc._slotWaitProp  = prop;
+    }
+  }
+
   // 扫描可配对的两名 stand 自由行人 → 随机生成 talk
   _tryPairTalk(npcs) {
     const standers = npcs.filter(n =>
-      n.alive && !n._activity && n.state === 'stand' &&
+      n.alive && !n._activity && !n._departing && n.state === 'stand' &&
       n._profile && n._profile.activities.includes('talk'));
     let paired = 0;
     for (let i = 0; i < standers.length; i++) {

@@ -1,0 +1,338 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;600&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:     #15151a; --bg2: #1e1e25; --bg3: #28282f; --bg4: #32323b;
+  --fg:     #dddde8; --fg2: #7878a0; --fg3: #55557a;
+  --accent: #ff6b4a; --accent2: #4a9eff; --accent3: #4adf7c;
+  --yellow: #ffe066; --purple: #df6bff; --cyan: #6bffdf;
+  --border: #333340; --border2: #44444f;
+
+  /* Node category colors */
+  --c-move:    #4a9eff; --c-idle:    #4adf7c; --c-sit:     #6bffdf;
+  --c-ground:  #ff9a4a; --c-special: #ffe066; --c-social:  #df6bff;
+}
+
+body {
+  font-family: 'Noto Sans SC', 'JetBrains Mono', sans-serif;
+  background: var(--bg); color: var(--fg);
+  height: 100vh; overflow: hidden;
+  display: grid;
+  grid-template-rows: 42px 1fr 44px;
+  user-select: none;
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 14px; background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.title {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+  color: var(--accent); letter-spacing: 1.5px; flex-shrink: 0;
+}
+.status-bar {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--fg2);
+  flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.header-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* ── Main Layout ─────────────────────────────────────────────────── */
+.main-layout { display: flex; overflow: hidden; }
+
+/* ── Left Col ────────────────────────────────────────────────────── */
+.left-col {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.preview-canvas {
+  display: block; flex-shrink: 0;
+  background: #e8e4de; width: 100%;
+  cursor: crosshair;
+  border-bottom: 2px solid var(--border);
+}
+.controls-scroll {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  background: var(--bg2);
+}
+
+/* ── Right Col ───────────────────────────────────────────────────── */
+.right-col {
+  width: 360px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  border-left: 2px solid var(--border);
+  background: var(--bg);
+}
+.graph-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.graph-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  font-weight: 600; color: var(--fg2); letter-spacing: 0.8px;
+}
+.graph-toolbar { display: flex; align-items: center; gap: 6px; }
+.graph-svg { flex: 1; display: block; width: 100%; }
+.graph-legend {
+  display: flex; gap: 10px; padding: 5px 10px; flex-shrink: 0;
+  background: var(--bg2); border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.leg { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--fg2); }
+.leg.move    { color: var(--c-move);    }
+.leg.idle    { color: var(--c-idle);    }
+.leg.sit     { color: var(--c-sit);     }
+.leg.ground  { color: var(--c-ground);  }
+.leg.special { color: var(--c-special); }
+.leg.social  { color: var(--c-social);  }
+
+/* ── Bottom Bar ──────────────────────────────────────────────────── */
+.bottom-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 12px; background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+.pb-group { display: flex; gap: 3px; }
+.pb-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px;
+  background: var(--bg3); color: var(--fg); cursor: pointer;
+}
+.pb-btn:hover { background: var(--bg4); }
+#playBtn { min-width: 56px; color: var(--accent3); }
+.bot-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--fg2); }
+.frame-info {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--yellow);
+  min-width: 100px;
+}
+.speed-btns { display: flex; gap: 2px; }
+.spd {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 3px 7px; border: 1px solid var(--border); border-radius: 3px;
+  background: var(--bg3); color: var(--fg2); cursor: pointer;
+}
+.spd:hover { background: var(--bg4); color: var(--fg); }
+.spd.spd-act { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+.sep { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
+
+/* ── Shared Buttons / Inputs ─────────────────────────────────────── */
+button {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px;
+  background: var(--bg3); color: var(--fg); cursor: pointer; white-space: nowrap;
+}
+button:hover { background: var(--bg4); border-color: var(--border2); }
+button.sm    { padding: 3px 8px; font-size: 10px; }
+button.green { background: var(--accent3); color: #111; border-color: var(--accent3); }
+button.green:hover { opacity: 0.85; }
+button.blue  { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+button.blue:hover { opacity: 0.85; }
+button.red   { background: #cc2200; color: #fff; border-color: #cc2200; }
+button.red:hover { opacity: 0.85; }
+button.ghost { background: transparent; border-color: var(--border2); color: var(--fg2); }
+button.ghost:hover { background: var(--bg3); color: var(--fg); }
+
+select, input[type=number] {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 3px; padding: 3px 6px;
+  cursor: pointer;
+}
+select:focus, input[type=number]:focus { outline: none; border-color: var(--accent2); }
+input[type=number] { width: 44px; text-align: center; }
+
+.chk-label {
+  display: flex; align-items: center; gap: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--fg2);
+  cursor: pointer;
+}
+.chk-label input { cursor: pointer; accent-color: var(--accent2); }
+
+/* ── Control Panel Sections ──────────────────────────────────────── */
+.cp-section {
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px;
+}
+.cp-section-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.cp-section-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.8px; color: var(--fg2);
+}
+.cp-row { display: flex; align-items: center; gap: 5px; margin-bottom: 4px; flex-wrap: wrap; }
+.cp-row:last-child { margin-bottom: 0; }
+.cp-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--fg2);
+  min-width: 46px; flex-shrink: 0;
+}
+.cp-row select { flex: 1; min-width: 0; }
+
+/* ── NPC Cards ───────────────────────────────────────────────────── */
+.npc-cards {
+  display: flex; flex-direction: column; gap: 0;
+}
+.npc-card {
+  border-bottom: 2px solid var(--border);
+  overflow: hidden;
+}
+.npc-card-hdr {
+  display: flex; align-items: center; gap: 7px;
+  padding: 6px 10px;
+  cursor: pointer;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+.npc-card-hdr:hover { background: var(--bg4); }
+.npc-dot {
+  width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+  box-shadow: 0 0 4px currentColor;
+}
+.npc-card-name {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+  flex: 1;
+}
+.npc-state-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  background: var(--bg); padding: 1px 5px; border-radius: 3px;
+  color: var(--fg2); border: 1px solid var(--border);
+}
+.npc-card-body { padding: 8px 10px; background: var(--bg2); }
+.npc-card-body.collapsed { display: none; }
+
+/* Trait chips */
+.trait-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.trait-chip {
+  display: flex; align-items: center; gap: 3px;
+  padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--fg2);
+  cursor: pointer; user-select: none;
+  transition: background 0.1s;
+}
+.trait-chip:hover { border-color: var(--border2); color: var(--fg); }
+.trait-chip.active { background: var(--bg4); border-color: var(--accent2); color: var(--accent2); }
+.trait-chip input { display: none; }
+
+/* Overlay pose textarea */
+textarea.pose-input {
+  width: 100%; height: 64px;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 5px; resize: none; line-height: 1.5; display: block;
+  margin-top: 3px;
+}
+textarea.pose-input:focus { outline: none; border-color: var(--accent2); }
+textarea.pose-input.err { border-color: #ff4444; }
+
+/* Collapsible details */
+details.cp-detail summary {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--fg2); cursor: pointer; padding: 4px 0;
+  user-select: none; list-style: none;
+}
+details.cp-detail summary::before { content: '▶ '; font-size: 8px; }
+details.cp-detail[open] summary::before { content: '▼ '; }
+details.cp-detail summary:hover { color: var(--fg); }
+
+/* Coords panel */
+.coords-panel { max-height: 140px; overflow-y: auto; margin-top: 4px; }
+.cr {
+  display: flex; align-items: center; gap: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; margin-bottom: 1px;
+}
+.cr .cl { width: 60px; color: var(--fg2); flex-shrink: 0; }
+.cr .cv { color: var(--fg); flex: 1; }
+.cr.ov .cl { color: var(--accent); }
+.cr.ov .cv { color: var(--accent); }
+.ov-badge { font-size: 8px; background: var(--accent); color: #fff; border-radius: 2px; padding: 0 2px; }
+
+/* ── Interaction Panel ───────────────────────────────────────────── */
+.interact-targets { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.interact-btns { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.interact-btn {
+  flex: 1; min-width: 70px; font-size: 10px; padding: 4px 8px;
+  border-color: var(--purple); color: var(--purple);
+}
+.interact-btn:hover { background: var(--bg4); }
+.interact-btn.active-interaction {
+  background: var(--purple); color: #111;
+}
+
+/* Active interaction glow on NPC cards */
+.npc-card.interacting-a .npc-card-hdr { border-bottom-color: var(--accent2); }
+.npc-card.interacting-b .npc-card-hdr { border-bottom-color: var(--accent); }
+
+/* ── Graph nodes/edges (SVG via inline style) ───────────────────── */
+.g-node { cursor: pointer; }
+.g-node:hover .g-node-bg { filter: brightness(1.3); }
+.g-node-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; fill: #fff; text-anchor: middle; dominant-baseline: middle;
+  pointer-events: none;
+}
+.g-node-sublabel {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; fill: rgba(255,255,255,0.6); text-anchor: middle; dominant-baseline: middle;
+  pointer-events: none;
+}
+.g-edge-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; fill: rgba(180,180,200,0.75); text-anchor: middle;
+  pointer-events: none;
+}
+
+/* ── Toast ───────────────────────────────────────────────────────── */
+.flash-msg {
+  position: fixed; bottom: 56px; left: 50%; transform: translateX(-50%);
+  background: var(--accent3); color: #111;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 7px 18px; border-radius: 6px; z-index: 999;
+  animation: fadeout 2s forwards;
+}
+@keyframes fadeout { 0%,60%{opacity:1} 100%{opacity:0} }
+
+/* ── Pose Registry Editor ────────────────────────────────────────── */
+.pose-reg-body {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 6px 0 2px;
+}
+.pose-group {
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 5px 7px; background: var(--bg3);
+}
+.pose-group-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 4px;
+}
+.pose-key {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  font-weight: 600; color: var(--accent2);
+}
+.pose-sub-hdr {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--fg3); text-transform: uppercase; letter-spacing: 0.5px;
+  margin: 3px 0 2px; padding-left: 2px;
+}
+.pj {
+  display: flex; align-items: center; gap: 4px; margin-bottom: 2px;
+}
+.pj-name {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--fg2); min-width: 56px; flex-shrink: 0;
+}
+.pj-input {
+  width: 46px !important; font-size: 10px; padding: 2px 4px;
+  text-align: center;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--fg3); }

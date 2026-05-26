@@ -21,6 +21,7 @@ import {
   GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
 } from '../SceneConfig.js';
+import { ExitRegistry }      from '../behavior/ExitRegistry.js';
 import { spawnPedestrians } from '../npcs/Pedestrians.js';
 import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
@@ -48,11 +49,14 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_sit_bench',  'assets/animations/sit_bench.json');
     this.load.json('anim_fall',       'assets/animations/fall.json');
     this.load.json('anim_lie_ground', 'assets/animations/lie_ground.json');
-    // 批次 1：路人扩展状态（sit_ground 暂复用 squat）
-    this.load.json('anim_lean_wall',  'assets/animations/lean_wall.json');
-    this.load.json('anim_squat',      'assets/animations/squat.json');
-    this.load.json('anim_lie_bench',  'assets/animations/lie_bench.json');
-    this.load.json('anim_get_up',     'assets/animations/get_up.json');
+    // 批次 1：路人扩展状态
+    this.load.json('anim_lean_wall',       'assets/animations/lean_wall.json');
+    this.load.json('anim_squat',           'assets/animations/squat.json');
+    this.load.json('anim_sit_ground',      'assets/animations/sit_ground.json');
+    this.load.json('anim_lie_bench',       'assets/animations/lie_bench.json');
+    this.load.json('anim_get_up',          'assets/animations/get_up.json');
+    this.load.json('anim_chess_onlookers', 'assets/animations/chess_onlookers.json');
+    this.load.json('anim_cross_arm',       'assets/animations/cross_arm.json');
   }
 
   create() {
@@ -85,10 +89,13 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('sit_bench',  this.cache.json.get('anim_sit_bench'));
     this.stickRenderer.loadAnimation('fall',       this.cache.json.get('anim_fall'));
     this.stickRenderer.loadAnimation('lie_ground', this.cache.json.get('anim_lie_ground'));
-    this.stickRenderer.loadAnimation('lean_wall',  this.cache.json.get('anim_lean_wall'));
-    this.stickRenderer.loadAnimation('squat',      this.cache.json.get('anim_squat'));
-    this.stickRenderer.loadAnimation('lie_bench',  this.cache.json.get('anim_lie_bench'));
-    this.stickRenderer.loadAnimation('get_up',     this.cache.json.get('anim_get_up'));
+    this.stickRenderer.loadAnimation('lean_wall',       this.cache.json.get('anim_lean_wall'));
+    this.stickRenderer.loadAnimation('squat',           this.cache.json.get('anim_squat'));
+    this.stickRenderer.loadAnimation('sit_ground',      this.cache.json.get('anim_sit_ground'));
+    this.stickRenderer.loadAnimation('lie_bench',       this.cache.json.get('anim_lie_bench'));
+    this.stickRenderer.loadAnimation('get_up',          this.cache.json.get('anim_get_up'));
+    this.stickRenderer.loadAnimation('chess_onlookers', this.cache.json.get('anim_chess_onlookers'));
+    this.stickRenderer.loadAnimation('cross_arm',       this.cache.json.get('anim_cross_arm'));
 
     // 统一 Entity 管理器
     // 缩放参考用人行道带（远端步行带 → 近端步行带），让远小近大对比贯穿整个纵深
@@ -112,6 +119,7 @@ export class StreetScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.input.keyboard.on('keydown-P', () => this._exportImage());
     this.input.keyboard.on('keydown-D', () => this.debugOverlay.toggle());
+    this._setupZoom();
   }
 
   // ─── UI ──────────────────────────────────────────────────────────────────────
@@ -120,7 +128,7 @@ export class StreetScene extends Phaser.Scene {
     const W = this.cameras.main.width;
     const H = this.cameras.main.height;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  拖动取景框 · 拖右下角缩放  |  P 导出长图  |  D 调试', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  滚轮缩放  Z 重置  |  拖动取景框 · 拖右下角缩放  |  P 导出长图  |  D 调试', {
       fontFamily: '"JetBrains Mono", monospace',
       fontSize: '13px',
       color: '#555555',
@@ -233,6 +241,43 @@ export class StreetScene extends Phaser.Scene {
     return templates[Math.floor(Math.random() * templates.length)];
   }
 
+  // ─── 滚轮缩放 ─────────────────────────────────────────────────────────────────
+
+  _setupZoom() {
+    const cam = this.cameras.main;
+    this.input.on('wheel', (pointer, _objs, _dx, deltaY) => {
+      const factor  = deltaY > 0 ? 0.9 : 1.1;
+      const newZoom = Phaser.Math.Clamp(cam.zoom * factor, 0.5, 2.0);
+      // 以鼠标位置为支点缩放（世界坐标不变）
+      const wx = cam.scrollX + pointer.x / cam.zoom;
+      const wy = cam.scrollY + pointer.y / cam.zoom;
+      cam.zoom = newZoom;
+      cam.scrollX = wx - pointer.x / newZoom;
+      cam.scrollY = wy - pointer.y / newZoom;
+      this._updateUIForZoom(newZoom);
+    });
+    this.input.keyboard.on('keydown-Z', () => {
+      cam.zoom = 1.0;
+      cam.scrollY = 0;
+      this._updateUIForZoom(1.0);
+    });
+  }
+
+  // 把所有 scrollFactor=0 的 UI 元素位置除以 zoom，抵消相机缩放导致的位移
+  _updateUIForZoom(zoom) {
+    const iz = 1 / zoom;
+    const W  = this.cameras.main.width;
+    const H  = this.cameras.main.height;
+    this.uiText.setPosition(10 * iz, 10 * iz);
+    this.captureText.setPosition(10 * iz, 36 * iz);
+    this.headlinePanel.setPosition(10 * iz, 64 * iz);
+    this.flashOverlay.setPosition(W / 2 * iz, H / 2 * iz);
+    this.flashOverlay.setDisplaySize(W * iz, H * iz);
+    this.btnCapture.setPosition((W - 126) * iz, (H - 50) * iz);
+    this.btnPublish.setPosition((W - 126) * iz, (H - 90) * iz);
+    if (this.debugOverlay) this.debugOverlay.panel.setPosition(10 * iz, 150 * iz);
+  }
+
   // ─── 每帧更新 ─────────────────────────────────────────────────────────────────
 
   update(time, delta) {
@@ -307,7 +352,7 @@ export class StreetScene extends Phaser.Scene {
   // 端点落在广场/喷泉边缘（不穿过喷泉椭圆、不压广场中心）。各路边缘放一把长椅。
   _drawParkPaths(g) {
     const paths = [
-      [[720, 420], [820, 411], [890, 418], [940, 426]],    // A 棋摊广场(接入) → 喷泉广场左缘(椭圆边)
+      [[750, 420], [820, 411], [890, 418], [940, 426]],    // A 棋摊广场(接入) → 喷泉广场左缘(椭圆边)
       [[490, 422], [330, 434], [150, 420], [0, 426]],      // B 棋摊广场左缘 → 画布左边缘
       [[1360, 430], [1540, 420], [1740, 438], [2000, 430]],// C 喷泉广场右缘 → 画布右边缘
       [[1500, 350], [1498, 388], [1500, 422]],             // D 上沿步道 ↓ 接入 C
@@ -644,6 +689,20 @@ export class StreetScene extends Phaser.Scene {
     // 所有 NPC 统一纳入行为系统：spawner 负责生成 + 指定 profile / 创建 Activity
     this.behaviorManager = new BehaviorManager(em);
     const bm = this.behaviorManager;
+
+    // ── 出口注册表 ──────────────────────────────────────────────────────────
+    const exitRegistry = new ExitRegistry();
+    // 左右场景边缘（覆盖全部 Y 带）
+    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -30,              y: null, yZone: null, facing: -1 });
+    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 30, y: null, yZone: null, facing:  1 });
+    // 建筑入口（仅前人行道区域，Y 固定在建筑立面，NPC 走入后消失）
+    exitRegistry.register({ id: 'building_a', type: 'building', x: 200,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_b', type: 'building', x: 600,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_c', type: 'building', x: 1100, y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_d', type: 'building', x: 1700, y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    // TODO: 加静止车辆时在停车位处注册 type:'vehicle' 出口
+    bm.exitRegistry = exitRegistry;
+
     spawnPedestrians(em, sr, bm);
     spawnChess(em, sr, bm);
     spawnDogWalker(em, sr, bm);
