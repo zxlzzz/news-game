@@ -7,10 +7,10 @@
  *      由 BehaviorManager 接管（npc.roam = zone），可随机停下/交谈/坐长椅。
  *   2) 前人行道行人：建筑前短街上沿 Y 线横向行走（窄带，仅 X 往返）。
  *
- * 道路（FAR_Y..NEAR_Y）只允许 cyclist / 横穿斑马线的行人。
+ * 道路（FAR_Y..NEAR_Y）只允许 cyclist。
  */
 
-import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, PARK_TOP, PARK_BOTTOM } from '../SceneConfig.js';
+import { SIDEWALK_FAR_Y, PARK_TOP, PARK_BOTTOM } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -87,31 +87,4 @@ export function spawnPedestrians(em, sr, bm) {
   applyTraits(sw3, sidewalkT); bm.register(sw3, 'pedestrian');
   sw3._ageTimer = rand(0, 60); sw3._lifespan = rand(90, 210); sw3._departing = false;
 
-  // ── 斑马线横穿者：前人行道 → 公园往返（路面上，道路对面 → scaleMul 0.55） ─────
-  const crosserX = 290;
-  const crosser = makeNPC(em, sr, {
-    x: crosserX, y: SIDEWALK_FAR_Y, animation: 'walk', direction: 1, speed: 0, vy: 0,
-    minX: crosserX - 4, maxX: crosserX + 4,
-    minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_NEAR_Y + 2,
-    tags: ['pedestrian', 'crossing'], scaleMul: 0.55,
-  });
-  crosser._stage = 'far';
-  crosser._wait  = 0;
-  crosser.customUpdate = (n, delta) => {
-    const dt = delta / 1000;
-    if (n._stage === 'far') {
-      n._wait += dt;
-      if (n._wait > 1.5) { n._stage = 'crossingDown'; n._wait = 0; n.animation = 'walk'; n.direction = 1; }
-    } else if (n._stage === 'crossingDown') {
-      n.y += 60 * dt;
-      if (n.y >= SIDEWALK_NEAR_Y) { n.y = SIDEWALK_NEAR_Y; n._stage = 'near'; }
-    } else if (n._stage === 'near') {
-      n._wait += dt;
-      if (n._wait > 1.5) { n._stage = 'crossingUp'; n._wait = 0; }
-    } else if (n._stage === 'crossingUp') {
-      n.y -= 60 * dt;
-      if (n.y <= SIDEWALK_FAR_Y) { n.y = SIDEWALK_FAR_Y; n._stage = 'far'; }
-    }
-  };
-  // 横穿者是路径脚本（customUpdate），不纳入行为状态机
 }

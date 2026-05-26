@@ -136,21 +136,24 @@ function _resolveTimeout(npc, envQuery, profile) {
     if (!bench) return 'stand';    // 无空椅 → 回退站立
     bench._occupiedBy = npc.id;
     npc._bench = bench;
-    // 对齐到椅心，夹在 NPC 自身活动带内（防人行道行人被吸到墙边椅）
+    // 对齐到椅面（椅面 = bench.y - seatH；bench._drawBench 中椅面顶固定 -12px）
+    // sit_bench anchorMode='hip'，body 关节落在 npc.y，对齐椅面即臀部落座正确。
+    const seatY = bench.y - (bench.seatH ?? 12);
     npc.x = Math.max(npc.minX, Math.min(npc.maxX, bench.x));
-    npc.y = Math.max(npc.minY, Math.min(npc.maxY, bench.y));
+    npc.y = Math.max(npc.minY, Math.min(npc.maxY, seatY));
     return 'sit_bench';
   }
-  // lie_bench anchorMode='back'（无竖向偏移），sit_bench anchorMode='hip'（body 关节落 y）。
-  // 坐→躺转换时需重对齐：令 lie_bench body 关节与坐姿体心高度一致（均在 bench.y）。
+  // lie_bench anchorMode='back'（无竖向偏移），sit_bench anchorMode='hip'（body 关节落 npc.y）。
+  // 坐→躺转换时需重对齐：令 lie_bench body 关节落在椅面（bench.y - seatH）。
   if (next === 'lie_bench' && npc._bench) {
     let bodyY = 79; // lie_bench body.y 默认值
     if (npc.renderer) {
       const anim = npc.renderer.getAnimation('lie_bench');
       if (anim && anim.frames[0]) bodyY = anim.frames[0].body[1];
     }
+    const seatY = npc._bench.y - (npc._bench.seatH ?? 12);
     npc.y = Math.max(npc.minY, Math.min(npc.maxY,
-      npc._bench.y - Math.round(bodyY * (npc.scale || 0.45))
+      seatY - Math.round(bodyY * (npc.scale || 0.45))
     ));
   }
   return next;
