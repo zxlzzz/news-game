@@ -184,8 +184,9 @@ export class NPC extends Entity {
     const stateTag = STATE_TAGS[this.state] ?? ANIM_TAGS[this.animation];
     if (stateTag) out.add(stateTag);
 
-    // 3) 修饰器（id 名 + 额外语义标签）
+    // 3) 修饰器（id 名 + 额外语义标签；跳过 _ 开头的系统内部修饰器）
     for (const m of this.modifiers) {
+      if (m.id.startsWith('_')) continue;
       out.add(m.id);
       const extra = OVERLAY_EXTRA_TAGS[m.id];
       if (extra) out.add(extra);
