@@ -17,12 +17,13 @@ import { Viewfinder }      from '../Viewfinder.js';
 import { DebugOverlay }    from '../DebugOverlay.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
-  PARK_TOP, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA, MINI_PARK,
+  PARK_TOP, PARK_BOTTOM, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA, MINI_PARK,
   GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
 } from '../SceneConfig.js';
 import { ExitRegistry }      from '../behavior/ExitRegistry.js';
-import { spawnPedestrians } from '../npcs/Pedestrians.js';
+import { SpawnManager }     from '../behavior/SpawnManager.js';
+import { spawnPedestrians, spawnOnePedestrian } from '../npcs/Pedestrians.js';
 import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
 import { spawnAthletes }    from '../npcs/Athletes.js';
@@ -295,6 +296,7 @@ export class StreetScene extends Phaser.Scene {
 
     // 行为状态机先决策（设状态/动画/速度/朝向），再由 EntityManager 推进位移与帧
     this.behaviorManager.update(delta);
+    this.spawnManager.update(delta / 1000);
     this.entityManager.update(delta);
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
@@ -708,5 +710,69 @@ export class StreetScene extends Phaser.Scene {
     spawnDogWalker(em, sr, bm);
     spawnAthletes(em, sr, bm);
     spawnVehicles(em, sr);
+
+    // ── SpawnManager：NPC 离场后按区域密度自动补充 ──────────────────────────
+    // 公园漫游带：PARK_TOP+16..PARK_BOTTOM-8（与 Pedestrians.js 的 ROAM_Y0/Y1 一致）
+    const ROAM_Y0 = PARK_TOP + 16;
+    const ROAM_Y1 = PARK_BOTTOM - 8;
+
+    const spawnZones = [
+      {
+        id:        'sidewalk',
+        target:    3,                                  // 维持 3 名建筑前人行道行人
+        yRange:    [BUILDING_BASE_Y, FAR_Y],           // [210, 268]
+        xRange:    [50, WORLD_WIDTH - 50],
+        exitTypes: ['edge', 'building'],
+        npcTypes:  ['pedestrian', 'businessman'],
+      },
+      {
+        id:        'park',
+        target:    10,                                 // 维持公园漫游者总数（含固定 NPC）
+        yRange:    [ROAM_Y0, ROAM_Y1],                 // [349, 492]
+        xRange:    [50, WORLD_WIDTH - 50],
+        exitTypes: ['edge'],                           // 公园只从边缘进
+        npcTypes:  ['pedestrian', 'tourist'],
+      },
+    ];
+
+    const spawnFn = _makeSpawnFn(bm, em, sr, ROAM_Y0, ROAM_Y1);
+    this.spawnManager = new SpawnManager({
+      spawnFn,
+      exitRegistry,
+      bm,
+      zones: spawnZones,
+    });
   }
+}
+
+// ─── SpawnManager 入场工厂 ─────────────────────────────────────────────────────
+// 根据 zone.id 决定 NPC 参数（公园漫游 vs 人行道横走），复用 spawnOnePedestrian。
+function _makeSpawnFn(bm, em, sr, roamY0, roamY1) {
+  return (entry, zone) => {
+    const npcType = zone.npcTypes[Math.floor(Math.random() * zone.npcTypes.length)];
+    const posY    = entry.y ?? (zone.yRange[0] + zone.yRange[1]) / 2;
+
+    const opts = {
+      minX: zone.xRange[0],
+      maxX: zone.xRange[1],
+      minY: zone.yRange[0],
+      maxY: zone.yRange[1],
+    };
+
+    if (zone.id === 'park') {
+      // 公园：可自由漫游的二维区域
+      opts.roamZone = {
+        x0: zone.xRange[0], x1: zone.xRange[1],
+        y0: roamY0,         y1: roamY1,
+      };
+      opts.minY = roamY0;
+      opts.maxY = roamY1;
+    } else {
+      // 人行道：建筑前窄带，缩小比例（远景感）
+      opts.scaleMul = 0.65;
+    }
+
+    // spawnOnePedestrian 默认 _ageTimer=0，新到者享有完整寿命
+    return spawnOnePedestrian(npcType, em, sr, bm, { x: entry.x, y: posY }, opts);
+  };
 }
