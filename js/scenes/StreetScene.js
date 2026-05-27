@@ -695,8 +695,8 @@ export class StreetScene extends Phaser.Scene {
     // ── 出口注册表 ──────────────────────────────────────────────────────────
     const exitRegistry = new ExitRegistry();
     // 左右场景边缘（覆盖全部 Y 带）
-    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -30,              y: null, yZone: null, facing: -1 });
-    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 30, y: null, yZone: null, facing:  1 });
+    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null, yZone: null, facing: -1 });
+    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 200, y: null, yZone: null, facing:  1 });
     // 建筑入口（仅前人行道区域，Y 固定在建筑立面，NPC 走入后消失）
     exitRegistry.register({ id: 'building_a', type: 'building', x: 200,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
     exitRegistry.register({ id: 'building_b', type: 'building', x: 600,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
@@ -722,7 +722,7 @@ export class StreetScene extends Phaser.Scene {
         target:    3,                                  // 维持 3 名建筑前人行道行人
         yRange:    [BUILDING_BASE_Y, FAR_Y],           // [210, 268]
         xRange:    [50, WORLD_WIDTH - 50],
-        exitTypes: ['edge', 'building'],
+        exitTypes: ['building'],          // edge 出口距离过远（~77s），会超时；仅用建筑入口
         npcTypes:  ['pedestrian', 'businessman'],
       },
       {
@@ -772,7 +772,9 @@ function _makeSpawnFn(bm, em, sr, roamY0, roamY1) {
       opts.scaleMul = 0.65;
     }
 
-    // spawnOnePedestrian 默认 _ageTimer=0，新到者享有完整寿命
-    return spawnOnePedestrian(npcType, em, sr, bm, { x: entry.x, y: posY }, opts);
+    // 入场 NPC 给予 65s 的负计时器，确保路由结束前（最长 60s）不触发离场
+    const npc = spawnOnePedestrian(npcType, em, sr, bm, { x: entry.x, y: posY }, opts);
+    npc._ageTimer = -65;
+    return npc;
   };
 }

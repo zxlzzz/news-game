@@ -63,7 +63,7 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
     if (npc.modifiers.some(m => m.id === traitKey)) continue;
     const tp = TRAIT_PROPS[traitKey];
     if (tp) npc.modifiers.push({
-      id: traitKey, kind: 'trait', priority: 5, joints: tp.joints, timer: -1,
+      id: traitKey, kind: 'trait', priority: 5, joints: { ...tp.joints }, timer: -1,
     });
   }
 
@@ -86,7 +86,7 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
       const hp = HELD_POSES[name];
       npc.modifiers.push({
         id: name, kind: 'held', priority: 10,
-        joints: hp?.joints ?? {},
+        joints: { ...(hp?.joints ?? {}) },
         timer: rand(def.dur[0], def.dur[1]),
       });
       break;

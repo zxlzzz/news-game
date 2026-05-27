@@ -271,7 +271,7 @@ function _applyLoiterVisuals(npc) {
   if (npc.traits.includes('walk_dog')) return; // walk_dog trait mod 已锁定左手，不叠加
   // 统一用右手看手机（POSE_PHONE = r_elbow + r_hand）。
   // hold_bag trait mod (priority 5) 已锁定左手，右手叠 POSE_PHONE 互不干扰。
-  npc.modifiers.push({ id: '_loiter_micro', kind: 'held', priority: 15, joints: POSE_PHONE, timer: 999 });
+  npc.modifiers.push({ id: '_loiter_micro', kind: 'held', priority: 15, joints: { ...POSE_PHONE }, timer: -1 });
 }
 
 function _advanceMicroPhase(npc) {
@@ -455,6 +455,7 @@ function _routeToExit(npc, exit) {
  */
 export function triggerDeparture(npc, exitRegistry) {
   if (!exitRegistry) return;
+  if (npc._departing) return;   // 防止重复触发
   const exit = exitRegistry.findExit(npc, npc._profile?.departure?.preferExitType ?? null);
   if (!exit) { npc._lifespan += 30; return; }  // 无出口：延长寿命
 

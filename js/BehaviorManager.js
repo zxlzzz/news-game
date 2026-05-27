@@ -102,6 +102,13 @@ export class BehaviorManager {
 
     // 4) 镜头反应层（依赖社会稳定度系统，本次留空）
     // this.cameraLayer.update(this.npcs, viewfinder, stability, dt);
+
+    // 5) 定期清理死亡 NPC，防止数组无限增长（每 10s 一次）
+    this._pruneTimer = (this._pruneTimer ?? 0) - dt;
+    if (this._pruneTimer <= 0) {
+      this.npcs = this.npcs.filter(n => n.alive);
+      this._pruneTimer = 10;
+    }
   }
 
   // 简单分离力：仅作用于移动中的自由 NPC（O(n²)，场景 NPC < 30 足够）
