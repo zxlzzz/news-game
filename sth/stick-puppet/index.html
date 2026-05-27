@@ -19,6 +19,7 @@
     <button onclick="app.mirrorPose()" title="左右关节互换">↔ 左右互换</button>
     <button onclick="app.resetPose()">重置姿势</button>
     <button onclick="app.exportSpriteSheet()" class="green">导出 Sprite Sheet</button>
+    <button id="gestureModeBtn" onclick="app.toggleGestureMode()">姿势片段</button>
   </div>
 </header>
 
@@ -89,6 +90,11 @@
       <div id="boneLengthPanel" class="coords-panel"></div>
     </div>
     
+    <div class="panel-section" id="jointSelectPanel" style="display:none">
+      <h3>活跃关节</h3>
+      <div id="jointCheckboxes"></div>
+    </div>
+
     <div class="json-area">
       <h3>JSON 导入/导出</h3>
       <textarea id="jsonInput" placeholder='粘贴动画 JSON...'></textarea>
