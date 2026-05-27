@@ -44,7 +44,7 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_bike',       'assets/animations/bike.json');
     this.load.json('anim_mobile',     'assets/animations/mobile.json');
     this.load.json('anim_chess',      'assets/animations/chess.json');
-    this.load.json('anim_dogwalk',    'assets/animations/dogwalk.json');
+    this.load.json('anim_dogwalk',    'assets/animations/pet/dog_walk.json');
     // 行为状态机第一批用到的姿态
     this.load.json('anim_single',     'assets/animations/single.json');
     this.load.json('anim_sit_bench',  'assets/animations/sit_bench.json');
