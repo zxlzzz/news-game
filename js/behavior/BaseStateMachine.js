@@ -242,16 +242,13 @@ function _tickState(npc, envQuery, profile, dt) {
 // ─── Loiter 微行为循环 ────────────────────────────────────────────────────────
 // pose 数据来自 PoseRegistry.js（单一来源，anim-preview 工具可实时编辑）
 const POSE_PHONE = LOITER_POSES.phone;
-const POSE_BAG_A = LOITER_POSES.bag_a;
-const POSE_BAG_B = LOITER_POSES.bag_b;
 
 function _getMicroActionDur(npc) {
   const ov = npc._loiterOverlay;
-  if (ov === 'phone_call')                        return rand(3, 6);
-  if (ov === 'phone_look')                        return rand(5, 10);
+  if (ov === 'phone_call')                            return rand(3, 6);
+  if (ov === 'phone_look')                            return rand(5, 10);
   if (npc.traits && npc.traits.includes('smoker'))    return rand(4, 6);
-  if (npc.traits && npc.traits.includes('hold_bag'))  return rand(2, 3);
-  if (npc.traits && npc.traits.includes('walk_dog'))  return rand(3, 5);  // TODO: 狗停下嗅地
+  if (npc.traits && npc.traits.includes('walk_dog'))  return rand(3, 5);
   return rand(5, 8);
 }
 
@@ -269,14 +266,12 @@ function _updateLoiterExtraTags(npc) {
 function _applyLoiterVisuals(npc) {
   npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
   if (npc._microPhase !== 1) return;
-  // 动态检查当前有效的用户级 held mod（比 _loiterOverlay 快照更可靠）
   const hasActiveHeld = npc.modifiers.some(m => m.kind === 'held' && !m.id.startsWith('_'));
   if (hasActiveHeld) return;           // held mod 自身已提供视觉，不额外叠加
-  if (npc.traits.includes('walk_dog')) return; // walk_dog trait mod 控制左手，不覆盖
-  const joints = npc.traits.includes('hold_bag')
-    ? ((Math.floor(npc._loiterElapsed * 2) % 2 === 0) ? POSE_BAG_A : POSE_BAG_B)
-    : POSE_PHONE;
-  npc.modifiers.push({ id: '_loiter_micro', kind: 'held', priority: 15, joints, timer: 999 });
+  if (npc.traits.includes('walk_dog')) return; // walk_dog trait mod 已锁定左手，不叠加
+  // 统一用右手看手机（POSE_PHONE = r_elbow + r_hand）。
+  // hold_bag trait mod (priority 5) 已锁定左手，右手叠 POSE_PHONE 互不干扰。
+  npc.modifiers.push({ id: '_loiter_micro', kind: 'held', priority: 15, joints: POSE_PHONE, timer: 999 });
 }
 
 function _advanceMicroPhase(npc) {
