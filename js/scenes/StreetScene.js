@@ -27,7 +27,7 @@ import { spawnPedestrians, spawnOnePedestrian } from '../npcs/Pedestrians.js';
 import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
 import { spawnAthletes }    from '../npcs/Athletes.js';
-import { spawnVehicles }    from '../npcs/Vehicles.js';
+import { initVehicleSystem } from '../npcs/Vehicles.js';
 
 export class StreetScene extends Phaser.Scene {
   constructor() {
@@ -75,6 +75,7 @@ export class StreetScene extends Phaser.Scene {
     // 远景视差层 + 静态地面（只绘制一次）
     this._drawSky();
     this._drawGround();
+    this._drawBusStops();
 
     // 火柴人渲染器
     this.stickRenderer = new StickRenderer(this);
@@ -297,6 +298,7 @@ export class StreetScene extends Phaser.Scene {
     // 行为状态机先决策（设状态/动画/速度/朝向），再由 EntityManager 推进位移与帧
     this.behaviorManager.update(delta);
     this.spawnManager.update(delta / 1000);
+    if (this.trafficManager) this.trafficManager.update(delta);
     this.entityManager.update(delta);
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
@@ -348,6 +350,27 @@ export class StreetScene extends Phaser.Scene {
     this._drawChessPlaza(g);
     this._drawParkPaths(g);
     this._drawTrees(g);
+  }
+
+  // ─── 公交站台视觉（bgGraphics，只绘一次） ────────────────────────────────────
+  _drawBusStops() {
+    const g = this.bgGraphics;
+    for (const sx of [400, 1600]) {
+      // 候车位（路面加宽处）
+      g.fillStyle(0xb4b4b2, 1);
+      g.fillRect(sx - 52, NEAR_Y - 5, 104, 14);
+      g.lineStyle(0.8, 0x888888, 0.4);
+      g.strokeRect(sx - 52, NEAR_Y - 5, 104, 14);
+      // 遮雨棚
+      g.fillStyle(0x8a8a88, 0.90);
+      g.fillRect(sx - 32, NEAR_Y + 9, 64, 7);
+      g.lineStyle(1, 0x444444, 0.85);
+      g.strokeRect(sx - 32, NEAR_Y + 9, 64, 7);
+      // 支柱
+      g.lineStyle(1.5, 0x666666, 1);
+      g.lineBetween(sx - 24, NEAR_Y + 9, sx - 24, NEAR_Y + 22);
+      g.lineBetween(sx + 24, NEAR_Y + 9, sx + 24, NEAR_Y + 22);
+    }
   }
 
   // ─── 公园园路：带弧度的步道，连接棋摊广场 / 喷泉 / 上沿人行道 ────────────────
@@ -709,7 +732,7 @@ export class StreetScene extends Phaser.Scene {
     spawnChess(em, sr, bm);
     spawnDogWalker(em, sr, bm);
     spawnAthletes(em, sr, bm);
-    spawnVehicles(em, sr);
+    this.trafficManager = initVehicleSystem(em, sr);
 
     // ── SpawnManager：NPC 离场后按区域密度自动补充 ──────────────────────────
     // 公园漫游带：PARK_TOP+16..PARK_BOTTOM-8（与 Pedestrians.js 的 ROAM_Y0/Y1 一致）

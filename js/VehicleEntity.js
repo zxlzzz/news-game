@@ -12,6 +12,14 @@ export class VehicleEntity extends Entity {
     this.kind            = cfg.kind || 'car';
     this.direction       = cfg.direction || 1;
     this.speed           = cfg.speed || 80;
+    this.currentSpeed    = this.speed;
+    this.baseSpeed       = this.speed;
+    this.doorOpen        = false;
+    this.stateMachine    = null;
+    this._laneY          = this.y;
+    this.tilt            = 0;
+    this._phaseOffset    = Math.random() * Math.PI * 2;
+    this._timeAccum      = Math.random() * 10;
     this.minX            = cfg.minX ?? -240;
     this.maxX            = cfg.maxX ?? 2240;
     this.baseScale       = cfg.scale ?? 0.9;
@@ -39,13 +47,16 @@ export class VehicleEntity extends Entity {
 
   update(delta) {
     if (!this.alive) return;
+    const dt = delta / 1000;
     if (this.scaleMul !== 1.0 && this.roadHalfHeight > 0) {
-      const t = (this.y - this.roadCenterY) / this.roadHalfHeight;
+      const t = (this._laneY - this.roadCenterY) / this.roadHalfHeight;
       this.scale = this.baseScale * (1 + t * (this.scaleMul - 1));
     }
-    this.x += this.direction * this.speed * (delta / 1000);
-    if (this.direction > 0 && this.x > this.maxX) this.x = this.minX;
-    else if (this.direction < 0 && this.x < this.minX) this.x = this.maxX;
+    this._timeAccum += dt;
+    this.y = this._laneY + Math.sin(this._timeAccum * 0.3 + this._phaseOffset) * 3;
+    this.x += this.direction * this.currentSpeed * dt;
+    if (this.direction > 0 && this.x > this.maxX) this.alive = false;
+    else if (this.direction < 0 && this.x < this.minX) this.alive = false;
   }
 
   draw(g) {
@@ -373,6 +384,11 @@ export class VehicleEntity extends Entity {
     g.fillRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.8, doorH * 0.48);
     g.lineStyle(Math.max(0.4, s * 1.5), 0x2a2a2a, 0.4);
     g.strokeRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.8, doorH * 0.48);
+    // 开门缝（停站时显示）
+    if (this.doorOpen) {
+      g.lineStyle(2, 0x1a1a1a, 1);
+      g.lineBetween(doorCX, doorTop, doorCX, doorTop + doorH);
+    }
 
     // 头灯
     const front = x + d * halfL;

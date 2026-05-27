@@ -7,9 +7,12 @@
  *   后轮在臀部下方、前轮在车把（手）下方，使人车成为一体。
  */
 
-import { roadY } from '../SceneConfig.js';
-import { makeNPC } from './util.js';
-import { VehicleEntity } from '../VehicleEntity.js';
+import { roadY }              from '../SceneConfig.js';
+import { makeNPC }            from './util.js';
+import { VehicleEntity }      from '../VehicleEntity.js';
+import { TrafficManager }     from '../behavior/TrafficManager.js';
+import { BusStop }            from '../behavior/BusStop.js';
+import { VehicleSpawner }     from '../behavior/VehicleSpawner.js';
 
 const FRAME = 0x2a2a2a;
 const SPOKE = 0x808080;
@@ -100,8 +103,7 @@ function drawEbike(g, n) {
   g.strokeRect(boxCx - boxW / 2, hip.y - boxH, boxW, boxH);
 }
 
-export function spawnVehicles(em, sr) {
-  // 远端自行车（小）
+function _spawnCyclists(em, sr) {
   const cyclist1 = makeNPC(em, sr, {
     x: 1350, y: roadY(0.30), animation: 'bike', direction:  1, speed: 110, vy: 0,
     minX: 100, maxX: 1950, minY: roadY(0.26), maxY: roadY(0.34),
@@ -110,7 +112,6 @@ export function spawnVehicles(em, sr) {
   cyclist1.drawExtra = drawBicycle;
   cyclist1.steadyFoot = true;
 
-  // 近端自行车（大）—— 透视对比
   const cyclist2 = makeNPC(em, sr, {
     x: 1550, y: roadY(0.72), animation: 'bike', direction: -1, speed: 100, vy: 0,
     minX: 100, maxX: 1950, minY: roadY(0.68), maxY: roadY(0.76),
@@ -119,25 +120,29 @@ export function spawnVehicles(em, sr) {
   cyclist2.drawExtra = drawBicycle;
   cyclist2.steadyFoot = true;
 
-  // 外卖电动车骑手（mobile：骑姿，脚不动；在路上行驶）
   const ebiker = makeNPC(em, sr, {
     x: 1450, y: roadY(0.50), animation: 'mobile', direction:  1, speed: 120, vy: 0,
     minX: 100, maxX: 1950, minY: roadY(0.46), maxY: roadY(0.54),
     color: 0x1a1000, tags: ['delivery', 'e-bike', 'vehicle'],
   });
   ebiker.drawExtra = drawEbike;
+}
 
-  // ── 机动车（双行道循环行驶）：上行带向右、下行带向左 ──────────────────────
-  // baseScale 把放大后的车身基准尺寸（350~900）压到合适大小；scaleMul 按路深做远小近大。
-  const rc = roadY(0.5);                  // 道路纵深中心
-  const rh = roadY(1.0) - roadY(0.5);     // 半个道路纵深
+export function initVehicleSystem(em, sr) {
+  _spawnCyclists(em, sr);
+
+  const rc  = roadY(0.5);
+  const rh  = roadY(1.0) - roadY(0.5);
   const dep = { scaleMul: 1.5, roadCenterY: rc, roadHalfHeight: rh };
-  // 上行带（y 偏上，dir +1）
-  em.add(new VehicleEntity({ kind: 'car',  x: 200,  y: roadY(0.28), direction: 1, speed: 95,  scale: 0.14, ...dep, tags: ['car', 'vehicle'] }));
-  em.add(new VehicleEntity({ kind: 'moto', x: 950,  y: roadY(0.20), direction: 1, speed: 138, scale: 0.13, ...dep, tags: ['motorcycle', 'vehicle'] }));
-  em.add(new VehicleEntity({ kind: 'car',  x: 1500, y: roadY(0.36), direction: 1, speed: 80,  scale: 0.14, ...dep, tags: ['car', 'vehicle'] }));
-  // 下行带（y 偏下，dir -1）
-  em.add(new VehicleEntity({ kind: 'bus',  x: 1400, y: roadY(0.70), direction: -1, speed: 68, scale: 0.13, ...dep, tags: ['bus', 'transit', 'vehicle'] }));
-  em.add(new VehicleEntity({ kind: 'taxi', x: 620,  y: roadY(0.82), direction: -1, speed: 92, scale: 0.14, ...dep, tags: ['taxi', 'vehicle'] }));
-  em.add(new VehicleEntity({ kind: 'car',  x: 1850, y: roadY(0.62), direction: -1, speed: 104, scale: 0.14, ...dep, tags: ['car', 'vehicle'] }));
+
+  const tm = new TrafficManager({ em, dep });
+
+  // 公交站（下行带，dir -1，靠近行道树处）
+  tm.busStops.push(new BusStop({ x: 400,  direction: -1, waitTime: 4000 }));
+  tm.busStops.push(new BusStop({ x: 1600, direction: -1, waitTime: 4000 }));
+
+  tm.spawner = new VehicleSpawner({ trafficManager: tm, dep });
+  tm.spawner.spawnInitial();
+
+  return tm;
 }
