@@ -460,7 +460,7 @@ function _routeToExit(npc, exit) {
  */
 export function triggerDeparture(npc, exitRegistry) {
   if (!exitRegistry) return;
-  const exit = exitRegistry.findExit(npc);
+  const exit = exitRegistry.findExit(npc, npc._profile?.departure?.preferExitType ?? null);
   if (!exit) { npc._lifespan += 30; return; }  // 无出口：延长寿命
 
   npc._departing = true;

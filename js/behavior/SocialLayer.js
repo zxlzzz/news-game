@@ -468,6 +468,10 @@ export class SocialLayer {
       if (!npc.alive || npc._activity || !npc._slotWaitProp) continue;
       npc._slotWaitTimer = (npc._slotWaitTimer || 0) + dt;
       if (npc._slotWaitTimer > 20) {
+        // 清理本 NPC 占用的槽位 ready 标记，防止下次到访时 allReady 误判
+        for (const s of npc._slotWaitProp._slots) {
+          if (s.npc === npc) { s.ready = false; s.npc = null; }
+        }
         this.envQuery.releaseSlotReservation(npc);
         npc._slotWaitProp = null;
         setState(npc, 'walk', 'slot_wait_timeout');

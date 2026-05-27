@@ -202,10 +202,7 @@ function generatePoseRegistryJS() {
  * 覆盖 data/ re-export 版本。手动修改后请重新载入游戏。
  */
 
-export const TRAIT_PROPS = {
-  hold_bag: { joints: { l_elbow: [-16, -5], l_hand: [-18, 5] } },
-  walk_dog: { joints: { l_elbow: [-10, -12], l_hand: [-18, -4] } },
-};
+export const TRAIT_PROPS = ${serHeldPoses(TRAIT_PROPS)};
 
 export const HELD_POSES = ${serHeldPoses(editedPoses.overlays)};
 
