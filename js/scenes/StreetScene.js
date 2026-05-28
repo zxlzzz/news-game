@@ -410,42 +410,42 @@ export class StreetScene extends Phaser.Scene {
       g.fillStyle(0xdadada, 1);
       g.fillRect(sx + 11, ft + 5, 12, 3);
 
-      // ── NEAR 侧站亭（近端路沿 ny=333，亭子在近端非机动车道区 333–353）────────
-      // 候车铺装
+      // ── NEAR 侧站亭（顶棚在上，支柱向下，候车区在公园内）────────────────────
+      // 候车铺装（路沿到站亭底）
       g.fillStyle(0xb2b2b0, 1);
-      g.fillRect(sx - 44, ny - 9, 88, 9);
+      g.fillRect(sx - 44, ny, 88, 8);
       g.lineStyle(0.6, 0x808080, 0.35);
-      g.strokeRect(sx - 44, ny - 9, 88, 9);
+      g.strokeRect(sx - 44, ny, 88, 8);
 
-      // 支柱
-      g.lineStyle(1.8, 0x404040, 1);
-      g.lineBetween(sx - 28, ny,     sx - 28, np - 4);
-      g.lineBetween(sx + 28, ny,     sx + 28, np - 4);
-
-      // 顶棚
+      // 顶棚（紧贴路沿下方）
       g.fillStyle(0x7a7a78, 0.95);
-      g.fillRect(sx - 36, np - 8, 72, 8);
+      g.fillRect(sx - 36, ny + 1, 72, 7);
       g.lineStyle(1.0, 0x1a1a1a, 0.9);
-      g.strokeRect(sx - 36, np - 8, 72, 8);
+      g.strokeRect(sx - 36, ny + 1, 72, 7);
 
-      // 后壁板（左侧）
+      // 支柱（从顶棚底向下）
+      g.lineStyle(1.8, 0x404040, 1);
+      g.lineBetween(sx - 28, ny + 8, sx - 28, ny + 22);
+      g.lineBetween(sx + 28, ny + 8, sx + 28, ny + 22);
+
+      // 后壁板（远离道路的一侧，即下方）
       g.fillStyle(0x929290, 0.85);
-      g.fillRect(sx - 36, ny + 1, 6, np - ny - 9);
+      g.fillRect(sx - 36, ny + 8, 6, 14);
       g.lineStyle(0.6, 0x333333, 0.7);
-      g.strokeRect(sx - 36, ny + 1, 6, np - ny - 9);
+      g.strokeRect(sx - 36, ny + 8, 6, 14);
 
-      // 长椅 + 椅腿
+      // 长椅
       g.fillStyle(0x686866, 1);
-      g.fillRect(sx - 22, ny + 4, 22, 4);
+      g.fillRect(sx - 22, ny + 14, 22, 3);
       g.lineStyle(1.0, 0x505050, 1);
-      g.lineBetween(sx - 18, ny + 8, sx - 18, ny + 15);
-      g.lineBetween(sx - 4,  ny + 8, sx - 4,  ny + 15);
+      g.lineBetween(sx - 18, ny + 17, sx - 18, ny + 20);
+      g.lineBetween(sx - 4,  ny + 17, sx - 4,  ny + 20);
 
       // 站牌（右侧支柱上）
       g.fillStyle(0x2255aa, 1);
-      g.fillRect(sx - 16, np - 7, 16, 7);
+      g.fillRect(sx + 10, ny + 2, 14, 5);
       g.fillStyle(0xdadada, 1);
-      g.fillRect(sx - 15, np - 6, 14, 5);
+      g.fillRect(sx + 11, ny + 3, 12, 3);
     }
   }
 

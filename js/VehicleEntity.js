@@ -495,12 +495,12 @@ export class VehicleEntity extends Entity {
     // hipX = 座垫X中心，hipY = 座垫顶（传给 anchorMode:'hip' 模式，body 关节对齐到此）
     if (this._sr) {
       const hipX = Math.round((tankR + seatR) / 2);
-      this._drawMotoRider(g, hipX, tankTop);
+      this._drawMotoRider(g, hipX, seatTop);
     }
   }
 
   _drawMotoRider(g, hipX, hipY) {
     const s = this.scale, d = this.direction;
-    this._sr.draw(g, 'mobike', 0, hipX, hipY, s * 1.3, d, 0x1a1a1a, 1);
+    this._sr.draw(g, 'mobike', 0, hipX, hipY, s * 1.6, d, 0x1a1a1a, 1);
   }
 }
