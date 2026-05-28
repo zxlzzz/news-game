@@ -16,7 +16,7 @@ const LANES = [
 
 // 车型权重（bus 只走 -1 方向）
 const WEIGHTS = {
-  '+1': { car: 5, taxi: 2, moto: 2 },
+  '1':  { car: 5, taxi: 2, moto: 2 },
   '-1': { car: 5, taxi: 2, moto: 2, bus: 1 },
 };
 
