@@ -492,20 +492,17 @@ export class VehicleEntity extends Entity {
     g.lineBetween(pivotX - d * ls * 0.03, pivotY + hs * 0.02,
                   rwx + d * rs * 0.6, wcy + rs * 0.22);
 
-    if (this._sr) this._drawMotoRider(g);
+    // hipX = 座垫X中心，hipY = 座垫顶（传给 anchorMode:'hip' 模式，body 关节对齐到此）
+    if (this._sr) {
+      const hipX = Math.round((tankR + seatR) / 2);
+      this._drawMotoRider(g, hipX, tankTop);
+    }
   }
 
-  _drawMotoRider(g) {
-    const s = this.scale, x = this.x, y = this.y, d = this.direction;
-    const { L, r } = this._dims();
-    const ls = L * s, rs = r * s;
-    const halfL = ls / 2;
-
-    // 骑手原点：座垫中心偏后，高度=轮心（踏板处）
-    const riderX     = x - d * halfL * 0.20;
-    const riderY     = y - rs;
-    const riderScale = s * 2.0;
-
-    this._sr.draw(g, 'mobike', 0, riderX, riderY, riderScale, d, 0x1a1a1a, 1);
+  _drawMotoRider(g, hipX, hipY) {
+    const s = this.scale, d = this.direction;
+    const riderScale = s * 2.2;
+    // anchorMode:'hip' 已在 mobike.json 中声明，StickRenderer 会把 body 关节对齐到 (hipX, hipY)
+    this._sr.draw(g, 'mobike', 0, hipX, hipY, riderScale, d, 0x1a1a1a, 1);
   }
 }

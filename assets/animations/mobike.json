@@ -1,6 +1,7 @@
 {
   "name": "animation",
   "skeleton": "human",
+  "anchorMode": "hip",
   "globalBend": {
     "body__neck": -11.424210292005
   },

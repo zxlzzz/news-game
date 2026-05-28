@@ -105,9 +105,11 @@ function drawEbike(g, n) {
 
 function _spawnCyclists(em, sr) {
   // 远端非机动车道（dir +1，自行车上行）
+  // scale 限制避免轮子超出 20px 非机动车道
   const cyclist1 = makeNPC(em, sr, {
-    x: 1350, y: bikeLaneFarY(0.3), animation: 'bike', direction:  1, speed: 110, vy: 0,
-    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.1), maxY: bikeLaneFarY(0.6),
+    x: 1350, y: bikeLaneFarY(0.5), animation: 'bike', direction:  1, speed: 110, vy: 0,
+    scale: 0.16,
+    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.05), maxY: bikeLaneFarY(0.95),
     color: 0x0a2010, tags: ['cyclist', 'vehicle'],
   });
   cyclist1.drawExtra = drawBicycle;
@@ -116,7 +118,8 @@ function _spawnCyclists(em, sr) {
   // 近端非机动车道（dir -1，自行车下行）
   const cyclist2 = makeNPC(em, sr, {
     x: 1550, y: bikeLaneNearY(0.5), animation: 'bike', direction: -1, speed: 100, vy: 0,
-    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneNearY(0.3), maxY: bikeLaneNearY(0.7),
+    scale: 0.18,
+    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneNearY(0.05), maxY: bikeLaneNearY(0.95),
     color: 0x200a10, tags: ['cyclist', 'vehicle'],
   });
   cyclist2.drawExtra = drawBicycle;
@@ -125,7 +128,8 @@ function _spawnCyclists(em, sr) {
   // 远端非机动车道（dir +1，外卖电动车）
   const ebiker = makeNPC(em, sr, {
     x: 1450, y: bikeLaneFarY(0.5), animation: 'mobile', direction:  1, speed: 120, vy: 0,
-    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.3), maxY: bikeLaneFarY(0.7),
+    scale: 0.16,
+    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.05), maxY: bikeLaneFarY(0.95),
     color: 0x1a1000, tags: ['delivery', 'e-bike', 'vehicle'],
   });
   ebiker.drawExtra = drawEbike;

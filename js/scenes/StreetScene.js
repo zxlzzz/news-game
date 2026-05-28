@@ -388,14 +388,41 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  // ─── 公园园路：带弧度的步道，连接棋摊广场 / 喷泉 / 上沿人行道 ────────────────
-  // 端点落在广场/喷泉边缘（不穿过喷泉椭圆、不压广场中心）。各路边缘放一把长椅。
+  // ─── 公园园路：带弧度的步道，连接棋摊广场 / 喷泉 / 上沿步道 ────────────────────
+  // 所有 Y 坐标通过 CHESS_PLAZA / MINI_PARK / PARK_TOP 派生，随区域整体移动不错位。
   _drawParkPaths(g) {
+    const cc    = CHESS_PLAZA;           // { cx:620, cy:443, rx:130, ry:56 }
+    const mp    = MINI_PARK;             // { cx:1150, cy:453, rx:210, ry:78 }
+    const walkY = PARK_TOP + 15;         // 横向步道中线（PARK_TOP+4 ~ +26 内）
+
     const paths = [
-      [[750, 420], [820, 411], [890, 418], [940, 426]],    // A 棋摊广场(接入) → 喷泉广场左缘(椭圆边)
-      [[490, 422], [330, 434], [150, 420], [0, 426]],      // B 棋摊广场左缘 → 画布左边缘
-      [[1360, 430], [1540, 420], [1740, 438], [2000, 430]],// C 喷泉广场右缘 → 画布右边缘
-      [[1500, 350], [1498, 388], [1500, 422]],             // D 上沿步道 ↓ 接入 C
+      // A: 棋摊广场右缘 → 喷泉广场左缘
+      [
+        [cc.cx + cc.rx,        cc.cy     ],
+        [cc.cx + cc.rx + 70,   cc.cy -  9],
+        [mp.cx - mp.rx - 50,   mp.cy -  9],
+        [mp.cx - mp.rx,        mp.cy     ],
+      ],
+      // B: 棋摊广场左缘 → 画布左边缘
+      [
+        [cc.cx - cc.rx,        cc.cy     ],
+        [cc.cx - cc.rx - 160,  cc.cy + 14],
+        [cc.cx - cc.rx - 340,  cc.cy +  2],
+        [0,                     cc.cy +  8],
+      ],
+      // C: 喷泉广场右缘 → 画布右边缘
+      [
+        [mp.cx + mp.rx,        mp.cy     ],
+        [mp.cx + mp.rx + 180,  mp.cy - 10],
+        [mp.cx + mp.rx + 380,  mp.cy +  8],
+        [WORLD_WIDTH,           mp.cy     ],
+      ],
+      // D: 上方横向步道 ↓ 接入 C 路段（x ≈ 1500）
+      [
+        [1500, walkY                         ],
+        [1498, (walkY + mp.cy) >> 1          ],   // 中间平滑过渡
+        [1500, mp.cy                         ],
+      ],
     ];
     for (const pts of paths) this._drawCurvedPath(g, pts, 26);
   }
