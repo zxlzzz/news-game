@@ -144,7 +144,7 @@ export function initVehicleSystem(em, sr) {
   tm.busStops.push(new BusStop({ x: 400,  direction: -1, waitTime: 4000 }));
   tm.busStops.push(new BusStop({ x: 1600, direction: -1, waitTime: 4000 }));
 
-  tm.spawner = new VehicleSpawner({ trafficManager: tm, dep });
+  tm.spawner = new VehicleSpawner({ trafficManager: tm, dep, sr });
   tm.spawner.spawnInitial();
 
   return tm;

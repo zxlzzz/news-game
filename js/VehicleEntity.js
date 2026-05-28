@@ -16,6 +16,7 @@ export class VehicleEntity extends Entity {
     this.baseSpeed       = this.speed;
     this.doorOpen        = false;
     this.stateMachine    = null;
+    this._sr             = null;
     this._laneY          = this.y;
     this.tilt            = 0;
     this._phaseOffset    = Math.random() * Math.PI * 2;
@@ -490,5 +491,21 @@ export class VehicleEntity extends Entity {
     g.lineStyle(Math.max(0.8, s * 4), 0x888888, 0.6);
     g.lineBetween(pivotX - d * ls * 0.03, pivotY + hs * 0.02,
                   rwx + d * rs * 0.6, wcy + rs * 0.22);
+
+    if (this._sr) this._drawMotoRider(g);
+  }
+
+  _drawMotoRider(g) {
+    const s = this.scale, x = this.x, y = this.y, d = this.direction;
+    const { L, r } = this._dims();
+    const ls = L * s, rs = r * s;
+    const halfL = ls / 2;
+
+    // 骑手原点：座垫中心偏后，高度=轮心（踏板处）
+    const riderX     = x - d * halfL * 0.20;
+    const riderY     = y - rs;
+    const riderScale = s * 2.0;
+
+    this._sr.draw(g, 'mobike', 0, riderX, riderY, riderScale, d, 0x1a1a1a, 1);
   }
 }

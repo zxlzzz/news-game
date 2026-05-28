@@ -10,8 +10,8 @@ import { VehicleStateMachine }  from './VehicleStateMachine.js';
 import { roadY, WORLD_WIDTH }   from '../SceneConfig.js';
 
 const LANES = [
-  { id: 'upbound',   direction: +1, yRange: [roadY(0.15), roadY(0.45)], target: 3, entryX: -200 },
-  { id: 'downbound', direction: -1, yRange: [roadY(0.55), roadY(0.85)], target: 3, entryX: WORLD_WIDTH + 200 },
+  { id: 'upbound',   direction: +1, yRange: [roadY(0.22), roadY(0.50)], target: 3, entryX: -200 },
+  { id: 'downbound', direction: -1, yRange: [roadY(0.52), roadY(0.92)], target: 3, entryX: WORLD_WIDTH + 200 },
 ];
 
 // 车型权重（bus 只走 -1 方向）
@@ -28,9 +28,10 @@ export class VehicleSpawner {
    * @param {TrafficManager} opts.trafficManager
    * @param {object}         opts.dep  - { scaleMul, roadCenterY, roadHalfHeight }
    */
-  constructor({ trafficManager, dep }) {
+  constructor({ trafficManager, dep, sr }) {
     this._tm    = trafficManager;
     this._dep   = dep;
+    this._sr    = sr ?? null;
     this._timer = 0;
   }
 
@@ -88,6 +89,7 @@ export class VehicleSpawner {
     });
 
     v.stateMachine = new VehicleStateMachine(v);
+    if (kind === 'moto' && this._sr) v._sr = this._sr;
     this._tm.addVehicle(v);
     return v;
   }
