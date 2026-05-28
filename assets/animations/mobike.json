@@ -1,19 +1,19 @@
 {
-  "name": "mobike",
+  "name": "animation",
   "skeleton": "human",
   "anchorMode": "hip",
-  "globalBend": { "body__neck": -8 },
+  "globalBend": { "body__neck": -9.168444178995767 },
   "frames": [{
     "body":    [0,   0],
-    "neck":    [8,  -22],
-    "head":    [14, -38],
-    "l_elbow": [20,  -12],
-    "r_elbow": [22,  -10],
-    "l_hand":  [32,   -4],
-    "r_hand":  [34,   -2],
-    "l_knee":  [-4,   18],
-    "r_knee":  [ 2,   16],
-    "l_foot":  [-6,   34],
-    "r_foot":  [ 4,   32]
+    "neck":    [31, -27],
+    "head":    [55, -35],
+    "l_elbow": [28,  -2],
+    "r_elbow": [26,  -2],
+    "l_hand":  [43,  12],
+    "r_hand":  [40,  13],
+    "l_knee":  [-7,  35],
+    "r_knee":  [ 1,  35],
+    "l_foot":  [-37, 36],
+    "r_foot":  [-28, 40]
   }]
 }

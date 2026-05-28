@@ -399,37 +399,39 @@ export class StreetScene extends Phaser.Scene {
       g.fillRect(sx + 3, py + 12, sw - 8, 1);
     };
 
-    // ── FAR 侧开放候车亭 x=500（左上）────────────────────────────────────────
+    // ── FAR 侧开放候车亭 x=500（左上，远端透视略窄）────────────────────────
     {
-      const sx   = 500;
-      const rX   = sx - ROOF_W / 2;          // 375 — 顶棚左边
-      const roofT = fy - ROOF_H;              // 262 — 顶棚顶（支柱从此向上）
-      const roofB = fy;                        // 268 = FAR_Y — 顶棚底贴路沿
+      const sx     = 500;
+      const FAR_W  = 190;                      // 远端透视缩窄（NEAR 的 76%）
+      const FAR_PIL = 82;                      // 支柱到中心距（FAR_W/2 - 13）
+      const rX     = sx - FAR_W / 2;          // 405 — 顶棚左边
+      const roofT  = fy - ROOF_H;             // 262 — 顶棚顶（支柱从此向上）
+      const roofB  = fy;                       // 268 = FAR_Y — 顶棚底贴路沿
 
       // 顶棚
       g.fillStyle(0x686866, 1);
-      g.fillRect(rX, roofT, ROOF_W, ROOF_H);
+      g.fillRect(rX, roofT, FAR_W, ROOF_H);
       g.lineStyle(1.6, 0x181818, 1);
-      g.strokeRect(rX, roofT, ROOF_W, ROOF_H);
+      g.strokeRect(rX, roofT, FAR_W, ROOF_H);
 
       // 支柱（从顶棚顶向上延伸）
       const pillarT = ft + 3;   // 251
       const pillarB = roofT;    // 262
       g.lineStyle(2.5, 0x282828, 1);
-      g.lineBetween(sx - PIL_X, pillarT, sx - PIL_X, pillarB);
-      g.lineBetween(sx + PIL_X, pillarT, sx + PIL_X, pillarB);
+      g.lineBetween(sx - FAR_PIL, pillarT, sx - FAR_PIL, pillarB);
+      g.lineBetween(sx + FAR_PIL, pillarT, sx + FAR_PIL, pillarB);
 
       // 长椅（支柱内，靠顶棚顶侧）
       const benchY = roofT - 7;   // 255
       g.fillStyle(0x565654, 1);
-      g.fillRect(sx - 88, benchY, 176, 4);
+      g.fillRect(sx - 68, benchY, 136, 4);
       g.lineStyle(0.8, 0x181818, 0.7);
-      g.strokeRect(sx - 88, benchY, 176, 4);
+      g.strokeRect(sx - 68, benchY, 136, 4);
 
       // 独立站牌杆（亭外右侧）
-      const poleX  = rX + ROOF_W + 8;  // 633
-      const poleTy = ft + 3;            // 251
-      const poleBy = roofT;             // 262
+      const poleX  = rX + FAR_W + 8;  // 603
+      const poleTy = ft + 3;           // 251
+      const poleBy = roofT;            // 262
       g.lineStyle(2.2, 0x2e2e2e, 1);
       g.lineBetween(poleX, poleBy, poleX, poleTy);
       drawSign(poleX, poleTy);
@@ -713,7 +715,7 @@ export class StreetScene extends Phaser.Scene {
 
   /** 斑马线左起 X（只保留一组，NPC 横穿时对齐其中间） */
   static crosswalkStarts() {
-    return [220];
+    return [];
   }
 
   // ─── 路面纹理：仅少量低调沥青补丁矩形（不画椭圆，避免与井盖混淆） ──────────
