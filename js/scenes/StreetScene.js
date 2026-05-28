@@ -358,7 +358,7 @@ export class StreetScene extends Phaser.Scene {
     g.lineBetween(0, BIKE_LANE_NEAR_BOTTOM, WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM);   // 近端下边界
 
     this._drawRoadMarkings(g);
-    this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, FAR_Y - 3, /*near=*/false);
+    this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, BIKE_LANE_FAR_TOP - 3, /*near=*/false);
     this._drawRoadPatches(g);
     this._drawParkPlaza(g);
     this._drawMiniPark(g);

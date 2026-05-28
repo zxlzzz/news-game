@@ -71,8 +71,8 @@ export const SIDEWALK_TREE_XS = [
   0.629, 0.706, 0.784, 0.861, 0.939,
 ].map(worldX);
 
-/** 建筑前人行道行道树基线 Y（路沿石前方） */
-export const SIDEWALK_TREE_Y = FAR_Y - 12;   // = 256
+/** 建筑前人行道行道树基线 Y（路沿石内侧，保持在人行道区域 210–248 内） */
+export const SIDEWALK_TREE_Y = BIKE_LANE_FAR_TOP - 8;   // = 240
 
 /** 公园后排树 X 列表 */
 export const PARK_TREE_XS = [0.06, 0.15, 0.235, 0.49, 0.58, 0.82, 0.91, 0.98].map(worldX);
