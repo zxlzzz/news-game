@@ -7,7 +7,7 @@
  *   后轮在臀部下方、前轮在车把（手）下方，使人车成为一体。
  */
 
-import { roadY }              from '../SceneConfig.js';
+import { roadY, worldX }      from '../SceneConfig.js';
 import { makeNPC }            from './util.js';
 import { VehicleEntity }      from '../VehicleEntity.js';
 import { TrafficManager }     from '../behavior/TrafficManager.js';
@@ -106,7 +106,7 @@ function drawEbike(g, n) {
 function _spawnCyclists(em, sr) {
   const cyclist1 = makeNPC(em, sr, {
     x: 1350, y: roadY(0.30), animation: 'bike', direction:  1, speed: 110, vy: 0,
-    minX: 100, maxX: 1950, minY: roadY(0.26), maxY: roadY(0.34),
+    minX: worldX(0.05), maxX: worldX(0.975), minY: roadY(0.26), maxY: roadY(0.34),
     color: 0x0a2010, tags: ['cyclist', 'vehicle'],
   });
   cyclist1.drawExtra = drawBicycle;
@@ -114,7 +114,7 @@ function _spawnCyclists(em, sr) {
 
   const cyclist2 = makeNPC(em, sr, {
     x: 1550, y: roadY(0.72), animation: 'bike', direction: -1, speed: 100, vy: 0,
-    minX: 100, maxX: 1950, minY: roadY(0.68), maxY: roadY(0.76),
+    minX: worldX(0.05), maxX: worldX(0.975), minY: roadY(0.68), maxY: roadY(0.76),
     color: 0x200a10, tags: ['cyclist', 'vehicle'],
   });
   cyclist2.drawExtra = drawBicycle;
@@ -122,7 +122,7 @@ function _spawnCyclists(em, sr) {
 
   const ebiker = makeNPC(em, sr, {
     x: 1450, y: roadY(0.50), animation: 'mobile', direction:  1, speed: 120, vy: 0,
-    minX: 100, maxX: 1950, minY: roadY(0.46), maxY: roadY(0.54),
+    minX: worldX(0.05), maxX: worldX(0.975), minY: roadY(0.46), maxY: roadY(0.54),
     color: 0x1a1000, tags: ['delivery', 'e-bike', 'vehicle'],
   });
   ebiker.drawExtra = drawEbike;

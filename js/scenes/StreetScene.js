@@ -20,6 +20,9 @@ import {
   PARK_TOP, PARK_BOTTOM, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA, MINI_PARK,
   GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
+  CLOUD_POSITIONS, SIDEWALK_TREE_XS, SIDEWALK_TREE_Y,
+  PARK_TREE_XS, PARK_TREE_Y, ROAD_STRIPE_SPACING, ROAD_STRIPE_LENGTH,
+  BUILDING_EXIT_XS,
 } from '../SceneConfig.js';
 import { ExitRegistry }      from '../behavior/ExitRegistry.js';
 import { SpawnManager }     from '../behavior/SpawnManager.js';
@@ -495,8 +498,7 @@ export class StreetScene extends Phaser.Scene {
 
   // ─── 天空：几朵灰度云（软团 + 浅灰描边） ──────────────────────────────────
   _drawClouds(g) {
-    const clouds = [[180, 38, 1.0], [560, 26, 0.8], [1000, 46, 1.15], [1500, 30, 0.9], [1840, 40, 1.0]];
-    for (const [cx, cy, s] of clouds) {
+    for (const [cx, cy, s] of CLOUD_POSITIONS) {
       g.fillStyle(0xffffff, 0.92);
       g.fillEllipse(cx,         cy,        70 * s, 26 * s);
       g.fillEllipse(cx - 28 * s, cy + 6 * s, 44 * s, 20 * s);
@@ -555,8 +557,8 @@ export class StreetScene extends Phaser.Scene {
     // 中心单虚线（车道分隔）
     const midY = Math.round((FAR_Y + NEAR_Y) / 2);
     g.lineStyle(2, 0xffffff, 0.6);
-    for (let x = 0; x < WORLD_WIDTH; x += 56) {
-      g.lineBetween(x, midY, x + 28, midY);
+    for (let x = 0; x < WORLD_WIDTH; x += ROAD_STRIPE_SPACING) {
+      g.lineBetween(x, midY, x + ROAD_STRIPE_LENGTH, midY);
     }
 
     // 斑马线（保留）
@@ -610,17 +612,15 @@ export class StreetScene extends Phaser.Scene {
 
   // ─── 行道树：建筑前人行道一排（小）+ 公园广场后排（中） ────────────────────
   _drawTrees(g) {
-    // 建筑前人行道（y≈244，贴近路沿），与街灯交错
-    const walkXs = [172, 327, 482, 792, 947, 1102, 1257, 1412, 1567, 1722, 1877];
-    for (const tx of walkXs) {
-      const ty = 256 + Math.sin(tx * 0.05) * 2;
+    // 建筑前人行道（贴近路沿），与街灯交错
+    for (const tx of SIDEWALK_TREE_XS) {
+      const ty = SIDEWALK_TREE_Y + Math.sin(tx * 0.05) * 2;
       const r  = 8 + Math.sin(tx * 0.071) * 1.5;
       this._drawBlobTree(g, tx, ty, r, 0.7, 0x808080, 0.9);
     }
-    // 公园广场后排（y≈350，承上启下，远离喷泉/活动区中心）
-    const parkXs = [120, 300, 470, 980, 1160, 1640, 1820, 1960];
-    for (const tx of parkXs) {
-      const ty = 350;
+    // 公园广场后排（承上启下，远离喷泉/活动区中心）
+    for (const tx of PARK_TREE_XS) {
+      const ty = PARK_TREE_Y;
       const r  = 12 + Math.sin(tx * 0.053) * 3;
       this._drawBlobTree(g, tx, ty, r, 1.1, 0x4a4a4a, 0.92);
     }
@@ -721,10 +721,10 @@ export class StreetScene extends Phaser.Scene {
     exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null, yZone: null, facing: -1 });
     exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 200, y: null, yZone: null, facing:  1 });
     // 建筑入口（仅前人行道区域，Y 固定在建筑立面，NPC 走入后消失）
-    exitRegistry.register({ id: 'building_a', type: 'building', x: 200,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
-    exitRegistry.register({ id: 'building_b', type: 'building', x: 600,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
-    exitRegistry.register({ id: 'building_c', type: 'building', x: 1100, y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
-    exitRegistry.register({ id: 'building_d', type: 'building', x: 1700, y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_a', type: 'building', x: BUILDING_EXIT_XS[0], y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_b', type: 'building', x: BUILDING_EXIT_XS[1], y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_c', type: 'building', x: BUILDING_EXIT_XS[2], y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_d', type: 'building', x: BUILDING_EXIT_XS[3], y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
     // TODO: 加静止车辆时在停车位处注册 type:'vehicle' 出口
     bm.exitRegistry = exitRegistry;
 
