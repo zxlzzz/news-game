@@ -10,8 +10,8 @@ import { VehicleStateMachine }  from './VehicleStateMachine.js';
 import { roadY, WORLD_WIDTH }   from '../SceneConfig.js';
 
 const LANES = [
-  { id: 'upbound',   direction: +1, yRange: [roadY(0.22), roadY(0.50)], target: 3, entryX: -200 },
-  { id: 'downbound', direction: -1, yRange: [roadY(0.52), roadY(0.92)], target: 3, entryX: WORLD_WIDTH + 200 },
+  { id: 'upbound',   direction: +1, yRange: [roadY(0.10), roadY(0.38)], target: 3, entryX: -200 },
+  { id: 'downbound', direction: -1, yRange: [roadY(0.62), roadY(0.90)], target: 3, entryX: WORLD_WIDTH + 200 },
 ];
 
 // 车型权重（bus 只走 -1 方向）

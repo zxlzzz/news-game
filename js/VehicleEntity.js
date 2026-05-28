@@ -501,8 +501,6 @@ export class VehicleEntity extends Entity {
 
   _drawMotoRider(g, hipX, hipY) {
     const s = this.scale, d = this.direction;
-    const riderScale = s * 2.2;
-    // anchorMode:'hip' 已在 mobike.json 中声明，StickRenderer 会把 body 关节对齐到 (hipX, hipY)
-    this._sr.draw(g, 'mobike', 0, hipX, hipY, riderScale, d, 0x1a1a1a, 1);
+    this._sr.draw(g, 'mobike', 0, hipX, hipY, s * 1.3, d, 0x1a1a1a, 1);
   }
 }
