@@ -368,84 +368,120 @@ export class StreetScene extends Phaser.Scene {
   }
 
   // ─── 公交站台视觉（bgGraphics，只绘一次） ────────────────────────────────────
+  // 保留两站：FAR x=500（左上，不改），NEAR x=1500（右下，港湾式开放候车亭）
   _drawBusStops() {
     const g  = this.bgGraphics;
     const ft = BIKE_LANE_FAR_TOP; // 248 — 远端非机动车道顶边
     const fy = FAR_Y;             // 268 — 远端路沿
     const ny = NEAR_Y;            // 333 — 近端路沿
-    const np = PARK_TOP;          // 353 — 近端非机动车道底边
 
-    for (const sx of [500, 1500]) {
-      // ── FAR 侧站亭（远端路沿 fy=268，亭子在人行道/非机动车道区 248–268）─────
-      // 候车铺装
+    // ── FAR 侧站亭 x=500（左上，原样保留）─────────────────────────────────────
+    {
+      const sx = 500;
       g.fillStyle(0xb2b2b0, 1);
       g.fillRect(sx - 44, fy, 88, 9);
       g.lineStyle(0.6, 0x808080, 0.35);
       g.strokeRect(sx - 44, fy, 88, 9);
 
-      // 顶棚
       g.fillStyle(0x8a8a88, 0.95);
       g.fillRect(sx - 33, ft + 3, 66, 6);
       g.lineStyle(0.8, 0x2a2a2a, 0.9);
       g.strokeRect(sx - 33, ft + 3, 66, 6);
 
-      // 支柱
       g.lineStyle(1.2, 0x505050, 1);
-      g.lineBetween(sx - 25, ft + 9,  sx - 25, fy - 1);
-      g.lineBetween(sx + 25, ft + 9,  sx + 25, fy - 1);
+      g.lineBetween(sx - 25, ft + 9, sx - 25, fy - 1);
+      g.lineBetween(sx + 25, ft + 9, sx + 25, fy - 1);
 
-      // 后壁板（左侧）
       g.fillStyle(0xa2a2a0, 0.85);
       g.fillRect(sx - 33, ft + 9, 5, fy - ft - 10);
       g.lineStyle(0.5, 0x404040, 0.7);
       g.strokeRect(sx - 33, ft + 9, 5, fy - ft - 10);
 
-      // 长椅
       g.fillStyle(0x787876, 1);
       g.fillRect(sx - 22, fy - 8, 18, 3);
 
-      // 站牌（右侧支柱上）
       g.fillStyle(0x2255aa, 1);
       g.fillRect(sx + 10, ft + 4, 14, 5);
       g.fillStyle(0xdadada, 1);
       g.fillRect(sx + 11, ft + 5, 12, 3);
+    }
 
-      // ── NEAR 侧站亭（顶棚在上，支柱向下，候车区在公园内）────────────────────
-      // 候车铺装（路沿到站亭底）
+    // ── NEAR 侧开放候车亭 x=1500（右下，港湾式）──────────────────────────────
+    {
+      const sx    = 1500;
+      const BAY_W = 124;              // 港湾宽度 px
+      const BAY_D = 9;               // 港湾深度（向公园侧凸出）px
+      const bx0   = sx - BAY_W / 2;  // 1438
+      const bx1   = sx + BAY_W / 2;  // 1562
+
+      // ── 港湾路面（覆盖近端路沿条带与自行车道，延伸机动车道色）──
+      g.fillStyle(GRAY_ROAD, 1);
+      g.fillRect(bx0, ny, BAY_W, BAY_D);
+
+      // 港湾入口两侧路沿角（标示港湾边界过渡）
+      g.fillStyle(0xd8d8d8, 1);
+      g.fillRect(bx0 - 3, ny,         3,         BAY_D + 3);  // 左肩竖
+      g.fillRect(bx1,     ny,         3,         BAY_D + 3);  // 右肩竖
+      g.fillRect(bx0 - 3, ny + BAY_D, BAY_W + 6, 3);         // 港湾底横
+
+      // ── 候车平台铺装（港湾底沿）──
       g.fillStyle(0xb2b2b0, 1);
-      g.fillRect(sx - 44, ny, 88, 8);
-      g.lineStyle(0.6, 0x808080, 0.35);
-      g.strokeRect(sx - 44, ny, 88, 8);
+      g.fillRect(bx0, ny + BAY_D, BAY_W, 2);
 
-      // 顶棚（紧贴路沿下方）
-      g.fillStyle(0x7a7a78, 0.95);
-      g.fillRect(sx - 36, ny + 1, 72, 7);
-      g.lineStyle(1.0, 0x1a1a1a, 0.9);
-      g.strokeRect(sx - 36, ny + 1, 72, 7);
-
-      // 支柱（从顶棚底向下）
-      g.lineStyle(1.8, 0x404040, 1);
-      g.lineBetween(sx - 28, ny + 8, sx - 28, ny + 22);
-      g.lineBetween(sx + 28, ny + 8, sx + 28, ny + 22);
-
-      // 后壁板（远离道路的一侧，即下方）
-      g.fillStyle(0x929290, 0.85);
-      g.fillRect(sx - 36, ny + 8, 6, 14);
-      g.lineStyle(0.6, 0x333333, 0.7);
-      g.strokeRect(sx - 36, ny + 8, 6, 14);
-
-      // 长椅
+      // ── 顶棚（宽而平，主视觉元素）──
+      const roofT = ny + BAY_D + 4;   // 345
+      const roofH = 6;
+      const roofW = 106;
+      const roofX = sx - roofW / 2;   // 1447
       g.fillStyle(0x686866, 1);
-      g.fillRect(sx - 22, ny + 14, 22, 3);
-      g.lineStyle(1.0, 0x505050, 1);
-      g.lineBetween(sx - 18, ny + 17, sx - 18, ny + 20);
-      g.lineBetween(sx - 4,  ny + 17, sx - 4,  ny + 20);
+      g.fillRect(roofX, roofT, roofW, roofH);
+      g.lineStyle(1.6, 0x181818, 1);
+      g.strokeRect(roofX, roofT, roofW, roofH);
 
-      // 站牌（右侧支柱上）
-      g.fillStyle(0x2255aa, 1);
-      g.fillRect(sx + 10, ny + 2, 14, 5);
-      g.fillStyle(0xdadada, 1);
-      g.fillRect(sx + 11, ny + 3, 12, 3);
+      // ── 支柱（左右各一根，纤细通透）──
+      const pillarT = roofT + roofH;  // 351
+      const pillarB = ny + 48;        // 381
+      g.lineStyle(2.5, 0x282828, 1);
+      g.lineBetween(sx - 45, pillarT, sx - 45, pillarB);
+      g.lineBetween(sx + 45, pillarT, sx + 45, pillarB);
+
+      // ── 长椅（棚下居中，宽而薄）──
+      const benchY = ny + 37;         // 370
+      g.fillStyle(0x565654, 1);
+      g.fillRect(sx - 32, benchY, 64, 4);
+      g.lineStyle(0.8, 0x181818, 0.7);
+      g.strokeRect(sx - 32, benchY, 64, 4);
+      // 椅腿
+      g.lineStyle(1.5, 0x303030, 0.9);
+      g.lineBetween(sx - 26, benchY + 4, sx - 26, benchY + 9);
+      g.lineBetween(sx + 26, benchY + 4, sx + 26, benchY + 9);
+
+      // ── 独立公交站牌杆（亭外右侧，带矩形站牌板）──
+      const poleX  = bx1 + 5;         // 1567，紧贴港湾右肩外侧
+      const poleTy = ny - 2;          // 331（略高于路沿，站牌板顶）
+      const poleBy = ny + BAY_D + 4;  // 346（立于平台面层）
+      g.lineStyle(2.2, 0x2e2e2e, 1);
+      g.lineBetween(poleX, poleBy, poleX, poleTy);
+
+      // 站牌板（矩形，蓝底白内）
+      const sigW = 22, sigH = 15;
+      const sigX = poleX - Math.round(sigW / 2);  // 1556
+      const sigY = poleTy;                          // 331
+      g.fillStyle(0x1a44aa, 1);
+      g.fillRect(sigX, sigY, sigW, sigH);
+      g.lineStyle(1, 0x0a0820, 1);
+      g.strokeRect(sigX, sigY, sigW, sigH);
+      // 站牌板内容：白底
+      g.fillStyle(0xeaeaf0, 1);
+      g.fillRect(sigX + 2, sigY + 2, sigW - 4, sigH - 4);
+      // 顶部蓝色公交图标条（模拟公交车图案）
+      g.fillStyle(0x2255bb, 0.85);
+      g.fillRect(sigX + 3, sigY + 3, sigW - 6, 4);
+      // 文字行
+      g.fillStyle(0x303050, 0.55);
+      g.fillRect(sigX + 3, sigY + 8,  sigW - 6, 1);
+      g.fillRect(sigX + 3, sigY + 10, sigW - 6, 1);
+      g.fillRect(sigX + 3, sigY + 12, sigW - 8, 1);
     }
   }
 
