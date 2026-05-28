@@ -7,7 +7,7 @@
  *   后轮在臀部下方、前轮在车把（手）下方，使人车成为一体。
  */
 
-import { roadY, worldX }      from '../SceneConfig.js';
+import { roadY, worldX, bikeLaneFarY, bikeLaneNearY } from '../SceneConfig.js';
 import { makeNPC }            from './util.js';
 import { VehicleEntity }      from '../VehicleEntity.js';
 import { TrafficManager }     from '../behavior/TrafficManager.js';
@@ -104,25 +104,28 @@ function drawEbike(g, n) {
 }
 
 function _spawnCyclists(em, sr) {
+  // 远端非机动车道（dir +1，自行车上行）
   const cyclist1 = makeNPC(em, sr, {
-    x: 1350, y: roadY(0.30), animation: 'bike', direction:  1, speed: 110, vy: 0,
-    minX: worldX(0.05), maxX: worldX(0.975), minY: roadY(0.26), maxY: roadY(0.34),
+    x: 1350, y: bikeLaneFarY(0.3), animation: 'bike', direction:  1, speed: 110, vy: 0,
+    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.1), maxY: bikeLaneFarY(0.6),
     color: 0x0a2010, tags: ['cyclist', 'vehicle'],
   });
   cyclist1.drawExtra = drawBicycle;
   cyclist1.steadyFoot = true;
 
+  // 近端非机动车道（dir -1，自行车下行）
   const cyclist2 = makeNPC(em, sr, {
-    x: 1550, y: roadY(0.72), animation: 'bike', direction: -1, speed: 100, vy: 0,
-    minX: worldX(0.05), maxX: worldX(0.975), minY: roadY(0.68), maxY: roadY(0.76),
+    x: 1550, y: bikeLaneNearY(0.5), animation: 'bike', direction: -1, speed: 100, vy: 0,
+    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneNearY(0.3), maxY: bikeLaneNearY(0.7),
     color: 0x200a10, tags: ['cyclist', 'vehicle'],
   });
   cyclist2.drawExtra = drawBicycle;
   cyclist2.steadyFoot = true;
 
+  // 远端非机动车道（dir +1，外卖电动车）
   const ebiker = makeNPC(em, sr, {
-    x: 1450, y: roadY(0.50), animation: 'mobile', direction:  1, speed: 120, vy: 0,
-    minX: worldX(0.05), maxX: worldX(0.975), minY: roadY(0.46), maxY: roadY(0.54),
+    x: 1450, y: bikeLaneFarY(0.5), animation: 'mobile', direction:  1, speed: 120, vy: 0,
+    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.3), maxY: bikeLaneFarY(0.7),
     color: 0x1a1000, tags: ['delivery', 'e-bike', 'vehicle'],
   });
   ebiker.drawExtra = drawEbike;

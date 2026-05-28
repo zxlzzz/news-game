@@ -18,11 +18,12 @@ import { DebugOverlay }    from '../DebugOverlay.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
   PARK_TOP, PARK_BOTTOM, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA, MINI_PARK,
-  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_CURB,
+  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
   CLOUD_POSITIONS, SIDEWALK_TREE_XS, SIDEWALK_TREE_Y,
   PARK_TREE_XS, PARK_TREE_Y, ROAD_STRIPE_SPACING, ROAD_STRIPE_LENGTH,
   BUILDING_EXIT_XS,
+  BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
 } from '../SceneConfig.js';
 import { ExitRegistry }      from '../behavior/ExitRegistry.js';
 import { SpawnManager }     from '../behavior/SpawnManager.js';
@@ -337,13 +338,22 @@ export class StreetScene extends Phaser.Scene {
     g.fillStyle(GRAY_FAR_PAVE, 1);
     g.fillRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
 
-    // 双行道
+    // 机动车道
     g.fillStyle(GRAY_ROAD, 1);
     g.fillRect(0, FAR_Y, WORLD_WIDTH, NEAR_Y - FAR_Y);
+
+    // 近端非机动车道
+    g.fillStyle(GRAY_NEAR_PAVE, 1);
+    g.fillRect(0, NEAR_Y, WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM - NEAR_Y);
 
     // 公园广场（草地）
     g.fillStyle(0xcacaca, 1);
     g.fillRect(0, PARK_TOP, WORLD_WIDTH, WORLD_HEIGHT - PARK_TOP);
+
+    // 非机动车道分隔实线
+    g.lineStyle(1.5, 0x888888, 1);
+    g.lineBetween(0, BIKE_LANE_FAR_TOP, WORLD_WIDTH, BIKE_LANE_FAR_TOP);           // 远端上边界
+    g.lineBetween(0, BIKE_LANE_NEAR_BOTTOM, WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM);   // 近端下边界
 
     this._drawRoadMarkings(g);
     this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, FAR_Y - 3, /*near=*/false);

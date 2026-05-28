@@ -7,24 +7,32 @@
 
 // ─── 世界尺寸 ─────────────────────────────────────────────────────────────────
 export const WORLD_WIDTH  = 2000;
-export const WORLD_HEIGHT = 500;
+export const WORLD_HEIGHT = 520;   // 底部扩 20px（近端非机动车道）
 
 // ─── 纵向分带边界（轻微俯视 2.5D ~30°，Y 越大越靠近镜头）────────────────────
-//   天空       0  – 100   纯装饰（蓝天白云→灰度，视差层）
-//   建筑街墙 100  – 210   连续街墙
-//   建筑前人行道 210 – 268 前人行道：行人/树/邮箱/售货机
-//   双行道   268  – 333   机动车
-//   公园广场 333  – 500   NPC 主活动区
+//   天空          0  – 100   纯装饰（蓝天白云→灰度，视差层）
+//   建筑街墙    100  – 210   连续街墙
+//   建筑前人行道 210 – 248   前人行道主体：行人/树/邮箱/售货机
+//   远端非机动车道 248 – 268  自行车/电动车（上行，dir +1）
+//   机动车道     268  – 333  机动车（公交/出租/私家/摩托）
+//   近端非机动车道 333 – 353  自行车/电动车（下行，dir -1）
+//   公园广场     353  – 520  NPC 主活动区（喷泉/小摊/树）
 export const SKY_Y           = 100;   // 天空区底边
 export const BUILDING_BASE_Y = 210;   // 建筑街墙底边（= 前人行道顶边）
-export const FAR_Y           = 268;   // 前人行道 / 道路 分界（curb）
-export const NEAR_Y          = 333;   // 道路 / 公园 分界（curb）
-export const PARK_TOP        = 333;   // 公园广场顶边
+export const FAR_Y           = 268;   // 前人行道 / 机动车道 分界（curb）
+export const NEAR_Y          = 333;   // 机动车道 / 近端非机动车道 分界
+export const PARK_TOP        = 353;   // 公园广场顶边（= 近端非机动车道底边）
 export const PARK_BOTTOM     = WORLD_HEIGHT;
+
+// 非机动车道边界
+export const BIKE_LANE_FAR_TOP     = 248;   // 远端非机动车道顶边
+export const BIKE_LANE_FAR_BOTTOM  = 268;   // 远端非机动车道底边 = FAR_Y
+export const BIKE_LANE_NEAR_TOP    = 333;   // 近端非机动车道顶边 = NEAR_Y
+export const BIKE_LANE_NEAR_BOTTOM = 353;   // 近端非机动车道底边 = PARK_TOP
 
 // 步行带（NPC 典型 Y）
 export const SIDEWALK_FAR_Y  = 240;   // 建筑前人行道步行 Y
-export const SIDEWALK_NEAR_Y = 488;   // 公园主步行 Y（近镜头）
+export const SIDEWALK_NEAR_Y = 508;   // 公园主步行 Y（近镜头）
 
 // ─── 区域内插值辅助函数 ───────────────────────────────────────────────────────
 
@@ -39,6 +47,12 @@ export const parkY = (f) => Math.round(PARK_TOP + (PARK_BOTTOM - PARK_TOP) * f);
 
 /** 横向相对位置，f=0 左边，f=1 右边 */
 export const worldX = (f) => Math.round(WORLD_WIDTH * f);
+
+/** 远端非机动车道纵深，f=0 靠人行道侧，f=1 靠机动车道侧 */
+export const bikeLaneFarY  = (f) => Math.round(BIKE_LANE_FAR_TOP  + (BIKE_LANE_FAR_BOTTOM  - BIKE_LANE_FAR_TOP)  * f);
+
+/** 近端非机动车道纵深，f=0 靠机动车道侧，f=1 靠公园侧 */
+export const bikeLaneNearY = (f) => Math.round(BIKE_LANE_NEAR_TOP + (BIKE_LANE_NEAR_BOTTOM - BIKE_LANE_NEAR_TOP) * f);
 
 // ─── 场景几何具名常量 ─────────────────────────────────────────────────────────
 
@@ -82,10 +96,10 @@ export const BUILDING_EXIT_XS = [
 export const BUS_STOP_XS = [worldX(0.20), worldX(0.80)];
 
 /** 棋摊广场（棋桌置于其中心，StreetScene 画图与 Chess 定位共用） */
-export const CHESS_PLAZA = { cx: worldX(0.31), cy: parkY(0.52), rx: 130, ry: 56 };
+export const CHESS_PLAZA = { cx: worldX(0.31), cy: parkY(0.54), rx: 130, ry: 56 };
 
 /** 大公园内的"小公园"游园区（喷泉居中） */
-export const MINI_PARK = { cx: worldX(0.575), cy: parkY(0.58), rx: 210, ry: 78 };
+export const MINI_PARK = { cx: worldX(0.575), cy: parkY(0.60), rx: 210, ry: 78 };
 
 // ─── 纯黑白灰画风调色板 ───────────────────────────────────────────────────────
 

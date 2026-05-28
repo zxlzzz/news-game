@@ -490,23 +490,5 @@ export class VehicleEntity extends Entity {
     g.lineStyle(Math.max(0.8, s * 4), 0x888888, 0.6);
     g.lineBetween(pivotX - d * ls * 0.03, pivotY + hs * 0.02,
                   rwx + d * rs * 0.6, wcy + rs * 0.22);
-
-    // ── 骑手 ──
-    const hipX = tankR + d * ls * 0.02;
-    const hipY = tankTop;
-    const shoulderX = hipX + d * ls * 0.08;
-    const shoulderY = hipY - hs * 0.42;
-    const headCX = shoulderX + d * ls * 0.02;
-    const headCY = shoulderY - rs * 0.45;
-    const headR = Math.max(3, s * 18);
-
-    g.lineStyle(Math.max(1.2, s * 7), 0x1e1e1e, 1);
-    g.lineBetween(hipX, hipY, shoulderX, shoulderY);                           // 脊柱
-    g.lineStyle(Math.max(1, s * 5.5), 0x1e1e1e, 0.85);
-    g.lineBetween(shoulderX, shoulderY + hs * 0.05, handleX, handleY);        // 手臂
-    g.lineBetween(hipX, hipY, pivotX + d * ls * 0.05, wcy + rs * 0.08);      // 前腿
-    g.lineBetween(hipX, hipY, rwx + d * rs * 0.75, wcy + rs * 0.04);         // 后腿
-    g.fillStyle(0x1e1e1e, 1);
-    g.fillCircle(headCX, headCY, headR);                                       // 头
   }
 }
