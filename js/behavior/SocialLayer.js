@@ -421,7 +421,8 @@ class DogWalkActivity extends Activity {
   }
 
   update(dt) {
-    if (!this.owner.alive) return false;
+    // owner 或 dog 任一消失则结束活动（super.destroy 会释放双方 _activity，避免悬挂）
+    if (!this.owner.alive || !this.dog.alive) return false;
     return true;
   }
 

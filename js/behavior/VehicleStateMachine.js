@@ -30,6 +30,7 @@ export class VehicleStateMachine {
     vehicle.vsmState     = 'cruising';
     vehicle._busStopTarget = null;
     vehicle._busStopDone   = false;
+    vehicle._busStopCooldown = 0;
   }
 
   /**
@@ -41,6 +42,9 @@ export class VehicleStateMachine {
   update(delta, sameDirVehicles, busStops) {
     const v  = this.vehicle;
     const dt = delta / 1000;
+
+    // 离站冷却倒计时（期间 _findBusStop 不会再选中任何站点）
+    if (v._busStopCooldown > 0) v._busStopCooldown -= delta;
 
     // 公交站离开（BusStop.depart() 设置 _busStopDone）
     if (v._busStopDone) {
@@ -69,8 +73,8 @@ export class VehicleStateMachine {
       return 'decelerating';
     }
 
-    // Priority 30: 公交站
-    if (v.kind === 'bus') {
+    // Priority 30: 公交站（离站冷却期内不再靠站）
+    if (v.kind === 'bus' && !(v._busStopCooldown > 0)) {
       const stop = this._findBusStop(busStops, 150);
       if (stop) {
         const dist = this._distToStop(stop);

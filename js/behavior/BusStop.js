@@ -15,10 +15,11 @@ export class BusStop {
     this._timer    = 0;
   }
 
-  /** 本次停站时长（有区间则随机取） */
+  /** 本次停站时长（有区间则随机取；防御性排序，避免 [大,小] 出负数） */
   _rollWait() {
     if (this.waitRange) {
-      const [a, b] = this.waitRange;
+      const a = Math.min(this.waitRange[0], this.waitRange[1]);
+      const b = Math.max(this.waitRange[0], this.waitRange[1]);
       return a + Math.random() * (b - a);
     }
     return this.waitTime;
@@ -43,8 +44,10 @@ export class BusStop {
   /** 时间到或强制离站 */
   depart() {
     if (!this._occupant) return;
-    this._occupant.doorOpen      = false;
-    this._occupant._busStopDone  = true;   // 通知状态机可以走了
+    this._occupant.doorOpen        = false;
+    this._occupant._busStopDone    = true;   // 通知状态机可以走了
+    // 离站冷却：驶离一段距离前不再被任何站点吸引，杜绝刚 depart 又被同站重新拉停的死循环
+    this._occupant._busStopCooldown = 2500;  // ms
     this._occupant = null;
     this._timer    = 0;
   }
