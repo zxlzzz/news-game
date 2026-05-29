@@ -17,16 +17,21 @@ import { Viewfinder }      from '../Viewfinder.js';
 import { DebugOverlay }    from '../DebugOverlay.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
-  PARK_TOP, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA, MINI_PARK,
-  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_CURB,
+  PARK_TOP, PARK_BOTTOM, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y, CHESS_PLAZA, MINI_PARK,
+  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
+  CLOUD_POSITIONS, SIDEWALK_TREE_XS, SIDEWALK_TREE_Y,
+  PARK_TREE_XS, PARK_TREE_Y, ROAD_STRIPE_SPACING, ROAD_STRIPE_LENGTH,
+  BUILDING_EXIT_XS,
+  BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
 } from '../SceneConfig.js';
 import { ExitRegistry }      from '../behavior/ExitRegistry.js';
-import { spawnPedestrians } from '../npcs/Pedestrians.js';
+import { SpawnManager }     from '../behavior/SpawnManager.js';
+import { spawnPedestrians, spawnOnePedestrian } from '../npcs/Pedestrians.js';
 import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
 import { spawnAthletes }    from '../npcs/Athletes.js';
-import { spawnVehicles }    from '../npcs/Vehicles.js';
+import { initVehicleSystem } from '../npcs/Vehicles.js';
 
 export class StreetScene extends Phaser.Scene {
   constructor() {
@@ -43,7 +48,7 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_bike',       'assets/animations/bike.json');
     this.load.json('anim_mobile',     'assets/animations/mobile.json');
     this.load.json('anim_chess',      'assets/animations/chess.json');
-    this.load.json('anim_dogwalk',    'assets/animations/dogwalk.json');
+    this.load.json('anim_dogwalk',    'assets/animations/pet/dog_walk.json');
     // 行为状态机第一批用到的姿态
     this.load.json('anim_single',     'assets/animations/single.json');
     this.load.json('anim_sit_bench',  'assets/animations/sit_bench.json');
@@ -57,6 +62,7 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_get_up',          'assets/animations/get_up.json');
     this.load.json('anim_chess_onlookers', 'assets/animations/chess_onlookers.json');
     this.load.json('anim_cross_arm',       'assets/animations/cross_arm.json');
+    this.load.json('anim_mobike',          'assets/animations/mobike.json');
   }
 
   create() {
@@ -74,6 +80,7 @@ export class StreetScene extends Phaser.Scene {
     // 远景视差层 + 静态地面（只绘制一次）
     this._drawSky();
     this._drawGround();
+    this._drawBusStops();
 
     // 火柴人渲染器
     this.stickRenderer = new StickRenderer(this);
@@ -96,6 +103,7 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('get_up',          this.cache.json.get('anim_get_up'));
     this.stickRenderer.loadAnimation('chess_onlookers', this.cache.json.get('anim_chess_onlookers'));
     this.stickRenderer.loadAnimation('cross_arm',       this.cache.json.get('anim_cross_arm'));
+    this.stickRenderer.loadAnimation('mobike',          this.cache.json.get('anim_mobike'));
 
     // 统一 Entity 管理器
     // 缩放参考用人行道带（远端步行带 → 近端步行带），让远小近大对比贯穿整个纵深
@@ -295,6 +303,8 @@ export class StreetScene extends Phaser.Scene {
 
     // 行为状态机先决策（设状态/动画/速度/朝向），再由 EntityManager 推进位移与帧
     this.behaviorManager.update(delta);
+    this.spawnManager.update(delta / 1000);
+    if (this.trafficManager) this.trafficManager.update(delta);
     this.entityManager.update(delta);
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
@@ -330,16 +340,25 @@ export class StreetScene extends Phaser.Scene {
     g.fillStyle(GRAY_FAR_PAVE, 1);
     g.fillRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
 
-    // 双行道
+    // 机动车道
     g.fillStyle(GRAY_ROAD, 1);
     g.fillRect(0, FAR_Y, WORLD_WIDTH, NEAR_Y - FAR_Y);
+
+    // 近端非机动车道
+    g.fillStyle(GRAY_NEAR_PAVE, 1);
+    g.fillRect(0, NEAR_Y, WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM - NEAR_Y);
 
     // 公园广场（草地）
     g.fillStyle(0xcacaca, 1);
     g.fillRect(0, PARK_TOP, WORLD_WIDTH, WORLD_HEIGHT - PARK_TOP);
 
+    // 非机动车道分隔实线
+    g.lineStyle(1.5, 0x888888, 1);
+    g.lineBetween(0, BIKE_LANE_FAR_TOP, WORLD_WIDTH, BIKE_LANE_FAR_TOP);           // 远端上边界
+    g.lineBetween(0, BIKE_LANE_NEAR_BOTTOM, WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM);   // 近端下边界
+
     this._drawRoadMarkings(g);
-    this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, FAR_Y - 3, /*near=*/false);
+    this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, BIKE_LANE_FAR_TOP - 3, /*near=*/false);
     this._drawRoadPatches(g);
     this._drawParkPlaza(g);
     this._drawMiniPark(g);
@@ -348,14 +367,192 @@ export class StreetScene extends Phaser.Scene {
     this._drawTrees(g);
   }
 
-  // ─── 公园园路：带弧度的步道，连接棋摊广场 / 喷泉 / 上沿人行道 ────────────────
-  // 端点落在广场/喷泉边缘（不穿过喷泉椭圆、不压广场中心）。各路边缘放一把长椅。
+  // ─── 公交站台视觉（bgGraphics，只绘一次） ────────────────────────────────────
+  // 两站同款开放候车亭（顶棚宽 250px ≈ 公交车长 130%）：
+  //   FAR x=500 — 顶棚贴 FAR_Y 从上往上挂，支柱向上伸，长椅靠顶棚底
+  //   NEAR x=1500 — 港湾式，顶棚贴 NEAR_Y，支柱向下伸，长椅在棚下
+  _drawBusStops() {
+    const g  = this.bgGraphics;
+    const ft = BIKE_LANE_FAR_TOP; // 248 — 远端非机动车道顶边
+    const fy = FAR_Y;             // 268 — 远端路沿
+    const ny = NEAR_Y;            // 333 — 近端路沿
+
+    const ROOF_W = 250;   // 两站共用：顶棚宽
+    const ROOF_H = 6;     // 顶棚厚
+    const PIL_X  = 112;   // 支柱到中心的横向距离（roofW/2 - 13）
+
+    // 辅助：绘制站牌板（蓝底白内，带模拟图案）
+    const drawSign = (px, py) => {
+      const sw = 22, sh = 15;
+      const sx = px - Math.round(sw / 2);
+      g.fillStyle(0x1a44aa, 1);
+      g.fillRect(sx, py, sw, sh);
+      g.lineStyle(1, 0x0a0820, 1);
+      g.strokeRect(sx, py, sw, sh);
+      g.fillStyle(0xeaeaf0, 1);
+      g.fillRect(sx + 2, py + 2, sw - 4, sh - 4);
+      g.fillStyle(0x2255bb, 0.85);
+      g.fillRect(sx + 3, py + 3, sw - 6, 4);
+      g.fillStyle(0x303050, 0.55);
+      g.fillRect(sx + 3, py + 8,  sw - 6, 1);
+      g.fillRect(sx + 3, py + 10, sw - 6, 1);
+      g.fillRect(sx + 3, py + 12, sw - 8, 1);
+    };
+
+    // ── FAR 侧港湾候车亭 x=500（仿 NEAR 港湾式：在远端非机动车道开港湾、路沿弯曲；
+    //     顶棚在上、支柱向下开口朝路；透视更小）──────────────────────────────────
+    {
+      const sx     = 500;
+      const F      = 0.76;             // 透视缩小系数
+      const BAY_W  = Math.round(266 * F);  // 202 — 港湾宽
+      const BAY_D  = 9;                // 港湾深度（向非机动车道凸入）
+      const FROOF_W= Math.round(ROOF_W * F); // 190 — 顶棚宽
+      const FPIL_X = Math.round(112 * F);    // 85  — 支柱到中心距
+      const bx0    = sx - BAY_W / 2;   // 399
+      const bx1    = sx + BAY_W / 2;   // 601
+
+      // 港湾路面（从远端路沿 FAR_Y 向上凸入非机动车道，公交向远端路沿靠站）
+      g.fillStyle(GRAY_ROAD, 1);
+      g.fillRect(bx0, fy - BAY_D, BAY_W, BAY_D);   // 259–268
+
+      // 港湾入口路沿角（镜像 NEAR：开口朝下/朝路，路沿在上侧）
+      g.fillStyle(0xd8d8d8, 1);
+      g.fillRect(bx0 - 3, fy - BAY_D - 3, 3,         BAY_D + 3);
+      g.fillRect(bx1,     fy - BAY_D - 3, 3,         BAY_D + 3);
+      g.fillRect(bx0 - 3, fy - BAY_D - 3, BAY_W + 6, 3);
+
+      // 候车平台铺装（港湾顶沿）
+      g.fillStyle(0xb2b2b0, 1);
+      g.fillRect(bx0, fy - BAY_D - 2, BAY_W, 2);
+
+      // 顶棚（在上，贴远端人行道下沿）
+      const rX    = sx - FROOF_W / 2;  // 405
+      const roofT = ft - 12;           // 236 — 顶棚顶（远端人行道内）
+      g.fillStyle(0x686866, 1);
+      g.fillRect(rX, roofT, FROOF_W, ROOF_H);
+      g.lineStyle(1.6, 0x181818, 1);
+      g.strokeRect(rX, roofT, FROOF_W, ROOF_H);
+
+      // 支柱（从顶棚底向下延伸到候车平台）
+      const pillarT = roofT + ROOF_H;       // 242
+      const pillarB = fy - BAY_D - 2;       // 257
+      g.lineStyle(2.5, 0x282828, 1);
+      g.lineBetween(sx - FPIL_X, pillarT, sx - FPIL_X, pillarB);
+      g.lineBetween(sx + FPIL_X, pillarT, sx + FPIL_X, pillarB);
+
+      // 长椅（棚下居中）
+      const benchY = pillarT + 5;           // 247
+      g.fillStyle(0x565654, 1);
+      g.fillRect(sx - 66, benchY, 132, 4);
+      g.lineStyle(0.8, 0x181818, 0.7);
+      g.strokeRect(sx - 66, benchY, 132, 4);
+      // 椅腿（向下）
+      g.lineStyle(1.5, 0x303030, 0.9);
+      g.lineBetween(sx - 56, benchY + 4, sx - 56, benchY + 8);
+      g.lineBetween(sx + 56, benchY + 4, sx + 56, benchY + 8);
+
+      // 独立站牌杆（亭外右侧）
+      const poleX  = bx1 + 5;          // 606
+      const poleTy = roofT;            // 236 — 牌面顶
+      const poleBy = fy - BAY_D - 2;   // 257 — 杆底（落到平台）
+      g.lineStyle(2.2, 0x2e2e2e, 1);
+      g.lineBetween(poleX, poleTy + 15, poleX, poleBy);
+      drawSign(poleX, poleTy);
+    }
+
+    // ── NEAR 侧开放候车亭 x=1500（右下，港湾式）─────────────────────────────
+    {
+      const sx    = 1500;
+      const BAY_W = 266;              // 港湾宽（略宽于顶棚）
+      const BAY_D = 9;               // 港湾深度（向公园侧凸出）
+      const bx0   = sx - BAY_W / 2;  // 1367
+      const bx1   = sx + BAY_W / 2;  // 1633
+
+      // 港湾路面（覆盖近端路沿条带与自行车道，延伸机动车道色）
+      g.fillStyle(GRAY_ROAD, 1);
+      g.fillRect(bx0, ny, BAY_W, BAY_D);
+
+      // 港湾入口路沿角
+      g.fillStyle(0xd8d8d8, 1);
+      g.fillRect(bx0 - 3, ny,         3,         BAY_D + 3);
+      g.fillRect(bx1,     ny,         3,         BAY_D + 3);
+      g.fillRect(bx0 - 3, ny + BAY_D, BAY_W + 6, 3);
+
+      // 候车平台铺装（港湾底沿）
+      g.fillStyle(0xb2b2b0, 1);
+      g.fillRect(bx0, ny + BAY_D, BAY_W, 2);
+
+      // 顶棚（顶边贴 NEAR_Y 路沿线）
+      const rX    = sx - ROOF_W / 2;  // 1375
+      const roofT = ny;                // 333 — 贴路沿
+      g.fillStyle(0x686866, 1);
+      g.fillRect(rX, roofT, ROOF_W, ROOF_H);
+      g.lineStyle(1.6, 0x181818, 1);
+      g.strokeRect(rX, roofT, ROOF_W, ROOF_H);
+
+      // 支柱（从顶棚底向下延伸）
+      const pillarT = roofT + ROOF_H;  // 339
+      const pillarB = ny + 44;         // 377
+      g.lineStyle(2.5, 0x282828, 1);
+      g.lineBetween(sx - PIL_X, pillarT, sx - PIL_X, pillarB);
+      g.lineBetween(sx + PIL_X, pillarT, sx + PIL_X, pillarB);
+
+      // 长椅（棚下居中）
+      const benchY = ny + 32;   // 365
+      g.fillStyle(0x565654, 1);
+      g.fillRect(sx - 88, benchY, 176, 4);
+      g.lineStyle(0.8, 0x181818, 0.7);
+      g.strokeRect(sx - 88, benchY, 176, 4);
+      // 椅腿
+      g.lineStyle(1.5, 0x303030, 0.9);
+      g.lineBetween(sx - 76, benchY + 4, sx - 76, benchY + 9);
+      g.lineBetween(sx + 76, benchY + 4, sx + 76, benchY + 9);
+
+      // 独立站牌杆（亭外右侧）
+      const poleX  = bx1 + 5;         // 1638
+      const poleTy = ny - 8;           // 325
+      const poleBy = ny + BAY_D + 2;   // 344
+      g.lineStyle(2.2, 0x2e2e2e, 1);
+      g.lineBetween(poleX, poleBy, poleX, poleTy);
+      drawSign(poleX, poleTy);
+    }
+  }
+
+  // ─── 公园园路：带弧度的步道，连接棋摊广场 / 喷泉 / 上沿步道 ────────────────────
+  // 所有 Y 坐标通过 CHESS_PLAZA / MINI_PARK / PARK_TOP 派生，随区域整体移动不错位。
   _drawParkPaths(g) {
+    const cc    = CHESS_PLAZA;           // { cx:620, cy:443, rx:130, ry:56 }
+    const mp    = MINI_PARK;             // { cx:1150, cy:453, rx:210, ry:78 }
+    const walkY = PARK_TOP + 15;         // 横向步道中线（PARK_TOP+4 ~ +26 内）
+
     const paths = [
-      [[750, 420], [820, 411], [890, 418], [940, 426]],    // A 棋摊广场(接入) → 喷泉广场左缘(椭圆边)
-      [[490, 422], [330, 434], [150, 420], [0, 426]],      // B 棋摊广场左缘 → 画布左边缘
-      [[1360, 430], [1540, 420], [1740, 438], [2000, 430]],// C 喷泉广场右缘 → 画布右边缘
-      [[1500, 350], [1498, 388], [1500, 422]],             // D 上沿步道 ↓ 接入 C
+      // A: 棋摊广场右缘 → 喷泉广场左缘
+      [
+        [cc.cx + cc.rx,        cc.cy     ],
+        [cc.cx + cc.rx + 70,   cc.cy -  9],
+        [mp.cx - mp.rx - 50,   mp.cy -  9],
+        [mp.cx - mp.rx,        mp.cy     ],
+      ],
+      // B: 棋摊广场左缘 → 画布左边缘
+      [
+        [cc.cx - cc.rx,        cc.cy     ],
+        [cc.cx - cc.rx - 160,  cc.cy + 14],
+        [cc.cx - cc.rx - 340,  cc.cy +  2],
+        [0,                     cc.cy +  8],
+      ],
+      // C: 喷泉广场右缘 → 画布右边缘
+      [
+        [mp.cx + mp.rx,        mp.cy     ],
+        [mp.cx + mp.rx + 180,  mp.cy - 10],
+        [mp.cx + mp.rx + 380,  mp.cy +  8],
+        [WORLD_WIDTH,           mp.cy     ],
+      ],
+      // D: 上方横向步道 ↓ 接入公园（x≈1765，NEAR 站台右侧，原 x=1500 位置让给站台）
+      [
+        [1765, walkY                         ],
+        [1762, (walkY + mp.cy) >> 1          ],
+        [1768, mp.cy + 6                     ],
+      ],
     ];
     for (const pts of paths) this._drawCurvedPath(g, pts, 26);
   }
@@ -470,8 +667,7 @@ export class StreetScene extends Phaser.Scene {
 
   // ─── 天空：几朵灰度云（软团 + 浅灰描边） ──────────────────────────────────
   _drawClouds(g) {
-    const clouds = [[180, 38, 1.0], [560, 26, 0.8], [1000, 46, 1.15], [1500, 30, 0.9], [1840, 40, 1.0]];
-    for (const [cx, cy, s] of clouds) {
+    for (const [cx, cy, s] of CLOUD_POSITIONS) {
       g.fillStyle(0xffffff, 0.92);
       g.fillEllipse(cx,         cy,        70 * s, 26 * s);
       g.fillEllipse(cx - 28 * s, cy + 6 * s, 44 * s, 20 * s);
@@ -530,8 +726,8 @@ export class StreetScene extends Phaser.Scene {
     // 中心单虚线（车道分隔）
     const midY = Math.round((FAR_Y + NEAR_Y) / 2);
     g.lineStyle(2, 0xffffff, 0.6);
-    for (let x = 0; x < WORLD_WIDTH; x += 56) {
-      g.lineBetween(x, midY, x + 28, midY);
+    for (let x = 0; x < WORLD_WIDTH; x += ROAD_STRIPE_SPACING) {
+      g.lineBetween(x, midY, x + ROAD_STRIPE_LENGTH, midY);
     }
 
     // 斑马线（保留）
@@ -540,9 +736,9 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  /** 斑马线左起 X（只保留一组，NPC 横穿时对齐其中间） */
+  /** 斑马线中心 X（横向条纹，NPC 横穿时对齐此 X） */
   static crosswalkStarts() {
-    return [220];
+    return [350];
   }
 
   // ─── 路面纹理：仅少量低调沥青补丁矩形（不画椭圆，避免与井盖混淆） ──────────
@@ -558,20 +754,21 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
+  // 横向斑马线：cx 为中心 X，5 条白色水平矩形均匀分布于马路纵深，
+  // 近端条纹略高（1px 递增）模拟 2.5D 透视感。
   _drawCrosswalk(g, cx) {
-    const roadTop = FAR_Y  + 10;
-    const roadBot = NEAR_Y - 10;
-    g.fillStyle(0xffffff, 0.55);
-    for (let i = 0; i < 8; i++) {
-      const fx = cx + i * (8  + 12); // 远端：条宽8，间隔12
-      const nx = cx + i * (13 + 16); // 近端：条宽13，间隔16
-      g.beginPath();
-      g.moveTo(fx,      roadTop);
-      g.lineTo(fx + 8,  roadTop);
-      g.lineTo(nx + 13, roadBot);
-      g.lineTo(nx,      roadBot);
-      g.closePath();
-      g.fillPath();
+    const roadTop  = FAR_Y  + 5;   // 273
+    const roadBot  = NEAR_Y - 5;   // 328
+    const usable   = roadBot - roadTop;   // 55px
+    const count    = 5;
+    const step     = Math.floor(usable / (count * 2 - 1));   // 6px（条+间隔均等）
+    const cw       = 240;                 // 横向总宽度（约公交车身宽）
+    const x0       = Math.round(cx - cw / 2);
+    g.fillStyle(0xffffff, 0.68);
+    for (let i = 0; i < count; i++) {
+      const y  = roadTop + i * step * 2;
+      const sh = step - 1 + i;             // 远端 5px → 近端 9px，透视渐高
+      g.fillRect(x0, y, cw, sh);
     }
   }
 
@@ -585,17 +782,15 @@ export class StreetScene extends Phaser.Scene {
 
   // ─── 行道树：建筑前人行道一排（小）+ 公园广场后排（中） ────────────────────
   _drawTrees(g) {
-    // 建筑前人行道（y≈244，贴近路沿），与街灯交错
-    const walkXs = [172, 327, 482, 792, 947, 1102, 1257, 1412, 1567, 1722, 1877];
-    for (const tx of walkXs) {
-      const ty = 256 + Math.sin(tx * 0.05) * 2;
+    // 建筑前人行道（贴近路沿），与街灯交错
+    for (const tx of SIDEWALK_TREE_XS) {
+      const ty = SIDEWALK_TREE_Y + Math.sin(tx * 0.05) * 2;
       const r  = 8 + Math.sin(tx * 0.071) * 1.5;
       this._drawBlobTree(g, tx, ty, r, 0.7, 0x808080, 0.9);
     }
-    // 公园广场后排（y≈350，承上启下，远离喷泉/活动区中心）
-    const parkXs = [120, 300, 470, 980, 1160, 1640, 1820, 1960];
-    for (const tx of parkXs) {
-      const ty = 350;
+    // 公园广场后排（承上启下，远离喷泉/活动区中心）
+    for (const tx of PARK_TREE_XS) {
+      const ty = PARK_TREE_Y;
       const r  = 12 + Math.sin(tx * 0.053) * 3;
       this._drawBlobTree(g, tx, ty, r, 1.1, 0x4a4a4a, 0.92);
     }
@@ -693,13 +888,13 @@ export class StreetScene extends Phaser.Scene {
     // ── 出口注册表 ──────────────────────────────────────────────────────────
     const exitRegistry = new ExitRegistry();
     // 左右场景边缘（覆盖全部 Y 带）
-    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -30,              y: null, yZone: null, facing: -1 });
-    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 30, y: null, yZone: null, facing:  1 });
+    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null, yZone: null, facing: -1 });
+    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 200, y: null, yZone: null, facing:  1 });
     // 建筑入口（仅前人行道区域，Y 固定在建筑立面，NPC 走入后消失）
-    exitRegistry.register({ id: 'building_a', type: 'building', x: 200,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
-    exitRegistry.register({ id: 'building_b', type: 'building', x: 600,  y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
-    exitRegistry.register({ id: 'building_c', type: 'building', x: 1100, y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
-    exitRegistry.register({ id: 'building_d', type: 'building', x: 1700, y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_a', type: 'building', x: BUILDING_EXIT_XS[0], y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_b', type: 'building', x: BUILDING_EXIT_XS[1], y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_c', type: 'building', x: BUILDING_EXIT_XS[2], y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+    exitRegistry.register({ id: 'building_d', type: 'building', x: BUILDING_EXIT_XS[3], y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
     // TODO: 加静止车辆时在停车位处注册 type:'vehicle' 出口
     bm.exitRegistry = exitRegistry;
 
@@ -707,6 +902,72 @@ export class StreetScene extends Phaser.Scene {
     spawnChess(em, sr, bm);
     spawnDogWalker(em, sr, bm);
     spawnAthletes(em, sr, bm);
-    spawnVehicles(em, sr);
+    this.trafficManager = initVehicleSystem(em, sr);
+
+    // ── SpawnManager：NPC 离场后按区域密度自动补充 ──────────────────────────
+    // 公园漫游带：PARK_TOP+16..PARK_BOTTOM-8（与 Pedestrians.js 的 ROAM_Y0/Y1 一致）
+    const ROAM_Y0 = PARK_TOP + 16;
+    const ROAM_Y1 = PARK_BOTTOM - 8;
+
+    const spawnZones = [
+      {
+        id:        'sidewalk',
+        target:    3,                                  // 维持 3 名建筑前人行道行人
+        yRange:    [BUILDING_BASE_Y, FAR_Y],           // [210, 268]
+        xRange:    [50, WORLD_WIDTH - 50],
+        exitTypes: ['building'],          // edge 出口距离过远（~77s），会超时；仅用建筑入口
+        npcTypes:  ['pedestrian', 'businessman'],
+      },
+      {
+        id:        'park',
+        target:    10,                                 // 维持公园漫游者总数（含固定 NPC）
+        yRange:    [ROAM_Y0, ROAM_Y1],                 // [349, 492]
+        xRange:    [50, WORLD_WIDTH - 50],
+        exitTypes: ['edge'],                           // 公园只从边缘进
+        npcTypes:  ['pedestrian', 'tourist'],
+      },
+    ];
+
+    const spawnFn = _makeSpawnFn(bm, em, sr, ROAM_Y0, ROAM_Y1);
+    this.spawnManager = new SpawnManager({
+      spawnFn,
+      exitRegistry,
+      bm,
+      zones: spawnZones,
+    });
   }
+}
+
+// ─── SpawnManager 入场工厂 ─────────────────────────────────────────────────────
+// 根据 zone.id 决定 NPC 参数（公园漫游 vs 人行道横走），复用 spawnOnePedestrian。
+function _makeSpawnFn(bm, em, sr, roamY0, roamY1) {
+  return (entry, zone) => {
+    const npcType = zone.npcTypes[Math.floor(Math.random() * zone.npcTypes.length)];
+    const posY    = entry.y ?? (zone.yRange[0] + zone.yRange[1]) / 2;
+
+    const opts = {
+      minX: zone.xRange[0],
+      maxX: zone.xRange[1],
+      minY: zone.yRange[0],
+      maxY: zone.yRange[1],
+    };
+
+    if (zone.id === 'park') {
+      // 公园：可自由漫游的二维区域
+      opts.roamZone = {
+        x0: zone.xRange[0], x1: zone.xRange[1],
+        y0: roamY0,         y1: roamY1,
+      };
+      opts.minY = roamY0;
+      opts.maxY = roamY1;
+    } else {
+      // 人行道：建筑前窄带，缩小比例（远景感）
+      opts.scaleMul = 0.65;
+    }
+
+    // 入场 NPC 给予 65s 的负计时器，确保路由结束前（最长 60s）不触发离场
+    const npc = spawnOnePedestrian(npcType, em, sr, bm, { x: entry.x, y: posY }, opts);
+    npc._ageTimer = -65;
+    return npc;
+  };
 }

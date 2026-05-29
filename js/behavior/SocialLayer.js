@@ -138,7 +138,7 @@ class TalkActivity extends Activity {
     npc.animDone   = false;
     npc.frameIndex = 0;
     npc.frameTimer = 0;
-    npc.overlay    = null;
+    npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
   }
 
   _faceEachOther() {
@@ -251,8 +251,8 @@ class TalkActivity extends Activity {
       if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, cfg.bDelta, t);
 
       if (this._subTimer >= cfg.release) {
-        this.a.overlayPose = null;
-        if (!this._pushBReleased) this.b.overlayPose = null;
+        this.a.modifiers = this.a.modifiers.filter(m => m.id !== '_talk_sub_event');
+        if (!this._pushBReleased) this.b.modifiers = this.b.modifiers.filter(m => m.id !== '_talk_sub_event');
         return false;  // 子事件完成，触发 destroy
       }
     }
@@ -271,23 +271,28 @@ class TalkActivity extends Activity {
     return base;
   }
 
-  // 将 basePose + deltaPose*t 写入 npc.overlayPose
+  // 将 basePose + deltaPose*t 写入 _talk_sub_event modifier
   _applyLerpPose(npc, basePose, deltaPose, t) {
     if (!deltaPose) return;
-    const pose = {};
+    const joints = {};
     for (const [j, delta] of Object.entries(deltaPose)) {
       const base = basePose[j] || [0, 0];
-      pose[j] = [base[0] + delta[0] * t, base[1] + delta[1] * t];
+      joints[j] = [base[0] + delta[0] * t, base[1] + delta[1] * t];
     }
-    npc.overlayPose = pose;
+    let mod = npc.modifiers.find(m => m.id === '_talk_sub_event');
+    if (!mod) {
+      npc.modifiers.push({ id: '_talk_sub_event', kind: 'held', priority: 20, joints, timer: -1 });
+    } else {
+      mod.joints = joints;
+    }
   }
 
   interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
-    // 清理骨骼覆盖（push 时 B 已被释放，B 的 overlayPose 从未被设置过，跳过）
-    if (this.a.alive) this.a.overlayPose = null;
-    if (!this._pushBReleased && this.b.alive) this.b.overlayPose = null;
+    // 清理子事件 modifier（push 时 B 已被释放，B 无此 modifier，filter 无害）
+    if (this.a.alive) this.a.modifiers = this.a.modifiers.filter(m => m.id !== '_talk_sub_event');
+    if (!this._pushBReleased && this.b.alive) this.b.modifiers = this.b.modifiers.filter(m => m.id !== '_talk_sub_event');
 
     for (const { npc } of this.participants) {
       npc.bond = null;
@@ -342,50 +347,25 @@ class ChessActivity extends Activity {
     npc.playOnce   = true;
   }
 
-  // 旁观者：播放 chess_onlookers 倾身动画后定格，定时小幅走动再回来
+  // 旁观者：播放 chess_onlookers 倾身动画后定格（移动逻辑后续扩展）
   _setupOnlooker(npc) {
-    npc.state       = null;
-    npc.animation   = 'chess_onlookers';
-    npc.speed       = 0;
-    npc.vy          = 0;
-    npc.playOnce    = true;
-    npc.animDone    = false;
-    npc.frameIndex  = 0;
-    npc.frameTimer  = 0;
-    npc._watchPhase = 'watch';
-    npc._watchTimer = 0;
-    npc._watchDur   = rand(6, 14);
-    npc._homeX      = npc.x;
+    npc.state      = null;
+    npc.animation  = 'chess_onlookers';
+    npc.speed      = 0;
+    npc.vy         = 0;
+    npc.playOnce   = true;
+    npc.animDone   = false;
+    npc.frameIndex = 0;
+    npc.frameTimer = 0;
   }
 
-  // 旁观者 watch/stroll 循环
+  // 旁观者保持倾身观棋姿势，暂不移动
   _tickOnlooker(npc, dt) {
-    npc._watchTimer += dt;
-    if (npc._watchPhase === 'watch') {
-      if (npc._watchTimer >= npc._watchDur) {
-        npc._watchPhase    = 'stroll';
-        npc._watchTimer    = 0;
-        npc._watchDur      = rand(2, 4);
-        const side         = Math.random() < 0.5 ? 1 : -1;
-        const dist         = 25 + Math.random() * 35;
-        npc._strollTargetX = npc._homeX + side * dist;
-        npc.animation      = 'walk';
-        npc.playOnce       = false;
-        npc.speed          = npc.walkSpeed || 26;
-        npc.direction      = npc._strollTargetX > npc.x ? 1 : -1;
-      }
-    } else {
-      npc.direction = npc._strollTargetX > npc.x ? 1 : -1;
-      if (Math.abs(npc._strollTargetX - npc.x) < 6 || npc._watchTimer >= npc._watchDur) {
-        npc._watchPhase = 'watch';
-        npc._watchTimer = 0;
-        npc._watchDur   = rand(6, 14);
-        npc.animation   = 'chess_onlookers';
-        npc.playOnce    = true;
-        npc.animDone    = false;
-        npc.frameIndex  = 0;
-        npc.speed       = 0;
-      }
+    // 动画播完后冻结首帧
+    if (npc.animDone) {
+      npc.animDone   = false;
+      npc.playOnce   = true;
+      npc.frameIndex = 0;
     }
   }
 
@@ -441,7 +421,8 @@ class DogWalkActivity extends Activity {
   }
 
   update(dt) {
-    if (!this.owner.alive) return false;
+    // owner 或 dog 任一消失则结束活动（super.destroy 会释放双方 _activity，避免悬挂）
+    if (!this.owner.alive || !this.dog.alive) return false;
     return true;
   }
 
@@ -488,6 +469,10 @@ export class SocialLayer {
       if (!npc.alive || npc._activity || !npc._slotWaitProp) continue;
       npc._slotWaitTimer = (npc._slotWaitTimer || 0) + dt;
       if (npc._slotWaitTimer > 20) {
+        // 清理本 NPC 占用的槽位 ready 标记，防止下次到访时 allReady 误判
+        for (const s of npc._slotWaitProp._slots) {
+          if (s.npc === npc) { s.ready = false; s.npc = null; }
+        }
         this.envQuery.releaseSlotReservation(npc);
         npc._slotWaitProp = null;
         setState(npc, 'walk', 'slot_wait_timeout');

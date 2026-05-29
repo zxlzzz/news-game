@@ -3,7 +3,7 @@
  *
  * 组合各行为层，对所有被托管的 NPC 每帧驱动：
  *   - SocialLayer：tick 所有 Activity（对话/下棋/遛狗）+ 周期性配对新对话
- *   - 自由 NPC（未被 Activity 锁定）：BaseStateMachine + OverlayLayer
+ *   - 自由 NPC（未被 Activity 锁定）：BaseStateMachine + ModifierLayer
  *   - CameraReactionLayer：镜头反应（本次留空）
  *
  * 行为差异由 NpcProfile 数据驱动；NPC 通过 register(npc, profileName) 纳入框架。
@@ -16,7 +16,7 @@
 import { getProfile }          from './behavior/NpcProfile.js';
 import { EnvironmentQuery }     from './behavior/EnvironmentQuery.js';
 import { tickBaseState, setState, registerTransition, triggerDeparture } from './behavior/BaseStateMachine.js';
-import { tickOverlay }          from './behavior/OverlayLayer.js';
+import { tickModifiers }        from './behavior/ModifierLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
 import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
 import { refreshDebugFlag }     from './behavior/DebugLog.js';
@@ -75,6 +75,12 @@ export class BehaviorManager {
     this.socialLayer.update(this.npcs, dt);
 
     // 2) 自由 NPC（未被 Activity 锁定）走基础状态机 + 叠加动作
+    // 计算全局 held 比例，传入 ModifierLayer 做频率上限
+    const heldCount = this.npcs.filter(n =>
+      n.alive && n.modifiers?.some(m => m.kind === 'held' && !m.id.startsWith('_'))
+    ).length;
+    const globalHeldFrac = this.npcs.length > 0 ? heldCount / this.npcs.length : 0;
+
     for (const npc of this.npcs) {
       if (!npc.alive || npc._activity) continue;
 
@@ -87,8 +93,8 @@ export class BehaviorManager {
       }
 
       tickBaseState(npc, npc._profile, this.envQuery, dt);
-      // 离场中的 NPC 跳过 overlay 随机触发
-      if (!npc._departing) tickOverlay(npc, npc._profile, dt);
+      // 离场中的 NPC 跳过 modifier 随机触发
+      if (!npc._departing) tickModifiers(npc, npc._profile, dt, globalHeldFrac);
     }
 
     // 3) NPC 间分离：行走中的两人靠太近时互相推开，避免重叠穿模
@@ -96,6 +102,13 @@ export class BehaviorManager {
 
     // 4) 镜头反应层（依赖社会稳定度系统，本次留空）
     // this.cameraLayer.update(this.npcs, viewfinder, stability, dt);
+
+    // 5) 定期清理死亡 NPC，防止数组无限增长（每 10s 一次）
+    this._pruneTimer = (this._pruneTimer ?? 0) - dt;
+    if (this._pruneTimer <= 0) {
+      this.npcs = this.npcs.filter(n => n.alive);
+      this._pruneTimer = 10;
+    }
   }
 
   // 简单分离力：仅作用于移动中的自由 NPC（O(n²)，场景 NPC < 30 足够）

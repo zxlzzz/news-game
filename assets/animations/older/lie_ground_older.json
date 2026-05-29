@@ -1,0 +1,55 @@
+{
+  "name": "lie_ground_older",
+  "skeleton": "human",
+  "globalBend": {
+    "body__neck": -5.0391532931974305
+  },
+  "frames": [
+    {
+      "body": [
+        30,
+        58
+      ],
+      "neck": [
+        71,
+        60
+      ],
+      "head": [
+        97,
+        60
+      ],
+      "l_elbow": [
+        44,
+        67
+      ],
+      "r_elbow": [
+        44,
+        58
+      ],
+      "l_hand": [
+        20,
+        78
+      ],
+      "r_hand": [
+        18,
+        66
+      ],
+      "l_knee": [
+        -1,
+        73
+      ],
+      "r_knee": [
+        -3,
+        68
+      ],
+      "l_foot": [
+        -31,
+        79
+      ],
+      "r_foot": [
+        -34,
+        70
+      ]
+    }
+  ]
+}

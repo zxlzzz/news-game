@@ -29,6 +29,10 @@
 
 import { dlog }        from './DebugLog.js';
 import { LOITER_POSES } from './PoseRegistry.js';
+import {
+  tickWalkMode, pickModeTarget, onPathArrival,
+  setWalkMode, popWalkMode, isRoadZone, modeWander,
+} from './WalkMode.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -65,10 +69,16 @@ export function setState(npc, state, trigger = '?') {
     npc._bench = null;
   }
 
-  // 离开 loiter 时清理微行为遗留（朝向 + overlayPose）
+  // 离开 loiter 时清理微行为遗留（朝向 + _loiter_micro modifier）
   if (prev === 'loiter' && state !== 'loiter') {
-    npc.overlayPose = null;
+    npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
     if (npc._loiterDir !== undefined) { npc.direction = npc._loiterDir; npc._loiterDir = undefined; }
+  }
+
+  // walk/run 恢复：从压栈中弹出被高优先级行为打断前的 walk mode
+  if ((state === 'walk' || state === 'run') && npc._walkModeStack?.length > 0) {
+    npc._walkMode  = npc._walkModeStack.pop();
+    npc.roamTarget = null;
   }
 
   npc.state      = state;
@@ -145,16 +155,25 @@ function _resolveTimeout(npc, envQuery, profile) {
     return 'sit_bench';
   }
   // lie_bench anchorMode='back'（无竖向偏移），sit_bench anchorMode='hip'（body 关节落 npc.y）。
-  // 坐→躺转换时需重对齐：令 lie_bench body 关节落在椅面（bench.y - seatH）。
+  // 坐→躺转换时重对齐：令 lie_bench body 关节落在椅面（bench.y - seatH），
+  // 并横向修正使 body 关节 X 与椅面中心对齐（躺姿整体偏左，需向右偏移）。
   if (next === 'lie_bench' && npc._bench) {
-    let bodyY = 79; // lie_bench body.y 默认值
+    let bodyX = -46, bodyY = 79; // lie_bench body 关节默认值
     if (npc.renderer) {
       const anim = npc.renderer.getAnimation('lie_bench');
-      if (anim && anim.frames[0]) bodyY = anim.frames[0].body[1];
+      if (anim && anim.frames[0]) {
+        bodyX = anim.frames[0].body[0];
+        bodyY = anim.frames[0].body[1];
+      }
     }
+    const sc = npc.scale || 0.45;
     const seatY = npc._bench.y - (npc._bench.seatH ?? 12);
-    npc.y = Math.max(npc.minY, Math.min(npc.maxY,
-      seatY - Math.round(bodyY * (npc.scale || 0.45))
+    npc.y = Math.max(npc.minY, Math.min(npc.maxY, seatY - Math.round(bodyY * sc)));
+    // X 修正：body 关节应落在椅面中心 X，而非偏移
+    const canonDir = npc.renderer?.getAnimation('lie_bench')?.canonicalDirection || 1;
+    const dir = npc.direction * canonDir;
+    npc.x = Math.max(npc.minX, Math.min(npc.maxX,
+      npc._bench.x - Math.round(bodyX * sc * dir)
     ));
   }
   return next;
@@ -220,29 +239,32 @@ function _evaluateTransitions(npc, profile, envQuery) {
 
 // ─── 当前状态的 per-frame 行为（纯行为，不含转换判断）────────────────────────
 function _tickState(npc, envQuery, profile, dt) {
-  // walk/run：逐帧转向漫游目标点（含避障）；routing：直奔槽位
-  if (npc.state === 'routing' || (npc.roam && (npc.state === 'walk' || npc.state === 'run'))) {
-    steerRoam(npc, envQuery, profile, dt);
-  }
+  const isWalking = npc.state === 'walk' || npc.state === 'run';
+
+  // walk/run：先推进 walk mode 内部计时（暂停/超时），再做转向移动
+  if (isWalking) tickWalkMode(npc, dt);
+
+  // 需要转向的条件：routing 状态，或 walk/run 且有 roam 区域 / direct / path_follow 模式
+  const needsSteer = npc.state === 'routing' ||
+    (isWalking && (npc.roam ||
+      npc._walkMode?.kind === 'direct' ||
+      npc._walkMode?.kind === 'path_follow'));
+  if (needsSteer) steerRoam(npc, envQuery, profile, dt);
+
   // loiter：驱动内部微行为循环
-  if (npc.state === 'loiter') {
-    _tickLoiter(npc, profile, dt);
-  }
+  if (npc.state === 'loiter') _tickLoiter(npc, profile, dt);
 }
 
 // ─── Loiter 微行为循环 ────────────────────────────────────────────────────────
 // pose 数据来自 PoseRegistry.js（单一来源，anim-preview 工具可实时编辑）
 const POSE_PHONE = LOITER_POSES.phone;
-const POSE_BAG_A = LOITER_POSES.bag_a;
-const POSE_BAG_B = LOITER_POSES.bag_b;
 
 function _getMicroActionDur(npc) {
   const ov = npc._loiterOverlay;
-  if (ov === 'phone_call')                  return rand(3, 6);
-  if (ov === 'phone_look')                  return rand(5, 10);
-  if (npc._traits && npc._traits.smoker)    return rand(4, 6);
-  if (npc.persistentOverlay === 'hold_bag') return rand(2, 3);
-  if (npc._traits && npc._traits.walk_dog)  return rand(3, 5);  // TODO: 狗停下嗅地
+  if (ov === 'phone_call')                            return rand(3, 6);
+  if (ov === 'phone_look')                            return rand(5, 10);
+  if (npc.traits && npc.traits.includes('smoker'))    return rand(4, 6);
+  if (npc.traits && npc.traits.includes('walk_dog'))  return rand(3, 5);
   return rand(5, 8);
 }
 
@@ -252,21 +274,20 @@ function _updateLoiterExtraTags(npc) {
   const ov = npc._loiterOverlay;
   if      (ov === 'phone_call')                 npc._extraTags = [...base, 'phone_call', 'communicating'];
   else if (ov === 'phone_look')                 npc._extraTags = [...base, 'phone_use', 'distracted'];
-  else if (npc._traits && npc._traits.smoker)   npc._extraTags = [...base, 'smoking'];
-  else if (npc._traits && npc._traits.walk_dog) npc._extraTags = [...base, 'dog_owner', 'watching'];
+  else if (npc.traits && npc.traits.includes('smoker'))    npc._extraTags = [...base, 'smoking'];
+  else if (npc.traits && npc.traits.includes('walk_dog'))  npc._extraTags = [...base, 'dog_owner', 'watching'];
   else                                          npc._extraTags = [...base, 'phone_use', 'distracted'];
 }
 
 function _applyLoiterVisuals(npc) {
-  if (npc._microPhase !== 1) { npc.overlayPose = null; return; }
-  const ov = npc._loiterOverlay;
-  if (ov === 'phone_call' || (npc._traits && npc._traits.smoker)) {
-    npc.overlayPose = null;       // 各自 overlay 负责视觉（TODO）
-  } else if (npc.persistentOverlay === 'hold_bag') {
-    npc.overlayPose = (Math.floor(npc._loiterElapsed * 2) % 2 === 0) ? POSE_BAG_A : POSE_BAG_B;
-  } else {
-    npc.overlayPose = POSE_PHONE; // phone_look / walk_dog / 默认：低头看手机
-  }
+  npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
+  if (npc._microPhase !== 1) return;
+  const hasActiveHeld = npc.modifiers.some(m => m.kind === 'held' && !m.id.startsWith('_'));
+  if (hasActiveHeld) return;           // held mod 自身已提供视觉，不额外叠加
+  if (npc.traits.includes('walk_dog')) return; // walk_dog trait mod 已锁定左手，不叠加
+  // 统一用右手看手机（POSE_PHONE = r_elbow + r_hand）。
+  // hold_bag trait mod (priority 5) 已锁定左手，右手叠 POSE_PHONE 互不干扰。
+  npc.modifiers.push({ id: '_loiter_micro', kind: 'held', priority: 15, joints: { ...POSE_PHONE }, timer: -1 });
 }
 
 function _advanceMicroPhase(npc) {
@@ -280,12 +301,14 @@ function _advanceMicroPhase(npc) {
   npc._microPhaseName = ['look_around', 'micro_action', 'look_around', 'check_around'][next];
   switch (next) {
     case 0: npc._microTimer = rand(3, 6);                break;
-    case 1: npc._microTimer = _getMicroActionDur(npc);   break;
+    case 1:
+      // 每次进入 micro_action 重新读取当前 held mod，避免使用过期快照
+      npc._loiterOverlay = npc.modifiers.find(m => m.kind === 'held' && !m.id.startsWith('_'))?.id ?? null;
+      npc._microTimer = _getMicroActionDur(npc);
+      break;
     case 2: npc._microTimer = rand(2, 4);                break;
     case 3:
-      npc._microTimer = rand(1, 2);
-      npc._loiterDir  = npc.direction;
-      npc.direction   = -npc.direction;   // 短暂转身看另一个方向
+      npc._microTimer = rand(1, 2);       // 短暂停顿（不翻转方向，避免叠加修饰器视觉跳变）
       break;
   }
   _updateLoiterExtraTags(npc);
@@ -297,7 +320,7 @@ function _tickLoiter(npc, profile, dt) {
     const range         = profile.loiterDurationRange || [15, 45];
     npc._loiterDur      = rand(range[0], range[1]);
     npc._loiterElapsed  = 0;
-    npc._loiterOverlay  = npc.overlay;   // 快照进入时的 overlay，供 micro_action 分派
+    npc._loiterOverlay  = npc.modifiers.find(m => m.kind === 'held' && !m.id.startsWith('_'))?.id ?? null;
     npc._microPhase     = 0;
     npc._microPhaseName = 'look_around';
     npc._microTimer     = rand(3, 6);
@@ -352,14 +375,36 @@ function steerRoam(npc, envQuery, profile, dt) {
     return;
   }
 
-  if (!npc.roamTarget) pickRoamTarget(npc, envQuery);
+  // path_follow 暂停：NPC 驻足等待，不推进位移
+  if (npc._walkMode?.kind === 'path_follow' && npc._walkMode.pausing) {
+    npc.speed = 0; npc.vy = 0;
+    return;
+  }
+
+  if (!npc.roamTarget) pickModeTarget(npc, envQuery);
+  if (!npc.roamTarget) return;   // 无目标（无 roam 且无 walk mode）
+
   const t = npc.roamTarget;
   const dx = t.x - npc.x, dy = t.y - npc.y;
   const dist = Math.hypot(dx, dy);
   if (dist < 6) {
-    const lc = profile && profile.loiterChance;
-    if (lc && Math.random() < lc) { setState(npc, 'loiter', 'loiter-chance'); return; }
-    pickRoamTarget(npc, envQuery);
+    const mode = npc._walkMode;
+    if (mode?.kind === 'path_follow') {
+      onPathArrival(mode, npc);
+    } else if (mode?.kind === 'direct') {
+      // direct 到达：触发回调，切回 wander（或回调自行设置下一模式）
+      const cb = mode.onArrive;
+      setWalkMode(npc, modeWander());
+      if (cb) cb(npc);
+    } else {
+      // wander：可能触发 loiter（马路区禁止驻留）
+      const lc = profile?.loiterChance;
+      if (lc && Math.random() < lc && !isRoadZone(npc.y)) {
+        setState(npc, 'loiter', 'loiter-chance');
+      } else {
+        pickModeTarget(npc, envQuery);
+      }
+    }
     return;
   }
 
@@ -409,17 +454,6 @@ function avoidObstacles(npc, vx, vy, envQuery) {
   return { x: ax, y: ay };
 }
 
-function pickRoamTarget(npc, envQuery) {
-  const r = npc.roam;
-  let pt = null;
-  for (let i = 0; i < 5; i++) {
-    const c = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
-    if (!envQuery.pointBlocked(c.x, c.y)) { pt = c; break; }
-    pt = c;
-  }
-  npc.roamTarget = pt;
-}
-
 // ─── 离场系统 ─────────────────────────────────────────────────────────────────
 /**
  * 将 NPC 路由到出口；离场全程不可打断（abandonAfter=999），到达后 alive=false。
@@ -430,8 +464,8 @@ function _routeToExit(npc, exit) {
   const ty = exit.y ?? npc.y;    // edge 出口跟随当前 Y，building 出口用固定 Y
   if (exit.facing !== 0) npc.direction = exit.facing;
   npc.roam = null;               // 关闭随机漫游
-  // 清除随机 overlay；持久特征 hold_bag 保留
-  if (npc.overlay && npc.overlay !== npc.persistentOverlay) npc.overlay = null;
+  // 清除用户可见的 held modifier（trait 保留；tickModifiers 在 routing 状态下也会清 held）
+  npc.modifiers = npc.modifiers.filter(m => m.kind !== 'held');
   setState(npc, 'routing', 'departure');
   npc._routeTarget = {
     x: tx, y: ty,
@@ -448,7 +482,8 @@ function _routeToExit(npc, exit) {
  */
 export function triggerDeparture(npc, exitRegistry) {
   if (!exitRegistry) return;
-  const exit = exitRegistry.findExit(npc);
+  if (npc._departing) return;   // 防止重复触发
+  const exit = exitRegistry.findExit(npc, npc._profile?.departure?.preferExitType ?? null);
   if (!exit) { npc._lifespan += 30; return; }  // 无出口：延长寿命
 
   npc._departing = true;

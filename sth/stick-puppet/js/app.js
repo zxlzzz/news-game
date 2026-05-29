@@ -24,6 +24,9 @@ let dragStarted = false;
 let playing = false;
 let playTimer = null;
 let boneLocked = true;
+let gestureMode = false;
+let activeJoints = new Set();
+let frameDurs = [0.3];
 
 const history = new History();
 
@@ -41,6 +44,7 @@ function switchSkeleton(name) {
   history.save(frames, currentFrame);
   setSkeleton(name);
   frames = [defaultPose()];
+  frameDurs = [0.3];
   currentFrame = 0;
   document.getElementById('coordsPanel').dataset.built = '';
   document.getElementById('boneLengthPanel').dataset.built = '';
@@ -356,19 +360,29 @@ function updateTimeline() {
     for (let i = 0; i < frames.length; i++) {
       const div = document.createElement('div');
       div.className = 'frame-thumb';
-      div.onclick = () => { if (!playing) { currentFrame = i; render(); } };
+      div.onclick = (e) => { if (!playing && e.target.tagName !== 'INPUT') { currentFrame = i; render(); } };
       const c = document.createElement('canvas'); c.width = 104; c.height = 112;
       div.appendChild(c);
       const num = document.createElement('span'); num.className = 'frame-num'; num.textContent = i+1;
       div.appendChild(num);
+      const dur = document.createElement('input');
+      dur.type = 'number'; dur.className = 'frame-dur'; dur.step = '0.05'; dur.min = '0.05';
+      dur.addEventListener('change', (e) => {
+        const v = parseFloat(e.target.value);
+        if (!isNaN(v) && v > 0) frameDurs[i] = v;
+      });
+      div.appendChild(dur);
       strip.appendChild(div);
     }
   }
   for (let i = 0; i < frames.length; i++) {
     const div = strip.children[i];
-    div.className = 'frame-thumb' + (i === currentFrame ? ' active' : '');
+    div.className = 'frame-thumb' + (i === currentFrame ? ' active' : '') + (gestureMode ? ' gesture' : '');
     div.querySelector('.frame-num').textContent = i+1;
     renderThumb(frames[i], div.querySelector('canvas'));
+    const dur = div.querySelector('.frame-dur');
+    dur.style.display = gestureMode ? '' : 'none';
+    if (gestureMode) dur.value = frameDurs[i] ?? 0.3;
   }
 }
 
@@ -519,11 +533,45 @@ function toggleBoneLock() {
 }
 
 // ============================================
+// 姿势片段模式
+// ============================================
+function toggleGestureMode() {
+  gestureMode = !gestureMode;
+  document.getElementById('gestureModeBtn').classList.toggle('active-toggle', gestureMode);
+  const panel = document.getElementById('jointSelectPanel');
+  panel.style.display = gestureMode ? '' : 'none';
+  if (gestureMode) _buildJointCheckboxes();
+  document.getElementById('framesStrip').innerHTML = '';
+  render();
+}
+
+function _buildJointCheckboxes() {
+  const sk = getSkeleton();
+  const container = document.getElementById('jointCheckboxes');
+  container.innerHTML = '';
+  for (const name of getJointNames()) {
+    const label = document.createElement('label');
+    label.className = 'check-row';
+    const chk = document.createElement('input');
+    chk.type = 'checkbox';
+    chk.checked = activeJoints.has(name);
+    chk.addEventListener('change', () => {
+      if (chk.checked) activeJoints.add(name);
+      else activeJoints.delete(name);
+    });
+    label.appendChild(chk);
+    label.appendChild(document.createTextNode(' ' + sk.labels[name]));
+    container.appendChild(label);
+  }
+}
+
+// ============================================
 // 帧管理
 // ============================================
 function addFrame() {
   history.save(frames, currentFrame);
   frames.push(defaultPose());
+  frameDurs.push(0.3);
   currentFrame = frames.length - 1;
   render();
 }
@@ -531,6 +579,7 @@ function addFrame() {
 function dupFrame() {
   history.save(frames, currentFrame);
   frames.splice(currentFrame+1, 0, clonePose(frames[currentFrame]));
+  frameDurs.splice(currentFrame+1, 0, frameDurs[currentFrame] ?? 0.3);
   currentFrame++;
   render();
 }
@@ -539,6 +588,7 @@ function delFrame() {
   if (frames.length <= 1) return;
   history.save(frames, currentFrame);
   frames.splice(currentFrame, 1);
+  frameDurs.splice(currentFrame, 1);
   if (currentFrame >= frames.length) currentFrame = frames.length - 1;
   render();
 }
@@ -553,6 +603,7 @@ function moveFrameLeft() {
   if (currentFrame <= 0) return;
   history.save(frames, currentFrame);
   [frames[currentFrame-1], frames[currentFrame]] = [frames[currentFrame], frames[currentFrame-1]];
+  [frameDurs[currentFrame-1], frameDurs[currentFrame]] = [frameDurs[currentFrame], frameDurs[currentFrame-1]];
   currentFrame--;
   render();
 }
@@ -561,6 +612,7 @@ function moveFrameRight() {
   if (currentFrame >= frames.length-1) return;
   history.save(frames, currentFrame);
   [frames[currentFrame], frames[currentFrame+1]] = [frames[currentFrame+1], frames[currentFrame]];
+  [frameDurs[currentFrame], frameDurs[currentFrame+1]] = [frameDurs[currentFrame+1], frameDurs[currentFrame]];
   currentFrame++;
   render();
 }
@@ -728,6 +780,34 @@ function loadJSON() {
   const ta = document.getElementById('jsonInput');
   try {
     const data = JSON.parse(ta.value);
+
+    if (data.type === 'gesture') {
+      gestureMode = true;
+      activeJoints = new Set(Array.isArray(data.activeJoints) ? data.activeJoints : []);
+      document.getElementById('gestureModeBtn').classList.add('active-toggle');
+      document.getElementById('jointSelectPanel').style.display = '';
+      _buildJointCheckboxes();
+      history.save(frames, currentFrame);
+      frames = []; frameDurs = [];
+      for (const kf of (data.keyframes || [])) {
+        const pose = defaultPose();
+        for (const name of activeJoints) {
+          if (kf[name]) {
+            pose[name] = Array.isArray(kf[name])
+              ? { x: kf[name][0], y: kf[name][1] }
+              : { x: kf[name].x,  y: kf[name].y  };
+          }
+        }
+        frames.push(pose);
+        frameDurs.push(typeof kf.dur === 'number' ? kf.dur : 0.3);
+      }
+      if (!frames.length) { frames = [defaultPose()]; frameDurs = [0.3]; }
+      document.getElementById('framesStrip').innerHTML = '';
+      currentFrame = 0; render();
+      setInfo(`载入手势片段 ${frames.length} 帧`);
+      return;
+    }
+
     if (!data.frames || !Array.isArray(data.frames)) { alert('需要 "frames" 数组'); return; }
     if (data.skeleton && SKELETONS[data.skeleton]) {
       setSkeleton(data.skeleton);
@@ -735,7 +815,6 @@ function loadJSON() {
       document.getElementById('coordsPanel').dataset.built = '';
       document.getElementById('boneLengthPanel').dataset.built = '';
     }
-    // 还原全局 bend
     if (data.globalBend) {
       const sk = getSkeleton();
       for (const [from, to] of sk.bones.map(b => [b[0],b[1]])) {
@@ -744,7 +823,7 @@ function loadJSON() {
       }
     }
     history.save(frames, currentFrame);
-    frames = [];
+    frames = []; frameDurs = [];
     for (const fd of data.frames) {
       const pose = defaultPose();
       for (const name of getJointNames()) {
@@ -753,11 +832,11 @@ function loadJSON() {
           else pose[name] = {x:fd[name].x, y:fd[name].y};
         }
       }
-      // per-frame bend 覆盖
       for (const k of Object.keys(fd)) {
         if (k.startsWith('_bend_')) pose[k] = fd[k];
       }
       frames.push(pose);
+      frameDurs.push(0.3);
     }
     currentFrame = 0; render();
     setInfo(`载入 ${frames.length} 帧`);
@@ -770,26 +849,42 @@ function exportJSON() {
   for (const [key, val] of Object.entries(SKELETONS)) {
     if (val === sk) { skeletonKey = key; break; }
   }
-  // 导出全局 bend
-  const globalBend = {};
-  for (const [from, to] of sk.bones.map(b => [b[0],b[1]])) {
-    const v = getGlobalBend(from, to);
-    if (v !== 0) globalBend[`${from}__${to}`] = v;
+
+  let data;
+  if (gestureMode) {
+    data = {
+      type: 'gesture',
+      activeJoints: [...activeJoints],
+      keyframes: frames.map((pose, i) => {
+        const kf = { dur: frameDurs[i] ?? 0.3 };
+        for (const j of activeJoints) {
+          if (pose[j]) kf[j] = [Math.round(pose[j].x), Math.round(pose[j].y)];
+        }
+        return kf;
+      }),
+      loop: false,
+    };
+  } else {
+    const globalBend = {};
+    for (const [from, to] of sk.bones.map(b => [b[0],b[1]])) {
+      const v = getGlobalBend(from, to);
+      if (v !== 0) globalBend[`${from}__${to}`] = v;
+    }
+    data = {
+      name: 'animation',
+      skeleton: skeletonKey,
+      globalBend,
+      frames: frames.map(pose => {
+        const f = {};
+        for (const name of getJointNames()) f[name] = [Math.round(pose[name].x), Math.round(pose[name].y)];
+        for (const k of Object.keys(pose)) {
+          if (k.startsWith('_bend_')) f[k] = Math.round(pose[k]);
+        }
+        return f;
+      }),
+    };
   }
-  const data = {
-    name: 'animation',
-    skeleton: skeletonKey,
-    globalBend,
-    frames: frames.map(pose => {
-      const f = {};
-      for (const name of getJointNames()) f[name] = [Math.round(pose[name].x), Math.round(pose[name].y)];
-      // per-frame bend 覆盖
-      for (const k of Object.keys(pose)) {
-        if (k.startsWith('_bend_')) f[k] = Math.round(pose[k]);
-      }
-      return f;
-    })
-  };
+
   const ta = document.getElementById('jsonInput');
   ta.value = JSON.stringify(data, null, 2);
   navigator.clipboard.writeText(ta.value).then(
@@ -865,6 +960,7 @@ window.app = {
   interpolateFrames, handleImageUpload,
   loadJSON, exportJSON, exportSpriteSheet,
   moveFrameLeft, moveFrameRight, switchSkeleton,
+  toggleGestureMode,
 };
 
 // ============================================
