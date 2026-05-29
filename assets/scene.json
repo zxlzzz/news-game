@@ -97,8 +97,8 @@
     { "propType": "stall",    "x": 430,  "y": 422, "width": 76,  "height": 60, "tags": ["stall", "park", "vendor"] },
     { "propType": "stall",    "x": 840,  "y": 492, "width": 70,  "height": 56, "tags": ["stall", "park", "vendor"] },
     { "propType": "stall",    "x": 1690, "y": 424, "width": 78,  "height": 62, "tags": ["stall", "park", "vendor"] },
-    { "propType": "bench", "x": 1500, "y": 440, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] },
+    { "propType": "bench", "x": 1500, "y": 425, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] },
     { "propType": "bench", "x": 245,  "y": 423, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] },
-    { "propType": "bench", "x": 1800, "y": 434, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] }
+    { "propType": "bench", "x": 1950, "y": 434, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] }
   ]
 }

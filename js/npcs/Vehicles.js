@@ -77,10 +77,10 @@ function drawEbike(g, n) {
   const footL = n.getAnchor('foot_l');
   const footR = n.getAnchor('foot_r');
   const footMid = { x: (footL.x + footR.x) / 2, y: (footL.y + footR.y) / 2 };
-  const wR  = 12 * s;
+  const wR  = 18 * s;
   const wCy = ground - wR;
-  const rwx = hip.x - 16 * s * d;
-  const fwx = bar.x  +  4 * s * d;
+  const rwx = hip.x - 32 * s * d;
+  const fwx = bar.x  +  8 * s * d;
 
   // 车轮
   g.lineStyle(lw(s, 2.6), 0x1f1f1f, 1);
@@ -88,15 +88,15 @@ function drawEbike(g, n) {
   g.strokeCircle(fwx, wCy, wR);
   // 低踏板（脚下平台，连接前后轮）
   g.lineStyle(lw(s, 3), 0x4a4a4a, 1);
-  g.lineBetween(rwx + wR * 0.6, footMid.y + 2 * s, fwx - wR * 0.6, footMid.y + 2 * s);
+  g.lineBetween(rwx + wR * 0.6, footMid.y + 4 * s, fwx - wR * 0.6, footMid.y + 4 * s);
   // 座管：后轮 → 臀
   g.lineStyle(lw(s, 2.2), 0x2a2a2a, 1);
   g.lineBetween(rwx, wCy, hip.x, hip.y);
   // 立管/前叉：前轮 → 车把
   g.lineBetween(fwx, wCy, bar.x, bar.y);
   // 外卖箱（座后）
-  const boxW = 12 * s, boxH = 11 * s;
-  const boxCx = hip.x - 18 * s * d;
+  const boxW =24 * s, boxH = 22 * s;
+  const boxCx = hip.x - 36 * s * d;
   g.fillStyle(0x707070, 1);
   g.fillRect(boxCx - boxW / 2, hip.y - boxH, boxW, boxH);
   g.lineStyle(lw(s, 1), 0x101010, 1);
@@ -125,10 +125,10 @@ function _spawnCyclists(em, sr) {
   cyclist2.drawExtra = drawBicycle;
   cyclist2.steadyFoot = true;
 
-  // 远端非机动车道（dir +1，外卖电动车）；整车放大 2×（scaleMul 由 EntityManager 每帧应用）
+  // 远端非机动车道（dir +1，外卖电动车）
   const ebiker = makeNPC(em, sr, {
     x: 1450, y: bikeLaneFarY(0.5), animation: 'mobile', direction:  1, speed: 120, vy: 0,
-    scale: 0.16, scaleMul: 2,
+    scale: 0.16,
     minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.05), maxY: bikeLaneFarY(0.95),
     color: 0x1a1000, tags: ['delivery', 'e-bike', 'vehicle'],
   });

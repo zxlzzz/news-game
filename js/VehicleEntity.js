@@ -444,7 +444,7 @@ export class VehicleEntity extends Entity {
   _moto(g, highlight) {
     const u = this.scale, x = this.x, y = this.y, d = this.direction;
     const groundY    = y;
-    const bs = u * 3;             // 车身比例：放大 3×（与骑手解耦）
+    const bs = u * 1.8;             // 车身比例：放大 3×（与骑手解耦）
     const ba = bs * 1.5;          // 车身造型锚点（虚拟大骑手）比例
     const riderScale = u * 1.5;   // 真实骑手：放大前大小，不随车放大
 
