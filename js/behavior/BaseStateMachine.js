@@ -29,6 +29,10 @@
 
 import { dlog }        from './DebugLog.js';
 import { LOITER_POSES } from './PoseRegistry.js';
+import {
+  tickWalkMode, pickModeTarget, onPathArrival,
+  setWalkMode, popWalkMode, isRoadZone, modeWander,
+} from './WalkMode.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -69,6 +73,12 @@ export function setState(npc, state, trigger = '?') {
   if (prev === 'loiter' && state !== 'loiter') {
     npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
     if (npc._loiterDir !== undefined) { npc.direction = npc._loiterDir; npc._loiterDir = undefined; }
+  }
+
+  // walk/run 恢复：从压栈中弹出被高优先级行为打断前的 walk mode
+  if ((state === 'walk' || state === 'run') && npc._walkModeStack?.length > 0) {
+    npc._walkMode  = npc._walkModeStack.pop();
+    npc.roamTarget = null;
   }
 
   npc.state      = state;
@@ -229,14 +239,20 @@ function _evaluateTransitions(npc, profile, envQuery) {
 
 // ─── 当前状态的 per-frame 行为（纯行为，不含转换判断）────────────────────────
 function _tickState(npc, envQuery, profile, dt) {
-  // walk/run：逐帧转向漫游目标点（含避障）；routing：直奔槽位
-  if (npc.state === 'routing' || (npc.roam && (npc.state === 'walk' || npc.state === 'run'))) {
-    steerRoam(npc, envQuery, profile, dt);
-  }
+  const isWalking = npc.state === 'walk' || npc.state === 'run';
+
+  // walk/run：先推进 walk mode 内部计时（暂停/超时），再做转向移动
+  if (isWalking) tickWalkMode(npc, dt);
+
+  // 需要转向的条件：routing 状态，或 walk/run 且有 roam 区域 / direct / path_follow 模式
+  const needsSteer = npc.state === 'routing' ||
+    (isWalking && (npc.roam ||
+      npc._walkMode?.kind === 'direct' ||
+      npc._walkMode?.kind === 'path_follow'));
+  if (needsSteer) steerRoam(npc, envQuery, profile, dt);
+
   // loiter：驱动内部微行为循环
-  if (npc.state === 'loiter') {
-    _tickLoiter(npc, profile, dt);
-  }
+  if (npc.state === 'loiter') _tickLoiter(npc, profile, dt);
 }
 
 // ─── Loiter 微行为循环 ────────────────────────────────────────────────────────
@@ -359,14 +375,36 @@ function steerRoam(npc, envQuery, profile, dt) {
     return;
   }
 
-  if (!npc.roamTarget) pickRoamTarget(npc, envQuery);
+  // path_follow 暂停：NPC 驻足等待，不推进位移
+  if (npc._walkMode?.kind === 'path_follow' && npc._walkMode.pausing) {
+    npc.speed = 0; npc.vy = 0;
+    return;
+  }
+
+  if (!npc.roamTarget) pickModeTarget(npc, envQuery);
+  if (!npc.roamTarget) return;   // 无目标（无 roam 且无 walk mode）
+
   const t = npc.roamTarget;
   const dx = t.x - npc.x, dy = t.y - npc.y;
   const dist = Math.hypot(dx, dy);
   if (dist < 6) {
-    const lc = profile && profile.loiterChance;
-    if (lc && Math.random() < lc) { setState(npc, 'loiter', 'loiter-chance'); return; }
-    pickRoamTarget(npc, envQuery);
+    const mode = npc._walkMode;
+    if (mode?.kind === 'path_follow') {
+      onPathArrival(mode, npc);
+    } else if (mode?.kind === 'direct') {
+      // direct 到达：触发回调，切回 wander（或回调自行设置下一模式）
+      const cb = mode.onArrive;
+      setWalkMode(npc, modeWander());
+      if (cb) cb(npc);
+    } else {
+      // wander：可能触发 loiter（马路区禁止驻留）
+      const lc = profile?.loiterChance;
+      if (lc && Math.random() < lc && !isRoadZone(npc.y)) {
+        setState(npc, 'loiter', 'loiter-chance');
+      } else {
+        pickModeTarget(npc, envQuery);
+      }
+    }
     return;
   }
 
@@ -414,17 +452,6 @@ function avoidObstacles(npc, vx, vy, envQuery) {
     ay += (ty * 1.4 + gy * 0.6) * base * prox;
   }
   return { x: ax, y: ay };
-}
-
-function pickRoamTarget(npc, envQuery) {
-  const r = npc.roam;
-  let pt = null;
-  for (let i = 0; i < 5; i++) {
-    const c = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
-    if (!envQuery.pointBlocked(c.x, c.y)) { pt = c; break; }
-    pt = c;
-  }
-  npc.roamTarget = pt;
 }
 
 // ─── 离场系统 ─────────────────────────────────────────────────────────────────
