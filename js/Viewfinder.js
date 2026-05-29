@@ -3,6 +3,8 @@
  * 可拖动取景框：检测框内所有实体（NPC、建筑、道具）并收集标签。
  */
 
+import { WORLD_WIDTH, WORLD_HEIGHT } from './SceneConfig.js';
+
 export class Viewfinder {
   constructor(scene, config = {}) {
     this.scene  = scene;
@@ -38,7 +40,8 @@ export class Viewfinder {
     const hx = this.x + this.width;
     const hy = this.y + this.height;
     const s  = this.handleSize;
-    return wx >= hx - s && wx <= hx + 4 && wy >= hy - s && wy <= hy + 4;
+    // 判定区域与 _drawResizeHandle 绘制的方块 [hx-s, hx+2]×[hy-s, hy+2] 一致
+    return wx >= hx - s && wx <= hx + 2 && wy >= hy - s && wy <= hy + 2;
   }
 
   _setupInput(scene) {
@@ -71,8 +74,9 @@ export class Viewfinder {
         return;
       }
       if (this.dragging) {
-        this.x = pointer.worldX - this.dragOffsetX;
-        this.y = pointer.worldY - this.dragOffsetY;
+        // 钳制在世界范围内，避免取景框被拖出场景（坐标语义混乱、只能捕获半框）
+        this.x = Math.max(0, Math.min(WORLD_WIDTH  - this.width,  pointer.worldX - this.dragOffsetX));
+        this.y = Math.max(0, Math.min(WORLD_HEIGHT - this.height, pointer.worldY - this.dragOffsetY));
       }
     });
 
