@@ -144,9 +144,9 @@ export function initVehicleSystem(em, sr) {
 
   const tm = new TrafficManager({ em, dep });
 
-  // 公交站（下行带，dir -1，靠近行道树处）
-  tm.busStops.push(new BusStop({ x: 500,  direction: -1, waitTime: 4000 }));
-  tm.busStops.push(new BusStop({ x: 1500, direction: -1, waitTime: 4000 }));
+  // 公交站（下行带，dir -1，靠近行道树处）；每次靠站随机停 5~20s
+  tm.busStops.push(new BusStop({ x: 500,  direction: -1, waitRange: [5000, 20000] }));
+  tm.busStops.push(new BusStop({ x: 1500, direction: -1, waitRange: [5000, 20000] }));
 
   tm.spawner = new VehicleSpawner({ trafficManager: tm, dep, sr });
   tm.spawner.spawnInitial();

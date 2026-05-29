@@ -399,43 +399,62 @@ export class StreetScene extends Phaser.Scene {
       g.fillRect(sx + 3, py + 12, sw - 8, 1);
     };
 
-    // ── FAR 侧开放候车亭 x=500（远端人行道，朝向同 NEAR：顶棚在上、支柱与长椅向下，透视更小更靠上）──
+    // ── FAR 侧港湾候车亭 x=500（仿 NEAR 港湾式：在远端非机动车道开港湾、路沿弯曲；
+    //     顶棚在上、支柱向下开口朝路；透视更小）──────────────────────────────────
     {
-      const sx      = 500;
-      const FAR_W   = 190;                      // 透视缩窄（NEAR 顶棚的 76%）
-      const FAR_PIL = 82;                       // 支柱到中心距
-      const rX      = sx - FAR_W / 2;          // 405
-      const gy      = ft;                       // 248 — 远端人行道/非机动车道交界（亭脚落点）
-      const POST_H  = 22;                       // 支柱高（小于 NEAR 的 38px，体现透视）
+      const sx     = 500;
+      const F      = 0.76;             // 透视缩小系数
+      const BAY_W  = Math.round(266 * F);  // 202 — 港湾宽
+      const BAY_D  = 9;                // 港湾深度（向非机动车道凸入）
+      const FROOF_W= Math.round(ROOF_W * F); // 190 — 顶棚宽
+      const FPIL_X = Math.round(112 * F);    // 85  — 支柱到中心距
+      const bx0    = sx - BAY_W / 2;   // 399
+      const bx1    = sx + BAY_W / 2;   // 601
 
-      // 顶棚（在上）
-      const roofB = gy - POST_H;                // 226 — 顶棚底
-      const roofT = roofB - ROOF_H;            // 220 — 顶棚顶
+      // 港湾路面（从远端路沿 FAR_Y 向上凸入非机动车道，公交向远端路沿靠站）
+      g.fillStyle(GRAY_ROAD, 1);
+      g.fillRect(bx0, fy - BAY_D, BAY_W, BAY_D);   // 259–268
+
+      // 港湾入口路沿角（镜像 NEAR：开口朝下/朝路，路沿在上侧）
+      g.fillStyle(0xd8d8d8, 1);
+      g.fillRect(bx0 - 3, fy - BAY_D - 3, 3,         BAY_D + 3);
+      g.fillRect(bx1,     fy - BAY_D - 3, 3,         BAY_D + 3);
+      g.fillRect(bx0 - 3, fy - BAY_D - 3, BAY_W + 6, 3);
+
+      // 候车平台铺装（港湾顶沿）
+      g.fillStyle(0xb2b2b0, 1);
+      g.fillRect(bx0, fy - BAY_D - 2, BAY_W, 2);
+
+      // 顶棚（在上，贴远端人行道下沿）
+      const rX    = sx - FROOF_W / 2;  // 405
+      const roofT = ft - 12;           // 236 — 顶棚顶（远端人行道内）
       g.fillStyle(0x686866, 1);
-      g.fillRect(rX, roofT, FAR_W, ROOF_H);
+      g.fillRect(rX, roofT, FROOF_W, ROOF_H);
       g.lineStyle(1.6, 0x181818, 1);
-      g.strokeRect(rX, roofT, FAR_W, ROOF_H);
+      g.strokeRect(rX, roofT, FROOF_W, ROOF_H);
 
-      // 支柱（从顶棚底向下延伸到亭脚，与 NEAR 同朝向）
+      // 支柱（从顶棚底向下延伸到候车平台）
+      const pillarT = roofT + ROOF_H;       // 242
+      const pillarB = fy - BAY_D - 2;       // 257
       g.lineStyle(2.5, 0x282828, 1);
-      g.lineBetween(sx - FAR_PIL, roofB, sx - FAR_PIL, gy);
-      g.lineBetween(sx + FAR_PIL, roofB, sx + FAR_PIL, gy);
+      g.lineBetween(sx - FPIL_X, pillarT, sx - FPIL_X, pillarB);
+      g.lineBetween(sx + FPIL_X, pillarT, sx + FPIL_X, pillarB);
 
-      // 长椅（棚下居中，靠顶棚底侧）
-      const benchY = roofB + 6;                 // 232
+      // 长椅（棚下居中）
+      const benchY = pillarT + 5;           // 247
       g.fillStyle(0x565654, 1);
-      g.fillRect(sx - 60, benchY, 120, 4);
+      g.fillRect(sx - 66, benchY, 132, 4);
       g.lineStyle(0.8, 0x181818, 0.7);
-      g.strokeRect(sx - 60, benchY, 120, 4);
+      g.strokeRect(sx - 66, benchY, 132, 4);
       // 椅腿（向下）
       g.lineStyle(1.5, 0x303030, 0.9);
-      g.lineBetween(sx - 50, benchY + 4, sx - 50, benchY + 9);
-      g.lineBetween(sx + 50, benchY + 4, sx + 50, benchY + 9);
+      g.lineBetween(sx - 56, benchY + 4, sx - 56, benchY + 8);
+      g.lineBetween(sx + 56, benchY + 4, sx + 56, benchY + 8);
 
-      // 独立站牌杆（亭外右侧，牌面在上、杆向下落到人行道）
-      const poleX  = rX + FAR_W + 8;           // 603
-      const poleTy = roofT + 4;                // 224 — 牌面顶
-      const poleBy = gy;                       // 248 — 杆底（落到人行道）
+      // 独立站牌杆（亭外右侧）
+      const poleX  = bx1 + 5;          // 606
+      const poleTy = roofT;            // 236 — 牌面顶
+      const poleBy = fy - BAY_D - 2;   // 257 — 杆底（落到平台）
       g.lineStyle(2.2, 0x2e2e2e, 1);
       g.lineBetween(poleX, poleTy + 15, poleX, poleBy);
       drawSign(poleX, poleTy);

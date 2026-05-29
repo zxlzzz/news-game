@@ -8,16 +8,27 @@ export class BusStop {
   constructor(cfg) {
     this.x         = cfg.x;
     this.direction = cfg.direction;          // +1 或 -1，只响应对应方向的公交
-    this.waitTime  = cfg.waitTime ?? 4000;   // 停站时长 ms
+    // 停站时长 ms：可给固定 waitTime，或给区间 waitRange=[min,max]（每次靠站随机）
+    this.waitTime  = cfg.waitTime ?? 4000;
+    this.waitRange = cfg.waitRange ?? null;
     this._occupant = null;
     this._timer    = 0;
+  }
+
+  /** 本次停站时长（有区间则随机取） */
+  _rollWait() {
+    if (this.waitRange) {
+      const [a, b] = this.waitRange;
+      return a + Math.random() * (b - a);
+    }
+    return this.waitTime;
   }
 
   /** 公交车到站时由 VehicleStateMachine 调用 */
   arrive(bus) {
     if (this._occupant) return false;   // 已有车停靠
     this._occupant = bus;
-    this._timer    = this.waitTime;
+    this._timer    = this._rollWait();
     bus.doorOpen   = true;
     return true;
   }

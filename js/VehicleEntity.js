@@ -35,7 +35,7 @@ export class VehicleEntity extends Entity {
   _dims() {
     switch (this.kind) {
       case 'bus':  return { L: 1500, H: 480, r: 60 };
-      case 'moto': return { L: 300, H: 170, r: 22 }; // 明显小于轿车；实际几何以骑手锚点为准（见 _moto）
+      case 'moto': return { L: 420, H: 310, r: 20 }; // 仅供取景框包围盒；实际几何以骑手锚点为准（见 _moto）
       default:     return { L: 480, H: 200, r: 34 }; // car/taxi
     }
   }
@@ -442,7 +442,8 @@ export class VehicleEntity extends Entity {
      双脚 [-37,36]/[-28,40]），故可像 bicycle/ebike 那样"绕骑手关节画车"：
      前手=车把、臀=座垫、双脚=踏板，车轮锚在脚后 / 手前。 */
   _moto(g, highlight) {
-    const s = this.scale, x = this.x, y = this.y, d = this.direction;
+    const MOTO_SCALE = 3;   // 整体放大（骑手+车身一起 ×3，在深度缩放基础上）
+    const s = this.scale * MOTO_SCALE, x = this.x, y = this.y, d = this.direction;
     const groundY    = y;
     const riderScale = s * 1.5;
 
