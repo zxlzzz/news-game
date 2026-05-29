@@ -894,6 +894,45 @@ function exportJSON() {
 }
 
 // ============================================
+// 导出 Held Pose / Trait —— 当前帧关节相对 defaultPose 的 delta
+//   held pose：导出全部关节的 delta（{ joints: { ... } }），可粘进 HeldPoses.js
+//   trait    ：仅导出左侧 l_elbow / l_hand 的 delta，可粘进 TraitProps.js
+// 仅 human 骨架适用；delta 为 0 的关节省略。
+// ============================================
+function _poseDelta(jointNames) {
+  const pose = frames[currentFrame];
+  const base = getSkeleton().defaultPose;
+  const joints = {};
+  for (const name of jointNames) {
+    if (!pose[name] || !base[name]) continue;
+    const dx = Math.round(pose[name].x - base[name].x);
+    const dy = Math.round(pose[name].y - base[name].y);
+    if (dx !== 0 || dy !== 0) joints[name] = [dx, dy];
+  }
+  return joints;
+}
+
+function _emitData(obj, label) {
+  const ta = document.getElementById('jsonInput');
+  ta.value = JSON.stringify(obj, null, 2);
+  navigator.clipboard.writeText(ta.value).then(
+    () => setInfo(`${label} 已导出并复制`),
+    () => setInfo(`${label} 已导出到文本框`)
+  );
+}
+
+function exportHeldPose() {
+  if (getSkeleton() !== SKELETONS.human) { setInfo('Held Pose 仅支持 human 骨架'); return; }
+  _emitData({ joints: _poseDelta(getJointNames()) }, 'Held Pose');
+}
+
+function exportTrait() {
+  if (getSkeleton() !== SKELETONS.human) { setInfo('Trait 仅支持 human 骨架'); return; }
+  // trait 只动左侧手臂（右手保持自然），与 hold_bag/walk_dog 一致
+  _emitData({ joints: _poseDelta(['l_elbow', 'l_hand']) }, 'Trait');
+}
+
+// ============================================
 // 导出 Sprite Sheet
 // ============================================
 function exportSpriteSheet() {
@@ -959,6 +998,7 @@ window.app = {
   addFrame, dupFrame, delFrame, resetPose, togglePlay,
   interpolateFrames, handleImageUpload,
   loadJSON, exportJSON, exportSpriteSheet,
+  exportHeldPose, exportTrait,
   moveFrameLeft, moveFrameRight, switchSkeleton,
   toggleGestureMode,
 };
