@@ -38,31 +38,31 @@
     { "propType": "lamp-near", "x": 1840, "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
 
 
-    { "propType": "tree", "x": 520,  "y": 430, "width": 26, "height": 26, "tags": ["tree", "park", "greenery"] },
-    { "propType": "tree", "x": 1010, "y": 488, "width": 30, "height": 30, "tags": ["tree", "park", "greenery"] },
+    { "propType": "tree", "x": 110,  "y": 430, "width": 26, "height": 26, "tags": ["tree", "park", "greenery"] },
+    { "propType": "tree", "x": 1590, "y": 475, "width": 30, "height": 30, "tags": ["tree", "park", "greenery"] },
     { "propType": "tree", "x": 1400, "y": 482, "width": 26, "height": 26, "tags": ["tree", "park", "greenery"] },
     { "propType": "tree", "x": 1880, "y": 494, "width": 30, "height": 30, "tags": ["tree", "park", "greenery"] },
 
     { "propType": "trash", "x": 300,  "y": 228, "width": 12, "height": 14, "tags": ["trash-can", "street-furniture"] },
     { "propType": "trash", "x": 1200, "y": 228, "width": 12, "height": 14, "tags": ["trash-can", "street-furniture"] },
     { "propType": "trash", "x": 1650, "y": 228, "width": 12, "height": 14, "tags": ["trash-can", "street-furniture"] },
-    { "propType": "trash", "x": 590,  "y": 500, "width": 14, "height": 14, "tags": ["trash-can", "street-furniture"] },
-    { "propType": "trash", "x": 1350, "y": 500, "width": 14, "height": 14, "tags": ["trash-can", "street-furniture"] },
+    { "propType": "trash", "x": 340,  "y": 500, "width": 14, "height": 14, "tags": ["trash-can", "street-furniture"] },
+    { "propType": "trash", "x": 1620, "y": 500, "width": 14, "height": 14, "tags": ["trash-can", "street-furniture"] },
 
-    { "propType": "newsrack", "x": 500,  "y": 230, "width": 14, "height": 18, "tags": ["newsstand", "news", "street-furniture"] },
+    { "propType": "newsrack", "x": 630,  "y": 230, "width": 14, "height": 18, "tags": ["newsstand", "news", "street-furniture"] },
     { "propType": "newsrack", "x": 1420, "y": 230, "width": 14, "height": 18, "tags": ["newsstand", "news", "street-furniture"] },
-    { "propType": "newsrack", "x": 980,  "y": 490, "width": 14, "height": 18, "tags": ["newsstand", "news", "street-furniture"] },
+    { "propType": "newsrack", "x": 910,  "y": 490, "width": 14, "height": 18, "tags": ["newsstand", "news", "street-furniture"] },
 
     { "propType": "hydrant", "x": 380,  "y": 230, "width": 10, "height": 14, "tags": ["fire-hydrant", "utility", "street-furniture"] },
     { "propType": "hydrant", "x": 1300, "y": 230, "width": 10, "height": 14, "tags": ["fire-hydrant", "utility", "street-furniture"] },
     { "propType": "hydrant", "x": 200,  "y": 498, "width": 10, "height": 14, "tags": ["fire-hydrant", "utility", "street-furniture"] },
 
     { "propType": "mailbox", "x": 920,  "y": 230, "width": 12, "height": 18, "tags": ["mailbox", "postal", "street-furniture"] },
-    { "propType": "mailbox", "x": 1150, "y": 492, "width": 12, "height": 18, "tags": ["mailbox", "postal", "street-furniture"] },
+    { "propType": "mailbox", "x": 60,   "y": 500, "width": 12, "height": 18, "tags": ["mailbox", "postal", "street-furniture"] },
 
-    { "propType": "planter", "x": 510,  "y": 508, "width": 36, "height": 10, "tags": ["planter", "greenery", "street-furniture"] },
-    { "propType": "planter", "x": 880,  "y": 508, "width": 32, "height": 10, "tags": ["planter", "greenery", "street-furniture"] },
-    { "propType": "planter", "x": 1700, "y": 508, "width": 38, "height": 10, "tags": ["planter", "greenery", "street-furniture"] },
+    { "propType": "planter", "x": 150,  "y": 508, "width": 36, "height": 10, "tags": ["planter", "greenery", "street-furniture"] },
+    { "propType": "planter", "x": 780,  "y": 508, "width": 32, "height": 10, "tags": ["planter", "greenery", "street-furniture"] },
+    { "propType": "planter", "x": 1340, "y": 515, "width": 38, "height": 10, "tags": ["planter", "greenery", "street-furniture"] },
 
     { "propType": "manhole", "x": 360,  "y": 290, "width": 22, "height": 10, "tags": ["manhole", "utility"] },
     { "propType": "manhole", "x": 1120, "y": 290, "width": 22, "height": 10, "tags": ["manhole", "utility"] },
@@ -97,8 +97,8 @@
     { "propType": "stall",    "x": 430,  "y": 422, "width": 76,  "height": 60, "tags": ["stall", "park", "vendor"] },
     { "propType": "stall",    "x": 840,  "y": 492, "width": 70,  "height": 56, "tags": ["stall", "park", "vendor"] },
     { "propType": "stall",    "x": 1690, "y": 424, "width": 78,  "height": 62, "tags": ["stall", "park", "vendor"] },
-    { "propType": "bench", "x": 830,  "y": 407, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] },
+    { "propType": "bench", "x": 1500, "y": 440, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] },
     { "propType": "bench", "x": 245,  "y": 423, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] },
-    { "propType": "bench", "x": 1780, "y": 434, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] }
+    { "propType": "bench", "x": 1800, "y": 434, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] }
   ]
 }

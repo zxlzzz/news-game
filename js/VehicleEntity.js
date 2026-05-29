@@ -35,8 +35,8 @@ export class VehicleEntity extends Entity {
   _dims() {
     switch (this.kind) {
       case 'bus':  return { L: 1500, H: 480, r: 60 };
-      case 'moto': return { L: 600, H: 400, r: 36 };
-      default:     return { L: 500, H: 240, r: 36 }; // car/taxi
+      case 'moto': return { L: 300, H: 170, r: 22 }; // 明显小于轿车；实际几何以骑手锚点为准（见 _moto）
+      default:     return { L: 480, H: 200, r: 34 }; // car/taxi
     }
   }
 
@@ -119,26 +119,47 @@ export class VehicleEntity extends Entity {
      形状表 xFrac: -1(后)→+1(前)   yFrac: 0(底)→1(顶)
      ═══════════════════════════════════════════════ */
 
-  // 轿车的 H 代表 从车底到车顶的全部可见高度
-  // 所有 yFrac 最大 ~1.0 = 车顶
+  // 轿车的 H 代表 从车底到车顶的全部可见高度；所有 yFrac 最大 ~1.0 = 车顶。
+  // 上缘（索引 1..13）经 Catmull-Rom 平滑成连续曲线，前后保险杠竖直段（0-1 / 13-14）保持直线。
+  // C柱前(idx4)、A柱前(idx9)补腰线锚点，使风挡/后窗过渡平缓不折角。
   static CAR_SHAPE = [
-    [-1.00, 0.00],   // 后保险杠底
-    [-1.00, 0.38],   // 后脸竖直上
-    [-0.92, 0.42],   // 后备箱起始
-    [-0.82, 0.44],   // 后备箱顶面
-    [-0.48, 0.92],   // C柱 → 车顶过渡
-    [-0.34, 0.96],   // 车顶后段
-    [-0.14, 0.99],   // 车顶最高点附近
-    [ 0.06, 0.99],   // 车顶最高点附近
-    [ 0.20, 0.96],   // 车顶前段
-    [ 0.32, 0.90],   // A柱顶
-    [ 0.50, 0.42],   // 前风挡底（腰线）
-    [ 0.80, 0.36],   // 引擎盖
-    [ 0.92, 0.34],   // 引擎盖末端
-    [ 0.98, 0.30],   // 前保险杠上沿
-    [ 1.00, 0.26],   // 前脸上角
-    [ 1.00, 0.00],   // 前保险杠底
+    [-1.00, 0.00],   // 0  后保险杠底
+    [-1.00, 0.36],   // 1  后脸竖直上
+    [-0.94, 0.42],   // 2  后备箱起
+    [-0.78, 0.46],   // 3  后备箱顶 / 腰线
+    [-0.62, 0.52],   // 4  C柱腰线（缓过渡）
+    [-0.46, 0.90],   // 5  C柱 → 车顶
+    [-0.28, 0.97],   // 6  车顶后段
+    [ 0.00, 1.00],   // 7  车顶最高
+    [ 0.24, 0.97],   // 8  车顶前段
+    [ 0.40, 0.78],   // 9  A柱（缓过渡）
+    [ 0.52, 0.46],   // 10 前风挡底 / 腰线
+    [ 0.78, 0.40],   // 11 引擎盖
+    [ 0.94, 0.36],   // 12 引擎盖末端
+    [ 1.00, 0.30],   // 13 前脸上角
+    [ 1.00, 0.00],   // 14 前保险杠底
   ];
+
+  // 局部 Catmull-Rom（端点钳制），对 [x,y] 屏幕点做平滑，每段插 seg 个点
+  _catmull(ctrl, seg) {
+    const out = [];
+    const p = (i) => ctrl[Math.max(0, Math.min(ctrl.length - 1, i))];
+    for (let i = 0; i < ctrl.length - 1; i++) {
+      const p0 = p(i - 1), p1 = p(i), p2 = p(i + 1), p3 = p(i + 2);
+      for (let k = 0; k < seg; k++) {
+        const t = k / seg, t2 = t * t, t3 = t2 * t;
+        const cx = 0.5 * (2 * p1[0] + (-p0[0] + p2[0]) * t +
+          (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 +
+          (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3);
+        const cy = 0.5 * (2 * p1[1] + (-p0[1] + p2[1]) * t +
+          (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 +
+          (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3);
+        out.push([cx, cy]);
+      }
+    }
+    out.push(ctrl[ctrl.length - 1]);
+    return out;
+  }
 
   _car(g, highlight) {
     const s = this.scale, x = this.x, y = this.y, d = this.direction;
@@ -165,9 +186,13 @@ export class VehicleEntity extends Entity {
     this._wheel(g, fwx, wcy, rs);
     this._wheel(g, rwx, wcy, rs);
 
-    // ── 车身轮廓 ──
+    // ── 车身轮廓（上缘平滑，前后保险杠竖直段保持直线）──
+    const pts = VehicleEntity.CAR_SHAPE.map(([xf, yf]) => [x + d * xf * halfL, bodyBot - yf * hs]);
     g.beginPath();
-    this._tracePath(g, VehicleEntity.CAR_SHAPE, x, bodyBot, halfL, hs, d);
+    g.moveTo(pts[0][0], pts[0][1]);          // 后保险杠底
+    g.lineTo(pts[1][0], pts[1][1]);          // 后脸竖直
+    for (const [px, py] of this._catmull(pts.slice(1, 14), 8)) g.lineTo(px, py); // 平滑上缘
+    g.lineTo(pts[14][0], pts[14][1]);        // 前保险杠竖直
     // 底边 + 轮拱
     this._archTo(g, fwx, bodyBot, archR, d);
     this._archTo(g, rwx, bodyBot, archR, d);
@@ -187,10 +212,10 @@ export class VehicleEntity extends Entity {
 
   /** 车窗（前窗 + 后窗 + B柱） */
   _carWindows(g, cx, baseY, halfL, hs, d, sw) {
-    // 窗户区域 yFrac 范围：底 ~0.44 → 顶 ~0.94
-    const winBot  = baseY - hs * 0.46;
-    const winTopR = baseY - hs * 0.90;  // 后窗顶
-    const winTopF = baseY - hs * 0.86;  // 前窗顶
+    // 窗户区域 yFrac 范围：底 ~0.48（腰线）→ 顶 ~0.82（新圆顶下留顶盖带）
+    const winBot  = baseY - hs * 0.48;
+    const winTopR = baseY - hs * 0.82;  // 后窗顶
+    const winTopF = baseY - hs * 0.80;  // 前窗顶
 
     // B柱 X（略偏后）
     const pillarX = cx - d * halfL * 0.04;
@@ -412,96 +437,81 @@ export class VehicleEntity extends Entity {
      摩托车
      ═══════════════════════════════════════════════ */
 
+  /* 摩托车以骑手为基准绘制，人车一体。
+     mobike 为固定单帧、关节偏移是已知常量（hip=body[0,0]、前手 l_hand[43,12]、
+     双脚 [-37,36]/[-28,40]），故可像 bicycle/ebike 那样"绕骑手关节画车"：
+     前手=车把、臀=座垫、双脚=踏板，车轮锚在脚后 / 手前。 */
   _moto(g, highlight) {
     const s = this.scale, x = this.x, y = this.y, d = this.direction;
-    const { L, H, r } = this._dims();
-    const ls = L * s, hs = H * s, rs = r * s;
-    const halfL = ls / 2;
+    const groundY    = y;
+    const riderScale = s * 1.5;
 
-    const groundY = y;
-    const wcy = groundY - rs;
+    // hip 略偏后于车体中心；hipY 由腿长定，使双脚落在踏板高度（贴近地面）
+    const hipX = x - d * 4 * s;
+    const hipY = groundY - 40 * riderScale;
+    const J = (jx, jy) => ({ x: hipX + d * jx * riderScale, y: hipY + jy * riderScale });
+    const bar   = J(43, 12);   // 前手 → 车把
+    const footF = J(-28, 40);  // 偏前脚 → 前踏板
+    const footR = J(-37, 36);  // 偏后脚 → 后踏板
 
-    const fwx = x + d * halfL * 0.74;
-    const rwx = x - d * halfL * 0.74;
-
-    // 阴影
-    g.fillStyle(0x000000, 0.05);
-    g.fillEllipse(x, groundY + rs * 0.04, ls * 0.62, rs * 0.20);
-
-    // 车轮
-    this._wheel(g, fwx, wcy, rs);
-    this._wheel(g, rwx, wcy, rs);
+    const wR  = Math.max(2, 14 * s);
+    const wCy = groundY - wR;
+    const rwx = footR.x - d * 3 * s;   // 后轮在后脚之后
+    const fwx = bar.x   + d * 6 * s;   // 前轮在车把之前
 
     const frameCol = highlight ?? 0x3a3a3a;
-    const frameSW = Math.max(1.5, s * 9);
+    const frameSW  = Math.max(1.2, s * 7);
 
-    // ── 车架 ──
-    const pivotX = x + d * ls * 0.02;
-    const pivotY = wcy + rs * 0.1;
-    const steerX = x + d * halfL * 0.44;
-    const steerY = wcy - hs * 0.35;
+    // 阴影
+    g.fillStyle(0x000000, 0.06);
+    g.fillEllipse((rwx + fwx) / 2, groundY + wR * 0.15, Math.abs(fwx - rwx) + wR * 2.2, wR * 0.5);
 
+    // 车轮（先画，压在车架下层）
+    this._wheel(g, fwx, wCy, wR);
+    this._wheel(g, rwx, wCy, wR);
+
+    // ── 车架三角：座管 / 上管(座→把) / 下管 ──
     g.lineStyle(frameSW, frameCol, 1);
-    g.lineBetween(rwx, wcy, pivotX, pivotY);          // 后摇臂
-    g.lineBetween(pivotX, pivotY, steerX, steerY);     // 主管
-    g.lineBetween(rwx, wcy, steerX - d * ls * 0.06, steerY + hs * 0.08); // 后上叉
+    g.lineBetween(rwx, wCy, hipX, hipY);
+    g.lineBetween(hipX, hipY, bar.x, bar.y);
+    g.lineBetween(rwx, wCy, bar.x - d * 8 * s, bar.y + 5 * s);
 
-    // ── 油箱+座垫 ──
-    const tankF = steerX - d * ls * 0.08;
-    const tankR = x - d * halfL * 0.26;
-    const tankTop = steerY + hs * 0.02;
-    const tankBot = wcy - rs * 0.10;
-    const seatR = x - d * halfL * 0.44;
-    const seatTop = tankTop + hs * 0.10;
-
+    // ── 油箱块（座与车把之间）──
     g.fillStyle(0xe0e0dd, 1);
     g.beginPath();
-    g.moveTo(tankF, tankTop);
-    g.lineTo(tankF, tankBot);
-    g.lineTo(seatR, tankBot + hs * 0.03);
-    g.lineTo(seatR, seatTop);
-    g.lineTo(tankR, tankTop + hs * 0.03);
+    g.moveTo(hipX,               hipY - 2 * s);
+    g.lineTo(bar.x - d * 12 * s, bar.y + 1 * s);
+    g.lineTo(bar.x - d * 12 * s, bar.y + 5 * s);
+    g.lineTo(hipX,               hipY + 4 * s);
     g.closePath();
     g.fillPath();
-    g.lineStyle(Math.max(0.8, s * 4), 0x2a2a2a, 0.85);
+    g.lineStyle(Math.max(0.8, s * 3), 0x2a2a2a, 0.85);
     g.strokePath();
 
-    // 座垫（深色部分）
-    g.fillStyle(0x555555, 0.75);
-    g.beginPath();
-    g.moveTo(tankR, tankTop + hs * 0.05);
-    g.lineTo(tankR, tankBot - hs * 0.01);
-    g.lineTo(seatR + d * ls * 0.02, tankBot + hs * 0.02);
-    g.lineTo(seatR, seatTop);
-    g.closePath();
-    g.fillPath();
+    // 座垫（深色，臀下）
+    g.lineStyle(Math.max(2, s * 6), 0x444444, 1);
+    g.lineBetween(hipX - d * 10 * s, hipY + 1 * s, hipX + d * 3 * s, hipY - 1 * s);
 
     // ── 前叉 ──
-    g.lineStyle(Math.max(1, s * 6), 0x555555, 0.85);
-    g.lineBetween(fwx, wcy - rs * 0.55, steerX + d * ls * 0.02, steerY);
+    g.lineStyle(Math.max(1, s * 5), 0x555555, 1);
+    g.lineBetween(fwx, wCy, bar.x, bar.y);
 
-    // ── 车把 ──
-    const handleX = steerX + d * ls * 0.06;
-    const handleY = steerY - hs * 0.10;
-    g.lineStyle(Math.max(1.2, s * 7), 0x2a2a2a, 1);
-    g.lineBetween(handleX - d * ls * 0.04, handleY + hs * 0.01,
-                  handleX + d * ls * 0.04, handleY - hs * 0.05);
+    // ── 车把握把（搭在前手处）──
+    g.lineStyle(Math.max(1.2, s * 6), 0x2a2a2a, 1);
+    g.lineBetween(bar.x - d * 4 * s, bar.y + 2 * s, bar.x + d * 5 * s, bar.y - 3 * s);
 
-    // ── 排气管 ──
+    // ── 排气管（后轮低处）──
     g.lineStyle(Math.max(0.8, s * 4), 0x888888, 0.6);
-    g.lineBetween(pivotX - d * ls * 0.03, pivotY + hs * 0.02,
-                  rwx + d * rs * 0.6, wcy + rs * 0.22);
+    g.lineBetween(hipX - d * 6 * s, hipY + 6 * s, rwx + d * wR * 0.6, wCy + wR * 0.4);
 
-    // hipX = 座垫X中心，hipY = 座垫顶（传给 anchorMode:'hip' 模式，body 关节对齐到此）
+    // ── 踏板块（双脚下）──
+    g.lineStyle(Math.max(1.5, s * 4), 0x2a2a2a, 1);
+    g.lineBetween(footF.x - d * 2 * s, footF.y, footF.x + d * 3 * s, footF.y);
+    g.lineBetween(footR.x - d * 2 * s, footR.y, footR.x + d * 3 * s, footR.y);
+
+    // ── 骑手（最后画，人压在车上）──
     if (this._sr) {
-      const hipX = Math.round((tankR + seatR) / 2);
-      const hipY = Math.round(pivotY - 36 * s * 1.6);
-      this._drawMotoRider(g, hipX, hipY);
+      this._sr.draw(g, 'mobike', 0, hipX, hipY, riderScale, d, 0x1a1a1a, 1);
     }
-  }
-
-  _drawMotoRider(g, hipX, hipY) {
-    const s = this.scale, d = this.direction;
-    this._sr.draw(g, 'mobike', 0, hipX, hipY, s * 1.6, d, 0x1a1a1a, 1);
   }
 }
