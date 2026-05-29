@@ -125,10 +125,10 @@ function _spawnCyclists(em, sr) {
   cyclist2.drawExtra = drawBicycle;
   cyclist2.steadyFoot = true;
 
-  // 远端非机动车道（dir +1，外卖电动车）
+  // 远端非机动车道（dir +1，外卖电动车）；整车放大 2×（scaleMul 由 EntityManager 每帧应用）
   const ebiker = makeNPC(em, sr, {
     x: 1450, y: bikeLaneFarY(0.5), animation: 'mobile', direction:  1, speed: 120, vy: 0,
-    scale: 0.16,
+    scale: 0.16, scaleMul: 2,
     minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.05), maxY: bikeLaneFarY(0.95),
     color: 0x1a1000, tags: ['delivery', 'e-bike', 'vehicle'],
   });

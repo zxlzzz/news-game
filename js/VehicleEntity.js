@@ -35,7 +35,7 @@ export class VehicleEntity extends Entity {
   _dims() {
     switch (this.kind) {
       case 'bus':  return { L: 1500, H: 480, r: 60 };
-      case 'moto': return { L: 210, H: 90, r: 26 }; // 仅供取景框包围盒；实际几何以骑手锚点为准（见 _moto）
+      case 'moto': return { L: 400, H: 200, r: 20 }; // 仅供取景框包围盒；实际几何以骑手锚点为准（见 _moto）
       default:     return { L: 480, H: 200, r: 34 }; // car/taxi
     }
   }
@@ -444,25 +444,25 @@ export class VehicleEntity extends Entity {
   _moto(g, highlight) {
     const u = this.scale, x = this.x, y = this.y, d = this.direction;
     const groundY    = y;
-    const riderScale = u * 1.5;   // 骑手：放大前的大小（与车身解耦）
+    const bs = u * 3;             // 车身比例：放大 3×（与骑手解耦）
+    const ba = bs * 1.5;          // 车身造型锚点（虚拟大骑手）比例
+    const riderScale = u * 1.5;   // 真实骑手：放大前大小，不随车放大
 
-    // 接触点以骑手关节为锚点（前手=车把、臀=座垫、双脚=踏板），骑手自然贴合
-    const hipX = x - d * 4 * u;
-    const hipY = groundY - 40 * riderScale;
-    const J = (jx, jy) => ({ x: hipX + d * jx * riderScale, y: hipY + jy * riderScale });
-    const bar   = J(43, 12);   // 前手 → 车把
-    const footF = J(-28, 40);  // 偏前脚 → 前踏板
-    const footR = J(-37, 36);  // 偏后脚 → 后踏板
+    // 车身造型锚点（决定车形/大小，按 3× 大车）
+    const hipX = x - d * 4 * bs;
+    const hipY = groundY - 40 * ba;
+    const J = (jx, jy) => ({ x: hipX + d * jx * ba, y: hipY + jy * ba });
+    const bar   = J(43, 12);   // 车把
+    const footF = J(-28, 40);  // 前踏板
+    const footR = J(-37, 36);  // 后踏板
 
-    // 车身放大：更大车轮 + 更长轴距 + 更粗车架，使"摩托更大"而骑手不变。
-    // 轮顶受座高限制（不超过座面），取与该尺寸骑手协调的最大值。
-    const wR  = Math.max(2, 26 * u);    // 车轮（约原 1.85×）
+    const wR  = Math.max(2, 14 * bs);
     const wCy = groundY - wR;
-    const rwx = footR.x - d * 16 * u;   // 后轮更靠后（拉长轴距）
-    const fwx = bar.x   + d * 16 * u;   // 前轮更靠前
+    const rwx = footR.x - d * 3 * bs;   // 后轮
+    const fwx = bar.x   + d * 6 * bs;   // 前轮
 
     const frameCol = highlight ?? 0x3a3a3a;
-    const frameSW  = Math.max(1.4, u * 10);   // 车架更粗
+    const frameSW  = Math.max(1.4, bs * 7);
 
     // 阴影
     g.fillStyle(0x000000, 0.06);
@@ -472,46 +472,46 @@ export class VehicleEntity extends Entity {
     this._wheel(g, fwx, wCy, wR);
     this._wheel(g, rwx, wCy, wR);
 
-    // ── 车架三角：座管 / 上管(座→把) / 下管 ──
+    // ── 车架三角：后摇臂 / 上管(座→把) / 下管 ──
     g.lineStyle(frameSW, frameCol, 1);
     g.lineBetween(rwx, wCy, hipX, hipY);
     g.lineBetween(hipX, hipY, bar.x, bar.y);
-    g.lineBetween(rwx, wCy, bar.x - d * 10 * u, bar.y + 6 * u);
+    g.lineBetween(rwx, wCy, bar.x - d * 8 * bs, bar.y + 5 * bs);
 
-    // ── 油箱块（座与车把之间，加厚）──
+    // ── 油箱块（座与车把之间）──
     g.fillStyle(0xe0e0dd, 1);
     g.beginPath();
-    g.moveTo(hipX,               hipY - 3 * u);
-    g.lineTo(bar.x - d * 14 * u, bar.y + 1 * u);
-    g.lineTo(bar.x - d * 14 * u, bar.y + 7 * u);
-    g.lineTo(hipX,               hipY + 6 * u);
+    g.moveTo(hipX,               hipY - 2 * bs);
+    g.lineTo(bar.x - d * 12 * bs, bar.y + 1 * bs);
+    g.lineTo(bar.x - d * 12 * bs, bar.y + 5 * bs);
+    g.lineTo(hipX,               hipY + 4 * bs);
     g.closePath();
     g.fillPath();
-    g.lineStyle(Math.max(0.8, u * 3), 0x2a2a2a, 0.85);
+    g.lineStyle(Math.max(0.8, bs * 3), 0x2a2a2a, 0.85);
     g.strokePath();
 
     // 座垫（深色，臀下）
-    g.lineStyle(Math.max(2, u * 7), 0x444444, 1);
-    g.lineBetween(hipX - d * 12 * u, hipY + 1 * u, hipX + d * 4 * u, hipY - 2 * u);
+    g.lineStyle(Math.max(2, bs * 6), 0x444444, 1);
+    g.lineBetween(hipX - d * 10 * bs, hipY + 1 * bs, hipX + d * 3 * bs, hipY - 1 * bs);
 
     // ── 前叉 ──
-    g.lineStyle(Math.max(1, u * 6), 0x555555, 1);
+    g.lineStyle(Math.max(1, bs * 5), 0x555555, 1);
     g.lineBetween(fwx, wCy, bar.x, bar.y);
 
-    // ── 车把握把（搭在前手处）──
-    g.lineStyle(Math.max(1.2, u * 7), 0x2a2a2a, 1);
-    g.lineBetween(bar.x - d * 5 * u, bar.y + 2 * u, bar.x + d * 6 * u, bar.y - 3 * u);
+    // ── 车把握把 ──
+    g.lineStyle(Math.max(1.2, bs * 6), 0x2a2a2a, 1);
+    g.lineBetween(bar.x - d * 4 * bs, bar.y + 2 * bs, bar.x + d * 5 * bs, bar.y - 3 * bs);
 
     // ── 排气管（后轮低处）──
-    g.lineStyle(Math.max(0.8, u * 5), 0x888888, 0.6);
-    g.lineBetween(hipX - d * 8 * u, hipY + 8 * u, rwx + d * wR * 0.6, wCy + wR * 0.4);
+    g.lineStyle(Math.max(0.8, bs * 4), 0x888888, 0.6);
+    g.lineBetween(hipX - d * 6 * bs, hipY + 6 * bs, rwx + d * wR * 0.6, wCy + wR * 0.4);
 
-    // ── 踏板块（双脚下）──
-    g.lineStyle(Math.max(1.5, u * 5), 0x2a2a2a, 1);
-    g.lineBetween(footF.x - d * 2 * u, footF.y, footF.x + d * 3 * u, footF.y);
-    g.lineBetween(footR.x - d * 2 * u, footR.y, footR.x + d * 3 * u, footR.y);
+    // ── 踏板块 ──
+    g.lineStyle(Math.max(1.5, bs * 4), 0x2a2a2a, 1);
+    g.lineBetween(footF.x - d * 2 * bs, footF.y, footF.x + d * 3 * bs, footF.y);
+    g.lineBetween(footR.x - d * 2 * bs, footR.y, footR.x + d * 3 * bs, footR.y);
 
-    // ── 骑手（最后画，人压在车上；放大前大小，贴合接触点）──
+    // ── 骑手（最后画，放大前大小，坐在座垫上；车身 3× 故人相对偏小）──
     if (this._sr) {
       this._sr.draw(g, 'mobike', 0, hipX, hipY, riderScale, d, 0x1a1a1a, 1);
     }
