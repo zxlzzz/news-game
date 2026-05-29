@@ -713,9 +713,9 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  /** 斑马线左起 X（只保留一组，NPC 横穿时对齐其中间） */
+  /** 斑马线中心 X（横向条纹，NPC 横穿时对齐此 X） */
   static crosswalkStarts() {
-    return [];
+    return [350];
   }
 
   // ─── 路面纹理：仅少量低调沥青补丁矩形（不画椭圆，避免与井盖混淆） ──────────
@@ -731,20 +731,21 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
+  // 横向斑马线：cx 为中心 X，5 条白色水平矩形均匀分布于马路纵深，
+  // 近端条纹略高（1px 递增）模拟 2.5D 透视感。
   _drawCrosswalk(g, cx) {
-    const roadTop = FAR_Y  + 10;
-    const roadBot = NEAR_Y - 10;
-    g.fillStyle(0xffffff, 0.55);
-    for (let i = 0; i < 8; i++) {
-      const fx = cx + i * (8  + 12); // 远端：条宽8，间隔12
-      const nx = cx + i * (13 + 16); // 近端：条宽13，间隔16
-      g.beginPath();
-      g.moveTo(fx,      roadTop);
-      g.lineTo(fx + 8,  roadTop);
-      g.lineTo(nx + 13, roadBot);
-      g.lineTo(nx,      roadBot);
-      g.closePath();
-      g.fillPath();
+    const roadTop  = FAR_Y  + 5;   // 273
+    const roadBot  = NEAR_Y - 5;   // 328
+    const usable   = roadBot - roadTop;   // 55px
+    const count    = 5;
+    const step     = Math.floor(usable / (count * 2 - 1));   // 6px（条+间隔均等）
+    const cw       = 240;                 // 横向总宽度（约公交车身宽）
+    const x0       = Math.round(cx - cw / 2);
+    g.fillStyle(0xffffff, 0.68);
+    for (let i = 0; i < count; i++) {
+      const y  = roadTop + i * step * 2;
+      const sh = step - 1 + i;             // 远端 5px → 近端 9px，透视渐高
+      g.fillRect(x0, y, cw, sh);
     }
   }
 
