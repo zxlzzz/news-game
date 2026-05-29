@@ -13,10 +13,12 @@
  *   - 同一 NPC 同时只能有一个用户级 held modifier（非内部/非 trait）
  *   - held mod 到期后有 15~35s 冷却，冷却内不触发新动作
  *   - 全局上限：当前有动作的 NPC 比例超过 30% 时停止新增
+ *   - gesture 与 held 相互独立：各自单实例、各自冷却；gesture 播完即移除
  */
 
-import { HELD_POSES }  from './PoseRegistry.js';
-import { TRAIT_PROPS } from './PoseRegistry.js';
+import { HELD_POSES }   from './PoseRegistry.js';
+import { TRAIT_PROPS }  from './PoseRegistry.js';
+import { GESTURE_CLIPS } from './PoseRegistry.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -67,12 +69,52 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
     });
   }
 
-  // 4) 尝试触发新 held
-  //    条件：全局比例 < 30%；无冷却；当前无用户级 held；每帧至多触发一个
+  // 4) 尝试触发新 held（独立函数，其内部的早退不影响后续 gesture 处理）
+  _tryTriggerHeld(npc, heldDefs, globalHeldFrac);
+
+  // 5) gesture 推进（逐关键帧播放，播完置 _done）
+  for (const m of npc.modifiers) {
+    if (m.kind !== 'gesture' || !m.keyframes) continue;
+    // 空 keyframes 的占位 clip：立即结束，不产生位移
+    if (m.keyframes.length === 0) { m._done = true; continue; }
+    m.kfTimer -= dt;
+    if (m.kfTimer <= 0) {
+      if (++m.kfIdx >= m.keyframes.length) {
+        if (m.loop) {
+          m.kfIdx   = 0;
+          m.joints  = m.keyframes[0].joints;
+          m.kfTimer = m.keyframes[0].dur;
+        } else {
+          m._done = true;
+        }
+      } else {
+        m.joints  = m.keyframes[m.kfIdx].joints;
+        m.kfTimer = m.keyframes[m.kfIdx].dur;
+      }
+    }
+  }
+
+  // gesture 到期移除 + 触发冷却
+  let removedGesture = false;
+  npc.modifiers = npc.modifiers.filter(m => {
+    if (m.kind === 'gesture' && m._done) { removedGesture = true; return false; }
+    return !m._done;
+  });
+  if (removedGesture) npc._gestureCooldown = rand(8, 20);
+  if ((npc._gestureCooldown || 0) > 0) npc._gestureCooldown -= dt;
+
+  // 6) 尝试触发新 gesture（与 held 独立：单实例 + 冷却 + 适用状态 + 概率）
+  _tryTriggerGesture(npc, profile);
+}
+
+/**
+ * 按 profile.heldPoses 配置随机触发一个 held。
+ * 条件：全局比例 < 30%；无 held 冷却；当前无用户级 held；每帧至多触发一个。
+ */
+function _tryTriggerHeld(npc, heldDefs, globalHeldFrac) {
   if (globalHeldFrac >= 0.30) return;
   if ((npc._heldCooldown || 0) > 0) return;
-  const hasUserHeld = npc.modifiers.some(m => m.kind === 'held' && !m.id.startsWith('_'));
-  if (hasUserHeld) return;
+  if (npc.modifiers.some(m => m.kind === 'held' && !m.id.startsWith('_'))) return;
 
   const activeIds = new Set(npc.modifiers.map(m => m.id));
   for (const [name, def] of Object.entries(heldDefs)) {
@@ -92,18 +134,36 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
       break;
     }
   }
+}
 
-  // 5) gesture 推进（预留；GESTURE_CLIPS 为空，实际不执行）
-  for (const m of npc.modifiers) {
-    if (m.kind !== 'gesture' || !m.keyframes) continue;
-    if ((m.kfTimer -= dt) <= 0) {
-      if (++m.kfIdx >= m.keyframes.length) {
-        m._done = true; if (m.onDone) m.onDone(npc);
-      } else {
-        m.joints  = m.keyframes[m.kfIdx].joints;
-        m.kfTimer = m.keyframes[m.kfIdx].dur;
-      }
+/**
+ * 按 profile.gesturePoses 配置随机触发一个 gesture，进入播放队列。
+ * 条件：无冷却、当前无 gesture 在播、状态匹配、概率命中；每帧至多触发一个。
+ */
+function _tryTriggerGesture(npc, profile) {
+  const gestureDefs = profile.gesturePoses;
+  if (!gestureDefs) return;
+  if ((npc._gestureCooldown || 0) > 0) return;
+  if (npc.modifiers.some(m => m.kind === 'gesture')) return;
+
+  for (const [name, def] of Object.entries(gestureDefs)) {
+    if (!def.on.includes(npc.state)) continue;
+    if (def.traitRequired && !npc.traits.includes(def.traitRequired)) continue;
+    if (def.traitExcludes?.some(t => npc.traits.includes(t))) continue;
+    if (Math.random() < def.chance) {
+      const clip = GESTURE_CLIPS[name];
+      if (!clip) continue;
+      const kf0 = clip.keyframes?.[0];
+      npc.modifiers.push({
+        id: name, kind: 'gesture', priority: 20,
+        keyframes: clip.keyframes || [],
+        loop:      !!clip.loop,
+        kfIdx:     0,
+        kfTimer:   kf0 ? kf0.dur : 0,
+        joints:    kf0 ? { ...kf0.joints } : {},
+        _done:     false,
+      });
+      break;
     }
   }
-  npc.modifiers = npc.modifiers.filter(m => !m._done);
 }

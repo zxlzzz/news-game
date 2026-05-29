@@ -295,6 +295,9 @@ export class StreetScene extends Phaser.Scene {
     if (this.cursors.left.isDown)       cam.scrollX -= spd;
     else if (this.cursors.right.isDown) cam.scrollX += spd;
 
+    if (this.cursors.up.isDown)         cam.scrollY -= spd;
+    else if (this.cursors.down.isDown)  cam.scrollY += spd;
+
     // 取景框靠近屏幕边缘时自动滚动
     const vfc    = this.viewfinder.getCenter();
     const margin = 80;

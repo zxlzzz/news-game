@@ -41,6 +41,19 @@ const CROSS_ARM = {
   on: ['stand'], chance: 0.001, dur: [8, 20],
   traitExcludes: ['hold_bag', 'walk_dog'],
 };
+// 兜手 held pose：站立/逗留时双手插兜；持物/遛狗者排除（占位 pose，数据待填）
+const HANDS_IN_POCKET = {
+  on: ['stand', 'lean_wall', 'loiter'], chance: 0.0008, dur: [10, 25],
+  traitExcludes: ['hold_bag', 'walk_dog'],
+};
+
+// 路人共用的 gesture 触发表（占位 clip，触发条件合理即可，数据待工具填入）
+//   chance 为每帧触发概率；dur 由 clip 关键帧累计决定，无需在此声明
+const PED_GESTURES = {
+  check_watch: { on: ['walk', 'stand', 'loiter'], chance: 0.0010, traitExcludes: ['hold_bag', 'walk_dog'] },
+  stretch:     { on: ['stand', 'loiter'],          chance: 0.0008, traitExcludes: ['hold_bag', 'walk_dog'] },
+  wave:        { on: ['stand', 'loiter'],          chance: 0.0006 },
+};
 
 const PEDESTRIAN = {
   name: 'pedestrian',
@@ -52,8 +65,10 @@ const PEDESTRIAN = {
     phone_call: { on: ['walk', 'stand', 'sit_bench', 'loiter'], chance: 0.0008, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
+    hands_in_pocket: HANDS_IN_POCKET,
   },
-  spawnTraits: ['hold_bag'],
+  gesturePoses: PED_GESTURES,
+  spawnTraits: ['hold_bag', 'backpack', 'umbrella'],
   activities: ['talk', 'chess'],
   traits: {},
   cameraReaction: 'neutral',
@@ -72,6 +87,7 @@ const BUSINESSMAN = {
     phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall', 'loiter'], chance: 0.001, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
+    hands_in_pocket: HANDS_IN_POCKET,
   },
   socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
   loiterChance: 0.12,
@@ -92,6 +108,7 @@ const TOURIST = {
     phone_call: { on: ['walk', 'stand', 'loiter'], chance: 0.0008, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
+    hands_in_pocket: HANDS_IN_POCKET,
   },
   activities: ['talk', 'chess'],
   socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },

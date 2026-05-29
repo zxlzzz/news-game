@@ -14,9 +14,9 @@ const LANES = [
   { id: 'downbound', direction: -1, yRange: [roadY(0.62), roadY(0.90)], target: 3, entryX: WORLD_WIDTH + 200 },
 ];
 
-// 车型权重（bus 只走 -1 方向）
+// 车型权重（两个方向各有一座公交站，故两向都生成 bus）
 const WEIGHTS = {
-  '1':  { car: 5, taxi: 2, moto: 2 },
+  '1':  { car: 5, taxi: 2, moto: 2, bus: 1 },
   '-1': { car: 5, taxi: 2, moto: 2, bus: 1 },
 };
 
