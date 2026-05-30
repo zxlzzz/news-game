@@ -433,7 +433,7 @@ export class StreetScene extends Phaser.Scene {
 
       // 顶棚（在上，贴远端人行道下沿）
       const rX    = sx - FROOF_W / 2;  // 405
-      const roofT = ft - 12;           // 236 — 顶棚顶（远端人行道内）
+      const roofT = ft - 30;           // 236 — 顶棚顶（远端人行道内）
       g.fillStyle(0x686866, 1);
       g.fillRect(rX, roofT, FROOF_W, ROOF_H);
       g.lineStyle(1.6, 0x181818, 1);
@@ -447,7 +447,7 @@ export class StreetScene extends Phaser.Scene {
       g.lineBetween(sx + FPIL_X, pillarT, sx + FPIL_X, pillarB);
 
       // 长椅（棚下居中）
-      const benchY = pillarT + 5;           // 247
+      const benchY = pillarT + 15;           // 247
       g.fillStyle(0x565654, 1);
       g.fillRect(sx - 66, benchY, 132, 4);
       g.lineStyle(0.8, 0x181818, 0.7);
@@ -490,7 +490,7 @@ export class StreetScene extends Phaser.Scene {
 
       // 顶棚（顶边贴 NEAR_Y 路沿线）
       const rX    = sx - ROOF_W / 2;  // 1375
-      const roofT = ny;                // 333 — 贴路沿
+      const roofT = ny - 15;                // 333 — 贴路沿
       g.fillStyle(0x686866, 1);
       g.fillRect(rX, roofT, ROOF_W, ROOF_H);
       g.lineStyle(1.6, 0x181818, 1);
