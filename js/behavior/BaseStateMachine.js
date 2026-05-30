@@ -72,7 +72,8 @@ export function setState(npc, state, trigger = '?') {
   // 离开 loiter 时清理微行为遗留（朝向 + _loiter_micro modifier）
   if (prev === 'loiter' && state !== 'loiter') {
     npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
-    if (npc._loiterDir !== undefined) { npc.direction = npc._loiterDir; npc._loiterDir = undefined; }
+    if (npc._loiterDir !== undefined) npc.direction = npc._loiterDir;
+    npc._loiterDir = undefined;
   }
 
   // walk/run 恢复：从压栈中弹出被高优先级行为打断前的 walk mode
