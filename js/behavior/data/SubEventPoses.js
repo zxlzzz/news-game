@@ -3,7 +3,7 @@
 export const SUB_EVENT_POSES = {
   push: {
     aDelta: { r_hand: [55, -3], r_elbow: [8, -4], l_hand: [35, -2], l_elbow: [32, -4] },
-    bDelta: null,
+    bDelta: { r_hand: [-20, -15], r_elbow: [-5, -8], l_hand: [-20, -15], l_elbow: [-5, -8] },
   },
   give_item: {
     aDelta: { r_hand: [50, -3], r_elbow: [8, -3] },
