@@ -1,5 +1,5 @@
 // 参考帧（single.json F0）：
-//   r_hand[-10,-18]  l_hand[9,-19]  r_elbow[14,-11]  l_elbow[-14,-11]  head[-6,-55]
+//   r_hand[14,15]  l_hand[-14,14]  r_elbow[12,-10]  l_elbow[-11,-10]  head[-1,-63]
 export const SUB_EVENT_POSES = {
   push: {
     aDelta: { r_hand: [55, -3], r_elbow: [8, -4], l_hand: [35, -2], l_elbow: [32, -4] },

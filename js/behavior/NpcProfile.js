@@ -41,13 +41,13 @@ const CROSS_ARM = {
   on: ['stand'], chance: 0.001, dur: [8, 20],
   traitExcludes: ['hold_bag', 'walk_dog'],
 };
-// 兜手 held pose：站立/逗留时双手插兜；持物/遛狗者排除（占位 pose，数据待填）
+// 兜手 held pose：站立/逗留时双手插兜；持物/遛狗者排除
 const HANDS_IN_POCKET = {
   on: ['stand', 'lean_wall', 'loiter'], chance: 0.0008, dur: [10, 25],
   traitExcludes: ['hold_bag', 'walk_dog'],
 };
 
-// 路人共用的 gesture 触发表（占位 clip，触发条件合理即可，数据待工具填入）
+// 路人共用的 gesture 触发表
 //   chance 为每帧触发概率；dur 由 clip 关键帧累计决定，无需在此声明
 const PED_GESTURES = {
   check_watch: { on: ['walk', 'stand', 'loiter'], chance: 0.0010, traitExcludes: ['hold_bag', 'walk_dog'] },
