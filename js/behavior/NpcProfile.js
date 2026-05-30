@@ -33,26 +33,26 @@ const PED_ALLOWED = [
 
 // 抽烟 held pose：需 smoker trait；靠墙时概率翻倍
 const SMOKE = {
-  on: ['stand', 'lean_wall', 'sit_bench', 'loiter'], chance: 0.0008, dur: [15, 30],
+  on: ['stand', 'lean_wall', 'sit_bench', 'loiter'], chance: 0.0003, dur: [15, 30],
   traitRequired: 'smoker', chanceMultiplier: { lean_wall: 2.0 },
 };
 // 抱臂 held pose：stand 状态下偶尔交叉双臂；持包/遛狗者手已被占用，排除
 const CROSS_ARM = {
-  on: ['stand'], chance: 0.001, dur: [8, 20],
+  on: ['stand'], chance: 0.0004, dur: [8, 20],
   traitExcludes: ['hold_bag', 'walk_dog'],
 };
 // 兜手 held pose：站立/逗留时双手插兜；持物/遛狗者排除
 const HANDS_IN_POCKET = {
-  on: ['stand', 'lean_wall', 'loiter'], chance: 0.0008, dur: [10, 25],
+  on: ['stand', 'lean_wall', 'loiter'], chance: 0.0003, dur: [10, 25],
   traitExcludes: ['hold_bag', 'walk_dog'],
 };
 
 // 路人共用的 gesture 触发表
 //   chance 为每帧触发概率；dur 由 clip 关键帧累计决定，无需在此声明
 const PED_GESTURES = {
-  check_watch: { on: ['walk', 'stand', 'loiter'], chance: 0.0010, traitExcludes: ['hold_bag', 'walk_dog'] },
-  stretch:     { on: ['stand', 'loiter'],          chance: 0.0008, traitExcludes: ['hold_bag', 'walk_dog'] },
-  wave:        { on: ['stand', 'loiter'],          chance: 0.0006 },
+  check_watch: { on: ['walk', 'stand', 'loiter'], chance: 0.0004, traitExcludes: ['hold_bag', 'walk_dog'] },
+  stretch:     { on: ['stand', 'loiter'],          chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
+  wave:        { on: ['stand', 'loiter'],          chance: 0.0002 },
 };
 
 const PEDESTRIAN = {
@@ -61,8 +61,8 @@ const PEDESTRIAN = {
   allowedStates: PED_ALLOWED,
   transitions: PED_TRANSITIONS,
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.001, dur: [8, 30] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench', 'loiter'], chance: 0.0008, dur: [10, 25] },
+    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.0004, dur: [8, 30] },
+    phone_call: { on: ['walk', 'stand', 'sit_bench', 'loiter'], chance: 0.0003, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
@@ -84,8 +84,8 @@ const BUSINESSMAN = {
   name: 'businessman',
   activities: ['talk', 'use_vending'],
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.0015, dur: [8, 30] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall', 'loiter'], chance: 0.001, dur: [10, 25] },
+    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.0006, dur: [8, 30] },
+    phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall', 'loiter'], chance: 0.0004, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
@@ -105,8 +105,8 @@ const TOURIST = {
     stand: { walk: 0.68, sit_bench: 0.08, sit_ground: 0.07, squat: 0.02, lean_wall: 0.05, loiter: 0.10 },
   },
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'sit_ground', 'squat', 'loiter'], chance: 0.001, dur: [8, 30] },
-    phone_call: { on: ['walk', 'stand', 'loiter'], chance: 0.0008, dur: [10, 25] },
+    phone_look: { on: ['walk', 'stand', 'sit_ground', 'squat', 'loiter'], chance: 0.0004, dur: [8, 30] },
+    phone_call: { on: ['walk', 'stand', 'loiter'], chance: 0.0003, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
@@ -139,7 +139,7 @@ const CHESS_ONLOOKER = {
     sit_ground: { stand: 1.0 },
   },
   heldPoses: {
-    phone_look: { on: ['stand'], chance: 0.001, dur: [8, 25] },
+    phone_look: { on: ['stand'], chance: 0.0004, dur: [8, 25] },
     cross_arm:  CROSS_ARM,
   },
   activities: ['talk', 'chess_watch'],
