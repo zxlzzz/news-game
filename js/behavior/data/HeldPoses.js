@@ -6,6 +6,5 @@ export const HELD_POSES = {
   smoke:      { joints: { r_elbow: [20, -15], r_hand: [14, -40] } },
   // cross_arm.json（全骨架）→ 双手交叉胸前
   cross_arm:  { joints: { l_elbow: [-19, -14], l_hand: [4, -23], r_elbow: [19, -14], r_hand: [-5, -23] } },
-  // 占位：用 stick-puppet 工具 held pose 模式导出后填入
-  hands_in_pocket: { joints: { l_elbow: [0, 0], r_elbow: [0, 0], l_hand: [0, 0], r_hand: [0, 0] } },
+  hands_in_pocket: { joints: { l_elbow: [-14, -6], r_elbow: [14, -6], l_hand: [-8, 8], r_hand: [8, 8] } },
 };
