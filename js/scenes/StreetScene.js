@@ -61,7 +61,6 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_lie_bench',       'assets/animations/lie_bench.json');
     this.load.json('anim_get_up',          'assets/animations/get_up.json');
     this.load.json('anim_chess_onlookers', 'assets/animations/chess_onlookers.json');
-    this.load.json('anim_cross_arm',       'assets/animations/cross_arm.json');
     this.load.json('anim_mobike',          'assets/animations/mobike.json');
   }
 
@@ -102,7 +101,6 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('lie_bench',       this.cache.json.get('anim_lie_bench'));
     this.stickRenderer.loadAnimation('get_up',          this.cache.json.get('anim_get_up'));
     this.stickRenderer.loadAnimation('chess_onlookers', this.cache.json.get('anim_chess_onlookers'));
-    this.stickRenderer.loadAnimation('cross_arm',       this.cache.json.get('anim_cross_arm'));
     this.stickRenderer.loadAnimation('mobike',          this.cache.json.get('anim_mobike'));
 
     // 统一 Entity 管理器

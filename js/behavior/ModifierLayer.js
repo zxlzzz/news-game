@@ -22,6 +22,13 @@ import { GESTURE_CLIPS } from './PoseRegistry.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
+// 从扁平 keyframe（{dur, r_elbow:[...], ...}）提取关节 joints 对象（剔除 dur）
+function kfJoints(kf) {
+  const j = {};
+  for (const k in kf) { if (k !== 'dur') j[k] = kf[k]; }
+  return j;
+}
+
 /**
  * @param {object} npc
  * @param {object} profile
@@ -82,13 +89,13 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
       if (++m.kfIdx >= m.keyframes.length) {
         if (m.loop) {
           m.kfIdx   = 0;
-          m.joints  = m.keyframes[0].joints;
+          m.joints  = kfJoints(m.keyframes[0]);
           m.kfTimer = m.keyframes[0].dur;
         } else {
           m._done = true;
         }
       } else {
-        m.joints  = m.keyframes[m.kfIdx].joints;
+        m.joints  = kfJoints(m.keyframes[m.kfIdx]);
         m.kfTimer = m.keyframes[m.kfIdx].dur;
       }
     }
@@ -160,7 +167,7 @@ function _tryTriggerGesture(npc, profile) {
         loop:      !!clip.loop,
         kfIdx:     0,
         kfTimer:   kf0 ? kf0.dur : 0,
-        joints:    kf0 ? { ...kf0.joints } : {},
+        joints:    kf0 ? kfJoints(kf0) : {},
         _done:     false,
       });
       break;

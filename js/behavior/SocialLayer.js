@@ -15,6 +15,13 @@ import { SUB_EVENT_POSES, GESTURE_CLIPS } from './PoseRegistry.js';
 const rand   = (a, b) => a + Math.random() * (b - a);
 const chance = (p) => Math.random() < p;
 
+// 从扁平 gesture keyframe（{dur, r_elbow:[...], ...}）提取关节 joints（剔除 dur）
+function kfJoints(kf) {
+  const j = {};
+  for (const k in kf) { if (k !== 'dur') j[k] = kf[k]; }
+  return j;
+}
+
 const CHESS_WAIT_MS = 3500;
 
 // ─── TalkActivity 子事件配置 ──────────────────────────────────────────────────
@@ -465,7 +472,7 @@ class UsePropActivity extends Activity {
 
     if (this.frames[0]) {
       npc.modifiers.push({ id: '_use_prop', kind: 'held', priority: 20,
-        joints: { ...this.frames[0].joints }, timer: -1 });
+        joints: kfJoints(this.frames[0]), timer: -1 });
     }
   }
 
@@ -478,9 +485,9 @@ class UsePropActivity extends Activity {
       const kf  = this.frames[this.kfIdx];
       this.kfTimer = kf.dur;
       let mod = this.npc.modifiers.find(m => m.id === '_use_prop');
-      if (mod) mod.joints = { ...kf.joints };
+      if (mod) mod.joints = kfJoints(kf);
       else this.npc.modifiers.push({ id: '_use_prop', kind: 'held', priority: 20,
-        joints: { ...kf.joints }, timer: -1 });
+        joints: kfJoints(kf), timer: -1 });
     }
     return true;
   }

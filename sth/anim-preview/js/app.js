@@ -110,6 +110,13 @@ const GESTURES_DEF = Object.keys(GESTURE_CLIPS).map(key => ({
   clip:  GESTURE_CLIPS[key],
 }));
 
+// 从扁平 gesture keyframe（{dur, r_elbow:[...], ...}）提取关节 joints（剔除 dur）
+function _kfJoints(kf) {
+  const j = {};
+  for (const k in kf) { if (k !== 'dur') j[k] = kf[k]; }
+  return j;
+}
+
 // Animation Graph 节点位置（0~1 相对坐标）
 const GRAPH_POS = {
   walk:       [0.14, 0.10],  run:        [0.38, 0.06],
@@ -377,6 +384,7 @@ class NpcInstance {
   }
 
   // gesture modifier 逐关键帧推进（与游戏 ModifierLayer step5 一致），播完移除
+  // keyframe 为扁平格式（{dur, r_elbow:[...], ...}），_kfJoints 提取关节
   _advanceGestures(dt) {
     for (const m of this.modifiers) {
       if (m.kind !== 'gesture' || !m.keyframes) continue;
@@ -386,11 +394,11 @@ class NpcInstance {
         if (++m.kfIdx >= m.keyframes.length) {
           if (m.loop) {
             m.kfIdx = 0;
-            m.joints = { ...m.keyframes[0].joints };
+            m.joints = _kfJoints(m.keyframes[0]);
             m.kfTimer = m.keyframes[0].dur;
           } else { m._done = true; }
         } else {
-          m.joints = { ...m.keyframes[m.kfIdx].joints };
+          m.joints = _kfJoints(m.keyframes[m.kfIdx]);
           m.kfTimer = m.keyframes[m.kfIdx].dur;
         }
       }
@@ -412,7 +420,7 @@ class NpcInstance {
       loop:    !!clip.loop,
       kfIdx:   0,
       kfTimer: kf0 ? kf0.dur : 0,
-      joints:  kf0 ? { ...kf0.joints } : {},
+      joints:  kf0 ? _kfJoints(kf0) : {},
       _done:   false,
     });
   }
