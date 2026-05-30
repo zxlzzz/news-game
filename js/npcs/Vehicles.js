@@ -13,6 +13,7 @@ import { VehicleEntity }      from '../VehicleEntity.js';
 import { TrafficManager }     from '../behavior/TrafficManager.js';
 import { BusStop }            from '../behavior/BusStop.js';
 import { VehicleSpawner }     from '../behavior/VehicleSpawner.js';
+import { CyclistSpawner }     from '../behavior/CyclistSpawner.js';
 
 const FRAME = 0x2a2a2a;
 const SPOKE = 0x808080;
@@ -103,40 +104,12 @@ function drawEbike(g, n) {
   g.strokeRect(boxCx - boxW / 2, hip.y - boxH, boxW, boxH);
 }
 
-function _spawnCyclists(em, sr) {
-  // 远端非机动车道（dir +1，自行车上行）
-  // scale 限制避免轮子超出 20px 非机动车道
-  const cyclist1 = makeNPC(em, sr, {
-    x: 1350, y: bikeLaneFarY(0.5), animation: 'bike', direction:  1, speed: 110, vy: 0,
-    scale: 0.16,
-    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.05), maxY: bikeLaneFarY(0.95),
-    color: 0x0a2010, tags: ['cyclist', 'vehicle'],
-  });
-  cyclist1.drawExtra = drawBicycle;
-  cyclist1.steadyFoot = true;
-
-  // 近端非机动车道（dir -1，自行车下行）
-  const cyclist2 = makeNPC(em, sr, {
-    x: 1550, y: bikeLaneNearY(0.5), animation: 'bike', direction: -1, speed: 100, vy: 0,
-    scale: 0.18,
-    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneNearY(0.05), maxY: bikeLaneNearY(0.95),
-    color: 0x200a10, tags: ['cyclist', 'vehicle'],
-  });
-  cyclist2.drawExtra = drawBicycle;
-  cyclist2.steadyFoot = true;
-
-  // 远端非机动车道（dir +1，外卖电动车）
-  const ebiker = makeNPC(em, sr, {
-    x: 1450, y: bikeLaneFarY(0.5), animation: 'mobile', direction:  1, speed: 120, vy: 0,
-    scale: 0.16,
-    minX: worldX(0.05), maxX: worldX(0.975), minY: bikeLaneFarY(0.05), maxY: bikeLaneFarY(0.95),
-    color: 0x1a1000, tags: ['delivery', 'e-bike', 'vehicle'],
-  });
-  ebiker.drawExtra = drawEbike;
-}
-
 export function initVehicleSystem(em, sr) {
-  _spawnCyclists(em, sr);
+  // 非机动车道：动态出入场（初始铺满 + 越界剔除 + 密度补充）
+  const cyclistSpawner = new CyclistSpawner({
+    em, sr, draw: { bicycle: drawBicycle, ebike: drawEbike },
+  });
+  cyclistSpawner.spawnInitial();
 
   const rc  = roadY(0.5);
   const rh  = roadY(1.0) - roadY(0.5);

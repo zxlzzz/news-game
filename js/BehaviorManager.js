@@ -55,6 +55,34 @@ export class BehaviorManager {
         return true;
       },
     });
+
+    // 单人 Smart Object（自动贩卖机 / 垃圾桶）：行走中低概率发现附近空闲机器并前往
+    const registerSmartObjectRoute = (activityType, defaultChance, radius) => {
+      registerTransition({
+        from: 'walk', to: 'routing', priority: 10,
+        trigger: 'smart-object',
+        condition: (npc, env, profile) => {
+          if (npc._departing) return false;
+          if (!profile?.activities?.includes(activityType)) return false;
+          const p = profile.smartObjectChance?.[activityType] ?? defaultChance;
+          if (Math.random() > p) return false;
+          const found = env.findAvailableSlot(activityType, npc, radius);
+          if (!found) return false;
+          const { prop, slot } = found;
+          slot.reserved = npc.id;
+          npc._routeTarget = {
+            x: prop.x + slot.dx,
+            y: prop.y + slot.dy,
+            prop, slot,
+            abandonAfter: 25,
+            onArrive: (n) => sl.onSlotArrival(n, prop, slot),
+          };
+          return true;
+        },
+      });
+    };
+    registerSmartObjectRoute('use_vending', 0.002, 150);
+    registerSmartObjectRoute('use_trash',   0.002, 150);
   }
 
   /** 注册 NPC 并指定行为档案；返回该 NPC */

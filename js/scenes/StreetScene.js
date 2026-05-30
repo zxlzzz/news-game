@@ -307,7 +307,10 @@ export class StreetScene extends Phaser.Scene {
     // 行为状态机先决策（设状态/动画/速度/朝向），再由 EntityManager 推进位移与帧
     this.behaviorManager.update(delta);
     this.spawnManager.update(delta / 1000);
-    if (this.trafficManager) this.trafficManager.update(delta);
+    if (this.trafficManager) {
+      this.trafficManager.update(delta);
+      this.trafficManager.cyclistSpawner?.update(delta);
+    }
     this.entityManager.update(delta);
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
@@ -876,6 +879,12 @@ export class StreetScene extends Phaser.Scene {
       if (p.propType === 'sign') {
         const host = buildings.find(b => p.x >= b.x && p.x <= b.x + b.bWidth);
         if (host) cfg.y = BUILDING_BASE_Y - 8;
+      }
+      // 单人 Smart Object：自动贩卖机 / 垃圾桶，槽位在机器正面（偏下，朝镜头）
+      else if (p.propType === 'vending') {
+        cfg.smartDef = { activityType: 'use_vending', slots: [{ role: 'user', dx: 0, dy: 16 }] };
+      } else if (p.propType === 'trash') {
+        cfg.smartDef = { activityType: 'use_trash', slots: [{ role: 'user', dx: 0, dy: 12 }] };
       }
       this.entityManager.add(new PropEntity(cfg));
     }
