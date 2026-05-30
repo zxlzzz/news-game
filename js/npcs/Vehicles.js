@@ -126,5 +126,8 @@ export function initVehicleSystem(em, sr) {
   tm.spawner = new VehicleSpawner({ trafficManager: tm, dep, sr });
   tm.spawner.spawnInitial();
 
+  // 非机动车道动态出入场（每帧由 StreetScene 调 cyclistSpawner.update 维持密度）
+  tm.cyclistSpawner = cyclistSpawner;
+
   return tm;
 }
