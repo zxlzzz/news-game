@@ -894,20 +894,19 @@ function exportJSON() {
 }
 
 // ============================================
-// 导出 Held Pose / Trait —— 当前帧关节相对 defaultPose 的 delta
-//   held pose：导出全部关节的 delta（{ joints: { ... } }），可粘进 HeldPoses.js
-//   trait    ：仅导出左侧 l_elbow / l_hand 的 delta，可粘进 TraitProps.js
-// 仅 human 骨架适用；delta 为 0 的关节省略。
+// 导出 Held Pose / Trait —— 当前帧关节的绝对局部坐标
+//   游戏渲染（StickRenderer）对 modifier.joints 是「绝对替换」语义，故导出绝对坐标，
+//   与 gesture 导出一致，可直接粘进数据文件。
+//   held pose：导出指定关节的绝对坐标（{ joints: { ... } }），粘进 HeldPoses.js
+//   trait    ：仅导出左侧 l_elbow / l_hand 的绝对坐标，粘进 TraitProps.js
+// 仅 human 骨架适用。
 // ============================================
-function _poseDelta(jointNames) {
+function _poseAbs(jointNames) {
   const pose = frames[currentFrame];
-  const base = getSkeleton().defaultPose;
   const joints = {};
   for (const name of jointNames) {
-    if (!pose[name] || !base[name]) continue;
-    const dx = Math.round(pose[name].x - base[name].x);
-    const dy = Math.round(pose[name].y - base[name].y);
-    if (dx !== 0 || dy !== 0) joints[name] = [dx, dy];
+    if (!pose[name]) continue;
+    joints[name] = [Math.round(pose[name].x), Math.round(pose[name].y)];
   }
   return joints;
 }
@@ -923,13 +922,13 @@ function _emitData(obj, label) {
 
 function exportHeldPose() {
   if (getSkeleton() !== SKELETONS.human) { setInfo('Held Pose 仅支持 human 骨架'); return; }
-  _emitData({ joints: _poseDelta(getJointNames()) }, 'Held Pose');
+  _emitData({ joints: _poseAbs(getJointNames()) }, 'Held Pose');
 }
 
 function exportTrait() {
   if (getSkeleton() !== SKELETONS.human) { setInfo('Trait 仅支持 human 骨架'); return; }
   // trait 只动左侧手臂（右手保持自然），与 hold_bag/walk_dog 一致
-  _emitData({ joints: _poseDelta(['l_elbow', 'l_hand']) }, 'Trait');
+  _emitData({ joints: _poseAbs(['l_elbow', 'l_hand']) }, 'Trait');
 }
 
 // ============================================
