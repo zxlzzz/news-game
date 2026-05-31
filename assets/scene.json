@@ -43,11 +43,11 @@
     { "propType": "tree", "x": 1400, "y": 482, "width": 26, "height": 26, "tags": ["tree", "park", "greenery"] },
     { "propType": "tree", "x": 1880, "y": 494, "width": 30, "height": 30, "tags": ["tree", "park", "greenery"] },
 
-    { "propType": "trash", "x": 300,  "y": 228, "width": 12, "height": 14, "tags": ["trash-can", "street-furniture"] },
-    { "propType": "trash", "x": 1200, "y": 228, "width": 12, "height": 14, "tags": ["trash-can", "street-furniture"] },
-    { "propType": "trash", "x": 1650, "y": 228, "width": 12, "height": 14, "tags": ["trash-can", "street-furniture"] },
-    { "propType": "trash", "x": 340,  "y": 500, "width": 14, "height": 14, "tags": ["trash-can", "street-furniture"] },
-    { "propType": "trash", "x": 1620, "y": 500, "width": 14, "height": 14, "tags": ["trash-can", "street-furniture"] },
+    { "propType": "trash", "x": 300,  "y": 228, "width": 12, "height": 14, "tags": ["trash-can", "street-furniture"], "smartDef": { "activityType": "use_trash", "slots": [{ "role": "user", "dx": 0, "dy": 12 }] } },
+    { "propType": "trash", "x": 1200, "y": 228, "width": 12, "height": 14, "tags": ["trash-can", "street-furniture"], "smartDef": { "activityType": "use_trash", "slots": [{ "role": "user", "dx": 0, "dy": 12 }] } },
+    { "propType": "trash", "x": 1650, "y": 228, "width": 12, "height": 14, "tags": ["trash-can", "street-furniture"], "smartDef": { "activityType": "use_trash", "slots": [{ "role": "user", "dx": 0, "dy": 12 }] } },
+    { "propType": "trash", "x": 340,  "y": 500, "width": 14, "height": 14, "tags": ["trash-can", "street-furniture"], "smartDef": { "activityType": "use_trash", "slots": [{ "role": "user", "dx": 0, "dy": 12 }] } },
+    { "propType": "trash", "x": 1620, "y": 500, "width": 14, "height": 14, "tags": ["trash-can", "street-furniture"], "smartDef": { "activityType": "use_trash", "slots": [{ "role": "user", "dx": 0, "dy": 12 }] } },
 
     { "propType": "newsrack", "x": 630,  "y": 230, "width": 14, "height": 18, "tags": ["newsstand", "news", "street-furniture"] },
     { "propType": "newsrack", "x": 1420, "y": 230, "width": 14, "height": 18, "tags": ["newsstand", "news", "street-furniture"] },
@@ -88,8 +88,8 @@
     { "propType": "sign", "x": 1810, "y": 224, "width": 22, "height": 14, "color": "#cc6622", "tags": ["sign", "food"] },
     { "propType": "sign", "x": 1920, "y": 224, "width": 22, "height": 14, "color": "#cc3322", "tags": ["sign", "retail"] },
 
-    { "propType": "vending",    "x": 700,  "y": 244, "width": 16, "height": 28, "tags": ["vending", "street-furniture"] },
-    { "propType": "vending",    "x": 1560, "y": 244, "width": 16, "height": 28, "tags": ["vending", "street-furniture"] },
+    { "propType": "vending",    "x": 700,  "y": 244, "width": 16, "height": 28, "tags": ["vending", "street-furniture"], "smartDef": { "activityType": "use_vending", "slots": [{ "role": "user", "dx": 0, "dy": 16 }] } },
+    { "propType": "vending",    "x": 1560, "y": 244, "width": 16, "height": 28, "tags": ["vending", "street-furniture"], "smartDef": { "activityType": "use_vending", "slots": [{ "role": "user", "dx": 0, "dy": 16 }] } },
     { "propType": "phonebooth", "x": 1150, "y": 244, "width": 16, "height": 34, "tags": ["phonebooth", "street-furniture"] },
     { "propType": "mailbox",    "x": 360,  "y": 244, "width": 12, "height": 18, "tags": ["mailbox", "street-furniture"] },
 
@@ -100,5 +100,60 @@
     { "propType": "bench", "x": 1500, "y": 425, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] },
     { "propType": "bench", "x": 245,  "y": 423, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] },
     { "propType": "bench", "x": 1950, "y": 434, "width": 30, "height": 12, "facing": "down", "tags": ["bench", "park", "park-furniture"] }
-  ]
+  ],
+  "layout": {
+    "sidewalkTrees": [
+      { "x": 172,  "y": 241, "r": 8 },
+      { "x": 328,  "y": 239, "r": 7 },
+      { "x": 482,  "y": 238, "r": 9 },
+      { "x": 792,  "y": 242, "r": 8 },
+      { "x": 948,  "y": 239, "r": 7 },
+      { "x": 1102, "y": 238, "r": 8 },
+      { "x": 1258, "y": 240, "r": 10 },
+      { "x": 1412, "y": 242, "r": 8 },
+      { "x": 1568, "y": 240, "r": 7 },
+      { "x": 1722, "y": 238, "r": 8 },
+      { "x": 1878, "y": 239, "r": 10 }
+    ],
+    "parkTrees": [
+      { "x": 120,  "y": 370, "r": 12 },
+      { "x": 300,  "y": 370, "r": 11 },
+      { "x": 470,  "y": 370, "r": 11 },
+      { "x": 980,  "y": 370, "r": 15 },
+      { "x": 1160, "y": 370, "r": 9 },
+      { "x": 1640, "y": 370, "r": 9 },
+      { "x": 1820, "y": 370, "r": 14 },
+      { "x": 1960, "y": 370, "r": 11 }
+    ],
+    "clouds": [
+      { "x": 180,  "y": 38, "scale": 1.0 },
+      { "x": 560,  "y": 26, "scale": 0.8 },
+      { "x": 1000, "y": 46, "scale": 1.15 },
+      { "x": 1500, "y": 30, "scale": 0.9 },
+      { "x": 1840, "y": 40, "scale": 1.0 }
+    ],
+    "crosswalks": [
+      { "x": 350 }
+    ],
+    "roadStripeSpacing": 56,
+    "roadStripeLength": 28,
+    "chessPlaza":  { "cx": 620, "cy": 443, "rx": 130, "ry": 56 },
+    "miniPark":    { "cx": 1150, "cy": 453, "rx": 210, "ry": 78 },
+    "busStops": [
+      {
+        "x": 500, "direction": 1,
+        "roofW": 190, "roofH": 6,
+        "pillarOffset": 85,
+        "benchW": 132,
+        "bayW": 202, "bayD": 9
+      },
+      {
+        "x": 1500, "direction": -1,
+        "roofW": 250, "roofH": 6,
+        "pillarOffset": 112,
+        "benchW": 176,
+        "bayW": 266, "bayD": 9
+      }
+    ]
+  }
 }
