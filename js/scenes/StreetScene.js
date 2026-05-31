@@ -950,7 +950,7 @@ export class StreetScene extends Phaser.Scene {
       {
         id:           'busstop_far',
         target:       3,
-        yRange:       [SIDEWALK_FAR_Y - 20, FAR_Y],
+        yRange:       [SIDEWALK_FAR_Y - 20, BIKE_LANE_FAR_TOP],
         xRange:       [380, 620],
         exitTypes:    ['building', 'edge'],
         npcTypes:     ['pedestrian', 'businessman'],
@@ -960,7 +960,7 @@ export class StreetScene extends Phaser.Scene {
       {
         id:           'busstop_near',
         target:       3,
-        yRange:       [NEAR_Y, NEAR_Y + 40],
+        yRange:       [PARK_TOP, PARK_TOP + 25],
         xRange:       [1380, 1620],
         exitTypes:    ['edge'],
         npcTypes:     ['pedestrian', 'tourist'],

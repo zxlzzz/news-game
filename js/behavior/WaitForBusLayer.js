@@ -8,11 +8,11 @@
  */
 
 import { setState } from './BaseStateMachine.js';
-import { FAR_Y, NEAR_Y, SIDEWALK_FAR_Y } from '../SceneConfig.js';
+import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../SceneConfig.js';
 
 const WAIT_ZONES = [
-  { stopDir: +1, xRange: [380, 620],  yRange: [SIDEWALK_FAR_Y - 20, FAR_Y] },
-  { stopDir: -1, xRange: [1380, 1620], yRange: [NEAR_Y, NEAR_Y + 40] },
+  { stopDir: +1, xRange: [380, 620],  yRange: [SIDEWALK_FAR_Y - 20, BIKE_LANE_FAR_TOP] },
+  { stopDir: -1, xRange: [1380, 1620], yRange: [PARK_TOP, PARK_TOP + 25] },
 ];
 
 const WAIT_STATES = new Set(['walk', 'stand', 'loiter']);
@@ -113,7 +113,7 @@ export class WaitForBusLayer {
     stop._waiters = [];
 
     const doorX = bus.x - bus.direction * bus._dims().L * bus.scale * 0.52;
-    const doorY = stop.direction > 0 ? FAR_Y - 5 : NEAR_Y + 5;
+    const doorY = stop.direction > 0 ? BIKE_LANE_FAR_TOP : PARK_TOP;
 
     for (const npc of waiters) {
       npc._boardingBus = bus;

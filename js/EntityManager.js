@@ -76,7 +76,7 @@ export class EntityManager {
    */
   draw(g) {
     const visible = this.entities.filter(e => e.alive && e.visible);
-    visible.sort((a, b) => a.y - b.y);
+    visible.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
     for (const e of visible) {
       e.draw(g);
     }
