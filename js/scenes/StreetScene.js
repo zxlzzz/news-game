@@ -32,6 +32,9 @@ import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
 import { spawnAthletes }    from '../npcs/Athletes.js';
 import { initVehicleSystem } from '../npcs/Vehicles.js';
+import { NpcPropManager }   from '../props/NpcPropManager.js';
+import { WaitForBusLayer }  from '../behavior/WaitForBusLayer.js';
+import { setState }         from '../behavior/BaseStateMachine.js';
 
 export class StreetScene extends Phaser.Scene {
   constructor() {
@@ -61,7 +64,6 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('anim_lie_bench',       'assets/animations/lie_bench.json');
     this.load.json('anim_get_up',          'assets/animations/get_up.json');
     this.load.json('anim_chess_onlookers', 'assets/animations/chess_onlookers.json');
-    this.load.json('anim_cross_arm',       'assets/animations/cross_arm.json');
     this.load.json('anim_mobike',          'assets/animations/mobike.json');
   }
 
@@ -102,7 +104,6 @@ export class StreetScene extends Phaser.Scene {
     this.stickRenderer.loadAnimation('lie_bench',       this.cache.json.get('anim_lie_bench'));
     this.stickRenderer.loadAnimation('get_up',          this.cache.json.get('anim_get_up'));
     this.stickRenderer.loadAnimation('chess_onlookers', this.cache.json.get('anim_chess_onlookers'));
-    this.stickRenderer.loadAnimation('cross_arm',       this.cache.json.get('anim_cross_arm'));
     this.stickRenderer.loadAnimation('mobike',          this.cache.json.get('anim_mobike'));
 
     // 统一 Entity 管理器
@@ -295,6 +296,9 @@ export class StreetScene extends Phaser.Scene {
     if (this.cursors.left.isDown)       cam.scrollX -= spd;
     else if (this.cursors.right.isDown) cam.scrollX += spd;
 
+    if (this.cursors.up.isDown)         cam.scrollY -= spd;
+    else if (this.cursors.down.isDown)  cam.scrollY += spd;
+
     // 取景框靠近屏幕边缘时自动滚动
     const vfc    = this.viewfinder.getCenter();
     const margin = 80;
@@ -304,12 +308,17 @@ export class StreetScene extends Phaser.Scene {
     // 行为状态机先决策（设状态/动画/速度/朝向），再由 EntityManager 推进位移与帧
     this.behaviorManager.update(delta);
     this.spawnManager.update(delta / 1000);
-    if (this.trafficManager) this.trafficManager.update(delta);
+    if (this.trafficManager) {
+      this.trafficManager.update(delta);
+      this.trafficManager.cyclistSpawner?.update(delta);
+    }
     this.entityManager.update(delta);
+    if (this.propManager) this.propManager.update(delta);
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
     this.entityGraphics.clear();
     this.entityManager.draw(this.entityGraphics);
+    if (this.propManager) this.propManager.draw(this.entityGraphics);
 
     this.vfGraphics.clear();
     this.viewfinder.draw(this.vfGraphics);
@@ -427,7 +436,7 @@ export class StreetScene extends Phaser.Scene {
 
       // 顶棚（在上，贴远端人行道下沿）
       const rX    = sx - FROOF_W / 2;  // 405
-      const roofT = ft - 12;           // 236 — 顶棚顶（远端人行道内）
+      const roofT = ft - 30;           // 236 — 顶棚顶（远端人行道内）
       g.fillStyle(0x686866, 1);
       g.fillRect(rX, roofT, FROOF_W, ROOF_H);
       g.lineStyle(1.6, 0x181818, 1);
@@ -441,7 +450,7 @@ export class StreetScene extends Phaser.Scene {
       g.lineBetween(sx + FPIL_X, pillarT, sx + FPIL_X, pillarB);
 
       // 长椅（棚下居中）
-      const benchY = pillarT + 5;           // 247
+      const benchY = pillarT + 15;           // 247
       g.fillStyle(0x565654, 1);
       g.fillRect(sx - 66, benchY, 132, 4);
       g.lineStyle(0.8, 0x181818, 0.7);
@@ -484,7 +493,7 @@ export class StreetScene extends Phaser.Scene {
 
       // 顶棚（顶边贴 NEAR_Y 路沿线）
       const rX    = sx - ROOF_W / 2;  // 1375
-      const roofT = ny;                // 333 — 贴路沿
+      const roofT = ny - 15;                // 333 — 贴路沿
       g.fillStyle(0x686866, 1);
       g.fillRect(rX, roofT, ROOF_W, ROOF_H);
       g.lineStyle(1.6, 0x181818, 1);
@@ -874,6 +883,12 @@ export class StreetScene extends Phaser.Scene {
         const host = buildings.find(b => p.x >= b.x && p.x <= b.x + b.bWidth);
         if (host) cfg.y = BUILDING_BASE_Y - 8;
       }
+      // 单人 Smart Object：自动贩卖机 / 垃圾桶，槽位在机器正面（偏下，朝镜头）
+      else if (p.propType === 'vending') {
+        cfg.smartDef = { activityType: 'use_vending', slots: [{ role: 'user', dx: 0, dy: 16 }] };
+      } else if (p.propType === 'trash') {
+        cfg.smartDef = { activityType: 'use_trash', slots: [{ role: 'user', dx: 0, dy: 12 }] };
+      }
       this.entityManager.add(new PropEntity(cfg));
     }
   }
@@ -900,9 +915,15 @@ export class StreetScene extends Phaser.Scene {
 
     spawnPedestrians(em, sr, bm);
     spawnChess(em, sr, bm);
-    spawnDogWalker(em, sr, bm);
+    this.propManager = new NpcPropManager(em);
+    spawnDogWalker(em, sr, bm, this.propManager);
     spawnAthletes(em, sr, bm);
     this.trafficManager = initVehicleSystem(em, sr);
+
+    // ── WaitForBusLayer：公交站乘客系统 ────────────────────────────────────
+    if (this.trafficManager.busStops.length > 0) {
+      bm.waitForBusLayer = new WaitForBusLayer(this.trafficManager.busStops);
+    }
 
     // ── SpawnManager：NPC 离场后按区域密度自动补充 ──────────────────────────
     // 公园漫游带：PARK_TOP+16..PARK_BOTTOM-8（与 Pedestrians.js 的 ROAM_Y0/Y1 一致）
@@ -925,6 +946,26 @@ export class StreetScene extends Phaser.Scene {
         xRange:    [50, WORLD_WIDTH - 50],
         exitTypes: ['edge'],                           // 公园只从边缘进
         npcTypes:  ['pedestrian', 'tourist'],
+      },
+      {
+        id:           'busstop_far',
+        target:       3,
+        yRange:       [SIDEWALK_FAR_Y - 20, BIKE_LANE_FAR_TOP],
+        xRange:       [380, 620],
+        exitTypes:    ['building', 'edge'],
+        npcTypes:     ['pedestrian', 'businessman'],
+        isBusWaiter:  true,
+        busStopDir:   +1,
+      },
+      {
+        id:           'busstop_near',
+        target:       3,
+        yRange:       [PARK_TOP, PARK_TOP + 25],
+        xRange:       [1380, 1620],
+        exitTypes:    ['edge'],
+        npcTypes:     ['pedestrian', 'tourist'],
+        isBusWaiter:  true,
+        busStopDir:   -1,
       },
     ];
 
@@ -953,21 +994,38 @@ function _makeSpawnFn(bm, em, sr, roamY0, roamY1) {
     };
 
     if (zone.id === 'park') {
-      // 公园：可自由漫游的二维区域
       opts.roamZone = {
         x0: zone.xRange[0], x1: zone.xRange[1],
         y0: roamY0,         y1: roamY1,
       };
       opts.minY = roamY0;
       opts.maxY = roamY1;
+    } else if (zone.isBusWaiter) {
+      if (zone.busStopDir > 0) opts.scaleMul = 0.65;
     } else {
-      // 人行道：建筑前窄带，缩小比例（远景感）
       opts.scaleMul = 0.65;
     }
 
-    // 入场 NPC 给予 65s 的负计时器，确保路由结束前（最长 60s）不触发离场
     const npc = spawnOnePedestrian(npcType, em, sr, bm, { x: entry.x, y: posY }, opts);
     npc._ageTimer = -65;
+
+    if (zone.isBusWaiter && bm.waitForBusLayer) {
+      const stop = bm.waitForBusLayer._stops.find(s => s.direction === zone.busStopDir);
+      if (stop && stop._waiters.length < stop.maxWaiters) {
+        npc._routeTarget = {
+          x: zone.xRange[0] + Math.random() * (zone.xRange[1] - zone.xRange[0]),
+          y: zone.yRange[0] + Math.random() * (zone.yRange[1] - zone.yRange[0]),
+          abandonAfter: 60,
+          onArrive: (n) => {
+            n._routeTarget = null;
+            bm.waitForBusLayer.addWaiterDirect(n, stop);
+          },
+        };
+        setState(npc, 'routing', 'entry_bus_waiter');
+        return npc;
+      }
+    }
+
     return npc;
   };
 }

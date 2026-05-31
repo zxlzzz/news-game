@@ -29,6 +29,7 @@
 
 import { dlog }        from './DebugLog.js';
 import { LOITER_POSES } from './PoseRegistry.js';
+import { PARK_TOP }     from '../SceneConfig.js';
 import {
   tickWalkMode, pickModeTarget, onPathArrival,
   setWalkMode, popWalkMode, isRoadZone, modeWander,
@@ -67,12 +68,22 @@ export function setState(npc, state, trigger = '?') {
   if (npc._bench && state !== 'sit_bench' && state !== 'lie_bench') {
     npc._bench._occupiedBy = null;
     npc._bench = null;
+    npc._sortY = undefined;
+  }
+
+  // 离开 lean_wall 时释放墙面靠点
+  if (npc._wallSpot && state !== 'lean_wall') {
+    const ws = npc._wallSpot;
+    if (ws.side === 'left') ws.building._leanLeft = null;
+    else ws.building._leanRight = null;
+    npc._wallSpot = null;
   }
 
   // 离开 loiter 时清理微行为遗留（朝向 + _loiter_micro modifier）
   if (prev === 'loiter' && state !== 'loiter') {
     npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
-    if (npc._loiterDir !== undefined) { npc.direction = npc._loiterDir; npc._loiterDir = undefined; }
+    if (npc._loiterDir !== undefined) npc.direction = npc._loiterDir;
+    npc._loiterDir = undefined;
   }
 
   // walk/run 恢复：从压栈中弹出被高优先级行为打断前的 walk mode
@@ -147,11 +158,10 @@ function _resolveTimeout(npc, envQuery, profile) {
     if (!bench) return 'stand';    // 无空椅 → 回退站立
     bench._occupiedBy = npc.id;
     npc._bench = bench;
-    // 对齐到椅面（椅面 = bench.y - seatH；bench._drawBench 中椅面顶固定 -12px）
-    // sit_bench anchorMode='hip'，body 关节落在 npc.y，对齐椅面即臀部落座正确。
     const seatY = bench.y - (bench.seatH ?? 12);
     npc.x = Math.max(npc.minX, Math.min(npc.maxX, bench.x));
     npc.y = Math.max(npc.minY, Math.min(npc.maxY, seatY));
+    npc._sortY = bench.y + 1;
     return 'sit_bench';
   }
   // lie_bench anchorMode='back'（无竖向偏移），sit_bench anchorMode='hip'（body 关节落 npc.y）。
@@ -175,6 +185,21 @@ function _resolveTimeout(npc, envQuery, profile) {
     npc.x = Math.max(npc.minX, Math.min(npc.maxX,
       npc._bench.x - Math.round(bodyX * sc * dir)
     ));
+    npc._sortY = npc._bench.y + 1;
+  }
+  if (next === 'lean_wall') {
+    const spot = envQuery.nearestFreeWallSpot(npc, 60);
+    if (!spot) return 'stand';
+    if (spot.side === 'left') spot.building._leanLeft = npc.id;
+    else spot.building._leanRight = npc.id;
+    npc._wallSpot = { building: spot.building, side: spot.side };
+    npc.x = Math.max(npc.minX, Math.min(npc.maxX, spot.x));
+    npc.direction = spot.facing;
+    return 'lean_wall';
+  }
+  if (next === 'sit_ground') {
+    if (npc.y < PARK_TOP) return 'stand';
+    return 'sit_ground';
   }
   return next;
 }

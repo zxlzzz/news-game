@@ -894,6 +894,44 @@ function exportJSON() {
 }
 
 // ============================================
+// 导出 Held Pose / Trait —— 当前帧关节的绝对局部坐标
+//   游戏渲染（StickRenderer）对 modifier.joints 是「绝对替换」语义，故导出绝对坐标，
+//   与 gesture 导出一致，可直接粘进数据文件。
+//   held pose：导出指定关节的绝对坐标（{ joints: { ... } }），粘进 HeldPoses.js
+//   trait    ：仅导出左侧 l_elbow / l_hand 的绝对坐标，粘进 TraitProps.js
+// 仅 human 骨架适用。
+// ============================================
+function _poseAbs(jointNames) {
+  const pose = frames[currentFrame];
+  const joints = {};
+  for (const name of jointNames) {
+    if (!pose[name]) continue;
+    joints[name] = [Math.round(pose[name].x), Math.round(pose[name].y)];
+  }
+  return joints;
+}
+
+function _emitData(obj, label) {
+  const ta = document.getElementById('jsonInput');
+  ta.value = JSON.stringify(obj, null, 2);
+  navigator.clipboard.writeText(ta.value).then(
+    () => setInfo(`${label} 已导出并复制`),
+    () => setInfo(`${label} 已导出到文本框`)
+  );
+}
+
+function exportHeldPose() {
+  if (getSkeleton() !== SKELETONS.human) { setInfo('Held Pose 仅支持 human 骨架'); return; }
+  _emitData({ joints: _poseAbs(getJointNames()) }, 'Held Pose');
+}
+
+function exportTrait() {
+  if (getSkeleton() !== SKELETONS.human) { setInfo('Trait 仅支持 human 骨架'); return; }
+  // trait 只动左侧手臂（右手保持自然），与 hold_bag/walk_dog 一致
+  _emitData({ joints: _poseAbs(['l_elbow', 'l_hand']) }, 'Trait');
+}
+
+// ============================================
 // 导出 Sprite Sheet
 // ============================================
 function exportSpriteSheet() {
@@ -959,6 +997,7 @@ window.app = {
   addFrame, dupFrame, delFrame, resetPose, togglePlay,
   interpolateFrames, handleImageUpload,
   loadJSON, exportJSON, exportSpriteSheet,
+  exportHeldPose, exportTrait,
   moveFrameLeft, moveFrameRight, switchSkeleton,
   toggleGestureMode,
 };

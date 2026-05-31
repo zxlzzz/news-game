@@ -18,10 +18,10 @@ const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const ROAM_Y0 = PARK_TOP + 16;          // 349
 const ROAM_Y1 = PARK_BOTTOM - 8;        // 492
 
-// 沿 X 铺开的若干漫游区（相互重叠，覆盖整条街），每区放 2 人
-const ROAM_ZONES = [
-  [40, 360], [300, 660], [600, 960], [900, 1260], [1200, 1560], [1500, 1900],
-];
+// 公园漫游 X 范围（与 SpawnManager / StreetScene spawnZones.park 保持一致）
+const ROAM_X0 = 50;
+const ROAM_X1 = 1950;
+const PARK_ROAM_COUNT = 12;
 
 const TYPES = [
   { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
@@ -89,19 +89,16 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
 
 export function spawnPedestrians(em, sr, bm) {
   // ── 公园漫游者（高密度，二维自由游走） ───────────────────────────────────
-  for (const [x0, x1] of ROAM_ZONES) {
-    for (let k = 0; k < 2; k++) {
-      const t = pick(TYPES);
-      const n = spawnOnePedestrian(t.npcType, em, sr, bm,
-        { x: rand(x0, x1), y: rand(ROAM_Y0, ROAM_Y1) },
-        {
-          minX: x0, maxX: x1, minY: ROAM_Y0, maxY: ROAM_Y1,
-          roamZone: { x0, x1, y0: ROAM_Y0, y1: ROAM_Y1 },
-        }
-      );
-      // 初始批量生成：错开各人离场时间，避免同时走光
-      n._ageTimer = rand(0, n._lifespan);
-    }
+  for (let k = 0; k < PARK_ROAM_COUNT; k++) {
+    const t = pick(TYPES);
+    const n = spawnOnePedestrian(t.npcType, em, sr, bm,
+      { x: rand(ROAM_X0, ROAM_X1), y: rand(ROAM_Y0, ROAM_Y1) },
+      {
+        minX: ROAM_X0, maxX: ROAM_X1, minY: ROAM_Y0, maxY: ROAM_Y1,
+        roamZone: { x0: ROAM_X0, x1: ROAM_X1, y0: ROAM_Y0, y1: ROAM_Y1 },
+      }
+    );
+    n._ageTimer = rand(0, n._lifespan);
   }
 
   // ── 前人行道行人（窄带横向行走；高 smokerChance 便于演示靠墙抽烟） ──────────

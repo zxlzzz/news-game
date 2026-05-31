@@ -10,10 +10,17 @@
 
 import { setState }       from './BaseStateMachine.js';
 import { dlog }           from './DebugLog.js';
-import { SUB_EVENT_POSES } from './PoseRegistry.js';
+import { SUB_EVENT_POSES, GESTURE_CLIPS } from './PoseRegistry.js';
 
 const rand   = (a, b) => a + Math.random() * (b - a);
 const chance = (p) => Math.random() < p;
+
+// 从扁平 gesture keyframe（{dur, r_elbow:[...], ...}）提取关节 joints（剔除 dur）
+function kfJoints(kf) {
+  const j = {};
+  for (const k in kf) { if (k !== 'dur') j[k] = kf[k]; }
+  return j;
+}
 
 const CHESS_WAIT_MS = 3500;
 
@@ -434,6 +441,69 @@ class DogWalkActivity extends Activity {
   }
 }
 
+// ─── UsePropActivity — 单人使用道具（自动贩卖机 / 垃圾桶），播放手势后离开 ──────
+// 到位即触发（单槽），用 GESTURE_CLIPS 的关键帧驱动 _use_prop modifier，播完结束。
+class UsePropActivity extends Activity {
+  constructor(id, type, npc, prop, clipName, tag) {
+    super(id, type);
+    this.npc  = npc;
+    this.prop = prop;
+    this.join(npc, 'user');
+    this.occupy(prop);
+
+    const clip   = GESTURE_CLIPS[clipName];
+    this.frames  = (clip && clip.keyframes) ? clip.keyframes : [];
+    this.kfIdx   = 0;
+    this.kfTimer = this.frames[0] ? this.frames[0].dur : 0;
+    this._tag    = tag;
+
+    // 站定面向道具，清非 trait modifier
+    npc.state      = 'stand';
+    npc.animation  = 'single';
+    npc.speed      = 0;
+    npc.vy         = 0;
+    npc.playOnce   = false;
+    npc.animDone   = false;
+    npc.frameIndex = 0;
+    npc.frameTimer = 0;
+    npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
+    npc.direction  = (prop.x >= npc.x) ? 1 : -1;
+    npc._extraTags = [tag];
+
+    if (this.frames[0]) {
+      npc.modifiers.push({ id: '_use_prop', kind: 'held', priority: 20,
+        joints: kfJoints(this.frames[0]), timer: -1 });
+    }
+  }
+
+  update(dt) {
+    if (!this.npc.alive) return false;
+    if (this.frames.length === 0) return false;   // 空 clip：立即结束
+    this.kfTimer -= dt;
+    if (this.kfTimer <= 0) {
+      if (++this.kfIdx >= this.frames.length) return false;   // 播完
+      const kf  = this.frames[this.kfIdx];
+      this.kfTimer = kf.dur;
+      let mod = this.npc.modifiers.find(m => m.id === '_use_prop');
+      if (mod) mod.joints = kfJoints(kf);
+      else this.npc.modifiers.push({ id: '_use_prop', kind: 'held', priority: 20,
+        joints: kfJoints(kf), timer: -1 });
+    }
+    return true;
+  }
+
+  interrupt(reason) { super.interrupt(reason); }
+
+  destroy() {
+    if (this.npc.alive) {
+      this.npc.modifiers = this.npc.modifiers.filter(m => m.id !== '_use_prop');
+      this.npc._extraTags = null;
+      setState(this.npc, 'walk', 'activity-end');
+    }
+    super.destroy();
+  }
+}
+
 // ─── SocialLayer 管理器 ───────────────────────────────────────────────────────
 export class SocialLayer {
   /** @param {EnvironmentQuery} envQuery */
@@ -494,6 +564,10 @@ export class SocialLayer {
       const owner = participants.find(p => p.role === 'owner').npc;
       const dog   = participants.find(p => p.role === 'dog').npc;
       act = new DogWalkActivity(id, owner, dog);
+    } else if (type === 'use_vending') {
+      act = new UsePropActivity(id, type, participants[0].npc, props[0], 'use_vending', 'buying');
+    } else if (type === 'use_trash') {
+      act = new UsePropActivity(id, type, participants[0].npc, props[0], 'use_trash', 'throwing_trash');
     }
     if (act) {
       this.activities.push(act);

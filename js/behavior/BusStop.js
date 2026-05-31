@@ -2,20 +2,24 @@
  * BusStop — 公交站 Smart Object
  *
  * 公交车进入探测范围后 VehicleStateMachine 调用 arrive(bus) 触发停站；
- * waitTime 毫秒后 depart() 自动释放，公交车进入 accelerating 状态。
+ * 所有 boarding NPC 上完（或 8s 超时）后 depart() 释放，公交车进入 accelerating。
+ * 无等车乘客时按 waitRange 计时正常发车。
  */
 export class BusStop {
   constructor(cfg) {
     this.x         = cfg.x;
-    this.direction = cfg.direction;          // +1 或 -1，只响应对应方向的公交
-    // 停站时长 ms：可给固定 waitTime，或给区间 waitRange=[min,max]（每次靠站随机）
+    this.direction = cfg.direction;
     this.waitTime  = cfg.waitTime ?? 4000;
     this.waitRange = cfg.waitRange ?? null;
     this._occupant = null;
     this._timer    = 0;
+
+    this._waiters       = [];
+    this._boardingQueue = [];
+    this._boardingTimer = 0;
+    this.maxWaiters     = cfg.maxWaiters ?? 8;
   }
 
-  /** 本次停站时长（有区间则随机取；防御性排序，避免 [大,小] 出负数） */
   _rollWait() {
     if (this.waitRange) {
       const a = Math.min(this.waitRange[0], this.waitRange[1]);
@@ -25,30 +29,48 @@ export class BusStop {
     return this.waitTime;
   }
 
-  /** 公交车到站时由 VehicleStateMachine 调用 */
   arrive(bus) {
-    if (this._occupant) return false;   // 已有车停靠
+    if (this._occupant) return false;
     this._occupant = bus;
-    this._timer    = this._rollWait();
     bus.doorOpen   = true;
+    this._boardingTimer = 0;
+
+    if (this._waiters.length > 0) {
+      this._timer = Infinity;
+      if (this.onBoarding) this.onBoarding(bus, this);
+    } else {
+      this._timer = this._rollWait();
+    }
     return true;
   }
 
-  /** 每帧由 TrafficManager 调用（delta ms） */
   update(delta) {
     if (!this._occupant) return;
+
+    this._boardingTimer += delta;
+
+    if (this._boardingQueue.length > 0) {
+      if (this._boardingTimer >= 8000) this.depart();
+      return;
+    }
+
+    if (this._timer === Infinity) {
+      this.depart();
+      return;
+    }
+
     this._timer -= delta;
     if (this._timer <= 0) this.depart();
   }
 
-  /** 时间到或强制离站 */
   depart() {
     if (!this._occupant) return;
     this._occupant.doorOpen        = false;
-    this._occupant._busStopDone    = true;   // 通知状态机可以走了
-    // 离站冷却：驶离一段距离前不再被任何站点吸引，杜绝刚 depart 又被同站重新拉停的死循环
-    this._occupant._busStopCooldown = 2500;  // ms
+    this._occupant._busStopDone    = true;
+    this._occupant._busStopCooldown = 2500;
     this._occupant = null;
     this._timer    = 0;
+    this._boardingQueue = [];
+    this._boardingTimer = 0;
   }
 }

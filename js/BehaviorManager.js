@@ -19,6 +19,7 @@ import { tickBaseState, setState, registerTransition, triggerDeparture } from '.
 import { tickModifiers }        from './behavior/ModifierLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
 import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
+import { WaitForBusLayer }      from './behavior/WaitForBusLayer.js';
 import { refreshDebugFlag }     from './behavior/DebugLog.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -30,7 +31,8 @@ export class BehaviorManager {
     this.envQuery    = new EnvironmentQuery(entityManager);
     this.socialLayer = new SocialLayer(this.envQuery);
     this.cameraLayer = new CameraReactionLayer();
-    this.npcs        = [];
+    this.npcs            = [];
+    this.waitForBusLayer = null;
 
     // 注入 Smart Object routing 转换：行走中的 NPC 低概率发现空棋桌并前往
     const sl = this.socialLayer;
@@ -55,6 +57,34 @@ export class BehaviorManager {
         return true;
       },
     });
+
+    // 单人 Smart Object（自动贩卖机 / 垃圾桶）：行走中低概率发现附近空闲机器并前往
+    const registerSmartObjectRoute = (activityType, defaultChance, radius) => {
+      registerTransition({
+        from: 'walk', to: 'routing', priority: 10,
+        trigger: 'smart-object',
+        condition: (npc, env, profile) => {
+          if (npc._departing) return false;
+          if (!profile?.activities?.includes(activityType)) return false;
+          const p = profile.smartObjectChance?.[activityType] ?? defaultChance;
+          if (Math.random() > p) return false;
+          const found = env.findAvailableSlot(activityType, npc, radius);
+          if (!found) return false;
+          const { prop, slot } = found;
+          slot.reserved = npc.id;
+          npc._routeTarget = {
+            x: prop.x + slot.dx,
+            y: prop.y + slot.dy,
+            prop, slot,
+            abandonAfter: 25,
+            onArrive: (n) => sl.onSlotArrival(n, prop, slot),
+          };
+          return true;
+        },
+      });
+    };
+    registerSmartObjectRoute('use_vending', 0.002, 150);
+    registerSmartObjectRoute('use_trash',   0.002, 150);
   }
 
   /** 注册 NPC 并指定行为档案；返回该 NPC */
@@ -74,7 +104,10 @@ export class BehaviorManager {
     // 1) Activity 层（tick 所有 Activity + 尝试新配对）
     this.socialLayer.update(this.npcs, dt);
 
-    // 2) 自由 NPC（未被 Activity 锁定）走基础状态机 + 叠加动作
+    // 2) WaitForBusLayer 扫描（有 busStops 时才启用）
+    if (this.waitForBusLayer) this.waitForBusLayer.update(this.npcs, dt);
+
+    // 3) 自由 NPC（未被 Activity 锁定）走基础状态机 + 叠加动作
     // 计算全局 held 比例，传入 ModifierLayer 做频率上限
     const heldCount = this.npcs.filter(n =>
       n.alive && n.modifiers?.some(m => m.kind === 'held' && !m.id.startsWith('_'))
@@ -84,8 +117,15 @@ export class BehaviorManager {
     for (const npc of this.npcs) {
       if (!npc.alive || npc._activity) continue;
 
+      // 等车 NPC：由 WaitForBusLayer 管理状态（stand/loiter 交替）
+      // boarding 中的 NPC（routing 状态）仍需 tickBaseState 驱动 steerRoam
+      if (npc._waitingBusStop && npc.state !== 'routing') {
+        if (this.waitForBusLayer) this.waitForBusLayer.tickWaiter(npc, dt);
+        continue;
+      }
+
       // 年龄计时 + 离场触发（仅对有 lifespan 的 NPC 生效，_departing 后不再计时）
-      if (!npc._departing && npc._lifespan != null) {
+      if (!npc._departing && npc._lifespan != null && !npc._waitingBusStop) {
         npc._ageTimer = (npc._ageTimer || 0) + dt;
         if (npc._ageTimer >= npc._lifespan) {
           triggerDeparture(npc, this.exitRegistry);
@@ -97,13 +137,13 @@ export class BehaviorManager {
       if (!npc._departing) tickModifiers(npc, npc._profile, dt, globalHeldFrac);
     }
 
-    // 3) NPC 间分离：行走中的两人靠太近时互相推开，避免重叠穿模
+    // 4) NPC 间分离：行走中的两人靠太近时互相推开，避免重叠穿模
     this._separate(dt);
 
-    // 4) 镜头反应层（依赖社会稳定度系统，本次留空）
+    // 5) 镜头反应层（依赖社会稳定度系统，本次留空）
     // this.cameraLayer.update(this.npcs, viewfinder, stability, dt);
 
-    // 5) 定期清理死亡 NPC，防止数组无限增长（每 10s 一次）
+    // 6) 定期清理死亡 NPC，防止数组无限增长（每 10s 一次）
     this._pruneTimer = (this._pruneTimer ?? 0) - dt;
     if (this._pruneTimer <= 0) {
       this.npcs = this.npcs.filter(n => n.alive);

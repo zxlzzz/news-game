@@ -102,6 +102,10 @@
         <button onclick="app.loadJSON()" class="primary">载入</button>
         <button onclick="app.exportJSON()">导出</button>
       </div>
+      <div class="btn-row">
+        <button onclick="app.exportHeldPose()" title="当前帧全部关节相对默认姿势的 delta，可粘进 HeldPoses.js">导出 Held Pose</button>
+        <button onclick="app.exportTrait()" title="仅左侧 l_elbow/l_hand 的 delta，可粘进 TraitProps.js">导出 Trait</button>
+      </div>
     </div>
   </div>
 </div>

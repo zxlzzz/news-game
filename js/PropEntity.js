@@ -122,40 +122,32 @@ export class PropEntity extends Entity {
   // ─── 路灯：远端（细线，灯臂朝路，加高） ───────────────────────────────────
   _drawLampFar(g) {
     const { x, y } = this;
-    // 灯柱（加高约 1.7×）
     g.lineStyle(1.1, 0x6a6a6a, 0.95);
-    g.lineBetween(x, y + 16, x, y - 28);
-    // 灯臂
+    g.lineBetween(x, y + 16, x, y - 35);          // 原 y-28 → y-48
     g.lineStyle(0.9, 0x6a6a6a, 0.9);
-    g.lineBetween(x, y - 28, x + 18, y - 12);
-    // 灯罩（描边方块，非实心）
+    g.lineBetween(x, y - 35, x + 18, y - 32);     // 原 y-28→y-48, y-12→y-32
     g.fillStyle(0xf0f0f0, 1);
-    g.fillRect(x + 15, y - 14, 7, 7);
+    g.fillRect(x + 15, y - 34, 7, 7);             // 原 y-14 → y-34
     g.lineStyle(0.8, 0x202020, 1);
-    g.strokeRect(x + 15, y - 14, 7, 7);
-    // 灯柱底座
+    g.strokeRect(x + 15, y - 34, 7, 7);           // 同上
     g.fillStyle(0x4a4a4a, 1);
-    g.fillRect(x - 1.5, y + 14, 4, 4);
+    g.fillRect(x - 1.5, y + 14, 4, 4);            // 底座不动
   }
 
-  // ─── 路灯：近端（粗线，灯臂朝路，加高） ───────────────────────────────────
   _drawLampNear(g) {
     const { x, y } = this;
     g.lineStyle(2.8, 0x1f1f1f, 1);
-    g.lineBetween(x, y - 36, x, y + 12);
+    g.lineBetween(x, y - 66, x, y + 12);          // 原 y-36 → y-66
     g.lineStyle(2.2, 0x1f1f1f, 1);
-    g.lineBetween(x, y - 36, x - 24, y - 24);
-    // 灯罩（线条几何，非实心圆）
+    g.lineBetween(x, y - 66, x - 24, y - 54);     // 原 y-36→y-66, y-24→y-54
     g.fillStyle(0xfafafa, 1);
-    g.fillRect(x - 29, y - 28, 10, 10);
+    g.fillRect(x - 29, y - 58, 10, 10);           // 原 y-28 → y-58
     g.lineStyle(1.8, 0x101010, 1);
-    g.strokeRect(x - 29, y - 28, 10, 10);
-    // 罩内灯光横线（暗示亮）
+    g.strokeRect(x - 29, y - 58, 10, 10);         // 同上
     g.lineStyle(0.8, 0xa0a0a0, 0.85);
-    g.lineBetween(x - 27, y - 23, x - 21, y - 23);
-    // 底座
+    g.lineBetween(x - 27, y - 53, x - 21, y - 53); // 原 y-23 → y-53
     g.fillStyle(0x101010, 1);
-    g.fillRect(x - 3, y + 10, 6, 5);
+    g.fillRect(x - 3, y + 10, 6, 5);              // 底座不动
   }
 
   // ─── 长椅：线条 ──────────────────────────────────────────────────────────

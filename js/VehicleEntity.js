@@ -15,6 +15,7 @@ export class VehicleEntity extends Entity {
     this.currentSpeed    = this.speed;
     this.baseSpeed       = this.speed;
     this.doorOpen        = false;
+    this.facingSide      = cfg.facingSide || 'near';
     this.stateMachine    = null;
     this._sr             = null;
     this._laneY          = this.y;
@@ -395,25 +396,25 @@ export class VehicleEntity extends Entity {
       g.strokeRect(wx, winTop, winW, winH);
     }
 
-    // 车门（偏后位置）
+    // 车门（偏后位置）——仅 facingSide='near' 时渲染（门朝玩家侧）
     const doorCX = x - d * halfL * 0.52;
-    const doorW = ls * 0.055;
-    const doorH = hs * 0.42;
-    const doorTop = bodyBot - doorH - hs * 0.02;
-    const doorLeft = doorCX - doorW / 2;
-    g.fillStyle(0xd8d8d4, 0.85);
-    g.fillRect(doorLeft, doorTop, doorW, doorH);
-    g.lineStyle(Math.max(0.8, s * 3), 0x2a2a2a, 0.65);
-    g.strokeRect(doorLeft, doorTop, doorW, doorH);
-    // 门窗
-    g.fillStyle(0xbcbcbc, 0.6);
-    g.fillRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.8, doorH * 0.48);
-    g.lineStyle(Math.max(0.4, s * 1.5), 0x2a2a2a, 0.4);
-    g.strokeRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.8, doorH * 0.48);
-    // 开门缝（停站时显示）
-    if (this.doorOpen) {
-      g.lineStyle(2, 0x1a1a1a, 1);
-      g.lineBetween(doorCX, doorTop, doorCX, doorTop + doorH);
+    if (this.facingSide !== 'far') {
+      const doorW = ls * 0.055;
+      const doorH = hs * 0.42;
+      const doorTop = bodyBot - doorH - hs * 0.02;
+      const doorLeft = doorCX - doorW / 2;
+      g.fillStyle(0xd8d8d4, 0.85);
+      g.fillRect(doorLeft, doorTop, doorW, doorH);
+      g.lineStyle(Math.max(0.8, s * 3), 0x2a2a2a, 0.65);
+      g.strokeRect(doorLeft, doorTop, doorW, doorH);
+      g.fillStyle(0xbcbcbc, 0.6);
+      g.fillRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.8, doorH * 0.48);
+      g.lineStyle(Math.max(0.4, s * 1.5), 0x2a2a2a, 0.4);
+      g.strokeRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.8, doorH * 0.48);
+      if (this.doorOpen) {
+        g.lineStyle(2, 0x1a1a1a, 1);
+        g.lineBetween(doorCX, doorTop, doorCX, doorTop + doorH);
+      }
     }
 
     // 头灯

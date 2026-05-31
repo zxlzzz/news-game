@@ -20,7 +20,7 @@
 
 import { PROFILES as _PROFILES }
   from '../../../js/behavior/NpcProfile.js';
-import { HELD_POSES, LOITER_POSES, SUB_EVENT_POSES, TRAIT_PROPS }
+import { HELD_POSES, LOITER_POSES, SUB_EVENT_POSES, TRAIT_PROPS, GESTURE_CLIPS }
   from '../../../js/behavior/PoseRegistry.js';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -84,11 +84,38 @@ const SUB_EVENT_META = {
   point_at:  { label: '指向', icon: '👆', desc: 'A 指，B 侧头' },
 };
 
-// Trait 芯片定义（smoker 是内部游戏 spawn trait，工具中不暴露；smoke 动作由 Mods 面板添加）
-const TRAITS_DEF = [
-  { key: 'hold_bag', label: '👜 拿包',  desc: '左手拿包（永久 modifier）' },
-  { key: 'walk_dog', label: '🐕 遛狗',  desc: '左手牵绳遛狗（永久 modifier）' },
-];
+// Trait 芯片：动态从 TRAIT_PROPS（游戏源）生成，新增 trait 无需改工具。
+// 已知 trait 用友好 label，其余自动用 key 生成。
+const TRAIT_LABELS = {
+  hold_bag: '👜 拿包',
+  walk_dog: '🐕 遛狗',
+  backpack: '🎒 背包',
+  umbrella: '☂ 雨伞',
+};
+const TRAITS_DEF = Object.keys(TRAIT_PROPS).map(key => ({
+  key,
+  label: TRAIT_LABELS[key] ?? `🏷 ${key}`,
+  desc:  '永久 modifier（左侧关节）',
+}));
+
+// Gesture 芯片：动态从 GESTURE_CLIPS（游戏源）生成
+const GESTURE_LABELS = {
+  check_watch: '⌚ 看表',
+  stretch:     '🙆 伸展',
+  wave:        '👋 挥手',
+};
+const GESTURES_DEF = Object.keys(GESTURE_CLIPS).map(key => ({
+  key,
+  label: GESTURE_LABELS[key] ?? `✨ ${key}`,
+  clip:  GESTURE_CLIPS[key],
+}));
+
+// 从扁平 gesture keyframe（{dur, r_elbow:[...], ...}）提取关节 joints（剔除 dur）
+function _kfJoints(kf) {
+  const j = {};
+  for (const k in kf) { if (k !== 'dur') j[k] = kf[k]; }
+  return j;
+}
 
 // Animation Graph 节点位置（0~1 相对坐标）
 const GRAPH_POS = {
@@ -212,7 +239,7 @@ export const LOITER_POSES = ${serFlatPoses(editedPoses.loiter)};
 //   r_hand[-10,-18]  l_hand[9,-19]  r_elbow[14,-11]  l_elbow[-14,-11]  head[-6,-55]
 export const SUB_EVENT_POSES = ${serSocial(editedPoses.social)};
 
-export const GESTURE_CLIPS = {};
+export const GESTURE_CLIPS = ${JSON.stringify(GESTURE_CLIPS, null, 2)};
 `;
 }
 
@@ -344,6 +371,7 @@ class NpcInstance {
   }
 
   advanceFrame(dt, speed) {
+    this._advanceGestures(dt * speed);
     if (!this.animData) return;
     const fps = (this.animData.fps || 8) * speed;
     this.frameAcc += dt * fps;
@@ -353,6 +381,48 @@ class NpcInstance {
       this.frame    = (this.frame + steps) % fc;
       this.frameAcc -= steps;
     }
+  }
+
+  // gesture modifier 逐关键帧推进（与游戏 ModifierLayer step5 一致），播完移除
+  // keyframe 为扁平格式（{dur, r_elbow:[...], ...}），_kfJoints 提取关节
+  _advanceGestures(dt) {
+    for (const m of this.modifiers) {
+      if (m.kind !== 'gesture' || !m.keyframes) continue;
+      if (m.keyframes.length === 0) { m._done = true; continue; }
+      m.kfTimer -= dt;
+      if (m.kfTimer <= 0) {
+        if (++m.kfIdx >= m.keyframes.length) {
+          if (m.loop) {
+            m.kfIdx = 0;
+            m.joints = _kfJoints(m.keyframes[0]);
+            m.kfTimer = m.keyframes[0].dur;
+          } else { m._done = true; }
+        } else {
+          m.joints = _kfJoints(m.keyframes[m.kfIdx]);
+          m.kfTimer = m.keyframes[m.kfIdx].dur;
+        }
+      }
+    }
+    if (this.modifiers.some(m => m._done)) {
+      this.modifiers = this.modifiers.filter(m => !m._done);
+    }
+  }
+
+  // 添加一个 gesture modifier（工具预览：实时播放，播完自动消失）
+  addGesture(gestureKey) {
+    const clip = GESTURE_CLIPS[gestureKey];
+    if (!clip) return;
+    if (this.modifiers.some(m => m.kind === 'gesture')) return; // 单实例
+    const kf0 = clip.keyframes?.[0];
+    this.modifiers.push({
+      id: gestureKey, kind: 'gesture', priority: 20,
+      keyframes: clip.keyframes || [],
+      loop:    !!clip.loop,
+      kfIdx:   0,
+      kfTimer: kf0 ? kf0.dur : 0,
+      joints:  kf0 ? _kfJoints(kf0) : {},
+      _done:   false,
+    });
   }
 
   stepFrame(delta) {
@@ -616,6 +686,47 @@ class PreviewCanvas {
       if (!frameData[jn]) continue;
       ctx.beginPath(); ctx.arc(jx(jn), jy(jn), 4, 0, Math.PI*2); ctx.fill();
     }
+
+    // NPC props (phone / cigarette / bag)
+    const activeHeld = npc.modifiers.filter(m => m.kind === 'held').map(m => m.id);
+    const activeTrait = npc.modifiers.filter(m => m.kind === 'trait').map(m => m.id);
+    if (activeHeld.includes('phone_look') || activeHeld.includes('phone_call')) {
+      const hx = jx('r_hand'), hy = jy('r_hand');
+      const pw = 10 * s, ph = 16 * s;
+      ctx.fillStyle = '#2a2a2a'; ctx.globalAlpha = 0.9;
+      ctx.fillRect(hx - pw / 2, hy - ph, pw, ph);
+      ctx.fillStyle = '#8a8a8a'; ctx.globalAlpha = 0.6;
+      ctx.fillRect(hx - pw / 2 + 1 * s, hy - ph + 2 * s, pw - 2 * s, ph - 4 * s);
+      ctx.globalAlpha = 1;
+    }
+    if (activeHeld.includes('smoke')) {
+      const hx = jx('r_hand'), hy = jy('r_hand');
+      const len = 16 * s;
+      const tipX = hx + d * len, tipY = hy - 3 * s;
+      ctx.strokeStyle = '#e8e0d0'; ctx.lineWidth = Math.max(1, 2 * s);
+      ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(tipX, tipY); ctx.stroke();
+      ctx.fillStyle = '#cc4400'; ctx.globalAlpha = 0.9;
+      ctx.beginPath(); ctx.arc(tipX, tipY, Math.max(1.2, 2 * s), 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    if (activeTrait.includes('hold_bag')) {
+      const hx = jx('l_hand'), hy = jy('l_hand');
+      const bw = 24 * s, bh = 32 * s;
+      ctx.fillStyle = '#4a4a4a'; ctx.globalAlpha = 0.85;
+      ctx.fillRect(hx - bw / 2, hy, bw, bh);
+      ctx.strokeStyle = '#3a3a3a'; ctx.lineWidth = Math.max(0.8, 1.4 * s);
+      ctx.globalAlpha = 0.9; ctx.strokeRect(hx - bw / 2, hy, bw, bh);
+      ctx.globalAlpha = 1;
+    }
+    if (activeTrait.includes('walk_dog')) {
+      ctx.strokeStyle = '#6a6a6a'; ctx.lineWidth = Math.max(0.8, 1.2 * s);
+      ctx.globalAlpha = 0.85;
+      const hx = jx('l_hand'), hy = jy('l_hand');
+      ctx.beginPath(); ctx.moveTo(hx, hy);
+      ctx.lineTo(hx + d * 30 * s, hy + 10 * s);
+      ctx.stroke(); ctx.globalAlpha = 1;
+    }
+
     ctx.restore();
   }
 
@@ -745,6 +856,15 @@ class AnimatorDebugger {
     if (!poseDef) return;
     npc.modifiers.push({ id: heldKey, kind: 'held', priority: 10, joints: poseDef.joints, timer: -1 });
     this._renderPanel(); this._renderFrame();
+  }
+
+  // 添加 gesture 并实时播放预览（播完由 _advanceGestures 自动移除）
+  addGesture(npcId, gestureKey) {
+    const npc = this._byId(npcId); if (!npc) return;
+    npc.addGesture(gestureKey);
+    this._renderPanel(); this._renderFrame();
+    // 确保播放运行，gesture 才能逐帧推进并自动消失
+    if (!this.pb.playing) this.pb.toggle();
   }
 
   removeModifier(npcId, modId) {
@@ -1116,6 +1236,11 @@ class AnimatorDebugger {
                 <button class="sm green" onclick="app.addHeldModifier(${npc.id},'${key}')">+</button>
               </div>`).join('')}
               ${!availHeld.length ? '<span style="color:var(--fg3);font-size:9px">—</span>' : ''}
+              ${GESTURES_DEF.length ? '<div style="font-size:9px;color:var(--fg3);margin:5px 0 3px">▶ 手势(播放)</div>' : ''}
+              ${GESTURES_DEF.map(gd => `<div style="display:flex;align-items:center;gap:3px;margin-bottom:2px">
+                <span style="flex:1;font-size:9px">${gd.label}</span>
+                <button class="sm blue" title="实时播放预览，播完自动消失" onclick="app.addGesture(${npc.id},'${gd.key}')">▶</button>
+              </div>`).join('')}
             </div>
             <div>
               <div style="font-size:9px;color:var(--fg3);margin-bottom:3px">激活</div>
