@@ -19,6 +19,7 @@ export class CigaretteProp extends NpcProp {
   deactivate() {
     super.deactivate();
     this.smoke.active = false;
+    this.smoke.particles.length = 0;
   }
 
   update(dt) {
@@ -26,7 +27,7 @@ export class CigaretteProp extends NpcProp {
     const anchor = this.npc.getAnchor('hand_r');
     const s = this.npc.scale;
     const d = this.npc.direction;
-    const tipX = anchor.x + d * 6 * s;
+    const tipX = anchor.x + d * 8 * s;
     const tipY = anchor.y - 2 * s;
     this.smoke.x = tipX;
     this.smoke.y = tipY;
