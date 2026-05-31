@@ -29,6 +29,7 @@
 
 import { dlog }        from './DebugLog.js';
 import { LOITER_POSES } from './PoseRegistry.js';
+import { PARK_TOP }     from '../SceneConfig.js';
 import {
   tickWalkMode, pickModeTarget, onPathArrival,
   setWalkMode, popWalkMode, isRoadZone, modeWander,
@@ -67,6 +68,14 @@ export function setState(npc, state, trigger = '?') {
   if (npc._bench && state !== 'sit_bench' && state !== 'lie_bench') {
     npc._bench._occupiedBy = null;
     npc._bench = null;
+  }
+
+  // 离开 lean_wall 时释放墙面靠点
+  if (npc._wallSpot && state !== 'lean_wall') {
+    const ws = npc._wallSpot;
+    if (ws.side === 'left') ws.building._leanLeft = null;
+    else ws.building._leanRight = null;
+    npc._wallSpot = null;
   }
 
   // 离开 loiter 时清理微行为遗留（朝向 + _loiter_micro modifier）
@@ -176,6 +185,20 @@ function _resolveTimeout(npc, envQuery, profile) {
     npc.x = Math.max(npc.minX, Math.min(npc.maxX,
       npc._bench.x - Math.round(bodyX * sc * dir)
     ));
+  }
+  if (next === 'lean_wall') {
+    const spot = envQuery.nearestFreeWallSpot(npc, 60);
+    if (!spot) return 'stand';
+    if (spot.side === 'left') spot.building._leanLeft = npc.id;
+    else spot.building._leanRight = npc.id;
+    npc._wallSpot = { building: spot.building, side: spot.side };
+    npc.x = Math.max(npc.minX, Math.min(npc.maxX, spot.x));
+    npc.direction = spot.facing;
+    return 'lean_wall';
+  }
+  if (next === 'sit_ground') {
+    if (npc.y < PARK_TOP) return 'stand';
+    return 'sit_ground';
   }
   return next;
 }

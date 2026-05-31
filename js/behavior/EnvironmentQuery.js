@@ -50,6 +50,37 @@ export class EnvironmentQuery {
     return false;
   }
 
+  /**
+   * 最近的空闲墙面靠点（建筑边缘左侧或右侧）。
+   * 每栋楼有 2 个靠点（左边缘 / 右边缘），各容纳 1 人。
+   * 返回 { building, side:'left'|'right', x, facing } 或 null。
+   */
+  nearestFreeWallSpot(npc, radius = 60) {
+    if (npc.y > NEAR_Y) return null;
+    let best = null, bestD = radius;
+    for (const e of this.em.entities) {
+      if (e.bWidth === undefined) continue;
+      if (!e._leanLeft) {
+        const d = Math.abs(npc.x - e.x);
+        if (d < bestD) { bestD = d; best = { building: e, side: 'left', x: e.x, facing: -1 }; }
+      }
+      if (!e._leanRight) {
+        const d = Math.abs(npc.x - (e.x + e.bWidth));
+        if (d < bestD) { bestD = d; best = { building: e, side: 'right', x: e.x + e.bWidth, facing: 1 }; }
+      }
+    }
+    return best;
+  }
+
+  /** 释放某 NPC 占用的墙面靠点 */
+  releaseWallSpot(npc) {
+    for (const e of this.em.entities) {
+      if (e.bWidth === undefined) continue;
+      if (e._leanLeft  === npc.id) e._leanLeft  = null;
+      if (e._leanRight === npc.id) e._leanRight = null;
+    }
+  }
+
   /** 附近是否有长椅（复刻重构前 _nearBench：|dx|<60, |dy|<80） */
   isNearBench(npc, dxT = 60, dyT = 80) {
     for (const e of this.em.entities) {
