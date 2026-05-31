@@ -11,6 +11,7 @@
 import { SIDEWALK_FAR_Y, PARK_TOP, PARK_BOTTOM, WORLD_WIDTH } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
 import { getProfile } from '../behavior/NpcProfile.js';
+import { TRAIT_PROPS } from '../behavior/data/TraitProps.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -33,16 +34,25 @@ const TYPES = [
 
 const SPAWN_TRAIT_CHANCES = { hold_bag: 0.25, backpack: 0.2, umbrella: 0.08 };
 
+function pushTrait(n, traitKey) {
+  n.traits.push(traitKey);
+  const tp = TRAIT_PROPS[traitKey];
+  if (tp) n.modifiers.push({
+    id: traitKey, kind: 'trait', priority: 5,
+    joints: { ...tp.joints }, timer: -1,
+  });
+}
+
 function applyTraits(n, t, profile) {
   n.traits = [];
-  if (Math.random() < t.smokerChance) n.traits.push('smoker');
+  if (Math.random() < t.smokerChance) pushTrait(n, 'smoker');
   const spawnTraits = profile?.spawnTraits;
   if (spawnTraits && spawnTraits.length > 0) {
     const r = Math.random();
     let cumulative = 0;
     for (const trait of spawnTraits) {
       cumulative += SPAWN_TRAIT_CHANCES[trait] || 0;
-      if (r < cumulative) { n.traits.push(trait); break; }
+      if (r < cumulative) { pushTrait(n, trait); break; }
     }
   }
 }
