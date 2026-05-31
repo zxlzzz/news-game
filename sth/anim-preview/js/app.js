@@ -686,6 +686,47 @@ class PreviewCanvas {
       if (!frameData[jn]) continue;
       ctx.beginPath(); ctx.arc(jx(jn), jy(jn), 4, 0, Math.PI*2); ctx.fill();
     }
+
+    // NPC props (phone / cigarette / bag)
+    const activeHeld = npc.modifiers.filter(m => m.kind === 'held').map(m => m.id);
+    const activeTrait = npc.modifiers.filter(m => m.kind === 'trait').map(m => m.id);
+    if (activeHeld.includes('phone_look') || activeHeld.includes('phone_call')) {
+      const hx = jx('r_hand'), hy = jy('r_hand');
+      const pw = 4 * s, ph = 7 * s;
+      ctx.fillStyle = '#2a2a2a'; ctx.globalAlpha = 0.9;
+      ctx.fillRect(hx - pw / 2, hy - ph, pw, ph);
+      ctx.fillStyle = '#8a8a8a'; ctx.globalAlpha = 0.6;
+      ctx.fillRect(hx - pw / 2 + 0.5 * s, hy - ph + 1 * s, pw - 1 * s, ph - 2 * s);
+      ctx.globalAlpha = 1;
+    }
+    if (activeHeld.includes('smoke')) {
+      const hx = jx('r_hand'), hy = jy('r_hand');
+      const len = 8 * s;
+      const tipX = hx + d * len, tipY = hy - 2 * s;
+      ctx.strokeStyle = '#e8e0d0'; ctx.lineWidth = Math.max(0.6, 1.2 * s);
+      ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(tipX, tipY); ctx.stroke();
+      ctx.fillStyle = '#cc4400'; ctx.globalAlpha = 0.9;
+      ctx.beginPath(); ctx.arc(tipX, tipY, Math.max(0.8, 1.2 * s), 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    if (activeTrait.includes('hold_bag')) {
+      const hx = jx('l_hand'), hy = jy('l_hand');
+      const bw = 6 * s, bh = 8 * s;
+      ctx.fillStyle = '#4a4a4a'; ctx.globalAlpha = 0.85;
+      ctx.fillRect(hx - bw / 2, hy, bw, bh);
+      ctx.strokeStyle = '#3a3a3a'; ctx.lineWidth = Math.max(0.5, 0.8 * s);
+      ctx.globalAlpha = 0.9; ctx.strokeRect(hx - bw / 2, hy, bw, bh);
+      ctx.globalAlpha = 1;
+    }
+    if (activeTrait.includes('walk_dog')) {
+      ctx.strokeStyle = '#6a6a6a'; ctx.lineWidth = Math.max(0.8, 1.2 * s);
+      ctx.globalAlpha = 0.85;
+      const hx = jx('l_hand'), hy = jy('l_hand');
+      ctx.beginPath(); ctx.moveTo(hx, hy);
+      ctx.lineTo(hx + d * 30 * s, hy + 10 * s);
+      ctx.stroke(); ctx.globalAlpha = 1;
+    }
+
     ctx.restore();
   }
 

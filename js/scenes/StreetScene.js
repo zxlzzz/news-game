@@ -32,6 +32,7 @@ import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
 import { spawnAthletes }    from '../npcs/Athletes.js';
 import { initVehicleSystem } from '../npcs/Vehicles.js';
+import { NpcPropManager }   from '../props/NpcPropManager.js';
 
 export class StreetScene extends Phaser.Scene {
   constructor() {
@@ -310,10 +311,12 @@ export class StreetScene extends Phaser.Scene {
       this.trafficManager.cyclistSpawner?.update(delta);
     }
     this.entityManager.update(delta);
+    if (this.propManager) this.propManager.update(delta);
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
     this.entityGraphics.clear();
     this.entityManager.draw(this.entityGraphics);
+    if (this.propManager) this.propManager.draw(this.entityGraphics);
 
     this.vfGraphics.clear();
     this.viewfinder.draw(this.vfGraphics);
@@ -910,7 +913,8 @@ export class StreetScene extends Phaser.Scene {
 
     spawnPedestrians(em, sr, bm);
     spawnChess(em, sr, bm);
-    spawnDogWalker(em, sr, bm);
+    this.propManager = new NpcPropManager(em);
+    spawnDogWalker(em, sr, bm, this.propManager);
     spawnAthletes(em, sr, bm);
     this.trafficManager = initVehicleSystem(em, sr);
 
