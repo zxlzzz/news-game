@@ -33,6 +33,8 @@ import { spawnDogWalker }   from '../npcs/DogWalker.js';
 import { spawnAthletes }    from '../npcs/Athletes.js';
 import { initVehicleSystem } from '../npcs/Vehicles.js';
 import { NpcPropManager }   from '../props/NpcPropManager.js';
+import { WaitForBusLayer }  from '../behavior/WaitForBusLayer.js';
+import { setState }         from '../behavior/BaseStateMachine.js';
 
 export class StreetScene extends Phaser.Scene {
   constructor() {
@@ -918,6 +920,11 @@ export class StreetScene extends Phaser.Scene {
     spawnAthletes(em, sr, bm);
     this.trafficManager = initVehicleSystem(em, sr);
 
+    // ── WaitForBusLayer：公交站乘客系统 ────────────────────────────────────
+    if (this.trafficManager.busStops.length > 0) {
+      bm.waitForBusLayer = new WaitForBusLayer(this.trafficManager.busStops);
+    }
+
     // ── SpawnManager：NPC 离场后按区域密度自动补充 ──────────────────────────
     // 公园漫游带：PARK_TOP+16..PARK_BOTTOM-8（与 Pedestrians.js 的 ROAM_Y0/Y1 一致）
     const ROAM_Y0 = PARK_TOP + 16;
@@ -939,6 +946,26 @@ export class StreetScene extends Phaser.Scene {
         xRange:    [50, WORLD_WIDTH - 50],
         exitTypes: ['edge'],                           // 公园只从边缘进
         npcTypes:  ['pedestrian', 'tourist'],
+      },
+      {
+        id:           'busstop_far',
+        target:       3,
+        yRange:       [SIDEWALK_FAR_Y - 20, FAR_Y],
+        xRange:       [380, 620],
+        exitTypes:    ['building', 'edge'],
+        npcTypes:     ['pedestrian', 'businessman'],
+        isBusWaiter:  true,
+        busStopDir:   +1,
+      },
+      {
+        id:           'busstop_near',
+        target:       3,
+        yRange:       [NEAR_Y, NEAR_Y + 40],
+        xRange:       [1380, 1620],
+        exitTypes:    ['edge'],
+        npcTypes:     ['pedestrian', 'tourist'],
+        isBusWaiter:  true,
+        busStopDir:   -1,
       },
     ];
 
@@ -967,21 +994,38 @@ function _makeSpawnFn(bm, em, sr, roamY0, roamY1) {
     };
 
     if (zone.id === 'park') {
-      // 公园：可自由漫游的二维区域
       opts.roamZone = {
         x0: zone.xRange[0], x1: zone.xRange[1],
         y0: roamY0,         y1: roamY1,
       };
       opts.minY = roamY0;
       opts.maxY = roamY1;
+    } else if (zone.isBusWaiter) {
+      if (zone.busStopDir > 0) opts.scaleMul = 0.65;
     } else {
-      // 人行道：建筑前窄带，缩小比例（远景感）
       opts.scaleMul = 0.65;
     }
 
-    // 入场 NPC 给予 65s 的负计时器，确保路由结束前（最长 60s）不触发离场
     const npc = spawnOnePedestrian(npcType, em, sr, bm, { x: entry.x, y: posY }, opts);
     npc._ageTimer = -65;
+
+    if (zone.isBusWaiter && bm.waitForBusLayer) {
+      const stop = bm.waitForBusLayer._stops.find(s => s.direction === zone.busStopDir);
+      if (stop && stop._waiters.length < stop.maxWaiters) {
+        npc._routeTarget = {
+          x: zone.xRange[0] + Math.random() * (zone.xRange[1] - zone.xRange[0]),
+          y: zone.yRange[0] + Math.random() * (zone.yRange[1] - zone.yRange[0]),
+          abandonAfter: 60,
+          onArrive: (n) => {
+            n._routeTarget = null;
+            bm.waitForBusLayer.addWaiterDirect(n, stop);
+          },
+        };
+        setState(npc, 'routing', 'entry_bus_waiter');
+        return npc;
+      }
+    }
+
     return npc;
   };
 }

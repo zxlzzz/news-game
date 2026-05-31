@@ -85,6 +85,7 @@ export class VehicleSpawner {
       minX:      -250,
       maxX:      WORLD_WIDTH + 250,
       tags:      [tagName, 'vehicle'],
+      facingSide: kind === 'bus' ? (lane.direction > 0 ? 'far' : 'near') : 'near',
       ...this._dep,
     });
 
