@@ -133,7 +133,7 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
     if (m.kind === 'gesture' && m._done) { removedGesture = true; return false; }
     return !m._done;
   });
-  if (removedGesture) npc._gestureCooldown = rand(20, 40);
+  if (removedGesture) npc._gestureCooldown = rand(35, 70);
   if ((npc._gestureCooldown || 0) > 0) npc._gestureCooldown -= dt;
 
   // 6) 尝试触发新 gesture（与 held 独立：单实例 + 冷却 + 适用状态 + 概率）

@@ -27,8 +27,8 @@ export class CigaretteProp extends NpcProp {
     const anchor = this.npc.getAnchor('hand_r');
     const s = this.npc.scale;
     const d = this.npc.direction;
-    const tipX = anchor.x + d * 8 * s;
-    const tipY = anchor.y - 2 * s;
+    const tipX = anchor.x + d * 16 * s;
+    const tipY = anchor.y - 3 * s;
     this.smoke.x = tipX;
     this.smoke.y = tipY;
     this.smoke.update(dt);
@@ -39,13 +39,13 @@ export class CigaretteProp extends NpcProp {
     const anchor = this.npc.getAnchor('hand_r');
     const s = this.npc.scale;
     const d = this.npc.direction;
-    const len = 8 * s;
+    const len = 16 * s;
     const tipX = anchor.x + d * len;
-    const tipY = anchor.y - 2 * s;
-    g.lineStyle(Math.max(0.6, 1.2 * s), 0xe8e0d0, 0.95);
+    const tipY = anchor.y - 3 * s;
+    g.lineStyle(Math.max(1, 2 * s), 0xe8e0d0, 0.95);
     g.lineBetween(anchor.x, anchor.y, tipX, tipY);
     g.fillStyle(0xcc4400, 0.9);
-    g.fillCircle(tipX, tipY, Math.max(0.8, 1.2 * s));
+    g.fillCircle(tipX, tipY, Math.max(1.2, 2 * s));
     this.smoke.draw(g);
   }
 }

@@ -50,8 +50,8 @@ const HANDS_IN_POCKET = {
 // 路人共用的 gesture 触发表
 //   chance 为每帧触发概率；dur 由 clip 关键帧累计决定，无需在此声明
 const PED_GESTURES = {
-  check_watch: { on: ['walk', 'stand', 'loiter'], chance: 0.0004, traitExcludes: ['hold_bag', 'walk_dog'] },
-  stretch:     { on: ['stand', 'loiter'],          chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
+  check_watch: { on: ['walk', 'stand', 'loiter'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
+  stretch:     { on: ['stand', 'loiter'],          chance: 0.00008, traitExcludes: ['hold_bag', 'walk_dog'] },
   wave:        { on: ['stand', 'loiter'],          chance: 0.0002 },
 };
 

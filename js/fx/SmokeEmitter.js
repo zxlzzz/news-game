@@ -10,15 +10,15 @@ export class SmokeEmitter extends ParticleEmitter {
   }
 
   initParticle(p) {
-    p.vx = (Math.random() - 0.5) * 4;
-    p.vy = -8 - Math.random() * 6;
-    p.life = 0.6 + Math.random() * 0.5;
-    p.size = 1.5 + Math.random() * 1.5;
+    p.vx = (Math.random() - 0.5) * 6;
+    p.vy = -12 - Math.random() * 8;
+    p.life = 0.7 + Math.random() * 0.5;
+    p.size = 2.5 + Math.random() * 2;
   }
 
   drawParticle(g, p) {
     const t = p.age / p.life;
-    const r = p.size + t * 2.5;
+    const r = p.size + t * 4;
     const gray = Math.round(0x88 + t * 0x44);
     const color = (gray << 16) | (gray << 8) | gray;
     g.fillStyle(color, p.alpha * 0.45);
