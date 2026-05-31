@@ -10,6 +10,7 @@
 
 import { SIDEWALK_FAR_Y, PARK_TOP, PARK_BOTTOM, WORLD_WIDTH } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
+import { getProfile } from '../behavior/NpcProfile.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -30,10 +31,20 @@ const TYPES = [
   { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
 ];
 
-function applyTraits(n, t) {
+const SPAWN_TRAIT_CHANCES = { hold_bag: 0.25, backpack: 0.2, umbrella: 0.08 };
+
+function applyTraits(n, t, profile) {
   n.traits = [];
   if (Math.random() < t.smokerChance) n.traits.push('smoker');
-  if (Math.random() < t.bagChance)    n.traits.push('hold_bag');
+  const spawnTraits = profile?.spawnTraits;
+  if (spawnTraits && spawnTraits.length > 0) {
+    const r = Math.random();
+    let cumulative = 0;
+    for (const trait of spawnTraits) {
+      cumulative += SPAWN_TRAIT_CHANCES[trait] || 0;
+      if (r < cumulative) { n.traits.push(trait); break; }
+    }
+  }
 }
 
 /**
@@ -76,7 +87,7 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
     n.roamTarget = null;
   }
 
-  applyTraits(n, typeData);
+  applyTraits(n, typeData, getProfile(typeData.npcType));
   bm.register(n, typeData.npcType);
 
   // SpawnManager 补充者从 _ageTimer=0 开始（call site 可覆盖为随机值做错峰离场）
@@ -109,7 +120,8 @@ export function spawnPedestrians(em, sr, bm) {
     minX: 20, maxX: 480, minY: SIDEWALK_FAR_Y - 3, maxY: SIDEWALK_FAR_Y + 1,
     tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
   });
-  applyTraits(sw1, sidewalkT); bm.register(sw1, 'businessman');
+  applyTraits(sw1, sidewalkT, getProfile('businessman')); bm.register(sw1, 'businessman');
+  sw1.roam = { x0: sw1.minX, x1: sw1.maxX, y0: sw1.minY, y1: sw1.maxY };
   sw1._lifespan = rand(30, 90); sw1._ageTimer = rand(0, sw1._lifespan); sw1._departing = false;
 
   const sw2 = makeNPC(em, sr, {
@@ -117,7 +129,8 @@ export function spawnPedestrians(em, sr, bm) {
     minX: 1050, maxX: 1300, minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y,
     tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
   });
-  applyTraits(sw2, sidewalkT); bm.register(sw2, 'businessman');
+  applyTraits(sw2, sidewalkT, getProfile('businessman')); bm.register(sw2, 'businessman');
+  sw2.roam = { x0: sw2.minX, x1: sw2.maxX, y0: sw2.minY, y1: sw2.maxY };
   sw2._lifespan = rand(30, 90); sw2._ageTimer = rand(0, sw2._lifespan); sw2._departing = false;
 
   const sw3 = makeNPC(em, sr, {
@@ -125,6 +138,7 @@ export function spawnPedestrians(em, sr, bm) {
     minX: 1500, maxX: 1980, minY: SIDEWALK_FAR_Y, maxY: SIDEWALK_FAR_Y + 3,
     tags: ['pedestrian'], npcType: 'pedestrian', scaleMul: 0.65,
   });
-  applyTraits(sw3, sidewalkT); bm.register(sw3, 'pedestrian');
+  applyTraits(sw3, sidewalkT, getProfile('pedestrian')); bm.register(sw3, 'pedestrian');
+  sw3.roam = { x0: sw3.minX, x1: sw3.maxX, y0: sw3.minY, y1: sw3.maxY };
   sw3._lifespan = rand(30, 90); sw3._ageTimer = rand(0, sw3._lifespan); sw3._departing = false;
 }

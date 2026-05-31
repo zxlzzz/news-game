@@ -158,6 +158,7 @@ function _tryTriggerHeld(npc, heldDefs, globalHeldFrac) {
     if (def.traitExcludes?.some(t => npc.traits.includes(t))) continue;
     const hp = HELD_POSES[name];
     const side = hp ? handSide(Object.keys(hp.joints)) : null;
+    if (side === 'both'  && (occ.left || occ.right)) continue;
     if (side === 'left'  && occ.left)  continue;
     if (side === 'right' && occ.right) continue;
     let p = def.chance;
@@ -192,6 +193,7 @@ function _tryTriggerGesture(npc, profile) {
       const clip = GESTURE_CLIPS[name];
       if (!clip) continue;
       const side = handSide(clip.activeJoints || []);
+      if (side === 'both'  && (occ.left || occ.right)) continue;
       if (side === 'left'  && occ.left)  continue;
       if (side === 'right' && occ.right) continue;
       const kf0 = clip.keyframes?.[0];

@@ -13,9 +13,9 @@
 
 // 路人共用的状态转换表
 const PED_TRANSITIONS = {
-  walk:       { stand: 0.6, sit_bench: 0.2, run: 0.08, squat: 0.01, sit_ground: 0.02 },
+  walk:       { stand: 0.6, sit_bench: 0.2, run: 0.08, squat: 0.01, sit_ground: 0.02, loiter: 0.02 },
   run:        { walk: 0.9, fall: 0.1 },
-  stand:      { walk: 0.77, sit_bench: 0.1, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05, loiter: 0.07 },
+  stand:      { walk: 0.77, sit_bench: 0.1, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05, loiter: 0.04 },
   sit_bench:  { stand: 0.97, lie_bench: 0.03 },
   squat:      { stand: 1.0 },
   sit_ground: { stand: 1.0 },
@@ -74,7 +74,7 @@ const PEDESTRIAN = {
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
-  loiterChance: 0.25,
+  loiterChance: 0.10,
   loiterDurationRange: [15, 45],
   departure: { lifespanRange: [90, 210], preferExitType: null },
 };
@@ -91,7 +91,7 @@ const BUSINESSMAN = {
     hands_in_pocket: HANDS_IN_POCKET,
   },
   socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
-  loiterChance: 0.12,
+  loiterChance: 0.06,
   loiterDurationRange: [15, 40],
   departure: { lifespanRange: [90, 210], preferExitType: 'building' },
 };
@@ -113,7 +113,7 @@ const TOURIST = {
   },
   activities: ['talk', 'chess', 'use_vending', 'use_trash'],
   socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
-  loiterChance: 0.40,
+  loiterChance: 0.18,
   loiterDurationRange: [20, 60],
   departure: { lifespanRange: [90, 210], preferExitType: null },
 };
