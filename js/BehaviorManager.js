@@ -15,8 +15,8 @@
 
 import { getProfile }          from './behavior/NpcProfile.js';
 import { EnvironmentQuery }     from './behavior/EnvironmentQuery.js';
-import { tickBaseState, setState, registerTransition, triggerDeparture } from './behavior/BaseStateMachine.js';
-import { tickModifiers }        from './behavior/ModifierLayer.js';
+import { tickBaseState, setState, registerTransition, triggerDeparture, initPoseCache as initBsmPoseCache } from './behavior/BaseStateMachine.js';
+import { tickModifiers, initPoseCache as initModPoseCache } from './behavior/ModifierLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
 import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
 import { WaitForBusLayer }      from './behavior/WaitForBusLayer.js';
@@ -25,11 +25,18 @@ import { refreshDebugFlag }     from './behavior/DebugLog.js';
 const rand = (a, b) => a + Math.random() * (b - a);
 
 export class BehaviorManager {
-  /** @param {EntityManager} entityManager */
-  constructor(entityManager) {
+  /** @param {EntityManager} entityManager @param {object} poseCache */
+  constructor(entityManager, poseCache) {
     this.em          = entityManager;
     this.envQuery    = new EnvironmentQuery(entityManager);
-    this.socialLayer = new SocialLayer(this.envQuery);
+    this.poseCache   = poseCache;
+
+    if (poseCache) {
+      initModPoseCache(poseCache);
+      initBsmPoseCache(poseCache);
+    }
+
+    this.socialLayer = new SocialLayer(this.envQuery, poseCache);
     this.cameraLayer = new CameraReactionLayer();
     this.npcs            = [];
     this.waitForBusLayer = null;

@@ -33,6 +33,34 @@ import { NpcPropManager }   from '../props/NpcPropManager.js';
 import { WaitForBusLayer }  from '../behavior/WaitForBusLayer.js';
 import { setState }         from '../behavior/BaseStateMachine.js';
 
+const POSE_FILES = {
+  // held poses
+  held_phone_call:       'held pose/phone',
+  held_phone_look:       'held pose/phone_look',
+  held_smoke:            'held pose/smoke',
+  held_cross_arm:        'held pose/cross_arm',
+  held_hands_in_pocket:  'held pose/hands_in_pocket',
+  // traits
+  trait_hold_bag:  'trait/hold',
+  trait_walk_dog:  'trait/walk_dog',
+  trait_backpack:  'trait/backpack',
+  trait_umbrella:  'trait/umbrella',
+  // gestures
+  gesture_check_watch: 'gesture/watch',
+  gesture_stretch:     'gesture/stretch',
+  gesture_use_vending: 'gesture/machine',
+  gesture_use_trash:   'gesture/trash',
+  // loiter
+  loiter_phone: 'loiter/phone',
+  loiter_bag_a: 'loiter/bag_a',
+  loiter_bag_b: 'loiter/bag_b',
+  // sub_event
+  sub_event_push:      'sub_event/push',
+  sub_event_give_item: 'sub_event/give_item',
+  sub_event_handshake: 'sub_event/handshake',
+  sub_event_point_at:  'sub_event/point_at',
+};
+
 const ANIM_FILES = {
   walk: 'walk', run: 'run', idle: 'idle', jog: 'jog', bike: 'bike',
   mobile: 'mobile', chess: 'chess', dogwalk: 'pet/dog_walk',
@@ -52,6 +80,9 @@ export class StreetScene extends Phaser.Scene {
     this.load.json('scene_data', 'assets/scene.json');
     for (const [key, file] of Object.entries(ANIM_FILES)) {
       this.load.json('anim_' + key, `assets/animations/${file}.json`);
+    }
+    for (const [key, file] of Object.entries(POSE_FILES)) {
+      this.load.json('pose_' + key, `assets/animations/${file}.json`);
     }
   }
 
@@ -75,13 +106,15 @@ export class StreetScene extends Phaser.Scene {
       this.stickRenderer.loadAnimation(key, this.cache.json.get('anim_' + key));
     }
 
+    const poseCache = this._buildPoseCache();
+
     this.entityManager = new EntityManager({
       farY: SIDEWALK_FAR_Y, nearY: SIDEWALK_NEAR_Y, farScale: 0.182, nearScale: 0.434,
     });
 
     this._spawnBuildings(sceneData);
     this._spawnProps(sceneData);
-    this._spawnNPCs(layout);
+    this._spawnNPCs(layout, poseCache);
 
     this.viewfinder = new Viewfinder(this, { x: 310, y: 295, width: 210, height: 145 });
     this._createUI();
@@ -279,6 +312,45 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
+  // ─── poseCache ───────────────────────────────────────────────────────────────
+
+  _buildPoseCache() {
+    const g = (key) => this.cache.json.get('pose_' + key);
+    return {
+      held: {
+        phone_call:       g('held_phone_call'),
+        phone_look:       g('held_phone_look'),
+        smoke:            g('held_smoke'),
+        cross_arm:        g('held_cross_arm'),
+        hands_in_pocket:  g('held_hands_in_pocket'),
+      },
+      trait: {
+        hold_bag:  g('trait_hold_bag'),
+        walk_dog:  g('trait_walk_dog'),
+        backpack:  g('trait_backpack'),
+        umbrella:  g('trait_umbrella'),
+      },
+      gesture: {
+        check_watch: g('gesture_check_watch'),
+        stretch:     g('gesture_stretch'),
+        wave:        { type: 'gesture', activeJoints: [], keyframes: [], loop: false },
+        use_vending: g('gesture_use_vending'),
+        use_trash:   g('gesture_use_trash'),
+      },
+      loiter: {
+        phone: g('loiter_phone')?.joints ?? {},
+        bag_a: g('loiter_bag_a')?.joints ?? {},
+        bag_b: g('loiter_bag_b')?.joints ?? {},
+      },
+      sub_event: {
+        push:      g('sub_event_push'),
+        give_item: g('sub_event_give_item'),
+        handshake: g('sub_event_handshake'),
+        point_at:  g('sub_event_point_at'),
+      },
+    };
+  }
+
   // ─── 实体生成 ─────────────────────────────────────────────────────────────────
 
   _spawnBuildings(sceneData) {
@@ -310,10 +382,10 @@ export class StreetScene extends Phaser.Scene {
     }
   }
 
-  _spawnNPCs(layout) {
+  _spawnNPCs(layout, poseCache) {
     const em = this.entityManager;
     const sr = this.stickRenderer;
-    this.behaviorManager = new BehaviorManager(em);
+    this.behaviorManager = new BehaviorManager(em, poseCache);
     const bm = this.behaviorManager;
 
     const exitRegistry = new ExitRegistry();

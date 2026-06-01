@@ -11,7 +11,7 @@
 import { SIDEWALK_FAR_Y, PARK_TOP, PARK_BOTTOM, WORLD_WIDTH } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
 import { getProfile } from '../behavior/NpcProfile.js';
-import { TRAIT_PROPS } from '../behavior/data/TraitProps.js';
+import { getTraitProps } from '../behavior/ModifierLayer.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -36,7 +36,7 @@ const SPAWN_TRAIT_CHANCES = { hold_bag: 0.25, backpack: 0.2, umbrella: 0.08 };
 
 function pushTrait(n, traitKey) {
   n.traits.push(traitKey);
-  const tp = TRAIT_PROPS[traitKey];
+  const tp = getTraitProps()[traitKey];
   if (tp) n.modifiers.push({
     id: traitKey, kind: 'trait', priority: 5,
     joints: { ...tp.joints }, timer: -1,

@@ -28,8 +28,13 @@
  */
 
 import { dlog }        from './DebugLog.js';
-import { LOITER_POSES } from './PoseRegistry.js';
 import { PARK_TOP }     from '../SceneConfig.js';
+
+let LOITER_POSES = {};
+
+export function initPoseCache(pc) {
+  LOITER_POSES = pc.loiter || {};
+}
 import {
   tickWalkMode, pickModeTarget, onPathArrival,
   setWalkMode, popWalkMode, isRoadZone, modeWander,
@@ -281,8 +286,7 @@ function _tickState(npc, envQuery, profile, dt) {
 }
 
 // ─── Loiter 微行为循环 ────────────────────────────────────────────────────────
-// pose 数据来自 PoseRegistry.js（单一来源，anim-preview 工具可实时编辑）
-const POSE_PHONE = LOITER_POSES.phone;
+function getPosePhone() { return LOITER_POSES.phone || {}; }
 
 function _getMicroActionDur(npc) {
   const ov = npc._loiterOverlay;
@@ -312,7 +316,7 @@ function _applyLoiterVisuals(npc) {
   if (npc.traits.includes('walk_dog')) return; // walk_dog trait mod 已锁定左手，不叠加
   // 统一用右手看手机（POSE_PHONE = r_elbow + r_hand）。
   // hold_bag trait mod (priority 5) 已锁定左手，右手叠 POSE_PHONE 互不干扰。
-  npc.modifiers.push({ id: '_loiter_micro', kind: 'held', priority: 15, joints: { ...POSE_PHONE }, timer: -1 });
+  npc.modifiers.push({ id: '_loiter_micro', kind: 'held', priority: 15, joints: { ...getPosePhone() }, timer: -1 });
 }
 
 function _advanceMicroPhase(npc) {

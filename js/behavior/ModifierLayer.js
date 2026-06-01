@@ -17,9 +17,17 @@
  *   - gesture 与 held 相互独立：各自单实例、各自冷却；gesture 播完即移除
  */
 
-import { HELD_POSES }   from './PoseRegistry.js';
-import { TRAIT_PROPS }  from './PoseRegistry.js';
-import { GESTURE_CLIPS } from './PoseRegistry.js';
+let HELD_POSES   = {};
+let TRAIT_PROPS  = {};
+let GESTURE_CLIPS = {};
+
+export function initPoseCache(pc) {
+  HELD_POSES   = pc.held    || {};
+  TRAIT_PROPS  = pc.trait   || {};
+  GESTURE_CLIPS = pc.gesture || {};
+}
+
+export function getTraitProps() { return TRAIT_PROPS; }
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
