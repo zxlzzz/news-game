@@ -32,13 +32,14 @@ import { initVehicleSystem } from '../npcs/Vehicles.js';
 import { NpcPropManager }   from '../props/NpcPropManager.js';
 import { WaitForBusLayer }  from '../behavior/WaitForBusLayer.js';
 import { setState }         from '../behavior/BaseStateMachine.js';
+import { initWalkPaths }    from '../behavior/WalkMode.js';
 
 const POSE_FILES = {
   // held poses (game coordinates)
   held_phone_call:       'held pose/phone_call',
   held_phone_look:       'held pose/phone_look',
-  held_smoke:            'held pose/smoke_game',
-  held_cross_arm:        'held pose/cross_arm_game',
+  held_smoke:            'held pose/smoke',
+  held_cross_arm:        'held pose/cross_arm',
   held_hands_in_pocket:  'held pose/hands_in_pocket',
   // traits (game coordinates)
   trait_hold_bag:  'trait/hold_bag',
@@ -47,9 +48,10 @@ const POSE_FILES = {
   trait_umbrella:  'trait/umbrella',
   // gestures (game coordinates)
   gesture_check_watch: 'gesture/check_watch',
-  gesture_stretch:     'gesture/stretch_game',
+  gesture_stretch:     'gesture/stretch',
+  gesture_wave:        'gesture/wave',
   gesture_use_vending: 'gesture/use_vending',
-  gesture_use_trash:   'gesture/use_trash_game',
+  gesture_use_trash:   'gesture/use_trash',
   // loiter
   loiter_phone: 'loiter/phone',
   loiter_bag_a: 'loiter/bag_a',
@@ -107,6 +109,7 @@ export class StreetScene extends Phaser.Scene {
     }
 
     const poseCache = this._buildPoseCache();
+    initWalkPaths(layout.walkPaths);
 
     this.entityManager = new EntityManager({
       farY: SIDEWALK_FAR_Y, nearY: SIDEWALK_NEAR_Y, farScale: 0.182, nearScale: 0.434,
@@ -333,7 +336,7 @@ export class StreetScene extends Phaser.Scene {
       gesture: {
         check_watch: g('gesture_check_watch'),
         stretch:     g('gesture_stretch'),
-        wave:        { type: 'gesture', activeJoints: [], keyframes: [], loop: false },
+        wave:        g('gesture_wave'),
         use_vending: g('gesture_use_vending'),
         use_trash:   g('gesture_use_trash'),
       },

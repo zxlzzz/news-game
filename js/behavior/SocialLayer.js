@@ -571,10 +571,13 @@ export class SocialLayer {
       const owner = participants.find(p => p.role === 'owner').npc;
       const dog   = participants.find(p => p.role === 'dog').npc;
       act = new DogWalkActivity(id, owner, dog);
-    } else if (type === 'use_vending') {
-      act = new UsePropActivity(id, type, participants[0].npc, props[0], 'use_vending', 'buying');
-    } else if (type === 'use_trash') {
-      act = new UsePropActivity(id, type, participants[0].npc, props[0], 'use_trash', 'throwing_trash');
+    } else {
+      const prop = props[0];
+      const gestureId  = prop?.smartDef?.gestureId  ?? type;
+      const phaseLabel = prop?.smartDef?.phaseLabel ?? type;
+      if (prop?.smartDef) {
+        act = new UsePropActivity(id, type, participants[0].npc, prop, gestureId, phaseLabel);
+      }
     }
     if (act) {
       this.activities.push(act);

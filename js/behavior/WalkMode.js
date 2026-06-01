@@ -36,48 +36,14 @@ export function isRoadZone(y) {
   return y >= FAR_Y && y < NEAR_Y;
 }
 
-// ─── 预定义路线 ───────────────────────────────────────────────────────────────
+// ─── 预定义路线（运行时从 scene.json 注入）──────────────────────────────────────
 // waypoints: [{x, y, pause?}]  pause = 到达后停留秒数（缺省/0 = 不停留）
-// SceneConfig（Layout.js）导出常量供路线与场景几何保持一致。
 
-export const WALK_PATHS = {
-  // 远端人行道 左→右（单程）
-  sidewalk_far_lr: {
-    waypoints: [
-      { x: 60,   y: 230 },
-      { x: 500,  y: 232 },
-      { x: 1000, y: 228 },
-      { x: 1500, y: 231 },
-      { x: 1940, y: 230 },
-    ],
-    loop: false,
-  },
-  // 远端人行道 右→左（单程）
-  sidewalk_far_rl: {
-    waypoints: [
-      { x: 1940, y: 230 },
-      { x: 1500, y: 231 },
-      { x: 1000, y: 228 },
-      { x: 500,  y: 232 },
-      { x: 60,   y: 230 },
-    ],
-    loop: false,
-  },
-  // 公园顺时针环形散步路线（loop）
-  park_loop_cw: {
-    waypoints: [
-      { x: 350,  y: 390 },
-      { x: 700,  y: 368 },
-      { x: 1150, y: 374, pause: 1.5 },   // 喷泉前驻足
-      { x: 1600, y: 394 },
-      { x: 1850, y: 448 },
-      { x: 1500, y: 492 },
-      { x: 900,  y: 502, pause: 1.0 },
-      { x: 400,  y: 470 },
-    ],
-    loop: true,
-  },
-};
+let WALK_PATHS = {};
+
+export { WALK_PATHS };
+
+export function initWalkPaths(paths) { WALK_PATHS = paths || {}; }
 
 // ─── 模式描述符工厂 ───────────────────────────────────────────────────────────
 
