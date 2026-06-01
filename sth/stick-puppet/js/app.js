@@ -17,7 +17,7 @@ const ctx = canvas.getContext('2d');
 const CX = canvas.width / 2;
 const CY = canvas.height / 2 + 20;
 
-let frames = [defaultPose()];
+let frames = [];
 let currentFrame = 0;
 let dragging = null;        // joint name 或 '_bend_from__to'
 let dragStarted = false;
@@ -29,6 +29,23 @@ let activeJoints = new Set();
 let frameDurs = [0.3];
 
 const history = new History();
+
+async function initFromSingle() {
+  try {
+    const r = await fetch('../../assets/animations/single.json');
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    const f0 = data.frames[0];
+    const dp = SKELETONS.human.defaultPose;
+    for (const j of Object.keys(dp)) {
+      if (f0[j]) { dp[j].x = f0[j][0]; dp[j].y = f0[j][1]; }
+    }
+    SKELETONS.human.headRadius = 9;
+  } catch (e) {
+    console.warn('[stick-puppet] single.json 加载失败，使用内置 defaultPose', e);
+  }
+  frames = [defaultPose()];
+}
 
 // ============================================
 // 工具函数
@@ -1005,4 +1022,4 @@ window.app = {
 // ============================================
 // 初始化
 // ============================================
-render();
+initFromSingle().then(() => render());
