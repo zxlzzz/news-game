@@ -1,17 +1,13 @@
 /**
  * Animator Debugger — NPC 动画状态机调试工具
  *
- * 数据来源：直接 import 游戏源文件，不硬编码任何 pose / profile 数据。
- *   - PROFILES        ← js/behavior/NpcProfile.js
- *   - HELD_POSES      ← js/behavior/PoseRegistry.js
- *   - LOITER_POSES    ← js/behavior/PoseRegistry.js
- *   - SUB_EVENT_POSES ← js/behavior/PoseRegistry.js
- *   - TRAIT_PROPS     ← js/behavior/PoseRegistry.js
+ * 数据来源：
+ *   - PROFILES        ← js/behavior/NpcProfile.js（import）
+ *   - pose/gesture 数据 ← assets/animations/ JSON 文件（fetch）
  *
  * 编辑工作流：
  *   1. 在 "Pose Registry" 面板里修改关节坐标 → 预览立即更新
- *   2. 点 "Save PoseRegistry.js" → 浏览器文件选择器写回磁盘
- *      （或 fallback：复制到剪贴板 → 手动粘贴到文件）
+ *   2. 点 "Save JSON" → 浏览器文件选择器写回对应 JSON 文件
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -20,8 +16,6 @@
 
 import { PROFILES as _PROFILES }
   from '../../../js/behavior/NpcProfile.js';
-import { HELD_POSES, LOITER_POSES, SUB_EVENT_POSES, TRAIT_PROPS, GESTURE_CLIPS }
-  from '../../../js/behavior/PoseRegistry.js';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ── 纯 UI 元数据（只用于工具显示，不进入游戏逻辑）────────────────────────────
@@ -84,31 +78,22 @@ const SUB_EVENT_META = {
   point_at:  { label: '指向', icon: '👆', desc: 'A 指，B 侧头' },
 };
 
-// Trait 芯片：动态从 TRAIT_PROPS（游戏源）生成，新增 trait 无需改工具。
-// 已知 trait 用友好 label，其余自动用 key 生成。
+// Trait 芯片：动态从 poseCache.trait 生成，新增 trait 无需改工具。
 const TRAIT_LABELS = {
   hold_bag: '👜 拿包',
   walk_dog: '🐕 遛狗',
   backpack: '🎒 背包',
   umbrella: '☂ 雨伞',
 };
-const TRAITS_DEF = Object.keys(TRAIT_PROPS).map(key => ({
-  key,
-  label: TRAIT_LABELS[key] ?? `🏷 ${key}`,
-  desc:  '永久 modifier（左侧关节）',
-}));
+let TRAITS_DEF = [];
 
-// Gesture 芯片：动态从 GESTURE_CLIPS（游戏源）生成
+// Gesture 芯片：动态从 poseCache.gesture 生成
 const GESTURE_LABELS = {
   check_watch: '⌚ 看表',
   stretch:     '🙆 伸展',
   wave:        '👋 挥手',
 };
-const GESTURES_DEF = Object.keys(GESTURE_CLIPS).map(key => ({
-  key,
-  label: GESTURE_LABELS[key] ?? `✨ ${key}`,
-  clip:  GESTURE_CLIPS[key],
-}));
+let GESTURES_DEF = [];
 
 // 从扁平 gesture keyframe（{dur, r_elbow:[...], ...}）提取关节 joints（剔除 dur）
 function _kfJoints(kf) {
@@ -177,11 +162,7 @@ for (const [k, s] of Object.entries(_overlayOnSets)) OVERLAY_ON[k] = [...s];
 // ── 可编辑 pose 状态（深拷贝自 import，工具内修改不影响模块缓存）──────────────
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const editedPoses = {
-  overlays: JSON.parse(JSON.stringify(HELD_POSES)),   // { key: { joints: {...} } }
-  loiter:   JSON.parse(JSON.stringify(LOITER_POSES)),  // { key: { joint: [...] } }
-  social:   JSON.parse(JSON.stringify(SUB_EVENT_POSES)),
-};
+let editedPoses = { overlays: {}, loiter: {}, social: {} };
 
 // single.json 首帧关节数据（用于 delta→absolute 换算；启动时 fetchAnim 后填入）
 let _singleBase = null;
@@ -197,50 +178,34 @@ function deltaToAbs(delta) {
   return out;
 }
 
-// 从 editedPoses 生成 PoseRegistry.js 源码（自包含，替换 data/ re-export 版本）
-function generatePoseRegistryJS() {
-  const serJoints = (obj) => {
-    if (!obj) return 'null';
-    const lines = Object.entries(obj).map(([k, v]) => `    ${k}: [${v[0]}, ${v[1]}]`);
-    return `{\n${lines.join(',\n')}\n  }`;
+async function saveJSON() {
+  const allData = {
+    held:      editedPoses.overlays,
+    loiter:    editedPoses.loiter,
+    sub_event: editedPoses.social,
+    trait:     poseCache.trait,
+    gesture:   poseCache.gesture,
   };
-  const serHeldPoses = (obj) => {
-    const lines = Object.entries(obj).map(([k, v]) =>
-      `  ${k}: { joints: ${serJoints(v.joints)} }`
-    );
-    return `{\n${lines.join(',\n')}\n}`;
-  };
-  const serFlatPoses = (obj) => {
-    const lines = Object.entries(obj).map(([k, v]) => `  ${k}: ${serJoints(v)}`);
-    return `{\n${lines.join(',\n')}\n}`;
-  };
-  const serSocial = (obj) => {
-    const lines = Object.entries(obj).map(([k, v]) => {
-      const a = v.aDelta ? serJoints(v.aDelta).replace(/\n/g, '\n  ') : 'null';
-      const b = v.bDelta ? serJoints(v.bDelta).replace(/\n/g, '\n  ') : 'null';
-      return `  ${k}: {\n    aDelta: ${a},\n    bDelta: ${b},\n  }`;
-    });
-    return `{\n${lines.join(',\n')}\n}`;
-  };
-
-  return `/**
- * PoseRegistry — 由 anim-preview 工具自动生成（自包含版本）
- *
- * 覆盖 data/ re-export 版本。手动修改后请重新载入游戏。
- */
-
-export const TRAIT_PROPS = ${serHeldPoses(TRAIT_PROPS)};
-
-export const HELD_POSES = ${serHeldPoses(editedPoses.overlays)};
-
-export const LOITER_POSES = ${serFlatPoses(editedPoses.loiter)};
-
-// 参考帧（single.json F0）：
-//   r_hand[-10,-18]  l_hand[9,-19]  r_elbow[14,-11]  l_elbow[-14,-11]  head[-6,-55]
-export const SUB_EVENT_POSES = ${serSocial(editedPoses.social)};
-
-export const GESTURE_CLIPS = ${JSON.stringify(GESTURE_CLIPS, null, 2)};
-`;
+  const json = JSON.stringify(allData, null, 2);
+  if (typeof window.showSaveFilePicker === 'function') {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: 'pose_data.json',
+        startIn: 'desktop',
+        types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
+      });
+      const writable = await handle.createWritable();
+      await writable.write(json);
+      await writable.close();
+      return true;
+    } catch (e) {
+      if (e.name === 'AbortError') return false;
+    }
+  }
+  navigator.clipboard.writeText(json)
+    .then(() => window.app?._flash('JSON 已复制到剪贴板'))
+    .catch(() => prompt('JSON:', json));
+  return true;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -311,6 +276,88 @@ async function preloadSingleBase() {
   } catch (e) {
     console.warn('[Debugger] single.json 加载失败，社交 pose 预览将使用零基准', e);
   }
+}
+
+let poseCache = { held: {}, trait: {}, gesture: {}, loiter: {}, sub_event: {} };
+
+async function loadPoseCache() {
+  const BASE = '../../assets/animations';
+  const fetchJSON = async (path) => {
+    const r = await fetch(`${BASE}/${path}`);
+    if (!r.ok) { console.warn(`[poseCache] ${path} → ${r.status}`); return null; }
+    return r.json();
+  };
+
+  const heldFiles = {
+    phone_look: 'held pose/phone_look.json',
+    phone_call: 'held pose/phone_call.json',
+    smoke:      'held pose/smoke.json',
+    cross_arm:  'held pose/cross_arm.json',
+    hands_in_pocket: 'held pose/hands_in_pocket.json',
+  };
+  const traitFiles = {
+    hold_bag: 'trait/hold_bag.json',
+    walk_dog: 'trait/walk_dog.json',
+    backpack: 'trait/backpack.json',
+    umbrella: 'trait/umbrella.json',
+  };
+  const gestureFiles = {
+    check_watch:  'gesture/check_watch.json',
+    stretch:      'gesture/stretch.json',
+    wave:         'gesture/wave.json',
+    use_vending:  'gesture/use_vending.json',
+    use_trash:    'gesture/use_trash.json',
+  };
+  const loiterFiles = {
+    phone: 'loiter/phone.json',
+    bag_a: 'loiter/bag_a.json',
+    bag_b: 'loiter/bag_b.json',
+  };
+  const subEventFiles = {
+    push:      'sub_event/push.json',
+    give_item: 'sub_event/give_item.json',
+    handshake: 'sub_event/handshake.json',
+    point_at:  'sub_event/point_at.json',
+  };
+
+  const load = async (map, extract) => {
+    const out = {};
+    await Promise.all(Object.entries(map).map(async ([key, path]) => {
+      const json = await fetchJSON(path);
+      if (json) out[key] = extract(json);
+    }));
+    return out;
+  };
+
+  const wrapJoints = (json) => {
+    if (json.joints) return json;
+    if (json.frames?.[0]) return { joints: json.frames[0] };
+    return { joints: json };
+  };
+
+  poseCache.held      = await load(heldFiles,     wrapJoints);
+  poseCache.trait      = await load(traitFiles,    wrapJoints);
+  poseCache.gesture    = await load(gestureFiles,  (j) => j);
+  poseCache.loiter     = await load(loiterFiles,   (j) => j.joints ?? j);
+  poseCache.sub_event  = await load(subEventFiles, (j) => j);
+
+  TRAITS_DEF = Object.keys(poseCache.trait).map(key => ({
+    key,
+    label: TRAIT_LABELS[key] ?? `🏷 ${key}`,
+    desc:  '永久 modifier（左侧关节）',
+  }));
+
+  GESTURES_DEF = Object.keys(poseCache.gesture).map(key => ({
+    key,
+    label: GESTURE_LABELS[key] ?? `✨ ${key}`,
+    clip:  poseCache.gesture[key],
+  }));
+
+  editedPoses = {
+    overlays: JSON.parse(JSON.stringify(poseCache.held)),
+    loiter:   JSON.parse(JSON.stringify(poseCache.loiter)),
+    social:   JSON.parse(JSON.stringify(poseCache.sub_event)),
+  };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -410,7 +457,7 @@ class NpcInstance {
 
   // 添加一个 gesture modifier（工具预览：实时播放，播完自动消失）
   addGesture(gestureKey) {
-    const clip = GESTURE_CLIPS[gestureKey];
+    const clip = poseCache.gesture[gestureKey];
     if (!clip) return;
     if (this.modifiers.some(m => m.kind === 'gesture')) return; // 单实例
     const kf0 = clip.keyframes?.[0];
@@ -852,8 +899,8 @@ class AnimatorDebugger {
   addHeldModifier(npcId, heldKey) {
     const npc = this._byId(npcId); if (!npc) return;
     if (npc.modifiers.some(m => m.id === heldKey)) return;
-    const poseDef = editedPoses.overlays[heldKey];
-    if (!poseDef) return;
+    const poseDef = editedPoses.overlays[heldKey] ?? poseCache.held[heldKey];
+    if (!poseDef?.joints) return;
     npc.modifiers.push({ id: heldKey, kind: 'held', priority: 10, joints: poseDef.joints, timer: -1 });
     this._renderPanel(); this._renderFrame();
   }
@@ -884,8 +931,8 @@ class AnimatorDebugger {
     }
     npc.modifiers = npc.modifiers.filter(m => m.kind !== 'trait' || m.id !== traitKey);
     if (checked) {
-      const tp = TRAIT_PROPS[traitKey];
-      if (tp) npc.modifiers.push({ id: traitKey, kind: 'trait', priority: 5, joints: tp.joints, timer: -1 });
+      const tp = poseCache.trait[traitKey];
+      if (tp?.joints) npc.modifiers.push({ id: traitKey, kind: 'trait', priority: 5, joints: tp.joints, timer: -1 });
     }
     this._renderPanel();
     this._renderFrame();
@@ -954,31 +1001,8 @@ class AnimatorDebugger {
   }
 
   async savePoseRegistry() {
-    const src = generatePoseRegistryJS();
-    if (typeof window.showSaveFilePicker === 'function') {
-      try {
-        const handle = await window.showSaveFilePicker({
-          suggestedName: 'PoseRegistry.js',
-          startIn: 'desktop',
-          types: [{ description: 'JavaScript Module', accept: { 'text/javascript': ['.js'] } }],
-        });
-        const writable = await handle.createWritable();
-        await writable.write(src);
-        await writable.close();
-        this._setStatus('✓ PoseRegistry.js 已保存');
-        return;
-      } catch (e) {
-        if (e.name === 'AbortError') return;  // user cancelled
-      }
-    }
-    // fallback: copy to clipboard
-    navigator.clipboard.writeText(src)
-      .then(() => this._flash('已复制到剪贴板 → 粘贴到 js/behavior/PoseRegistry.js'))
-      .catch(() => {
-        const win = window.open('', '_blank');
-        if (win) { win.document.write(`<pre>${src.replace(/</g,'&lt;')}</pre>`); }
-        else { prompt('复制下面的内容到 PoseRegistry.js:', src); }
-      });
+    const ok = await saveJSON();
+    if (ok) this._setStatus('✓ pose_data.json 已保存');
   }
 
   exportAll() {
@@ -1062,7 +1086,7 @@ class AnimatorDebugger {
     <div class="cp-section">
       <div class="cp-section-hdr">
         <span class="cp-section-title">⚙ Pose Registry</span>
-        <button class="sm blue" onclick="app.savePoseRegistry()">Save .js</button>
+        <button class="sm blue" onclick="app.savePoseRegistry()">Save JSON</button>
       </div>
       <details class="cp-detail">
         <summary>Overlay Poses</summary>
@@ -1364,4 +1388,7 @@ class AnimatorDebugger {
 }
 
 // ── Bootstrap ──
-window.app = new AnimatorDebugger();
+(async () => {
+  await loadPoseCache();
+  window.app = new AnimatorDebugger();
+})();
