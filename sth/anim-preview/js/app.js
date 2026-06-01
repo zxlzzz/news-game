@@ -344,26 +344,15 @@ async function loadPoseCache() {
   poseCache.loiter     = await load(loiterFiles,   (j) => j.joints ?? j);
   poseCache.sub_event  = await load(subEventFiles, (j) => j);
 
-  // 绝对坐标 → delta（相对 single.json body [-1, 12]）
-  const BODY = [-1, 12];
-  const absToDelta = (joints) => {
-    const out = {};
-    for (const [j, v] of Object.entries(joints)) {
-      out[j] = [v[0] - BODY[0], v[1] - BODY[1]];
-    }
-    return out;
-  };
-  for (const p of Object.values(poseCache.held))  if (p.joints) p.joints = absToDelta(p.joints);
-  for (const p of Object.values(poseCache.trait)) if (p.joints) p.joints = absToDelta(p.joints);
-  for (const p of Object.values(poseCache.loiter)) {
-    const j = p.joints ?? p;
-    for (const k of Object.keys(j)) j[k] = [j[k][0] - BODY[0], j[k][1] - BODY[1]];
-  }
-  for (const clip of Object.values(poseCache.gesture)) {
-    for (const kf of (clip.keyframes ?? [])) {
-      for (const [k, v] of Object.entries(kf)) {
-        if (k !== 'dur') kf[k] = [v[0] - BODY[0], v[1] - BODY[1]];
-      }
+  // abs → delta（相对 single.json body [-1,12]），与游戏 _buildPoseCache 一致
+  const B = [-1, 12];
+  const toDelta = j => { const o={}; for(const[k,v] of Object.entries(j)) o[k]=[v[0]-B[0],v[1]-B[1]]; return o; };
+  for(const p of Object.values(poseCache.held))  if(p?.joints) p.joints = toDelta(p.joints);
+  for(const p of Object.values(poseCache.trait)) if(p?.joints) p.joints = toDelta(p.joints);
+  for(const k of Object.keys(poseCache.loiter))  poseCache.loiter[k] = toDelta(poseCache.loiter[k]);
+  for(const clip of Object.values(poseCache.gesture)) {
+    for(const kf of (clip.keyframes??[])) {
+      for(const k of Object.keys(kf)) if(k!=='dur') kf[k]=[kf[k][0]-B[0],kf[k][1]-B[1]];
     }
   }
 
@@ -437,8 +426,8 @@ class NpcInstance {
     }
     const out = {};
     for (const [j, d] of Object.entries(deltas)) {
-      const base = frame[j];
-      out[j] = base ? [base[0] + d[0], base[1] + d[1]] : [d[0], d[1]];
+      const bodyPos = frame['body'] ?? [0, 0];
+      out[j] = [bodyPos[0] + d[0], bodyPos[1] + d[1]];
     }
     for (const [j, v] of Object.entries(absolutes)) {
       out[j] = v;
