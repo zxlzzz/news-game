@@ -390,7 +390,6 @@ class NpcInstance {
 
   get profile() { return PROFILES[this.profileKey] || PROFILES.pedestrian; }
 
-  // 与 NPC.resolveJoints() 完全一致：按 priority 升序合并所有 modifier joints
   resolveJoints() {
     if (!this.modifiers.length) return null;
     const out = {};
@@ -400,9 +399,35 @@ class NpcInstance {
     return out;
   }
 
+  _buildJointOverrides(frame) {
+    if (!this.modifiers.length) return null;
+    const sorted = [...this.modifiers].sort((a, b) => a.priority - b.priority);
+    const deltas = {};
+    const absolutes = {};
+    for (const m of sorted) {
+      if (!m.joints) continue;
+      if (m.absolute) {
+        Object.assign(absolutes, m.joints);
+      } else {
+        Object.assign(deltas, m.joints);
+      }
+    }
+    const out = {};
+    for (const [j, d] of Object.entries(deltas)) {
+      const base = frame[j];
+      out[j] = base ? [base[0] + d[0], base[1] + d[1]] : [d[0], d[1]];
+    }
+    for (const [j, v] of Object.entries(absolutes)) {
+      out[j] = v;
+    }
+    return out;
+  }
+
   get resolvedPose() {
     if (this.interactPose) return this.interactPose;
-    return this.resolveJoints() ?? {};
+    if (!this.animData || !this.modifiers.length) return {};
+    const frame = this.animData.frames[this.frame % this.animData.frames.length];
+    return this._buildJointOverrides(frame) ?? {};
   }
 
   async loadAnimForState(stateName) {

@@ -289,7 +289,7 @@ class TalkActivity extends Activity {
     }
     let mod = npc.modifiers.find(m => m.id === '_talk_sub_event');
     if (!mod) {
-      npc.modifiers.push({ id: '_talk_sub_event', kind: 'held', priority: 20, joints, timer: -1 });
+      npc.modifiers.push({ id: '_talk_sub_event', kind: 'held', priority: 20, joints, timer: -1, absolute: true });
     } else {
       mod.joints = joints;
     }

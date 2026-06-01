@@ -114,6 +114,30 @@ export class NPC extends Entity {
     return out;
   }
 
+  _buildJointOverrides(frame) {
+    if (!this.modifiers.length) return null;
+    const sorted = [...this.modifiers].sort((a, b) => a.priority - b.priority);
+    const deltas = {};
+    const absolutes = {};
+    for (const m of sorted) {
+      if (!m.joints) continue;
+      if (m.absolute) {
+        Object.assign(absolutes, m.joints);
+      } else {
+        Object.assign(deltas, m.joints);
+      }
+    }
+    const out = {};
+    for (const [j, d] of Object.entries(deltas)) {
+      const base = frame[j];
+      out[j] = base ? [base[0] + d[0], base[1] + d[1]] : [d[0], d[1]];
+    }
+    for (const [j, v] of Object.entries(absolutes)) {
+      out[j] = v;
+    }
+    return out;
+  }
+
   getBounds() {
     const h = 80 * this.scale * 2;
     const w = 40 * this.scale * 2;
@@ -157,7 +181,7 @@ export class NPC extends Entity {
       : { head: 'head', neck: 'neck', hand_l: 'l_hand', hand_r: 'r_hand',
           hip: 'body', foot_l: 'l_foot', foot_r: 'r_foot' };
     const jn = map[name] || name;
-    const ov = this.resolveJoints();
+    const ov = this._buildJointOverrides(frame);
     const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
     const jp = coord(jn);
     if (!jp) return { x: this.x, y: this.y };
@@ -271,14 +295,14 @@ export class NPC extends Entity {
     // 围绕骑手/主人的真实锚点作画，从而实现精确对齐。
     if (this.drawExtra) this.drawExtra(g, this);
 
-    // 纯黑白灰画风：忽略 config.color，按 Y 深度自动取灰度
-    // 取景框命中时仍用红色高亮（唯一保留的彩色，方便玩家定位捕获目标）
     const color = this.inViewfinder ? 0xcc2200 : npcDepthGray(this.y);
+    const frame = this.renderer.getFrame(this.animation, this.frameIndex);
+    const overrides = this.modifiers.length ? this._buildJointOverrides(frame) : null;
 
     this.renderer.draw(
       g, this.animation, this.frameIndex,
       this.x, this._renderY(), this.scale, this.direction,
-      color, 1, this.resolveJoints()
+      color, 1, overrides
     );
 
     if (this.inViewfinder) this._drawViewfinderOutline(g);

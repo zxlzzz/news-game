@@ -21,7 +21,7 @@ import {
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 
 const POSE_FILES = {
-  // held poses (game coordinates)
+  // held poses (delta relative to single.json base frame)
   held_phone_call:       'held pose/phone_call',
   held_phone_look:       'held pose/phone_look',
   held_smoke:            'held pose/smoke',
