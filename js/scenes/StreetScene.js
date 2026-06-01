@@ -304,25 +304,28 @@ export class StreetScene extends Phaser.Scene {
 
   _buildPoseCache() {
     const g = (key) => this.cache.json.get('pose_' + key);
-    const BODY = [-1, 12];
-    const toDelta = (joints) => {
-      if (!joints) return {};
-      const out = {};
-      for (const [j, v] of Object.entries(joints)) out[j] = [v[0] - BODY[0], v[1] - BODY[1]];
-      return out;
-    };
+    const B = [-1, 12];
     const wrapHeld = (json) => {
       if (!json) return null;
       const joints = json.joints ?? json.frames?.[0] ?? json;
-      return { ...json, joints: toDelta(joints) };
+      const out = {};
+      for (const [j, v] of Object.entries(joints)) out[j] = [v[0] - B[0], v[1] - B[1]];
+      return { ...json, joints: out };
     };
     const wrapGesture = (json) => {
       if (!json) return null;
       return { ...json, keyframes: (json.keyframes ?? []).map(kf => {
         const out = { dur: kf.dur };
-        for (const [k, v] of Object.entries(kf)) if (k !== 'dur') out[k] = [v[0] - BODY[0], v[1] - BODY[1]];
+        for (const [k, v] of Object.entries(kf)) if (k !== 'dur') out[k] = [v[0] - B[0], v[1] - B[1]];
         return out;
       })};
+    };
+    const wrapLoiter = (json) => {
+      if (!json) return {};
+      const joints = json.joints ?? json;
+      const out = {};
+      for (const [j, v] of Object.entries(joints)) out[j] = [v[0] - B[0], v[1] - B[1]];
+      return out;
     };
     return {
       held: {
@@ -346,9 +349,9 @@ export class StreetScene extends Phaser.Scene {
         use_trash:   wrapGesture(g('gesture_use_trash')),
       },
       loiter: {
-        phone: toDelta(g('loiter_phone')?.joints ?? {}),
-        bag_a: toDelta(g('loiter_bag_a')?.joints ?? {}),
-        bag_b: toDelta(g('loiter_bag_b')?.joints ?? {}),
+        phone: wrapLoiter(g('loiter_phone')),
+        bag_a: wrapLoiter(g('loiter_bag_a')),
+        bag_b: wrapLoiter(g('loiter_bag_b')),
       },
       sub_event: {
         push:      g('sub_event_push'),
