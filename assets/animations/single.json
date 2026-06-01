@@ -1,7 +1,9 @@
 {
   "name": "animation",
   "skeleton": "human",
-  "globalBend": {},
+  "globalBend": {
+    "body__neck": 0.3410561103068392
+  },
   "frames": [
     {
       "body": [
@@ -22,27 +24,27 @@
       ],
       "r_elbow": [
         12,
-        -10
+        -11
       ],
       "l_hand": [
         -14,
-        14
+        16
       ],
       "r_hand": [
         14,
-        15
+        14
       ],
       "l_knee": [
         -7,
-        47
+        46
       ],
       "r_knee": [
         7,
-        47
+        46
       ],
       "l_foot": [
         -8,
-        82
+        81
       ],
       "r_foot": [
         9,
