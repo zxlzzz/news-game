@@ -61,8 +61,8 @@ const PEDESTRIAN = {
   allowedStates: PED_ALLOWED,
   transitions: PED_TRANSITIONS,
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.0004, dur: [8, 30] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench', 'loiter'], chance: 0.0003, dur: [10, 25] },
+    phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [8, 30] },
+    phone_call: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0003, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
@@ -84,8 +84,8 @@ const BUSINESSMAN = {
   name: 'businessman',
   activities: ['talk', 'use_vending'],
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.0006, dur: [8, 30] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall', 'loiter'], chance: 0.0004, dur: [10, 25] },
+    phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0006, dur: [8, 30] },
+    phone_call: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
@@ -105,8 +105,8 @@ const TOURIST = {
     stand: { walk: 0.68, sit_bench: 0.08, sit_ground: 0.07, squat: 0.02, lean_wall: 0.05, loiter: 0.10 },
   },
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'sit_ground', 'squat', 'loiter'], chance: 0.0004, dur: [8, 30] },
-    phone_call: { on: ['walk', 'stand', 'loiter'], chance: 0.0003, dur: [10, 25] },
+    phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [8, 30] },
+    phone_call: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0003, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
@@ -139,7 +139,7 @@ const CHESS_ONLOOKER = {
     sit_ground: { stand: 1.0 },
   },
   heldPoses: {
-    phone_look: { on: ['stand'], chance: 0.0004, dur: [8, 25] },
+    phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [8, 25] },
     cross_arm:  CROSS_ARM,
   },
   activities: ['talk', 'chess_watch'],

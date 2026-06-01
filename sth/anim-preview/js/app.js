@@ -16,6 +16,9 @@
 
 import { PROFILES as _PROFILES }
   from '../../../js/behavior/NpcProfile.js';
+import { PhoneProp } from '../../../js/props/PhoneProp.js';
+import { CigaretteProp } from '../../../js/props/CigaretteProp.js';
+import { BagProp } from '../../../js/props/BagProp.js';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ── 纯 UI 元数据（只用于工具显示，不进入游戏逻辑）────────────────────────────
@@ -381,6 +384,8 @@ class NpcInstance {
     this.modifiers   = [];     // Modifier[]，驱动实际渲染
     this.collapsed   = false;
     this.interactPose = null;
+    this._props      = {};     // type → prop instance
+    this._propProxy  = new NpcPropProxy();
   }
 
   get profile() { return PROFILES[this.profileKey] || PROFILES.pedestrian; }
@@ -617,6 +622,55 @@ class AnimGraph {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// ── Canvas2D → Phaser Graphics adapter (for NPC props) ────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function hexToCSS(hex, alpha) {
+  const r = (hex >> 16) & 0xff, g = (hex >> 8) & 0xff, b = hex & 0xff;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+class CanvasGraphics {
+  constructor(ctx) { this.ctx = ctx; this._lw = 1; this._lc = '#000'; this._la = 1; }
+  fillStyle(color, alpha = 1) { this.ctx.fillStyle = hexToCSS(color, alpha); }
+  fillRect(x, y, w, h) { this.ctx.fillRect(x, y, w, h); }
+  fillCircle(x, y, r) { this.ctx.beginPath(); this.ctx.arc(x, y, r, 0, Math.PI * 2); this.ctx.fill(); }
+  fillEllipse(x, y, w, h) {
+    this.ctx.beginPath(); this.ctx.ellipse(x, y, w / 2, h / 2, 0, 0, Math.PI * 2); this.ctx.fill();
+  }
+  lineStyle(width, color, alpha = 1) {
+    this._lw = width; this._lc = hexToCSS(color, alpha); this._la = alpha;
+    this.ctx.lineWidth = width; this.ctx.strokeStyle = this._lc;
+  }
+  lineBetween(x1, y1, x2, y2) {
+    this.ctx.beginPath(); this.ctx.moveTo(x1, y1); this.ctx.lineTo(x2, y2); this.ctx.stroke();
+  }
+  strokeRect(x, y, w, h) { this.ctx.strokeRect(x, y, w, h); }
+  strokeCircle(x, y, r) { this.ctx.beginPath(); this.ctx.arc(x, y, r, 0, Math.PI * 2); this.ctx.stroke(); }
+}
+
+class NpcPropProxy {
+  constructor() {
+    this._anchors = {};
+    this.scale = 1;
+    this.direction = 1;
+    this.alive = true;
+    this.visible = true;
+    this.id = 0;
+    this.modifiers = [];
+  }
+  getAnchor(name) {
+    const map = { hand_r: 'r_hand', hand_l: 'l_hand' };
+    return this._anchors[map[name] ?? name] ?? { x: 0, y: 0 };
+  }
+}
+
+const MODIFIER_TO_PROP_TYPE = {
+  phone_look: 'phone', phone_call: 'phone',
+  smoke: 'cigarette', hold_bag: 'bag',
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // ── PreviewCanvas ─────────────────────────────────────────────────────────────
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -734,37 +788,44 @@ class PreviewCanvas {
       ctx.beginPath(); ctx.arc(jx(jn), jy(jn), 4, 0, Math.PI*2); ctx.fill();
     }
 
-    // NPC props (phone / cigarette / bag)
-    const activeHeld = npc.modifiers.filter(m => m.kind === 'held').map(m => m.id);
+    // NPC props via prop classes
+    const proxy = npc._propProxy;
+    proxy.scale = s;
+    proxy.direction = d;
+    proxy.id = npc.id;
+    proxy.modifiers = npc.modifiers;
+    proxy._anchors = {};
+    for (const jn of ['r_hand', 'l_hand', 'r_elbow', 'l_elbow', 'head', 'body']) {
+      if (frameData[jn]) proxy._anchors[jn] = { x: jx(jn), y: jy(jn) };
+    }
+
+    const wantedTypes = new Set();
+    for (const m of npc.modifiers) {
+      const pt = MODIFIER_TO_PROP_TYPE[m.id];
+      if (pt) wantedTypes.add(pt);
+    }
+    for (const type of wantedTypes) {
+      if (!npc._props[type]) {
+        switch (type) {
+          case 'phone':     npc._props[type] = new PhoneProp(proxy); break;
+          case 'cigarette': npc._props[type] = new CigaretteProp(proxy); break;
+          case 'bag':       npc._props[type] = new BagProp(proxy); break;
+        }
+      }
+      const prop = npc._props[type];
+      if (prop && !prop.active) prop.activate();
+    }
+    for (const [type, prop] of Object.entries(npc._props)) {
+      if (!wantedTypes.has(type) && prop.active) prop.deactivate();
+    }
+
+    const gfx = new CanvasGraphics(ctx);
+    for (const prop of Object.values(npc._props)) {
+      if (prop.active) prop.draw(gfx);
+    }
+
+    // walk_dog leash hint
     const activeTrait = npc.modifiers.filter(m => m.kind === 'trait').map(m => m.id);
-    if (activeHeld.includes('phone_look') || activeHeld.includes('phone_call')) {
-      const hx = jx('r_hand'), hy = jy('r_hand');
-      const pw = 10 * s, ph = 16 * s;
-      ctx.fillStyle = '#2a2a2a'; ctx.globalAlpha = 0.9;
-      ctx.fillRect(hx - pw / 2, hy - ph, pw, ph);
-      ctx.fillStyle = '#8a8a8a'; ctx.globalAlpha = 0.6;
-      ctx.fillRect(hx - pw / 2 + 1 * s, hy - ph + 2 * s, pw - 2 * s, ph - 4 * s);
-      ctx.globalAlpha = 1;
-    }
-    if (activeHeld.includes('smoke')) {
-      const hx = jx('r_hand'), hy = jy('r_hand');
-      const len = 16 * s;
-      const tipX = hx + d * len, tipY = hy - 3 * s;
-      ctx.strokeStyle = '#e8e0d0'; ctx.lineWidth = Math.max(1, 2 * s);
-      ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(tipX, tipY); ctx.stroke();
-      ctx.fillStyle = '#cc4400'; ctx.globalAlpha = 0.9;
-      ctx.beginPath(); ctx.arc(tipX, tipY, Math.max(1.2, 2 * s), 0, Math.PI * 2); ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-    if (activeTrait.includes('hold_bag')) {
-      const hx = jx('l_hand'), hy = jy('l_hand');
-      const bw = 24 * s, bh = 32 * s;
-      ctx.fillStyle = '#4a4a4a'; ctx.globalAlpha = 0.85;
-      ctx.fillRect(hx - bw / 2, hy, bw, bh);
-      ctx.strokeStyle = '#3a3a3a'; ctx.lineWidth = Math.max(0.8, 1.4 * s);
-      ctx.globalAlpha = 0.9; ctx.strokeRect(hx - bw / 2, hy, bw, bh);
-      ctx.globalAlpha = 1;
-    }
     if (activeTrait.includes('walk_dog')) {
       ctx.strokeStyle = '#6a6a6a'; ctx.lineWidth = Math.max(0.8, 1.2 * s);
       ctx.globalAlpha = 0.85;
@@ -811,7 +872,12 @@ class PlaybackController {
   _loop(ts) {
     if (!this.playing) return;
     const dt = Math.min((ts - this._lastTs)/1000, 0.1); this._lastTs = ts;
-    for (const npc of this.getNpcs()) npc.advanceFrame(dt, this.speed);
+    for (const npc of this.getNpcs()) {
+      npc.advanceFrame(dt, this.speed);
+      for (const prop of Object.values(npc._props)) {
+        if (prop.active) prop.update(dt * 1000);
+      }
+    }
     this.onTick();
     requestAnimationFrame(t => this._loop(t));
   }
