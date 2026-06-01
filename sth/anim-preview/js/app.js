@@ -413,9 +413,9 @@ class NpcInstance {
       }
     }
     const out = {};
+    const bodyPos = frame['body'] ?? [0, 0];
     for (const [j, d] of Object.entries(deltas)) {
-      const base = frame[j];
-      out[j] = base ? [base[0] + d[0], base[1] + d[1]] : [d[0], d[1]];
+      out[j] = [bodyPos[0] + d[0], bodyPos[1] + d[1]];
     }
     for (const [j, v] of Object.entries(absolutes)) {
       out[j] = v;
