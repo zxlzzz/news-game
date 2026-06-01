@@ -34,22 +34,22 @@ import { WaitForBusLayer }  from '../behavior/WaitForBusLayer.js';
 import { setState }         from '../behavior/BaseStateMachine.js';
 
 const POSE_FILES = {
-  // held poses
-  held_phone_call:       'held pose/phone',
+  // held poses (game coordinates)
+  held_phone_call:       'held pose/phone_call',
   held_phone_look:       'held pose/phone_look',
-  held_smoke:            'held pose/smoke',
-  held_cross_arm:        'held pose/cross_arm',
+  held_smoke:            'held pose/smoke_game',
+  held_cross_arm:        'held pose/cross_arm_game',
   held_hands_in_pocket:  'held pose/hands_in_pocket',
-  // traits
-  trait_hold_bag:  'trait/hold',
+  // traits (game coordinates)
+  trait_hold_bag:  'trait/hold_bag',
   trait_walk_dog:  'trait/walk_dog',
   trait_backpack:  'trait/backpack',
   trait_umbrella:  'trait/umbrella',
-  // gestures
-  gesture_check_watch: 'gesture/watch',
-  gesture_stretch:     'gesture/stretch',
-  gesture_use_vending: 'gesture/machine',
-  gesture_use_trash:   'gesture/trash',
+  // gestures (game coordinates)
+  gesture_check_watch: 'gesture/check_watch',
+  gesture_stretch:     'gesture/stretch_game',
+  gesture_use_vending: 'gesture/use_vending',
+  gesture_use_trash:   'gesture/use_trash_game',
   // loiter
   loiter_phone: 'loiter/phone',
   loiter_bag_a: 'loiter/bag_a',

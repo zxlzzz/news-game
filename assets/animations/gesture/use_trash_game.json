@@ -1,0 +1,14 @@
+{
+  "type": "gesture",
+  "activeJoints": ["r_elbow", "r_hand"],
+  "loop": false,
+  "keyframes": [
+    { "dur": 0.3, "r_elbow": [27, -26], "r_hand": [34, -2] },
+    { "dur": 0.3, "r_elbow": [26, -23], "r_hand": [27, 2] },
+    { "dur": 0.3, "r_elbow": [23, -18], "r_hand": [18, 7] },
+    { "dur": 0.3, "r_elbow": [19, -15], "r_hand": [8, 8] },
+    { "dur": 0.3, "r_elbow": [23, -18], "r_hand": [18, 7] },
+    { "dur": 0.3, "r_elbow": [26, -23], "r_hand": [27, 2] },
+    { "dur": 0.3, "r_elbow": [27, -26], "r_hand": [34, -2] }
+  ]
+}
