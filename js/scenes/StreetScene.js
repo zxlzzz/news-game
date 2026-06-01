@@ -304,31 +304,51 @@ export class StreetScene extends Phaser.Scene {
 
   _buildPoseCache() {
     const g = (key) => this.cache.json.get('pose_' + key);
+    const BODY = [-1, 12];
+    const toDelta = (joints) => {
+      if (!joints) return {};
+      const out = {};
+      for (const [j, v] of Object.entries(joints)) out[j] = [v[0] - BODY[0], v[1] - BODY[1]];
+      return out;
+    };
+    const wrapHeld = (json) => {
+      if (!json) return null;
+      const joints = json.joints ?? json.frames?.[0] ?? json;
+      return { ...json, joints: toDelta(joints) };
+    };
+    const wrapGesture = (json) => {
+      if (!json) return null;
+      return { ...json, keyframes: (json.keyframes ?? []).map(kf => {
+        const out = { dur: kf.dur };
+        for (const [k, v] of Object.entries(kf)) if (k !== 'dur') out[k] = [v[0] - BODY[0], v[1] - BODY[1]];
+        return out;
+      })};
+    };
     return {
       held: {
-        phone_call:       g('held_phone_call'),
-        phone_look:       g('held_phone_look'),
-        smoke:            g('held_smoke'),
-        cross_arm:        g('held_cross_arm'),
-        hands_in_pocket:  g('held_hands_in_pocket'),
+        phone_call:      wrapHeld(g('held_phone_call')),
+        phone_look:      wrapHeld(g('held_phone_look')),
+        smoke:           wrapHeld(g('held_smoke')),
+        cross_arm:       wrapHeld(g('held_cross_arm')),
+        hands_in_pocket: wrapHeld(g('held_hands_in_pocket')),
       },
       trait: {
-        hold_bag:  g('trait_hold_bag'),
-        walk_dog:  g('trait_walk_dog'),
-        backpack:  g('trait_backpack'),
-        umbrella:  g('trait_umbrella'),
+        hold_bag: wrapHeld(g('trait_hold_bag')),
+        walk_dog: wrapHeld(g('trait_walk_dog')),
+        backpack: wrapHeld(g('trait_backpack')),
+        umbrella: wrapHeld(g('trait_umbrella')),
       },
       gesture: {
-        check_watch: g('gesture_check_watch'),
-        stretch:     g('gesture_stretch'),
-        wave:        g('gesture_wave'),
-        use_vending: g('gesture_use_vending'),
-        use_trash:   g('gesture_use_trash'),
+        check_watch: wrapGesture(g('gesture_check_watch')),
+        stretch:     wrapGesture(g('gesture_stretch')),
+        wave:        wrapGesture(g('gesture_wave')),
+        use_vending: wrapGesture(g('gesture_use_vending')),
+        use_trash:   wrapGesture(g('gesture_use_trash')),
       },
       loiter: {
-        phone: g('loiter_phone')?.joints ?? {},
-        bag_a: g('loiter_bag_a')?.joints ?? {},
-        bag_b: g('loiter_bag_b')?.joints ?? {},
+        phone: toDelta(g('loiter_phone')?.joints ?? {}),
+        bag_a: toDelta(g('loiter_bag_a')?.joints ?? {}),
+        bag_b: toDelta(g('loiter_bag_b')?.joints ?? {}),
       },
       sub_event: {
         push:      g('sub_event_push'),
