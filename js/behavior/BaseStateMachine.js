@@ -29,6 +29,7 @@
 
 import { dlog }        from './DebugLog.js';
 import { PARK_TOP }     from '../SceneConfig.js';
+import { alignSitBench, seatSurfaceY } from './SeatAlign.js';
 
 let LOITER_POSES = {};
 
@@ -161,12 +162,7 @@ function _resolveTimeout(npc, envQuery, profile) {
   if (next === 'sit_bench') {
     const bench = envQuery.nearestFreeBench(npc, 80);
     if (!bench) return 'stand';    // 无空椅 → 回退站立
-    bench._occupiedBy = npc.id;
-    npc._bench = bench;
-    const seatY = bench.y - (bench.seatH ?? 12);
-    npc.x = Math.max(npc.minX, Math.min(npc.maxX, bench.x));
-    npc.y = Math.max(npc.minY, Math.min(npc.maxY, seatY));
-    npc._sortY = bench.y + 1;
+    alignSitBench(npc, bench);     // 占位 + x/y 对齐 + 按 facing 设图层
     return 'sit_bench';
   }
   // lie_bench anchorMode='back'（无竖向偏移），sit_bench anchorMode='hip'（body 关节落 npc.y）。
@@ -182,7 +178,7 @@ function _resolveTimeout(npc, envQuery, profile) {
       }
     }
     const sc = npc.scale || 0.45;
-    const seatY = npc._bench.y - (npc._bench.seatH ?? 12);
+    const seatY = seatSurfaceY(npc._bench);
     npc.y = Math.max(npc.minY, Math.min(npc.maxY, seatY - Math.round(bodyY * sc)));
     // X 修正：body 关节应落在椅面中心 X，而非偏移
     const canonDir = npc.renderer?.getAnimation('lie_bench')?.canonicalDirection || 1;
@@ -198,11 +194,16 @@ function _resolveTimeout(npc, envQuery, profile) {
     if (spot.side === 'left') spot.building._leanLeft = npc.id;
     else spot.building._leanRight = npc.id;
     npc._wallSpot = { building: spot.building, side: spot.side };
-    npc.x = Math.max(npc.minX, Math.min(npc.maxX, spot.x));
+    // 身体偏到墙边外侧（不骑在转角上）；脚底落在建筑临街地面线
+    const halfW = 20 * (npc.scale || 0.45);
+    const dx = spot.side === 'left' ? -halfW : halfW;
+    npc.x = Math.max(npc.minX, Math.min(npc.maxX, spot.x + dx));
+    npc.y = Math.max(npc.minY, Math.min(npc.maxY, spot.building.baseY));
     npc.direction = spot.facing;
     return 'lean_wall';
   }
   if (next === 'sit_ground') {
+    // sit_ground 用 foot 锚点、坐在当前公园地面 y，已正确对齐，无需修正
     if (npc.y < PARK_TOP) return 'stand';
     return 'sit_ground';
   }

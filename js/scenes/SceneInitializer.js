@@ -6,6 +6,7 @@ import { SpawnManager }    from '../behavior/SpawnManager.js';
 import { NpcPropManager }  from '../props/NpcPropManager.js';
 import { WaitForBusLayer } from '../behavior/WaitForBusLayer.js';
 import { setState }        from '../behavior/BaseStateMachine.js';
+import { busStopBenchY, BENCH_SEAT_H } from '../behavior/SeatAlign.js';
 import { spawnPedestrians, spawnOnePedestrian } from '../npcs/Pedestrians.js';
 import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
@@ -80,8 +81,10 @@ export class SceneInitializer {
     spawnAthletes(em, sr, bm);
     this.scene.trafficManager = initVehicleSystem(em, sr);
 
-    if (this.scene.trafficManager.busStops.length > 0)
+    if (this.scene.trafficManager.busStops.length > 0) {
       bm.waitForBusLayer = new WaitForBusLayer(this.scene.trafficManager.busStops);
+      this._spawnBusStopBenches(layout);
+    }
 
     const RY0 = PARK_TOP + 16, RY1 = PARK_BOTTOM - 8;
     const WR = [50, WORLD_WIDTH - 50];
@@ -92,6 +95,28 @@ export class SceneInitializer {
       { id: 'busstop_near',  target: 3,  yRange: [PARK_TOP, PARK_TOP + 25],                xRange: [1380, 1620], exitTypes: ['edge'],              npcTypes: ['pedestrian', 'tourist'],     isBusWaiter: true, busStopDir: -1 },
     ];
     this.scene.spawnManager = new SpawnManager({ spawnFn: this._makeSpawnFn(bm, RY0, RY1), exitRegistry, bm, zones: spawnZones });
+  }
+
+  // 公交站长椅提升为实体（参与 Y 排序 + 复用 sit_bench 落座路径）。
+  // 背景层仅保留顶棚/立柱/站台；长椅由实体绘制。
+  _spawnBusStopBenches(layout) {
+    const stops = layout?.busStops || [];
+    const instances = this.scene.trafficManager?.busStops || [];
+    for (const ls of stops) {
+      const benchY = busStopBenchY(ls);
+      const bench = new PropEntity({
+        propType: 'bench',
+        x: ls.x,
+        y: benchY + BENCH_SEAT_H,                 // 座面(y-seatH)落在原站台长椅线
+        width: (ls.benchW ?? 132) / 3,            // PropEntity 内部 *3
+        facing: ls.direction > 0 ? 'up' : 'down', // 远站→椅遮人；近站→人遮椅
+        seatH: BENCH_SEAT_H,
+        tags: ['bench', 'busstop'],
+      });
+      this.em.add(bench);
+      const inst = instances.find(s => s.direction === ls.direction);
+      if (inst) inst._bench = bench;
+    }
   }
 
   _makeSpawnFn(bm, roamY0, roamY1) {

@@ -86,7 +86,6 @@ export class SceneRenderer {
     const ROOF_W  = stop.roofW;
     const ROOF_H  = stop.roofH;
     const PIL_X   = stop.pillarOffset;
-    const BENCH_W = stop.benchW;
     const bx0     = sx - BAY_W / 2;
     const bx1     = sx + BAY_W / 2;
 
@@ -112,15 +111,7 @@ export class SceneRenderer {
     g.lineBetween(sx - PIL_X, pillarT, sx - PIL_X, pillarB);
     g.lineBetween(sx + PIL_X, pillarT, sx + PIL_X, pillarB);
 
-    const benchY = pillarT + 15;
-    const benchHalf = BENCH_W / 2;
-    g.fillStyle(0x565654, 1);
-    g.fillRect(sx - benchHalf, benchY, BENCH_W, 4);
-    g.lineStyle(0.8, 0x181818, 0.7);
-    g.strokeRect(sx - benchHalf, benchY, BENCH_W, 4);
-    g.lineStyle(1.5, 0x303030, 0.9);
-    g.lineBetween(sx - benchHalf + 10, benchY + 4, sx - benchHalf + 10, benchY + 8);
-    g.lineBetween(sx + benchHalf - 10, benchY + 4, sx + benchHalf - 10, benchY + 8);
+    // 长椅现由实体绘制（参与 Y 排序），此处不再画背景长椅。
 
     const poleX  = bx1 + 5;
     const poleTy = roofT;
@@ -137,7 +128,6 @@ export class SceneRenderer {
     const ROOF_W  = stop.roofW;
     const ROOF_H  = stop.roofH;
     const PIL_X   = stop.pillarOffset;
-    const BENCH_W = stop.benchW;
     const bx0     = sx - BAY_W / 2;
     const bx1     = sx + BAY_W / 2;
 
@@ -163,15 +153,7 @@ export class SceneRenderer {
     g.lineBetween(sx - PIL_X, pillarT, sx - PIL_X, pillarB);
     g.lineBetween(sx + PIL_X, pillarT, sx + PIL_X, pillarB);
 
-    const benchY = ny + 32;
-    const benchHalf = BENCH_W / 2;
-    g.fillStyle(0x565654, 1);
-    g.fillRect(sx - benchHalf, benchY, BENCH_W, 4);
-    g.lineStyle(0.8, 0x181818, 0.7);
-    g.strokeRect(sx - benchHalf, benchY, BENCH_W, 4);
-    g.lineStyle(1.5, 0x303030, 0.9);
-    g.lineBetween(sx - benchHalf + 12, benchY + 4, sx - benchHalf + 12, benchY + 9);
-    g.lineBetween(sx + benchHalf - 12, benchY + 4, sx + benchHalf - 12, benchY + 9);
+    // 长椅现由实体绘制（参与 Y 排序），此处不再画背景长椅。
 
     const poleX  = bx1 + 5;
     const poleTy = ny - 8;

@@ -8,6 +8,7 @@
  */
 
 import { setState } from './BaseStateMachine.js';
+import { alignSitBench } from './SeatAlign.js';
 import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../SceneConfig.js';
 
 const WAIT_ZONES = [
@@ -47,9 +48,11 @@ export class WaitForBusLayer {
 
     if (npc._waitTimer > MAX_WAIT_TIME) {
       this._releaseWaiter(npc);
-      setState(npc, 'walk', 'wait_timeout');
+      setState(npc, 'walk', 'wait_timeout');   // 离开 sit_bench 自动释放长椅
       return;
     }
+
+    if (npc.state === 'sit_bench') return;     // 坐着等车：不做 stand/loiter 摆动
 
     if (npc.state === 'stand' && npc._waitTimer > (npc._nextFidget || 10)) {
       npc._nextFidget = npc._waitTimer + 10 + Math.random() * 10;
@@ -91,7 +94,13 @@ export class WaitForBusLayer {
     npc._waitTimer = 0;
     npc._nextFidget = 10 + Math.random() * 10;
     stop._waiters.push(npc);
-    setState(npc, 'stand', 'wait_bus');
+    // 部分等车者落座（每站长椅仅 1 人，由 _occupiedBy 自然限位）
+    if (stop._bench && !stop._bench._occupiedBy && Math.random() < 0.5) {
+      alignSitBench(npc, stop._bench);
+      setState(npc, 'sit_bench', 'wait_sit');
+    } else {
+      setState(npc, 'stand', 'wait_bus');
+    }
     npc.stateDur = Infinity;
     npc.speed = 0;
     npc.vy = 0;

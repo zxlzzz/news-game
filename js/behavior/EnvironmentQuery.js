@@ -95,6 +95,7 @@ export class EnvironmentQuery {
     let best = null, bestD = radius;
     for (const e of this.em.entities) {
       if (e.propType !== 'bench' || e._occupiedBy != null) continue;
+      if (e.tags?.includes('busstop')) continue;   // 公交站长椅仅由 WaitForBusLayer 分配
       const d = Math.hypot(e.x - npc.x, e.y - npc.y);
       if (d <= bestD) { bestD = d; best = e; }
     }
