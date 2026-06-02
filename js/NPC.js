@@ -295,7 +295,7 @@ export class NPC extends Entity {
     // 围绕骑手/主人的真实锚点作画，从而实现精确对齐。
     if (this.drawExtra) this.drawExtra(g, this);
 
-    const color = this.inViewfinder ? 0xcc2200 : npcDepthGray(this.y);
+    const color = npcDepthGray(this.y);
     const frame = this.renderer.getFrame(this.animation, this.frameIndex);
     const overrides = this.modifiers.length ? this._buildJointOverrides(frame) : null;
 
@@ -304,7 +304,5 @@ export class NPC extends Entity {
       this.x, this._renderY(), this.scale, this.direction,
       color, 1, overrides
     );
-
-    if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
 }

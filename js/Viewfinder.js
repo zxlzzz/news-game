@@ -87,7 +87,7 @@ export class Viewfinder {
   }
 
   /**
-   * 检测哪些实体在取景框内（AABB），更新 entity.inViewfinder 标志
+   * 检测哪些实体在取景框内（AABB），收集到 capturedEntities
    * @param {Entity[]} entities - 所有存活可见实体
    */
   updateCapture(entities) {
@@ -102,7 +102,6 @@ export class Viewfinder {
         b.y + b.height < vf.y ||
         b.y            > vf.y + vf.h
       );
-      e.inViewfinder = overlap;
       if (overlap) this.capturedEntities.push(e);
     }
   }

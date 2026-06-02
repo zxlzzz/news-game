@@ -63,14 +63,13 @@ export class VehicleEntity extends Entity {
 
   draw(g) {
     if (!this.visible) return;
-    const hl = this.inViewfinder ? 0xcc2200 : null;
+    const hl = null;
     switch (this.kind) {
       case 'bus':  this._bus(g, hl);  break;
       case 'taxi': this._taxi(g, hl); break;
       case 'moto': this._moto(g, hl); break;
       default:     this._car(g, hl);  break;
     }
-    if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
 
   /* ═══════════════════════════════════════════════

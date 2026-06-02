@@ -107,8 +107,6 @@ export class BuildingEntity extends Entity {
       g.fillStyle(0xffffff, 0.08);            // 右侧细高光，强调缝隙立体
       g.fillRect(x + 7, top, 1.5, base - top + 1);
     }
-
-    if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
 
   _facade(g, x, w) {

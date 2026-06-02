@@ -61,6 +61,5 @@ export class PropEntity extends Entity {
   draw(g) {
     if (!this.visible) return;
     drawProp(g, this);
-    if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
 }
