@@ -11,7 +11,7 @@
 import { SIDEWALK_FAR_Y, PARK_TOP, PARK_BOTTOM, WORLD_WIDTH } from '../SceneConfig.js';
 import { makeNPC } from './util.js';
 import { getProfile } from '../behavior/NpcProfile.js';
-import { getTraitProps } from '../behavior/ModifierLayer.js';
+import { getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -37,9 +37,12 @@ const SPAWN_TRAIT_CHANCES = { hold_bag: 0.25, umbrella: 0.08 };
 function pushTrait(n, traitKey) {
   n.traits.push(traitKey);
   const tp = getTraitProps()[traitKey];
-  if (tp) n.modifiers.push({
+  if (!tp) return;
+  // 生成时取 front 变体；运行中由 ModifierLayer 按状态切换 front/side
+  const variant = resolveTraitVariant(tp, false);
+  n.modifiers.push({
     id: traitKey, kind: 'trait', priority: 5,
-    joints: { ...tp.joints }, timer: -1,
+    joints: { ...(variant?.joints ?? {}) }, timer: -1, _side: false,
   });
 }
 

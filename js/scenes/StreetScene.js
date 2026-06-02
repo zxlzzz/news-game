@@ -345,13 +345,10 @@ export class StreetScene extends Phaser.Scene {
         hands_in_pocket: wrapHeld(g('held_hands_in_pocket')),
       },
       trait: {
-        hold_bag: wrapHeld(g('trait_hold_bag')),
-        walk_dog: wrapHeld(g('trait_walk_dog')),
-        umbrella: wrapHeld(g('trait_umbrella')),
-        // side 变体：仅注册，选用逻辑待接入
-        hold_bag_side: wrapHeld(g('trait_hold_bag_side')),
-        walk_dog_side: wrapHeld(g('trait_walk_dog_side')),
-        umbrella_side: wrapHeld(g('trait_umbrella_side')),
+        // 每个 trait 含 front / side 两个变体，由 ModifierLayer 按状态选用
+        hold_bag: { front: wrapHeld(g('trait_hold_bag')), side: wrapHeld(g('trait_hold_bag_side')) },
+        walk_dog: { front: wrapHeld(g('trait_walk_dog')), side: wrapHeld(g('trait_walk_dog_side')) },
+        umbrella: { front: wrapHeld(g('trait_umbrella')), side: wrapHeld(g('trait_umbrella_side')) },
       },
       gesture: {
         check_watch:    wrapGesture(g('gesture_check_watch')),
