@@ -25,7 +25,7 @@ const OVERLAY_EXTRA_TAGS = {
 // 无状态机托管时按动画名推断标签（chess/cycle/dance 等专用场景）
 const ANIM_TAGS = {
   walk: 'walking', run: 'running', jog: 'jogging', bike: 'cycling',
-  mobile: 'riding', idle: 'standing', single: 'standing', chess: 'sitting',
+  mobile: 'riding', idle: 'standing', stand: 'standing', chess: 'sitting',
   sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling',
 };
 

@@ -140,7 +140,7 @@ class TalkActivity extends Activity {
   _enterTalk(npc) {
     npc.state      = 'talk';
     npc.stateTimer = 0;
-    npc.animation  = 'single';
+    npc.animation  = 'stand';
     npc.speed      = 0;
     npc.playOnce   = false;
     npc.animDone   = false;
@@ -460,7 +460,7 @@ class UsePropActivity extends Activity {
 
     // 站定面向道具，清非 trait modifier
     npc.state      = 'stand';
-    npc.animation  = 'single';
+    npc.animation  = 'stand';
     npc.speed      = 0;
     npc.vy         = 0;
     npc.playOnce   = false;

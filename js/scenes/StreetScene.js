@@ -21,41 +21,41 @@ import {
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 
 const POSE_FILES = {
-  // held poses (delta relative to single.json base frame)
+  // held poses (delta relative to stand.json base frame)
   held_phone_call:       'held pose/phone_call',
   held_phone_look:       'held pose/phone_look',
   held_smoke:            'held pose/smoke',
   held_cross_arm:        'held pose/cross_arm',
   held_hands_in_pocket:  'held pose/hands_in_pocket',
-  // traits (game coordinates)
-  trait_hold_bag:  'trait/hold_bag',
-  trait_walk_dog:  'trait/walk_dog',
-  trait_backpack:  'trait/backpack',
-  trait_umbrella:  'trait/umbrella',
-  // gestures (game coordinates)
-  gesture_check_watch: 'gesture/check_watch',
-  gesture_stretch:     'gesture/stretch',
-  gesture_wave:        'gesture/wave',
-  gesture_use_vending: 'gesture/use_vending',
-  gesture_use_trash:   'gesture/use_trash',
+  // traits
+  trait_hold_bag:  'trait/front/hold_bag',
+  trait_walk_dog:  'trait/front/walk_dog',
+  trait_backpack:  'trait/front/backpack',
+  trait_umbrella:  'trait/front/umbrella',
+  // gestures (static)
+  gesture_check_watch: 'gesture/static/check_watch',
+  gesture_stretch:     'gesture/static/stretch',
+  gesture_wave:        'gesture/static/wave',
   // loiter
-  loiter_phone: 'loiter/phone',
-  loiter_bag_a: 'loiter/bag_a',
-  loiter_bag_b: 'loiter/bag_b',
+  loiter_phone: 'base/loiter/phone',
+  loiter_bag_a: 'base/loiter/bag_a',
+  loiter_bag_b: 'base/loiter/bag_b',
   // sub_event
-  sub_event_push:      'sub_event/push',
-  sub_event_give_item: 'sub_event/give_item',
-  sub_event_handshake: 'sub_event/handshake',
-  sub_event_point_at:  'sub_event/point_at',
+  sub_event_push:        'sub_event/push',
+  sub_event_give_item:   'sub_event/give_item',
+  sub_event_handshake:   'sub_event/handshake',
+  sub_event_point_at:    'sub_event/point_at',
+  sub_event_use_vending: 'sub_event/use_vending',
+  sub_event_use_trash:   'sub_event/use_trash',
 };
 
 const ANIM_FILES = {
-  walk: 'walk', run: 'run', idle: 'idle', jog: 'jog', bike: 'bike',
-  mobile: 'mobile', chess: 'chess', dogwalk: 'pet/dog_walk',
-  single: 'single', sit_bench: 'sit_bench', fall: 'fall',
-  lie_ground: 'lie_ground', lean_wall: 'lean_wall', squat: 'squat',
-  sit_ground: 'sit_ground', lie_bench: 'lie_bench', get_up: 'get_up',
-  chess_onlookers: 'chess_onlookers', mobike: 'mobike',
+  walk: 'base/walk', run: 'base/run', idle: 'base/idle', jog: 'base/jog', bike: 'base/bike',
+  mobile: 'base/mobile', chess: 'variant/chess/chess', dogwalk: 'pet/dog_walk',
+  stand: 'base/stand', sit_bench: 'base/sit_bench', fall: 'base/fall',
+  lie_ground: 'base/lie_ground', lean_wall: 'base/lean_wall', squat: 'base/squat',
+  sit_ground: 'base/sit_ground', lie_bench: 'base/lie_bench', get_up: 'base/get_up',
+  chess_onlookers: 'variant/chess/chess_onlookers', mobike: 'base/mobike',
 };
 
 export class StreetScene extends Phaser.Scene {
@@ -345,8 +345,6 @@ export class StreetScene extends Phaser.Scene {
         check_watch: wrapGesture(g('gesture_check_watch')),
         stretch:     wrapGesture(g('gesture_stretch')),
         wave:        wrapGesture(g('gesture_wave')),
-        use_vending: wrapGesture(g('gesture_use_vending')),
-        use_trash:   wrapGesture(g('gesture_use_trash')),
       },
       loiter: {
         phone: wrapLoiter(g('loiter_phone')),
@@ -354,10 +352,12 @@ export class StreetScene extends Phaser.Scene {
         bag_b: wrapLoiter(g('loiter_bag_b')),
       },
       sub_event: {
-        push:      g('sub_event_push'),
-        give_item: g('sub_event_give_item'),
-        handshake: g('sub_event_handshake'),
-        point_at:  g('sub_event_point_at'),
+        push:        g('sub_event_push'),
+        give_item:   g('sub_event_give_item'),
+        handshake:   g('sub_event_handshake'),
+        point_at:    g('sub_event_point_at'),
+        use_vending: g('sub_event_use_vending'),
+        use_trash:   g('sub_event_use_trash'),
       },
     };
   }

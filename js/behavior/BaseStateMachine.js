@@ -47,7 +47,7 @@ const STATE_DEFS = {
   walk:       { anim: 'walk',       speedK: 1.0, once: false, dur: [4, 10]  },
   run:        { anim: 'run',        speedK: 2.4, once: false, dur: [2, 4]   },
   jog:        { anim: 'jog',        speedK: 1.0, once: false, dur: null     },
-  stand:      { anim: 'single',     speedK: 0,   once: false, dur: [3, 8]   },
+  stand:      { anim: 'stand',      speedK: 0,   once: false, dur: [3, 8]   },
   sit_bench:  { anim: 'sit_bench',  speedK: 0,   once: true,  dur: [8, 15]  },
   fall:       { anim: 'fall',       speedK: 0,   once: true,  dur: null     },
   lie_ground: { anim: 'lie_ground', speedK: 0,   once: true,  dur: [4, 8]   },
@@ -56,8 +56,8 @@ const STATE_DEFS = {
   sit_ground: { anim: 'sit_ground', speedK: 0,   once: true,  dur: [8, 20]  },
   lie_bench:  { anim: 'lie_bench',  speedK: 0,   once: true,  dur: [15, 40] },
   get_up:     { anim: 'get_up',     speedK: 0,   once: true,  dur: null     },
-  talk:       { anim: 'single',     speedK: 0,   once: false, dur: null     },
-  loiter:     { anim: 'single',     speedK: 0,   once: false, dur: null     },
+  talk:       { anim: 'stand',      speedK: 0,   once: false, dur: null     },
+  loiter:     { anim: 'stand',      speedK: 0,   once: false, dur: null     },
   routing:    { anim: 'walk',       speedK: 1.0, once: false, dur: null     },
 };
 

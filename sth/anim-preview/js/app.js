@@ -25,20 +25,31 @@ import { BagProp } from '../../../js/props/BagProp.js';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ANIM_FILES = [
-  'single', 'cross_arm', 'idle', 'walk', 'run', 'jog',
+  'stand', 'cross_arm', 'idle', 'walk', 'run', 'jog',
   'fall', 'get_up', 'lie_ground',
   'lean_wall', 'squat', 'squat down', 'stand up', 'sit_ground',
   'sit_bench', 'lie_bench',
   'chess', 'chess_onlookers', 'dogwalk', 'bike', 'mobile',
 ];
 
+const ANIM_PATHS = {
+  stand: 'base/stand', idle: 'base/idle', walk: 'base/walk', run: 'base/run', jog: 'base/jog',
+  fall: 'base/fall', get_up: 'base/get_up', lie_ground: 'base/lie_ground',
+  lean_wall: 'base/lean_wall', squat: 'base/squat', 'squat down': 'base/squat down',
+  'stand up': 'base/stand up', sit_ground: 'base/sit_ground',
+  sit_bench: 'base/sit_bench', lie_bench: 'base/lie_bench',
+  bike: 'base/bike', mobile: 'base/mobile', mobike: 'base/mobike',
+  chess: 'variant/chess/chess', chess_onlookers: 'variant/chess/chess_onlookers',
+  dogwalk: 'pet/dog_walk', cross_arm: 'held pose/cross_arm',
+};
+
 // 状态图形元数据（cat / label）
 const STATES = {
   walk:       { anim: 'walk',       cat: 'move',    label: '步行' },
   run:        { anim: 'run',        cat: 'move',    label: '跑步' },
   jog:        { anim: 'jog',        cat: 'move',    label: '慢跑' },
-  stand:      { anim: 'single',     cat: 'idle',    label: '站立' },
-  loiter:     { anim: 'single',     cat: 'idle',    label: '闲晃' },
+  stand:      { anim: 'stand',      cat: 'idle',    label: '站立' },
+  loiter:     { anim: 'stand',      cat: 'idle',    label: '闲晃' },
   sit_bench:  { anim: 'sit_bench',  cat: 'sit',     label: '坐椅' },
   lean_wall:  { anim: 'lean_wall',  cat: 'sit',     label: '靠墙' },
   squat:      { anim: 'squat',      cat: 'sit',     label: '蹲下' },
@@ -47,7 +58,7 @@ const STATES = {
   lie_ground: { anim: 'lie_ground', cat: 'ground',  label: '躺地' },
   fall:       { anim: 'fall',       cat: 'special', label: '摔倒' },
   get_up:     { anim: 'get_up',     cat: 'special', label: '起身' },
-  talk:       { anim: 'single',     cat: 'social',  label: '对话' },
+  talk:       { anim: 'stand',      cat: 'social',  label: '对话' },
 };
 
 // Profile 显示名（label/shortLabel 仅工具用，不写入游戏源）
@@ -167,12 +178,12 @@ for (const [k, s] of Object.entries(_overlayOnSets)) OVERLAY_ON[k] = [...s];
 
 let editedPoses = { overlays: {}, loiter: {}, social: {} };
 
-// single.json 首帧关节数据（用于 delta→absolute 换算；启动时 fetchAnim 后填入）
-let _singleBase = null;
+// stand.json 首帧关节数据（用于 delta→absolute 换算；启动时 fetchAnim 后填入）
+let _standBase = null;
 
 function deltaToAbs(delta) {
   if (!delta) return {};
-  const base = _singleBase ?? {};
+  const base = _standBase ?? {};
   const out = {};
   for (const [j, d] of Object.entries(delta)) {
     const b = base[j] ?? [0, 0];
@@ -265,19 +276,21 @@ function calcOffsetY(data, coord, isDog) {
 const animCache = {};
 async function fetchAnim(name) {
   if (animCache[name]) return animCache[name];
-  const url = `../../assets/animations/${encodeURIComponent(name)}.json`;
+  const path = ANIM_PATHS[name] || name;
+  const parts = path.split('/');
+  const url = `../../assets/animations/${parts.map(encodeURIComponent).join('/')}.json`;
   const r = await fetch(url);
   if (!r.ok) throw new Error(`HTTP ${r.status}: ${name}`);
   return (animCache[name] = await r.json());
 }
 
-// single.json 首帧作为社交 delta→absolute 的基准
-async function preloadSingleBase() {
+// stand.json 首帧作为社交 delta→absolute 的基准
+async function preloadStandBase() {
   try {
-    const data = await fetchAnim('single');
-    _singleBase = data.frames[0];
+    const data = await fetchAnim('stand');
+    _standBase = data.frames[0];
   } catch (e) {
-    console.warn('[Debugger] single.json 加载失败，社交 pose 预览将使用零基准', e);
+    console.warn('[Debugger] stand.json 加载失败，社交 pose 预览将使用零基准', e);
   }
 }
 
@@ -299,28 +312,28 @@ async function loadPoseCache() {
     hands_in_pocket: 'held pose/hands_in_pocket.json',
   };
   const traitFiles = {
-    hold_bag: 'trait/hold_bag.json',
-    walk_dog: 'trait/walk_dog.json',
-    backpack: 'trait/backpack.json',
-    umbrella: 'trait/umbrella.json',
+    hold_bag: 'trait/front/hold_bag.json',
+    walk_dog: 'trait/front/walk_dog.json',
+    backpack: 'trait/front/backpack.json',
+    umbrella: 'trait/front/umbrella.json',
   };
   const gestureFiles = {
-    check_watch:  'gesture/check_watch.json',
-    stretch:      'gesture/stretch.json',
-    wave:         'gesture/wave.json',
-    use_vending:  'gesture/use_vending.json',
-    use_trash:    'gesture/use_trash.json',
+    check_watch:  'gesture/static/check_watch.json',
+    stretch:      'gesture/static/stretch.json',
+    wave:         'gesture/static/wave.json',
   };
   const loiterFiles = {
-    phone: 'loiter/phone.json',
-    bag_a: 'loiter/bag_a.json',
-    bag_b: 'loiter/bag_b.json',
+    phone: 'base/loiter/phone.json',
+    bag_a: 'base/loiter/bag_a.json',
+    bag_b: 'base/loiter/bag_b.json',
   };
   const subEventFiles = {
-    push:      'sub_event/push.json',
-    give_item: 'sub_event/give_item.json',
-    handshake: 'sub_event/handshake.json',
-    point_at:  'sub_event/point_at.json',
+    push:        'sub_event/push.json',
+    give_item:   'sub_event/give_item.json',
+    handshake:   'sub_event/handshake.json',
+    point_at:    'sub_event/point_at.json',
+    use_vending: 'sub_event/use_vending.json',
+    use_trash:   'sub_event/use_trash.json',
   };
 
   const load = async (map, extract) => {
@@ -375,7 +388,7 @@ class NpcInstance {
     this.pal         = NPC_PALETTE[this.palIdx];
     this.profileKey  = 'pedestrian';
     this.state       = 'stand';
-    this.animName    = 'single';
+    this.animName    = 'stand';
     this.animData    = null;
     this.frame       = 0;
     this.frameAcc    = 0;
@@ -932,7 +945,7 @@ class AnimatorDebugger {
     this.pb = new PlaybackController(() => this.npcs, () => this._renderFrame());
     this._bindKeys();
 
-    preloadSingleBase().then(() => {
+    preloadStandBase().then(() => {
       this.addNpc();
       this.addNpc();
       this.graph.render();
@@ -945,7 +958,7 @@ class AnimatorDebugger {
     if (this.npcs.length >= NPC_PALETTE.length) return;
     const npc = new NpcInstance(this.npcs.length);
     this.npcs.push(npc);
-    npc.loadAnim('single').then(() => this._renderFrame());
+    npc.loadAnim('stand').then(() => this._renderFrame());
     this._renderPanel();
     this._setStatus(`NPC ${npc.pal.label} 已添加`);
   }

@@ -30,9 +30,9 @@ let frameDurs = [0.3];
 
 const history = new History();
 
-async function initFromSingle() {
+async function initFromStand() {
   try {
-    const r = await fetch('../../assets/animations/single.json');
+    const r = await fetch('../../assets/animations/base/stand.json');
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const data = await r.json();
     const f0 = data.frames[0];
@@ -42,7 +42,7 @@ async function initFromSingle() {
     }
     SKELETONS.human.headRadius = 9;
   } catch (e) {
-    console.warn('[stick-puppet] single.json 加载失败，使用内置 defaultPose', e);
+    console.warn('[stick-puppet] stand.json 加载失败，使用内置 defaultPose', e);
   }
   frames = [defaultPose()];
 }
@@ -1022,4 +1022,4 @@ window.app = {
 // ============================================
 // 初始化
 // ============================================
-initFromSingle().then(() => render());
+initFromStand().then(() => render());
