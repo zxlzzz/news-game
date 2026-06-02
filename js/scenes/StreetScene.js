@@ -27,15 +27,24 @@ const POSE_FILES = {
   held_smoke:            'held pose/smoke',
   held_cross_arm:        'held pose/cross_arm',
   held_hands_in_pocket:  'held pose/hands_in_pocket',
-  // traits
+  // traits (front)
   trait_hold_bag:  'trait/front/hold_bag',
   trait_walk_dog:  'trait/front/walk_dog',
-  trait_backpack:  'trait/front/backpack',
   trait_umbrella:  'trait/front/umbrella',
+  // traits (side) — 仅注册，选用逻辑待接入
+  trait_hold_bag_side: 'trait/side/hold_bag',
+  trait_walk_dog_side: 'trait/side/walk_dog',
+  trait_umbrella_side: 'trait/side/umbrella',
   // gestures (static)
-  gesture_check_watch: 'gesture/static/check_watch',
-  gesture_stretch:     'gesture/static/stretch',
-  gesture_wave:        'gesture/static/wave',
+  gesture_check_watch:    'gesture/static/check_watch',
+  gesture_stretch:        'gesture/static/stretch',
+  gesture_yawn:           'gesture/static/yawn',
+  gesture_look_around:    'gesture/static/look_around',
+  gesture_adjust_clothes: 'gesture/static/adjust_clothes',
+  gesture_wave:           'gesture/wave',
+  // gestures (moving) — 行走/奔跑中触发
+  gesture_moving_check_watch: 'gesture/moving/check_watch',
+  gesture_moving_wipe_sweat:  'gesture/moving/wipe_sweat',
   // loiter
   loiter_phone: 'base/loiter/phone',
   loiter_bag_a: 'base/loiter/bag_a',
@@ -338,13 +347,22 @@ export class StreetScene extends Phaser.Scene {
       trait: {
         hold_bag: wrapHeld(g('trait_hold_bag')),
         walk_dog: wrapHeld(g('trait_walk_dog')),
-        backpack: wrapHeld(g('trait_backpack')),
         umbrella: wrapHeld(g('trait_umbrella')),
+        // side 变体：仅注册，选用逻辑待接入
+        hold_bag_side: wrapHeld(g('trait_hold_bag_side')),
+        walk_dog_side: wrapHeld(g('trait_walk_dog_side')),
+        umbrella_side: wrapHeld(g('trait_umbrella_side')),
       },
       gesture: {
-        check_watch: wrapGesture(g('gesture_check_watch')),
-        stretch:     wrapGesture(g('gesture_stretch')),
-        wave:        wrapGesture(g('gesture_wave')),
+        check_watch:    wrapGesture(g('gesture_check_watch')),
+        stretch:        wrapGesture(g('gesture_stretch')),
+        yawn:           wrapGesture(g('gesture_yawn')),
+        look_around:    wrapGesture(g('gesture_look_around')),
+        adjust_clothes: wrapGesture(g('gesture_adjust_clothes')),
+        wave:           wrapGesture(g('gesture_wave')),
+        // moving 变体
+        moving_check_watch: wrapGesture(g('gesture_moving_check_watch')),
+        moving_wipe_sweat:  wrapGesture(g('gesture_moving_wipe_sweat')),
       },
       loiter: {
         phone: wrapLoiter(g('loiter_phone')),

@@ -32,7 +32,7 @@ const TYPES = [
   { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
 ];
 
-const SPAWN_TRAIT_CHANCES = { hold_bag: 0.25, backpack: 0.2, umbrella: 0.08 };
+const SPAWN_TRAIT_CHANCES = { hold_bag: 0.25, umbrella: 0.08 };
 
 function pushTrait(n, traitKey) {
   n.traits.push(traitKey);

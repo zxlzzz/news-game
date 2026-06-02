@@ -50,9 +50,15 @@ const HANDS_IN_POCKET = {
 // 路人共用的 gesture 触发表
 //   chance 为每帧触发概率；dur 由 clip 关键帧累计决定，无需在此声明
 const PED_GESTURES = {
-  check_watch: { on: ['walk', 'stand', 'loiter'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
-  stretch:     { on: ['stand', 'loiter'],          chance: 0.00008, traitExcludes: ['hold_bag', 'walk_dog'] },
-  wave:        { on: ['stand', 'loiter'],          chance: 0.0002 },
+  check_watch:    { on: ['walk', 'stand', 'loiter'], chance: 0.0003,  traitExcludes: ['hold_bag', 'walk_dog'] },
+  stretch:        { on: ['stand', 'loiter'],         chance: 0.00008, traitExcludes: ['hold_bag', 'walk_dog'] },
+  yawn:           { on: ['stand', 'loiter'],         chance: 0.0001 },
+  look_around:    { on: ['stand', 'loiter'],         chance: 0.0002 },
+  adjust_clothes: { on: ['stand', 'loiter'],         chance: 0.0001,  traitExcludes: ['hold_bag', 'walk_dog'] },
+  wave:           { on: ['stand', 'loiter'],         chance: 0.0002 },
+  // moving gesture：行走/奔跑中触发
+  moving_check_watch: { on: ['walk', 'run'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
+  moving_wipe_sweat:  { on: ['walk', 'run'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
 };
 
 const PEDESTRIAN = {
@@ -68,7 +74,7 @@ const PEDESTRIAN = {
     hands_in_pocket: HANDS_IN_POCKET,
   },
   gesturePoses: PED_GESTURES,
-  spawnTraits: ['hold_bag', 'backpack', 'umbrella'],
+  spawnTraits: ['hold_bag', 'umbrella'],
   activities: ['talk', 'chess', 'use_vending', 'use_trash'],
   smartObjectChance: { use_vending: 0.002, use_trash: 0.002 },
   traits: {},
