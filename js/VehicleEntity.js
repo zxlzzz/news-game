@@ -439,23 +439,29 @@ export class VehicleEntity extends Entity {
      ═══════════════════════════════════════════════ */
 
   /* 摩托车以骑手为基准绘制，人车一体。
-     mobike 为固定单帧、关节偏移是已知常量（hip=body[0,0]、前手 l_hand[43,12]、
-     双脚 [-37,36]/[-28,40]），故可像 bicycle/ebike 那样"绕骑手关节画车"：
-     前手=车把、臀=座垫、双脚=踏板，车轮锚在脚后 / 手前。 */
+     车架锚点从 mobike.json frame0 动态读取：
+     前手(l_hand)=车把、臀(body)=座垫、右脚(r_foot)=前踏板、左脚(l_foot)=后踏板。
+     车身用 ba 比例放大，骑手用 riderScale 单独渲染，共用同一 hipX/hipY。 */
   _moto(g, highlight) {
     const u = this.scale, x = this.x, y = this.y, d = this.direction;
     const groundY    = y;
-    const bs = u * 1.8;             // 车身比例：放大 3×（与骑手解耦）
-    const ba = bs * 1.5;          // 车身造型锚点（虚拟大骑手）比例
-    const riderScale = u * 1.5;   // 真实骑手：放大前大小，不随车放大
+    const bs = u * 1.8;
+    const ba = bs * 1.5;          // 车身造型比例
+    const riderScale = u * 1.5;   // 骑手渲染比例
 
-    // 车身造型锚点（决定车形/大小，按 3× 大车）
+    // 从 mobike.json frame0 读取关节坐标（fallback 到旧硬编码值）
+    const fr = this._sr?.getFrame('mobike', 0) ?? {};
+    const jBar   = fr.l_hand ?? [50,  6];
+    const jFootF = fr.r_foot ?? [-28, 40];
+    const jFootR = fr.l_foot ?? [-37, 36];
+
+    // 车身造型锚点
     const hipX = x - d * 4 * bs;
     const hipY = groundY - 40 * ba;
     const J = (jx, jy) => ({ x: hipX + d * jx * ba, y: hipY + jy * ba });
-    const bar   = J(43, 12);   // 车把
-    const footF = J(-28, 40);  // 前踏板
-    const footR = J(-37, 36);  // 后踏板
+    const bar   = J(...jBar);
+    const footF = J(...jFootF);
+    const footR = J(...jFootR);
 
     const wR  = Math.max(2, 14 * bs);
     const wCy = groundY - wR;
