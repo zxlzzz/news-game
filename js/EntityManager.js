@@ -5,6 +5,10 @@
  * - 按Y深度排序绘制（Y小=远=先画）
  * - 提供矩形区域查询接口供取景框使用
  */
+
+// 高大道具：绘制到独立的高层图层，恒压在 NPC 之上（遮住从其后方走过的人）
+const HIGH_PROP_TYPES = new Set(['fountain', 'chess-table', 'stall', 'slide']);
+
 export class EntityManager {
   /**
    * @param {object} config
@@ -72,13 +76,15 @@ export class EntityManager {
 
   /**
    * 按 Y 深度排序后统一绘制所有可见实体
-   * @param {Phaser.GameObjects.Graphics} g
+   * @param {Phaser.GameObjects.Graphics} g     - 主实体图层
+   * @param {Phaser.GameObjects.Graphics} gHigh - 高大道具图层（恒在 NPC 之上）
    */
-  draw(g) {
+  draw(g, gHigh) {
     const visible = this.entities.filter(e => e.alive && e.visible);
     visible.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
     for (const e of visible) {
-      e.draw(g);
+      const isHigh = e.propType && HIGH_PROP_TYPES.has(e.propType);
+      e.draw(isHigh && gHigh ? gHigh : g);
     }
   }
 

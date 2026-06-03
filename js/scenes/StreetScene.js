@@ -3,9 +3,10 @@
  * 主场景：2.5D俯视角街道 + 统一Entity系统 + 取景框 + 拍照/发布
  *
  * 渲染层次（从下到上）：
- *   bgGraphics     — 静态地面（道路/人行道/树木），只绘制一次
- *   entityGraphics — 所有 Entity（建筑、道具、NPC），每帧按Y排序重绘
- *   vfGraphics     — 取景框 UI，最上层
+ *   bgGraphics         — 静态地面（道路/人行道/树木），只绘制一次
+ *   entityGraphics     — 所有 Entity（建筑、道具、NPC），每帧按Y排序重绘
+ *   entityHighGraphics — 高大道具（喷泉/棋亭/摊位/滑梯），恒压在 NPC 之上
+ *   vfGraphics         — 取景框 UI，最上层
  */
 
 import { StickRenderer }   from '../StickRenderer.js';
@@ -89,8 +90,9 @@ export class StreetScene extends Phaser.Scene {
 
     this.skyGraphics    = this.add.graphics().setScrollFactor(0.45);
     this.bgGraphics     = this.add.graphics();
-    this.entityGraphics = this.add.graphics();
-    this.vfGraphics     = this.add.graphics();
+    this.entityGraphics     = this.add.graphics();
+    this.entityHighGraphics = this.add.graphics();
+    this.vfGraphics         = this.add.graphics();
 
     const sceneData = this.cache.json.get('scene_data');
     const layout = sceneData.layout;
@@ -173,7 +175,7 @@ export class StreetScene extends Phaser.Scene {
     const dt = this.textures.addDynamicTexture(key, WORLD_WIDTH, WORLD_HEIGHT);
     if (!dt) return;
     dt.fill(GRAY_SKY, 1);
-    dt.draw([this.skyGraphics, this.bgGraphics, this.entityGraphics], 0, 0);
+    dt.draw([this.skyGraphics, this.bgGraphics, this.entityGraphics, this.entityHighGraphics], 0, 0);
     dt.snapshot((image) => {
       const a = document.createElement('a');
       a.href = image.src;
@@ -289,7 +291,8 @@ export class StreetScene extends Phaser.Scene {
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
     this.entityGraphics.clear();
-    this.entityManager.draw(this.entityGraphics);
+    this.entityHighGraphics.clear();
+    this.entityManager.draw(this.entityGraphics, this.entityHighGraphics);
     if (this.propManager) this.propManager.draw(this.entityGraphics);
 
     this.vfGraphics.clear();
