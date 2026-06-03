@@ -99,12 +99,8 @@ export class SceneRenderer {
     g.fillStyle(0xb2b2b0, 1);
     g.fillRect(bx0, fy - BAY_D - 2, BAY_W, 2);
 
-    const rX    = sx - ROOF_W / 2;
+    // 顶棚改由 busstop-roof PropEntity 绘制（参与 Y 排序）；此处仅保留排序基准
     const roofT = ft - 30;
-    g.fillStyle(0x686866, 1);
-    g.fillRect(rX, roofT, ROOF_W, ROOF_H);
-    g.lineStyle(1.6, 0x181818, 1);
-    g.strokeRect(rX, roofT, ROOF_W, ROOF_H);
 
     const pillarT = roofT + ROOF_H;
     const pillarB = fy - BAY_D - 2;
@@ -150,12 +146,8 @@ export class SceneRenderer {
     g.fillStyle(0xb2b2b0, 1);
     g.fillRect(bx0, ny + BAY_D, BAY_W, 2);
 
-    const rX    = sx - ROOF_W / 2;
+    // 顶棚改由 busstop-roof PropEntity 绘制（参与 Y 排序）；此处仅保留排序基准
     const roofT = ny - 15;
-    g.fillStyle(0x686866, 1);
-    g.fillRect(rX, roofT, ROOF_W, ROOF_H);
-    g.lineStyle(1.6, 0x181818, 1);
-    g.strokeRect(rX, roofT, ROOF_W, ROOF_H);
 
     const pillarT = roofT + ROOF_H;
     const pillarB = ny + 44;

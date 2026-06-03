@@ -13,7 +13,7 @@ import { spawnDogWalker }   from '../npcs/DogWalker.js';
 import { spawnAthletes }    from '../npcs/Athletes.js';
 import { initVehicleSystem } from '../npcs/Vehicles.js';
 import {
-  WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y,
+  WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y, NEAR_Y,
   PARK_TOP, PARK_BOTTOM, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
   BIKE_LANE_FAR_TOP, BUILDING_EXIT_XS,
 } from '../SceneConfig.js';
@@ -81,6 +81,7 @@ export class SceneInitializer {
     spawnDogWalker(em, sr, bm, this.scene.propManager);
     spawnAthletes(em, sr, bm);
     this.scene.trafficManager = initVehicleSystem(em, sr);
+    this._spawnBusStopRoofs(layout);
 
     if (this.scene.trafficManager.busStops.length > 0)
       bm.waitForBusLayer = new WaitForBusLayer(this.scene.trafficManager.busStops);
@@ -94,6 +95,27 @@ export class SceneInitializer {
       { id: 'busstop_near',  target: 3,  yRange: [PARK_TOP, PARK_TOP + 25],                xRange: [1380, 1620], exitTypes: ['edge'],              npcTypes: ['pedestrian', 'tourist'],     isBusWaiter: true, busStopDir: -1 },
     ];
     this.scene.spawnManager = new SpawnManager({ spawnFn: this._makeSpawnFn(bm, RY0, RY1), exitRegistry, bm, zones: spawnZones });
+  }
+
+  // 公交站顶棚：升级为独立 PropEntity，参与 Y 排序（顶棚能遮住后方走过的 NPC）。
+  // 柱子 / 长椅 / 站台仍由 SceneRenderer 画在静态背景层。
+  _spawnBusStopRoofs(layout) {
+    const { em } = this;
+    for (const stop of (layout.busStops || [])) {
+      // 顶棚底边 y：远端 BIKE_LANE_FAR_TOP-30+roofH，近端 NEAR_Y-15+roofH（与原渲染对齐）
+      const roofY = stop.direction > 0
+        ? BIKE_LANE_FAR_TOP - 30 + stop.roofH
+        : NEAR_Y - 15 + stop.roofH;
+      em.add(new PropEntity({
+        propType: 'busstop-roof',
+        x: stop.x, y: roofY,
+        roofW: stop.roofW, roofH: stop.roofH,
+        dir: stop.direction,
+        width: stop.roofW, height: stop.roofH,
+        _sortY: roofY,
+        tags: ['busstop-roof'],
+      }));
+    }
   }
 
   // 为每个带 smartDef 的摊位生成一名常驻摊主：从地图边缘入场，路由到 seller 槽。

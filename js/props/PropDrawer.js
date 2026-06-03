@@ -29,6 +29,7 @@ export function drawProp(g, prop) {
     case 'stall':       drawStall(g, prop);      break;
     case 'vending':     drawVending(g, prop);    break;
     case 'phonebooth':  drawPhoneBooth(g, prop); break;
+    case 'busstop-roof': drawBusStopRoof(g, prop); break;
   }
 }
 
@@ -453,6 +454,17 @@ function drawPhoneBooth(g, p) {
   g.lineStyle(lineW, lineC, 0.95); g.strokeRect(px - 1, py, w + 2, 5);
   g.fillStyle(0xeaeaea, 0.9); g.fillRect(px + 1, py + 1, w - 2, 2);
   g.fillStyle(0x202020, 0.7); g.fillRect(px + w - 5, py + 10, 2, 6);
+}
+
+// 公交站顶棚（独立 PropEntity，参与 Y 排序，遮挡后方 NPC）。
+// 远端 / 近端画法一致：顶棚底边在 prop.y，向上延伸 roofH。
+function drawBusStopRoof(g, p) {
+  const roofT = p.y - p.roofH;
+  const rX    = p.x - p.roofW / 2;
+  g.fillStyle(0x686866, 1);
+  g.fillRect(rX, roofT, p.roofW, p.roofH);
+  g.lineStyle(1.6, 0x181818, 1);
+  g.strokeRect(rX, roofT, p.roofW, p.roofH);
 }
 
 function drawStall(g, p) {

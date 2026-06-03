@@ -28,10 +28,18 @@ export class PropEntity extends Entity {
       this.collisionRX = this.collisionRY = this.collisionRadius = 0;
     }
 
+    // 公交站顶棚：顶棚尺寸（drawBusStopRoof 读取）
+    if (this.propType === 'busstop-roof') {
+      this.roofW = config.roofW;
+      this.roofH = config.roofH;
+    }
+
     // 简单 Y 排序偏移：让 stall 遮阳棚 / tree 树冠的排序基准上移，
     // 从而能遮住从其后方（更小 Y）走过的 NPC。其余 prop 用默认 y。
     if (this.propType === 'stall') this._sortY = this.y - this.height * 0.5;
     if (this.propType === 'tree')  this._sortY = this.y - this.height * 0.35;
+    // 顶棚显式指定排序基准（底边 y）
+    if (config._sortY != null) this._sortY = config._sortY;
 
     if (config.smartDef) {
       this.smartDef = config.smartDef;
