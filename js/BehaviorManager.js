@@ -41,29 +41,37 @@ export class BehaviorManager {
     this.npcs            = [];
     this.waitForBusLayer = null;
 
-    // 注入 Smart Object routing 转换：行走中的 NPC 低概率发现空棋桌并前往
     const sl = this.socialLayer;
-    registerTransition({
-      from: 'walk', to: 'routing', priority: 10,
-      trigger: 'smart-object',
-      condition: (npc, env, profile) => {
-        if (npc._departing) return false;
-        if (!profile?.activities?.includes('chess')) return false;
-        if (Math.random() > 0.003) return false;
-        const found = env.findAvailableSlot('chess', npc, 220);
-        if (!found) return false;
-        const { prop, slot } = found;
-        slot.reserved = npc.id;
-        npc._routeTarget = {
-          x: prop.x + slot.dx,
-          y: prop.y + slot.dy,
-          prop, slot,
-          abandonAfter: 25,
-          onArrive: (n) => sl.onSlotArrival(n, prop, slot),
-        };
-        return true;
-      },
-    });
+
+    // 加入已在进行的多人 Smart Object（棋局旁观 / 摊位买东西）：
+    // 行走中的普通行人低概率发现「已被占用、但仍有空闲 role 槽位」的道具并前往加入。
+    // requireOccupied=true 保证目标已有主活动（棋手在下 / 摊主在卖），到位即加入。
+    const registerJoinRoute = (activityType, activityFlag, role, defaultChance, radius) => {
+      registerTransition({
+        from: 'walk', to: 'routing', priority: 10,
+        trigger: 'smart-object',
+        condition: (npc, env, profile) => {
+          if (npc._departing) return false;
+          if (!profile?.activities?.includes(activityFlag)) return false;
+          const p = profile.smartObjectChance?.[activityFlag] ?? defaultChance;
+          if (Math.random() > p) return false;
+          const found = env.findAvailableSlot(activityType, npc, radius, { role, requireOccupied: true });
+          if (!found) return false;
+          const { prop, slot } = found;
+          slot.reserved = npc.id;
+          npc._routeTarget = {
+            x: prop.x + slot.dx,
+            y: prop.y + slot.dy,
+            prop, slot,
+            abandonAfter: 25,
+            onArrive: (n) => sl.onSlotArrival(n, prop, slot),
+          };
+          return true;
+        },
+      });
+    };
+    registerJoinRoute('chess', 'chess_onlooker', 'onlooker', 0.003, 220);
+    registerJoinRoute('stall', 'stall_buyer',   'buyer',    0.003, 220);
 
     // 单人 Smart Object（自动贩卖机 / 垃圾桶）：行走中低概率发现附近空闲机器并前往
     const registerSmartObjectRoute = (activityType, defaultChance, radius) => {

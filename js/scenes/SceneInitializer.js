@@ -7,6 +7,7 @@ import { NpcPropManager }  from '../props/NpcPropManager.js';
 import { WaitForBusLayer } from '../behavior/WaitForBusLayer.js';
 import { setState }        from '../behavior/BaseStateMachine.js';
 import { spawnPedestrians, spawnOnePedestrian } from '../npcs/Pedestrians.js';
+import { makeNPC }          from '../npcs/util.js';
 import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
 import { spawnAthletes }    from '../npcs/Athletes.js';
@@ -75,6 +76,7 @@ export class SceneInitializer {
 
     spawnPedestrians(em, sr, bm);
     spawnChess(em, sr, bm, layout.chessPlaza);
+    this._spawnStallSellers(bm);
     this.scene.propManager = new NpcPropManager(em);
     spawnDogWalker(em, sr, bm, this.scene.propManager);
     spawnAthletes(em, sr, bm);
@@ -92,6 +94,35 @@ export class SceneInitializer {
       { id: 'busstop_near',  target: 3,  yRange: [PARK_TOP, PARK_TOP + 25],                xRange: [1380, 1620], exitTypes: ['edge'],              npcTypes: ['pedestrian', 'tourist'],     isBusWaiter: true, busStopDir: -1 },
     ];
     this.scene.spawnManager = new SpawnManager({ spawnFn: this._makeSpawnFn(bm, RY0, RY1), exitRegistry, bm, zones: spawnZones });
+  }
+
+  // 为每个带 smartDef 的摊位生成一名常驻摊主：从地图边缘入场，路由到 seller 槽。
+  _spawnStallSellers(bm) {
+    const { em, sr } = this;
+    const stalls = em.entities.filter(e => e.alive && e.smartDef?.activityType === 'stall' && e._slots);
+    for (const stall of stalls) {
+      const slot = stall._slots.find(s => s.role === 'seller');
+      if (!slot || slot.reserved != null) continue;
+
+      const fromLeft = stall.x < WORLD_WIDTH / 2;
+      const seller = makeNPC(em, sr, {
+        x: fromLeft ? 10 : WORLD_WIDTH - 10, y: stall.y,
+        animation: 'walk', direction: fromLeft ? 1 : -1, speed: 28, vy: 0,
+        minX: 0, maxX: WORLD_WIDTH, minY: stall.y - 24, maxY: stall.y + 24,
+        tags: ['vendor'], npcType: 'stall_seller',
+      });
+      seller.scale = em.depthScale(stall.y);
+      bm.register(seller, 'stall_seller');
+
+      slot.reserved = seller.id;   // 预约 seller 槽，防止他人占用（永不释放）
+      seller._routeTarget = {
+        x: stall.x + slot.dx, y: stall.y + slot.dy,
+        prop: stall, slot,
+        abandonAfter: 60,
+        onArrive: (n) => bm.socialLayer.onSlotArrival(n, stall, slot),
+      };
+      setState(seller, 'routing', 'stall_seller_entry');
+    }
   }
 
   _makeSpawnFn(bm, roamY0, roamY1) {

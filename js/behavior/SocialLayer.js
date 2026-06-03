@@ -24,7 +24,45 @@ const CHESS_WAIT_MS = 3500;
 
 let SUB_EVENT_POSES = {};
 let GESTURE_CLIPS   = {};
+let STALL_GESTURES  = {};
 let SUB_EVENTS      = {};
+
+/**
+ * ClipPlayer — 把一段 gesture clip（keyframes）驱动为 NPC 上的一个 held modifier。
+ * 逐帧推进，播完停在末帧（done=true）。供 StallActivity 复用（摊主循环 / 买卖动作）。
+ */
+class ClipPlayer {
+  constructor(npc, modId) {
+    this.npc = npc; this.modId = modId;
+    this.frames = []; this.idx = 0; this.timer = 0; this.done = true;
+  }
+  play(clip) {
+    this.frames = (clip && clip.keyframes) ? clip.keyframes : [];
+    this.idx    = 0;
+    this.done   = this.frames.length === 0;
+    this.timer  = this.frames[0] ? this.frames[0].dur : 0;
+    if (this.frames[0]) this._apply(this.frames[0]);
+  }
+  update(dt) {
+    if (this.done) return;
+    this.timer -= dt;
+    if (this.timer <= 0) {
+      if (this.idx + 1 >= this.frames.length) { this.done = true; return; }  // 停在末帧
+      this.idx++;
+      this.timer = this.frames[this.idx].dur;
+      this._apply(this.frames[this.idx]);
+    }
+  }
+  _apply(frame) {
+    const joints = kfJoints(frame);
+    const mod = this.npc.modifiers.find(m => m.id === this.modId);
+    if (mod) mod.joints = joints;
+    else this.npc.modifiers.push({ id: this.modId, kind: 'held', priority: 20, joints, timer: -1 });
+  }
+  clear() {
+    this.npc.modifiers = this.npc.modifiers.filter(m => m.id !== this.modId);
+  }
+}
 
 function _buildSubEvents() {
   SUB_EVENTS = {
@@ -328,10 +366,12 @@ class ChessActivity extends Activity {
     this.a = players[0];
     this.b = players[1];
     this.onlookers = onlookers || [];
+    this.table = props[0] || null;        // 棋桌（onlooker 槽宿主）
     this.join(this.a, 'player_a');
     this.join(this.b, 'player_b');
     for (const o of this.onlookers) this.join(o, 'onlooker');
     for (const p of props) this.occupy(p);
+    if (this.table) this.table._chessActivity = this;
 
     this.subState = 'playing';
     this.active   = 'A';
@@ -377,6 +417,32 @@ class ChessActivity extends Activity {
     }
   }
 
+  // 后来的旁观者经 onlooker 槽到达后动态加入；停留 rand(15,40)s 后离开
+  addOnlooker(npc, slot) {
+    this.onlookers.push(npc);
+    this.join(npc, 'onlooker');
+    this._setupOnlooker(npc);
+    npc._chessSlot     = slot || null;
+    npc._onlookerTimer = 0;
+    npc._onlookerDur   = rand(15, 40);
+    if (this.table) npc.direction = (this.table.x >= npc.x) ? 1 : -1;
+  }
+
+  // 旁观者离开：移出列表、释放 onlooker 槽、归还 BaseStateMachine
+  releaseOnlooker(npc) {
+    const i = this.onlookers.indexOf(npc);
+    if (i >= 0) this.onlookers.splice(i, 1);
+    this.participants = this.participants.filter(p => p.npc !== npc);
+    this.release(npc);
+    if (npc._chessSlot) {
+      npc._chessSlot.reserved = null;
+      npc._chessSlot.ready    = false;
+      npc._chessSlot.npc      = null;
+      npc._chessSlot = null;
+    }
+    if (npc.alive) setState(npc, 'walk', 'onlooker-done');
+  }
+
   update(dt) {
     if (!this.a.alive || !this.b.alive) return false;
     const cur = this.active === 'A' ? this.a : this.b;
@@ -397,8 +463,18 @@ class ChessActivity extends Activity {
         freezeAt0(prev);
       }
     }
-    for (const o of this.onlookers) {
-      if (o.alive) this._tickOnlooker(o, dt);
+    for (let i = this.onlookers.length - 1; i >= 0; i--) {
+      const o = this.onlookers[i];
+      if (!o.alive) {
+        this.onlookers.splice(i, 1);
+        this.participants = this.participants.filter(p => p.npc !== o);
+        continue;
+      }
+      this._tickOnlooker(o, dt);
+      o._onlookerTimer = (o._onlookerTimer || 0) + dt;
+      if (o._onlookerDur != null && o._onlookerTimer >= o._onlookerDur) {
+        this.releaseOnlooker(o);
+      }
     }
     return true;
   }
@@ -406,6 +482,14 @@ class ChessActivity extends Activity {
   interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
+    // 释放 onlooker 槽预约，防泄漏（棋局极少销毁，但保险）
+    for (const o of this.onlookers) {
+      if (o._chessSlot) {
+        o._chessSlot.reserved = null; o._chessSlot.ready = false; o._chessSlot.npc = null;
+        o._chessSlot = null;
+      }
+    }
+    if (this.table) this.table._chessActivity = null;
     for (const { npc } of this.participants) {
       if (npc.alive) setState(npc, 'walk', 'activity-end');
     }
@@ -505,6 +589,150 @@ class UsePropActivity extends Activity {
   }
 }
 
+// ─── StallActivity — 摊主常驻经营 + 顾客偶尔光临 ────────────────────────────────
+// 摊主到位即创建本活动（单人），循环 tidy/call；顾客经 buyer 槽到达后 addBuyer 加入，
+// 完成 point → give/give_get 后离开，摊主回循环。摊主永不离场（seller 槽永久预约，
+// destroy 时也不 setState walk）。
+class StallActivity extends Activity {
+  constructor(id, seller, prop) {
+    super(id, 'stall');
+    this.seller    = seller;
+    this.prop      = prop;
+    this.buyer     = null;
+    this.buyerSlot = null;
+    this.join(seller, 'seller');
+    this.occupy(prop);
+    prop._stallActivity = this;
+
+    this._setupSeller(seller);
+    this._sellerPlayer = new ClipPlayer(seller, '_stall');
+    this._sellerSwitch = rand(4, 8);
+    this._sellerTimer  = 0;
+    this._pickSellerClip();
+
+    this._giving           = false;
+    this._sellerGivePlayer = null;
+  }
+
+  _setupSeller(npc) {
+    npc.state = 'stand'; npc.animation = 'stand'; npc.speed = 0; npc.vy = 0;
+    npc.playOnce = false; npc.animDone = false; npc.frameIndex = 0; npc.frameTimer = 0;
+    npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
+    npc._extraTags = ['vendor'];
+  }
+
+  _pickSellerClip() {
+    this._sellerPlayer.play(STALL_GESTURES[chance(0.5) ? 'seller_tidy' : 'seller_call']);
+  }
+
+  // 顾客到达 buyer 槽：加入并开始 point 阶段
+  addBuyer(npc, slot) {
+    if (this.buyer) return false;
+    this.buyer     = npc;
+    this.buyerSlot = slot;
+    this.join(npc, 'buyer');
+    this._setupBuyer(npc);
+
+    this._buyerPhase  = 'point';
+    this._buyerTimer  = 0;
+    this._buyerDur    = rand(2, 4);
+    this._buyerPlayer = new ClipPlayer(npc, '_stall_buyer');
+    this._buyerPlayer.play(STALL_GESTURES.buyer_point);
+    npc._extraTags = ['transaction', 'shopping'];
+
+    // 双方相向
+    this.seller.direction = (npc.x >= this.seller.x) ? 1 : -1;
+    npc.direction         = (this.seller.x >= npc.x) ? 1 : -1;
+    return true;
+  }
+
+  _setupBuyer(npc) {
+    npc.state = 'stand'; npc.animation = 'stand'; npc.speed = 0; npc.vy = 0;
+    npc.playOnce = false; npc.animDone = false; npc.frameIndex = 0; npc.frameTimer = 0;
+    npc.modifiers = npc.modifiers.filter(m => m.kind === 'trait');
+  }
+
+  update(dt) {
+    if (!this.seller.alive) return false;   // 摊主消失（极少）→ 活动结束
+
+    // 摊主循环（give 阶段暂停循环，改播 give，复用同一 '_stall' modifier）
+    if (this._giving) {
+      if (this._sellerGivePlayer) this._sellerGivePlayer.update(dt);
+    } else {
+      this._sellerPlayer.update(dt);
+      this._sellerTimer += dt;
+      if (this._sellerTimer >= this._sellerSwitch) {
+        this._sellerTimer  = 0;
+        this._sellerSwitch = rand(4, 8);
+        this._pickSellerClip();
+      }
+    }
+
+    if (this.buyer) this._tickBuyer(dt);
+    return true;
+  }
+
+  _tickBuyer(dt) {
+    if (!this.buyer.alive) { this._endBuyer(false); return; }
+    this._buyerTimer += dt;
+
+    if (this._buyerPhase === 'point') {
+      this._buyerPlayer.update(dt);
+      if (this._buyerTimer >= this._buyerDur) {
+        // 进入 give：摊主 give 与顾客 give_get 同时开播（无需逐帧对齐）
+        this._buyerPhase       = 'give';
+        this._giving           = true;
+        this._sellerGivePlayer = new ClipPlayer(this.seller, '_stall');
+        this._sellerGivePlayer.play(STALL_GESTURES.seller_give);
+        this._buyerPlayer.play(STALL_GESTURES.buyer_give_get);
+      }
+    } else if (this._buyerPhase === 'give') {
+      this._buyerPlayer.update(dt);
+      const sDone = !this._sellerGivePlayer || this._sellerGivePlayer.done;
+      if (this._buyerPlayer.done && sDone) this._endBuyer(true);
+    }
+  }
+
+  // 顾客离开：清动作、释放 buyer 槽、摊主回循环
+  _endBuyer(walkAway) {
+    const b = this.buyer;
+    if (this._buyerPlayer)      this._buyerPlayer.clear();
+    if (this._sellerGivePlayer) { this._sellerGivePlayer.clear(); this._sellerGivePlayer = null; }
+    this._giving = false;
+
+    if (this.buyerSlot) {
+      this.buyerSlot.reserved = null;
+      this.buyerSlot.ready    = false;
+      this.buyerSlot.npc      = null;
+    }
+    if (b) {
+      b._extraTags = null;
+      this.release(b);
+      this.participants = this.participants.filter(p => p.npc !== b);
+      if (walkAway && b.alive) setState(b, 'walk', 'stall-done');
+    }
+    this.buyer     = null;
+    this.buyerSlot = null;
+
+    // 摊主恢复循环
+    this._sellerTimer  = 0;
+    this._sellerSwitch = rand(4, 8);
+    this._pickSellerClip();
+  }
+
+  interrupt(reason) { super.interrupt(reason); }
+
+  destroy() {
+    if (this._buyerPlayer)      this._buyerPlayer.clear();
+    if (this._sellerGivePlayer) this._sellerGivePlayer.clear();
+    if (this._sellerPlayer)     this._sellerPlayer.clear();
+    if (this.buyer && this.buyer.alive) setState(this.buyer, 'walk', 'stall-interrupt');
+    if (this.seller.alive) this.seller._extraTags = null;
+    if (this.prop) this.prop._stallActivity = null;
+    super.destroy();   // 注意：摊主由 super.destroy 解锁 _activity，但不主动 walk（留在原地）
+  }
+}
+
 // ─── SocialLayer 管理器 ───────────────────────────────────────────────────────
 export class SocialLayer {
   /** @param {EnvironmentQuery} envQuery @param {object} poseCache */
@@ -516,8 +744,9 @@ export class SocialLayer {
     this.lastScanInfo = { standers: 0, paired: 0 };
 
     if (poseCache) {
-      SUB_EVENT_POSES = poseCache.sub_event || {};
-      GESTURE_CLIPS   = poseCache.gesture   || {};
+      SUB_EVENT_POSES = poseCache.sub_event      || {};
+      GESTURE_CLIPS   = poseCache.gesture        || {};
+      STALL_GESTURES  = poseCache.stall_gestures || {};
       _buildSubEvents();
     }
   }
@@ -571,6 +800,9 @@ export class SocialLayer {
       const owner = participants.find(p => p.role === 'owner').npc;
       const dog   = participants.find(p => p.role === 'dog').npc;
       act = new DogWalkActivity(id, owner, dog);
+    } else if (type === 'stall') {
+      const seller = participants.find(p => p.role === 'seller')?.npc;
+      if (seller) act = new StallActivity(id, seller, props[0]);
     } else {
       const prop = props[0];
       const gestureId  = prop?.smartDef?.gestureId  ?? type;
@@ -592,15 +824,37 @@ export class SocialLayer {
     if (act) act.interrupt(reason);
   }
 
-  /** Smart Object 槽位到达：凑齐所有槽位即创建 Activity，否则原地站等 */
+  /** Smart Object 槽位到达：按 activityType 分派（摊位/棋局加入既有活动；其余凑齐即创建） */
   onSlotArrival(npc, prop, slot) {
     slot.ready = true;
     slot.npc   = npc;
+    const type = prop.smartDef.activityType;
 
+    // 摊位：摊主到位创建活动（seller 槽永久预约，不清）；顾客加入已有活动
+    if (type === 'stall') {
+      if (slot.role === 'seller') {
+        this.createActivity('stall', [{ npc, role: 'seller' }], [prop]);
+      } else {
+        const act = prop._stallActivity;
+        if (act && act.alive && !act.buyer) act.addBuyer(npc, slot);
+        else this._abandonSlot(npc, slot, 'stall_no_seller');
+      }
+      return;
+    }
+
+    // 棋局：旁观者加入已在进行的对局
+    if (type === 'chess') {
+      const act = prop._chessActivity;
+      if (act && act.alive && act.addOnlooker) act.addOnlooker(npc, slot);
+      else this._abandonSlot(npc, slot, 'chess_no_game');
+      return;
+    }
+
+    // 默认（单/多槽，如自动贩卖机/垃圾桶）：凑齐所有槽位即创建 Activity，否则原地站等
     const allReady = prop._slots.every(s => s.ready);
     if (allReady) {
       const participants = prop._slots.map(s => ({ npc: s.npc, role: s.role }));
-      this.createActivity(prop.smartDef.activityType, participants, [prop]);
+      this.createActivity(type, participants, [prop]);
       for (const s of prop._slots) { s.reserved = null; s.ready = false; s.npc = null; }
     } else {
       setState(npc, 'stand', 'slot_wait');
@@ -608,6 +862,14 @@ export class SocialLayer {
       npc._slotWaitTimer = 0;
       npc._slotWaitProp  = prop;
     }
+  }
+
+  // 放弃一个已到达但无法加入的槽位（清预约 + 重新行走）
+  _abandonSlot(npc, slot, reason) {
+    slot.reserved = null;
+    slot.ready    = false;
+    slot.npc      = null;
+    setState(npc, 'walk', reason);
   }
 
   // 扫描可配对的两名 stand 自由行人 → 随机生成 talk

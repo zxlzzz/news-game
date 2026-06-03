@@ -179,19 +179,27 @@ export class EnvironmentQuery {
 
   /**
    * 在 radius 内找一个有空闲槽位的 Smart Object（按 activityType 过滤）。
-   * 空闲 = prop._occupiedBy == null && 至少有一个 slot.reserved == null。
-   * 返回 { prop, slot }（距离最近 prop 的第一个空闲槽位），或 null。
+   * 空闲 = 至少有一个 slot.reserved == null（且匹配 opts.role，若指定）。
+   *
+   * @param {object} [opts]
+   * @param {string} [opts.role]            - 仅匹配该 role 的槽位（如 'buyer' / 'onlooker'）
+   * @param {boolean} [opts.requireOccupied] - true：仅匹配已有 Activity 进行中的道具
+   *   （供后来者加入，如摊位顾客 / 棋局旁观者）；false（默认）：仅匹配尚未占用的道具
+   *   （供首批参与者，如自动贩卖机 / 棋手）。
+   * @returns {{prop, slot}|null} 距离最近的道具及其首个匹配空闲槽位
    */
-  findAvailableSlot(activityType, npc, radius = 200) {
+  findAvailableSlot(activityType, npc, radius = 200, opts = {}) {
+    const { role = null, requireOccupied = false } = opts;
     let best = null, bestD = radius;
     for (const e of this.em.entities) {
-      if (!e.alive || e.smartDef?.activityType !== activityType) continue;
-      if (e._occupiedBy || !e._slots || !e._slots.some(s => s.reserved == null)) continue;
+      if (!e.alive || e.smartDef?.activityType !== activityType || !e._slots) continue;
+      if (requireOccupied ? !e._occupiedBy : !!e._occupiedBy) continue;
+      const free = e._slots.find(s => s.reserved == null && (role == null || s.role === role));
+      if (!free) continue;
       const d = Math.hypot(e.x - npc.x, e.y - npc.y);
-      if (d <= bestD) { bestD = d; best = e; }
+      if (d <= bestD) { bestD = d; best = { prop: e, slot: free }; }
     }
-    if (!best) return null;
-    return { prop: best, slot: best._slots.find(s => s.reserved == null) };
+    return best;
   }
 
   /** 释放某 NPC 持有的所有槽位预约（NPC 途中放弃或超时时调用） */

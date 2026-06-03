@@ -75,8 +75,8 @@ const PEDESTRIAN = {
   },
   gesturePoses: PED_GESTURES,
   spawnTraits: ['hold_bag', 'umbrella'],
-  activities: ['talk', 'chess', 'use_vending', 'use_trash'],
-  smartObjectChance: { use_vending: 0.002, use_trash: 0.002 },
+  activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
+  smartObjectChance: { use_vending: 0.002, use_trash: 0.002, stall_buyer: 0.002, chess_onlooker: 0.002 },
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
@@ -88,7 +88,7 @@ const PEDESTRIAN = {
 const BUSINESSMAN = {
   ...PEDESTRIAN,
   name: 'businessman',
-  activities: ['talk', 'use_vending'],
+  activities: ['talk', 'use_vending', 'stall_buyer'],
   heldPoses: {
     phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0006, dur: [8, 30] },
     phone_call: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [10, 25] },
@@ -117,7 +117,7 @@ const TOURIST = {
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
   },
-  activities: ['talk', 'chess', 'use_vending', 'use_trash'],
+  activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
   socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
   loiterChance: 0.18,
   loiterDurationRange: [20, 60],
@@ -154,6 +154,18 @@ const CHESS_ONLOOKER = {
   socialWeights: { push: 0.02, give_item: 0.04, handshake: 0.05, point_at: 0.04 },
 };
 
+// 摊主：从地图边缘入场 → 路由到 stall 的 seller 槽 → 常驻经营，无正常状态机转换
+const STALL_SELLER = {
+  name: 'stall_seller',
+  initial: 'walk',
+  allowedStates: ['walk', 'stand', 'routing'],
+  transitions: {},
+  heldPoses: {},
+  activities: ['stall_seller'],
+  traits: {},
+  cameraReaction: 'neutral',
+};
+
 const DOG_OWNER = {
   name: 'dog_owner',
   initial: 'walk',
@@ -182,6 +194,7 @@ export const PROFILES = {
   tourist:        TOURIST,
   chess_player:   CHESS_PLAYER,
   chess_onlooker: CHESS_ONLOOKER,
+  stall_seller:   STALL_SELLER,
   dog_owner:      DOG_OWNER,
   athlete:        ATHLETE,
 };

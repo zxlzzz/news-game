@@ -57,6 +57,12 @@ const POSE_FILES = {
   loiter_phone: 'base/loiter/phone',
   loiter_bag_a: 'base/loiter/bag_a',
   loiter_bag_b: 'base/loiter/bag_b',
+  // stall smart-object gestures（摊主 + 顾客）
+  stall_seller_give:    'gesture/static/stall/seller/give',
+  stall_seller_tidy:    'gesture/static/stall/seller/tidy',
+  stall_seller_call:    'gesture/static/stall/seller/call',
+  stall_buyer_give_get: 'gesture/static/stall/buyer/give_get',
+  stall_buyer_point:    'gesture/static/stall/buyer/point',
   // sub_event
   sub_event_push:        'sub_event/push',
   sub_event_give_item:   'sub_event/give_item',
@@ -537,6 +543,14 @@ export class StreetScene {
         phone: wrapLoiter(g('loiter_phone')),
         bag_a: wrapLoiter(g('loiter_bag_a')),
         bag_b: wrapLoiter(g('loiter_bag_b')),
+      },
+      // 摊位 smart-object 手势（格式同 gesture，供 StallActivity 读取）
+      stall_gestures: {
+        seller_give: wrapGesture(g('stall_seller_give')),
+        seller_tidy: wrapGesture(g('stall_seller_tidy')),
+        seller_call: wrapGesture(g('stall_seller_call')),
+        buyer_give_get: wrapGesture(g('stall_buyer_give_get')),
+        buyer_point:    wrapGesture(g('stall_buyer_point')),
       },
       sub_event: {
         push:        g('sub_event_push'),
