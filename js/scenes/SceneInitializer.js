@@ -33,8 +33,8 @@ export class SceneInitializer {
     this._spawnNPCs(layout);
   }
 
-  // 行道树 / 公园树：从 bg 移到 entity 层，按树干 y 参与 Y 排序（可遮挡后方 NPC）。
-  // 渲染交给 PropDrawer.drawTree（propType:'tree'），半径 r → width = 2r。
+  // 行道树 / 公园树：从 bg 移到 entity 层。y = 树根落地点（layout 树坐标），
+  // 不设 _sortY（用默认 y 参与 Y 排序）。渲染交给 PropDrawer.drawTree，半径 r → width = 2r。
   _spawnTrees(layout) {
     const { em } = this;
     const groups = [
@@ -47,7 +47,6 @@ export class SceneInitializer {
           propType: 'tree',
           x: t.x, y: t.y,
           width: t.r * 2, height: t.r * 2,
-          _sortY: t.y,
           tags,
         }));
       }
@@ -119,22 +118,23 @@ export class SceneInitializer {
     this.scene.spawnManager = new SpawnManager({ spawnFn: this._makeSpawnFn(bm, RY0, RY1), exitRegistry, bm, zones: spawnZones });
   }
 
-  // 公交站顶棚：升级为独立 PropEntity，参与 Y 排序（顶棚能遮住后方走过的 NPC）。
-  // 柱子 / 长椅 / 站台仍由 SceneRenderer 画在静态背景层。
+  // 公交站上半部分（顶棚 + 柱子）：升级为独立 PropEntity，参与 Y 排序。
+  // 锚点 y = 柱子落地点（远端 FAR_Y / 近端 NEAR_Y），不设 _sortY（用默认 y）。
+  // 地面站台 / 长椅 / 标牌仍由 SceneRenderer 画在静态背景层。
   _spawnBusStopRoofs(layout) {
     const { em } = this;
     for (const stop of (layout.busStops || [])) {
-      // 顶棚底边 y：远端 BIKE_LANE_FAR_TOP-30+roofH，近端 NEAR_Y-15+roofH（与原渲染对齐）
-      const roofY = stop.direction > 0
-        ? BIKE_LANE_FAR_TOP - 30 + stop.roofH
-        : NEAR_Y - 15 + stop.roofH;
+      const far           = stop.direction > 0;
+      const anchorY       = far ? FAR_Y : NEAR_Y;                       // 柱子落地点
+      const roofTopY      = far ? BIKE_LANE_FAR_TOP - 30 : NEAR_Y - 15; // 顶棚顶边
+      const pillarBottomY = far ? FAR_Y - stop.bayD - 2  : NEAR_Y + 44; // 柱子底端
       em.add(new PropEntity({
         propType: 'busstop-roof',
-        x: stop.x, y: roofY,
+        x: stop.x, y: anchorY,
         roofW: stop.roofW, roofH: stop.roofH,
+        roofTopY, pillarOffset: stop.pillarOffset, pillarBottomY,
         dir: stop.direction,
-        width: stop.roofW, height: stop.roofH,
-        _sortY: roofY,
+        width: stop.roofW, height: anchorY - roofTopY,
         tags: ['busstop-roof'],
       }));
     }

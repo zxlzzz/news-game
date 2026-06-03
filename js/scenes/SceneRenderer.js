@@ -98,14 +98,10 @@ export class SceneRenderer {
     g.fillStyle(0xb2b2b0, 1);
     g.fillRect(bx0, fy - BAY_D - 2, BAY_W, 2);
 
-    // 顶棚改由 busstop-roof PropEntity 绘制（参与 Y 排序）；此处仅保留排序基准
-    const roofT = ft - 30;
-
+    // 顶棚 + 柱子已移到 busstop-roof PropEntity（参与 Y 排序）；这里只保留地面站台 / 长椅 / 标牌。
+    // roofT / pillarT 仅用于长椅与标牌的纵向定位。
+    const roofT   = ft - 30;
     const pillarT = roofT + ROOF_H;
-    const pillarB = fy - BAY_D - 2;
-    g.lineStyle(2.5, 0x282828, 1);
-    g.lineBetween(sx - PIL_X, pillarT, sx - PIL_X, pillarB);
-    g.lineBetween(sx + PIL_X, pillarT, sx + PIL_X, pillarB);
 
     const benchY = pillarT + 25;
     const benchHalf = BENCH_W / 2;
@@ -145,15 +141,7 @@ export class SceneRenderer {
     g.fillStyle(0xb2b2b0, 1);
     g.fillRect(bx0, ny + BAY_D, BAY_W, 2);
 
-    // 顶棚改由 busstop-roof PropEntity 绘制（参与 Y 排序）；此处仅保留排序基准
-    const roofT = ny - 15;
-
-    const pillarT = roofT + ROOF_H;
-    const pillarB = ny + 44;
-    g.lineStyle(2.5, 0x282828, 1);
-    g.lineBetween(sx - PIL_X, pillarT, sx - PIL_X, pillarB);
-    g.lineBetween(sx + PIL_X, pillarT, sx + PIL_X, pillarB);
-
+    // 顶棚 + 柱子已移到 busstop-roof PropEntity（参与 Y 排序）；这里只保留地面站台 / 长椅 / 标牌。
     const benchY = ny + 32;
     const benchHalf = BENCH_W / 2;
     g.fillStyle(0x565654, 1);

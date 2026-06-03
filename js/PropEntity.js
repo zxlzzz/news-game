@@ -28,10 +28,13 @@ export class PropEntity extends Entity {
       this.collisionRX = this.collisionRY = this.collisionRadius = 0;
     }
 
-    // 公交站顶棚：顶棚尺寸（drawBusStopRoof 读取）
+    // 公交站上半部分（顶棚 + 柱子）：y = 柱子落地点；几何参数由 drawBusStopRoof 读取
     if (this.propType === 'busstop-roof') {
-      this.roofW = config.roofW;
-      this.roofH = config.roofH;
+      this.roofW         = config.roofW;
+      this.roofH         = config.roofH;
+      this.roofTopY      = config.roofTopY;       // 顶棚顶边绝对 y
+      this.pillarOffset  = config.pillarOffset;   // 柱子相对 x 偏移
+      this.pillarBottomY = config.pillarBottomY;  // 柱子底端绝对 y
     }
 
     // 简单 Y 排序偏移：让 stall 遮阳棚 / tree 树冠的排序基准上移，

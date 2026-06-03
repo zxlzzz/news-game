@@ -456,15 +456,20 @@ function drawPhoneBooth(g, p) {
   g.fillStyle(0x202020, 0.7); g.fillRect(px + w - 5, py + 10, 2, 6);
 }
 
-// 公交站顶棚（独立 PropEntity，参与 Y 排序，遮挡后方 NPC）。
-// 远端 / 近端画法一致：顶棚底边在 prop.y，向上延伸 roofH。
+// 公交站上半部分（顶棚 + 柱子，独立 PropEntity，参与 Y 排序，遮挡后方 NPC）。
+// 几何为绝对坐标：roofTopY 顶棚顶边、pillarBottomY 柱子底端，远/近端画法一致。
 function drawBusStopRoof(g, p) {
-  const roofT = p.y - p.roofH;
-  const rX    = p.x - p.roofW / 2;
+  const rX = p.x - p.roofW / 2;
+  // 顶棚
   g.fillStyle(0x686866, 1);
-  g.fillRect(rX, roofT, p.roofW, p.roofH);
+  g.fillRect(rX, p.roofTopY, p.roofW, p.roofH);
   g.lineStyle(1.6, 0x181818, 1);
-  g.strokeRect(rX, roofT, p.roofW, p.roofH);
+  g.strokeRect(rX, p.roofTopY, p.roofW, p.roofH);
+  // 柱子
+  const pillarT = p.roofTopY + p.roofH;
+  g.lineStyle(2.5, 0x282828, 1);
+  g.lineBetween(p.x - p.pillarOffset, pillarT, p.x - p.pillarOffset, p.pillarBottomY);
+  g.lineBetween(p.x + p.pillarOffset, pillarT, p.x + p.pillarOffset, p.pillarBottomY);
 }
 
 function drawStall(g, p) {
