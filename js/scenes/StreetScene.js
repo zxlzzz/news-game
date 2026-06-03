@@ -460,8 +460,11 @@ export class StreetScene {
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
     this.entityGraphics.clear();
-    this.entityManager.draw(this.entityGraphics);
-    if (this.propManager) this.propManager.draw(this.entityGraphics);
+    // 实体 + NPC 道具混合，统一按地面接触 Y 排序后一次性绘制
+    this.entityManager.draw(
+      this.entityGraphics,
+      this.propManager ? this.propManager.getDrawables() : [],
+    );
 
     this.vfGraphics.clear();
     this.viewfinder.draw(this.vfGraphics);

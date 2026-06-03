@@ -71,14 +71,16 @@ export class EntityManager {
   }
 
   /**
-   * 按 Y 深度排序后绘制（Y 小=远=先画）。stall/tree 用 _sortY 上移排序基准，
-   * 使其遮阳棚 / 树冠能遮住从后方走过的 NPC。
+   * 按 Y 深度排序后绘制（Y 小=远=先画）。所有实体统一用地面接触 Y（_sortY ?? y）。
    * @param {Phaser.GameObjects.Graphics} g - 实体图层
+   * @param {Array<{_sortY:number, draw:(g)=>void}>} [extras] - 外部可绘制对象（如 NPC 道具），
+   *        与实体混合参与同一次 Y 排序，统一画到 g。
    */
-  draw(g) {
+  draw(g, extras = []) {
     const visible = this.entities.filter(e => e.alive && e.visible);
-    visible.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
-    for (const e of visible) e.draw(g);
+    const list = extras.length ? visible.concat(extras) : visible;
+    list.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
+    for (const e of list) e.draw(g);
   }
 
   /** 返回所有存活且可见的实体（供取景框碰撞检测使用） */
