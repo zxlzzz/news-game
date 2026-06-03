@@ -1,12 +1,18 @@
 /**
- * StreetScene
+ * StreetScene（PixiJS 版）
  * 主场景：2.5D俯视角街道 + 统一Entity系统 + 取景框 + 拍照/发布
  *
  * 渲染层次（从下到上）：
- *   bgGraphics         — 静态地面（道路/人行道/树木），只绘制一次
- *   entityGraphics     — 所有 Entity（建筑、道具、NPC），每帧按Y排序重绘
- *   entityHighGraphics — 高大道具（喷泉/棋亭/摊位/滑梯），恒压在 NPC 之上
- *   vfGraphics         — 取景框 UI，最上层
+ *   skyContainer       — 静态天空（视差 0.45）
+ *   worldContainer     — 受相机（scroll/zoom）控制：
+ *     bgGraphics         静态地面（道路/人行道/树木），只绘制一次
+ *     entityGraphics     所有 Entity（建筑、道具、NPC），每帧按Y排序重绘
+ *     entityHighGraphics 高大道具顶部（喷泉/棋亭/摊位/树冠），恒压在 NPC 之上
+ *     vfGraphics         取景框 UI（世界坐标）
+ *     （DebugOverlay 的世界浮标也挂这里）
+ *   uiContainer        — 屏幕固定 HUD（文本/按钮/闪光/调试面板）
+ *
+ * 渲染底层为 PixiJS；所有绘图文件通过 PhaserGraphicsAdapter 复用 Phaser Graphics API。
  */
 
 import { StickRenderer }   from '../StickRenderer.js';
@@ -15,6 +21,7 @@ import { Viewfinder }      from '../Viewfinder.js';
 import { DebugOverlay }    from '../DebugOverlay.js';
 import { SceneRenderer }   from './SceneRenderer.js';
 import { SceneInitializer } from './SceneInitializer.js';
+import { PhaserGraphicsAdapter } from '../PhaserGraphicsAdapter.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT,
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
@@ -68,31 +75,146 @@ const ANIM_FILES = {
   chess_onlookers: 'variant/chess/chess_onlookers', mobike: 'base/mobike',
 };
 
-export class StreetScene extends Phaser.Scene {
-  constructor() {
-    super({ key: 'StreetScene' });
-    this.lastPhoto = null;
+// ─── 颜色解析（'#rgb' / 'rgba(...)' / number → { color, alpha }）──────────────
+function parseColor(str) {
+  if (typeof str === 'number') return { color: str, alpha: 1 };
+  if (typeof str !== 'string') return { color: 0x000000, alpha: 1 };
+  if (str.startsWith('#')) return { color: parseInt(str.slice(1), 16), alpha: 1 };
+  const m = str.match(/rgba?\(([^)]+)\)/i);
+  if (m) {
+    const p = m[1].split(',').map(s => parseFloat(s.trim()));
+    return { color: (p[0] << 16) | (p[1] << 8) | p[2], alpha: p[3] === undefined ? 1 : p[3] };
+  }
+  return { color: 0x000000, alpha: 1 };
+}
+
+/**
+ * PixiText — 最小化模拟 Phaser.GameObjects.Text 的链式 API。
+ * 是一个 PIXI.Container：背景矩形（可选）+ 文本。供 StreetScene HUD 与 DebugOverlay 共用。
+ */
+class PixiText extends PIXI.Container {
+  constructor(scene, x, y, str, style = {}) {
+    super();
+    this._scene = scene;
+    this.style  = { ...style };
+    this._origin = { x: 0, y: 0 };
+
+    const fontSize = parseInt(style.fontSize, 10) || 13;
+    const pixiStyle = {
+      fontFamily: style.fontFamily || 'sans-serif',
+      fontSize,
+      fill: style.color || '#000000',
+      align: style.align || 'left',
+    };
+    if (style.wordWrap) { pixiStyle.wordWrap = true; pixiStyle.wordWrapWidth = style.wordWrap.width; }
+    if (style.lineSpacing) pixiStyle.leading = style.lineSpacing;
+
+    this._bg  = new PIXI.Graphics();
+    this._txt = new PIXI.Text(str ?? '', pixiStyle);
+    this.addChild(this._bg, this._txt);
+
+    this.position.set(x, y);
+    this._redraw();
   }
 
-  preload() {
-    this.load.json('scene_data', 'assets/scene.json');
-    for (const [key, file] of Object.entries(ANIM_FILES)) {
-      this.load.json('anim_' + key, `assets/animations/${file}.json`);
+  _redraw() {
+    const padX = this.style.padding?.x ?? 0;
+    const padY = this.style.padding?.y ?? 0;
+    this._txt.position.set(padX, padY);
+    const w = this._txt.width + padX * 2;
+    const h = this._txt.height + padY * 2;
+    this._bg.clear();
+    if (this.style.backgroundColor) {
+      const { color, alpha } = parseColor(this.style.backgroundColor);
+      this._bg.beginFill(color, alpha);
+      this._bg.drawRect(0, 0, w, h);
+      this._bg.endFill();
     }
-    for (const [key, file] of Object.entries(POSE_FILES)) {
-      this.load.json('pose_' + key, `assets/animations/${file}.json`);
-    }
+    this.pivot.set(w * this._origin.x, h * this._origin.y);
+  }
+
+  setText(str) {
+    const s = String(str);
+    if (this._txt.text !== s) { this._txt.text = s; this._redraw(); }
+    return this;
+  }
+  setColor(c) { this.style.color = c; this._txt.style.fill = c; return this; }
+  setPosition(x, y) { this.position.set(x, y); return this; }
+  setOrigin(ox, oy = ox) { this._origin = { x: ox, y: oy }; this._redraw(); return this; }
+  setVisible(v) { this.visible = v; return this; }
+  setAlpha(a) { this.alpha = a; return this; }
+  setDepth(d) { this.zIndex = d; return this; }
+  setScrollFactor(f) {
+    const target = (f === 0) ? this._scene.uiContainer : this._scene.worldContainer;
+    target.addChild(this);
+    return this;
+  }
+  setInteractive() { this.eventMode = 'static'; this.cursor = 'pointer'; return this; }
+  on(event, cb) { super.on(event, cb); return this; }
+}
+
+export class StreetScene {
+  constructor(app) {
+    this.app = app;
+    this.lastPhoto = null;
+    this.viewW = app.screen.width;
+    this.viewH = app.screen.height;
+
+    // 相机状态（手动实现，替代 Phaser camera）
+    this.scrollX = 0;
+    this.scrollY = 0;
+    this.zoom    = 1;
+
+    // 资源缓存 + Phaser cache 兼容 shim（_buildPoseCache 仍用 this.cache.json.get）
+    this._json = {};
+    this.cache = { json: { get: (k) => this._json[k] } };
+
+    // add.text 兼容工厂（DebugOverlay / HUD 共用）
+    this.add = { text: (x, y, str, style) => new PixiText(this, x, y, str, style) };
+
+    this.keys = { left: false, right: false, up: false, down: false };
+    this._flashAlpha = 0;
+  }
+
+  // ─── 资源加载（fetch JSON）────────────────────────────────────────────────
+  async preload() {
+    const load = async (key, path) => {
+      const r = await fetch(path);
+      if (r.ok) this._json[key] = await r.json();
+    };
+    const jobs = [load('scene_data', 'assets/scene.json')];
+    for (const [key, file] of Object.entries(ANIM_FILES)) jobs.push(load('anim_' + key, `assets/animations/${file}.json`));
+    for (const [key, file] of Object.entries(POSE_FILES)) jobs.push(load('pose_' + key, `assets/animations/${file}.json`));
+    await Promise.all(jobs);
   }
 
   create() {
-    this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-    this.cameras.main.setBackgroundColor(GRAY_SKY);
+    const stage = this.app.stage;
+    stage.sortableChildren = true;
 
-    this.skyGraphics    = this.add.graphics().setScrollFactor(0.45);
-    this.bgGraphics     = this.add.graphics();
-    this.entityGraphics     = this.add.graphics();
-    this.entityHighGraphics = this.add.graphics();
-    this.vfGraphics         = this.add.graphics();
+    // 图层容器
+    this.skyContainer   = new PIXI.Container();
+    this.worldContainer = new PIXI.Container();
+    this.uiContainer    = new PIXI.Container();
+    this.skyContainer.zIndex   = 0;
+    this.worldContainer.zIndex = 1;
+    this.uiContainer.zIndex    = 2;
+    this.worldContainer.sortableChildren = true;
+    this.uiContainer.sortableChildren    = true;
+    stage.addChild(this.skyContainer, this.worldContainer, this.uiContainer);
+
+    // Graphics 图层（用适配器包装 PIXI.Graphics）
+    const mkLayer = (container, zIndex) => {
+      const pg = new PIXI.Graphics();
+      pg.zIndex = zIndex;
+      container.addChild(pg);
+      return new PhaserGraphicsAdapter(pg);
+    };
+    this.skyGraphics        = mkLayer(this.skyContainer, 0);
+    this.bgGraphics         = mkLayer(this.worldContainer, 1);
+    this.entityGraphics     = mkLayer(this.worldContainer, 2);
+    this.entityHighGraphics = mkLayer(this.worldContainer, 3);
+    this.vfGraphics         = mkLayer(this.worldContainer, 4);
 
     const sceneData = this.cache.json.get('scene_data');
     const layout = sceneData.layout;
@@ -115,21 +237,76 @@ export class StreetScene extends Phaser.Scene {
     const initializer = new SceneInitializer(this, this.entityManager, this.stickRenderer, poseCache);
     initializer.spawnAll(sceneData, layout);
 
-    this.viewfinder = new Viewfinder(this, { x: 310, y: 295, width: 210, height: 145 });
+    this.viewfinder = new Viewfinder({
+      app: this.app,
+      getWorldCoords: (cx, cy) => this._getWorldCoords(cx, cy),
+    }, { x: 310, y: 295, width: 210, height: 145 });
     this._createUI();
     this.debugOverlay = new DebugOverlay(this, this.behaviorManager, this.entityManager);
 
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.input.keyboard.on('keydown-P', () => this._exportImage());
-    this.input.keyboard.on('keydown-D', () => this.debugOverlay.toggle());
-    this._setupZoom();
+    this._setupInput();
+    this._applyCamera();
+
+    // 主循环
+    this.app.ticker.add(() => this.update(this.app.ticker.deltaMS));
+  }
+
+  // ─── 相机 ──────────────────────────────────────────────────────────────────
+  _applyCamera() {
+    const z = this.zoom;
+    this.worldContainer.scale.set(z);
+    this.worldContainer.position.set(-this.scrollX * z, -this.scrollY * z);
+    this.skyContainer.scale.set(z);
+    this.skyContainer.position.set(-this.scrollX * 0.45 * z, -this.scrollY * 0.45 * z);
+  }
+
+  _clampScroll() {
+    const z = this.zoom;
+    const maxX = Math.max(0, WORLD_WIDTH  - this.viewW / z);
+    const maxY = Math.max(0, WORLD_HEIGHT - this.viewH / z);
+    this.scrollX = Math.min(Math.max(0, this.scrollX), maxX);
+    this.scrollY = Math.min(Math.max(0, this.scrollY), maxY);
+  }
+
+  /** DOM client 坐标 → 世界坐标（考虑画布 CSS 缩放与相机 scroll/zoom）*/
+  _getWorldCoords(clientX, clientY) {
+    // 用逻辑屏幕尺寸 app.screen（非 view 的物理像素），避免 hi-DPI 下偏移
+    const rect = this.app.view.getBoundingClientRect();
+    const sx = (clientX - rect.left) * (this.app.screen.width  / rect.width);
+    const sy = (clientY - rect.top)  * (this.app.screen.height / rect.height);
+    return { x: sx / this.zoom + this.scrollX, y: sy / this.zoom + this.scrollY };
+  }
+
+  // ─── 输入 ──────────────────────────────────────────────────────────────────
+  _setupInput() {
+    const keyMap = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' };
+    window.addEventListener('keydown', (e) => {
+      if (keyMap[e.key]) { this.keys[keyMap[e.key]] = true; return; }
+      const k = e.key.toLowerCase();
+      if (k === 'p') this._exportImage();
+      else if (k === 'd') this.debugOverlay.toggle();
+      else if (k === 'z') { this.zoom = 1; this.scrollY = 0; this._clampScroll(); this._applyCamera(); }
+    });
+    window.addEventListener('keyup', (e) => { if (keyMap[e.key]) this.keys[keyMap[e.key]] = false; });
+
+    this.app.view.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const factor  = e.deltaY > 0 ? 0.9 : 1.1;
+      const newZoom = Math.max(0.5, Math.min(2.0, this.zoom * factor));
+      const before  = this._getWorldCoords(e.clientX, e.clientY);
+      this.zoom = newZoom;
+      const after   = this._getWorldCoords(e.clientX, e.clientY);
+      this.scrollX += before.x - after.x;
+      this.scrollY += before.y - after.y;
+      this._clampScroll();
+      this._applyCamera();
+    }, { passive: false });
   }
 
   // ─── UI ──────────────────────────────────────────────────────────────────────
-
   _createUI() {
-    const W = this.cameras.main.width;
-    const H = this.cameras.main.height;
+    const W = this.viewW;
+    const H = this.viewH;
 
     this.uiText = this.add.text(10, 10, '← → 滚动  |  滚轮缩放  Z 重置  |  拖动取景框 · 拖右下角缩放  |  P 导出长图  |  D 调试', {
       fontFamily: '"JetBrains Mono", monospace', fontSize: '13px', color: '#555555',
@@ -147,8 +324,12 @@ export class StreetScene extends Phaser.Scene {
       wordWrap: { width: W - 200 },
     }).setScrollFactor(0).setDepth(200).setVisible(false);
 
-    this.flashOverlay = this.add.rectangle(W / 2, H / 2, W, H, 0xffffff, 0)
-      .setScrollFactor(0).setDepth(190);
+    // 闪光遮罩（屏幕固定的全屏白，alpha 由 ticker 手动淡出）
+    this.flashOverlay = new PIXI.Graphics();
+    this.flashOverlay.beginFill(0xffffff, 1).drawRect(0, 0, W, H).endFill();
+    this.flashOverlay.alpha = 0;
+    this.flashOverlay.zIndex = 190;
+    this.uiContainer.addChild(this.flashOverlay);
 
     this.btnCapture = this._makeButton(W - 126, H - 50, '[ 拍  照 ]', '#b83000');
     this.btnCapture.on('pointerdown', () => this._takePhoto());
@@ -162,43 +343,60 @@ export class StreetScene extends Phaser.Scene {
     const btn = this.add.text(x, y, label, {
       fontFamily: '"Noto Sans SC", sans-serif', fontSize: '14px', color: '#ffffff',
       backgroundColor: bgColor, padding: { x: 12, y: 7 },
-    }).setScrollFactor(0).setDepth(200).setInteractive({ useHandCursor: true });
+    }).setScrollFactor(0).setDepth(200).setInteractive();
     btn.on('pointerover', () => btn.setAlpha(0.78));
     btn.on('pointerout',  () => btn.setAlpha(1.0));
     return btn;
   }
 
-  // ─── 导出长图 ───────────────────────────────────────────────────────────────
+  // ─── 延时调用（rAF 实现，替代 Phaser time.delayedCall）──────────────────────
+  _delay(ms, cb) {
+    const start = performance.now();
+    const tick = (now) => { if (now - start >= ms) cb(); else requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  }
 
+  // ─── 导出长图（PIXI.RenderTexture）───────────────────────────────────────────
   _exportImage() {
-    const key = '__pano_' + Date.now();
-    const dt = this.textures.addDynamicTexture(key, WORLD_WIDTH, WORLD_HEIGHT);
-    if (!dt) return;
-    dt.fill(GRAY_SKY, 1);
-    dt.draw([this.skyGraphics, this.bgGraphics, this.entityGraphics, this.entityHighGraphics], 0, 0);
-    dt.snapshot((image) => {
+    const renderer = this.app.renderer;
+    const rt = PIXI.RenderTexture.create({ width: WORLD_WIDTH, height: WORLD_HEIGHT });
+
+    // 底色
+    const fill = new PIXI.Graphics();
+    fill.beginFill(GRAY_SKY, 1).drawRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT).endFill();
+    renderer.render(fill, { renderTexture: rt, clear: true });
+    fill.destroy();
+
+    // 各 Graphics 图层以世界坐标（自身 local transform 为单位阵）合成
+    for (const layer of [this.skyGraphics, this.bgGraphics, this.entityGraphics, this.entityHighGraphics]) {
+      renderer.render(layer.g, { renderTexture: rt, clear: false });
+    }
+
+    const canvas = renderer.extract.canvas(rt);
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = image.src;
+      a.href = url;
       a.download = `news-street-pano-${Date.now()}.png`;
       document.body.appendChild(a);
       a.click();
       a.remove();
-      this.textures.remove(key);
+      URL.revokeObjectURL(url);
+      rt.destroy(true);
     });
   }
 
   // ─── 拍照 / 发布 ──────────────────────────────────────────────────────────────
-
   _takePhoto() {
     const count = this.viewfinder.capturedEntities.length;
     if (count === 0) {
       this.captureText.setText('取景框内没有目标！').setColor('#cc2200');
-      this.time.delayedCall(1500, () => this.captureText.setText(''));
+      this._delay(1500, () => this.captureText.setText(''));
       return;
     }
     this.lastPhoto = { tags: this.viewfinder.getCapturedTags(), count };
-    this.flashOverlay.setAlpha(0.80);
-    this.tweens.add({ targets: this.flashOverlay, alpha: 0, duration: 220, ease: 'Power2' });
+    this._flashAlpha = 0.80;
+    this.flashOverlay.alpha = this._flashAlpha;
     this.btnPublish.setVisible(true);
     this.captureText
       .setText(`已拍摄 ${count} 个目标  [${this.lastPhoto.tags.join('  ')}]`)
@@ -209,11 +407,11 @@ export class StreetScene extends Phaser.Scene {
     if (!this.lastPhoto) return;
     const headline = this._generateHeadline(this.lastPhoto.tags, this.lastPhoto.count);
     this.headlinePanel.setText(`【快讯】${headline}`).setVisible(true);
-    this.time.delayedCall(7000, () => this.headlinePanel.setVisible(false));
+    this._delay(7000, () => this.headlinePanel.setVisible(false));
     this.lastPhoto = null;
     this.btnPublish.setVisible(false);
     this.captureText.setText('新闻已发布！').setColor('#1a3d99');
-    this.time.delayedCall(2000, () => this.captureText.setText(''));
+    this._delay(2000, () => this.captureText.setText(''));
   }
 
   _generateHeadline(tags, count) {
@@ -229,56 +427,22 @@ export class StreetScene extends Phaser.Scene {
     return templates[Math.floor(Math.random() * templates.length)];
   }
 
-  // ─── 滚轮缩放 ─────────────────────────────────────────────────────────────────
-
-  _setupZoom() {
-    const cam = this.cameras.main;
-    this.input.on('wheel', (pointer, _objs, _dx, deltaY) => {
-      const factor  = deltaY > 0 ? 0.9 : 1.1;
-      const newZoom = Phaser.Math.Clamp(cam.zoom * factor, 0.5, 2.0);
-      const wx = cam.scrollX + pointer.x / cam.zoom;
-      const wy = cam.scrollY + pointer.y / cam.zoom;
-      cam.zoom = newZoom;
-      cam.scrollX = wx - pointer.x / newZoom;
-      cam.scrollY = wy - pointer.y / newZoom;
-      this._updateUIForZoom(newZoom);
-    });
-    this.input.keyboard.on('keydown-Z', () => {
-      cam.zoom = 1.0;
-      cam.scrollY = 0;
-      this._updateUIForZoom(1.0);
-    });
-  }
-
-  _updateUIForZoom(zoom) {
-    const iz = 1 / zoom;
-    const W  = this.cameras.main.width;
-    const H  = this.cameras.main.height;
-    this.uiText.setPosition(10 * iz, 10 * iz);
-    this.captureText.setPosition(10 * iz, 36 * iz);
-    this.headlinePanel.setPosition(10 * iz, 64 * iz);
-    this.flashOverlay.setPosition(W / 2 * iz, H / 2 * iz);
-    this.flashOverlay.setDisplaySize(W * iz, H * iz);
-    this.btnCapture.setPosition((W - 126) * iz, (H - 50) * iz);
-    this.btnPublish.setPosition((W - 126) * iz, (H - 90) * iz);
-    if (this.debugOverlay) this.debugOverlay.panel.setPosition(10 * iz, 150 * iz);
-  }
-
   // ─── 每帧更新 ─────────────────────────────────────────────────────────────────
-
-  update(time, delta) {
-    const cam = this.cameras.main;
+  update(delta) {
     const spd = 300 * (delta / 1000);
 
-    if (this.cursors.left.isDown)       cam.scrollX -= spd;
-    else if (this.cursors.right.isDown) cam.scrollX += spd;
-    if (this.cursors.up.isDown)         cam.scrollY -= spd;
-    else if (this.cursors.down.isDown)  cam.scrollY += spd;
+    if (this.keys.left)       this.scrollX -= spd;
+    else if (this.keys.right) this.scrollX += spd;
+    if (this.keys.up)         this.scrollY -= spd;
+    else if (this.keys.down)  this.scrollY += spd;
 
     const vfc    = this.viewfinder.getCenter();
     const margin = 80;
-    if (vfc.x - cam.scrollX < margin)                    cam.scrollX -= spd * 0.5;
-    else if (cam.scrollX + cam.width - vfc.x < margin)   cam.scrollX += spd * 0.5;
+    if (vfc.x - this.scrollX < margin)                       this.scrollX -= spd * 0.5;
+    else if (this.scrollX + this.viewW - vfc.x < margin)     this.scrollX += spd * 0.5;
+
+    this._clampScroll();
+    this._applyCamera();
 
     this.behaviorManager.update(delta);
     this.spawnManager.update(delta / 1000);
@@ -299,6 +463,11 @@ export class StreetScene extends Phaser.Scene {
     this.viewfinder.draw(this.vfGraphics);
 
     this.debugOverlay.update();
+
+    if (this._flashAlpha > 0) {
+      this._flashAlpha = Math.max(0, this._flashAlpha - (delta / 220) * 0.80);
+      this.flashOverlay.alpha = this._flashAlpha;
+    }
 
     if (!this.lastPhoto) {
       const captured = this.viewfinder.capturedEntities;
