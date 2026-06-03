@@ -112,7 +112,7 @@ export class SceneRenderer {
     g.lineBetween(sx - PIL_X, pillarT, sx - PIL_X, pillarB);
     g.lineBetween(sx + PIL_X, pillarT, sx + PIL_X, pillarB);
 
-    const benchY = pillarT + 15;
+    const benchY = pillarT + 25;
     const benchHalf = BENCH_W / 2;
     g.fillStyle(0x565654, 1);
     g.fillRect(sx - benchHalf, benchY, BENCH_W, 4);
@@ -123,10 +123,10 @@ export class SceneRenderer {
     g.lineBetween(sx + benchHalf - 10, benchY + 4, sx + benchHalf - 10, benchY + 8);
 
     const poleX  = bx1 + 5;
-    const poleTy = roofT;
+    const poleTy = roofT + 10;
     const poleBy = fy - BAY_D - 2;
     g.lineStyle(2.2, 0x2e2e2e, 1);
-    g.lineBetween(poleX, poleTy + 15, poleX, poleBy);
+    g.lineBetween(poleX, poleTy, poleX, poleBy);
     drawSign(poleX, poleTy);
   }
 
@@ -174,8 +174,8 @@ export class SceneRenderer {
     g.lineBetween(sx + benchHalf - 12, benchY + 4, sx + benchHalf - 12, benchY + 9);
 
     const poleX  = bx1 + 5;
-    const poleTy = ny - 8;
-    const poleBy = ny + BAY_D + 2;
+    const poleTy = ny ;
+    const poleBy = ny + BAY_D + 32;
     g.lineStyle(2.2, 0x2e2e2e, 1);
     g.lineBetween(poleX, poleBy, poleX, poleTy);
     drawSign(poleX, poleTy);
