@@ -29,7 +29,29 @@ export class SceneInitializer {
   spawnAll(sceneData, layout) {
     this._spawnBuildings(sceneData);
     this._spawnProps(sceneData);
+    this._spawnTrees(layout);
     this._spawnNPCs(layout);
+  }
+
+  // 行道树 / 公园树：从 bg 移到 entity 层，按树干 y 参与 Y 排序（可遮挡后方 NPC）。
+  // 渲染交给 PropDrawer.drawTree（propType:'tree'），半径 r → width = 2r。
+  _spawnTrees(layout) {
+    const { em } = this;
+    const groups = [
+      { list: layout.sidewalkTrees || [], tags: ['tree', 'greenery'] },
+      { list: layout.parkTrees     || [], tags: ['tree', 'park', 'greenery'] },
+    ];
+    for (const { list, tags } of groups) {
+      for (const t of list) {
+        em.add(new PropEntity({
+          propType: 'tree',
+          x: t.x, y: t.y,
+          width: t.r * 2, height: t.r * 2,
+          _sortY: t.y,
+          tags,
+        }));
+      }
+    }
   }
 
   _spawnBuildings(sceneData) {

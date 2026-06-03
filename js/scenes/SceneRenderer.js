@@ -42,7 +42,6 @@ export class SceneRenderer {
     this._drawMiniPark(g);
     this._drawChessPlaza(g);
     this._drawParkPaths(g);
-    this._drawTrees(g);
   }
 
   // ─── 公交站台 ───────────────────────────────────────────────────────────────
@@ -410,49 +409,5 @@ export class SceneRenderer {
     for (let y = topY; y <= botY; y += 20) {
       g.lineBetween(0, y, WORLD_WIDTH, y);
     }
-  }
-
-  // ─── 行道树 ─────────────────────────────────────────────────────────────────
-
-  _drawTrees(g) {
-    for (const t of (this.layout.sidewalkTrees || [])) {
-      this._drawBlobTree(g, t.x, t.y, t.r, 0.7, 0x808080, 0.9);
-    }
-    for (const t of (this.layout.parkTrees || [])) {
-      this._drawBlobTree(g, t.x, t.y, t.r, 1.1, 0x4a4a4a, 0.92);
-    }
-  }
-
-  _drawBlobTree(g, cx, cy, r, lw, c, a) {
-    g.fillStyle(0x000000, 0.10);
-    g.fillEllipse(cx + r * 0.2, cy + r * 0.3, r * 1.8, r * 0.65);
-    const lobes = 6;
-    const steps = lobes * 4;
-    const pts = [];
-    for (let i = 0; i < steps; i++) {
-      const ang  = (i / steps) * Math.PI * 2;
-      const lobe = 0.84 + 0.16 * Math.cos(ang * lobes);
-      const nz   = 1 + 0.06 * Math.sin(cx * 0.21 + i * 1.3);
-      const rad  = r * lobe * nz;
-      pts.push({ x: cx + Math.cos(ang) * rad, y: cy + Math.sin(ang) * rad * 0.82 });
-    }
-    g.fillStyle(c, 0.08);
-    g.beginPath();
-    g.moveTo(pts[0].x, pts[0].y);
-    for (let i = 1; i < steps; i++) g.lineTo(pts[i].x, pts[i].y);
-    g.closePath();
-    g.fillPath();
-    g.lineStyle(lw, c, a);
-    g.beginPath();
-    g.moveTo(pts[0].x, pts[0].y);
-    for (let i = 1; i < steps; i++) g.lineTo(pts[i].x, pts[i].y);
-    g.closePath();
-    g.strokePath();
-    g.lineStyle(lw * 0.7, c, a * 0.55);
-    g.strokeCircle(cx - r * 0.3, cy - r * 0.15, r * 0.3);
-    g.strokeCircle(cx + r * 0.28, cy + r * 0.12, r * 0.26);
-    g.lineStyle(lw * 1.1, c, a);
-    g.lineBetween(cx - 1.5, cy, cx + 1.5, cy);
-    g.lineBetween(cx, cy - 1.5, cx, cy + 1.5);
   }
 }
