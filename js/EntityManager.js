@@ -71,22 +71,14 @@ export class EntityManager {
   }
 
   /**
-   * 按 Y 深度排序后绘制：底层（参与排序）画到 g，顶层（道具顶部）画到 gHigh。
-   * @param {Phaser.GameObjects.Graphics} g     - 主实体图层
-   * @param {Phaser.GameObjects.Graphics} gHigh - 道具顶部图层（恒在 NPC 之上）
+   * 按 Y 深度排序后绘制（Y 小=远=先画）。stall/tree 用 _sortY 上移排序基准，
+   * 使其遮阳棚 / 树冠能遮住从后方走过的 NPC。
+   * @param {Phaser.GameObjects.Graphics} g - 实体图层
    */
-  draw(g, gHigh) {
+  draw(g) {
     const visible = this.entities.filter(e => e.alive && e.visible);
     visible.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
-    for (const e of visible) {
-      const drawFn = e.drawBase ?? e.draw;
-      drawFn.call(e, g);
-    }
-    if (gHigh) {
-      for (const e of visible) {
-        if (e.drawTop) e.drawTop(gHigh);
-      }
-    }
+    for (const e of visible) e.draw(g);
   }
 
   /** 返回所有存活且可见的实体（供取景框碰撞检测使用） */

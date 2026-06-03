@@ -1,5 +1,5 @@
 import { Entity } from './Entity.js';
-import { drawPropBase, drawPropTop } from './props/PropDrawer.js';
+import { drawProp } from './props/PropDrawer.js';
 
 const OBSTACLE_TYPES = new Set([
   'fountain', 'slide', 'stall', 'tree', 'bench', 'trash', 'hydrant',
@@ -27,6 +27,11 @@ export class PropEntity extends Entity {
     } else {
       this.collisionRX = this.collisionRY = this.collisionRadius = 0;
     }
+
+    // 简单 Y 排序偏移：让 stall 遮阳棚 / tree 树冠的排序基准上移，
+    // 从而能遮住从其后方（更小 Y）走过的 NPC。其余 prop 用默认 y。
+    if (this.propType === 'stall') this._sortY = this.y - this.height * 0.5;
+    if (this.propType === 'tree')  this._sortY = this.y - this.height * 0.35;
 
     if (config.smartDef) {
       this.smartDef = config.smartDef;
@@ -58,13 +63,8 @@ export class PropEntity extends Entity {
     }
   }
 
-  drawBase(g) {
+  draw(g) {
     if (!this.visible) return;
-    drawPropBase(g, this);
-  }
-
-  drawTop(g) {
-    if (!this.visible) return;
-    drawPropTop(g, this);
+    drawProp(g, this);
   }
 }

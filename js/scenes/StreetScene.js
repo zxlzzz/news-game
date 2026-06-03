@@ -7,7 +7,7 @@
  *   worldContainer     — 受相机（scroll/zoom）控制：
  *     bgGraphics         静态地面（道路/人行道/树木），只绘制一次
  *     entityGraphics     所有 Entity（建筑、道具、NPC），每帧按Y排序重绘
- *     entityHighGraphics 高大道具顶部（喷泉/棋亭/摊位/树冠），恒压在 NPC 之上
+ *                        （stall/tree 用 _sortY 上移排序基准以遮挡后方 NPC）
  *     vfGraphics         取景框 UI（世界坐标）
  *     （DebugOverlay 的世界浮标也挂这里）
  *   uiContainer        — 屏幕固定 HUD（文本/按钮/闪光/调试面板）
@@ -219,7 +219,6 @@ export class StreetScene {
     this.skyGraphics        = mkLayer(this.skyContainer, 0);
     this.bgGraphics         = mkLayer(this.worldContainer, 1);
     this.entityGraphics     = mkLayer(this.worldContainer, 2);
-    this.entityHighGraphics = mkLayer(this.worldContainer, 3);
     this.vfGraphics         = mkLayer(this.worldContainer, 4);
 
     const sceneData = this.cache.json.get('scene_data');
@@ -374,7 +373,7 @@ export class StreetScene {
     fill.destroy();
 
     // 各 Graphics 图层以世界坐标（自身 local transform 为单位阵）合成
-    for (const layer of [this.skyGraphics, this.bgGraphics, this.entityGraphics, this.entityHighGraphics]) {
+    for (const layer of [this.skyGraphics, this.bgGraphics, this.entityGraphics]) {
       renderer.render(layer.g, { renderTexture: rt, clear: false });
     }
 
@@ -461,8 +460,7 @@ export class StreetScene {
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
     this.entityGraphics.clear();
-    this.entityHighGraphics.clear();
-    this.entityManager.draw(this.entityGraphics, this.entityHighGraphics);
+    this.entityManager.draw(this.entityGraphics);
     if (this.propManager) this.propManager.draw(this.entityGraphics);
 
     this.vfGraphics.clear();
