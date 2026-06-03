@@ -9,7 +9,8 @@ function toGrayBand(color, lightVal, darkVal) {
   return (v << 16) | (v << 8) | v;
 }
 
-export function drawProp(g, prop) {
+// 底层：参与 Y 排序的部分。tree/stall 仅画底部（树干 / 柱子+货台）；其余整体画。
+export function drawPropBase(g, prop) {
   switch (prop.propType) {
     case 'lamp-far':    drawLampFar(g, prop);    break;
     case 'lamp-near':   drawLampNear(g, prop);   break;
@@ -24,11 +25,20 @@ export function drawProp(g, prop) {
     case 'drain':       drawDrain(g, prop);      break;
     case 'chair':       drawChair(g, prop);      break;
     case 'chess-table': drawChessTable(g, prop); break;
-    case 'tree':        drawTree(g, prop);       break;
+    case 'tree':        drawTreeBase(g, prop);   break;
     case 'fountain':    drawFountain(g, prop);   break;
-    case 'stall':       drawStall(g, prop);      break;
+    case 'stall':       drawStallBase(g, prop);  break;
     case 'vending':     drawVending(g, prop);    break;
     case 'phonebooth':  drawPhoneBooth(g, prop); break;
+  }
+}
+
+// 顶层：恒压在 NPC 之上的部分。仅 tree/stall 有顶部；其余为空。
+export function drawPropTop(g, prop) {
+  switch (prop.propType) {
+    case 'tree':  drawTreeTop(g, prop);  break;
+    case 'stall': drawStallTop(g, prop); break;
+    default:      return;
   }
 }
 
@@ -349,7 +359,18 @@ function drawChessTable(g, p) {
   g.lineBetween(topX + tw * 0.7, topY + th, topX + tw * 0.7, y - 1);
 }
 
-function drawTree(g, p) {
+// 树干（底部，参与 Y 排序）
+function drawTreeBase(g, p) {
+  const { x, y } = p;
+  const lw = depthLineWidth(y, { wMin: 0.7, wMax: 1.5 });
+  const c  = depthLineColor(y, { light: 0x78, dark: 0x24 });
+  g.lineStyle(lw * 1.1, c, 0.9);
+  g.lineBetween(x - 1.5, y, x + 1.5, y);
+  g.lineBetween(x, y - 1.5, x, y + 1.5);
+}
+
+// 树冠（顶部，恒在 NPC 之上）
+function drawTreeTop(g, p) {
   const { x, y } = p;
   const r  = (p.width || 22) / 2;
   const lw = depthLineWidth(y, { wMin: 0.7, wMax: 1.5 });
@@ -374,9 +395,6 @@ function drawTree(g, p) {
   g.closePath(); g.strokePath();
   g.lineStyle(lw * 0.7, c, 0.5);
   g.strokeCircle(x - r * 0.3, y - r * 0.15, r * 0.3);
-  g.lineStyle(lw * 1.1, c, 0.9);
-  g.lineBetween(x - 1.5, y, x + 1.5, y);
-  g.lineBetween(x, y - 1.5, x, y + 1.5);
 }
 
 function drawDrain(g, p) {
@@ -455,7 +473,8 @@ function drawPhoneBooth(g, p) {
   g.fillStyle(0x202020, 0.7); g.fillRect(px + w - 5, py + 10, 2, 6);
 }
 
-function drawStall(g, p) {
+// 柱子 + 货台（底部，参与 Y 排序）
+function drawStallBase(g, p) {
   const { x, y } = p;
   const w = p.width || 36;
   const h = w * 0.78;
@@ -466,6 +485,24 @@ function drawStall(g, p) {
   g.lineStyle(lineW, lineC, 0.95);
   g.lineBetween(px + 2, y, px + 2, y - h);
   g.lineBetween(px + w - 2, y, px + w - 2, y - h);
+  g.fillStyle(0xc0c0c0, 1); g.fillRect(px + 1, counterY, w - 2, 4);
+  g.lineStyle(lineW, lineC, 0.95); g.strokeRect(px + 1, counterY, w - 2, 4);
+  g.fillStyle(0x9a9a9a, 1);
+  for (let i = 0; i < 3; i++) {
+    const gx = px + 4 + i * ((w - 10) / 2);
+    g.fillRect(gx, counterY - 3, 4, 3);
+    g.lineStyle(0.4, lineC, 0.85); g.strokeRect(gx, counterY - 3, 4, 3);
+  }
+}
+
+// 遮阳棚顶（顶部，恒在 NPC 之上）
+function drawStallTop(g, p) {
+  const { x, y } = p;
+  const w = p.width || 36;
+  const h = w * 0.78;
+  const lineW = depthLineWidth(y, { wMin: 1, wMax: 1.7 });
+  const lineC = depthLineColor(y, { light: 0x38, dark: 0x08 });
+  const px = x - w / 2;
   const aY = y - h, aH = 6;
   g.fillStyle(0x707070, 1);
   g.beginPath();
@@ -476,13 +513,5 @@ function drawStall(g, p) {
   g.lineStyle(0.5, 0xdddddd, 0.7);
   for (let i = 1; i < Math.floor(w / 6); i++) {
     const sx = px - 3 + i * 6; g.lineBetween(sx, aY, sx + 1.5, aY + aH);
-  }
-  g.fillStyle(0xc0c0c0, 1); g.fillRect(px + 1, counterY, w - 2, 4);
-  g.lineStyle(lineW, lineC, 0.95); g.strokeRect(px + 1, counterY, w - 2, 4);
-  g.fillStyle(0x9a9a9a, 1);
-  for (let i = 0; i < 3; i++) {
-    const gx = px + 4 + i * ((w - 10) / 2);
-    g.fillRect(gx, counterY - 3, 4, 3);
-    g.lineStyle(0.4, lineC, 0.85); g.strokeRect(gx, counterY - 3, 4, 3);
   }
 }

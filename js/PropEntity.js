@@ -1,5 +1,5 @@
 import { Entity } from './Entity.js';
-import { drawProp } from './props/PropDrawer.js';
+import { drawPropBase, drawPropTop } from './props/PropDrawer.js';
 
 const OBSTACLE_TYPES = new Set([
   'fountain', 'slide', 'stall', 'tree', 'bench', 'trash', 'hydrant',
@@ -58,8 +58,13 @@ export class PropEntity extends Entity {
     }
   }
 
-  draw(g) {
+  drawBase(g) {
     if (!this.visible) return;
-    drawProp(g, this);
+    drawPropBase(g, this);
+  }
+
+  drawTop(g) {
+    if (!this.visible) return;
+    drawPropTop(g, this);
   }
 }
