@@ -72,6 +72,9 @@ export function spawnChess(em, sr, bm, chessPlaza) {
     tags: ['chair', 'street-furniture'],
   }));
 
+  chessA._sortY = Y + 1;
+  chessB._sortY = Y + 1;
+  
   // ── 3) 棋手入列（在桌椅之后 → 画在上层，人坐在椅上、手压在棋盘上） ──
   em.add(chessA);
   em.add(chessB);
