@@ -135,6 +135,7 @@ export class SceneInitializer {
         roofTopY, pillarOffset: stop.pillarOffset, pillarBottomY,
         dir: stop.direction,
         width: stop.roofW, height: anchorY - roofTopY,
+        _sortY: pillarBottomY,   // 真实地面接触点（柱子底端）参与 Y 排序
         tags: ['busstop-roof'],
       }));
     }
