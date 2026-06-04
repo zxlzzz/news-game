@@ -1,4 +1,4 @@
-import { depthLineWidth, depthLineColor } from '../SceneConfig.js';
+import { depthLineWidth, depthLineColor, NEAR_Y } from '../SceneConfig.js';
 
 function toGrayBand(color, lightVal, darkVal) {
   const r = (color >> 16) & 0xff;
@@ -11,8 +11,7 @@ function toGrayBand(color, lightVal, darkVal) {
 
 export function drawProp(g, prop) {
   switch (prop.propType) {
-    case 'lamp-far':    drawLampFar(g, prop);    break;
-    case 'lamp-near':   drawLampNear(g, prop);   break;
+    case 'lamp':        drawLamp(g, prop);       break;
     case 'bench':       drawBench(g, prop);      break;
     case 'trash':       drawTrash(g, prop);      break;
     case 'sign':        drawSign(g, prop);       break;
@@ -33,34 +32,35 @@ export function drawProp(g, prop) {
   }
 }
 
-function drawLampFar(g, p) {
+function drawLamp(g, p) {
   const { x, y } = p;
-  g.lineStyle(1.1, 0x6a6a6a, 0.95);
-  g.lineBetween(x, y + 16, x, y - 35);
-  g.lineStyle(0.9, 0x6a6a6a, 0.9);
-  g.lineBetween(x, y - 35, x + 18, y - 32);
-  g.fillStyle(0xf0f0f0, 1);
-  g.fillRect(x + 15, y - 34, 7, 7);
-  g.lineStyle(0.8, 0x202020, 1);
-  g.strokeRect(x + 15, y - 34, 7, 7);
-  g.fillStyle(0x4a4a4a, 1);
-  g.fillRect(x - 1.5, y + 14, 4, 4);
-}
-
-function drawLampNear(g, p) {
-  const { x, y } = p;
-  g.lineStyle(2.8, 0x1f1f1f, 1);
-  g.lineBetween(x, y - 66, x, y + 12);
-  g.lineStyle(2.2, 0x1f1f1f, 1);
-  g.lineBetween(x, y - 66, x - 24, y - 54);
-  g.fillStyle(0xfafafa, 1);
-  g.fillRect(x - 29, y - 58, 10, 10);
-  g.lineStyle(1.8, 0x101010, 1);
-  g.strokeRect(x - 29, y - 58, 10, 10);
-  g.lineStyle(0.8, 0xa0a0a0, 0.85);
-  g.lineBetween(x - 27, y - 53, x - 21, y - 53);
-  g.fillStyle(0x101010, 1);
-  g.fillRect(x - 3, y + 10, 6, 5);
+  const lw = depthLineWidth(y);
+  const lc = depthLineColor(y, { light: 0x6a, dark: 0x1f });
+  if (y < NEAR_Y) {
+    g.lineStyle(lw, lc, 0.95);
+    g.lineBetween(x, y + 16, x, y - 35);
+    g.lineStyle(lw * 0.85, lc, 0.9);
+    g.lineBetween(x, y - 35, x + 18, y - 32);
+    g.fillStyle(0xf0f0f0, 1);
+    g.fillRect(x + 15, y - 34, 7, 7);
+    g.lineStyle(lw * 0.75, 0x202020, 1);
+    g.strokeRect(x + 15, y - 34, 7, 7);
+    g.fillStyle(0x4a4a4a, 1);
+    g.fillRect(x - 1.5, y + 14, 4, 4);
+  } else {
+    g.lineStyle(lw * 1.25, lc, 1);
+    g.lineBetween(x, y - 66, x, y + 12);
+    g.lineStyle(lw, lc, 1);
+    g.lineBetween(x, y - 66, x - 24, y - 54);
+    g.fillStyle(0xfafafa, 1);
+    g.fillRect(x - 29, y - 58, 10, 10);
+    g.lineStyle(lw * 0.8, 0x101010, 1);
+    g.strokeRect(x - 29, y - 58, 10, 10);
+    g.lineStyle(lw * 0.35, 0xa0a0a0, 0.85);
+    g.lineBetween(x - 27, y - 53, x - 21, y - 53);
+    g.fillStyle(0x101010, 1);
+    g.fillRect(x - 3, y + 10, 6, 5);
+  }
 }
 
 function drawBench(g, p) {
@@ -307,16 +307,18 @@ function drawChair(g, p) {
   const seatY = y - seatH;
   const seatX1 = x - seatW / 2;
   const seatX2 = x + seatW / 2;
-  g.lineStyle(1.2, 0x202020, 0.95);
+  const lw = depthLineWidth(y);
+  const lc = depthLineColor(y, { light: 0x20, dark: 0x0a });
+  g.lineStyle(lw, lc, 0.95);
   g.lineBetween(seatX1, seatY, seatX2, seatY);
   const backX = (d > 0) ? seatX1 : seatX2;
   const backTop = seatY - seatH * 0.7;
   g.lineBetween(backX, seatY, backX, backTop);
   g.lineBetween(backX - 2 * d, backTop, backX + 1 * d, backTop);
-  g.lineStyle(1, 0x202020, 0.9);
+  g.lineStyle(lw * 0.85, lc, 0.9);
   g.lineBetween(seatX1 + 1, seatY, seatX1 + 1, y);
   g.lineBetween(seatX2 - 1, seatY, seatX2 - 1, y);
-  g.lineStyle(0.5, 0x303030, 0.6);
+  g.lineStyle(lw * 0.4, 0x303030, 0.6);
   g.lineBetween(seatX1 + 1, seatY + 1, seatX2 - 1, seatY + 1);
 }
 
@@ -327,13 +329,15 @@ function drawChessTable(g, p) {
   const th = Math.min(8, Math.max(5, topH * 0.4));
   const topX = x - tw / 2;
   const topY = y - topH;
+  const lw = depthLineWidth(y);
+  const lc = depthLineColor(y, { light: 0x1a, dark: 0x0a });
   g.fillStyle(0xcfcfcf, 1);
   g.fillRect(topX, topY, tw, th);
-  g.lineStyle(1, 0x1a1a1a, 0.95);
+  g.lineStyle(lw, lc, 0.95);
   g.strokeRect(topX, topY, tw, th);
-  g.lineStyle(0.5, 0xfafafa, 0.85);
+  g.lineStyle(lw * 0.5, 0xfafafa, 0.85);
   g.lineBetween(topX + 1, topY + 1, topX + tw - 1, topY + 1);
-  g.lineStyle(0.6, 0x101010, 0.85);
+  g.lineStyle(lw * 0.55, lc, 0.85);
   for (let i = 1; i < 3; i++) {
     const lx = topX + (tw * i / 3);
     g.lineBetween(lx, topY + 2, lx, topY + th - 2);
@@ -342,10 +346,10 @@ function drawChessTable(g, p) {
     const ly = topY + 2 + (th - 4) * i / 3;
     g.lineBetween(topX + 2, ly, topX + tw - 2, ly);
   }
-  g.lineStyle(1, 0x1a1a1a, 0.95);
+  g.lineStyle(lw, lc, 0.95);
   g.lineBetween(topX + 1,      topY + th, topX + 1,      y);
   g.lineBetween(topX + tw - 1, topY + th, topX + tw - 1, y);
-  g.lineStyle(0.7, 0x1a1a1a, 0.7);
+  g.lineStyle(lw * 0.65, lc, 0.7);
   g.lineBetween(topX + tw * 0.3, topY + th, topX + tw * 0.3, y - 1);
   g.lineBetween(topX + tw * 0.7, topY + th, topX + tw * 0.7, y - 1);
 }
@@ -385,11 +389,13 @@ function drawDrain(g, p) {
   const h = 6;
   const px = p.x - w / 2;
   const py = p.y - h / 2;
+  const lw = depthLineWidth(p.y, { wMin: 0.7, wMax: 1.4 });
+  const lc = depthLineColor(p.y, { light: 0x10, dark: 0x08 });
   g.fillStyle(0x707070, 1);
   g.fillRect(px, py, w, h);
-  g.lineStyle(0.9, 0x101010, 0.9);
+  g.lineStyle(lw, lc, 0.9);
   g.strokeRect(px, py, w, h);
-  g.lineStyle(0.6, 0x1a1a1a, 0.85);
+  g.lineStyle(lw * 0.65, lc, 0.85);
   const slots = Math.max(3, Math.floor(w / 3));
   for (let i = 1; i < slots; i++) {
     const lx = px + (w * i / slots);
@@ -401,15 +407,17 @@ function drawFountain(g, p) {
   const { x, y } = p;
   const rx = (p.width || 60) / 2;
   const ry = rx * 0.42;
+  const lw = depthLineWidth(y, { wMin: 0.7, wMax: 1.5 });
+  const lc = depthLineColor(y, { light: 0xbc, dark: 0x88 });
   g.fillStyle(0x000000, 0.04);
   g.fillEllipse(x, y + 4, rx * 1.9, ry * 1.3);
   g.fillStyle(0xe5e5e5, 1);
   g.fillEllipse(x, y, rx * 1.55, ry * 1.55);
-  g.lineStyle(1, 0xbcbcbc, 0.7);
+  g.lineStyle(lw, lc, 0.7);
   g.strokeEllipse(x, y, rx * 1.2, ry * 1.2);
   g.fillStyle(0xd6d6d6, 0.9);
   g.fillEllipse(x + 1, y - 1, rx * 0.92, ry * 0.92);
-  g.lineStyle(0.5, 0xb0b0b0, 0.35);
+  g.lineStyle(lw * 0.5, lc, 0.35);
   g.strokeEllipse(x - 1, y, rx * 0.42, ry * 0.42);
   g.fillStyle(0xa8a8a8, 1);
   g.fillCircle(x, y - 1, 2);

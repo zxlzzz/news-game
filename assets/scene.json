@@ -23,19 +23,19 @@
     { "x": 1902, "bWidth": 88,  "bDepth": 16, "facadeH": 32,  "waterTower": false, "solar": false, "billboard": false, "color": "#808080", "tags": ["convenience", "shop", "building"] }
   ],
   "props": [
-    { "propType": "lamp-far", "x": 95,   "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-far", "x": 350,  "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-far", "x": 715,  "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-far", "x": 1025, "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-far", "x": 1335, "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-far", "x": 1645, "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-far", "x": 1955, "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 95,   "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 350,  "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 715,  "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 1025, "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 1335, "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 1645, "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 1955, "y": 246, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
 
-    { "propType": "lamp-near", "x": 240,  "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-near", "x": 640,  "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-near", "x": 1040, "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-near", "x": 1300, "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
-    { "propType": "lamp-near", "x": 1840, "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 240,  "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 640,  "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 1040, "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 1300, "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
+    { "propType": "lamp", "x": 1840, "y": 372, "width": 14, "height": 14, "tags": ["lamp", "street-furniture"] },
 
 
     { "propType": "tree", "x": 110,  "y": 430, "width": 26, "height": 26, "tags": ["tree", "park", "greenery"] },

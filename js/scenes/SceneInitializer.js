@@ -186,10 +186,6 @@ export class SceneInitializer {
         opts.roamZone = { x0: zone.xRange[0], x1: zone.xRange[1], y0: roamY0, y1: roamY1 };
         opts.minY = roamY0;
         opts.maxY = roamY1;
-      } else if (zone.isBusWaiter) {
-        if (zone.busStopDir > 0) opts.scaleMul = 0.65;
-      } else {
-        opts.scaleMul = 0.65;
       }
 
       const npc = spawnOnePedestrian(npcType, em, sr, bm, { x: entry.x, y: posY }, opts);

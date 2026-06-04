@@ -75,31 +75,43 @@ export const BUILDING_FILL_DARK  = GRAY_BUILDING_LO;
 
 // ─── 深度辅助函数 ─────────────────────────────────────────────────────────────
 
+// 分段锚点：[y, t]。y 范围外夹取到 [0,1]。
+const _SEG = [
+  [BUILDING_BASE_Y, 0.00],
+  [FAR_Y,           0.30],
+  [NEAR_Y,          0.50],
+  [PARK_TOP,        0.55],
+  [PARK_BOTTOM,     1.00],
+];
+
+/** Y 坐标 → 景深参数 t∈[0,1]（分段线性，0=最远，1=最近） */
+export function depthT(y) {
+  if (y <= BUILDING_BASE_Y) return 0;
+  if (y >= PARK_BOTTOM)     return 1;
+  for (let i = 1; i < _SEG.length; i++) {
+    const [y0, t0] = _SEG[i - 1];
+    const [y1, t1] = _SEG[i];
+    if (y <= y1) return t0 + (y - y0) / (y1 - y0) * (t1 - t0);
+  }
+  return 1;
+}
+
 export function depthGray(y, opts = {}) {
-  const minY  = opts.minY  ?? BUILDING_BASE_Y;
-  const maxY  = opts.maxY  ?? PARK_BOTTOM;
   const light = opts.light ?? 0xb0;
   const dark  = opts.dark  ?? 0x2c;
-  const t = Math.max(0, Math.min(1, (y - minY) / (maxY - minY)));
-  const g = Math.round(light + (dark - light) * t);
+  const g = Math.round(light + (dark - light) * depthT(y));
   return (g << 16) | (g << 8) | g;
 }
 
 export function depthLineWidth(y, opts = {}) {
-  const minY = opts.minY ?? BUILDING_BASE_Y;
-  const maxY = opts.maxY ?? PARK_BOTTOM;
   const wMin = opts.wMin ?? 0.8;
   const wMax = opts.wMax ?? 2.2;
-  const t = Math.max(0, Math.min(1, (y - minY) / (maxY - minY)));
-  return wMin + (wMax - wMin) * t;
+  return wMin + (wMax - wMin) * depthT(y);
 }
 
 export function depthLineColor(y, opts = {}) {
-  const minY = opts.minY ?? BUILDING_BASE_Y;
-  const maxY = opts.maxY ?? PARK_BOTTOM;
   const light = opts.light ?? 0x80;
   const dark  = opts.dark  ?? 0x10;
-  const t = Math.max(0, Math.min(1, (y - minY) / (maxY - minY)));
-  const v = Math.round(light + (dark - light) * t);
+  const v = Math.round(light + (dark - light) * depthT(y));
   return (v << 16) | (v << 8) | v;
 }

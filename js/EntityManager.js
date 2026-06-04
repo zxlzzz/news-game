@@ -1,3 +1,5 @@
+import { depthT } from './Layout.js';
+
 /**
  * EntityManager
  * 统一管理所有场景实体（NPC、建筑、道具）：
@@ -8,14 +10,10 @@
 export class EntityManager {
   /**
    * @param {object} config
-   * @param {number} config.farY      - 纵深远端 Y（NPC最小Y）
-   * @param {number} config.nearY     - 纵深近端 Y（NPC最大Y）
-   * @param {number} config.farScale  - 远端缩放系数
-   * @param {number} config.nearScale - 近端缩放系数
+   * @param {number} config.farScale  - 远端缩放系数（depthT=0）
+   * @param {number} config.nearScale - 近端缩放系数（depthT=1）
    */
   constructor(config = {}) {
-    this.farY      = config.farY      ?? 250;
-    this.nearY     = config.nearY     ?? 460;
     this.farScale  = config.farScale  ?? 0.25;
     this.nearScale = config.nearScale ?? 0.55;
     this.entities  = [];
@@ -30,8 +28,7 @@ export class EntityManager {
 
   /** 按 Y 坐标计算深度缩放系数（仅对动态实体生效） */
   depthScale(y) {
-    const t = Math.max(0, Math.min(1, (y - this.farY) / (this.nearY - this.farY)));
-    return this.farScale + t * (this.nearScale - this.farScale);
+    return this.farScale + depthT(y) * (this.nearScale - this.farScale);
   }
 
   /**
@@ -64,7 +61,7 @@ export class EntityManager {
     for (const e of this.entities) {
       if (!e.alive) continue;
       if (!e.static && 'scale' in e) {
-        e.scale = this.depthScale(e.y) * (e.scaleMul ?? 1);
+        e.scale = this.depthScale(e.y);
       }
       e.update(delta);
     }

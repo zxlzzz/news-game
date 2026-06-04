@@ -75,7 +75,6 @@ function applyTraits(n, t, profile) {
  * @param {number}          [opts.maxX]
  * @param {number}          [opts.minY]
  * @param {number}          [opts.maxY]
- * @param {number}          [opts.scaleMul]   - 建筑前人行道传 0.65
  * @returns {NPC}
  */
 export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
@@ -92,7 +91,6 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
     maxY: opts.maxY ?? PARK_BOTTOM,
     tags:    typeData.tags,
     npcType: typeData.npcType,
-    scaleMul: opts.scaleMul ?? 1,
   });
 
   if (opts.roamZone) {
@@ -131,7 +129,7 @@ export function spawnPedestrians(em, sr, bm) {
   const sw1 = makeNPC(em, sr, {
     x: 160, y: SIDEWALK_FAR_Y - 2, animation: 'walk', direction: 1, speed: 28, vy: 0,
     minX: 20, maxX: 480, minY: SIDEWALK_FAR_Y - 3, maxY: SIDEWALK_FAR_Y + 1,
-    tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
+    tags: ['pedestrian', 'business'], npcType: 'businessman',
   });
   applyTraits(sw1, sidewalkT, getProfile('businessman')); bm.register(sw1, 'businessman');
   sw1.roam = { x0: sw1.minX, x1: sw1.maxX, y0: sw1.minY, y1: sw1.maxY };
@@ -140,7 +138,7 @@ export function spawnPedestrians(em, sr, bm) {
   const sw2 = makeNPC(em, sr, {
     x: 1100, y: SIDEWALK_FAR_Y - 1, animation: 'walk', direction: 1, speed: 16, vy: 0,
     minX: 1050, maxX: 1300, minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y,
-    tags: ['pedestrian', 'business'], npcType: 'businessman', scaleMul: 0.65,
+    tags: ['pedestrian', 'business'], npcType: 'businessman',
   });
   applyTraits(sw2, sidewalkT, getProfile('businessman')); bm.register(sw2, 'businessman');
   sw2.roam = { x0: sw2.minX, x1: sw2.maxX, y0: sw2.minY, y1: sw2.maxY };
@@ -149,7 +147,7 @@ export function spawnPedestrians(em, sr, bm) {
   const sw3 = makeNPC(em, sr, {
     x: 1750, y: SIDEWALK_FAR_Y + 2, animation: 'walk', direction: 1, speed: 28, vy: 0,
     minX: 1500, maxX: 1980, minY: SIDEWALK_FAR_Y, maxY: SIDEWALK_FAR_Y + 3,
-    tags: ['pedestrian'], npcType: 'pedestrian', scaleMul: 0.65,
+    tags: ['pedestrian'], npcType: 'pedestrian',
   });
   applyTraits(sw3, sidewalkT, getProfile('pedestrian')); bm.register(sw3, 'pedestrian');
   sw3.roam = { x0: sw3.minX, x1: sw3.maxX, y0: sw3.minY, y1: sw3.maxY };

@@ -5,7 +5,7 @@
  */
 
 import { Entity } from './Entity.js';
-import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y } from './SceneConfig.js';
+import { depthGray } from './SceneConfig.js';
 import { humanOffsetY, dogOffsetY } from './StickRenderer.js';
 
 // 行为状态 → 标签
@@ -29,12 +29,6 @@ const ANIM_TAGS = {
   sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling',
 };
 
-// NPC 按 Y 取灰度：远端中浅灰 → 近端中深灰（避免近端过黑）
-function npcDepthGray(y) {
-  const t = Math.max(0, Math.min(1, (y - SIDEWALK_FAR_Y) / (SIDEWALK_NEAR_Y - SIDEWALK_FAR_Y)));
-  const v = Math.round(0x78 + t * (0x32 - 0x78));
-  return (v << 16) | (v << 8) | v;
-}
 
 export class NPC extends Entity {
   static _nextId = 1;
@@ -72,7 +66,6 @@ export class NPC extends Entity {
     this.speed     = config.speed     || 0;
     this.vy        = config.vy !== undefined ? config.vy : (Math.random() * 2 - 1) * 18;
     this.scale     = config.scale     ?? 0.45;
-    this.scaleMul  = config.scaleMul  ?? 1;   // 额外缩放系数（按所处带拉开远近差距）
     this.color     = config.color     ?? 0x1a1a1a;
 
     this.frameIndex = 0;
@@ -295,7 +288,7 @@ export class NPC extends Entity {
     // 围绕骑手/主人的真实锚点作画，从而实现精确对齐。
     if (this.drawExtra) this.drawExtra(g, this);
 
-    const color = npcDepthGray(this.y);
+    const color = depthGray(this.y);
     const frame = this.renderer.getFrame(this.animation, this.frameIndex);
     const overrides = this.modifiers.length ? this._buildJointOverrides(frame) : null;
 
