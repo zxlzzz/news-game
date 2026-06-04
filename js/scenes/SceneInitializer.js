@@ -98,6 +98,7 @@ export class SceneInitializer {
     spawnPedestrians(em, sr, bm);
     spawnChess(em, sr, bm, layout.chessPlaza);
     this._spawnStallSellers(bm);
+    bm.initSmartObjectRoutes();   // 所有含 smartDef.routing 的道具已入 em，自动注册路由规则
     this.scene.propManager = new NpcPropManager(em);
     spawnDogWalker(em, sr, bm, this.scene.propManager);
     spawnAthletes(em, sr, bm);

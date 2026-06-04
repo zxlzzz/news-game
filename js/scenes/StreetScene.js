@@ -27,50 +27,8 @@ import {
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
 } from '../SceneConfig.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
-
-const POSE_FILES = {
-  // held poses (delta relative to stand.json base frame)
-  held_phone_call:       'held pose/phone_call',
-  held_phone_look:       'held pose/phone_look',
-  held_smoke:            'held pose/smoke',
-  held_cross_arm:        'held pose/cross_arm',
-  held_hands_in_pocket:  'held pose/hands_in_pocket',
-  // traits (front)
-  trait_hold_bag:  'trait/front/hold_bag',
-  trait_walk_dog:  'trait/front/walk_dog',
-  trait_umbrella:  'trait/front/umbrella',
-  // traits (side) — 仅注册，选用逻辑待接入
-  trait_hold_bag_side: 'trait/side/hold_bag',
-  trait_walk_dog_side: 'trait/side/walk_dog',
-  trait_umbrella_side: 'trait/side/umbrella',
-  // gestures (static)
-  gesture_check_watch:    'gesture/static/check_watch',
-  gesture_stretch:        'gesture/static/stretch',
-  gesture_yawn:           'gesture/static/yawn',
-  gesture_look_around:    'gesture/static/look_around',
-  gesture_adjust_clothes: 'gesture/static/adjust_clothes',
-  gesture_wave:           'gesture/wave',
-  // gestures (moving) — 行走/奔跑中触发
-  gesture_moving_check_watch: 'gesture/moving/check_watch',
-  gesture_moving_wipe_sweat:  'gesture/moving/wipe_sweat',
-  // loiter
-  loiter_phone: 'base/loiter/phone',
-  loiter_bag_a: 'base/loiter/bag_a',
-  loiter_bag_b: 'base/loiter/bag_b',
-  // stall smart-object gestures（摊主 + 顾客）
-  stall_seller_give:    'gesture/static/stall/seller/give',
-  stall_seller_tidy:    'gesture/static/stall/seller/tidy',
-  stall_seller_call:    'gesture/static/stall/seller/call',
-  stall_buyer_give_get: 'gesture/static/stall/buyer/give_get',
-  stall_buyer_point:    'gesture/static/stall/buyer/point',
-  // sub_event
-  sub_event_push:        'sub_event/push',
-  sub_event_give_item:   'sub_event/give_item',
-  sub_event_handshake:   'sub_event/handshake',
-  sub_event_point_at:    'sub_event/point_at',
-  sub_event_use_vending: 'sub_event/use_vending',
-  sub_event_use_trash:   'sub_event/use_trash',
-};
+import { PixiText }         from '../PixiText.js';
+import { getManifestPaths, buildPoseCache } from '../PoseCacheBuilder.js';
 
 const ANIM_FILES = {
   walk: 'base/walk', run: 'base/run', idle: 'base/idle', jog: 'base/jog', bike: 'base/bike',
@@ -81,84 +39,6 @@ const ANIM_FILES = {
   chess_onlookers: 'variant/chess/chess_onlookers', mobike: 'base/mobike',
 };
 
-// ─── 颜色解析（'#rgb' / 'rgba(...)' / number → { color, alpha }）──────────────
-function parseColor(str) {
-  if (typeof str === 'number') return { color: str, alpha: 1 };
-  if (typeof str !== 'string') return { color: 0x000000, alpha: 1 };
-  if (str.startsWith('#')) return { color: parseInt(str.slice(1), 16), alpha: 1 };
-  const m = str.match(/rgba?\(([^)]+)\)/i);
-  if (m) {
-    const p = m[1].split(',').map(s => parseFloat(s.trim()));
-    return { color: (p[0] << 16) | (p[1] << 8) | p[2], alpha: p[3] === undefined ? 1 : p[3] };
-  }
-  return { color: 0x000000, alpha: 1 };
-}
-
-/**
- * PixiText — 最小化模拟 Phaser.GameObjects.Text 的链式 API。
- * 是一个 PIXI.Container：背景矩形（可选）+ 文本。供 StreetScene HUD 与 DebugOverlay 共用。
- */
-class PixiText extends PIXI.Container {
-  constructor(scene, x, y, str, style = {}) {
-    super();
-    this._scene = scene;
-    this.style  = { ...style };
-    this._origin = { x: 0, y: 0 };
-
-    const fontSize = parseInt(style.fontSize, 10) || 13;
-    const pixiStyle = {
-      fontFamily: style.fontFamily || 'sans-serif',
-      fontSize,
-      fill: style.color || '#000000',
-      align: style.align || 'left',
-    };
-    if (style.wordWrap) { pixiStyle.wordWrap = true; pixiStyle.wordWrapWidth = style.wordWrap.width; }
-    if (style.lineSpacing) pixiStyle.leading = style.lineSpacing;
-
-    this._bg  = new PIXI.Graphics();
-    this._txt = new PIXI.Text(str ?? '', pixiStyle);
-    this.addChild(this._bg, this._txt);
-
-    this.position.set(x, y);
-    this._redraw();
-  }
-
-  _redraw() {
-    const padX = this.style.padding?.x ?? 0;
-    const padY = this.style.padding?.y ?? 0;
-    this._txt.position.set(padX, padY);
-    const w = this._txt.width + padX * 2;
-    const h = this._txt.height + padY * 2;
-    this._bg.clear();
-    if (this.style.backgroundColor) {
-      const { color, alpha } = parseColor(this.style.backgroundColor);
-      this._bg.beginFill(color, alpha);
-      this._bg.drawRect(0, 0, w, h);
-      this._bg.endFill();
-    }
-    this.pivot.set(w * this._origin.x, h * this._origin.y);
-  }
-
-  setText(str) {
-    const s = String(str);
-    if (this._txt.text !== s) { this._txt.text = s; this._redraw(); }
-    return this;
-  }
-  setColor(c) { this.style.color = c; this._txt.style.fill = c; return this; }
-  setPosition(x, y) { this.position.set(x, y); return this; }
-  setOrigin(ox, oy = ox) { this._origin = { x: ox, y: oy }; this._redraw(); return this; }
-  setVisible(v) { this.visible = v; return this; }
-  setAlpha(a) { this.alpha = a; return this; }
-  setDepth(d) { this.zIndex = d; return this; }
-  setScrollFactor(f) {
-    const target = (f === 0) ? this._scene.uiContainer : this._scene.worldContainer;
-    target.addChild(this);
-    return this;
-  }
-  setInteractive() { this.eventMode = 'static'; this.cursor = 'pointer'; return this; }
-  on(event, cb) { super.on(event, cb); return this; }
-}
-
 export class StreetScene {
   constructor(app) {
     this.app = app;
@@ -166,12 +46,10 @@ export class StreetScene {
     this.viewW = app.screen.width;
     this.viewH = app.screen.height;
 
-    // 相机状态（手动实现，替代 Phaser camera）
     this.scrollX = 0;
     this.scrollY = 0;
     this.zoom    = 1;
 
-    // 资源缓存 + Phaser cache 兼容 shim（_buildPoseCache 仍用 this.cache.json.get）
     this._json = {};
     this.cache = { json: { get: (k) => this._json[k] } };
 
@@ -190,7 +68,7 @@ export class StreetScene {
     };
     const jobs = [load('scene_data', 'assets/scene.json')];
     for (const [key, file] of Object.entries(ANIM_FILES)) jobs.push(load('anim_' + key, `assets/animations/${file}.json`));
-    for (const [key, file] of Object.entries(POSE_FILES)) jobs.push(load('pose_' + key, `assets/animations/${file}.json`));
+    for (const [key, file] of getManifestPaths()) jobs.push(load('pose_' + key, `assets/animations/${file}.json`));
     await Promise.all(jobs);
   }
 
@@ -198,7 +76,6 @@ export class StreetScene {
     const stage = this.app.stage;
     stage.sortableChildren = true;
 
-    // 图层容器
     this.skyContainer   = new PIXI.Container();
     this.worldContainer = new PIXI.Container();
     this.uiContainer    = new PIXI.Container();
@@ -209,7 +86,6 @@ export class StreetScene {
     this.uiContainer.sortableChildren    = true;
     stage.addChild(this.skyContainer, this.worldContainer, this.uiContainer);
 
-    // Graphics 图层（用适配器包装 PIXI.Graphics）
     const mkLayer = (container, zIndex) => {
       const pg = new PIXI.Graphics();
       pg.zIndex = zIndex;
@@ -232,7 +108,7 @@ export class StreetScene {
       this.stickRenderer.loadAnimation(key, this.cache.json.get('anim_' + key));
     }
 
-    const poseCache = this._buildPoseCache();
+    const poseCache = buildPoseCache(key => this._json['pose_' + key]);
     initWalkPaths(layout.walkPaths);
 
     this.entityManager = new EntityManager({
@@ -252,7 +128,6 @@ export class StreetScene {
     this._setupInput();
     this._applyCamera();
 
-    // 主循环
     this.app.ticker.add(() => this.update(this.app.ticker.deltaMS));
   }
 
@@ -273,9 +148,7 @@ export class StreetScene {
     this.scrollY = Math.min(Math.max(0, this.scrollY), maxY);
   }
 
-  /** DOM client 坐标 → 世界坐标（考虑画布 CSS 缩放与相机 scroll/zoom）*/
   _getWorldCoords(clientX, clientY) {
-    // 用逻辑屏幕尺寸 app.screen（非 view 的物理像素），避免 hi-DPI 下偏移
     const rect = this.app.view.getBoundingClientRect();
     const sx = (clientX - rect.left) * (this.app.screen.width  / rect.width);
     const sy = (clientY - rect.top)  * (this.app.screen.height / rect.height);
@@ -329,7 +202,6 @@ export class StreetScene {
       wordWrap: { width: W - 200 },
     }).setScrollFactor(0).setDepth(200).setVisible(false);
 
-    // 闪光遮罩（屏幕固定的全屏白，alpha 由 ticker 手动淡出）
     this.flashOverlay = new PIXI.Graphics();
     this.flashOverlay.beginFill(0xffffff, 1).drawRect(0, 0, W, H).endFill();
     this.flashOverlay.alpha = 0;
@@ -354,25 +226,22 @@ export class StreetScene {
     return btn;
   }
 
-  // ─── 延时调用（rAF 实现，替代 Phaser time.delayedCall）──────────────────────
   _delay(ms, cb) {
     const start = performance.now();
     const tick = (now) => { if (now - start >= ms) cb(); else requestAnimationFrame(tick); };
     requestAnimationFrame(tick);
   }
 
-  // ─── 导出长图（PIXI.RenderTexture）───────────────────────────────────────────
+  // ─── 导出长图 ───────────────────────────────────────────────────────────────
   _exportImage() {
     const renderer = this.app.renderer;
     const rt = PIXI.RenderTexture.create({ width: WORLD_WIDTH, height: WORLD_HEIGHT });
 
-    // 底色
     const fill = new PIXI.Graphics();
     fill.beginFill(GRAY_SKY, 1).drawRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT).endFill();
     renderer.render(fill, { renderTexture: rt, clear: true });
     fill.destroy();
 
-    // 各 Graphics 图层以世界坐标（自身 local transform 为单位阵）合成
     for (const layer of [this.skyGraphics, this.bgGraphics, this.entityGraphics]) {
       renderer.render(layer.g, { renderTexture: rt, clear: false });
     }
@@ -460,7 +329,6 @@ export class StreetScene {
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
     this.entityGraphics.clear();
-    // 实体 + NPC 道具混合，统一按地面接触 Y 排序后一次性绘制
     this.entityManager.draw(
       this.entityGraphics,
       this.propManager ? this.propManager.getDrawables() : [],
@@ -487,81 +355,4 @@ export class StreetScene {
       }
     }
   }
-
-  // ─── poseCache ───────────────────────────────────────────────────────────────
-
-  _buildPoseCache() {
-    const g = (key) => this.cache.json.get('pose_' + key);
-    const B = [-1, 12];
-    const wrapHeld = (json) => {
-      if (!json) return null;
-      const joints = json.joints ?? json.frames?.[0] ?? json;
-      const out = {};
-      for (const [j, v] of Object.entries(joints)) out[j] = [v[0] - B[0], v[1] - B[1]];
-      return { ...json, joints: out };
-    };
-    const wrapGesture = (json) => {
-      if (!json) return null;
-      return { ...json, keyframes: (json.keyframes ?? []).map(kf => {
-        const out = { dur: kf.dur };
-        for (const [k, v] of Object.entries(kf)) if (k !== 'dur') out[k] = [v[0] - B[0], v[1] - B[1]];
-        return out;
-      })};
-    };
-    const wrapLoiter = (json) => {
-      if (!json) return {};
-      const joints = json.joints ?? json;
-      const out = {};
-      for (const [j, v] of Object.entries(joints)) out[j] = [v[0] - B[0], v[1] - B[1]];
-      return out;
-    };
-    return {
-      held: {
-        phone_call:      wrapHeld(g('held_phone_call')),
-        phone_look:      wrapHeld(g('held_phone_look')),
-        smoke:           wrapHeld(g('held_smoke')),
-        cross_arm:       wrapHeld(g('held_cross_arm')),
-        hands_in_pocket: wrapHeld(g('held_hands_in_pocket')),
-      },
-      trait: {
-        // 每个 trait 含 front / side 两个变体，由 ModifierLayer 按状态选用
-        hold_bag: { front: wrapHeld(g('trait_hold_bag')), side: wrapHeld(g('trait_hold_bag_side')) },
-        walk_dog: { front: wrapHeld(g('trait_walk_dog')), side: wrapHeld(g('trait_walk_dog_side')) },
-        umbrella: { front: wrapHeld(g('trait_umbrella')), side: wrapHeld(g('trait_umbrella_side')) },
-      },
-      gesture: {
-        check_watch:    wrapGesture(g('gesture_check_watch')),
-        stretch:        wrapGesture(g('gesture_stretch')),
-        yawn:           wrapGesture(g('gesture_yawn')),
-        look_around:    wrapGesture(g('gesture_look_around')),
-        adjust_clothes: wrapGesture(g('gesture_adjust_clothes')),
-        wave:           wrapGesture(g('gesture_wave')),
-        // moving 变体
-        moving_check_watch: wrapGesture(g('gesture_moving_check_watch')),
-        moving_wipe_sweat:  wrapGesture(g('gesture_moving_wipe_sweat')),
-      },
-      loiter: {
-        phone: wrapLoiter(g('loiter_phone')),
-        bag_a: wrapLoiter(g('loiter_bag_a')),
-        bag_b: wrapLoiter(g('loiter_bag_b')),
-      },
-      // 摊位 smart-object 手势（格式同 gesture，供 StallActivity 读取）
-      stall_gestures: {
-        seller_give: wrapGesture(g('stall_seller_give')),
-        seller_tidy: wrapGesture(g('stall_seller_tidy')),
-        seller_call: wrapGesture(g('stall_seller_call')),
-        buyer_give_get: wrapGesture(g('stall_buyer_give_get')),
-        buyer_point:    wrapGesture(g('stall_buyer_point')),
-      },
-      sub_event: {
-        push:        g('sub_event_push'),
-        give_item:   g('sub_event_give_item'),
-        handshake:   g('sub_event_handshake'),
-        point_at:    g('sub_event_point_at'),
-        use_vending: g('sub_event_use_vending'),
-        use_trash:   g('sub_event_use_trash'),
-      },
-    };
-  }
-
 }

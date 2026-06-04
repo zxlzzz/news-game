@@ -47,6 +47,7 @@ export function spawnChess(em, sr, bm, chessPlaza) {
     tags: ['chess-table', 'game', 'street-furniture'],
     smartDef: {
       activityType: 'chess',
+      routing: [{ activityFlag: 'chess_onlooker', role: 'onlooker', chance: 0.003, radius: 220, requireOccupied: true }],
       slots: [
         { role: 'player_a', dx: -(gap / 2),     dy: 0 },
         { role: 'player_b', dx:  (gap / 2),     dy: 0 },
