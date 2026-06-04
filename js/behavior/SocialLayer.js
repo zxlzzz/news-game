@@ -84,8 +84,8 @@ export class SocialLayer {
   createActivity(type, participants, props = []) {
     const id = ++this._idSeq;
     const REGISTRY = getRegistry();
-    const factory = REGISTRY[type] ?? REGISTRY['*'];
-    const act = factory ? factory(id, participants, props, type) : null;
+    const entry = REGISTRY[type] ?? REGISTRY['*'];
+    const act = entry ? entry.factory(id, participants, props, type) : null;
     if (act) {
       this.activities.push(act);
       dlog(`[Activity ${act.label}] created`);
@@ -99,29 +99,15 @@ export class SocialLayer {
     if (act) act.interrupt(reason);
   }
 
-  /** Smart Object 槽位到达：按 activityType 分派 */
+  /** Smart Object 槽位到达：优先用注册项的 onSlotArrival 钩子，否则走默认多槽凑齐逻辑 */
   onSlotArrival(npc, prop, slot) {
     slot.ready = true;
     slot.npc   = npc;
-    const type = prop.smartDef.activityType;
+    const type  = prop.smartDef.activityType;
+    const entry = getRegistry()[type];
 
-    // 摊位：摊主到位创建活动；顾客加入已有活动
-    if (type === 'stall') {
-      if (slot.role === 'seller') {
-        this.createActivity('stall', [{ npc, role: 'seller' }], [prop]);
-      } else {
-        const act = prop._stallActivity;
-        if (act && act.alive && !act.buyer) act.addBuyer(npc, slot);
-        else this._abandonSlot(npc, slot, 'stall_no_seller');
-      }
-      return;
-    }
-
-    // 棋局：旁观者加入已在进行的对局
-    if (type === 'chess') {
-      const act = prop._chessActivity;
-      if (act && act.alive && act.addOnlooker) act.addOnlooker(npc, slot);
-      else this._abandonSlot(npc, slot, 'chess_no_game');
+    if (entry?.onSlotArrival) {
+      entry.onSlotArrival(npc, prop, slot, this);
       return;
     }
 

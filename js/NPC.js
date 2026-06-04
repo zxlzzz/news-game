@@ -41,7 +41,6 @@ export class NPC extends Entity {
    * @param {number}        config.speed         - 水平速度（像素/秒）
    * @param {number}        config.vy            - 纵深漂移速度（像素/秒）
    * @param {number}        config.scale         - 初始缩放（EntityManager每帧会按Y覆盖）
-   * @param {number}        config.color         - 服装颜色
    * @param {number}        config.minX/maxX     - X活动边界
    * @param {number}        config.minY/maxY     - Y活动边界
    * @param {boolean}       config.playOnce      - true=动画只播放一次，结束后设 animDone=true
@@ -64,9 +63,8 @@ export class NPC extends Entity {
     this.animation = config.animation || 'idle';
     this.direction = config.direction || 1;
     this.speed     = config.speed     || 0;
-    this.vy        = config.vy !== undefined ? config.vy : (Math.random() * 2 - 1) * 18;
+    this.vy        = config.vy ?? 0;
     this.scale     = config.scale     ?? 0.45;
-    this.color     = config.color     ?? 0x1a1a1a;
 
     this.frameIndex = 0;
     this.frameTimer = 0;
@@ -270,12 +268,12 @@ export class NPC extends Entity {
     if (!this.leashTarget) {
       if (this.speed > 0) {
         this.x += this.direction * this.speed * (delta / 1000);
-        if      (this.x > this.maxX) { this.x = this.maxX; if (!this.roam) this.direction = -1; }
-        else if (this.x < this.minX) { this.x = this.minX; if (!this.roam) this.direction =  1; }
+        if      (this.x > this.maxX) { this.x = this.maxX; if (!this._walkMode) this.direction = -1; }
+        else if (this.x < this.minX) { this.x = this.minX; if (!this._walkMode) this.direction =  1; }
       }
       this.y += this.vy * (delta / 1000);
-      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = this.roam ? 0 : -Math.abs(this.vy); }
-      else if (this.y < this.minY) { this.y = this.minY; this.vy = this.roam ? 0 :  Math.abs(this.vy); }
+      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = this._walkMode ? 0 : -Math.abs(this.vy); }
+      else if (this.y < this.minY) { this.y = this.minY; this.vy = this._walkMode ? 0 :  Math.abs(this.vy); }
     }
 
     if (this.customUpdate) this.customUpdate(this, delta);

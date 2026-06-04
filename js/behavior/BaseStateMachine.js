@@ -165,7 +165,7 @@ export function setState(npc, state, trigger = '?') {
   npc.animDone   = false;
   npc.frameIndex = 0;
   npc.frameTimer = 0;
-  if (npc.roam && (state === 'walk' || state === 'run')) npc.roamTarget = null;
+  if (npc._walkMode?.kind === 'wander' && (state === 'walk' || state === 'run')) npc.roamTarget = null;
 
   // 进入 lie_bench：_extraTags 已由 onExit 清空，此处重新按状态赋值
   if (state === 'lie_bench') {
@@ -318,10 +318,7 @@ function _tickState(npc, envQuery, profile, dt) {
 
   if (isWalking) tickWalkMode(npc, dt);
 
-  const needsSteer = npc.state === 'routing' ||
-    (isWalking && (npc.roam ||
-      npc._walkMode?.kind === 'direct' ||
-      npc._walkMode?.kind === 'path_follow'));
+  const needsSteer = npc.state === 'routing' || (isWalking && npc._walkMode);
   if (needsSteer) steerRoam(npc, envQuery, profile, dt);
 
   if (npc.state === 'loiter') tickLoiter(npc, profile, dt);
@@ -437,7 +434,7 @@ function _routeToExit(npc, exit) {
   const tx = exit.x;
   const ty = exit.y ?? npc.y;
   if (exit.facing !== 0) npc.direction = exit.facing;
-  npc.roam = null;
+  npc._walkMode = null;
   npc.modifiers = npc.modifiers.filter(m => m.kind !== 'held');
   setState(npc, 'routing', 'departure');
   npc._routeTarget = {

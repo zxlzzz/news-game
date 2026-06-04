@@ -2,7 +2,7 @@
  * WalkMode — NPC 走路模式子系统
  *
  * 三种模式：
- *   wander      在 npc.roam 区域内随机漂移（默认）
+ *   wander      在 bounds 区域内随机漂移（默认）
  *   direct      直线奔赴指定目标点，到达后回调并切回 wander
  *   path_follow 沿 WALK_PATHS 中预定义的 waypoint 序列行走，支持途中暂停
  *
@@ -47,9 +47,9 @@ export function initWalkPaths(paths) { WALK_PATHS = paths || {}; }
 
 // ─── 模式描述符工厂 ───────────────────────────────────────────────────────────
 
-/** 漫游模式（默认行为，在 roam 区域内随机选点） */
-export function modeWander() {
-  return { kind: 'wander' };
+/** 漫游模式（默认行为，在 bounds 区域内随机选点） */
+export function modeWander(bounds = null) {
+  return { kind: 'wander', bounds };
 }
 
 /**
@@ -167,7 +167,7 @@ export function pickModeTarget(npc, envQuery) {
 }
 
 function _pickRandom(npc, envQuery) {
-  const r = npc.roam;
+  const r = npc._walkMode?.bounds;
   if (!r) return;
   let pt = null;
   for (let i = 0; i < 5; i++) {

@@ -150,4 +150,14 @@ registerActivity('stall', (id, participants, props) => {
   const seller = participants.find(p => p.role === 'seller')?.npc;
   if (!seller) return null;
   return new StallActivity(id, seller, props[0]);
+}, {
+  onSlotArrival(npc, prop, slot, socialLayer) {
+    if (slot.role === 'seller') {
+      socialLayer.createActivity('stall', [{ npc, role: 'seller' }], [prop]);
+    } else {
+      const act = prop._stallActivity;
+      if (act && act.alive && !act.buyer) act.addBuyer(npc, slot);
+      else socialLayer._abandonSlot(npc, slot, 'stall_no_seller');
+    }
+  },
 });

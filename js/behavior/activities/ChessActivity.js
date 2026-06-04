@@ -150,4 +150,10 @@ registerActivity('chess', (id, participants, props) => {
   const players   = participants.filter(p => p.role.startsWith('player')).map(p => p.npc);
   const onlookers = participants.filter(p => p.role === 'onlooker').map(p => p.npc);
   return new ChessActivity(id, players, onlookers, props);
+}, {
+  onSlotArrival(npc, prop, slot, socialLayer) {
+    const act = prop._chessActivity;
+    if (act && act.alive && act.addOnlooker) act.addOnlooker(npc, slot);
+    else socialLayer._abandonSlot(npc, slot, 'chess_no_game');
+  },
 });
