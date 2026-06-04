@@ -288,7 +288,7 @@ export class NPC extends Entity {
     // 围绕骑手/主人的真实锚点作画，从而实现精确对齐。
     if (this.drawExtra) this.drawExtra(g, this);
 
-    const color = depthGray(this.y);
+    const color = depthGray(this.y, { light: 0x78, dark: 0x32 });
     const frame = this.renderer.getFrame(this.animation, this.frameIndex);
     const overrides = this.modifiers.length ? this._buildJointOverrides(frame) : null;
 

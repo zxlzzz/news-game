@@ -112,7 +112,7 @@ export class StreetScene {
     initWalkPaths(layout.walkPaths);
 
     this.entityManager = new EntityManager({
-      farY: SIDEWALK_FAR_Y, nearY: SIDEWALK_NEAR_Y, farScale: 0.182, nearScale: 0.434,
+      farScale: 0.182, nearScale: 0.434,
     });
 
     const initializer = new SceneInitializer(this, this.entityManager, this.stickRenderer, poseCache);
