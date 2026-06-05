@@ -40,8 +40,8 @@ function drawLamp(g, p) {
   const lw = depthLineWidth(y);
   const lc = depthLineColor(y, { light: 0x6a, dark: 0x1f });
 
-  const poleH  = 400 * s;
-  const armLen = 85  * s;
+  const poleH  = 300 * s;
+  const armLen = 60  * s;
   const boxW   = 28  * s,  boxH  = 28 * s;
   const baseW  = 22  * s,  baseH = 22 * s;
   const topY    = y - poleH;
@@ -74,7 +74,7 @@ function drawBench(g, p) {
   const { x, y } = p;
   const f = p.facing || 'down';
   const s = p.scale ?? 1;
-  const L     = 153 * s;
+  const L     = 300 * s;
   const half  = L / 2;
   const legH  = 23 * s;
   const seatT = 17 * s;
@@ -132,7 +132,7 @@ function drawBench(g, p) {
   rect(-half + 11 * s, by3 + plkT, half - 11 * s, by3, 0xd2d2d2, 0.92, lineW * 0.85);
   for (let i = 0; i <= 4; i++) {
     const u = -half + 11 * s + (L - 22 * s) * i / 4;
-    line(u, by2, u + 6 * s, by3 + plkT, lineW * 0.7, 0.85);
+    line(u, by2, u + s, by3 + plkT, lineW * 0.7, 0.85);
   }
 
   // armrest stubs
@@ -151,7 +151,7 @@ function drawTrash(g, p) {
   const s     = p.scale ?? 1;
   const lineW = depthLineWidth(y, { wMin: 0.8, wMax: 1.6 });
   const lineC = depthLineColor(y, { light: 0x40, dark: 0x10 });
-  const topW  = 46 * s,  botW = 34 * s,  h = 80 * s;
+  const topW  = 40 * s,  botW = 30 * s,  h = 50 * s;
   const tx    = x - topW / 2;
   const bx    = x - botW / 2;
 
@@ -205,7 +205,7 @@ function drawSign(g, p) {
 function drawNewsRack(g, p) {
   const { x, y } = p;
   const s     = p.scale ?? 1;
-  const w     = 58 * s,  h = 86 * s;
+  const w     = 70 * s,  h = 86 * s;
   const px    = x - w / 2;
   const py    = y - h;
   const lineW = depthLineWidth(y, { wMin: 0.8, wMax: 1.5 });
@@ -253,37 +253,41 @@ function drawHydrant(g, p) {
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.5 });
   const lineC = depthLineColor(y, { light: 0x40, dark: 0x05 });
 
-  // base flange
+  // base flange（底部法兰）- 改宽度
   g.fillStyle(0x6a6a6a, 1);
-  g.fillRect(x - 11 * s, y - 6 * s, 23 * s, 6 * s);
+  g.fillRect(x - 15 * s, y - 8 * s, 30 * s, 8 * s);  // 原 -11, 23, 6
   g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(x - 11 * s, y - 6 * s, 23 * s, 6 * s);
-  // body
+  g.strokeRect(x - 15 * s, y - 8 * s, 30 * s, 8 * s);
+  
+  // body（主体）- 改宽度和高度
   g.fillStyle(0xb0b0b0, 1);
-  g.fillRect(x - 9 * s, y - 29 * s, 17 * s, 23 * s);
+  g.fillRect(x - 12 * s, y - 38 * s, 24 * s, 30 * s);  // 原 -9, -29, 17, 23
   g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(x - 9 * s, y - 29 * s, 17 * s, 23 * s);
-  // dome
+  g.strokeRect(x - 12 * s, y - 38 * s, 24 * s, 30 * s);
+  
+  // dome（顶部圆顶）- 改宽度和高度
   g.fillStyle(0xa0a0a0, 1);
   g.beginPath();
-  g.moveTo(x - 6 * s, y - 38 * s);
-  g.lineTo(x + 6 * s, y - 38 * s);
-  g.lineTo(x + 9 * s, y - 29 * s);
-  g.lineTo(x - 9 * s, y - 29 * s);
+  g.moveTo(x - 8 * s, y - 50 * s);    // 原 -6, -38
+  g.lineTo(x + 8 * s, y - 50 * s);    // 原 +6, -38
+  g.lineTo(x + 12 * s, y - 38 * s);   // 原 +9, -29
+  g.lineTo(x - 12 * s, y - 38 * s);   // 原 -9, -29
   g.closePath();
   g.fillPath();
   g.lineStyle(lineW, lineC, 0.95);
   g.strokePath();
-  // cap bolt
+  
+  // cap bolt（顶部螺栓）- 改大小
   g.fillStyle(0x4a4a4a, 1);
-  g.fillRect(x - 3 * s, y - 43 * s, 6 * s, 5 * s);
-  // side outlets
+  g.fillRect(x - 4 * s, y - 57 * s, 8 * s, 7 * s);  // 原 -3, -43, 6, 5
+  
+  // side outlets（侧面出水口）- 改位置和大小
   g.fillStyle(0x707070, 1);
-  g.fillRect(x - 20 * s, y - 23 * s, 9 * s, 6 * s);
-  g.fillRect(x + 11 * s, y - 23 * s, 9 * s, 6 * s);
+  g.fillRect(x - 26 * s, y - 30 * s, 12 * s, 8 * s);  // 原 -20, -23, 9, 6
+  g.fillRect(x + 14 * s, y - 30 * s, 12 * s, 8 * s);  // 原 +11, -23, 9, 6
   g.lineStyle(1.5 * s, lineC, 0.85);
-  g.strokeRect(x - 20 * s, y - 23 * s, 9 * s, 6 * s);
-  g.strokeRect(x + 11 * s, y - 23 * s, 9 * s, 6 * s);
+  g.strokeRect(x - 26 * s, y - 30 * s, 12 * s, 8 * s);
+  g.strokeRect(x + 14 * s, y - 30 * s, 12 * s, 8 * s);
 }
 
 // ─── 邮筒 ────────────────────────────────────────────────────────────────────
@@ -295,26 +299,33 @@ function drawMailbox(g, p) {
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.5 });
   const lineC = depthLineColor(y, { light: 0x40, dark: 0x05 });
 
-  // post
+  // 柱子加长量（比如增加 20*s）
+  const extraHeight = 20 * s;  // 柱子额外伸长的长度
+  
+  // post（柱子）- 向下伸更长
   g.lineStyle(lineW * 1.1, lineC, 0.95);
-  g.lineBetween(x, y, x, y - 29 * s);
-  // box body
+  g.lineBetween(x, y, x, y - 29 * s - extraHeight);  // 柱子从 y 向上画到更高的位置
+  
+  // box body - 整体向上平移 extraHeight
   g.fillStyle(0x8a8a8a, 1);
-  g.fillRect(x - 20 * s, y - 64 * s, 40 * s, 35 * s);
+  g.fillRect(x - 20 * s, y - 64 * s - extraHeight, 40 * s, 35 * s);
   g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(x - 20 * s, y - 64 * s, 40 * s, 35 * s);
-  // cap
+  g.strokeRect(x - 20 * s, y - 64 * s - extraHeight, 40 * s, 35 * s);
+  
+  // cap - 整体向上平移 extraHeight
   g.fillStyle(0x707070, 1);
-  g.fillRect(x - 23 * s, y - 72 * s, 46 * s, 9 * s);
+  g.fillRect(x - 23 * s, y - 72 * s - extraHeight, 46 * s, 9 * s);
   g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(x - 23 * s, y - 72 * s, 46 * s, 9 * s);
-  // mail slot
+  g.strokeRect(x - 23 * s, y - 72 * s - extraHeight, 46 * s, 9 * s);
+  
+  // mail slot - 整体向上平移 extraHeight
   g.fillStyle(0x101010, 0.9);
-  g.fillRect(x - 14 * s, y - 52 * s, 29 * s, 6 * s);
-  // flag
+  g.fillRect(x - 14 * s, y - 52 * s - extraHeight, 29 * s, 6 * s);
+  
+  // flag - 整体向上平移 extraHeight
   g.lineStyle(1.5 * s, 0xfafafa, 0.85);
-  g.lineBetween(x - 9 * s, y - 40 * s, x, y - 37 * s);
-  g.lineBetween(x, y - 37 * s, x + 9 * s, y - 40 * s);
+  g.lineBetween(x - 9 * s, y - 40 * s - extraHeight, x, y - 37 * s - extraHeight);
+  g.lineBetween(x, y - 37 * s - extraHeight, x + 9 * s, y - 40 * s - extraHeight);
 }
 
 // ─── 花坛 ────────────────────────────────────────────────────────────────────
@@ -322,8 +333,8 @@ function drawMailbox(g, p) {
 
 function drawPlanter(g, p) {
   const s     = p.scale ?? 1;
-  const w     = 58 * s;
-  const h     = 35 * s;
+  const w     = 80 * s;
+  const h     = 20 * s;
   const px    = p.x - w / 2;
   const py    = p.y - h;
   const lineW = depthLineWidth(p.y, { wMin: 0.9, wMax: 1.5 });
@@ -362,7 +373,7 @@ function drawPlanter(g, p) {
 function drawManhole(g, p) {
   const { x, y } = p;
   const s     = p.scale ?? 1;
-  const rx    = 20 * s;
+  const rx    = 30 * s;
   const ry    = rx * 0.45;
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
 
@@ -391,7 +402,7 @@ function drawManhole(g, p) {
 function drawDrain(g, p) {
   const s     = p.scale ?? 1;
   const w     = 58 * s;
-  const h     = 17 * s;
+  const h     = 27 * s;
   const px    = p.x - w / 2;
   const py    = p.y - h / 2;
   const lineW = depthLineWidth(p.y, { wMin: 0.7, wMax: 1.4 });
@@ -418,9 +429,9 @@ function drawChair(g, p) {
   const { x, y } = p;
   const s      = p.scale ?? 1;
   const d      = p.dir ?? 1;
-  const seatH  = 17 * s;
-  const seatW  = 35 * s;
-  const backH  = 40 * s;
+  const seatH  = 10 * s;
+  const seatW  = 25 * s;
+  const backH  = 20 * s;
   const seatY  = y - seatH;
   const seatX1 = x - seatW / 2;
   const seatX2 = x + seatW / 2;
@@ -449,79 +460,132 @@ function drawChair(g, p) {
 function drawChessTable(g, p) {
   const { x, y } = p;
   const s    = p.scale ?? 1;
-  const tw   = 80 * s;
-  const topH = 63 * s;
-  const th   = 23 * s;   // face-panel thickness (~topH * 0.36)
+  const tw   = 58 * s;
+  const topH = 25 * s;
+  const th   = 20 * s;
   const topX = x - tw / 2;
   const topY = y - topH;
   const lw   = depthLineWidth(y);
   const lc   = depthLineColor(y, { light: 0x1a, dark: 0x0a });
 
+  // 桌面主体
   g.fillStyle(0xcfcfcf, 1);
   g.fillRect(topX, topY, tw, th);
   g.lineStyle(lw, lc, 0.95);
   g.strokeRect(topX, topY, tw, th);
-  // highlight + grid
-  g.lineStyle(lw * 0.5, 0xfafafa, 0.85);
-  g.lineBetween(topX + 3 * s, topY + 3 * s, topX + tw - 3 * s, topY + 3 * s);
+  
+  // 桌面内框装饰线
+  g.lineStyle(lw * 0.5, 0x9a9a9a, 0.8);
+  g.strokeRect(topX + 4 * s, topY + 4 * s, tw - 8 * s, th - 8 * s);
+  
+  // 桌面网格线（3x3）
   g.lineStyle(lw * 0.55, lc, 0.85);
   for (let i = 1; i < 3; i++) {
     const lx = topX + (tw * i / 3);
     g.lineBetween(lx, topY + 6 * s, lx, topY + th - 6 * s);
   }
   for (let i = 1; i < 3; i++) {
-    const ly = topY + 6 * s + (th - 12 * s) * i / 3;
-    g.lineBetween(topX + 6 * s, ly, topX + tw - 6 * s, ly);
+      const ly = topY + 4.5 * s + (3 + th - 12 * s) * i / 3;
+      g.lineBetween(topX + 6 * s, ly, topX + tw - 6 * s, ly);
   }
-  // legs
+
+  // 桌腿
   g.lineStyle(lw, lc, 0.95);
   g.lineBetween(topX + 3 * s,       topY + th, topX + 3 * s,       y);
   g.lineBetween(topX + tw - 3 * s,  topY + th, topX + tw - 3 * s,  y);
   g.lineStyle(lw * 0.65, lc, 0.7);
-  g.lineBetween(topX + tw * 0.3, topY + th, topX + tw * 0.3, y - 3 * s);
-  g.lineBetween(topX + tw * 0.7, topY + th, topX + tw * 0.7, y - 3 * s);
+  g.lineBetween(topX + tw * 0.2, topY + th, topX + tw * 0.2, y - 3 * s);
+  g.lineBetween(topX + tw * 0.8, topY + th, topX + tw * 0.8, y - 3 * s);
 }
 
 // ─── 树木 ────────────────────────────────────────────────────────────────────
 // 干115~170, 冠径170~290, 冠高145~230
 // tree.crownR（旧世界单位）× 2.88 转换；无则用默认95（世界单位）
 
+/**
+ * drawTree(g, p)
+ * p.x, p.y       - 树的中心底部坐标
+ * p.scale        - 缩放，默认 1
+ * p.style        - 'heart' | 'fluffy' | 'round' | 'layered'，默认 'round'
+ * p.crownR       - 树冠半径（可选，覆盖默认值）
+ */
 function drawTree(g, p) {
   const { x, y } = p;
-  const s       = p.scale ?? 1;
-  const crownR  = (p.crownR != null ? p.crownR * 2.88 : 95) * s;
-  const lw      = depthLineWidth(y, { wMin: 0.7, wMax: 1.5 });
-  const c       = depthLineColor(y, { light: 0x78, dark: 0x24 });
+  const s = p.scale ?? 1;
+  const r = (p.crownR != null ? p.crownR * 2.88 : 95) * s;
 
-  // ground shadow
-  g.fillStyle(0x000000, 0.10);
-  g.fillEllipse(x + crownR * 0.2, y + crownR * 0.3, crownR * 1.7, crownR * 0.6);
+  const lw = depthLineWidth(y, { wMin: 0.8, wMax: 1.6 });
+  const lineColor = depthLineColor(y, { light: 0x40, dark: 0x18 });
 
-  // trunk stub
-  g.lineStyle(Math.max(lw, 6 * s), c, 0.9);
-  g.lineBetween(x, y, x, y - crownR * 0.4);
+  const trunkW = r * 0.14;
+  const trunkH = r * 0.52;
+  const crownBottom = y - trunkH;
+  const crownCY = crownBottom - r * 0.38;
 
-  // crown lobe outline (y anchor = base of crown)
-  const crownCy = y - crownR * 0.6;
-  const lobes = 6, steps = lobes * 4, pts = [];
-  for (let i = 0; i < steps; i++) {
-    const ang  = (i / steps) * Math.PI * 2;
-    const lobe = 0.84 + 0.16 * Math.cos(ang * lobes);
-    const nz   = 1 + 0.06 * Math.sin(x * 0.21 + i * 1.3);
-    const rad  = crownR * lobe * nz;
-    pts.push({ x: x + Math.cos(ang) * rad, y: crownCy + Math.sin(ang) * rad * 0.82 });
+  // ── 树干 ─────────────────────────────────────────────
+  g.lineStyle(lw, lineColor, 0.9);
+  g.beginFill(0x8B7355);
+  g.drawRect(x - trunkW / 2, crownBottom, trunkW, trunkH);
+  g.endFill();
+
+  // 分叉
+  g.lineStyle(lw * 1.2, lineColor, 0.85);
+  const forkY = crownBottom + r * 0.18;
+  g.moveTo(x - trunkW * 0.3, forkY);
+  g.lineTo(x - r * 0.28, crownBottom + r * 0.05);
+  g.moveTo(x + trunkW * 0.3, forkY);
+  g.lineTo(x + r * 0.22, crownBottom + r * 0.02);
+
+  // ── 树冠填色 ─────────────────────────────────────────
+  const blobs = [
+    [  0,       -r*0.30,  r*0.52 ],
+    [ -r*0.38,  -r*0.14,  r*0.42 ],
+    [  r*0.38,  -r*0.10,  r*0.40 ],
+    [ -r*0.56,   r*0.14,  r*0.34 ],
+    [  r*0.54,   r*0.16,  r*0.34 ],
+    [ -r*0.24,   r*0.26,  r*0.36 ],
+    [  r*0.26,   r*0.28,  r*0.36 ],
+  ];
+
+  g.lineStyle(0);
+  g.beginFill(0xe8e8e8);
+  for (const [dx, dy, br] of blobs) {
+    g.drawCircle(x + dx, crownCY + dy, br);
   }
-  g.fillStyle(c, 0.08);
-  g.beginPath(); g.moveTo(pts[0].x, pts[0].y);
-  for (let i = 1; i < steps; i++) g.lineTo(pts[i].x, pts[i].y);
-  g.closePath(); g.fillPath();
-  g.lineStyle(lw, c, 0.9);
-  g.beginPath(); g.moveTo(pts[0].x, pts[0].y);
-  for (let i = 1; i < steps; i++) g.lineTo(pts[i].x, pts[i].y);
-  g.closePath(); g.strokePath();
-  // inner highlight lobe
-  g.lineStyle(lw * 0.7, c, 0.5);
-  g.strokeCircle(x - crownR * 0.3, crownCy - crownR * 0.15, crownR * 0.3);
+  g.endFill();
+
+  // ── 轮廓点计算 ───────────────────────────────────────
+  function isOuter(px, py, skipIdx) {
+    for (let i = 0; i < blobs.length; i++) {
+      if (i === skipIdx) continue;
+      const [dx, dy, br] = blobs[i];
+      if ((px - (x + dx)) ** 2 + (py - (crownCY + dy)) ** 2 < (br - lw) ** 2) return false;
+    }
+    return true;
+  }
+
+  const STEPS = 64;
+  const pts = [];
+  for (let bi = 0; bi < blobs.length; bi++) {
+    const [dx, dy, br] = blobs[bi];
+    const cx = x + dx, cy = crownCY + dy;
+    for (let i = 0; i < STEPS; i++) {
+      const a = (2 * Math.PI * i) / STEPS;
+      const px = cx + Math.cos(a) * br;
+      const py = cy + Math.sin(a) * br;
+      if (isOuter(px, py, bi)) pts.push({ x: px, y: py });
+    }
+  }
+
+  const mx = pts.reduce((s, p) => s + p.x, 0) / pts.length;
+  const my = pts.reduce((s, p) => s + p.y, 0) / pts.length;
+  pts.sort((a, b) => Math.atan2(a.y - my, a.x - mx) - Math.atan2(b.y - my, b.x - mx));
+
+  // ── 描轮廓 ───────────────────────────────────────────
+  g.lineStyle(lw, lineColor, 0.88);
+  g.moveTo(pts[0].x, pts[0].y);
+  for (let i = 1; i < pts.length; i++) g.lineTo(pts[i].x, pts[i].y);
+  g.lineTo(pts[0].x, pts[0].y);
 }
 
 // ─── 喷泉 ────────────────────────────────────────────────────────────────────
