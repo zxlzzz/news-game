@@ -83,6 +83,7 @@ const PEDESTRIAN = {
   loiterChance: 0.10,
   loiterDurationRange: [15, 45],
   departure: { lifespanRange: [90, 210], preferExitType: null },
+  speedRange: [20, 34],
 };
 
 const BUSINESSMAN = {
@@ -100,6 +101,7 @@ const BUSINESSMAN = {
   loiterChance: 0.06,
   loiterDurationRange: [15, 40],
   departure: { lifespanRange: [90, 210], preferExitType: 'building' },
+  speedRange: [28, 40],
 };
 
 const TOURIST = {
@@ -122,6 +124,7 @@ const TOURIST = {
   loiterChance: 0.18,
   loiterDurationRange: [20, 60],
   departure: { lifespanRange: [90, 210], preferExitType: null },
+  speedRange: [16, 26],
 };
 
 const CHESS_PLAYER = {

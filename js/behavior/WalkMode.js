@@ -17,7 +17,7 @@
  *   setWalkMode / pushWalkMode / popWalkMode — 模式切换 / 优先级打断保存恢复
  */
 
-import { FAR_Y, NEAR_Y, PARK_TOP } from '../Layout.js';
+import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../Layout.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -45,11 +45,14 @@ export { WALK_PATHS };
 
 export function initWalkPaths(paths) { WALK_PATHS = paths || {}; }
 
+/** 动态注入单条路线（RouteSelector.initRoutes 调用） */
+export function addWalkPath(key, def) { WALK_PATHS[key] = def; }
+
 // ─── 模式描述符工厂 ───────────────────────────────────────────────────────────
 
 /** 漫游模式（默认行为，在 bounds 区域内随机选点） */
-export function modeWander(bounds = null) {
-  return { kind: 'wander', bounds };
+export function modeWander(bounds = null, maxDuration = null) {
+  return { kind: 'wander', bounds, maxDuration, _elapsed: 0 };
 }
 
 /**
@@ -111,21 +114,31 @@ export function popWalkMode(npc) {
 
 // ─── 区域自动切换（安全网）────────────────────────────────────────────────────
 
+/** 是否在自行车道区（两侧自行车道） */
+function isBikeLaneZone(y) {
+  return (y >= BIKE_LANE_FAR_TOP && y < FAR_Y) ||
+         (y >= NEAR_Y && y < BIKE_LANE_NEAR_BOTTOM);
+}
+
 /**
- * 检测 wander NPC 是否误入马路，若是则自动压栈并切 direct 穿越到对侧。
+ * 检测 wander NPC 是否误入马路或自行车道，若是则自动压栈并切 direct 穿越到安全区。
  * 建议由 BehaviorManager 在每帧（或每 N 帧）调用。
  */
 export function checkZoneTransition(npc) {
   if (!npc._walkMode || npc._departing) return;
   if (npc.state !== 'walk' && npc.state !== 'run') return;
   if (npc._walkMode.kind !== 'wander') return;   // direct/path_follow 自行负责区域
-  if (!isRoadZone(npc.y)) return;
 
-  // wander NPC 闯入马路：压栈，切 direct 直穿对侧路沿
-  const targetY = (npc.vy ?? 0) >= 0 ? NEAR_Y - 4 : FAR_Y + 4;
+  const inRoad     = isRoadZone(npc.y);
+  const inBikeLane = !inRoad && isBikeLaneZone(npc.y);
+  if (!inRoad && !inBikeLane) return;
+
+  // 误入危险区：压栈，切 direct 直穿到安全侧
+  const goingDown = (npc.vy ?? 0) >= 0;
+  const targetY   = goingDown ? BIKE_LANE_NEAR_BOTTOM + 4 : BIKE_LANE_FAR_TOP - 4;
   pushWalkMode(npc, modeDirect(
     { x: npc.x, y: targetY },
-    (n) => { popWalkMode(n); },   // 到达后恢复原模式
+    (n) => { popWalkMode(n); },
     20,
   ));
 }
@@ -156,7 +169,8 @@ export function pickModeTarget(npc, envQuery) {
       if (mode.loop) {
         mode.wpIndex = 0;
       } else {
-        npc._walkMode = modeWander();
+        npc._walkMode      = modeWander();
+        npc._needsNewRoute = true;
         _pickRandom(npc, envQuery);
         return;
       }
@@ -194,8 +208,9 @@ export function onPathArrival(mode, npc) {
     if (mode.loop) {
       mode.wpIndex = 0;
     } else {
-      npc._walkMode  = modeWander();
-      npc.roamTarget = null;
+      npc._walkMode      = modeWander();
+      npc.roamTarget     = null;
+      npc._needsNewRoute = true;
       return;
     }
   }
@@ -226,6 +241,16 @@ export function tickWalkMode(npc, dt) {
     if (mode.pauseTimer <= 0) {
       mode.pausing   = false;
       npc.roamTarget = null;   // 解锁，下帧 pickModeTarget 取下一 waypoint
+    }
+    return;
+  }
+
+  if (mode.kind === 'wander') {
+    if (mode.maxDuration != null) {
+      mode._elapsed = (mode._elapsed ?? 0) + dt;
+      if (mode._elapsed >= mode.maxDuration) {
+        npc._needsNewRoute = true;
+      }
     }
     return;
   }

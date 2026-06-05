@@ -37,6 +37,7 @@ export class BehaviorManager {
     this.cameraLayer = new CameraReactionLayer();
     this.npcs            = [];
     this.waitForBusLayer = null;
+    this.routeSelector   = null;
   }
 
   /**
@@ -132,6 +133,9 @@ export class BehaviorManager {
       }
 
       tickBaseState(npc, npc._profile, this.envQuery, dt);
+      if (npc._needsNewRoute && this.routeSelector) {
+        this.routeSelector.pickAndStart(npc, this.npcs);
+      }
       if (!npc._departing) tickModifiers(npc, npc._profile, dt, globalHeldFrac);
     }
 
@@ -158,8 +162,9 @@ export class BehaviorManager {
         const a = movers[i], b = movers[j];
         const dx = a.x - b.x, dy = a.y - b.y;
         const d = Math.hypot(dx, dy);
-        if (d > 0 && d < 24) {
-          const f = ((24 - d) / 24) * 16 * dt;
+        const sepR = 24 * ((a.scale + b.scale) / 2 / 0.18);
+        if (d > 0 && d < sepR) {
+          const f = ((sepR - d) / sepR) * 16 * dt;
           const ux = dx / d, uy = dy / d;
           a.x += ux * f; a.y += uy * f;
           b.x -= ux * f; b.y -= uy * f;
