@@ -21,7 +21,6 @@ export class SmokeEmitter extends ParticleEmitter {
     const r = p.size + t * 4;
     const gray = Math.round(0x88 + t * 0x44);
     const color = (gray << 16) | (gray << 8) | gray;
-    g.fillStyle(color, p.alpha * 0.45);
-    g.fillCircle(p.x, p.y, r);
+    g.lineStyle(0); g.beginFill(color, p.alpha * 0.45); g.drawCircle(p.x, p.y, r); g.endFill();
   }
 }

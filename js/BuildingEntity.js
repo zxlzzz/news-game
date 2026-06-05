@@ -91,35 +91,33 @@ export class BuildingEntity extends Entity {
     const top  = this.y - d;
 
     // ── 屋顶 ──
-    g.fillStyle(A.roof, 1); g.fillRect(x, top, w, d);
-    g.fillStyle(0xffffff, 0.10); g.fillRect(x, top, w, Math.floor(d * 0.32));
-    g.fillStyle(0x000000, 0.10); g.fillRect(x, top + d * 0.68, w, d * 0.32);
-    g.lineStyle(LINE_FAR_WIDTH, LINE_FAR_COLOR, 0.95); g.strokeRect(x, top, w, d);
+    g.lineStyle(0); g.beginFill(A.roof, 1); g.drawRect(x, top, w, d); g.endFill();
+    g.lineStyle(0); g.beginFill(0xffffff, 0.10); g.drawRect(x, top, w, Math.floor(d * 0.32)); g.endFill();
+    g.lineStyle(0); g.beginFill(0x000000, 0.10); g.drawRect(x, top + d * 0.68, w, d * 0.32); g.endFill();
+    g.lineStyle(LINE_FAR_WIDTH, LINE_FAR_COLOR, 0.95); g.drawRect(x, top, w, d); g.lineStyle(0);
     this._roofDetails(g, top, d);
     if (this.solar)      this._solarPanels(g, top, d);
     if (this.waterTower) this._waterTower(g, top, d);
     if (this.billboard)  this._billboard(g, top);
 
     // 临街地面线
-    g.lineStyle(1.2, 0x303030, 0.45); g.lineBetween(x, base, x + w, base);
+    g.lineStyle(1.2, 0x303030, 0.45); g.moveTo(x, base); g.lineTo(x + w, base);
 
     // ── 立面 ──
     this._facade(g, x, w);
 
     // 巷道暗缝（与左邻楼之间），自屋顶贯通到地面，制造一栋栋分离的纵深
     if (this.alleyLeft) {
-      g.fillStyle(0x555555, 0.5);
-      g.fillRect(x - 1, top, 8, base - top + 1);
-      g.fillStyle(0xffffff, 0.08);            // 右侧细高光，强调缝隙立体
-      g.fillRect(x + 7, top, 1.5, base - top + 1);
+      g.lineStyle(0); g.beginFill(0x555555, 0.5); g.drawRect(x - 1, top, 8, base - top + 1); g.endFill();
+      g.lineStyle(0); g.beginFill(0xffffff, 0.08); g.drawRect(x + 7, top, 1.5, base - top + 1); g.endFill();  // 右侧细高光，强调缝隙立体
     }
   }
 
   _facade(g, x, w) {
     const H = this.facadeH, y = this.y, A = this.A;
-    g.fillStyle(A.wall, 1); g.fillRect(x, y, w, H);
-    g.fillStyle(0x000000, 0.16); g.fillRect(x, y, 3, H);          // 左阴影
-    g.fillStyle(0x000000, 0.20); g.fillRect(x, y, w, 3);          // 屋檐投影
+    g.lineStyle(0); g.beginFill(A.wall, 1); g.drawRect(x, y, w, H); g.endFill();
+    g.lineStyle(0); g.beginFill(0x000000, 0.16); g.drawRect(x, y, 3, H); g.endFill();          // 左阴影
+    g.lineStyle(0); g.beginFill(0x000000, 0.20); g.drawRect(x, y, w, 3); g.endFill();          // 屋檐投影
 
     const groundH = Math.min(A.groundMax, Math.round(H * A.groundFrac));
     const resH    = H - groundH;
