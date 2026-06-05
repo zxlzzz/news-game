@@ -4,6 +4,7 @@ import {
   GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
   BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
+  depthScale,
 } from '../SceneConfig.js';
 
 export class SceneRenderer {
@@ -103,20 +104,21 @@ export class SceneRenderer {
     const roofT   = ft - 30;
     const pillarT = roofT + ROOF_H;
 
+    const sf = depthScale(fy);
     const benchY = pillarT + 25;
     const benchHalf = BENCH_W / 2;
     g.fillStyle(0x565654, 1);
-    g.fillRect(sx - benchHalf, benchY, BENCH_W, 4);
-    g.lineStyle(0.8, 0x181818, 0.7);
-    g.strokeRect(sx - benchHalf, benchY, BENCH_W, 4);
-    g.lineStyle(1.5, 0x303030, 0.9);
-    g.lineBetween(sx - benchHalf + 10, benchY + 4, sx - benchHalf + 10, benchY + 8);
-    g.lineBetween(sx + benchHalf - 10, benchY + 4, sx + benchHalf - 10, benchY + 8);
+    g.fillRect(sx - benchHalf, benchY, BENCH_W, 4 * sf);
+    g.lineStyle(0.8 * sf, 0x181818, 0.7);
+    g.strokeRect(sx - benchHalf, benchY, BENCH_W, 4 * sf);
+    g.lineStyle(1.5 * sf, 0x303030, 0.9);
+    g.lineBetween(sx - benchHalf + 10, benchY + 4 * sf, sx - benchHalf + 10, benchY + 8 * sf);
+    g.lineBetween(sx + benchHalf - 10, benchY + 4 * sf, sx + benchHalf - 10, benchY + 8 * sf);
 
     const poleX  = bx1 + 5;
     const poleTy = roofT + 10;
     const poleBy = fy - BAY_D - 2;
-    g.lineStyle(2.2, 0x2e2e2e, 1);
+    g.lineStyle(2.2 * sf, 0x2e2e2e, 1);
     g.lineBetween(poleX, poleTy, poleX, poleBy);
     drawSign(poleX, poleTy);
   }
@@ -142,20 +144,21 @@ export class SceneRenderer {
     g.fillRect(bx0, ny + BAY_D, BAY_W, 2);
 
     // 顶棚 + 柱子已移到 busstop-roof PropEntity（参与 Y 排序）；这里只保留地面站台 / 长椅 / 标牌。
+    const sn     = depthScale(ny);
     const benchY = ny + 32;
     const benchHalf = BENCH_W / 2;
     g.fillStyle(0x565654, 1);
-    g.fillRect(sx - benchHalf, benchY, BENCH_W, 4);
-    g.lineStyle(0.8, 0x181818, 0.7);
-    g.strokeRect(sx - benchHalf, benchY, BENCH_W, 4);
-    g.lineStyle(1.5, 0x303030, 0.9);
-    g.lineBetween(sx - benchHalf + 12, benchY + 4, sx - benchHalf + 12, benchY + 9);
-    g.lineBetween(sx + benchHalf - 12, benchY + 4, sx + benchHalf - 12, benchY + 9);
+    g.fillRect(sx - benchHalf, benchY, BENCH_W, 4 * sn);
+    g.lineStyle(0.8 * sn, 0x181818, 0.7);
+    g.strokeRect(sx - benchHalf, benchY, BENCH_W, 4 * sn);
+    g.lineStyle(1.5 * sn, 0x303030, 0.9);
+    g.lineBetween(sx - benchHalf + 12, benchY + 4 * sn, sx - benchHalf + 12, benchY + 9 * sn);
+    g.lineBetween(sx + benchHalf - 12, benchY + 4 * sn, sx + benchHalf - 12, benchY + 9 * sn);
 
     const poleX  = bx1 + 5;
-    const poleTy = ny ;
+    const poleTy = ny;
     const poleBy = ny + BAY_D + 32;
-    g.lineStyle(2.2, 0x2e2e2e, 1);
+    g.lineStyle(2.2 * sn, 0x2e2e2e, 1);
     g.lineBetween(poleX, poleBy, poleX, poleTy);
     drawSign(poleX, poleTy);
   }

@@ -115,3 +115,13 @@ export function depthLineColor(y, opts = {}) {
   const v = Math.round(light + (dark - light) * depthT(y));
   return (v << 16) | (v << 8) | v;
 }
+
+// ─── 统一深度缩放（供 VehicleEntity / PropDrawer 直接调用）───────────────────
+// 数值与 StreetScene 构造 EntityManager 时的 farScale / nearScale 一致。
+const _FAR_SCALE  = 0.182;
+const _NEAR_SCALE = 0.434;
+
+/** Y → screen scale，与 EntityManager.depthScale 使用相同锚值 */
+export function depthScale(y) {
+  return _FAR_SCALE + depthT(y) * (_NEAR_SCALE - _FAR_SCALE);
+}

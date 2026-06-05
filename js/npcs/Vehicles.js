@@ -111,11 +111,7 @@ export function initVehicleSystem(em, sr) {
   });
   cyclistSpawner.spawnInitial();
 
-  const rc  = roadY(0.5);
-  const rh  = roadY(1.0) - roadY(0.5);
-  const dep = { scaleMul: 1.5, roadCenterY: rc, roadHalfHeight: rh };
-
-  const tm = new TrafficManager({ em, dep });
+  const tm = new TrafficManager({ em });
 
   // 公交站：每个站台只服务其所在路沿对应方向的公交，每次靠站随机停 5~20s
   //   FAR  站台 x=500  画在远端路沿（FAR_Y）→ 上行 dir +1（远车道）
@@ -123,7 +119,7 @@ export function initVehicleSystem(em, sr) {
   tm.busStops.push(new BusStop({ x: 500,  direction: +1, waitRange: [5000, 20000] }));
   tm.busStops.push(new BusStop({ x: 1500, direction: -1, waitRange: [5000, 20000] }));
 
-  tm.spawner = new VehicleSpawner({ trafficManager: tm, dep, sr });
+  tm.spawner = new VehicleSpawner({ trafficManager: tm, sr });
   tm.spawner.spawnInitial();
 
   // 非机动车道动态出入场（每帧由 StreetScene 调 cyclistSpawner.update 维持密度）

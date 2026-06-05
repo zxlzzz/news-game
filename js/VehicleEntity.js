@@ -4,7 +4,8 @@
  *   this.x = 车身中心；this.y = 车轮触地基线（用于深度排序/缩放）
  */
 
-import { Entity } from './Entity.js';
+import { Entity }      from './Entity.js';
+import { depthScale }  from './Layout.js';
 
 export class VehicleEntity extends Entity {
   constructor(cfg) {
@@ -22,22 +23,18 @@ export class VehicleEntity extends Entity {
     this.tilt            = 0;
     this._phaseOffset    = Math.random() * Math.PI * 2;
     this._timeAccum      = Math.random() * 10;
-    this.minX            = cfg.minX ?? -240;
-    this.maxX            = cfg.maxX ?? 2240;
-    this.baseScale       = cfg.scale ?? 0.9;
-    this.scale           = this.baseScale;
-    this.scaleMul        = cfg.scaleMul ?? 1.0;
-    this.roadCenterY     = cfg.roadCenterY ?? 0;
-    this.roadHalfHeight  = cfg.roadHalfHeight ?? 1;
+    this.minX  = cfg.minX ?? -240;
+    this.maxX  = cfg.maxX ?? 2240;
+    this.scale = depthScale(this._laneY);
     if (!this.tags || this.tags.length === 0) this.tags = ['vehicle', this.kind];
   }
 
-  // L = 车总长, H = 车身总高(含车舱), r = 轮半径
+  // L = 车总长, H = 车身总高(含车舱), r = 轮半径（世界单位，× scale → 像素）
   _dims() {
     switch (this.kind) {
-      case 'bus':  return { L: 1500, H: 480, r: 60 };
-      case 'moto': return { L: 400, H: 200, r: 20 }; // 仅供取景框包围盒；实际几何以骑手锚点为准（见 _moto）
-      default:     return { L: 480, H: 200, r: 34 }; // car/taxi
+      case 'bus':  return { L: 350, H: 74, r: 13 };
+      case 'moto': return { L: 65,  H: 29, r: 9 };
+      default:     return { L: 132, H: 44, r: 9 };  // car/taxi
     }
   }
 
@@ -50,10 +47,7 @@ export class VehicleEntity extends Entity {
   update(delta) {
     if (!this.alive) return;
     const dt = delta / 1000;
-    if (this.scaleMul !== 1.0 && this.roadHalfHeight > 0) {
-      const t = (this._laneY - this.roadCenterY) / this.roadHalfHeight;
-      this.scale = this.baseScale * (1 + t * (this.scaleMul - 1));
-    }
+    this.scale = depthScale(this._laneY);
     this._timeAccum += dt;
     this.y = this._laneY + Math.sin(this._timeAccum * 0.3 + this._phaseOffset) * 3;
     this.x += this.direction * this.currentSpeed * dt;

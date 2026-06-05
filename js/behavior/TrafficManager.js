@@ -10,13 +10,11 @@
  */
 export class TrafficManager {
   /**
-   * @param {object} opts
+   * @param {object}        opts
    * @param {EntityManager} opts.em  - 实体管理器（addVehicle 时用于注册渲染）
-   * @param {object}        opts.dep - { scaleMul, roadCenterY, roadHalfHeight }
    */
-  constructor({ em, dep }) {
+  constructor({ em }) {
     this._em       = em;
-    this._dep      = dep;
     this.vehicles  = [];
     this.busStops  = [];
     this.signals   = [];

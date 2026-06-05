@@ -43,12 +43,13 @@ export class SceneInitializer {
     ];
     for (const { list, tags } of groups) {
       for (const t of list) {
-        em.add(new PropEntity({
+        const prop = em.add(new PropEntity({
           propType: 'tree',
           x: t.x, y: t.y,
           width: t.r * 2, height: t.r * 2,
           tags,
         }));
+        prop.scale = em.depthScale(prop.y);
       }
     }
   }
@@ -78,7 +79,8 @@ export class SceneInitializer {
         const host = buildings.find(b => p.x >= b.x && p.x <= b.x + b.bWidth);
         if (host) cfg.y = BUILDING_BASE_Y - 8;
       }
-      this.em.add(new PropEntity(cfg));
+      const prop = this.em.add(new PropEntity(cfg));
+      prop.scale = this.em.depthScale(prop.y);
     }
   }
 
@@ -131,16 +133,17 @@ export class SceneInitializer {
       const anchorY       = far ? FAR_Y : NEAR_Y;                       // 柱子落地点
       const roofTopY      = far ? BIKE_LANE_FAR_TOP - 30 : NEAR_Y - 15; // 顶棚顶边
       const pillarBottomY = far ? FAR_Y - stop.bayD - 2  : NEAR_Y + 44; // 柱子底端
-      em.add(new PropEntity({
+      const bsr = em.add(new PropEntity({
         propType: 'busstop-roof',
         x: stop.x, y: anchorY,
         roofW: stop.roofW, roofH: stop.roofH,
         roofTopY, pillarOffset: stop.pillarOffset, pillarBottomY,
         dir: stop.direction,
         width: stop.roofW, height: anchorY - roofTopY,
-        _sortY: pillarBottomY,   // 真实地面接触点（柱子底端）参与 Y 排序
+        _sortY: pillarBottomY,
         tags: ['busstop-roof'],
       }));
+      bsr.scale = em.depthScale(anchorY);
     }
   }
 
