@@ -30,11 +30,12 @@ export class VehicleEntity extends Entity {
   }
 
   // L = 车总长, H = 车身总高(含车舱), r = 轮半径（世界单位，× scale → 像素）
+  // 基准：火柴人原生高度 144 单位 = 1.7m，1m ≈ 85 单位
   _dims() {
     switch (this.kind) {
-      case 'bus':  return { L: 350, H: 74, r: 13 };
-      case 'moto': return { L: 65,  H: 29, r: 9 };
-      default:     return { L: 132, H: 44, r: 9 };  // car/taxi
+      case 'bus':  return { L: 1010, H: 213, r: 38 };
+      case 'moto': return { L: 187,  H: 84,  r: 26 };
+      default:     return { L: 380,  H: 127, r: 26 };  // car/taxi
     }
   }
 
