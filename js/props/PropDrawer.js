@@ -49,22 +49,19 @@ function drawLamp(g, p) {
   const armTipY = topY + 28 * s;   // arm slopes slightly downward from pole top
 
   // base block
-  g.fillStyle(0x101010, 1);
-  g.fillRect(x - baseW / 2, y - baseH, baseW, baseH);
+  g.lineStyle(0); g.beginFill(0x101010, 1); g.drawRect(x - baseW / 2, y - baseH, baseW, baseH); g.endFill();
   // pole
   g.lineStyle(lw * 1.25, lc, 1);
-  g.lineBetween(x, y - baseH, x, topY);
+  g.moveTo(x, y - baseH); g.lineTo(x, topY);
   // arm
   g.lineStyle(lw, lc, 1);
-  g.lineBetween(x, topY, armTipX, armTipY);
+  g.moveTo(x, topY); g.lineTo(armTipX, armTipY);
   // light box
-  g.fillStyle(0xfafafa, 1);
-  g.fillRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH);
-  g.lineStyle(lw * 0.8, 0x101010, 1);
-  g.strokeRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH);
+  g.lineStyle(0); g.beginFill(0xfafafa, 1); g.drawRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH); g.endFill();
+  g.lineStyle(lw * 0.8, 0x101010, 1); g.drawRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH); g.lineStyle(0);
   // diffuser line
   g.lineStyle(lw * 0.35, 0xa0a0a0, 0.85);
-  g.lineBetween(armTipX - boxW + 3 * s, armTipY, armTipX - 3 * s, armTipY);
+  g.moveTo(armTipX - boxW + 3 * s, armTipY); g.lineTo(armTipX - 3 * s, armTipY);
 }
 
 // ─── 长椅 ─────────────────────────────────────────────────────────────────────
@@ -94,19 +91,19 @@ function drawBench(g, p) {
     const a = P(u0, w0), b = P(u1, w1);
     const rx = Math.min(a[0], b[0]), ry = Math.min(a[1], b[1]);
     const rw = Math.abs(a[0] - b[0]), rh = Math.abs(a[1] - b[1]);
-    if (fill != null) { g.fillStyle(fill, fa ?? 1); g.fillRect(rx, ry, rw, rh); }
-    if (sw)           { g.lineStyle(sw, lineC, 0.9); g.strokeRect(rx, ry, rw, rh); }
+    if (fill != null) { g.lineStyle(0); g.beginFill(fill, fa ?? 1); g.drawRect(rx, ry, rw, rh); g.endFill(); }
+    if (sw)           { g.lineStyle(sw, lineC, 0.9); g.drawRect(rx, ry, rw, rh); g.lineStyle(0); }
   };
   const line = (u0, w0, u1, w1, lwd, al) => {
     const a = P(u0, w0), b = P(u1, w1);
     g.lineStyle(lwd, lineC, al ?? 0.9);
-    g.lineBetween(a[0], a[1], b[0], b[1]);
+    g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]);
   };
 
   // ground shadow
-  g.fillStyle(0x000000, 0.10);
-  if (f === 'left' || f === 'right') g.fillEllipse(x, y, 12 * s, L * 1.05);
-  else                               g.fillEllipse(x, y, L * 1.05, 8 * s);
+  g.lineStyle(0);
+  if (f === 'left' || f === 'right') { g.beginFill(0x000000, 0.10); g.drawEllipse(x, y, 6 * s, L * 1.05 / 2); g.endFill(); }
+  else                               { g.beginFill(0x000000, 0.10); g.drawEllipse(x, y, L * 1.05 / 2, 4 * s); g.endFill(); }
 
   // outer + inner legs
   const li = 14 * s;
@@ -155,23 +152,22 @@ function drawTrash(g, p) {
   const tx    = x - topW / 2;
   const bx    = x - botW / 2;
 
-  g.fillStyle(0xc0c0c0, 0.92);
-  g.beginPath();
+  g.lineStyle(lineW, lineC, 0.95);
+  g.beginFill(0xc0c0c0, 0.92);
   g.moveTo(tx,          y - h);
   g.lineTo(tx + topW,   y - h);
   g.lineTo(bx + botW,   y);
   g.lineTo(bx,          y);
   g.closePath();
-  g.fillPath();
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokePath();
+  g.endFill();
+  g.lineStyle(0);
   // lid
   g.lineStyle(lineW * 1.1, lineC, 0.95);
-  g.lineBetween(tx - 3 * s, y - h - 3 * s, tx + topW + 3 * s, y - h - 3 * s);
+  g.moveTo(tx - 3 * s, y - h - 3 * s); g.lineTo(tx + topW + 3 * s, y - h - 3 * s);
   // grooves
   g.lineStyle(0.5 * s, lineC, 0.6);
-  g.lineBetween(x - 6 * s, y - h + 6 * s, x - 6 * s + (botW - topW) * 0.3, y - 3 * s);
-  g.lineBetween(x + 6 * s, y - h + 6 * s, x + 6 * s - (botW - topW) * 0.3, y - 3 * s);
+  g.moveTo(x - 6 * s, y - h + 6 * s); g.lineTo(x - 6 * s + (botW - topW) * 0.3, y - 3 * s);
+  g.moveTo(x + 6 * s, y - h + 6 * s); g.lineTo(x + 6 * s - (botW - topW) * 0.3, y - 3 * s);
 }
 
 // ─── 标牌（店招等） ──────────────────────────────────────────────────────────
@@ -185,18 +181,16 @@ function drawSign(g, p) {
   const sy = p.y - sh;
   const fill = _toGrayBand(p.propColor, 0xa8, 0x60);
 
-  g.fillStyle(fill, 0.95);
-  g.fillRect(sx, sy, sw, sh);
+  g.lineStyle(0); g.beginFill(fill, 0.95); g.drawRect(sx, sy, sw, sh); g.endFill();
   // inner text lines
   g.lineStyle(1.7 * s, 0xfafafa, 0.8);
-  g.lineBetween(sx + 9 * s, sy + sh * 0.35, sx + sw - 9 * s, sy + sh * 0.35);
-  g.lineBetween(sx + 14 * s, sy + sh * 0.65, sx + sw - 14 * s, sy + sh * 0.65);
-  g.lineStyle(2.3 * s, 0x000000, 0.7);
-  g.strokeRect(sx, sy, sw, sh);
+  g.moveTo(sx + 9 * s, sy + sh * 0.35); g.lineTo(sx + sw - 9 * s, sy + sh * 0.35);
+  g.moveTo(sx + 14 * s, sy + sh * 0.65); g.lineTo(sx + sw - 14 * s, sy + sh * 0.65);
+  g.lineStyle(2.3 * s, 0x000000, 0.7); g.drawRect(sx, sy, sw, sh); g.lineStyle(0);
   // hanger brackets
   g.lineStyle(1.5 * s, 0x303030, 0.7);
-  g.lineBetween(sx + 11 * s,       sy, sx + 11 * s,       sy - 9 * s);
-  g.lineBetween(sx + sw - 11 * s,  sy, sx + sw - 11 * s,  sy - 9 * s);
+  g.moveTo(sx + 11 * s,      sy); g.lineTo(sx + 11 * s,      sy - 9 * s);
+  g.moveTo(sx + sw - 11 * s, sy); g.lineTo(sx + sw - 11 * s, sy - 9 * s);
 }
 
 // ─── 报纸架 ──────────────────────────────────────────────────────────────────
@@ -211,37 +205,30 @@ function drawNewsRack(g, p) {
   const lineW = depthLineWidth(y, { wMin: 0.8, wMax: 1.5 });
   const lineC = depthLineColor(y, { light: 0x40, dark: 0x05 });
 
-  g.fillStyle(0xb8b8b8, 0.95);
-  g.fillRect(px, py + 17 * s, w, h - 17 * s);
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(px, py + 17 * s, w, h - 17 * s);
+  g.lineStyle(0); g.beginFill(0xb8b8b8, 0.95); g.drawRect(px, py + 17 * s, w, h - 17 * s); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(px, py + 17 * s, w, h - 17 * s); g.lineStyle(0);
 
   // glass window
-  g.fillStyle(0xeaeaea, 0.95);
-  g.fillRect(px + 3 * s, py + 20 * s, w - 6 * s, 26 * s);
-  g.lineStyle(1.5 * s, lineC, 0.8);
-  g.strokeRect(px + 3 * s, py + 20 * s, w - 6 * s, 26 * s);
+  g.lineStyle(0); g.beginFill(0xeaeaea, 0.95); g.drawRect(px + 3 * s, py + 20 * s, w - 6 * s, 26 * s); g.endFill();
+  g.lineStyle(1.5 * s, lineC, 0.8); g.drawRect(px + 3 * s, py + 20 * s, w - 6 * s, 26 * s); g.lineStyle(0);
 
   // text lines
   g.lineStyle(1.5 * s, lineC, 0.85);
-  g.lineBetween(px + 6 * s, py + 26 * s, px + w - 6 * s, py + 26 * s);
-  g.lineBetween(px + 6 * s, py + 32 * s, px + w - 6 * s, py + 32 * s);
-  g.lineBetween(px + 6 * s, py + 38 * s, px + w - 11 * s, py + 38 * s);
+  g.moveTo(px + 6 * s, py + 26 * s); g.lineTo(px + w - 6 * s, py + 26 * s);
+  g.moveTo(px + 6 * s, py + 32 * s); g.lineTo(px + w - 6 * s, py + 32 * s);
+  g.moveTo(px + 6 * s, py + 38 * s); g.lineTo(px + w - 11 * s, py + 38 * s);
 
   // coin slot
-  g.fillStyle(0x101010, 0.9);
-  g.fillRect(px + w / 2 - 6 * s, py + h - 14 * s, 11 * s, 3 * s);
+  g.lineStyle(0); g.beginFill(0x101010, 0.9); g.drawRect(px + w / 2 - 6 * s, py + h - 14 * s, 11 * s, 3 * s); g.endFill();
 
   // header bar
-  g.fillStyle(0x4a4a4a, 1);
-  g.fillRect(px - 3 * s, py + 6 * s, w + 6 * s, 11 * s);
-  g.lineStyle(lineW * 0.9, lineC, 0.95);
-  g.strokeRect(px - 3 * s, py + 6 * s, w + 6 * s, 11 * s);
+  g.lineStyle(0); g.beginFill(0x4a4a4a, 1); g.drawRect(px - 3 * s, py + 6 * s, w + 6 * s, 11 * s); g.endFill();
+  g.lineStyle(lineW * 0.9, lineC, 0.95); g.drawRect(px - 3 * s, py + 6 * s, w + 6 * s, 11 * s); g.lineStyle(0);
 
   // feet
   g.lineStyle(lineW, lineC, 0.9);
-  g.lineBetween(px + 6 * s,     py + h, px + 6 * s,     py + h + 9 * s);
-  g.lineBetween(px + w - 6 * s, py + h, px + w - 6 * s, py + h + 9 * s);
+  g.moveTo(px + 6 * s,     py + h); g.lineTo(px + 6 * s,     py + h + 9 * s);
+  g.moveTo(px + w - 6 * s, py + h); g.lineTo(px + w - 6 * s, py + h + 9 * s);
 }
 
 // ─── 消防栓 ──────────────────────────────────────────────────────────────────
@@ -254,40 +241,36 @@ function drawHydrant(g, p) {
   const lineC = depthLineColor(y, { light: 0x40, dark: 0x05 });
 
   // base flange（底部法兰）- 改宽度
-  g.fillStyle(0x6a6a6a, 1);
-  g.fillRect(x - 15 * s, y - 8 * s, 30 * s, 8 * s);  // 原 -11, 23, 6
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(x - 15 * s, y - 8 * s, 30 * s, 8 * s);
-  
+  g.lineStyle(0); g.beginFill(0x6a6a6a, 1); g.drawRect(x - 15 * s, y - 8 * s, 30 * s, 8 * s); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(x - 15 * s, y - 8 * s, 30 * s, 8 * s); g.lineStyle(0);
+
   // body（主体）- 改宽度和高度
-  g.fillStyle(0xb0b0b0, 1);
-  g.fillRect(x - 12 * s, y - 38 * s, 24 * s, 30 * s);  // 原 -9, -29, 17, 23
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(x - 12 * s, y - 38 * s, 24 * s, 30 * s);
-  
+  g.lineStyle(0); g.beginFill(0xb0b0b0, 1); g.drawRect(x - 12 * s, y - 38 * s, 24 * s, 30 * s); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(x - 12 * s, y - 38 * s, 24 * s, 30 * s); g.lineStyle(0);
+
   // dome（顶部圆顶）- 改宽度和高度
-  g.fillStyle(0xa0a0a0, 1);
-  g.beginPath();
+  g.lineStyle(lineW, lineC, 0.95);
+  g.beginFill(0xa0a0a0, 1);
   g.moveTo(x - 8 * s, y - 50 * s);    // 原 -6, -38
   g.lineTo(x + 8 * s, y - 50 * s);    // 原 +6, -38
   g.lineTo(x + 12 * s, y - 38 * s);   // 原 +9, -29
   g.lineTo(x - 12 * s, y - 38 * s);   // 原 -9, -29
   g.closePath();
-  g.fillPath();
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokePath();
-  
+  g.endFill();
+  g.lineStyle(0);
+
   // cap bolt（顶部螺栓）- 改大小
-  g.fillStyle(0x4a4a4a, 1);
-  g.fillRect(x - 4 * s, y - 57 * s, 8 * s, 7 * s);  // 原 -3, -43, 6, 5
-  
+  g.lineStyle(0); g.beginFill(0x4a4a4a, 1); g.drawRect(x - 4 * s, y - 57 * s, 8 * s, 7 * s); g.endFill();
+
   // side outlets（侧面出水口）- 改位置和大小
-  g.fillStyle(0x707070, 1);
-  g.fillRect(x - 26 * s, y - 30 * s, 12 * s, 8 * s);  // 原 -20, -23, 9, 6
-  g.fillRect(x + 14 * s, y - 30 * s, 12 * s, 8 * s);  // 原 +11, -23, 9, 6
+  g.lineStyle(0); g.beginFill(0x707070, 1);
+  g.drawRect(x - 26 * s, y - 30 * s, 12 * s, 8 * s);  // 原 -20, -23, 9, 6
+  g.drawRect(x + 14 * s, y - 30 * s, 12 * s, 8 * s);  // 原 +11, -23, 9, 6
+  g.endFill();
   g.lineStyle(1.5 * s, lineC, 0.85);
-  g.strokeRect(x - 26 * s, y - 30 * s, 12 * s, 8 * s);
-  g.strokeRect(x + 14 * s, y - 30 * s, 12 * s, 8 * s);
+  g.drawRect(x - 26 * s, y - 30 * s, 12 * s, 8 * s); g.lineStyle(0);
+  g.lineStyle(1.5 * s, lineC, 0.85);
+  g.drawRect(x + 14 * s, y - 30 * s, 12 * s, 8 * s); g.lineStyle(0);
 }
 
 // ─── 邮筒 ────────────────────────────────────────────────────────────────────
@@ -304,28 +287,23 @@ function drawMailbox(g, p) {
   
   // post（柱子）- 向下伸更长
   g.lineStyle(lineW * 1.1, lineC, 0.95);
-  g.lineBetween(x, y, x, y - 29 * s - extraHeight);  // 柱子从 y 向上画到更高的位置
-  
+  g.moveTo(x, y); g.lineTo(x, y - 29 * s - extraHeight);
+
   // box body - 整体向上平移 extraHeight
-  g.fillStyle(0x8a8a8a, 1);
-  g.fillRect(x - 20 * s, y - 64 * s - extraHeight, 40 * s, 35 * s);
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(x - 20 * s, y - 64 * s - extraHeight, 40 * s, 35 * s);
-  
+  g.lineStyle(0); g.beginFill(0x8a8a8a, 1); g.drawRect(x - 20 * s, y - 64 * s - extraHeight, 40 * s, 35 * s); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(x - 20 * s, y - 64 * s - extraHeight, 40 * s, 35 * s); g.lineStyle(0);
+
   // cap - 整体向上平移 extraHeight
-  g.fillStyle(0x707070, 1);
-  g.fillRect(x - 23 * s, y - 72 * s - extraHeight, 46 * s, 9 * s);
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(x - 23 * s, y - 72 * s - extraHeight, 46 * s, 9 * s);
-  
+  g.lineStyle(0); g.beginFill(0x707070, 1); g.drawRect(x - 23 * s, y - 72 * s - extraHeight, 46 * s, 9 * s); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(x - 23 * s, y - 72 * s - extraHeight, 46 * s, 9 * s); g.lineStyle(0);
+
   // mail slot - 整体向上平移 extraHeight
-  g.fillStyle(0x101010, 0.9);
-  g.fillRect(x - 14 * s, y - 52 * s - extraHeight, 29 * s, 6 * s);
-  
+  g.lineStyle(0); g.beginFill(0x101010, 0.9); g.drawRect(x - 14 * s, y - 52 * s - extraHeight, 29 * s, 6 * s); g.endFill();
+
   // flag - 整体向上平移 extraHeight
   g.lineStyle(1.5 * s, 0xfafafa, 0.85);
-  g.lineBetween(x - 9 * s, y - 40 * s - extraHeight, x, y - 37 * s - extraHeight);
-  g.lineBetween(x, y - 37 * s - extraHeight, x + 9 * s, y - 40 * s - extraHeight);
+  g.moveTo(x - 9 * s, y - 40 * s - extraHeight); g.lineTo(x, y - 37 * s - extraHeight);
+  g.moveTo(x, y - 37 * s - extraHeight); g.lineTo(x + 9 * s, y - 40 * s - extraHeight);
 }
 
 // ─── 花坛 ────────────────────────────────────────────────────────────────────
@@ -340,17 +318,15 @@ function drawPlanter(g, p) {
   const lineW = depthLineWidth(p.y, { wMin: 0.9, wMax: 1.5 });
   const lineC = depthLineColor(p.y, { light: 0x40, dark: 0x10 });
 
-  g.fillStyle(0xb4b4b4, 1);
-  g.fillRect(px, py + 9 * s, w, h - 9 * s);
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(px, py + 9 * s, w, h - 9 * s);
+  g.lineStyle(0); g.beginFill(0xb4b4b4, 1); g.drawRect(px, py + 9 * s, w, h - 9 * s); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(px, py + 9 * s, w, h - 9 * s); g.lineStyle(0);
 
   // seams
   g.lineStyle(1.2 * s, lineC, 0.6);
   const segs = Math.max(2, Math.floor(w / (23 * s)));
   for (let i = 1; i < segs; i++) {
     const lx = px + (w * i / segs);
-    g.lineBetween(lx, py + 9 * s, lx, py + h);
+    g.moveTo(lx, py + 9 * s); g.lineTo(lx, py + h);
   }
 
   // plant clumps
@@ -359,11 +335,11 @@ function drawPlanter(g, p) {
     const cx = px + 11 * s + i * (w - 23 * s) / Math.max(1, clumps - 1);
     const cy = py + 6 * s;
     g.lineStyle(lineW * 0.9, lineC, 0.85);
-    g.lineBetween(cx, cy + 6 * s, cx, cy - 11 * s);
-    g.lineBetween(cx, cy - 6 * s, cx - 9 * s, cy - 14 * s);
-    g.lineBetween(cx, cy - 6 * s, cx + 9 * s, cy - 14 * s);
-    g.lineBetween(cx, cy - 11 * s, cx - 6 * s, cy - 17 * s);
-    g.lineBetween(cx, cy - 11 * s, cx + 6 * s, cy - 17 * s);
+    g.moveTo(cx, cy + 6 * s); g.lineTo(cx, cy - 11 * s);
+    g.moveTo(cx, cy - 6 * s); g.lineTo(cx - 9 * s, cy - 14 * s);
+    g.moveTo(cx, cy - 6 * s); g.lineTo(cx + 9 * s, cy - 14 * s);
+    g.moveTo(cx, cy - 11 * s); g.lineTo(cx - 6 * s, cy - 17 * s);
+    g.moveTo(cx, cy - 11 * s); g.lineTo(cx + 6 * s, cy - 17 * s);
   }
 }
 
@@ -377,14 +353,10 @@ function drawManhole(g, p) {
   const ry    = rx * 0.45;
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
 
-  g.fillStyle(0x000000, 0.18);
-  g.fillEllipse(x + 3 * s, y + 3 * s, rx * 2.1, ry * 2.1);
-  g.fillStyle(0x6a6a6a, 1);
-  g.fillEllipse(x, y, rx * 2, ry * 2);
-  g.lineStyle(lineW, 0x101010, 0.92);
-  g.strokeEllipse(x, y, rx * 2, ry * 2);
-  g.lineStyle(1.5 * s, 0x1a1a1a, 0.8);
-  g.strokeEllipse(x, y, rx * 1.55, ry * 1.55);
+  g.lineStyle(0); g.beginFill(0x000000, 0.18); g.drawEllipse(x + 3 * s, y + 3 * s, rx * 2.1 / 2, ry * 2.1 / 2); g.endFill();
+  g.lineStyle(0); g.beginFill(0x6a6a6a, 1); g.drawEllipse(x, y, rx, ry); g.endFill();
+  g.lineStyle(lineW, 0x101010, 0.92); g.drawEllipse(x, y, rx, ry); g.lineStyle(0);
+  g.lineStyle(1.5 * s, 0x1a1a1a, 0.8); g.drawEllipse(x, y, rx * 1.55 / 2, ry * 1.55 / 2); g.lineStyle(0);
 
   // grate lines
   g.lineStyle(1.5 * s, 0x202020, 0.7);
@@ -392,7 +364,7 @@ function drawManhole(g, p) {
     const ly   = y + i * (ry * 0.32);
     const t    = 1 - Math.pow(i / 2.8, 2);
     const half = Math.sqrt(Math.max(0, t)) * rx * 0.78;
-    g.lineBetween(x - half, ly, x + half, ly);
+    g.moveTo(x - half, ly); g.lineTo(x + half, ly);
   }
 }
 
@@ -408,17 +380,15 @@ function drawDrain(g, p) {
   const lineW = depthLineWidth(p.y, { wMin: 0.7, wMax: 1.4 });
   const lineC = depthLineColor(p.y, { light: 0x10, dark: 0x08 });
 
-  g.fillStyle(0x707070, 1);
-  g.fillRect(px, py, w, h);
-  g.lineStyle(lineW, lineC, 0.9);
-  g.strokeRect(px, py, w, h);
+  g.lineStyle(0); g.beginFill(0x707070, 1); g.drawRect(px, py, w, h); g.endFill();
+  g.lineStyle(lineW, lineC, 0.9); g.drawRect(px, py, w, h); g.lineStyle(0);
 
   // grate slots
   g.lineStyle(lineW * 0.65, lineC, 0.85);
   const slots = Math.max(3, Math.floor(w / (9 * s)));
   for (let i = 1; i < slots; i++) {
     const lx = px + (w * i / slots);
-    g.lineBetween(lx, py + 3 * s, lx, py + h - 3 * s);
+    g.moveTo(lx, py + 3 * s); g.lineTo(lx, py + h - 3 * s);
   }
 }
 
@@ -439,19 +409,19 @@ function drawChair(g, p) {
   const lc     = depthLineColor(y, { light: 0x20, dark: 0x0a });
 
   g.lineStyle(lw, lc, 0.95);
-  g.lineBetween(seatX1, seatY, seatX2, seatY);
+  g.moveTo(seatX1, seatY); g.lineTo(seatX2, seatY);
   // back rest
   const backX   = (d > 0) ? seatX1 : seatX2;
   const backTop = seatY - backH;
-  g.lineBetween(backX, seatY, backX, backTop);
-  g.lineBetween(backX - 6 * s * d, backTop, backX + 3 * s * d, backTop);
+  g.moveTo(backX, seatY); g.lineTo(backX, backTop);
+  g.moveTo(backX - 6 * s * d, backTop); g.lineTo(backX + 3 * s * d, backTop);
   // legs
   g.lineStyle(lw * 0.85, lc, 0.9);
-  g.lineBetween(seatX1 + 3 * s, seatY, seatX1 + 3 * s, y);
-  g.lineBetween(seatX2 - 3 * s, seatY, seatX2 - 3 * s, y);
+  g.moveTo(seatX1 + 3 * s, seatY); g.lineTo(seatX1 + 3 * s, y);
+  g.moveTo(seatX2 - 3 * s, seatY); g.lineTo(seatX2 - 3 * s, y);
   // seat highlight
   g.lineStyle(lw * 0.4, 0x303030, 0.6);
-  g.lineBetween(seatX1 + 3 * s, seatY + 3 * s, seatX2 - 3 * s, seatY + 3 * s);
+  g.moveTo(seatX1 + 3 * s, seatY + 3 * s); g.lineTo(seatX2 - 3 * s, seatY + 3 * s);
 }
 
 // ─── 棋桌 ────────────────────────────────────────────────────────────────────
@@ -469,33 +439,30 @@ function drawChessTable(g, p) {
   const lc   = depthLineColor(y, { light: 0x1a, dark: 0x0a });
 
   // 桌面主体
-  g.fillStyle(0xcfcfcf, 1);
-  g.fillRect(topX, topY, tw, th);
-  g.lineStyle(lw, lc, 0.95);
-  g.strokeRect(topX, topY, tw, th);
-  
+  g.lineStyle(0); g.beginFill(0xcfcfcf, 1); g.drawRect(topX, topY, tw, th); g.endFill();
+  g.lineStyle(lw, lc, 0.95); g.drawRect(topX, topY, tw, th); g.lineStyle(0);
+
   // 桌面内框装饰线
-  g.lineStyle(lw * 0.5, 0x9a9a9a, 0.8);
-  g.strokeRect(topX + 4 * s, topY + 4 * s, tw - 8 * s, th - 8 * s);
-  
+  g.lineStyle(lw * 0.5, 0x9a9a9a, 0.8); g.drawRect(topX + 4 * s, topY + 4 * s, tw - 8 * s, th - 8 * s); g.lineStyle(0);
+
   // 桌面网格线（3x3）
   g.lineStyle(lw * 0.55, lc, 0.85);
   for (let i = 1; i < 3; i++) {
     const lx = topX + (tw * i / 3);
-    g.lineBetween(lx, topY + 6 * s, lx, topY + th - 6 * s);
+    g.moveTo(lx, topY + 6 * s); g.lineTo(lx, topY + th - 6 * s);
   }
   for (let i = 1; i < 3; i++) {
       const ly = topY + 4.5 * s + (3 + th - 12 * s) * i / 3;
-      g.lineBetween(topX + 6 * s, ly, topX + tw - 6 * s, ly);
+      g.moveTo(topX + 6 * s, ly); g.lineTo(topX + tw - 6 * s, ly);
   }
 
   // 桌腿
   g.lineStyle(lw, lc, 0.95);
-  g.lineBetween(topX + 3 * s,       topY + th, topX + 3 * s,       y);
-  g.lineBetween(topX + tw - 3 * s,  topY + th, topX + tw - 3 * s,  y);
+  g.moveTo(topX + 3 * s,       topY + th); g.lineTo(topX + 3 * s,       y);
+  g.moveTo(topX + tw - 3 * s,  topY + th); g.lineTo(topX + tw - 3 * s,  y);
   g.lineStyle(lw * 0.65, lc, 0.7);
-  g.lineBetween(topX + tw * 0.2, topY + th, topX + tw * 0.2, y - 3 * s);
-  g.lineBetween(topX + tw * 0.8, topY + th, topX + tw * 0.8, y - 3 * s);
+  g.moveTo(topX + tw * 0.2, topY + th); g.lineTo(topX + tw * 0.2, y - 3 * s);
+  g.moveTo(topX + tw * 0.8, topY + th); g.lineTo(topX + tw * 0.8, y - 3 * s);
 }
 
 // ─── 树木 ────────────────────────────────────────────────────────────────────
@@ -600,23 +567,17 @@ function drawFountain(g, p) {
   const lc  = depthLineColor(y, { light: 0xbc, dark: 0x88 });
 
   // shadow
-  g.fillStyle(0x000000, 0.04);
-  g.fillEllipse(x, y + 11 * s, rx * 1.9, ry * 1.3);
+  g.lineStyle(0); g.beginFill(0x000000, 0.04); g.drawEllipse(x, y + 11 * s, rx * 1.9 / 2, ry * 1.3 / 2); g.endFill();
   // pool rim
-  g.fillStyle(0xe5e5e5, 1);
-  g.fillEllipse(x, y, rx * 1.55, ry * 1.55);
-  g.lineStyle(lw, lc, 0.7);
-  g.strokeEllipse(x, y, rx * 1.2, ry * 1.2);
+  g.lineStyle(0); g.beginFill(0xe5e5e5, 1); g.drawEllipse(x, y, rx * 1.55 / 2, ry * 1.55 / 2); g.endFill();
+  g.lineStyle(lw, lc, 0.7); g.drawEllipse(x, y, rx * 1.2 / 2, ry * 1.2 / 2); g.lineStyle(0);
   // water surface
-  g.fillStyle(0xd6d6d6, 0.9);
-  g.fillEllipse(x + 3 * s, y - 3 * s, rx * 0.92, ry * 0.92);
-  g.lineStyle(lw * 0.5, lc, 0.35);
-  g.strokeEllipse(x - 3 * s, y, rx * 0.42, ry * 0.42);
+  g.lineStyle(0); g.beginFill(0xd6d6d6, 0.9); g.drawEllipse(x + 3 * s, y - 3 * s, rx * 0.92 / 2, ry * 0.92 / 2); g.endFill();
+  g.lineStyle(lw * 0.5, lc, 0.35); g.drawEllipse(x - 3 * s, y, rx * 0.42 / 2, ry * 0.42 / 2); g.lineStyle(0);
   // nozzle + jet
-  g.fillStyle(0xa8a8a8, 1);
-  g.fillCircle(x, y - 3 * s, 6 * s);
+  g.lineStyle(0); g.beginFill(0xa8a8a8, 1); g.drawCircle(x, y - 3 * s, 6 * s); g.endFill();
   g.lineStyle(2.3 * s, 0xf0f0f0, 0.6);
-  g.lineBetween(x, y - 6 * s, x, y - ry * 1.1);
+  g.moveTo(x, y - 6 * s); g.lineTo(x, y - ry * 1.1);
 }
 
 // ─── 小摊 ────────────────────────────────────────────────────────────────────
@@ -635,38 +596,35 @@ function drawStall(g, p) {
 
   // support poles
   g.lineStyle(lineW, lineC, 0.95);
-  g.lineBetween(px + 6 * s, y, px + 6 * s, y - roofH);
-  g.lineBetween(px + w - 6 * s, y, px + w - 6 * s, y - roofH);
+  g.moveTo(px + 6 * s, y); g.lineTo(px + 6 * s, y - roofH);
+  g.moveTo(px + w - 6 * s, y); g.lineTo(px + w - 6 * s, y - roofH);
 
   // awning
   const aY = y - roofH, aH = 17 * s;
-  g.fillStyle(0x707070, 1);
-  g.beginPath();
+  g.lineStyle(lineW, lineC, 0.95);
+  g.beginFill(0x707070, 1);
   g.moveTo(px, aY + aH); g.lineTo(px + w, aY + aH);
   g.lineTo(px + w + 9 * s, aY); g.lineTo(px - 9 * s, aY);
-  g.closePath(); g.fillPath();
-  g.lineStyle(lineW, lineC, 0.95); g.strokePath();
+  g.closePath();
+  g.endFill();
+  g.lineStyle(0);
   // awning stripes
   g.lineStyle(1.5 * s, 0xdddddd, 0.7);
   for (let i = 1; i < Math.floor(w / (17 * s)); i++) {
     const sx = px - 9 * s + i * 17 * s;
-    g.lineBetween(sx, aY, sx + 4 * s, aY + aH);
+    g.moveTo(sx, aY); g.lineTo(sx + 4 * s, aY + aH);
   }
 
   // counter
-  g.fillStyle(0xc0c0c0, 1);
-  g.fillRect(px + 3 * s, counterY, w - 6 * s, 11 * s);
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(px + 3 * s, counterY, w - 6 * s, 11 * s);
+  g.lineStyle(0); g.beginFill(0xc0c0c0, 1); g.drawRect(px + 3 * s, counterY, w - 6 * s, 11 * s); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(px + 3 * s, counterY, w - 6 * s, 11 * s); g.lineStyle(0);
 
   // items
-  g.fillStyle(0x9a9a9a, 1);
   const itemW = 11 * s, itemH = 9 * s;
   for (let i = 0; i < 3; i++) {
     const gx = px + 11 * s + i * ((w - 29 * s) / 2);
-    g.fillRect(gx, counterY - itemH, itemW, itemH);
-    g.lineStyle(1.2 * s, lineC, 0.85);
-    g.strokeRect(gx, counterY - itemH, itemW, itemH);
+    g.lineStyle(0); g.beginFill(0x9a9a9a, 1); g.drawRect(gx, counterY - itemH, itemW, itemH); g.endFill();
+    g.lineStyle(1.2 * s, lineC, 0.85); g.drawRect(gx, counterY - itemH, itemW, itemH); g.lineStyle(0);
   }
 }
 
@@ -682,35 +640,26 @@ function drawVending(g, p) {
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
   const lineC = depthLineColor(y, { light: 0x40, dark: 0x08 });
 
-  g.fillStyle(0x000000, 0.10);
-  g.fillEllipse(x, y, w * 1.1, 11 * s);
-  g.fillStyle(0xb0b0b0, 1);
-  g.fillRect(px, py, w, h);
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(px, py, w, h);
+  g.lineStyle(0); g.beginFill(0x000000, 0.10); g.drawEllipse(x, y, w * 1.1 / 2, 11 * s / 2); g.endFill();
+  g.lineStyle(0); g.beginFill(0xb0b0b0, 1); g.drawRect(px, py, w, h); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(px, py, w, h); g.lineStyle(0);
 
   // glass front
   const gx = px + 6 * s, gy = py + 6 * s, gw = w * 0.6, gh = h - 29 * s;
-  g.fillStyle(0x3a3a3a, 0.6);
-  g.fillRect(gx, gy, gw, gh);
-  g.fillStyle(0xffffff, 0.18);
-  g.fillRect(gx + 3 * s, gy + 3 * s, gw - 6 * s, gh * 0.4);
-  g.lineStyle(1.5 * s, lineC, 0.8);
-  g.strokeRect(gx, gy, gw, gh);
+  g.lineStyle(0); g.beginFill(0x3a3a3a, 0.6); g.drawRect(gx, gy, gw, gh); g.endFill();
+  g.lineStyle(0); g.beginFill(0xffffff, 0.18); g.drawRect(gx + 3 * s, gy + 3 * s, gw - 6 * s, gh * 0.4); g.endFill();
+  g.lineStyle(1.5 * s, lineC, 0.8); g.drawRect(gx, gy, gw, gh); g.lineStyle(0);
 
   // shelf lines
   g.lineStyle(1.2 * s, 0xcacaca, 0.6);
-  for (let i = 1; i < 5; i++) g.lineBetween(gx, gy + gh * i / 5, gx + gw, gy + gh * i / 5);
+  for (let i = 1; i < 5; i++) { g.moveTo(gx, gy + gh * i / 5); g.lineTo(gx + gw, gy + gh * i / 5); }
 
   // side panel
-  g.fillStyle(0x8a8a8a, 1);
-  g.fillRect(px + gw + 9 * s, gy, w - gw - 14 * s, gh * 0.5);
-  g.lineStyle(1.5 * s, lineC, 0.8);
-  g.strokeRect(px + gw + 9 * s, gy, w - gw - 14 * s, gh * 0.5);
+  g.lineStyle(0); g.beginFill(0x8a8a8a, 1); g.drawRect(px + gw + 9 * s, gy, w - gw - 14 * s, gh * 0.5); g.endFill();
+  g.lineStyle(1.5 * s, lineC, 0.8); g.drawRect(px + gw + 9 * s, gy, w - gw - 14 * s, gh * 0.5); g.lineStyle(0);
 
   // dispenser slot
-  g.fillStyle(0x101010, 0.9);
-  g.fillRect(px + 6 * s, py + h - 17 * s, w - 11 * s, 9 * s);
+  g.lineStyle(0); g.beginFill(0x101010, 0.9); g.drawRect(px + 6 * s, py + h - 17 * s, w - 11 * s, 9 * s); g.endFill();
 }
 
 // ─── 电话亭 ──────────────────────────────────────────────────────────────────
@@ -725,32 +674,24 @@ function drawPhoneBooth(g, p) {
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
   const lineC = depthLineColor(y, { light: 0x40, dark: 0x08 });
 
-  g.fillStyle(0x000000, 0.10);
-  g.fillEllipse(x, y, w * 1.1, 11 * s);
-  g.fillStyle(0x404040, 0.5);
-  g.fillRect(px, py + 11 * s, w, h - 11 * s);
-  g.fillStyle(0xffffff, 0.16);
-  g.fillRect(px + 3 * s, py + 14 * s, w - 6 * s, (h - 11 * s) * 0.45);
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(px, py + 11 * s, w, h - 11 * s);
+  g.lineStyle(0); g.beginFill(0x000000, 0.10); g.drawEllipse(x, y, w * 1.1 / 2, 11 * s / 2); g.endFill();
+  g.lineStyle(0); g.beginFill(0x404040, 0.5); g.drawRect(px, py + 11 * s, w, h - 11 * s); g.endFill();
+  g.lineStyle(0); g.beginFill(0xffffff, 0.16); g.drawRect(px + 3 * s, py + 14 * s, w - 6 * s, (h - 11 * s) * 0.45); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(px, py + 11 * s, w, h - 11 * s); g.lineStyle(0);
 
   // interior dividers
   g.lineStyle(1.5 * s, lineC, 0.7);
-  g.lineBetween(px + w / 2, py + 14 * s, px + w / 2, y - 3 * s);
-  g.lineBetween(px + 6 * s, py + (h - 11 * s) * 0.5 + 11 * s,
-                px + w - 6 * s, py + (h - 11 * s) * 0.5 + 11 * s);
+  g.moveTo(px + w / 2, py + 14 * s); g.lineTo(px + w / 2, y - 3 * s);
+  g.moveTo(px + 6 * s, py + (h - 11 * s) * 0.5 + 11 * s);
+  g.lineTo(px + w - 6 * s, py + (h - 11 * s) * 0.5 + 11 * s);
 
   // roof header
-  g.fillStyle(0x6a6a6a, 1);
-  g.fillRect(px - 3 * s, py, w + 6 * s, 14 * s);
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(px - 3 * s, py, w + 6 * s, 14 * s);
-  g.fillStyle(0xeaeaea, 0.9);
-  g.fillRect(px + 3 * s, py + 3 * s, w - 6 * s, 6 * s);
+  g.lineStyle(0); g.beginFill(0x6a6a6a, 1); g.drawRect(px - 3 * s, py, w + 6 * s, 14 * s); g.endFill();
+  g.lineStyle(lineW, lineC, 0.95); g.drawRect(px - 3 * s, py, w + 6 * s, 14 * s); g.lineStyle(0);
+  g.lineStyle(0); g.beginFill(0xeaeaea, 0.9); g.drawRect(px + 3 * s, py + 3 * s, w - 6 * s, 6 * s); g.endFill();
 
   // handset
-  g.fillStyle(0x202020, 0.7);
-  g.fillRect(px + w - 14 * s, py + 29 * s, 6 * s, 17 * s);
+  g.lineStyle(0); g.beginFill(0x202020, 0.7); g.drawRect(px + w - 14 * s, py + 29 * s, 6 * s, 17 * s); g.endFill();
 }
 
 // ─── 公交站顶棚（独立 PropEntity，参与 Y 排序）───────────────────────────────
@@ -764,17 +705,15 @@ function drawBusStopRoof(g, p) {
   const rX = p.x - rW / 2;
 
   // roof panel
-  g.fillStyle(0x686866, 1);
-  g.fillRect(rX, p.roofTopY, rW, rH);
-  g.lineStyle(4.6 * s, 0x181818, 1);
-  g.strokeRect(rX, p.roofTopY, rW, rH);
+  g.lineStyle(0); g.beginFill(0x686866, 1); g.drawRect(rX, p.roofTopY, rW, rH); g.endFill();
+  g.lineStyle(4.6 * s, 0x181818, 1); g.drawRect(rX, p.roofTopY, rW, rH); g.lineStyle(0);
 
   // support pillars
   const pillarT = p.roofTopY + rH;
   const pOff    = 130 * s;
   g.lineStyle(7.2 * s, 0x282828, 1);
-  g.lineBetween(p.x - pOff, pillarT, p.x - pOff, p.pillarBottomY);
-  g.lineBetween(p.x + pOff, pillarT, p.x + pOff, p.pillarBottomY);
+  g.moveTo(p.x - pOff, pillarT); g.lineTo(p.x - pOff, p.pillarBottomY);
+  g.moveTo(p.x + pOff, pillarT); g.lineTo(p.x + pOff, p.pillarBottomY);
 }
 
 // ─── 内部工具 ────────────────────────────────────────────────────────────────

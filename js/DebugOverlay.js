@@ -31,7 +31,7 @@ const PANEL_STYLE = {
 
 export class DebugOverlay {
   /**
-   * @param {Phaser.Scene}    scene
+   * @param {object}    scene
    * @param {BehaviorManager} behaviorManager
    * @param {EntityManager}   entityManager
    */
