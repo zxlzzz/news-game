@@ -8,7 +8,7 @@
  *   2) 左上角全局面板（scrollFactor 0，固定屏幕）：
  *      活跃 Activity 列表 / 托管数统计 / 上次配对扫描结果。
  *
- * 用 Phaser Text 对象池绘制，默认隐藏。不参与 P 键长图导出
+ * 用 PixiText 对象池绘制，默认隐藏。不参与 P 键长图导出
  * （导出只合成 sky+bg+entity 三个 Graphics，本层的 Text 不在其中）。
  */
 

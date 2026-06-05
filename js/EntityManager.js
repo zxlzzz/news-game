@@ -69,7 +69,7 @@ export class EntityManager {
 
   /**
    * 按 Y 深度排序后绘制（Y 小=远=先画）。所有实体统一用地面接触 Y（_sortY ?? y）。
-   * @param {Phaser.GameObjects.Graphics} g - 实体图层
+   * @param {PIXI.Graphics} g - 实体图层
    * @param {Array<{_sortY:number, draw:(g)=>void}>} [extras] - 外部可绘制对象（如 NPC 道具），
    *        与实体混合参与同一次 Y 排序，统一画到 g。
    */

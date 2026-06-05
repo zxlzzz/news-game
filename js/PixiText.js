@@ -1,5 +1,5 @@
 /**
- * PixiText — 最小化模拟 Phaser.GameObjects.Text 的链式 API。
+ * PixiText — 最小化 PIXI.Text 链式 API 封装。
  * 是一个 PIXI.Container：背景矩形（可选）+ 文本。供 StreetScene HUD 与 DebugOverlay 共用。
  */
 
