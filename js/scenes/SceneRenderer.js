@@ -97,13 +97,13 @@ export class SceneRenderer {
     const pillarT = roofT + ROOF_H;
 
     const sf = depthScale(fy);
-    const benchY = pillarT + 25;
+    const benchY = pillarT + 10;
     const benchHalf = BENCH_W / 2;
     g.lineStyle(0); g.beginFill(0x565654, 1); g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sf); g.endFill();
     g.lineStyle(0.8 * sf, 0x181818, 0.7); g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sf); g.lineStyle(0);
     g.lineStyle(1.5 * sf, 0x303030, 0.9);
-    g.moveTo(sx - benchHalf + 10, benchY + 4 * sf); g.lineTo(sx - benchHalf + 10, benchY + 8 * sf);
-    g.moveTo(sx + benchHalf - 10, benchY + 4 * sf); g.lineTo(sx + benchHalf - 10, benchY + 8 * sf);
+    g.lineBetween(sx - benchHalf + 10, benchY + 4 * sf, sx - benchHalf + 10, benchY + 30 * sf);
+    g.lineBetween(sx + benchHalf - 10, benchY + 4 * sf, sx + benchHalf - 10, benchY + 30 * sf);
 
     const poleX  = bx1 + 5;
     const poleTy = roofT + 10;
@@ -139,8 +139,8 @@ export class SceneRenderer {
     g.lineStyle(0); g.beginFill(0x565654, 1); g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sn); g.endFill();
     g.lineStyle(0.8 * sn, 0x181818, 0.7); g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sn); g.lineStyle(0);
     g.lineStyle(1.5 * sn, 0x303030, 0.9);
-    g.moveTo(sx - benchHalf + 12, benchY + 4 * sn); g.lineTo(sx - benchHalf + 12, benchY + 9 * sn);
-    g.moveTo(sx + benchHalf - 12, benchY + 4 * sn); g.lineTo(sx + benchHalf - 12, benchY + 9 * sn);
+    g.lineBetween(sx - benchHalf + 12, benchY + 4 * sn, sx - benchHalf + 12, benchY + 40 * sn);
+    g.lineBetween(sx + benchHalf - 12, benchY + 4 * sn, sx + benchHalf - 12, benchY + 40 * sn);
 
     const poleX  = bx1 + 5;
     const poleTy = ny;

@@ -490,18 +490,16 @@ function drawTree(g, p) {
   const crownCY = crownBottom - r * 0.38;
 
   // ── 树干 ─────────────────────────────────────────────
+  g.fillStyle(0xE0E0E0, 1);
+  g.fillRect(x - trunkW / 2, crownBottom, trunkW, trunkH);
   g.lineStyle(lw, lineColor, 0.9);
-  g.beginFill(0x8B7355);
-  g.drawRect(x - trunkW / 2, crownBottom, trunkW, trunkH);
-  g.endFill();
+  g.strokeRect(x - trunkW / 2, crownBottom, trunkW, trunkH);
 
   // 分叉
   g.lineStyle(lw * 1.2, lineColor, 0.85);
   const forkY = crownBottom + r * 0.18;
-  g.moveTo(x - trunkW * 0.3, forkY);
-  g.lineTo(x - r * 0.28, crownBottom + r * 0.05);
-  g.moveTo(x + trunkW * 0.3, forkY);
-  g.lineTo(x + r * 0.22, crownBottom + r * 0.02);
+  g.lineBetween(x - trunkW * 0.3, forkY, x - r * 0.28, crownBottom + r * 0.05);
+  g.lineBetween(x + trunkW * 0.3, forkY, x + r * 0.22, crownBottom + r * 0.02);
 
   // ── 树冠填色 ─────────────────────────────────────────
   const blobs = [
@@ -514,12 +512,10 @@ function drawTree(g, p) {
     [  r*0.26,   r*0.28,  r*0.36 ],
   ];
 
-  g.lineStyle(0);
-  g.beginFill(0xe8e8e8);
+  g.fillStyle(0xe8e8e8, 1);
   for (const [dx, dy, br] of blobs) {
-    g.drawCircle(x + dx, crownCY + dy, br);
+    g.fillCircle(x + dx, crownCY + dy, br);
   }
-  g.endFill();
 
   // ── 轮廓点计算 ───────────────────────────────────────
   function isOuter(px, py, skipIdx) {
@@ -544,30 +540,34 @@ function drawTree(g, p) {
     }
   }
 
+  if (pts.length < 3) return;
   const mx = pts.reduce((s, p) => s + p.x, 0) / pts.length;
   const my = pts.reduce((s, p) => s + p.y, 0) / pts.length;
   pts.sort((a, b) => Math.atan2(a.y - my, a.x - mx) - Math.atan2(b.y - my, b.x - mx));
 
   // ── 描轮廓 ───────────────────────────────────────────
   g.lineStyle(lw, lineColor, 0.88);
+  g.beginPath();
   g.moveTo(pts[0].x, pts[0].y);
   for (let i = 1; i < pts.length; i++) g.lineTo(pts[i].x, pts[i].y);
-  g.lineTo(pts[0].x, pts[0].y);
+  g.closePath();
+  g.strokePath();
 }
 
 // ─── 喷泉 ────────────────────────────────────────────────────────────────────
-// 池径173, 柱高86, 水盘宽58
+// 池径600, 柱高86, 水盘宽58
 
 function drawFountain(g, p) {
   const { x, y } = p;
   const s   = p.scale ?? 1;
-  const rx  = 86.5 * s;   // pool half-diameter
-  const ry  = rx * 0.42;
+  const rx  = 300 * s;   // pool half-diameter
+  const ry  = rx * 0.5;
   const lw  = depthLineWidth(y, { wMin: 0.7, wMax: 1.5 });
   const lc  = depthLineColor(y, { light: 0xbc, dark: 0x88 });
 
   // shadow
-  g.lineStyle(0); g.beginFill(0x000000, 0.04); g.drawEllipse(x, y + 11 * s, rx * 1.9 / 2, ry * 1.3 / 2); g.endFill();
+  g.fillStyle(0x000000, 0.04);
+  g.fillEllipse(x, y + 11 * s, rx * 1.9, ry * 1.8);
   // pool rim
   g.lineStyle(0); g.beginFill(0xe5e5e5, 1); g.drawEllipse(x, y, rx * 1.55 / 2, ry * 1.55 / 2); g.endFill();
   g.lineStyle(lw, lc, 0.7); g.drawEllipse(x, y, rx * 1.2 / 2, ry * 1.2 / 2); g.lineStyle(0);
@@ -587,7 +587,7 @@ function drawStall(g, p) {
   const { x, y } = p;
   const s       = p.scale ?? 1;
   const w       = 290 * s;
-  const roofH   = 144 * s;
+  const roofH   = 200 * s;
   const ctrH    = 72  * s;
   const lineW   = depthLineWidth(y, { wMin: 1, wMax: 1.7 });
   const lineC   = depthLineColor(y, { light: 0x38, dark: 0x08 });
@@ -634,7 +634,7 @@ function drawStall(g, p) {
 function drawVending(g, p) {
   const { x, y } = p;
   const s     = p.scale ?? 1;
-  const w     = 58  * s;
+  const w     = 80  * s;
   const h     = 158 * s;
   const px    = x - w / 2,  py = y - h;
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
@@ -668,7 +668,7 @@ function drawVending(g, p) {
 function drawPhoneBooth(g, p) {
   const { x, y } = p;
   const s     = p.scale ?? 1;
-  const w     = 58  * s;
+  const w     = 80  * s;
   const h     = 173 * s;
   const px    = x - w / 2,  py = y - h;
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
@@ -700,8 +700,8 @@ function drawPhoneBooth(g, p) {
 
 function drawBusStopRoof(g, p) {
   const s  = p.scale ?? 1;
-  const rW = 340 * s;
-  const rH = 65  * s;
+  const rW = 800 * s;
+  const rH = 30  * s;
   const rX = p.x - rW / 2;
 
   // roof panel
@@ -710,7 +710,7 @@ function drawBusStopRoof(g, p) {
 
   // support pillars
   const pillarT = p.roofTopY + rH;
-  const pOff    = 130 * s;
+  const pOff    = 325 * s;
   g.lineStyle(7.2 * s, 0x282828, 1);
   g.moveTo(p.x - pOff, pillarT); g.lineTo(p.x - pOff, p.pillarBottomY);
   g.moveTo(p.x + pOff, pillarT); g.lineTo(p.x + pOff, p.pillarBottomY);
