@@ -6,8 +6,9 @@
 import { WORLD_WIDTH, WORLD_HEIGHT } from './SceneConfig.js';
 
 export class Viewfinder {
-  constructor(scene, config = {}) {
-    this.scene  = scene;
+  constructor({ app, getWorldCoords }, config = {}) {
+    this.app = app;
+    this._toWorld = getWorldCoords;
     this.x      = config.x      || 300;
     this.y      = config.y      || 200;
     this.width  = config.width  || 200;
@@ -32,7 +33,7 @@ export class Viewfinder {
     // 框内实体列表（Entity 的任意子类）
     this.capturedEntities = [];
 
-    this._setupInput(scene);
+    this._setupInput();
   }
 
   /** 判断点是否在右下角缩放手柄方块内 */
@@ -44,10 +45,11 @@ export class Viewfinder {
     return wx >= hx - s && wx <= hx + 2 && wy >= hy - s && wy <= hy + 2;
   }
 
-  _setupInput(scene) {
-    scene.input.on('pointerdown', (pointer) => {
-      const wx = pointer.worldX;
-      const wy = pointer.worldY;
+  _setupInput() {
+    const view = this.app.view;
+
+    view.addEventListener('pointerdown', (e) => {
+      const { x: wx, y: wy } = this._toWorld(e.clientX, e.clientY);
       // 优先检测缩放手柄
       if (this._isInHandle(wx, wy)) {
         this.resizing = true;
@@ -65,29 +67,29 @@ export class Viewfinder {
       }
     });
 
-    scene.input.on('pointermove', (pointer) => {
+    view.addEventListener('pointermove', (e) => {
+      if (!this.resizing && !this.dragging) return;
+      const { x: wx, y: wy } = this._toWorld(e.clientX, e.clientY);
       if (this.resizing) {
-        const newW = (pointer.worldX + this.resizeGrabDx) - this.resizeAnchorX;
-        const newH = (pointer.worldY + this.resizeGrabDy) - this.resizeAnchorY;
+        const newW = (wx + this.resizeGrabDx) - this.resizeAnchorX;
+        const newH = (wy + this.resizeGrabDy) - this.resizeAnchorY;
         this.width  = Math.max(this.minWidth,  Math.min(this.maxWidth,  newW));
         this.height = Math.max(this.minHeight, Math.min(this.maxHeight, newH));
         return;
       }
-      if (this.dragging) {
-        // 钳制在世界范围内，避免取景框被拖出场景（坐标语义混乱、只能捕获半框）
-        this.x = Math.max(0, Math.min(WORLD_WIDTH  - this.width,  pointer.worldX - this.dragOffsetX));
-        this.y = Math.max(0, Math.min(WORLD_HEIGHT - this.height, pointer.worldY - this.dragOffsetY));
-      }
+      // 钳制在世界范围内，避免取景框被拖出场景（坐标语义混乱、只能捕获半框）
+      this.x = Math.max(0, Math.min(WORLD_WIDTH  - this.width,  wx - this.dragOffsetX));
+      this.y = Math.max(0, Math.min(WORLD_HEIGHT - this.height, wy - this.dragOffsetY));
     });
 
-    scene.input.on('pointerup', () => {
+    window.addEventListener('pointerup', () => {
       this.dragging = false;
       this.resizing = false;
     });
   }
 
   /**
-   * 检测哪些实体在取景框内（AABB），更新 entity.inViewfinder 标志
+   * 检测哪些实体在取景框内（AABB），收集到 capturedEntities
    * @param {Entity[]} entities - 所有存活可见实体
    */
   updateCapture(entities) {
@@ -102,7 +104,6 @@ export class Viewfinder {
         b.y + b.height < vf.y ||
         b.y            > vf.y + vf.h
       );
-      e.inViewfinder = overlap;
       if (overlap) this.capturedEntities.push(e);
     }
   }

@@ -24,13 +24,12 @@ const rand = (a, b) => a + Math.random() * (b - a);
 
 export class VehicleSpawner {
   /**
-   * @param {object} opts
+   * @param {object}         opts
    * @param {TrafficManager} opts.trafficManager
-   * @param {object}         opts.dep  - { scaleMul, roadCenterY, roadHalfHeight }
+   * @param {StickRenderer}  opts.sr
    */
-  constructor({ trafficManager, dep, sr }) {
+  constructor({ trafficManager, sr }) {
     this._tm    = trafficManager;
-    this._dep   = dep;
     this._sr    = sr ?? null;
     this._timer = 0;
   }
@@ -69,11 +68,9 @@ export class VehicleSpawner {
     const weights = WEIGHTS[String(lane.direction)];
     const kind    = this._pickKind(weights);
 
-    const y = rand(lane.yRange[0], lane.yRange[1]);
+    const y     = rand(lane.yRange[0], lane.yRange[1]);
     const speed = kind === 'moto' ? rand(100, 150) : rand(70, 130);
-
-    const baseScale = kind === 'bus' ? 0.13 : 0.14;
-    const tagName   = kind === 'taxi' ? 'taxi' : kind === 'bus' ? 'transit' : kind;
+    const tagName = kind === 'taxi' ? 'taxi' : kind === 'bus' ? 'transit' : kind;
 
     const v = new VehicleEntity({
       kind,
@@ -81,12 +78,10 @@ export class VehicleSpawner {
       y,
       direction: lane.direction,
       speed,
-      scale:     baseScale,
       minX:      -250,
       maxX:      WORLD_WIDTH + 250,
       tags:      [tagName, 'vehicle'],
       facingSide: kind === 'bus' ? (lane.direction > 0 ? 'far' : 'near') : 'near',
-      ...this._dep,
     });
 
     v.stateMachine = new VehicleStateMachine(v);

@@ -1,3 +1,5 @@
+import { depthT } from './Layout.js';
+
 /**
  * EntityManager
  * 统一管理所有场景实体（NPC、建筑、道具）：
@@ -8,14 +10,10 @@
 export class EntityManager {
   /**
    * @param {object} config
-   * @param {number} config.farY      - 纵深远端 Y（NPC最小Y）
-   * @param {number} config.nearY     - 纵深近端 Y（NPC最大Y）
-   * @param {number} config.farScale  - 远端缩放系数
-   * @param {number} config.nearScale - 近端缩放系数
+   * @param {number} config.farScale  - 远端缩放系数（depthT=0）
+   * @param {number} config.nearScale - 近端缩放系数（depthT=1）
    */
   constructor(config = {}) {
-    this.farY      = config.farY      ?? 250;
-    this.nearY     = config.nearY     ?? 460;
     this.farScale  = config.farScale  ?? 0.25;
     this.nearScale = config.nearScale ?? 0.55;
     this.entities  = [];
@@ -30,8 +28,7 @@ export class EntityManager {
 
   /** 按 Y 坐标计算深度缩放系数（仅对动态实体生效） */
   depthScale(y) {
-    const t = Math.max(0, Math.min(1, (y - this.farY) / (this.nearY - this.farY)));
-    return this.farScale + t * (this.nearScale - this.farScale);
+    return this.farScale + depthT(y) * (this.nearScale - this.farScale);
   }
 
   /**
@@ -64,22 +61,23 @@ export class EntityManager {
     for (const e of this.entities) {
       if (!e.alive) continue;
       if (!e.static && 'scale' in e) {
-        e.scale = this.depthScale(e.y) * (e.scaleMul ?? 1);
+        e.scale = this.depthScale(e.y);
       }
       e.update(delta);
     }
   }
 
   /**
-   * 按 Y 深度排序后统一绘制所有可见实体
-   * @param {Phaser.GameObjects.Graphics} g
+   * 按 Y 深度排序后绘制（Y 小=远=先画）。所有实体统一用地面接触 Y（_sortY ?? y）。
+   * @param {Phaser.GameObjects.Graphics} g - 实体图层
+   * @param {Array<{_sortY:number, draw:(g)=>void}>} [extras] - 外部可绘制对象（如 NPC 道具），
+   *        与实体混合参与同一次 Y 排序，统一画到 g。
    */
-  draw(g) {
+  draw(g, extras = []) {
     const visible = this.entities.filter(e => e.alive && e.visible);
-    visible.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
-    for (const e of visible) {
-      e.draw(g);
-    }
+    const list = extras.length ? visible.concat(extras) : visible;
+    list.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
+    for (const e of list) e.draw(g);
   }
 
   /** 返回所有存活且可见的实体（供取景框碰撞检测使用） */

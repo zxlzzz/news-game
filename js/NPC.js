@@ -5,7 +5,7 @@
  */
 
 import { Entity } from './Entity.js';
-import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y } from './SceneConfig.js';
+import { depthGray } from './SceneConfig.js';
 import { humanOffsetY, dogOffsetY } from './StickRenderer.js';
 
 // 行为状态 → 标签
@@ -25,16 +25,10 @@ const OVERLAY_EXTRA_TAGS = {
 // 无状态机托管时按动画名推断标签（chess/cycle/dance 等专用场景）
 const ANIM_TAGS = {
   walk: 'walking', run: 'running', jog: 'jogging', bike: 'cycling',
-  mobile: 'riding', idle: 'standing', single: 'standing', chess: 'sitting',
+  mobile: 'riding', idle: 'standing', stand: 'standing', chess: 'sitting',
   sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling',
 };
 
-// NPC 按 Y 取灰度：远端中浅灰 → 近端中深灰（避免近端过黑）
-function npcDepthGray(y) {
-  const t = Math.max(0, Math.min(1, (y - SIDEWALK_FAR_Y) / (SIDEWALK_NEAR_Y - SIDEWALK_FAR_Y)));
-  const v = Math.round(0x78 + t * (0x32 - 0x78));
-  return (v << 16) | (v << 8) | v;
-}
 
 export class NPC extends Entity {
   static _nextId = 1;
@@ -47,7 +41,6 @@ export class NPC extends Entity {
    * @param {number}        config.speed         - 水平速度（像素/秒）
    * @param {number}        config.vy            - 纵深漂移速度（像素/秒）
    * @param {number}        config.scale         - 初始缩放（EntityManager每帧会按Y覆盖）
-   * @param {number}        config.color         - 服装颜色
    * @param {number}        config.minX/maxX     - X活动边界
    * @param {number}        config.minY/maxY     - Y活动边界
    * @param {boolean}       config.playOnce      - true=动画只播放一次，结束后设 animDone=true
@@ -70,10 +63,8 @@ export class NPC extends Entity {
     this.animation = config.animation || 'idle';
     this.direction = config.direction || 1;
     this.speed     = config.speed     || 0;
-    this.vy        = config.vy !== undefined ? config.vy : (Math.random() * 2 - 1) * 18;
+    this.vy        = config.vy ?? 0;
     this.scale     = config.scale     ?? 0.45;
-    this.scaleMul  = config.scaleMul  ?? 1;   // 额外缩放系数（按所处带拉开远近差距）
-    this.color     = config.color     ?? 0x1a1a1a;
 
     this.frameIndex = 0;
     this.frameTimer = 0;
@@ -110,6 +101,30 @@ export class NPC extends Entity {
     const out = {};
     for (const m of [...this.modifiers].sort((a, b) => a.priority - b.priority)) {
       if (m.joints) Object.assign(out, m.joints);
+    }
+    return out;
+  }
+
+  _buildJointOverrides(frame) {
+    if (!this.modifiers.length) return null;
+    const sorted = [...this.modifiers].sort((a, b) => a.priority - b.priority);
+    const deltas = {};
+    const absolutes = {};
+    for (const m of sorted) {
+      if (!m.joints) continue;
+      if (m.absolute) {
+        Object.assign(absolutes, m.joints);
+      } else {
+        Object.assign(deltas, m.joints);
+      }
+    }
+    const out = {};
+    const bodyPos = frame['body'] ?? [0, 0];
+    for (const [j, d] of Object.entries(deltas)) {
+      out[j] = [bodyPos[0] + d[0], bodyPos[1] + d[1]];
+    }
+    for (const [j, v] of Object.entries(absolutes)) {
+      out[j] = v;
     }
     return out;
   }
@@ -157,7 +172,7 @@ export class NPC extends Entity {
       : { head: 'head', neck: 'neck', hand_l: 'l_hand', hand_r: 'r_hand',
           hip: 'body', foot_l: 'l_foot', foot_r: 'r_foot' };
     const jn = map[name] || name;
-    const ov = this.resolveJoints();
+    const ov = this._buildJointOverrides(frame);
     const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
     const jp = coord(jn);
     if (!jp) return { x: this.x, y: this.y };
@@ -253,12 +268,12 @@ export class NPC extends Entity {
     if (!this.leashTarget) {
       if (this.speed > 0) {
         this.x += this.direction * this.speed * (delta / 1000);
-        if      (this.x > this.maxX) { this.x = this.maxX; if (!this.roam) this.direction = -1; }
-        else if (this.x < this.minX) { this.x = this.minX; if (!this.roam) this.direction =  1; }
+        if      (this.x > this.maxX) { this.x = this.maxX; if (!this._walkMode) this.direction = -1; }
+        else if (this.x < this.minX) { this.x = this.minX; if (!this._walkMode) this.direction =  1; }
       }
       this.y += this.vy * (delta / 1000);
-      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = this.roam ? 0 : -Math.abs(this.vy); }
-      else if (this.y < this.minY) { this.y = this.minY; this.vy = this.roam ? 0 :  Math.abs(this.vy); }
+      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = this._walkMode ? 0 : -Math.abs(this.vy); }
+      else if (this.y < this.minY) { this.y = this.minY; this.vy = this._walkMode ? 0 :  Math.abs(this.vy); }
     }
 
     if (this.customUpdate) this.customUpdate(this, delta);
@@ -271,16 +286,14 @@ export class NPC extends Entity {
     // 围绕骑手/主人的真实锚点作画，从而实现精确对齐。
     if (this.drawExtra) this.drawExtra(g, this);
 
-    // 纯黑白灰画风：忽略 config.color，按 Y 深度自动取灰度
-    // 取景框命中时仍用红色高亮（唯一保留的彩色，方便玩家定位捕获目标）
-    const color = this.inViewfinder ? 0xcc2200 : npcDepthGray(this.y);
+    const color = depthGray(this.y, { light: 0x78, dark: 0x32 });
+    const frame = this.renderer.getFrame(this.animation, this.frameIndex);
+    const overrides = this.modifiers.length ? this._buildJointOverrides(frame) : null;
 
     this.renderer.draw(
       g, this.animation, this.frameIndex,
       this.x, this._renderY(), this.scale, this.direction,
-      color, 1, this.resolveJoints()
+      color, 1, overrides
     );
-
-    if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
 }

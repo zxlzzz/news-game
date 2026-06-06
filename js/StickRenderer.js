@@ -115,6 +115,12 @@ export class StickRenderer {
     return this.animations[name] || null;
   }
 
+  getFrame(animKey, frameIndex) {
+    const anim = this.animations[animKey];
+    if (!anim) return {};
+    return anim.frames[frameIndex % anim.frameCount] ?? {};
+  }
+
   /**
    * 绘制一帧角色
    * @param {Phaser.GameObjects.Graphics} g

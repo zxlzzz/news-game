@@ -22,7 +22,6 @@ export class Entity {
     this.visible = config.visible !== false;
     this.alive   = true;
     this.static  = config.static !== false; // 默认静态；NPC 显式设为 false
-    this.inViewfinder = false;
   }
 
   /**
@@ -44,11 +43,4 @@ export class Entity {
 
   /** 绘制自身到 Graphics 对象（子类实现） */
   draw(g) {}
-
-  /** 被取景框捕获时的红色边框高亮（子类可调用） */
-  _drawViewfinderOutline(g) {
-    const b = this.getBounds();
-    g.lineStyle(1.5, 0xee4400, 0.7);
-    g.strokeRect(b.x - 2, b.y - 2, b.width + 4, b.height + 4);
-  }
 }

@@ -74,6 +74,12 @@ export class BuildingEntity extends Entity {
     this.facadeH = config.facadeH ?? 90;
   }
 
+  // 深度排序用「地面接触线」= baseY（立面落地线）= this.y + facadeH。
+  // 注意：_spawnBuildings 在构造之后才把 this.y 改成立面顶边（baseY - facadeH），
+  // 构造器内 this.y 仍是 BUILDING_BASE_Y，直接赋值会取到旧值；故用 getter 惰性求值，
+  // 保证排序时返回最终 baseY（与 draw() 里的 base 计算一致）。
+  get _sortY() { return this.y + this.facadeH; }
+
   getBounds() {
     return { x: this.x, y: this.y - this.bDepth, width: this.bWidth, height: this.bDepth };
   }
@@ -107,8 +113,6 @@ export class BuildingEntity extends Entity {
       g.fillStyle(0xffffff, 0.08);            // 右侧细高光，强调缝隙立体
       g.fillRect(x + 7, top, 1.5, base - top + 1);
     }
-
-    if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
 
   _facade(g, x, w) {

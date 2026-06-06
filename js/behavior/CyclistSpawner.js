@@ -22,8 +22,8 @@ const ENTRY_PAD = 60;
 const CULL_PAD  = 50;
 
 const LANES = [
-  { id: 'far',  direction: +1, yFn: bikeLaneFarY,  target: 2, baseScale: 0.16 },
-  { id: 'near', direction: -1, yFn: bikeLaneNearY, target: 2, baseScale: 0.18 },
+  { id: 'far',  direction: +1, yFn: bikeLaneFarY,  target: 2 },
+  { id: 'near', direction: -1, yFn: bikeLaneNearY, target: 2 },
 ];
 
 // 车型权重（自行车 3、电动车 2）
@@ -95,10 +95,8 @@ export class CyclistSpawner {
       x, y: yFn(0.5),
       animation: kind === 'ebike' ? 'mobile' : 'bike',
       direction: lane.direction, speed, vy: 0,
-      scale: lane.baseScale,
       minX: -100000, maxX: 100000,
       minY: yFn(0.05), maxY: yFn(0.95),
-      color: kind === 'ebike' ? 0x1a1000 : (lane.direction > 0 ? 0x0a2010 : 0x200a10),
       tags: kind === 'ebike' ? ['delivery', 'e-bike', 'vehicle'] : ['cyclist', 'vehicle'],
     });
     n.drawExtra  = kind === 'ebike' ? this.draw.ebike : this.draw.bicycle;

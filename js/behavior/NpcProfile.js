@@ -13,9 +13,9 @@
 
 // 路人共用的状态转换表
 const PED_TRANSITIONS = {
-  walk:       { stand: 0.6, sit_bench: 0.2, run: 0.08, squat: 0.01, sit_ground: 0.02 },
+  walk:       { stand: 0.6, sit_bench: 0.2, run: 0.08, squat: 0.01, sit_ground: 0.02, loiter: 0.02 },
   run:        { walk: 0.9, fall: 0.1 },
-  stand:      { walk: 0.77, sit_bench: 0.1, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05, loiter: 0.07 },
+  stand:      { walk: 0.77, sit_bench: 0.1, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05, loiter: 0.04 },
   sit_bench:  { stand: 0.97, lie_bench: 0.03 },
   squat:      { stand: 1.0 },
   sit_ground: { stand: 1.0 },
@@ -50,9 +50,15 @@ const HANDS_IN_POCKET = {
 // 路人共用的 gesture 触发表
 //   chance 为每帧触发概率；dur 由 clip 关键帧累计决定，无需在此声明
 const PED_GESTURES = {
-  check_watch: { on: ['walk', 'stand', 'loiter'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
-  stretch:     { on: ['stand', 'loiter'],          chance: 0.00008, traitExcludes: ['hold_bag', 'walk_dog'] },
-  wave:        { on: ['stand', 'loiter'],          chance: 0.0002 },
+  check_watch:    { on: ['stand', 'loiter'],         chance: 0.0003,  traitExcludes: ['hold_bag', 'walk_dog'] },
+  stretch:        { on: ['stand', 'loiter'],         chance: 0.00008, traitExcludes: ['hold_bag', 'walk_dog'] },
+  yawn:           { on: ['stand', 'loiter'],         chance: 0.0001 },
+  look_around:    { on: ['stand', 'loiter'],         chance: 0.0002 },
+  adjust_clothes: { on: ['stand', 'loiter'],         chance: 0.0001,  traitExcludes: ['hold_bag', 'walk_dog'] },
+  wave:           { on: ['stand', 'loiter'],         chance: 0.0002 },
+  // moving gesture：行走/奔跑中触发
+  moving_check_watch: { on: ['walk', 'run'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
+  moving_wipe_sweat:  { on: ['walk', 'run'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
 };
 
 const PEDESTRIAN = {
@@ -61,39 +67,41 @@ const PEDESTRIAN = {
   allowedStates: PED_ALLOWED,
   transitions: PED_TRANSITIONS,
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.0004, dur: [8, 30] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench', 'loiter'], chance: 0.0003, dur: [10, 25] },
+    phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [8, 30] },
+    phone_call: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0003, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
   },
   gesturePoses: PED_GESTURES,
-  spawnTraits: ['hold_bag', 'backpack', 'umbrella'],
-  activities: ['talk', 'chess', 'use_vending', 'use_trash'],
-  smartObjectChance: { use_vending: 0.002, use_trash: 0.002 },
+  spawnTraits: ['hold_bag', 'umbrella'],
+  activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
+  smartObjectChance: { use_vending: 0.002, use_trash: 0.002, stall_buyer: 0.002, chess_onlooker: 0.002 },
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
-  loiterChance: 0.25,
+  loiterChance: 0.10,
   loiterDurationRange: [15, 45],
   departure: { lifespanRange: [90, 210], preferExitType: null },
+  speedRange: [20, 34],
 };
 
 const BUSINESSMAN = {
   ...PEDESTRIAN,
   name: 'businessman',
-  activities: ['talk', 'use_vending'],
+  activities: ['talk', 'use_vending', 'stall_buyer'],
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'loiter'], chance: 0.0006, dur: [8, 30] },
-    phone_call: { on: ['walk', 'stand', 'sit_bench', 'lean_wall', 'loiter'], chance: 0.0004, dur: [10, 25] },
+    phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0006, dur: [8, 30] },
+    phone_call: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
   },
   socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
-  loiterChance: 0.12,
+  loiterChance: 0.06,
   loiterDurationRange: [15, 40],
   departure: { lifespanRange: [90, 210], preferExitType: 'building' },
+  speedRange: [28, 40],
 };
 
 const TOURIST = {
@@ -105,17 +113,18 @@ const TOURIST = {
     stand: { walk: 0.68, sit_bench: 0.08, sit_ground: 0.07, squat: 0.02, lean_wall: 0.05, loiter: 0.10 },
   },
   heldPoses: {
-    phone_look: { on: ['walk', 'stand', 'sit_ground', 'squat', 'loiter'], chance: 0.0004, dur: [8, 30] },
-    phone_call: { on: ['walk', 'stand', 'loiter'], chance: 0.0003, dur: [10, 25] },
+    phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [8, 30] },
+    phone_call: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0003, dur: [10, 25] },
     smoke:      SMOKE,
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
   },
-  activities: ['talk', 'chess', 'use_vending', 'use_trash'],
+  activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
   socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
-  loiterChance: 0.40,
+  loiterChance: 0.18,
   loiterDurationRange: [20, 60],
   departure: { lifespanRange: [90, 210], preferExitType: null },
+  speedRange: [16, 26],
 };
 
 const CHESS_PLAYER = {
@@ -139,13 +148,25 @@ const CHESS_ONLOOKER = {
     sit_ground: { stand: 1.0 },
   },
   heldPoses: {
-    phone_look: { on: ['stand'], chance: 0.0004, dur: [8, 25] },
+    phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [8, 25] },
     cross_arm:  CROSS_ARM,
   },
   activities: ['talk', 'chess_watch'],
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.02, give_item: 0.04, handshake: 0.05, point_at: 0.04 },
+};
+
+// 摊主：从地图边缘入场 → 路由到 stall 的 seller 槽 → 常驻经营，无正常状态机转换
+const STALL_SELLER = {
+  name: 'stall_seller',
+  initial: 'walk',
+  allowedStates: ['walk', 'stand', 'routing'],
+  transitions: {},
+  heldPoses: {},
+  activities: ['stall_seller'],
+  traits: {},
+  cameraReaction: 'neutral',
 };
 
 const DOG_OWNER = {
@@ -176,6 +197,7 @@ export const PROFILES = {
   tourist:        TOURIST,
   chess_player:   CHESS_PLAYER,
   chess_onlooker: CHESS_ONLOOKER,
+  stall_seller:   STALL_SELLER,
   dog_owner:      DOG_OWNER,
   athlete:        ATHLETE,
 };

@@ -6,17 +6,14 @@
  *   - 自由 NPC（未被 Activity 锁定）：BaseStateMachine + ModifierLayer
  *   - CameraReactionLayer：镜头反应（本次留空）
  *
- * 行为差异由 NpcProfile 数据驱动；NPC 通过 register(npc, profileName) 纳入框架。
- *
- * 注意：本类只设置状态/动画/速度/朝向，实际位移与帧推进仍由 NPC.update
- *       （经 EntityManager.update）执行。每帧顺序：behaviorManager.update() →
- *       entityManager.update()。
+ * Smart Object 路由规则由 initSmartObjectRoutes() 构造完成后调用，
+ * 扫描 em.entities 中所有含 smartDef.routing 的 PropEntity 并自动注册 registerTransition。
  */
 
 import { getProfile }          from './behavior/NpcProfile.js';
 import { EnvironmentQuery }     from './behavior/EnvironmentQuery.js';
-import { tickBaseState, setState, registerTransition, triggerDeparture } from './behavior/BaseStateMachine.js';
-import { tickModifiers }        from './behavior/ModifierLayer.js';
+import { tickBaseState, setState, registerTransition, triggerDeparture, initPoseCache as initBsmPoseCache } from './behavior/BaseStateMachine.js';
+import { tickModifiers, initPoseCache as initModPoseCache } from './behavior/ModifierLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
 import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
 import { WaitForBusLayer }      from './behavior/WaitForBusLayer.js';
@@ -25,72 +22,79 @@ import { refreshDebugFlag }     from './behavior/DebugLog.js';
 const rand = (a, b) => a + Math.random() * (b - a);
 
 export class BehaviorManager {
-  /** @param {EntityManager} entityManager */
-  constructor(entityManager) {
+  /** @param {EntityManager} entityManager @param {object} poseCache */
+  constructor(entityManager, poseCache) {
     this.em          = entityManager;
     this.envQuery    = new EnvironmentQuery(entityManager);
-    this.socialLayer = new SocialLayer(this.envQuery);
+    this.poseCache   = poseCache;
+
+    if (poseCache) {
+      initModPoseCache(poseCache);
+      initBsmPoseCache(poseCache);
+    }
+
+    this.socialLayer = new SocialLayer(this.envQuery, poseCache);
     this.cameraLayer = new CameraReactionLayer();
     this.npcs            = [];
     this.waitForBusLayer = null;
+    this.routeSelector   = null;
+  }
 
-    // 注入 Smart Object routing 转换：行走中的 NPC 低概率发现空棋桌并前往
+  /**
+   * 扫描 em.entities 中所有含 smartDef.routing 的 PropEntity，
+   * 为每个唯一 activityFlag 自动注册一条 walk → routing 转换规则。
+   * 须在所有实体（包括 Chess.js 等代码生成的道具）加入 em 之后调用。
+   */
+  initSmartObjectRoutes() {
     const sl = this.socialLayer;
-    registerTransition({
-      from: 'walk', to: 'routing', priority: 10,
-      trigger: 'smart-object',
-      condition: (npc, env, profile) => {
-        if (npc._departing) return false;
-        if (!profile?.activities?.includes('chess')) return false;
-        if (Math.random() > 0.003) return false;
-        const found = env.findAvailableSlot('chess', npc, 220);
-        if (!found) return false;
-        const { prop, slot } = found;
-        slot.reserved = npc.id;
-        npc._routeTarget = {
-          x: prop.x + slot.dx,
-          y: prop.y + slot.dy,
-          prop, slot,
-          abandonAfter: 25,
-          onArrive: (n) => sl.onSlotArrival(n, prop, slot),
-        };
-        return true;
-      },
-    });
+    const seenFlags = new Set();
 
-    // 单人 Smart Object（自动贩卖机 / 垃圾桶）：行走中低概率发现附近空闲机器并前往
-    const registerSmartObjectRoute = (activityType, defaultChance, radius) => {
-      registerTransition({
-        from: 'walk', to: 'routing', priority: 10,
-        trigger: 'smart-object',
-        condition: (npc, env, profile) => {
-          if (npc._departing) return false;
-          if (!profile?.activities?.includes(activityType)) return false;
-          const p = profile.smartObjectChance?.[activityType] ?? defaultChance;
-          if (Math.random() > p) return false;
-          const found = env.findAvailableSlot(activityType, npc, radius);
-          if (!found) return false;
-          const { prop, slot } = found;
-          slot.reserved = npc.id;
-          npc._routeTarget = {
-            x: prop.x + slot.dx,
-            y: prop.y + slot.dy,
-            prop, slot,
-            abandonAfter: 25,
-            onArrive: (n) => sl.onSlotArrival(n, prop, slot),
-          };
-          return true;
-        },
-      });
-    };
-    registerSmartObjectRoute('use_vending', 0.002, 150);
-    registerSmartObjectRoute('use_trash',   0.002, 150);
+    for (const entity of this.em.entities) {
+      if (!entity.smartDef?.routing) continue;
+      const activityType = entity.smartDef.activityType;
+
+      for (const cfg of entity.smartDef.routing) {
+        if (seenFlags.has(cfg.activityFlag)) continue;
+        seenFlags.add(cfg.activityFlag);
+
+        // 捕获本次循环的配置（避免闭包共享变量）
+        const flag            = cfg.activityFlag;
+        const role            = cfg.role ?? null;
+        const defaultChance   = cfg.chance;
+        const radius          = cfg.radius;
+        const requireOccupied = cfg.requireOccupied ?? false;
+
+        registerTransition({
+          from: 'walk', to: 'routing', priority: 10,
+          trigger: 'smart-object',
+          condition: (npc, env, profile) => {
+            if (npc._departing) return false;
+            if (!profile?.activities?.includes(flag)) return false;
+            const p = profile.smartObjectChance?.[flag] ?? defaultChance;
+            if (Math.random() > p) return false;
+            const opts = role ? { role, requireOccupied } : undefined;
+            const found = env.findAvailableSlot(activityType, npc, radius, opts);
+            if (!found) return false;
+            const { prop, slot } = found;
+            slot.reserved = npc.id;
+            npc._routeTarget = {
+              x: prop.x + slot.dx,
+              y: prop.y + slot.dy,
+              prop, slot,
+              abandonAfter: 25,
+              onArrive: (n) => sl.onSlotArrival(n, prop, slot),
+            };
+            return true;
+          },
+        });
+      }
+    }
   }
 
   /** 注册 NPC 并指定行为档案；返回该 NPC */
   register(npc, profileName = 'pedestrian') {
     npc._profile  = getProfile(profileName);
-    npc._activity = null;   // 当前参与的 Activity（null = 自由）
+    npc._activity = null;
     npc.walkSpeed = npc.speed > 0 ? npc.speed : rand(20, 34);
     this.npcs.push(npc);
     setState(npc, npc._profile.initial || 'walk');
@@ -99,16 +103,15 @@ export class BehaviorManager {
 
   update(delta) {
     const dt = delta / 1000;
-    refreshDebugFlag();   // 缓存当帧 npc-debug 开关，供各层日志使用
+    refreshDebugFlag();
 
-    // 1) Activity 层（tick 所有 Activity + 尝试新配对）
+    // 1) Activity 层
     this.socialLayer.update(this.npcs, dt);
 
-    // 2) WaitForBusLayer 扫描（有 busStops 时才启用）
+    // 2) WaitForBusLayer 扫描
     if (this.waitForBusLayer) this.waitForBusLayer.update(this.npcs, dt);
 
-    // 3) 自由 NPC（未被 Activity 锁定）走基础状态机 + 叠加动作
-    // 计算全局 held 比例，传入 ModifierLayer 做频率上限
+    // 3) 自由 NPC：基础状态机 + 叠加动作
     const heldCount = this.npcs.filter(n =>
       n.alive && n.modifiers?.some(m => m.kind === 'held' && !m.id.startsWith('_'))
     ).length;
@@ -117,14 +120,11 @@ export class BehaviorManager {
     for (const npc of this.npcs) {
       if (!npc.alive || npc._activity) continue;
 
-      // 等车 NPC：由 WaitForBusLayer 管理状态（stand/loiter 交替）
-      // boarding 中的 NPC（routing 状态）仍需 tickBaseState 驱动 steerRoam
       if (npc._waitingBusStop && npc.state !== 'routing') {
         if (this.waitForBusLayer) this.waitForBusLayer.tickWaiter(npc, dt);
         continue;
       }
 
-      // 年龄计时 + 离场触发（仅对有 lifespan 的 NPC 生效，_departing 后不再计时）
       if (!npc._departing && npc._lifespan != null && !npc._waitingBusStop) {
         npc._ageTimer = (npc._ageTimer || 0) + dt;
         if (npc._ageTimer >= npc._lifespan) {
@@ -133,17 +133,19 @@ export class BehaviorManager {
       }
 
       tickBaseState(npc, npc._profile, this.envQuery, dt);
-      // 离场中的 NPC 跳过 modifier 随机触发
+      if (npc._needsNewRoute && this.routeSelector) {
+        this.routeSelector.pickAndStart(npc, this.npcs);
+      }
       if (!npc._departing) tickModifiers(npc, npc._profile, dt, globalHeldFrac);
     }
 
-    // 4) NPC 间分离：行走中的两人靠太近时互相推开，避免重叠穿模
+    // 4) NPC 间分离
     this._separate(dt);
 
-    // 5) 镜头反应层（依赖社会稳定度系统，本次留空）
+    // 5) 镜头反应层（预留）
     // this.cameraLayer.update(this.npcs, viewfinder, stability, dt);
 
-    // 6) 定期清理死亡 NPC，防止数组无限增长（每 10s 一次）
+    // 6) 定期清理死亡 NPC
     this._pruneTimer = (this._pruneTimer ?? 0) - dt;
     if (this._pruneTimer <= 0) {
       this.npcs = this.npcs.filter(n => n.alive);
@@ -151,7 +153,6 @@ export class BehaviorManager {
     }
   }
 
-  // 简单分离力：仅作用于移动中的自由 NPC（O(n²)，场景 NPC < 30 足够）
   _separate(dt) {
     const MOVING = new Set(['walk', 'run', 'jog']);
     const movers = this.npcs.filter(n =>
@@ -161,8 +162,9 @@ export class BehaviorManager {
         const a = movers[i], b = movers[j];
         const dx = a.x - b.x, dy = a.y - b.y;
         const d = Math.hypot(dx, dy);
-        if (d > 0 && d < 24) {
-          const f = ((24 - d) / 24) * 16 * dt;       // 越近推力越大
+        const sepR = 24 * ((a.scale + b.scale) / 2 / 0.18);
+        if (d > 0 && d < sepR) {
+          const f = ((sepR - d) / sepR) * 16 * dt;
           const ux = dx / d, uy = dy / d;
           a.x += ux * f; a.y += uy * f;
           b.x -= ux * f; b.y -= uy * f;

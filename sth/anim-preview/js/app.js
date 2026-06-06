@@ -1,17 +1,13 @@
 /**
  * Animator Debugger — NPC 动画状态机调试工具
  *
- * 数据来源：直接 import 游戏源文件，不硬编码任何 pose / profile 数据。
- *   - PROFILES        ← js/behavior/NpcProfile.js
- *   - HELD_POSES      ← js/behavior/PoseRegistry.js
- *   - LOITER_POSES    ← js/behavior/PoseRegistry.js
- *   - SUB_EVENT_POSES ← js/behavior/PoseRegistry.js
- *   - TRAIT_PROPS     ← js/behavior/PoseRegistry.js
+ * 数据来源：
+ *   - PROFILES        ← js/behavior/NpcProfile.js（import）
+ *   - pose/gesture 数据 ← assets/animations/ JSON 文件（fetch）
  *
  * 编辑工作流：
  *   1. 在 "Pose Registry" 面板里修改关节坐标 → 预览立即更新
- *   2. 点 "Save PoseRegistry.js" → 浏览器文件选择器写回磁盘
- *      （或 fallback：复制到剪贴板 → 手动粘贴到文件）
+ *   2. 点 "Save JSON" → 浏览器文件选择器写回对应 JSON 文件
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -20,28 +16,40 @@
 
 import { PROFILES as _PROFILES }
   from '../../../js/behavior/NpcProfile.js';
-import { HELD_POSES, LOITER_POSES, SUB_EVENT_POSES, TRAIT_PROPS, GESTURE_CLIPS }
-  from '../../../js/behavior/PoseRegistry.js';
+import { PhoneProp } from '../../../js/props/PhoneProp.js';
+import { CigaretteProp } from '../../../js/props/CigaretteProp.js';
+import { BagProp } from '../../../js/props/BagProp.js';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ── 纯 UI 元数据（只用于工具显示，不进入游戏逻辑）────────────────────────────
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ANIM_FILES = [
-  'single', 'cross_arm', 'idle', 'walk', 'run', 'jog',
+  'stand', 'cross_arm', 'idle', 'walk', 'run', 'jog',
   'fall', 'get_up', 'lie_ground',
   'lean_wall', 'squat', 'squat down', 'stand up', 'sit_ground',
   'sit_bench', 'lie_bench',
   'chess', 'chess_onlookers', 'dogwalk', 'bike', 'mobile',
 ];
 
+const ANIM_PATHS = {
+  stand: 'base/stand', idle: 'base/idle', walk: 'base/walk', run: 'base/run', jog: 'base/jog',
+  fall: 'base/fall', get_up: 'base/get_up', lie_ground: 'base/lie_ground',
+  lean_wall: 'base/lean_wall', squat: 'base/squat', 'squat down': 'base/squat down',
+  'stand up': 'base/stand up', sit_ground: 'base/sit_ground',
+  sit_bench: 'base/sit_bench', lie_bench: 'base/lie_bench',
+  bike: 'base/bike', mobile: 'base/mobile', mobike: 'base/mobike',
+  chess: 'variant/chess/chess', chess_onlookers: 'variant/chess/chess_onlookers',
+  dogwalk: 'pet/dog_walk', cross_arm: 'held pose/cross_arm',
+};
+
 // 状态图形元数据（cat / label）
 const STATES = {
   walk:       { anim: 'walk',       cat: 'move',    label: '步行' },
   run:        { anim: 'run',        cat: 'move',    label: '跑步' },
   jog:        { anim: 'jog',        cat: 'move',    label: '慢跑' },
-  stand:      { anim: 'single',     cat: 'idle',    label: '站立' },
-  loiter:     { anim: 'single',     cat: 'idle',    label: '闲晃' },
+  stand:      { anim: 'stand',      cat: 'idle',    label: '站立' },
+  loiter:     { anim: 'stand',      cat: 'idle',    label: '闲晃' },
   sit_bench:  { anim: 'sit_bench',  cat: 'sit',     label: '坐椅' },
   lean_wall:  { anim: 'lean_wall',  cat: 'sit',     label: '靠墙' },
   squat:      { anim: 'squat',      cat: 'sit',     label: '蹲下' },
@@ -50,7 +58,7 @@ const STATES = {
   lie_ground: { anim: 'lie_ground', cat: 'ground',  label: '躺地' },
   fall:       { anim: 'fall',       cat: 'special', label: '摔倒' },
   get_up:     { anim: 'get_up',     cat: 'special', label: '起身' },
-  talk:       { anim: 'single',     cat: 'social',  label: '对话' },
+  talk:       { anim: 'stand',      cat: 'social',  label: '对话' },
 };
 
 // Profile 显示名（label/shortLabel 仅工具用，不写入游戏源）
@@ -84,31 +92,22 @@ const SUB_EVENT_META = {
   point_at:  { label: '指向', icon: '👆', desc: 'A 指，B 侧头' },
 };
 
-// Trait 芯片：动态从 TRAIT_PROPS（游戏源）生成，新增 trait 无需改工具。
-// 已知 trait 用友好 label，其余自动用 key 生成。
+// Trait 芯片：动态从 poseCache.trait 生成，新增 trait 无需改工具。
 const TRAIT_LABELS = {
   hold_bag: '👜 拿包',
   walk_dog: '🐕 遛狗',
   backpack: '🎒 背包',
   umbrella: '☂ 雨伞',
 };
-const TRAITS_DEF = Object.keys(TRAIT_PROPS).map(key => ({
-  key,
-  label: TRAIT_LABELS[key] ?? `🏷 ${key}`,
-  desc:  '永久 modifier（左侧关节）',
-}));
+let TRAITS_DEF = [];
 
-// Gesture 芯片：动态从 GESTURE_CLIPS（游戏源）生成
+// Gesture 芯片：动态从 poseCache.gesture 生成
 const GESTURE_LABELS = {
   check_watch: '⌚ 看表',
   stretch:     '🙆 伸展',
   wave:        '👋 挥手',
 };
-const GESTURES_DEF = Object.keys(GESTURE_CLIPS).map(key => ({
-  key,
-  label: GESTURE_LABELS[key] ?? `✨ ${key}`,
-  clip:  GESTURE_CLIPS[key],
-}));
+let GESTURES_DEF = [];
 
 // 从扁平 gesture keyframe（{dur, r_elbow:[...], ...}）提取关节 joints（剔除 dur）
 function _kfJoints(kf) {
@@ -177,18 +176,14 @@ for (const [k, s] of Object.entries(_overlayOnSets)) OVERLAY_ON[k] = [...s];
 // ── 可编辑 pose 状态（深拷贝自 import，工具内修改不影响模块缓存）──────────────
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const editedPoses = {
-  overlays: JSON.parse(JSON.stringify(HELD_POSES)),   // { key: { joints: {...} } }
-  loiter:   JSON.parse(JSON.stringify(LOITER_POSES)),  // { key: { joint: [...] } }
-  social:   JSON.parse(JSON.stringify(SUB_EVENT_POSES)),
-};
+let editedPoses = { overlays: {}, loiter: {}, social: {} };
 
-// single.json 首帧关节数据（用于 delta→absolute 换算；启动时 fetchAnim 后填入）
-let _singleBase = null;
+// stand.json 首帧关节数据（用于 delta→absolute 换算；启动时 fetchAnim 后填入）
+let _standBase = null;
 
 function deltaToAbs(delta) {
   if (!delta) return {};
-  const base = _singleBase ?? {};
+  const base = _standBase ?? {};
   const out = {};
   for (const [j, d] of Object.entries(delta)) {
     const b = base[j] ?? [0, 0];
@@ -197,50 +192,34 @@ function deltaToAbs(delta) {
   return out;
 }
 
-// 从 editedPoses 生成 PoseRegistry.js 源码（自包含，替换 data/ re-export 版本）
-function generatePoseRegistryJS() {
-  const serJoints = (obj) => {
-    if (!obj) return 'null';
-    const lines = Object.entries(obj).map(([k, v]) => `    ${k}: [${v[0]}, ${v[1]}]`);
-    return `{\n${lines.join(',\n')}\n  }`;
+async function saveJSON() {
+  const allData = {
+    held:      editedPoses.overlays,
+    loiter:    editedPoses.loiter,
+    sub_event: editedPoses.social,
+    trait:     poseCache.trait,
+    gesture:   poseCache.gesture,
   };
-  const serHeldPoses = (obj) => {
-    const lines = Object.entries(obj).map(([k, v]) =>
-      `  ${k}: { joints: ${serJoints(v.joints)} }`
-    );
-    return `{\n${lines.join(',\n')}\n}`;
-  };
-  const serFlatPoses = (obj) => {
-    const lines = Object.entries(obj).map(([k, v]) => `  ${k}: ${serJoints(v)}`);
-    return `{\n${lines.join(',\n')}\n}`;
-  };
-  const serSocial = (obj) => {
-    const lines = Object.entries(obj).map(([k, v]) => {
-      const a = v.aDelta ? serJoints(v.aDelta).replace(/\n/g, '\n  ') : 'null';
-      const b = v.bDelta ? serJoints(v.bDelta).replace(/\n/g, '\n  ') : 'null';
-      return `  ${k}: {\n    aDelta: ${a},\n    bDelta: ${b},\n  }`;
-    });
-    return `{\n${lines.join(',\n')}\n}`;
-  };
-
-  return `/**
- * PoseRegistry — 由 anim-preview 工具自动生成（自包含版本）
- *
- * 覆盖 data/ re-export 版本。手动修改后请重新载入游戏。
- */
-
-export const TRAIT_PROPS = ${serHeldPoses(TRAIT_PROPS)};
-
-export const HELD_POSES = ${serHeldPoses(editedPoses.overlays)};
-
-export const LOITER_POSES = ${serFlatPoses(editedPoses.loiter)};
-
-// 参考帧（single.json F0）：
-//   r_hand[-10,-18]  l_hand[9,-19]  r_elbow[14,-11]  l_elbow[-14,-11]  head[-6,-55]
-export const SUB_EVENT_POSES = ${serSocial(editedPoses.social)};
-
-export const GESTURE_CLIPS = ${JSON.stringify(GESTURE_CLIPS, null, 2)};
-`;
+  const json = JSON.stringify(allData, null, 2);
+  if (typeof window.showSaveFilePicker === 'function') {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: 'pose_data.json',
+        startIn: 'desktop',
+        types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }],
+      });
+      const writable = await handle.createWritable();
+      await writable.write(json);
+      await writable.close();
+      return true;
+    } catch (e) {
+      if (e.name === 'AbortError') return false;
+    }
+  }
+  navigator.clipboard.writeText(json)
+    .then(() => window.app?._flash('JSON 已复制到剪贴板'))
+    .catch(() => prompt('JSON:', json));
+  return true;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -297,20 +276,104 @@ function calcOffsetY(data, coord, isDog) {
 const animCache = {};
 async function fetchAnim(name) {
   if (animCache[name]) return animCache[name];
-  const url = `../../assets/animations/${encodeURIComponent(name)}.json`;
+  const path = ANIM_PATHS[name] || name;
+  const parts = path.split('/');
+  const url = `../../assets/animations/${parts.map(encodeURIComponent).join('/')}.json`;
   const r = await fetch(url);
   if (!r.ok) throw new Error(`HTTP ${r.status}: ${name}`);
   return (animCache[name] = await r.json());
 }
 
-// single.json 首帧作为社交 delta→absolute 的基准
-async function preloadSingleBase() {
+// stand.json 首帧作为社交 delta→absolute 的基准
+async function preloadStandBase() {
   try {
-    const data = await fetchAnim('single');
-    _singleBase = data.frames[0];
+    const data = await fetchAnim('stand');
+    _standBase = data.frames[0];
   } catch (e) {
-    console.warn('[Debugger] single.json 加载失败，社交 pose 预览将使用零基准', e);
+    console.warn('[Debugger] stand.json 加载失败，社交 pose 预览将使用零基准', e);
   }
+}
+
+let poseCache = { held: {}, trait: {}, gesture: {}, loiter: {}, sub_event: {} };
+
+async function loadPoseCache() {
+  const BASE = '../../assets/animations';
+  const fetchJSON = async (path) => {
+    const r = await fetch(`${BASE}/${path}`);
+    if (!r.ok) { console.warn(`[poseCache] ${path} → ${r.status}`); return null; }
+    return r.json();
+  };
+
+  const heldFiles = {
+    phone_look: 'held pose/phone_look.json',
+    phone_call: 'held pose/phone_call.json',
+    smoke:      'held pose/smoke.json',
+    cross_arm:  'held pose/cross_arm.json',
+    hands_in_pocket: 'held pose/hands_in_pocket.json',
+  };
+  const traitFiles = {
+    hold_bag: 'trait/front/hold_bag.json',
+    walk_dog: 'trait/front/walk_dog.json',
+    backpack: 'trait/front/backpack.json',
+    umbrella: 'trait/front/umbrella.json',
+  };
+  const gestureFiles = {
+    check_watch:  'gesture/static/check_watch.json',
+    stretch:      'gesture/static/stretch.json',
+    wave:         'gesture/static/wave.json',
+  };
+  const loiterFiles = {
+    phone: 'base/loiter/phone.json',
+    bag_a: 'base/loiter/bag_a.json',
+    bag_b: 'base/loiter/bag_b.json',
+  };
+  const subEventFiles = {
+    push:        'sub_event/push.json',
+    give_item:   'sub_event/give_item.json',
+    handshake:   'sub_event/handshake.json',
+    point_at:    'sub_event/point_at.json',
+    use_vending: 'sub_event/use_vending.json',
+    use_trash:   'sub_event/use_trash.json',
+  };
+
+  const load = async (map, extract) => {
+    const out = {};
+    await Promise.all(Object.entries(map).map(async ([key, path]) => {
+      const json = await fetchJSON(path);
+      if (json) out[key] = extract(json);
+    }));
+    return out;
+  };
+
+  const wrapJoints = (json) => {
+    if (json.joints) return json;
+    if (json.frames?.[0]) return { joints: json.frames[0] };
+    return { joints: json };
+  };
+
+  poseCache.held      = await load(heldFiles,     wrapJoints);
+  poseCache.trait      = await load(traitFiles,    wrapJoints);
+  poseCache.gesture    = await load(gestureFiles,  (j) => j);
+  poseCache.loiter     = await load(loiterFiles,   (j) => j.joints ?? j);
+  poseCache.sub_event  = await load(subEventFiles, (j) => j);
+
+  TRAITS_DEF = Object.keys(poseCache.trait).map(key => ({
+    key,
+    label: TRAIT_LABELS[key] ?? `🏷 ${key}`,
+    desc:  '永久 modifier（左侧关节）',
+  }));
+
+  GESTURES_DEF = Object.keys(poseCache.gesture).map(key => ({
+    key,
+    label: GESTURE_LABELS[key] ?? `✨ ${key}`,
+    clip:  poseCache.gesture[key],
+  }));
+
+  editedPoses = {
+    overlays: JSON.parse(JSON.stringify(poseCache.held)),
+    loiter:   JSON.parse(JSON.stringify(poseCache.loiter)),
+    social:   JSON.parse(JSON.stringify(poseCache.sub_event)),
+  };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -325,7 +388,7 @@ class NpcInstance {
     this.pal         = NPC_PALETTE[this.palIdx];
     this.profileKey  = 'pedestrian';
     this.state       = 'stand';
-    this.animName    = 'single';
+    this.animName    = 'stand';
     this.animData    = null;
     this.frame       = 0;
     this.frameAcc    = 0;
@@ -334,11 +397,12 @@ class NpcInstance {
     this.modifiers   = [];     // Modifier[]，驱动实际渲染
     this.collapsed   = false;
     this.interactPose = null;
+    this._props      = {};     // type → prop instance
+    this._propProxy  = new NpcPropProxy();
   }
 
   get profile() { return PROFILES[this.profileKey] || PROFILES.pedestrian; }
 
-  // 与 NPC.resolveJoints() 完全一致：按 priority 升序合并所有 modifier joints
   resolveJoints() {
     if (!this.modifiers.length) return null;
     const out = {};
@@ -348,9 +412,36 @@ class NpcInstance {
     return out;
   }
 
+  _buildJointOverrides(frame) {
+    if (!this.modifiers.length) return null;
+    const sorted = [...this.modifiers].sort((a, b) => a.priority - b.priority);
+    const deltas = {};
+    const absolutes = {};
+    for (const m of sorted) {
+      if (!m.joints) continue;
+      if (m.absolute) {
+        Object.assign(absolutes, m.joints);
+      } else {
+        Object.assign(deltas, m.joints);
+      }
+    }
+    const out = {};
+    const B = [-1, 12];
+    const bodyPos = frame['body'] ?? [0, 0];
+    for (const [j, d] of Object.entries(deltas)) {
+      out[j] = [bodyPos[0] + d[0] - B[0], bodyPos[1] + d[1] - B[1]];
+    }
+    for (const [j, v] of Object.entries(absolutes)) {
+      out[j] = v;
+    }
+    return out;
+  }
+
   get resolvedPose() {
     if (this.interactPose) return this.interactPose;
-    return this.resolveJoints() ?? {};
+    if (!this.animData || !this.modifiers.length) return {};
+    const frame = this.animData.frames[this.frame % this.animData.frames.length];
+    return this._buildJointOverrides(frame) ?? {};
   }
 
   async loadAnimForState(stateName) {
@@ -410,7 +501,7 @@ class NpcInstance {
 
   // 添加一个 gesture modifier（工具预览：实时播放，播完自动消失）
   addGesture(gestureKey) {
-    const clip = GESTURE_CLIPS[gestureKey];
+    const clip = poseCache.gesture[gestureKey];
     if (!clip) return;
     if (this.modifiers.some(m => m.kind === 'gesture')) return; // 单实例
     const kf0 = clip.keyframes?.[0];
@@ -570,6 +661,55 @@ class AnimGraph {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// ── Canvas2D → Phaser Graphics adapter (for NPC props) ────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function hexToCSS(hex, alpha) {
+  const r = (hex >> 16) & 0xff, g = (hex >> 8) & 0xff, b = hex & 0xff;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+class CanvasGraphics {
+  constructor(ctx) { this.ctx = ctx; this._lw = 1; this._lc = '#000'; this._la = 1; }
+  fillStyle(color, alpha = 1) { this.ctx.fillStyle = hexToCSS(color, alpha); }
+  fillRect(x, y, w, h) { this.ctx.fillRect(x, y, w, h); }
+  fillCircle(x, y, r) { this.ctx.beginPath(); this.ctx.arc(x, y, r, 0, Math.PI * 2); this.ctx.fill(); }
+  fillEllipse(x, y, w, h) {
+    this.ctx.beginPath(); this.ctx.ellipse(x, y, w / 2, h / 2, 0, 0, Math.PI * 2); this.ctx.fill();
+  }
+  lineStyle(width, color, alpha = 1) {
+    this._lw = width; this._lc = hexToCSS(color, alpha); this._la = alpha;
+    this.ctx.lineWidth = width; this.ctx.strokeStyle = this._lc;
+  }
+  lineBetween(x1, y1, x2, y2) {
+    this.ctx.beginPath(); this.ctx.moveTo(x1, y1); this.ctx.lineTo(x2, y2); this.ctx.stroke();
+  }
+  strokeRect(x, y, w, h) { this.ctx.strokeRect(x, y, w, h); }
+  strokeCircle(x, y, r) { this.ctx.beginPath(); this.ctx.arc(x, y, r, 0, Math.PI * 2); this.ctx.stroke(); }
+}
+
+class NpcPropProxy {
+  constructor() {
+    this._anchors = {};
+    this.scale = 1;
+    this.direction = 1;
+    this.alive = true;
+    this.visible = true;
+    this.id = 0;
+    this.modifiers = [];
+  }
+  getAnchor(name) {
+    const map = { hand_r: 'r_hand', hand_l: 'l_hand' };
+    return this._anchors[map[name] ?? name] ?? { x: 0, y: 0 };
+  }
+}
+
+const MODIFIER_TO_PROP_TYPE = {
+  phone_look: 'phone', phone_call: 'phone',
+  smoke: 'cigarette', hold_bag: 'bag',
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // ── PreviewCanvas ─────────────────────────────────────────────────────────────
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -687,37 +827,44 @@ class PreviewCanvas {
       ctx.beginPath(); ctx.arc(jx(jn), jy(jn), 4, 0, Math.PI*2); ctx.fill();
     }
 
-    // NPC props (phone / cigarette / bag)
-    const activeHeld = npc.modifiers.filter(m => m.kind === 'held').map(m => m.id);
+    // NPC props via prop classes
+    const proxy = npc._propProxy;
+    proxy.scale = s;
+    proxy.direction = d;
+    proxy.id = npc.id;
+    proxy.modifiers = npc.modifiers;
+    proxy._anchors = {};
+    for (const jn of ['r_hand', 'l_hand', 'r_elbow', 'l_elbow', 'head', 'body']) {
+      if (frameData[jn]) proxy._anchors[jn] = { x: jx(jn), y: jy(jn) };
+    }
+
+    const wantedTypes = new Set();
+    for (const m of npc.modifiers) {
+      const pt = MODIFIER_TO_PROP_TYPE[m.id];
+      if (pt) wantedTypes.add(pt);
+    }
+    for (const type of wantedTypes) {
+      if (!npc._props[type]) {
+        switch (type) {
+          case 'phone':     npc._props[type] = new PhoneProp(proxy); break;
+          case 'cigarette': npc._props[type] = new CigaretteProp(proxy); break;
+          case 'bag':       npc._props[type] = new BagProp(proxy); break;
+        }
+      }
+      const prop = npc._props[type];
+      if (prop && !prop.active) prop.activate();
+    }
+    for (const [type, prop] of Object.entries(npc._props)) {
+      if (!wantedTypes.has(type) && prop.active) prop.deactivate();
+    }
+
+    const gfx = new CanvasGraphics(ctx);
+    for (const prop of Object.values(npc._props)) {
+      if (prop.active) prop.draw(gfx);
+    }
+
+    // walk_dog leash hint
     const activeTrait = npc.modifiers.filter(m => m.kind === 'trait').map(m => m.id);
-    if (activeHeld.includes('phone_look') || activeHeld.includes('phone_call')) {
-      const hx = jx('r_hand'), hy = jy('r_hand');
-      const pw = 10 * s, ph = 16 * s;
-      ctx.fillStyle = '#2a2a2a'; ctx.globalAlpha = 0.9;
-      ctx.fillRect(hx - pw / 2, hy - ph, pw, ph);
-      ctx.fillStyle = '#8a8a8a'; ctx.globalAlpha = 0.6;
-      ctx.fillRect(hx - pw / 2 + 1 * s, hy - ph + 2 * s, pw - 2 * s, ph - 4 * s);
-      ctx.globalAlpha = 1;
-    }
-    if (activeHeld.includes('smoke')) {
-      const hx = jx('r_hand'), hy = jy('r_hand');
-      const len = 16 * s;
-      const tipX = hx + d * len, tipY = hy - 3 * s;
-      ctx.strokeStyle = '#e8e0d0'; ctx.lineWidth = Math.max(1, 2 * s);
-      ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(tipX, tipY); ctx.stroke();
-      ctx.fillStyle = '#cc4400'; ctx.globalAlpha = 0.9;
-      ctx.beginPath(); ctx.arc(tipX, tipY, Math.max(1.2, 2 * s), 0, Math.PI * 2); ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-    if (activeTrait.includes('hold_bag')) {
-      const hx = jx('l_hand'), hy = jy('l_hand');
-      const bw = 24 * s, bh = 32 * s;
-      ctx.fillStyle = '#4a4a4a'; ctx.globalAlpha = 0.85;
-      ctx.fillRect(hx - bw / 2, hy, bw, bh);
-      ctx.strokeStyle = '#3a3a3a'; ctx.lineWidth = Math.max(0.8, 1.4 * s);
-      ctx.globalAlpha = 0.9; ctx.strokeRect(hx - bw / 2, hy, bw, bh);
-      ctx.globalAlpha = 1;
-    }
     if (activeTrait.includes('walk_dog')) {
       ctx.strokeStyle = '#6a6a6a'; ctx.lineWidth = Math.max(0.8, 1.2 * s);
       ctx.globalAlpha = 0.85;
@@ -764,7 +911,12 @@ class PlaybackController {
   _loop(ts) {
     if (!this.playing) return;
     const dt = Math.min((ts - this._lastTs)/1000, 0.1); this._lastTs = ts;
-    for (const npc of this.getNpcs()) npc.advanceFrame(dt, this.speed);
+    for (const npc of this.getNpcs()) {
+      npc.advanceFrame(dt, this.speed);
+      for (const prop of Object.values(npc._props)) {
+        if (prop.active) prop.update(dt * 1000);
+      }
+    }
     this.onTick();
     requestAnimationFrame(t => this._loop(t));
   }
@@ -793,7 +945,7 @@ class AnimatorDebugger {
     this.pb = new PlaybackController(() => this.npcs, () => this._renderFrame());
     this._bindKeys();
 
-    preloadSingleBase().then(() => {
+    preloadStandBase().then(() => {
       this.addNpc();
       this.addNpc();
       this.graph.render();
@@ -806,7 +958,7 @@ class AnimatorDebugger {
     if (this.npcs.length >= NPC_PALETTE.length) return;
     const npc = new NpcInstance(this.npcs.length);
     this.npcs.push(npc);
-    npc.loadAnim('single').then(() => this._renderFrame());
+    npc.loadAnim('stand').then(() => this._renderFrame());
     this._renderPanel();
     this._setStatus(`NPC ${npc.pal.label} 已添加`);
   }
@@ -852,8 +1004,8 @@ class AnimatorDebugger {
   addHeldModifier(npcId, heldKey) {
     const npc = this._byId(npcId); if (!npc) return;
     if (npc.modifiers.some(m => m.id === heldKey)) return;
-    const poseDef = editedPoses.overlays[heldKey];
-    if (!poseDef) return;
+    const poseDef = editedPoses.overlays[heldKey] ?? poseCache.held[heldKey];
+    if (!poseDef?.joints) return;
     npc.modifiers.push({ id: heldKey, kind: 'held', priority: 10, joints: poseDef.joints, timer: -1 });
     this._renderPanel(); this._renderFrame();
   }
@@ -884,8 +1036,8 @@ class AnimatorDebugger {
     }
     npc.modifiers = npc.modifiers.filter(m => m.kind !== 'trait' || m.id !== traitKey);
     if (checked) {
-      const tp = TRAIT_PROPS[traitKey];
-      if (tp) npc.modifiers.push({ id: traitKey, kind: 'trait', priority: 5, joints: tp.joints, timer: -1 });
+      const tp = poseCache.trait[traitKey];
+      if (tp?.joints) npc.modifiers.push({ id: traitKey, kind: 'trait', priority: 5, joints: tp.joints, timer: -1 });
     }
     this._renderPanel();
     this._renderFrame();
@@ -954,31 +1106,8 @@ class AnimatorDebugger {
   }
 
   async savePoseRegistry() {
-    const src = generatePoseRegistryJS();
-    if (typeof window.showSaveFilePicker === 'function') {
-      try {
-        const handle = await window.showSaveFilePicker({
-          suggestedName: 'PoseRegistry.js',
-          startIn: 'desktop',
-          types: [{ description: 'JavaScript Module', accept: { 'text/javascript': ['.js'] } }],
-        });
-        const writable = await handle.createWritable();
-        await writable.write(src);
-        await writable.close();
-        this._setStatus('✓ PoseRegistry.js 已保存');
-        return;
-      } catch (e) {
-        if (e.name === 'AbortError') return;  // user cancelled
-      }
-    }
-    // fallback: copy to clipboard
-    navigator.clipboard.writeText(src)
-      .then(() => this._flash('已复制到剪贴板 → 粘贴到 js/behavior/PoseRegistry.js'))
-      .catch(() => {
-        const win = window.open('', '_blank');
-        if (win) { win.document.write(`<pre>${src.replace(/</g,'&lt;')}</pre>`); }
-        else { prompt('复制下面的内容到 PoseRegistry.js:', src); }
-      });
+    const ok = await saveJSON();
+    if (ok) this._setStatus('✓ pose_data.json 已保存');
   }
 
   exportAll() {
@@ -1062,7 +1191,7 @@ class AnimatorDebugger {
     <div class="cp-section">
       <div class="cp-section-hdr">
         <span class="cp-section-title">⚙ Pose Registry</span>
-        <button class="sm blue" onclick="app.savePoseRegistry()">Save .js</button>
+        <button class="sm blue" onclick="app.savePoseRegistry()">Save JSON</button>
       </div>
       <details class="cp-detail">
         <summary>Overlay Poses</summary>
@@ -1364,4 +1493,7 @@ class AnimatorDebugger {
 }
 
 // ── Bootstrap ──
-window.app = new AnimatorDebugger();
+(async () => {
+  await loadPoseCache();
+  window.app = new AnimatorDebugger();
+})();

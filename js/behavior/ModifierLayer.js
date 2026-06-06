@@ -17,9 +17,29 @@
  *   - gesture 与 held 相互独立：各自单实例、各自冷却；gesture 播完即移除
  */
 
-import { HELD_POSES }   from './PoseRegistry.js';
-import { TRAIT_PROPS }  from './PoseRegistry.js';
-import { GESTURE_CLIPS } from './PoseRegistry.js';
+let HELD_POSES   = {};
+let TRAIT_PROPS  = {};
+let GESTURE_CLIPS = {};
+
+export function initPoseCache(pc) {
+  HELD_POSES   = pc.held    || {};
+  TRAIT_PROPS  = pc.trait   || {};
+  GESTURE_CLIPS = pc.gesture || {};
+}
+
+export function getTraitProps() { return TRAIT_PROPS; }
+
+// trait 在 walk/run 时使用侧面（side）变体，其余状态用正面（front）。
+export function isSideState(state) { return state === 'walk' || state === 'run'; }
+
+// 解析 trait 变体姿态对象（含 .joints）。
+// 兼容新结构 { front, side } 与旧的扁平结构（直接含 .joints）：
+//   - 新结构：want side 且有 side 数据时取 side，否则取 front
+//   - 旧结构：tp.front/side 均为 undefined，回退到 tp 本身（即 tp.joints）
+export function resolveTraitVariant(tp, isSide) {
+  if (!tp) return null;
+  return (isSide && tp.side) ? tp.side : (tp.front ?? tp);
+}
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -93,12 +113,31 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
     npc._heldCooldown = rand(30, 55);
   }
 
-  // 3) 确保 trait 修饰器存在（trait 不会被步骤 1/2 移除，但若意外丢失则补回）
+  // 3) trait front/side 自动切换：walk/run 用 side 变体，其余用 front
+  const isSide = isSideState(npc.state);
+
+  // 3a) 状态切换时更新已有 trait 的 joints（仅当变体来源与当前不符）
+  for (const m of npc.modifiers) {
+    if (m.kind !== 'trait' || m.id.startsWith('_')) continue;
+    const tp = TRAIT_PROPS[m.id];
+    if (!tp) continue;
+    const wantSide = isSide && !!tp.side;
+    if (!!m._side === wantSide) continue;   // joints 来源未变，跳过
+    const variant = resolveTraitVariant(tp, wantSide);
+    m.joints = { ...(variant?.joints ?? {}) };
+    m._side  = wantSide;
+  }
+
+  // 3b) 确保 trait 修饰器存在（trait 不会被步骤 1/2 移除，但若意外丢失则补回）
   for (const traitKey of npc.traits) {
     if (npc.modifiers.some(m => m.id === traitKey)) continue;
     const tp = TRAIT_PROPS[traitKey];
-    if (tp) npc.modifiers.push({
-      id: traitKey, kind: 'trait', priority: 5, joints: { ...tp.joints }, timer: -1,
+    if (!tp) continue;
+    const wantSide = isSide && !!tp.side;
+    const variant  = resolveTraitVariant(tp, wantSide);
+    npc.modifiers.push({
+      id: traitKey, kind: 'trait', priority: 5,
+      joints: { ...(variant?.joints ?? {}) }, timer: -1, _side: wantSide,
     });
   }
 
@@ -158,6 +197,7 @@ function _tryTriggerHeld(npc, heldDefs, globalHeldFrac) {
     if (def.traitExcludes?.some(t => npc.traits.includes(t))) continue;
     const hp = HELD_POSES[name];
     const side = hp ? handSide(Object.keys(hp.joints)) : null;
+    if (side === 'both'  && (occ.left || occ.right)) continue;
     if (side === 'left'  && occ.left)  continue;
     if (side === 'right' && occ.right) continue;
     let p = def.chance;
@@ -192,6 +232,7 @@ function _tryTriggerGesture(npc, profile) {
       const clip = GESTURE_CLIPS[name];
       if (!clip) continue;
       const side = handSide(clip.activeJoints || []);
+      if (side === 'both'  && (occ.left || occ.right)) continue;
       if (side === 'left'  && occ.left)  continue;
       if (side === 'right' && occ.right) continue;
       const kf0 = clip.keyframes?.[0];

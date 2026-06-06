@@ -79,14 +79,23 @@ export class NpcPropManager {
     }
   }
 
-  draw(g) {
-    const visible = [];
+  /**
+   * 返回活跃道具的轻量可绘制包装 {_sortY, draw}，供与场景实体混合统一 Y 排序。
+   * 排序键用宿主 NPC 的地面接触 Y（_sortY ?? y），与实体一致。
+   */
+  getDrawables() {
+    const out = [];
     for (const prop of this._props.values()) {
       if (!prop.active) continue;
       if (!prop.npc.alive || !prop.npc.visible) continue;
-      visible.push(prop);
+      out.push({ _sortY: prop.npc._sortY ?? prop.npc.y, draw: (g) => prop.draw(g) });
     }
-    visible.sort((a, b) => a.npc.y - b.npc.y);
-    for (const prop of visible) prop.draw(g);
+    return out;
+  }
+
+  draw(g) {
+    const list = this.getDrawables();
+    list.sort((a, b) => a._sortY - b._sortY);
+    for (const d of list) d.draw(g);
   }
 }

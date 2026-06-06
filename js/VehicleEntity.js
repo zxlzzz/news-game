@@ -4,7 +4,8 @@
  *   this.x = 车身中心；this.y = 车轮触地基线（用于深度排序/缩放）
  */
 
-import { Entity } from './Entity.js';
+import { Entity }      from './Entity.js';
+import { depthScale }  from './Layout.js';
 
 export class VehicleEntity extends Entity {
   constructor(cfg) {
@@ -22,22 +23,19 @@ export class VehicleEntity extends Entity {
     this.tilt            = 0;
     this._phaseOffset    = Math.random() * Math.PI * 2;
     this._timeAccum      = Math.random() * 10;
-    this.minX            = cfg.minX ?? -240;
-    this.maxX            = cfg.maxX ?? 2240;
-    this.baseScale       = cfg.scale ?? 0.9;
-    this.scale           = this.baseScale;
-    this.scaleMul        = cfg.scaleMul ?? 1.0;
-    this.roadCenterY     = cfg.roadCenterY ?? 0;
-    this.roadHalfHeight  = cfg.roadHalfHeight ?? 1;
+    this.minX  = cfg.minX ?? -240;
+    this.maxX  = cfg.maxX ?? 2240;
+    this.scale = depthScale(this._laneY);
     if (!this.tags || this.tags.length === 0) this.tags = ['vehicle', this.kind];
   }
 
-  // L = 车总长, H = 车身总高(含车舱), r = 轮半径
+  // L = 车总长, H = 车身总高(含车舱), r = 轮半径（世界单位，× scale → 像素）
+  // 基准：火柴人原生高度 144 单位 = 1.7m，1m ≈ 85 单位
   _dims() {
     switch (this.kind) {
-      case 'bus':  return { L: 1500, H: 480, r: 60 };
-      case 'moto': return { L: 400, H: 200, r: 20 }; // 仅供取景框包围盒；实际几何以骑手锚点为准（见 _moto）
-      default:     return { L: 480, H: 200, r: 34 }; // car/taxi
+      case 'bus':  return { L: 1010, H: 213, r: 38 };
+      case 'moto': return { L: 187,  H: 84,  r: 26 };
+      default:     return { L: 380,  H: 127, r: 26 };  // car/taxi
     }
   }
 
@@ -50,10 +48,7 @@ export class VehicleEntity extends Entity {
   update(delta) {
     if (!this.alive) return;
     const dt = delta / 1000;
-    if (this.scaleMul !== 1.0 && this.roadHalfHeight > 0) {
-      const t = (this._laneY - this.roadCenterY) / this.roadHalfHeight;
-      this.scale = this.baseScale * (1 + t * (this.scaleMul - 1));
-    }
+    this.scale = depthScale(this._laneY);
     this._timeAccum += dt;
     this.y = this._laneY + Math.sin(this._timeAccum * 0.3 + this._phaseOffset) * 3;
     this.x += this.direction * this.currentSpeed * dt;
@@ -63,14 +58,13 @@ export class VehicleEntity extends Entity {
 
   draw(g) {
     if (!this.visible) return;
-    const hl = this.inViewfinder ? 0xcc2200 : null;
+    const hl = null;
     switch (this.kind) {
       case 'bus':  this._bus(g, hl);  break;
       case 'taxi': this._taxi(g, hl); break;
       case 'moto': this._moto(g, hl); break;
       default:     this._car(g, hl);  break;
     }
-    if (this.inViewfinder) this._drawViewfinderOutline(g);
   }
 
   /* ═══════════════════════════════════════════════
@@ -439,23 +433,29 @@ export class VehicleEntity extends Entity {
      ═══════════════════════════════════════════════ */
 
   /* 摩托车以骑手为基准绘制，人车一体。
-     mobike 为固定单帧、关节偏移是已知常量（hip=body[0,0]、前手 l_hand[43,12]、
-     双脚 [-37,36]/[-28,40]），故可像 bicycle/ebike 那样"绕骑手关节画车"：
-     前手=车把、臀=座垫、双脚=踏板，车轮锚在脚后 / 手前。 */
+     车架锚点从 mobike.json frame0 动态读取：
+     前手(l_hand)=车把、臀(body)=座垫、右脚(r_foot)=前踏板、左脚(l_foot)=后踏板。
+     车身用 ba 比例放大，骑手用 riderScale 单独渲染，共用同一 hipX/hipY。 */
   _moto(g, highlight) {
     const u = this.scale, x = this.x, y = this.y, d = this.direction;
     const groundY    = y;
-    const bs = u * 1.8;             // 车身比例：放大 3×（与骑手解耦）
-    const ba = bs * 1.5;          // 车身造型锚点（虚拟大骑手）比例
-    const riderScale = u * 1.5;   // 真实骑手：放大前大小，不随车放大
+    const bs = u * 1.8;
+    const ba = bs * 1.5;          // 车身造型比例
+    const riderScale = u * 1.5;   // 骑手渲染比例
 
-    // 车身造型锚点（决定车形/大小，按 3× 大车）
+    // 从 mobike.json frame0 读取关节坐标（fallback 到旧硬编码值）
+    const fr = this._sr?.getFrame('mobike', 0) ?? {};
+    const jBar   = fr.l_hand ?? [50,  6];
+    const jFootF = fr.r_foot ?? [-28, 40];
+    const jFootR = fr.l_foot ?? [-37, 36];
+
+    // 车身造型锚点
     const hipX = x - d * 4 * bs;
     const hipY = groundY - 40 * ba;
     const J = (jx, jy) => ({ x: hipX + d * jx * ba, y: hipY + jy * ba });
-    const bar   = J(43, 12);   // 车把
-    const footF = J(-28, 40);  // 前踏板
-    const footR = J(-37, 36);  // 后踏板
+    const bar   = J(...jBar);
+    const footF = J(...jFootF);
+    const footR = J(...jFootR);
 
     const wR  = Math.max(2, 14 * bs);
     const wCy = groundY - wR;
