@@ -793,7 +793,7 @@
     {
       "propType": "drain",
       "x": 240,
-      "y": 330,
+      "y": 345,
       "width": 72,
       "height": 6,
       "tags": [
@@ -804,18 +804,7 @@
     {
       "propType": "drain",
       "x": 900,
-      "y": 330,
-      "width": 72,
-      "height": 6,
-      "tags": [
-        "drain",
-        "utility"
-      ]
-    },
-    {
-      "propType": "drain",
-      "x": 1560,
-      "y": 330,
+      "y": 345,
       "width": 72,
       "height": 6,
       "tags": [

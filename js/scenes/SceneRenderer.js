@@ -113,28 +113,29 @@ export class SceneRenderer {
     drawSign(poleX, poleTy);
   }
 
-  _drawNearBusStop(g, stop, ny, drawSign) {
+_drawNearBusStop(g, stop, ny, drawSign) {
     const sx      = stop.x;
     const BAY_W   = stop.bayW;
     const BAY_D   = stop.bayD;
-    const ROOF_W  = stop.roofW;
     const ROOF_H  = stop.roofH;
-    const PIL_X   = stop.pillarOffset;
     const BENCH_W = stop.benchW;
     const bx0     = sx - BAY_W / 2;
     const bx1     = sx + BAY_W / 2;
 
-    g.lineStyle(0); g.beginFill(GRAY_ROAD, 1); g.drawRect(bx0, ny, BAY_W, BAY_D); g.endFill();
-    g.lineStyle(0); g.beginFill(0xd8d8d8, 1);
-    g.drawRect(bx0 - 3, ny,         3,         BAY_D + 3);
-    g.drawRect(bx1,     ny,         3,         BAY_D + 3);
-    g.drawRect(bx0 - 3, ny + BAY_D, BAY_W + 6, 3);
-    g.endFill();
-    g.lineStyle(0); g.beginFill(0xb2b2b0, 1); g.drawRect(bx0, ny + BAY_D, BAY_W, 2); g.endFill();
+    g.fillStyle(GRAY_ROAD, 1);
+    g.fillRect(bx0, ny, BAY_W, BAY_D);
+    g.fillStyle(0xd8d8d8, 1);
+    g.fillRect(bx0 - 3, ny,             3,         BAY_D + 3);
+    g.fillRect(bx1,     ny,             3,         BAY_D + 3);
+    g.fillRect(bx0 - 3, ny + BAY_D,     BAY_W + 6, 3);
+    g.fillStyle(0xb2b2b0, 1);
+    g.fillRect(bx0, ny + BAY_D, BAY_W, 2);
 
-    // 顶棚 + 柱子已移到 busstop-roof PropEntity（参与 Y 排序）；这里只保留地面站台 / 长椅 / 标牌。
-    const sn     = depthScale(ny);
-    const benchY = ny + 32;
+    const roofT   = BIKE_LANE_NEAR_BOTTOM;
+    const pillarT = roofT + ROOF_H;
+    const sn      = depthScale(ny);
+
+    const benchY    = pillarT - 43;
     const benchHalf = BENCH_W / 2;
     g.lineStyle(0); g.beginFill(0x565654, 1); g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sn); g.endFill();
     g.lineStyle(0.8 * sn, 0x181818, 0.7); g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sn); g.lineStyle(0);
@@ -143,13 +144,12 @@ export class SceneRenderer {
     g.lineBetween(sx + benchHalf - 12, benchY + 4 * sn, sx + benchHalf - 12, benchY + 40 * sn);
 
     const poleX  = bx1 + 5;
-    const poleTy = ny;
-    const poleBy = ny + BAY_D + 32;
+    const poleTy = roofT + 10;
+    const poleBy = BIKE_LANE_NEAR_BOTTOM + 50;
     g.lineStyle(2.2 * sn, 0x2e2e2e, 1);
-    g.moveTo(poleX, poleBy); g.lineTo(poleX, poleTy);
+    g.lineBetween(poleX, poleTy, poleX, poleBy);
     drawSign(poleX, poleTy);
   }
-
   // ─── 公园园路 ───────────────────────────────────────────────────────────────
 
   _drawParkPaths(g) {
