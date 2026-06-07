@@ -7,6 +7,7 @@
  */
 
 import { SIDEWALK_FAR_Y, NEAR_Y } from '../SceneConfig.js';
+import { findFree as _findFreeBench, isNear as _isNearBench } from '../entity/bench/bench.js';
 
 export class EnvironmentQuery {
   /** @param {EntityManager} entityManager */
@@ -83,23 +84,12 @@ export class EnvironmentQuery {
 
   /** 附近是否有长椅（复刻重构前 _nearBench：|dx|<60, |dy|<80） */
   isNearBench(npc, dxT = 60, dyT = 80) {
-    for (const e of this.em.entities) {
-      if (e.propType === 'bench' &&
-          Math.abs(e.x - npc.x) < dxT && Math.abs(e.y - npc.y) < dyT) return true;
-    }
-    return false;
+    return _isNearBench(this.em.entities, npc, dxT, dyT);
   }
 
   /** 附近最近的空闲长椅（bench._occupiedBy == null）；无则 null */
   nearestFreeBench(npc, radius = 80) {
-    let best = null, bestD = radius;
-    for (const e of this.em.entities) {
-      if (e.propType !== 'bench' || e._occupiedBy != null) continue;
-      if (e.tags?.includes('busstop')) continue;   // 公交站长椅仅由 WaitForBusLayer 分配
-      const d = Math.hypot(e.x - npc.x, e.y - npc.y);
-      if (d <= bestD) { bestD = d; best = e; }
-    }
-    return best;
+    return _findFreeBench(this.em.entities, npc, radius);
   }
 
   // ─── 障碍物查询（批次 0 避障）──────────────────────────────────────────────

@@ -1,0 +1,82 @@
+/**
+ * bench — 长椅实体模块
+ *
+ * 独占写入权：_occupiedBy、_bench、_sortY 由本模块负责写入。
+ * Activity.js 的 occupy/release 方法负责道具侧的 _occupiedBy 写入，
+ * 两者互不干涉：bench.js 管理 NPC 侧（sit/stand），Activity.js 管理活动侧。
+ */
+
+/** 长椅内禀尺寸（未缩放，世界单位） */
+export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 17, backH: 40 };
+
+/** 座面距 bench.y 的偏移（像素），与 drawBench 座板锚点一致 */
+const BENCH_SEAT_H = 12;
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+/** 座面世界 Y（NPC 臀部应落于此） */
+export function seatSurfaceY(bench) {
+  return bench.y - (bench.seatH ?? BENCH_SEAT_H);
+}
+
+/** 在 entities 中寻找距 npc 最近的空闲长椅（跳过 busstop tag）；无则 null */
+export function findFree(entities, npc, radius = 80) {
+  let best = null, bestD = radius;
+  for (const e of entities) {
+    if (e.propType !== 'bench' || e._occupiedBy != null) continue;
+    if (e.tags?.includes('busstop')) continue;
+    const d = Math.hypot(e.x - npc.x, e.y - npc.y);
+    if (d <= bestD) { bestD = d; best = e; }
+  }
+  return best;
+}
+
+/** 附近是否有长椅（|dx| < dxT && |dy| < dyT） */
+export function isNear(entities, npc, dxT = 60, dyT = 80) {
+  for (const e of entities) {
+    if (e.propType === 'bench' &&
+        Math.abs(e.x - npc.x) < dxT && Math.abs(e.y - npc.y) < dyT) return true;
+  }
+  return false;
+}
+
+/** 将 NPC 对齐到长椅落座：占位 + x/y 对齐 + 按 facing 设图层 */
+export function sitDown(npc, bench) {
+  bench._occupiedBy = npc.id;
+  npc._bench = bench;
+  npc.x = clamp(bench.x, npc.minX, npc.maxX);
+  npc.y = clamp(seatSurfaceY(bench), npc.minY, npc.maxY);
+  const far = bench.facing === 'up' || bench.facing === 'left';
+  npc._sortY = far ? bench.y - 1 : bench.y + 1;
+}
+
+/** 释放长椅占位，清 _bench 和 _sortY */
+export function standUp(npc) {
+  if (!npc._bench) return;
+  npc._bench._occupiedBy = null;
+  npc._bench = null;
+  npc._sortY = undefined;
+}
+
+/**
+ * sit_bench → lie_bench 转换时重对齐。
+ * lie_bench anchorMode='back'（无竖向偏移），需要重算 npc.x / npc.y。
+ */
+export function alignLie(npc, renderer) {
+  if (!npc._bench) return;
+  let bodyX = -46, bodyY = 79;
+  if (renderer) {
+    const anim = renderer.getAnimation('lie_bench');
+    if (anim && anim.frames[0]) {
+      bodyX = anim.frames[0].body[0];
+      bodyY = anim.frames[0].body[1];
+    }
+  }
+  const sc = npc.scale || 0.45;
+  const seatY = seatSurfaceY(npc._bench);
+  npc.y = clamp(seatY - Math.round(bodyY * sc), npc.minY, npc.maxY);
+  const canonDir = renderer?.getAnimation('lie_bench')?.canonicalDirection || 1;
+  const dir = npc.direction * canonDir;
+  npc.x = clamp(npc._bench.x - Math.round(bodyX * sc * dir), npc.minX, npc.maxX);
+  npc._sortY = npc._bench.y + 1;
+}

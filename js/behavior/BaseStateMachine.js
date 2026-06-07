@@ -31,7 +31,7 @@
 
 import { dlog }        from './DebugLog.js';
 import { PARK_TOP }     from '../SceneConfig.js';
-import { alignSitBench, seatSurfaceY } from './SeatAlign.js';
+import { sitDown, alignLie, standUp } from '../entity/bench/bench.js';
 import { tickLoiter, initPoseCache as initLoiterPoseCache } from './LoiterBehavior.js';
 
 import {
@@ -73,12 +73,7 @@ const STATE_DEFS = {
   sit_bench: {
     anim: 'sit_bench', speedK: 0, once: true, dur: [8, 15],
     onExit: (npc, toState) => {
-      // lie_bench 与 sit_bench 共享 _bench，不释放
-      if (toState !== 'lie_bench' && npc._bench) {
-        npc._bench._occupiedBy = null;
-        npc._bench = null;
-        npc._sortY = undefined;
-      }
+      if (toState !== 'lie_bench') standUp(npc);
       _defaultOnExit(npc, toState);
     },
   },
@@ -113,11 +108,7 @@ const STATE_DEFS = {
   lie_bench: {
     anim: 'lie_bench', speedK: 0, once: true, dur: [15, 40],
     onExit: (npc, toState) => {
-      if (npc._bench) {
-        npc._bench._occupiedBy = null;
-        npc._bench = null;
-        npc._sortY = undefined;
-      }
+      standUp(npc);
       _defaultOnExit(npc, toState);
     },
   },
@@ -222,28 +213,12 @@ function _resolveTimeout(npc, envQuery, profile) {
   if (next === 'sit_bench') {
     const bench = envQuery.nearestFreeBench(npc, 80);
     if (!bench) return 'stand';
-    alignSitBench(npc, bench);
+    sitDown(npc, bench);
     return 'sit_bench';
   }
   // lie_bench anchorMode='back'（无竖向偏移），坐→躺转换时重对齐
   if (next === 'lie_bench' && npc._bench) {
-    let bodyX = -46, bodyY = 79;
-    if (npc.renderer) {
-      const anim = npc.renderer.getAnimation('lie_bench');
-      if (anim && anim.frames[0]) {
-        bodyX = anim.frames[0].body[0];
-        bodyY = anim.frames[0].body[1];
-      }
-    }
-    const sc = npc.scale || 0.45;
-    const seatY = seatSurfaceY(npc._bench);
-    npc.y = Math.max(npc.minY, Math.min(npc.maxY, seatY - Math.round(bodyY * sc)));
-    const canonDir = npc.renderer?.getAnimation('lie_bench')?.canonicalDirection || 1;
-    const dir = npc.direction * canonDir;
-    npc.x = Math.max(npc.minX, Math.min(npc.maxX,
-      npc._bench.x - Math.round(bodyX * sc * dir)
-    ));
-    npc._sortY = npc._bench.y + 1;
+    alignLie(npc, npc.renderer);
   }
   if (next === 'lean_wall') {
     const spot = envQuery.nearestFreeWallSpot(npc, 60);
