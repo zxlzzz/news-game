@@ -110,37 +110,35 @@ export class Viewfinder {
 
   /**
    * 绘制取景框 UI
-   * @param {Phaser.GameObjects.Graphics} g
+   * @param {PIXI.Graphics} g
    */
   draw(g) {
     const cx = this.x, cy = this.y, cw = this.width, ch = this.height;
     const cornerLen = 12;
 
     // 外框
-    g.lineStyle(2, 0xffffff, 0.88);
-    g.strokeRect(cx, cy, cw, ch);
+    g.lineStyle(2, 0xffffff, 0.88); g.drawRect(cx, cy, cw, ch); g.lineStyle(0);
 
     // 四角红色标记
     g.lineStyle(3, 0xff4444, 1);
-    g.lineBetween(cx,      cy,      cx + cornerLen, cy);
-    g.lineBetween(cx,      cy,      cx,      cy + cornerLen);
-    g.lineBetween(cx + cw, cy,      cx + cw - cornerLen, cy);
-    g.lineBetween(cx + cw, cy,      cx + cw, cy + cornerLen);
-    g.lineBetween(cx,      cy + ch, cx + cornerLen,      cy + ch);
-    g.lineBetween(cx,      cy + ch, cx,      cy + ch - cornerLen);
-    g.lineBetween(cx + cw, cy + ch, cx + cw - cornerLen, cy + ch);
-    g.lineBetween(cx + cw, cy + ch, cx + cw, cy + ch - cornerLen);
+    g.moveTo(cx,      cy);      g.lineTo(cx + cornerLen, cy);
+    g.moveTo(cx,      cy);      g.lineTo(cx,      cy + cornerLen);
+    g.moveTo(cx + cw, cy);      g.lineTo(cx + cw - cornerLen, cy);
+    g.moveTo(cx + cw, cy);      g.lineTo(cx + cw, cy + cornerLen);
+    g.moveTo(cx,      cy + ch); g.lineTo(cx + cornerLen,      cy + ch);
+    g.moveTo(cx,      cy + ch); g.lineTo(cx,      cy + ch - cornerLen);
+    g.moveTo(cx + cw, cy + ch); g.lineTo(cx + cw - cornerLen, cy + ch);
+    g.moveTo(cx + cw, cy + ch); g.lineTo(cx + cw, cy + ch - cornerLen);
 
     // 中心十字
     const mx = cx + cw / 2, my = cy + ch / 2;
     g.lineStyle(1, 0xffffff, 0.3);
-    g.lineBetween(mx - 10, my, mx + 10, my);
-    g.lineBetween(mx, my - 10, mx, my + 10);
+    g.moveTo(mx - 10, my); g.lineTo(mx + 10, my);
+    g.moveTo(mx, my - 10); g.lineTo(mx, my + 10);
 
     // 捕获指示点
     if (this.capturedEntities.length > 0) {
-      g.fillStyle(0xff4444, 0.85);
-      g.fillCircle(cx + cw - 8, cy + 8, 5);
+      g.lineStyle(0); g.beginFill(0xff4444, 0.85); g.drawCircle(cx + cw - 8, cy + 8, 5); g.endFill();
     }
 
     // 右下角缩放手柄（白底红边小方块 + 三条斜纹）
@@ -150,16 +148,14 @@ export class Viewfinder {
   _drawResizeHandle(g, hx, hy) {
     const s = this.handleSize;
     // 半透明白色方块
-    g.fillStyle(0xffffff, this.resizing ? 0.9 : 0.55);
-    g.fillRect(hx - s, hy - s, s + 2, s + 2);
+    g.lineStyle(0); g.beginFill(0xffffff, this.resizing ? 0.9 : 0.55); g.drawRect(hx - s, hy - s, s + 2, s + 2); g.endFill();
     // 红色边框
-    g.lineStyle(2, 0xff4444, 1);
-    g.strokeRect(hx - s, hy - s, s + 2, s + 2);
+    g.lineStyle(2, 0xff4444, 1); g.drawRect(hx - s, hy - s, s + 2, s + 2); g.lineStyle(0);
     // 三条斜纹（表示可拖拽）
     g.lineStyle(1.5, 0xcc2200, 0.95);
     for (let i = 0; i < 3; i++) {
       const off = 3 + i * 4;
-      g.lineBetween(hx - off, hy + 1, hx + 1, hy - off);
+      g.moveTo(hx - off, hy + 1); g.lineTo(hx + 1, hy - off);
     }
   }
 

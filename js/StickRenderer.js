@@ -1,6 +1,6 @@
 /**
  * StickRenderer
- * 读取 StickPuppet JSON 格式的动画数据，用 Phaser Graphics 实时绘制角色。
+ * 读取 StickPuppet JSON 格式的动画数据，用 PIXI.Graphics 实时绘制角色。
  * 支持两种骨架：human（火柴人）和 dog（四足犬）。
  * 多个 NPC 可以共享同一份动画数据。
  *
@@ -56,7 +56,8 @@ function getBend(from, to, frame, globalBend) {
  */
 function drawBone(g, x1, y1, x2, y2, bend) {
   if (bend === 0) {
-    g.lineBetween(x1, y1, x2, y2);
+    g.moveTo(x1, y1);
+    g.lineTo(x2, y2);
     return;
   }
 
@@ -70,7 +71,6 @@ function drawBone(g, x1, y1, x2, y2, bend) {
   const cpx = (x1 + x2) / 2 + bend * nx;
   const cpy = (y1 + y2) / 2 + bend * ny;
 
-  g.beginPath();
   g.moveTo(x1, y1);
   for (let i = 1; i <= CURVE_SEGS; i++) {
     const t  = i / CURVE_SEGS;
@@ -80,7 +80,6 @@ function drawBone(g, x1, y1, x2, y2, bend) {
       mt * mt * y1 + 2 * mt * t * cpy + t * t * y2
     );
   }
-  g.strokePath();
 }
 
 export class StickRenderer {
@@ -123,7 +122,7 @@ export class StickRenderer {
 
   /**
    * 绘制一帧角色
-   * @param {Phaser.GameObjects.Graphics} g
+   * @param {PIXI.Graphics} g
    * @param {string} animName
    * @param {number} frameIndex
    * @param {number} x         - 锚点世界坐标 X
@@ -159,8 +158,7 @@ export class StickRenderer {
       drawBone(g, jx(from), jy(from), jx(to), jy(to), bend);
     }
 
-    g.fillStyle(color, alpha);
-    g.fillCircle(jx('head'), jy('head'), HEAD_RADIUS * s);
+    g.lineStyle(0); g.beginFill(color, alpha); g.drawCircle(jx('head'), jy('head'), HEAD_RADIUS * s); g.endFill();
   }
 
   _drawDog(g, anim, frame, x, y, s, d, color, alpha, ov) {
@@ -175,8 +173,7 @@ export class StickRenderer {
       drawBone(g, jx(from), jy(from), jx(to), jy(to), bend);
     }
 
-    g.fillStyle(color, alpha);
-    g.fillCircle(jx('head'), jy('head'), DOG_HEAD_R * s);
+    g.lineStyle(0); g.beginFill(color, alpha); g.drawCircle(jx('head'), jy('head'), DOG_HEAD_R * s); g.endFill();
   }
 }
 

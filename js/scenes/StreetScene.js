@@ -12,7 +12,7 @@
  *     （DebugOverlay 的世界浮标也挂这里）
  *   uiContainer        — 屏幕固定 HUD（文本/按钮/闪光/调试面板）
  *
- * 渲染底层为 PixiJS；所有绘图文件通过 PhaserGraphicsAdapter 复用 Phaser Graphics API。
+ * 渲染底层为 PixiJS；所有绘图文件直接调用 PIXI.Graphics 原生 API。
  */
 
 import { StickRenderer }   from '../StickRenderer.js';
@@ -21,7 +21,6 @@ import { Viewfinder }      from '../Viewfinder.js';
 import { DebugOverlay }    from '../DebugOverlay.js';
 import { SceneRenderer }   from './SceneRenderer.js';
 import { SceneInitializer } from './SceneInitializer.js';
-import { PhaserGraphicsAdapter } from '../PhaserGraphicsAdapter.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT,
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
@@ -90,7 +89,7 @@ export class StreetScene {
       const pg = new PIXI.Graphics();
       pg.zIndex = zIndex;
       container.addChild(pg);
-      return new PhaserGraphicsAdapter(pg);
+      return pg;
     };
     this.skyGraphics        = mkLayer(this.skyContainer, 0);
     this.bgGraphics         = mkLayer(this.worldContainer, 1);
@@ -243,7 +242,7 @@ export class StreetScene {
     fill.destroy();
 
     for (const layer of [this.skyGraphics, this.bgGraphics, this.entityGraphics]) {
-      renderer.render(layer.g, { renderTexture: rt, clear: false });
+      renderer.render(layer, { renderTexture: rt, clear: false });
     }
 
     const canvas = renderer.extract.canvas(rt);

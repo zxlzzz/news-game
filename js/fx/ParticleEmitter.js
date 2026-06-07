@@ -1,5 +1,5 @@
 /**
- * ParticleEmitter — lightweight 2D particle system for Phaser Graphics
+ * ParticleEmitter — lightweight 2D particle system for PIXI.Graphics
  *
  * Subclasses override initParticle() and drawParticle() to define visual style.
  * Each emitter is attached to a world-space anchor that the owner updates every frame.
