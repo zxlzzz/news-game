@@ -15,7 +15,7 @@ import { spawnAthletes }    from '../npcs/Athletes.js';
 import { initVehicleSystem } from '../npcs/Vehicles.js';
 import {
   WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y, NEAR_Y,
-  SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, BUILDING_EXIT_XS,
+  SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, BUILDING_EXIT_XS,BIKE_LANE_NEAR_BOTTOM,
 } from '../SceneConfig.js';
 
 export class SceneInitializer {
@@ -130,16 +130,16 @@ export class SceneInitializer {
     const { em } = this;
     for (const stop of (layout.busStops || [])) {
       const far           = stop.direction > 0;
-      const anchorY       = far ? FAR_Y : NEAR_Y;                       // 柱子落地点
-      const roofTopY      = far ? BIKE_LANE_FAR_TOP - 30 : NEAR_Y - 15; // 顶棚顶边
-      const pillarBottomY = far ? FAR_Y - stop.bayD - 2  : NEAR_Y + 44; // 柱子底端
+      const anchorY       = far ? FAR_Y : NEAR_Y;
+      const roofTopY      = far ? BIKE_LANE_FAR_TOP - 30 : BIKE_LANE_NEAR_BOTTOM - 65;
+      const pillarBottomY = far ? FAR_Y - stop.bayD - 2  : BIKE_LANE_NEAR_BOTTOM - 5;
       const bsr = em.add(new PropEntity({
         propType: 'busstop-roof',
         x: stop.x, y: anchorY,
         roofW: stop.roofW, roofH: stop.roofH,
         roofTopY, pillarOffset: stop.pillarOffset, pillarBottomY,
         dir: stop.direction,
-        width: stop.roofW, height: anchorY - roofTopY,
+        width: stop.roofW, height: far ? anchorY - roofTopY : pillarBottomY - anchorY,
         _sortY: pillarBottomY,
         tags: ['busstop-roof'],
       }));
