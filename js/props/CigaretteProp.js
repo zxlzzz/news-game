@@ -43,9 +43,11 @@ export class CigaretteProp extends NpcProp {
     const tipX = anchor.x + d * len;
     const tipY = anchor.y - 3 * s;
     g.lineStyle(Math.max(1, 2 * s), 0xe8e0d0, 0.95);
-    g.lineBetween(anchor.x, anchor.y, tipX, tipY);
-    g.fillStyle(0xcc4400, 0.9);
-    g.fillCircle(tipX, tipY, Math.max(1.2, 2 * s));
+    g.moveTo(anchor.x, anchor.y).lineTo(tipX, tipY);
+    g.lineStyle(0);
+    g.beginFill(0xcc4400, 0.9);
+    g.drawCircle(tipX, tipY, Math.max(1.2, 2 * s));
+    g.endFill();
     this.smoke.draw(g);
   }
 }
