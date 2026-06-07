@@ -30,7 +30,7 @@ export class VehicleEntity extends Entity {
 
   _dims() {
     switch (this.kind) {
-      case 'bus':  return { L: 1010, H: 213, r: 38 };
+      case 'bus':  return { L: 800, H: 213, r: 38 };
       case 'moto': return { L: 187,  H: 84,  r: 26 };
       default:     return { L: 380,  H: 127, r: 26 };
     }
@@ -408,9 +408,9 @@ export class VehicleEntity extends Entity {
   _moto(g, highlight) {
     const u = this.scale, x = this.x, y = this.y, d = this.direction;
     const groundY    = y;
-    const bs = u * 1.8;
+    const bs = u;
     const ba = bs * 1.5;
-    const riderScale = u * 1.5;
+    const riderScale = u * 0.9;
 
     const fr = this._sr?.getFrame('mobike', 0) ?? {};
     const jBar   = fr.l_hand ?? [50,  6];
