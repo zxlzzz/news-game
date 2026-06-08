@@ -1,3 +1,4 @@
+import './core/graphicsPolyfill.js';
 /**
  * main.js - 游戏入口（PixiJS）
  */
