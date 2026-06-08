@@ -1204,7 +1204,8 @@
       "tags": [
         "bench",
         "park",
-        "park-furniture"
+        "park-furniture",
+        "seatable"
       ]
     },
     {
@@ -1217,7 +1218,8 @@
       "tags": [
         "bench",
         "park",
-        "park-furniture"
+        "park-furniture",
+        "seatable"
       ]
     },
     {
@@ -1230,7 +1232,8 @@
       "tags": [
         "bench",
         "park",
-        "park-furniture"
+        "park-furniture",
+        "seatable"
       ]
     }
   ],

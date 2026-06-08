@@ -31,7 +31,7 @@
 
 import { dlog }        from './DebugLog.js';
 import { PARK_TOP }     from '../SceneConfig.js';
-import { sitDown, alignLie, standUp } from '../entity/bench/bench.js';
+import { sitDown, alignLie, standUp } from '../entity/seat/seat.js';
 import { tickLoiter, initPoseCache as initLoiterPoseCache } from './LoiterBehavior.js';
 
 import {

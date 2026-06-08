@@ -1,15 +1,17 @@
 /**
- * bench — 长椅实体模块
+ * seat — 可坐道具行为模块（bench / chair 共用）
  *
  * 独占写入权：_occupiedBy、_bench、_sortY 由本模块负责写入。
  * Activity.js 的 occupy/release 方法负责道具侧的 _occupiedBy 写入，
- * 两者互不干涉：bench.js 管理 NPC 侧（sit/stand），Activity.js 管理活动侧。
+ * 两者互不干涉：seat.js 管理 NPC 侧（sit/stand），Activity.js 管理活动侧。
+ *
+ * 可坐道具通过 tags 数组包含 'seatable' 来声明，而非 propType 判断。
  */
 
 /** 长椅内禀尺寸（未缩放，世界单位） */
 export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 17, backH: 40 };
 
-/** 座面距 bench.y 的偏移（像素），与 drawBench 座板锚点一致 */
+/** 座面距 prop.y 的默认偏移（像素），与 drawBench 座板锚点一致 */
 const BENCH_SEAT_H = 12;
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -19,11 +21,11 @@ export function seatSurfaceY(bench) {
   return bench.y - (bench.seatH ?? BENCH_SEAT_H);
 }
 
-/** 在 entities 中寻找距 npc 最近的空闲长椅（跳过 busstop tag）；无则 null */
+/** 在 entities 中寻找距 npc 最近的空闲可坐道具（跳过 busstop tag）；无则 null */
 export function findFree(entities, npc, radius = 80) {
   let best = null, bestD = radius;
   for (const e of entities) {
-    if (e.propType !== 'bench' || e._occupiedBy != null) continue;
+    if (!e.tags?.includes('seatable') || e._occupiedBy != null) continue;
     if (e.tags?.includes('busstop')) continue;
     const d = Math.hypot(e.x - npc.x, e.y - npc.y);
     if (d <= bestD) { bestD = d; best = e; }
@@ -31,16 +33,16 @@ export function findFree(entities, npc, radius = 80) {
   return best;
 }
 
-/** 附近是否有长椅（|dx| < dxT && |dy| < dyT） */
+/** 附近是否有可坐道具（|dx| < dxT && |dy| < dyT） */
 export function isNear(entities, npc, dxT = 60, dyT = 80) {
   for (const e of entities) {
-    if (e.propType === 'bench' &&
+    if (e.tags?.includes('seatable') &&
         Math.abs(e.x - npc.x) < dxT && Math.abs(e.y - npc.y) < dyT) return true;
   }
   return false;
 }
 
-/** 将 NPC 对齐到长椅落座：占位 + x/y 对齐 + 按 facing 设图层 */
+/** 将 NPC 对齐到座位落座：占位 + x/y 对齐 + 按 facing 设图层 */
 export function sitDown(npc, bench) {
   bench._occupiedBy = npc.id;
   npc._bench = bench;
@@ -50,7 +52,7 @@ export function sitDown(npc, bench) {
   npc._sortY = far ? bench.y - 1 : bench.y + 1;
 }
 
-/** 释放长椅占位，清 _bench 和 _sortY */
+/** 释放座位占位，清 _bench 和 _sortY */
 export function standUp(npc) {
   if (!npc._bench) return;
   npc._bench._occupiedBy = null;

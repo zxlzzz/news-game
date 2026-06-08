@@ -7,7 +7,7 @@
  */
 
 import { SIDEWALK_FAR_Y, NEAR_Y } from '../SceneConfig.js';
-import { findFree as _findFreeBench, isNear as _isNearBench } from '../entity/bench/bench.js';
+import { findFree as _findFreeBench, isNear as _isNearBench } from '../entity/seat/seat.js';
 
 export class EnvironmentQuery {
   /** @param {EntityManager} entityManager */
