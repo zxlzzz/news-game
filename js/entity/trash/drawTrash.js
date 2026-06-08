@@ -9,21 +9,19 @@ export function drawTrash(g, p) {
   const tx    = x - topW / 2;
   const bx    = x - botW / 2;
 
-  g.fillStyle(0xc0c0c0, 0.92);
-  g.beginPath();
+  g.lineStyle(lineW, lineC, 0.95);
+  g.beginFill(0xc0c0c0, 0.92);
   g.moveTo(tx,          y - h);
   g.lineTo(tx + topW,   y - h);
   g.lineTo(bx + botW,   y);
   g.lineTo(bx,          y);
   g.closePath();
-  g.fillPath();
-  g.lineStyle(lineW, lineC, 0.95);
-  g.strokePath();
+  g.endFill();
   // lid
   g.lineStyle(lineW * 1.1, lineC, 0.95);
-  g.lineBetween(tx - 3 * s, y - h - 3 * s, tx + topW + 3 * s, y - h - 3 * s);
+  g.moveTo(tx - 3 * s, y - h - 3 * s); g.lineTo(tx + topW + 3 * s, y - h - 3 * s);
   // grooves
   g.lineStyle(0.5 * s, lineC, 0.6);
-  g.lineBetween(x - 6 * s, y - h + 6 * s, x - 6 * s + (botW - topW) * 0.3, y - 3 * s);
-  g.lineBetween(x + 6 * s, y - h + 6 * s, x + 6 * s - (botW - topW) * 0.3, y - 3 * s);
+  g.moveTo(x - 6 * s, y - h + 6 * s); g.lineTo(x - 6 * s + (botW - topW) * 0.3, y - 3 * s);
+  g.moveTo(x + 6 * s, y - h + 6 * s); g.lineTo(x + 6 * s - (botW - topW) * 0.3, y - 3 * s);
 }

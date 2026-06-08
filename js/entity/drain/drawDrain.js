@@ -9,16 +9,17 @@ export function drawDrain(g, p) {
   const lineW = depthLineWidth(p.y, { wMin: 0.7, wMax: 1.4 });
   const lineC = depthLineColor(p.y, { light: 0x10, dark: 0x08 });
 
-  g.fillStyle(0x707070, 1);
-  g.fillRect(px, py, w, h);
+  g.beginFill(0x707070, 1);
+  g.drawRect(px, py, w, h);
+  g.endFill();
   g.lineStyle(lineW, lineC, 0.9);
-  g.strokeRect(px, py, w, h);
+  g.drawRect(px, py, w, h);
 
   // grate slots
   g.lineStyle(lineW * 0.65, lineC, 0.85);
   const slots = Math.max(3, Math.floor(w / (9 * s)));
   for (let i = 1; i < slots; i++) {
     const lx = px + (w * i / slots);
-    g.lineBetween(lx, py + 3 * s, lx, py + h - 3 * s);
+    g.moveTo(lx, py + 3 * s); g.lineTo(lx, py + h - 3 * s);
   }
 }

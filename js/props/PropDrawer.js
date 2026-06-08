@@ -64,37 +64,42 @@ function drawStall(g, p) {
 
   // support poles
   g.lineStyle(lineW, lineC, 0.95);
-  g.lineBetween(px + 6 * s, y, px + 6 * s, y - roofH);
-  g.lineBetween(px + w - 6 * s, y, px + w - 6 * s, y - roofH);
+  g.moveTo(px + 6 * s, y); g.lineTo(px + 6 * s, y - roofH);
+  g.moveTo(px + w - 6 * s, y); g.lineTo(px + w - 6 * s, y - roofH);
 
   // awning
   const aY = y - roofH, aH = 17 * s;
-  g.fillStyle(0x707070, 1);
-  g.beginPath();
+  g.lineStyle(lineW, lineC, 0.95);
+  g.beginFill(0x707070, 1);
   g.moveTo(px, aY + aH); g.lineTo(px + w, aY + aH);
   g.lineTo(px + w + 9 * s, aY); g.lineTo(px - 9 * s, aY);
-  g.closePath(); g.fillPath();
-  g.lineStyle(lineW, lineC, 0.95); g.strokePath();
+  g.closePath();
+  g.endFill();
   // awning stripes
   g.lineStyle(1.5 * s, 0xdddddd, 0.7);
   for (let i = 1; i < Math.floor(w / (17 * s)); i++) {
     const sx = px - 9 * s + i * 17 * s;
-    g.lineBetween(sx, aY, sx + 4 * s, aY + aH);
+    g.moveTo(sx, aY); g.lineTo(sx + 4 * s, aY + aH);
   }
 
   // counter
-  g.fillStyle(0xc0c0c0, 1);
-  g.fillRect(px + 3 * s, counterY, w - 6 * s, 11 * s);
   g.lineStyle(lineW, lineC, 0.95);
-  g.strokeRect(px + 3 * s, counterY, w - 6 * s, 11 * s);
+  g.beginFill(0xc0c0c0, 1);
+  g.drawRect(px + 3 * s, counterY, w - 6 * s, 11 * s);
+  g.endFill();
+  g.drawRect(px + 3 * s, counterY, w - 6 * s, 11 * s);
 
   // items
-  g.fillStyle(0x9a9a9a, 1);
   const itemW = 11 * s, itemH = 9 * s;
+  g.lineStyle(1.2 * s, lineC, 0.85);
+  g.beginFill(0x9a9a9a, 1);
   for (let i = 0; i < 3; i++) {
     const gx = px + 11 * s + i * ((w - 29 * s) / 2);
-    g.fillRect(gx, counterY - itemH, itemW, itemH);
-    g.lineStyle(1.2 * s, lineC, 0.85);
-    g.strokeRect(gx, counterY - itemH, itemW, itemH);
+    g.drawRect(gx, counterY - itemH, itemW, itemH);
+  }
+  g.endFill();
+  for (let i = 0; i < 3; i++) {
+    const gx = px + 11 * s + i * ((w - 29 * s) / 2);
+    g.drawRect(gx, counterY - itemH, itemW, itemH);
   }
 }

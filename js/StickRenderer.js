@@ -40,9 +40,6 @@ const HEAD_RADIUS  = 10;
 const DOG_HEAD_R   = 7;
 const CURVE_SEGS   = 10; // 贝塞尔曲线折线段数
 
-/**
- * 取骨骼弯曲值（px，未缩放）
- */
 function getBend(from, to, frame, globalBend) {
   const perFrameKey = `_bend_${from}__${to}`;
   if (perFrameKey in frame) return frame[perFrameKey];
@@ -51,12 +48,9 @@ function getBend(from, to, frame, globalBend) {
   return 0;
 }
 
-/**
- * 绘制一段骨骼（直线或二次贝塞尔曲线）
- */
 function drawBone(g, x1, y1, x2, y2, bend) {
   if (bend === 0) {
-    g.lineBetween(x1, y1, x2, y2);
+    g.moveTo(x1, y1); g.lineTo(x2, y2);
     return;
   }
 
@@ -70,7 +64,7 @@ function drawBone(g, x1, y1, x2, y2, bend) {
   const cpx = (x1 + x2) / 2 + bend * nx;
   const cpy = (y1 + y2) / 2 + bend * ny;
 
-  g.beginPath();
+  g.beginFill(0, 0);
   g.moveTo(x1, y1);
   for (let i = 1; i <= CURVE_SEGS; i++) {
     const t  = i / CURVE_SEGS;
@@ -80,37 +74,28 @@ function drawBone(g, x1, y1, x2, y2, bend) {
       mt * mt * y1 + 2 * mt * t * cpy + t * t * y2
     );
   }
-  g.strokePath();
+  g.endFill();
 }
 
 export class StickRenderer {
   constructor(scene) {
     this.scene      = scene;
-    this.animations = {}; // name -> { frames, fps, frameCount, globalBend, skeleton }
+    this.animations = {};
   }
 
-  /**
-   * 加载一个动画
-   * @param {string} name - 动画名称
-   * @param {object} data - StickPuppet JSON
-   *   { frames, fps?, globalBend?, skeleton?, anchorMode?, canonicalDirection? }
-   */
   loadAnimation(name, data) {
-    if (!data) return; // 防护：缺失的 JSON 不致整体崩溃
+    if (!data) return;
     this.animations[name] = {
       frames:     data.frames,
       fps:        data.fps        || 8,
       frameCount: data.frames.length,
       globalBend: data.globalBend ?? {},
       skeleton:   data.skeleton   || 'human',
-      // 定位模式：'foot'(默认,最低脚落 y) / 'hip'(body关节落 y) / 'back'(不做竖直偏移)
       anchorMode: data.anchorMode || 'foot',
-      // 基准朝向：动画作画时面向 +1=右 / -1=左；渲染翻转 = direction * canonicalDirection
       canonicalDirection: data.canonicalDirection || 1,
     };
   }
 
-  /** 获取动画元信息 */
   getAnimation(name) {
     return this.animations[name] || null;
   }
@@ -121,19 +106,6 @@ export class StickRenderer {
     return anim.frames[frameIndex % anim.frameCount] ?? {};
   }
 
-  /**
-   * 绘制一帧角色
-   * @param {Phaser.GameObjects.Graphics} g
-   * @param {string} animName
-   * @param {number} frameIndex
-   * @param {number} x         - 锚点世界坐标 X
-   * @param {number} y         - 锚点世界坐标 Y（按 anchorMode 解释）
-   * @param {number} scale
-   * @param {number} direction - 1=面右，-1=面左（会再乘 canonicalDirection）
-   * @param {number} color
-   * @param {number} alpha
-   * @param {Object<string,[number,number]>} [jointOverrides] - 关节坐标覆盖（代码控制肢体）
-   */
   draw(g, animName, frameIndex, x, y, scale = 0.45, direction = 1,
        color = 0x1a1a1a, alpha = 1, jointOverrides = null) {
     const anim = this.animations[animName];
@@ -159,8 +131,9 @@ export class StickRenderer {
       drawBone(g, jx(from), jy(from), jx(to), jy(to), bend);
     }
 
-    g.fillStyle(color, alpha);
-    g.fillCircle(jx('head'), jy('head'), HEAD_RADIUS * s);
+    g.beginFill(color, alpha);
+    g.drawCircle(jx('head'), jy('head'), HEAD_RADIUS * s);
+    g.endFill();
   }
 
   _drawDog(g, anim, frame, x, y, s, d, color, alpha, ov) {
@@ -175,16 +148,16 @@ export class StickRenderer {
       drawBone(g, jx(from), jy(from), jx(to), jy(to), bend);
     }
 
-    g.fillStyle(color, alpha);
-    g.fillCircle(jx('head'), jy('head'), DOG_HEAD_R * s);
+    g.beginFill(color, alpha);
+    g.drawCircle(jx('head'), jy('head'), DOG_HEAD_R * s);
+    g.endFill();
   }
 }
 
-// ─── 按 anchorMode 计算竖直偏移（渲染器与 NPC.getAnchor 必须保持一致） ──────────
 export function humanOffsetY(anim, coord, s) {
   if (anim.anchorMode === 'hip')  return -coord('body')[1] * s;
   if (anim.anchorMode === 'back') return 0;
-  return -Math.max(coord('l_foot')[1], coord('r_foot')[1]) * s; // foot
+  return -Math.max(coord('l_foot')[1], coord('r_foot')[1]) * s;
 }
 
 export function dogOffsetY(anim, coord, s) {
@@ -193,5 +166,5 @@ export function dogOffsetY(anim, coord, s) {
   return -Math.max(
     coord('fl_lower')[1], coord('fr_lower')[1],
     coord('bl_lower')[1], coord('br_lower')[1]
-  ) * s; // foot
+  ) * s;
 }

@@ -24,19 +24,20 @@ export function drawBench(g, p) {
     const a = P(u0, w0), b = P(u1, w1);
     const rx = Math.min(a[0], b[0]), ry = Math.min(a[1], b[1]);
     const rw = Math.abs(a[0] - b[0]), rh = Math.abs(a[1] - b[1]);
-    if (fill != null) { g.fillStyle(fill, fa ?? 1); g.fillRect(rx, ry, rw, rh); }
-    if (sw)           { g.lineStyle(sw, lineC, 0.9); g.strokeRect(rx, ry, rw, rh); }
+    if (fill != null) { g.beginFill(fill, fa ?? 1); g.drawRect(rx, ry, rw, rh); g.endFill(); }
+    if (sw)           { g.lineStyle(sw, lineC, 0.9); g.drawRect(rx, ry, rw, rh); }
   };
   const line = (u0, w0, u1, w1, lwd, al) => {
     const a = P(u0, w0), b = P(u1, w1);
     g.lineStyle(lwd, lineC, al ?? 0.9);
-    g.lineBetween(a[0], a[1], b[0], b[1]);
+    g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]);
   };
 
   // ground shadow
-  g.fillStyle(0x000000, 0.10);
-  if (f === 'left' || f === 'right') g.fillEllipse(x, y, 12 * s, L * 1.05);
-  else                               g.fillEllipse(x, y, L * 1.05, 8 * s);
+  g.beginFill(0x000000, 0.10);
+  if (f === 'left' || f === 'right') g.drawEllipse(x, y, 6 * s, L * 1.05 / 2);
+  else                               g.drawEllipse(x, y, L * 1.05 / 2, 4 * s);
+  g.endFill();
 
   // outer + inner legs
   const li = 14 * s;

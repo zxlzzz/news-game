@@ -12,23 +12,25 @@ export function drawLamp(g, p) {
   const baseW  = 22  * s,  baseH = 22 * s;
   const topY    = y - poleH;
   const armTipX = x - armLen;
-  const armTipY = topY + 28 * s;   // arm slopes slightly downward from pole top
+  const armTipY = topY + 28 * s;
 
   // base block
-  g.fillStyle(0x101010, 1);
-  g.fillRect(x - baseW / 2, y - baseH, baseW, baseH);
+  g.beginFill(0x101010, 1);
+  g.drawRect(x - baseW / 2, y - baseH, baseW, baseH);
+  g.endFill();
   // pole
   g.lineStyle(lw * 1.25, lc, 1);
-  g.lineBetween(x, y - baseH, x, topY);
+  g.moveTo(x, y - baseH); g.lineTo(x, topY);
   // arm
   g.lineStyle(lw, lc, 1);
-  g.lineBetween(x, topY, armTipX, armTipY);
+  g.moveTo(x, topY); g.lineTo(armTipX, armTipY);
   // light box
-  g.fillStyle(0xfafafa, 1);
-  g.fillRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH);
+  g.beginFill(0xfafafa, 1);
+  g.drawRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH);
+  g.endFill();
   g.lineStyle(lw * 0.8, 0x101010, 1);
-  g.strokeRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH);
+  g.drawRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH);
   // diffuser line
   g.lineStyle(lw * 0.35, 0xa0a0a0, 0.85);
-  g.lineBetween(armTipX - boxW + 3 * s, armTipY, armTipX - 3 * s, armTipY);
+  g.moveTo(armTipX - boxW + 3 * s, armTipY); g.lineTo(armTipX - 3 * s, armTipY);
 }
