@@ -10,6 +10,7 @@ export class PhoneProp extends NpcProp {
     const anchor = this.npc.getAnchor('hand_r');
     const s = this.npc.scale;
     const w = 10 * s, h = 16 * s;
+    g.lineStyle(0);
     g.beginFill(0x2a2a2a, 0.9);
     g.drawRect(anchor.x - w / 2, anchor.y - h, w, h);
     g.endFill();
