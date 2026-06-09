@@ -86,7 +86,7 @@ export class SceneRenderer {
 
     for (const stop of (this.layout.busStops || [])) {
       if (stop.direction > 0) {
-        this._drawFarBusStop(g, stop, ft, fy, drawSign);
+        this._drawFarBusStop(g, stop, ft, fy+4, drawSign);
       } else {
         this._drawNearBusStop(g, stop, ny, drawSign);
       }
@@ -104,6 +104,7 @@ export class SceneRenderer {
     const bx0     = sx - BAY_W / 2;
     const bx1     = sx + BAY_W / 2;
 
+    g.lineStyle(0);
     g.beginFill(GRAY_ROAD, 1);
     g.drawRect(bx0, fy - BAY_D, BAY_W, BAY_D);
     g.endFill();
@@ -122,20 +123,21 @@ export class SceneRenderer {
     const sf = depthScale(fy);
     const benchY = pillarT + 10;
     const benchHalf = BENCH_W / 2;
+    g.lineStyle(0);
     g.beginFill(0x565654, 1);
     g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sf);
     g.endFill();
     g.lineStyle(0.8 * sf, 0x181818, 0.7);
     g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sf);
     g.lineStyle(1.5 * sf, 0x303030, 0.9);
-    g.moveTo(sx - benchHalf + 10, benchY + 4 * sf); g.lineTo(sx - benchHalf + 10, benchY + 30 * sf);
-    g.moveTo(sx + benchHalf - 10, benchY + 4 * sf); g.lineTo(sx + benchHalf - 10, benchY + 30 * sf);
+    g.moveTo(sx - benchHalf + 10, benchY + 4 * sf).lineTo(sx - benchHalf + 10, benchY + 30 * sf);
+    g.moveTo(sx + benchHalf - 10, benchY + 4 * sf).lineTo(sx + benchHalf - 10, benchY + 30 * sf);
 
     const poleX  = bx1 + 5;
     const poleTy = roofT + 10;
     const poleBy = fy - BAY_D - 2;
     g.lineStyle(2.2 * sf, 0x2e2e2e, 1);
-    g.moveTo(poleX, poleTy); g.lineTo(poleX, poleBy);
+    g.moveTo(poleX, poleTy).lineTo(poleX, poleBy);
     drawSign(poleX, poleTy);
   }
 
@@ -148,6 +150,7 @@ export class SceneRenderer {
     const bx0     = sx - BAY_W / 2;
     const bx1     = sx + BAY_W / 2;
 
+    g.lineStyle(0);
     g.beginFill(GRAY_ROAD, 1);
     g.drawRect(bx0, ny, BAY_W, BAY_D);
     g.endFill();
@@ -166,20 +169,21 @@ export class SceneRenderer {
 
     const benchY    = pillarT - 43;
     const benchHalf = BENCH_W / 2;
+    g.lineStyle(0);
     g.beginFill(0x565654, 1);
     g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sn);
     g.endFill();
     g.lineStyle(0.8 * sn, 0x181818, 0.7);
     g.drawRect(sx - benchHalf, benchY, BENCH_W, 4 * sn);
     g.lineStyle(1.5 * sn, 0x303030, 0.9);
-    g.moveTo(sx - benchHalf + 12, benchY + 4 * sn); g.lineTo(sx - benchHalf + 12, benchY + 40 * sn);
-    g.moveTo(sx + benchHalf - 12, benchY + 4 * sn); g.lineTo(sx + benchHalf - 12, benchY + 40 * sn);
+    g.moveTo(sx - benchHalf + 12, benchY + 4 * sn).lineTo(sx - benchHalf + 12, benchY + 40 * sn);
+    g.moveTo(sx + benchHalf - 12, benchY + 4 * sn).lineTo(sx + benchHalf - 12, benchY + 40 * sn);
 
     const poleX  = bx1 + 5;
     const poleTy = roofT + 10;
     const poleBy = BIKE_LANE_NEAR_BOTTOM + 50;
     g.lineStyle(2.2 * sn, 0x2e2e2e, 1);
-    g.moveTo(poleX, poleTy); g.lineTo(poleX, poleBy);
+    g.moveTo(poleX, poleTy).lineTo(poleX, poleBy);
     drawSign(poleX, poleTy);
   }
 
