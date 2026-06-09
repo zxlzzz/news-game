@@ -55,33 +55,75 @@ function _catmull(ctrl, seg) {
 }
 
 function _carWindows(g, cx, baseY, halfL, hs, d, sw) {
-  const winBot  = baseY - hs * 0.48;
-  const winTopR = baseY - hs * 0.82;
-  const winTopF = baseY - hs * 0.80;
-  const pillarX = cx - d * halfL * 0.04;
+  const winBot = baseY - hs * 0.50;
+  const winTop = baseY - hs * 0.80;
+
+  const pillarX = cx - d * halfL * 0.02;
+  const bw = halfL * 0.015;
+
+  // 后窗
+  g.lineStyle(Math.max(0.6, sw * 0.35), 0x2a2a2a, 0.6);
+  g.beginFill(0xc0c0c0, 0.55);
+
+  g.moveTo(cx - d * halfL * 0.42,winTop);
+  g.lineTo(pillarX - bw,winTop);
+  g.lineTo(pillarX - bw,winBot);
+  g.lineTo(cx - d * halfL * 0.42,winBot);
+
+  g.closePath();
+  g.endFill();
+
+  // 前窗（长度减小）
+  const leftTopX = pillarX + bw;
+  const leftBotX = pillarX + bw;
+
+  // 修改：三个 X 系数各减小 0.04，缩短前窗长度
+  const topFrontX = cx + d * halfL * 0.3;   // 原 0.38
+  const topFrontY = baseY - hs * 0.78;
+
+  const aMidX = cx + d * halfL * 0.35;       // 原 0.43
+  const aMidY = baseY - hs * 0.64;
+
+  const botFrontX = cx + d * halfL * 0.39;   // 原 0.47
+  const botFrontY = winBot + hs * 0.02;
 
   g.lineStyle(Math.max(0.6, sw * 0.35), 0x2a2a2a, 0.6);
-  g.beginFill(0xc0c0c0, 0.6);
-  g.moveTo(cx - d * halfL * 0.46, winTopR);
-  g.lineTo(cx - d * halfL * 0.32, winTopR - hs * 0.04);
-  g.lineTo(pillarX - d * halfL * 0.02, winTopR - hs * 0.02);
-  g.lineTo(pillarX - d * halfL * 0.02, winBot);
-  g.lineTo(cx - d * halfL * 0.44, winBot);
-  g.closePath(); g.endFill();
+  g.beginFill(0xc0c0c0, 0.50);
 
-  g.lineStyle(Math.max(0.6, sw * 0.35), 0x2a2a2a, 0.6);
-  g.beginFill(0xc0c0c0, 0.5);
-  g.moveTo(pillarX + d * halfL * 0.04, winTopR - hs * 0.02);
-  g.lineTo(cx + d * halfL * 0.22, winTopF);
-  g.lineTo(cx + d * halfL * 0.46, winBot + hs * 0.04);
-  g.lineTo(pillarX + d * halfL * 0.04, winBot);
-  g.closePath(); g.endFill();
+  g.moveTo(leftTopX, winTop);
+  g.lineTo(topFrontX, topFrontY);
+  g.lineTo(aMidX, aMidY);
+  g.lineTo(botFrontX, botFrontY);
+  g.lineTo(leftBotX, winBot);
 
-  g.lineStyle(Math.max(1.5, sw * 0.7), 0x2a2a2a, 0.85);
-  g.moveTo(pillarX, winTopR - hs * 0.02); g.lineTo(pillarX, winBot);
+  g.closePath();
+  g.endFill();
 
-  g.lineStyle(Math.max(0.5, sw * 0.3), 0x2a2a2a, 0.25);
-  g.moveTo(pillarX, winBot); g.lineTo(pillarX, baseY + hs * 0.02);
+  // B柱
+  g.lineStyle(0);
+  g.beginFill(0x2a2a2a, 0.85);
+
+  g.drawRect(
+    pillarX - bw,
+    winTop,
+    bw * 2,
+    winBot - winTop
+  );
+
+  g.endFill();
+
+  // 腰线
+  g.lineStyle(
+    Math.max(0.5, sw * 0.3),
+    0x2a2a2a,
+    0.25
+  );
+
+  g.moveTo(pillarX, winBot);
+  g.lineTo(
+    pillarX,
+    baseY + hs * 0.02
+  );
 }
 
 function _carDetails(g, cx, baseY, halfL, hs, rs, d, s) {
