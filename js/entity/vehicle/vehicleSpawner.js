@@ -1,14 +1,14 @@
 /**
- * Vehicles — 自行车 + 摩托（仅在马路上，车架与骑手对齐）
+ * vehicleSpawner — 自行车 + 摩托（仅在马路上，车架与骑手对齐）
  */
 
-import { roadY, worldX, bikeLaneFarY, bikeLaneNearY } from '../SceneConfig.js';
-import { makeNPC }            from './util.js';
-import { VehicleEntity }      from '../VehicleEntity.js';
-import { TrafficManager }     from '../behavior/TrafficManager.js';
-import { BusStop }            from '../behavior/BusStop.js';
-import { VehicleSpawner }     from '../behavior/VehicleSpawner.js';
-import { CyclistSpawner }     from '../behavior/CyclistSpawner.js';
+import { roadY, worldX, bikeLaneFarY, bikeLaneNearY } from '../../SceneConfig.js';
+import { makeNPC }            from '../../npcs/util.js';
+import { VehicleEntity }      from '../../VehicleEntity.js';
+import { TrafficManager }     from './TrafficManager.js';
+import { BusStop }            from '../busstop/busstop.js';
+import { VehicleSpawner }     from '../../behavior/VehicleSpawner.js';
+import { CyclistSpawner }     from './CyclistSpawner.js';
 
 const FRAME = 0x2a2a2a;
 const SPOKE = 0x808080;

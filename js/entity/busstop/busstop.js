@@ -1,7 +1,9 @@
 /**
  * BusStop — 公交站 Smart Object
  *
- * 公交车进入探测范围后 VehicleStateMachine 调用 arrive(bus) 触发停站；
+ * 独占写入权：_occupant 由 arrive/depart 负责写入；
+ *   _waiters / _boardingQueue 由 WaitForBusLayer 负责管理。
+ * VehicleStateMachine 调用 arrive(bus) 触发停站；
  * 所有 boarding NPC 上完（或 8s 超时）后 depart() 释放，公交车进入 accelerating。
  * 无等车乘客时按 waitRange 计时正常发车。
  */

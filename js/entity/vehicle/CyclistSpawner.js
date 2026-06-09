@@ -12,8 +12,8 @@
  * 绘制函数 drawBicycle / drawEbike 保留在 Vehicles.js，经构造参数注入。
  */
 
-import { makeNPC }     from '../npcs/util.js';
-import { bikeLaneFarY, bikeLaneNearY, WORLD_WIDTH } from '../SceneConfig.js';
+import { makeNPC }     from '../../npcs/util.js';
+import { bikeLaneFarY, bikeLaneNearY, WORLD_WIDTH } from '../../SceneConfig.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 

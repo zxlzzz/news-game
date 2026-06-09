@@ -16,7 +16,7 @@ import { tickBaseState, setState, registerTransition, triggerDeparture, initPose
 import { tickModifiers, initPoseCache as initModPoseCache } from './behavior/ModifierLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
 import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
-import { WaitForBusLayer }      from './behavior/WaitForBusLayer.js';
+import { WaitForBusLayer }      from './entity/busstop/WaitForBusLayer.js';
 import { refreshDebugFlag }     from './behavior/DebugLog.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);

@@ -5,14 +5,14 @@ import { ExitRegistry }    from '../behavior/ExitRegistry.js';
 import { SpawnManager }    from '../behavior/SpawnManager.js';
 import { RouteSelector }   from '../behavior/RouteSelector.js';
 import { NpcPropManager }  from '../props/NpcPropManager.js';
-import { WaitForBusLayer } from '../behavior/WaitForBusLayer.js';
+import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
 import { setState }        from '../behavior/BaseStateMachine.js';
 import { spawnPedestrians, spawnOnePedestrian } from '../npcs/Pedestrians.js';
 import { makeNPC }          from '../npcs/util.js';
 import { spawnChess }       from '../npcs/Chess.js';
 import { spawnDogWalker }   from '../npcs/DogWalker.js';
 import { spawnAthletes }    from '../npcs/Athletes.js';
-import { initVehicleSystem } from '../npcs/Vehicles.js';
+import { initVehicleSystem } from '../entity/vehicle/vehicleSpawner.js';
 import {
   WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y, NEAR_Y,
   SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, BUILDING_EXIT_XS,BIKE_LANE_NEAR_BOTTOM,

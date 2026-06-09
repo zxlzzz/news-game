@@ -6,7 +6,7 @@
  */
 
 import { VehicleEntity }        from '../VehicleEntity.js';
-import { VehicleStateMachine }  from './VehicleStateMachine.js';
+import { VehicleStateMachine }  from '../entity/vehicle/VehicleStateMachine.js';
 import { roadY, WORLD_WIDTH }   from '../SceneConfig.js';
 
 const LANES = [
