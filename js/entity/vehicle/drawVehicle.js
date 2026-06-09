@@ -267,9 +267,9 @@ function _bus(g, vehicle, highlight) {
 function _moto(g, vehicle, highlight) {
   const u = vehicle.scale, x = vehicle.x, y = vehicle.y, d = vehicle.direction;
   const groundY = y;
-  const bs = u * 1.8;
+  const bs = u;
   const ba = bs * 1.5;
-  const riderScale = u * 1.5;
+  const riderScale = u * 0.8;
 
   const fr = vehicle._sr?.getFrame('mobike', 0) ?? {};
   const jBar   = fr.l_hand ?? [50,  6];
