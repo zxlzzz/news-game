@@ -2,9 +2,9 @@
  * BuildingEntity — 俯视角"老街区"沿街楼，6 种原型
  */
 
-import { Entity }        from './core/Entity.js';
-import { ARCH }          from './entity/building/building.js';
-import { drawBuilding }  from './entity/building/drawBuilding.js';
+import { Entity }        from '../../core/Entity.js';
+import { ARCH }          from './building.js';
+import { drawBuilding }  from './drawBuilding.js';
 
 export class BuildingEntity extends Entity {
   constructor(config) {

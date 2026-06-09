@@ -1,22 +1,22 @@
-import { Entity } from './core/Entity.js';
-import { drawBench }       from './entity/seat/drawBench.js';
-import { drawChair }       from './entity/seat/drawChair.js';
-import { drawLamp }        from './entity/lamp/drawLamp.js';
-import { drawTrash }       from './entity/trash/drawTrash.js';
-import { drawSign }        from './entity/sign/drawSign.js';
-import { drawNewsRack }    from './entity/newsrack/drawNewsRack.js';
-import { drawHydrant }     from './entity/hydrant/drawHydrant.js';
-import { drawMailbox }     from './entity/mailbox/drawMailbox.js';
-import { drawPlanter }     from './entity/planter/drawPlanter.js';
-import { drawManhole }     from './entity/manhole/drawManhole.js';
-import { drawDrain }       from './entity/drain/drawDrain.js';
-import { drawFountain }    from './entity/fountain/drawFountain.js';
-import { drawPhoneBooth }  from './entity/phonebooth/drawPhoneBooth.js';
-import { drawBusStopRoof } from './entity/busstop/drawBusStopRoof.js';
-import { drawTree }        from './entity/tree/drawTree.js';
-import { drawVending }     from './entity/vending/drawVending.js';
-import { drawChessTable }  from './entity/chess-table/drawChessTable.js';
-import { drawStall }       from './entity/stall/drawStall.js';
+import { Entity } from './Entity.js';
+import { drawBench }       from '../entity/seat/drawBench.js';
+import { drawChair }       from '../entity/seat/drawChair.js';
+import { drawLamp }        from '../entity/lamp/drawLamp.js';
+import { drawTrash }       from '../entity/trash/drawTrash.js';
+import { drawSign }        from '../entity/sign/drawSign.js';
+import { drawNewsRack }    from '../entity/newsrack/drawNewsRack.js';
+import { drawHydrant }     from '../entity/hydrant/drawHydrant.js';
+import { drawMailbox }     from '../entity/mailbox/drawMailbox.js';
+import { drawPlanter }     from '../entity/planter/drawPlanter.js';
+import { drawManhole }     from '../entity/manhole/drawManhole.js';
+import { drawDrain }       from '../entity/drain/drawDrain.js';
+import { drawFountain }    from '../entity/fountain/drawFountain.js';
+import { drawPhoneBooth }  from '../entity/phonebooth/drawPhoneBooth.js';
+import { drawBusStopRoof } from '../entity/busstop/drawBusStopRoof.js';
+import { drawTree }        from '../entity/tree/drawTree.js';
+import { drawVending }     from '../entity/vending/drawVending.js';
+import { drawChessTable }  from '../entity/chess-table/drawChessTable.js';
+import { drawStall }       from '../entity/stall/drawStall.js';
 
 const OBSTACLE_TYPES = new Set([
   'fountain', 'slide', 'stall', 'tree', 'bench', 'trash', 'hydrant',

@@ -4,10 +4,10 @@
  *   this.x = 车身中心；this.y = 车轮触地基线（用于深度排序/缩放）
  */
 
-import { Entity }       from './core/Entity.js';
-import { depthScale }   from './core/Layout.js';
-import { dims }         from './entity/vehicle/vehicle.js';
-import { drawVehicle }  from './entity/vehicle/drawVehicle.js';
+import { Entity }       from '../../core/Entity.js';
+import { depthScale }   from '../../core/Layout.js';
+import { dims }         from './vehicle.js';
+import { drawVehicle }  from './drawVehicle.js';
 
 export class VehicleEntity extends Entity {
   constructor(cfg) {

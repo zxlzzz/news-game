@@ -1,6 +1,6 @@
-import { BuildingEntity }  from '../BuildingEntity.js';
-import { PropEntity }      from '../PropEntity.js';
-import { BehaviorManager } from '../BehaviorManager.js';
+import { BuildingEntity }  from '../entity/building/BuildingEntity.js';
+import { PropEntity }      from '../core/PropEntity.js';
+import { BehaviorManager } from '../behavior/BehaviorManager.js';
 import { ExitRegistry }    from '../npc/ExitRegistry.js';
 import { SpawnManager }    from '../npc/SpawnManager.js';
 import { RouteSelector }   from '../behavior/RouteSelector.js';

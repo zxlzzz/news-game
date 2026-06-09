@@ -10,15 +10,15 @@
  * 扫描 em.entities 中所有含 smartDef.routing 的 PropEntity 并自动注册 registerTransition。
  */
 
-import { getProfile }          from './npc/NpcProfile.js';
-import { EnvironmentQuery }     from './behavior/EnvironmentQuery.js';
-import { tickBaseState, setState, registerTransition, triggerDeparture, initPoseCache as initBsmPoseCache } from './behavior/BaseStateMachine.js';
-import { tickModifiers, initPoseCache as initModPoseCache } from './behavior/ModifierLayer.js';
-import { SocialLayer }          from './behavior/SocialLayer.js';
-import { CameraReactionLayer }  from './camera/CameraReactionLayer.js';
-import { WaitForBusLayer }      from './entity/busstop/WaitForBusLayer.js';
-import { refreshDebugFlag }     from './behavior/DebugLog.js';
-import { checkZoneTransition }  from './behavior/WalkMode.js';
+import { getProfile }          from '../npc/NpcProfile.js';
+import { EnvironmentQuery }     from './EnvironmentQuery.js';
+import { tickBaseState, setState, registerTransition, triggerDeparture, initPoseCache as initBsmPoseCache } from './BaseStateMachine.js';
+import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
+import { SocialLayer }          from './SocialLayer.js';
+import { CameraReactionLayer }  from '../camera/CameraReactionLayer.js';
+import { WaitForBusLayer }      from '../entity/busstop/WaitForBusLayer.js';
+import { refreshDebugFlag }     from './DebugLog.js';
+import { checkZoneTransition }  from './WalkMode.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 

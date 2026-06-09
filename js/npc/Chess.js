@@ -11,7 +11,7 @@
  */
 
 import { NPC }            from './Npc.js';
-import { PropEntity }     from '../PropEntity.js';
+import { PropEntity }     from '../core/PropEntity.js';
 import { gapAt, makeSlots } from '../entity/chess-table/chessTable.js';
 
 export function spawnChess(em, sr, bm, chessPlaza) {

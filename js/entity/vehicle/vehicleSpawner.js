@@ -4,7 +4,7 @@
 
 import { roadY, worldX, bikeLaneFarY, bikeLaneNearY } from '../../core/Layout.js';
 import { makeNPC }            from '../../npc/npcUtil.js';
-import { VehicleEntity }      from '../../VehicleEntity.js';
+import { VehicleEntity }      from './VehicleEntity.js';
 import { TrafficManager }     from './TrafficManager.js';
 import { BusStop }            from '../busstop/busstop.js';
 import { VehicleSpawner }     from '../../behavior/VehicleSpawner.js';

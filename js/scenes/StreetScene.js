@@ -18,7 +18,7 @@
 import { StickRenderer }   from '../core/StickRenderer.js';
 import { EntityManager }   from '../core/EntityManager.js';
 import { Viewfinder }      from '../camera/Viewfinder.js';
-import { DebugOverlay }    from '../DebugOverlay.js';
+import { DebugOverlay }    from '../ui/DebugOverlay.js';
 import { SceneRenderer }   from './SceneRenderer.js';
 import { SceneInitializer } from './SceneInitializer.js';
 import {
@@ -27,7 +27,7 @@ import {
 } from '../core/Layout.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 import { PixiText }         from '../core/PixiText.js';
-import { getManifestPaths, buildPoseCache } from '../PoseCacheBuilder.js';
+import { getManifestPaths, buildPoseCache } from '../behavior/PoseCacheBuilder.js';
 
 const ANIM_FILES = {
   walk: 'base/walk', run: 'base/run', idle: 'base/idle', jog: 'base/jog', bike: 'base/bike',
