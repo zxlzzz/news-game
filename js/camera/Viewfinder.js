@@ -3,7 +3,7 @@
  * 可拖动取景框：检测框内所有实体（NPC、建筑、道具）并收集标签。
  */
 
-import { WORLD_WIDTH, WORLD_HEIGHT } from './SceneConfig.js';
+import { WORLD_WIDTH, WORLD_HEIGHT } from '../core/Layout.js';
 
 export class Viewfinder {
   constructor({ app, getWorldCoords }, config = {}) {

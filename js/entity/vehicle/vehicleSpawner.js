@@ -2,8 +2,8 @@
  * vehicleSpawner — 自行车 + 摩托（仅在马路上，车架与骑手对齐）
  */
 
-import { roadY, worldX, bikeLaneFarY, bikeLaneNearY } from '../../SceneConfig.js';
-import { makeNPC }            from '../../npcs/util.js';
+import { roadY, worldX, bikeLaneFarY, bikeLaneNearY } from '../../core/Layout.js';
+import { makeNPC }            from '../../npc/npcUtil.js';
 import { VehicleEntity }      from '../../VehicleEntity.js';
 import { TrafficManager }     from './TrafficManager.js';
 import { BusStop }            from '../busstop/busstop.js';

@@ -4,9 +4,9 @@
  * 支持：playOnce 单次播放、leashTarget 绑带跟随、drawExtra 附加绘制、customUpdate 回调。
  */
 
-import { Entity } from './Entity.js';
-import { depthGray } from './SceneConfig.js';
-import { humanOffsetY, dogOffsetY } from './StickRenderer.js';
+import { Entity } from '../core/Entity.js';
+import { depthGray } from '../core/Layout.js';
+import { humanOffsetY, dogOffsetY } from '../core/StickRenderer.js';
 
 // 行为状态 → 标签
 const STATE_TAGS = {

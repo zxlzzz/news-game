@@ -1,4 +1,4 @@
-import { depthLineWidth, depthLineColor } from '../../Layout.js';
+import { depthLineWidth, depthLineColor } from '../../core/Layout.js';
 
 export function drawBench(g, p) {
   const { x, y } = p;

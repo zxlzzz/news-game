@@ -10,7 +10,7 @@
  * 由 ChessActivity 驱动轮流落子（动画逻辑见 js/behavior/SocialLayer.js）。
  */
 
-import { NPC }            from '../NPC.js';
+import { NPC }            from './Npc.js';
 import { PropEntity }     from '../PropEntity.js';
 import { gapAt, makeSlots } from '../entity/chess-table/chessTable.js';
 
@@ -71,7 +71,7 @@ export function spawnChess(em, sr, bm, chessPlaza) {
 
   chessA._sortY = Y + 1;
   chessB._sortY = Y + 1;
-  
+
   // ── 3) 棋手入列（在桌椅之后 → 画在上层，人坐在椅上、手压在棋盘上） ──
   em.add(chessA);
   em.add(chessB);

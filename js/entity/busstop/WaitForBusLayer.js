@@ -8,7 +8,7 @@
  */
 
 import { setState } from '../../behavior/BaseStateMachine.js';
-import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../../SceneConfig.js';
+import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../../core/Layout.js';
 
 const WAIT_ZONES = [
   { stopDir: +1, xRange: [380, 620],  yRange: [SIDEWALK_FAR_Y - 20, BIKE_LANE_FAR_TOP] },

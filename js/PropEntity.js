@@ -1,5 +1,22 @@
-import { Entity } from './Entity.js';
-import { drawProp } from './props/PropDrawer.js';
+import { Entity } from './core/Entity.js';
+import { drawBench }       from './entity/seat/drawBench.js';
+import { drawChair }       from './entity/seat/drawChair.js';
+import { drawLamp }        from './entity/lamp/drawLamp.js';
+import { drawTrash }       from './entity/trash/drawTrash.js';
+import { drawSign }        from './entity/sign/drawSign.js';
+import { drawNewsRack }    from './entity/newsrack/drawNewsRack.js';
+import { drawHydrant }     from './entity/hydrant/drawHydrant.js';
+import { drawMailbox }     from './entity/mailbox/drawMailbox.js';
+import { drawPlanter }     from './entity/planter/drawPlanter.js';
+import { drawManhole }     from './entity/manhole/drawManhole.js';
+import { drawDrain }       from './entity/drain/drawDrain.js';
+import { drawFountain }    from './entity/fountain/drawFountain.js';
+import { drawPhoneBooth }  from './entity/phonebooth/drawPhoneBooth.js';
+import { drawBusStopRoof } from './entity/busstop/drawBusStopRoof.js';
+import { drawTree }        from './entity/tree/drawTree.js';
+import { drawVending }     from './entity/vending/drawVending.js';
+import { drawChessTable }  from './entity/chess-table/drawChessTable.js';
+import { drawStall }       from './entity/stall/drawStall.js';
 
 const OBSTACLE_TYPES = new Set([
   'fountain', 'slide', 'stall', 'tree', 'bench', 'trash', 'hydrant',
@@ -79,6 +96,25 @@ export class PropEntity extends Entity {
 
   draw(g) {
     if (!this.visible) return;
-    drawProp(g, this);
+    switch (this.propType) {
+      case 'lamp':         drawLamp(g, this);        break;
+      case 'bench':        drawBench(g, this);       break;
+      case 'trash':        drawTrash(g, this);       break;
+      case 'sign':         drawSign(g, this);        break;
+      case 'newsrack':     drawNewsRack(g, this);    break;
+      case 'hydrant':      drawHydrant(g, this);     break;
+      case 'mailbox':      drawMailbox(g, this);     break;
+      case 'planter':      drawPlanter(g, this);     break;
+      case 'manhole':      drawManhole(g, this);     break;
+      case 'drain':        drawDrain(g, this);       break;
+      case 'chair':        drawChair(g, this);       break;
+      case 'chess-table':  drawChessTable(g, this);  break;
+      case 'tree':         drawTree(g, this);        break;
+      case 'fountain':     drawFountain(g, this);    break;
+      case 'stall':        drawStall(g, this);       break;
+      case 'vending':      drawVending(g, this);     break;
+      case 'phonebooth':   drawPhoneBooth(g, this);  break;
+      case 'busstop-roof': drawBusStopRoof(g, this); break;
+    }
   }
 }

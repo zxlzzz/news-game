@@ -5,7 +5,7 @@ import {
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
   BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
   depthScale,
-} from '../SceneConfig.js';
+} from '../core/Layout.js';
 
 export class SceneRenderer {
   constructor(bgGraphics, skyGraphics, layout) {

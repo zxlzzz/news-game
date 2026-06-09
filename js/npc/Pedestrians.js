@@ -5,9 +5,9 @@
  * spawnOnePedestrian() 供 SpawnManager 动态补充复用。
  */
 
-import { PARK_TOP, PARK_BOTTOM, WORLD_WIDTH } from '../SceneConfig.js';
-import { makeNPC } from './util.js';
-import { getProfile } from '../behavior/NpcProfile.js';
+import { PARK_TOP, PARK_BOTTOM, WORLD_WIDTH, BUILDING_BASE_Y } from '../core/Layout.js';
+import { makeNPC } from './npcUtil.js';
+import { getProfile } from './NpcProfile.js';
 import { getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -82,7 +82,7 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
     speed: rand(speedRange[0], speedRange[1]), vy: 0,
     minX: opts.minX ?? 0,
     maxX: opts.maxX ?? WORLD_WIDTH,
-    minY: opts.minY ?? PARK_TOP,
+    minY: opts.minY ?? BUILDING_BASE_Y,
     maxY: opts.maxY ?? PARK_BOTTOM,
     tags:    typeData.tags,
     npcType: typeData.npcType,

@@ -3,7 +3,7 @@
  */
 
 import { NpcProp } from './NpcProp.js';
-import { SmokeEmitter } from '../fx/SmokeEmitter.js';
+import { SmokeEmitter } from '../../fx/SmokeEmitter.js';
 
 export class CigaretteProp extends NpcProp {
   constructor(npc) {

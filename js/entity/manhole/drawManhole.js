@@ -1,4 +1,4 @@
-import { depthLineWidth } from '../../Layout.js';
+import { depthLineWidth } from '../../core/Layout.js';
 
 export function drawManhole(g, p) {
   const { x, y } = p;

@@ -17,7 +17,7 @@
  *   setWalkMode / pushWalkMode / popWalkMode — 模式切换 / 优先级打断保存恢复
  */
 
-import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../Layout.js';
+import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../core/Layout.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 

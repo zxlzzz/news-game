@@ -5,7 +5,7 @@
  * micro_action 根据 NPC 特征派发视觉（打电话 / 看手机 / 抽烟 / 换包手）。
  */
 
-import { setState } from './BaseStateMachine.js';
+import { setState } from '../behavior/BaseStateMachine.js';
 
 let LOITER_POSES = {};
 

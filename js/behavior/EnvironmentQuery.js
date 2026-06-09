@@ -6,7 +6,7 @@
  * （Activity 开始时写入其 id，结束时清空），不在 PropEntity 上新增公开属性。
  */
 
-import { SIDEWALK_FAR_Y, NEAR_Y } from '../SceneConfig.js';
+import { SIDEWALK_FAR_Y, NEAR_Y } from '../core/Layout.js';
 import { findFree as _findFreeBench,   isNear as _isNearBench   } from '../entity/seat/seat.js';
 import { findFree as _findFreeVending, isNear as _isNearVending  } from '../entity/vending/vending.js';
 import { findFree as _findFreeChess,   isNear as _isNearChess    } from '../entity/chess-table/chessTable.js';

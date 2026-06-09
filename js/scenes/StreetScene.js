@@ -15,18 +15,18 @@
  * 渲染底层为 PixiJS；所有绘图文件直接调用 PIXI.Graphics 原生 API。
  */
 
-import { StickRenderer }   from '../StickRenderer.js';
-import { EntityManager }   from '../EntityManager.js';
-import { Viewfinder }      from '../Viewfinder.js';
+import { StickRenderer }   from '../core/StickRenderer.js';
+import { EntityManager }   from '../core/EntityManager.js';
+import { Viewfinder }      from '../camera/Viewfinder.js';
 import { DebugOverlay }    from '../DebugOverlay.js';
 import { SceneRenderer }   from './SceneRenderer.js';
 import { SceneInitializer } from './SceneInitializer.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT,
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
-} from '../SceneConfig.js';
+} from '../core/Layout.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
-import { PixiText }         from '../PixiText.js';
+import { PixiText }         from '../core/PixiText.js';
 import { getManifestPaths, buildPoseCache } from '../PoseCacheBuilder.js';
 
 const ANIM_FILES = {

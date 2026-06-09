@@ -30,9 +30,9 @@
  */
 
 import { dlog }        from './DebugLog.js';
-import { PARK_TOP }     from '../SceneConfig.js';
+import { PARK_TOP }     from '../core/Layout.js';
 import { sitDown, alignLie, standUp } from '../entity/seat/seat.js';
-import { tickLoiter, initPoseCache as initLoiterPoseCache } from './LoiterBehavior.js';
+import { tickLoiter, initPoseCache as initLoiterPoseCache } from '../npc/LoiterBehavior.js';
 
 import {
   tickWalkMode, pickModeTarget, onPathArrival,

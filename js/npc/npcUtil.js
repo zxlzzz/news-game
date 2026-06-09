@@ -3,8 +3,8 @@
  * 所有 spawn 模块共用，统一注入 renderer、默认 minY/maxY，并随机初始帧。
  */
 
-import { NPC }          from '../NPC.js';
-import { FAR_Y, NEAR_Y } from '../SceneConfig.js';
+import { NPC }          from './Npc.js';
+import { FAR_Y, NEAR_Y } from '../core/Layout.js';
 
 /**
  * 创建 NPC 并注册到 EntityManager

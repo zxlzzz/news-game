@@ -2,8 +2,8 @@
  * DogWalker — 遛狗者 + 狗（绳索绑带系统）
  */
 
-import { SIDEWALK_NEAR_Y } from '../SceneConfig.js';
-import { makeNPC } from './util.js';
+import { SIDEWALK_NEAR_Y } from '../core/Layout.js';
+import { makeNPC } from './npcUtil.js';
 import { getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
 
 export function spawnDogWalker(em, sr, bm, propManager) {

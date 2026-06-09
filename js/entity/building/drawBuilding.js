@@ -1,4 +1,4 @@
-import { LINE_FAR_COLOR, LINE_FAR_WIDTH } from '../../SceneConfig.js';
+import { LINE_FAR_COLOR, LINE_FAR_WIDTH } from '../../core/Layout.js';
 
 function seededRand(x, salt = 0) {
   const s = Math.sin(x * 12.9898 + salt * 78.233) * 43758.5453;

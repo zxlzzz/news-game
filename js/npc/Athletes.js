@@ -3,8 +3,8 @@
  * 远端慢跑者（小）/ 近端慢跑者（大）做透视对比。
  */
 
-import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y } from '../SceneConfig.js';
-import { makeNPC } from './util.js';
+import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y } from '../core/Layout.js';
+import { makeNPC } from './npcUtil.js';
 
 export function spawnAthletes(em, sr, bm) {
   // 远端慢跑者（小）

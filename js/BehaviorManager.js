@@ -10,14 +10,15 @@
  * 扫描 em.entities 中所有含 smartDef.routing 的 PropEntity 并自动注册 registerTransition。
  */
 
-import { getProfile }          from './behavior/NpcProfile.js';
+import { getProfile }          from './npc/NpcProfile.js';
 import { EnvironmentQuery }     from './behavior/EnvironmentQuery.js';
 import { tickBaseState, setState, registerTransition, triggerDeparture, initPoseCache as initBsmPoseCache } from './behavior/BaseStateMachine.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './behavior/ModifierLayer.js';
 import { SocialLayer }          from './behavior/SocialLayer.js';
-import { CameraReactionLayer }  from './behavior/CameraReactionLayer.js';
+import { CameraReactionLayer }  from './camera/CameraReactionLayer.js';
 import { WaitForBusLayer }      from './entity/busstop/WaitForBusLayer.js';
 import { refreshDebugFlag }     from './behavior/DebugLog.js';
+import { checkZoneTransition }  from './behavior/WalkMode.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -133,6 +134,7 @@ export class BehaviorManager {
       }
 
       tickBaseState(npc, npc._profile, this.envQuery, dt);
+      if (npc.state === 'walk') checkZoneTransition(npc);
       if (npc._needsNewRoute && this.routeSelector) {
         this.routeSelector.pickAndStart(npc, this.npcs);
       }
