@@ -12,12 +12,13 @@
 
 import { NPC }            from '../NPC.js';
 import { PropEntity }     from '../PropEntity.js';
+import { gapAt, makeSlots } from '../entity/chess-table/chessTable.js';
 
 export function spawnChess(em, sr, bm, chessPlaza) {
   const Y = chessPlaza.cy;
 
   const scale = em.depthScale(Y);
-  const gap   = Math.round(68 * scale / 0.26);
+  const gap   = gapAt(scale);
   const cx    = chessPlaza.cx;
   const chessA = new NPC({
     renderer: sr, x: cx - gap / 2, y: Y, animation: 'chess', direction:  1,
@@ -48,12 +49,7 @@ export function spawnChess(em, sr, bm, chessPlaza) {
     smartDef: {
       activityType: 'chess',
       routing: [{ activityFlag: 'chess_onlooker', role: 'onlooker', chance: 0.003, radius: 220, requireOccupied: true }],
-      slots: [
-        { role: 'player_a', dx: -(gap / 2),     dy: 0 },
-        { role: 'player_b', dx:  (gap / 2),     dy: 0 },
-        { role: 'onlooker', dx: -(gap * 0.24),  dy: 14 },
-        { role: 'onlooker', dx:  (gap * 0.24),  dy: 14 },
-      ],
+      slots: makeSlots(scale),
     },
   }));
   // 棋手直接占用 player 槽（不走 routing）；onlooker 槽对外开放给路过行人

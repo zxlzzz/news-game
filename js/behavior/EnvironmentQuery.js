@@ -7,7 +7,9 @@
  */
 
 import { SIDEWALK_FAR_Y, NEAR_Y } from '../SceneConfig.js';
-import { findFree as _findFreeBench, isNear as _isNearBench } from '../entity/seat/seat.js';
+import { findFree as _findFreeBench,   isNear as _isNearBench   } from '../entity/seat/seat.js';
+import { findFree as _findFreeVending, isNear as _isNearVending  } from '../entity/vending/vending.js';
+import { findFree as _findFreeChess,   isNear as _isNearChess    } from '../entity/chess-table/chessTable.js';
 
 export class EnvironmentQuery {
   /** @param {EntityManager} entityManager */
@@ -90,6 +92,26 @@ export class EnvironmentQuery {
   /** 附近最近的空闲长椅（bench._occupiedBy == null）；无则 null */
   nearestFreeBench(npc, radius = 80) {
     return _findFreeBench(this.em.entities, npc, radius);
+  }
+
+  /** 附近是否有贩卖机（|dx| < dxT && |dy| < dyT） */
+  isNearVending(npc, dxT = 60, dyT = 80) {
+    return _isNearVending(this.em.entities, npc, dxT, dyT);
+  }
+
+  /** 附近最近的空闲贩卖机；无则 null */
+  nearestFreeVending(npc, radius = 150) {
+    return _findFreeVending(this.em.entities, npc, radius);
+  }
+
+  /** 附近是否有棋桌（|dx| < dxT && |dy| < dyT） */
+  isNearChessTable(npc, dxT = 80, dyT = 80) {
+    return _isNearChess(this.em.entities, npc, dxT, dyT);
+  }
+
+  /** 附近最近的有空闲玩家槽的棋桌；无则 null */
+  nearestFreeChessTable(npc, radius = 200) {
+    return _findFreeChess(this.em.entities, npc, radius);
   }
 
   // ─── 障碍物查询（批次 0 避障）──────────────────────────────────────────────
