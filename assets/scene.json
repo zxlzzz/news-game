@@ -1451,9 +1451,10 @@
         "roofW": 818,
         "roofH": 26,
         "pillarOffset": 366,
-        "benchW": 132,
         "bayW": 202,
-        "bayD": 9
+        "bayD": 9,
+        "bench": { "dx": 0, "dy": -14, "width": 80, "facing": "down" },
+        "sign":  { "dx": 106, "dy": -40 }
       },
       {
         "x": 1500,
@@ -1461,9 +1462,10 @@
         "roofW": 812,
         "roofH": 19,
         "pillarOffset": 364,
-        "benchW": 176,
         "bayW": 266,
-        "bayD": 9
+        "bayD": 9,
+        "bench": { "dx": 0, "dy": -4, "width": 80, "facing": "down" },
+        "sign":  { "dx": 138, "dy": 30 }
       }
     ]
   },

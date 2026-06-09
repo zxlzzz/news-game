@@ -7,6 +7,12 @@
  * 所有 boarding NPC 上完（或 8s 超时）后 depart() 释放，公交车进入 accelerating。
  * 无等车乘客时按 waitRange 计时正常发车。
  */
+import { PropEntity } from '../../core/PropEntity.js';
+import {
+  FAR_Y, NEAR_Y,
+  BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
+} from '../../core/Layout.js';
+
 export class BusStop {
   constructor(cfg) {
     this.x         = cfg.x;
@@ -74,5 +80,39 @@ export class BusStop {
     this._timer    = 0;
     this._boardingQueue = [];
     this._boardingTimer = 0;
+  }
+}
+
+/** 一次性创建整个公交站：顶棚 PropEntity + 长椅 PropEntity */
+export function spawnBusStop(em, stop) {
+  const far           = stop.direction > 0;
+  const anchorY       = far ? FAR_Y : NEAR_Y;
+  const roofTopY      = far ? BIKE_LANE_FAR_TOP - 30 : BIKE_LANE_NEAR_BOTTOM - 65;
+  const pillarBottomY = far ? FAR_Y - stop.bayD - 2  : BIKE_LANE_NEAR_BOTTOM - 5;
+
+  const roof = em.add(new PropEntity({
+    propType: 'busstop-roof',
+    x: stop.x, y: anchorY,
+    roofW: stop.roofW, roofH: stop.roofH,
+    roofTopY, pillarOffset: stop.pillarOffset, pillarBottomY,
+    dir: stop.direction,
+    width: stop.roofW, height: far ? anchorY - roofTopY : pillarBottomY - anchorY,
+    _sortY: pillarBottomY,
+    tags: ['busstop-roof'],
+  }));
+  roof.scale = em.depthScale(anchorY);
+
+  if (stop.bench) {
+    const bx = stop.x + stop.bench.dx;
+    const by = anchorY + stop.bench.dy;
+    const bench = em.add(new PropEntity({
+      propType: 'bench',
+      x: bx, y: by,
+      width: stop.bench.width,
+      height: 12,
+      facing: stop.bench.facing ?? 'down',
+      tags: ['bench', 'seatable', 'busstop'],
+    }));
+    bench.scale = em.depthScale(by);
   }
 }

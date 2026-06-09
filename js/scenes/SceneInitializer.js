@@ -6,6 +6,7 @@ import { SpawnManager }    from '../npc/SpawnManager.js';
 import { RouteSelector }   from '../behavior/RouteSelector.js';
 import { NpcPropManager }  from '../npc/props/NpcPropManager.js';
 import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
+import { spawnBusStop }    from '../entity/busstop/busstop.js';
 import { setState }        from '../behavior/BaseStateMachine.js';
 import { spawnPedestrians, spawnOnePedestrian } from '../npc/Pedestrians.js';
 import { makeNPC }          from '../npc/npcUtil.js';
@@ -109,7 +110,7 @@ export class SceneInitializer {
     spawnDogWalker(em, sr, bm, this.scene.propManager);
     spawnAthletes(em, sr, bm);
     this.scene.trafficManager = initVehicleSystem(em, sr);
-    this._spawnBusStopRoofs(layout);
+    for (const stop of (layout.busStops || [])) spawnBusStop(this.em, stop);
 
     if (this.scene.trafficManager.busStops.length > 0)
       bm.waitForBusLayer = new WaitForBusLayer(this.scene.trafficManager.busStops);
@@ -121,30 +122,6 @@ export class SceneInitializer {
       target: 20,
       routeSelector,
     });
-  }
-
-  // 公交站上半部分（顶棚 + 柱子）：升级为独立 PropEntity，参与 Y 排序。
-  // 锚点 y = 柱子落地点（远端 FAR_Y / 近端 NEAR_Y），不设 _sortY（用默认 y）。
-  // 地面站台 / 长椅 / 标牌仍由 SceneRenderer 画在静态背景层。
-  _spawnBusStopRoofs(layout) {
-    const { em } = this;
-    for (const stop of (layout.busStops || [])) {
-      const far           = stop.direction > 0;
-      const anchorY       = far ? FAR_Y : NEAR_Y;
-      const roofTopY      = far ? BIKE_LANE_FAR_TOP - 30 : BIKE_LANE_NEAR_BOTTOM - 65;
-      const pillarBottomY = far ? FAR_Y - stop.bayD - 2  : BIKE_LANE_NEAR_BOTTOM - 5;
-      const bsr = em.add(new PropEntity({
-        propType: 'busstop-roof',
-        x: stop.x, y: anchorY,
-        roofW: stop.roofW, roofH: stop.roofH,
-        roofTopY, pillarOffset: stop.pillarOffset, pillarBottomY,
-        dir: stop.direction,
-        width: stop.roofW, height: far ? anchorY - roofTopY : pillarBottomY - anchorY,
-        _sortY: pillarBottomY,
-        tags: ['busstop-roof'],
-      }));
-      bsr.scale = em.depthScale(anchorY);
-    }
   }
 
   // 为每个带 smartDef 的摊位生成一名常驻摊主：从地图边缘入场，路由到 seller 槽。
