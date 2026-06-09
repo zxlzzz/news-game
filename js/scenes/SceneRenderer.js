@@ -56,18 +56,28 @@ export class SceneRenderer {
     const drawSign = (px, py) => {
       const sw = 22, sh = 15;
       const sx = px - Math.round(sw / 2);
-      g.beginFill(0x1a44aa, 1);
+      
+      // 深灰色外框背景（替代蓝色）
+      g.beginFill(0x4a4a4a, 1);
       g.drawRect(sx, py, sw, sh);
       g.endFill();
-      g.lineStyle(1, 0x0a0820, 1);
+      
+      // 边框（深灰近黑）
+      g.lineStyle(1, 0x1a1a1a, 1);
       g.drawRect(sx, py, sw, sh);
-      g.beginFill(0xeaeaf0, 1);
+      
+      // 内框浅灰白底
+      g.beginFill(0xe8e8e8, 1);
       g.drawRect(sx + 2, py + 2, sw - 4, sh - 4);
       g.endFill();
-      g.beginFill(0x2255bb, 0.85);
+      
+      // 顶部深灰色带（替代蓝色）
+      g.beginFill(0x5a5a5a, 0.9);
       g.drawRect(sx + 3, py + 3, sw - 6, 4);
       g.endFill();
-      g.beginFill(0x303050, 0.55);
+      
+      // 文字/装饰线（深浅灰层次）
+      g.beginFill(0x6a6a6a, 0.7);
       g.drawRect(sx + 3, py + 8,  sw - 6, 1);
       g.drawRect(sx + 3, py + 10, sw - 6, 1);
       g.drawRect(sx + 3, py + 12, sw - 8, 1);
