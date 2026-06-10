@@ -58,9 +58,6 @@ export class PropEntity extends Entity {
     // 从而能遮住从其后方（更小 Y）走过的 NPC。其余 prop 用默认 y。
     if (this.propType === 'stall') this._sortY = this.y;
     if (this.propType === 'tree')  this._sortY = this.y - this.height * 0.35;
-    // 路灯：排序基准下移到灯杆真实落地点（this.y 是灯杆中部锚点）
-    if (this.propType === 'lamp-far')  this._sortY = this.y + 18;
-    if (this.propType === 'lamp-near') this._sortY = this.y + 15;
     // 显式指定排序基准（如 busstop-roof 的柱子落地点）
     if (config._sortY != null) this._sortY = config._sortY;
 

@@ -13,11 +13,12 @@
 import { NPC }            from './Npc.js';
 import { PropEntity }     from '../core/PropEntity.js';
 import { gapAt, makeSlots } from '../entity/chess-table/chessTable.js';
+import { depthScale }     from '../core/Layout.js';
 
 export function spawnChess(em, sr, bm, chessPlaza) {
   const Y = chessPlaza.cy;
 
-  const scale = em.depthScale(Y);
+  const scale = depthScale(Y);
   const gap   = gapAt(scale);
   const cx    = chessPlaza.cx;
   const chessA = new NPC({

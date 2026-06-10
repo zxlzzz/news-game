@@ -11,6 +11,7 @@ import { PropEntity } from '../../core/PropEntity.js';
 import {
   FAR_Y, NEAR_Y,
   BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
+  depthScale,
 } from '../../core/Layout.js';
 
 export class BusStop {
@@ -100,7 +101,7 @@ export function spawnBusStop(em, stop) {
     _sortY: pillarBottomY,
     tags: ['busstop-roof'],
   }));
-  roof.scale = em.depthScale(anchorY);
+  roof.scale = depthScale(anchorY);
 
   if (stop.bench) {
     const bx = stop.x + stop.bench.dx;
@@ -113,6 +114,6 @@ export function spawnBusStop(em, stop) {
       facing: stop.bench.facing ?? 'down',
       tags: ['bench', 'seatable', 'busstop'],
     }));
-    bench.scale = em.depthScale(by);
+    bench.scale = depthScale(by);
   }
 }

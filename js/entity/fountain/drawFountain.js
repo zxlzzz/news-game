@@ -9,6 +9,7 @@ export function drawFountain(g, p) {
   const lc  = depthLineColor(y, { light: 0xbc, dark: 0x88 });
 
   // shadow
+  g.lineStyle(0);
   g.beginFill(0x000000, 0.04);
   g.drawEllipse(x, y + 11 * s, rx * 0.95, ry * 0.9);
   g.endFill();

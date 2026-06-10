@@ -11,10 +11,13 @@ const BUS_SHAPE = [
 ];
 
 function _wheel(g, wx, wy, r) {
+  g.lineStyle(0);
   g.beginFill(0x333333, 1); g.drawCircle(wx, wy, r); g.endFill();
   g.lineStyle(Math.max(0.8, r * 0.08), 0x1a1a1a, 1); g.drawCircle(wx, wy, r);
+  g.lineStyle(0);
   g.beginFill(0x7a7a7a, 1); g.drawCircle(wx, wy, r * 0.55); g.endFill();
   g.lineStyle(Math.max(0.5, r * 0.05), 0x555555, 0.5); g.drawCircle(wx, wy, r * 0.55);
+  g.lineStyle(0);
   g.beginFill(0x444444, 1); g.drawCircle(wx, wy, r * 0.2); g.endFill();
 }
 
@@ -376,6 +379,7 @@ function _moto(g, vehicle, highlight) {
 }
 
 export function drawVehicle(g, vehicle) {
+  g.lineStyle(0);
   const hl = null;
   switch (vehicle.kind) {
     case 'bus':  _bus(g, vehicle, hl);  break;
