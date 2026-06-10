@@ -16,7 +16,8 @@ import { spawnAthletes }    from '../npc/Athletes.js';
 import { initVehicleSystem } from '../entity/vehicle/vehicleSpawner.js';
 import {
   WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y, NEAR_Y,
-  SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, BUILDING_EXIT_XS,BIKE_LANE_NEAR_BOTTOM,
+  SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, BUILDING_EXIT_XS, BIKE_LANE_NEAR_BOTTOM,
+  depthScale,
 } from '../core/Layout.js';
 
 export class SceneInitializer {
@@ -50,7 +51,7 @@ export class SceneInitializer {
           width: t.r * 2, height: t.r * 2,
           tags,
         }));
-        prop.scale = em.depthScale(prop.y);
+        prop.scale = depthScale(prop.y);
       }
     }
   }
@@ -81,7 +82,7 @@ export class SceneInitializer {
         if (host) cfg.y = BUILDING_BASE_Y - 8;
       }
       const prop = this.em.add(new PropEntity(cfg));
-      prop.scale = this.em.depthScale(prop.y);
+      prop.scale = depthScale(prop.y);
     }
   }
 
@@ -139,7 +140,7 @@ export class SceneInitializer {
         minX: 0, maxX: WORLD_WIDTH, minY: stall.y - 24, maxY: stall.y + 24,
         tags: ['vendor'], npcType: 'stall_seller',
       });
-      seller.scale = em.depthScale(stall.y);
+      seller.scale = depthScale(stall.y);
       bm.register(seller, 'stall_seller');
 
       slot.reserved = seller.id;   // 预约 seller 槽，防止他人占用（永不释放）

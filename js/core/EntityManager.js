@@ -1,4 +1,4 @@
-import { depthT } from './Layout.js';
+import { depthT, depthScale } from './Layout.js';
 
 /**
  * EntityManager
@@ -8,15 +8,8 @@ import { depthT } from './Layout.js';
  * - 提供矩形区域查询接口供取景框使用
  */
 export class EntityManager {
-  /**
-   * @param {object} config
-   * @param {number} config.farScale  - 远端缩放系数（depthT=0）
-   * @param {number} config.nearScale - 近端缩放系数（depthT=1）
-   */
-  constructor(config = {}) {
-    this.farScale  = config.farScale  ?? 0.25;
-    this.nearScale = config.nearScale ?? 0.55;
-    this.entities  = [];
+  constructor() {
+    this.entities = [];
   }
 
   /** 添加一个实体，返回该实体（方便链式调用） */
@@ -24,11 +17,6 @@ export class EntityManager {
     entity.manager = this; // 反向引用，供 NPC.getTags() 做空间关系查询
     this.entities.push(entity);
     return entity;
-  }
-
-  /** 按 Y 坐标计算深度缩放系数（仅对动态实体生效） */
-  depthScale(y) {
-    return this.farScale + depthT(y) * (this.nearScale - this.farScale);
   }
 
   /**
@@ -61,9 +49,14 @@ export class EntityManager {
     for (const e of this.entities) {
       if (!e.alive) continue;
       if (!e.static && 'scale' in e) {
-        e.scale = this.depthScale(e.y);
+        e.scale = depthScale(e.y);
       }
       e.update(delta);
+    }
+    this._pruneTimer = (this._pruneTimer ?? 0) - delta;
+    if (this._pruneTimer <= 0) {
+      this.entities = this.entities.filter(e => e.alive);
+      this._pruneTimer = 10000;
     }
   }
 

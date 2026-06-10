@@ -34,6 +34,7 @@ export function drawBench(g, p) {
   };
 
   // ground shadow
+  g.lineStyle(0);
   g.beginFill(0x000000, 0.10);
   if (f === 'left' || f === 'right') g.drawEllipse(x, y, 6 * s, L * 1.05 / 2);
   else                               g.drawEllipse(x, y, L * 1.05 / 2, 4 * s);

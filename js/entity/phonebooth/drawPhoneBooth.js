@@ -9,6 +9,7 @@ export function drawPhoneBooth(g, p) {
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
   const lineC = depthLineColor(y, { light: 0x40, dark: 0x08 });
 
+  g.lineStyle(0);
   g.beginFill(0x000000, 0.10);
   g.drawEllipse(x, y, w * 0.55, 5.5 * s);
   g.endFill();

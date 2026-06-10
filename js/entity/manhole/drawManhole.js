@@ -7,6 +7,7 @@ export function drawManhole(g, p) {
   const ry    = rx * 0.45;
   const lineW = depthLineWidth(y, { wMin: 0.9, wMax: 1.6 });
 
+  g.lineStyle(0);
   g.beginFill(0x000000, 0.18);
   g.drawEllipse(x + 3 * s, y + 3 * s, rx * 1.05, ry * 1.05);
   g.endFill();

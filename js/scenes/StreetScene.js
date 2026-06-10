@@ -110,9 +110,7 @@ export class StreetScene {
     const poseCache = buildPoseCache(key => this._json['pose_' + key]);
     initWalkPaths(layout.walkPaths);
 
-    this.entityManager = new EntityManager({
-      farScale: 0.182, nearScale: 0.434,
-    });
+    this.entityManager = new EntityManager();
 
     const initializer = new SceneInitializer(this, this.entityManager, this.stickRenderer, poseCache);
     initializer.spawnAll(sceneData, layout);
