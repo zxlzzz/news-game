@@ -1,5 +1,6 @@
 import { depthT, depthScale } from './Layout.js';
 
+const SHADOWS_ENABLED = false;  // 影子系统开关；新规范稳定后再决定是否启用
 const _SHADOW_SKIP = new Set(['manhole', 'drain', 'park-path', 'busstop-roof', 'sign']);
 
 /**
@@ -68,6 +69,7 @@ export class EntityManager {
    * 跳过建筑、地面贴图类道具（manhole/drain/park-path）、以及不适合投影的结构（sign/busstop-roof）。
    */
   drawShadows(g, extras = []) {
+    if (!SHADOWS_ENABLED) return;
     const visible = this.entities.filter(e => e.alive && e.visible);
     const list = extras.length ? visible.concat(extras) : visible;
     list.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));

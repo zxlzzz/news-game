@@ -44,6 +44,16 @@ export const BUILDING_EXIT_XS = [
   worldX(0.85),   // building_d ≈ 1700
 ];
 
+// ─── 统一填充色阶（4 档，全场景 draw 文件共用，禁止额外随手灰） ──────────────────
+export const FILL_PAPER = 0xf0f0f0;   // 最浅：立面底色、留白区域
+export const FILL_LIGHT = 0xe0e0e0;   // 窗户、次级表面
+export const FILL_MID   = 0xc8c8c8;   // 屋顶、门楣、雨棚
+export const FILL_SHADE = 0xa8a8a8;   // 最深环境填充：门板、百叶格
+
+// ─── 环境线颜色参数（比 NPC 浅一档，与 depthLineColor 配合使用） ──────────────
+export const ENV_LINE_LIGHT = 0xb0;
+export const ENV_LINE_DARK  = 0x60;
+
 // ─── 天空 / 地平线明度带（SceneRenderer 用） ──────────────────────────────────
 export const SKY_COLOR_TOP    = 0xf9f9f9;   // 天空顶端
 export const SKY_COLOR_HOR    = 0xe8e8e4;   // 近地平线（轻微暖色）
