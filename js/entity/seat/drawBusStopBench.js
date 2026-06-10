@@ -2,7 +2,7 @@ import { depthLineWidth, depthLineColor } from '../../core/Layout.js';
 
 export function drawBusStopBench(g, p) {
   const s     = p.scale ?? 1;
-  const halfW = (p.width ?? 132) / 2;
+  const halfW = (p.width ?? 132) / 1.5;
   const benchW = halfW * 2;
   const { x, y } = p;
 

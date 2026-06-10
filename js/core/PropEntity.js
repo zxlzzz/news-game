@@ -13,7 +13,7 @@ import { drawDrain }       from '../entity/drain/drawDrain.js';
 import { drawFountain }    from '../entity/fountain/drawFountain.js';
 import { drawPhoneBooth }  from '../entity/phonebooth/drawPhoneBooth.js';
 import { drawBusStopRoof }  from '../entity/busstop/drawBusStopRoof.js';
-import { drawBusStopBench } from '../entity/busstop/drawBusStopBench.js';
+import { drawBusStopBench } from '../entity/seat/drawBusStopBench.js';
 import { drawTree }        from '../entity/tree/drawTree.js';
 import { drawVending }     from '../entity/vending/drawVending.js';
 import { drawChessTable }  from '../entity/chess-table/drawChessTable.js';
