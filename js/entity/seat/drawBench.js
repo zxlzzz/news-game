@@ -2,7 +2,6 @@ import { depthLineWidth, depthLineColor } from '../../core/Layout.js';
 
 export function drawBench(g, p) {
   const { x, y } = p;
-  const f = p.facing || 'down';
   const s = p.scale ?? 1;
   const L     = 300 * s;
   const half  = L / 2;
@@ -12,14 +11,7 @@ export function drawBench(g, p) {
   const lineW = depthLineWidth(y, { wMin: 1, wMax: 2 });
   const lineC = depthLineColor(y, { light: 0x38, dark: 0x08 });
 
-  const P = (u, w) => {
-    switch (f) {
-      case 'up':    return [x + u, y - w];
-      case 'left':  return [x - w, y + u];
-      case 'right': return [x + w, y + u];
-      default:      return [x + u, y + w];
-    }
-  };
+  const P = (u, w) => [x + u, y + w];
   const rect = (u0, w0, u1, w1, fill, fa, sw) => {
     const a = P(u0, w0), b = P(u1, w1);
     const rx = Math.min(a[0], b[0]), ry = Math.min(a[1], b[1]);
@@ -36,8 +28,7 @@ export function drawBench(g, p) {
   // ground shadow
   g.lineStyle(0);
   g.beginFill(0x000000, 0.10);
-  if (f === 'left' || f === 'right') g.drawEllipse(x, y, 6 * s, L * 1.05 / 2);
-  else                               g.drawEllipse(x, y, L * 1.05 / 2, 4 * s);
+  g.drawEllipse(x, y, L * 1.05 / 2, 4 * s);
   g.endFill();
 
   // outer + inner legs

@@ -1,6 +1,7 @@
 import { Entity } from './Entity.js';
 import { drawBench }       from '../entity/seat/drawBench.js';
-import { drawChair }       from '../entity/seat/drawChair.js';
+import { drawChairL }      from '../entity/seat/drawChairL.js';
+import { drawChairR }      from '../entity/seat/drawChairR.js';
 import { drawLamp }        from '../entity/lamp/drawLamp.js';
 import { drawTrash }       from '../entity/trash/drawTrash.js';
 import { drawSign }        from '../entity/sign/drawSign.js';
@@ -105,7 +106,8 @@ export class PropEntity extends Entity {
       case 'planter':      drawPlanter(g, this);     break;
       case 'manhole':      drawManhole(g, this);     break;
       case 'drain':        drawDrain(g, this);       break;
-      case 'chair':        drawChair(g, this);       break;
+      case 'chair-l':      drawChairL(g, this);      break;
+      case 'chair-r':      drawChairR(g, this);      break;
       case 'chess-table':  drawChessTable(g, this);  break;
       case 'tree':         drawTree(g, this);        break;
       case 'fountain':     drawFountain(g, this);    break;

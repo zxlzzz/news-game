@@ -3,7 +3,7 @@ import { depthLineWidth, depthLineColor } from '../../core/Layout.js';
 export function drawTree(g, p) {
   const { x, y } = p;
   const s = p.scale ?? 1;
-  const r = (p.crownR != null ? p.crownR * 2.88 : 150) * s;
+  const r = 150 * s;
 
   const lw = depthLineWidth(y, { wMin: 0.8, wMax: 1.6 });
   const lineColor = depthLineColor(y, { light: 0x40, dark: 0x18 });

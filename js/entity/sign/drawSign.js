@@ -1,22 +1,11 @@
-function _toGrayBand(color, lightVal, darkVal) {
-  if (!color) return (lightVal << 16) | (lightVal << 8) | lightVal;
-  const r   = (color >> 16) & 0xff;
-  const g   = (color >> 8)  & 0xff;
-  const b   =  color        & 0xff;
-  const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-  const v   = Math.round(lightVal + (lum / 255) * (darkVal - lightVal));
-  return (v << 16) | (v << 8) | v;
-}
-
 export function drawSign(g, p) {
   const s  = p.scale ?? 1;
   const sw = 43 * s;
   const sh = 35 * s;
   const sx = p.x - sw / 2;
   const sy = p.y - sh;
-  const fill = _toGrayBand(p.propColor, 0xa8, 0x60);
 
-  g.beginFill(fill, 0.95);
+  g.beginFill(0x888888, 0.95);
   g.drawRect(sx, sy, sw, sh);
   g.endFill();
   // inner text lines
