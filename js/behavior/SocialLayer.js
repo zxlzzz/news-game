@@ -66,8 +66,18 @@ export class SocialLayer {
     }
 
     // 3) 槽位等待超时（20s 内无第二个人到位） → 放弃，重新 walk
+    //    死亡 NPC 的槽位也必须回收（不跳过 !alive）
     for (const npc of npcs) {
-      if (!npc.alive || npc._activity || !npc._slotWaitProp) continue;
+      if (!npc._slotWaitProp) continue;
+      if (!npc.alive) {
+        for (const s of npc._slotWaitProp._slots) {
+          if (s.npc === npc) { s.ready = false; s.npc = null; }
+        }
+        this.envQuery.releaseSlotReservation(npc);
+        npc._slotWaitProp = null;
+        continue;
+      }
+      if (npc._activity) continue;
       npc._slotWaitTimer = (npc._slotWaitTimer || 0) + dt;
       if (npc._slotWaitTimer > 20) {
         for (const s of npc._slotWaitProp._slots) {

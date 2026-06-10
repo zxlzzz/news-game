@@ -208,6 +208,7 @@ function _pickNext(npc, profile, envQuery) {
 
 // ─── 内部：timeout 触发时解析最终目标（含 sit_bench 占位/对齐副作用）──────────
 function _resolveTimeout(npc, envQuery, profile) {
+  if (isRoadZone(npc.y)) return null;
   const next = _pickNext(npc, profile, envQuery);
   if (!next) return null;
   if (next === 'sit_bench') {

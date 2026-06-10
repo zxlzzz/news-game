@@ -22,6 +22,17 @@ import { checkZoneTransition }  from './WalkMode.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
+/** 释放 NPC 占用的所有槽位（reserved 预约 + slot_wait 就位），清 _slotWaitProp */
+function releaseAllHoldings(npc, envQuery) {
+  envQuery.releaseSlotReservation(npc);
+  if (npc._slotWaitProp) {
+    for (const s of npc._slotWaitProp._slots) {
+      if (s.npc === npc) { s.ready = false; s.npc = null; }
+    }
+    npc._slotWaitProp = null;
+  }
+}
+
 export class BehaviorManager {
   /** @param {EntityManager} entityManager @param {object} poseCache */
   constructor(entityManager, poseCache) {
@@ -48,6 +59,7 @@ export class BehaviorManager {
    */
   initSmartObjectRoutes() {
     const sl = this.socialLayer;
+    const bm = this;   // captured for condition closures (dt normalization)
     const seenFlags = new Set();
 
     for (const entity of this.em.entities) {
@@ -72,7 +84,7 @@ export class BehaviorManager {
             if (npc._departing) return false;
             if (!profile?.activities?.includes(flag)) return false;
             const p = profile.smartObjectChance?.[flag] ?? defaultChance;
-            if (Math.random() > p) return false;
+            if (Math.random() > p * (bm._dt ?? 1 / 60) * 60) return false;
             const opts = role ? { role, requireOccupied } : undefined;
             const found = env.findAvailableSlot(activityType, npc, radius, opts);
             if (!found) return false;
@@ -104,6 +116,7 @@ export class BehaviorManager {
 
   update(delta) {
     const dt = delta / 1000;
+    this._dt = dt;   // exposed for smart-object condition closures
     refreshDebugFlag();
 
     // 1) Activity 层
@@ -129,12 +142,13 @@ export class BehaviorManager {
       if (!npc._departing && npc._lifespan != null && !npc._waitingBusStop) {
         npc._ageTimer = (npc._ageTimer || 0) + dt;
         if (npc._ageTimer >= npc._lifespan) {
+          releaseAllHoldings(npc, this.envQuery);
           triggerDeparture(npc, this.exitRegistry);
         }
       }
 
       tickBaseState(npc, npc._profile, this.envQuery, dt);
-      if (npc.state === 'walk') checkZoneTransition(npc);
+      if (npc.state === 'walk' || npc.state === 'run') checkZoneTransition(npc);
       if (npc._needsNewRoute && this.routeSelector) {
         this.routeSelector.pickAndStart(npc, this.npcs);
       }
