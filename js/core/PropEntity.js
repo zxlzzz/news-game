@@ -12,7 +12,8 @@ import { drawManhole }     from '../entity/manhole/drawManhole.js';
 import { drawDrain }       from '../entity/drain/drawDrain.js';
 import { drawFountain }    from '../entity/fountain/drawFountain.js';
 import { drawPhoneBooth }  from '../entity/phonebooth/drawPhoneBooth.js';
-import { drawBusStopRoof } from '../entity/busstop/drawBusStopRoof.js';
+import { drawBusStopRoof }  from '../entity/busstop/drawBusStopRoof.js';
+import { drawBusStopBench } from '../entity/busstop/drawBusStopBench.js';
 import { drawTree }        from '../entity/tree/drawTree.js';
 import { drawVending }     from '../entity/vending/drawVending.js';
 import { drawChessTable }  from '../entity/chess-table/drawChessTable.js';
@@ -111,7 +112,8 @@ export class PropEntity extends Entity {
       case 'stall':        drawStall(g, this);       break;
       case 'vending':      drawVending(g, this);     break;
       case 'phonebooth':   drawPhoneBooth(g, this);  break;
-      case 'busstop-roof': drawBusStopRoof(g, this); break;
+      case 'busstop-roof':  drawBusStopRoof(g, this);  break;
+      case 'busstop-bench': drawBusStopBench(g, this); break;
     }
   }
 }

@@ -107,12 +107,12 @@ export function spawnBusStop(em, stop) {
     const bx = stop.x + stop.bench.dx;
     const by = anchorY + stop.bench.dy;
     const bench = em.add(new PropEntity({
-      propType: 'bench',
+      propType: 'busstop-bench',
       x: bx, y: by,
       width: stop.bench.width,
       height: 12,
       facing: stop.bench.facing ?? 'down',
-      tags: ['bench', 'seatable', 'busstop'],
+      tags: ['busstop-bench', 'seatable', 'busstop'],
     }));
     bench.scale = depthScale(by);
   }
