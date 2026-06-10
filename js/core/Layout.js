@@ -45,14 +45,17 @@ export const BUILDING_EXIT_XS = [
 ];
 
 // ─── 统一填充色阶（4 档，全场景 draw 文件共用，禁止额外随手灰） ──────────────────
-export const FILL_PAPER = 0xf0f0f0;   // 最浅：立面底色、留白区域
-export const FILL_LIGHT = 0xe0e0e0;   // 窗户、次级表面
-export const FILL_MID   = 0xc8c8c8;   // 屋顶、门楣、雨棚
-export const FILL_SHADE = 0xa8a8a8;   // 最深环境填充：门板、百叶格
+// 目标：从亮到暗四档，眯眼可分辨四个层次
+//   天空/天际线 > FILL_PAPER(建筑立面) > FILL_LIGHT(窗/玻璃) > FILL_MID(屋顶/雨棚)
+//   > 地面(GRAY_*) ≈ FILL_SHADE > NPC(最深)
+export const FILL_PAPER = 0xd8d8d8;   // 建筑立面底色（LIGHT-MID 区间上沿）
+export const FILL_LIGHT = 0xc4c4c4;   // 窗户、玻璃面（立面内次级）
+export const FILL_MID   = 0xaaaaaa;   // 屋顶、门楣、雨棚（中灰）
+export const FILL_SHADE = 0x888888;   // 最深环境填充：门板、百叶格
 
 // ─── 环境线颜色参数（比 NPC 浅一档，与 depthLineColor 配合使用） ──────────────
-export const ENV_LINE_LIGHT = 0xb0;
-export const ENV_LINE_DARK  = 0x60;
+export const ENV_LINE_LIGHT = 0x90;
+export const ENV_LINE_DARK  = 0x40;
 
 // ─── 天空 / 地平线明度带（SceneRenderer 用） ──────────────────────────────────
 export const SKY_COLOR_TOP    = 0xf9f9f9;   // 天空顶端
@@ -62,14 +65,15 @@ export const FOG_ALPHA        = 0.28;       // 雾霭透明度
 
 // ─── 纯黑白灰画风调色板 ───────────────────────────────────────────────────────
 
-export const GRAY_SKY         = 0xf4f4f4;
-export const GRAY_FAR_PAVE    = 0xe2e2e2;
+export const GRAY_SKY         = 0xf4f4f4;   // 天空（保持最亮）
+export const GRAY_FAR_PAVE    = 0xcccccc;   // 远端人行道（was 0xe2，压 MID 上方）
 export const GRAY_BUILDING_HI = 0xdadada;
 export const GRAY_BUILDING_MID= 0xc8c8c8;
 export const GRAY_BUILDING_LO = 0xb4b4b4;
-export const GRAY_ROAD        = 0x9a9a9a;
-export const GRAY_NEAR_PAVE   = 0xbcbcbc;
-export const GRAY_CURB        = 0xe8e8e8;
+export const GRAY_ROAD        = 0x888888;   // 路面（was 0x9a，比人行道深，≈ FILL_SHADE）
+export const GRAY_NEAR_PAVE   = 0xb0b0b0;   // 近端人行道（was 0xbc）
+export const GRAY_CURB        = 0xd8d8d8;   // 路缘石（was 0xe8，略亮于 FAR_PAVE）
+export const GRAY_PARK        = 0xaaaaaa;   // 公园地面（≈ FILL_MID）
 
 export const LINE_FAR_COLOR  = 0x9a9a9a;
 export const LINE_FAR_WIDTH  = 0.8;

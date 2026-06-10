@@ -1,7 +1,8 @@
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
   PARK_TOP,
-  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB,
+  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB, GRAY_PARK,
+  FILL_MID,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
   BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
   SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR, FOG_ALPHA,
@@ -35,7 +36,7 @@ export class SceneRenderer {
     g.beginFill(GRAY_NEAR_PAVE, 1);
     g.drawRect(0, NEAR_Y, WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM - NEAR_Y);
     g.endFill();
-    g.beginFill(0xcacaca, 1);
+    g.beginFill(GRAY_PARK, 1);
     g.drawRect(0, PARK_TOP, WORLD_WIDTH, WORLD_HEIGHT - PARK_TOP);
     g.endFill();
     g.lineStyle(1.5, 0x888888, 1);
@@ -178,7 +179,7 @@ export class SceneRenderer {
   }
 
   _drawSidewalkTiles(g, topY, botY) {
-    g.lineStyle(0.8, 0xcccccc, 0.3);
+    g.lineStyle(0.8, FILL_MID, 0.45);
     for (let y = topY; y <= botY; y += 20) {
       g.moveTo(0, y); g.lineTo(WORLD_WIDTH, y);
     }
