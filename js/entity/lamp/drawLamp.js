@@ -4,7 +4,7 @@ export function drawLamp(g, p) {
   const { x, y } = p;
   const s  = p.scale ?? 1;
   const lw = depthLineWidth(y);
-  const lc = depthLineColor(y, { light: 0x6a, dark: 0x1f });
+  const lc = depthLineColor(y, { light: 0x9a, dark: 0x55 });
 
   const poleH  = 300 * s;
   const armLen = 60  * s;
@@ -15,7 +15,7 @@ export function drawLamp(g, p) {
   const armTipY = topY + 28 * s;
 
   // base block
-  g.beginFill(0x101010, 1);
+  g.beginFill(0x909090, 1);
   g.drawRect(x - baseW / 2, y - baseH, baseW, baseH);
   g.endFill();
   // pole
@@ -28,7 +28,7 @@ export function drawLamp(g, p) {
   g.beginFill(0xfafafa, 1);
   g.drawRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH);
   g.endFill();
-  g.lineStyle(lw * 0.8, 0x101010, 1);
+  g.lineStyle(lw * 0.8, 0x606060, 1);
   g.drawRect(armTipX - boxW, armTipY - boxH / 2, boxW, boxH);
   // diffuser line
   g.lineStyle(lw * 0.35, 0xa0a0a0, 0.85);

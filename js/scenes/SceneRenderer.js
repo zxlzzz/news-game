@@ -4,6 +4,7 @@ import {
   GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
   BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
+  SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR, FOG_ALPHA,
 } from '../core/Layout.js';
 import { drawBusStopBays }  from '../entity/busstop/drawBusStopBay.js';
 import { drawChessPlaza }   from '../entity/chess-table/drawChessPlaza.js';
@@ -53,9 +54,27 @@ export class SceneRenderer {
   _drawSky() {
     const g = this.sky;
     g.clear();
-    g.beginFill(GRAY_SKY, 1);
-    g.drawRect(-300, 0, WORLD_WIDTH + 600, SKY_Y);
+
+    // 5-band vertical gradient: SKY_COLOR_TOP → SKY_COLOR_HOR over full sky height
+    const skyH  = BUILDING_BASE_Y;
+    const bands = 5;
+    const rT = (SKY_COLOR_TOP >> 16) & 0xff, gT = (SKY_COLOR_TOP >> 8) & 0xff, bT = SKY_COLOR_TOP & 0xff;
+    const rH = (SKY_COLOR_HOR >> 16) & 0xff, gH = (SKY_COLOR_HOR >> 8) & 0xff, bH = SKY_COLOR_HOR & 0xff;
+    for (let i = 0; i < bands; i++) {
+      const t  = (i + 0.5) / bands;
+      const r  = Math.round(rT + (rH - rT) * t);
+      const gc = Math.round(gT + (gH - gT) * t);
+      const b  = Math.round(bT + (bH - bT) * t);
+      g.beginFill((r << 16) | (gc << 8) | b, 1);
+      g.drawRect(-300, Math.round(i / bands * skyH), WORLD_WIDTH + 600, Math.ceil(skyH / bands) + 1);
+      g.endFill();
+    }
+
+    // Horizon fog band: atmospheric haze over the skyline baseline
+    g.beginFill(FOG_COLOR, FOG_ALPHA);
+    g.drawRect(-300, BUILDING_BASE_Y - 20, WORLD_WIDTH + 600, 32);
     g.endFill();
+
     this._drawFarSkyline(g);
     this._drawClouds(g);
   }

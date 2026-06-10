@@ -326,10 +326,9 @@ export class StreetScene {
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
     this.entityGraphics.clear();
-    this.entityManager.draw(
-      this.entityGraphics,
-      this.propManager ? this.propManager.getDrawables() : [],
-    );
+    const _extras = this.propManager ? this.propManager.getDrawables() : [];
+    this.entityManager.drawShadows(this.entityGraphics, _extras);
+    this.entityManager.draw(this.entityGraphics, _extras);
 
     this.vfGraphics.clear();
     this.viewfinder.draw(this.vfGraphics);

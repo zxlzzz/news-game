@@ -25,12 +25,6 @@ export function drawBench(g, p) {
     g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]);
   };
 
-  // ground shadow
-  g.lineStyle(0);
-  g.beginFill(0x000000, 0.10);
-  g.drawEllipse(x, y, L * 1.05 / 2, 4 * s);
-  g.endFill();
-
   // outer + inner legs
   const li = 14 * s;
   line(-(half - li), -legH, -(half - li), 0, lineW, 0.95);

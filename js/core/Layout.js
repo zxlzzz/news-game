@@ -44,6 +44,12 @@ export const BUILDING_EXIT_XS = [
   worldX(0.85),   // building_d ≈ 1700
 ];
 
+// ─── 天空 / 地平线明度带（SceneRenderer 用） ──────────────────────────────────
+export const SKY_COLOR_TOP    = 0xf9f9f9;   // 天空顶端
+export const SKY_COLOR_HOR    = 0xe8e8e4;   // 近地平线（轻微暖色）
+export const FOG_COLOR        = 0xffffff;   // 地平线雾霭
+export const FOG_ALPHA        = 0.28;       // 雾霭透明度
+
 // ─── 纯黑白灰画风调色板 ───────────────────────────────────────────────────────
 
 export const GRAY_SKY         = 0xf4f4f4;

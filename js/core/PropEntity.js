@@ -95,6 +95,7 @@ export class PropEntity extends Entity {
 
   draw(g) {
     if (!this.visible) return;
+    g.lineStyle(0);
     switch (this.propType) {
       case 'lamp':         drawLamp(g, this);        break;
       case 'bench':        drawBench(g, this);       break;

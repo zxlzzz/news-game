@@ -1,5 +1,7 @@
 import { depthT, depthScale } from './Layout.js';
 
+const _SHADOW_SKIP = new Set(['manhole', 'drain', 'park-path', 'busstop-roof', 'sign']);
+
 /**
  * EntityManager
  * 统一管理所有场景实体（NPC、建筑、道具）：
@@ -57,6 +59,31 @@ export class EntityManager {
     if (this._pruneTimer <= 0) {
       this.entities = this.entities.filter(e => e.alive);
       this._pruneTimer = 10000;
+    }
+  }
+
+  /**
+   * 统一地面影子预通道（必须在 draw() 之前调用）。
+   * 为所有实体在 (x, y) 处绘制椭圆投影，alpha 和尺寸随景深变化。
+   * 跳过建筑、地面贴图类道具（manhole/drain/park-path）、以及不适合投影的结构（sign/busstop-roof）。
+   */
+  drawShadows(g, extras = []) {
+    const visible = this.entities.filter(e => e.alive && e.visible);
+    const list = extras.length ? visible.concat(extras) : visible;
+    list.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
+    g.lineStyle(0);
+    for (const e of list) {
+      if (e.bWidth !== undefined) continue;                          // building
+      if (e.propType && _SHADOW_SKIP.has(e.propType)) continue;
+      const y     = e._sortY ?? e.y;
+      const t     = depthT(y);
+      const sc    = e.scale ?? 1;
+      const rx    = Math.max(6 * sc, (e.width ?? 40) * 0.5 * sc);
+      const ry    = Math.max(2 * sc, rx * 0.22);
+      const alpha = 0.04 + 0.11 * t;
+      g.beginFill(0x000000, alpha);
+      g.drawEllipse(e.x, y, rx, ry);
+      g.endFill();
     }
   }
 
