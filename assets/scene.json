@@ -991,6 +991,33 @@
       "tags": [
         "seatable"
       ]
+    },
+    {
+      "propType": "bench",
+      "x": 780,
+      "y": 418,
+      "width": 80,
+      "height": 12,
+      "facing": "down",
+      "tags": [
+        "seatable"
+      ]
+    },
+    {
+      "propType": "trash",
+      "x": 1460,
+      "y": 465,
+      "width": 14,
+      "height": 14,
+      "tags": []
+    },
+    {
+      "propType": "lamp",
+      "x": 550,
+      "y": 465,
+      "width": 14,
+      "height": 14,
+      "tags": []
     }
   ],
   "layout": {

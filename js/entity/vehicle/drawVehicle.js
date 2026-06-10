@@ -1,3 +1,5 @@
+import { FILL_PAPER, FILL_LIGHT, FILL_MID, FILL_SHADE } from '../../core/Layout.js';
+
 const CAR_SHAPE = [
   [-1.00, 0.00], [-1.00, 0.36], [-0.94, 0.42], [-0.78, 0.46],
   [-0.62, 0.52], [-0.46, 0.90], [-0.28, 0.97], [ 0.00, 1.00],
@@ -178,7 +180,7 @@ function _car(g, vehicle, highlight) {
 
   const pts = CAR_SHAPE.map(([xf, yf]) => [x + d * xf * halfL, bodyBot - yf * hs]);
   g.lineStyle(sw, highlight ?? 0x2a2a2a, 1);
-  g.beginFill(0xf2f2ef, 1);
+  g.beginFill(FILL_MID, 1);
   g.moveTo(pts[0][0], pts[0][1]);
   g.lineTo(pts[1][0], pts[1][1]);
   for (const [px, py] of _catmull(pts.slice(1, 14), 8)) g.lineTo(px, py);
@@ -251,7 +253,7 @@ function _bus(g, vehicle, highlight) {
   _wheel(g, rwx, wcy, rs);
 
   g.lineStyle(sw, highlight ?? 0x2a2a2a, 1);
-  g.beginFill(0xeaeae8, 1);
+  g.beginFill(FILL_MID, 1);
   _tracePath(g, BUS_SHAPE, x, bodyBot, halfL, hs, d);
   _archTo(g, fwx, bodyBot, archR, d);
   _archTo(g, rwx, bodyBot, archR, d);
@@ -260,7 +262,7 @@ function _bus(g, vehicle, highlight) {
 
   const bodyTop = bodyBot - hs;
   const bandLeft = Math.min(x - d * halfL, x + d * halfL) + ls * 0.01;
-  g.beginFill(0xd0d0cc, 1);
+  g.beginFill(FILL_SHADE, 1);
   g.drawRect(bandLeft, bodyTop + hs * 0.02, ls * 0.98, hs * 0.08);
   g.endFill();
 
@@ -284,7 +286,7 @@ function _bus(g, vehicle, highlight) {
     const doorH = hs * 0.42;
     const doorTop = bodyBot - doorH - hs * 0.02;
     const doorLeft = doorCX - doorW / 2;
-    g.beginFill(0xd8d8d4, 0.85); g.drawRect(doorLeft, doorTop, doorW, doorH); g.endFill();
+    g.beginFill(FILL_PAPER, 0.85); g.drawRect(doorLeft, doorTop, doorW, doorH); g.endFill();
     g.lineStyle(Math.max(0.8, s * 3), 0x2a2a2a, 0.65); g.drawRect(doorLeft, doorTop, doorW, doorH);
     g.beginFill(0xbcbcbc, 0.6);
     g.drawRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.8, doorH * 0.48);
@@ -349,7 +351,7 @@ function _moto(g, vehicle, highlight) {
   g.moveTo(rwx, wCy); g.lineTo(bar.x - d * 8 * bs, bar.y + 5 * bs);
 
   g.lineStyle(Math.max(0.8, bs * 3), 0x2a2a2a, 0.85);
-  g.beginFill(0xe0e0dd, 1);
+  g.beginFill(FILL_LIGHT, 1);
   g.moveTo(hipX,                hipY - 2 * bs);
   g.lineTo(bar.x - d * 12 * bs, bar.y + 1 * bs);
   g.lineTo(bar.x - d * 12 * bs, bar.y + 5 * bs);

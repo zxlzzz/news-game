@@ -46,7 +46,7 @@ export class SceneRenderer {
     this._drawRoadMarkings(g);
     this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, BIKE_LANE_FAR_TOP - 3);
     this._drawRoadPatches(g);
-    drawParkPlaza(g);
+    drawParkPlaza(g, this.layout.parkTrees || []);
     drawMiniPark(g, this.layout.miniPark);
     drawChessPlaza(g, this.layout.chessPlaza);
     drawParkPaths(g, this.layout.chessPlaza, this.layout.miniPark);
