@@ -40,8 +40,8 @@ export class SceneInitializer {
   _spawnTrees(layout) {
     const { em } = this;
     const groups = [
-      { list: layout.sidewalkTrees || [], tags: ['tree', 'greenery'] },
-      { list: layout.parkTrees     || [], tags: ['tree', 'park', 'greenery'] },
+      { list: layout.sidewalkTrees || [], tags: [] },
+      { list: layout.parkTrees     || [], tags: [] },
     ];
     for (const { list, tags } of groups) {
       for (const t of list) {

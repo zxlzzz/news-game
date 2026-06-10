@@ -297,10 +297,7 @@
       "y": 246,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -308,10 +305,7 @@
       "y": 246,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -319,10 +313,7 @@
       "y": 246,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -330,10 +321,7 @@
       "y": 246,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -341,10 +329,7 @@
       "y": 246,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -352,10 +337,7 @@
       "y": 246,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -363,10 +345,7 @@
       "y": 246,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -374,10 +353,7 @@
       "y": 372,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -385,10 +361,7 @@
       "y": 372,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -396,10 +369,7 @@
       "y": 372,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -407,10 +377,7 @@
       "y": 372,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "lamp",
@@ -418,10 +385,7 @@
       "y": 372,
       "width": 14,
       "height": 14,
-      "tags": [
-        "lamp",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "trash",
@@ -429,10 +393,7 @@
       "y": 228,
       "width": 12,
       "height": 14,
-      "tags": [
-        "trash-can",
-        "street-furniture"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "use_trash",
         "gestureId": "use_trash",
@@ -459,10 +420,7 @@
       "y": 228,
       "width": 12,
       "height": 14,
-      "tags": [
-        "trash-can",
-        "street-furniture"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "use_trash",
         "gestureId": "use_trash",
@@ -489,10 +447,7 @@
       "y": 228,
       "width": 12,
       "height": 14,
-      "tags": [
-        "trash-can",
-        "street-furniture"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "use_trash",
         "gestureId": "use_trash",
@@ -519,10 +474,7 @@
       "y": 500,
       "width": 14,
       "height": 14,
-      "tags": [
-        "trash-can",
-        "street-furniture"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "use_trash",
         "gestureId": "use_trash",
@@ -549,10 +501,7 @@
       "y": 500,
       "width": 14,
       "height": 14,
-      "tags": [
-        "trash-can",
-        "street-furniture"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "use_trash",
         "gestureId": "use_trash",
@@ -579,11 +528,7 @@
       "y": 230,
       "width": 14,
       "height": 18,
-      "tags": [
-        "newsstand",
-        "news",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "newsrack",
@@ -591,11 +536,7 @@
       "y": 230,
       "width": 14,
       "height": 18,
-      "tags": [
-        "newsstand",
-        "news",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "newsrack",
@@ -603,11 +544,7 @@
       "y": 490,
       "width": 14,
       "height": 18,
-      "tags": [
-        "newsstand",
-        "news",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "hydrant",
@@ -615,11 +552,7 @@
       "y": 230,
       "width": 10,
       "height": 14,
-      "tags": [
-        "fire-hydrant",
-        "utility",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "hydrant",
@@ -627,11 +560,7 @@
       "y": 230,
       "width": 10,
       "height": 14,
-      "tags": [
-        "fire-hydrant",
-        "utility",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "hydrant",
@@ -639,11 +568,7 @@
       "y": 498,
       "width": 10,
       "height": 14,
-      "tags": [
-        "fire-hydrant",
-        "utility",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "mailbox",
@@ -651,11 +576,7 @@
       "y": 230,
       "width": 12,
       "height": 18,
-      "tags": [
-        "mailbox",
-        "postal",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "mailbox",
@@ -663,11 +584,7 @@
       "y": 500,
       "width": 12,
       "height": 18,
-      "tags": [
-        "mailbox",
-        "postal",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "planter",
@@ -675,11 +592,7 @@
       "y": 508,
       "width": 84,
       "height": 10,
-      "tags": [
-        "planter",
-        "greenery",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "planter",
@@ -687,11 +600,7 @@
       "y": 508,
       "width": 75,
       "height": 10,
-      "tags": [
-        "planter",
-        "greenery",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "planter",
@@ -699,11 +608,7 @@
       "y": 515,
       "width": 88,
       "height": 10,
-      "tags": [
-        "planter",
-        "greenery",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "manhole",
@@ -711,10 +616,7 @@
       "y": 290,
       "width": 85,
       "height": 10,
-      "tags": [
-        "manhole",
-        "utility"
-      ]
+      "tags": []
     },
     {
       "propType": "manhole",
@@ -722,10 +624,7 @@
       "y": 290,
       "width": 85,
       "height": 10,
-      "tags": [
-        "manhole",
-        "utility"
-      ]
+      "tags": []
     },
     {
       "propType": "manhole",
@@ -733,10 +632,7 @@
       "y": 290,
       "width": 85,
       "height": 10,
-      "tags": [
-        "manhole",
-        "utility"
-      ]
+      "tags": []
     },
     {
       "propType": "drain",
@@ -744,10 +640,7 @@
       "y": 345,
       "width": 72,
       "height": 6,
-      "tags": [
-        "drain",
-        "utility"
-      ]
+      "tags": []
     },
     {
       "propType": "drain",
@@ -755,10 +648,7 @@
       "y": 345,
       "width": 72,
       "height": 6,
-      "tags": [
-        "drain",
-        "utility"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -767,10 +657,7 @@
       "width": 22,
       "height": 14,
       "color": "#1a4488",
-      "tags": [
-        "sign",
-        "office"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -779,10 +666,7 @@
       "width": 22,
       "height": 14,
       "color": "#cc3322",
-      "tags": [
-        "sign",
-        "retail"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -791,10 +675,7 @@
       "width": 22,
       "height": 14,
       "color": "#886633",
-      "tags": [
-        "sign",
-        "cafe"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -803,10 +684,7 @@
       "width": 28,
       "height": 14,
       "color": "#886600",
-      "tags": [
-        "sign",
-        "finance"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -815,10 +693,7 @@
       "width": 22,
       "height": 14,
       "color": "#22aa55",
-      "tags": [
-        "sign",
-        "retail"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -827,10 +702,7 @@
       "width": 24,
       "height": 14,
       "color": "#336688",
-      "tags": [
-        "sign",
-        "office"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -839,10 +711,7 @@
       "width": 30,
       "height": 14,
       "color": "#7a3322",
-      "tags": [
-        "sign",
-        "hotel"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -851,10 +720,7 @@
       "width": 22,
       "height": 14,
       "color": "#aa2288",
-      "tags": [
-        "sign",
-        "retail"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -863,10 +729,7 @@
       "width": 22,
       "height": 14,
       "color": "#886633",
-      "tags": [
-        "sign",
-        "cafe"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -875,10 +738,7 @@
       "width": 28,
       "height": 14,
       "color": "#886600",
-      "tags": [
-        "sign",
-        "finance"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -887,10 +747,7 @@
       "width": 22,
       "height": 14,
       "color": "#445588",
-      "tags": [
-        "sign",
-        "residential"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -899,10 +756,7 @@
       "width": 24,
       "height": 14,
       "color": "#225588",
-      "tags": [
-        "sign",
-        "office"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -911,10 +765,7 @@
       "width": 30,
       "height": 14,
       "color": "#7a3322",
-      "tags": [
-        "sign",
-        "hotel"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -923,10 +774,7 @@
       "width": 22,
       "height": 14,
       "color": "#cc6622",
-      "tags": [
-        "sign",
-        "food"
-      ]
+      "tags": []
     },
     {
       "propType": "sign",
@@ -935,10 +783,7 @@
       "width": 22,
       "height": 14,
       "color": "#cc3322",
-      "tags": [
-        "sign",
-        "retail"
-      ]
+      "tags": []
     },
     {
       "propType": "vending",
@@ -946,10 +791,7 @@
       "y": 244,
       "width": 76,
       "height": 28,
-      "tags": [
-        "vending",
-        "street-furniture"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "use_vending",
         "gestureId": "use_vending",
@@ -976,10 +818,7 @@
       "y": 244,
       "width": 76,
       "height": 28,
-      "tags": [
-        "vending",
-        "street-furniture"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "use_vending",
         "gestureId": "use_vending",
@@ -1006,10 +845,7 @@
       "y": 244,
       "width": 76,
       "height": 34,
-      "tags": [
-        "phonebooth",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "mailbox",
@@ -1017,10 +853,7 @@
       "y": 244,
       "width": 12,
       "height": 18,
-      "tags": [
-        "mailbox",
-        "street-furniture"
-      ]
+      "tags": []
     },
     {
       "propType": "fountain",
@@ -1028,11 +861,7 @@
       "y": 450,
       "width": 479,
       "height": 80,
-      "tags": [
-        "fountain",
-        "park",
-        "landmark"
-      ]
+      "tags": []
     },
     {
       "propType": "stall",
@@ -1040,11 +869,7 @@
       "y": 422,
       "width": 199,
       "height": 60,
-      "tags": [
-        "stall",
-        "park",
-        "vendor"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "stall",
         "routing": [
@@ -1076,11 +901,7 @@
       "y": 492,
       "width": 167,
       "height": 56,
-      "tags": [
-        "stall",
-        "park",
-        "vendor"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "stall",
         "routing": [
@@ -1112,11 +933,7 @@
       "y": 424,
       "width": 203,
       "height": 62,
-      "tags": [
-        "stall",
-        "park",
-        "vendor"
-      ],
+      "tags": [],
       "smartDef": {
         "activityType": "stall",
         "routing": [
@@ -1150,9 +967,7 @@
       "height": 12,
       "facing": "down",
       "tags": [
-        "bench",
-        "park",
-        "park-furniture"
+        "seatable"
       ]
     },
     {
@@ -1163,9 +978,7 @@
       "height": 12,
       "facing": "down",
       "tags": [
-        "bench",
-        "park",
-        "park-furniture"
+        "seatable"
       ]
     },
     {
@@ -1176,9 +989,7 @@
       "height": 12,
       "facing": "down",
       "tags": [
-        "bench",
-        "park",
-        "park-furniture"
+        "seatable"
       ]
     }
   ],
@@ -1270,7 +1081,7 @@
         "x": 660,
         "y": 370,
         "r": 11
-      },      
+      },
       {
         "x": 840,
         "y": 370,
@@ -1453,8 +1264,16 @@
         "pillarOffset": 366,
         "bayW": 202,
         "bayD": 9,
-        "bench": { "dx": 0, "dy": -14, "width": 80, "facing": "down" },
-        "sign":  { "dx": 106, "dy": -40 }
+        "bench": {
+          "dx": 0,
+          "dy": -14,
+          "width": 80,
+          "facing": "down"
+        },
+        "sign": {
+          "dx": 106,
+          "dy": -40
+        }
       },
       {
         "x": 1500,
@@ -1464,8 +1283,16 @@
         "pillarOffset": 364,
         "bayW": 266,
         "bayD": 9,
-        "bench": { "dx": 0, "dy": -4, "width": 80, "facing": "down" },
-        "sign":  { "dx": 138, "dy": 30 }
+        "bench": {
+          "dx": 0,
+          "dy": -4,
+          "width": 80,
+          "facing": "down"
+        },
+        "sign": {
+          "dx": 138,
+          "dy": 30
+        }
       }
     ]
   },

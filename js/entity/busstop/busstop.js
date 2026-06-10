@@ -99,7 +99,7 @@ export function spawnBusStop(em, stop) {
     dir: stop.direction,
     width: stop.roofW, height: far ? anchorY - roofTopY : pillarBottomY - anchorY,
     _sortY: pillarBottomY,
-    tags: ['busstop-roof'],
+    tags: [],
   }));
   roof.scale = depthScale(anchorY);
 
@@ -112,7 +112,7 @@ export function spawnBusStop(em, stop) {
       width: stop.bench.width,
       height: 12,
       facing: stop.bench.facing ?? 'down',
-      tags: ['busstop-bench', 'seatable', 'busstop'],
+      tags: ['seatable', 'busstop'],
     }));
     bench.scale = depthScale(by);
   }

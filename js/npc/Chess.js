@@ -46,7 +46,7 @@ export function spawnChess(em, sr, bm, chessPlaza) {
     propType: 'chess-table', x: boardMid.x, y: Y,
     width: Math.max(20, Math.abs(handA.x - handB.x))-30, height: 18,
     topH: Math.max(10, Y - boardMid.y),
-    tags: ['chess-table', 'game', 'street-furniture'],
+    tags: [],
     smartDef: {
       activityType: 'chess',
       routing: [{ activityFlag: 'chess_onlooker', role: 'onlooker', chance: 0.003, radius: 220, requireOccupied: true }],
@@ -62,12 +62,12 @@ export function spawnChess(em, sr, bm, chessPlaza) {
   const chairA = em.add(new PropEntity({
     propType: 'chair-r', x: hipA.x, y: Y,
     width: 14, height: 16, seatH: Math.max(8, Y - hipA.y),
-    tags: ['chair', 'street-furniture'],
+    tags: [],
   }));
   const chairB = em.add(new PropEntity({
     propType: 'chair-l', x: hipB.x, y: Y,
     width: 14, height: 16, seatH: Math.max(8, Y - hipB.y),
-    tags: ['chair', 'street-furniture'],
+    tags: [],
   }));
 
   chessA._sortY = Y + 1;

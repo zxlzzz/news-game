@@ -286,7 +286,7 @@ export class StreetScene {
   }
 
   _generateHeadline(tags, count) {
-    const subject = tags.filter(t => !['building', 'street-furniture'].includes(t)).join('与') || tags[0];
+    const subject = tags.filter(t => t !== 'building').join('与') || tags[0];
     const templates = [
       `${count}个目标聚集现场，真相令人震惊`,
       `独家现场：${subject}背后的秘密`,
