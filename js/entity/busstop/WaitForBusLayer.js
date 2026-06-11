@@ -98,8 +98,6 @@ export class WaitForBusLayer {
     stop._waiters.push(npc);
     setState(npc, 'stand', 'wait_bus');
     npc.stateDur = Infinity;
-    npc.speed = 0;
-    npc.vy = 0;
   }
 
   _releaseWaiter(npc) {

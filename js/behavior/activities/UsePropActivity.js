@@ -28,14 +28,7 @@ export class UsePropActivity extends Activity {
     this.kfTimer = this.frames[0] ? this.frames[0].dur : 0;
     this._tag    = tag;
 
-    npc.state      = 'stand';
-    npc.animation  = 'stand';
-    npc.speed      = 0;
-    npc.vy         = 0;
-    npc.playOnce   = false;
-    npc.animDone   = false;
-    npc.frameIndex = 0;
-    npc.frameTimer = 0;
+    setState(npc, 'stand', 'use-prop');
     npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
     npc.direction  = (prop.x >= npc.x) ? 1 : -1;
     npc._extraTags = [tag];

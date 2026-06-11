@@ -18,6 +18,10 @@
  */
 
 import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../core/Layout.js';
+import { setWalkMode, pushWalkMode, popWalkMode, setAnimation, setSpeed } from './Motor.js';
+
+// Re-export for backward-compat
+export { setWalkMode, pushWalkMode, popWalkMode } from './Motor.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -72,12 +76,12 @@ export function planCrossing(npc, targetY, profile, onCrossed = null) {
 
   if (Math.random() < jaywalkChance) {
     npc._extraTags = ['jaywalking'];
-    npc.animation  = 'run';
-    npc.speed      = (npc.walkSpeed || 26) * 2.4;
+    setAnimation(npc, 'run');
+    setSpeed(npc, (npc.walkSpeed || 26) * 2.4);
     pushWalkMode(npc, modeDirect({ x: npc.x, y: exitY }, (n) => {
       n._extraTags = null;
-      n.animation  = 'walk';
-      n.speed      = n.walkSpeed || 26;
+      setAnimation(n, 'walk');
+      setSpeed(n, n.walkSpeed || 26);
       if (onCrossed) onCrossed(n);
     }, 30));
   } else {
@@ -143,34 +147,6 @@ export function modePathFollow(pathKey, startIndex = 0) {
   };
 }
 
-// ─── 模式管理 API ─────────────────────────────────────────────────────────────
-
-/** 直接设置模式（清除旧目标，不保存历史） */
-export function setWalkMode(npc, desc) {
-  npc._walkMode      = desc;
-  npc._walkModeStack = npc._walkModeStack ?? [];
-  npc.roamTarget     = null;
-}
-
-/**
- * 压栈并设新模式（优先级打断用）
- * 调用方负责在合适时机调用 popWalkMode 恢复。
- */
-export function pushWalkMode(npc, desc) {
-  npc._walkModeStack = npc._walkModeStack ?? [];
-  if (npc._walkMode) npc._walkModeStack.push(npc._walkMode);
-  npc._walkMode  = desc;
-  npc.roamTarget = null;
-}
-
-/** 弹出并恢复上一个模式（打断结束后调用） */
-export function popWalkMode(npc) {
-  const stack = npc._walkModeStack;
-  if (!stack?.length) return;
-  npc._walkMode  = stack.pop();
-  npc.roamTarget = null;
-}
-
 // ─── 区域自动切换（安全网）────────────────────────────────────────────────────
 
 /** 是否在自行车道区（两侧自行车道） */
@@ -228,7 +204,7 @@ export function pickModeTarget(npc, envQuery) {
       if (mode.loop) {
         mode.wpIndex = 0;
       } else {
-        npc._walkMode      = modeWander();
+        setWalkMode(npc, modeWander());
         npc._needsNewRoute = true;
         _pickRandom(npc, envQuery);
         return;
@@ -267,8 +243,7 @@ export function onPathArrival(mode, npc) {
     if (mode.loop) {
       mode.wpIndex = 0;
     } else {
-      npc._walkMode      = modeWander();
-      npc.roamTarget     = null;
+      setWalkMode(npc, modeWander());
       npc._needsNewRoute = true;
       return;
     }

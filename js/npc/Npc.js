@@ -7,6 +7,7 @@
 import { Entity } from '../core/Entity.js';
 import { depthGray } from '../core/Layout.js';
 import { humanOffsetY, dogOffsetY } from '../core/StickRenderer.js';
+import { integratePhysics } from '../behavior/Motor.js';
 
 // 行为状态 → 标签
 const STATE_TAGS = {
@@ -240,8 +241,8 @@ export class NPC extends Entity {
   update(delta) {
     if (!this.alive) return;
 
-    // 绑带：同步到主人位置
-    if (this.leashTarget) {
+    // 绑带：同步到主人位置（非 Motor 托管 NPC）
+    if (this.leashTarget && !this._motorInstalled) {
       this.x = this.leashTarget.x + this.leashOffset.x * this.leashTarget.direction;
       this.y = this.leashTarget.y + this.leashOffset.y;
       this.direction = this.leashTarget.direction;
@@ -262,10 +263,12 @@ export class NPC extends Entity {
       }
     }
 
-    // 非绑带NPC：执行X/Y位移
-    // 漫游 NPC 的朝向/速度由 steerRoam 每帧决定，到边界只夹取位置、不翻转方向，
-    // 否则会在区域边界与转向逻辑互相打架，出现原地左右乱闪。
-    if (!this.leashTarget) {
+    // 物理积分：Motor 托管 NPC 经 Motor 写保护路径；其余 NPC 走原内联逻辑
+    if (this._motorInstalled) {
+      integratePhysics(this, delta);
+    } else if (!this.leashTarget) {
+      // 漫游 NPC 的朝向/速度由 steerRoam 每帧决定，到边界只夹取位置、不翻转方向，
+      // 否则会在区域边界与转向逻辑互相打架，出现原地左右乱闪。
       if (this.speed > 0) {
         this.x += this.direction * this.speed * (delta / 1000);
         if      (this.x > this.maxX) { this.x = this.maxX; if (!this._walkMode) this.direction = -1; }

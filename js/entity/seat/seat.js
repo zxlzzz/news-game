@@ -6,7 +6,14 @@
  * 两者互不干涉：seat.js 管理 NPC 侧（sit/stand），Activity.js 管理活动侧。
  *
  * 可坐道具通过 tags 数组包含 'seatable' 来声明，而非 propType 判断。
+ *
+ * 注：与 Motor.js 存在循环依赖（Motor 导入 standUp；seat 导入 setXY）。
+ * ES module live bindings 在运行时（非初始化期）正确解析，无需特殊处理。
  */
+
+// Circular import with Motor.js — Motor imports standUp; we need setXY for NPC position writes.
+// ES module live bindings resolve at runtime; both values are only used after all modules load.
+import { setXY as _motorSetXY } from '../behavior/Motor.js';
 
 /** 长椅内禀尺寸（未缩放，世界单位） */
 export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 17, backH: 40 };
@@ -15,6 +22,10 @@ export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 1
 const BENCH_SEAT_H = 12;
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+function _setXY(npc, x, y) {
+  if (typeof _motorSetXY === 'function') { _motorSetXY(npc, x, y); } else { npc.x = x; npc.y = y; }
+}
 
 /** 座面世界 Y（NPC 臀部应落于此） */
 export function seatSurfaceY(bench) {
@@ -46,8 +57,7 @@ export function isNear(entities, npc, dxT = 60, dyT = 80) {
 export function sitDown(npc, bench) {
   bench._occupiedBy = npc.id;
   npc._bench = bench;
-  npc.x = clamp(bench.x, npc.minX, npc.maxX);
-  npc.y = clamp(seatSurfaceY(bench), npc.minY, npc.maxY);
+  _setXY(npc, clamp(bench.x, npc.minX, npc.maxX), clamp(seatSurfaceY(bench), npc.minY, npc.maxY));
   const far = bench.facing === 'up' || bench.facing === 'left';
   npc._sortY = far ? bench.y - 1 : bench.y + 1;
 }
@@ -76,9 +86,11 @@ export function alignLie(npc, renderer) {
   }
   const sc = npc.scale || 0.45;
   const seatY = seatSurfaceY(npc._bench);
-  npc.y = clamp(seatY - Math.round(bodyY * sc), npc.minY, npc.maxY);
   const canonDir = renderer?.getAnimation('lie_bench')?.canonicalDirection || 1;
   const dir = npc.direction * canonDir;
-  npc.x = clamp(npc._bench.x - Math.round(bodyX * sc * dir), npc.minX, npc.maxX);
+  _setXY(npc,
+    clamp(npc._bench.x - Math.round(bodyX * sc * dir), npc.minX, npc.maxX),
+    clamp(seatY - Math.round(bodyY * sc), npc.minY, npc.maxY),
+  );
   npc._sortY = npc._bench.y + 1;
 }

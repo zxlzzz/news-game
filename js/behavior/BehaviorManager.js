@@ -13,6 +13,7 @@
 import { getProfile }          from '../npc/NpcProfile.js';
 import { EnvironmentQuery }     from './EnvironmentQuery.js';
 import { tickBaseState, setState, registerTransition, triggerDeparture, initPoseCache as initBsmPoseCache } from './BaseStateMachine.js';
+import { installProtection, nudgeXY } from './Motor.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
 import { SocialLayer }          from './SocialLayer.js';
 import { CameraReactionLayer }  from '../camera/CameraReactionLayer.js';
@@ -110,6 +111,7 @@ export class BehaviorManager {
     npc._activity = null;
     npc.walkSpeed = npc.speed > 0 ? npc.speed : rand(20, 34);
     this.npcs.push(npc);
+    installProtection(npc);
     setState(npc, npc._profile.initial || 'walk');
     return npc;
   }
@@ -182,8 +184,8 @@ export class BehaviorManager {
         if (d > 0 && d < sepR) {
           const f = ((sepR - d) / sepR) * 16 * dt;
           const ux = dx / d, uy = dy / d;
-          a.x += ux * f; a.y += uy * f;
-          b.x -= ux * f; b.y -= uy * f;
+          nudgeXY(a,  ux * f,  uy * f);
+          nudgeXY(b, -ux * f, -uy * f);
         }
       }
     }
