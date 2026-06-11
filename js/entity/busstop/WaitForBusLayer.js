@@ -8,7 +8,12 @@
  */
 
 import { setState } from '../../behavior/BaseStateMachine.js';
-import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../../core/Layout.js';
+import { planCrossing } from '../../behavior/WalkMode.js';
+import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP, FAR_Y, NEAR_Y } from '../../core/Layout.js';
+
+function _needsCrossing(y1, y2) {
+  return (y1 < FAR_Y && y2 >= NEAR_Y) || (y1 >= NEAR_Y && y2 < FAR_Y);
+}
 
 const WAIT_ZONES = [
   { stopDir: +1, xRange: [380, 620],  yRange: [SIDEWALK_FAR_Y - 20, BIKE_LANE_FAR_TOP] },
@@ -118,18 +123,26 @@ export class WaitForBusLayer {
     for (const npc of waiters) {
       npc._boardingBus = bus;
       stop._boardingQueue.push(npc);
-
       npc._waitingBusStop = stop;
-      npc._routeTarget = {
-        x: doorX,
-        y: doorY,
-        abandonAfter: 15,
-        onArrive: (n) => {
-          n.alive = false;
-          stop._boardingQueue = stop._boardingQueue.filter(x => x !== n);
-        },
+
+      const routeToDoor = (n) => {
+        n._routeTarget = {
+          x: doorX, y: doorY,
+          abandonAfter: 15,
+          onArrive: (n2) => {
+            n2.alive = false;
+            stop._boardingQueue = stop._boardingQueue.filter(x => x !== n2);
+          },
+        };
+        setState(n, 'routing', 'boarding');
       };
-      setState(npc, 'routing', 'boarding');
+
+      if (_needsCrossing(npc.y, doorY)) {
+        setState(npc, 'walk', 'boarding_cross');
+        planCrossing(npc, doorY, npc._profile, routeToDoor);
+      } else {
+        routeToDoor(npc);
+      }
     }
   }
 }

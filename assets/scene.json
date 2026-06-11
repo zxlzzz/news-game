@@ -1175,6 +1175,12 @@
     "crosswalks": [
       {
         "x": 350
+      },
+      {
+        "x": 1050
+      },
+      {
+        "x": 1700
       }
     ],
     "roadStripeSpacing": 56,

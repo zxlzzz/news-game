@@ -9,7 +9,12 @@
  *   wander  — 在 bounds 矩形内随机游走（modeWander + maxDuration）
  */
 
-import { setWalkMode, modeWander, modePathFollow, modeDirect, addWalkPath } from './WalkMode.js';
+import { setWalkMode, modeWander, modePathFollow, modeDirect, addWalkPath, planCrossing } from './WalkMode.js';
+import { FAR_Y, NEAR_Y } from '../core/Layout.js';
+
+function _needsCrossing(y1, y2) {
+  return (y1 < FAR_Y && y2 >= NEAR_Y) || (y1 >= NEAR_Y && y2 < FAR_Y);
+}
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -72,11 +77,16 @@ export class RouteSelector {
     if (route.type === 'path') {
       const entry = route.entry;
       const dist  = entry ? Math.hypot(npc.x - entry.x, npc.y - entry.y) : 0;
-      if (dist > 40) {
-        setWalkMode(npc, modeDirect(entry, (n) => {
-          n._currentRouteId = route.id;
-          setWalkMode(n, modePathFollow(route.id));
+      if (dist > 40 && entry) {
+        const startRoute = (n) => setWalkMode(n, modeDirect(entry, (n2) => {
+          n2._currentRouteId = route.id;
+          setWalkMode(n2, modePathFollow(route.id));
         }));
+        if (_needsCrossing(npc.y, entry.y)) {
+          planCrossing(npc, entry.y, npc._profile, startRoute);
+        } else {
+          startRoute(npc);
+        }
       } else {
         setWalkMode(npc, modePathFollow(route.id));
       }

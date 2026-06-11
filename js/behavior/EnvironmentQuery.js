@@ -6,7 +6,12 @@
  * （Activity 开始时写入其 id，结束时清空），不在 PropEntity 上新增公开属性。
  */
 
-import { SIDEWALK_FAR_Y, NEAR_Y } from '../core/Layout.js';
+import { SIDEWALK_FAR_Y, FAR_Y, NEAR_Y } from '../core/Layout.js';
+
+function _sameSide(y1, y2) {
+  const side = y => y < FAR_Y ? 'far' : y >= NEAR_Y ? 'near' : 'road';
+  return side(y1) === side(y2);
+}
 import { findFree as _findFreeBench,   isNear as _isNearBench   } from '../entity/seat/seat.js';
 import { findFree as _findFreeVending, isNear as _isNearVending  } from '../entity/vending/vending.js';
 import { findFree as _findFreeChess,   isNear as _isNearChess    } from '../entity/chess-table/chessTable.js';
@@ -206,6 +211,7 @@ export class EnvironmentQuery {
     for (const e of this.em.entities) {
       if (!e.alive || e.smartDef?.activityType !== activityType || !e._slots) continue;
       if (requireOccupied ? !e._occupiedBy : !!e._occupiedBy) continue;
+      if (!_sameSide(npc.y, e.y)) continue;
       const free = e._slots.find(s => s.reserved == null && (role == null || s.role === role));
       if (!free) continue;
       const d = Math.hypot(e.x - npc.x, e.y - npc.y);

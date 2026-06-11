@@ -14,7 +14,7 @@
 // 路人共用的状态转换表
 const PED_TRANSITIONS = {
   walk:       { stand: 0.6, sit_bench: 0.2, run: 0.08, squat: 0.01, sit_ground: 0.02, loiter: 0.02 },
-  run:        { walk: 0.9, fall: 0.1 },
+  run:        { walk: 0.9, fall: 0.001 },
   stand:      { walk: 0.77, sit_bench: 0.1, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05, loiter: 0.04 },
   sit_bench:  { stand: 0.97, lie_bench: 0.03 },
   squat:      { stand: 1.0 },
@@ -82,6 +82,7 @@ const PEDESTRIAN = {
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
   loiterChance: 0.10,
   loiterDurationRange: [15, 45],
+  jaywalkChance: 0.10,
   departure: { lifespanRange: [90, 210], preferExitType: null },
   speedRange: [20, 34],
 };
@@ -100,6 +101,7 @@ const BUSINESSMAN = {
   socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
   loiterChance: 0.06,
   loiterDurationRange: [15, 40],
+  jaywalkChance: 0.20,
   departure: { lifespanRange: [90, 210], preferExitType: 'building' },
   speedRange: [28, 40],
 };
@@ -123,6 +125,7 @@ const TOURIST = {
   socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
   loiterChance: 0.18,
   loiterDurationRange: [20, 60],
+  jaywalkChance: 0.15,
   departure: { lifespanRange: [90, 210], preferExitType: null },
   speedRange: [16, 26],
 };

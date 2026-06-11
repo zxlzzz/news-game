@@ -36,6 +36,65 @@ export function isRoadZone(y) {
   return y >= FAR_Y && y < NEAR_Y;
 }
 
+// ─── 斑马线注册 ──────────────────────────────────────────────────────────────────
+
+let _CROSSWALKS = [];
+
+export function initCrosswalks(list) {
+  _CROSSWALKS = (list || []).map(cw => ({ x: cw.x }));
+}
+
+function _nearestCrosswalk(x) {
+  if (!_CROSSWALKS.length) return null;
+  let best = null, bestD = Infinity;
+  for (const cw of _CROSSWALKS) {
+    const d = Math.abs(x - cw.x);
+    if (d < bestD) { bestD = d; best = cw; }
+  }
+  return best;
+}
+
+// TrafficSignal stub — always green; replace with real implementation when needed
+// TODO: export real signal state and wire up to vehicle system
+const TrafficSignal = { getState: (_x) => 'green' };
+
+/**
+ * 规划过马路（从当前侧到 targetY 所在侧）。
+ *   守法：走最近斑马线入口 → 竖穿到对侧，_extraTags=['crossing_road']。
+ *   乱穿：原地竖穿，切 run 动画，_extraTags=['jaywalking']。
+ * onCrossed(npc) 在完成过马路后回调（可选）。
+ */
+export function planCrossing(npc, targetY, profile, onCrossed = null) {
+  const jaywalkChance = profile?.jaywalkChance ?? 0.1;
+  const goingDown = targetY > npc.y;
+  const entryY = goingDown ? FAR_Y - 2  : NEAR_Y + 2;
+  const exitY  = goingDown ? NEAR_Y + 2 : FAR_Y - 2;
+
+  if (Math.random() < jaywalkChance) {
+    npc._extraTags = ['jaywalking'];
+    npc.animation  = 'run';
+    npc.speed      = (npc.walkSpeed || 26) * 2.4;
+    pushWalkMode(npc, modeDirect({ x: npc.x, y: exitY }, (n) => {
+      n._extraTags = null;
+      n.animation  = 'walk';
+      n.speed      = n.walkSpeed || 26;
+      if (onCrossed) onCrossed(n);
+    }, 30));
+  } else {
+    const cw = _nearestCrosswalk(npc.x);
+    const cwX = cw ? cw.x : npc.x;
+    // TODO: if (TrafficSignal.getState(cwX) === 'red') { /* wait */ }
+    pushWalkMode(npc, modeDirect({ x: cwX, y: entryY }, (n) => {
+      n._extraTags = ['crossing_road'];
+      setWalkMode(n, modeDirect({ x: cwX, y: exitY }, (n2) => {
+        n2._extraTags = null;
+        popWalkMode(n2);
+        if (onCrossed) onCrossed(n2);
+      }, 30));
+    }, 60));
+  }
+}
+
 // ─── 预定义路线（运行时从 scene.json 注入）──────────────────────────────────────
 // waypoints: [{x, y, pause?}]  pause = 到达后停留秒数（缺省/0 = 不停留）
 
@@ -133,9 +192,9 @@ export function checkZoneTransition(npc) {
   const inBikeLane = !inRoad && isBikeLaneZone(npc.y);
   if (!inRoad && !inBikeLane) return;
 
-  // 误入危险区：压栈，切 direct 直穿到安全侧
+  // 误入危险区：压栈，弹回原侧
   const goingDown = (npc.vy ?? 0) >= 0;
-  const targetY   = goingDown ? BIKE_LANE_NEAR_BOTTOM + 4 : BIKE_LANE_FAR_TOP - 4;
+  const targetY   = goingDown ? BIKE_LANE_FAR_TOP - 4 : BIKE_LANE_NEAR_BOTTOM + 4;
   pushWalkMode(npc, modeDirect(
     { x: npc.x, y: targetY },
     (n) => { popWalkMode(n); },

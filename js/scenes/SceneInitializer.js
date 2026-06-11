@@ -19,6 +19,7 @@ import {
   SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, BUILDING_EXIT_XS, BIKE_LANE_NEAR_BOTTOM,
   depthScale,
 } from '../core/Layout.js';
+import { initCrosswalks } from '../behavior/WalkMode.js';
 
 export class SceneInitializer {
   constructor(scene, em, sr, poseCache) {
@@ -94,6 +95,7 @@ export class SceneInitializer {
     const routeSelector = new RouteSelector();
     routeSelector.initRoutes(sceneData?.routes);
     bm.routeSelector = routeSelector;
+    initCrosswalks(layout.crosswalks);
 
     const exitRegistry = new ExitRegistry();
     exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null, yZone: null, facing: -1 });

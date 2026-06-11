@@ -162,13 +162,13 @@ export class SceneRenderer {
   }
 
   _drawCrosswalk(g, cx) {
-    const roadTop  = FAR_Y  + 5;
-    const roadBot  = NEAR_Y - 5;
-    const usable   = roadBot - roadTop;
-    const count    = 5;
-    const step     = Math.floor(usable / (count * 2 - 1));
-    const cw       = 200;
-    const x0       = 100;
+    const roadTop = FAR_Y  + 5;
+    const roadBot = NEAR_Y - 5;
+    const usable  = roadBot - roadTop;
+    const count   = 5;
+    const step    = Math.floor(usable / (count * 2 - 1));
+    const cw      = 36;
+    const x0      = cx - 18;
     g.beginFill(0xffffff, 0.68);
     for (let i = 0; i < count; i++) {
       const y  = roadTop + i * step * 2;
