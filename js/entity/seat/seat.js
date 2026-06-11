@@ -13,7 +13,7 @@
 
 // Circular import with Motor.js — Motor imports standUp; we need setXY for NPC position writes.
 // ES module live bindings resolve at runtime; both values are only used after all modules load.
-import { setXY as _motorSetXY } from '../behavior/Motor.js';
+import { setXY as _motorSetXY } from '../../behavior/Motor.js';
 
 /** 长椅内禀尺寸（未缩放，世界单位） */
 export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 17, backH: 40 };
