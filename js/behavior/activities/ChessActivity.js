@@ -60,21 +60,10 @@ export class ChessActivity extends Activity {
     npc.animDone   = false;
     npc.frameIndex = 0;
     npc.frameTimer = 0;
-    npc._holdTimer = 0;
-    npc._holdDur   = rand(3, 8);
   }
 
   _tickOnlooker(npc, dt) {
-    if (!npc.animDone) return;
-    // 定格最后一帧，计时结束后重播
-    npc._holdTimer = (npc._holdTimer || 0) + dt;
-    if (npc._holdTimer >= (npc._holdDur ?? rand(3, 8))) {
-      npc._holdTimer = 0;
-      npc._holdDur   = rand(3, 8);
-      npc.animDone   = false;
-      npc.playOnce   = true;
-      npc.frameIndex = 0;
-    }
+    // animDone=true + playOnce=true → StickRenderer 自动冻结最后一帧，无需处理
   }
 
   addOnlooker(npc, slot) {
@@ -84,8 +73,6 @@ export class ChessActivity extends Activity {
     npc._chessSlot     = slot || null;
     npc._onlookerTimer = 0;
     npc._onlookerDur   = rand(15, 40);
-    npc._holdTimer     = 0;
-    npc._holdDur       = rand(3, 8);
     if (this.table) npc.direction = (this.table.x >= npc.x) ? 1 : -1;
   }
 

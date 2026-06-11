@@ -26,8 +26,8 @@ export function makeSlots(scale) {
   return [
     { role: 'player_a', dx: -(gap / 2),    dy: 0  },
     { role: 'player_b', dx:  (gap / 2),    dy: 0  },
-    { role: 'onlooker', dx: -(gap * 0.24), dy: 14 },
-    { role: 'onlooker', dx:  (gap * 0.24), dy: 14 },
+    { role: 'onlooker', dx: -(gap * 0.3), dy: -18 },
+    { role: 'onlooker', dx:  (gap * 0.3), dy: -18 },
   ];
 }
 
