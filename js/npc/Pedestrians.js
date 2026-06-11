@@ -99,19 +99,17 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
 }
 
 /**
- * 批量生成初始行人，路线由 routeSelector 分配。
+ * 批量生成初始行人；漫游目标由 Agenda（StrollTask）自动分配。
  * @param {EntityManager}   em
  * @param {StickRenderer}   sr
  * @param {BehaviorManager} bm
- * @param {RouteSelector}   routeSelector
  * @param {number}          [count=18]
  */
-export function spawnPedestrians(em, sr, bm, routeSelector, count = 18) {
+export function spawnPedestrians(em, sr, bm, count = 18) {
   for (let k = 0; k < count; k++) {
     const t   = pick(TYPES);
     const pos = randomSpawnPos();
     const npc = spawnOnePedestrian(t.npcType, em, sr, bm, pos);
     npc._ageTimer = rand(0, npc._lifespan);
-    if (routeSelector) routeSelector.pickAndStart(npc, bm.npcs);
   }
 }

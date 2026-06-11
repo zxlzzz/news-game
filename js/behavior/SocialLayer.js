@@ -13,6 +13,7 @@
 import { setState }       from './BaseStateMachine.js';
 import { dlog }           from './DebugLog.js';
 import { getRegistry }    from './ActivityRegistry.js';
+import { TalkToTask }     from './tasks/TalkToTask.js';
 export { registerActivity } from './ActivityRegistry.js';
 
 // Side-effect imports：触发各 Activity 文件的 registerActivity 自注册
@@ -154,7 +155,11 @@ export class SocialLayer {
         const dx = Math.abs(a.x - b.x);
         const dy = Math.abs(a.y - b.y);
         if (dx < 70 && dx > 14 && dy < 24 && chance(0.5)) {
-          this.createActivity('talk', [{ npc: a, role: 'speaker' }, { npc: b, role: 'speaker' }]);
+          const act = this.createActivity('talk', [{ npc: a, role: 'speaker' }, { npc: b, role: 'speaker' }]);
+          if (act) {
+            a._runner?.setPrimary(new TalkToTask(), a);
+            b._runner?.setPrimary(new TalkToTask(), b);
+          }
           paired++;
         }
       }

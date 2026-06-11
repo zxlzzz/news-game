@@ -398,13 +398,6 @@
         "activityType": "use_trash",
         "gestureId": "use_trash",
         "phaseLabel": "throwing_trash",
-        "routing": [
-          {
-            "activityFlag": "use_trash",
-            "chance": 0.002,
-            "radius": 150
-          }
-        ],
         "slots": [
           {
             "role": "user",
@@ -425,13 +418,6 @@
         "activityType": "use_trash",
         "gestureId": "use_trash",
         "phaseLabel": "throwing_trash",
-        "routing": [
-          {
-            "activityFlag": "use_trash",
-            "chance": 0.002,
-            "radius": 150
-          }
-        ],
         "slots": [
           {
             "role": "user",
@@ -452,13 +438,6 @@
         "activityType": "use_trash",
         "gestureId": "use_trash",
         "phaseLabel": "throwing_trash",
-        "routing": [
-          {
-            "activityFlag": "use_trash",
-            "chance": 0.002,
-            "radius": 150
-          }
-        ],
         "slots": [
           {
             "role": "user",
@@ -479,13 +458,6 @@
         "activityType": "use_trash",
         "gestureId": "use_trash",
         "phaseLabel": "throwing_trash",
-        "routing": [
-          {
-            "activityFlag": "use_trash",
-            "chance": 0.002,
-            "radius": 150
-          }
-        ],
         "slots": [
           {
             "role": "user",
@@ -506,13 +478,6 @@
         "activityType": "use_trash",
         "gestureId": "use_trash",
         "phaseLabel": "throwing_trash",
-        "routing": [
-          {
-            "activityFlag": "use_trash",
-            "chance": 0.002,
-            "radius": 150
-          }
-        ],
         "slots": [
           {
             "role": "user",
@@ -796,13 +761,6 @@
         "activityType": "use_vending",
         "gestureId": "use_vending",
         "phaseLabel": "buying",
-        "routing": [
-          {
-            "activityFlag": "use_vending",
-            "chance": 0.002,
-            "radius": 150
-          }
-        ],
         "slots": [
           {
             "role": "user",
@@ -823,13 +781,6 @@
         "activityType": "use_vending",
         "gestureId": "use_vending",
         "phaseLabel": "buying",
-        "routing": [
-          {
-            "activityFlag": "use_vending",
-            "chance": 0.002,
-            "radius": 150
-          }
-        ],
         "slots": [
           {
             "role": "user",

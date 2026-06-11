@@ -12,10 +12,11 @@
  */
 
 // 路人共用的状态转换表
+// sit_bench 已从 walk/stand 行移除 — UseBenchTask（Agenda 驱动）负责落座
 const PED_TRANSITIONS = {
-  walk:       { stand: 0.6, sit_bench: 0.2, run: 0.08, squat: 0.01, sit_ground: 0.02, loiter: 0.02 },
+  walk:       { stand: 0.6, run: 0.08, squat: 0.01, sit_ground: 0.02, loiter: 0.02 },
   run:        { walk: 0.9, fall: 0.001 },
-  stand:      { walk: 0.77, sit_bench: 0.1, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05, loiter: 0.04 },
+  stand:      { walk: 0.77, sit_ground: 0.03, squat: 0.01, lean_wall: 0.05, loiter: 0.04 },
   sit_bench:  { stand: 0.97, lie_bench: 0.03 },
   squat:      { stand: 1.0 },
   sit_ground: { stand: 1.0 },
@@ -76,7 +77,8 @@ const PEDESTRIAN = {
   gesturePoses: PED_GESTURES,
   spawnTraits: ['hold_bag', 'umbrella'],
   activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
-  smartObjectChance: { use_vending: 0.002, use_trash: 0.002, stall_buyer: 0.002, chess_onlooker: 0.002 },
+  smartObjectChance: { stall_buyer: 0.002, chess_onlooker: 0.002 },
+  desires: ['rest', 'use_vending', 'use_trash'],
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
@@ -90,6 +92,7 @@ const PEDESTRIAN = {
 const BUSINESSMAN = {
   ...PEDESTRIAN,
   name: 'businessman',
+  desires: ['use_vending'],
   activities: ['talk', 'use_vending', 'stall_buyer'],
   heldPoses: {
     phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0006, dur: [8, 30] },
@@ -109,6 +112,7 @@ const BUSINESSMAN = {
 const TOURIST = {
   ...PEDESTRIAN,
   name: 'tourist',
+  desires: ['rest', 'use_vending'],
   transitions: {
     ...PED_TRANSITIONS,
     walk:  { stand: 0.55, sit_bench: 0.18, run: 0.06, squat: 0.02, sit_ground: 0.05, lean_wall: 0.01 },

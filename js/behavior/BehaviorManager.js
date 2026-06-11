@@ -1,13 +1,18 @@
 /**
  * BehaviorManager — 行为系统薄协调器
  *
- * 组合各行为层，对所有被托管的 NPC 每帧驱动：
- *   - SocialLayer：tick 所有 Activity（对话/下棋/遛狗）+ 周期性配对新对话
- *   - 自由 NPC（未被 Activity 锁定）：BaseStateMachine + ModifierLayer
- *   - CameraReactionLayer：镜头反应（本次留空）
+ * 主循环顺序（每帧，每个存活 NPC）：
+ *   1. SocialLayer.update（Activity tick + talk 配对）
+ *   2. WaitForBusLayer.update
+ *   3. 寿命到期 → releaseAllHoldings + triggerDeparture + 推 ExitSceneTask
+ *   4. Agenda.tick（无 primary 时选下一目标，_activity 时跳过）
+ *   5. runner.tick（始终执行，含 TalkToTask / ExitSceneTask 等监控任务）
+ *   6. if _activity → continue（跳过 BSM / modifiers）
+ *   7. tickBaseState + checkZoneTransition
+ *   8. tickModifiers
  *
- * Smart Object 路由规则由 initSmartObjectRoutes() 构造完成后调用，
- * 扫描 em.entities 中所有含 smartDef.routing 的 PropEntity 并自动注册 registerTransition。
+ * initSmartObjectRoutes 仅为 chess_onlooker / stall_buyer 注册路由规则；
+ * use_vending / use_trash 已迁移至 Agenda desires（UseSmartPropTask）。
  */
 
 import { getProfile }          from '../npc/NpcProfile.js';
@@ -20,6 +25,9 @@ import { CameraReactionLayer }  from '../camera/CameraReactionLayer.js';
 import { WaitForBusLayer }      from '../entity/busstop/WaitForBusLayer.js';
 import { refreshDebugFlag }     from './DebugLog.js';
 import { checkZoneTransition }  from './WalkMode.js';
+import { TaskRunner }           from './TaskRunner.js';
+import { Agenda }               from './Agenda.js';
+import { ExitSceneTask }        from './tasks/ExitSceneTask.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -46,21 +54,21 @@ export class BehaviorManager {
       initBsmPoseCache(poseCache);
     }
 
-    this.socialLayer = new SocialLayer(this.envQuery, poseCache);
-    this.cameraLayer = new CameraReactionLayer();
+    this.socialLayer     = new SocialLayer(this.envQuery, poseCache);
+    this.cameraLayer     = new CameraReactionLayer();
     this.npcs            = [];
     this.waitForBusLayer = null;
-    this.routeSelector   = null;
+    this.exitRegistry    = null;
   }
 
   /**
-   * 扫描 em.entities 中所有含 smartDef.routing 的 PropEntity，
-   * 为每个唯一 activityFlag 自动注册一条 walk → routing 转换规则。
-   * 须在所有实体（包括 Chess.js 等代码生成的道具）加入 em 之后调用。
+   * 扫描含 smartDef.routing 的实体，为 chess_onlooker / stall_buyer 等注册路由规则。
+   * use_vending / use_trash 的 routing 已从 scene.json 移除，由 Agenda 驱动。
+   * 须在所有实体加入 em 之后调用。
    */
   initSmartObjectRoutes() {
-    const sl = this.socialLayer;
-    const bm = this;   // captured for condition closures (dt normalization)
+    const sl       = this.socialLayer;
+    const bm       = this;
     const seenFlags = new Set();
 
     for (const entity of this.em.entities) {
@@ -71,7 +79,6 @@ export class BehaviorManager {
         if (seenFlags.has(cfg.activityFlag)) continue;
         seenFlags.add(cfg.activityFlag);
 
-        // 捕获本次循环的配置（避免闭包共享变量）
         const flag            = cfg.activityFlag;
         const role            = cfg.role ?? null;
         const defaultChance   = cfg.chance;
@@ -113,12 +120,16 @@ export class BehaviorManager {
     this.npcs.push(npc);
     installProtection(npc);
     setState(npc, npc._profile.initial || 'walk');
+
+    npc._runner = new TaskRunner();
+    npc._agenda = new Agenda(npc._profile, this.envQuery);
+
     return npc;
   }
 
   update(delta) {
     const dt = delta / 1000;
-    this._dt = dt;   // exposed for smart-object condition closures
+    this._dt = dt;
     refreshDebugFlag();
 
     // 1) Activity 层
@@ -127,43 +138,53 @@ export class BehaviorManager {
     // 2) WaitForBusLayer 扫描
     if (this.waitForBusLayer) this.waitForBusLayer.update(this.npcs, dt);
 
-    // 3) 自由 NPC：基础状态机 + 叠加动作
+    // 3) 自由 NPC：Agenda + TaskRunner + BSM + modifiers
     const heldCount = this.npcs.filter(n =>
       n.alive && n.modifiers?.some(m => m.kind === 'held' && !m.id.startsWith('_'))
     ).length;
     const globalHeldFrac = this.npcs.length > 0 ? heldCount / this.npcs.length : 0;
 
     for (const npc of this.npcs) {
-      if (!npc.alive || npc._activity) continue;
+      if (!npc.alive) continue;
 
+      // 等公交：bus waiter 逻辑独立
       if (npc._waitingBusStop && npc.state !== 'routing') {
         if (this.waitForBusLayer) this.waitForBusLayer.tickWaiter(npc, dt);
         continue;
       }
 
+      // 寿命到期 → 离场
       if (!npc._departing && npc._lifespan != null && !npc._waitingBusStop) {
         npc._ageTimer = (npc._ageTimer || 0) + dt;
         if (npc._ageTimer >= npc._lifespan) {
           releaseAllHoldings(npc, this.envQuery);
           triggerDeparture(npc, this.exitRegistry);
+          if (npc._departing) {
+            npc._runner?.setPrimary(new ExitSceneTask(), npc);
+          }
         }
       }
 
+      // Agenda 选目标（无 Activity 时才评估）
+      if (!npc._activity) {
+        npc._agenda?.tick(npc, npc._runner, dt);
+      }
+
+      // TaskRunner tick（始终，含 TalkToTask / ExitSceneTask）
+      npc._runner?.tick(npc, dt);
+
+      // Activity 锁定 → 跳过 BSM / modifiers
+      if (npc._activity) continue;
+
       tickBaseState(npc, npc._profile, this.envQuery, dt);
       if (npc.state === 'walk' || npc.state === 'run') checkZoneTransition(npc);
-      if (npc._needsNewRoute && this.routeSelector) {
-        this.routeSelector.pickAndStart(npc, this.npcs);
-      }
       if (!npc._departing) tickModifiers(npc, npc._profile, dt, globalHeldFrac);
     }
 
     // 4) NPC 间分离
     this._separate(dt);
 
-    // 5) 镜头反应层（预留）
-    // this.cameraLayer.update(this.npcs, viewfinder, stability, dt);
-
-    // 6) 定期清理死亡 NPC
+    // 5) 定期清理死亡 NPC
     this._pruneTimer = (this._pruneTimer ?? 0) - dt;
     if (this._pruneTimer <= 0) {
       this.npcs = this.npcs.filter(n => n.alive);

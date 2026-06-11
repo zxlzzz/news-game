@@ -3,7 +3,6 @@ import { PropEntity }      from '../core/PropEntity.js';
 import { BehaviorManager } from '../behavior/BehaviorManager.js';
 import { ExitRegistry }    from '../npc/ExitRegistry.js';
 import { SpawnManager }    from '../npc/SpawnManager.js';
-import { RouteSelector }   from '../behavior/RouteSelector.js';
 import { NpcPropManager }  from '../npc/props/NpcPropManager.js';
 import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
 import { spawnBusStop }    from '../entity/busstop/busstop.js';
@@ -92,9 +91,6 @@ export class SceneInitializer {
     const bm = new BehaviorManager(em, poseCache);
     this.scene.behaviorManager = bm;
 
-    const routeSelector = new RouteSelector();
-    routeSelector.initRoutes(sceneData?.routes);
-    bm.routeSelector = routeSelector;
     initCrosswalks(layout.crosswalks);
 
     const exitRegistry = new ExitRegistry();
@@ -105,7 +101,7 @@ export class SceneInitializer {
     }
     bm.exitRegistry = exitRegistry;
 
-    spawnPedestrians(em, sr, bm, routeSelector);
+    spawnPedestrians(em, sr, bm);
     spawnChess(em, sr, bm, layout.chessPlaza);
     this._spawnStallSellers(bm);
     bm.initSmartObjectRoutes();
@@ -123,7 +119,6 @@ export class SceneInitializer {
       exitRegistry,
       bm,
       target: 20,
-      routeSelector,
     });
   }
 
