@@ -167,7 +167,7 @@ export class SceneRenderer {
     const usable  = roadBot - roadTop;
     const count   = 5;
     const step    = Math.floor(usable / (count * 2 - 1));
-    const cw      = 36;
+    const cw      = 200;
     const x0      = cx - 18;
     g.beginFill(0xffffff, 0.68);
     for (let i = 0; i < count; i++) {
