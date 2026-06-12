@@ -44,6 +44,9 @@ export class BusStop {
     bus.doorOpen   = true;
     this._boardingTimer = 0;
 
+    // Director 钩子：先下客再上客
+    if (this.onArrival) this.onArrival(bus, this);
+
     if (this._waiters.length > 0) {
       this._timer = Infinity;
       if (this.onBoarding) this.onBoarding(bus, this);

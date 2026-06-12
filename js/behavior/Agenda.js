@@ -6,21 +6,25 @@
  * 向 runner 提交对应的 task。
  *
  * desires 池：
- *   'stroll'       — 始终存在的默认漫游目标
+ *   'stroll'       — 始终存在的默认漫游目标（不计入完成条件）
  *   'rest'         — 找空椅子坐下（UseBenchTask）
  *   'use_vending'  — 用自动贩卖机（UseSmartPropTask）
  *   'use_trash'    — 扔垃圾（UseSmartPropTask）
  *
- * 权重/效用：
- *   utility = desire 匹配（1.0）× 距离衰减 × profile 调系数
- *   stroll 固定低效用兜底；其他欲望仅在道具可达时有效用。
+ * 完成逻辑：
+ *   每个非 stroll 的 desire 完成（task done）后从列表移除；
+ *   若连续 abort 3 次，视为放弃并移除；
+ *   当所有非 stroll desires 都移除后，_readyToExit = true，
+ *   下一轮 Agenda.tick 推 ExitSceneTask 取代 StrollTask。
  */
 
 import { StrollTask }       from './tasks/StrollTask.js';
 import { UseBenchTask }     from './tasks/UseBenchTask.js';
 import { UseSmartPropTask } from './tasks/UseSmartPropTask.js';
+import { ExitSceneTask }    from './tasks/ExitSceneTask.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
+const MAX_ABORTS = 3;
 
 export class Agenda {
   /**
@@ -28,10 +32,12 @@ export class Agenda {
    * @param {EnvironmentQuery} envQuery
    */
   constructor(profile, envQuery) {
-    this._profile   = profile;
-    this._envQuery  = envQuery;
-    this._desires   = this._buildDesires(profile);
-    this._scanTimer = rand(0, 2);  // stagger first evaluation across NPCs
+    this._profile      = profile;
+    this._envQuery     = envQuery;
+    this._desires      = this._buildDesires(profile);
+    this._abortCounts  = new Map();
+    this._readyToExit  = false;
+    this._scanTimer    = rand(0, 2);  // stagger first evaluation across NPCs
   }
 
   /** 从 profile.desires 随机取 0-2 个，加上始终存在的 'stroll' */
@@ -56,22 +62,55 @@ export class Agenda {
    */
   tick(npc, runner, dt) {
     this._scanTimer -= dt;
-    if (runner.primary) return;      // 已有目标，等它完成
-    if (this._scanTimer > 0) return; // 等扫描冷却
+    if (runner.primary) return;
+    if (this._scanTimer > 0) return;
     this._pickGoal(npc, runner);
   }
 
   _pickGoal(npc, runner) {
     this._scanTimer = rand(1, 3);
 
-    let bestDesire = 'stroll', bestScore = 0;
-    for (const d of this._desires) {
+    // 所有特定 desires 完成 → 触发离场
+    if (this._readyToExit) {
+      runner.setPrimary(new ExitSceneTask(), npc);
+      return;
+    }
+
+    const active = this._desires.filter(d => d !== 'stroll');
+
+    let bestDesire = 'stroll', bestScore = 0.3;
+    for (const d of active) {
       const score = this._utility(d, npc);
       if (score > bestScore) { bestScore = score; bestDesire = d; }
     }
 
     const task = this._makeTask(bestDesire);
-    if (task) runner.setPrimary(task, npc);
+    if (!task) return;
+
+    if (bestDesire !== 'stroll') {
+      runner.setPrimary(task, npc, (result) => this._onTaskDone(bestDesire, result));
+    } else {
+      runner.setPrimary(task, npc);
+    }
+  }
+
+  _onTaskDone(desire, result) {
+    if (desire === 'stroll') return;
+
+    if (result === 'done') {
+      this._desires = this._desires.filter(d => d !== desire);
+    } else if (result === 'abort') {
+      const cnt = (this._abortCounts.get(desire) ?? 0) + 1;
+      this._abortCounts.set(desire, cnt);
+      if (cnt >= MAX_ABORTS) {
+        this._desires = this._desires.filter(d => d !== desire);
+      }
+    }
+
+    // 检查是否所有特定 desires 已完成/放弃
+    if (this._desires.every(d => d === 'stroll')) {
+      this._readyToExit = true;
+    }
   }
 
   _utility(desire, npc) {

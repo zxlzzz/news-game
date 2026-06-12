@@ -294,7 +294,8 @@ function _routeToExit(npc, exit) {
 export function triggerDeparture(npc, exitRegistry) {
   if (!exitRegistry) return;
   if (npc._departing) return;
-  const exit = exitRegistry.findExit(npc, npc._profile?.departure?.preferExitType ?? null);
+  const preferType = npc._preferExitType ?? npc._profile?.departure?.preferExitType ?? null;
+  const exit = exitRegistry.findExit(npc, preferType);
   if (!exit) { npc._lifespan += 30; return; }
 
   npc._departing = true;

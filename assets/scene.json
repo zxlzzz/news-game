@@ -13,7 +13,8 @@
         "resi",
         "residential",
         "building"
-      ]
+      ],
+      "door": 60
     },
     {
       "x": 120,
@@ -29,7 +30,8 @@
         "residential",
         "shop",
         "building"
-      ]
+      ],
+      "door": 156
     },
     {
       "x": 192,
@@ -44,7 +46,8 @@
         "modern",
         "commercial",
         "building"
-      ]
+      ],
+      "door": 246
     },
     {
       "x": 300,
@@ -59,7 +62,8 @@
         "resi",
         "residential",
         "building"
-      ]
+      ],
+      "door": 349
     },
     {
       "x": 398,
@@ -74,7 +78,8 @@
         "convenience",
         "shop",
         "building"
-      ]
+      ],
+      "door": 433
     },
     {
       "x": 468,
@@ -89,7 +94,8 @@
         "bookstore",
         "shop",
         "building"
-      ]
+      ],
+      "door": 504
     },
     {
       "x": 650,
@@ -105,7 +111,8 @@
         "residential",
         "shop",
         "building"
-      ]
+      ],
+      "door": 685
     },
     {
       "x": 720,
@@ -120,7 +127,8 @@
         "resi",
         "residential",
         "building"
-      ]
+      ],
+      "door": 781
     },
     {
       "x": 842,
@@ -136,7 +144,8 @@
         "residential",
         "shop",
         "building"
-      ]
+      ],
+      "door": 879
     },
     {
       "x": 916,
@@ -151,7 +160,8 @@
         "modern",
         "commercial",
         "building"
-      ]
+      ],
+      "door": 974
     },
     {
       "x": 1032,
@@ -166,7 +176,8 @@
         "resi",
         "residential",
         "building"
-      ]
+      ],
+      "door": 1088
     },
     {
       "x": 1144,
@@ -182,7 +193,8 @@
         "residential",
         "shop",
         "building"
-      ]
+      ],
+      "door": 1179
     },
     {
       "x": 1214,
@@ -197,7 +209,8 @@
         "resi",
         "residential",
         "building"
-      ]
+      ],
+      "door": 1262
     },
     {
       "x": 1310,
@@ -211,7 +224,8 @@
       "tags": [
         "clinic",
         "building"
-      ]
+      ],
+      "door": 1345
     },
     {
       "x": 1490,
@@ -226,7 +240,8 @@
         "resi",
         "residential",
         "building"
-      ]
+      ],
+      "door": 1552
     },
     {
       "x": 1614,
@@ -241,7 +256,8 @@
         "modern",
         "commercial",
         "building"
-      ]
+      ],
+      "door": 1673
     },
     {
       "x": 1732,
@@ -257,7 +273,8 @@
         "residential",
         "shop",
         "building"
-      ]
+      ],
+      "door": 1770
     },
     {
       "x": 1808,
@@ -272,7 +289,8 @@
         "resi",
         "residential",
         "building"
-      ]
+      ],
+      "door": 1855
     },
     {
       "x": 1902,
@@ -287,7 +305,8 @@
         "convenience",
         "shop",
         "building"
-      ]
+      ],
+      "door": 1946
     }
   ],
   "props": [

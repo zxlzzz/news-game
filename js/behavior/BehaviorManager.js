@@ -74,6 +74,11 @@ export class BehaviorManager {
     npc._runner = new TaskRunner();
     npc._agenda = new Agenda(npc._profile, this.envQuery);
 
+    // 供 ExitSceneTask 在运行时读取（Director spawn 的 NPC 由 Director._installRefs 覆写）
+    npc._exitRegistry    = this.exitRegistry;
+    npc._waitForBusLayer = this.waitForBusLayer;
+    npc._busStops        = this.waitForBusLayer?._stops ?? [];
+
     return npc;
   }
 

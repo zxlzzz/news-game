@@ -2,20 +2,20 @@ import { BuildingEntity }  from '../entity/building/BuildingEntity.js';
 import { PropEntity }      from '../core/PropEntity.js';
 import { BehaviorManager } from '../behavior/BehaviorManager.js';
 import { ExitRegistry }    from '../npc/ExitRegistry.js';
-import { SpawnManager }    from '../npc/SpawnManager.js';
+import { Director }        from '../behavior/Director.js';
 import { NpcPropManager }  from '../npc/props/NpcPropManager.js';
 import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
 import { spawnBusStop }    from '../entity/busstop/busstop.js';
 import { setState }        from '../behavior/Motor.js';
-import { spawnPedestrians, spawnOnePedestrian } from '../npc/Pedestrians.js';
+import { spawnPedestrians } from '../npc/Pedestrians.js';
 import { makeNPC }          from '../npc/npcUtil.js';
 import { spawnChess }       from '../npc/Chess.js';
 import { spawnDogWalker }   from '../npc/DogWalker.js';
 import { spawnAthletes }    from '../npc/Athletes.js';
 import { initVehicleSystem } from '../entity/vehicle/vehicleSpawner.js';
 import {
-  WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y, NEAR_Y,
-  SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, BUILDING_EXIT_XS, BIKE_LANE_NEAR_BOTTOM,
+  WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y,
+  SIDEWALK_FAR_Y,
   depthScale,
 } from '../core/Layout.js';
 import { initCrosswalks } from '../behavior/WalkMode.js';
@@ -93,11 +93,22 @@ export class SceneInitializer {
 
     initCrosswalks(layout.crosswalks);
 
+    // ── ExitRegistry：边缘 + 建筑门（从 scene.json 读取）───────────────────────
     const exitRegistry = new ExitRegistry();
     exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null, yZone: null, facing: -1 });
     exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 200, y: null, yZone: null, facing:  1 });
-    for (let i = 0; i < BUILDING_EXIT_XS.length; i++) {
-      exitRegistry.register({ id: 'building_' + 'abcd'[i], type: 'building', x: BUILDING_EXIT_XS[i], y: SIDEWALK_FAR_Y - 10, yZone: [210, 295], facing: 0 });
+
+    const buildingDoors = [];
+    for (const b of (sceneData?.buildings ?? [])) {
+      if (b.door == null) continue;
+      const id = `building_${b.x}`;
+      exitRegistry.register({
+        id, type: 'building',
+        x: b.door, y: SIDEWALK_FAR_Y - 8,
+        yZone: [BUILDING_BASE_Y, FAR_Y],
+        facing: 0,
+      });
+      buildingDoors.push({ id, x: b.door });
     }
     bm.exitRegistry = exitRegistry;
 
@@ -113,12 +124,17 @@ export class SceneInitializer {
     if (this.scene.trafficManager.busStops.length > 0)
       bm.waitForBusLayer = new WaitForBusLayer(this.scene.trafficManager.busStops);
 
-    this.scene.spawnManager = new SpawnManager({
-      spawnFn: this._makeSpawnFn(bm),
+    // ── Director（替换 SpawnManager）──────────────────────────────────────────
+    const director = new Director({
+      bm, em, sr,
       exitRegistry,
-      bm,
-      target: 20,
+      buildingDoors,
+      busStops: this.scene.trafficManager.busStops,
     });
+    // 初始批次 NPC 补齐 exitBias
+    director.assignDefaults(bm.npcs);
+
+    this.scene.director = director;
   }
 
   // 为每个带 smartDef 的摊位生成一名常驻摊主：从地图边缘入场，路由到 seller 槽。
@@ -148,17 +164,5 @@ export class SceneInitializer {
       };
       setState(seller, 'routing', 'stall_seller_entry');
     }
-  }
-
-  _makeSpawnFn(bm) {
-    const { em, sr } = this;
-    const npcTypes = ['pedestrian', 'businessman', 'tourist'];
-    return (entry) => {
-      const npcType = npcTypes[Math.floor(Math.random() * npcTypes.length)];
-      const posY    = entry.y ?? SIDEWALK_FAR_Y;
-      const npc     = spawnOnePedestrian(npcType, em, sr, bm, { x: entry.x, y: posY });
-      npc._ageTimer = -65;
-      return npc;
-    };
   }
 }

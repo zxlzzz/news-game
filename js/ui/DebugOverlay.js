@@ -20,6 +20,8 @@ const FLOAT_STYLE = {
   padding: { x: 3, y: 1 },
 };
 
+import { gameTimeStr } from '../core/GameClock.js';
+
 const PANEL_STYLE = {
   fontFamily: '"JetBrains Mono", monospace',
   fontSize: '12px',
@@ -119,7 +121,7 @@ export class DebugOverlay {
     const free     = total - locked;
 
     const lines = [];
-    lines.push('— NPC DEBUG (D 切换) —');
+    lines.push(`— NPC DEBUG (D 切换)  ${gameTimeStr()} —`);
     lines.push(`托管 ${total}  |  自由 ${free}  |  锁定 ${locked}  |  离场 ${departing}`);
     const scan = sl.lastScanInfo || { standers: 0, paired: 0 };
     lines.push(`配对扫描: stand=${scan.standers}  新配对=${scan.paired}`);
