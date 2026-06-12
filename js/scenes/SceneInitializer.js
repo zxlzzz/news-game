@@ -6,7 +6,7 @@ import { SpawnManager }    from '../npc/SpawnManager.js';
 import { NpcPropManager }  from '../npc/props/NpcPropManager.js';
 import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
 import { spawnBusStop }    from '../entity/busstop/busstop.js';
-import { setState }        from '../behavior/BaseStateMachine.js';
+import { setState }        from '../behavior/Motor.js';
 import { spawnPedestrians, spawnOnePedestrian } from '../npc/Pedestrians.js';
 import { makeNPC }          from '../npc/npcUtil.js';
 import { spawnChess }       from '../npc/Chess.js';
@@ -104,7 +104,6 @@ export class SceneInitializer {
     spawnPedestrians(em, sr, bm);
     spawnChess(em, sr, bm, layout.chessPlaza);
     this._spawnStallSellers(bm);
-    bm.initSmartObjectRoutes();
     this.scene.propManager = new NpcPropManager(em);
     spawnDogWalker(em, sr, bm, this.scene.propManager);
     spawnAthletes(em, sr, bm);

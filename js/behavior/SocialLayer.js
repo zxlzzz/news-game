@@ -10,7 +10,7 @@
  * createActivity 查 REGISTRY['*'] 为通配符兜底（UsePropActivity）。
  */
 
-import { setState }       from './BaseStateMachine.js';
+import { setState }       from './Motor.js';
 import { dlog }           from './DebugLog.js';
 import { getRegistry }    from './ActivityRegistry.js';
 import { TalkToTask }     from './tasks/TalkToTask.js';

@@ -7,7 +7,7 @@
  *   3. 响应公交到站，驱动 boarding 流程（走向车门 → 上车消失）
  */
 
-import { setState } from '../../behavior/BaseStateMachine.js';
+import { setState } from '../../behavior/Motor.js';
 import { planCrossing } from '../../behavior/WalkMode.js';
 import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP, FAR_Y, NEAR_Y } from '../../core/Layout.js';
 

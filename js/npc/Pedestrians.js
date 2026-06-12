@@ -1,7 +1,7 @@
 /**
  * Pedestrians — 普通行人
  *
- * spawnPedestrians() 初始化场景内行人，路线由外部 RouteSelector 分配。
+ * spawnPedestrians() 初始化场景内行人。
  * spawnOnePedestrian() 供 SpawnManager 动态补充复用。
  */
 
@@ -59,8 +59,7 @@ function randomSpawnPos() {
 }
 
 /**
- * 生成单个行人 NPC，注册到行为系统后返回。
- * 路线由调用方通过 routeSelector.pickAndStart 分配，此处不设置 walkMode。
+ * 生成单个行人 NPC，注册到行为系统后返回。初始 walkMode 由 Agenda 在首帧分配。
  *
  * @param {string}          npcType
  * @param {EntityManager}   em

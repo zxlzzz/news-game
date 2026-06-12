@@ -6,11 +6,12 @@
  *   sitting : sitDown + setState('sit_bench') + 计时；到时 standUp + setState('walk')
  *
  * 设 stateDur=Infinity 防止 BSM timeout 触发状态转换（如 sit_bench→lie_bench）。
+ * bench 占位通过 runner.hold(fn) 登记；中断/顶替时由 runner 统一释放。
  */
 
-import { setState }          from '../Motor.js';
-import { sitDown, standUp }  from '../../entity/seat/seat.js';
-import { GotoTask }          from './GotoTask.js';
+import { setState }         from '../Motor.js';
+import { sitDown, standUp } from '../../entity/seat/seat.js';
+import { GotoTask }         from './GotoTask.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -23,9 +24,12 @@ export class UseBenchTask {
     this._sitDur   = rand(8, 22);
     this._bench    = null;
     this._goto     = null;
+    this._runner   = null;
   }
 
-  onStart(npc, _runner) {
+  onStart(npc, runner) {
+    this._runner = runner;
+
     // Already adjacent to a bench? Sit immediately.
     const near = this._envQuery.nearestFreeBench(npc, 80);
     if (near) {
@@ -33,6 +37,7 @@ export class UseBenchTask {
       sitDown(npc, near);
       setState(npc, 'sit_bench', 'use-bench');
       npc.stateDur = Infinity;
+      this._registerBenchHold(npc, runner);
       this._phase = 'sitting';
       return;
     }
@@ -45,6 +50,17 @@ export class UseBenchTask {
     this._goto  = new GotoTask({ x: far.x, y: far.y }, { timeout: 35 });
     this._goto.onStart(npc, null);
     this._phase = 'goto';
+  }
+
+  /** 登记 bench 占位清理（幂等：standUp 内部已检查 npc._bench）。 */
+  _registerBenchHold(npc, runner) {
+    runner?.hold(() => {
+      if (!npc._bench) return;
+      standUp(npc);
+      if (npc.state === 'sit_bench' || npc.state === 'lie_bench') {
+        setState(npc, 'walk', 'bench-released');
+      }
+    });
   }
 
   tick(npc, dt) {
@@ -61,6 +77,7 @@ export class UseBenchTask {
           sitDown(npc, bench);
           setState(npc, 'sit_bench', 'use-bench');
           npc.stateDur = Infinity;
+          this._registerBenchHold(npc, this._runner);
           this._elapsed = 0;
           this._phase = 'sitting';
         }
@@ -70,6 +87,7 @@ export class UseBenchTask {
       case 'sitting': {
         this._elapsed += dt;
         if (this._elapsed >= this._sitDur || !npc.alive) {
+          // 自然完成：任务自己起身（runner 的 holdings 再执行一次亦幂等）
           standUp(npc);
           setState(npc, 'walk', 'bench-done');
           return 'done';
@@ -82,8 +100,9 @@ export class UseBenchTask {
   }
 
   onAbort(npc) {
-    if (this._phase === 'goto')    this._goto?.onAbort(npc);
-    if (this._phase === 'sitting') { standUp(npc); setState(npc, 'walk', 'bench-abort'); }
+    // goto 阶段：中断导航
+    if (this._phase === 'goto') this._goto?.onAbort(npc);
+    // sitting 阶段：bench holdings 由 runner._releaseHoldings 在 onAbort 前已处理
   }
 
   onInterrupt(npc) {
@@ -92,10 +111,10 @@ export class UseBenchTask {
 
   onResume(npc) {
     if (this._phase === 'sitting') {
-      npc.stateDur = Infinity;  // re-lock duration
+      npc.stateDur = Infinity;
     } else {
       this._phase = 'init';
-      this.onStart(npc, null);
+      this.onStart(npc, this._runner);
     }
   }
 }

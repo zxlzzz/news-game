@@ -11,13 +11,14 @@
  *   7. tickBaseState + checkZoneTransition
  *   8. tickModifiers
  *
- * initSmartObjectRoutes 仅为 chess_onlooker / stall_buyer 注册路由规则；
- * use_vending / use_trash 已迁移至 Agenda desires（UseSmartPropTask）。
+ * Smart-object 路由规则（walk → routing）已全部删除；
+ * 售货机 / 垃圾桶由 Agenda desires 驱动；chess_onlooker / stall_buyer
+ * 将在第三刀迁移为 Agenda desires，目前暂无 onlooker / buyer 路由。
  */
 
 import { getProfile }          from '../npc/NpcProfile.js';
 import { EnvironmentQuery }     from './EnvironmentQuery.js';
-import { tickBaseState, setState, registerTransition, triggerDeparture, initPoseCache as initBsmPoseCache } from './BaseStateMachine.js';
+import { tickBaseState, setState, triggerDeparture, initPoseCache as initBsmPoseCache } from './BaseStateMachine.js';
 import { installProtection, nudgeXY } from './Motor.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
 import { SocialLayer }          from './SocialLayer.js';
@@ -59,57 +60,6 @@ export class BehaviorManager {
     this.npcs            = [];
     this.waitForBusLayer = null;
     this.exitRegistry    = null;
-  }
-
-  /**
-   * 扫描含 smartDef.routing 的实体，为 chess_onlooker / stall_buyer 等注册路由规则。
-   * use_vending / use_trash 的 routing 已从 scene.json 移除，由 Agenda 驱动。
-   * 须在所有实体加入 em 之后调用。
-   */
-  initSmartObjectRoutes() {
-    const sl       = this.socialLayer;
-    const bm       = this;
-    const seenFlags = new Set();
-
-    for (const entity of this.em.entities) {
-      if (!entity.smartDef?.routing) continue;
-      const activityType = entity.smartDef.activityType;
-
-      for (const cfg of entity.smartDef.routing) {
-        if (seenFlags.has(cfg.activityFlag)) continue;
-        seenFlags.add(cfg.activityFlag);
-
-        const flag            = cfg.activityFlag;
-        const role            = cfg.role ?? null;
-        const defaultChance   = cfg.chance;
-        const radius          = cfg.radius;
-        const requireOccupied = cfg.requireOccupied ?? false;
-
-        registerTransition({
-          from: 'walk', to: 'routing', priority: 10,
-          trigger: 'smart-object',
-          condition: (npc, env, profile) => {
-            if (npc._departing) return false;
-            if (!profile?.activities?.includes(flag)) return false;
-            const p = profile.smartObjectChance?.[flag] ?? defaultChance;
-            if (Math.random() > p * (bm._dt ?? 1 / 60) * 60) return false;
-            const opts = role ? { role, requireOccupied } : undefined;
-            const found = env.findAvailableSlot(activityType, npc, radius, opts);
-            if (!found) return false;
-            const { prop, slot } = found;
-            slot.reserved = npc.id;
-            npc._routeTarget = {
-              x: prop.x + slot.dx,
-              y: prop.y + slot.dy,
-              prop, slot,
-              abandonAfter: 25,
-              onArrive: (n) => sl.onSlotArrival(n, prop, slot),
-            };
-            return true;
-          },
-        });
-      }
-    }
   }
 
   /** 注册 NPC 并指定行为档案；返回该 NPC */

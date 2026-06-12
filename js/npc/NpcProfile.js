@@ -77,7 +77,6 @@ const PEDESTRIAN = {
   gesturePoses: PED_GESTURES,
   spawnTraits: ['hold_bag', 'umbrella'],
   activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
-  smartObjectChance: { stall_buyer: 0.002, chess_onlooker: 0.002 },
   desires: ['rest', 'use_vending', 'use_trash'],
   traits: {},
   cameraReaction: 'neutral',
@@ -115,8 +114,8 @@ const TOURIST = {
   desires: ['rest', 'use_vending'],
   transitions: {
     ...PED_TRANSITIONS,
-    walk:  { stand: 0.55, sit_bench: 0.18, run: 0.06, squat: 0.02, sit_ground: 0.05, lean_wall: 0.01 },
-    stand: { walk: 0.68, sit_bench: 0.08, sit_ground: 0.07, squat: 0.02, lean_wall: 0.05, loiter: 0.10 },
+    walk:  { stand: 0.55, run: 0.06, squat: 0.02, sit_ground: 0.05, lean_wall: 0.01 },
+    stand: { walk: 0.68, sit_ground: 0.07, squat: 0.02, lean_wall: 0.05, loiter: 0.10 },
   },
   heldPoses: {
     phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [8, 30] },

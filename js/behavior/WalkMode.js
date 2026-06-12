@@ -21,6 +21,7 @@ import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } fro
 import { setWalkMode, pushWalkMode, popWalkMode, setAnimation, setSpeed } from './Motor.js';
 
 // Re-export for backward-compat
+// @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
 export { setWalkMode, pushWalkMode, popWalkMode } from './Motor.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -108,7 +109,7 @@ export { WALK_PATHS };
 
 export function initWalkPaths(paths) { WALK_PATHS = paths || {}; }
 
-/** 动态注入单条路线（RouteSelector.initRoutes 调用） */
+/** 动态注入单条路线 */
 export function addWalkPath(key, def) { WALK_PATHS[key] = def; }
 
 // ─── 模式描述符工厂 ───────────────────────────────────────────────────────────
@@ -205,7 +206,6 @@ export function pickModeTarget(npc, envQuery) {
         mode.wpIndex = 0;
       } else {
         setWalkMode(npc, modeWander());
-        npc._needsNewRoute = true;
         _pickRandom(npc, envQuery);
         return;
       }
@@ -244,7 +244,6 @@ export function onPathArrival(mode, npc) {
       mode.wpIndex = 0;
     } else {
       setWalkMode(npc, modeWander());
-      npc._needsNewRoute = true;
       return;
     }
   }
@@ -283,7 +282,7 @@ export function tickWalkMode(npc, dt) {
     if (mode.maxDuration != null) {
       mode._elapsed = (mode._elapsed ?? 0) + dt;
       if (mode._elapsed >= mode.maxDuration) {
-        npc._needsNewRoute = true;
+        setWalkMode(npc, modeWander());
       }
     }
     return;
