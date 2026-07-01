@@ -11,6 +11,15 @@ function lenv(g, baseY, wScale = 1.0) {
   return lc;
 }
 
+function drawGroundShadow(g, cx, cy, rx, ry) {
+  const ox = rx * 0.15, oy = ry * 0.25;
+  const sx = cx + ox,   sy = cy + oy;
+  g.lineStyle(0);
+  g.beginFill(0x000000, 0.03); g.drawEllipse(sx, sy, rx * 1.6, ry * 1.6); g.endFill();
+  g.beginFill(0x000000, 0.05); g.drawEllipse(sx, sy, rx * 1.3, ry * 1.3); g.endFill();
+  g.beginFill(0x000000, 0.08); g.drawEllipse(sx, sy, rx,       ry);       g.endFill();
+}
+
 export function drawChessTable(g, p) {
   g.lineStyle(0);
 
@@ -23,10 +32,7 @@ export function drawChessTable(g, p) {
   const D  = tw * 0.2, DY = D * 0.6;
 
   // 0. Ground shadow
-  g.lineStyle(0);
-  g.beginFill(0x000000, 0.12);
-  g.drawEllipse(x, y, (tw / 2) * 1.1, (tw / 2) * 0.33);
-  g.endFill();
+  drawGroundShadow(g, x, y, tw / 2, tw / 2 * 0.3);
 
   // 1. Table legs (structural lines, behind fills)
   lenv(g, y, 1.0);

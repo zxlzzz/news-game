@@ -11,6 +11,15 @@ function lenv(g, baseY, wScale = 1.0) {
   return lc;
 }
 
+function drawGroundShadow(g, cx, cy, rx, ry) {
+  const ox = rx * 0.15, oy = ry * 0.25;
+  const sx = cx + ox,   sy = cy + oy;
+  g.lineStyle(0);
+  g.beginFill(0x000000, 0.03); g.drawEllipse(sx, sy, rx * 1.6, ry * 1.6); g.endFill();
+  g.beginFill(0x000000, 0.05); g.drawEllipse(sx, sy, rx * 1.3, ry * 1.3); g.endFill();
+  g.beginFill(0x000000, 0.08); g.drawEllipse(sx, sy, rx,       ry);       g.endFill();
+}
+
 export function drawTrash(g, p) {
   g.lineStyle(0);
 
@@ -23,11 +32,8 @@ export function drawTrash(g, p) {
   const D  = topW * 0.2;   // 8*s
   const DY = D * 0.6;      // 4.8*s
 
-  // 0. Ground shadow
-  g.lineStyle(0);
-  g.beginFill(0x000000, 0.12);
-  g.drawEllipse(x, y, (topW / 2 + 3 * s) * 1.1, (topW / 2 + 3 * s) * 0.33);
-  g.endFill();
+  // 0. Ground shadow — 按底部寬
+  drawGroundShadow(g, x, y, botW / 2, botW / 2 * 0.3);
 
   // 1. Side — FILL_MID (right edge trapezoid strip)
   g.lineStyle(0);

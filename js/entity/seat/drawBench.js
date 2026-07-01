@@ -11,6 +11,15 @@ function lenv(g, baseY, wScale = 1.0) {
   return lc;
 }
 
+function drawGroundShadow(g, cx, cy, rx, ry) {
+  const ox = rx * 0.15, oy = ry * 0.25;
+  const sx = cx + ox,   sy = cy + oy;
+  g.lineStyle(0);
+  g.beginFill(0x000000, 0.03); g.drawEllipse(sx, sy, rx * 1.6, ry * 1.6); g.endFill();
+  g.beginFill(0x000000, 0.05); g.drawEllipse(sx, sy, rx * 1.3, ry * 1.3); g.endFill();
+  g.beginFill(0x000000, 0.08); g.drawEllipse(sx, sy, rx,       ry);       g.endFill();
+}
+
 export function drawBench(g, p) {
   g.lineStyle(0);
 
@@ -38,10 +47,8 @@ export function drawBench(g, p) {
     g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]);
   };
 
-  // ground shadow
-  g.beginFill(0x000000, 0.12);
-  g.drawEllipse(x, y, half * 1.1, half * 0.33);
-  g.endFill();
+  // ground shadow —極扁長條形
+  drawGroundShadow(g, x, y, half, half * 0.15);
 
   // outer + inner legs
   const li = 14 * s;
