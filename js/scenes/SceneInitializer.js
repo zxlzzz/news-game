@@ -19,6 +19,7 @@ import {
   depthScale,
 } from '../core/Layout.js';
 import { initCrosswalks } from '../behavior/WalkMode.js';
+import { NavGrid, setNavGrid } from '../behavior/nav/NavGrid.js';
 
 export class SceneInitializer {
   constructor(scene, em, sr, poseCache) {
@@ -88,6 +89,12 @@ export class SceneInitializer {
 
   _spawnNPCs(layout, sceneData) {
     const { em, sr, poseCache } = this;
+
+    // NavGrid — 在所有静态道具（props/trees）入场后烘焙
+    const navGrid = new NavGrid();
+    navGrid.bake(em.entities, layout);
+    setNavGrid(navGrid);
+
     const bm = new BehaviorManager(em, poseCache);
     this.scene.behaviorManager = bm;
 
