@@ -6,6 +6,7 @@
  */
 
 import { PARK_TOP, PARK_BOTTOM, WORLD_WIDTH, BUILDING_BASE_Y } from '../core/Layout.js';
+import { getNavGrid } from '../behavior/nav/NavGrid.js';
 import { makeNPC } from './npcUtil.js';
 import { getProfile } from './NpcProfile.js';
 import { getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
@@ -74,8 +75,11 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
   const profile  = getProfile(typeData.npcType);
   const speedRange = profile?.speedRange ?? [20, 34];
 
+  const grid   = getNavGrid();
+  const safePos = grid ? grid.nearestWalkable(pos.x, pos.y) : pos;
+
   const n = makeNPC(em, sr, {
-    x: pos.x, y: pos.y,
+    x: safePos.x, y: safePos.y,
     animation: 'walk',
     direction: Math.random() < 0.5 ? 1 : -1,
     speed: rand(speedRange[0], speedRange[1]), vy: 0,

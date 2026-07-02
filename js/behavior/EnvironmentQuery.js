@@ -143,7 +143,7 @@ export class EnvironmentQuery {
       const wx = x + dx * t, wy = y + dy * t;
       const { gx, gy } = grid.worldToCell(wx, wy);
       const c = grid.cost(gx, gy);
-      if (c === 0 || c === ROAD) return { x: wx, y: wy };
+      if (c === 0) return { x: wx, y: wy };
     }
     return null;
   }

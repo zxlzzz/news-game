@@ -84,7 +84,7 @@ export class PropEntity extends Entity {
         return [rx, rx * 0.5];
       }
       case 'slide': case 'stall':
-        return [w * 0.5, h * 0.5];
+        return [w * 0.5, 14];
       case 'bench': {
         const half = w * 0.5;
         return (this.facing === 'left' || this.facing === 'right') ? [8, half] : [half, 8];

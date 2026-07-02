@@ -19,6 +19,7 @@
 
 import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../core/Layout.js';
 import { setWalkMode, pushWalkMode, popWalkMode, setAnimation, setSpeed } from './Motor.js';
+import { getNavGrid } from './nav/NavGrid.js';
 
 // Re-export for backward-compat
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
@@ -217,7 +218,10 @@ export function pickModeTarget(npc, envQuery) {
 
 function _pickRandom(npc, envQuery) {
   const r = npc._walkMode?.bounds;
-  if (!r) return;
+  if (!r) {
+    npc.roamTarget = getNavGrid()?.sampleWalkableNear(npc, 350) ?? null;
+    return;
+  }
   for (let i = 0; i < 5; i++) {
     const c = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
     if (envQuery.pointBlocked(c.x, c.y)) continue;

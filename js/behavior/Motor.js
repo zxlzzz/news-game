@@ -177,19 +177,51 @@ function _navBlocked(grid, wx, wy) {
 
 /**
  * 尝试移动 (dx, dy)，NavGrid 阻挡时做轴分离滑行：
- *   先试 (dx, dy)，阻挡则试 (dx, 0)，再试 (0, dy)，均阻挡则不动。
+ *   0. 若 NPC 自身格已被标记 BLOCKED，无条件放行（逃逸规则）。
+ *   1. 先试 (dx, dy)，阻挡则试 (dx, 0)，再试 (0, dy)，均阻挡则不动。
+ *   2. 连续 ≥30 帧全阻：清零、翻转方向、传送到最近可走格；
+ *      direct 模式命中同一目标 ≥3 次则降级 wander。
  */
 function _slideMove(npc, dx, dy) {
   const grid = getNavGrid();
   const nx = npc.x + dx, ny = npc.y + dy;
-  if (!grid || !_navBlocked(grid, nx, ny)) {
-    _mw(npc, 'x', nx);
-    _mw(npc, 'y', ny);
+
+  // Escape: if NPC's own cell is blocked, allow move unconditionally
+  if (grid && _navBlocked(grid, npc.x, npc.y)) {
+    _mw(npc, 'x', nx); _mw(npc, 'y', ny);
+    npc._blockedFrames = 0;
     return;
   }
-  if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) { _mw(npc, 'x', nx); return; }
-  if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) { _mw(npc, 'y', ny); return; }
-  // fully blocked — no movement
+
+  if (!grid || !_navBlocked(grid, nx, ny)) {
+    _mw(npc, 'x', nx); _mw(npc, 'y', ny);
+    npc._blockedFrames = 0;
+    return;
+  }
+  if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) { _mw(npc, 'x', nx); npc._blockedFrames = 0; return; }
+  if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) { _mw(npc, 'y', ny); npc._blockedFrames = 0; return; }
+
+  // Fully blocked
+  npc._blockedFrames = (npc._blockedFrames ?? 0) + 1;
+  if (npc._blockedFrames >= 30) {
+    npc._blockedFrames = 0;
+    npc.roamTarget = null;
+    npc.direction  = -(npc.direction || 1);
+    const safe = grid.nearestWalkable(npc.x, npc.y);
+    _mw(npc, 'x', safe.x);
+    _mw(npc, 'y', safe.y);
+    if (npc._walkMode?.kind === 'direct') {
+      const tgt = npc._walkMode.target;
+      const key = `${tgt?.x},${tgt?.y}`;
+      if (npc._directBailoutKey !== key) { npc._directBailoutKey = key; npc._directBailouts = 0; }
+      npc._directBailouts = (npc._directBailouts ?? 0) + 1;
+      if (npc._directBailouts >= 3) {
+        npc._directBailouts = 0;
+        npc._directBailoutKey = null;
+        setWalkMode(npc, { kind: 'wander', bounds: null, maxDuration: null, _elapsed: 0 });
+      }
+    }
+  }
 }
 
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
