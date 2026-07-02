@@ -6,6 +6,8 @@ import {
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
   BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
   SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR, FOG_ALPHA,
+  SKYLINE_BACK, SKYLINE_FRONT, SKYLINE_LINE, CLOUD_LINE,
+  depthLineColor, ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../core/Layout.js';
 import { drawBusStopBays }  from '../entity/busstop/drawBusStopBay.js';
 import { drawChessPlaza }   from '../entity/chess-table/drawChessPlaza.js';
@@ -39,13 +41,18 @@ export class SceneRenderer {
     g.beginFill(GRAY_PARK, 1);
     g.drawRect(0, PARK_TOP, WORLD_WIDTH, WORLD_HEIGHT - PARK_TOP);
     g.endFill();
-    g.lineStyle(1.5, 0x888888, 1);
-    g.moveTo(0, BIKE_LANE_FAR_TOP);      g.lineTo(WORLD_WIDTH, BIKE_LANE_FAR_TOP);
-    g.moveTo(0, BIKE_LANE_NEAR_BOTTOM);  g.lineTo(WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM);
+
+    const lcFar  = depthLineColor(BIKE_LANE_FAR_TOP,      { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
+    const lcNear = depthLineColor(BIKE_LANE_NEAR_BOTTOM,   { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
+    g.lineStyle(1.5, lcFar,  1);
+    g.moveTo(0, BIKE_LANE_FAR_TOP);     g.lineTo(WORLD_WIDTH, BIKE_LANE_FAR_TOP);
+    g.lineStyle(1.5, lcNear, 1);
+    g.moveTo(0, BIKE_LANE_NEAR_BOTTOM); g.lineTo(WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM);
 
     this._drawRoadMarkings(g);
     this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, BIKE_LANE_FAR_TOP - 3);
     this._drawRoadPatches(g);
+    this._drawParkGrass(g);
     drawParkPlaza(g, this.layout.parkTrees || []);
     drawMiniPark(g, this.layout.miniPark);
     drawChessPlaza(g, this.layout.chessPlaza);
@@ -83,7 +90,7 @@ export class SceneRenderer {
   _drawFarSkyline(g) {
     const seed = (i) => { const s = Math.sin(i * 73.13) * 43758.5; return s - Math.floor(s); };
     const base = BUILDING_BASE_Y;
-    g.beginFill(0xf1f1f1, 1);
+    g.beginFill(SKYLINE_BACK, 1);
     for (let i = 0; i < 48; i++) {
       const bx = i * 46 - 30 + seed(i) * 12;
       const bw = 38 + seed(i + 9) * 26;
@@ -95,12 +102,12 @@ export class SceneRenderer {
       const bx = i * 70 - 20 + seed(i + 50) * 28;
       const bw = 44 + seed(i + 60) * 36;
       const bh = 110 + seed(i + 70) * 70;
-      g.beginFill(0xe6e6e6, 1);
+      g.beginFill(SKYLINE_FRONT, 1);
       g.drawRect(bx, base - bh, bw, bh);
       g.endFill();
-      g.lineStyle(0.5, 0xd6d6d6, 0.5);
+      g.lineStyle(0.5, SKYLINE_LINE, 0.5);
       g.drawRect(bx, base - bh, bw, bh);
-      g.lineStyle(0.4, 0xdcdcdc, 0.4);
+      g.lineStyle(0.4, SKYLINE_LINE, 0.4);
       for (let k = 1; k < 3; k++) { const lx = bx + bw * k / 3; g.moveTo(lx, base - bh + 6); g.lineTo(lx, base - 4); }
     }
   }
@@ -113,7 +120,7 @@ export class SceneRenderer {
       g.drawEllipse(cx - 28 * s, cy + 6 * s, 22 * s, 10 * s);
       g.drawEllipse(cx + 30 * s, cy + 5 * s, 24 * s, 10 * s);
       g.endFill();
-      g.lineStyle(0.8, 0xd2d2d2, 0.6);
+      g.lineStyle(0.8, CLOUD_LINE, 0.6);
       g.drawEllipse(cx, cy, 35 * s, 13 * s);
     }
   }
@@ -150,7 +157,7 @@ export class SceneRenderer {
 
   _drawRoadPatches(g) {
     const rand = (i) => { const s = Math.sin(i * 91.337) * 43758.5453; return s - Math.floor(s); };
-    g.beginFill(0x8a8a8a, 0.4);
+    g.beginFill(0x000000, 0.04);
     for (let i = 0; i < 3; i++) {
       const px = (i + 0.5) * WORLD_WIDTH / 3 + (rand(i + 1) - 0.5) * 200;
       const py = FAR_Y + 18 + rand(i * 3 + 2) * (NEAR_Y - FAR_Y - 36);
@@ -179,9 +186,22 @@ export class SceneRenderer {
   }
 
   _drawSidewalkTiles(g, topY, botY) {
-    g.lineStyle(0.8, FILL_MID, 0.45);
+    g.lineStyle(0.8, FILL_MID, 0.06);
     for (let y = topY; y <= botY; y += 20) {
       g.moveTo(0, y); g.lineTo(WORLD_WIDTH, y);
+    }
+  }
+
+  _drawParkGrass(g) {
+    const seed = (i) => { const s = Math.sin(i * 91.337) * 43758.5453; return s - Math.floor(s); };
+    g.lineStyle(0.7, 0x000000, 0.05);
+    for (let i = 0; i < 80; i++) {
+      const gx  = seed(i * 3 + 1) * WORLD_WIDTH;
+      const gy  = PARK_TOP + 5 + seed(i * 3 + 2) * (WORLD_HEIGHT - PARK_TOP - 10);
+      const len = 4 + seed(i * 3 + 3) * 2;
+      const ang = (seed(i * 5 + 7) - 0.3) * 0.8;
+      g.moveTo(gx, gy);
+      g.lineTo(gx + Math.sin(ang) * len, gy - Math.cos(ang) * len);
     }
   }
 }

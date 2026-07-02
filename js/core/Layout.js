@@ -75,6 +75,12 @@ export const GRAY_NEAR_PAVE   = 0xb0b0b0;   // 近端人行道（was 0xbc）
 export const GRAY_CURB        = 0xd8d8d8;   // 路缘石（was 0xe8，略亮于 FAR_PAVE）
 export const GRAY_PARK        = 0xaaaaaa;   // 公园地面（≈ FILL_MID）
 
+// ─── 天际线 / 云（SceneRenderer 用） ──────────────────────────────────────────
+export const SKYLINE_BACK  = 0xf1f1f1;
+export const SKYLINE_FRONT = 0xe6e6e6;
+export const SKYLINE_LINE  = 0xd6d6d6;
+export const CLOUD_LINE    = 0xd2d2d2;
+
 export const LINE_FAR_COLOR  = 0x9a9a9a;
 export const LINE_FAR_WIDTH  = 0.8;
 export const LINE_MID_COLOR  = 0x5a5a5a;
