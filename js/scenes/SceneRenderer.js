@@ -7,6 +7,7 @@ import {
   BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
   SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR, FOG_ALPHA,
   SKYLINE_BACK, SKYLINE_FRONT, SKYLINE_LINE, CLOUD_LINE,
+  CURB_EDGE_LINE,
   depthLineColor, ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../core/Layout.js';
 import { drawBusStopBays }  from '../entity/busstop/drawBusStopBay.js';
@@ -129,14 +130,14 @@ export class SceneRenderer {
     g.beginFill(GRAY_CURB, 1);
     g.drawRect(0, FAR_Y - 3, WORLD_WIDTH, 3);
     g.endFill();
-    g.lineStyle(LINE_FAR_WIDTH, 0x7a7a7a, 0.65);
+    g.lineStyle(LINE_FAR_WIDTH, CURB_EDGE_LINE, 0.65);
     g.moveTo(0, FAR_Y - 3); g.lineTo(WORLD_WIDTH, FAR_Y - 3);
     g.moveTo(0, FAR_Y);     g.lineTo(WORLD_WIDTH, FAR_Y);
-    g.beginFill(0x888888, 0.85);
+    g.beginFill(GRAY_ROAD, 0.85);
     g.drawRect(0, FAR_Y, WORLD_WIDTH, 4);
     g.endFill();
 
-    g.beginFill(0xd8d8d8, 1);
+    g.beginFill(GRAY_CURB, 1);
     g.drawRect(0, NEAR_Y, WORLD_WIDTH, 4);
     g.endFill();
     g.lineStyle(LINE_NEAR_WIDTH * 0.7, LINE_NEAR_COLOR, 0.55);
