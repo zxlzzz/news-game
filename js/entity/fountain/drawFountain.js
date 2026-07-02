@@ -11,7 +11,8 @@ function lenv(g, baseY, wScale = 1.0) {
   return lc;
 }
 
-export function drawFountain(g, p) {
+/** 贴地平面部分：池壁、池沿、水面、涟漪、轮廓 — 地面预通道调用 */
+export function drawFountainPool(g, p) {
   g.lineStyle(0);
 
   const { x, y } = p;
@@ -24,26 +25,35 @@ export function drawFountain(g, p) {
   const waterRx = rx * 0.53,  waterRy = ry * 0.53;
   const ripRx   = rx * 0.21,  ripRy   = ry * 0.21;
 
-  // 1. Pool rim — FILL_MID (outer ring)
-  g.lineStyle(0);
   g.beginFill(FILL_MID, 1);
   g.drawEllipse(x, y, outerRx, outerRy);
   g.endFill();
 
-  // 2. Rim top — FILL_LIGHT (ring, shifted slightly up)
   g.lineStyle(0);
   g.beginFill(FILL_LIGHT, 1);
   g.drawEllipse(x, y - 4 * s, rimRx, rimRy);
   g.endFill();
 
-  // 3. Water surface — FILL_MID (inner pool face)
   g.lineStyle(0);
   g.beginFill(FILL_MID, 1);
   g.drawEllipse(x + 2 * s, y - 3 * s, waterRx, waterRy);
   g.endFill();
 
-  // 4. Nozzle
+  lenv(g, y, 0.35);
+  g.drawEllipse(x - 3 * s, y - 2 * s, ripRx, ripRy);
+
+  lenv(g, y, 0.85);
+  g.drawEllipse(x, y, outerRx, outerRy);
+}
+
+/** 立体部分：喷嘴 + 水柱 — 主 Y 排序通道调用（遮挡从后方经过的 NPC） */
+export function drawFountainNozzle(g, p) {
   g.lineStyle(0);
+
+  const { x, y } = p;
+  const s  = p.scale ?? 1;
+  const outerRy = 300 * s * 0.5 * 0.775;
+
   g.beginFill(FILL_SHADE, 1);
   g.drawCircle(x, y - 2 * s, 8 * s);
   g.endFill();
@@ -56,15 +66,6 @@ export function drawFountain(g, p) {
   g.drawCircle(x, y - 7 * s, 3 * s);
   g.endFill();
 
-  // 5. Ripple detail
-  lenv(g, y, 0.35);
-  g.drawEllipse(x - 3 * s, y - 2 * s, ripRx, ripRy);
-
-  // 6. Water jet
   lenv(g, y - outerRy * 1.1, 0.5);
   g.moveTo(x, y - 8 * s); g.lineTo(x, y - outerRy * 1.1);
-
-  // 7. Outline (last)
-  lenv(g, y, 0.85);
-  g.drawEllipse(x, y, outerRx, outerRy);
 }

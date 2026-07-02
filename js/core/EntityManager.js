@@ -1,4 +1,5 @@
 import { depthT, depthScale } from './Layout.js';
+import { Entity } from './Entity.js';
 
 const SHADOWS_ENABLED = false;  // 影子系统开关；新规范稳定后再决定是否启用
 const _SHADOW_SKIP = new Set(['manhole', 'drain', 'park-path', 'busstop-roof', 'sign']);
@@ -98,6 +99,10 @@ export class EntityManager {
   draw(g, extras = []) {
     const visible = this.entities.filter(e => e.alive && e.visible);
     const list = extras.length ? visible.concat(extras) : visible;
+    // Ground pre-pass: flat elements drawn before Y-sorted stack (e.g. fountain pool, manhole)
+    for (const e of visible) {
+      if (e.drawGround !== Entity.prototype.drawGround) e.drawGround(g);
+    }
     list.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
     for (const e of list) e.draw(g);
   }

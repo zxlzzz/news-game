@@ -11,6 +11,7 @@
 
 import { standUp }  from '../entity/seat/seat.js';
 import { dlog }     from './DebugLog.js';
+import { getNavGrid } from './nav/NavGrid.js';
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
 let _writing = false;
@@ -168,6 +169,29 @@ export function setState(npc, state, trigger = '?') {
   }
 }
 
+// ── 碰撞辅助 ────────────────────────────────────────────────────────────────
+function _navBlocked(grid, wx, wy) {
+  const { gx, gy } = grid.worldToCell(wx, wy);
+  return grid.cost(gx, gy) === 0;
+}
+
+/**
+ * 尝试移动 (dx, dy)，NavGrid 阻挡时做轴分离滑行：
+ *   先试 (dx, dy)，阻挡则试 (dx, 0)，再试 (0, dy)，均阻挡则不动。
+ */
+function _slideMove(npc, dx, dy) {
+  const grid = getNavGrid();
+  const nx = npc.x + dx, ny = npc.y + dy;
+  if (!grid || !_navBlocked(grid, nx, ny)) {
+    _mw(npc, 'x', nx);
+    _mw(npc, 'y', ny);
+    return;
+  }
+  if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) { _mw(npc, 'x', nx); return; }
+  if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) { _mw(npc, 'y', ny); return; }
+  // fully blocked — no movement
+}
+
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
 export function setXY(npc, x, y) {
   _mw(npc, 'x', x);
@@ -175,8 +199,7 @@ export function setXY(npc, x, y) {
 }
 
 export function nudgeXY(npc, dx, dy) {
-  _mw(npc, 'x', npc.x + dx);
-  _mw(npc, 'y', npc.y + dy);
+  _slideMove(npc, dx, dy);
 }
 
 // ── 速度写入（供 steerRoam）──────────────────────────────────────────────────
@@ -198,14 +221,16 @@ export function integratePhysics(npc, delta) {
     npc.direction = npc.leashTarget.direction;
     return;
   }
+  let dx = 0, dy = 0;
   if (npc.speed > 0) {
     let nx = npc.x + npc.direction * npc.speed * dt;
     if      (nx > npc.maxX) { nx = npc.maxX; if (!npc._walkMode) npc.direction = -1; }
     else if (nx < npc.minX) { nx = npc.minX; if (!npc._walkMode) npc.direction =  1; }
-    _mw(npc, 'x', nx);
+    dx = nx - npc.x;
   }
   let ny = npc.y + npc.vy * dt;
   if      (ny > npc.maxY) { ny = npc.maxY; npc.vy = npc._walkMode ? 0 : -Math.abs(npc.vy); }
   else if (ny < npc.minY) { ny = npc.minY; npc.vy = npc._walkMode ? 0 :  Math.abs(npc.vy); }
-  _mw(npc, 'y', ny);
+  dy = ny - npc.y;
+  if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
 }

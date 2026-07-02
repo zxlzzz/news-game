@@ -31,6 +31,21 @@ let _instance = null;
 export const getNavGrid = () => _instance;
 export const setNavGrid = (g) => { _instance = g; };
 
+/** 调试用：把 BLOCKED 格（cost=0）画成半透明黑色矩形。window.__navDebug=true 时调用。 */
+export function drawNavDebug(g) {
+  if (!_instance) return;
+  g.lineStyle(0);
+  for (let gy = 0; gy < ROWS; gy++) {
+    for (let gx = 0; gx < COLS; gx++) {
+      if (_instance._cost[gy * COLS + gx] === 0) {
+        g.beginFill(0x000000, 0.15);
+        g.drawRect(gx * CELL, gy * CELL, CELL, CELL);
+        g.endFill();
+      }
+    }
+  }
+}
+
 // ─── Y 分带默认代价 ───────────────────────────────────────────────────────────
 function _zoneDefault(wy) {
   if (wy < BUILDING_BASE_Y)       return 0;   // 建筑上方

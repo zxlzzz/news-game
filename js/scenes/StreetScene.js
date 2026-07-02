@@ -29,6 +29,7 @@ import { initWalkPaths }    from '../behavior/WalkMode.js';
 import { PixiText }         from '../core/PixiText.js';
 import { getManifestPaths, buildPoseCache } from '../behavior/PoseCacheBuilder.js';
 import { clockUpdate, gameTimeStr, setClockSpeed, setGameTime } from '../core/GameClock.js';
+import { drawNavDebug } from '../behavior/nav/NavGrid.js';
 
 const ANIM_FILES = {
   walk: 'base/walk', run: 'base/run', idle: 'base/idle', jog: 'base/jog', bike: 'base/bike',
@@ -334,6 +335,7 @@ export class StreetScene {
     const _extras = this.propManager ? this.propManager.getDrawables() : [];
     this.entityManager.drawShadows(this.entityGraphics, _extras);
     this.entityManager.draw(this.entityGraphics, _extras);
+    if (window.__navDebug) drawNavDebug(this.entityGraphics);
 
     this.vfGraphics.clear();
     this.viewfinder.draw(this.vfGraphics);

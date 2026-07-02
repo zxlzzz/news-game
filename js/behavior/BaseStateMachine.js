@@ -232,11 +232,7 @@ function steerRoam(npc, envQuery, profile, dt) {
   }
 
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
-  let vx = dx / dist * total, vy = dy / dist * total;
-  const av = avoidObstacles(npc, vx, vy, envQuery);
-  vx += av.x; vy += av.y;
-  const mag = Math.hypot(vx, vy) || 1;
-  vx = vx / mag * total; vy = vy / mag * total;
+  const vx = dx / dist * total, vy = dy / dist * total;
   setSpeed(npc, Math.abs(vx));
   npc.vy = vy;
 
@@ -246,33 +242,6 @@ function steerRoam(npc, envQuery, profile, dt) {
     npc.direction = desired;
     npc._dirCD = 0.45;
   }
-}
-
-function avoidObstacles(npc, vx, vy, envQuery) {
-  let ax = 0, ay = 0;
-  const speed = Math.hypot(vx, vy) || 1;
-  const fx = vx / speed, fy = vy / speed;
-  const base = npc.walkSpeed || 26;
-  const npcR = 12;
-  for (const o of envQuery.getObstacles(npc.x, npc.y, 46)) {
-    const ox = npc.x - o.x, oy = npc.y - o.y;
-    const rx = o.collisionRX + npcR, ry = o.collisionRY + npcR;
-    const sd = Math.hypot(ox / rx, oy / ry) || 0.001;
-    if (sd > 1.8) continue;
-    if (sd < 1) { setXY(npc, o.x + ox / sd, o.y + oy / sd); }
-    const d = Math.hypot(ox, oy) || 0.001;
-    const dot = (-ox / d) * fx + (-oy / d) * fy;
-    if (dot < 0.2) continue;
-    const prox = Math.max(0, 1 - (sd - 1) / 0.8);
-    if (prox <= 0) continue;
-    let gx = ox / (rx * rx), gy = oy / (ry * ry);
-    const gl = Math.hypot(gx, gy) || 1; gx /= gl; gy /= gl;
-    let tx = -gy, ty = gx;
-    if (tx * fx + ty * fy < 0) { tx = -tx; ty = -ty; }
-    ax += (tx * 1.4 + gx * 0.6) * base * prox;
-    ay += (ty * 1.4 + gy * 0.6) * base * prox;
-  }
-  return { x: ax, y: ay };
 }
 
 // ─── 离场系统 ─────────────────────────────────────────────────────────────────

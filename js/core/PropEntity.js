@@ -1,4 +1,5 @@
 import { Entity } from './Entity.js';
+import { depthScale } from './Layout.js';
 import { drawBench }       from '../entity/seat/drawBench.js';
 import { drawChairL }      from '../entity/seat/drawChairL.js';
 import { drawChairR }      from '../entity/seat/drawChairR.js';
@@ -11,7 +12,7 @@ import { drawMailbox }     from '../entity/mailbox/drawMailbox.js';
 import { drawPlanter }     from '../entity/planter/drawPlanter.js';
 import { drawManhole }     from '../entity/manhole/drawManhole.js';
 import { drawDrain }       from '../entity/drain/drawDrain.js';
-import { drawFountain }    from '../entity/fountain/drawFountain.js';
+import { drawFountainPool, drawFountainNozzle } from '../entity/fountain/drawFountain.js';
 import { drawPhoneBooth }  from '../entity/phonebooth/drawPhoneBooth.js';
 import { drawBusStopRoof }  from '../entity/busstop/drawBusStopRoof.js';
 import { drawBusStopBench } from '../entity/seat/drawBusStopBench.js';
@@ -78,7 +79,11 @@ export class PropEntity extends Entity {
   _calcCollision() {
     const w = this.width || 20, h = this.height || 20;
     switch (this.propType) {
-      case 'fountain': case 'slide': case 'stall':
+      case 'fountain': {
+        const rx = 300 * depthScale(this.y) * 0.775;
+        return [rx, rx * 0.5];
+      }
+      case 'slide': case 'stall':
         return [w * 0.5, h * 0.5];
       case 'bench': {
         const half = w * 0.5;
@@ -93,30 +98,40 @@ export class PropEntity extends Entity {
     }
   }
 
+  /** 地面预通道：贴地平面元素（EntityManager.draw 在 Y 排序前调用） */
+  drawGround(g) {
+    if (!this.visible) return;
+    g.lineStyle(0);
+    switch (this.propType) {
+      case 'fountain': drawFountainPool(g, this); break;
+      case 'manhole':  drawManhole(g, this);      break;
+      case 'drain':    drawDrain(g, this);        break;
+    }
+  }
+
   draw(g) {
     if (!this.visible) return;
     g.lineStyle(0);
     switch (this.propType) {
-      case 'lamp':         drawLamp(g, this);        break;
-      case 'bench':        drawBench(g, this);       break;
-      case 'trash':        drawTrash(g, this);       break;
-      case 'sign':         drawSign(g, this);        break;
-      case 'newsrack':     drawNewsRack(g, this);    break;
-      case 'hydrant':      drawHydrant(g, this);     break;
-      case 'mailbox':      drawMailbox(g, this);     break;
-      case 'planter':      drawPlanter(g, this);     break;
-      case 'manhole':      drawManhole(g, this);     break;
-      case 'drain':        drawDrain(g, this);       break;
-      case 'chair-l':      drawChairL(g, this);      break;
-      case 'chair-r':      drawChairR(g, this);      break;
-      case 'chess-table':  drawChessTable(g, this);  break;
-      case 'tree':         drawTree(g, this);        break;
-      case 'fountain':     drawFountain(g, this);    break;
-      case 'stall':        drawStall(g, this);       break;
-      case 'vending':      drawVending(g, this);     break;
-      case 'phonebooth':   drawPhoneBooth(g, this);  break;
-      case 'busstop-roof':  drawBusStopRoof(g, this);  break;
-      case 'busstop-bench': drawBusStopBench(g, this); break;
+      case 'lamp':         drawLamp(g, this);           break;
+      case 'bench':        drawBench(g, this);          break;
+      case 'trash':        drawTrash(g, this);          break;
+      case 'sign':         drawSign(g, this);           break;
+      case 'newsrack':     drawNewsRack(g, this);       break;
+      case 'hydrant':      drawHydrant(g, this);        break;
+      case 'mailbox':      drawMailbox(g, this);        break;
+      case 'planter':      drawPlanter(g, this);        break;
+      case 'chair-l':      drawChairL(g, this);         break;
+      case 'chair-r':      drawChairR(g, this);         break;
+      case 'chess-table':  drawChessTable(g, this);     break;
+      case 'tree':         drawTree(g, this);           break;
+      case 'fountain':     drawFountainNozzle(g, this); break;
+      case 'stall':        drawStall(g, this);          break;
+      case 'vending':      drawVending(g, this);        break;
+      case 'phonebooth':   drawPhoneBooth(g, this);     break;
+      case 'busstop-roof':  drawBusStopRoof(g, this);   break;
+      case 'busstop-bench': drawBusStopBench(g, this);  break;
+      // manhole / drain handled entirely in drawGround; nothing to draw in main pass
     }
   }
 }

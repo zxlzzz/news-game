@@ -218,13 +218,14 @@ export function pickModeTarget(npc, envQuery) {
 function _pickRandom(npc, envQuery) {
   const r = npc._walkMode?.bounds;
   if (!r) return;
-  let pt = null;
   for (let i = 0; i < 5; i++) {
     const c = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
-    if (!envQuery.pointBlocked(c.x, c.y)) { pt = c; break; }
-    pt = c;
+    if (envQuery.pointBlocked(c.x, c.y)) continue;
+    if (envQuery.raycastObstacle(npc.x, npc.y, c.x, c.y)) continue;
+    npc.roamTarget = c;
+    return;
   }
-  npc.roamTarget = pt;
+  npc.roamTarget = null;  // 5 次均失败，保持原地直到下帧再试
 }
 
 // ─── Waypoint 到达处理 ────────────────────────────────────────────────────────
@@ -255,6 +256,34 @@ export function onPathArrival(mode, npc) {
     npc.roamTarget  = null;   // 暂停期间 steerRoam 检测到 null 且 pausing=true → 停止
   } else {
     npc.roamTarget = null;    // 下帧 pickModeTarget 取下一 waypoint
+  }
+}
+
+// ─── 简单导航辅助 ─────────────────────────────────────────────────────────────
+
+function _crossSide(y1, y2) {
+  const side = y => (y < FAR_Y ? 0 : y >= NEAR_Y ? 1 : -1);
+  const s1 = side(y1), s2 = side(y2);
+  return s1 >= 0 && s2 >= 0 && s1 !== s2;
+}
+
+/**
+ * 规划从 npc 当前位置到 target 的一次行程（不用 PathPlanner）。
+ * 跨侧时先 planCrossing，再 modeDirect；同侧直接 modeDirect。
+ * GotoTask / StrollTask 使用 PathPlanner 获得更精确的路径；
+ * planLegs 供简单场景（无需绕障）快速设置目标。
+ *
+ * @param {{x:number, y:number}} target
+ * @param {number} timeout  放弃超时（秒）
+ * @param {Function|null} onDone  到达回调 (npc) => void
+ */
+export function planLegs(npc, target, timeout = 60, onDone = null) {
+  if (_crossSide(npc.y, target.y ?? npc.y)) {
+    planCrossing(npc, target.y, npc._profile, (n) => {
+      setWalkMode(n, modeDirect(target, onDone, timeout));
+    });
+  } else {
+    setWalkMode(npc, modeDirect(target, onDone, timeout));
   }
 }
 
