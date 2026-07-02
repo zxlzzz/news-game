@@ -2,15 +2,18 @@
  * NavGrid — 10px 格代价图
  *
  * 代价编码（Uint8Array）：
- *   0 = BLOCKED
- *   1 = 代价 1（人行道、公园小路、plaza）
- *   3 = 代价 3（草地）
+ *   0    = 硬阻挡（BLOCKED）：建筑区、障碍物 AABB
+ *   1    = 可规划、可采样（人行道、公园小路、plaza）
+ *   3    = 可规划、可采样（公园草地，行走代价高）
+ *   ROAD = 可通行（Motor._slideMove 不拒绝），但不可规划、不可采样：
+ *          自行车道 + 机动车道。planCrossing/modeDirect 可穿越，
+ *          PathPlanner / sampleWalkableNear / pickRandom 不选它。
  *
  * 烘焙来源：
  *   1. Y 分带默认代价
  *   2. walkPaths 管道（PATH_TUBE_R px 内 → cost 1）
  *   3. chessPlaza / miniPark 椭圆 → cost 1
- *   4. 道具 AABB + OBS_MARGIN → BLOCKED
+ *   4. 道具 AABB + OBS_MARGIN → 0（BLOCKED）
  *
  * 单例：getNavGrid() / setNavGrid()
  */
@@ -22,6 +25,7 @@ import {
 } from '../../core/Layout.js';
 
 export const CELL = 10;
+export const ROAD = 250;   // 可通行但不可规划/采样的格（马路+自行车道）
 const COLS = Math.ceil(WORLD_WIDTH  / CELL);   // 200
 const ROWS = Math.ceil(WORLD_HEIGHT / CELL);   // 52
 const OBS_MARGIN = 6;
@@ -31,14 +35,22 @@ let _instance = null;
 export const getNavGrid = () => _instance;
 export const setNavGrid = (g) => { _instance = g; };
 
-/** 调试用：把 BLOCKED 格（cost=0）画成半透明黑色矩形。window.__navDebug=true 时调用。 */
+/**
+ * 调试用：BLOCKED(0) 画 alpha 0.15，ROAD(250) 画 alpha 0.05。
+ * window.__navDebug=true 时由 StreetScene 调用。
+ */
 export function drawNavDebug(g) {
   if (!_instance) return;
   g.lineStyle(0);
   for (let gy = 0; gy < ROWS; gy++) {
     for (let gx = 0; gx < COLS; gx++) {
-      if (_instance._cost[gy * COLS + gx] === 0) {
+      const c = _instance._cost[gy * COLS + gx];
+      if (c === 0) {
         g.beginFill(0x000000, 0.15);
+        g.drawRect(gx * CELL, gy * CELL, CELL, CELL);
+        g.endFill();
+      } else if (c === ROAD) {
+        g.beginFill(0x000000, 0.05);
         g.drawRect(gx * CELL, gy * CELL, CELL, CELL);
         g.endFill();
       }
@@ -48,11 +60,11 @@ export function drawNavDebug(g) {
 
 // ─── Y 分带默认代价 ───────────────────────────────────────────────────────────
 function _zoneDefault(wy) {
-  if (wy < BUILDING_BASE_Y)       return 0;   // 建筑上方
-  if (wy < BIKE_LANE_FAR_TOP)     return 1;   // 远端人行道 (210-248)
-  if (wy < NEAR_Y)                return 0;   // 自行车道 + 马路 (248-333)
-  if (wy < BIKE_LANE_NEAR_BOTTOM) return 0;   // 近端自行车道 (333-353)
-  return 3;                                    // 公园草地默认 3
+  if (wy < BUILDING_BASE_Y)       return 0;     // 建筑区（硬阻挡）
+  if (wy < BIKE_LANE_FAR_TOP)     return 1;     // 远端人行道 (210-248)
+  if (wy < NEAR_Y)                return ROAD;  // 远端自行车道+马路 (248-333)
+  if (wy < BIKE_LANE_NEAR_BOTTOM) return ROAD;  // 近端自行车道 (333-353)
+  return 3;                                      // 公园草地
 }
 
 // ─── 线段到点最短距离 ─────────────────────────────────────────────────────────
@@ -110,10 +122,11 @@ export class NavGrid {
     return { x: (gx + 0.5) * CELL, y: (gy + 0.5) * CELL };
   }
 
-  /** BFS 找最近可走格，返回其中心世界坐标 */
+  /** BFS 找最近可走格（cost 1 或 3，不含 ROAD），返回其中心世界坐标 */
   nearestWalkable(wx, wy) {
     const { gx: sx, gy: sy } = this.worldToCell(wx, wy);
-    if (this.cost(sx, sy) > 0) return { x: wx, y: wy };
+    const c0 = this.cost(sx, sy);
+    if (c0 > 0 && c0 < ROAD) return { x: wx, y: wy };
 
     const visited = new Uint8Array(COLS * ROWS);
     const queue   = [sx + sy * COLS];
@@ -122,13 +135,13 @@ export class NavGrid {
     while (queue.length) {
       const ci = queue.shift();
       const gx = ci % COLS, gy = Math.floor(ci / COLS);
-      if (this._cost[ci] > 0) return this.cellCenter(gx, gy);
+      const cv = this._cost[ci];
+      if (cv > 0 && cv < ROAD) return this.cellCenter(gx, gy);
       for (const d of DIRS) {
         const ni = ci + d;
         if (ni < 0 || ni >= COLS * ROWS || visited[ni]) continue;
-        // bounds check for row wrap
         const ng = Math.floor(ni / COLS);
-        if (Math.abs(ng - gy) > 2) continue;  // prevent column wrap artifacts
+        if (Math.abs(ng - gy) > 2) continue;
         visited[ni] = 1;
         queue.push(ni);
       }
@@ -154,7 +167,7 @@ export class NavGrid {
         if (dx * dx + dy * dy > gr * gr) continue;
         const gx = gxC + dx, gy = gyC + dy;
         const c  = this.cost(gx, gy);
-        if (c === 0) continue;
+        if (c === 0 || c === ROAD) continue;
         const wy = (gy + 0.5) * CELL;
         if ((wy >= NEAR_Y) !== isNearSide) continue;  // 不跨侧
         if (c === 1) pool1.push({ gx, gy });

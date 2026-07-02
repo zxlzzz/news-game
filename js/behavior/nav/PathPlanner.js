@@ -6,7 +6,7 @@
  * 无路返回 null。
  */
 
-import { CELL, getNavGrid } from './NavGrid.js';
+import { CELL, ROAD, getNavGrid } from './NavGrid.js';
 
 const SQRT2 = Math.SQRT2;
 // [dx, dy, moveCostMultiplier]
@@ -66,11 +66,13 @@ export class PathPlanner {
     let s = grid.worldToCell(x0, y0);
     let e = grid.worldToCell(x1, y1);
 
-    if (grid.cost(s.gx, s.gy) === 0) {
+    const sc = grid.cost(s.gx, s.gy);
+    if (sc === 0 || sc === ROAD) {
       const snap = grid.nearestWalkable(x0, y0);
       s = grid.worldToCell(snap.x, snap.y);
     }
-    if (grid.cost(e.gx, e.gy) === 0) {
+    const ec = grid.cost(e.gx, e.gy);
+    if (ec === 0 || ec === ROAD) {
       const snap = grid.nearestWalkable(x1, y1);
       e = grid.worldToCell(snap.x, snap.y);
     }
@@ -113,7 +115,7 @@ export class PathPlanner {
         const nx = gx + dx, ny = gy + dy;
         if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) continue;
         const nc = this._grid.cost(nx, ny);
-        if (nc === 0) continue;
+        if (nc === 0 || nc === ROAD) continue;
         const ni = ny * COLS + nx;
         if (closed[ni]) continue;
         const ng = gCost[ci] + mul * nc;
@@ -145,12 +147,14 @@ export class PathPlanner {
     const sx = gx0 < gx1 ? 1 : -1, sy = gy0 < gy1 ? 1 : -1;
     let err = dx - dy, x = gx0, y = gy0;
     while (x !== gx1 || y !== gy1) {
-      if (this._grid.cost(x, y) === 0) return false;
+      const cv = this._grid.cost(x, y);
+      if (cv === 0 || cv === ROAD) return false;
       const e2 = 2 * err;
       if (e2 > -dy) { err -= dy; x += sx; }
       if (e2 < dx)  { err += dx; y += sy; }
     }
-    return this._grid.cost(gx1, gy1) > 0;
+    const endC = this._grid.cost(gx1, gy1);
+    return endC > 0 && endC < ROAD;
   }
 
   _straighten(path) {

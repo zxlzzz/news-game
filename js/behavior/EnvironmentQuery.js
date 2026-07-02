@@ -7,7 +7,7 @@
  */
 
 import { SIDEWALK_FAR_Y, FAR_Y, NEAR_Y } from '../core/Layout.js';
-import { getNavGrid, CELL } from './nav/NavGrid.js';
+import { getNavGrid, CELL, ROAD } from './nav/NavGrid.js';
 
 function _sameSide(y1, y2) {
   const side = y => y < FAR_Y ? 'far' : y >= NEAR_Y ? 'near' : 'road';
@@ -121,15 +121,16 @@ export class EnvironmentQuery {
   }
 
   // ─── 障碍物查询（NavGrid 单一真值源）──────────────────────────────────────
-  /** 点 (x,y) 是否被 NavGrid 标记为 BLOCKED；是则返回真值，否则 null */
+  /** 点 (x,y) 是否为不可选目标（BLOCKED 或 ROAD）；是则返回真值，否则 null */
   pointBlocked(x, y, _npcRadius = 12) {
     const grid = getNavGrid();
     if (!grid) return null;
     const { gx, gy } = grid.worldToCell(x, y);
-    return grid.cost(gx, gy) === 0 ? { x, y } : null;
+    const c = grid.cost(gx, gy);
+    return (c === 0 || c === ROAD) ? { x, y } : null;
   }
 
-  /** 线段 (x,y)→(tx,ty) 沿途是否经过 BLOCKED 格；有则返回首个碰撞点，否则 null */
+  /** 线段 (x,y)→(tx,ty) 沿途是否经过不可选格（BLOCKED 或 ROAD）；有则返回首个碰撞点，否则 null */
   raycastObstacle(x, y, tx, ty, _npcRadius = 12) {
     const grid = getNavGrid();
     if (!grid) return null;
@@ -141,7 +142,8 @@ export class EnvironmentQuery {
       const t  = i / steps;
       const wx = x + dx * t, wy = y + dy * t;
       const { gx, gy } = grid.worldToCell(wx, wy);
-      if (grid.cost(gx, gy) === 0) return { x: wx, y: wy };
+      const c = grid.cost(gx, gy);
+      if (c === 0 || c === ROAD) return { x: wx, y: wy };
     }
     return null;
   }
