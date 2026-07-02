@@ -1,6 +1,6 @@
 import {
   depthLineWidth, depthLineColor,
-  FILL_PAPER, FILL_LIGHT, FILL_MID, FILL_SHADE,
+  FILL_LIGHT, FILL_MID, FILL_SHADE,
   ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../../core/Layout.js';
 
@@ -11,15 +11,6 @@ function lenv(g, baseY, wScale = 1.0) {
   return lc;
 }
 
-function drawGroundShadow(g, cx, cy, rx, ry) {
-  const ox = rx * 0.15, oy = ry * 0.25;
-  const sx = cx + ox,   sy = cy + oy;
-  g.lineStyle(0);
-  g.beginFill(0x000000, 0.03); g.drawEllipse(sx, sy, rx * 1.6, ry * 1.6); g.endFill();
-  g.beginFill(0x000000, 0.05); g.drawEllipse(sx, sy, rx * 1.3, ry * 1.3); g.endFill();
-  g.beginFill(0x000000, 0.08); g.drawEllipse(sx, sy, rx,       ry);       g.endFill();
-}
-
 export function drawVending(g, p) {
   g.lineStyle(0);
 
@@ -28,38 +19,13 @@ export function drawVending(g, p) {
   const w  = 80 * s, h = 158 * s;
   const px = x - w / 2, py = y - h;
 
-  const D  = w * 0.2, DY = D * 0.6;
-
-  // 0. Ground shadow
-  drawGroundShadow(g, x, y, w / 2, w / 2 * 0.3);
-
-  // 1. Side — 浅色材质, FILL_MID
-  g.lineStyle(0);
-  g.beginFill(FILL_MID, 1);
-  g.moveTo(px + w,     py);
-  g.lineTo(px + w + D, py - DY);
-  g.lineTo(px + w + D, py + h - DY);
-  g.lineTo(px + w,     py + h);
-  g.closePath();
-  g.endFill();
-
-  // 2. Front body — FILL_LIGHT
+  // 1. Front body — FILL_LIGHT
   g.lineStyle(0);
   g.beginFill(FILL_LIGHT, 1);
   g.drawRect(px, py, w, h);
   g.endFill();
 
-  // 3. Top — FILL_PAPER
-  g.lineStyle(0);
-  g.beginFill(FILL_PAPER, 1);
-  g.moveTo(px,         py);
-  g.lineTo(px + D,     py - DY);
-  g.lineTo(px + w + D, py - DY);
-  g.lineTo(px + w,     py);
-  g.closePath();
-  g.endFill();
-
-  // 4. Glass front — FILL_SHADE at low alpha
+  // 2. Glass front — FILL_SHADE at low alpha
   const gx = px + 6 * s, gy = py + 6 * s;
   const gw  = w * 0.6, gh = h - 29 * s;
   g.lineStyle(0);
@@ -72,25 +38,25 @@ export function drawVending(g, p) {
   g.drawRect(gx + 3 * s, gy + 3 * s, gw - 6 * s, gh * 0.4);
   g.endFill();
 
-  // 5. Side control panel (right of glass)
+  // 3. Side control panel (right of glass)
   g.lineStyle(0);
   g.beginFill(FILL_MID, 1);
   g.drawRect(gx + gw + 3 * s, gy, w - gw - 14 * s, gh * 0.5);
   g.endFill();
 
-  // 6. Shelf lines (detail)
+  // 4. Shelf lines (detail)
   lenv(g, y, 0.55);
   for (let i = 1; i < 5; i++) {
     g.moveTo(gx, gy + gh * i / 5); g.lineTo(gx + gw, gy + gh * i / 5);
   }
 
-  // 7. Dispenser slot
+  // 5. Dispenser slot
   g.lineStyle(0);
   g.beginFill(0x000000, 0.9);
   g.drawRect(px + 6 * s, py + h - 17 * s, w - 11 * s, 9 * s);
   g.endFill();
 
-  // 8. Outlines (last)
+  // 6. Outlines (last)
   lenv(g, y, 0.85);
   g.drawRect(px, py, w, h);
   lenv(g, gy, 0.7);

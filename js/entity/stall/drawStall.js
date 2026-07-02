@@ -1,6 +1,6 @@
 import {
   depthLineWidth, depthLineColor,
-  FILL_PAPER, FILL_LIGHT, FILL_MID, FILL_SHADE,
+  FILL_LIGHT, FILL_MID,
   ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../../core/Layout.js';
 
@@ -9,15 +9,6 @@ function lenv(g, baseY, wScale = 1.0) {
   const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
   g.lineStyle(lw, lc, 1);
   return lc;
-}
-
-function drawGroundShadow(g, cx, cy, rx, ry) {
-  const ox = rx * 0.15, oy = ry * 0.25;
-  const sx = cx + ox,   sy = cy + oy;
-  g.lineStyle(0);
-  g.beginFill(0x000000, 0.03); g.drawEllipse(sx, sy, rx * 1.6, ry * 1.6); g.endFill();
-  g.beginFill(0x000000, 0.05); g.drawEllipse(sx, sy, rx * 1.3, ry * 1.3); g.endFill();
-  g.beginFill(0x000000, 0.08); g.drawEllipse(sx, sy, rx,       ry);       g.endFill();
 }
 
 export function drawStall(g, p) {
@@ -32,44 +23,18 @@ export function drawStall(g, p) {
   const counterY = y - ctrH;
   const aY       = y - roofH, aH = 17 * s;
 
-  const D_ctr = 20 * s, DY_ctr = D_ctr * 0.6;   // capped depth for counter
-  const D_awn = 20 * s, DY_awn = D_awn * 0.6;   // capped depth for awning
-
-  // 0. Ground shadow — 長條形
-  drawGroundShadow(g, x, y, w / 2, w / 2 * 0.15);
-
   // 1. Support poles (structural lines, behind fills)
   lenv(g, y, 1.0);
   g.moveTo(px + 6 * s,     y); g.lineTo(px + 6 * s,     y - roofH);
   g.moveTo(px + w - 6 * s, y); g.lineTo(px + w - 6 * s, y - roofH);
 
-  // 2. Awning — 深色材质, side first (FILL_SHADE)
-  g.lineStyle(0);
-  g.beginFill(FILL_SHADE, 1);
-  g.moveTo(px + w,                  aY + aH);
-  g.lineTo(px + w + D_awn,          aY + aH - DY_awn);
-  g.lineTo(px + w + 9 * s + D_awn,  aY - DY_awn);
-  g.lineTo(px + w + 9 * s,          aY);
-  g.closePath();
-  g.endFill();
-
-  // Awning front (trapezoid) — FILL_MID
+  // 2. Awning front (trapezoid) — FILL_MID
   g.lineStyle(0);
   g.beginFill(FILL_MID, 1);
   g.moveTo(px,               aY + aH);
   g.lineTo(px + w,           aY + aH);
   g.lineTo(px + w + 9 * s,   aY);
   g.lineTo(px - 9 * s,       aY);
-  g.closePath();
-  g.endFill();
-
-  // Awning top — FILL_LIGHT
-  g.lineStyle(0);
-  g.beginFill(FILL_LIGHT, 1);
-  g.moveTo(px - 9 * s,               aY);
-  g.lineTo(px - 9 * s + D_awn,        aY - DY_awn);
-  g.lineTo(px + w + 9 * s + D_awn,    aY - DY_awn);
-  g.lineTo(px + w + 9 * s,            aY);
   g.closePath();
   g.endFill();
 
@@ -80,31 +45,11 @@ export function drawStall(g, p) {
     g.moveTo(sx, aY); g.lineTo(sx + 4 * s, aY + aH);
   }
 
-  // 3. Counter — 浅色材质 side (FILL_MID)
+  // 3. Counter front — FILL_LIGHT
   const bpx = px + 3 * s, bpy = counterY, bw = w - 6 * s, bh = 11 * s;
-  g.lineStyle(0);
-  g.beginFill(FILL_MID, 1);
-  g.moveTo(bpx + bw,           bpy);
-  g.lineTo(bpx + bw + D_ctr,   bpy - DY_ctr);
-  g.lineTo(bpx + bw + D_ctr,   bpy + bh - DY_ctr);
-  g.lineTo(bpx + bw,           bpy + bh);
-  g.closePath();
-  g.endFill();
-
-  // Counter front — FILL_LIGHT
   g.lineStyle(0);
   g.beginFill(FILL_LIGHT, 1);
   g.drawRect(bpx, bpy, bw, bh);
-  g.endFill();
-
-  // Counter top — FILL_PAPER
-  g.lineStyle(0);
-  g.beginFill(FILL_PAPER, 1);
-  g.moveTo(bpx,             bpy);
-  g.lineTo(bpx + D_ctr,     bpy - DY_ctr);
-  g.lineTo(bpx + bw + D_ctr, bpy - DY_ctr);
-  g.lineTo(bpx + bw,         bpy);
-  g.closePath();
   g.endFill();
 
   // 4. Items on counter — FILL_MID

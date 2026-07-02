@@ -11,15 +11,6 @@ function lenv(g, baseY, wScale = 1.0) {
   return lc;
 }
 
-function drawGroundShadow(g, cx, cy, rx, ry) {
-  const ox = rx * 0.15, oy = ry * 0.25;
-  const sx = cx + ox,   sy = cy + oy;
-  g.lineStyle(0);
-  g.beginFill(0x000000, 0.03); g.drawEllipse(sx, sy, rx * 1.6, ry * 1.6); g.endFill();
-  g.beginFill(0x000000, 0.05); g.drawEllipse(sx, sy, rx * 1.3, ry * 1.3); g.endFill();
-  g.beginFill(0x000000, 0.08); g.drawEllipse(sx, sy, rx,       ry);       g.endFill();
-}
-
 export function drawFountain(g, p) {
   g.lineStyle(0);
 
@@ -33,10 +24,7 @@ export function drawFountain(g, p) {
   const waterRx = rx * 0.53,  waterRy = ry * 0.53;
   const ripRx   = rx * 0.21,  ripRy   = ry * 0.21;
 
-  // 0. Ground shadow — 圓形，ry ≈ rx * 0.5
-  drawGroundShadow(g, x, y, outerRx, outerRx * 0.5);
-
-  // 1. Pool rim — 浅色材质, side = FILL_MID (outer ring visible at edges)
+  // 1. Pool rim — FILL_MID (outer ring)
   g.lineStyle(0);
   g.beginFill(FILL_MID, 1);
   g.drawEllipse(x, y, outerRx, outerRy);
@@ -54,7 +42,7 @@ export function drawFountain(g, p) {
   g.drawEllipse(x + 2 * s, y - 3 * s, waterRx, waterRy);
   g.endFill();
 
-  // 4. Nozzle — 深色材质 (side FILL_SHADE, front FILL_MID, top FILL_LIGHT)
+  // 4. Nozzle
   g.lineStyle(0);
   g.beginFill(FILL_SHADE, 1);
   g.drawCircle(x, y - 2 * s, 8 * s);
