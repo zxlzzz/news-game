@@ -16,7 +16,7 @@ export function drawChessTable(g, p) {
 
   const { x, y } = p;
   const s    = p.scale ?? 1;
-  const tw   = 58 * s, topH = 25 * s, th = 5 * s;   // th=5*s → ~20*s leg visible
+  const tw   = 58 * s, topH = 18 * s, th = 5 * s;   // th=5*s → ~20*s leg visible
   const topX = x - tw / 2;
   const topY = y - topH;
 

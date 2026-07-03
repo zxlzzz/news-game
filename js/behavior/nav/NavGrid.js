@@ -28,7 +28,7 @@ export const CELL = 10;
 export const ROAD = 250;   // 可通行但不可规划/采样的格（马路+自行车道）
 const COLS = Math.ceil(WORLD_WIDTH  / CELL);   // 200
 const ROWS = Math.ceil(WORLD_HEIGHT / CELL);   // 52
-const OBS_MARGIN = 3;
+const OBS_MARGIN = 1;
 const PATH_TUBE_R = 20;
 
 let _instance = null;
@@ -56,6 +56,16 @@ export function drawNavDebug(g) {
       }
     }
   }
+  // island 格 → 红色 alpha 0.2
+  for (let gy = 0; gy < ROWS; gy++) {
+      for (let gx = 0; gx < COLS; gx++) {
+          if (_instance._island[gy * COLS + gx]) {
+              g.beginFill(0xff0000, 0.2);
+              g.drawRect(gx * CELL, gy * CELL, CELL, CELL);
+              g.endFill();
+          }
+      }
+  }
 }
 
 // ─── Y 分带默认代价 ───────────────────────────────────────────────────────────
@@ -82,12 +92,14 @@ export class NavGrid {
     this.ROWS  = ROWS;
     this._cost = new Uint8Array(COLS * ROWS);
     this._baseZone = new Uint8Array(COLS * ROWS);  // zone cost without obstacles
+    this._island = new Uint8Array(COLS * ROWS);
   }
 
   /** 全场烘焙（场景初始化时调用一次） */
   bake(entities, layout) {
     this._bakeZones(layout);
     this._bakeObstacles(entities, 0, COLS - 1, 0, ROWS - 1);
+    this._labelRegions();
   }
 
   /** 局部重烘焙（动态道具增删时，供后续使用） */
@@ -104,6 +116,7 @@ export class NavGrid {
       }
     }
     this._bakeObstacles(entities, gx0, gx1, gy0, gy1);
+    this._labelRegions();
   }
 
   cost(gx, gy) {
@@ -136,7 +149,7 @@ export class NavGrid {
       const ci = queue.shift();
       const gx = ci % COLS, gy = Math.floor(ci / COLS);
       const cv = this._cost[ci];
-      if (cv > 0 && cv < ROAD) return this.cellCenter(gx, gy);
+      if (cv > 0 && cv < ROAD && !this._island[ci]) return this.cellCenter(gx, gy);
       for (const d of DIRS) {
         const ni = ci + d;
         if (ni < 0 || ni >= COLS * ROWS || visited[ni]) continue;
@@ -168,6 +181,7 @@ export class NavGrid {
         const gx = gxC + dx, gy = gyC + dy;
         const c  = this.cost(gx, gy);
         if (c === 0 || c === ROAD) continue;
+        if (this._island[gy * COLS + gx]) continue;
         const wx = (gx + 0.5) * CELL;
         const wy = (gy + 0.5) * CELL;
         if ((wy >= NEAR_Y) !== isNearSide) continue;  // 不跨侧
@@ -267,18 +281,61 @@ export class NavGrid {
     const rx = (e.collisionRX || e.width  / 2 || 10) + OBS_MARGIN;
     const ry = (e.collisionRY || e.height / 2 || 10) + OBS_MARGIN;
     const cgx0 = Math.max(gx0, Math.floor((e.x - rx) / CELL));
-    const cgx1 = Math.min(gx1, Math.floor((e.x + rx) / CELL));
+    const cgx1 = Math.min(gx1, Math.ceil((e.x + rx) / CELL));
     const cgy0 = Math.max(gy0, Math.floor((e.y - ry) / CELL));
-    const cgy1 = Math.min(gy1, Math.floor((e.y + ry) / CELL));
+    const cgy1 = Math.min(gy1, Math.ceil((e.y + ry) / CELL));
+    const isFountain = e.propType === 'fountain';
     for (let gy = cgy0; gy <= cgy1; gy++) {
+      const wy = (gy + 0.5) * CELL;
       for (let gx = cgx0; gx <= cgx1; gx++) {
-        if (e.propType === 'fountain') {
-          const wx = (gx + 0.5) * CELL, wy = (gy + 0.5) * CELL;
+        const wx = (gx + 0.5) * CELL;
+        if (isFountain) {
           const ex = (wx - e.x) / rx, ey = (wy - e.y) / ry;
           if (ex * ex + ey * ey > 1) continue;
+        } else {
+          if (wx < e.x - rx || wx > e.x + rx || wy < e.y - ry || wy > e.y + ry) continue;
         }
         this._cost[gy * COLS + gx] = 0;
       }
     }
   }
+  _labelRegions() {
+    this._island.fill(0);
+    const visited = new Uint8Array(COLS * ROWS);
+    const MIN_REGION_SIZE = 40;
+    const DIRS = [-1, 1, -COLS, COLS, -COLS - 1, -COLS + 1, COLS - 1, COLS + 1];
+
+    for (let i = 0; i < COLS * ROWS; i++) {
+      const c = this._cost[i];
+      if (c !== 1 && c !== 3) continue;
+      if (visited[i]) continue;
+
+      // flood fill
+      const stack = [i];
+      visited[i] = 1;
+      const region = [];
+      while (stack.length) {
+        const ci = stack.pop();
+        region.push(ci);
+        const gy = Math.floor(ci / COLS);
+        for (const d of DIRS) {
+          const ni = ci + d;
+          if (ni < 0 || ni >= COLS * ROWS || visited[ni]) continue;
+          const ng = Math.floor(ni / COLS);
+          if (Math.abs(ng - gy) > 1) continue;
+          const nc = this._cost[ni];
+          if (nc !== 1 && nc !== 3) continue;
+          visited[ni] = 1;
+          stack.push(ni);
+        }
+      }
+
+      if (region.length < MIN_REGION_SIZE) {
+        for (const idx of region) {
+          this._island[idx] = 1;
+        }
+      }
+    }
+  }
 }
+

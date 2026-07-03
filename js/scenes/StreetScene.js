@@ -237,7 +237,12 @@ export class StreetScene {
   // ─── 导出长图 ───────────────────────────────────────────────────────────────
   _exportImage() {
     const renderer = this.app.renderer;
-    const rt = PIXI.RenderTexture.create({ width: WORLD_WIDTH, height: WORLD_HEIGHT });
+    const RES = 2; // 或 window.devicePixelRatio，喂视觉模型可以用 2~3
+    const rt = PIXI.RenderTexture.create({
+      width: WORLD_WIDTH,
+      height: WORLD_HEIGHT,
+      resolution: RES,
+    });
 
     const fill = new PIXI.Graphics();
     fill.beginFill(GRAY_SKY, 1).drawRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT).endFill();
