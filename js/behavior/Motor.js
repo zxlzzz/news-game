@@ -212,6 +212,10 @@ function _bailout(npc, grid) {
   const safe = grid.nearestWalkable(npc.x, npc.y);
   _mw(npc, 'x', safe.x);
   _mw(npc, 'y', safe.y);
+  if (npc.state === 'routing') {
+    npc._routePts = null;
+    npc._routeIdx = 0;
+  }
   if (npc._walkMode?.kind === 'direct') {
     const tgt = npc._walkMode.target;
     const key = `${tgt?.x},${tgt?.y}`;
@@ -315,7 +319,7 @@ export function integratePhysics(npc, delta) {
     const dist = Math.hypot(npc.x - (npc._watchdogX ?? npc.x), npc.y - (npc._watchdogY ?? npc.y));
     npc._watchdogX = npc.x;
     npc._watchdogY = npc.y;
-    if (npc.speed > 0 && dist < 4) {
+    if ((npc.speed > 0 || npc.state === 'routing') && dist < 4) {
       npc._watchdogLow = (npc._watchdogLow ?? 0) + 1;
       if (npc._watchdogLow >= 2) {
         npc._watchdogLow = 0;

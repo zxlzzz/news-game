@@ -12,7 +12,7 @@ export function spawnDogWalker(em, sr, bm, propManager) {
   const owner = makeNPC(em, sr, {
     x: 760, y: ownerY, animation: 'walk', direction: 1, speed: 26, vy: 0,
     minX: 600, maxX: 950,
-    minY: ownerY - 2, maxY: ownerY + 2,
+    minY: ownerY - 8, maxY: ownerY + 8,
     color: 0x1a1a10, tags: ['pedestrian', 'dog-owner'],
     traits: ['walk_dog'],
   });

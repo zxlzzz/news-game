@@ -302,15 +302,16 @@ export class NavGrid {
   _labelRegions() {
     this._island.fill(0);
     const visited = new Uint8Array(COLS * ROWS);
-    const MIN_REGION_SIZE = 40;
     const DIRS = [-1, 1, -COLS, COLS, -COLS - 1, -COLS + 1, COLS - 1, COLS + 1];
+    const farRegions  = [];  // wy < NEAR_Y
+    const nearRegions = [];  // wy >= NEAR_Y
 
     for (let i = 0; i < COLS * ROWS; i++) {
       const c = this._cost[i];
       if (c !== 1 && c !== 3) continue;
       if (visited[i]) continue;
 
-      // flood fill
+      // flood fill (DFS)
       const stack = [i];
       visited[i] = 1;
       const region = [];
@@ -330,12 +331,24 @@ export class NavGrid {
         }
       }
 
-      if (region.length < MIN_REGION_SIZE) {
-        for (const idx of region) {
-          this._island[idx] = 1;
+      // Classify by seed cell's side
+      const seedWy = (Math.floor(i / COLS) + 0.5) * CELL;
+      if (seedWy < NEAR_Y) farRegions.push(region);
+      else                  nearRegions.push(region);
+    }
+
+    // Per side: largest region = mainland, rest = island
+    const _markSmaller = (regions) => {
+      if (!regions.length) return;
+      const maxSize = regions.reduce((m, r) => Math.max(m, r.length), 0);
+      for (const region of regions) {
+        if (region.length < maxSize) {
+          for (const idx of region) this._island[idx] = 1;
         }
       }
-    }
+    };
+    _markSmaller(farRegions);
+    _markSmaller(nearRegions);
   }
 }
 

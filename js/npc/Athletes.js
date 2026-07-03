@@ -11,14 +11,14 @@ export function spawnAthletes(em, sr, bm) {
   bm.register(makeNPC(em, sr, {
     x: 980, y: SIDEWALK_FAR_Y, animation: 'jog', direction:  1, speed: 60, vy: 0,
     minX: 850, maxX: 1320,
-    minY: SIDEWALK_FAR_Y - 2, maxY: SIDEWALK_FAR_Y + 2,
+    minY: SIDEWALK_FAR_Y - 10, maxY: SIDEWALK_FAR_Y + 10,
     color: 0x1a0818, tags: ['jogger', 'athlete'],
   }), 'athlete');
   // 近端慢跑者（大）—— 同类透视对比
   bm.register(makeNPC(em, sr, {
     x: 1220, y: SIDEWALK_NEAR_Y, animation: 'jog', direction: -1, speed: 66, vy: 0,
     minX: 850, maxX: 1320,
-    minY: SIDEWALK_NEAR_Y - 2, maxY: SIDEWALK_NEAR_Y + 2,
+    minY: SIDEWALK_NEAR_Y - 10, maxY: SIDEWALK_NEAR_Y + 10,
     color: 0x0a1808, tags: ['jogger', 'athlete'],
   }), 'athlete');
 }
