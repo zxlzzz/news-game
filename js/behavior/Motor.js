@@ -176,98 +176,44 @@ function _navBlocked(grid, wx, wy) {
 }
 
 /**
- * 持续摩擦（非全量成功帧）累计 ≥30：
- *   direct → 推超时让 tickWalkMode 自然降级 wander；wander → 重选目标。
- */
-function _checkGrind(npc) {
-  if ((npc._grindFrames ?? 0) < 30) return;
-  npc._grindFrames = 0;
-  const mode = npc._walkMode;
-  if (mode?.kind === 'direct') {
-    mode._elapsed = mode.abandonAfter ?? 60;
-  } else if (npc.state === 'routing') {
-    const tgt = npc._routeTarget;
-    const key = tgt ? `${tgt.x},${tgt.y}` : null;
-    if (npc._routeReplanKey !== key) { npc._routeReplanKey = key; npc._routeReplanCount = 0; }
-    if ((npc._routeReplanCount ?? 0) < 2) {
-      npc._routeReplanCount = (npc._routeReplanCount ?? 0) + 1;
-      npc._routePts = null;
-      npc._routeIdx = 0;
-    }
-  } else if (!mode) {
-    // No walk-mode (legacy bounce NPC): flip direction and nudge one cell to escape wall
-    npc.direction = -(npc.direction || 1);
-    const grid = getNavGrid();
-    if (grid) _slideMove(npc, npc.direction * CELL, 0);
-  } else if (mode.kind === 'wander') {
-    npc.roamTarget = null;
-  }
-}
-
-/** 传送到最近可走格并重置卡死状态；_slideMove / 位移看门狗共用。 */
-function _bailout(npc, grid) {
-  npc._blockedFrames = 0;
-  npc.roamTarget     = null;
-  npc.direction      = -(npc.direction || 1);
-  const safe = grid.nearestWalkable(npc.x, npc.y);
-  _mw(npc, 'x', safe.x);
-  _mw(npc, 'y', safe.y);
-  if (npc.state === 'routing') {
-    npc._routePts = null;
-    npc._routeIdx = 0;
-  }
-  if (npc._walkMode?.kind === 'direct') {
-    const tgt = npc._walkMode.target;
-    const key = `${tgt?.x},${tgt?.y}`;
-    if (npc._directBailoutKey !== key) { npc._directBailoutKey = key; npc._directBailouts = 0; }
-    npc._directBailouts = (npc._directBailouts ?? 0) + 1;
-    if (npc._directBailouts >= 3) {
-      npc._directBailouts = 0;
-      npc._directBailoutKey = null;
-      setWalkMode(npc, { kind: 'wander', bounds: null, maxDuration: null, _elapsed: 0 });
-    }
-  }
-}
-
-/**
- * 尝试移动 (dx, dy)，NavGrid 阻挡时做轴分离滑行：
+ * 尝试移动 (dx, dy)，NavGrid 阻挡时做轴分离滑行，位移归一化到原速度模长（贴边不减速）。
  *   0. 自身格已 BLOCKED → 无条件放行（逃逸）。
- *   1. (dx,dy) / (dx,0) / (0,dy) 逐级尝试。
- *   2. 纯水平受阻时纵向让行（消除主要活锁）。
- *   3. 全阻 ≥30 帧 → _bailout 传送。
+ *   1. 全向 → 单轴 → 垂直让行逐级尝试。
+ *   2. 全阻：静止，不维护任何计数器。
  */
 function _slideMove(npc, dx, dy) {
   const grid = getNavGrid();
   const nx = npc.x + dx, ny = npc.y + dy;
+  const mag = Math.hypot(dx, dy);
 
+  // Escape rule: already in a blocked cell → move freely to get out
   if (grid && _navBlocked(grid, npc.x, npc.y)) {
     _mw(npc, 'x', nx); _mw(npc, 'y', ny);
-    npc._blockedFrames = 0; npc._grindFrames = 0;
     return;
   }
 
+  // Full move
   if (!grid || !_navBlocked(grid, nx, ny)) {
     _mw(npc, 'x', nx); _mw(npc, 'y', ny);
-    npc._blockedFrames = 0; npc._grindFrames = 0;
     return;
   }
 
-  // Not a clean full move — increment grind counter
-  npc._grindFrames = (npc._grindFrames ?? 0) + 1;
-  _checkGrind(npc);
-
-  if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) { _mw(npc, 'x', nx); npc._blockedFrames = 0; return; }
-  if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) { _mw(npc, 'y', ny); npc._blockedFrames = 0; return; }
-
-  // Wall-slide: pure horizontal move blocked → nudge perpendicular
-  if (dx !== 0 && dy === 0) {
-    const step = Math.abs(dx);
-    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - step); npc._blockedFrames = 0; return; }
-    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + step); npc._blockedFrames = 0; return; }
+  // Axis separation — normalize to original magnitude to preserve speed
+  if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) {
+    _mw(npc, 'x', npc.x + Math.sign(dx) * mag);
+    return;
+  }
+  if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) {
+    _mw(npc, 'y', npc.y + Math.sign(dy) * mag);
+    return;
   }
 
-  npc._blockedFrames = (npc._blockedFrames ?? 0) + 1;
-  if (npc._blockedFrames >= 30) _bailout(npc, grid);
+  // Wall-slide: pure horizontal blocked → nudge perpendicularly at original speed
+  if (dx !== 0 && dy === 0) {
+    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - mag); return; }
+    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + mag); return; }
+  }
+  // Fully blocked: no movement, no counters
 }
 
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
@@ -312,22 +258,36 @@ export function integratePhysics(npc, delta) {
   dy = ny - npc.y;
   if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
 
-  // Oscillation watchdog: every 1s sample displacement; speed>0 & dist<4px twice → bailout
-  npc._watchdogAcc = (npc._watchdogAcc ?? 0) + dt;
-  if (npc._watchdogAcc >= 1) {
-    npc._watchdogAcc = 0;
-    const dist = Math.hypot(npc.x - (npc._watchdogX ?? npc.x), npc.y - (npc._watchdogY ?? npc.y));
-    npc._watchdogX = npc.x;
-    npc._watchdogY = npc.y;
-    if ((npc.speed > 0 || npc.state === 'routing') && dist < 4) {
-      npc._watchdogLow = (npc._watchdogLow ?? 0) + 1;
-      if (npc._watchdogLow >= 2) {
-        npc._watchdogLow = 0;
-        const g = getNavGrid();
-        if (g) _bailout(npc, g);
+  // Progress monitor: every 1.5 s compare displacement; < 15 px with active goal → fail leg
+  npc._progressAcc = (npc._progressAcc ?? 0) + dt;
+  if (npc._progressAcc >= 1.5) {
+    npc._progressAcc = 0;
+    const snap  = npc._progressSnap;
+    const moved = snap ? Math.hypot(npc.x - snap.x, npc.y - snap.y) : Infinity;
+    npc._progressSnap = { x: npc.x, y: npc.y };
+
+    const hasGoal = npc.speed > 0 || npc.state === 'routing';
+    if (hasGoal && moved < 15) {
+      const mode = npc._walkMode;
+      if (mode?.kind === 'direct') {
+        mode._elapsed = mode.abandonAfter ?? 60;
+      } else if (mode?.kind === 'wander') {
+        npc.roamTarget = null;
+      } else if (npc.state === 'routing') {
+        if (!npc._routeReplan) {
+          // First failure: replan once; fresh window so second check starts now
+          npc._routePts   = null;
+          npc._routeIdx   = 0;
+          npc._routeReplan = 1;
+          npc._progressSnap = { x: npc.x, y: npc.y };
+        } else {
+          // Second consecutive failure: hand off to existing routing timeout
+          npc._routeReplan = 0;
+          npc.stateTimer   = 9999;
+        }
       }
     } else {
-      npc._watchdogLow = 0;
+      npc._routeReplan = 0; // progress made or no goal → reset replan counter
     }
   }
 }

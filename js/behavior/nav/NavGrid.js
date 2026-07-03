@@ -56,16 +56,6 @@ export function drawNavDebug(g) {
       }
     }
   }
-  // island 格 → 红色 alpha 0.2
-  for (let gy = 0; gy < ROWS; gy++) {
-      for (let gx = 0; gx < COLS; gx++) {
-          if (_instance._island[gy * COLS + gx]) {
-              g.beginFill(0xff0000, 0.2);
-              g.drawRect(gx * CELL, gy * CELL, CELL, CELL);
-              g.endFill();
-          }
-      }
-  }
 }
 
 // ─── Y 分带默认代价 ───────────────────────────────────────────────────────────
@@ -92,14 +82,13 @@ export class NavGrid {
     this.ROWS  = ROWS;
     this._cost = new Uint8Array(COLS * ROWS);
     this._baseZone = new Uint8Array(COLS * ROWS);  // zone cost without obstacles
-    this._island = new Uint8Array(COLS * ROWS);
   }
 
   /** 全场烘焙（场景初始化时调用一次） */
   bake(entities, layout) {
     this._bakeZones(layout);
     this._bakeObstacles(entities, 0, COLS - 1, 0, ROWS - 1);
-    this._labelRegions();
+    this._assertSingleRegions();
   }
 
   /** 局部重烘焙（动态道具增删时，供后续使用） */
@@ -116,7 +105,6 @@ export class NavGrid {
       }
     }
     this._bakeObstacles(entities, gx0, gx1, gy0, gy1);
-    this._labelRegions();
   }
 
   cost(gx, gy) {
@@ -149,7 +137,7 @@ export class NavGrid {
       const ci = queue.shift();
       const gx = ci % COLS, gy = Math.floor(ci / COLS);
       const cv = this._cost[ci];
-      if (cv > 0 && cv < ROAD && !this._island[ci]) return this.cellCenter(gx, gy);
+      if (cv > 0 && cv < ROAD) return this.cellCenter(gx, gy);
       for (const d of DIRS) {
         const ni = ci + d;
         if (ni < 0 || ni >= COLS * ROWS || visited[ni]) continue;
@@ -181,7 +169,6 @@ export class NavGrid {
         const gx = gxC + dx, gy = gyC + dy;
         const c  = this.cost(gx, gy);
         if (c === 0 || c === ROAD) continue;
-        if (this._island[gy * COLS + gx]) continue;
         const wx = (gx + 0.5) * CELL;
         const wy = (gy + 0.5) * CELL;
         if ((wy >= NEAR_Y) !== isNearSide) continue;  // 不跨侧
@@ -299,25 +286,19 @@ export class NavGrid {
       }
     }
   }
-  _labelRegions() {
-    this._island.fill(0);
+  /** 烘焙后断言：每侧可走格应构成单一连通区域。 */
+  _assertSingleRegions() {
     const visited = new Uint8Array(COLS * ROWS);
     const DIRS = [-1, 1, -COLS, COLS, -COLS - 1, -COLS + 1, COLS - 1, COLS + 1];
-    const farRegions  = [];  // wy < NEAR_Y
-    const nearRegions = [];  // wy >= NEAR_Y
-
+    let farRegions = 0, nearRegions = 0;
     for (let i = 0; i < COLS * ROWS; i++) {
       const c = this._cost[i];
-      if (c !== 1 && c !== 3) continue;
-      if (visited[i]) continue;
-
-      // flood fill (DFS)
-      const stack = [i];
-      visited[i] = 1;
-      const region = [];
+      if ((c !== 1 && c !== 3) || visited[i]) continue;
+      const seedWy = (Math.floor(i / COLS) + 0.5) * CELL;
+      if (seedWy < NEAR_Y) farRegions++; else nearRegions++;
+      const stack = [i]; visited[i] = 1;
       while (stack.length) {
         const ci = stack.pop();
-        region.push(ci);
         const gy = Math.floor(ci / COLS);
         for (const d of DIRS) {
           const ni = ci + d;
@@ -326,29 +307,12 @@ export class NavGrid {
           if (Math.abs(ng - gy) > 1) continue;
           const nc = this._cost[ni];
           if (nc !== 1 && nc !== 3) continue;
-          visited[ni] = 1;
-          stack.push(ni);
+          visited[ni] = 1; stack.push(ni);
         }
       }
-
-      // Classify by seed cell's side
-      const seedWy = (Math.floor(i / COLS) + 0.5) * CELL;
-      if (seedWy < NEAR_Y) farRegions.push(region);
-      else                  nearRegions.push(region);
     }
-
-    // Per side: largest region = mainland, rest = island
-    const _markSmaller = (regions) => {
-      if (!regions.length) return;
-      const maxSize = regions.reduce((m, r) => Math.max(m, r.length), 0);
-      for (const region of regions) {
-        if (region.length < maxSize) {
-          for (const idx of region) this._island[idx] = 1;
-        }
-      }
-    };
-    _markSmaller(farRegions);
-    _markSmaller(nearRegions);
+    console.assert(farRegions  <= 1, `NavGrid: far side has ${farRegions} walkable regions (expected 1)`);
+    console.assert(nearRegions <= 1, `NavGrid: near side has ${nearRegions} walkable regions (expected 1)`);
   }
 }
 
