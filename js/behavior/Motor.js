@@ -175,6 +175,21 @@ function _navBlocked(grid, wx, wy) {
   return grid.cost(gx, gy) === 0;
 }
 
+/**
+ * 持续摩擦（非全量成功帧）累计 ≥30：
+ *   direct → 推超时让 tickWalkMode 自然降级 wander；wander → 重选目标。
+ */
+function _checkGrind(npc) {
+  if ((npc._grindFrames ?? 0) < 30) return;
+  npc._grindFrames = 0;
+  const mode = npc._walkMode;
+  if (mode?.kind === 'direct') {
+    mode._elapsed = mode.abandonAfter ?? 60;
+  } else if (!mode || mode.kind === 'wander') {
+    npc.roamTarget = null;
+  }
+}
+
 /** 传送到最近可走格并重置卡死状态；_slideMove / 位移看门狗共用。 */
 function _bailout(npc, grid) {
   npc._blockedFrames = 0;
@@ -209,15 +224,20 @@ function _slideMove(npc, dx, dy) {
 
   if (grid && _navBlocked(grid, npc.x, npc.y)) {
     _mw(npc, 'x', nx); _mw(npc, 'y', ny);
-    npc._blockedFrames = 0;
+    npc._blockedFrames = 0; npc._grindFrames = 0;
     return;
   }
 
   if (!grid || !_navBlocked(grid, nx, ny)) {
     _mw(npc, 'x', nx); _mw(npc, 'y', ny);
-    npc._blockedFrames = 0;
+    npc._blockedFrames = 0; npc._grindFrames = 0;
     return;
   }
+
+  // Not a clean full move — increment grind counter
+  npc._grindFrames = (npc._grindFrames ?? 0) + 1;
+  _checkGrind(npc);
+
   if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) { _mw(npc, 'x', nx); npc._blockedFrames = 0; return; }
   if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) { _mw(npc, 'y', ny); npc._blockedFrames = 0; return; }
 

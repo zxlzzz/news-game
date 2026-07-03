@@ -168,8 +168,11 @@ export class NavGrid {
         const gx = gxC + dx, gy = gyC + dy;
         const c  = this.cost(gx, gy);
         if (c === 0 || c === ROAD) continue;
+        const wx = (gx + 0.5) * CELL;
         const wy = (gy + 0.5) * CELL;
         if ((wy >= NEAR_Y) !== isNearSide) continue;  // 不跨侧
+        if (npc.minX != null && (wx < npc.minX || wx > npc.maxX)) continue;
+        if (npc.minY != null && (wy < npc.minY || wy > npc.maxY)) continue;
         if (c === 1) pool1.push({ gx, gy });
         else         pool3.push({ gx, gy });
       }
@@ -264,11 +267,16 @@ export class NavGrid {
     const rx = (e.collisionRX || e.width  / 2 || 10) + OBS_MARGIN;
     const ry = (e.collisionRY || e.height / 2 || 10) + OBS_MARGIN;
     const cgx0 = Math.max(gx0, Math.floor((e.x - rx) / CELL));
-    const cgx1 = Math.min(gx1, Math.ceil ((e.x + rx) / CELL));
+    const cgx1 = Math.min(gx1, Math.floor((e.x + rx) / CELL));
     const cgy0 = Math.max(gy0, Math.floor((e.y - ry) / CELL));
-    const cgy1 = Math.min(gy1, Math.ceil ((e.y + ry) / CELL));
+    const cgy1 = Math.min(gy1, Math.floor((e.y + ry) / CELL));
     for (let gy = cgy0; gy <= cgy1; gy++) {
       for (let gx = cgx0; gx <= cgx1; gx++) {
+        if (e.propType === 'fountain') {
+          const wx = (gx + 0.5) * CELL, wy = (gy + 0.5) * CELL;
+          const ex = (wx - e.x) / rx, ey = (wy - e.y) / ry;
+          if (ex * ex + ey * ey > 1) continue;
+        }
         this._cost[gy * COLS + gx] = 0;
       }
     }

@@ -9,6 +9,7 @@
 import { setWalkMode } from '../Motor.js';
 import { modeWander, modeDirect } from '../WalkMode.js';
 import { getNavGrid } from '../nav/NavGrid.js';
+import { getPlanner } from '../nav/PathPlanner.js';
 
 export class StrollTask {
   /** @param {{duration?:number}} opts  duration=null → 无限期 */
@@ -23,16 +24,19 @@ export class StrollTask {
 
   _pickNext(npc) {
     const grid = getNavGrid();
-    if (!grid) {
-      setWalkMode(npc, modeWander());
-      return;
+    if (!grid) { setWalkMode(npc, modeWander()); return; }
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const pt = grid.sampleWalkableNear(npc, 350);
+      if (!pt) break;
+      const pts = getPlanner()?.plan(npc.x, npc.y, pt.x, pt.y);
+      if (pts && pts.length > 0) { this._chain(npc, pts, 0); return; }
     }
-    const pt = grid.sampleWalkableNear(npc, 350);
-    if (!pt) {
-      setWalkMode(npc, modeWander());
-      return;
-    }
-    setWalkMode(npc, modeDirect(pt, (n) => this._pickNext(n), 30));
+    setWalkMode(npc, modeWander());
+  }
+
+  _chain(npc, pts, idx) {
+    if (idx >= pts.length) { this._pickNext(npc); return; }
+    setWalkMode(npc, modeDirect(pts[idx], (n) => this._chain(n, pts, idx + 1), 30));
   }
 
   tick(_npc, dt) {

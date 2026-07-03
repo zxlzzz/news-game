@@ -224,7 +224,17 @@ export function pickModeTarget(npc, envQuery) {
 function _pickRandom(npc, envQuery) {
   const r = npc._walkMode?.bounds;
   if (!r) {
-    npc.roamTarget = getNavGrid()?.sampleWalkableNear(npc, 350) ?? null;
+    const grid = getNavGrid();
+    if (!grid) { npc.roamTarget = null; return; }
+    for (let i = 0; i < 5; i++) {
+      const pt = grid.sampleWalkableNear(npc, 350);
+      if (!pt) break;
+      if (!envQuery.raycastObstacle(npc.x, npc.y, pt.x, pt.y)) {
+        npc.roamTarget = pt;
+        return;
+      }
+    }
+    npc.roamTarget = null;
     return;
   }
   for (let i = 0; i < 5; i++) {
