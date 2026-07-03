@@ -40,6 +40,7 @@ import {
 } from './WalkMode.js';
 
 import { setState, STATE_DEFS, setXY, nudgeXY, setSpeed } from './Motor.js';
+import { getPlanner } from './nav/PathPlanner.js';
 
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
 export { setState, STATE_DEFS } from './Motor.js';
@@ -174,26 +175,49 @@ function _tickState(npc, envQuery, profile, dt) {
 function steerRoam(npc, envQuery, profile, dt) {
   if (npc.state === 'routing') {
     setSpeed(npc, 0);
-    npc.vy    = 0;
+    npc.vy = 0;
     if (!npc._routeTarget) { setState(npc, 'walk', 'routing_no_target'); return; }
-    const t  = npc._routeTarget;
-    const dx = t.x - npc.x, dy = t.y - npc.y;
-    const dist = Math.hypot(dx, dy);
+    const t = npc._routeTarget;
     const arriveThreshold = t.exitType === 'building' ? 20 : 8;
 
     if (npc.stateTimer > (t.abandonAfter ?? 30)) {
       envQuery.releaseSlotReservation(npc);
-      npc._routeTarget = null;
+      npc._routeTarget = null; npc._routePts = null; npc._routeIdx = 0;
       setState(npc, 'walk', 'routing_timeout');
       return;
     }
-    if (dist < arriveThreshold) {
-      setXY(npc, t.x, t.y);
-      const cb = t.onArrive;
-      npc._routeTarget = null;
-      if (cb) cb(npc);
+
+    // One-shot path planning when _routePts is null
+    if (npc._routePts == null) {
+      if (!envQuery.raycastObstacle(npc.x, npc.y, t.x, t.y)) {
+        npc._routePts = [t];
+      } else {
+        const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y);
+        npc._routePts = (pts && pts.length > 0) ? pts : [t];
+      }
+      npc._routeIdx = 0;
+    }
+
+    const pts  = npc._routePts;
+    const idx  = npc._routeIdx ?? 0;
+    const wp   = pts[Math.min(idx, pts.length - 1)];
+    const isLast = idx >= pts.length - 1;
+    const dx = wp.x - npc.x, dy = wp.y - npc.y;
+    const dist = Math.hypot(dx, dy);
+
+    if (isLast) {
+      if (dist < arriveThreshold) {
+        setXY(npc, t.x, t.y);
+        const cb = t.onArrive;
+        npc._routeTarget = null; npc._routePts = null; npc._routeIdx = 0;
+        if (cb) cb(npc);
+        return;
+      }
+    } else if (dist < 8) {
+      npc._routeIdx = idx + 1;
       return;
     }
+
     npc.direction = dx > 0 ? 1 : -1;
     const spd = npc.walkSpeed || 26;
     nudgeXY(npc, (dx / dist) * spd * dt, (dy / dist) * spd * dt);

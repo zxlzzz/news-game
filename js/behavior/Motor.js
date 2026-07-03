@@ -185,6 +185,15 @@ function _checkGrind(npc) {
   const mode = npc._walkMode;
   if (mode?.kind === 'direct') {
     mode._elapsed = mode.abandonAfter ?? 60;
+  } else if (npc.state === 'routing') {
+    const tgt = npc._routeTarget;
+    const key = tgt ? `${tgt.x},${tgt.y}` : null;
+    if (npc._routeReplanKey !== key) { npc._routeReplanKey = key; npc._routeReplanCount = 0; }
+    if ((npc._routeReplanCount ?? 0) < 2) {
+      npc._routeReplanCount = (npc._routeReplanCount ?? 0) + 1;
+      npc._routePts = null;
+      npc._routeIdx = 0;
+    }
   } else if (!mode || mode.kind === 'wander') {
     npc.roamTarget = null;
   }
