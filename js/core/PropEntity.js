@@ -21,6 +21,19 @@ import { drawVending }     from '../entity/vending/drawVending.js';
 import { drawChessTable }  from '../entity/chess-table/drawChessTable.js';
 import { drawStall }       from '../entity/stall/drawStall.js';
 
+import { footprint as fpBench }     from '../entity/seat/seat.js';
+import { footprint as fpChess }     from '../entity/chess-table/chessTable.js';
+import { footprint as fpVending }   from '../entity/vending/vending.js';
+import { footprint as fpFountain }  from '../entity/fountain/fountain.js';
+import { footprint as fpStall }     from '../entity/stall/stall.js';
+import { footprint as fpTree }      from '../entity/tree/tree.js';
+import { footprint as fpTrash }     from '../entity/trash/trash.js';
+import { footprint as fpHydrant }   from '../entity/hydrant/hydrant.js';
+import { footprint as fpMailbox }   from '../entity/mailbox/mailbox.js';
+import { footprint as fpNewsrack }  from '../entity/newsrack/newsrack.js';
+import { footprint as fpPlanter }   from '../entity/planter/planter.js';
+import { footprint as fpPhone }     from '../entity/phonebooth/phonebooth.js';
+
 const OBSTACLE_TYPES = new Set([
   'fountain', 'slide', 'stall', 'tree', 'bench', 'trash', 'hydrant',
   'mailbox', 'newsrack', 'planter', 'vending', 'phonebooth', 'chess-table',
@@ -36,11 +49,9 @@ export class PropEntity extends Entity {
     this.seatH     = config.seatH     ?? null;
     this.topH      = config.topH      ?? null;
 
-    if (this.propType === 'bench') { this.width *= 3; this.height = 24; }
-
     this.obstacle = OBSTACLE_TYPES.has(this.propType);
     if (this.obstacle) {
-      const [rx, ry] = this._calcCollision();
+      const { rx, ry } = this._footprint();
       this.collisionRX = rx;
       this.collisionRY = ry;
       this.collisionRadius = Math.max(rx, ry);
@@ -76,27 +87,21 @@ export class PropEntity extends Entity {
     }
   }
 
-  _calcCollision() {
-    const w = this.width || 20, h = this.height || 20;
+  _footprint() {
     switch (this.propType) {
-      case 'fountain': {
-        const rx = 300 * depthScale(this.y) * 0.775;
-        return [rx, rx * 0.5];
-      }
-      case 'slide': case 'stall':
-        return [w * 0.5, 14];
-      case 'bench': {
-        const half = w * 0.5;
-        return (this.facing === 'left' || this.facing === 'right') ? [8, half] : [half, 8];
-      }
-      case 'tree':
-        return [8, 5];
-      case 'planter':
-        return [w * 0.5, 8];
-      case 'vending': case 'phonebooth': case 'chess-table':
-        return [14, 12];
-      default:
-        return [10, 10];
+      case 'fountain':    return fpFountain(this);
+      case 'stall':       return fpStall(this);
+      case 'bench':       return fpBench(this);
+      case 'tree':        return fpTree(this);
+      case 'trash':       return fpTrash(this);
+      case 'hydrant':     return fpHydrant(this);
+      case 'mailbox':     return fpMailbox(this);
+      case 'newsrack':    return fpNewsrack(this);
+      case 'planter':     return fpPlanter(this);
+      case 'vending':     return fpVending(this);
+      case 'phonebooth':  return fpPhone(this);
+      case 'chess-table': return fpChess(this);
+      default:            return { rx: 10 * depthScale(this.y), ry: 10 };
     }
   }
 

@@ -14,9 +14,18 @@
 // Circular import with Motor.js — Motor imports standUp; we need setXY for NPC position writes.
 // ES module live bindings resolve at runtime; both values are only used after all modules load.
 import { setXY as _motorSetXY } from '../../behavior/Motor.js';
+import { depthScale } from '../../core/Layout.js';
 
 /** 长椅内禀尺寸（未缩放，世界单位） */
 export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 17, backH: 40 };
+
+/** 落地接触面半宽/半深（世界像素，已乘深度缩放）。facing left/right 时长轴沿 Y 方向。 */
+export function footprint(e) {
+  const ds = depthScale(e.y);
+  return (e.facing === 'left' || e.facing === 'right')
+    ? { rx: 8, ry: 150 * ds }
+    : { rx: 150 * ds, ry: 8 };
+}
 
 /** 座面距 prop.y 的默认偏移（像素），与 drawBench 座板锚点一致 */
 const BENCH_SEAT_H = 12;
