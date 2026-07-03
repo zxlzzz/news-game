@@ -194,7 +194,12 @@ function _checkGrind(npc) {
       npc._routePts = null;
       npc._routeIdx = 0;
     }
-  } else if (!mode || mode.kind === 'wander') {
+  } else if (!mode) {
+    // No walk-mode (legacy bounce NPC): flip direction and nudge one cell to escape wall
+    npc.direction = -(npc.direction || 1);
+    const grid = getNavGrid();
+    if (grid) _slideMove(npc, npc.direction * CELL, 0);
+  } else if (mode.kind === 'wander') {
     npc.roamTarget = null;
   }
 }
