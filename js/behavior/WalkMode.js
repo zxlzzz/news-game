@@ -195,6 +195,11 @@ export function pickModeTarget(npc, envQuery) {
   }
 
   if (mode.kind === 'direct') {
+    if (!mode._sanitized) {
+      const grid = getNavGrid();
+      if (grid) mode.target = grid.nearestWalkable(mode.target.x, mode.target.y);
+      mode._sanitized = true;
+    }
     npc.roamTarget = mode.target;
     return;
   }

@@ -28,7 +28,7 @@ export const CELL = 10;
 export const ROAD = 250;   // 可通行但不可规划/采样的格（马路+自行车道）
 const COLS = Math.ceil(WORLD_WIDTH  / CELL);   // 200
 const ROWS = Math.ceil(WORLD_HEIGHT / CELL);   // 52
-const OBS_MARGIN = 6;
+const OBS_MARGIN = 3;
 const PATH_TUBE_R = 20;
 
 let _instance = null;

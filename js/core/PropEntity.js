@@ -90,7 +90,9 @@ export class PropEntity extends Entity {
         return (this.facing === 'left' || this.facing === 'right') ? [8, half] : [half, 8];
       }
       case 'tree':
-        return [15, 15];
+        return [8, 5];
+      case 'planter':
+        return [w * 0.5, 8];
       case 'vending': case 'phonebooth': case 'chess-table':
         return [14, 12];
       default:

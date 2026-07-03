@@ -11,7 +11,7 @@
 
 import { standUp }  from '../entity/seat/seat.js';
 import { dlog }     from './DebugLog.js';
-import { getNavGrid } from './nav/NavGrid.js';
+import { getNavGrid, CELL } from './nav/NavGrid.js';
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
 let _writing = false;
@@ -175,18 +175,38 @@ function _navBlocked(grid, wx, wy) {
   return grid.cost(gx, gy) === 0;
 }
 
+/** 传送到最近可走格并重置卡死状态；_slideMove / 位移看门狗共用。 */
+function _bailout(npc, grid) {
+  npc._blockedFrames = 0;
+  npc.roamTarget     = null;
+  npc.direction      = -(npc.direction || 1);
+  const safe = grid.nearestWalkable(npc.x, npc.y);
+  _mw(npc, 'x', safe.x);
+  _mw(npc, 'y', safe.y);
+  if (npc._walkMode?.kind === 'direct') {
+    const tgt = npc._walkMode.target;
+    const key = `${tgt?.x},${tgt?.y}`;
+    if (npc._directBailoutKey !== key) { npc._directBailoutKey = key; npc._directBailouts = 0; }
+    npc._directBailouts = (npc._directBailouts ?? 0) + 1;
+    if (npc._directBailouts >= 3) {
+      npc._directBailouts = 0;
+      npc._directBailoutKey = null;
+      setWalkMode(npc, { kind: 'wander', bounds: null, maxDuration: null, _elapsed: 0 });
+    }
+  }
+}
+
 /**
  * 尝试移动 (dx, dy)，NavGrid 阻挡时做轴分离滑行：
- *   0. 若 NPC 自身格已被标记 BLOCKED，无条件放行（逃逸规则）。
- *   1. 先试 (dx, dy)，阻挡则试 (dx, 0)，再试 (0, dy)，均阻挡则不动。
- *   2. 连续 ≥30 帧全阻：清零、翻转方向、传送到最近可走格；
- *      direct 模式命中同一目标 ≥3 次则降级 wander。
+ *   0. 自身格已 BLOCKED → 无条件放行（逃逸）。
+ *   1. (dx,dy) / (dx,0) / (0,dy) 逐级尝试。
+ *   2. 纯水平受阻时纵向让行（消除主要活锁）。
+ *   3. 全阻 ≥30 帧 → _bailout 传送。
  */
 function _slideMove(npc, dx, dy) {
   const grid = getNavGrid();
   const nx = npc.x + dx, ny = npc.y + dy;
 
-  // Escape: if NPC's own cell is blocked, allow move unconditionally
   if (grid && _navBlocked(grid, npc.x, npc.y)) {
     _mw(npc, 'x', nx); _mw(npc, 'y', ny);
     npc._blockedFrames = 0;
@@ -201,27 +221,15 @@ function _slideMove(npc, dx, dy) {
   if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) { _mw(npc, 'x', nx); npc._blockedFrames = 0; return; }
   if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) { _mw(npc, 'y', ny); npc._blockedFrames = 0; return; }
 
-  // Fully blocked
-  npc._blockedFrames = (npc._blockedFrames ?? 0) + 1;
-  if (npc._blockedFrames >= 30) {
-    npc._blockedFrames = 0;
-    npc.roamTarget = null;
-    npc.direction  = -(npc.direction || 1);
-    const safe = grid.nearestWalkable(npc.x, npc.y);
-    _mw(npc, 'x', safe.x);
-    _mw(npc, 'y', safe.y);
-    if (npc._walkMode?.kind === 'direct') {
-      const tgt = npc._walkMode.target;
-      const key = `${tgt?.x},${tgt?.y}`;
-      if (npc._directBailoutKey !== key) { npc._directBailoutKey = key; npc._directBailouts = 0; }
-      npc._directBailouts = (npc._directBailouts ?? 0) + 1;
-      if (npc._directBailouts >= 3) {
-        npc._directBailouts = 0;
-        npc._directBailoutKey = null;
-        setWalkMode(npc, { kind: 'wander', bounds: null, maxDuration: null, _elapsed: 0 });
-      }
-    }
+  // Wall-slide: pure horizontal move blocked → nudge perpendicular
+  if (dx !== 0 && dy === 0) {
+    const step = Math.abs(dx);
+    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - step); npc._blockedFrames = 0; return; }
+    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + step); npc._blockedFrames = 0; return; }
   }
+
+  npc._blockedFrames = (npc._blockedFrames ?? 0) + 1;
+  if (npc._blockedFrames >= 30) _bailout(npc, grid);
 }
 
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
@@ -265,4 +273,23 @@ export function integratePhysics(npc, delta) {
   else if (ny < npc.minY) { ny = npc.minY; npc.vy = npc._walkMode ? 0 :  Math.abs(npc.vy); }
   dy = ny - npc.y;
   if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
+
+  // Oscillation watchdog: every 1s sample displacement; speed>0 & dist<4px twice → bailout
+  npc._watchdogAcc = (npc._watchdogAcc ?? 0) + dt;
+  if (npc._watchdogAcc >= 1) {
+    npc._watchdogAcc = 0;
+    const dist = Math.hypot(npc.x - (npc._watchdogX ?? npc.x), npc.y - (npc._watchdogY ?? npc.y));
+    npc._watchdogX = npc.x;
+    npc._watchdogY = npc.y;
+    if (npc.speed > 0 && dist < 4) {
+      npc._watchdogLow = (npc._watchdogLow ?? 0) + 1;
+      if (npc._watchdogLow >= 2) {
+        npc._watchdogLow = 0;
+        const g = getNavGrid();
+        if (g) _bailout(npc, g);
+      }
+    } else {
+      npc._watchdogLow = 0;
+    }
+  }
 }
