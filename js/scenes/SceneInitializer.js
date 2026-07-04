@@ -15,7 +15,7 @@ import { spawnAthletes }    from '../npc/Athletes.js';
 import { initVehicleSystem } from '../entity/vehicle/vehicleSpawner.js';
 import {
   WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y,
-  SIDEWALK_FAR_Y,
+  SIDEWALK_FAR_Y, PARK_BOTTOM,
   depthScale,
 } from '../core/Layout.js';
 import { initCrosswalks } from '../behavior/WalkMode.js';
@@ -156,7 +156,7 @@ export class SceneInitializer {
       const seller = makeNPC(em, sr, {
         x: fromLeft ? 10 : WORLD_WIDTH - 10, y: stall.y,
         animation: 'walk', direction: fromLeft ? 1 : -1, speed: 28, vy: 0,
-        minX: 0, maxX: WORLD_WIDTH, minY: stall.y - 24, maxY: stall.y + 24,
+        minX: 0, maxX: WORLD_WIDTH, minY: BUILDING_BASE_Y, maxY: PARK_BOTTOM,
         tags: ['vendor'], npcType: 'stall_seller',
       });
       seller.scale = depthScale(stall.y);

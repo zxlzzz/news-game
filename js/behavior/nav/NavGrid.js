@@ -125,10 +125,14 @@ export class NavGrid {
   }
 
   /** BFS 找最近可走格（cost 1 或 3，不含 ROAD），返回其中心世界坐标 */
-  nearestWalkable(wx, wy) {
+  nearestWalkable(wx, wy, bounds = null) {
     const { gx: sx, gy: sy } = this.worldToCell(wx, wy);
     const c0 = this.cost(sx, sy);
-    if (c0 > 0 && c0 < ROAD) return { x: wx, y: wy };
+    if (c0 > 0 && c0 < ROAD) {
+      if (!bounds) return { x: wx, y: wy };
+      if (wx >= bounds.minX && wx <= bounds.maxX && wy >= bounds.minY && wy <= bounds.maxY)
+        return { x: wx, y: wy };
+    }
 
     const visited = new Uint8Array(COLS * ROWS);
     const queue   = [{ gx: sx, gy: sy }];
@@ -136,7 +140,11 @@ export class NavGrid {
     while (queue.length) {
       const { gx, gy } = queue.shift();
       const cv = this._cost[gy * COLS + gx];
-      if (cv > 0 && cv < ROAD) return this.cellCenter(gx, gy);
+      if (cv > 0 && cv < ROAD) {
+        const { x: cx, y: cy } = this.cellCenter(gx, gy);
+        if (!bounds || (cx >= bounds.minX && cx <= bounds.maxX && cy >= bounds.minY && cy <= bounds.maxY))
+          return { x: cx, y: cy };
+      }
       for (let dy = -1; dy <= 1; dy++) {
         const ny = gy + dy;
         if (ny < 0 || ny >= ROWS) continue;

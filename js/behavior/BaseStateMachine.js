@@ -192,7 +192,8 @@ function steerRoam(npc, envQuery, profile, dt) {
       if (!envQuery.raycastObstacle(npc.x, npc.y, t.x, t.y)) {
         npc._routePts = [t];
       } else {
-        const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y);
+        const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
+        const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y, _b);
         npc._routePts = (pts && pts.length > 0) ? pts : [t];
       }
       npc._routeIdx = 0;

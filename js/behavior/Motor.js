@@ -182,6 +182,13 @@ function _navBlocked(grid, wx, wy) {
  *   2. 全阻：静止，不维护任何计数器。
  */
 function _slideMove(npc, dx, dy) {
+  // Bounds clamp: only block displacement that crosses from inside to outside
+  if (npc.minX != null && npc.x >= npc.minX && npc.x + dx < npc.minX) dx = npc.minX - npc.x;
+  if (npc.maxX != null && npc.x <= npc.maxX && npc.x + dx > npc.maxX) dx = npc.maxX - npc.x;
+  if (npc.minY != null && npc.y >= npc.minY && npc.y + dy < npc.minY) dy = npc.minY - npc.y;
+  if (npc.maxY != null && npc.y <= npc.maxY && npc.y + dy > npc.maxY) dy = npc.maxY - npc.y;
+  if (dx === 0 && dy === 0) return;
+
   const grid = getNavGrid();
   const nx = npc.x + dx, ny = npc.y + dy;
   const mag = Math.hypot(dx, dy);
@@ -247,15 +254,20 @@ export function integratePhysics(npc, delta) {
   }
   let dx = 0, dy = 0;
   if (npc.speed > 0) {
-    let nx = npc.x + npc.direction * npc.speed * dt;
-    if      (nx > npc.maxX) { nx = npc.maxX; if (!npc._walkMode) npc.direction = -1; }
-    else if (nx < npc.minX) { nx = npc.minX; if (!npc._walkMode) npc.direction =  1; }
-    dx = nx - npc.x;
+    const tentX = npc.x + npc.direction * npc.speed * dt;
+    if (!npc._walkMode) {
+      if (npc.maxX != null && tentX > npc.maxX && npc.x <= npc.maxX) npc.direction = -1;
+      else if (npc.minX != null && tentX < npc.minX && npc.x >= npc.minX) npc.direction = 1;
+    }
+    dx = npc.direction * npc.speed * dt;
   }
-  let ny = npc.y + npc.vy * dt;
-  if      (ny > npc.maxY) { ny = npc.maxY; npc.vy = npc._walkMode ? 0 : -Math.abs(npc.vy); }
-  else if (ny < npc.minY) { ny = npc.minY; npc.vy = npc._walkMode ? 0 :  Math.abs(npc.vy); }
-  dy = ny - npc.y;
+  const tentY = npc.y + npc.vy * dt;
+  if (npc.maxY != null && tentY > npc.maxY && npc.y <= npc.maxY) {
+    npc.vy = npc._walkMode ? 0 : -Math.abs(npc.vy);
+  } else if (npc.minY != null && tentY < npc.minY && npc.y >= npc.minY) {
+    npc.vy = npc._walkMode ? 0 : Math.abs(npc.vy);
+  }
+  dy = npc.vy * dt;
   if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
 
   // Progress monitor: every 1.5 s compare displacement; < 15 px with active goal → fail leg

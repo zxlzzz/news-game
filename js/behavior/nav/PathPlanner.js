@@ -60,26 +60,27 @@ export class PathPlanner {
    * 规划路径，返回世界坐标路点数组（含终点），无路返回 null。
    * @param {number} x0 @param {number} y0 起点
    * @param {number} x1 @param {number} y1 终点
+   * @param {{minX,maxX,minY,maxY}|null} bounds  可选活动边界（格中心在界外的格跳过）
    */
-  plan(x0, y0, x1, y1) {
+  plan(x0, y0, x1, y1, bounds = null) {
     const grid = this._grid;
     let s = grid.worldToCell(x0, y0);
     let e = grid.worldToCell(x1, y1);
 
     const sc = grid.cost(s.gx, s.gy);
     if (sc === 0 || sc === ROAD) {
-      const snap = grid.nearestWalkable(x0, y0);
+      const snap = grid.nearestWalkable(x0, y0, bounds);
       s = grid.worldToCell(snap.x, snap.y);
     }
     const ec = grid.cost(e.gx, e.gy);
     if (ec === 0 || ec === ROAD) {
-      const snap = grid.nearestWalkable(x1, y1);
+      const snap = grid.nearestWalkable(x1, y1, bounds);
       e = grid.worldToCell(snap.x, snap.y);
     }
 
     if (s.gx === e.gx && s.gy === e.gy) return [{ x: x1, y: y1 }];
 
-    const cellPath = this._astar(s.gx, s.gy, e.gx, e.gy);
+    const cellPath = this._astar(s.gx, s.gy, e.gx, e.gy, bounds);
     if (!cellPath || cellPath.length === 0) return null;
 
     const straight = this._straighten(cellPath);
@@ -90,7 +91,7 @@ export class PathPlanner {
   }
 
   // ─── A* ──────────────────────────────────────────────────────────────────────
-  _astar(sx, sy, ex, ey) {
+  _astar(sx, sy, ex, ey, bounds = null) {
     const { COLS, ROWS } = this._grid;
     const N      = COLS * ROWS;
     const gCost  = new Float32Array(N).fill(Infinity);
@@ -114,6 +115,10 @@ export class PathPlanner {
       for (const [dx, dy, mul] of DIRS) {
         const nx = gx + dx, ny = gy + dy;
         if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) continue;
+        if (bounds) {
+          const wx = (nx + 0.5) * CELL, wy = (ny + 0.5) * CELL;
+          if (wx < bounds.minX || wx > bounds.maxX || wy < bounds.minY || wy > bounds.maxY) continue;
+        }
         const nc = this._grid.cost(nx, ny);
         if (nc === 0 || nc === ROAD) continue;
         const ni = ny * COLS + nx;

@@ -28,7 +28,8 @@ export class StrollTask {
     for (let attempt = 0; attempt < 2; attempt++) {
       const pt = grid.sampleWalkableNear(npc, 350);
       if (!pt) break;
-      const pts = getPlanner()?.plan(npc.x, npc.y, pt.x, pt.y);
+      const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
+      const pts = getPlanner()?.plan(npc.x, npc.y, pt.x, pt.y, _b);
       if (pts && pts.length > 0) { this._chain(npc, pts, 0); return; }
     }
     setWalkMode(npc, modeWander());

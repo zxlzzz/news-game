@@ -57,7 +57,8 @@ export class GotoTask {
 
   _planSameSide(npc, t, gen) {
     const planner = getPlanner();
-    const pts     = planner ? planner.plan(npc.x, npc.y, t.x, t.y) : null;
+    const bounds  = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
+    const pts     = planner ? planner.plan(npc.x, npc.y, t.x, t.y, bounds) : null;
     this._chainWaypoints(npc, (pts && pts.length > 0) ? pts : [t], 0, gen);
   }
 
