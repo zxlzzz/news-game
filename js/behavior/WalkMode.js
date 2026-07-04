@@ -126,8 +126,8 @@ export function modeWander(bounds = null, maxDuration = null) {
  * @param {Function|null} onArrive  到达回调 (npc) => void；到达后模式自动切回 wander
  * @param {number} abandonAfter  超时放弃（秒），避免卡死
  */
-export function modeDirect(target, onArrive = null, abandonAfter = 60) {
-  return { kind: 'direct', target, onArrive, abandonAfter, _elapsed: 0 };
+export function modeDirect(target, onArrive = null, abandonAfter = 60, nextTarget = null) {
+  return { kind: 'direct', target, onArrive, abandonAfter, _elapsed: 0, nextTarget };
 }
 
 /**

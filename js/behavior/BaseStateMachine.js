@@ -214,7 +214,10 @@ function steerRoam(npc, envQuery, profile, dt) {
         return;
       }
     } else if (dist < 8) {
-      npc._routeIdx = idx + 1;
+      const next = pts[idx + 1];
+      if (dist < 2 || !envQuery.raycastObstacle(npc.x, npc.y, next.x, next.y)) {
+        npc._routeIdx = idx + 1;
+      }
       return;
     }
 
@@ -241,9 +244,12 @@ function steerRoam(npc, envQuery, profile, dt) {
     if (mode?.kind === 'path_follow') {
       onPathArrival(mode, npc);
     } else if (mode?.kind === 'direct') {
-      const cb = mode.onArrive;
-      setWalkMode(npc, modeWander());
-      if (cb) cb(npc);
+      const nt = mode.nextTarget;
+      if (!nt || dist < 2 || !envQuery.raycastObstacle(npc.x, npc.y, nt.x, nt.y)) {
+        const cb = mode.onArrive;
+        setWalkMode(npc, modeWander());
+        if (cb) cb(npc);
+      }
     } else {
       const lc = profile?.loiterChance;
       if (lc && Math.random() < lc && !isRoadZone(npc.y)) {

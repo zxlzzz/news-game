@@ -131,21 +131,23 @@ export class NavGrid {
     if (c0 > 0 && c0 < ROAD) return { x: wx, y: wy };
 
     const visited = new Uint8Array(COLS * ROWS);
-    const queue   = [sx + sy * COLS];
+    const queue   = [{ gx: sx, gy: sy }];
     visited[sy * COLS + sx] = 1;
-    const DIRS = [-1, 1, -COLS, COLS, -COLS - 1, -COLS + 1, COLS - 1, COLS + 1];
     while (queue.length) {
-      const ci = queue.shift();
-      const gx = ci % COLS, gy = Math.floor(ci / COLS);
-      const cv = this._cost[ci];
+      const { gx, gy } = queue.shift();
+      const cv = this._cost[gy * COLS + gx];
       if (cv > 0 && cv < ROAD) return this.cellCenter(gx, gy);
-      for (const d of DIRS) {
-        const ni = ci + d;
-        if (ni < 0 || ni >= COLS * ROWS || visited[ni]) continue;
-        const ng = Math.floor(ni / COLS);
-        if (Math.abs(ng - gy) > 2) continue;
-        visited[ni] = 1;
-        queue.push(ni);
+      for (let dy = -1; dy <= 1; dy++) {
+        const ny = gy + dy;
+        if (ny < 0 || ny >= ROWS) continue;
+        for (let dx = -1; dx <= 1; dx++) {
+          if (dx === 0 && dy === 0) continue;
+          const nx = Math.max(0, Math.min(COLS - 1, gx + dx));
+          const ni = ny * COLS + nx;
+          if (visited[ni]) continue;
+          visited[ni] = 1;
+          queue.push({ gx: nx, gy: ny });
+        }
       }
     }
     return { x: wx, y: wy };

@@ -66,8 +66,9 @@ export class GotoTask {
       if (this._gen === gen) this._arrived = true;
       return;
     }
-    const remaining = Math.max(5, this._timeout - this._elapsed);
-    const isLast    = idx === pts.length - 1;
+    const remaining  = Math.max(5, this._timeout - this._elapsed);
+    const isLast     = idx === pts.length - 1;
+    const nextTarget = isLast ? null : pts[idx + 1];
     setWalkMode(npc, modeDirect(pts[idx], (n) => {
       if (this._gen !== gen) return;
       if (isLast) {
@@ -75,7 +76,7 @@ export class GotoTask {
       } else {
         this._chainWaypoints(n, pts, idx + 1, gen);
       }
-    }, remaining));
+    }, remaining, nextTarget));
   }
 
   tick(npc, dt) {

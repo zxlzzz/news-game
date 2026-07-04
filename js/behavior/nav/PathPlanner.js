@@ -84,8 +84,8 @@ export class PathPlanner {
 
     const straight = this._straighten(cellPath);
     const pts = straight.map(c => grid.cellCenter(c.gx, c.gy));
-    // 最后一点用精确目标坐标（终点已在可走格）
-    if (pts.length > 0) pts[pts.length - 1] = { x: x1, y: y1 };
+    // 最后一点用精确目标坐标（仅当终点原本在可走格时覆盖）
+    if (pts.length > 0 && ec !== 0 && ec !== ROAD) pts[pts.length - 1] = { x: x1, y: y1 };
     return pts;
   }
 

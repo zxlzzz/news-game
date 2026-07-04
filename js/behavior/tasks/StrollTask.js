@@ -36,7 +36,8 @@ export class StrollTask {
 
   _chain(npc, pts, idx) {
     if (idx >= pts.length) { this._pickNext(npc); return; }
-    setWalkMode(npc, modeDirect(pts[idx], (n) => this._chain(n, pts, idx + 1), 30));
+    const nextTarget = idx < pts.length - 1 ? pts[idx + 1] : null;
+    setWalkMode(npc, modeDirect(pts[idx], (n) => this._chain(n, pts, idx + 1), 30, nextTarget));
   }
 
   tick(_npc, dt) {
