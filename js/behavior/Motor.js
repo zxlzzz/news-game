@@ -215,10 +215,25 @@ function _slideMove(npc, dx, dy) {
     return;
   }
 
-  // Wall-slide: pure horizontal blocked → nudge perpendicularly at original speed
+  // Wall-slide: axis-locked → nudge perpendicularly at original speed
   if (dx !== 0 && dy === 0) {
     if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - mag); return; }
     if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + mag); return; }
+  }
+  if (dy !== 0 && dx === 0) {
+    if (!_navBlocked(grid, npc.x - CELL * 0.6, npc.y)) { _mw(npc, 'x', npc.x - mag); return; }
+    if (!_navBlocked(grid, npc.x + CELL * 0.6, npc.y)) { _mw(npc, 'x', npc.x + mag); return; }
+  }
+
+  // Diagonal probing: try 4 diagonal directions at reduced speed
+  const probe = mag * 0.7;
+  const diags = [[-1,-1],[1,-1],[-1,1],[1,1]];
+  for (const [sx, sy] of diags) {
+    const tx = npc.x + sx * probe, ty = npc.y + sy * probe;
+    if (!_navBlocked(grid, tx, ty)) {
+      _mw(npc, 'x', tx); _mw(npc, 'y', ty);
+      return;
+    }
   }
   // Fully blocked: no movement, no counters
 }
@@ -282,7 +297,17 @@ export function integratePhysics(npc, delta) {
     if (hasGoal && moved < 15) {
       const mode = npc._walkMode;
       if (mode?.kind === 'direct') {
-        mode._elapsed = mode.abandonAfter ?? 60;
+        if (!mode._replanned) {
+          // First stuck: clear internal path to force replan from current position
+          mode._path      = null;
+          mode._pathIdx   = 0;
+          mode._replanned = true;
+          npc.roamTarget  = null;    // triggers pickModeTarget → re-plan
+          npc._progressSnap = { x: npc.x, y: npc.y };
+        } else {
+          // Second stuck: abandon
+          mode._elapsed = mode.abandonAfter ?? 60;
+        }
       } else if (mode?.kind === 'wander') {
         npc.roamTarget = null;
       } else if (npc.state === 'routing') {

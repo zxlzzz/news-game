@@ -187,15 +187,11 @@ function steerRoam(npc, envQuery, profile, dt) {
       return;
     }
 
-    // One-shot path planning when _routePts is null
+    // One-shot path planning when _routePts is null — always use A*
     if (npc._routePts == null) {
-      if (!envQuery.raycastObstacle(npc.x, npc.y, t.x, t.y)) {
-        npc._routePts = [t];
-      } else {
-        const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
-        const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y, _b);
-        npc._routePts = (pts && pts.length > 0) ? pts : [t];
-      }
+      const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
+      const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y, _b);
+      npc._routePts = (pts && pts.length > 0) ? pts : [t];
       npc._routeIdx = 0;
     }
 
@@ -245,6 +241,13 @@ function steerRoam(npc, envQuery, profile, dt) {
     if (mode?.kind === 'path_follow') {
       onPathArrival(mode, npc);
     } else if (mode?.kind === 'direct') {
+      // Advance through internal A* waypoints
+      if (mode._path && mode._pathIdx < mode._path.length - 1) {
+        mode._pathIdx++;
+        npc.roamTarget = mode._path[mode._pathIdx];
+        return;
+      }
+      // At final waypoint (or no internal path): apply original arrival logic
       const nt = mode.nextTarget;
       if (!nt || dist < 2 || !envQuery.raycastObstacle(npc.x, npc.y, nt.x, nt.y)) {
         const cb = mode.onArrive;

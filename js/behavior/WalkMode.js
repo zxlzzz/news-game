@@ -20,6 +20,7 @@
 import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../core/Layout.js';
 import { setWalkMode, pushWalkMode, popWalkMode, setAnimation, setSpeed } from './Motor.js';
 import { getNavGrid } from './nav/NavGrid.js';
+import { getPlanner } from './nav/PathPlanner.js';
 
 // Re-export for backward-compat
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
@@ -200,7 +201,26 @@ export function pickModeTarget(npc, envQuery) {
       if (grid) mode.target = grid.nearestWalkable(mode.target.x, mode.target.y);
       mode._sanitized = true;
     }
-    npc.roamTarget = mode.target;
+    // Plan a path using A* if not yet planned
+    if (!mode._path) {
+      const planner = getPlanner();
+      if (planner) {
+        const bounds = npc.minX != null
+          ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY }
+          : null;
+        const pts = planner.plan(npc.x, npc.y, mode.target.x, mode.target.y, bounds);
+        if (pts && pts.length > 0) {
+          mode._path    = pts;
+          mode._pathIdx = 0;
+        }
+      }
+    }
+    // Follow waypoints if path exists
+    if (mode._path && mode._pathIdx < mode._path.length) {
+      npc.roamTarget = mode._path[mode._pathIdx];
+    } else {
+      npc.roamTarget = mode.target;   // fallback: direct (no grid or plan failed)
+    }
     return;
   }
 
@@ -226,12 +246,29 @@ function _pickRandom(npc, envQuery) {
   if (!r) {
     const grid = getNavGrid();
     if (!grid) { npc.roamTarget = null; return; }
+    // Collect candidates that pass the thin-ray check (fast path)
+    let best = null;
     for (let i = 0; i < 5; i++) {
       const pt = grid.sampleWalkableNear(npc, 350);
       if (!pt) break;
       if (!envQuery.raycastObstacle(npc.x, npc.y, pt.x, pt.y)) {
         npc.roamTarget = pt;
         return;
+      }
+      if (!best) best = pt;  // remember first reachable-but-obstructed candidate
+    }
+    // Fallback: use PathPlanner to reach a sampled point (handles obstacles)
+    if (best) {
+      const planner = getPlanner();
+      if (planner) {
+        const bounds = npc.minX != null
+          ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY }
+          : null;
+        const pts = planner.plan(npc.x, npc.y, best.x, best.y, bounds);
+        if (pts && pts.length > 0) {
+          npc.roamTarget = pts[0];  // first waypoint; modeDirect will re-plan full path
+          return;
+        }
       }
     }
     npc.roamTarget = null;
