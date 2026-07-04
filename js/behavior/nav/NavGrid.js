@@ -108,7 +108,8 @@ export class NavGrid {
   }
 
   cost(gx, gy) {
-    if (gx < 0 || gx >= COLS || gy < 0 || gy >= ROWS) return 0;
+    if (gy < 0 || gy >= ROWS) return 0;
+    gx = Math.max(0, Math.min(COLS - 1, gx));
     return this._cost[gy * COLS + gx];
   }
 

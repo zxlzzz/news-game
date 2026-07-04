@@ -161,7 +161,7 @@ function _evaluateTransitions(npc, profile, envQuery) {
 
 // ─── 当前状态的 per-frame 行为（纯行为，不含转换判断）────────────────────────
 function _tickState(npc, envQuery, profile, dt) {
-  const isWalking = npc.state === 'walk' || npc.state === 'run';
+  const isWalking = npc.state === 'walk' || npc.state === 'run' || npc.state === 'jog';
 
   if (isWalking) tickWalkMode(npc, dt);
 
