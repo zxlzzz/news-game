@@ -286,6 +286,9 @@ export function integratePhysics(npc, delta) {
           npc.stateTimer   = 9999;
         }
       }
+      else if (!mode){
+        npc.direction=-npc.direction;
+      }
     } else {
       npc._routeReplan = 0; // progress made or no goal → reset replan counter
     }
