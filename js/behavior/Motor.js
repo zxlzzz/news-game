@@ -270,13 +270,17 @@ export function integratePhysics(npc, delta) {
   dy = npc.vy * dt;
   if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
 
-  // Progress monitor: every 1.5 s compare displacement; < 15 px with active goal → fail leg
+  // Progress monitor: every 1.5 s sum cumulative travel; < 15 px with active goal → fail leg
+  if (!npc._progressLast) npc._progressLast = { x: npc.x, y: npc.y };
+  const frameDist = Math.hypot(npc.x - npc._progressLast.x, npc.y - npc._progressLast.y);
+  npc._progressCum = (npc._progressCum ?? 0) + frameDist;
+  npc._progressLast = { x: npc.x, y: npc.y };
+
   npc._progressAcc = (npc._progressAcc ?? 0) + dt;
   if (npc._progressAcc >= 1.5) {
     npc._progressAcc = 0;
-    const snap  = npc._progressSnap;
-    const moved = snap ? Math.hypot(npc.x - snap.x, npc.y - snap.y) : Infinity;
-    npc._progressSnap = { x: npc.x, y: npc.y };
+    const moved = npc._progressCum;
+    npc._progressCum = 0;
 
     const hasGoal = npc.speed > 0 || npc.state === 'routing';
     if (hasGoal && moved < 15) {
@@ -285,10 +289,10 @@ export function integratePhysics(npc, delta) {
       const mode = npc._walkMode;
       if (mode?.kind === 'direct') {
         if (!mode._stuckOnce) {
-          // First stuck: just replan (path cleared above)
           mode._stuckOnce = true;
-          npc.roamTarget  = null;
-          npc._progressSnap = { x: npc.x, y: npc.y };
+          npc._navPath   = null;
+          npc.roamTarget = null;
+          npc._progressCum = 0;
         } else {
           mode._elapsed = mode.abandonAfter ?? 60;
         }
@@ -296,22 +300,19 @@ export function integratePhysics(npc, delta) {
         npc.roamTarget = null;
       } else if (npc.state === 'routing') {
         if (!npc._routeReplan) {
-          // First failure: replan once; fresh window so second check starts now
-          npc._routePts   = null;
-          npc._routeIdx   = 0;
+          npc._routePts    = null;
+          npc._routeIdx    = 0;
           npc._routeReplan = 1;
-          npc._progressSnap = { x: npc.x, y: npc.y };
         } else {
-          // Second consecutive failure: hand off to existing routing timeout
           npc._routeReplan = 0;
           npc.stateTimer   = 9999;
         }
-      }
-      else if (!mode){
-        npc.direction=-npc.direction;
+      } else if (!mode) {
+        npc.direction = -npc.direction;
       }
     } else {
-      npc._routeReplan = 0; // progress made or no goal → reset replan counter
+      npc._routeReplan = 0;
+      if (npc._walkMode?.kind === 'direct') npc._walkMode._stuckOnce = false;
     }
   }
 }

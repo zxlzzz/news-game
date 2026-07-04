@@ -226,25 +226,18 @@ function _pickRandom(npc, envQuery) {
   if (!r) {
     const grid = getNavGrid();
     if (!grid) { npc.roamTarget = null; return; }
-    for (let i = 0; i < 5; i++) {
-      const pt = grid.sampleWalkableNear(npc, 350);
-      if (!pt) break;
-      if (!envQuery.raycastObstacle(npc.x, npc.y, pt.x, pt.y)) {
-        npc.roamTarget = pt;
-        return;
-      }
-    }
+    const pt = grid.sampleWalkableNear(npc, 350);
+    if (pt) { npc.roamTarget = pt; return; }
     npc.roamTarget = null;
     return;
   }
   for (let i = 0; i < 5; i++) {
     const c = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
     if (envQuery.pointBlocked(c.x, c.y)) continue;
-    if (envQuery.raycastObstacle(npc.x, npc.y, c.x, c.y)) continue;
     npc.roamTarget = c;
     return;
   }
-  npc.roamTarget = null;  // 5 次均失败，保持原地直到下帧再试
+  npc.roamTarget = null;
 }
 
 // ─── Waypoint 到达处理 ────────────────────────────────────────────────────────

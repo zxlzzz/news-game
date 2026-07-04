@@ -215,10 +215,7 @@ function steerRoam(npc, envQuery, profile, dt) {
         return;
       }
     } else if (dist < 8) {
-      const next = pts[idx + 1];
-      if (dist < 2 || !envQuery.raycastObstacle(npc.x, npc.y, next.x, next.y)) {
-        npc._routeIdx = idx + 1;
-      }
+      npc._routeIdx = idx + 1;
       return;
     }
 
