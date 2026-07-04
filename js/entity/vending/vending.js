@@ -14,7 +14,8 @@ export const INTRINSIC = { width: 80, height: 158 };
 
 /** 落地接触面半宽/半深（世界像素，已乘深度缩放） */
 export function footprint(e) {
-  return { rx: 40 * depthScale(e.y), ry: 12 };
+  const ds = depthScale(e.y);
+  return { rx: 40 * ds, ry: Math.max(3, 12 * ds) };
 }
 
 /** 找最近的空闲贩卖机（_occupiedBy == null 且有空闲 user 槽）；无则 null */

@@ -121,7 +121,7 @@ export class PathPlanner {
         }
         const nc = this._grid.cost(nx, ny);
         if (nc === 0 || nc === ROAD) continue;
-        // Prevent diagonal corner-cutting: both cardinal neighbors must be walkable
+        // Block diagonal moves that cut through a blocked corner
         if (dx !== 0 && dy !== 0) {
           const c1 = this._grid.cost(gx + dx, gy);
           const c2 = this._grid.cost(gx, gy + dy);
@@ -152,25 +152,14 @@ export class PathPlanner {
     return path;
   }
 
-  // ─── 视距拉直（Bresenham 可见性检查 + 1-cell 安全带）──────────────────────
-  //
-  // 原版只检查 Bresenham 线上的格子（零宽射线）。NPC 沿直线走时身体有宽度，
-  // 如果直线擦着 BLOCKED 格边缘过，_slideMove 会挡住 NPC → 卡死。
-  // 新版：线上每个格子 + 4 个正交邻居都不能是 BLOCKED。
-  // 这保证直线路径两侧至少有 1 格（10px）余量，NPC 不会擦边。
+  // ─── 视距拉直（Bresenham 可见性检查）────────────────────────────────────────
   _lineOfSight(gx0, gy0, gx1, gy1) {
-    const { COLS, ROWS } = this._grid;
     const dx = Math.abs(gx1 - gx0), dy = Math.abs(gy1 - gy0);
     const sx = gx0 < gx1 ? 1 : -1, sy = gy0 < gy1 ? 1 : -1;
     let err = dx - dy, x = gx0, y = gy0;
     while (x !== gx1 || y !== gy1) {
       const cv = this._grid.cost(x, y);
       if (cv === 0 || cv === ROAD) return false;
-      // Check 4 cardinal neighbors for BLOCKED (not ROAD — ROAD adjacency is normal on sidewalks)
-      if (x > 0        && this._grid.cost(x - 1, y) === 0) return false;
-      if (x < COLS - 1 && this._grid.cost(x + 1, y) === 0) return false;
-      if (y > 0        && this._grid.cost(x, y - 1) === 0) return false;
-      if (y < ROWS - 1 && this._grid.cost(x, y + 1) === 0) return false;
       const e2 = 2 * err;
       if (e2 > -dy) { err -= dy; x += sx; }
       if (e2 < dx)  { err += dx; y += sy; }

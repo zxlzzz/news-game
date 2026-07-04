@@ -16,7 +16,7 @@ export const INTRINSIC = { tw: 58, topH: 25, th: 20 };
 /** 落地接触面半宽/半深（世界像素，已乘深度缩放） */
 export function footprint(e) {
   const ds = depthScale(e.y);
-  return { rx: 29 * ds, ry: 10 };
+  return { rx: 29 * ds, ry: Math.max(3, 10 * ds) };
 }
 
 /**

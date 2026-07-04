@@ -130,29 +130,20 @@ export class EnvironmentQuery {
     return (c === 0 || c === ROAD) ? { x, y } : null;
   }
 
-  /**
-   * 线段 (x,y)→(tx,ty) 沿途是否经过不可选格（BLOCKED）；有则返回首个碰撞点，否则 null。
-   * 检查线两侧 npcRadius 范围内的所有格子，防止 NPC 擦边卡住。
-   */
-  raycastObstacle(x, y, tx, ty, npcRadius = 10) {
+  /** 线段 (x,y)→(tx,ty) 沿途是否经过不可选格（BLOCKED 或 ROAD）；有则返回首个碰撞点，否则 null */
+  raycastObstacle(x, y, tx, ty, _npcRadius = 12) {
     const grid = getNavGrid();
     if (!grid) return null;
     const dx = tx - x, dy = ty - y;
     const len = Math.hypot(dx, dy);
     if (len < 1) return null;
-    // Perpendicular unit vector
-    const px = -dy / len, py = dx / len;
     const steps = Math.ceil(len / (CELL * 0.5));
     for (let i = 1; i <= steps; i++) {
       const t  = i / steps;
-      const cx = x + dx * t, cy = y + dy * t;
-      // Check center + two perpendicular offsets at ±npcRadius
-      for (const off of [0, npcRadius, -npcRadius]) {
-        const wx = cx + px * off, wy = cy + py * off;
-        const { gx, gy } = grid.worldToCell(wx, wy);
-        const c = grid.cost(gx, gy);
-        if (c === 0) return { x: cx, y: cy };
-      }
+      const wx = x + dx * t, wy = y + dy * t;
+      const { gx, gy } = grid.worldToCell(wx, wy);
+      const c = grid.cost(gx, gy);
+      if (c === 0) return { x: wx, y: wy };
     }
     return null;
   }

@@ -23,8 +23,8 @@ export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 1
 export function footprint(e) {
   const ds = depthScale(e.y);
   return (e.facing === 'left' || e.facing === 'right')
-    ? { rx: 8, ry: 150 * ds }
-    : { rx: 150 * ds, ry: 8 };
+    ? { rx: Math.max(3, 8 * ds), ry: 150 * ds }
+    : { rx: 150 * ds, ry: Math.max(3, 8 * ds) };
 }
 
 /** 座面距 prop.y 的默认偏移（像素），与 drawBench 座板锚点一致 */

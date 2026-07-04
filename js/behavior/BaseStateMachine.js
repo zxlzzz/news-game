@@ -187,11 +187,15 @@ function steerRoam(npc, envQuery, profile, dt) {
       return;
     }
 
-    // One-shot path planning when _routePts is null — always use A*
+    // One-shot path planning when _routePts is null
     if (npc._routePts == null) {
-      const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
-      const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y, _b);
-      npc._routePts = (pts && pts.length > 0) ? pts : [t];
+      if (!envQuery.raycastObstacle(npc.x, npc.y, t.x, t.y)) {
+        npc._routePts = [t];
+      } else {
+        const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
+        const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y, _b);
+        npc._routePts = (pts && pts.length > 0) ? pts : [t];
+      }
       npc._routeIdx = 0;
     }
 
@@ -234,22 +238,52 @@ function steerRoam(npc, envQuery, profile, dt) {
   if (!npc.roamTarget) return;
 
   const t = npc.roamTarget;
-  const dx = t.x - npc.x, dy = t.y - npc.y;
+
+  // ── Path layer: plan once per roamTarget, follow waypoints ────────────
+  // When roamTarget changes (new goal), plan an A* path.
+  // If planner returns null (e.g. crossing road), fall back to direct steer.
+  if (!npc._navPath || npc._navGoalX !== t.x || npc._navGoalY !== t.y) {
+    npc._navGoalX = t.x;
+    npc._navGoalY = t.y;
+    npc._navPath  = null;
+    npc._navIdx   = 0;
+    const planner = getPlanner();
+    if (planner) {
+      const _b = npc.minX != null
+        ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY }
+        : null;
+      const pts = planner.plan(npc.x, npc.y, t.x, t.y, _b);
+      if (pts && pts.length > 0) {
+        npc._navPath = pts;
+        npc._navIdx  = 0;
+      }
+    }
+  }
+
+  // Steering target: current waypoint if path exists, else direct to roamTarget
+  const wp = (npc._navPath && npc._navIdx < npc._navPath.length)
+    ? npc._navPath[npc._navIdx]
+    : t;
+
+  const dx = wp.x - npc.x, dy = wp.y - npc.y;
   const dist = Math.hypot(dx, dy);
-  if (dist < 6) {
+
+  // ── Waypoint arrival (intermediate) ───────────────────────────────────
+  if (npc._navPath && npc._navIdx < npc._navPath.length - 1 && dist < 8) {
+    npc._navIdx++;
+    return;   // advance; next frame steers toward the next waypoint
+  }
+
+  // ── Final target arrival (roamTarget) ─────────────────────────────────
+  const distToGoal = Math.hypot(t.x - npc.x, t.y - npc.y);
+  if (distToGoal < 6) {
+    npc._navPath = null;
     const mode = npc._walkMode;
     if (mode?.kind === 'path_follow') {
       onPathArrival(mode, npc);
     } else if (mode?.kind === 'direct') {
-      // Advance through internal A* waypoints
-      if (mode._path && mode._pathIdx < mode._path.length - 1) {
-        mode._pathIdx++;
-        npc.roamTarget = mode._path[mode._pathIdx];
-        return;
-      }
-      // At final waypoint (or no internal path): apply original arrival logic
       const nt = mode.nextTarget;
-      if (!nt || dist < 2 || !envQuery.raycastObstacle(npc.x, npc.y, nt.x, nt.y)) {
+      if (!nt || distToGoal < 2 || !envQuery.raycastObstacle(npc.x, npc.y, nt.x, nt.y)) {
         const cb = mode.onArrive;
         setWalkMode(npc, modeWander());
         if (cb) cb(npc);
@@ -265,6 +299,7 @@ function steerRoam(npc, envQuery, profile, dt) {
     return;
   }
 
+  // ── Steer toward current waypoint ─────────────────────────────────────
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
   const vx = dx / dist * total, vy = dy / dist * total;
   setSpeed(npc, Math.abs(vx));
