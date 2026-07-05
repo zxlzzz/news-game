@@ -148,10 +148,61 @@ function _windowsGrille(g, x, y0, w, resH, floorH, baseY) {
   }
 }
 
-// ── 底层店面 ──────────────────────────────────────────────────────────────────
-// 一个大橱窗 + 一扇门，留白充足，细节克制
+// ── 阳台 ──────────────────────────────────────────────────────────────────────
 
-function _ground(g, x, gy, w, gh, style, baseY) {
+function _balcony(g, x, y0, w, resH, floorH, baseY) {
+  const lc    = lenv(g, baseY, 0.5);
+  const n     = Math.max(1, Math.round(resH / floorH));
+  const fh    = resH / n;
+  const slabW = 8, slabH = 3, railH = 6;
+  const bx    = x + w;
+
+  for (let f = 0; f < n; f++) {
+    const slabY = Math.round(y0 + f * fh + fh * 0.55);
+
+    // Slab
+    g.lineStyle(0); g.beginFill(FILL_LIGHT, 1); g.drawRect(bx, slabY, slabW, slabH); g.endFill();
+    g.lineStyle(0.4, lc, 0.9); g.drawRect(bx, slabY, slabW, slabH);
+
+    // Vertical rails + horizontal top rail
+    g.moveTo(bx,         slabY - railH); g.lineTo(bx,         slabY);
+    g.moveTo(bx + slabW, slabY - railH); g.lineTo(bx + slabW, slabY);
+    g.moveTo(bx,         slabY - railH); g.lineTo(bx + slabW, slabY - railH);
+  }
+}
+
+// ── 晾衣绳 ────────────────────────────────────────────────────────────────────
+
+function _laundry(g, x, y0, w, resH, floorH, baseY) {
+  const lc  = lenv(g, baseY, 0.5);
+  const n   = Math.max(1, Math.round(resH / floorH));
+  const fh  = resH / n;
+  const cnt = 1 + Math.floor(rand(x, 44) * 2);   // 1 or 2 lines
+
+  for (let li = 0; li < cnt; li++) {
+    const fi    = Math.floor(rand(x, 50 + li * 7) * Math.max(1, n - 1));
+    const lineY = y0 + fi * fh + fh * 0.3;
+    const lx1   = x + 4 + Math.round(rand(x, 55 + li * 3) * w * 0.25);
+    const lx2   = x + w - 4 - Math.round(rand(x, 60 + li * 3) * w * 0.25);
+    if (lx2 <= lx1 + 8) continue;
+
+    // Clothesline
+    g.lineStyle(depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * 0.3, lc, 0.55);
+    g.moveTo(lx1, lineY); g.lineTo(lx2, lineY);
+
+    // Hanging items
+    const items = 3 + Math.floor(rand(x, 65 + li) * 3);
+    const sp    = (lx2 - lx1) / (items + 1);
+    for (let i = 0; i < items; i++) {
+      const ix = lx1 + sp * (i + 1) + (rand(x, 70 + li * 13 + i) - 0.5) * 3;
+      g.lineStyle(0); g.beginFill(FILL_MID, 1); g.drawRect(Math.round(ix) - 1, lineY, 3, 4); g.endFill();
+    }
+  }
+}
+
+// ── 底层店面 ──────────────────────────────────────────────────────────────────
+
+function _ground(g, x, gy, w, gh, style, archType, baseY) {
   const lc = lenv(g, baseY, 0.65);
 
   // 门楣/招牌横条
@@ -160,27 +211,94 @@ function _ground(g, x, gy, w, gh, style, baseY) {
   g.lineStyle(0.5, lc, 0.85); g.drawRect(x + 2, gy, w - 4, sH);
 
   const glY = gy + sH + 1, glH = gh - sH - 2;
-  if (glH < 4) return;
+  if (glH >= 4) {
+    const dW  = Math.max(8, Math.min(12, Math.round(w * 0.2)));
+    const dX  = x + w - 4 - dW;
+    const winW = dX - x - 5;
 
-  const dW = Math.max(8, Math.min(12, Math.round(w * 0.2)));
-  const dX = x + w - 4 - dW;
+    if (archType === 'convenience') {
+      // Full-width glass front — awning stripe + glass rect + dividers
+      const awH = 4;
+      g.lineStyle(0); g.beginFill(FILL_SHADE, 1); g.drawRect(x + 2, glY, w - 4, awH); g.endFill();
+      g.lineStyle(0.4, lc, 0.8); g.drawRect(x + 2, glY, w - 4, awH);
+      const frontY = glY + awH, frontH = glH - awH;
+      g.lineStyle(0); g.beginFill(FILL_LIGHT, 0.9); g.drawRect(x + 2, frontY, w - 4, frontH); g.endFill();
+      g.lineStyle(0.5, lc, 0.9); g.drawRect(x + 2, frontY, w - 4, frontH);
+      g.lineStyle(0.35, lc, 0.5);
+      for (let dx = 14; dx < w - 6; dx += 14) {
+        g.moveTo(x + 2 + dx, frontY); g.lineTo(x + 2 + dx, frontY + frontH);
+      }
 
-  // 橱窗
-  const winW = dX - x - 5;
-  if (winW > 4) {
-    g.lineStyle(0);
-    g.beginFill(FILL_LIGHT, style === 'glass' ? 0.9 : 0.75);
-    g.drawRect(x + 3, glY, winW, glH);
-    g.endFill();
-    g.lineStyle(0.55, lc, 0.9);
-    g.drawRect(x + 3, glY, winW, glH);
+    } else {
+      // 橱窗
+      if (winW > 4) {
+        const [shopFill, shopAlpha] =
+          archType === 'oldmix'  ? [FILL_MID,   1   ] :
+          archType === 'clinic'  ? [FILL_LIGHT, 0.9  ] :
+          style    === 'glass'   ? [FILL_LIGHT, 0.9  ] :
+                                   [FILL_LIGHT, 0.75 ];
+        g.lineStyle(0); g.beginFill(shopFill, shopAlpha); g.drawRect(x + 3, glY, winW, glH); g.endFill();
+        g.lineStyle(0.55, lc, 0.9); g.drawRect(x + 3, glY, winW, glH);
+
+        if (archType === 'bookstore') {
+          const nSpines = 4 + Math.floor(rand(x, 91) * 3);  // 4–6
+          g.lineStyle(0.3, lc, 0.5);
+          for (let i = 1; i <= nSpines; i++) {
+            const bx = x + 3 + winW * i / (nSpines + 1);
+            g.moveTo(bx, glY + 2); g.lineTo(bx, glY + glH - 2);
+          }
+        }
+      }
+
+      // 门扇
+      if (archType === 'modern' || archType === 'glass') {
+        // Two narrow panels with center gap
+        const halfW = Math.floor(dW / 2);
+        g.lineStyle(0); g.beginFill(FILL_LIGHT, 1); g.drawRect(dX, glY, halfW - 1, glH); g.endFill();
+        g.lineStyle(0.5, lc, 0.95); g.drawRect(dX, glY, halfW - 1, glH);
+        g.lineStyle(0); g.beginFill(FILL_LIGHT, 1); g.drawRect(dX + halfW + 1, glY, dW - halfW - 1, glH); g.endFill();
+        g.lineStyle(0.5, lc, 0.95); g.drawRect(dX + halfW + 1, glY, dW - halfW - 1, glH);
+
+      } else if (archType === 'oldmix') {
+        // Roller shutter
+        g.lineStyle(0); g.beginFill(FILL_SHADE, 1); g.drawRect(dX, glY, dW, glH); g.endFill();
+        g.lineStyle(0.5, lc, 0.95); g.drawRect(dX, glY, dW, glH);
+        g.lineStyle(0.25, lc, 0.4);
+        for (let sy = glY + 3; sy < glY + glH; sy += 3) {
+          g.moveTo(dX + 1, sy); g.lineTo(dX + dW - 1, sy);
+        }
+
+      } else if (archType === 'clinic') {
+        // Glass door with cross
+        g.lineStyle(0); g.beginFill(FILL_LIGHT, 1); g.drawRect(dX, glY, dW, glH); g.endFill();
+        g.lineStyle(0.5, lc, 0.95); g.drawRect(dX, glY, dW, glH);
+        const cx = Math.round(dX + dW / 2), cy = Math.round(glY + glH / 2);
+        g.lineStyle(0); g.beginFill(FILL_SHADE, 1);
+        g.drawRect(cx - 0.5, cy - 3, 1, 6);
+        g.drawRect(cx - 3,   cy - 0.5, 6, 1);
+        g.endFill();
+
+      } else {
+        // resi / default / bookstore — single panel
+        g.lineStyle(0); g.beginFill(FILL_MID, 1); g.drawRect(dX, glY, dW, glH); g.endFill();
+        g.lineStyle(0.5, lc, 0.95); g.drawRect(dX, glY, dW, glH);
+        // Vertical center line
+        g.lineStyle(0.3, lc, 0.5);
+        g.moveTo(dX + dW / 2, glY + 2); g.lineTo(dX + dW / 2, glY + glH - 2);
+        // Door sill
+        g.lineStyle(0.4, lc, 0.6);
+        g.moveTo(dX - 1, glY + glH); g.lineTo(dX + dW + 1, glY + glH);
+        // Door number dot (above handle)
+        g.lineStyle(0); g.beginFill(FILL_SHADE, 1); g.drawCircle(dX + dW / 2, glY + 5, 1); g.endFill();
+        // Handle dot
+        g.lineStyle(0); g.beginFill(FILL_SHADE, 1); g.drawCircle(dX + 3, glY + glH * 0.52, 1.2); g.endFill();
+      }
+    }
   }
 
-  // 门扇
-  g.lineStyle(0); g.beginFill(FILL_MID, 1); g.drawRect(dX, glY, dW, glH); g.endFill();
-  g.lineStyle(0.5, lc, 0.95); g.drawRect(dX, glY, dW, glH);
-  // 门把手点
-  g.lineStyle(0); g.beginFill(FILL_SHADE, 1); g.drawCircle(dX + 3, glY + glH * 0.52, 1.2); g.endFill();
+  // Fix 4: full-width entrance step at very bottom of ground floor
+  lenv(g, baseY, 0.5);
+  g.moveTo(x, gy + gh); g.lineTo(x + w, gy + gh);
 }
 
 // ── 立面 ──────────────────────────────────────────────────────────────────────
@@ -206,7 +324,10 @@ function _facade(g, x, w, building, baseY) {
   else if (A.style === 'grille')  _windowsGrille(g, x, y, w, resH, A.floorH, baseY);
   else                            _windows(g, x, y, w, resH, A.floorH, baseY);
 
-  _ground(g, x, y + resH, w, groundH, A.style, baseY);
+  if (A.balcony)                  _balcony(g, x, y, w, resH, A.floorH, baseY);
+  if (A.laundry && rand(x, 77) < A.laundry) _laundry(g, x, y, w, resH, A.floorH, baseY);
+
+  _ground(g, x, y + resH, w, groundH, A.style, building.arch, baseY);
 
   // 立面轮廓（最后画，压在所有细节上）
   lenv(g, baseY, 0.85);
