@@ -1,9 +1,13 @@
 {
-  "id": "give_get_buyer",
+  "id": "stall_give_get",
   "type": "gesture",
   "facing": null,
   "variant_of": null,
-  "tags": [],
+  "tags": [
+    "static",
+    "stall",
+    "buyer"
+  ],
   "loop": false,
   "activeJoints": [
     "r_elbow",

@@ -1,9 +1,13 @@
 {
-  "id": "tidy_seller",
+  "id": "stall_tidy",
   "type": "gesture",
   "facing": null,
   "variant_of": null,
-  "tags": [],
+  "tags": [
+    "static",
+    "stall",
+    "seller"
+  ],
   "loop": false,
   "activeJoints": [
     "r_elbow",

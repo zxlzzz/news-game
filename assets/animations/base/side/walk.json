@@ -1,5 +1,5 @@
 {
-  "id": "walk_side",
+  "id": "walk",
   "type": "base",
   "facing": "side",
   "variant_of": null,

@@ -80,6 +80,19 @@ if (dupes.length > 0) {
   process.exit(1);
 }
 
+// ── 悬空 variant_of 检查 ─────────────────────────────────────────────────────
+const dangling = [];
+for (const [id, clip] of Object.entries(clips)) {
+  if (clip.variant_of && !clips[clip.variant_of]) {
+    dangling.push(`  "${id}" variant_of="${clip.variant_of}" — not found in manifest`);
+  }
+}
+if (dangling.length > 0) {
+  console.error('\nDangling variant_of references:');
+  dangling.forEach(d => console.error(d));
+  process.exit(1);
+}
+
 const manifest = { clips };
 fs.writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + '\n');
 console.log(`\nManifest written: ${Object.keys(clips).length} clips → assets/manifest.json`);

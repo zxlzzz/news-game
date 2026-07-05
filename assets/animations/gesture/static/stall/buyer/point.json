@@ -1,9 +1,13 @@
 {
-  "id": "point_buyer",
+  "id": "stall_point",
   "type": "gesture",
   "facing": null,
   "variant_of": null,
-  "tags": [],
+  "tags": [
+    "static",
+    "stall",
+    "buyer"
+  ],
   "loop": false,
   "activeJoints": [
     "r_elbow",

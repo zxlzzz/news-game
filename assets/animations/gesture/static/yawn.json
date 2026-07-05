@@ -3,7 +3,9 @@
   "type": "gesture",
   "facing": null,
   "variant_of": null,
-  "tags": [],
+  "tags": [
+    "static"
+  ],
   "loop": false,
   "activeJoints": [
     "head",

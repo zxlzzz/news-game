@@ -104,7 +104,7 @@
       "tags": [],
       "loop": true
     },
-    "down_on_knee_side": {
+    "down_on_knee": {
       "path": "animations/base/side/down_on_knee.json",
       "type": "base",
       "facing": "side",
@@ -112,7 +112,7 @@
       "tags": [],
       "loop": false
     },
-    "fall_side": {
+    "fall": {
       "path": "animations/base/side/fall.json",
       "type": "base",
       "facing": "side",
@@ -120,7 +120,7 @@
       "tags": [],
       "loop": false
     },
-    "get_up_side": {
+    "get_up": {
       "path": "animations/base/side/get_up.json",
       "type": "base",
       "facing": "side",
@@ -128,7 +128,7 @@
       "tags": [],
       "loop": false
     },
-    "jog_side": {
+    "jog": {
       "path": "animations/base/side/jog.json",
       "type": "base",
       "facing": "side",
@@ -136,7 +136,7 @@
       "tags": [],
       "loop": true
     },
-    "lean_wall_side": {
+    "lean_wall": {
       "path": "animations/base/side/lean_wall.json",
       "type": "base",
       "facing": "side",
@@ -144,7 +144,7 @@
       "tags": [],
       "loop": true
     },
-    "lie_bench_side": {
+    "lie_bench": {
       "path": "animations/base/side/lie_bench.json",
       "type": "base",
       "facing": "side",
@@ -152,7 +152,7 @@
       "tags": [],
       "loop": true
     },
-    "lie_ground_side": {
+    "lie_ground": {
       "path": "animations/base/side/lie_ground.json",
       "type": "base",
       "facing": "side",
@@ -160,7 +160,7 @@
       "tags": [],
       "loop": true
     },
-    "run_side": {
+    "run": {
       "path": "animations/base/side/run.json",
       "type": "base",
       "facing": "side",
@@ -168,7 +168,7 @@
       "tags": [],
       "loop": true
     },
-    "sit_bench_side": {
+    "sit_bench": {
       "path": "animations/base/side/sit_bench.json",
       "type": "base",
       "facing": "side",
@@ -176,7 +176,7 @@
       "tags": [],
       "loop": true
     },
-    "sit_ground_side": {
+    "sit_ground": {
       "path": "animations/base/side/sit_ground.json",
       "type": "base",
       "facing": "side",
@@ -184,7 +184,7 @@
       "tags": [],
       "loop": true
     },
-    "walk_side": {
+    "walk": {
       "path": "animations/base/side/walk.json",
       "type": "base",
       "facing": "side",
@@ -197,7 +197,9 @@
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "moving"
+      ],
       "loop": false
     },
     "wipe_sweat_moving": {
@@ -205,7 +207,9 @@
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "moving"
+      ],
       "loop": false
     },
     "adjust_clothes_static": {
@@ -213,7 +217,9 @@
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static"
+      ],
       "loop": false
     },
     "check_watch_static": {
@@ -221,7 +227,9 @@
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static"
+      ],
       "loop": false
     },
     "look_around_static": {
@@ -229,47 +237,69 @@
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static"
+      ],
       "loop": false
     },
-    "give_get_buyer": {
+    "stall_give_get": {
       "path": "animations/gesture/static/stall/buyer/give_get.json",
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static",
+        "stall",
+        "buyer"
+      ],
       "loop": false
     },
-    "point_buyer": {
+    "stall_point": {
       "path": "animations/gesture/static/stall/buyer/point.json",
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static",
+        "stall",
+        "buyer"
+      ],
       "loop": false
     },
-    "call_seller": {
+    "stall_call": {
       "path": "animations/gesture/static/stall/seller/call.json",
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static",
+        "stall",
+        "seller"
+      ],
       "loop": false
     },
-    "give_seller": {
+    "stall_give": {
       "path": "animations/gesture/static/stall/seller/give.json",
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static",
+        "stall",
+        "seller"
+      ],
       "loop": false
     },
-    "tidy_seller": {
+    "stall_tidy": {
       "path": "animations/gesture/static/stall/seller/tidy.json",
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static",
+        "stall",
+        "seller"
+      ],
       "loop": false
     },
     "stretch_static": {
@@ -277,7 +307,9 @@
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static"
+      ],
       "loop": false
     },
     "yawn_static": {
@@ -285,7 +317,9 @@
       "type": "gesture",
       "facing": null,
       "variant_of": null,
-      "tags": [],
+      "tags": [
+        "static"
+      ],
       "loop": false
     },
     "wave": {
@@ -440,7 +474,7 @@
       "tags": [],
       "loop": true
     },
-    "hold_bag_side": {
+    "hold_bag": {
       "path": "animations/trait/side/hold_bag.json",
       "type": "trait",
       "facing": "side",
@@ -448,7 +482,7 @@
       "tags": [],
       "loop": true
     },
-    "umbrella_side": {
+    "umbrella": {
       "path": "animations/trait/side/umbrella.json",
       "type": "trait",
       "facing": "side",
@@ -456,7 +490,7 @@
       "tags": [],
       "loop": true
     },
-    "walk_dog_side": {
+    "walk_dog": {
       "path": "animations/trait/side/walk_dog.json",
       "type": "trait",
       "facing": "side",

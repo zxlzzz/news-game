@@ -143,16 +143,31 @@ function normalizeRelPath(rel) {
 // 主转换
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** gesture clip 的中间目录名写入 tags */
+function inferTags(type, parts) {
+  if (type !== 'gesture') return [];
+  return parts.slice(1, -1); // ['moving'] or ['static','stall','seller'] etc.
+}
+
+/**
+ * id 规则:
+ *   - side facing: 去掉 _side 后缀（side 是标准朝向）
+ *   - front facing: 保留 _front 后缀
+ *   - gesture/stall/…: 用 stall_<stem>（角色已在 tags，不在 id 里）
+ *   - gesture 其他子目录: <stem>_<直接父目录>
+ */
 function buildId(type, stem, facing, parts) {
-  let id = facing ? `${stem}_${facing}` : stem;
+  // 基础 id：front 保留后缀，side 省略，无 facing 裸 stem
+  const base = facing === 'front' ? `${stem}_front` : stem;
+
   if (type === 'gesture') {
-    // 子目录限定符防止同名冲突（e.g. moving/check_watch vs static/check_watch）
-    const intermediate = parts.slice(1, -1); // ['moving'] or ['static','stall','buyer']
-    if (intermediate.length > 0) {
-      id = `${stem}_${intermediate[intermediate.length - 1]}`;
-    }
+    const intermediate = parts.slice(1, -1); // dirs between gesture/ and filename
+    if (intermediate.includes('stall')) return `stall_${stem}`;
+    if (intermediate.length > 0) return `${stem}_${intermediate[intermediate.length - 1]}`;
+    return stem; // gesture 根下（wave.json 等）
   }
-  return id;
+
+  return base;
 }
 
 function convertFile(abs) {
@@ -167,9 +182,10 @@ function convertFile(abs) {
   const variant_of = inferVariantOf(type, stem);
 
   // ── 幂等路径: 已是新 schema（含 keyframes + source）→ 只刷路径推断的元数据字段 ──
-  // 坐标数据原样保留，loop/activeJoints/tags 等其余字段原样保留
+  // 坐标数据原样保留，loop/activeJoints 等其余字段原样保留
   if ('keyframes' in src && src.source != null) {
-    return { ...src, id, type, facing: facing ?? null, variant_of };
+    const tags = inferTags(type, parts);
+    return { ...src, id, type, facing: facing ?? null, variant_of, tags };
   }
 
   const loop = inferLoop(type, stem, src);
@@ -185,6 +201,8 @@ function convertFile(abs) {
     };
   }
 
+  const tags = inferTags(type, parts);
+
   // ── gesture: 已含 keyframes，只补元数据 ──────────────────────────────────
   if (src.type === 'gesture' || (src.keyframes && !src.frames)) {
     const activeJoints = src.activeJoints ?? null;
@@ -197,7 +215,7 @@ function convertFile(abs) {
     });
     return {
       id, type: 'gesture', facing: facing ?? null,
-      variant_of: null, tags: [], loop,
+      variant_of: null, tags, loop,
       activeJoints, source: 'authored',
       keyframes,
     };
@@ -210,7 +228,7 @@ function convertFile(abs) {
     const kf = { dur: 0.15, ...joints };
     return {
       id, type, facing: facing ?? null,
-      variant_of, tags: [], loop,
+      variant_of, tags, loop,
       activeJoints, source: 'authored',
       keyframes: [kf],
     };
@@ -228,7 +246,7 @@ function convertFile(abs) {
 
     return {
       id, type, facing: facing ?? null,
-      variant_of, tags: [], loop,
+      variant_of, tags, loop,
       activeJoints: null, source: 'authored',
       ...(isDog && { skeleton: 'dog' }),
       keyframes,
@@ -238,7 +256,7 @@ function convertFile(abs) {
   // ── 兜底 ─────────────────────────────────────────────────────────────────
   return {
     id, type, facing: facing ?? null,
-    variant_of, tags: [], loop,
+    variant_of, tags, loop,
     activeJoints: null, source: 'authored',
     keyframes: [],
   };
