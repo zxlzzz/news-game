@@ -9,6 +9,13 @@
     "buyer"
   ],
   "loop": false,
+  "blend_mode": "override",
+  "interrupt": "blend",
+  "from": null,
+  "to": null,
+  "weight": 1,
+  "ref_speed": null,
+  "events": [],
   "activeJoints": [
     "r_elbow",
     "r_hand"

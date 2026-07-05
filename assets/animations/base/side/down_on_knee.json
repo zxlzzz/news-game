@@ -5,6 +5,13 @@
   "variant_of": null,
   "tags": [],
   "loop": false,
+  "blend_mode": "replace",
+  "interrupt": "committed",
+  "from": "walk",
+  "to": "sit_ground",
+  "weight": 1,
+  "ref_speed": null,
+  "events": [],
   "activeJoints": null,
   "source": "authored",
   "keyframes": [

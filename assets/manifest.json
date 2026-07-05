@@ -6,7 +6,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": 26,
+      "events": []
     },
     "idle_front": {
       "path": "animations/base/front/idle.json",
@@ -14,7 +21,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "open_door_front": {
       "path": "animations/base/front/open_door.json",
@@ -22,7 +36,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "committed",
+      "from": "stand",
+      "to": "stand",
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "squat_front": {
       "path": "animations/base/front/squat.json",
@@ -30,7 +51,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "squat_down_front": {
       "path": "animations/base/front/squat_down.json",
@@ -38,7 +66,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "committed",
+      "from": "stand",
+      "to": "squat",
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "stand_front": {
       "path": "animations/base/front/stand.json",
@@ -46,7 +81,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "stand_up_front": {
       "path": "animations/base/front/stand_up.json",
@@ -54,7 +96,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "committed",
+      "from": "squat",
+      "to": "stand",
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "walk_front": {
       "path": "animations/base/front/walk.json",
@@ -62,7 +111,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": 26,
+      "events": []
     },
     "bag_a": {
       "path": "animations/base/loiter/bag_a.json",
@@ -70,7 +126,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "bag_b": {
       "path": "animations/base/loiter/bag_b.json",
@@ -78,7 +141,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "phone": {
       "path": "animations/base/loiter/phone.json",
@@ -86,7 +156,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "mobike": {
       "path": "animations/base/mobike.json",
@@ -94,7 +171,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": 26,
+      "events": []
     },
     "mobile": {
       "path": "animations/base/mobile.json",
@@ -102,7 +186,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "down_on_knee": {
       "path": "animations/base/side/down_on_knee.json",
@@ -110,7 +201,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "committed",
+      "from": "walk",
+      "to": "sit_ground",
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "fall": {
       "path": "animations/base/side/fall.json",
@@ -118,7 +216,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "committed",
+      "from": "walk",
+      "to": "lie_ground",
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "get_up": {
       "path": "animations/base/side/get_up.json",
@@ -126,7 +231,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "committed",
+      "from": "lie_ground",
+      "to": "walk",
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "jog": {
       "path": "animations/base/side/jog.json",
@@ -134,7 +246,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": 36,
+      "events": []
     },
     "lean_wall": {
       "path": "animations/base/side/lean_wall.json",
@@ -142,7 +261,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "lie_bench": {
       "path": "animations/base/side/lie_bench.json",
@@ -150,7 +276,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "lie_ground": {
       "path": "animations/base/side/lie_ground.json",
@@ -158,7 +291,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "run": {
       "path": "animations/base/side/run.json",
@@ -166,7 +306,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": 52,
+      "events": []
     },
     "sit_bench": {
       "path": "animations/base/side/sit_bench.json",
@@ -174,7 +321,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "sit_ground": {
       "path": "animations/base/side/sit_ground.json",
@@ -182,7 +336,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "walk": {
       "path": "animations/base/side/walk.json",
@@ -190,7 +351,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": 26,
+      "events": []
     },
     "check_watch_moving": {
       "path": "animations/gesture/moving/check_watch.json",
@@ -200,7 +368,14 @@
       "tags": [
         "moving"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "wipe_sweat_moving": {
       "path": "animations/gesture/moving/wipe_sweat.json",
@@ -210,7 +385,14 @@
       "tags": [
         "moving"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "adjust_clothes_static": {
       "path": "animations/gesture/static/adjust_clothes.json",
@@ -220,7 +402,14 @@
       "tags": [
         "static"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "check_watch_static": {
       "path": "animations/gesture/static/check_watch.json",
@@ -230,7 +419,14 @@
       "tags": [
         "static"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "look_around_static": {
       "path": "animations/gesture/static/look_around.json",
@@ -240,7 +436,14 @@
       "tags": [
         "static"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "stall_give_get": {
       "path": "animations/gesture/static/stall/buyer/give_get.json",
@@ -252,7 +455,14 @@
         "stall",
         "buyer"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "stall_point": {
       "path": "animations/gesture/static/stall/buyer/point.json",
@@ -264,7 +474,14 @@
         "stall",
         "buyer"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "stall_call": {
       "path": "animations/gesture/static/stall/seller/call.json",
@@ -276,7 +493,14 @@
         "stall",
         "seller"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "stall_give": {
       "path": "animations/gesture/static/stall/seller/give.json",
@@ -288,7 +512,14 @@
         "stall",
         "seller"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "stall_tidy": {
       "path": "animations/gesture/static/stall/seller/tidy.json",
@@ -300,7 +531,14 @@
         "stall",
         "seller"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "stretch_static": {
       "path": "animations/gesture/static/stretch.json",
@@ -310,7 +548,14 @@
       "tags": [
         "static"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "yawn_static": {
       "path": "animations/gesture/static/yawn.json",
@@ -320,7 +565,14 @@
       "tags": [
         "static"
       ],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "wave": {
       "path": "animations/gesture/wave.json",
@@ -328,7 +580,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "override",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "cross_arm": {
       "path": "animations/held/cross_arm.json",
@@ -336,7 +595,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "cut",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "hands_in_pocket": {
       "path": "animations/held/hands_in_pocket.json",
@@ -344,7 +610,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "cut",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "phone_call": {
       "path": "animations/held/phone_call.json",
@@ -352,7 +625,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "cut",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "phone_look": {
       "path": "animations/held/phone_look.json",
@@ -360,7 +640,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "cut",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "smoke": {
       "path": "animations/held/smoke.json",
@@ -368,7 +655,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "cut",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "dog_idle": {
       "path": "animations/pet/dog_idle.json",
@@ -376,7 +670,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "dog_pet": {
       "path": "animations/pet/dog_pet.json",
@@ -384,7 +685,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "dog_walk": {
       "path": "animations/pet/dog_walk.json",
@@ -392,7 +700,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": 26,
+      "events": []
     },
     "human_pet_dog_side": {
       "path": "animations/pet/human_pet_dog_side.json",
@@ -400,7 +715,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "give_item": {
       "path": "animations/sub_event/give_item.json",
@@ -408,7 +730,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "handshake": {
       "path": "animations/sub_event/handshake.json",
@@ -416,7 +745,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "point_at": {
       "path": "animations/sub_event/point_at.json",
@@ -424,7 +760,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "push": {
       "path": "animations/sub_event/push.json",
@@ -432,7 +775,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "use_trash": {
       "path": "animations/sub_event/use_trash.json",
@@ -440,7 +790,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "use_vending": {
       "path": "animations/sub_event/use_vending.json",
@@ -448,7 +805,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "hold_bag_front": {
       "path": "animations/trait/front/hold_bag.json",
@@ -456,7 +820,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "additive",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "umbrella_front": {
       "path": "animations/trait/front/umbrella.json",
@@ -464,7 +835,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "additive",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "walk_dog_front": {
       "path": "animations/trait/front/walk_dog.json",
@@ -472,7 +850,14 @@
       "facing": "front",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "additive",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "hold_bag": {
       "path": "animations/trait/side/hold_bag.json",
@@ -480,7 +865,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "additive",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "umbrella": {
       "path": "animations/trait/side/umbrella.json",
@@ -488,7 +880,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "additive",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "walk_dog": {
       "path": "animations/trait/side/walk_dog.json",
@@ -496,7 +895,14 @@
       "facing": "side",
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "additive",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "chess": {
       "path": "animations/variant/chess/chess.json",
@@ -504,7 +910,14 @@
       "facing": null,
       "variant_of": null,
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "chess_onlookers": {
       "path": "animations/variant/chess/chess_onlookers.json",
@@ -512,7 +925,14 @@
       "facing": null,
       "variant_of": "chess",
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "fall_older": {
       "path": "animations/variant/older/fall_older.json",
@@ -520,7 +940,14 @@
       "facing": null,
       "variant_of": "fall",
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "lie_ground_older": {
       "path": "animations/variant/older/lie_ground_older.json",
@@ -528,7 +955,14 @@
       "facing": null,
       "variant_of": "lie_ground",
       "tags": [],
-      "loop": false
+      "loop": false,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": null,
+      "events": []
     },
     "walk_older": {
       "path": "animations/variant/older/walk_older.json",
@@ -536,7 +970,14 @@
       "facing": null,
       "variant_of": "walk",
       "tags": [],
-      "loop": true
+      "loop": true,
+      "blend_mode": "replace",
+      "interrupt": "blend",
+      "from": null,
+      "to": null,
+      "weight": 1,
+      "ref_speed": 26,
+      "events": []
     }
   }
 }

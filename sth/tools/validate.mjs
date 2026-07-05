@@ -98,6 +98,33 @@ function validateFile(abs) {
     }
   }
 
+  // 检查 3: blend_mode 合法值
+  const BLEND_MODES = new Set(['additive', 'override', 'replace']);
+  if (!BLEND_MODES.has(clip.blend_mode)) {
+    violations.push(`blend_mode "${clip.blend_mode}" must be one of: additive, override, replace`);
+  }
+
+  // 检查 4: interrupt 合法值
+  const INTERRUPT_MODES = new Set(['committed', 'blend', 'cut']);
+  if (!INTERRUPT_MODES.has(clip.interrupt)) {
+    violations.push(`interrupt "${clip.interrupt}" must be one of: committed, blend, cut`);
+  }
+
+  // 检查 5: weight 必须是正数
+  if (typeof clip.weight !== 'number' || clip.weight <= 0) {
+    violations.push(`weight "${clip.weight}" must be a positive number`);
+  }
+
+  // 检查 6: loop===false && type==="base" → from/to 必须是非空字符串
+  if (clip.loop === false && clip.type === 'base') {
+    if (typeof clip.from !== 'string' || clip.from === '') {
+      violations.push(`loop=false base clip must have non-null "from" string`);
+    }
+    if (typeof clip.to !== 'string' || clip.to === '') {
+      violations.push(`loop=false base clip must have non-null "to" string`);
+    }
+  }
+
   return violations.map(v => `  ${rel}: ${v}`);
 }
 

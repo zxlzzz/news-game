@@ -52,7 +52,8 @@ const dupes = [];
 
 for (const abs of files) {
   const clip = JSON.parse(fs.readFileSync(abs, 'utf8'));
-  const { id, type, facing, variant_of, tags, loop } = clip;
+  const { id, type, facing, variant_of, tags, loop,
+          blend_mode, interrupt, from, to, weight, ref_speed, events } = clip;
   const relPath = path.relative(path.dirname(MANIFEST), abs).replace(/\\/g, '/');
 
   if (!id) {
@@ -71,6 +72,13 @@ for (const abs of files) {
     variant_of: variant_of ?? null,
     tags: tags ?? [],
     loop: loop ?? true,
+    blend_mode: blend_mode ?? 'replace',
+    interrupt: interrupt ?? 'blend',
+    from: from ?? null,
+    to: to ?? null,
+    weight: weight ?? 1,
+    ref_speed: ref_speed ?? null,
+    events: events ?? [],
   };
 }
 

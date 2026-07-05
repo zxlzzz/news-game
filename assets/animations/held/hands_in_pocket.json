@@ -5,6 +5,13 @@
   "variant_of": null,
   "tags": [],
   "loop": true,
+  "blend_mode": "replace",
+  "interrupt": "cut",
+  "from": null,
+  "to": null,
+  "weight": 1,
+  "ref_speed": null,
+  "events": [],
   "activeJoints": [
     "l_elbow",
     "r_elbow",
