@@ -1,15 +1,15 @@
 {
-  "name": "animation",
-  "skeleton": "human",
-  "globalBend": {
-    "body__neck": 0.3410561103068392
-  },
-  "frames": [
+  "id": "mobile",
+  "type": "gesture",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": null,
+  "source": "authored",
+  "keyframes": [
     {
-      "body": [
-        0,
-        0
-      ],
+      "dur": 0.125,
       "neck": [
         2,
         -50

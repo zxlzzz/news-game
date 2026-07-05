@@ -1,12 +1,26 @@
 {
-  "joints": {
-    "l_elbow": [
-      -8,
-      -9
-    ],
-    "l_hand": [
-      -11,
-      17
-    ]
-  }
+  "id": "hold_bag_front",
+  "type": "gesture",
+  "facing": "front",
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": [
+    "l_elbow",
+    "l_hand"
+  ],
+  "source": "authored",
+  "keyframes": [
+    {
+      "dur": 0.15,
+      "l_elbow": [
+        -8,
+        -9
+      ],
+      "l_hand": [
+        -11,
+        17
+      ]
+    }
+  ]
 }

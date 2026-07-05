@@ -1,0 +1,508 @@
+{
+  "clips": {
+    "bike": {
+      "path": "animations/base/bike.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "idle_front": {
+      "path": "animations/base/front/idle.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "open_door_front": {
+      "path": "animations/base/front/open_door.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "squat_front": {
+      "path": "animations/base/front/squat.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "squat_down_front": {
+      "path": "animations/base/front/squat_down.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "stand_front": {
+      "path": "animations/base/front/stand.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "stand_up_front": {
+      "path": "animations/base/front/stand_up.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "walk_front": {
+      "path": "animations/base/front/walk.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "bag_a": {
+      "path": "animations/base/loiter/bag_a.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "bag_b": {
+      "path": "animations/base/loiter/bag_b.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "phone": {
+      "path": "animations/base/loiter/phone.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "mobike": {
+      "path": "animations/base/mobike.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "mobile": {
+      "path": "animations/base/mobile.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "down_on_knee_side": {
+      "path": "animations/base/side/down_on_knee.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "fall_side": {
+      "path": "animations/base/side/fall.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "get_up_side": {
+      "path": "animations/base/side/get_up.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "jog_side": {
+      "path": "animations/base/side/jog.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "lean_wall_side": {
+      "path": "animations/base/side/lean_wall.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "lie_bench_side": {
+      "path": "animations/base/side/lie_bench.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "lie_ground_side": {
+      "path": "animations/base/side/lie_ground.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "run_side": {
+      "path": "animations/base/side/run.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "sit_bench_side": {
+      "path": "animations/base/side/sit_bench.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "sit_ground_side": {
+      "path": "animations/base/side/sit_ground.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "walk_side": {
+      "path": "animations/base/side/walk.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "check_watch_moving": {
+      "path": "animations/gesture/moving/check_watch.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "wipe_sweat_moving": {
+      "path": "animations/gesture/moving/wipe_sweat.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "adjust_clothes_static": {
+      "path": "animations/gesture/static/adjust_clothes.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "check_watch_static": {
+      "path": "animations/gesture/static/check_watch.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "look_around_static": {
+      "path": "animations/gesture/static/look_around.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "give_get_buyer": {
+      "path": "animations/gesture/static/stall/buyer/give_get.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "point_buyer": {
+      "path": "animations/gesture/static/stall/buyer/point.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "call_seller": {
+      "path": "animations/gesture/static/stall/seller/call.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "give_seller": {
+      "path": "animations/gesture/static/stall/seller/give.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "tidy_seller": {
+      "path": "animations/gesture/static/stall/seller/tidy.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "stretch_static": {
+      "path": "animations/gesture/static/stretch.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "yawn_static": {
+      "path": "animations/gesture/static/yawn.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "wave": {
+      "path": "animations/gesture/wave.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "cross_arm": {
+      "path": "animations/held/cross_arm.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "hands_in_pocket": {
+      "path": "animations/held/hands_in_pocket.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "phone_call": {
+      "path": "animations/held/phone_call.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "phone_look": {
+      "path": "animations/held/phone_look.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "smoke": {
+      "path": "animations/held/smoke.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "dog_idle": {
+      "path": "animations/pet/dog_idle.json",
+      "type": "pet",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "dog_pet": {
+      "path": "animations/pet/dog_pet.json",
+      "type": "pet",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "dog_walk": {
+      "path": "animations/pet/dog_walk.json",
+      "type": "pet",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "human_pet_dog_side": {
+      "path": "animations/pet/human_pet_dog_side.json",
+      "type": "pet",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "give_item": {
+      "path": "animations/sub_event/give_item.json",
+      "type": "sub_event",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "handshake": {
+      "path": "animations/sub_event/handshake.json",
+      "type": "sub_event",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "point_at": {
+      "path": "animations/sub_event/point_at.json",
+      "type": "sub_event",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "push": {
+      "path": "animations/sub_event/push.json",
+      "type": "sub_event",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "use_trash": {
+      "path": "animations/sub_event/use_trash.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "use_vending": {
+      "path": "animations/sub_event/use_vending.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "hold_bag_front": {
+      "path": "animations/trait/front/hold_bag.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "umbrella_front": {
+      "path": "animations/trait/front/umbrella.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "walk_dog_front": {
+      "path": "animations/trait/front/walk_dog.json",
+      "type": "gesture",
+      "facing": "front",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "hold_bag_side": {
+      "path": "animations/trait/side/hold_bag.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "umbrella_side": {
+      "path": "animations/trait/side/umbrella.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "walk_dog_side": {
+      "path": "animations/trait/side/walk_dog.json",
+      "type": "gesture",
+      "facing": "side",
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "chess": {
+      "path": "animations/variant/chess/chess.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "chess_onlookers": {
+      "path": "animations/variant/chess/chess_onlookers.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    },
+    "fall_older": {
+      "path": "animations/variant/older/fall_older.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "lie_ground_older": {
+      "path": "animations/variant/older/lie_ground_older.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": false
+    },
+    "walk_older": {
+      "path": "animations/variant/older/walk_older.json",
+      "type": "gesture",
+      "facing": null,
+      "variant_of": null,
+      "tags": [],
+      "loop": true
+    }
+  }
+}

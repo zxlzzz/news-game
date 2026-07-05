@@ -1,12 +1,26 @@
 {
-  "joints": {
-    "r_elbow": [
-      10,
-      -20
-    ],
-    "r_hand": [
-      5,
-      -30
-    ]
-  }
+  "id": "phone",
+  "type": "gesture",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": [
+    "r_elbow",
+    "r_hand"
+  ],
+  "source": "authored",
+  "keyframes": [
+    {
+      "dur": 0.15,
+      "r_elbow": [
+        10,
+        -20
+      ],
+      "r_hand": [
+        5,
+        -30
+      ]
+    }
+  ]
 }

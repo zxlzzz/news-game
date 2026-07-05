@@ -1,25 +1,35 @@
 {
-  "id": "hold_bag_side",
+  "id": "hands_in_pocket",
   "type": "gesture",
-  "facing": "side",
+  "facing": null,
   "variant_of": null,
   "tags": [],
   "loop": true,
   "activeJoints": [
     "l_elbow",
-    "l_hand"
+    "r_elbow",
+    "l_hand",
+    "r_hand"
   ],
   "source": "authored",
   "keyframes": [
     {
       "dur": 0.15,
       "l_elbow": [
-        -8,
-        -9
+        -12,
+        -5
+      ],
+      "r_elbow": [
+        12,
+        -5
       ],
       "l_hand": [
-        -11,
-        17
+        -6,
+        15
+      ],
+      "r_hand": [
+        6,
+        15
       ]
     }
   ]

@@ -1,0 +1,16 @@
+{
+  "root": "body",
+  "joints": {
+    "neck":    { "parent": "body",    "len": 50   },
+    "head":    { "parent": "neck",    "len": 25   },
+    "l_elbow": { "parent": "neck",    "len": 29.8 },
+    "l_hand":  { "parent": "l_elbow", "len": 25   },
+    "r_elbow": { "parent": "neck",    "len": 29.8 },
+    "r_hand":  { "parent": "r_elbow", "len": 25   },
+    "l_knee":  { "parent": "body",    "len": 35.2 },
+    "l_foot":  { "parent": "l_knee",  "len": 35.1 },
+    "r_knee":  { "parent": "body",    "len": 35.2 },
+    "r_foot":  { "parent": "r_knee",  "len": 35.1 }
+  },
+  "unit_height": 144
+}

@@ -1,54 +1,54 @@
 {
-  "name": "animation",
-  "skeleton": "human",
-  "anchorMode": "foot",
-  "canonicalDirection": -1,
-  "globalBend": {},
-  "frames": [
+  "id": "lie_ground_side",
+  "type": "gesture",
+  "facing": "side",
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": null,
+  "source": "authored",
+  "keyframes": [
     {
-      "body": [
-        -17,
-        79
-      ],
+      "dur": 0.125,
       "neck": [
-        -66,
-        82
+        -49,
+        3
       ],
       "head": [
-        -89,
-        72
+        -72,
+        -7
       ],
       "l_elbow": [
-        -97,
-        83
+        -80,
+        4
       ],
       "r_elbow": [
-        -95,
-        94
+        -78,
+        15
       ],
       "l_hand": [
-        -75,
-        93
+        -58,
+        14
       ],
       "r_hand": [
-        -70,
-        93
+        -53,
+        14
       ],
       "l_knee": [
-        18,
-        74
+        35,
+        -5
       ],
       "r_knee": [
-        16,
-        64
+        33,
+        -15
       ],
       "l_foot": [
-        52,
-        85
+        69,
+        6
       ],
       "r_foot": [
-        50,
-        68
+        67,
+        -11
       ]
     }
   ]

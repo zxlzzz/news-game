@@ -1,9 +1,15 @@
 {
+  "id": "check_watch_static",
   "type": "gesture",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": false,
   "activeJoints": [
     "r_elbow",
     "r_hand"
   ],
+  "source": "authored",
   "keyframes": [
     {
       "dur": 0.1,
@@ -115,6 +121,5 @@
         14
       ]
     }
-  ],
-  "loop": false
+  ]
 }

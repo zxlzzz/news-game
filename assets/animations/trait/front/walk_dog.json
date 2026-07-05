@@ -1,12 +1,26 @@
 {
-  "joints": {
-    "l_elbow": [
-      -16,
-      -12
-    ],
-    "l_hand": [
-      -21,
-      13
-    ]
-  }
+  "id": "walk_dog_front",
+  "type": "gesture",
+  "facing": "front",
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": [
+    "l_elbow",
+    "l_hand"
+  ],
+  "source": "authored",
+  "keyframes": [
+    {
+      "dur": 0.15,
+      "l_elbow": [
+        -16,
+        -12
+      ],
+      "l_hand": [
+        -21,
+        13
+      ]
+    }
+  ]
 }

@@ -1,10 +1,16 @@
 {
+  "id": "yawn_static",
   "type": "gesture",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": false,
   "activeJoints": [
     "head",
     "r_elbow",
     "r_hand"
   ],
+  "source": "authored",
   "keyframes": [
     {
       "dur": 0.3,
@@ -156,6 +162,5 @@
         14
       ]
     }
-  ],
-  "loop": false
+  ]
 }

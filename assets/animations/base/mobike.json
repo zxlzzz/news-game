@@ -1,16 +1,15 @@
 {
-  "name": "animation",
-  "skeleton": "human",
-  "anchorMode": "hip",
-  "globalBend": {
-    "body__neck": -9.168444178995767
-  },
-  "frames": [
+  "id": "mobike",
+  "type": "gesture",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": null,
+  "source": "authored",
+  "keyframes": [
     {
-      "body": [
-        0,
-        0
-      ],
+      "dur": 0.125,
       "neck": [
         38,
         -33

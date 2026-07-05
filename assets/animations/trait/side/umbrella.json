@@ -1,12 +1,26 @@
 {
-  "joints": {
-    "l_elbow": [
-      12,
-      -10
-    ],
-    "l_hand": [
-      8,
-      -12
-    ]
-  }
+  "id": "umbrella_side",
+  "type": "gesture",
+  "facing": "side",
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": [
+    "l_elbow",
+    "l_hand"
+  ],
+  "source": "authored",
+  "keyframes": [
+    {
+      "dur": 0.15,
+      "l_elbow": [
+        12,
+        -10
+      ],
+      "l_hand": [
+        8,
+        -12
+      ]
+    }
+  ]
 }

@@ -1,53 +1,54 @@
 {
-  "name": "animation",
-  "skeleton": "human",
-  "anchorMode": "back",
-  "globalBend": {},
-  "frames": [
+  "id": "lie_bench_side",
+  "type": "gesture",
+  "facing": "side",
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": null,
+  "source": "authored",
+  "keyframes": [
     {
-      "body": [
-        -46,
-        79
-      ],
+      "dur": 0.125,
       "neck": [
-        -80,
-        43
+        -34,
+        -36
       ],
       "head": [
-        -92,
-        21
+        -46,
+        -58
       ],
       "l_elbow": [
-        -53,
-        29
+        -7,
+        -50
       ],
       "r_elbow": [
-        -83,
-        74
+        -37,
+        -5
       ],
       "l_hand": [
-        -73,
-        16
+        -27,
+        -63
       ],
       "r_hand": [
-        -59,
-        81
+        -13,
+        2
       ],
       "l_knee": [
-        -16,
-        98
+        30,
+        19
       ],
       "r_knee": [
-        -10,
-        79
+        36,
+        0
       ],
       "l_foot": [
-        -10,
-        133
+        36,
+        54
       ],
       "r_foot": [
-        24,
-        80
+        70,
+        1
       ]
     }
   ]

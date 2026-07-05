@@ -1,5 +1,10 @@
 {
+  "id": "call_seller",
   "type": "gesture",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": false,
   "activeJoints": [
     "r_elbow",
     "r_hand",
@@ -7,6 +12,7 @@
     "neck",
     "head"
   ],
+  "source": "authored",
   "keyframes": [
     {
       "dur": 0.2,
@@ -215,6 +221,5 @@
         -63
       ]
     }
-  ],
-  "loop": false
+  ]
 }

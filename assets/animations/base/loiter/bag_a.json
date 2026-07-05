@@ -1,12 +1,26 @@
 {
-  "joints": {
-    "l_elbow": [
-      -9,
-      -20
-    ],
-    "l_hand": [
-      -15,
-      -8
-    ]
-  }
+  "id": "bag_a",
+  "type": "gesture",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": [
+    "l_elbow",
+    "l_hand"
+  ],
+  "source": "authored",
+  "keyframes": [
+    {
+      "dur": 0.15,
+      "l_elbow": [
+        -9,
+        -20
+      ],
+      "l_hand": [
+        -15,
+        -8
+      ]
+    }
+  ]
 }

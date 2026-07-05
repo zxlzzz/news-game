@@ -1,10 +1,30 @@
 {
+  "id": "handshake",
+  "type": "sub_event",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": false,
+  "activeJoints": null,
+  "source": "authored",
   "aDelta": {
-    "r_hand": [40, -3],
-    "r_elbow": [6, -2]
+    "r_hand": [
+      40,
+      -3
+    ],
+    "r_elbow": [
+      6,
+      -2
+    ]
   },
   "bDelta": {
-    "l_hand": [30, -3],
-    "l_elbow": [15, -2]
+    "l_hand": [
+      30,
+      -3
+    ],
+    "l_elbow": [
+      15,
+      -2
+    ]
   }
 }

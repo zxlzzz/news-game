@@ -1,10 +1,30 @@
 {
+  "id": "give_item",
+  "type": "sub_event",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": false,
+  "activeJoints": null,
+  "source": "authored",
   "aDelta": {
-    "r_hand": [50, -3],
-    "r_elbow": [8, -3]
+    "r_hand": [
+      50,
+      -3
+    ],
+    "r_elbow": [
+      8,
+      -3
+    ]
   },
   "bDelta": {
-    "l_hand": [35, -3],
-    "l_elbow": [20, -3]
+    "l_hand": [
+      35,
+      -3
+    ],
+    "l_elbow": [
+      20,
+      -3
+    ]
   }
 }

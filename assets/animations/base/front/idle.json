@@ -1,13 +1,15 @@
 {
-  "name": "animation",
-  "skeleton": "human",
-  "globalBend": {},
-  "frames": [
+  "id": "idle_front",
+  "type": "gesture",
+  "facing": "front",
+  "variant_of": null,
+  "tags": [],
+  "loop": true,
+  "activeJoints": null,
+  "source": "authored",
+  "keyframes": [
     {
-      "body": [
-        0,
-        0
-      ],
+      "dur": 0.125,
       "neck": [
         0,
         -50

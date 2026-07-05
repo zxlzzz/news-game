@@ -1,11 +1,17 @@
 {
+  "id": "stretch_static",
   "type": "gesture",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": false,
   "activeJoints": [
     "l_elbow",
     "l_hand",
     "r_elbow",
     "r_hand"
   ],
+  "source": "authored",
   "keyframes": [
     {
       "dur": 0.1,
@@ -254,6 +260,5 @@
         14
       ]
     }
-  ],
-  "loop": false
+  ]
 }

@@ -1,9 +1,15 @@
 {
+  "id": "look_around_static",
   "type": "gesture",
+  "facing": null,
+  "variant_of": null,
+  "tags": [],
+  "loop": false,
   "activeJoints": [
     "r_elbow",
     "r_hand"
   ],
+  "source": "authored",
   "keyframes": [
     {
       "dur": 0.1,
@@ -104,6 +110,5 @@
         14
       ]
     }
-  ],
-  "loop": false
+  ]
 }

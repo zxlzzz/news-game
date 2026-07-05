@@ -1,25 +1,25 @@
 {
-  "id": "hold_bag_side",
+  "id": "smoke",
   "type": "gesture",
-  "facing": "side",
+  "facing": null,
   "variant_of": null,
   "tags": [],
   "loop": true,
   "activeJoints": [
-    "l_elbow",
-    "l_hand"
+    "r_elbow",
+    "r_hand"
   ],
   "source": "authored",
   "keyframes": [
     {
       "dur": 0.15,
-      "l_elbow": [
-        -8,
-        -9
+      "r_elbow": [
+        17,
+        -30
       ],
-      "l_hand": [
-        -11,
-        17
+      "r_hand": [
+        14,
+        -55
       ]
     }
   ]

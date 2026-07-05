@@ -1,25 +1,35 @@
 {
-  "id": "hold_bag_side",
+  "id": "cross_arm",
   "type": "gesture",
-  "facing": "side",
+  "facing": null,
   "variant_of": null,
   "tags": [],
   "loop": true,
   "activeJoints": [
     "l_elbow",
-    "l_hand"
+    "l_hand",
+    "r_elbow",
+    "r_hand"
   ],
   "source": "authored",
   "keyframes": [
     {
       "dur": 0.15,
       "l_elbow": [
-        -8,
-        -9
+        -18,
+        -19
       ],
       "l_hand": [
+        11,
+        -30
+      ],
+      "r_elbow": [
+        18,
+        -19
+      ],
+      "r_hand": [
         -11,
-        17
+        -30
       ]
     }
   ]
