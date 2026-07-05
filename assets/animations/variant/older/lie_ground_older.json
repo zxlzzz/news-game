@@ -1,8 +1,8 @@
 {
   "id": "lie_ground_older",
-  "type": "gesture",
+  "type": "variant",
   "facing": null,
-  "variant_of": null,
+  "variant_of": "lie_ground",
   "tags": [],
   "loop": false,
   "activeJoints": null,

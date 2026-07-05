@@ -1,6 +1,6 @@
 {
   "id": "hold_bag_side",
-  "type": "gesture",
+  "type": "trait",
   "facing": "side",
   "variant_of": null,
   "tags": [],

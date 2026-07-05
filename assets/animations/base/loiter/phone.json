@@ -1,6 +1,6 @@
 {
   "id": "phone",
-  "type": "gesture",
+  "type": "base",
   "facing": null,
   "variant_of": null,
   "tags": [],

@@ -1,16 +1,37 @@
 {
-  "root": "body",
-  "joints": {
-    "neck":    { "parent": "body",    "len": 50   },
-    "head":    { "parent": "neck",    "len": 25   },
-    "l_elbow": { "parent": "neck",    "len": 29.8 },
-    "l_hand":  { "parent": "l_elbow", "len": 25   },
-    "r_elbow": { "parent": "neck",    "len": 29.8 },
-    "r_hand":  { "parent": "r_elbow", "len": 25   },
-    "l_knee":  { "parent": "body",    "len": 35.2 },
-    "l_foot":  { "parent": "l_knee",  "len": 35.1 },
-    "r_knee":  { "parent": "body",    "len": 35.2 },
-    "r_foot":  { "parent": "r_knee",  "len": 35.1 }
-  },
-  "unit_height": 144
+  "skeletons": {
+    "human": {
+      "root": "body",
+      "joints": {
+        "neck":    { "parent": "body",    "len": 50   },
+        "head":    { "parent": "neck",    "len": 25   },
+        "l_elbow": { "parent": "neck",    "len": 29.8 },
+        "l_hand":  { "parent": "l_elbow", "len": 25   },
+        "r_elbow": { "parent": "neck",    "len": 29.8 },
+        "r_hand":  { "parent": "r_elbow", "len": 25   },
+        "l_knee":  { "parent": "body",    "len": 35.2 },
+        "l_foot":  { "parent": "l_knee",  "len": 35.1 },
+        "r_knee":  { "parent": "body",    "len": 35.2 },
+        "r_foot":  { "parent": "r_knee",  "len": 35.1 }
+      },
+      "unit_height": 144
+    },
+    "dog": {
+      "root": "body_back",
+      "joints": {
+        "body_front": { "parent": "body_back",  "len": 50.2 },
+        "neck":       { "parent": "body_front", "len": 7.2  },
+        "head":       { "parent": "neck",       "len": 7.1  },
+        "tail":       { "parent": "body_back",  "len": 26.0 },
+        "fl_upper":   { "parent": "body_front", "len": 12.1 },
+        "fl_lower":   { "parent": "fl_upper",   "len": 14.8 },
+        "fr_upper":   { "parent": "body_front", "len": 13.3 },
+        "fr_lower":   { "parent": "fr_upper",   "len": 14.9 },
+        "bl_upper":   { "parent": "body_back",  "len": 13.2 },
+        "bl_lower":   { "parent": "bl_upper",   "len": 12.7 },
+        "br_upper":   { "parent": "body_back",  "len": 12.8 },
+        "br_lower":   { "parent": "br_upper",   "len": 15.0 }
+      }
+    }
+  }
 }

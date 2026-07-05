@@ -1,6 +1,6 @@
 {
   "id": "walk_dog_side",
-  "type": "gesture",
+  "type": "trait",
   "facing": "side",
   "variant_of": null,
   "tags": [],

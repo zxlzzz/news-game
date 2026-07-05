@@ -1,6 +1,6 @@
 {
   "id": "bag_b",
-  "type": "gesture",
+  "type": "base",
   "facing": null,
   "variant_of": null,
   "tags": [],

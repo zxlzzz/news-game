@@ -1,6 +1,6 @@
 {
   "id": "cross_arm",
-  "type": "gesture",
+  "type": "held",
   "facing": null,
   "variant_of": null,
   "tags": [],

@@ -1,8 +1,8 @@
 {
   "id": "walk_older",
-  "type": "gesture",
+  "type": "variant",
   "facing": null,
-  "variant_of": null,
+  "variant_of": "walk",
   "tags": [],
   "loop": true,
   "activeJoints": null,

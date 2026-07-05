@@ -143,25 +143,36 @@ function normalizeRelPath(rel) {
 // 主转换
 // ─────────────────────────────────────────────────────────────────────────────
 
-function convertFile(abs) {
-  const rel   = path.relative(ANIM_DIR, abs);
-  const parts = rel.split(path.sep);
-  const src   = JSON.parse(fs.readFileSync(abs, 'utf8'));
-
-  const type    = inferType(parts);
-  const facing  = inferFacing(parts);
-  const stem    = snake(path.basename(abs, '.json'));
-
-  // gesture 子目录限定符防止同名冲突（e.g. moving/check_watch vs static/check_watch）
+function buildId(type, stem, facing, parts) {
   let id = facing ? `${stem}_${facing}` : stem;
   if (type === 'gesture') {
+    // 子目录限定符防止同名冲突（e.g. moving/check_watch vs static/check_watch）
     const intermediate = parts.slice(1, -1); // ['moving'] or ['static','stall','buyer']
     if (intermediate.length > 0) {
       id = `${stem}_${intermediate[intermediate.length - 1]}`;
     }
   }
-  const loop    = inferLoop(type, stem, src);
+  return id;
+}
+
+function convertFile(abs) {
+  const rel   = path.relative(ANIM_DIR, abs);
+  const parts = rel.split(path.sep);
+  const src   = JSON.parse(fs.readFileSync(abs, 'utf8'));
+
+  const type       = inferType(parts);
+  const facing     = inferFacing(parts);
+  const stem       = snake(path.basename(abs, '.json'));
+  const id         = buildId(type, stem, facing, parts);
   const variant_of = inferVariantOf(type, stem);
+
+  // ── 幂等路径: 已是新 schema（含 keyframes + source）→ 只刷路径推断的元数据字段 ──
+  // 坐标数据原样保留，loop/activeJoints/tags 等其余字段原样保留
+  if ('keyframes' in src && src.source != null) {
+    return { ...src, id, type, facing: facing ?? null, variant_of };
+  }
+
+  const loop = inferLoop(type, stem, src);
 
   // ── sub_event: 元数据壳 + 保留 aDelta/bDelta ──────────────────────────────
   if (src.aDelta != null || src.bDelta != null) {
@@ -175,7 +186,7 @@ function convertFile(abs) {
   }
 
   // ── gesture: 已含 keyframes，只补元数据 ──────────────────────────────────
-  if (type !== 'pet' && (src.type === 'gesture' || (src.keyframes && !src.frames))) {
+  if (src.type === 'gesture' || (src.keyframes && !src.frames)) {
     const activeJoints = src.activeJoints ?? null;
     const keyframes = (src.keyframes ?? []).map(kf => {
       const out = { dur: kf.dur ?? 0.15 };
@@ -219,6 +230,7 @@ function convertFile(abs) {
       id, type, facing: facing ?? null,
       variant_of, tags: [], loop,
       activeJoints: null, source: 'authored',
+      ...(isDog && { skeleton: 'dog' }),
       keyframes,
     };
   }

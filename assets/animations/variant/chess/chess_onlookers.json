@@ -1,8 +1,8 @@
 {
   "id": "chess_onlookers",
-  "type": "gesture",
+  "type": "variant",
   "facing": null,
-  "variant_of": null,
+  "variant_of": "chess",
   "tags": [],
   "loop": true,
   "activeJoints": null,

@@ -3,9 +3,9 @@
  * validate.mjs — 校验 assets/animations/ 所有 JSON（已转换格式）
  *
  * 检查项:
- *   1. 关节名 ⊆ skeleton.json joints（含 body）
+ *   1. 关节名 ⊆ 对应骨架的 joints（含 root 节点名）
+ *      未知关节 = 违规；按 clip.skeleton 字段选骨架（缺省 human，pet → dog）
  *   2. delta 分量幅度 ≤120（|dx|≤120 且 |dy|≤120）
- *      注：骨长偏差检查已跳过——2D 美术动画存在透视缩短，骨长天然浮动 15–30%
  *
  * 执行: node sth/tools/validate.mjs
  */
@@ -19,15 +19,30 @@ const ANIM_DIR  = path.resolve(__dirname, '../../assets/animations');
 const SKEL_FILE = path.resolve(__dirname, '../../assets/skeleton.json');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 加载骨骼
+// 加载骨架
 // ─────────────────────────────────────────────────────────────────────────────
 
-const skel = JSON.parse(fs.readFileSync(SKEL_FILE, 'utf8'));
-const VALID_JOINTS = new Set(Object.keys(skel.joints)); // neck,head,...
-// body 是 root，转换后省略，但保留为合法名称以防万一
-VALID_JOINTS.add('body');
+const skelFile = JSON.parse(fs.readFileSync(SKEL_FILE, 'utf8'));
+const SKELETONS = skelFile.skeletons; // { human: {...}, dog: {...} }
 
-const DELTA_MAX = 120; // 转换后单分量幅度上限（fall/get_up 极端姿态最大约 100）
+if (!SKELETONS) {
+  console.error('skeleton.json missing "skeletons" key');
+  process.exit(1);
+}
+
+/** 构造骨架的合法关节集合（含 root 节点名） */
+function buildValidSet(skel) {
+  const s = new Set(Object.keys(skel.joints));
+  s.add(skel.root); // root 节点本身（body / body_back）
+  return s;
+}
+
+const VALID = {
+  human: buildValidSet(SKELETONS.human),
+  dog:   buildValidSet(SKELETONS.dog),
+};
+
+const DELTA_MAX = 120;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 工具
@@ -47,19 +62,21 @@ function walkDir(dir, out = []) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function validateFile(abs) {
-  const rel = path.relative(ANIM_DIR, abs);
+  const rel  = path.relative(ANIM_DIR, abs);
   const clip = JSON.parse(fs.readFileSync(abs, 'utf8'));
   const violations = [];
 
-  // sub_event / pet: 跳过 keyframe 检查
-  // sub_event 保留 aDelta/bDelta 结构；pet 使用独立的狗骨骼，不在 skeleton.json 中
-  if (clip.type === 'sub_event' || clip.type === 'pet' ||
-      clip.aDelta != null || clip.bDelta != null) {
+  // sub_event: 跳过 keyframe 检查（保留 aDelta/bDelta 结构，无 keyframes）
+  if (clip.type === 'sub_event' || clip.aDelta != null || clip.bDelta != null) {
     return violations;
   }
 
   const keyframes = clip.keyframes ?? [];
   if (keyframes.length === 0) return violations;
+
+  // 选骨架: clip.skeleton === 'dog' → dog; 否则 human
+  const skelName = clip.skeleton === 'dog' ? 'dog' : 'human';
+  const validJoints = VALID[skelName];
 
   for (let fi = 0; fi < keyframes.length; fi++) {
     const kf = keyframes[fi];
@@ -68,9 +85,9 @@ function validateFile(abs) {
       if (k === 'dur') continue;
       if (!Array.isArray(v)) continue;
 
-      // 检查 1: 关节名合法性
-      if (!VALID_JOINTS.has(k)) {
-        violations.push(`frame ${fi}: unknown joint "${k}"`);
+      // 检查 1: 关节名合法性（所有未知关节均为违规）
+      if (!validJoints.has(k)) {
+        violations.push(`frame ${fi}: unknown joint "${k}" (skeleton: ${skelName})`);
         continue;
       }
 

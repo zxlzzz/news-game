@@ -1,6 +1,6 @@
 {
   "id": "hands_in_pocket",
-  "type": "gesture",
+  "type": "held",
   "facing": null,
   "variant_of": null,
   "tags": [],

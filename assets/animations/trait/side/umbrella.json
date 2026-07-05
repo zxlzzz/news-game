@@ -1,6 +1,6 @@
 {
   "id": "umbrella_side",
-  "type": "gesture",
+  "type": "trait",
   "facing": "side",
   "variant_of": null,
   "tags": [],

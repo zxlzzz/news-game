@@ -7,5 +7,227 @@
   "loop": false,
   "activeJoints": null,
   "source": "authored",
-  "keyframes": []
+  "skeleton": "dog",
+  "keyframes": [
+    {
+      "dur": 0.125,
+      "body_back": [
+        -54,
+        -1
+      ],
+      "body_front": [
+        -4,
+        4
+      ],
+      "neck": [
+        2,
+        0
+      ],
+      "head": [
+        7,
+        -5
+      ],
+      "tail": [
+        -78,
+        9
+      ],
+      "fl_upper": [
+        7,
+        9
+      ],
+      "fl_lower": [
+        14,
+        22
+      ],
+      "fr_upper": [
+        -7,
+        17
+      ],
+      "fr_lower": [
+        -2,
+        31
+      ],
+      "bl_upper": [
+        -52,
+        12
+      ],
+      "bl_lower": [
+        -43,
+        21
+      ],
+      "br_upper": [
+        -62,
+        9
+      ],
+      "br_lower": [
+        -61,
+        24
+      ]
+    },
+    {
+      "dur": 0.125,
+      "body_back": [
+        -54,
+        -1
+      ],
+      "body_front": [
+        -4,
+        4
+      ],
+      "neck": [
+        2,
+        0
+      ],
+      "head": [
+        6,
+        -6
+      ],
+      "tail": [
+        -78,
+        9
+      ],
+      "fl_upper": [
+        7,
+        9
+      ],
+      "fl_lower": [
+        14,
+        22
+      ],
+      "fr_upper": [
+        -7,
+        17
+      ],
+      "fr_lower": [
+        -2,
+        31
+      ],
+      "bl_upper": [
+        -52,
+        12
+      ],
+      "bl_lower": [
+        -43,
+        21
+      ],
+      "br_upper": [
+        -62,
+        9
+      ],
+      "br_lower": [
+        -61,
+        24
+      ]
+    },
+    {
+      "dur": 0.125,
+      "body_back": [
+        -54,
+        -1
+      ],
+      "body_front": [
+        -4,
+        4
+      ],
+      "neck": [
+        2,
+        0
+      ],
+      "head": [
+        7,
+        -5
+      ],
+      "tail": [
+        -78,
+        9
+      ],
+      "fl_upper": [
+        7,
+        9
+      ],
+      "fl_lower": [
+        14,
+        22
+      ],
+      "fr_upper": [
+        -7,
+        17
+      ],
+      "fr_lower": [
+        -2,
+        31
+      ],
+      "bl_upper": [
+        -52,
+        12
+      ],
+      "bl_lower": [
+        -43,
+        21
+      ],
+      "br_upper": [
+        -62,
+        9
+      ],
+      "br_lower": [
+        -61,
+        24
+      ]
+    },
+    {
+      "dur": 0.125,
+      "body_back": [
+        -54,
+        -1
+      ],
+      "body_front": [
+        -4,
+        4
+      ],
+      "neck": [
+        2,
+        0
+      ],
+      "head": [
+        6,
+        -6
+      ],
+      "tail": [
+        -78,
+        9
+      ],
+      "fl_upper": [
+        7,
+        9
+      ],
+      "fl_lower": [
+        14,
+        22
+      ],
+      "fr_upper": [
+        -7,
+        17
+      ],
+      "fr_lower": [
+        -2,
+        31
+      ],
+      "bl_upper": [
+        -52,
+        12
+      ],
+      "bl_lower": [
+        -43,
+        21
+      ],
+      "br_upper": [
+        -62,
+        9
+      ],
+      "br_lower": [
+        -61,
+        24
+      ]
+    }
+  ]
 }

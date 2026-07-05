@@ -1,6 +1,6 @@
 {
   "id": "phone_call",
-  "type": "gesture",
+  "type": "held",
   "facing": null,
   "variant_of": null,
   "tags": [],

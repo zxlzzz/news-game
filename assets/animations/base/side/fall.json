@@ -1,6 +1,6 @@
 {
   "id": "fall_side",
-  "type": "gesture",
+  "type": "base",
   "facing": "side",
   "variant_of": null,
   "tags": [],

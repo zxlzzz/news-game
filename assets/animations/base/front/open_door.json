@@ -1,6 +1,6 @@
 {
   "id": "open_door_front",
-  "type": "gesture",
+  "type": "base",
   "facing": "front",
   "variant_of": null,
   "tags": [],
