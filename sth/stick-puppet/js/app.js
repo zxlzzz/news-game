@@ -871,15 +871,23 @@ function exportJSON() {
   if (gestureMode) {
     data = {
       type: 'gesture',
+      blend_mode: 'override',
+      interrupt: 'blend',
+      facing: null,
       activeJoints: [...activeJoints],
+      loop: false,
+      weight: 1,
+      ref_speed: null,
+      events: [],
       keyframes: frames.map((pose, i) => {
+        const bx = pose.body ? pose.body.x : 0;
+        const by = pose.body ? pose.body.y : 0;
         const kf = { dur: frameDurs[i] ?? 0.3 };
         for (const j of activeJoints) {
-          if (pose[j]) kf[j] = [Math.round(pose[j].x), Math.round(pose[j].y)];
+          if (pose[j]) kf[j] = [Math.round(pose[j].x - bx), Math.round(pose[j].y - by)];
         }
         return kf;
       }),
-      loop: false,
     };
   } else {
     const globalBend = {};
@@ -888,16 +896,29 @@ function exportJSON() {
       if (v !== 0) globalBend[`${from}__${to}`] = v;
     }
     data = {
-      name: 'animation',
-      skeleton: skeletonKey,
+      type: 'base',
+      blend_mode: 'replace',
+      interrupt: 'blend',
+      facing: null,
+      loop: true,
+      weight: 1,
+      ref_speed: null,
+      events: [],
+      activeJoints: null,
+      source: 'authored',
       globalBend,
-      frames: frames.map(pose => {
-        const f = {};
-        for (const name of getJointNames()) f[name] = [Math.round(pose[name].x), Math.round(pose[name].y)];
-        for (const k of Object.keys(pose)) {
-          if (k.startsWith('_bend_')) f[k] = Math.round(pose[k]);
+      keyframes: frames.map((pose, i) => {
+        const bx = pose.body ? pose.body.x : 0;
+        const by = pose.body ? pose.body.y : 0;
+        const kf = { dur: frameDurs[i] ?? 0.3 };
+        for (const name of getJointNames()) {
+          if (name === 'body') continue;
+          kf[name] = [Math.round(pose[name].x - bx), Math.round(pose[name].y - by)];
         }
-        return f;
+        for (const k of Object.keys(pose)) {
+          if (k.startsWith('_bend_')) kf[k] = Math.round(pose[k]);
+        }
+        return kf;
       }),
     };
   }
@@ -939,13 +960,40 @@ function _emitData(obj, label) {
 
 function exportHeldPose() {
   if (getSkeleton() !== SKELETONS.human) { setInfo('Held Pose 仅支持 human 骨架'); return; }
-  _emitData({ joints: _poseAbs(getJointNames()) }, 'Held Pose');
+  _emitData({
+    type: 'held',
+    blend_mode: 'replace',
+    interrupt: 'cut',
+    joints: _poseAbs(getJointNames()),
+  }, 'Held Pose');
 }
 
 function exportTrait() {
   if (getSkeleton() !== SKELETONS.human) { setInfo('Trait 仅支持 human 骨架'); return; }
-  // trait 只动左侧手臂（右手保持自然），与 hold_bag/walk_dog 一致
-  _emitData({ joints: _poseAbs(['l_elbow', 'l_hand']) }, 'Trait');
+  const pose = frames[currentFrame];
+  const dp = defaultPose();
+  const activeJ = [];
+  const kf = { dur: 0.15 };
+  for (const name of getJointNames()) {
+    const dx = pose[name].x - dp[name].x;
+    const dy = pose[name].y - dp[name].y;
+    if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+      kf[name] = [Math.round(dx), Math.round(dy)];
+      activeJ.push(name);
+    }
+  }
+  _emitData({
+    type: 'trait',
+    blend_mode: 'additive',
+    interrupt: 'blend',
+    facing: null,
+    activeJoints: activeJ,
+    loop: true,
+    weight: 1,
+    ref_speed: null,
+    events: [],
+    keyframes: [kf],
+  }, 'Trait');
 }
 
 // ============================================
