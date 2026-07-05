@@ -732,12 +732,13 @@
       "tags": [],
       "loop": false,
       "blend_mode": "replace",
-      "interrupt": "blend",
+      "interrupt": "committed",
       "from": null,
       "to": null,
       "weight": 1,
       "ref_speed": null,
-      "events": []
+      "events": [],
+      "spacing": null
     },
     "handshake": {
       "path": "animations/sub_event/handshake.json",
@@ -747,12 +748,13 @@
       "tags": [],
       "loop": false,
       "blend_mode": "replace",
-      "interrupt": "blend",
+      "interrupt": "committed",
       "from": null,
       "to": null,
       "weight": 1,
       "ref_speed": null,
-      "events": []
+      "events": [],
+      "spacing": null
     },
     "point_at": {
       "path": "animations/sub_event/point_at.json",
@@ -767,7 +769,8 @@
       "to": null,
       "weight": 1,
       "ref_speed": null,
-      "events": []
+      "events": [],
+      "spacing": null
     },
     "push": {
       "path": "animations/sub_event/push.json",
@@ -777,12 +780,13 @@
       "tags": [],
       "loop": false,
       "blend_mode": "replace",
-      "interrupt": "blend",
+      "interrupt": "committed",
       "from": null,
       "to": null,
       "weight": 1,
       "ref_speed": null,
-      "events": []
+      "events": [],
+      "spacing": null
     },
     "use_trash": {
       "path": "animations/sub_event/use_trash.json",
@@ -797,7 +801,8 @@
       "to": null,
       "weight": 1,
       "ref_speed": null,
-      "events": []
+      "events": [],
+      "spacing": null
     },
     "use_vending": {
       "path": "animations/sub_event/use_vending.json",
@@ -812,7 +817,8 @@
       "to": null,
       "weight": 1,
       "ref_speed": null,
-      "events": []
+      "events": [],
+      "spacing": null
     },
     "hold_bag_front": {
       "path": "animations/trait/front/hold_bag.json",
@@ -955,7 +961,7 @@
       "facing": null,
       "variant_of": "lie_ground",
       "tags": [],
-      "loop": false,
+      "loop": true,
       "blend_mode": "replace",
       "interrupt": "blend",
       "from": null,

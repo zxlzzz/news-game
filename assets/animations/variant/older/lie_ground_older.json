@@ -4,7 +4,7 @@
   "facing": null,
   "variant_of": "lie_ground",
   "tags": [],
-  "loop": false,
+  "loop": true,
   "blend_mode": "replace",
   "interrupt": "blend",
   "from": null,
