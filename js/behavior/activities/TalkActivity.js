@@ -64,15 +64,8 @@ export class TalkActivity extends Activity {
   }
 
   _enterTalk(npc) {
-    npc.state      = 'talk';
-    npc.stateTimer = 0;
-    npc.animation  = 'stand';
-    npc.speed      = 0;
-    npc.playOnce   = false;
-    npc.animDone   = false;
-    npc.frameIndex = 0;
-    npc.frameTimer = 0;
-    npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
+    setState(npc, 'talk', 'talk-enter');
+    npc.modifiers = npc.modifiers.filter(m => m.kind === 'trait');
   }
 
   _faceEachOther() {

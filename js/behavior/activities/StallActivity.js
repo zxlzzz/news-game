@@ -34,8 +34,7 @@ export class StallActivity extends Activity {
   }
 
   _setupSeller(npc) {
-    npc.state = 'stand'; npc.animation = 'stand'; npc.speed = 0; npc.vy = 0;
-    npc.playOnce = false; npc.animDone = false; npc.frameIndex = 0; npc.frameTimer = 0;
+    setState(npc, 'stand', 'stall-setup');
     npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
     npc._extraTags = ['vendor'];
   }
@@ -64,8 +63,7 @@ export class StallActivity extends Activity {
   }
 
   _setupBuyer(npc) {
-    npc.state = 'stand'; npc.animation = 'stand'; npc.speed = 0; npc.vy = 0;
-    npc.playOnce = false; npc.animDone = false; npc.frameIndex = 0; npc.frameTimer = 0;
+    setState(npc, 'stand', 'stall-buyer-setup');
     npc.modifiers = npc.modifiers.filter(m => m.kind === 'trait');
   }
 

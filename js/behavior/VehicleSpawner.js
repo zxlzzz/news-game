@@ -5,9 +5,9 @@
  * 参考 SpawnManager 的密度控制思路，专为机动车设计。
  */
 
-import { VehicleEntity }        from '../VehicleEntity.js';
-import { VehicleStateMachine }  from './VehicleStateMachine.js';
-import { roadY, WORLD_WIDTH }   from '../SceneConfig.js';
+import { VehicleEntity }        from '../entity/vehicle/VehicleEntity.js';
+import { VehicleStateMachine }  from '../entity/vehicle/VehicleStateMachine.js';
+import { roadY, WORLD_WIDTH }   from '../core/Layout.js';
 
 const LANES = [
   { id: 'upbound',   direction: +1, yRange: [roadY(0.10), roadY(0.38)], target: 3, entryX: -200 },

@@ -2,7 +2,7 @@
  * BaseStateMachine — 集中式转换表状态机（Unity 风格）
  *
  * 架构：
- *   STATE_DEFS          — 状态定义（动画/速度/计时/onExit 钩子），不含转换逻辑
+ *   STATE_DEFS          — 状态定义（动画/速度/计时/onExit 钩子），现存于 Motor.js
  *   TRANSITIONS         — 全局转换规则数组，按 priority 降序预排序
  *   registerTransition  — 外部注入规则的接口（供 SocialLayer / 镜头层等使用）
  *   _evaluateTransitions— 每帧求值：遍历规则，首个满足条件的规则触发
@@ -30,162 +30,21 @@
  */
 
 import { dlog }        from './DebugLog.js';
-import { PARK_TOP }     from '../SceneConfig.js';
-import { alignSitBench, seatSurfaceY } from './SeatAlign.js';
-import { tickLoiter, initPoseCache as initLoiterPoseCache } from './LoiterBehavior.js';
+import { PARK_TOP }     from '../core/Layout.js';
+import { sitDown, alignLie } from '../entity/seat/seat.js';
+import { tickLoiter, initPoseCache as initLoiterPoseCache } from '../npc/LoiterBehavior.js';
 
 import {
   tickWalkMode, pickModeTarget, onPathArrival,
   setWalkMode, popWalkMode, isRoadZone, modeWander,
 } from './WalkMode.js';
 
+import { setState, STATE_DEFS, setXY, nudgeXY, setSpeed } from './Motor.js';
+
+// @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
+export { setState, STATE_DEFS } from './Motor.js';
+
 const rand = (a, b) => a + Math.random() * (b - a);
-
-// ─── 共享 onExit 工具 ──────────────────────────────────────────────────────────
-
-// 清临时标签 + walk/run 时恢复压栈的 walk mode
-function _defaultOnExit(npc, toState) {
-  npc._extraTags = null;
-  if ((toState === 'walk' || toState === 'run') && npc._walkModeStack?.length > 0) {
-    npc._walkMode  = npc._walkModeStack.pop();
-    npc.roamTarget = null;
-  }
-}
-
-// ─── 状态定义（不含转换逻辑）────────────────────────────────────────────────
-const STATE_DEFS = {
-  walk: {
-    anim: 'walk', speedK: 1.0, once: false, dur: [4, 10],
-    onExit: _defaultOnExit,
-  },
-  run: {
-    anim: 'run', speedK: 2.4, once: false, dur: [2, 4],
-    onExit: _defaultOnExit,
-  },
-  jog: {
-    anim: 'jog', speedK: 1.0, once: false, dur: null,
-    onExit: _defaultOnExit,
-  },
-  stand: {
-    anim: 'stand', speedK: 0, once: false, dur: [3, 8],
-    onExit: _defaultOnExit,
-  },
-  sit_bench: {
-    anim: 'sit_bench', speedK: 0, once: true, dur: [8, 15],
-    onExit: (npc, toState) => {
-      // lie_bench 与 sit_bench 共享 _bench，不释放
-      if (toState !== 'lie_bench' && npc._bench) {
-        npc._bench._occupiedBy = null;
-        npc._bench = null;
-        npc._sortY = undefined;
-      }
-      _defaultOnExit(npc, toState);
-    },
-  },
-  fall: {
-    anim: 'fall', speedK: 0, once: true, dur: null,
-    onExit: _defaultOnExit,
-  },
-  lie_ground: {
-    anim: 'lie_ground', speedK: 0, once: true, dur: [4, 8],
-    onExit: _defaultOnExit,
-  },
-  lean_wall: {
-    anim: 'lean_wall', speedK: 0, once: true, dur: [8, 20],
-    onExit: (npc, toState) => {
-      if (npc._wallSpot) {
-        const ws = npc._wallSpot;
-        if (ws.side === 'left') ws.building._leanLeft = null;
-        else ws.building._leanRight = null;
-        npc._wallSpot = null;
-      }
-      _defaultOnExit(npc, toState);
-    },
-  },
-  squat: {
-    anim: 'squat', speedK: 0, once: true, dur: [5, 15],
-    onExit: _defaultOnExit,
-  },
-  sit_ground: {
-    anim: 'sit_ground', speedK: 0, once: true, dur: [8, 20],
-    onExit: _defaultOnExit,
-  },
-  lie_bench: {
-    anim: 'lie_bench', speedK: 0, once: true, dur: [15, 40],
-    onExit: (npc, toState) => {
-      if (npc._bench) {
-        npc._bench._occupiedBy = null;
-        npc._bench = null;
-        npc._sortY = undefined;
-      }
-      _defaultOnExit(npc, toState);
-    },
-  },
-  get_up: {
-    anim: 'get_up', speedK: 0, once: true, dur: null,
-    onExit: _defaultOnExit,
-  },
-  talk: {
-    anim: 'stand', speedK: 0, once: false, dur: null,
-    onExit: _defaultOnExit,
-  },
-  loiter: {
-    anim: 'stand', speedK: 0, once: false, dur: null,
-    onExit: (npc, toState) => {
-      npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
-      if (npc._loiterDir !== undefined) npc.direction = npc._loiterDir;
-      npc._loiterDir = undefined;
-      _defaultOnExit(npc, toState);
-    },
-  },
-  routing: {
-    anim: 'walk', speedK: 1.0, once: false, dur: null,
-    onExit: _defaultOnExit,
-  },
-};
-
-export { STATE_DEFS };
-
-// ─── setState（对外 API；供 Activity / SocialLayer 等外部直接切换状态）──────
-export function setState(npc, state, trigger = '?') {
-  const def = STATE_DEFS[state];
-  if (!def) return;
-  const prev = npc.state;
-
-  // 调用前一状态的退出钩子（清理 bench/wall 占用、loiter 状态、walk mode 等）
-  if (prev) STATE_DEFS[prev]?.onExit?.(npc, state);
-
-  npc.state      = state;
-  npc.stateTimer = 0;
-  npc.stateDur   = def.dur ? rand(def.dur[0], def.dur[1]) : Infinity;
-  npc.animation  = def.anim;
-  npc.speed      = def.speedK * (npc.walkSpeed || 26);
-  npc.vy         = 0;        // 纵深速度由 steerRoam 每帧设定；静止态归零防漂移
-  npc.playOnce   = def.once;
-  npc.animDone   = false;
-  npc.frameIndex = 0;
-  npc.frameTimer = 0;
-  if (npc._walkMode?.kind === 'wander' && (state === 'walk' || state === 'run')) npc.roamTarget = null;
-
-  // 进入 lie_bench：_extraTags 已由 onExit 清空，此处重新按状态赋值
-  if (state === 'lie_bench') {
-    npc._extraTags = (Math.random() < 0.2) ? ['resting', 'homeless'] : ['resting'];
-  }
-  // 进入 loiter：初始化微行为（首帧由 tickLoiter 完成，_loiterDur=null 为触发信号）
-  if (state === 'loiter') {
-    npc._loiterDur     = null;
-    npc._loiterElapsed = 0;
-    npc._microPhase    = null;
-    npc._microTimer    = 0;
-    npc._extraTags     = ['standing', 'idle'];
-  }
-
-  if (prev && prev !== state) {
-    const dur = npc.stateDur === Infinity ? '∞' : npc.stateDur.toFixed(1) + 's';
-    const extra = npc._extraTags ? `, extra_tags=[${npc._extraTags.join(',')}]` : '';
-    dlog(`[NPC-${npc.id}] ${prev} → ${state} (dur=${dur}, trigger=${trigger}${extra})`);
-  }
-}
 
 // ─── initPoseCache（转发到 LoiterBehavior）──────────────────────────────────
 export function initPoseCache(pc) {
@@ -217,33 +76,18 @@ function _pickNext(npc, profile, envQuery) {
 
 // ─── 内部：timeout 触发时解析最终目标（含 sit_bench 占位/对齐副作用）──────────
 function _resolveTimeout(npc, envQuery, profile) {
+  if (isRoadZone(npc.y)) return null;
   const next = _pickNext(npc, profile, envQuery);
   if (!next) return null;
   if (next === 'sit_bench') {
     const bench = envQuery.nearestFreeBench(npc, 80);
     if (!bench) return 'stand';
-    alignSitBench(npc, bench);
+    sitDown(npc, bench);
     return 'sit_bench';
   }
   // lie_bench anchorMode='back'（无竖向偏移），坐→躺转换时重对齐
   if (next === 'lie_bench' && npc._bench) {
-    let bodyX = -46, bodyY = 79;
-    if (npc.renderer) {
-      const anim = npc.renderer.getAnimation('lie_bench');
-      if (anim && anim.frames[0]) {
-        bodyX = anim.frames[0].body[0];
-        bodyY = anim.frames[0].body[1];
-      }
-    }
-    const sc = npc.scale || 0.45;
-    const seatY = seatSurfaceY(npc._bench);
-    npc.y = Math.max(npc.minY, Math.min(npc.maxY, seatY - Math.round(bodyY * sc)));
-    const canonDir = npc.renderer?.getAnimation('lie_bench')?.canonicalDirection || 1;
-    const dir = npc.direction * canonDir;
-    npc.x = Math.max(npc.minX, Math.min(npc.maxX,
-      npc._bench.x - Math.round(bodyX * sc * dir)
-    ));
-    npc._sortY = npc._bench.y + 1;
+    alignLie(npc, npc.renderer);
   }
   if (next === 'lean_wall') {
     const spot = envQuery.nearestFreeWallSpot(npc, 60);
@@ -253,8 +97,10 @@ function _resolveTimeout(npc, envQuery, profile) {
     npc._wallSpot = { building: spot.building, side: spot.side };
     const halfW = 20 * (npc.scale || 0.45);
     const dx = spot.side === 'left' ? -halfW : halfW;
-    npc.x = Math.max(npc.minX, Math.min(npc.maxX, spot.x + dx));
-    npc.y = Math.max(npc.minY, Math.min(npc.maxY, spot.building.baseY));
+    setXY(npc,
+      Math.max(npc.minX, Math.min(npc.maxX, spot.x + dx)),
+      Math.max(npc.minY, Math.min(npc.maxY, spot.building.baseY)),
+    );
     npc.direction = spot.facing;
     return 'lean_wall';
   }
@@ -327,7 +173,7 @@ function _tickState(npc, envQuery, profile, dt) {
 // ─── 二维漫游转向 ─────────────────────────────────────────────────────────────
 function steerRoam(npc, envQuery, profile, dt) {
   if (npc.state === 'routing') {
-    npc.speed = 0;
+    setSpeed(npc, 0);
     npc.vy    = 0;
     if (!npc._routeTarget) { setState(npc, 'walk', 'routing_no_target'); return; }
     const t  = npc._routeTarget;
@@ -342,7 +188,7 @@ function steerRoam(npc, envQuery, profile, dt) {
       return;
     }
     if (dist < arriveThreshold) {
-      npc.x = t.x; npc.y = t.y;
+      setXY(npc, t.x, t.y);
       const cb = t.onArrive;
       npc._routeTarget = null;
       if (cb) cb(npc);
@@ -350,13 +196,13 @@ function steerRoam(npc, envQuery, profile, dt) {
     }
     npc.direction = dx > 0 ? 1 : -1;
     const spd = npc.walkSpeed || 26;
-    npc.x += (dx / dist) * spd * dt;
-    npc.y += (dy / dist) * spd * dt;
+    nudgeXY(npc, (dx / dist) * spd * dt, (dy / dist) * spd * dt);
     return;
   }
 
   if (npc._walkMode?.kind === 'path_follow' && npc._walkMode.pausing) {
-    npc.speed = 0; npc.vy = 0;
+    setSpeed(npc, 0);
+    npc.vy = 0;
     return;
   }
 
@@ -391,8 +237,8 @@ function steerRoam(npc, envQuery, profile, dt) {
   vx += av.x; vy += av.y;
   const mag = Math.hypot(vx, vy) || 1;
   vx = vx / mag * total; vy = vy / mag * total;
-  npc.speed = Math.abs(vx);
-  npc.vy    = vy;
+  setSpeed(npc, Math.abs(vx));
+  npc.vy = vy;
 
   npc._dirCD = (npc._dirCD || 0) - dt;
   const desired = vx >= 0 ? 1 : -1;
@@ -413,7 +259,7 @@ function avoidObstacles(npc, vx, vy, envQuery) {
     const rx = o.collisionRX + npcR, ry = o.collisionRY + npcR;
     const sd = Math.hypot(ox / rx, oy / ry) || 0.001;
     if (sd > 1.8) continue;
-    if (sd < 1) { npc.x = o.x + ox / sd; npc.y = o.y + oy / sd; }
+    if (sd < 1) { setXY(npc, o.x + ox / sd, o.y + oy / sd); }
     const d = Math.hypot(ox, oy) || 0.001;
     const dot = (-ox / d) * fx + (-oy / d) * fy;
     if (dot < 0.2) continue;
@@ -434,7 +280,7 @@ function _routeToExit(npc, exit) {
   const tx = exit.x;
   const ty = exit.y ?? npc.y;
   if (exit.facing !== 0) npc.direction = exit.facing;
-  npc._walkMode = null;
+  setWalkMode(npc, null);
   npc.modifiers = npc.modifiers.filter(m => m.kind !== 'held');
   setState(npc, 'routing', 'departure');
   npc._routeTarget = {
@@ -448,7 +294,8 @@ function _routeToExit(npc, exit) {
 export function triggerDeparture(npc, exitRegistry) {
   if (!exitRegistry) return;
   if (npc._departing) return;
-  const exit = exitRegistry.findExit(npc, npc._profile?.departure?.preferExitType ?? null);
+  const preferType = npc._preferExitType ?? npc._profile?.departure?.preferExitType ?? null;
+  const exit = exitRegistry.findExit(npc, preferType);
   if (!exit) { npc._lifespan += 30; return; }
 
   npc._departing = true;

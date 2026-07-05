@@ -10,9 +10,10 @@
  * createActivity 查 REGISTRY['*'] 为通配符兜底（UsePropActivity）。
  */
 
-import { setState }       from './BaseStateMachine.js';
+import { setState }       from './Motor.js';
 import { dlog }           from './DebugLog.js';
 import { getRegistry }    from './ActivityRegistry.js';
+import { TalkToTask }     from './tasks/TalkToTask.js';
 export { registerActivity } from './ActivityRegistry.js';
 
 // Side-effect imports：触发各 Activity 文件的 registerActivity 自注册
@@ -66,8 +67,18 @@ export class SocialLayer {
     }
 
     // 3) 槽位等待超时（20s 内无第二个人到位） → 放弃，重新 walk
+    //    死亡 NPC 的槽位也必须回收（不跳过 !alive）
     for (const npc of npcs) {
-      if (!npc.alive || npc._activity || !npc._slotWaitProp) continue;
+      if (!npc._slotWaitProp) continue;
+      if (!npc.alive) {
+        for (const s of npc._slotWaitProp._slots) {
+          if (s.npc === npc) { s.ready = false; s.npc = null; }
+        }
+        this.envQuery.releaseSlotReservation(npc);
+        npc._slotWaitProp = null;
+        continue;
+      }
+      if (npc._activity) continue;
       npc._slotWaitTimer = (npc._slotWaitTimer || 0) + dt;
       if (npc._slotWaitTimer > 20) {
         for (const s of npc._slotWaitProp._slots) {
@@ -144,7 +155,11 @@ export class SocialLayer {
         const dx = Math.abs(a.x - b.x);
         const dy = Math.abs(a.y - b.y);
         if (dx < 70 && dx > 14 && dy < 24 && chance(0.5)) {
-          this.createActivity('talk', [{ npc: a, role: 'speaker' }, { npc: b, role: 'speaker' }]);
+          const act = this.createActivity('talk', [{ npc: a, role: 'speaker' }, { npc: b, role: 'speaker' }]);
+          if (act) {
+            a._runner?.setPrimary(new TalkToTask(), a);
+            b._runner?.setPrimary(new TalkToTask(), b);
+          }
           paired++;
         }
       }

@@ -10,8 +10,7 @@ export class DogWalkActivity extends Activity {
     this.subState = 'walking';
     this.join(owner, 'owner');
     this.join(dog, 'dog');
-    owner.state     = 'walk';
-    owner.animation = 'walk';
+    setState(owner, 'walk', 'dog-walk');
   }
 
   update(dt) {

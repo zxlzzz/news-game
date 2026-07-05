@@ -142,7 +142,7 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
   }
 
   // 4) 尝试触发新 held（独立函数，其内部的早退不影响后续 gesture 处理）
-  _tryTriggerHeld(npc, heldDefs, globalHeldFrac);
+  _tryTriggerHeld(npc, heldDefs, globalHeldFrac, dt);
 
   // 5) gesture 推进（逐关键帧播放，播完置 _done）
   for (const m of npc.modifiers) {
@@ -176,14 +176,14 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
   if ((npc._gestureCooldown || 0) > 0) npc._gestureCooldown -= dt;
 
   // 6) 尝试触发新 gesture（与 held 独立：单实例 + 冷却 + 适用状态 + 概率）
-  _tryTriggerGesture(npc, profile);
+  _tryTriggerGesture(npc, profile, dt);
 }
 
 /**
  * 按 profile.heldPoses 配置随机触发一个 held。
  * 条件：全局比例 < 30%；无 held 冷却；当前无用户级 held；每帧至多触发一个。
  */
-function _tryTriggerHeld(npc, heldDefs, globalHeldFrac) {
+function _tryTriggerHeld(npc, heldDefs, globalHeldFrac, dt) {
   if (globalHeldFrac >= 0.18) return;
   if ((npc._heldCooldown || 0) > 0) return;
   if (npc.modifiers.some(m => m.kind === 'held' && !m.id.startsWith('_'))) return;
@@ -202,7 +202,7 @@ function _tryTriggerHeld(npc, heldDefs, globalHeldFrac) {
     if (side === 'right' && occ.right) continue;
     let p = def.chance;
     if (def.chanceMultiplier?.[npc.state]) p *= def.chanceMultiplier[npc.state];
-    if (Math.random() < p) {
+    if (Math.random() < p * dt * 60) {
       npc.modifiers.push({
         id: name, kind: 'held', priority: 10,
         joints: { ...(hp?.joints ?? {}) },
@@ -217,7 +217,7 @@ function _tryTriggerHeld(npc, heldDefs, globalHeldFrac) {
  * 按 profile.gesturePoses 配置随机触发一个 gesture，进入播放队列。
  * 条件：无冷却、当前无 gesture 在播、状态匹配、概率命中；每帧至多触发一个。
  */
-function _tryTriggerGesture(npc, profile) {
+function _tryTriggerGesture(npc, profile, dt) {
   const gestureDefs = profile.gesturePoses;
   if (!gestureDefs) return;
   if ((npc._gestureCooldown || 0) > 0) return;
@@ -228,7 +228,7 @@ function _tryTriggerGesture(npc, profile) {
     if (!def.on.includes(npc.state)) continue;
     if (def.traitRequired && !npc.traits.includes(def.traitRequired)) continue;
     if (def.traitExcludes?.some(t => npc.traits.includes(t))) continue;
-    if (Math.random() < def.chance) {
+    if (Math.random() < def.chance * dt * 60) {
       const clip = GESTURE_CLIPS[name];
       if (!clip) continue;
       const side = handSide(clip.activeJoints || []);

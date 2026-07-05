@@ -15,19 +15,20 @@
  * 渲染底层为 PixiJS；所有绘图文件直接调用 PIXI.Graphics 原生 API。
  */
 
-import { StickRenderer }   from '../StickRenderer.js';
-import { EntityManager }   from '../EntityManager.js';
-import { Viewfinder }      from '../Viewfinder.js';
-import { DebugOverlay }    from '../DebugOverlay.js';
+import { StickRenderer }   from '../core/StickRenderer.js';
+import { EntityManager }   from '../core/EntityManager.js';
+import { Viewfinder }      from '../camera/Viewfinder.js';
+import { DebugOverlay }    from '../ui/DebugOverlay.js';
 import { SceneRenderer }   from './SceneRenderer.js';
 import { SceneInitializer } from './SceneInitializer.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT,
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
-} from '../SceneConfig.js';
+} from '../core/Layout.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
-import { PixiText }         from '../PixiText.js';
-import { getManifestPaths, buildPoseCache } from '../PoseCacheBuilder.js';
+import { PixiText }         from '../core/PixiText.js';
+import { getManifestPaths, buildPoseCache } from '../behavior/PoseCacheBuilder.js';
+import { clockUpdate, gameTimeStr, setClockSpeed, setGameTime } from '../core/GameClock.js';
 
 const ANIM_FILES = {
   walk: 'base/walk', run: 'base/run', idle: 'base/idle', jog: 'base/jog', bike: 'base/bike',
@@ -110,9 +111,7 @@ export class StreetScene {
     const poseCache = buildPoseCache(key => this._json['pose_' + key]);
     initWalkPaths(layout.walkPaths);
 
-    this.entityManager = new EntityManager({
-      farScale: 0.182, nearScale: 0.434,
-    });
+    this.entityManager = new EntityManager();
 
     const initializer = new SceneInitializer(this, this.entityManager, this.stickRenderer, poseCache);
     initializer.spawnAll(sceneData, layout);
@@ -126,6 +125,9 @@ export class StreetScene {
 
     this._setupInput();
     this._applyCamera();
+
+    // 调试用：暴露时钟控制到 window
+    window.__clock = { setSpeed: setClockSpeed, setTime: setGameTime, now: () => gameTimeStr() };
 
     this.app.ticker.add(() => this.update(this.app.ticker.deltaMS));
   }
@@ -288,7 +290,7 @@ export class StreetScene {
   }
 
   _generateHeadline(tags, count) {
-    const subject = tags.filter(t => !['building', 'street-furniture'].includes(t)).join('与') || tags[0];
+    const subject = tags.filter(t => t !== 'building').join('与') || tags[0];
     const templates = [
       `${count}个目标聚集现场，真相令人震惊`,
       `独家现场：${subject}背后的秘密`,
@@ -317,8 +319,9 @@ export class StreetScene {
     this._clampScroll();
     this._applyCamera();
 
+    clockUpdate(delta / 1000);
     this.behaviorManager.update(delta);
-    this.spawnManager.update(delta / 1000);
+    if (this.director) this.director.update(delta / 1000);
     if (this.trafficManager) {
       this.trafficManager.update(delta);
       this.trafficManager.cyclistSpawner?.update(delta);
@@ -328,10 +331,9 @@ export class StreetScene {
     this.viewfinder.updateCapture(this.entityManager.getAlive());
 
     this.entityGraphics.clear();
-    this.entityManager.draw(
-      this.entityGraphics,
-      this.propManager ? this.propManager.getDrawables() : [],
-    );
+    const _extras = this.propManager ? this.propManager.getDrawables() : [];
+    this.entityManager.drawShadows(this.entityGraphics, _extras);
+    this.entityManager.draw(this.entityGraphics, _extras);
 
     this.vfGraphics.clear();
     this.viewfinder.draw(this.vfGraphics);

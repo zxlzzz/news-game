@@ -1,4 +1,4 @@
-import { setState }         from '../BaseStateMachine.js';
+import { setState }         from '../Motor.js';
 import { Activity }         from './Activity.js';
 import { registerActivity } from '../ActivityRegistry.js';
 
@@ -44,30 +44,15 @@ export class ChessActivity extends Activity {
   }
 
   _setupPlayer(npc) {
-    npc.state      = null;
-    npc.animation  = 'chess';
-    npc.speed      = 0;
-    npc.vy         = 0;
-    npc.playOnce   = true;
+    setState(npc, 'chess', 'chess-setup');
   }
 
   _setupOnlooker(npc) {
-    npc.state      = null;
-    npc.animation  = 'chess_onlookers';
-    npc.speed      = 0;
-    npc.vy         = 0;
-    npc.playOnce   = true;
-    npc.animDone   = false;
-    npc.frameIndex = 0;
-    npc.frameTimer = 0;
+    setState(npc, 'chess_onlooker', 'chess-onlooker-setup');
   }
 
   _tickOnlooker(npc, dt) {
-    if (npc.animDone) {
-      npc.animDone   = false;
-      npc.playOnce   = true;
-      npc.frameIndex = 0;
-    }
+    // animDone=true + playOnce=true → StickRenderer 自动冻结最后一帧，无需处理
   }
 
   addOnlooker(npc, slot) {
