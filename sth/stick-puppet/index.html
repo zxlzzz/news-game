@@ -95,6 +95,48 @@
       <div id="jointCheckboxes"></div>
     </div>
 
+    <div class="panel-section" id="clipBrowserSection">
+      <h3>Clip 浏览器</h3>
+      <div style="display:flex;gap:4px;margin-bottom:4px">
+        <select id="clipTypeFilter" onchange="app.filterClips()" style="flex:1;padding:3px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
+          <option value="">全部</option>
+          <option value="base">base</option>
+          <option value="gesture">gesture</option>
+          <option value="trait">trait</option>
+          <option value="held">held</option>
+          <option value="sub_event">sub_event</option>
+        </select>
+        <select id="clipFacingFilter" onchange="app.filterClips()" style="flex:1;padding:3px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
+          <option value="">朝向</option>
+          <option value="side">side</option>
+          <option value="front">front</option>
+        </select>
+      </div>
+      <input type="text" id="clipTagFilter" placeholder="ID / 标签过滤..." oninput="app.filterClips()" style="width:100%;margin-bottom:4px;padding:3px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px;box-sizing:border-box">
+      <select id="clipBrowserList" size="6" style="width:100%;font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px" ondblclick="app.loadClipFromBrowser()"></select>
+      <button onclick="app.loadClipFromBrowser()" class="primary" style="width:100%;margin-top:4px">载入选中 Clip</button>
+      <div id="clipBrowserInfo" style="font-size:10px;color:#888;margin-top:4px;line-height:1.4"></div>
+    </div>
+
+    <div class="panel-section" id="previewSection">
+      <h3>合成预览</h3>
+      <div class="check-row">
+        <label><input type="checkbox" id="previewEnable" onchange="app.togglePreview()"> 启用合成预览</label>
+      </div>
+      <div id="previewControls" style="display:none">
+        <select id="previewBaseSelect" onchange="app.loadPreviewBase()" style="width:100%;margin:4px 0;padding:3px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
+          <option value="">-- 选择 base clip --</option>
+        </select>
+        <div style="font-size:10px;color:#888">蓝色=base，实色=合成结果</div>
+      </div>
+    </div>
+
+    <div class="panel-section" id="transitionSection" style="display:none">
+      <h3>衔接检查</h3>
+      <div id="transitionInfo" style="font-size:10px;color:#888;line-height:1.4"></div>
+      <div style="font-size:10px;color:#c44;margin-top:3px">红圈 = 偏差 &gt;5px 的关节</div>
+    </div>
+
     <div class="json-area">
       <h3>JSON 导入/导出</h3>
       <textarea id="jsonInput" placeholder='粘贴动画 JSON...'></textarea>
