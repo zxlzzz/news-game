@@ -5,7 +5,7 @@
  * spawnOnePedestrian() 供 SpawnManager 动态补充复用。
  */
 
-import { PARK_TOP, PARK_BOTTOM, WORLD_WIDTH, BUILDING_BASE_Y } from '../core/Layout.js';
+import { PARK_BOTTOM, WORLD_WIDTH, BUILDING_BASE_Y } from '../core/Layout.js';
 import { getNavGrid } from '../behavior/nav/NavGrid.js';
 import { makeNPC } from './npcUtil.js';
 import { getProfile } from './NpcProfile.js';
@@ -13,12 +13,6 @@ import { getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-// 行人初始随机生成区域（避开自行车道和马路）
-const SPAWN_ZONES = [
-  { x0: 50, x1: 1950, y0: 215, y1: 244 },          // 远侧人行道
-  { x0: 50, x1: 1950, y0: PARK_TOP + 16, y1: PARK_BOTTOM - 8 },  // 公园
-];
 
 const TYPES = [
   { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
@@ -52,11 +46,6 @@ function applyTraits(n, t, profile) {
       if (r < cumulative) { pushTrait(n, trait); break; }
     }
   }
-}
-
-function randomSpawnPos() {
-  const z = SPAWN_ZONES[Math.floor(Math.random() * SPAWN_ZONES.length)];
-  return { x: rand(z.x0, z.x1), y: rand(z.y0, z.y1) };
 }
 
 /**
@@ -106,13 +95,15 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
  * @param {EntityManager}   em
  * @param {StickRenderer}   sr
  * @param {BehaviorManager} bm
+ * @param {Array}           spawnPoints  — [{x, y, facing}]
  * @param {number}          [count=18]
  */
-export function spawnPedestrians(em, sr, bm, count = 18) {
+export function spawnPedestrians(em, sr, bm, spawnPoints, count = 18) {
   for (let k = 0; k < count; k++) {
     const t   = pick(TYPES);
-    const pos = randomSpawnPos();
-    const npc = spawnOnePedestrian(t.npcType, em, sr, bm, pos);
+    const pt  = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+    const npc = spawnOnePedestrian(t.npcType, em, sr, bm, { x: pt.x, y: pt.y });
+    npc.direction = pt.facing !== 0 ? pt.facing : (Math.random() < 0.5 ? 1 : -1);
     npc._ageTimer = rand(0, npc._lifespan);
   }
 }

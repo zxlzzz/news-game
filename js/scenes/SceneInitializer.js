@@ -15,7 +15,7 @@ import { spawnAthletes }    from '../npc/Athletes.js';
 import { initVehicleSystem } from '../entity/vehicle/vehicleSpawner.js';
 import {
   WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y,
-  SIDEWALK_FAR_Y, PARK_BOTTOM,
+  SIDEWALK_FAR_Y, PARK_TOP, PARK_BOTTOM,
   depthScale,
 } from '../core/Layout.js';
 import { initCrosswalks } from '../behavior/WalkMode.js';
@@ -119,7 +119,15 @@ export class SceneInitializer {
     }
     bm.exitRegistry = exitRegistry;
 
-    spawnPedestrians(em, sr, bm);
+    const spawnPoints = [
+      ...buildingDoors.map(d => ({ x: d.x, y: SIDEWALK_FAR_Y, facing: 0 })),
+      { x: -10,              y: SIDEWALK_FAR_Y, facing:  1 },
+      { x: WORLD_WIDTH + 10, y: SIDEWALK_FAR_Y, facing: -1 },
+      { x: -10,              y: PARK_TOP + 30,  facing:  1 },
+      { x: WORLD_WIDTH + 10, y: PARK_TOP + 30,  facing: -1 },
+    ];
+
+    spawnPedestrians(em, sr, bm, spawnPoints);
     spawnChess(em, sr, bm, layout.chessPlaza);
     this._spawnStallSellers(bm);
     this.scene.propManager = new NpcPropManager(em);
@@ -136,6 +144,7 @@ export class SceneInitializer {
       bm, em, sr,
       exitRegistry,
       buildingDoors,
+      spawnPoints,
       busStops: this.scene.trafficManager.busStops,
     });
     // 初始批次 NPC 补齐 exitBias
