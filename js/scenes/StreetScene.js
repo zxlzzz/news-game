@@ -32,12 +32,25 @@ import { clockUpdate, gameTimeStr, setClockSpeed, setGameTime } from '../core/Ga
 import { drawNavDebug } from '../behavior/nav/NavGrid.js';
 
 const ANIM_FILES = {
-  walk: 'base/walk', run: 'base/run', idle: 'base/idle', jog: 'base/jog', bike: 'base/bike',
-  mobile: 'base/mobile', chess: 'variant/chess/chess', dogwalk: 'pet/dog_walk',
-  stand: 'base/stand', sit_bench: 'base/sit_bench', fall: 'base/fall',
-  lie_ground: 'base/lie_ground', lean_wall: 'base/lean_wall', squat: 'base/squat',
-  sit_ground: 'base/sit_ground', lie_bench: 'base/lie_bench', get_up: 'base/get_up',
-  chess_onlookers: 'variant/chess/chess_onlookers', mobike: 'base/mobike',
+  walk:            'base/side/walk',
+  run:             'base/side/run',
+  jog:             'base/side/jog',
+  fall:            'base/side/fall',
+  get_up:          'base/side/get_up',
+  sit_bench:       'base/side/sit_bench',
+  sit_ground:      'base/side/sit_ground',
+  lie_bench:       'base/side/lie_bench',
+  lie_ground:      'base/side/lie_ground',
+  lean_wall:       'base/side/lean_wall',
+  idle:            'base/front/idle',
+  stand:           'base/front/stand',
+  squat:           'base/front/squat',
+  bike:            'base/bike',
+  mobile:          'base/mobile',
+  mobike:          'base/mobike',
+  chess:           'variant/chess/chess',
+  chess_onlookers: 'variant/chess/chess_onlookers',
+  dogwalk:         'pet/dog_walk',
 };
 
 export class StreetScene {

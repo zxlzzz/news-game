@@ -7,7 +7,7 @@
  *   - 新增 gesture：MANIFEST.gesture.static 或 .moving 加条目 + 放 JSON，完毕。
  *
  * 路径规则：
- *   held       → assets/animations/held pose/{name}.json
+ *   held       → assets/animations/held/{name}.json
  *   trait      → assets/animations/trait/front/{name}.json 和 trait/side/{name}.json
  *   gesture.static → assets/animations/gesture/static/{name}.json  （可加 name:path 覆盖路径）
  *   gesture.moving → assets/animations/gesture/moving/{file}.json  （格式 file:key）
@@ -43,7 +43,7 @@ export function getManifestPaths() {
   const pairs = [];
 
   for (const n of MANIFEST.held)
-    pairs.push([`held_${n}`, `held pose/${n}`]);
+    pairs.push([`held_${n}`, `held/${n}`]);
 
   for (const n of MANIFEST.trait) {
     pairs.push([`trait_${n}`,      `trait/front/${n}`]);
