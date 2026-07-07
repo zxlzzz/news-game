@@ -43,6 +43,7 @@ const DELTA_WARN     = 180;
 const GROUND_TOL     = 2;    // y > 2 → warn (入地)
 const CLOSURE_TOL    = 12;   // cycle 首末帧闭合容差 px
 const TRANSITION_TOL = 5;    // transition 衔接容差 px
+const BONE_LEN_TOL   = 3;    // 骨长偏差容差 px（仅非人类骨架；人类动画允许自由拉伸）
 
 // ─── Load skeletons ───────────────────────────────────────────────────────────
 
@@ -218,6 +219,35 @@ function validateFile(abs, allClips) {
         const dy = Math.abs((kf0[j][1]) - (kfN[j][1]));
         if (dx > CLOSURE_TOL || dy > CLOSURE_TOL)
           W(`cycle: joint "${j}" not closed (Δ=[${dx.toFixed(1)},${dy.toFixed(1)}] > ${CLOSURE_TOL}px)`);
+      }
+    }
+    // 11. Bone length validation (non-human/non-child; human clips use free-stretch intentionally)
+    if (!isRoleGrouped && skelName !== 'human' && skelName !== 'child' && Object.keys(dp).length > 0) {
+      const jointsInfo = SKELETONS[skelName]?.joints ?? {};
+      const maxDevByBone = {};
+      for (const kf of kfs) {
+        const absPos = {};
+        for (const [j, dpCoords] of Object.entries(dp)) {
+          const delta = kf[j];
+          absPos[j] = Array.isArray(delta) && delta.length === 2
+            ? [dpCoords[0] + delta[0], dpCoords[1] + delta[1]]
+            : [dpCoords[0], dpCoords[1]];
+        }
+        for (const [child, info] of Object.entries(jointsInfo)) {
+          if (!info.len || !absPos[child] || !absPos[info.parent]) continue;
+          const actual = Math.hypot(
+            absPos[child][0] - absPos[info.parent][0],
+            absPos[child][1] - absPos[info.parent][1]
+          );
+          const dev = Math.abs(actual - info.len);
+          if (dev > (maxDevByBone[child] ?? 0)) maxDevByBone[child] = dev;
+        }
+      }
+      for (const [child, dev] of Object.entries(maxDevByBone)) {
+        if (dev > BONE_LEN_TOL) {
+          const info = jointsInfo[child];
+          W(`bone "${info.parent}"→"${child}": length deviation ${dev.toFixed(1)}px > ±${BONE_LEN_TOL}`);
+        }
       }
     }
   } else if (clip.kind && clip.kind !== 'cycle') {

@@ -54,6 +54,10 @@ let variantBaseDecoded = null; // decoded base clip frames for variant preview
 // Screen offset used during duet rendering so toScreen() accounts for role position
 let _screenOffsetX = 0, _screenOffsetY = 0;
 
+// 全局平移模式
+let translateMode = false;
+let _translateLastX = 0, _translateLastY = 0;
+
 // ── 工具函数 ──────────────────────────────────────────────────────────────────
 function toScreen(j) { return {x: CX + j.x + _screenOffsetX, y: CY + j.y + _screenOffsetY}; }
 
@@ -924,6 +928,16 @@ canvas.addEventListener('mousedown', (e) => {
     }
   }
 
+  // 全局平移模式：单击画布即开始整体平移
+  if (translateMode) {
+    history.save(frames, currentFrame);
+    dragging = '__translate__';
+    _translateLastX = x; _translateLastY = y;
+    dragStarted = true;
+    setInfo('整体平移中…');
+    return;
+  }
+
   const bendHit = e.altKey ? findBendHandleAt(x, y) : null;
   if (bendHit) { dragging = bendHit; dragStarted = false; setInfo(`调整弯曲: ${bendHit.replace('_bend_','').replace('__','→')}`); return; }
   dragging = findJointAt(x, y);
@@ -942,6 +956,15 @@ canvas.addEventListener('mousemove', (e) => {
     const rsk = SKELETONS[role.skelName] ?? getSkeleton();
     const body = rpose?.[rsk.root] ?? (rpose ? Object.values(rpose)[0] : null);
     if (body) { role.offset.x = x - CX - body.x; role.offset.y = y - CY - body.y; }
+    render(); return;
+  }
+
+  // 全局平移模式
+  if (dragging === '__translate__') {
+    const dx = x - _translateLastX, dy = y - _translateLastY;
+    _translateLastX = x; _translateLastY = y;
+    const pose = frames[currentFrame];
+    for (const j of getJointNames()) { if (pose[j]) { pose[j].x += dx; pose[j].y += dy; } }
     render(); return;
   }
 
@@ -1038,6 +1061,22 @@ function toggleBoneLock() {
     btn.classList.add('active-toggle');
     ind.textContent = '自由移动关节，可拉长/缩短骨骼';
     ind.className = 'mode-indicator mode-unlocked';
+  }
+}
+
+// ── 全局平移模式 ──────────────────────────────────────────────────────────────
+function toggleTranslateMode() {
+  translateMode = !translateMode;
+  const btn = document.getElementById('translateModeBtn');
+  const ind = document.getElementById('modeIndicator');
+  if (translateMode) {
+    btn.classList.add('active-toggle');
+    ind.textContent = '整体平移模式：拖拽移动整具骨架';
+    ind.className = 'mode-indicator mode-unlocked';
+  } else {
+    btn.classList.remove('active-toggle');
+    ind.textContent = boneLocked ? '关节绕父骨骼旋转，长度固定' : '自由移动关节，可拉长/缩短骨骼';
+    ind.className = boneLocked ? 'mode-indicator mode-locked' : 'mode-indicator mode-unlocked';
   }
 }
 
@@ -1413,6 +1452,7 @@ document.addEventListener('keydown', (e) => {
     case ' ': e.preventDefault(); togglePlay(); break;
     case 'l': case 'L': toggleBoneLock(); break;
     case 'm': case 'M': mirrorPose(); break;
+    case 'g': case 'G': toggleTranslateMode(); break;
   }
 });
 
@@ -1423,7 +1463,7 @@ window.app = {
   interpolateFrames, handleImageUpload,
   loadJSON, exportJSON, exportSpriteSheet,
   moveFrameLeft, moveFrameRight, switchSkeleton,
-  toggleGestureMode,
+  toggleGestureMode, toggleTranslateMode,
   filterClips, loadClipFromBrowser,
   togglePreview, loadPreviewBase,
   setTransitionRef, updateVariantParam,
