@@ -27,31 +27,11 @@ import {
 } from '../core/Layout.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 import { PixiText }         from '../core/PixiText.js';
-import { getManifestPaths, buildPoseCache } from '../behavior/PoseCacheBuilder.js';
+import { buildPoseCache } from '../behavior/PoseCacheBuilder.js';
+import { clipLibrary, ANIM_MAP } from '../core/ClipLibrary.js';
 import { clockUpdate, gameTimeStr, setClockSpeed, setGameTime } from '../core/GameClock.js';
 import { drawNavDebug } from '../behavior/nav/NavGrid.js';
 
-const ANIM_FILES = {
-  walk:            'base/side/walk',
-  run:             'base/side/run',
-  jog:             'base/side/jog',
-  fall:            'base/side/fall',
-  get_up:          'base/side/get_up',
-  sit_bench:       'base/side/sit_bench',
-  sit_ground:      'base/side/sit_ground',
-  lie_bench:       'base/side/lie_bench',
-  lie_ground:      'base/side/lie_ground',
-  lean_wall:       'base/side/lean_wall',
-  idle:            'base/front/idle',
-  stand:           'base/front/stand',
-  squat:           'base/front/squat',
-  bike:            'base/bike',
-  mobile:          'base/mobile',
-  mobike:          'base/mobike',
-  chess:           'variant/chess/chess',
-  chess_onlookers: 'variant/chess/chess_onlookers',
-  dogwalk:         'pet/dog_walk',
-};
 
 export class StreetScene {
   constructor(app) {
@@ -80,9 +60,15 @@ export class StreetScene {
       const r = await fetch(path);
       if (r.ok) this._json[key] = await r.json();
     };
-    const jobs = [load('scene_data', 'assets/scene.json')];
-    for (const [key, file] of Object.entries(ANIM_FILES)) jobs.push(load('anim_' + key, `assets/animations/${file}.json`));
-    for (const [key, file] of getManifestPaths()) jobs.push(load('pose_' + key, `assets/animations/${file}.json`));
+    await clipLibrary.init();
+    const animIds = new Set([
+      ...Object.values(ANIM_MAP),
+      ...Object.keys(clipLibrary.manifest?.clips ?? {}),
+    ]);
+    const jobs = [
+      load('scene_data', 'assets/scene.json'),
+      ...Array.from(animIds).map(id => clipLibrary.getClip(id)),
+    ];
     await Promise.all(jobs);
   }
 
@@ -118,11 +104,11 @@ export class StreetScene {
     sceneRenderer.drawAll();
 
     this.stickRenderer = new StickRenderer(this);
-    for (const key of Object.keys(ANIM_FILES)) {
-      this.stickRenderer.loadAnimation(key, this.cache.json.get('anim_' + key));
+    for (const [key, id] of Object.entries(ANIM_MAP)) {
+      this.stickRenderer.loadAnimation(key, clipLibrary.resolve(id));
     }
 
-    const poseCache = buildPoseCache(key => this._json['pose_' + key]);
+    const poseCache = buildPoseCache(clipLibrary);
     initWalkPaths(layout.walkPaths);
 
     this.entityManager = new EntityManager();

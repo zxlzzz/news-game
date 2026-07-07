@@ -15,7 +15,7 @@ export function initPoseCache(pc) {
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
-function getPosePhone() { return LOITER_POSES.phone || {}; }
+function getPosePhone() { return LOITER_POSES.loiter_phone || {}; }
 
 function _getMicroActionDur(npc) {
   const ov = npc._loiterOverlay;
