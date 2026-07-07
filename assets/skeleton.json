@@ -2,6 +2,22 @@
   "skeletons": {
     "human": {
       "root": "body",
+      "headRadius": 16,
+      "scale": 1.0,
+      "unit_height": 144,
+      "defaultPose": {
+        "body":    [0,    -82],
+        "neck":    [0,   -152],
+        "head":    [0,   -182],
+        "l_elbow": [-24, -122],
+        "r_elbow": [24,  -122],
+        "l_hand":  [-32,  -94],
+        "r_hand":  [32,   -94],
+        "l_knee":  [-10,  -42],
+        "r_knee":  [10,   -42],
+        "l_foot":  [-14,    0],
+        "r_foot":  [14,     0]
+      },
       "joints": {
         "neck":    { "parent": "body",    "len": 50   },
         "head":    { "parent": "neck",    "len": 25   },
@@ -13,11 +29,27 @@
         "l_foot":  { "parent": "l_knee",  "len": 35.1 },
         "r_knee":  { "parent": "body",    "len": 35.2 },
         "r_foot":  { "parent": "r_knee",  "len": 35.1 }
-      },
-      "unit_height": 144
+      }
     },
     "dog": {
       "root": "body_back",
+      "headRadius": 8,
+      "scale": 0.7,
+      "defaultPose": {
+        "body_back":  [40,   -55],
+        "body_front": [-40,  -55],
+        "neck":       [-75,  -65],
+        "head":       [-100, -75],
+        "tail":       [75,   -70],
+        "fl_upper":   [-50,  -30],
+        "fl_lower":   [-52,    0],
+        "fr_upper":   [-30,  -30],
+        "fr_lower":   [-28,    0],
+        "bl_upper":   [30,   -30],
+        "bl_lower":   [32,     0],
+        "br_upper":   [50,   -30],
+        "br_lower":   [48,     0]
+      },
       "joints": {
         "body_front": { "parent": "body_back",  "len": 50.2 },
         "neck":       { "parent": "body_front", "len": 7.2  },

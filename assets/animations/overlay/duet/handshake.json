@@ -1,0 +1,36 @@
+{
+  "id": "handshake",
+  "kind": "overlay",
+  "participants": [
+    {
+      "role": "a"
+    },
+    {
+      "role": "b"
+    }
+  ],
+  "keyframes": [
+    {
+      "a": {
+        "r_hand": [
+          40,
+          -3
+        ],
+        "r_elbow": [
+          6,
+          -2
+        ]
+      },
+      "b": {
+        "l_hand": [
+          30,
+          -3
+        ],
+        "l_elbow": [
+          15,
+          -2
+        ]
+      }
+    }
+  ]
+}

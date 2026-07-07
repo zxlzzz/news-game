@@ -194,32 +194,56 @@ function _buildHierarchy(root, joints) {
 }
 
 /**
- * 从 assets/skeleton.json 加载 human/dog 层级结构，
- * cat/child 使用内置层级定义。
- * 必须在 app.js 初始化时 await。
+ * 从 assets/skeleton.json 加载 human/dog 的层级结构、defaultPose、headRadius。
+ * cat/child 使用内置定义。必须在 app.js 初始化时 await。
+ *
+ * skeleton.json 的 defaultPose 是地面空间（脚部 y=0），
+ * 编辑器使用以 root 关节为原点的坐标系，因此加载时做平移：
+ *   editor_y = ground_y − root_ground_y
  */
 export async function initSkeletons() {
   // 先用编辑器定义初始化全部四套
   for (const [k, v] of Object.entries(_EDITOR_DATA)) {
     SKELETONS[k] = { ...v, hierarchy: { ...v.hierarchy } };
-    // deep-copy hierarchy children arrays
     for (const node of Object.values(SKELETONS[k].hierarchy)) {
       node.children = [...node.children];
     }
+    // deep-copy defaultPose
+    const dp = {};
+    for (const [j, p] of Object.entries(v.defaultPose)) dp[j] = { x: p.x, y: p.y };
+    SKELETONS[k].defaultPose = dp;
   }
 
-  // 用 skeleton.json 覆盖 human / dog 的层级
+  // 用 skeleton.json 覆盖 human / dog
   try {
     const r = await fetch('../../assets/skeleton.json');
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const data = await r.json();
     for (const [name, skData] of Object.entries(data.skeletons ?? {})) {
-      if (SKELETONS[name] && skData.root && skData.joints) {
+      if (!SKELETONS[name]) continue;
+
+      // 层级
+      if (skData.root && skData.joints) {
         SKELETONS[name].hierarchy = _buildHierarchy(skData.root, skData.joints);
+      }
+
+      // headRadius
+      if (skData.headRadius != null) SKELETONS[name].headRadius = skData.headRadius;
+
+      // defaultPose: 地面空间 → 编辑器空间（以 root 关节为 y 原点）
+      if (skData.defaultPose && skData.root) {
+        const groundPose = skData.defaultPose;
+        const rootGroundY = (groundPose[skData.root] ?? [0, 0])[1];
+        const offsetY = -rootGroundY;
+        const editorPose = {};
+        for (const [joint, coords] of Object.entries(groundPose)) {
+          editorPose[joint] = { x: coords[0], y: coords[1] + offsetY };
+        }
+        SKELETONS[name].defaultPose = editorPose;
       }
     }
   } catch (e) {
-    console.warn('[stick-puppet] skeleton.json 加载失败，使用内置层级', e.message);
+    console.warn('[stick-puppet] skeleton.json 加载失败，使用内置定义', e.message);
   }
 }
 

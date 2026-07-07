@@ -72,21 +72,17 @@ function switchSkeleton(name) {
 }
 
 // ── Keyframe 解码（新 schema → 编辑器绝对坐标）──────────────────────────────
-// base/gesture/held/sub_event：kf[j] = [dx, dy] 相对 body（body 在编辑器原点 0,0）
-// trait：kf[j] = [dx, dy] 相对 defaultPose（加性）
-function _decodeKf(kf, type) {
+// kf[j] = [dx, dy] — delta = absolute − skeleton.defaultPose
+// 解码: absolute = defaultPose + delta
+function _decodeKf(kf) {
   const sk = getSkeleton();
   const dp = sk.defaultPose;
   const pose = clonePose(dp);
   for (const [name, val] of Object.entries(kf)) {
-    if (name === 'dur' || name === 'body') continue;
+    if (name === 'dur') continue;
     if (name.startsWith('_bend_')) { pose[name] = val; continue; }
     if (!Array.isArray(val) || val.length !== 2) continue;
-    if (type === 'trait') {
-      if (dp[name]) pose[name] = { x: dp[name].x + val[0], y: dp[name].y + val[1] };
-    } else {
-      pose[name] = { x: val[0], y: val[1] };
-    }
+    if (dp[name]) pose[name] = { x: dp[name].x + val[0], y: dp[name].y + val[1] };
   }
   return pose;
 }
@@ -106,9 +102,9 @@ async function loadManifest() {
 
 function _populateBaseClipSelect() {
   const sel = document.getElementById('previewBaseSelect');
-  sel.innerHTML = '<option value="">-- 选择 base clip --</option>';
+  sel.innerHTML = '<option value="">-- 选择 cycle/transition clip --</option>';
   for (const [id, entry] of Object.entries(manifestData?.clips ?? {})) {
-    if (entry.type !== 'base') continue;
+    if (entry.kind !== 'cycle' && entry.kind !== 'transition') continue;
     const opt = document.createElement('option');
     opt.value = id;
     opt.textContent = id + (entry.facing ? ` (${entry.facing})` : '');
@@ -126,14 +122,14 @@ function filterClips() {
   if (!manifestData) return;
 
   for (const [id, entry] of Object.entries(manifestData.clips ?? {})) {
-    if (typeF && entry.type !== typeF) continue;
-    if (facingF === 'side'  && entry.facing !== 'side')  continue;
+    if (typeF && entry.kind !== typeF) continue;
+    if (facingF === 'side'  && entry.facing === 'front') continue;
     if (facingF === 'front' && entry.facing !== 'front') continue;
-    if (tagF && !id.toLowerCase().includes(tagF) && !(entry.tags ?? []).some(t => t.includes(tagF))) continue;
+    if (tagF && !id.toLowerCase().includes(tagF)) continue;
 
     const opt = document.createElement('option');
     opt.value = id;
-    opt.textContent = `[${entry.type}] ${id}` + (entry.facing ? ` (${entry.facing})` : '');
+    opt.textContent = `[${entry.kind}] ${id}` + (entry.facing ? ` (${entry.facing})` : '');
     sel.appendChild(opt);
   }
 }
@@ -164,7 +160,9 @@ async function loadClipFromBrowser() {
     }
 
     document.getElementById('clipBrowserInfo').textContent =
-      `type:${entry.type}  loop:${entry.loop}  blend:${entry.blend_mode}` +
+      `kind:${entry.kind}` +
+      (entry.skeleton ? `  skel:${entry.skeleton}` : '') +
+      (entry.variant_of ? `  variant_of:${entry.variant_of}` : '') +
       (entry.from ? `\nfrom:${entry.from}` : '') +
       (entry.to   ? `  to:${entry.to}` : '');
 
@@ -179,28 +177,22 @@ async function loadClipFromBrowser() {
 }
 
 function _loadClipData(id, meta, data) {
-  const type = meta.type;
+  const kind = meta.kind ?? (data.kind ?? 'cycle');
   history.save(frames, currentFrame);
 
-  if (type === 'held') {
-    // Held：单帧，joints 对象
-    gestureMode = false;
-    document.getElementById('gestureModeBtn').classList.remove('active-toggle');
-    document.getElementById('jointSelectPanel').style.display = 'none';
-    const joints = data.joints ?? data.frames?.[0] ?? {};
-    const pose = clonePose(getSkeleton().defaultPose);
-    for (const [name, val] of Object.entries(joints)) {
-      if (Array.isArray(val) && val.length === 2) pose[name] = { x: val[0], y: val[1] };
-    }
-    frames = [pose]; frameDurs = [0.3]; currentFrame = 0;
-    return;
+  // Switch skeleton if specified
+  const skelName = data.skeleton ?? 'human';
+  if (skelName !== getSkeleton()?.name?.toLowerCase() && SKELETONS[skelName]) {
+    setSkeleton(skelName);
+    document.getElementById('skeletonSelect').value = skelName;
+    document.getElementById('coordsPanel').dataset.built = '';
+    document.getElementById('boneLengthPanel').dataset.built = '';
   }
 
   const kfs = data.keyframes ?? [];
-  const isGesture = type === 'gesture';
-  const isTrait   = type === 'trait';
+  const isOverlay = kind === 'overlay';
 
-  if (isGesture || isTrait) {
+  if (isOverlay) {
     gestureMode = true;
     activeJoints = new Set(Array.isArray(data.activeJoints) ? data.activeJoints : []);
     document.getElementById('gestureModeBtn').classList.add('active-toggle');
@@ -212,17 +204,9 @@ function _loadClipData(id, meta, data) {
     document.getElementById('jointSelectPanel').style.display = 'none';
   }
 
-  if (data.globalBend) {
-    const sk = getSkeleton();
-    for (const [from, to] of sk.bones.map(b => [b[0], b[1]])) {
-      const key = `${from}__${to}`;
-      if (key in data.globalBend) setGlobalBend(from, to, data.globalBend[key]);
-    }
-  }
-
   frames = []; frameDurs = [];
   for (const kf of kfs) {
-    frames.push(_decodeKf(kf, type));
+    frames.push(_decodeKf(kf));
     frameDurs.push(typeof kf.dur === 'number' ? kf.dur : 0.3);
   }
   if (!frames.length) { frames = [defaultPose()]; frameDurs = [0.3]; }
@@ -243,7 +227,7 @@ async function _loadTransitionOnion(fromId, toId) {
       const kfs = data.keyframes ?? [];
       if (!kfs.length) return null;
       const kf = kfs[last ? kfs.length - 1 : 0];
-      return _decodeKf(kf, entry.type);
+      return _decodeKf(kf);
     } catch { return null; }
   }
 
@@ -273,26 +257,17 @@ async function loadPreviewBase() {
   try {
     const r = await fetch('../../assets/' + entry.path);
     const data = await r.json();
-    previewBaseDecoded = (data.keyframes ?? []).map(kf => _decodeKf(kf, 'base'));
+    previewBaseDecoded = (data.keyframes ?? []).map(kf => _decodeKf(kf));
   } catch { previewBaseDecoded = null; }
   render();
 }
 
 function _composeForPreview(base, current) {
   const dp = getSkeleton().defaultPose;
-  const bBody = base.body ?? {x: 0, y: 0};
-  const cBody = current.body ?? {x: 0, y: 0};
   const composed = {};
   for (const name of getJointNames()) {
-    const inActive = gestureMode && activeJoints.has(name);
-    if (inActive) {
-      // override: delta from body, applied on top of base body position
-      composed[name] = {
-        x: bBody.x + (current[name].x - cBody.x),
-        y: bBody.y + (current[name].y - cBody.y),
-      };
-    } else if (!gestureMode && loadedClipMeta?.type === 'trait') {
-      // additive: delta from defaultPose added to base
+    if (gestureMode && activeJoints.has(name)) {
+      // overlay: apply delta from defaultPose on top of base
       const delta = { x: current[name].x - (dp[name]?.x ?? 0), y: current[name].y - (dp[name]?.y ?? 0) };
       composed[name] = { x: (base[name]?.x ?? 0) + delta.x, y: (base[name]?.y ?? 0) + delta.y };
     } else {
@@ -388,7 +363,7 @@ function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = '#f5f0eb'; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const gy = CY + 85;
+  const gy = CY + 82;
   ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.width, gy);
   ctx.strokeStyle = '#ccc'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]);
 
@@ -956,168 +931,50 @@ function loadJSON() {
   const ta = document.getElementById('jsonInput');
   try {
     const data = JSON.parse(ta.value);
-    const type = data.type ?? 'base';
-
-    // 新 schema：有 keyframes 或 joints（held）
-    if (data.keyframes || (type === 'held' && data.joints)) {
-      loadedClipMeta = {
-        id: data.id ?? null,
-        type,
-        blend_mode:  data.blend_mode  ?? null,
-        interrupt:   data.interrupt   ?? null,
-        facing:      data.facing      ?? null,
-        variant_of:  data.variant_of  ?? null,
-        tags:        data.tags        ?? [],
-        loop:        data.loop        ?? true,
-        weight:      data.weight      ?? 1,
-        ref_speed:   data.ref_speed   ?? null,
-        events:      data.events      ?? [],
-        source:      data.source      ?? null,
-        spacing:     data.spacing     ?? undefined,
-      };
-      _loadClipData(data.id ?? '(pasted)', loadedClipMeta, data);
-      document.getElementById('framesStrip').innerHTML = '';
-      currentFrame = 0; render();
-      setInfo(`载入 ${type} clip: ${frames.length} 帧`);
-      return;
-    }
-
-    // 旧 schema：gesture 有 activeJoints
-    if (type === 'gesture') {
-      gestureMode = true;
-      activeJoints = new Set(Array.isArray(data.activeJoints) ? data.activeJoints : []);
-      document.getElementById('gestureModeBtn').classList.add('active-toggle');
-      document.getElementById('jointSelectPanel').style.display = '';
-      _buildJointCheckboxes();
-      history.save(frames, currentFrame);
-      frames = []; frameDurs = [];
-      for (const kf of (data.keyframes ?? [])) {
-        const pose = defaultPose();
-        for (const name of activeJoints) {
-          if (kf[name]) {
-            pose[name] = Array.isArray(kf[name]) ? { x: kf[name][0], y: kf[name][1] } : { x: kf[name].x, y: kf[name].y };
-          }
-        }
-        frames.push(pose); frameDurs.push(typeof kf.dur === 'number' ? kf.dur : 0.3);
-      }
-      if (!frames.length) { frames = [defaultPose()]; frameDurs = [0.3]; }
-      document.getElementById('framesStrip').innerHTML = '';
-      currentFrame = 0; render();
-      setInfo(`载入手势片段 ${frames.length} 帧`);
-      return;
-    }
-
-    // 旧 schema：有 frames 数组
-    if (!data.frames || !Array.isArray(data.frames)) { alert('需要 "frames" 或 "keyframes" 数组'); return; }
-    if (data.skeleton && SKELETONS[data.skeleton]) {
-      setSkeleton(data.skeleton);
-      document.getElementById('skeletonSelect').value = data.skeleton;
-      document.getElementById('coordsPanel').dataset.built = '';
-      document.getElementById('boneLengthPanel').dataset.built = '';
-    }
-    if (data.globalBend) {
-      const sk = getSkeleton();
-      for (const [from, to] of sk.bones.map(b => [b[0], b[1]])) {
-        const key = `${from}__${to}`;
-        if (key in data.globalBend) setGlobalBend(from, to, data.globalBend[key]);
-      }
-    }
-    history.save(frames, currentFrame);
-    frames = []; frameDurs = [];
-    for (const fd of data.frames) {
-      const pose = defaultPose();
-      for (const name of getJointNames()) {
-        if (fd[name]) {
-          if (Array.isArray(fd[name])) pose[name] = {x: fd[name][0], y: fd[name][1]};
-          else pose[name] = {x: fd[name].x, y: fd[name].y};
-        }
-      }
-      for (const k of Object.keys(fd)) { if (k.startsWith('_bend_')) pose[k] = fd[k]; }
-      frames.push(pose); frameDurs.push(0.3);
-    }
+    if (!data.kind) { alert('缺少 "kind" 字段（新 schema 格式）'); return; }
+    loadedClipMeta = {
+      id:         data.id         ?? null,
+      kind:       data.kind,
+      facing:     data.facing     ?? null,
+      skeleton:   data.skeleton   ?? null,
+      variant_of: data.variant_of ?? null,
+      from:       data.from       ?? null,
+      to:         data.to         ?? null,
+      ref_speed:  data.ref_speed  ?? null,
+    };
+    _loadClipData(data.id ?? '(pasted)', loadedClipMeta, data);
+    document.getElementById('framesStrip').innerHTML = '';
     currentFrame = 0; render();
-    setInfo(`载入 ${frames.length} 帧`);
+    setInfo(`载入 ${data.kind} clip: ${frames.length} 帧`);
   } catch (e) { alert('JSON 解析失败: ' + e.message); }
 }
 
 function exportJSON() {
   const sk = getSkeleton();
+  const dp = sk.defaultPose;
   const m = loadedClipMeta;
-
-  if (gestureMode) {
-    const isTrait = m?.type === 'trait';
-    const dp = sk.defaultPose;
-    const data = {
-      ...(m?.id != null ? { id: m.id } : {}),
-      type:        isTrait ? 'trait' : (m?.type ?? 'gesture'),
-      blend_mode:  m?.blend_mode  ?? (isTrait ? 'additive' : 'override'),
-      interrupt:   m?.interrupt   ?? 'blend',
-      facing:      m?.facing      ?? null,
-      ...(m?.variant_of != null ? { variant_of: m.variant_of } : {}),
-      tags:        m?.tags        ?? [],
-      loop:        m?.loop        ?? false,
-      weight:      m?.weight      ?? 1,
-      ref_speed:   m?.ref_speed   ?? null,
-      events:      m?.events      ?? [],
-      activeJoints: [...activeJoints],
-      ...(m?.source ? { source: m.source } : {}),
-      keyframes: frames.map((pose, i) => {
-        const bx = pose.body?.x ?? 0, by = pose.body?.y ?? 0;
-        const kf = { dur: frameDurs[i] ?? 0.3 };
-        for (const j of activeJoints) {
-          if (!pose[j]) continue;
-          if (isTrait && dp[j]) {
-            kf[j] = [Math.round(pose[j].x - dp[j].x), Math.round(pose[j].y - dp[j].y)];
-          } else {
-            kf[j] = [Math.round(pose[j].x - bx), Math.round(pose[j].y - by)];
-          }
-        }
-        return kf;
-      }),
-    };
-    _emitData(data, 'Gesture/Trait JSON');
-    return;
-  }
-
-  // base / held / sub_event
-  if (m?.type === 'held') {
-    _emitData({
-      ...(m.id != null ? { id: m.id } : {}),
-      type: 'held',
-      blend_mode: m.blend_mode ?? 'replace',
-      interrupt:  m.interrupt  ?? 'cut',
-      joints: _poseAbs(getJointNames()),
-    }, 'Held JSON');
-    return;
-  }
-
-  const globalBend = {};
-  for (const [from, to] of sk.bones.map(b => [b[0], b[1]])) {
-    const v = getGlobalBend(from, to);
-    if (v !== 0) globalBend[`${from}__${to}`] = v;
-  }
+  const kind = m?.kind ?? (gestureMode ? 'overlay' : 'cycle');
 
   const data = {
     ...(m?.id != null ? { id: m.id } : {}),
-    type:        m?.type        ?? 'base',
-    blend_mode:  m?.blend_mode  ?? 'replace',
-    interrupt:   m?.interrupt   ?? 'blend',
-    facing:      m?.facing      ?? null,
+    kind,
+    ...(m?.facing   ? { facing:     m.facing   } : {}),
+    ...(m?.skeleton && m.skeleton !== 'human' ? { skeleton: m.skeleton } : {}),
+    ...(kind === 'transition' && m?.from ? { from: m.from } : {}),
+    ...(kind === 'transition' && m?.to   ? { to:   m.to   } : {}),
+    ...(kind === 'overlay' ? { activeJoints: [...activeJoints] } : {}),
+    ...(m?.ref_speed  != null ? { ref_speed:  m.ref_speed  } : {}),
     ...(m?.variant_of != null ? { variant_of: m.variant_of } : {}),
-    tags:        m?.tags        ?? [],
-    loop:        m?.loop        ?? true,
-    weight:      m?.weight      ?? 1,
-    ref_speed:   m?.ref_speed   ?? null,
-    events:      m?.events      ?? [],
-    activeJoints: null,
-    ...(m?.source ? { source: m.source } : {}),
-    ...(Object.keys(globalBend).length ? { globalBend } : {}),
     keyframes: frames.map((pose, i) => {
-      const bx = pose.body?.x ?? 0, by = pose.body?.y ?? 0;
-      const kf = { dur: frameDurs[i] ?? 0.3 };
-      for (const name of getJointNames()) {
-        if (name === 'body') continue;
-        kf[name] = [Math.round(pose[name].x - bx), Math.round(pose[name].y - by)];
+      const kf = {};
+      const dur = frameDurs[i] ?? 0.3;
+      if (dur !== 0.3) kf.dur = dur;
+      const joints = (kind === 'overlay') ? [...activeJoints] : getJointNames();
+      for (const name of joints) {
+        if (!pose[name] || !dp[name]) continue;
+        const dx = Math.round(pose[name].x - dp[name].x);
+        const dy = Math.round(pose[name].y - dp[name].y);
+        if (dx !== 0 || dy !== 0) kf[name] = [dx, dy];
       }
       for (const k of Object.keys(pose)) {
         if (k.startsWith('_bend_')) kf[k] = Math.round(pose[k]);
@@ -1125,7 +982,6 @@ function exportJSON() {
       return kf;
     }),
   };
-  if (m?.type === 'sub_event' && 'spacing' in (m ?? {})) data.spacing = m.spacing;
   _emitData(data, 'JSON');
 }
 
@@ -1146,35 +1002,6 @@ function _emitData(obj, label) {
     () => setInfo(`${label} 已导出并复制`),
     () => setInfo(`${label} 已导出到文本框`)
   );
-}
-
-function exportHeldPose() {
-  if (getSkeleton() !== SKELETONS.human) { setInfo('Held Pose 仅支持 human 骨架'); return; }
-  _emitData({
-    type: 'held', blend_mode: 'replace', interrupt: 'cut',
-    joints: _poseAbs(getJointNames()),
-  }, 'Held Pose');
-}
-
-function exportTrait() {
-  if (getSkeleton() !== SKELETONS.human) { setInfo('Trait 仅支持 human 骨架'); return; }
-  const pose = frames[currentFrame];
-  const dp = defaultPose();
-  const activeJ = [], kf = { dur: 0.15 };
-  for (const name of getJointNames()) {
-    const dx = pose[name].x - dp[name].x;
-    const dy = pose[name].y - dp[name].y;
-    if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-      kf[name] = [Math.round(dx), Math.round(dy)];
-      activeJ.push(name);
-    }
-  }
-  _emitData({
-    type: 'trait', blend_mode: 'additive', interrupt: 'blend',
-    facing: null, activeJoints: activeJ,
-    loop: true, weight: 1, ref_speed: null, events: [],
-    keyframes: [kf],
-  }, 'Trait');
 }
 
 // ── Sprite Sheet ──────────────────────────────────────────────────────────────
@@ -1239,7 +1066,6 @@ window.app = {
   addFrame, dupFrame, delFrame, resetPose, togglePlay,
   interpolateFrames, handleImageUpload,
   loadJSON, exportJSON, exportSpriteSheet,
-  exportHeldPose, exportTrait,
   moveFrameLeft, moveFrameRight, switchSkeleton,
   toggleGestureMode,
   filterClips, loadClipFromBrowser,

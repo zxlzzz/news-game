@@ -1,0 +1,20 @@
+{
+  "id": "hunched",
+  "kind": "overlay",
+  "activeJoints": [
+    "neck",
+    "head"
+  ],
+  "keyframes": [
+    {
+      "neck": [
+        -13,
+        51
+      ],
+      "head": [
+        0,
+        59
+      ]
+    }
+  ]
+}

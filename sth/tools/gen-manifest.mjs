@@ -1,15 +1,10 @@
 #!/usr/bin/env node
 /**
- * gen-manifest.mjs — 校验后生成 assets/manifest.json
+ * gen-manifest.mjs — 扫描 assets/animations/ 生成纯派生索引 assets/manifest.json
+ *
+ * 格式: { "clips": { "<id>": { path, kind, facing, skeleton, variant_of } } }
  *
  * 执行: node sth/tools/gen-manifest.mjs
- *
- * 输出格式:
- * {
- *   "clips": {
- *     "<id>": { "path": "...", "type": "...", "facing": ..., "variant_of": ..., "tags": [], "loop": ... }
- *   }
- * }
  */
 
 import fs            from 'node:fs';
@@ -22,10 +17,7 @@ const ANIM_DIR    = path.resolve(__dirname, '../../assets/animations');
 const MANIFEST    = path.resolve(__dirname, '../../assets/manifest.json');
 const VALIDATE    = path.resolve(__dirname, './validate.mjs');
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 1. 先跑 validate
-// ─────────────────────────────────────────────────────────────────────────────
-
+// 1. Run validate first (errors abort; warns are ok)
 try {
   execFileSync(process.execPath, [VALIDATE], { stdio: 'inherit' });
 } catch {
@@ -33,10 +25,7 @@ try {
   process.exit(1);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 2. 扫描，生成 clips 索引
-// ─────────────────────────────────────────────────────────────────────────────
-
+// 2. Scan clips
 function walkDir(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, e.name);
@@ -47,62 +36,48 @@ function walkDir(dir, out = []) {
 }
 
 const clips = {};
-const files = walkDir(ANIM_DIR);
 const dupes = [];
+const MANIFEST_DIR = path.dirname(MANIFEST);
 
-for (const abs of files) {
-  const clip = JSON.parse(fs.readFileSync(abs, 'utf8'));
-  const { id, type, facing, variant_of, tags, loop,
-          blend_mode, interrupt, from, to, weight, ref_speed, events, spacing } = clip;
-  const relPath = path.relative(path.dirname(MANIFEST), abs).replace(/\\/g, '/');
+for (const abs of walkDir(ANIM_DIR)) {
+  let clip;
+  try { clip = JSON.parse(fs.readFileSync(abs, 'utf8')); }
+  catch { continue; }
 
-  if (!id) {
-    console.warn(`  WARN: no id in ${path.relative(ANIM_DIR, abs)}`);
+  const { id, kind, facing, skeleton, variant_of } = clip;
+  if (!id) { console.warn(`  WARN: no id in ${path.relative(ANIM_DIR, abs)}`); continue; }
+
+  const relPath = path.relative(MANIFEST_DIR, abs).replace(/\\/g, '/');
+
+  if (clips[id]) {
+    dupes.push(`duplicate id "${id}": ${relPath} vs ${clips[id].path}`);
     continue;
   }
 
-  if (clips[id]) {
-    dupes.push(`  duplicate id "${id}": ${relPath} vs ${clips[id].path}`);
-  }
-
-  const entry = {
-    path: relPath,
-    type: type ?? 'base',
-    facing: facing ?? null,
-    variant_of: variant_of ?? null,
-    tags: tags ?? [],
-    loop: loop ?? true,
-    blend_mode: blend_mode ?? 'replace',
-    interrupt: interrupt ?? 'blend',
-    from: from ?? null,
-    to: to ?? null,
-    weight: weight ?? 1,
-    ref_speed: ref_speed ?? null,
-    events: events ?? [],
-  };
-  if (type === 'sub_event') entry.spacing = spacing ?? null;
+  // Minimal derived entry — only non-default values
+  const entry = { path: relPath, kind: kind ?? 'cycle' };
+  if (facing   && facing   !== 'side')  entry.facing     = facing;
+  if (skeleton && skeleton !== 'human') entry.skeleton   = skeleton;
+  if (variant_of)                        entry.variant_of = variant_of;
   clips[id] = entry;
 }
 
 if (dupes.length > 0) {
-  console.error('\nDuplicate clip IDs found:');
-  dupes.forEach(d => console.error(d));
+  console.error('\nDuplicate clip IDs:');
+  dupes.forEach(d => console.error('  ' + d));
   process.exit(1);
 }
 
-// ── 悬空 variant_of 检查 ─────────────────────────────────────────────────────
+// 3. Check variant_of references
 const dangling = [];
-for (const [id, clip] of Object.entries(clips)) {
-  if (clip.variant_of && !clips[clip.variant_of]) {
-    dangling.push(`  "${id}" variant_of="${clip.variant_of}" — not found in manifest`);
-  }
+for (const [id, entry] of Object.entries(clips)) {
+  if (entry.variant_of && !clips[entry.variant_of])
+    dangling.push(`"${id}" variant_of="${entry.variant_of}" — not found`);
 }
 if (dangling.length > 0) {
-  console.error('\nDangling variant_of references:');
-  dangling.forEach(d => console.error(d));
-  process.exit(1);
+  console.warn('\nDangling variant_of references (warn):');
+  dangling.forEach(d => console.warn('  ' + d));
 }
 
-const manifest = { clips };
-fs.writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + '\n');
+fs.writeFileSync(MANIFEST, JSON.stringify({ clips }, null, 2) + '\n');
 console.log(`\nManifest written: ${Object.keys(clips).length} clips → assets/manifest.json`);

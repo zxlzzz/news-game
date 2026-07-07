@@ -1,0 +1,21 @@
+{
+  "id": "smoke",
+  "kind": "overlay",
+  "activeJoints": [
+    "r_elbow",
+    "r_hand"
+  ],
+  "latched": true,
+  "keyframes": [
+    {
+      "r_elbow": [
+        -7,
+        10
+      ],
+      "r_hand": [
+        -18,
+        -43
+      ]
+    }
+  ]
+}

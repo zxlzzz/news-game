@@ -1,0 +1,30 @@
+{
+  "id": "cross_arm",
+  "kind": "overlay",
+  "activeJoints": [
+    "l_elbow",
+    "l_hand",
+    "r_elbow",
+    "r_hand"
+  ],
+  "keyframes": [
+    {
+      "l_elbow": [
+        6,
+        21
+      ],
+      "l_hand": [
+        43,
+        -18
+      ],
+      "r_elbow": [
+        -6,
+        21
+      ],
+      "r_hand": [
+        -43,
+        -18
+      ]
+    }
+  ]
+}

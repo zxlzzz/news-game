@@ -1,0 +1,36 @@
+{
+  "id": "give_item",
+  "kind": "overlay",
+  "participants": [
+    {
+      "role": "a"
+    },
+    {
+      "role": "b"
+    }
+  ],
+  "keyframes": [
+    {
+      "a": {
+        "r_hand": [
+          50,
+          -3
+        ],
+        "r_elbow": [
+          8,
+          -3
+        ]
+      },
+      "b": {
+        "l_hand": [
+          35,
+          -3
+        ],
+        "l_elbow": [
+          20,
+          -3
+        ]
+      }
+    }
+  ]
+}

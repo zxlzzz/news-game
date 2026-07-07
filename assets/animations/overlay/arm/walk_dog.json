@@ -1,0 +1,21 @@
+{
+  "id": "walk_dog",
+  "kind": "overlay",
+  "activeJoints": [
+    "l_elbow",
+    "l_hand"
+  ],
+  "latched": true,
+  "keyframes": [
+    {
+      "l_elbow": [
+        4,
+        -12
+      ],
+      "l_hand": [
+        8,
+        13
+      ]
+    }
+  ]
+}

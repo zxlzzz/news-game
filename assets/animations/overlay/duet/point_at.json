@@ -1,0 +1,32 @@
+{
+  "id": "point_at",
+  "kind": "overlay",
+  "participants": [
+    {
+      "role": "a"
+    },
+    {
+      "role": "b"
+    }
+  ],
+  "keyframes": [
+    {
+      "a": {
+        "r_hand": [
+          60,
+          -2
+        ],
+        "r_elbow": [
+          10,
+          -4
+        ]
+      },
+      "b": {
+        "head": [
+          -5,
+          2
+        ]
+      }
+    }
+  ]
+}

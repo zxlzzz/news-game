@@ -1,0 +1,65 @@
+{
+  "id": "stall_buyer_point",
+  "kind": "overlay",
+  "activeJoints": [
+    "r_elbow",
+    "r_hand"
+  ],
+  "keyframes": [
+    {
+      "dur": 0.2,
+      "r_elbow": [
+        -12,
+        29
+      ],
+      "r_hand": [
+        -18,
+        26
+      ]
+    },
+    {
+      "dur": 0.2,
+      "r_elbow": [
+        -11,
+        23
+      ],
+      "r_hand": [
+        -13,
+        10
+      ]
+    },
+    {
+      "dur": 0.9,
+      "r_elbow": [
+        -11,
+        23
+      ],
+      "r_hand": [
+        -10,
+        9
+      ]
+    },
+    {
+      "dur": 0.2,
+      "r_elbow": [
+        -11,
+        26
+      ],
+      "r_hand": [
+        -14,
+        18
+      ]
+    },
+    {
+      "dur": 0.2,
+      "r_elbow": [
+        -12,
+        29
+      ],
+      "r_hand": [
+        -18,
+        26
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "phone_call",
+  "kind": "overlay",
+  "activeJoints": [
+    "r_elbow",
+    "r_hand"
+  ],
+  "latched": true,
+  "keyframes": [
+    {
+      "r_elbow": [
+        -8,
+        12
+      ],
+      "r_hand": [
+        -26,
+        -37
+      ]
+    }
+  ]
+}

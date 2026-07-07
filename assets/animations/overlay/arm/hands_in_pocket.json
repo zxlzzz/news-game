@@ -1,0 +1,30 @@
+{
+  "id": "hands_in_pocket",
+  "kind": "overlay",
+  "activeJoints": [
+    "l_elbow",
+    "r_elbow",
+    "l_hand",
+    "r_hand"
+  ],
+  "keyframes": [
+    {
+      "l_elbow": [
+        12,
+        35
+      ],
+      "r_elbow": [
+        -12,
+        35
+      ],
+      "l_hand": [
+        26,
+        27
+      ],
+      "r_hand": [
+        -26,
+        27
+      ]
+    }
+  ]
+}

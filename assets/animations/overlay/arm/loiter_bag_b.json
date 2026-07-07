@@ -1,0 +1,20 @@
+{
+  "id": "loiter_bag_b",
+  "kind": "overlay",
+  "activeJoints": [
+    "l_elbow",
+    "l_hand"
+  ],
+  "keyframes": [
+    {
+      "l_elbow": [
+        13,
+        26
+      ],
+      "l_hand": [
+        15,
+        12
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "idle_front",
+  "kind": "cycle",
+  "facing": "front",
+  "keyframes": [
+    {
+      "body": [
+        0,
+        0
+      ],
+      "neck": [
+        0,
+        20
+      ],
+      "head": [
+        0,
+        25
+      ],
+      "l_elbow": [
+        5,
+        13
+      ],
+      "r_elbow": [
+        -5,
+        13
+      ],
+      "l_hand": [
+        6,
+        9
+      ],
+      "r_hand": [
+        -6,
+        9
+      ],
+      "l_knee": [
+        1,
+        -6
+      ],
+      "r_knee": [
+        -1,
+        -6
+      ],
+      "l_foot": [
+        2,
+        -13
+      ],
+      "r_foot": [
+        -2,
+        -13
+      ],
+      "dur": 0.2
+    }
+  ]
+}
