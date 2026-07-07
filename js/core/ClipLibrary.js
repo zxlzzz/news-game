@@ -31,8 +31,6 @@ export const ANIM_MAP = {
   dogwalk:         'dog_walk',
 };
 
-// 这些 clip 的足部 y 可能超出地面（卧姿），用 back anchor 避免 offsetY 计算错误
-const BACK_ANCHOR_IDS = new Set(['lie_bench', 'lie_ground', 'lie_ground_older']);
 
 class ClipLibrary {
   constructor() {
@@ -74,7 +72,7 @@ class ClipLibrary {
 
   /**
    * 将 manifest clip 转换为 StickRenderer.loadAnimation 接受的格式：
-   * { frames, fps, frameCount, globalBend, skeleton, anchorMode, canonicalDirection,
+   * { frames, fps, frameCount, globalBend, skeleton, canonicalDirection,
    *   kind, activeJoints, latched, facing }
    *
    * 须在所有所需 clip 已 getClip 后调用（同步）。
@@ -123,7 +121,6 @@ class ClipLibrary {
       frameCount:         frames.length,
       globalBend:         raw.globalBend ?? {},
       skeleton:           skelName,
-      anchorMode:         BACK_ANCHOR_IDS.has(id) ? 'back' : 'foot',
       canonicalDirection: raw.canonicalDirection ?? 1,
       kind:               raw.kind,
       activeJoints:       raw.activeJoints ?? null,

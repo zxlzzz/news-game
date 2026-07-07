@@ -86,7 +86,7 @@ function _resolveTimeout(npc, envQuery, profile) {
     sitDown(npc, bench);
     return 'sit_bench';
   }
-  // lie_bench anchorMode='back'（无竖向偏移），坐→躺转换时重对齐
+  // sit_bench→lie_bench: body joint shifts laterally, realign so body maps to seatY
   if (next === 'lie_bench' && npc._bench) {
     alignLie(npc, npc.renderer);
   }
@@ -219,7 +219,7 @@ function steerRoam(npc, envQuery, profile, dt) {
       return;
     }
 
-    npc.direction = dx > 0 ? 1 : -1;
+    if (Math.abs(dx) > 2) npc.direction = dx > 0 ? 1 : -1;
     const spd = npc.walkSpeed || 26;
     nudgeXY(npc, (dx / dist) * spd * dt, (dy / dist) * spd * dt);
     return;

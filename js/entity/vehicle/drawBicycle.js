@@ -27,7 +27,7 @@ export function drawBicycle(g, n) {
 
   const crank = { x: (footL.x + footR.x) / 2, y: (footL.y + footR.y) / 2 };
   const wCy = crank.y;
-  const wR  = Math.max(14 * s, (ground - crank.y) * 1.5);
+  const wR  = Math.max(14 * s, ground - crank.y);
   const rwx = hip.x - 5 * s * d;
   const fwx = bar.x + 7 * s * d;
 

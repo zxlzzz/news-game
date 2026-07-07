@@ -81,7 +81,7 @@ export function standUp(npc) {
 
 /**
  * sit_bench → lie_bench 转换时重对齐。
- * lie_bench anchorMode='back'（无竖向偏移），需要重算 npc.x / npc.y。
+ * sit_bench→lie_bench: body joint shifts laterally, realign so body maps to seatY.
  */
 export function alignLie(npc, renderer) {
   if (!npc._bench) return;

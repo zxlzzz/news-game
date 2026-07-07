@@ -19,14 +19,13 @@
  * @returns {{ held, trait, gesture, loiter, sub_event, stall_gestures }}
  */
 export function buildPoseCache(clipLibrary) {
-  const clips    = clipLibrary.manifest?.clips ?? {};
-  const dp       = clipLibrary.skeletons?.human?.defaultPose ?? {};
-  const dpBody   = dp.body ?? [0, -82];
-  const clipIds  = new Set(Object.keys(clips));
+  const clips   = clipLibrary.manifest?.clips ?? {};
+  const dp      = clipLibrary.skeletons?.human?.defaultPose ?? {};
+  const clipIds = new Set(Object.keys(clips));
 
-  function toBodyRel(j, kfDelta) {
+  function abs(j, kfDelta) {
     const base = dp[j] ?? [0, 0];
-    return [base[0] + kfDelta[0] - dpBody[0], base[1] + kfDelta[1] - dpBody[1]];
+    return [base[0] + kfDelta[0], base[1] + kfDelta[1]];
   }
 
   function decodeHeld(rawJson) {
@@ -35,7 +34,7 @@ export function buildPoseCache(clipLibrary) {
     const joints = {};
     for (const [j, v] of Object.entries(kf0)) {
       if (j === 'dur' || !Array.isArray(v)) continue;
-      joints[j] = toBodyRel(j, v);
+      joints[j] = abs(j, v);
     }
     return { ...rawJson, joints };
   }
@@ -46,7 +45,7 @@ export function buildPoseCache(clipLibrary) {
       const out = { dur: kf.dur ?? 0.15 };
       for (const [k, v] of Object.entries(kf)) {
         if (k === 'dur' || !Array.isArray(v)) continue;
-        out[k] = toBodyRel(k, v);
+        out[k] = abs(k, v);
       }
       return out;
     })};
@@ -58,7 +57,7 @@ export function buildPoseCache(clipLibrary) {
     const out = {};
     for (const [j, v] of Object.entries(kf0)) {
       if (j === 'dur' || !Array.isArray(v)) continue;
-      out[j] = toBodyRel(j, v);
+      out[j] = abs(j, v);
     }
     return out;
   }
@@ -69,10 +68,10 @@ export function buildPoseCache(clipLibrary) {
     const roles = rawJson.participants.map(p => p.role);
     const aDelta = {}, bDelta = {};
     for (const [j, v] of Object.entries(kf0[roles[0]] ?? {})) {
-      if (Array.isArray(v)) aDelta[j] = toBodyRel(j, v);
+      if (Array.isArray(v)) aDelta[j] = abs(j, v);
     }
     for (const [j, v] of Object.entries(kf0[roles[1]] ?? {})) {
-      if (Array.isArray(v)) bDelta[j] = toBodyRel(j, v);
+      if (Array.isArray(v)) bDelta[j] = abs(j, v);
     }
     return { ...rawJson, aDelta, bDelta };
   }

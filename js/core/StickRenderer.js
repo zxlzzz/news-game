@@ -91,7 +91,6 @@ export class StickRenderer {
       frameCount: data.frames.length,
       globalBend: data.globalBend ?? {},
       skeleton:   data.skeleton   || 'human',
-      anchorMode: data.anchorMode || 'foot',
       canonicalDirection: data.canonicalDirection || 1,
     };
   }
@@ -120,10 +119,9 @@ export class StickRenderer {
   }
 
   _drawHuman(g, anim, frame, x, y, s, d, color, alpha, ov) {
-    const coord   = (j) => (ov && ov[j]) ? ov[j] : frame[j];
-    const offsetY = humanOffsetY(anim, coord, s);
+    const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
     const jx = (j) => x + coord(j)[0] * s * d;
-    const jy = (j) => y + coord(j)[1] * s + offsetY;
+    const jy = (j) => y + coord(j)[1] * s;
 
     for (const [from, to, w] of BONES) {
       const bend = getBend(from, to, frame, anim.globalBend) * s * d;
@@ -137,10 +135,9 @@ export class StickRenderer {
   }
 
   _drawDog(g, anim, frame, x, y, s, d, color, alpha, ov) {
-    const coord   = (j) => (ov && ov[j]) ? ov[j] : frame[j];
-    const offsetY = dogOffsetY(anim, coord, s);
+    const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
     const jx = (j) => x + coord(j)[0] * s * d;
-    const jy = (j) => y + coord(j)[1] * s + offsetY;
+    const jy = (j) => y + coord(j)[1] * s;
 
     for (const [from, to, w] of DOG_BONES) {
       const bend = getBend(from, to, frame, anim.globalBend) * s * d;
@@ -152,19 +149,4 @@ export class StickRenderer {
     g.drawCircle(jx('head'), jy('head'), DOG_HEAD_R * s);
     g.endFill();
   }
-}
-
-export function humanOffsetY(anim, coord, s) {
-  if (anim.anchorMode === 'hip')  return -coord('body')[1] * s;
-  if (anim.anchorMode === 'back') return 0;
-  return -Math.max(coord('l_foot')[1], coord('r_foot')[1]) * s;
-}
-
-export function dogOffsetY(anim, coord, s) {
-  if (anim.anchorMode === 'hip')  return -coord('body_back')[1] * s;
-  if (anim.anchorMode === 'back') return 0;
-  return -Math.max(
-    coord('fl_lower')[1], coord('fr_lower')[1],
-    coord('bl_lower')[1], coord('br_lower')[1]
-  ) * s;
 }
