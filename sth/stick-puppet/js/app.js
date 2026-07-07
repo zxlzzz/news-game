@@ -33,15 +33,29 @@ const history = new History();
 let manifestData = null;
 let loadedClipMeta = null;   // 当前已载入 clip 的完整 schema 元数据
 
-// 合成预览
+// 合成预览（overlay 模式）
 let previewEnabled = false;
 let previewBaseDecoded = null;  // 解码后的 base clip 帧数组
 
-// 衔接检查
+// 衔接检查（transition 模式）
 let transitionOnion = null;     // { fromFrame: pose|null, toFrame: pose|null }
 
+// Duet 模式（kind=overlay with participants）
+let duetMode = false;
+let duetRoles = [];         // [{role, skelName, offset:{x,y}, frames:[]}]
+let activeDuetRoleIdx = 0;
+let draggingRoleOffset = -1; // index of role whose offset is being dragged
+
+// Variant 模式（kind=cycle, variant_of set, no keyframes）
+let variantMode = false;
+let variantParams = { variant_of: '', amp: 1, ref_speed: null, overlay: null };
+let variantBaseDecoded = null; // decoded base clip frames for variant preview
+
+// Screen offset used during duet rendering so toScreen() accounts for role position
+let _screenOffsetX = 0, _screenOffsetY = 0;
+
 // ── 工具函数 ──────────────────────────────────────────────────────────────────
-function toScreen(j) { return {x: CX + j.x, y: CY + j.y}; }
+function toScreen(j) { return {x: CX + j.x + _screenOffsetX, y: CY + j.y + _screenOffsetY}; }
 
 function getMousePos(e) {
   const r = canvas.getBoundingClientRect();
@@ -64,6 +78,9 @@ function switchSkeleton(name) {
   loadedClipMeta = null;
   previewBaseDecoded = null;
   transitionOnion = null;
+  duetMode = false; duetRoles = [];
+  variantMode = false;
+  _screenOffsetX = 0; _screenOffsetY = 0;
   document.getElementById('coordsPanel').dataset.built = '';
   document.getElementById('boneLengthPanel').dataset.built = '';
   document.getElementById('transitionSection').style.display = 'none';
@@ -122,14 +139,16 @@ function filterClips() {
   if (!manifestData) return;
 
   for (const [id, entry] of Object.entries(manifestData.clips ?? {})) {
-    if (typeF && entry.kind !== typeF) continue;
+    const effectiveKind = entry.variant_of ? 'variant' : entry.kind;
+    if (typeF === 'variant' && !entry.variant_of) continue;
+    if (typeF && typeF !== 'variant' && entry.kind !== typeF) continue;
     if (facingF === 'side'  && entry.facing === 'front') continue;
     if (facingF === 'front' && entry.facing !== 'front') continue;
     if (tagF && !id.toLowerCase().includes(tagF)) continue;
 
     const opt = document.createElement('option');
     opt.value = id;
-    opt.textContent = `[${entry.kind}] ${id}` + (entry.facing ? ` (${entry.facing})` : '');
+    opt.textContent = `[${effectiveKind}] ${id}` + (entry.facing ? ` (${entry.facing})` : '');
     sel.appendChild(opt);
   }
 }
@@ -151,20 +170,19 @@ async function loadClipFromBrowser() {
     loadedClipMeta = { id: clipId, ...entry };
     _loadClipData(clipId, entry, data);
 
-    // 衔接检查：加载 from/to clip 的边界帧
-    if (entry.from || entry.to) {
+    // 衔接检查：transition clip 加载 from/to 边界帧
+    if (entry.kind === 'transition') {
       await _loadTransitionOnion(entry.from ?? null, entry.to ?? null);
     } else {
       transitionOnion = null;
-      document.getElementById('transitionSection').style.display = 'none';
     }
 
-    document.getElementById('clipBrowserInfo').textContent =
-      `kind:${entry.kind}` +
-      (entry.skeleton ? `  skel:${entry.skeleton}` : '') +
-      (entry.variant_of ? `  variant_of:${entry.variant_of}` : '') +
-      (entry.from ? `\nfrom:${entry.from}` : '') +
-      (entry.to   ? `  to:${entry.to}` : '');
+    const info = [`kind:${entry.kind}`];
+    if (entry.skeleton) info.push(`skel:${entry.skeleton}`);
+    if (entry.variant_of) info.push(`variant_of:${entry.variant_of}`);
+    if (entry.from) info.push(`from:${entry.from}`);
+    if (entry.to)   info.push(`to:${entry.to}`);
+    document.getElementById('clipBrowserInfo').textContent = info.join('  ');
 
     document.getElementById('framesStrip').innerHTML = '';
     currentFrame = 0;
@@ -180,9 +198,18 @@ function _loadClipData(id, meta, data) {
   const kind = meta.kind ?? (data.kind ?? 'cycle');
   history.save(frames, currentFrame);
 
+  // Reset mode flags
+  duetMode = false;
+  duetRoles = [];
+  variantMode = false;
+  variantParams = { variant_of: '', amp: 1, ref_speed: null, overlay: null };
+  variantBaseDecoded = null;
+  _screenOffsetX = 0; _screenOffsetY = 0;
+  _hideAllModePanels();
+
   // Switch skeleton if specified
   const skelName = data.skeleton ?? 'human';
-  if (skelName !== getSkeleton()?.name?.toLowerCase() && SKELETONS[skelName]) {
+  if (SKELETONS[skelName]) {
     setSkeleton(skelName);
     document.getElementById('skeletonSelect').value = skelName;
     document.getElementById('coordsPanel').dataset.built = '';
@@ -190,7 +217,24 @@ function _loadClipData(id, meta, data) {
   }
 
   const kfs = data.keyframes ?? [];
-  const isOverlay = kind === 'overlay';
+  const isDuet = kind === 'overlay' && Array.isArray(data.participants) && data.participants.length > 0
+    && kfs.length > 0 && _isRoleGrouped(kfs);
+  const isVariant = (kind === 'cycle' || !kind) && data.variant_of && !kfs.length;
+  const isOverlay = kind === 'overlay' && !isDuet;
+
+  gestureMode = false;
+  document.getElementById('gestureModeBtn').classList.remove('active-toggle');
+  document.getElementById('jointSelectPanel').style.display = 'none';
+
+  if (isDuet) {
+    _enterDuetMode(data);
+    return;
+  }
+
+  if (isVariant) {
+    _enterVariantMode(data);
+    return;
+  }
 
   if (isOverlay) {
     gestureMode = true;
@@ -198,10 +242,6 @@ function _loadClipData(id, meta, data) {
     document.getElementById('gestureModeBtn').classList.add('active-toggle');
     document.getElementById('jointSelectPanel').style.display = '';
     _buildJointCheckboxes();
-  } else {
-    gestureMode = false;
-    document.getElementById('gestureModeBtn').classList.remove('active-toggle');
-    document.getElementById('jointSelectPanel').style.display = 'none';
   }
 
   frames = []; frameDurs = [];
@@ -211,6 +251,163 @@ function _loadClipData(id, meta, data) {
   }
   if (!frames.length) { frames = [defaultPose()]; frameDurs = [0.3]; }
   currentFrame = 0;
+}
+
+function _isRoleGrouped(kfs) {
+  if (!kfs.length) return false;
+  return Object.keys(kfs[0]).every(k => {
+    if (k === 'dur') return true;
+    const v = kfs[0][k];
+    return typeof v === 'object' && v !== null && !Array.isArray(v);
+  });
+}
+
+function _hideAllModePanels() {
+  document.getElementById('duetPanel').style.display = 'none';
+  document.getElementById('variantPanel').style.display = 'none';
+  document.getElementById('transitionSection').style.display = 'none';
+}
+
+function _enterDuetMode(data) {
+  duetMode = true;
+  const participants = data.participants;
+  duetRoles = participants.map(p => ({
+    role: p.role,
+    skelName: p.skeleton ?? 'human',
+    offset: { x: 0, y: 0 },
+    frames: [],
+  }));
+  // Default horizontal spread: role 0 at -80, role 1 at +80
+  if (duetRoles.length >= 2) {
+    duetRoles[0].offset = { x: -80, y: 0 };
+    duetRoles[1].offset = { x: 80, y: 0 };
+  }
+  // Decode frames per role
+  const kfs = data.keyframes ?? [];
+  frameDurs = [];
+  for (const kf of kfs) {
+    frameDurs.push(typeof kf.dur === 'number' ? kf.dur : 0.3);
+  }
+  for (const roleInfo of duetRoles) {
+    const sk = SKELETONS[roleInfo.skelName] ?? getSkeleton();
+    roleInfo.frames = kfs.map(kf => _decodeKfForSkel(kf[roleInfo.role] ?? {}, roleInfo.skelName));
+  }
+  activeDuetRoleIdx = 0;
+  _applyActiveDuetRole();
+  _buildDuetRoleButtons();
+  document.getElementById('duetPanel').style.display = '';
+}
+
+function _applyActiveDuetRole() {
+  const role = duetRoles[activeDuetRoleIdx];
+  if (!SKELETONS[role.skelName]) return;
+  setSkeleton(role.skelName);
+  document.getElementById('skeletonSelect').value = role.skelName;
+  document.getElementById('coordsPanel').dataset.built = '';
+  document.getElementById('boneLengthPanel').dataset.built = '';
+  frames = role.frames;
+  _screenOffsetX = role.offset.x;
+  _screenOffsetY = role.offset.y;
+  currentFrame = Math.min(currentFrame, frames.length - 1);
+}
+
+function _buildDuetRoleButtons() {
+  const container = document.getElementById('duetRoleButtons');
+  container.innerHTML = '';
+  for (let i = 0; i < duetRoles.length; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = `[${duetRoles[i].role}] ${duetRoles[i].skelName}`;
+    btn.className = i === activeDuetRoleIdx ? 'active-toggle' : '';
+    btn.style.flex = '1';
+    const idx = i;
+    btn.onclick = () => {
+      duetRoles[activeDuetRoleIdx].frames = frames; // save current edits
+      activeDuetRoleIdx = idx;
+      _applyActiveDuetRole();
+      _buildDuetRoleButtons();
+      render();
+    };
+    container.appendChild(btn);
+  }
+}
+
+function _decodeKfForSkel(kf, skelName) {
+  const sk = SKELETONS[skelName] ?? getSkeleton();
+  const dp = sk.defaultPose;
+  const pose = {};
+  for (const [j, p] of Object.entries(dp)) pose[j] = { x: p.x, y: p.y };
+  for (const [name, val] of Object.entries(kf)) {
+    if (name === 'dur') continue;
+    if (name.startsWith('_bend_')) { pose[name] = val; continue; }
+    if (!Array.isArray(val) || val.length !== 2) continue;
+    if (dp[name]) pose[name] = { x: dp[name].x + val[0], y: dp[name].y + val[1] };
+  }
+  return pose;
+}
+
+function _encodeKfForSkel(pose, skelName) {
+  const sk = SKELETONS[skelName] ?? getSkeleton();
+  const dp = sk.defaultPose;
+  const kf = {};
+  for (const [j, p] of Object.entries(pose)) {
+    if (!dp[j]) continue;
+    const dx = Math.round(p.x - dp[j].x);
+    const dy = Math.round(p.y - dp[j].y);
+    if (dx !== 0 || dy !== 0) kf[j] = [dx, dy];
+  }
+  for (const k of Object.keys(pose)) {
+    if (k.startsWith('_bend_')) kf[k] = Math.round(pose[k]);
+  }
+  return kf;
+}
+
+function _enterVariantMode(data) {
+  variantMode = true;
+  variantParams = {
+    variant_of: data.variant_of ?? '',
+    amp: data.amp ?? 1,
+    ref_speed: data.ref_speed ?? null,
+    overlay: data.overlay ?? null,
+  };
+  frames = [defaultPose()]; frameDurs = [0.3]; currentFrame = 0;
+  _buildVariantPanel();
+  document.getElementById('variantPanel').style.display = '';
+  _loadVariantPreview();
+}
+
+function _buildVariantPanel() {
+  const sel = document.getElementById('variantOfSelect');
+  sel.innerHTML = '<option value="">-- 选择 base --</option>';
+  for (const [cid, entry] of Object.entries(manifestData?.clips ?? {})) {
+    if (entry.kind !== 'cycle' || entry.variant_of) continue;
+    const opt = document.createElement('option');
+    opt.value = cid;
+    opt.textContent = cid;
+    if (cid === variantParams.variant_of) opt.selected = true;
+    sel.appendChild(opt);
+  }
+  document.getElementById('variantAmp').value = variantParams.amp ?? 1;
+  const rs = variantParams.ref_speed;
+  document.getElementById('variantRefSpeed').value = rs != null ? rs : '';
+  document.getElementById('variantOverlay').value = variantParams.overlay ?? '';
+}
+
+async function _loadVariantPreview() {
+  const baseId = variantParams.variant_of;
+  if (!baseId || !manifestData?.clips?.[baseId]) { variantBaseDecoded = null; render(); return; }
+  const entry = manifestData.clips[baseId];
+  try {
+    const r = await fetch('../../assets/' + entry.path);
+    const data = await r.json();
+    variantBaseDecoded = (data.keyframes ?? []).map(kf => _decodeKf(kf));
+  } catch { variantBaseDecoded = null; }
+  render();
+}
+
+function updateVariantParam(key, value) {
+  variantParams[key] = value;
+  if (key === 'variant_of') _loadVariantPreview();
+  else render();
 }
 
 // ── 衔接检查（from/to clip 边界帧作洋葱皮）────────────────────────────────────
@@ -234,12 +431,33 @@ async function _loadTransitionOnion(fromId, toId) {
   if (fromId) transitionOnion.fromFrame = await _fetchBoundaryFrame(fromId, true);
   if (toId)   transitionOnion.toFrame   = await _fetchBoundaryFrame(toId, false);
 
-  const hasOnion = transitionOnion.fromFrame || transitionOnion.toFrame;
-  const info = [];
-  if (fromId) info.push(`from: ${fromId}`);
-  if (toId)   info.push(`to: ${toId}`);
-  document.getElementById('transitionInfo').textContent = info.join('  ');
-  document.getElementById('transitionSection').style.display = hasOnion ? '' : 'none';
+  document.getElementById('transitionSection').style.display = '';
+  _populateTransitionSelects(fromId, toId);
+  render();
+}
+
+function _populateTransitionSelects(fromId, toId) {
+  const fromSel = document.getElementById('transFromSelect');
+  const toSel   = document.getElementById('transToSelect');
+  [fromSel, toSel].forEach(sel => {
+    sel.innerHTML = '<option value="">-- 无 --</option>';
+    for (const [cid, entry] of Object.entries(manifestData?.clips ?? {})) {
+      if (entry.kind !== 'cycle') continue;
+      const opt = document.createElement('option');
+      opt.value = cid;
+      opt.textContent = cid;
+      sel.appendChild(opt);
+    }
+  });
+  fromSel.value = fromId ?? '';
+  toSel.value   = toId   ?? '';
+}
+
+async function setTransitionRef(side, clipId) {
+  if (!loadedClipMeta) return;
+  if (side === 'from') loadedClipMeta.from = clipId || null;
+  else                 loadedClipMeta.to   = clipId || null;
+  await _loadTransitionOnion(loadedClipMeta.from, loadedClipMeta.to);
 }
 
 // ── 合成预览 ──────────────────────────────────────────────────────────────────
@@ -291,8 +509,8 @@ function drawBone(ax, ay, bx, by, bend, w, color) {
   ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap = 'round'; ctx.stroke();
 }
 
-function drawFigure(pose, alpha=1, color='#1a1a1a', jColor='#e63322', showBendHandles=false) {
-  const sk = getSkeleton();
+function drawFigure(pose, alpha=1, color='#1a1a1a', jColor='#e63322', showBendHandles=false, sk=null) {
+  sk = sk ?? getSkeleton();
   ctx.globalAlpha = alpha;
   for (const [from, to, w] of sk.bones) {
     if (!pose[from] || !pose[to]) continue;
@@ -372,31 +590,87 @@ function render() {
   ctx.moveTo(CX, CY - 8); ctx.lineTo(CX, CY + 8);
   ctx.strokeStyle = '#ddd'; ctx.lineWidth = 1; ctx.stroke();
 
-  const cur = frames[currentFrame];
-
-  // 洋葱皮（前一帧）
-  if (document.getElementById('onionSkin').checked && currentFrame > 0)
-    drawFigure(frames[currentFrame - 1], 0.2, '#aaaacc', '#aaaacc', false);
-
-  // 衔接检查洋葱皮
-  if (transitionOnion) {
-    if (currentFrame === 0 && transitionOnion.fromFrame) {
-      drawFigure(transitionOnion.fromFrame, 0.3, '#884422', '#884422', false);
-      drawFigure(cur, 1, '#1a1a1a', '#e63322', true);
-      _drawTransitionDeviations(transitionOnion.fromFrame, cur);
-    } else if (currentFrame === frames.length - 1 && transitionOnion.toFrame) {
-      drawFigure(transitionOnion.toFrame, 0.3, '#884422', '#884422', false);
-      drawFigure(cur, 1, '#1a1a1a', '#e63322', true);
-      _drawTransitionDeviations(transitionOnion.toFrame, cur);
+  if (duetMode) {
+    _renderDuet();
+  } else if (variantMode) {
+    _renderVariant();
+  } else {
+    const cur = frames[currentFrame];
+    // 洋葱皮（前一帧）
+    if (document.getElementById('onionSkin').checked && currentFrame > 0)
+      drawFigure(frames[currentFrame - 1], 0.2, '#aaaacc', '#aaaacc', false);
+    // 衔接检查洋葱皮
+    if (transitionOnion) {
+      if (currentFrame === 0 && transitionOnion.fromFrame) {
+        drawFigure(transitionOnion.fromFrame, 0.3, '#884422', '#884422', false);
+        drawFigure(cur, 1, '#1a1a1a', '#e63322', true);
+        _drawTransitionDeviations(transitionOnion.fromFrame, cur);
+      } else if (currentFrame === frames.length - 1 && transitionOnion.toFrame) {
+        drawFigure(transitionOnion.toFrame, 0.3, '#884422', '#884422', false);
+        drawFigure(cur, 1, '#1a1a1a', '#e63322', true);
+        _drawTransitionDeviations(transitionOnion.toFrame, cur);
+      } else {
+        _renderCurrentOrComposed(cur);
+      }
     } else {
       _renderCurrentOrComposed(cur);
     }
-  } else {
-    _renderCurrentOrComposed(cur);
   }
 
   updateCoordsDisplay();
   updateTimeline();
+}
+
+function _renderDuet() {
+  const onion = document.getElementById('onionSkin').checked;
+  for (let i = 0; i < duetRoles.length; i++) {
+    const role = duetRoles[i];
+    const sk = SKELETONS[role.skelName] ?? getSkeleton();
+    const isActive = i === activeDuetRoleIdx;
+    const roleFrames = isActive ? frames : role.frames;
+    const pose = roleFrames[currentFrame] ?? roleFrames[0];
+    if (!pose) continue;
+    _screenOffsetX = role.offset.x;
+    _screenOffsetY = role.offset.y;
+    if (onion && currentFrame > 0 && isActive) {
+      const prev = roleFrames[currentFrame - 1];
+      if (prev) drawFigure(prev, 0.2, '#aaaacc', '#aaaacc', false, sk);
+    }
+    drawFigure(pose, isActive ? 1 : 0.35, isActive ? '#1a1a1a' : '#6666aa',
+               isActive ? '#e63322' : '#aaaaee', isActive, sk);
+    // position handle for inactive roles
+    if (!isActive) {
+      const body = pose[sk.root] ?? Object.values(pose)[0];
+      if (body) {
+        const p = toScreen(body);
+        ctx.beginPath(); ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(100,100,200,0.4)';
+        ctx.fill();
+        ctx.strokeStyle = '#6666aa'; ctx.lineWidth = 1.5; ctx.stroke();
+      }
+    }
+  }
+  _screenOffsetX = duetRoles[activeDuetRoleIdx]?.offset.x ?? 0;
+  _screenOffsetY = duetRoles[activeDuetRoleIdx]?.offset.y ?? 0;
+}
+
+function _renderVariant() {
+  if (!variantBaseDecoded?.length) {
+    drawFigure(defaultPose(), 0.3, '#999', '#999', false);
+    return;
+  }
+  const amp = variantParams.amp ?? 1;
+  const baseFrame = variantBaseDecoded[currentFrame % variantBaseDecoded.length];
+  drawFigure(baseFrame, 0.3, '#2244aa', '#2244aa', false);
+  // scaled version
+  const dp = getSkeleton().defaultPose;
+  const scaled = {};
+  for (const [j, p] of Object.entries(baseFrame)) {
+    const dpj = dp[j];
+    if (!dpj) { scaled[j] = p; continue; }
+    scaled[j] = { x: dpj.x + (p.x - dpj.x) * amp, y: dpj.y + (p.y - dpj.y) * amp };
+  }
+  drawFigure(scaled, 1, '#aa5500', '#ff7700', false);
 }
 
 function _renderCurrentOrComposed(cur) {
@@ -627,6 +901,29 @@ function updateTimeline() {
 canvas.addEventListener('mousedown', (e) => {
   if (playing) return;
   const {x, y} = getMousePos(e);
+  draggingRoleOffset = -1;
+
+  // In duet mode: check inactive role position handles first
+  if (duetMode) {
+    for (let i = 0; i < duetRoles.length; i++) {
+      if (i === activeDuetRoleIdx) continue;
+      const role = duetRoles[i];
+      const roleFrames = role.frames;
+      const rpose = roleFrames[currentFrame] ?? roleFrames[0];
+      if (!rpose) continue;
+      const rsk = SKELETONS[role.skelName] ?? getSkeleton();
+      const body = rpose[rsk.root] ?? Object.values(rpose)[0];
+      if (!body) continue;
+      const px = CX + body.x + role.offset.x, py = CY + body.y + role.offset.y;
+      if (Math.hypot(x - px, y - py) <= GRAB_RADIUS + 4) {
+        draggingRoleOffset = i;
+        dragStarted = false;
+        setInfo(`调整 ${role.role} 位置`);
+        return;
+      }
+    }
+  }
+
   const bendHit = e.altKey ? findBendHandleAt(x, y) : null;
   if (bendHit) { dragging = bendHit; dragStarted = false; setInfo(`调整弯曲: ${bendHit.replace('_bend_','').replace('__','→')}`); return; }
   dragging = findJointAt(x, y);
@@ -635,11 +932,24 @@ canvas.addEventListener('mousedown', (e) => {
 });
 
 canvas.addEventListener('mousemove', (e) => {
-  if (!dragging) return;
-  if (!dragStarted) { history.save(frames, currentFrame); dragStarted = true; }
+  if (draggingRoleOffset < 0 && !dragging) return;
   const {x, y} = getMousePos(e);
+
+  // Duet: dragging an inactive role's position handle
+  if (draggingRoleOffset >= 0) {
+    const role = duetRoles[draggingRoleOffset];
+    const rpose = (role.frames[currentFrame] ?? role.frames[0]);
+    const rsk = SKELETONS[role.skelName] ?? getSkeleton();
+    const body = rpose?.[rsk.root] ?? (rpose ? Object.values(rpose)[0] : null);
+    if (body) { role.offset.x = x - CX - body.x; role.offset.y = y - CY - body.y; }
+    render(); return;
+  }
+
+  if (!dragStarted) { history.save(frames, currentFrame); dragStarted = true; }
   const pose = frames[currentFrame];
   const sk = getSkeleton();
+  // Pose space: subtract screen offset so coordinates stay in role-local space
+  const lx = x - _screenOffsetX, ly = y - _screenOffsetY;
 
   if (dragging.startsWith('_bend_')) {
     const [from, to] = dragging.slice('_bend_'.length).split('__');
@@ -653,13 +963,13 @@ canvas.addEventListener('mousemove', (e) => {
 
   const parentName = sk.hierarchy[dragging]?.parent;
   if (!parentName) {
-    const dx = (x - CX) - pose[dragging].x, dy = (y - CY) - pose[dragging].y;
+    const dx = (lx - CX) - pose[dragging].x, dy = (ly - CY) - pose[dragging].y;
     for (const n of getJointNames()) { if (pose[n]) { pose[n].x += dx; pose[n].y += dy; } }
   } else if (boneLocked) {
     const parent = pose[parentName];
     const boneLen = Math.hypot(pose[dragging].x - parent.x, pose[dragging].y - parent.y);
     const oldAngle = Math.atan2(pose[dragging].y - parent.y, pose[dragging].x - parent.x);
-    const newAngle = Math.atan2((y - CY) - parent.y, (x - CX) - parent.x);
+    const newAngle = Math.atan2((ly - CY) - parent.y, (lx - CX) - parent.x);
     const angleDiff = newAngle - oldAngle;
     pose[dragging].x = parent.x + boneLen * Math.cos(newAngle);
     pose[dragging].y = parent.y + boneLen * Math.sin(newAngle);
@@ -670,7 +980,7 @@ canvas.addEventListener('mousemove', (e) => {
       pose[desc].y = parent.y + r * Math.sin(a);
     }
   } else {
-    const newX = x - CX, newY = y - CY;
+    const newX = lx - CX, newY = ly - CY;
     const dx = newX - pose[dragging].x, dy = newY - pose[dragging].y;
     pose[dragging].x = newX; pose[dragging].y = newY;
     for (const desc of getDescendants(dragging)) { pose[desc].x += dx; pose[desc].y += dy; }
@@ -678,8 +988,8 @@ canvas.addEventListener('mousemove', (e) => {
   render();
 });
 
-canvas.addEventListener('mouseup', () => { dragging = null; setInfo('拖动红色关节点摆姿势'); render(); });
-canvas.addEventListener('mouseleave', () => { dragging = null; render(); });
+canvas.addEventListener('mouseup', () => { dragging = null; draggingRoleOffset = -1; setInfo('拖动红色关节点摆姿势'); render(); });
+canvas.addEventListener('mouseleave', () => { dragging = null; draggingRoleOffset = -1; render(); });
 
 // ── 撤销 / 重做 ────────────────────────────────────────────────────────────────
 function applySnapshot(snap) {
@@ -950,11 +1260,57 @@ function loadJSON() {
 }
 
 function exportJSON() {
-  const sk = getSkeleton();
-  const dp = sk.defaultPose;
   const m = loadedClipMeta;
   const kind = m?.kind ?? (gestureMode ? 'overlay' : 'cycle');
 
+  // Variant: parameter-only clip, no keyframes
+  if (variantMode) {
+    const data = {
+      ...(m?.id != null ? { id: m.id } : {}),
+      kind: 'cycle',
+      ...(m?.facing   ? { facing: m.facing } : {}),
+      ...(m?.skeleton && m.skeleton !== 'human' ? { skeleton: m.skeleton } : {}),
+      ...(variantParams.variant_of ? { variant_of: variantParams.variant_of } : {}),
+      ...(variantParams.amp !== 1   ? { amp: variantParams.amp } : {}),
+      ...(variantParams.ref_speed != null ? { ref_speed: variantParams.ref_speed } : {}),
+      ...(variantParams.overlay     ? { overlay: variantParams.overlay } : {}),
+    };
+    _emitData(data, 'JSON'); return;
+  }
+
+  // Duet: role-grouped keyframes
+  if (duetMode) {
+    const numFrames = Math.max(...duetRoles.map(r => r.frames.length), 1);
+    // Sync active role's latest edits back
+    duetRoles[activeDuetRoleIdx].frames = frames;
+    const keyframes = [];
+    for (let i = 0; i < numFrames; i++) {
+      const kf = {};
+      const dur = frameDurs[i] ?? 0.3;
+      if (dur !== 0.3) kf.dur = dur;
+      for (const roleInfo of duetRoles) {
+        const pose = roleInfo.frames[i] ?? roleInfo.frames[roleInfo.frames.length - 1];
+        if (!pose) continue;
+        kf[roleInfo.role] = _encodeKfForSkel(pose, roleInfo.skelName);
+      }
+      keyframes.push(kf);
+    }
+    const data = {
+      ...(m?.id != null ? { id: m.id } : {}),
+      kind: 'overlay',
+      ...(m?.facing ? { facing: m.facing } : {}),
+      participants: duetRoles.map(r => ({
+        role: r.role,
+        ...(r.skelName !== 'human' ? { skeleton: r.skelName } : {}),
+      })),
+      keyframes,
+    };
+    _emitData(data, 'JSON'); return;
+  }
+
+  // Normal single-skeleton clip
+  const sk = getSkeleton();
+  const dp = sk.defaultPose;
   const data = {
     ...(m?.id != null ? { id: m.id } : {}),
     kind,
@@ -962,14 +1318,14 @@ function exportJSON() {
     ...(m?.skeleton && m.skeleton !== 'human' ? { skeleton: m.skeleton } : {}),
     ...(kind === 'transition' && m?.from ? { from: m.from } : {}),
     ...(kind === 'transition' && m?.to   ? { to:   m.to   } : {}),
-    ...(kind === 'overlay' ? { activeJoints: [...activeJoints] } : {}),
+    ...(kind === 'overlay' && activeJoints.size > 0 ? { activeJoints: [...activeJoints] } : {}),
     ...(m?.ref_speed  != null ? { ref_speed:  m.ref_speed  } : {}),
     ...(m?.variant_of != null ? { variant_of: m.variant_of } : {}),
     keyframes: frames.map((pose, i) => {
       const kf = {};
       const dur = frameDurs[i] ?? 0.3;
       if (dur !== 0.3) kf.dur = dur;
-      const joints = (kind === 'overlay') ? [...activeJoints] : getJointNames();
+      const joints = (kind === 'overlay' && activeJoints.size > 0) ? [...activeJoints] : getJointNames();
       for (const name of joints) {
         if (!pose[name] || !dp[name]) continue;
         const dx = Math.round(pose[name].x - dp[name].x);
@@ -1070,6 +1426,7 @@ window.app = {
   toggleGestureMode,
   filterClips, loadClipFromBrowser,
   togglePreview, loadPreviewBase,
+  setTransitionRef, updateVariantParam,
 };
 
 // ── 初始化 ────────────────────────────────────────────────────────────────────

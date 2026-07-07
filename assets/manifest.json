@@ -1,274 +1,269 @@
 {
   "clips": {
     "bike": {
-      "path": "animations/cycle/locomotion/bike.json",
-      "kind": "cycle"
-    },
-    "dog_walk": {
-      "path": "animations/cycle/locomotion/dog_walk.json",
-      "kind": "cycle",
-      "skeleton": "dog"
-    },
-    "jog": {
-      "path": "animations/cycle/locomotion/jog.json",
-      "kind": "cycle"
-    },
-    "mobike": {
-      "path": "animations/cycle/locomotion/mobike.json",
-      "kind": "cycle"
-    },
-    "run": {
-      "path": "animations/cycle/locomotion/run.json",
-      "kind": "cycle"
-    },
-    "walk": {
-      "path": "animations/cycle/locomotion/walk.json",
-      "kind": "cycle"
-    },
-    "walk_front": {
-      "path": "animations/cycle/locomotion/walk_front.json",
-      "kind": "cycle",
-      "facing": "front"
-    },
-    "mobile": {
-      "path": "animations/cycle/loiter/mobile.json",
+      "path": "animations/cycle/bike.json",
       "kind": "cycle"
     },
     "chess": {
-      "path": "animations/cycle/social/chess.json",
+      "path": "animations/cycle/chess.json",
       "kind": "cycle"
     },
     "chess_onlookers": {
-      "path": "animations/cycle/social/chess_onlookers.json",
+      "path": "animations/cycle/chess_onlookers.json",
       "kind": "cycle"
     },
     "dog_idle": {
-      "path": "animations/cycle/stance/dog_idle.json",
+      "path": "animations/cycle/dog_idle.json",
+      "kind": "cycle",
+      "skeleton": "dog"
+    },
+    "dog_walk": {
+      "path": "animations/cycle/dog_walk.json",
       "kind": "cycle",
       "skeleton": "dog"
     },
     "idle_front": {
-      "path": "animations/cycle/stance/idle_front.json",
+      "path": "animations/cycle/idle_front.json",
       "kind": "cycle",
       "facing": "front"
     },
+    "jog": {
+      "path": "animations/cycle/jog.json",
+      "kind": "cycle"
+    },
     "lean_wall": {
-      "path": "animations/cycle/stance/lean_wall.json",
+      "path": "animations/cycle/lean_wall.json",
       "kind": "cycle"
     },
     "lie_bench": {
-      "path": "animations/cycle/stance/lie_bench.json",
+      "path": "animations/cycle/lie_bench.json",
       "kind": "cycle"
     },
     "lie_ground": {
-      "path": "animations/cycle/stance/lie_ground.json",
+      "path": "animations/cycle/lie_ground.json",
+      "kind": "cycle"
+    },
+    "loiter_bag_a": {
+      "path": "animations/cycle/loiter_bag_a.json",
+      "kind": "cycle"
+    },
+    "loiter_bag_b": {
+      "path": "animations/cycle/loiter_bag_b.json",
+      "kind": "cycle"
+    },
+    "loiter_phone": {
+      "path": "animations/cycle/loiter_phone.json",
+      "kind": "cycle"
+    },
+    "mobike": {
+      "path": "animations/cycle/mobike.json",
+      "kind": "cycle"
+    },
+    "mobile": {
+      "path": "animations/cycle/mobile.json",
+      "kind": "cycle"
+    },
+    "run": {
+      "path": "animations/cycle/run.json",
       "kind": "cycle"
     },
     "sit_bench": {
-      "path": "animations/cycle/stance/sit_bench.json",
+      "path": "animations/cycle/sit_bench.json",
       "kind": "cycle"
     },
     "sit_ground": {
-      "path": "animations/cycle/stance/sit_ground.json",
+      "path": "animations/cycle/sit_ground.json",
       "kind": "cycle"
     },
     "squat_front": {
-      "path": "animations/cycle/stance/squat_front.json",
+      "path": "animations/cycle/squat_front.json",
       "kind": "cycle",
       "facing": "front"
     },
     "stand_front": {
-      "path": "animations/cycle/stance/stand_front.json",
+      "path": "animations/cycle/stand_front.json",
+      "kind": "cycle",
+      "facing": "front"
+    },
+    "walk": {
+      "path": "animations/cycle/walk.json",
+      "kind": "cycle"
+    },
+    "walk_front": {
+      "path": "animations/cycle/walk_front.json",
       "kind": "cycle",
       "facing": "front"
     },
     "adjust_clothes": {
-      "path": "animations/overlay/arm/adjust_clothes.json",
+      "path": "animations/overlay/adjust_clothes.json",
       "kind": "overlay"
     },
     "check_watch": {
-      "path": "animations/overlay/arm/check_watch.json",
+      "path": "animations/overlay/check_watch.json",
       "kind": "overlay"
     },
     "check_watch_static": {
-      "path": "animations/overlay/arm/check_watch_static.json",
+      "path": "animations/overlay/check_watch_static.json",
       "kind": "overlay"
     },
     "cross_arm": {
-      "path": "animations/overlay/arm/cross_arm.json",
+      "path": "animations/overlay/cross_arm.json",
+      "kind": "overlay"
+    },
+    "give_item": {
+      "path": "animations/overlay/give_item.json",
       "kind": "overlay"
     },
     "hands_in_pocket": {
-      "path": "animations/overlay/arm/hands_in_pocket.json",
+      "path": "animations/overlay/hands_in_pocket.json",
+      "kind": "overlay"
+    },
+    "handshake": {
+      "path": "animations/overlay/handshake.json",
       "kind": "overlay"
     },
     "hold_bag": {
-      "path": "animations/overlay/arm/hold_bag.json",
+      "path": "animations/overlay/hold_bag.json",
       "kind": "overlay"
     },
     "hold_bag_front": {
-      "path": "animations/overlay/arm/hold_bag_front.json",
+      "path": "animations/overlay/hold_bag_front.json",
       "kind": "overlay",
       "facing": "front"
     },
-    "loiter_bag_a": {
-      "path": "animations/overlay/arm/loiter_bag_a.json",
+    "human_pet_dog": {
+      "path": "animations/overlay/human_pet_dog.json",
       "kind": "overlay"
     },
-    "loiter_bag_b": {
-      "path": "animations/overlay/arm/loiter_bag_b.json",
-      "kind": "overlay"
-    },
-    "loiter_phone": {
-      "path": "animations/overlay/arm/loiter_phone.json",
+    "hunched": {
+      "path": "animations/overlay/hunched.json",
       "kind": "overlay"
     },
     "look_around": {
-      "path": "animations/overlay/arm/look_around.json",
+      "path": "animations/overlay/look_around.json",
       "kind": "overlay"
     },
     "phone_call": {
-      "path": "animations/overlay/arm/phone_call.json",
+      "path": "animations/overlay/phone_call.json",
       "kind": "overlay"
     },
     "phone_look": {
-      "path": "animations/overlay/arm/phone_look.json",
+      "path": "animations/overlay/phone_look.json",
+      "kind": "overlay"
+    },
+    "point_at": {
+      "path": "animations/overlay/point_at.json",
+      "kind": "overlay"
+    },
+    "push": {
+      "path": "animations/overlay/push.json",
       "kind": "overlay"
     },
     "smoke": {
-      "path": "animations/overlay/arm/smoke.json",
+      "path": "animations/overlay/smoke.json",
       "kind": "overlay"
     },
     "stall_buyer_give_get": {
-      "path": "animations/overlay/arm/stall_buyer_give_get.json",
+      "path": "animations/overlay/stall_buyer_give_get.json",
       "kind": "overlay"
     },
     "stall_buyer_point": {
-      "path": "animations/overlay/arm/stall_buyer_point.json",
+      "path": "animations/overlay/stall_buyer_point.json",
       "kind": "overlay"
     },
     "stall_seller_call": {
-      "path": "animations/overlay/arm/stall_seller_call.json",
+      "path": "animations/overlay/stall_seller_call.json",
       "kind": "overlay"
     },
     "stall_seller_give": {
-      "path": "animations/overlay/arm/stall_seller_give.json",
+      "path": "animations/overlay/stall_seller_give.json",
       "kind": "overlay"
     },
     "stall_seller_tidy": {
-      "path": "animations/overlay/arm/stall_seller_tidy.json",
+      "path": "animations/overlay/stall_seller_tidy.json",
       "kind": "overlay"
     },
     "stretch": {
-      "path": "animations/overlay/arm/stretch.json",
+      "path": "animations/overlay/stretch.json",
       "kind": "overlay"
     },
     "umbrella": {
-      "path": "animations/overlay/arm/umbrella.json",
+      "path": "animations/overlay/umbrella.json",
       "kind": "overlay"
     },
     "umbrella_front": {
-      "path": "animations/overlay/arm/umbrella_front.json",
+      "path": "animations/overlay/umbrella_front.json",
       "kind": "overlay",
       "facing": "front"
     },
     "use_trash": {
-      "path": "animations/overlay/arm/use_trash.json",
+      "path": "animations/overlay/use_trash.json",
       "kind": "overlay"
     },
     "use_vending": {
-      "path": "animations/overlay/arm/use_vending.json",
+      "path": "animations/overlay/use_vending.json",
       "kind": "overlay"
     },
     "walk_dog": {
-      "path": "animations/overlay/arm/walk_dog.json",
+      "path": "animations/overlay/walk_dog.json",
       "kind": "overlay"
     },
     "walk_dog_front": {
-      "path": "animations/overlay/arm/walk_dog_front.json",
+      "path": "animations/overlay/walk_dog_front.json",
       "kind": "overlay",
       "facing": "front"
     },
     "wave": {
-      "path": "animations/overlay/arm/wave.json",
+      "path": "animations/overlay/wave.json",
       "kind": "overlay"
     },
     "wipe_sweat": {
-      "path": "animations/overlay/arm/wipe_sweat.json",
+      "path": "animations/overlay/wipe_sweat.json",
       "kind": "overlay"
     },
     "yawn": {
-      "path": "animations/overlay/arm/yawn.json",
+      "path": "animations/overlay/yawn.json",
       "kind": "overlay"
-    },
-    "give_item": {
-      "path": "animations/overlay/duet/give_item.json",
-      "kind": "overlay"
-    },
-    "handshake": {
-      "path": "animations/overlay/duet/handshake.json",
-      "kind": "overlay"
-    },
-    "human_pet_dog": {
-      "path": "animations/overlay/duet/human_pet_dog.json",
-      "kind": "overlay"
-    },
-    "point_at": {
-      "path": "animations/overlay/duet/point_at.json",
-      "kind": "overlay"
-    },
-    "push": {
-      "path": "animations/overlay/duet/push.json",
-      "kind": "overlay"
-    },
-    "hunched": {
-      "path": "animations/overlay/posture/hunched.json",
-      "kind": "overlay"
-    },
-    "dog_pet": {
-      "path": "animations/transition/interact/dog_pet.json",
-      "kind": "transition",
-      "skeleton": "dog"
-    },
-    "open_door": {
-      "path": "animations/transition/interact/open_door.json",
-      "kind": "transition",
-      "facing": "front"
     },
     "down_on_knee": {
-      "path": "animations/transition/posture/down_on_knee.json",
+      "path": "animations/transition/down_on_knee.json",
       "kind": "transition"
     },
     "fall": {
-      "path": "animations/transition/posture/fall.json",
+      "path": "animations/transition/fall.json",
       "kind": "transition"
     },
     "get_up": {
-      "path": "animations/transition/posture/get_up.json",
+      "path": "animations/transition/get_up.json",
       "kind": "transition"
     },
+    "open_door": {
+      "path": "animations/transition/open_door.json",
+      "kind": "transition",
+      "facing": "front"
+    },
     "squat_down": {
-      "path": "animations/transition/posture/squat_down.json",
+      "path": "animations/transition/squat_down.json",
       "kind": "transition",
       "facing": "front"
     },
     "stand_up": {
-      "path": "animations/transition/posture/stand_up.json",
+      "path": "animations/transition/stand_up.json",
       "kind": "transition",
       "facing": "front"
     },
     "fall_older": {
-      "path": "animations/variant/fall_older.json",
+      "path": "animations/variant/older/fall_older.json",
       "kind": "transition",
       "variant_of": "fall"
     },
     "lie_ground_older": {
-      "path": "animations/variant/lie_ground_older.json",
+      "path": "animations/variant/older/lie_ground_older.json",
       "kind": "cycle",
       "variant_of": "lie_ground"
     },
     "walk_older": {
-      "path": "animations/variant/walk_older.json",
+      "path": "animations/variant/older/walk_older.json",
       "kind": "cycle",
       "variant_of": "walk"
     }

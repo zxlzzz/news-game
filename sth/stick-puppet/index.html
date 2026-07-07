@@ -100,11 +100,10 @@
       <div style="display:flex;gap:4px;margin-bottom:4px">
         <select id="clipTypeFilter" onchange="app.filterClips()" style="flex:1;padding:3px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
           <option value="">全部</option>
-          <option value="base">base</option>
-          <option value="gesture">gesture</option>
-          <option value="trait">trait</option>
-          <option value="held">held</option>
-          <option value="sub_event">sub_event</option>
+          <option value="cycle">cycle</option>
+          <option value="overlay">overlay</option>
+          <option value="transition">transition</option>
+          <option value="variant">variant</option>
         </select>
         <select id="clipFacingFilter" onchange="app.filterClips()" style="flex:1;padding:3px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
           <option value="">朝向</option>
@@ -131,9 +130,47 @@
       </div>
     </div>
 
+    <div class="panel-section" id="duetPanel" style="display:none">
+      <h3>参与者</h3>
+      <div id="duetRoleButtons" style="display:flex;gap:4px;flex-wrap:wrap"></div>
+      <div style="font-size:10px;color:#888;margin-top:4px">点击按钮切换编辑角色；拖拽另一角色根关节调整相对位置</div>
+    </div>
+
+    <div class="panel-section" id="variantPanel" style="display:none">
+      <h3>变体参数</h3>
+      <div class="coord-row">
+        <span class="coord-label">base</span>
+        <select id="variantOfSelect" onchange="app.updateVariantParam('variant_of',this.value)" style="flex:1;padding:2px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px"></select>
+      </div>
+      <div class="coord-row">
+        <span class="coord-label">amp</span>
+        <input type="number" id="variantAmp" step="0.05" min="0" max="3" value="1" onchange="app.updateVariantParam('amp',parseFloat(this.value))" style="width:60px">
+      </div>
+      <div class="coord-row">
+        <span class="coord-label">ref_speed</span>
+        <input type="number" id="variantRefSpeed" step="0.05" min="0" value="" placeholder="—" onchange="app.updateVariantParam('ref_speed',parseFloat(this.value)||null)" style="width:60px">
+      </div>
+      <div class="coord-row">
+        <span class="coord-label">overlay</span>
+        <input type="text" id="variantOverlay" placeholder="overlay id" onchange="app.updateVariantParam('overlay',this.value||null)" style="flex:1;padding:2px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
+      </div>
+      <div style="font-size:10px;color:#888;margin-top:4px">实时预览：蓝色=原始，橙色=amp缩放</div>
+    </div>
+
     <div class="panel-section" id="transitionSection" style="display:none">
       <h3>衔接检查</h3>
-      <div id="transitionInfo" style="font-size:10px;color:#888;line-height:1.4"></div>
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px">
+        <span style="font-size:11px;color:#888;min-width:28px">from</span>
+        <select id="transFromSelect" onchange="app.setTransitionRef('from',this.value)" style="flex:1;padding:2px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
+          <option value="">-- 无 --</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px">
+        <span style="font-size:11px;color:#888;min-width:28px">to</span>
+        <select id="transToSelect" onchange="app.setTransitionRef('to',this.value)" style="flex:1;padding:2px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
+          <option value="">-- 无 --</option>
+        </select>
+      </div>
       <div style="font-size:10px;color:#c44;margin-top:3px">红圈 = 偏差 &gt;5px 的关节</div>
     </div>
 
@@ -143,10 +180,6 @@
       <div class="btn-row">
         <button onclick="app.loadJSON()" class="primary">载入</button>
         <button onclick="app.exportJSON()">导出</button>
-      </div>
-      <div class="btn-row">
-        <button onclick="app.exportHeldPose()" title="当前帧全部关节相对默认姿势的 delta，可粘进 HeldPoses.js">导出 Held Pose</button>
-        <button onclick="app.exportTrait()" title="仅左侧 l_elbow/l_hand 的 delta，可粘进 TraitProps.js">导出 Trait</button>
       </div>
     </div>
   </div>

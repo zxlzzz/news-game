@@ -1,10 +1,6 @@
 {
   "id": "loiter_phone",
-  "kind": "overlay",
-  "activeJoints": [
-    "r_elbow",
-    "r_hand"
-  ],
+  "kind": "cycle",
   "keyframes": [
     {
       "r_elbow": [

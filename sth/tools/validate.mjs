@@ -161,12 +161,18 @@ function validateFile(abs, allClips) {
 
       if (isRoleGrouped) {
         // Duet format: {dur?, role: {joint: [dx,dy]}}
+        // Resolve per-role skeleton from participants array
+        const roleSkels = {};
+        for (const p of (clip.participants ?? [])) {
+          roleSkels[p.role] = p.skeleton ?? 'human';
+        }
         for (const [role, roleData] of Object.entries(kf)) {
           if (role === 'dur') continue;
           if (typeof roleData !== 'object' || Array.isArray(roleData)) continue;
-          if (typeof roleData !== 'object') continue;
+          const roleSkelName = roleSkels[role] ?? skelName;
+          const roleValidJoints = VALID_JOINTS[roleSkelName] ?? VALID_JOINTS.human;
           for (const [j, v] of Object.entries(roleData)) {
-            if (!validJoints.has(j))
+            if (!roleValidJoints.has(j))
               E(`frame ${fi} role "${role}": unknown joint "${j}"`);
             if (Array.isArray(v) && (Math.abs(v[0]) > DELTA_WARN || Math.abs(v[1]) > DELTA_WARN))
               W(`frame ${fi} role "${role}" joint "${j}": delta [${v[0]},${v[1]}] > ±${DELTA_WARN}`);
