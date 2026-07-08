@@ -1,20 +1,50 @@
 {
-  "id": "stand",
+  "id": "idle_front",
   "kind": "cycle",
+  "facing": "front",
   "keyframes": [
     {
-      "body":    [0, 0],
-      "neck":    [0, 0],
-      "head":    [0, 0],
-      "l_elbow": [0, 0],
-      "r_elbow": [0, 0],
-      "l_hand":  [0, 0],
-      "r_hand":  [0, 0],
-      "l_knee":  [0, 0],
-      "r_knee":  [0, 0],
-      "l_foot":  [0, 0],
-      "r_foot":  [0, 0],
-      "dur": 0.5
+      "dur": 0.2,
+      "neck": [
+        0,
+        20
+      ],
+      "head": [
+        0,
+        25
+      ],
+      "l_elbow": [
+        5,
+        13
+      ],
+      "l_hand": [
+        6,
+        9
+      ],
+      "r_elbow": [
+        -5,
+        13
+      ],
+      "r_hand": [
+        -6,
+        9
+      ],
+      "l_knee": [
+        1,
+        -6
+      ],
+      "l_foot": [
+        2,
+        -13
+      ],
+      "r_knee": [
+        -1,
+        -6
+      ],
+      "r_foot": [
+        -2,
+        -13
+      ]
     }
   ]
 }
