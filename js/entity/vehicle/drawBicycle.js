@@ -26,8 +26,8 @@ export function drawBicycle(g, n) {
   const footR = n.getAnchor('foot_r');
 
   const crank = { x: (footL.x + footR.x) / 2, y: (footL.y + footR.y) / 2 };
-  const wCy = crank.y;
-  const wR  = Math.max(14 * s, ground - crank.y);
+  const wR  = 25 * s;
+  const wCy = ground - wR;
   const rwx = hip.x - 5 * s * d;
   const fwx = bar.x + 7 * s * d;
 
@@ -64,35 +64,38 @@ export function drawBicycle(g, n) {
 
 export function drawEbike(g, n) {
   g.lineStyle(0);
-  const s = n.scale, d = n.direction, ground = n.y;
+  const s = n.scale*1.2;
+  const d = n.direction, ground = n.y;
   const hip   = n.getAnchor('hip');
   const bar   = forwardHand(n);
   const footL = n.getAnchor('foot_l');
   const footR = n.getAnchor('foot_r');
-  const crank = { x: (footL.x + footR.x) / 2, y: (footL.y + footR.y) / 2 };
-  const wR  = Math.max(14 * s, ground - crank.y);
-  const wCy = crank.y;
-  const rwx = hip.x - 32 * s * d;
-  const fwx = bar.x  +  8 * s * d;
+  const footMidY = (footL.y + footR.y) / 2;
+
+  const wR  = 14.4 * s;          // 12*1.2
+  const wCy = ground - wR;
+  const rwx = hip.x - 19.2 * s * d;  // 16*1.2
+  const fwx = bar.x  +  4.8 * s * d; //  4*1.2
 
   // wheels
   lenv(g, ground, 0.9);
   g.drawCircle(rwx, wCy, wR);
   g.drawCircle(fwx, wCy, wR);
 
-  // low platform
+  // platform
   lenv(g, ground, 1.0);
-  g.moveTo(rwx + wR * 0.6, crank.y + 4 * s); g.lineTo(fwx - wR * 0.6, crank.y + 4 * s);
+  g.moveTo(rwx + wR * 0.6, footMidY + 2.4 * s);  // 2*1.2
+  g.lineTo(fwx - wR * 0.6, footMidY + 2.4 * s);
 
-  // seat tube + front fork
+  // tubes
   lenv(g, ground, 0.85);
   g.moveTo(rwx, wCy); g.lineTo(hip.x, hip.y);
   g.moveTo(fwx, wCy); g.lineTo(bar.x, bar.y);
 
-  // delivery box
+  // box
   g.lineStyle(0);
-  const boxW = 24 * s, boxH = 22 * s;
-  const boxCx = hip.x - 36 * s * d;
+  const boxW = 14.4 * s, boxH = 13.2 * s;  // 12*1.2, 11*1.2
+  const boxCx = hip.x - 21.6 * s * d;      // 18*1.2
   g.beginFill(FILL_SHADE, 1);
   g.drawRect(boxCx - boxW / 2, hip.y - boxH, boxW, boxH);
   g.endFill();

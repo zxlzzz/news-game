@@ -333,9 +333,9 @@ function _moto(g, vehicle, highlight) {
   const riderScale = u * 0.8;
 
   const fr = vehicle._sr?.getFrame('mobike', 0) ?? {};
-  const jBar   = fr.l_hand ?? [50,  6];
-  const jFootF = fr.r_foot ?? [-28, 40];
-  const jFootR = fr.l_foot ?? [-37, 36];
+  const jBar   = fr.l_hand;
+  const jFootF = fr.r_foot;
+  const jFootR = fr.l_foot;
 
   const hipX = x - d * 4 * bs;
   const hipY = groundY - 40 * ba;
