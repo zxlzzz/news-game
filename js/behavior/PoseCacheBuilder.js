@@ -107,5 +107,19 @@ export function buildPoseCache(clipLibrary) {
   if (!gesture.moving_wipe_sweat && gesture.wipe_sweat)
     gesture.moving_wipe_sweat = gesture.wipe_sweat;
 
-  return { held, gesture, loiter, sub_event, stall_gestures };
+  const trait = {};
+  for (const [id, entry] of Object.entries(clips)) {
+    const raw = clipLibrary.getCachedClip(id);
+    if (!raw || entry.kind !== 'overlay' || !raw.latched) continue;
+    if (raw.participants || id.startsWith('stall_') || id.endsWith('_front')) continue;
+    const frontRaw = clipLibrary.getCachedClip(id + '_front');
+    const sideData = decodeHeld(raw);
+    if (frontRaw) {
+      trait[id] = { side: sideData, front: decodeHeld(frontRaw) };
+    } else {
+      trait[id] = sideData;
+    }
+  }
+
+  return { held, gesture, loiter, sub_event, stall_gestures, trait };
 }

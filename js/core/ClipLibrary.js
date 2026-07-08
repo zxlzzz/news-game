@@ -110,6 +110,10 @@ class ClipLibrary {
       for (const k of Object.keys(kf)) {
         if (k.startsWith('_bend_')) frame[k] = kf[k];
       }
+      // 补全 keyframe 中省略的关节（零 delta 不写入磁盘约定）
+      for (const [k, v] of Object.entries(dp)) {
+        if (!(k in frame)) frame[k] = [...v];
+      }
       return frame;
     });
 
