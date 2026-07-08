@@ -1,0 +1,20 @@
+{
+  "id": "squat",
+  "kind": "cycle",
+  "keyframes": [
+    {
+      "body":    [0,   42],
+      "neck":    [0,   67],
+      "head":    [5,   92],
+      "l_elbow": [34,  42],
+      "r_elbow": [-34, 44],
+      "l_hand":  [52,  29],
+      "r_hand":  [-37, 29],
+      "l_knee":  [40,  22],
+      "r_knee":  [-25, 20],
+      "l_foot":  [39,  0],
+      "r_foot":  [-29, 0],
+      "dur": 0.5
+    }
+  ]
+}

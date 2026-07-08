@@ -17,16 +17,19 @@
  *   - gesture 与 held 相互独立：各自单实例、各自冷却；gesture 播完即移除
  */
 
-let HELD_POSES   = {};
-let TRAIT_PROPS  = {};
+let HELD_POSES    = {};
+let TRAIT_PROPS   = {};
 let GESTURE_CLIPS = {};
+const _warnedHeld    = new Set();
+const _warnedGesture = new Set();
 
 export function initPoseCache(pc) {
-  HELD_POSES   = pc.held    || {};
-  TRAIT_PROPS  = pc.trait   || {};
+  HELD_POSES    = pc.held    || {};
+  TRAIT_PROPS   = pc.trait   || {};
   GESTURE_CLIPS = pc.gesture || {};
 }
 
+export function getHeldPoses()  { return HELD_POSES; }
 export function getTraitProps() { return TRAIT_PROPS; }
 
 // trait 在 walk/run 时使用侧面（side）变体，其余状态用正面（front）。
@@ -196,7 +199,11 @@ function _tryTriggerHeld(npc, heldDefs, globalHeldFrac, dt) {
     if (def.traitRequired && !npc.traits.includes(def.traitRequired)) continue;
     if (def.traitExcludes?.some(t => npc.traits.includes(t))) continue;
     const hp = HELD_POSES[name];
-    const side = hp ? handSide(Object.keys(hp.joints)) : null;
+    if (!hp) {
+      if (!_warnedHeld.has(name)) { console.warn(`[ModifierLayer] held pose not found: '${name}'`); _warnedHeld.add(name); }
+      continue;
+    }
+    const side = handSide(Object.keys(hp.joints));
     if (side === 'both'  && (occ.left || occ.right)) continue;
     if (side === 'left'  && occ.left)  continue;
     if (side === 'right' && occ.right) continue;
@@ -205,7 +212,7 @@ function _tryTriggerHeld(npc, heldDefs, globalHeldFrac, dt) {
     if (Math.random() < p * dt * 60) {
       npc.modifiers.push({
         id: name, kind: 'held', priority: 10,
-        joints: { ...(hp?.joints ?? {}) },
+        joints: { ...hp.joints },
         timer: rand(def.dur[0], def.dur[1]),
       });
       break;
@@ -230,7 +237,10 @@ function _tryTriggerGesture(npc, profile, dt) {
     if (def.traitExcludes?.some(t => npc.traits.includes(t))) continue;
     if (Math.random() < def.chance * dt * 60) {
       const clip = GESTURE_CLIPS[name];
-      if (!clip) continue;
+      if (!clip) {
+        if (!_warnedGesture.has(name)) { console.warn(`[ModifierLayer] gesture clip not found: '${name}'`); _warnedGesture.add(name); }
+        continue;
+      }
       const side = handSide(clip.activeJoints || []);
       if (side === 'both'  && (occ.left || occ.right)) continue;
       if (side === 'left'  && occ.left)  continue;

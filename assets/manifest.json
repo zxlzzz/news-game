@@ -75,10 +75,18 @@
       "path": "animations/cycle/sit_ground.json",
       "kind": "cycle"
     },
+    "squat": {
+      "path": "animations/cycle/squat.json",
+      "kind": "cycle"
+    },
     "squat_front": {
       "path": "animations/cycle/squat_front.json",
       "kind": "cycle",
       "facing": "front"
+    },
+    "stand": {
+      "path": "animations/cycle/stand.json",
+      "kind": "cycle"
     },
     "stand_front": {
       "path": "animations/cycle/stand_front.json",

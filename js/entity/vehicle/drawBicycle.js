@@ -69,9 +69,9 @@ export function drawEbike(g, n) {
   const bar   = forwardHand(n);
   const footL = n.getAnchor('foot_l');
   const footR = n.getAnchor('foot_r');
-  const footMid = { x: (footL.x + footR.x) / 2, y: (footL.y + footR.y) / 2 };
-  const wR  = 18 * s;
-  const wCy = ground - wR;
+  const crank = { x: (footL.x + footR.x) / 2, y: (footL.y + footR.y) / 2 };
+  const wR  = Math.max(14 * s, ground - crank.y);
+  const wCy = crank.y;
   const rwx = hip.x - 32 * s * d;
   const fwx = bar.x  +  8 * s * d;
 
@@ -82,7 +82,7 @@ export function drawEbike(g, n) {
 
   // low platform
   lenv(g, ground, 1.0);
-  g.moveTo(rwx + wR * 0.6, footMid.y + 4 * s); g.lineTo(fwx - wR * 0.6, footMid.y + 4 * s);
+  g.moveTo(rwx + wR * 0.6, crank.y + 4 * s); g.lineTo(fwx - wR * 0.6, crank.y + 4 * s);
 
   // seat tube + front fork
   lenv(g, ground, 0.85);

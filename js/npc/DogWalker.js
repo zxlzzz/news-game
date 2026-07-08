@@ -4,7 +4,7 @@
 
 import { SIDEWALK_NEAR_Y } from '../core/Layout.js';
 import { makeNPC } from './npcUtil.js';
-import { getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
+import { getHeldPoses } from '../behavior/ModifierLayer.js';
 
 export function spawnDogWalker(em, sr, bm, propManager) {
   const ownerY = SIDEWALK_NEAR_Y;
@@ -17,7 +17,7 @@ export function spawnDogWalker(em, sr, bm, propManager) {
     traits: ['walk_dog'],
   });
   // walk_dog trait modifier must be pushed manually (owner._activity skips tickModifiers step 3)
-  const wdJoints = { ...(resolveTraitVariant(getTraitProps().walk_dog, false)?.joints ?? {}) };
+  const wdJoints = { ...(getHeldPoses().walk_dog?.joints ?? {}) };
   owner.modifiers.push({ id: 'walk_dog', kind: 'trait', priority: 5, joints: wdJoints, timer: -1 });
 
   const dog = makeNPC(em, sr, {

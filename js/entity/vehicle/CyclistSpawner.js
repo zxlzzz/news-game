@@ -93,7 +93,7 @@ export class CyclistSpawner {
     // minX/maxX 设到屏外很远，避免 NPC 边界折返；越界剔除由 update 处理
     const n = makeNPC(this.em, this.sr, {
       x, y: yFn(0.5),
-      animation: kind === 'ebike' ? 'mobile' : 'bike',
+      animation: kind === 'ebike' ? 'mobike' : 'bike',
       direction: lane.direction, speed, vy: 0,
       minX: -100000, maxX: 100000,
       minY: yFn(0.05), maxY: yFn(0.95),
