@@ -326,73 +326,72 @@ function _bus(g, vehicle, highlight) {
 }
 
 function _moto(g, vehicle, highlight) {
-  const u = vehicle.scale, x = vehicle.x, y = vehicle.y, d = vehicle.direction;
-  const groundY = y;
-  const bs = u;
-  const ba = bs * 1.5;
-  const riderScale = u * 0.8;
+  const u = vehicle.scale, x = vehicle.x, d = vehicle.direction;
+  const groundY = vehicle.y;
+  const rs = u * 0.8;   // 骑手缩放
 
+  // mobike 帧为锚点空间绝对坐标（y=0=地面，负值向上），与 StickRenderer 同一变换：
+  // world = (x + d·jx·rs, groundY + jy·rs)
   const fr = vehicle._sr?.getFrame('mobike', 0) ?? {};
-  const jBar   = fr.l_hand;
-  const jFootF = fr.r_foot;
-  const jFootR = fr.l_foot;
+  const W  = (j, fb) => {
+    const p = fr[j] ?? fb;
+    return { x: x + d * p[0] * rs, y: groundY + p[1] * rs };
+  };
+  const hip   = W('body',   [0,  -82]);
+  const handL = W('l_hand', [50, -76]);
+  const handR = W('r_hand', [47, -75]);
+  const bar   = (handL.x * d >= handR.x * d) ? handL : handR;
+  const footF = W('r_foot', [-28, -42]);
+  const footR = W('l_foot', [-37, -46]);
 
-  const hipX = x - d * 4 * bs;
-  const hipY = groundY - 40 * ba;
-  const J = (jx, jy) => ({ x: hipX + d * jx * ba, y: hipY + jy * ba });
-  const bar   = J(...jBar);
-  const footF = J(...jFootF);
-  const footR = J(...jFootR);
-
-  const wR  = Math.max(2, 14 * bs);
+  const wR  = 26 * u;
   const wCy = groundY - wR;
-  const rwx = footR.x - d * 3 * bs;
-  const fwx = bar.x   + d * 6 * bs;
-
-  const lc = depthLineColor(groundY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
-  const frameSW  = Math.max(1.4, bs * 7);
-
-  g.beginFill(0x000000, 0.06);
-  g.drawEllipse((rwx + fwx) / 2, groundY + wR * 0.12, (Math.abs(fwx - rwx) + wR * 2.2) / 2, wR * 0.25);
-  g.endFill();
+  const rwx = footR.x - d * 18 * u;
+  const fwx = bar.x   + d * 26 * u;
 
   _wheel(g, fwx, wCy, wR, groundY);
   _wheel(g, rwx, wCy, wR, groundY);
 
-  g.lineStyle(frameSW, highlight ?? lc, 1);
-  g.moveTo(rwx, wCy); g.lineTo(hipX, hipY);
-  g.moveTo(hipX, hipY); g.lineTo(bar.x, bar.y);
-  g.moveTo(rwx, wCy); g.lineTo(bar.x - d * 8 * bs, bar.y + 5 * bs);
+  // 车架：后轮→座下→把立；前叉：前轮→把
+  const lc = lenv(g, groundY, 1.0);
+  g.moveTo(rwx, wCy);                     g.lineTo(hip.x, hip.y + 6 * u);
+  g.moveTo(hip.x, hip.y + 6 * u);         g.lineTo(bar.x - d * 6 * u, bar.y + 4 * u);
+  g.moveTo(fwx, wCy);                     g.lineTo(bar.x, bar.y);
 
-  g.lineStyle(Math.max(0.8, bs * 3), lc, 0.85);
+  // 车身块（油箱）：座前 → 把立之间
+  g.lineStyle(0);
   g.beginFill(FILL_LIGHT, 1);
-  g.moveTo(hipX,                 hipY - 2 * bs);
-  g.lineTo(bar.x - d * 12 * bs, bar.y + 1 * bs);
-  g.lineTo(bar.x - d * 12 * bs, bar.y + 5 * bs);
-  g.lineTo(hipX,                 hipY + 4 * bs);
+  g.moveTo(hip.x + d * 2 * u,  hip.y + 4 * u);
+  g.lineTo(bar.x - d * 8 * u,  bar.y + 2 * u);
+  g.lineTo(bar.x - d * 8 * u,  bar.y + 12 * u);
+  g.lineTo(hip.x + d * 2 * u,  hip.y + 14 * u);
   g.closePath();
   g.endFill();
+  lenv(g, groundY, 0.5);
+  g.moveTo(hip.x + d * 2 * u,  hip.y + 4 * u);
+  g.lineTo(bar.x - d * 8 * u,  bar.y + 2 * u);
+  g.lineTo(bar.x - d * 8 * u,  bar.y + 12 * u);
+  g.lineTo(hip.x + d * 2 * u,  hip.y + 14 * u);
+  g.closePath();
 
-  g.lineStyle(Math.max(2, bs * 6), lc, 1);
-  g.moveTo(hipX - d * 10 * bs, hipY + 1 * bs); g.lineTo(hipX + d * 3 * bs, hipY - 1 * bs);
+  // 座垫
+  lenv(g, groundY, 1.1);
+  g.moveTo(hip.x - d * 10 * u, hip.y + 4 * u); g.lineTo(hip.x + d * 4 * u, hip.y + 4 * u);
 
-  g.lineStyle(Math.max(1, bs * 5), lc, 1);
-  g.moveTo(fwx, wCy); g.lineTo(bar.x, bar.y);
+  // 车把
+  g.moveTo(bar.x - d * 4 * u, bar.y + 2 * u); g.lineTo(bar.x + d * 5 * u, bar.y - 2 * u);
 
-  g.lineStyle(Math.max(1.2, bs * 6), lc, 1);
-  g.moveTo(bar.x - d * 4 * bs, bar.y + 2 * bs); g.lineTo(bar.x + d * 5 * bs, bar.y - 3 * bs);
+  // 脚踏
+  lenv(g, groundY, 0.85);
+  g.moveTo(footF.x - d * 2 * u, footF.y); g.lineTo(footF.x + d * 3 * u, footF.y);
+  g.moveTo(footR.x - d * 2 * u, footR.y); g.lineTo(footR.x + d * 3 * u, footR.y);
 
-  lenv(g, groundY, 0.35);
-  g.moveTo(hipX - d * 6 * bs, hipY + 6 * bs); g.lineTo(rwx + d * wR * 0.6, wCy + wR * 0.4);
-
-  g.lineStyle(Math.max(1.5, bs * 4), lc, 1);
-  g.moveTo(footF.x - d * 2 * bs, footF.y); g.lineTo(footF.x + d * 3 * bs, footF.y);
-  g.moveTo(footR.x - d * 2 * bs, footR.y); g.lineTo(footR.x + d * 3 * bs, footR.y);
-
+  // 骑手：与 W() 同一原点/缩放，关节精确重合
   if (vehicle._sr) {
-    vehicle._sr.draw(g, 'mobike', 0, hipX, hipY, riderScale, d, lc, 1);
+    vehicle._sr.draw(g, 'mobike', 0, x, groundY, rs, d, highlight ?? lc, 1);
   }
 }
+
 
 export function drawVehicle(g, vehicle) {
   g.lineStyle(0);
