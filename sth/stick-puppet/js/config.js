@@ -34,13 +34,14 @@ const _EDITOR_DATA = {
       l_foot:  { parent: 'l_knee',  children: [] },
       r_foot:  { parent: 'r_knee',  children: [] },
     },
+    // idle pose: stand.json kf0 delta + skeleton.json defaultPose → body-relative
     defaultPose: {
-      head:{x:0,y:-100}, neck:{x:0,y:-70},
-      l_elbow:{x:-24,y:-40}, r_elbow:{x:24,y:-40},
-      l_hand:{x:-32,y:-12}, r_hand:{x:32,y:-12},
+      head:{x:0,y:-75}, neck:{x:0,y:-50},
+      l_elbow:{x:-19,y:-27}, r_elbow:{x:19,y:-27},
+      l_hand:{x:-26,y:-3}, r_hand:{x:26,y:-3},
       body:{x:0,y:0},
-      l_knee:{x:-10,y:40}, r_knee:{x:10,y:40},
-      l_foot:{x:-14,y:82}, r_foot:{x:14,y:82},
+      l_knee:{x:-9,y:34}, r_knee:{x:9,y:34},
+      l_foot:{x:-12,y:69}, r_foot:{x:12,y:69},
     },
   },
 
@@ -230,17 +231,9 @@ export async function initSkeletons() {
       // headRadius
       if (skData.headRadius != null) SKELETONS[name].headRadius = skData.headRadius;
 
-      // defaultPose: 地面空间 → 编辑器空间（以 root 关节为 y 原点）
-      if (skData.defaultPose && skData.root) {
-        const groundPose = skData.defaultPose;
-        const rootGroundY = (groundPose[skData.root] ?? [0, 0])[1];
-        const offsetY = -rootGroundY;
-        const editorPose = {};
-        for (const [joint, coords] of Object.entries(groundPose)) {
-          editorPose[joint] = { x: coords[0], y: coords[1] + offsetY };
-        }
-        SKELETONS[name].defaultPose = editorPose;
-      }
+      // defaultPose intentionally NOT loaded from skeleton.json:
+      // skeleton.json stores the T-pose; the editor uses the idle/stand pose
+      // defined in _EDITOR_DATA so that new files open in a natural standing position.
     }
   } catch (e) {
     console.warn('[stick-puppet] skeleton.json 加载失败，使用内置定义', e.message);

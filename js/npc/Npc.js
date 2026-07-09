@@ -7,6 +7,7 @@
 import { Entity } from '../core/Entity.js';
 import { depthGray } from '../core/Layout.js';
 import { integratePhysics } from '../behavior/Motor.js';
+import { clipLibrary } from '../core/ClipLibrary.js';
 
 // 行为状态 → 标签
 const STATE_TAGS = {
@@ -108,11 +109,40 @@ export class NPC extends Entity {
   _buildJointOverrides(frame) {
     if (!this.modifiers.length) return null;
     const sorted = [...this.modifiers].sort((a, b) => a.priority - b.priority);
-    const out = {};
+    const merged = {};
     for (const m of sorted) {
-      if (m.joints) Object.assign(out, m.joints);
+      if (m.joints) Object.assign(merged, m.joints);
     }
-    return Object.keys(out).length ? out : null;
+    if (!Object.keys(merged).length) return null;
+
+    // Re-anchor overlay deltas (recorded against defaultPose) to the current frame's
+    // chain root, so arms/legs stay attached when the torso moves (sit, squat, walk…).
+    const dp = clipLibrary.skeletons?.human?.defaultPose ?? {};
+    const dpNeck = dp.neck ?? [0, -152];
+    const dpBody = dp.body ?? [0, -82];
+    const frameNeck = frame.neck ?? dpNeck;
+    const frameBody = frame.body ?? dpBody;
+
+    // joints whose chain root passes through neck (arms, head)
+    const NECK_ANCHORED = new Set(['l_elbow', 'r_elbow', 'l_hand', 'r_hand', 'head']);
+    // joints whose chain root passes through body (legs, neck)
+    const BODY_ANCHORED = new Set(['neck', 'l_knee', 'r_knee', 'l_foot', 'r_foot']);
+
+    const out = {};
+    for (const [j, v] of Object.entries(merged)) {
+      if (NECK_ANCHORED.has(j)) {
+        const dpAnchor = dpNeck;
+        const frameAnchor = frameNeck;
+        out[j] = [frameAnchor[0] + (v[0] - dpAnchor[0]), frameAnchor[1] + (v[1] - dpAnchor[1])];
+      } else if (BODY_ANCHORED.has(j)) {
+        const dpAnchor = dpBody;
+        const frameAnchor = frameBody;
+        out[j] = [frameAnchor[0] + (v[0] - dpAnchor[0]), frameAnchor[1] + (v[1] - dpAnchor[1])];
+      } else {
+        out[j] = v;
+      }
+    }
+    return out;
   }
 
   getBounds() {
