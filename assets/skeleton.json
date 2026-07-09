@@ -3,32 +3,95 @@
     "human": {
       "root": "body",
       "headRadius": 16,
-      "scale": 1.0,
+      "scale": 1,
       "unit_height": 144,
       "defaultPose": {
-        "body":    [0,    -82],
-        "neck":    [0,   -152],
-        "head":    [0,   -182],
-        "l_elbow": [-24, -122],
-        "r_elbow": [24,  -122],
-        "l_hand":  [-32,  -94],
-        "r_hand":  [32,   -94],
-        "l_knee":  [-10,  -42],
-        "r_knee":  [10,   -42],
-        "l_foot":  [-14,    0],
-        "r_foot":  [14,     0]
+        "body": [
+          0,
+          -69
+        ],
+        "neck": [
+          0,
+          -119
+        ],
+        "head": [
+          0,
+          -144
+        ],
+        "l_elbow": [
+          -19,
+          -96
+        ],
+        "r_elbow": [
+          19,
+          -96
+        ],
+        "l_hand": [
+          -26,
+          -72
+        ],
+        "r_hand": [
+          26,
+          -72
+        ],
+        "l_knee": [
+          -9,
+          -35
+        ],
+        "r_knee": [
+          9,
+          -35
+        ],
+        "l_foot": [
+          -12,
+          0
+        ],
+        "r_foot": [
+          12,
+          0
+        ]
       },
       "joints": {
-        "neck":    { "parent": "body",    "len": 50   },
-        "head":    { "parent": "neck",    "len": 25   },
-        "l_elbow": { "parent": "neck",    "len": 29.8 },
-        "l_hand":  { "parent": "l_elbow", "len": 25   },
-        "r_elbow": { "parent": "neck",    "len": 29.8 },
-        "r_hand":  { "parent": "r_elbow", "len": 25   },
-        "l_knee":  { "parent": "body",    "len": 35.2 },
-        "l_foot":  { "parent": "l_knee",  "len": 35.1 },
-        "r_knee":  { "parent": "body",    "len": 35.2 },
-        "r_foot":  { "parent": "r_knee",  "len": 35.1 }
+        "neck": {
+          "parent": "body",
+          "len": 50
+        },
+        "head": {
+          "parent": "neck",
+          "len": 25
+        },
+        "l_elbow": {
+          "parent": "neck",
+          "len": 29.8
+        },
+        "l_hand": {
+          "parent": "l_elbow",
+          "len": 25
+        },
+        "r_elbow": {
+          "parent": "neck",
+          "len": 29.8
+        },
+        "r_hand": {
+          "parent": "r_elbow",
+          "len": 25
+        },
+        "l_knee": {
+          "parent": "body",
+          "len": 35.2
+        },
+        "l_foot": {
+          "parent": "l_knee",
+          "len": 35.1
+        },
+        "r_knee": {
+          "parent": "body",
+          "len": 35.2
+        },
+        "r_foot": {
+          "parent": "r_knee",
+          "len": 35.1
+        }
       }
     },
     "dog": {
@@ -36,33 +99,108 @@
       "headRadius": 8,
       "scale": 0.7,
       "defaultPose": {
-        "body_back":  [40,   -31],
-        "body_front": [-40,  -31],
-        "neck":       [-75,  -41],
-        "head":       [-100, -51],
-        "tail":       [75,   -46],
-        "fl_upper":   [-50,   -6],
-        "fl_lower":   [-52,   24],
-        "fr_upper":   [-30,   -6],
-        "fr_lower":   [-28,   24],
-        "bl_upper":   [30,    -6],
-        "bl_lower":   [32,    24],
-        "br_upper":   [50,    -6],
-        "br_lower":   [48,    24]
+        "body_back": [
+          40,
+          -31
+        ],
+        "body_front": [
+          -10.2,
+          -31
+        ],
+        "tail": [
+          63.8978,
+          -41.2419
+        ],
+        "fl_upper": [
+          -14.6938,
+          -19.7654
+        ],
+        "fl_lower": [
+          -15.6783,
+          -4.9982
+        ],
+        "fr_upper": [
+          -5.2605,
+          -18.6513
+        ],
+        "fr_lower": [
+          -4.2694,
+          -3.7843
+        ],
+        "bl_upper": [
+          35.0976,
+          -18.7441
+        ],
+        "bl_lower": [
+          35.9424,
+          -6.0722
+        ],
+        "br_upper": [
+          44.7538,
+          -19.1155
+        ],
+        "br_lower": [
+          43.756,
+          -4.1487
+        ],
+        "neck": [
+          -17.123,
+          -32.978
+        ],
+        "head": [
+          -23.7152,
+          -35.6149
+        ]
       },
       "joints": {
-        "body_front": { "parent": "body_back",  "len": 50.2 },
-        "neck":       { "parent": "body_front", "len": 7.2  },
-        "head":       { "parent": "neck",       "len": 7.1  },
-        "tail":       { "parent": "body_back",  "len": 26.0 },
-        "fl_upper":   { "parent": "body_front", "len": 12.1 },
-        "fl_lower":   { "parent": "fl_upper",   "len": 14.8 },
-        "fr_upper":   { "parent": "body_front", "len": 13.3 },
-        "fr_lower":   { "parent": "fr_upper",   "len": 14.9 },
-        "bl_upper":   { "parent": "body_back",  "len": 13.2 },
-        "bl_lower":   { "parent": "bl_upper",   "len": 12.7 },
-        "br_upper":   { "parent": "body_back",  "len": 12.8 },
-        "br_lower":   { "parent": "br_upper",   "len": 15.0 }
+        "body_front": {
+          "parent": "body_back",
+          "len": 50.2
+        },
+        "neck": {
+          "parent": "body_front",
+          "len": 7.2
+        },
+        "head": {
+          "parent": "neck",
+          "len": 7.1
+        },
+        "tail": {
+          "parent": "body_back",
+          "len": 26
+        },
+        "fl_upper": {
+          "parent": "body_front",
+          "len": 12.1
+        },
+        "fl_lower": {
+          "parent": "fl_upper",
+          "len": 14.8
+        },
+        "fr_upper": {
+          "parent": "body_front",
+          "len": 13.3
+        },
+        "fr_lower": {
+          "parent": "fr_upper",
+          "len": 14.9
+        },
+        "bl_upper": {
+          "parent": "body_back",
+          "len": 13.2
+        },
+        "bl_lower": {
+          "parent": "bl_upper",
+          "len": 12.7
+        },
+        "br_upper": {
+          "parent": "body_back",
+          "len": 12.8
+        },
+        "br_lower": {
+          "parent": "br_upper",
+          "len": 15
+        }
       }
     }
   }

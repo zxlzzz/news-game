@@ -118,8 +118,8 @@ export class NPC extends Entity {
     // Re-anchor overlay deltas (recorded against defaultPose) to the current frame's
     // chain root, so arms/legs stay attached when the torso moves (sit, squat, walk…).
     const dp = clipLibrary.skeletons?.human?.defaultPose ?? {};
-    const dpNeck = dp.neck ?? [0, -152];
-    const dpBody = dp.body ?? [0, -82];
+    const dpNeck = dp.neck ?? [0, -119];
+    const dpBody = dp.body ?? [0, -69];
     const frameNeck = frame.neck ?? dpNeck;
     const frameBody = frame.body ?? dpBody;
 

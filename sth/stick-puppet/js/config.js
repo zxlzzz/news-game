@@ -231,9 +231,17 @@ export async function initSkeletons() {
       // headRadius
       if (skData.headRadius != null) SKELETONS[name].headRadius = skData.headRadius;
 
-      // defaultPose intentionally NOT loaded from skeleton.json:
-      // skeleton.json stores the T-pose; the editor uses the idle/stand pose
-      // defined in _EDITOR_DATA so that new files open in a natural standing position.
+      // defaultPose: 地面空间 → 编辑器空间（以 root 关节为 y 原点）
+      if (skData.defaultPose && skData.root) {
+        const groundPose = skData.defaultPose;
+        const rootGroundY = (groundPose[skData.root] ?? [0, 0])[1];
+        const offsetY = -rootGroundY;
+        const editorPose = {};
+        for (const [joint, coords] of Object.entries(groundPose)) {
+          editorPose[joint] = { x: coords[0], y: coords[1] + offsetY };
+        }
+        SKELETONS[name].defaultPose = editorPose;
+      }
     }
   } catch (e) {
     console.warn('[stick-puppet] skeleton.json 加载失败，使用内置定义', e.message);
