@@ -344,42 +344,92 @@ function _moto(g, vehicle, highlight) {
   const footF = W('r_foot', [-28, -42]);
   const footR = W('l_foot', [-37, -46]);
 
-  const wR  = 26 * u;
-  const wCy = groundY - wR;
-  const rwx = footR.x - d * 18 * u;
-  const fwx = bar.x   + d * 26 * u;
+  // 局部坐标：ux 沿行驶方向，uy 向上为正（单位 u）
+  const P = (ux, uy) => ({ x: x + d * ux * u, y: groundY - uy * u });
+  const lc = depthLineColor(groundY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
+  const sw = Math.max(1.5, u * 6);
 
-  _wheel(g, fwx, wCy, wR, groundY);
-  _wheel(g, rwx, wCy, wR, groundY);
+  // 轮：前轮在把前下方，后轮在脚后
+  const wR  = 24 * u;
+  const F   = P(56, 24);   // 前轮轴
+  const R   = P(-50, 24);  // 后轮轴
 
-  // 车架：后轮→座下→把立；前叉：前轮→把
-  const lc = lenv(g, groundY, 1.0);
-  g.moveTo(rwx, wCy);                     g.lineTo(hip.x, hip.y + 6 * u);
-  g.moveTo(hip.x, hip.y + 6 * u);         g.lineTo(bar.x - d * 6 * u, bar.y + 4 * u);
-  g.moveTo(fwx, wCy);                     g.lineTo(bar.x, bar.y);
-
-  // 车身块（油箱）：座前 → 把立之间
+  // 后摇臂 + 排气（压在车轮上、车身下）
+  lenv(g, groundY, 1.0);
+  g.moveTo(P(2, 32).x, P(2, 32).y);  g.lineTo(R.x, R.y);
+  lenv(g, groundY, 0.7);
+  g.moveTo(P(18, 31).x, P(18, 31).y); g.lineTo(P(-36, 29).x, P(-36, 29).y);
   g.lineStyle(0);
-  g.beginFill(FILL_LIGHT, 1);
-  g.moveTo(hip.x + d * 2 * u,  hip.y + 4 * u);
-  g.lineTo(bar.x - d * 8 * u,  bar.y + 2 * u);
-  g.lineTo(bar.x - d * 8 * u,  bar.y + 12 * u);
-  g.lineTo(hip.x + d * 2 * u,  hip.y + 14 * u);
+  g.beginFill(FILL_MID, 1);
+  const mf = P(-38, 33);
+  g.drawRect(Math.min(mf.x, mf.x + d * 18 * u), mf.y, 18 * u, 6 * u);
+  g.endFill();
+
+  _wheel(g, F.x, F.y, wR, groundY);
+  _wheel(g, R.x, R.y, wR, groundY);
+
+  // 前叉：把立 → 前轮轴
+  const sh = { x: bar.x + d * 2 * u, y: bar.y + 7 * u };  // 转向头（手正下方）
+  g.lineStyle(sw * 0.7, highlight ?? lc, 1);
+  g.moveTo(sh.x, sh.y); g.lineTo(F.x, F.y);
+
+  // 主车身：尾翘 → 座（贴臀）→ 油箱 → 转向头前脸，一个闭合剪影
+  const seatY = hip.y + 3 * u;
+  const body = [
+    P(-34, 55),                                  // 尾底
+    P(-36, 62),                                  // 尾尖
+    { x: hip.x - d * 22 * u, y: seatY - 1 * u }, // 座后沿
+    { x: hip.x + d * 2 * u,  y: seatY },         // 座面（贴臀）
+    { x: hip.x + d * 14 * u, y: seatY + 2 * u }, // 油箱后
+    { x: sh.x - d * 4 * u,   y: sh.y + 2 * u },  // 油箱前/转向头
+    { x: sh.x + d * 2 * u,   y: sh.y + 10 * u }, // 前脸下
+    P(26, 42),
+    P(-4, 46),
+    P(-22, 50),
+  ];
+  g.lineStyle(sw, highlight ?? lc, 1);
+  g.beginFill(FILL_PAPER, 1);
+  const bpts = _catmull(body.map(p => [p.x, p.y]), 6);
+  g.moveTo(bpts[0][0], bpts[0][1]);
+  for (const [px, py] of bpts) g.lineTo(px, py);
   g.closePath();
   g.endFill();
-  lenv(g, groundY, 0.5);
-  g.moveTo(hip.x + d * 2 * u,  hip.y + 4 * u);
-  g.lineTo(bar.x - d * 8 * u,  bar.y + 2 * u);
-  g.lineTo(bar.x - d * 8 * u,  bar.y + 12 * u);
-  g.lineTo(hip.x + d * 2 * u,  hip.y + 14 * u);
+
+  // 座垫：深色贴条（车身上、骑手下）
+  g.lineStyle(0);
+  g.beginFill(FILL_SHADE, 1);
+  g.moveTo(hip.x - d * 22 * u, seatY - 1 * u);
+  g.lineTo(hip.x + d *  6 * u, seatY + 1 * u);
+  g.lineTo(hip.x + d *  6 * u, seatY + 5 * u);
+  g.lineTo(hip.x - d * 22 * u, seatY + 4 * u);
   g.closePath();
+  g.endFill();
 
-  // 座垫
-  lenv(g, groundY, 1.1);
-  g.moveTo(hip.x - d * 10 * u, hip.y + 4 * u); g.lineTo(hip.x + d * 4 * u, hip.y + 4 * u);
+  // 发动机块：车身下、两轮之间
+  const eg = P(-2, 46);
+  g.beginFill(FILL_SHADE, 1);
+  g.drawRect(Math.min(eg.x, eg.x + d * 24 * u), eg.y, 24 * u, 15 * u);
+  g.endFill();
 
-  // 车把
-  g.moveTo(bar.x - d * 4 * u, bar.y + 2 * u); g.lineTo(bar.x + d * 5 * u, bar.y - 2 * u);
+  // 车把：穿过手，前端微翘
+  g.lineStyle(sw * 0.7, highlight ?? lc, 1);
+  g.moveTo(bar.x - d * 6 * u, bar.y + 3 * u);
+  g.lineTo(bar.x + d * 5 * u, bar.y - 2 * u);
+
+  // 大灯：前脸小圆
+  g.lineStyle(0);
+  g.beginFill(0xffffff, 0.55);
+  g.drawCircle(sh.x + d * 8 * u, sh.y + 12 * u, 4.5 * u);
+  g.endFill();
+  lenv(g, groundY, 0.6);
+  g.drawCircle(sh.x + d * 8 * u, sh.y + 12 * u, 4.5 * u);
+
+  // 尾灯
+  g.lineStyle(0);
+  g.beginFill(FILL_MID, 0.9);
+  const tl = P(-38, 58);
+  g.drawRect(Math.min(tl.x, tl.x + d * 3 * u), tl.y, 3 * u, 4 * u);
+  g.endFill();
 
   // 脚踏
   lenv(g, groundY, 0.85);
