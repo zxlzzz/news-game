@@ -5,17 +5,16 @@
     "r_elbow",
     "r_hand"
   ],
-  "latched": true,
   "keyframes": [
     {
       "dur": 0.15,
       "r_elbow": [
-        -1,
-        -4
+        3,
+        -9
       ],
       "r_hand": [
-        -2,
-        -44
+        1,
+        -49
       ]
     }
   ]

@@ -43,18 +43,6 @@
       "path": "animations/cycle/lie_ground.json",
       "kind": "cycle"
     },
-    "loiter_bag_a": {
-      "path": "animations/cycle/loiter_bag_a.json",
-      "kind": "cycle"
-    },
-    "loiter_bag_b": {
-      "path": "animations/cycle/loiter_bag_b.json",
-      "kind": "cycle"
-    },
-    "loiter_phone": {
-      "path": "animations/cycle/loiter_phone.json",
-      "kind": "cycle"
-    },
     "mobike": {
       "path": "animations/cycle/mobike.json",
       "kind": "cycle"

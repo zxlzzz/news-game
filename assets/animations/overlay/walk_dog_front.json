@@ -6,16 +6,15 @@
     "l_elbow",
     "l_hand"
   ],
-  "latched": true,
   "keyframes": [
     {
       "l_elbow": [
         8,
-        28
+        4
       ],
       "l_hand": [
-        11,
-        25
+        13,
+        5
       ]
     }
   ]
