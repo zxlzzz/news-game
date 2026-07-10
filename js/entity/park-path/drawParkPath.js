@@ -2,7 +2,16 @@ import {
   PARK_TOP, WORLD_WIDTH, WORLD_HEIGHT,
   FILL_PAPER, FILL_LIGHT, FILL_MID,
   depthScale,
+  depthLineWidth, depthLineColor,
+  ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../../core/Layout.js';
+
+function lenv(g, baseY, wScale = 1.0) {
+  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
+  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
+  g.lineStyle(lw, lc, 1);
+  return lc;
+}
 
 function rand(x, salt = 0) {
   const s = Math.sin(x * 12.9898 + salt * 78.233) * 43758.5453;
@@ -36,11 +45,13 @@ function _strokePolyline(g, pts) {
   g.endFill();
 }
 
-function _drawCurvedPath(g, ctrl, width) {
+function _drawCurvedPath(g, ctrl, width, baseY) {
   const pts = _catmullRom(ctrl, 10);
+  // 路面用 FILL_PAPER 宽线条填充（fill-via-stroke 技法）
   g.lineStyle(width, FILL_PAPER, 1);       _strokePolyline(g, pts);
   g.lineStyle(width - 7, FILL_PAPER, 1);   _strokePolyline(g, pts);
-  g.lineStyle(0.8, FILL_MID, 0.5);         _strokePolyline(g, pts);
+  // 路缘线走 lenv
+  lenv(g, baseY, 0.5);                     _strokePolyline(g, pts);
 }
 
 export function drawParkPaths(g, chessPlaza, miniPark) {
@@ -73,14 +84,18 @@ export function drawParkPaths(g, chessPlaza, miniPark) {
       [1768, mp.cy + 6                     ],
     ],
   ];
-  for (const pts of paths) _drawCurvedPath(g, pts, 26);
+  for (const pts of paths) {
+    const baseY = pts.reduce((sum, p) => sum + p[1], 0) / pts.length;
+    _drawCurvedPath(g, pts, 26, baseY);
+  }
 }
 
 export function drawParkPlaza(g, parkTrees = []) {
   const top = PARK_TOP, bot = WORLD_HEIGHT;
+  const parkMidY = (top + bot) / 2;
   const seed = (i) => { const s = Math.sin(i * 91.7) * 43758.5; return s - Math.floor(s); };
 
-  // Grass blob patches — lighter areas on park ground for texture
+  // Grass blob patches
   g.lineStyle(0);
   const blobs = 7;
   for (let i = 0; i < blobs; i++) {
@@ -93,7 +108,7 @@ export function drawParkPlaza(g, parkTrees = []) {
     g.endFill();
   }
 
-  // Tree shadow ellipses — FILL_LIGHT halo at base of each park tree
+  // Tree shadow ellipses
   for (const t of parkTrees) {
     const sc = depthScale(t.y);
     const jitter = 0.85 + rand(t.x, 0) * 0.30;
@@ -105,7 +120,6 @@ export function drawParkPlaza(g, parkTrees = []) {
   }
 
   // Grass stroke marks
-  g.lineStyle(0.6, FILL_MID, 0.3);
   const clusters = 22;
   let drawn = 0;
   for (let c = 0; c < clusters && drawn < 160; c++) {
@@ -117,6 +131,7 @@ export function drawParkPlaza(g, parkTrees = []) {
       const gx = ccx + (seed(drawn * 2 + 7) - 0.5) * spread;
       const gy = ccy + (seed(drawn * 2 + 8) - 0.5) * spread * 0.55;
       if (gx < 4 || gx > WORLD_WIDTH - 4) continue;
+      lenv(g, gy, 0.3);
       g.moveTo(gx, gy);       g.lineTo(gx, gy - 3);
       g.moveTo(gx, gy - 1.5); g.lineTo(gx - 1.5, gy - 3.5);
       g.moveTo(gx, gy - 1.5); g.lineTo(gx + 1.5, gy - 3.5);
@@ -128,7 +143,8 @@ export function drawParkPlaza(g, parkTrees = []) {
   g.beginFill(FILL_PAPER, 1);
   g.drawRect(0, top + 4, WORLD_WIDTH, 22);
   g.endFill();
-  g.lineStyle(0.6, FILL_MID, 0.5);
+  lenv(g, top + 4, 0.5);
   g.moveTo(0, top + 4);  g.lineTo(WORLD_WIDTH, top + 4);
+  lenv(g, top + 26, 0.5);
   g.moveTo(0, top + 26); g.lineTo(WORLD_WIDTH, top + 26);
 }

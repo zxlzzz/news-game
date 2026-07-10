@@ -70,8 +70,10 @@ export class TalkActivity extends Activity {
 
   _faceEachOther() {
     const { a, b } = this;
-    a.direction = (b.x >= a.x) ? 1 : -1;
-    b.direction = (a.x >= b.x) ? 1 : -1;
+    if (Math.abs(b.x - a.x) > 2) {
+      a.direction = (b.x >= a.x) ? 1 : -1;
+      b.direction = (a.x >= b.x) ? 1 : -1;
+    }
   }
 
   update(dt) {
@@ -191,16 +193,16 @@ export class TalkActivity extends Activity {
     return base;
   }
 
-  _applyLerpPose(npc, basePose, deltaPose, t) {
-    if (!deltaPose) return;
+  _applyLerpPose(npc, basePose, targetPose, t) {
+    if (!targetPose) return;
     const joints = {};
-    for (const [j, delta] of Object.entries(deltaPose)) {
+    for (const [j, target] of Object.entries(targetPose)) {
       const base = basePose[j] || [0, 0];
-      joints[j] = [base[0] + delta[0] * t, base[1] + delta[1] * t];
+      joints[j] = [base[0] + (target[0] - base[0]) * t, base[1] + (target[1] - base[1]) * t];
     }
     let mod = npc.modifiers.find(m => m.id === '_talk_sub_event');
     if (!mod) {
-      npc.modifiers.push({ id: '_talk_sub_event', kind: 'held', priority: 20, joints, timer: -1, absolute: true });
+      npc.modifiers.push({ id: '_talk_sub_event', kind: 'held', priority: 20, joints, timer: -1 });
     } else {
       mod.joints = joints;
     }

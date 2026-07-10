@@ -1,0 +1,19 @@
+{
+  "facing": "front",
+  "activeJoints": [
+    "l_elbow",
+    "l_hand"
+  ],
+  "keyframes": [
+    {
+      "l_elbow": [
+        -3,
+        4
+      ],
+      "l_hand": [
+        16,
+        -23
+      ]
+    }
+  ]
+}

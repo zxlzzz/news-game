@@ -15,10 +15,11 @@ import { spawnAthletes }    from '../npc/Athletes.js';
 import { initVehicleSystem } from '../entity/vehicle/vehicleSpawner.js';
 import {
   WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y,
-  SIDEWALK_FAR_Y,
+  SIDEWALK_FAR_Y, PARK_TOP, PARK_BOTTOM,
   depthScale,
 } from '../core/Layout.js';
 import { initCrosswalks } from '../behavior/WalkMode.js';
+import { NavGrid, setNavGrid } from '../behavior/nav/NavGrid.js';
 
 export class SceneInitializer {
   constructor(scene, em, sr, poseCache) {
@@ -88,6 +89,12 @@ export class SceneInitializer {
 
   _spawnNPCs(layout, sceneData) {
     const { em, sr, poseCache } = this;
+
+    // NavGrid — 在所有静态道具（props/trees）入场后烘焙
+    const navGrid = new NavGrid();
+    navGrid.bake(em.entities, layout);
+    setNavGrid(navGrid);
+
     const bm = new BehaviorManager(em, poseCache);
     this.scene.behaviorManager = bm;
 
@@ -112,7 +119,15 @@ export class SceneInitializer {
     }
     bm.exitRegistry = exitRegistry;
 
-    spawnPedestrians(em, sr, bm);
+    const spawnPoints = [
+      ...buildingDoors.map(d => ({ x: d.x, y: SIDEWALK_FAR_Y, facing: 0 })),
+      { x: -10,              y: SIDEWALK_FAR_Y, facing:  1 },
+      { x: WORLD_WIDTH + 10, y: SIDEWALK_FAR_Y, facing: -1 },
+      { x: -10,              y: PARK_TOP + 30,  facing:  1 },
+      { x: WORLD_WIDTH + 10, y: PARK_TOP + 30,  facing: -1 },
+    ];
+
+    spawnPedestrians(em, sr, bm, spawnPoints);
     spawnChess(em, sr, bm, layout.chessPlaza);
     this._spawnStallSellers(bm);
     this.scene.propManager = new NpcPropManager(em);
@@ -129,6 +144,7 @@ export class SceneInitializer {
       bm, em, sr,
       exitRegistry,
       buildingDoors,
+      spawnPoints,
       busStops: this.scene.trafficManager.busStops,
     });
     // 初始批次 NPC 补齐 exitBias
@@ -149,7 +165,7 @@ export class SceneInitializer {
       const seller = makeNPC(em, sr, {
         x: fromLeft ? 10 : WORLD_WIDTH - 10, y: stall.y,
         animation: 'walk', direction: fromLeft ? 1 : -1, speed: 28, vy: 0,
-        minX: 0, maxX: WORLD_WIDTH, minY: stall.y - 24, maxY: stall.y + 24,
+        minX: 0, maxX: WORLD_WIDTH, minY: BUILDING_BASE_Y, maxY: PARK_BOTTOM,
         tags: ['vendor'], npcType: 'stall_seller',
       });
       seller.scale = depthScale(stall.y);

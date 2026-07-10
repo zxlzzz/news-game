@@ -1,47 +1,70 @@
-import { depthLineWidth, depthLineColor } from '../../core/Layout.js';
+import {
+  depthLineWidth, depthLineColor,
+  FILL_PAPER, FILL_LIGHT, FILL_MID,
+  ENV_LINE_LIGHT, ENV_LINE_DARK,
+} from '../../core/Layout.js';
+
+function lenv(g, baseY, wScale = 1.0) {
+  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
+  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
+  g.lineStyle(lw, lc, 1);
+  return lc;
+}
 
 export function drawNewsRack(g, p) {
+  g.lineStyle(0);
+
   const { x, y } = p;
-  const s     = p.scale ?? 1;
-  const w     = 70 * s,  h = 86 * s;
-  const px    = x - w / 2;
-  const py    = y - h;
-  const lineW = depthLineWidth(y, { wMin: 0.8, wMax: 1.5 });
-  const lineC = depthLineColor(y, { light: 0x40, dark: 0x05 });
+  const s  = p.scale ?? 1;
+  const w  = 70 * s, h = 86 * s;
+  const px = x - w / 2, py = y - h;
 
-  g.beginFill(0xb8b8b8, 0.95);
-  g.drawRect(px, py + 17 * s, w, h - 17 * s);
-  g.endFill();
-  g.lineStyle(lineW, lineC, 0.95);
-  g.drawRect(px, py + 17 * s, w, h - 17 * s);
+  // Body block
+  const bpx = px, bpy = py + 17 * s, bw = w, bh = h - 17 * s;
 
-  // glass window
-  g.beginFill(0xeaeaea, 0.95);
-  g.drawRect(px + 3 * s, py + 20 * s, w - 6 * s, 26 * s);
-  g.endFill();
-  g.lineStyle(1.5 * s, lineC, 0.8);
-  g.drawRect(px + 3 * s, py + 20 * s, w - 6 * s, 26 * s);
+  // Header block
+  const hpx = px - 3 * s, hpy = py + 6 * s, hw = w + 6 * s, hh = 11 * s;
 
-  // text lines
-  g.lineStyle(1.5 * s, lineC, 0.85);
-  g.moveTo(px + 6 * s, py + 26 * s); g.lineTo(px + w - 6 * s, py + 26 * s);
-  g.moveTo(px + 6 * s, py + 32 * s); g.lineTo(px + w - 6 * s, py + 32 * s);
-  g.moveTo(px + 6 * s, py + 38 * s); g.lineTo(px + w - 11 * s, py + 38 * s);
-
-  // coin slot
-  g.beginFill(0x101010, 0.9);
-  g.drawRect(px + w / 2 - 6 * s, py + h - 14 * s, 11 * s, 3 * s);
+  // === Body block ===
+  // Front
+  g.lineStyle(0);
+  g.beginFill(FILL_LIGHT, 1);
+  g.drawRect(bpx, bpy, bw, bh);
   g.endFill();
 
-  // header bar
-  g.beginFill(0x4a4a4a, 1);
-  g.drawRect(px - 3 * s, py + 6 * s, w + 6 * s, 11 * s);
+  // Glass window
+  g.lineStyle(0);
+  g.beginFill(FILL_PAPER, 0.5);
+  g.drawRect(bpx + 3 * s, bpy + 3 * s, bw - 6 * s, 26 * s);
   g.endFill();
-  g.lineStyle(lineW * 0.9, lineC, 0.95);
-  g.drawRect(px - 3 * s, py + 6 * s, w + 6 * s, 11 * s);
 
-  // feet
-  g.lineStyle(lineW, lineC, 0.9);
-  g.moveTo(px + 6 * s,     py + h); g.lineTo(px + 6 * s,     py + h + 9 * s);
-  g.moveTo(px + w - 6 * s, py + h); g.lineTo(px + w - 6 * s, py + h + 9 * s);
+  // Body details
+  lenv(g, y, 0.6);
+  g.moveTo(bpx + 6 * s,       bpy + 9 * s);  g.lineTo(bpx + bw - 6 * s,  bpy + 9 * s);
+  g.moveTo(bpx + 6 * s,       bpy + 15 * s); g.lineTo(bpx + bw - 6 * s,  bpy + 15 * s);
+  g.moveTo(bpx + 6 * s,       bpy + 21 * s); g.lineTo(bpx + bw - 11 * s, bpy + 21 * s);
+
+  g.lineStyle(0);
+  g.beginFill(0x000000, 0.6);
+  g.drawRect(bpx + bw / 2 - 6 * s, bpy + bh - 14 * s, 11 * s, 3 * s);
+  g.endFill();
+
+  lenv(g, y, 0.9);
+  g.moveTo(bpx + 6 * s,      y); g.lineTo(bpx + 6 * s,      y + 9 * s);
+  g.moveTo(bpx + bw - 6 * s, y); g.lineTo(bpx + bw - 6 * s, y + 9 * s);
+
+  // Body outline
+  lenv(g, y, 0.85);
+  g.drawRect(bpx, bpy, bw, bh);
+
+  // === Header block ===
+  // Front
+  g.lineStyle(0);
+  g.beginFill(FILL_MID, 1);
+  g.drawRect(hpx, hpy, hw, hh);
+  g.endFill();
+
+  // Header outline
+  lenv(g, hpy, 0.85);
+  g.drawRect(hpx, hpy, hw, hh);
 }

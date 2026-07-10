@@ -1,0 +1,18 @@
+{
+  "activeJoints": [
+    "l_elbow",
+    "l_hand"
+  ],
+  "keyframes": [
+    {
+      "l_elbow": [
+        29,
+        10
+      ],
+      "l_hand": [
+        43,
+        -33
+      ]
+    }
+  ]
+}

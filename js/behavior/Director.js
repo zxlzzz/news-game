@@ -12,9 +12,8 @@
  */
 
 import {
-  SIDEWALK_FAR_Y, BUILDING_BASE_Y, FAR_Y, NEAR_Y,
-  PARK_TOP, PARK_BOTTOM, WORLD_WIDTH,
-  BIKE_LANE_FAR_TOP, depthScale,
+  BUILDING_BASE_Y, PARK_TOP, PARK_BOTTOM, WORLD_WIDTH,
+  BIKE_LANE_FAR_TOP,
 } from '../core/Layout.js';
 import { gameClock }          from '../core/GameClock.js';
 import { spawnOnePedestrian } from '../npc/Pedestrians.js';
@@ -58,10 +57,6 @@ function _pickProfile(mix) {
   return 'pedestrian';
 }
 
-// ─── spawn 区域（建筑门出来进入远端人行道，或公园两侧边缘）─────────────────────
-const FAR_SPAWN_Y  = SIDEWALK_FAR_Y;
-const NEAR_SPAWN_Y = PARK_TOP + 30;
-
 export class Director {
   /**
    * @param {object}          opts
@@ -70,14 +65,16 @@ export class Director {
    * @param {StickRenderer}   opts.sr
    * @param {ExitRegistry}    opts.exitRegistry
    * @param {Array}           opts.buildingDoors   — [{x, id}]
+   * @param {Array}           opts.spawnPoints     — [{x, y, facing}]
    * @param {Array}           opts.busStops        — BusStop 实例数组
    */
-  constructor({ bm, em, sr, exitRegistry, buildingDoors, busStops }) {
+  constructor({ bm, em, sr, exitRegistry, buildingDoors, spawnPoints, busStops }) {
     this._bm           = bm;
     this._em           = em;
     this._sr           = sr;
     this._exitRegistry = exitRegistry;
     this._doors        = buildingDoors ?? [];
+    this._spawnPoints  = spawnPoints ?? [];
     this._busStops     = busStops ?? [];
     this._spawnTimer   = rand(2, 5);
 
@@ -133,25 +130,15 @@ export class Director {
     }
   }
 
-  // ─── 单次 spawn：加权选源 ──────────────────────────────────────────────────────
+  // ─── 单次 spawn：从 spawnPoints 随机选入口 ────────────────────────────────────
   _spawnOne() {
+    if (this._spawnPoints.length === 0) return;
     const { mix } = this._currentPeriod();
     const profile = _pickProfile(mix);
 
-    const r = Math.random();
-    if (r < 0.60 && this._doors.length > 0) {
-      // 建筑门出行
-      const door = this._doors[Math.floor(Math.random() * this._doors.length)];
-      this._spawnNPC(profile, door.x, FAR_SPAWN_Y, door);
-    } else if (r < 0.90) {
-      // 画面边缘入场
-      const fromLeft = Math.random() < 0.5;
-      const useNear  = Math.random() < 0.4;  // 40% 从公园侧入
-      const x = fromLeft ? -10 : WORLD_WIDTH + 10;
-      const y = useNear ? rand(NEAR_SPAWN_Y, PARK_BOTTOM - 20) : rand(FAR_SPAWN_Y - 10, FAR_Y - 5);
-      this._spawnNPC(profile, x, y, null);
-    }
-    // 剩余 10% 等公交到站下客（_alight 处理）
+    const pt     = this._spawnPoints[Math.floor(Math.random() * this._spawnPoints.length)];
+    const isDoor = pt.facing === 0;
+    this._spawnNPC(profile, pt.x, pt.y, isDoor ? { x: pt.x } : null);
   }
 
   // ─── 实际创建 NPC ─────────────────────────────────────────────────────────────
@@ -159,8 +146,8 @@ export class Director {
     const exitBias  = extra.exitBias ?? _pickBias(profile);
     const fromDoor  = door != null;
     const direction = fromDoor
-      ? (x < WORLD_WIDTH / 2 ? 1 : -1)
-      : (x < 0 ? 1 : -1);
+      ? (Math.random() < 0.5 ? 1 : -1)   // door: facing=0, pick randomly
+      : (x < 0 ? 1 : -1);                // edge: derive from entry side
 
     const npc = spawnOnePedestrian(profile, this._em, this._sr, this._bm, { x, y }, {
       minX: 0, maxX: WORLD_WIDTH,

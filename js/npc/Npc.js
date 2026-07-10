@@ -6,8 +6,8 @@
 
 import { Entity } from '../core/Entity.js';
 import { depthGray } from '../core/Layout.js';
-import { humanOffsetY, dogOffsetY } from '../core/StickRenderer.js';
 import { integratePhysics } from '../behavior/Motor.js';
+import { clipLibrary } from '../core/ClipLibrary.js';
 
 // 行为状态 → 标签
 const STATE_TAGS = {
@@ -109,23 +109,38 @@ export class NPC extends Entity {
   _buildJointOverrides(frame) {
     if (!this.modifiers.length) return null;
     const sorted = [...this.modifiers].sort((a, b) => a.priority - b.priority);
-    const deltas = {};
-    const absolutes = {};
+    const merged = {};
     for (const m of sorted) {
-      if (!m.joints) continue;
-      if (m.absolute) {
-        Object.assign(absolutes, m.joints);
-      } else {
-        Object.assign(deltas, m.joints);
-      }
+      if (m.joints) Object.assign(merged, m.joints);
     }
+    if (!Object.keys(merged).length) return null;
+
+    // Re-anchor overlay deltas (recorded against defaultPose) to the current frame's
+    // chain root, so arms/legs stay attached when the torso moves (sit, squat, walk…).
+    const dp = clipLibrary.skeletons?.human?.defaultPose ?? {};
+    const dpNeck = dp.neck ?? [0, -119];
+    const dpBody = dp.body ?? [0, -69];
+    const frameNeck = frame.neck ?? dpNeck;
+    const frameBody = frame.body ?? dpBody;
+
+    // joints whose chain root passes through neck (arms, head)
+    const NECK_ANCHORED = new Set(['l_elbow', 'r_elbow', 'l_hand', 'r_hand', 'head']);
+    // joints whose chain root passes through body (legs, neck)
+    const BODY_ANCHORED = new Set(['neck', 'l_knee', 'r_knee', 'l_foot', 'r_foot']);
+
     const out = {};
-    const bodyPos = frame['body'] ?? [0, 0];
-    for (const [j, d] of Object.entries(deltas)) {
-      out[j] = [bodyPos[0] + d[0], bodyPos[1] + d[1]];
-    }
-    for (const [j, v] of Object.entries(absolutes)) {
-      out[j] = v;
+    for (const [j, v] of Object.entries(merged)) {
+      if (NECK_ANCHORED.has(j)) {
+        const dpAnchor = dpNeck;
+        const frameAnchor = frameNeck;
+        out[j] = [frameAnchor[0] + (v[0] - dpAnchor[0]), frameAnchor[1] + (v[1] - dpAnchor[1])];
+      } else if (BODY_ANCHORED.has(j)) {
+        const dpAnchor = dpBody;
+        const frameAnchor = frameBody;
+        out[j] = [frameAnchor[0] + (v[0] - dpAnchor[0]), frameAnchor[1] + (v[1] - dpAnchor[1])];
+      } else {
+        out[j] = v;
+      }
     }
     return out;
   }
@@ -145,17 +160,7 @@ export class NPC extends Entity {
   // 把命名锚点映射到动画关节，按与 StickRenderer 完全一致的变换求世界坐标。
   // human: head/neck/hand_l/hand_r/hip/foot_l/foot_r ；dog: neck/head/hip
   _renderY() {
-    if (!this.steadyFoot) return this.y;
-    const anim = this.renderer.getAnimation(this.animation);
-    if (!anim) return this.y;
-    if (anim._maxFootY === undefined) {
-      let m = 0;
-      for (const f of anim.frames) m = Math.max(m, f.l_foot[1], f.r_foot[1]);
-      anim._maxFootY = m;
-    }
-    const frame = anim.frames[this.frameIndex % anim.frameCount];
-    const frameMax = Math.max(frame.l_foot[1], frame.r_foot[1]);
-    return this.y + (frameMax - anim._maxFootY) * this.scale;
+    return this.y;
   }
 
   /**
@@ -178,12 +183,10 @@ export class NPC extends Entity {
     const jp = coord(jn);
     if (!jp) return { x: this.x, y: this.y };
     const s = this.scale;
-    const offsetY = isDog ? dogOffsetY(anim, coord, s) : humanOffsetY(anim, coord, s);
     const dir = this.direction * (anim.canonicalDirection || 1);
-    const renderY = this._renderY();
     return {
       x: this.x + jp[0] * s * dir,
-      y: renderY + jp[1] * s + offsetY,
+      y: this.y + jp[1] * s,
     };
   }
 

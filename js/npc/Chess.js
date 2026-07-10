@@ -61,12 +61,12 @@ export function spawnChess(em, sr, bm, chessPlaza) {
   // 两把椅子：椅面 = 各自 hip 高度
   const chairA = em.add(new PropEntity({
     propType: 'chair-r', x: hipA.x, y: Y,
-    width: 14, height: 16, seatH: Math.max(8, Y - hipA.y),
+    width: 14, height: 16, seatH: Y - hipA.y - 1,
     tags: [],
   }));
   const chairB = em.add(new PropEntity({
     propType: 'chair-l', x: hipB.x, y: Y,
-    width: 14, height: 16, seatH: Math.max(8, Y - hipB.y),
+    width: 14, height: 16, seatH: Y - hipB.y - 1,
     tags: [],
   }));
 

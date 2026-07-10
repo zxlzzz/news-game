@@ -1,0 +1,18 @@
+{
+  "activeJoints": [
+    "neck",
+    "head"
+  ],
+  "keyframes": [
+    {
+      "neck": [
+        -13,
+        18
+      ],
+      "head": [
+        0,
+        21
+      ]
+    }
+  ]
+}

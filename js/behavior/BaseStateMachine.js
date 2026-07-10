@@ -32,7 +32,7 @@
 import { dlog }        from './DebugLog.js';
 import { PARK_TOP }     from '../core/Layout.js';
 import { sitDown, alignLie } from '../entity/seat/seat.js';
-import { tickLoiter, initPoseCache as initLoiterPoseCache } from '../npc/LoiterBehavior.js';
+import { tickLoiter } from '../npc/LoiterBehavior.js';
 
 import {
   tickWalkMode, pickModeTarget, onPathArrival,
@@ -40,16 +40,12 @@ import {
 } from './WalkMode.js';
 
 import { setState, STATE_DEFS, setXY, nudgeXY, setSpeed } from './Motor.js';
+import { getPlanner } from './nav/PathPlanner.js';
 
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
 export { setState, STATE_DEFS } from './Motor.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
-
-// ─── initPoseCache（转发到 LoiterBehavior）──────────────────────────────────
-export function initPoseCache(pc) {
-  initLoiterPoseCache(pc);
-}
 
 // ─── 内部：按 profile.transitions 权重表随机选下一状态，含环境前置检查 ───────
 function _pickNext(npc, profile, envQuery) {
@@ -85,7 +81,7 @@ function _resolveTimeout(npc, envQuery, profile) {
     sitDown(npc, bench);
     return 'sit_bench';
   }
-  // lie_bench anchorMode='back'（无竖向偏移），坐→躺转换时重对齐
+  // sit_bench→lie_bench: body joint shifts laterally, realign so body maps to seatY
   if (next === 'lie_bench' && npc._bench) {
     alignLie(npc, npc.renderer);
   }
@@ -160,7 +156,7 @@ function _evaluateTransitions(npc, profile, envQuery) {
 
 // ─── 当前状态的 per-frame 行为（纯行为，不含转换判断）────────────────────────
 function _tickState(npc, envQuery, profile, dt) {
-  const isWalking = npc.state === 'walk' || npc.state === 'run';
+  const isWalking = npc.state === 'walk' || npc.state === 'run' || npc.state === 'jog';
 
   if (isWalking) tickWalkMode(npc, dt);
 
@@ -174,27 +170,51 @@ function _tickState(npc, envQuery, profile, dt) {
 function steerRoam(npc, envQuery, profile, dt) {
   if (npc.state === 'routing') {
     setSpeed(npc, 0);
-    npc.vy    = 0;
+    npc.vy = 0;
     if (!npc._routeTarget) { setState(npc, 'walk', 'routing_no_target'); return; }
-    const t  = npc._routeTarget;
-    const dx = t.x - npc.x, dy = t.y - npc.y;
-    const dist = Math.hypot(dx, dy);
+    const t = npc._routeTarget;
     const arriveThreshold = t.exitType === 'building' ? 20 : 8;
 
     if (npc.stateTimer > (t.abandonAfter ?? 30)) {
       envQuery.releaseSlotReservation(npc);
-      npc._routeTarget = null;
+      npc._routeTarget = null; npc._routePts = null; npc._routeIdx = 0;
       setState(npc, 'walk', 'routing_timeout');
       return;
     }
-    if (dist < arriveThreshold) {
-      setXY(npc, t.x, t.y);
-      const cb = t.onArrive;
-      npc._routeTarget = null;
-      if (cb) cb(npc);
+
+    // One-shot path planning when _routePts is null
+    if (npc._routePts == null) {
+      if (!envQuery.raycastObstacle(npc.x, npc.y, t.x, t.y)) {
+        npc._routePts = [t];
+      } else {
+        const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
+        const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y, _b);
+        npc._routePts = (pts && pts.length > 0) ? pts : [t];
+      }
+      npc._routeIdx = 0;
+    }
+
+    const pts  = npc._routePts;
+    const idx  = npc._routeIdx ?? 0;
+    const wp   = pts[Math.min(idx, pts.length - 1)];
+    const isLast = idx >= pts.length - 1;
+    const dx = wp.x - npc.x, dy = wp.y - npc.y;
+    const dist = Math.hypot(dx, dy);
+
+    if (isLast) {
+      if (dist < arriveThreshold) {
+        setXY(npc, t.x, t.y);
+        const cb = t.onArrive;
+        npc._routeTarget = null; npc._routePts = null; npc._routeIdx = 0;
+        if (cb) cb(npc);
+        return;
+      }
+    } else if (dist < 8) {
+      npc._routeIdx = idx + 1;
       return;
     }
-    npc.direction = dx > 0 ? 1 : -1;
+
+    if (Math.abs(dx) > 2) npc.direction = dx > 0 ? 1 : -1;
     const spd = npc.walkSpeed || 26;
     nudgeXY(npc, (dx / dist) * spd * dt, (dy / dist) * spd * dt);
     return;
@@ -210,16 +230,56 @@ function steerRoam(npc, envQuery, profile, dt) {
   if (!npc.roamTarget) return;
 
   const t = npc.roamTarget;
-  const dx = t.x - npc.x, dy = t.y - npc.y;
+
+  // ── Path layer: plan once per roamTarget, follow waypoints ────────────
+  // When roamTarget changes (new goal), plan an A* path.
+  // If planner returns null (e.g. crossing road), fall back to direct steer.
+  if (!npc._navPath || npc._navGoalX !== t.x || npc._navGoalY !== t.y) {
+    npc._navGoalX = t.x;
+    npc._navGoalY = t.y;
+    npc._navPath  = null;
+    npc._navIdx   = 0;
+    const planner = getPlanner();
+    if (planner) {
+      const _b = npc.minX != null
+        ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY }
+        : null;
+      const pts = planner.plan(npc.x, npc.y, t.x, t.y, _b);
+      if (pts && pts.length > 0) {
+        npc._navPath = pts;
+        npc._navIdx  = 0;
+      }
+    }
+  }
+
+  // Steering target: current waypoint if path exists, else direct to roamTarget
+  const wp = (npc._navPath && npc._navIdx < npc._navPath.length)
+    ? npc._navPath[npc._navIdx]
+    : t;
+
+  const dx = wp.x - npc.x, dy = wp.y - npc.y;
   const dist = Math.hypot(dx, dy);
-  if (dist < 6) {
+
+  // ── Waypoint arrival (intermediate) ───────────────────────────────────
+  if (npc._navPath && npc._navIdx < npc._navPath.length - 1 && dist < 8) {
+    npc._navIdx++;
+    return;   // advance; next frame steers toward the next waypoint
+  }
+
+  // ── Final target arrival (roamTarget) ─────────────────────────────────
+  const distToGoal = Math.hypot(t.x - npc.x, t.y - npc.y);
+  if (distToGoal < 6) {
+    npc._navPath = null;
     const mode = npc._walkMode;
     if (mode?.kind === 'path_follow') {
       onPathArrival(mode, npc);
     } else if (mode?.kind === 'direct') {
-      const cb = mode.onArrive;
-      setWalkMode(npc, modeWander());
-      if (cb) cb(npc);
+      const nt = mode.nextTarget;
+      if (!nt || distToGoal < 2 || !envQuery.raycastObstacle(npc.x, npc.y, nt.x, nt.y)) {
+        const cb = mode.onArrive;
+        setWalkMode(npc, modeWander());
+        if (cb) cb(npc);
+      }
     } else {
       const lc = profile?.loiterChance;
       if (lc && Math.random() < lc && !isRoadZone(npc.y)) {
@@ -231,12 +291,9 @@ function steerRoam(npc, envQuery, profile, dt) {
     return;
   }
 
+  // ── Steer toward current waypoint ─────────────────────────────────────
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
-  let vx = dx / dist * total, vy = dy / dist * total;
-  const av = avoidObstacles(npc, vx, vy, envQuery);
-  vx += av.x; vy += av.y;
-  const mag = Math.hypot(vx, vy) || 1;
-  vx = vx / mag * total; vy = vy / mag * total;
+  const vx = dx / dist * total, vy = dy / dist * total;
   setSpeed(npc, Math.abs(vx));
   npc.vy = vy;
 
@@ -246,33 +303,6 @@ function steerRoam(npc, envQuery, profile, dt) {
     npc.direction = desired;
     npc._dirCD = 0.45;
   }
-}
-
-function avoidObstacles(npc, vx, vy, envQuery) {
-  let ax = 0, ay = 0;
-  const speed = Math.hypot(vx, vy) || 1;
-  const fx = vx / speed, fy = vy / speed;
-  const base = npc.walkSpeed || 26;
-  const npcR = 12;
-  for (const o of envQuery.getObstacles(npc.x, npc.y, 46)) {
-    const ox = npc.x - o.x, oy = npc.y - o.y;
-    const rx = o.collisionRX + npcR, ry = o.collisionRY + npcR;
-    const sd = Math.hypot(ox / rx, oy / ry) || 0.001;
-    if (sd > 1.8) continue;
-    if (sd < 1) { setXY(npc, o.x + ox / sd, o.y + oy / sd); }
-    const d = Math.hypot(ox, oy) || 0.001;
-    const dot = (-ox / d) * fx + (-oy / d) * fy;
-    if (dot < 0.2) continue;
-    const prox = Math.max(0, 1 - (sd - 1) / 0.8);
-    if (prox <= 0) continue;
-    let gx = ox / (rx * rx), gy = oy / (ry * ry);
-    const gl = Math.hypot(gx, gy) || 1; gx /= gl; gy /= gl;
-    let tx = -gy, ty = gx;
-    if (tx * fx + ty * fy < 0) { tx = -tx; ty = -ty; }
-    ax += (tx * 1.4 + gx * 0.6) * base * prox;
-    ay += (ty * 1.4 + gy * 0.6) * base * prox;
-  }
-  return { x: ax, y: ay };
 }
 
 // ─── 离场系统 ─────────────────────────────────────────────────────────────────

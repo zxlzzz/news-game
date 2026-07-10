@@ -7,6 +7,7 @@
  */
 
 import { SIDEWALK_FAR_Y, FAR_Y, NEAR_Y } from '../core/Layout.js';
+import { getNavGrid, CELL, ROAD } from './nav/NavGrid.js';
 
 function _sameSide(y1, y2) {
   const side = y => y < FAR_Y ? 'far' : y >= NEAR_Y ? 'near' : 'road';
@@ -119,67 +120,32 @@ export class EnvironmentQuery {
     return _findFreeChess(this.em.entities, npc, radius);
   }
 
-  // ─── 障碍物查询（批次 0 避障）──────────────────────────────────────────────
-  // 障碍是静态道具，构建一次缓存后复用（按 X 升序分桶，桶宽 200px）。
-  _ensureObstacles() {
-    if (this._buckets) return;
-    const list = this.em.entities.filter(e => e.obstacle);
-    this._buckets = new Map();
-    for (const o of list) {
-      const b = Math.floor(o.x / 200);
-      if (!this._buckets.has(b)) this._buckets.set(b, []);
-      this._buckets.get(b).push(o);
-    }
+  // ─── 障碍物查询（NavGrid 单一真值源）──────────────────────────────────────
+  /** 点 (x,y) 是否为不可选目标（BLOCKED 或 ROAD）；是则返回真值，否则 null */
+  pointBlocked(x, y, _npcRadius = 12) {
+    const grid = getNavGrid();
+    if (!grid) return null;
+    const { gx, gy } = grid.worldToCell(x, y);
+    const c = grid.cost(gx, gy);
+    return (c === 0 || c === ROAD) ? { x, y } : null;
   }
 
-  _candidatesNear(cx, span) {
-    this._ensureObstacles();
-    const out = [];
-    const b0 = Math.floor((cx - span) / 200);
-    const b1 = Math.floor((cx + span) / 200);
-    for (let b = b0; b <= b1; b++) {
-      const arr = this._buckets.get(b);
-      if (arr) for (const o of arr) out.push(o);
-    }
-    return out;
-  }
-
-  /** center 附近 radius 内的障碍物列表（含各自 collisionRadius） */
-  getObstacles(centerX, centerY, radius) {
-    const out = [];
-    for (const o of this._candidatesNear(centerX, radius + 100)) {
-      if (!o.alive) continue;
-      if (Math.hypot(o.x - centerX, o.y - centerY) <= radius + o.collisionRadius) out.push(o);
-    }
-    return out;
-  }
-
-  /** 点 (x,y) 是否落在某障碍椭圆碰撞体内（含 npc 半径）；命中返回该障碍，否则 null */
-  pointBlocked(x, y, npcRadius = 12) {
-    for (const o of this._candidatesNear(x, 120)) {
-      if (!o.alive) continue;
-      const ex = (x - o.x) / (o.collisionRX + npcRadius);
-      const ey = (y - o.y) / (o.collisionRY + npcRadius);
-      if (ex * ex + ey * ey < 1) return o;
+  /** 线段 (x,y)→(tx,ty) 沿途是否经过不可选格（BLOCKED 或 ROAD）；有则返回首个碰撞点，否则 null */
+  raycastObstacle(x, y, tx, ty, _npcRadius = 12) {
+    const grid = getNavGrid();
+    if (!grid) return null;
+    const dx = tx - x, dy = ty - y;
+    const len = Math.hypot(dx, dy);
+    if (len < 1) return null;
+    const steps = Math.ceil(len / (CELL * 0.5));
+    for (let i = 1; i <= steps; i++) {
+      const t  = i / steps;
+      const wx = x + dx * t, wy = y + dy * t;
+      const { gx, gy } = grid.worldToCell(wx, wy);
+      const c = grid.cost(gx, gy);
+      if (c === 0) return { x: wx, y: wy };
     }
     return null;
-  }
-
-  /** 线段 (x,y)→(tx,ty) 上第一个阻挡的障碍（按距起点最近）；无则 null */
-  raycastObstacle(x, y, tx, ty, npcRadius = 12) {
-    const dx = tx - x, dy = ty - y;
-    const len = Math.hypot(dx, dy) || 1;
-    const ux = dx / len, uy = dy / len;
-    let best = null, bestT = Infinity;
-    for (const o of this._candidatesNear((x + tx) / 2, len / 2 + 120)) {
-      if (!o.alive) continue;
-      const t = (o.x - x) * ux + (o.y - y) * uy;      // 投影到线段
-      if (t < 0 || t > len) continue;
-      const px = x + ux * t, py = y + uy * t;
-      const dist = Math.hypot(o.x - px, o.y - py);
-      if (dist < o.collisionRadius + npcRadius && t < bestT) { best = o; bestT = t; }
-    }
-    return best;
   }
 
   /** 在 center 半径内找一个无人占用的指定 propType 道具（如空棋桌）；无则 null */

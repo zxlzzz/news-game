@@ -151,6 +151,8 @@ registerActivity('stall', (id, participants, props) => {
 }, {
   onSlotArrival(npc, prop, slot, socialLayer) {
     if (slot.role === 'seller') {
+      npc.minY = prop.y - 24;
+      npc.maxY = prop.y + 24;
       socialLayer.createActivity('stall', [{ npc, role: 'seller' }], [prop]);
     } else {
       const act = prop._stallActivity;

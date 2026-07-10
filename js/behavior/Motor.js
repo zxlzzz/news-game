@@ -11,6 +11,7 @@
 
 import { standUp }  from '../entity/seat/seat.js';
 import { dlog }     from './DebugLog.js';
+import { getNavGrid, CELL } from './nav/NavGrid.js';
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
 let _writing = false;
@@ -168,6 +169,60 @@ export function setState(npc, state, trigger = '?') {
   }
 }
 
+// ── 碰撞辅助 ────────────────────────────────────────────────────────────────
+function _navBlocked(grid, wx, wy) {
+  const { gx, gy } = grid.worldToCell(wx, wy);
+  return grid.cost(gx, gy) === 0;
+}
+
+/**
+ * 尝试移动 (dx, dy)，NavGrid 阻挡时做轴分离滑行，位移归一化到原速度模长（贴边不减速）。
+ *   0. 自身格已 BLOCKED → 无条件放行（逃逸）。
+ *   1. 全向 → 单轴 → 垂直让行逐级尝试。
+ *   2. 全阻：静止，不维护任何计数器。
+ */
+function _slideMove(npc, dx, dy) {
+  // Bounds clamp: only block displacement that crosses from inside to outside
+  if (npc.minX != null && npc.x >= npc.minX && npc.x + dx < npc.minX) dx = npc.minX - npc.x;
+  if (npc.maxX != null && npc.x <= npc.maxX && npc.x + dx > npc.maxX) dx = npc.maxX - npc.x;
+  if (npc.minY != null && npc.y >= npc.minY && npc.y + dy < npc.minY) dy = npc.minY - npc.y;
+  if (npc.maxY != null && npc.y <= npc.maxY && npc.y + dy > npc.maxY) dy = npc.maxY - npc.y;
+  if (dx === 0 && dy === 0) return;
+
+  const grid = getNavGrid();
+  const nx = npc.x + dx, ny = npc.y + dy;
+  const mag = Math.hypot(dx, dy);
+
+  // Escape rule: already in a blocked cell → move freely to get out
+  if (grid && _navBlocked(grid, npc.x, npc.y)) {
+    _mw(npc, 'x', nx); _mw(npc, 'y', ny);
+    return;
+  }
+
+  // Full move
+  if (!grid || !_navBlocked(grid, nx, ny)) {
+    _mw(npc, 'x', nx); _mw(npc, 'y', ny);
+    return;
+  }
+
+  // Axis separation — normalize to original magnitude to preserve speed
+  if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) {
+    _mw(npc, 'x', npc.x + Math.sign(dx) * mag);
+    return;
+  }
+  if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) {
+    _mw(npc, 'y', npc.y + Math.sign(dy) * mag);
+    return;
+  }
+
+  // Wall-slide: pure horizontal blocked → nudge perpendicularly at original speed
+  if (dx !== 0 && dy === 0) {
+    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - mag); return; }
+    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + mag); return; }
+  }
+  // Fully blocked: no movement, no counters
+}
+
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
 export function setXY(npc, x, y) {
   _mw(npc, 'x', x);
@@ -175,8 +230,7 @@ export function setXY(npc, x, y) {
 }
 
 export function nudgeXY(npc, dx, dy) {
-  _mw(npc, 'x', npc.x + dx);
-  _mw(npc, 'y', npc.y + dy);
+  _slideMove(npc, dx, dy);
 }
 
 // ── 速度写入（供 steerRoam）──────────────────────────────────────────────────
@@ -198,14 +252,67 @@ export function integratePhysics(npc, delta) {
     npc.direction = npc.leashTarget.direction;
     return;
   }
+  let dx = 0, dy = 0;
   if (npc.speed > 0) {
-    let nx = npc.x + npc.direction * npc.speed * dt;
-    if      (nx > npc.maxX) { nx = npc.maxX; if (!npc._walkMode) npc.direction = -1; }
-    else if (nx < npc.minX) { nx = npc.minX; if (!npc._walkMode) npc.direction =  1; }
-    _mw(npc, 'x', nx);
+    const tentX = npc.x + npc.direction * npc.speed * dt;
+    if (!npc._walkMode) {
+      if (npc.maxX != null && tentX > npc.maxX && npc.x <= npc.maxX) npc.direction = -1;
+      else if (npc.minX != null && tentX < npc.minX && npc.x >= npc.minX) npc.direction = 1;
+    }
+    dx = npc.direction * npc.speed * dt;
   }
-  let ny = npc.y + npc.vy * dt;
-  if      (ny > npc.maxY) { ny = npc.maxY; npc.vy = npc._walkMode ? 0 : -Math.abs(npc.vy); }
-  else if (ny < npc.minY) { ny = npc.minY; npc.vy = npc._walkMode ? 0 :  Math.abs(npc.vy); }
-  _mw(npc, 'y', ny);
+  const tentY = npc.y + npc.vy * dt;
+  if (npc.maxY != null && tentY > npc.maxY && npc.y <= npc.maxY) {
+    npc.vy = npc._walkMode ? 0 : -Math.abs(npc.vy);
+  } else if (npc.minY != null && tentY < npc.minY && npc.y >= npc.minY) {
+    npc.vy = npc._walkMode ? 0 : Math.abs(npc.vy);
+  }
+  dy = npc.vy * dt;
+  if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
+
+  // Progress monitor: every 1.5 s sum cumulative travel; < 15 px with active goal → fail leg
+  if (!npc._progressLast) npc._progressLast = { x: npc.x, y: npc.y };
+  const frameDist = Math.hypot(npc.x - npc._progressLast.x, npc.y - npc._progressLast.y);
+  npc._progressCum = (npc._progressCum ?? 0) + frameDist;
+  npc._progressLast = { x: npc.x, y: npc.y };
+
+  npc._progressAcc = (npc._progressAcc ?? 0) + dt;
+  if (npc._progressAcc >= 1.5) {
+    npc._progressAcc = 0;
+    const moved = npc._progressCum;
+    npc._progressCum = 0;
+
+    const hasGoal = npc.speed > 0 || npc.state === 'routing';
+    if (hasGoal && moved < 15) {
+      // Clear the path layer so steerRoam replans from current position
+      npc._navPath = null;
+      const mode = npc._walkMode;
+      if (mode?.kind === 'direct') {
+        if (!mode._stuckOnce) {
+          mode._stuckOnce = true;
+          npc._navPath   = null;
+          npc.roamTarget = null;
+          npc._progressCum = 0;
+        } else {
+          mode._elapsed = mode.abandonAfter ?? 60;
+        }
+      } else if (mode?.kind === 'wander') {
+        npc.roamTarget = null;
+      } else if (npc.state === 'routing') {
+        if (!npc._routeReplan) {
+          npc._routePts    = null;
+          npc._routeIdx    = 0;
+          npc._routeReplan = 1;
+        } else {
+          npc._routeReplan = 0;
+          npc.stateTimer   = 9999;
+        }
+      } else if (!mode) {
+        npc.direction = -npc.direction;
+      }
+    } else {
+      npc._routeReplan = 0;
+      if (npc._walkMode?.kind === 'direct') npc._walkMode._stuckOnce = false;
+    }
+  }
 }

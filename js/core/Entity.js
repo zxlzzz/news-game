@@ -41,6 +41,9 @@ export class Entity {
   /** 每帧逻辑更新（静态实体留空） */
   update(delta) {}
 
+  /** 地面预通道：在 Y 排序主绘制之前调用，绘制贴地平面元素（子类按需覆盖） */
+  drawGround(g) {}
+
   /** 绘制自身到 Graphics 对象（子类实现） */
   draw(g) {}
 }

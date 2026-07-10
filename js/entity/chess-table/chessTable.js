@@ -8,8 +8,16 @@
  * 棋桌通过 propType === 'chess-table' 和 smartDef.activityType === 'chess' 来识别。
  */
 
+import { depthScale } from '../../core/Layout.js';
+
 /** 棋桌内禀尺寸（未缩放，世界单位） */
 export const INTRINSIC = { tw: 58, topH: 25, th: 20 };
+
+/** 落地接触面半宽/半深（世界像素，已乘深度缩放） */
+export function footprint(e) {
+  const ds = depthScale(e.y);
+  return { rx: 29 * ds, ry: Math.max(3, 10 * ds) };
+}
 
 /**
  * 计算参考缩放下的玩家间距（gap）。

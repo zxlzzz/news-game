@@ -867,38 +867,6 @@
     },
     {
       "propType": "stall",
-      "x": 840,
-      "y": 492,
-      "width": 167,
-      "height": 56,
-      "tags": [],
-      "smartDef": {
-        "activityType": "stall",
-        "routing": [
-          {
-            "activityFlag": "stall_buyer",
-            "role": "buyer",
-            "chance": 0.003,
-            "radius": 220,
-            "requireOccupied": true
-          }
-        ],
-        "slots": [
-          {
-            "role": "seller",
-            "dx": 0,
-            "dy": -6
-          },
-          {
-            "role": "buyer",
-            "dx": 0,
-            "dy": 18
-          }
-        ]
-      }
-    },
-    {
-      "propType": "stall",
       "x": 1690,
       "y": 424,
       "width": 203,
@@ -964,7 +932,7 @@
     },
     {
       "propType": "bench",
-      "x": 780,
+      "x": 830,
       "y": 418,
       "width": 80,
       "height": 12,

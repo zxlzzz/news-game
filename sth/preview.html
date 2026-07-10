@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Draw Preview</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a1a; color: #ccc; font: 13px/1.4 monospace; display: flex; height: 100vh; }
+  #panel {
+    width: 260px; padding: 12px; overflow-y: auto; flex-shrink: 0;
+    background: #222; border-right: 1px solid #444;
+  }
+  #panel h3 { color: #fff; margin: 12px 0 6px; font-size: 13px; }
+  #panel h3:first-child { margin-top: 0; }
+  #panel label { display: block; margin: 4px 0; }
+  #panel select, #panel input[type=range], #panel input[type=number] {
+    width: 100%; margin: 2px 0 8px;
+  }
+  #panel select { padding: 4px; background: #333; color: #ccc; border: 1px solid #555; }
+  #panel input[type=range] { accent-color: #888; }
+  #panel .val { float: right; color: #999; }
+  #panel button {
+    width: 100%; padding: 6px; margin: 4px 0; cursor: pointer;
+    background: #444; color: #ccc; border: 1px solid #666;
+  }
+  #panel button:hover { background: #555; }
+  #canvas-wrap { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #status { position: fixed; bottom: 8px; left: 270px; color: #666; font-size: 11px; }
+  .row { display: flex; gap: 8px; align-items: center; }
+  .row label { flex: 1; }
+</style>
+</head>
+<body>
+
+<div id="panel">
+  <h3>Draw 文件</h3>
+  <select id="drawSelect"></select>
+  <button id="btnReload">重新加载 (R)</button>
+
+  <h3>参数</h3>
+  <label>Y 位置 <span class="val" id="valY">350</span></label>
+  <input type="range" id="sliderY" min="210" max="520" value="350" step="1">
+
+  <label>Scale <span class="val" id="valScale">1.00</span></label>
+  <input type="range" id="sliderScale" min="0.3" max="2.0" value="1.0" step="0.05">
+
+  <h3>背景</h3>
+  <label><input type="radio" name="bg" value="white" checked> 白底 (看线条)</label>
+  <label><input type="radio" name="bg" value="gray"> 灰底 (看填充)</label>
+  <label><input type="radio" name="bg" value="bands"> 模拟场景分带</label>
+
+  <h3>辅助</h3>
+  <label><input type="checkbox" id="chkGrid"> 网格</label>
+  <label><input type="checkbox" id="chkOrigin" checked> 原点标记</label>
+  <label><input type="checkbox" id="chkCompare"> 左右对比 (旧 vs 新)</label>
+
+  <h3>对比文件 (可选)</h3>
+  <select id="drawSelectB" disabled><option value="">-- 无 --</option></select>
+</div>
+
+<div id="canvas-wrap"></div>
+<div id="status">就绪</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.12/pixi.min.js"></script>
+<script type="module">
+
+// ── 扫描可用的 draw 文件 ──────────────────────────────────────────────────────
+
+const DRAW_FILES = [
+  { label: 'hydrant',       path: '../js/entity/hydrant/drawHydrant.js',         fn: 'drawHydrant' },
+  { label: 'fountain',      path: '../js/entity/fountain/drawFountain.js',       fn: 'drawFountain' },
+  { label: 'mailbox',       path: '../js/entity/mailbox/drawMailbox.js',         fn: 'drawMailbox' },
+  { label: 'trash',         path: '../js/entity/trash/drawTrash.js',             fn: 'drawTrash' },
+  { label: 'lamp',          path: '../js/entity/lamp/drawLamp.js',               fn: 'drawLamp' },
+  { label: 'bench',         path: '../js/entity/seat/drawBench.js',              fn: 'drawBench' },
+  { label: 'busStopBench',  path: '../js/entity/seat/drawBusStopBench.js',       fn: 'drawBusStopBench' },
+  { label: 'chairL',        path: '../js/entity/seat/drawChairL.js',             fn: 'drawChairL' },
+  { label: 'chairR',        path: '../js/entity/seat/drawChairR.js',             fn: 'drawChairR' },
+  { label: 'sign',          path: '../js/entity/sign/drawSign.js',               fn: 'drawSign' },
+  { label: 'newsRack',      path: '../js/entity/newsrack/drawNewsRack.js',       fn: 'drawNewsRack' },
+  { label: 'phoneBooth',    path: '../js/entity/phonebooth/drawPhoneBooth.js',   fn: 'drawPhoneBooth' },
+  { label: 'planter',       path: '../js/entity/planter/drawPlanter.js',         fn: 'drawPlanter' },
+  { label: 'vending',       path: '../js/entity/vending/drawVending.js',         fn: 'drawVending' },
+  { label: 'stall',         path: '../js/entity/stall/drawStall.js',             fn: 'drawStall' },
+  { label: 'tree',          path: '../js/entity/tree/drawTree.js',               fn: 'drawTree' },
+  { label: 'drain',         path: '../js/entity/drain/drawDrain.js',             fn: 'drawDrain' },
+  { label: 'manhole',       path: '../js/entity/manhole/drawManhole.js',         fn: 'drawManhole' },
+  { label: 'busStopRoof',   path: '../js/entity/busstop/drawBusStopRoof.js',     fn: 'drawBusStopRoof' },
+  { label: 'chessTable',    path: '../js/entity/chess-table/drawChessTable.js',  fn: 'drawChessTable' },
+  { label: 'vehicle',       path: '../js/entity/vehicle/drawVehicle.js',         fn: 'drawVehicle' },
+  { label: 'building',      path: '../js/entity/building/drawBuilding.js',       fn: 'drawBuilding' },
+];
+
+// ── Layout 常量导入 ───────────────────────────────────────────────────────────
+
+const BASE = '../';  // preview.html 在 sth/ 下，项目根在上一层
+const Layout = await import(BASE + 'js/core/Layout.js');
+
+// ── PIXI 初始化 ──────────────────────────────────────────────────────────────
+
+const app = new PIXI.Application({
+  width: 800, height: 600,
+  backgroundColor: 0xffffff,
+  antialias: true,
+});
+document.getElementById('canvas-wrap').appendChild(app.view);
+
+const bgLayer    = new PIXI.Graphics();
+const drawLayer  = new PIXI.Graphics();
+const drawLayerB = new PIXI.Graphics();
+const guideLayer = new PIXI.Graphics();
+app.stage.addChild(bgLayer, drawLayer, drawLayerB, guideLayer);
+
+// ── UI 绑定 ──────────────────────────────────────────────────────────────────
+
+const selA   = document.getElementById('drawSelect');
+const selB   = document.getElementById('drawSelectB');
+const status = document.getElementById('status');
+
+for (const f of DRAW_FILES) {
+  selA.appendChild(new Option(f.label, f.label));
+  selB.appendChild(new Option(f.label, f.label));
+}
+
+const ui = {
+  get selected()  { return DRAW_FILES.find(f => f.label === selA.value); },
+  get selectedB() { return DRAW_FILES.find(f => f.label === selB.value); },
+  get y()         { return +document.getElementById('sliderY').value; },
+  get scale()     { return +document.getElementById('sliderScale').value; },
+  get bg()        { return document.querySelector('input[name=bg]:checked').value; },
+  get grid()      { return document.getElementById('chkGrid').checked; },
+  get origin()    { return document.getElementById('chkOrigin').checked; },
+  get compare()   { return document.getElementById('chkCompare').checked; },
+};
+
+// ── 模块缓存 + 加载（加时间戳强制刷新） ──────────────────────────────────────
+
+const moduleCache = {};
+
+async function loadDraw(entry, bustCache = false) {
+  const url = bustCache ? `${entry.path}?t=${Date.now()}` : entry.path;
+  try {
+    const mod = await import(url);
+    moduleCache[entry.label] = mod[entry.fn];
+    return mod[entry.fn];
+  } catch (e) {
+    console.error(`加载失败: ${entry.path}`, e);
+    status.textContent = `❌ 加载失败: ${entry.label} — ${e.message}`;
+    return null;
+  }
+}
+
+// ── 背景渲染 ─────────────────────────────────────────────────────────────────
+
+function renderBg() {
+  bgLayer.clear();
+  const W = 800, H = 600;
+  if (ui.bg === 'white') {
+    bgLayer.beginFill(0xffffff); bgLayer.drawRect(0, 0, W, H); bgLayer.endFill();
+  } else if (ui.bg === 'gray') {
+    bgLayer.beginFill(0xb0b0b0); bgLayer.drawRect(0, 0, W, H); bgLayer.endFill();
+  } else {
+    // 模拟场景分带
+    const bands = [
+      [0,                     Layout.BUILDING_BASE_Y, 0xf4f4f4],
+      [Layout.BUILDING_BASE_Y, Layout.FAR_Y,          0xcccccc],
+      [Layout.FAR_Y,           Layout.NEAR_Y,         0x888888],
+      [Layout.NEAR_Y,          Layout.PARK_TOP,        0xb0b0b0],
+      [Layout.PARK_TOP,        Layout.WORLD_HEIGHT,    0xaaaaaa],
+    ];
+    for (const [y0, y1, c] of bands) {
+      bgLayer.beginFill(c); bgLayer.drawRect(0, y0, W, y1 - y0); bgLayer.endFill();
+    }
+  }
+}
+
+// ── 辅助线渲染 ───────────────────────────────────────────────────────────────
+
+function renderGuides(cx, cy) {
+  guideLayer.clear();
+
+  if (ui.grid) {
+    guideLayer.lineStyle(0.5, 0x000000, 0.08);
+    for (let x = 0; x < 800; x += 20) { guideLayer.moveTo(x, 0); guideLayer.lineTo(x, 600); }
+    for (let y = 0; y < 600; y += 20) { guideLayer.moveTo(0, y); guideLayer.lineTo(800, y); }
+  }
+
+  if (ui.origin) {
+    // 十字标记
+    guideLayer.lineStyle(1, 0xff0000, 0.5);
+    guideLayer.moveTo(cx - 12, cy); guideLayer.lineTo(cx + 12, cy);
+    guideLayer.moveTo(cx, cy - 12); guideLayer.lineTo(cx, cy + 12);
+    // Y 值标签
+    guideLayer.lineStyle(0);
+  }
+}
+
+// ── 主渲染 ───────────────────────────────────────────────────────────────────
+
+async function render(bustCache = false) {
+  const entry = ui.selected;
+  if (!entry) return;
+
+  const fn = await loadDraw(entry, bustCache);
+  if (!fn) return;
+
+  const compare = ui.compare && ui.selectedB;
+  let fnB = null;
+  if (compare) {
+    fnB = await loadDraw(ui.selectedB, bustCache);
+  }
+
+  const y     = ui.y;
+  const scale = ui.scale;
+  const cx    = compare ? 280 : 400;
+  const cxB   = 520;
+
+  renderBg();
+  renderGuides(cx, y);
+  if (compare) renderGuides(cxB, y);
+
+  // 绘制 A
+  drawLayer.clear();
+  try {
+    // 构造 draw 参数对象（兼容不同 draw 函数的参数需求）
+    const p = { x: cx, y: y, scale: scale };
+
+    // building 需要特殊参数
+    if (entry.label === 'building') {
+      fn(drawLayer, {
+        x: cx - 60, y: y - 80, bWidth: 120, bDepth: 12,
+        facadeH: 80,
+        A: { style: 'normal', groundMax: 24, groundFrac: 0.3, floorH: 20 },
+        waterTower: true, solar: false, billboard: false, alleyLeft: false,
+      });
+    } else if (entry.label === 'vehicle') {
+      // vehicle 需要不同的调用方式，暂时跳过
+      status.textContent = '⚠️ vehicle 需要 VehicleEntity 实例，暂不支持独立预览';
+    } else {
+      fn(drawLayer, p);
+    }
+    status.textContent = `✅ ${entry.label} — y=${y}, scale=${scale.toFixed(2)}`;
+  } catch (e) {
+    console.error(e);
+    status.textContent = `❌ 渲染出错: ${e.message}`;
+  }
+
+  // 绘制 B（对比）
+  drawLayerB.clear();
+  if (compare && fnB) {
+    try {
+      const pB = { x: cxB, y: y, scale: scale };
+      if (ui.selectedB.label === 'building') {
+        fnB(drawLayerB, {
+          x: cxB - 60, y: y - 80, bWidth: 120, bDepth: 12,
+          facadeH: 80,
+          A: { style: 'normal', groundMax: 24, groundFrac: 0.3, floorH: 20 },
+          waterTower: true, solar: false, billboard: false, alleyLeft: false,
+        });
+      } else {
+        fnB(drawLayerB, pB);
+      }
+    } catch (e) {
+      console.error('对比渲染出错:', e);
+    }
+  }
+
+  // 更新显示值
+  document.getElementById('valY').textContent = y;
+  document.getElementById('valScale').textContent = scale.toFixed(2);
+}
+
+// ── 事件绑定 ─────────────────────────────────────────────────────────────────
+
+selA.addEventListener('change', () => render());
+selB.addEventListener('change', () => render());
+document.getElementById('sliderY').addEventListener('input', () => render());
+document.getElementById('sliderScale').addEventListener('input', () => render());
+document.querySelectorAll('input[name=bg]').forEach(r => r.addEventListener('change', () => render()));
+document.getElementById('chkGrid').addEventListener('change', () => render());
+document.getElementById('chkOrigin').addEventListener('change', () => render());
+document.getElementById('chkCompare').addEventListener('change', () => {
+  selB.disabled = !ui.compare;
+  render();
+});
+
+document.getElementById('btnReload').addEventListener('click', () => render(true));
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'r' || e.key === 'R') render(true);
+});
+
+// ── 首次渲染 ─────────────────────────────────────────────────────────────────
+
+render();
+
+</script>
+</body>
+</html>

@@ -1,14 +1,15 @@
 /**
- * StrollTask — 默认漫游目标
+ * StrollTask — NavGrid 感知漫游
  *
- * 设置 modeWander（若当前无方向性走法），BSM 继续驱动 walk/stand/loiter 微转换。
+ * 用 grid.sampleWalkableNear 采样目标（70% cost-1, 30% cost-3），
+ * 逐点 modeDirect 驱动；无 grid 时退回 modeWander。
  * duration 秒后返回 'done'，Agenda 重新评估下一目标。
  */
 
 import { setWalkMode } from '../Motor.js';
-import { modeWander }  from '../WalkMode.js';
-
-const rand = (a, b) => a + Math.random() * (b - a);
+import { modeWander, modeDirect } from '../WalkMode.js';
+import { getNavGrid } from '../nav/NavGrid.js';
+import { getPlanner } from '../nav/PathPlanner.js';
 
 export class StrollTask {
   /** @param {{duration?:number}} opts  duration=null → 无限期 */
@@ -18,10 +19,26 @@ export class StrollTask {
   }
 
   onStart(npc, _runner) {
-    // 只在无方向性走法时切入漫游；direct/path_follow 让 BSM 自然完成
-    if (!npc._walkMode || npc._walkMode.kind === 'wander' || npc._walkMode.kind == null) {
-      setWalkMode(npc, modeWander());
+    this._pickNext(npc);
+  }
+
+  _pickNext(npc) {
+    const grid = getNavGrid();
+    if (!grid) { setWalkMode(npc, modeWander()); return; }
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const pt = grid.sampleWalkableNear(npc, 350);
+      if (!pt) break;
+      const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
+      const pts = getPlanner()?.plan(npc.x, npc.y, pt.x, pt.y, _b);
+      if (pts && pts.length > 0) { this._chain(npc, pts, 0); return; }
     }
+    setWalkMode(npc, modeWander());
+  }
+
+  _chain(npc, pts, idx) {
+    if (idx >= pts.length) { this._pickNext(npc); return; }
+    const nextTarget = idx < pts.length - 1 ? pts[idx + 1] : null;
+    setWalkMode(npc, modeDirect(pts[idx], (n) => this._chain(n, pts, idx + 1), 30, nextTarget));
   }
 
   tick(_npc, dt) {
@@ -30,7 +47,7 @@ export class StrollTask {
     return null;
   }
 
-  onAbort(_npc)    {}
+  onAbort(npc)      { setWalkMode(npc, null); }
   onInterrupt(_npc) {}
-  onResume(npc)    { this.onStart(npc, null); }
+  onResume(npc)     { this._pickNext(npc); }
 }

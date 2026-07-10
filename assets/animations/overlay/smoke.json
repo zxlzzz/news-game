@@ -1,0 +1,20 @@
+{
+  "activeJoints": [
+    "r_elbow",
+    "r_hand"
+  ],
+  "latched": true,
+  "keyframes": [
+    {
+      "dur": 0.15,
+      "r_elbow": [
+        -1,
+        -15
+      ],
+      "r_hand": [
+        -11,
+        -64
+      ]
+    }
+  ]
+}

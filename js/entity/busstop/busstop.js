@@ -114,6 +114,7 @@ export function spawnBusStop(em, stop) {
       x: bx, y: by,
       width: stop.bench.width,
       height: 12,
+      seatH: 34,
       facing: stop.bench.facing ?? 'down',
       tags: ['seatable', 'busstop'],
     }));

@@ -90,7 +90,6 @@ export class CyclistSpawner {
     const kind  = this._pickKind();
     const yFn   = lane.yFn;
     const speed = kind === 'ebike' ? rand(110, 130) : rand(95, 120);
-    // minX/maxX 设到屏外很远，避免 NPC 边界折返；越界剔除由 update 处理
     const n = makeNPC(this.em, this.sr, {
       x, y: yFn(0.5),
       animation: kind === 'ebike' ? 'mobile' : 'bike',

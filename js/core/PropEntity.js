@@ -1,4 +1,5 @@
 import { Entity } from './Entity.js';
+import { depthScale } from './Layout.js';
 import { drawBench }       from '../entity/seat/drawBench.js';
 import { drawChairL }      from '../entity/seat/drawChairL.js';
 import { drawChairR }      from '../entity/seat/drawChairR.js';
@@ -11,7 +12,7 @@ import { drawMailbox }     from '../entity/mailbox/drawMailbox.js';
 import { drawPlanter }     from '../entity/planter/drawPlanter.js';
 import { drawManhole }     from '../entity/manhole/drawManhole.js';
 import { drawDrain }       from '../entity/drain/drawDrain.js';
-import { drawFountain }    from '../entity/fountain/drawFountain.js';
+import { drawFountainPool, drawFountainNozzle } from '../entity/fountain/drawFountain.js';
 import { drawPhoneBooth }  from '../entity/phonebooth/drawPhoneBooth.js';
 import { drawBusStopRoof }  from '../entity/busstop/drawBusStopRoof.js';
 import { drawBusStopBench } from '../entity/seat/drawBusStopBench.js';
@@ -19,6 +20,19 @@ import { drawTree }        from '../entity/tree/drawTree.js';
 import { drawVending }     from '../entity/vending/drawVending.js';
 import { drawChessTable }  from '../entity/chess-table/drawChessTable.js';
 import { drawStall }       from '../entity/stall/drawStall.js';
+
+import { footprint as fpBench }     from '../entity/seat/seat.js';
+import { footprint as fpChess }     from '../entity/chess-table/chessTable.js';
+import { footprint as fpVending }   from '../entity/vending/vending.js';
+import { footprint as fpFountain }  from '../entity/fountain/fountain.js';
+import { footprint as fpStall }     from '../entity/stall/stall.js';
+import { footprint as fpTree }      from '../entity/tree/tree.js';
+import { footprint as fpTrash }     from '../entity/trash/trash.js';
+import { footprint as fpHydrant }   from '../entity/hydrant/hydrant.js';
+import { footprint as fpMailbox }   from '../entity/mailbox/mailbox.js';
+import { footprint as fpNewsrack }  from '../entity/newsrack/newsrack.js';
+import { footprint as fpPlanter }   from '../entity/planter/planter.js';
+import { footprint as fpPhone }     from '../entity/phonebooth/phonebooth.js';
 
 const OBSTACLE_TYPES = new Set([
   'fountain', 'slide', 'stall', 'tree', 'bench', 'trash', 'hydrant',
@@ -35,11 +49,9 @@ export class PropEntity extends Entity {
     this.seatH     = config.seatH     ?? null;
     this.topH      = config.topH      ?? null;
 
-    if (this.propType === 'bench') { this.width *= 3; this.height = 24; }
-
     this.obstacle = OBSTACLE_TYPES.has(this.propType);
     if (this.obstacle) {
-      const [rx, ry] = this._calcCollision();
+      const { rx, ry } = this._footprint();
       this.collisionRX = rx;
       this.collisionRY = ry;
       this.collisionRadius = Math.max(rx, ry);
@@ -75,21 +87,32 @@ export class PropEntity extends Entity {
     }
   }
 
-  _calcCollision() {
-    const w = this.width || 20, h = this.height || 20;
+  _footprint() {
     switch (this.propType) {
-      case 'fountain': case 'slide': case 'stall':
-        return [w * 0.5, h * 0.5];
-      case 'bench': {
-        const half = w * 0.5;
-        return (this.facing === 'left' || this.facing === 'right') ? [8, half] : [half, 8];
-      }
-      case 'tree':
-        return [15, 15];
-      case 'vending': case 'phonebooth': case 'chess-table':
-        return [14, 12];
-      default:
-        return [10, 10];
+      case 'fountain':    return fpFountain(this);
+      case 'stall':       return fpStall(this);
+      case 'bench':       return fpBench(this);
+      case 'tree':        return fpTree(this);
+      case 'trash':       return fpTrash(this);
+      case 'hydrant':     return fpHydrant(this);
+      case 'mailbox':     return fpMailbox(this);
+      case 'newsrack':    return fpNewsrack(this);
+      case 'planter':     return fpPlanter(this);
+      case 'vending':     return fpVending(this);
+      case 'phonebooth':  return fpPhone(this);
+      case 'chess-table': return fpChess(this);
+      default:            return { rx: 10 * depthScale(this.y), ry: 10 };
+    }
+  }
+
+  /** 地面预通道：贴地平面元素（EntityManager.draw 在 Y 排序前调用） */
+  drawGround(g) {
+    if (!this.visible) return;
+    g.lineStyle(0);
+    switch (this.propType) {
+      case 'fountain': drawFountainPool(g, this); break;
+      case 'manhole':  drawManhole(g, this);      break;
+      case 'drain':    drawDrain(g, this);        break;
     }
   }
 
@@ -97,26 +120,25 @@ export class PropEntity extends Entity {
     if (!this.visible) return;
     g.lineStyle(0);
     switch (this.propType) {
-      case 'lamp':         drawLamp(g, this);        break;
-      case 'bench':        drawBench(g, this);       break;
-      case 'trash':        drawTrash(g, this);       break;
-      case 'sign':         drawSign(g, this);        break;
-      case 'newsrack':     drawNewsRack(g, this);    break;
-      case 'hydrant':      drawHydrant(g, this);     break;
-      case 'mailbox':      drawMailbox(g, this);     break;
-      case 'planter':      drawPlanter(g, this);     break;
-      case 'manhole':      drawManhole(g, this);     break;
-      case 'drain':        drawDrain(g, this);       break;
-      case 'chair-l':      drawChairL(g, this);      break;
-      case 'chair-r':      drawChairR(g, this);      break;
-      case 'chess-table':  drawChessTable(g, this);  break;
-      case 'tree':         drawTree(g, this);        break;
-      case 'fountain':     drawFountain(g, this);    break;
-      case 'stall':        drawStall(g, this);       break;
-      case 'vending':      drawVending(g, this);     break;
-      case 'phonebooth':   drawPhoneBooth(g, this);  break;
-      case 'busstop-roof':  drawBusStopRoof(g, this);  break;
-      case 'busstop-bench': drawBusStopBench(g, this); break;
+      case 'lamp':         drawLamp(g, this);           break;
+      case 'bench':        drawBench(g, this);          break;
+      case 'trash':        drawTrash(g, this);          break;
+      case 'sign':         drawSign(g, this);           break;
+      case 'newsrack':     drawNewsRack(g, this);       break;
+      case 'hydrant':      drawHydrant(g, this);        break;
+      case 'mailbox':      drawMailbox(g, this);        break;
+      case 'planter':      drawPlanter(g, this);        break;
+      case 'chair-l':      drawChairL(g, this);         break;
+      case 'chair-r':      drawChairR(g, this);         break;
+      case 'chess-table':  drawChessTable(g, this);     break;
+      case 'tree':         drawTree(g, this);           break;
+      case 'fountain':     drawFountainNozzle(g, this); break;
+      case 'stall':        drawStall(g, this);          break;
+      case 'vending':      drawVending(g, this);        break;
+      case 'phonebooth':   drawPhoneBooth(g, this);     break;
+      case 'busstop-roof':  drawBusStopRoof(g, this);   break;
+      case 'busstop-bench': drawBusStopBench(g, this);  break;
+      // manhole / drain handled entirely in drawGround; nothing to draw in main pass
     }
   }
 }

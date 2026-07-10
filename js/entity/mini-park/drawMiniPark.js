@@ -1,4 +1,15 @@
-import { FILL_PAPER, FILL_SHADE } from '../../core/Layout.js';
+import {
+  FILL_PAPER,
+  depthLineWidth, depthLineColor,
+  ENV_LINE_LIGHT, ENV_LINE_DARK,
+} from '../../core/Layout.js';
+
+function lenv(g, baseY, wScale = 1.0) {
+  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
+  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
+  g.lineStyle(lw, lc, 1);
+  return lc;
+}
 
 export function drawMiniPark(g, config) {
   const { cx, cy, rx, ry } = config;
@@ -7,7 +18,7 @@ export function drawMiniPark(g, config) {
   g.beginFill(FILL_PAPER, 1);
   g.drawEllipse(cx, cy, rx, ry);
   g.endFill();
-  g.lineStyle(0.6, FILL_SHADE, 0.28);
+  lenv(g, cy, 0.3);
   for (let i = 0; i < 28; i++) {
     const a = seed(i * 2) * Math.PI * 2, rr = Math.sqrt(seed(i * 2 + 1));
     const gx = cx + Math.cos(a) * rx * 0.82 * rr;

@@ -1,149 +1,110 @@
 /**
- * PoseCacheBuilder — 从 JSON 资产构建 poseCache 的单一入口。
+ * PoseCacheBuilder — 从 ClipLibrary 自动构建 poseCache。
  *
- * MANIFEST 驱动资产路径和 wrap 逻辑：
- *   - 新增 held pose：MANIFEST.held 加名字 + 放 JSON，完毕。
- *   - 新增 trait：MANIFEST.trait 加名字 + 放 front/side JSON，完毕。
- *   - 新增 gesture：MANIFEST.gesture.static 或 .moving 加条目 + 放 JSON，完毕。
- *
- * 路径规则：
- *   held       → assets/animations/held pose/{name}.json
- *   trait      → assets/animations/trait/front/{name}.json 和 trait/side/{name}.json
- *   gesture.static → assets/animations/gesture/static/{name}.json  （可加 name:path 覆盖路径）
- *   gesture.moving → assets/animations/gesture/moving/{file}.json  （格式 file:key）
- *   loiter     → assets/animations/base/loiter/{name}.json
- *   sub_event  → assets/animations/sub_event/{name}.json
- *   stall      → assets/animations/gesture/static/stall/{seller|buyer}/{name}.json
- *
- * delta 基准 body[-1, 12]：held/trait/loiter/gesture 的所有关节值均以此偏移归零。
+ * 分类规则（读取 manifest.clips）：
+ *   overlay + participants          → sub_event
+ *   id 以 "stall_" 开头             → stall_gestures（key 去掉 "stall_" 前缀）
+ *   overlay + latched               → held
+ *   overlay + _front 变体存在        → trait（side+front 双视角）
+ *   overlay（其余）                  → gesture（含 use_vending / use_trash）
  */
-
-const MANIFEST = {
-  held:    ['phone_call', 'phone_look', 'smoke', 'cross_arm', 'hands_in_pocket'],
-  trait:   ['hold_bag', 'walk_dog', 'umbrella'],
-  gesture: {
-    // 条目格式：'name' 或 'name:custom/path'（覆盖默认 gesture/static/ 前缀）
-    static: ['check_watch', 'stretch', 'yawn', 'look_around', 'adjust_clothes', 'wave:gesture/wave'],
-    // 条目格式：'file:key'，文件在 gesture/moving/{file}，缓存键为 key
-    moving: ['check_watch:moving_check_watch', 'wipe_sweat:moving_wipe_sweat'],
-  },
-  loiter:    ['phone', 'bag_a', 'bag_b'],
-  sub_event: ['push', 'give_item', 'handshake', 'point_at', 'use_vending', 'use_trash'],
-  stall: {
-    seller: ['give', 'tidy', 'call'],
-    buyer:  ['give_get', 'point'],
-  },
-};
 
 /**
- * 返回 [[cacheKey, filePath], ...] 供 StreetScene.preload() 使用。
- * cacheKey 不含 'pose_' 前缀（preload 自行加）。
+ * 同步构建 poseCache；调用前须确保所有相关 clip 已通过 clipLibrary.getClip() 缓存。
+ * @param {import('../core/ClipLibrary.js').ClipLibrary} clipLibrary
+ * @returns {{ held, gesture, sub_event, stall_gestures, trait }}
  */
-export function getManifestPaths() {
-  const pairs = [];
+export function buildPoseCache(clipLibrary) {
+  const clips   = clipLibrary.manifest?.clips ?? {};
+  const dp      = clipLibrary.skeletons?.human?.defaultPose ?? {};
+  const clipIds = new Set(Object.keys(clips));
 
-  for (const n of MANIFEST.held)
-    pairs.push([`held_${n}`, `held pose/${n}`]);
-
-  for (const n of MANIFEST.trait) {
-    pairs.push([`trait_${n}`,      `trait/front/${n}`]);
-    pairs.push([`trait_${n}_side`, `trait/side/${n}`]);
+  function abs(j, kfDelta) {
+    const base = dp[j] ?? [0, 0];
+    return [base[0] + kfDelta[0], base[1] + kfDelta[1]];
   }
 
-  for (const entry of MANIFEST.gesture.static) {
-    const [name, path] = entry.includes(':') ? entry.split(':') : [entry, `gesture/static/${entry}`];
-    pairs.push([`gesture_${name}`, path]);
+  function decodeHeld(rawJson) {
+    if (!rawJson) return null;
+    const kf0 = rawJson.keyframes?.[0] ?? {};
+    const joints = {};
+    for (const [j, v] of Object.entries(kf0)) {
+      if (j === 'dur' || !Array.isArray(v)) continue;
+      joints[j] = abs(j, v);
+    }
+    return { ...rawJson, joints };
   }
 
-  for (const entry of MANIFEST.gesture.moving) {
-    const [file, key] = entry.split(':');
-    pairs.push([`gesture_${key}`, `gesture/moving/${file}`]);
-  }
-
-  for (const n of MANIFEST.loiter)
-    pairs.push([`loiter_${n}`, `base/loiter/${n}`]);
-
-  for (const n of MANIFEST.sub_event)
-    pairs.push([`sub_event_${n}`, `sub_event/${n}`]);
-
-  for (const n of MANIFEST.stall.seller)
-    pairs.push([`stall_seller_${n}`, `gesture/static/stall/seller/${n}`]);
-
-  for (const n of MANIFEST.stall.buyer)
-    pairs.push([`stall_buyer_${n}`, `gesture/static/stall/buyer/${n}`]);
-
-  return pairs;
-}
-
-/**
- * 构建 poseCache 对象。
- * @param {function(string): object|null} jsonGetter - 接受裸 cacheKey（不含 'pose_' 前缀），返回解析后的 JSON
- */
-export function buildPoseCache(jsonGetter) {
-  const g = jsonGetter;
-  const B = [-1, 12];   // body 关节基准偏移，delta 归零用
-
-  const wrapHeld = (json) => {
-    if (!json) return null;
-    const joints = json.joints ?? json.frames?.[0] ?? json;
-    const out = {};
-    for (const [j, v] of Object.entries(joints)) out[j] = [v[0] - B[0], v[1] - B[1]];
-    return { ...json, joints: out };
-  };
-
-  const wrapGesture = (json) => {
-    if (!json) return null;
-    return { ...json, keyframes: (json.keyframes ?? []).map(kf => {
-      const out = { dur: kf.dur };
-      for (const [k, v] of Object.entries(kf)) if (k !== 'dur') out[k] = [v[0] - B[0], v[1] - B[1]];
+  function decodeGesture(rawJson) {
+    if (!rawJson) return null;
+    return { ...rawJson, keyframes: (rawJson.keyframes ?? []).map(kf => {
+      const out = { dur: kf.dur ?? 0.15 };
+      for (const [k, v] of Object.entries(kf)) {
+        if (k === 'dur' || !Array.isArray(v)) continue;
+        out[k] = abs(k, v);
+      }
       return out;
     })};
-  };
-
-  const wrapLoiter = (json) => {
-    if (!json) return {};
-    const joints = json.joints ?? json;
-    const out = {};
-    for (const [j, v] of Object.entries(joints)) out[j] = [v[0] - B[0], v[1] - B[1]];
-    return out;
-  };
-
-  // held
-  const held = {};
-  for (const n of MANIFEST.held) held[n] = wrapHeld(g(`held_${n}`));
-
-  // trait（front + side 变体）
-  const trait = {};
-  for (const n of MANIFEST.trait) {
-    trait[n] = {
-      front: wrapHeld(g(`trait_${n}`)),
-      side:  wrapHeld(g(`trait_${n}_side`)),
-    };
   }
 
-  // gesture（static + moving 合并到同一 dict）
-  const gesture = {};
-  for (const entry of MANIFEST.gesture.static) {
-    const name = entry.split(':')[0];
-    gesture[name] = wrapGesture(g(`gesture_${name}`));
+  function decodeSubEvent(rawJson) {
+    if (!rawJson || !rawJson.participants) return null;
+    const kf0   = rawJson.keyframes?.[0] ?? {};
+    const roles = rawJson.participants.map(p => p.role);
+    const aDelta = {}, bDelta = {};
+    for (const [j, v] of Object.entries(kf0[roles[0]] ?? {})) {
+      if (Array.isArray(v)) aDelta[j] = abs(j, v);
+    }
+    for (const [j, v] of Object.entries(kf0[roles[1]] ?? {})) {
+      if (Array.isArray(v)) bDelta[j] = abs(j, v);
+    }
+    return { ...rawJson, aDelta, bDelta };
   }
-  for (const entry of MANIFEST.gesture.moving) {
-    const key = entry.split(':')[1];
-    gesture[key] = wrapGesture(g(`gesture_${key}`));
-  }
 
-  // loiter
-  const loiter = {};
-  for (const n of MANIFEST.loiter) loiter[n] = wrapLoiter(g(`loiter_${n}`));
-
-  // sub_event（原始 JSON，无 wrap）
-  const sub_event = {};
-  for (const n of MANIFEST.sub_event) sub_event[n] = g(`sub_event_${n}`);
-
-  // stall_gestures
+  const held           = {};
+  const gesture        = {};
+  const sub_event      = {};
   const stall_gestures = {};
-  for (const n of MANIFEST.stall.seller) stall_gestures[`seller_${n}`] = wrapGesture(g(`stall_seller_${n}`));
-  for (const n of MANIFEST.stall.buyer)  stall_gestures[`buyer_${n}`]  = wrapGesture(g(`stall_buyer_${n}`));
 
-  return { held, trait, gesture, loiter, sub_event, stall_gestures };
+  for (const [id, entry] of Object.entries(clips)) {
+    const raw = clipLibrary.getCachedClip(id);
+    if (!raw) continue;
+    if (raw.variant_of) continue;
+
+    const { kind } = entry;
+
+    if (kind === 'overlay') {
+      if (raw.participants) {
+        sub_event[id] = decodeSubEvent(raw);
+      } else if (id.startsWith('stall_')) {
+        const key = id.slice('stall_'.length);
+        stall_gestures[key] = decodeGesture(raw);
+      } else if (raw.latched) {
+        held[id] = decodeHeld(raw);
+      } else if (clipIds.has(id + '_front')) {
+        // trait overlay: handled separately in trait loop below
+      } else {
+        gesture[id] = decodeGesture(raw);
+      }
+    }
+  }
+
+  // Aliases for profile keys that reference old "moving" gesture names
+  if (!gesture.moving_check_watch && gesture.check_watch)
+    gesture.moving_check_watch = gesture.check_watch;
+  if (!gesture.moving_wipe_sweat && gesture.wipe_sweat)
+    gesture.moving_wipe_sweat = gesture.wipe_sweat;
+
+  const trait = {};
+  for (const [id, entry] of Object.entries(clips)) {
+    if (entry.kind !== 'overlay') continue;
+    const raw = clipLibrary.getCachedClip(id);
+    if (!raw) continue;
+    if (raw.participants || id.startsWith('stall_') || raw.latched || id.endsWith('_front')) continue;
+    if (!clipIds.has(id + '_front')) continue;
+    const frontRaw = clipLibrary.getCachedClip(id + '_front');
+    trait[id] = { side: decodeHeld(raw), front: decodeHeld(frontRaw) };
+  }
+
+  return { held, gesture, sub_event, stall_gestures, trait };
 }

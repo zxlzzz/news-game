@@ -11,13 +11,15 @@ export function spawnDogWalker(em, sr, bm, propManager) {
 
   const owner = makeNPC(em, sr, {
     x: 760, y: ownerY, animation: 'walk', direction: 1, speed: 26, vy: 0,
-    minX: 600, maxX: 950,
-    minY: ownerY - 2, maxY: ownerY + 2,
+    minX: 600, maxX: 755,
+    minY: ownerY - 8, maxY: ownerY + 8,
     color: 0x1a1a10, tags: ['pedestrian', 'dog-owner'],
     traits: ['walk_dog'],
   });
   // walk_dog trait modifier must be pushed manually (owner._activity skips tickModifiers step 3)
-  const wdJoints = { ...(resolveTraitVariant(getTraitProps().walk_dog, false)?.joints ?? {}) };
+  const tp = getTraitProps().walk_dog;
+  const variant = resolveTraitVariant(tp, true);  // true = side view (walking)
+  const wdJoints = { ...(variant?.joints ?? {}) };
   owner.modifiers.push({ id: 'walk_dog', kind: 'trait', priority: 5, joints: wdJoints, timer: -1 });
 
   const dog = makeNPC(em, sr, {

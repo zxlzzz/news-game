@@ -18,7 +18,7 @@
 
 import { getProfile }          from '../npc/NpcProfile.js';
 import { EnvironmentQuery }     from './EnvironmentQuery.js';
-import { tickBaseState, setState, triggerDeparture, initPoseCache as initBsmPoseCache } from './BaseStateMachine.js';
+import { tickBaseState, setState, triggerDeparture } from './BaseStateMachine.js';
 import { installProtection, nudgeXY } from './Motor.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
 import { SocialLayer }          from './SocialLayer.js';
@@ -29,6 +29,7 @@ import { checkZoneTransition }  from './WalkMode.js';
 import { TaskRunner }           from './TaskRunner.js';
 import { Agenda }               from './Agenda.js';
 import { ExitSceneTask }        from './tasks/ExitSceneTask.js';
+import { stuckProbe } from './StuckProbe.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -52,7 +53,6 @@ export class BehaviorManager {
 
     if (poseCache) {
       initModPoseCache(poseCache);
-      initBsmPoseCache(poseCache);
     }
 
     this.socialLayer     = new SocialLayer(this.envQuery, poseCache);
@@ -87,6 +87,8 @@ export class BehaviorManager {
     this._dt = dt;
     refreshDebugFlag();
 
+    stuckProbe(this.npcs, dt)
+    
     // 1) Activity 层
     this.socialLayer.update(this.npcs, dt);
 
@@ -147,6 +149,17 @@ export class BehaviorManager {
     }
   }
 
+  // 当分离推力方向与 NPC 行进方向相反时衰减为 0.5，避免抖振
+  _sepScale(npc, ux, uy) {
+    const mode = npc._walkMode;
+    if (!mode || mode.kind !== 'direct') return 1;
+    const t = mode.target;
+    const dx = t.x - npc.x, dy = t.y - npc.y;
+    const len = Math.hypot(dx, dy);
+    if (len < 1) return 1;
+    return (ux * dx + uy * dy) / len < -0.4 ? 0.5 : 1;
+  }
+
   _separate(dt) {
     const MOVING = new Set(['walk', 'run', 'jog']);
     const movers = this.npcs.filter(n =>
@@ -158,10 +171,12 @@ export class BehaviorManager {
         const d = Math.hypot(dx, dy);
         const sepR = 24 * ((a.scale + b.scale) / 2 / 0.18);
         if (d > 0 && d < sepR) {
-          const f = ((sepR - d) / sepR) * 16 * dt;
+          const f  = ((sepR - d) / sepR) * 16 * dt;
           const ux = dx / d, uy = dy / d;
-          nudgeXY(a,  ux * f,  uy * f);
-          nudgeXY(b, -ux * f, -uy * f);
+          const sa = this._sepScale(a,  ux,  uy);
+          const sb = this._sepScale(b, -ux, -uy);
+          nudgeXY(a,  ux * f * sa,  uy * f * sa);
+          nudgeXY(b, -ux * f * sb, -uy * f * sb);
         }
       }
     }

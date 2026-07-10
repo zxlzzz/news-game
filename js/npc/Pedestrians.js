@@ -5,19 +5,14 @@
  * spawnOnePedestrian() 供 SpawnManager 动态补充复用。
  */
 
-import { PARK_TOP, PARK_BOTTOM, WORLD_WIDTH, BUILDING_BASE_Y } from '../core/Layout.js';
+import { PARK_BOTTOM, WORLD_WIDTH, BUILDING_BASE_Y } from '../core/Layout.js';
+import { getNavGrid } from '../behavior/nav/NavGrid.js';
 import { makeNPC } from './npcUtil.js';
 import { getProfile } from './NpcProfile.js';
-import { getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
+import { getHeldPoses, getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-// 行人初始随机生成区域（避开自行车道和马路）
-const SPAWN_ZONES = [
-  { x0: 50, x1: 1950, y0: 215, y1: 244 },          // 远侧人行道
-  { x0: 50, x1: 1950, y0: PARK_TOP + 16, y1: PARK_BOTTOM - 8 },  // 公园
-];
 
 const TYPES = [
   { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
@@ -32,10 +27,10 @@ function pushTrait(n, traitKey) {
   n.traits.push(traitKey);
   const tp = getTraitProps()[traitKey];
   if (!tp) return;
-  const variant = resolveTraitVariant(tp, false);
+  const variant = resolveTraitVariant(tp, true);  // spawn 时默认 side（walking）
   n.modifiers.push({
     id: traitKey, kind: 'trait', priority: 5,
-    joints: { ...(variant?.joints ?? {}) }, timer: -1, _side: false,
+    joints: { ...(variant?.joints ?? {}) }, timer: -1,
   });
 }
 
@@ -51,11 +46,6 @@ function applyTraits(n, t, profile) {
       if (r < cumulative) { pushTrait(n, trait); break; }
     }
   }
-}
-
-function randomSpawnPos() {
-  const z = SPAWN_ZONES[Math.floor(Math.random() * SPAWN_ZONES.length)];
-  return { x: rand(z.x0, z.x1), y: rand(z.y0, z.y1) };
 }
 
 /**
@@ -74,8 +64,11 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
   const profile  = getProfile(typeData.npcType);
   const speedRange = profile?.speedRange ?? [20, 34];
 
+  const grid   = getNavGrid();
+  const safePos = grid ? grid.nearestWalkable(pos.x, pos.y) : pos;
+
   const n = makeNPC(em, sr, {
-    x: pos.x, y: pos.y,
+    x: safePos.x, y: safePos.y,
     animation: 'walk',
     direction: Math.random() < 0.5 ? 1 : -1,
     speed: rand(speedRange[0], speedRange[1]), vy: 0,
@@ -102,13 +95,15 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
  * @param {EntityManager}   em
  * @param {StickRenderer}   sr
  * @param {BehaviorManager} bm
+ * @param {Array}           spawnPoints  — [{x, y, facing}]
  * @param {number}          [count=18]
  */
-export function spawnPedestrians(em, sr, bm, count = 18) {
+export function spawnPedestrians(em, sr, bm, spawnPoints, count = 18) {
   for (let k = 0; k < count; k++) {
     const t   = pick(TYPES);
-    const pos = randomSpawnPos();
-    const npc = spawnOnePedestrian(t.npcType, em, sr, bm, pos);
+    const pt  = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+    const npc = spawnOnePedestrian(t.npcType, em, sr, bm, { x: pt.x, y: pt.y });
+    npc.direction = pt.facing !== 0 ? pt.facing : (Math.random() < 0.5 ? 1 : -1);
     npc._ageTimer = rand(0, npc._lifespan);
   }
 }
