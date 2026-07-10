@@ -18,7 +18,7 @@
 
 import { getProfile }          from '../npc/NpcProfile.js';
 import { EnvironmentQuery }     from './EnvironmentQuery.js';
-import { tickBaseState, setState, triggerDeparture, initPoseCache as initBsmPoseCache } from './BaseStateMachine.js';
+import { tickBaseState, setState, triggerDeparture } from './BaseStateMachine.js';
 import { installProtection, nudgeXY } from './Motor.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
 import { SocialLayer }          from './SocialLayer.js';
@@ -53,7 +53,6 @@ export class BehaviorManager {
 
     if (poseCache) {
       initModPoseCache(poseCache);
-      initBsmPoseCache(poseCache);
     }
 
     this.socialLayer     = new SocialLayer(this.envQuery, poseCache);

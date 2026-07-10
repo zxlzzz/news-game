@@ -2,17 +2,17 @@
  * PoseCacheBuilder — 从 ClipLibrary 自动构建 poseCache。
  *
  * 分类规则（读取 manifest.clips）：
- *   overlay + participants   → sub_event
- *   id 以 "stall_" 开头      → stall_gestures（key 去掉 "stall_" 前缀）
- *   overlay + latched        → held
- *   overlay（其余）           → gesture（含 use_vending / use_trash）
- *   cycle + id 以 "loiter_" 开头 → loiter
+ *   overlay + participants          → sub_event
+ *   id 以 "stall_" 开头             → stall_gestures（key 去掉 "stall_" 前缀）
+ *   overlay + latched               → held
+ *   overlay + _front 变体存在        → trait（side+front 双视角）
+ *   overlay（其余）                  → gesture（含 use_vending / use_trash）
  */
 
 /**
  * 同步构建 poseCache；调用前须确保所有相关 clip 已通过 clipLibrary.getClip() 缓存。
  * @param {import('../core/ClipLibrary.js').ClipLibrary} clipLibrary
- * @returns {{ held, gesture, loiter, sub_event, stall_gestures }}
+ * @returns {{ held, gesture, sub_event, stall_gestures, trait }}
  */
 export function buildPoseCache(clipLibrary) {
   const clips   = clipLibrary.manifest?.clips ?? {};
@@ -47,17 +47,6 @@ export function buildPoseCache(clipLibrary) {
     })};
   }
 
-  function decodeLoiter(rawJson) {
-    if (!rawJson) return {};
-    const kf0 = rawJson.keyframes?.[0] ?? {};
-    const out = {};
-    for (const [j, v] of Object.entries(kf0)) {
-      if (j === 'dur' || !Array.isArray(v)) continue;
-      out[j] = abs(j, v);
-    }
-    return out;
-  }
-
   function decodeSubEvent(rawJson) {
     if (!rawJson || !rawJson.participants) return null;
     const kf0   = rawJson.keyframes?.[0] ?? {};
@@ -74,7 +63,6 @@ export function buildPoseCache(clipLibrary) {
 
   const held           = {};
   const gesture        = {};
-  const loiter         = {};
   const sub_event      = {};
   const stall_gestures = {};
 
@@ -93,11 +81,11 @@ export function buildPoseCache(clipLibrary) {
         stall_gestures[key] = decodeGesture(raw);
       } else if (raw.latched) {
         held[id] = decodeHeld(raw);
+      } else if (clipIds.has(id + '_front')) {
+        // trait overlay: handled separately in trait loop below
       } else {
         gesture[id] = decodeGesture(raw);
       }
-    } else if (kind === 'cycle' && id.startsWith('loiter_')) {
-      loiter[id] = decodeLoiter(raw);
     }
   }
 
@@ -109,17 +97,14 @@ export function buildPoseCache(clipLibrary) {
 
   const trait = {};
   for (const [id, entry] of Object.entries(clips)) {
+    if (entry.kind !== 'overlay') continue;
     const raw = clipLibrary.getCachedClip(id);
-    if (!raw || entry.kind !== 'overlay' || !raw.latched) continue;
-    if (raw.participants || id.startsWith('stall_') || id.endsWith('_front')) continue;
+    if (!raw) continue;
+    if (raw.participants || id.startsWith('stall_') || raw.latched || id.endsWith('_front')) continue;
+    if (!clipIds.has(id + '_front')) continue;
     const frontRaw = clipLibrary.getCachedClip(id + '_front');
-    const sideData = decodeHeld(raw);
-    if (frontRaw) {
-      trait[id] = { side: sideData, front: decodeHeld(frontRaw) };
-    } else {
-      trait[id] = sideData;
-    }
+    trait[id] = { side: decodeHeld(raw), front: decodeHeld(frontRaw) };
   }
 
-  return { held, gesture, loiter, sub_event, stall_gestures, trait };
+  return { held, gesture, sub_event, stall_gestures, trait };
 }

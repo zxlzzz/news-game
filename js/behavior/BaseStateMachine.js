@@ -32,7 +32,7 @@
 import { dlog }        from './DebugLog.js';
 import { PARK_TOP }     from '../core/Layout.js';
 import { sitDown, alignLie } from '../entity/seat/seat.js';
-import { tickLoiter, initPoseCache as initLoiterPoseCache } from '../npc/LoiterBehavior.js';
+import { tickLoiter } from '../npc/LoiterBehavior.js';
 
 import {
   tickWalkMode, pickModeTarget, onPathArrival,
@@ -46,11 +46,6 @@ import { getPlanner } from './nav/PathPlanner.js';
 export { setState, STATE_DEFS } from './Motor.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
-
-// ─── initPoseCache（转发到 LoiterBehavior）──────────────────────────────────
-export function initPoseCache(pc) {
-  initLoiterPoseCache(pc);
-}
 
 // ─── 内部：按 profile.transitions 权重表随机选下一状态，含环境前置检查 ───────
 function _pickNext(npc, profile, envQuery) {

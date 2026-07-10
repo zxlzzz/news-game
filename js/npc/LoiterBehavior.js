@@ -7,15 +7,7 @@
 
 import { setState } from '../behavior/Motor.js';
 
-let LOITER_POSES = {};
-
-export function initPoseCache(pc) {
-  LOITER_POSES = pc.loiter || {};
-}
-
 const rand = (a, b) => a + Math.random() * (b - a);
-
-function getPosePhone() { return LOITER_POSES.loiter_phone || {}; }
 
 function _getMicroActionDur(npc) {
   const ov = npc._loiterOverlay;
@@ -39,11 +31,6 @@ function _updateLoiterExtraTags(npc) {
 
 function _applyLoiterVisuals(npc) {
   npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
-  if (npc._microPhase !== 1) return;
-  const hasActiveHeld = npc.modifiers.some(m => m.kind === 'held' && !m.id.startsWith('_'));
-  if (hasActiveHeld) return;
-  if (npc.traits.includes('walk_dog')) return;
-  npc.modifiers.push({ id: '_loiter_micro', kind: 'held', priority: 15, joints: { ...getPosePhone() }, timer: -1 });
 }
 
 function _advanceMicroPhase(npc) {
