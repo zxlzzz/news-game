@@ -1226,7 +1226,7 @@
         "bayD": 9,
         "bench": {
           "dx": 0,
-          "dy": -14,
+          "dy": 0,
           "width": 80,
           "facing": "down"
         },
@@ -1245,7 +1245,7 @@
         "bayD": 9,
         "bench": {
           "dx": 0,
-          "dy": -4,
+          "dy": 0,
           "width": 80,
           "facing": "down"
         },
