@@ -42,6 +42,7 @@ function _drawSign(g, px, py, baseY) {
 }
 
 function _drawFarBusStop(g, stop) {
+  g.lineStyle(0);
   const ft = BIKE_LANE_FAR_TOP;
   const fy = FAR_Y + 4;
   const sx      = stop.x;
@@ -73,6 +74,7 @@ function _drawFarBusStop(g, stop) {
 }
 
 function _drawNearBusStop(g, stop) {
+  g.lineStyle(0);
   const ny = NEAR_Y;
   const sx      = stop.x;
   const BAY_W   = stop.bayW;
@@ -102,6 +104,7 @@ function _drawNearBusStop(g, stop) {
 }
 
 export function drawBusStopBays(g, busStops) {
+  g.lineStyle(0);
   for (const stop of (busStops || [])) {
     if (stop.direction > 0) {
       _drawFarBusStop(g, stop);

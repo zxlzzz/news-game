@@ -55,6 +55,7 @@ function _drawCurvedPath(g, ctrl, width, baseY) {
 }
 
 export function drawParkPaths(g, chessPlaza, miniPark) {
+  g.lineStyle(0);
   const cc    = chessPlaza;
   const mp    = miniPark;
   const walkY = PARK_TOP + 15;

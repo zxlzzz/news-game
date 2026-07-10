@@ -26,18 +26,11 @@ export function drawHydrant(g, p) {
   const outW = 12 * s, outH = 8 * s;
   const outY = y - baseH - 20 * s;
 
-  function drawCylinder(cx, topY, w, h, leftFill, rightFill) {
-    g.lineStyle(0);
-    g.beginFill(leftFill, 1);
-    g.drawRect(cx - w/2, topY, w/2, h);
-    g.endFill();
-    g.beginFill(rightFill, 1);
-    g.drawRect(cx, topY, w/2, h);
-    g.endFill();
-  }
-
   // === 底座 ===
-  drawCylinder(x, y - baseH, baseW, baseH, FILL_LIGHT, FILL_MID);
+  g.lineStyle(0);
+  g.beginFill(FILL_MID, 1);
+  g.drawRect(x - baseW/2, y - baseH, baseW, baseH);
+  g.endFill();
   lenv(g, y, 0.85);
   g.drawRect(x - baseW/2, y - baseH, baseW, baseH);
   lenv(g, y, 0.5);
@@ -45,7 +38,10 @@ export function drawHydrant(g, p) {
   g.lineTo(x + baseW/2, y - baseH);
 
   // === 主体 ===
-  drawCylinder(x, y - baseH - bodyH, bodyW, bodyH, FILL_LIGHT, FILL_MID);
+  g.lineStyle(0);
+  g.beginFill(FILL_LIGHT, 1);
+  g.drawRect(x - bodyW/2, y - baseH - bodyH, bodyW, bodyH);
+  g.endFill();
   lenv(g, y, 0.85);
   g.drawRect(x - bodyW/2, y - baseH - bodyH, bodyW, bodyH);
 
@@ -53,18 +49,11 @@ export function drawHydrant(g, p) {
   const domeLeftW = 8 * s;
   const domeRightW = 12 * s;
   g.lineStyle(0);
-  g.beginFill(FILL_LIGHT, 1);
-  g.moveTo(x, domeTopY);
-  g.lineTo(x - domeLeftW, domeTopY);
-  g.lineTo(x - domeRightW, domeBotY);
-  g.lineTo(x, domeBotY);
-  g.closePath();
-  g.endFill();
   g.beginFill(FILL_MID, 1);
-  g.moveTo(x, domeTopY);
+  g.moveTo(x - domeLeftW, domeTopY);
   g.lineTo(x + domeLeftW, domeTopY);
   g.lineTo(x + domeRightW, domeBotY);
-  g.lineTo(x, domeBotY);
+  g.lineTo(x - domeRightW, domeBotY);
   g.closePath();
   g.endFill();
   lenv(g, y, 0.85);
@@ -91,19 +80,4 @@ export function drawHydrant(g, p) {
   g.endFill();
   lenv(g, y, 1.0);
   g.drawRect(x - capW/2, domeTopY - capH, capW, capH);
-
-  // === 金属高光线（例外：0xffffff 低 alpha） ===
-  const hAlpha = 0.2;
-  const hWidth = 1.5 * s;
-  g.lineStyle(hWidth, 0xffffff, hAlpha);
-  g.moveTo(x - bodyW/2, y - baseH - bodyH);
-  g.lineTo(x - bodyW/2, y - baseH);
-  g.moveTo(x - baseW/2, y - baseH);
-  g.lineTo(x - baseW/2, y);
-  g.moveTo(x - 26 * s, outY);
-  g.lineTo(x - 26 * s, outY + outH);
-  g.moveTo(x + 14 * s, outY);
-  g.lineTo(x + 14 * s, outY + outH);
-  g.moveTo(x - domeRightW, domeBotY);
-  g.lineTo(x - domeLeftW, domeTopY);
 }

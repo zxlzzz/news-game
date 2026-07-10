@@ -1,6 +1,6 @@
 import {
   depthLineWidth, depthLineColor,
-  FILL_LIGHT, FILL_MID,
+  FILL_LIGHT, FILL_MID, FILL_SHADE,
   ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../../core/Layout.js';
 
@@ -33,7 +33,7 @@ export function drawMailbox(g, p) {
   g.endFill();
   // Mail slot
   g.lineStyle(0);
-  g.beginFill(0x000000, 0.6);
+  g.beginFill(FILL_SHADE, 1);
   g.drawRect(x - 14 * s, y - 52 * s - extraHeight, 29 * s, 6 * s);
   g.endFill();
   // Outline
