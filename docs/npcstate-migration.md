@@ -9,7 +9,7 @@
 
 将 NPC 对象上散落的 `_xxx` 临时字段统一纳入 `npc.mem(ns)` 命名空间：
 - 消除全局字段污染；状态切换时 `clearMem(ns)` 自动回收
-- 跨 namespace 只读原则（owner = 主写模块）
+- 跨 namespace 只读原则（owner = 主写模块；写者即 owner）
 - 多处写 = 设计异味，单独标注
 
 ---
@@ -90,7 +90,7 @@
 
 ## namespace: `agenda`
 
-> **owner**: `BehaviorManager.js` / `Director.js`  
+> **owner**: `BehaviorManager.js`（写）；Director 通过参数传入，不直接写 NPC 字段  
 > 主题：NPC 生命周期、任务链、离场逻辑、路线注册
 
 | 字段 | 写模块 | 读模块 | 备注 |
@@ -98,22 +98,27 @@
 | `_profile` | BehaviorManager.js | WalkMode.js, GotoTask.js, BaseStateMachine.js, ModifierLayer.js, DebugOverlay.js | 广泛只读，owner 唯一 |
 | `_agenda` | BehaviorManager.js | BehaviorManager.js | — |
 | `_runner` | BehaviorManager.js | BehaviorManager.js | — |
-| `_lifespan` | Director.js, BaseStateMachine.js(extend) | BehaviorManager.js, Pedestrians.js | BaseStateMachine 只做 `+= N` 延长，语义一致 |
+| `_lifespan` | Director.js→BM参数→BM写, BaseStateMachine.js(extend) | BehaviorManager.js, Pedestrians.js | BaseStateMachine 只做 `+= N` 延长，语义一致 |
 | `_ageTimer` | BehaviorManager.js, Director.js(init) | BehaviorManager.js | init 视为初始化 |
 | `_departing` | BaseStateMachine.js | BehaviorManager.js, WalkMode.js, WaitForBusLayer.js, DebugOverlay.js | — |
 | `_pendingDeparture` | BaseStateMachine.js | BaseStateMachine.js | — |
-| `_exitBias` | Director.js | ExitSceneTask.js, Director.js | — |
-| `_exitRegistry` | BehaviorManager.js, Director.js | ExitSceneTask.js | ⚠️ 两处写：BM 和 Director 各自注册 |
-| `_busStops` | BehaviorManager.js, Director.js | ExitSceneTask.js | ⚠️ 同上 |
-| `_waitForBusLayer` | BehaviorManager.js, Director.js | ExitSceneTask.js | ⚠️ 同上（BM/Director 均可注入） |
+| `_exitBias` | BehaviorManager.js(via Director param) | ExitSceneTask.js | — |
+| `_exitRegistry` | BehaviorManager.js(via Director param) | ExitSceneTask.js | 裁决：BM.register() 唯一写者；Director 经参数传入，不直接写 NPC |
+| `_busStops` | BehaviorManager.js(via Director param) | ExitSceneTask.js | 同上 |
+| `_waitForBusLayer` | BehaviorManager.js(via Director param) | ExitSceneTask.js | 同上 |
 | `_preferExitType` | ExitSceneTask.js, BaseStateMachine.js(clear) | BaseStateMachine.js | clear 视为释放 |
+
+> **⚠️ 待迁出（超出本次范围，记录备查）**  
+> `_exitRegistry` / `_busStops` / `_waitForBusLayer` 本质是场景级服务引用，
+> 每个 NPC 身上存的是同一个对象 —— 这是把服务定位器摊到实体上的反模式。
+> 正解：BM 持有服务引用，经 context/envQuery 传给状态机；NPC 上不保存任何服务指针。
+> 待下次重构状态机签名时顺手收掉。
 
 ---
 
-## namespace: `modifier`（原 `_gestureCooldown` / `_heldCooldown`）
+## namespace: `modifier`
 
-> **owner**: `ModifierLayer.js`  
-> 可并入 loiter 或单独 modifier namespace，取决于实装偏好
+> **owner**: `ModifierLayer.js`（写者即 owner，不并入 loiter）
 
 | 字段 | 写模块 | 读模块 | 备注 |
 |------|--------|--------|------|
@@ -122,50 +127,69 @@
 
 ---
 
-## 设计异味 ⚠️
+## `_extraTags` — 删除，改为 mem 聚合
 
-| 字段 | 问题 |
-|------|------|
-| `_extraTags` | 写者五处：Motor.js、LoiterBehavior.js、WalkMode.js、StallActivity.js、UsePropActivity.js，各写不同语义标签；无单一 owner。建议：改为 `npc.mem('loiter').extraTags` / `npc.mem('social').extraTags` 分拆，或引入 addTag/removeTag API 统一管理 |
-| `_exitRegistry` / `_busStops` / `_waitForBusLayer` | BehaviorManager 和 Director 均写入，存在初始化顺序假设；建议明确只由 BehaviorManager.register() 写，Director 通过参数传入 |
+**现状**：五处写者（Motor.js、LoiterBehavior.js、WalkMode.js、StallActivity.js、UsePropActivity.js），
+各写不同语义标签，互相覆盖；共享可变数组是根本病灶，换 API 只是礼貌地踩踏。
+
+**裁决**：删除 `_extraTags` 字段。各 owner 写入自己 namespace 的 `tags` 子字段，
+`getTags()` 聚合所有 `npc._mem[*].tags`（若存在）再拼静态 `this.tags`。
+
+```js
+// Npc.js — getTags() 聚合逻辑（新增）
+if (this._mem) {
+  for (const ns of Object.values(this._mem)) {
+    if (ns.tags) for (const t of ns.tags) out.add(t);
+  }
+}
+
+// 原写者改写示例 — LoiterBehavior.js
+npc.mem('loiter').tags = ['loitering'];
+
+// WalkMode.js（crossing 状态）
+npc.mem('motor').tags = ['crossing'];
+
+// StallActivity.js
+npc.mem('social').tags = ['shopping'];
+
+// clearMem 天然清理对应 ns 的 tags，无需额外逻辑
+```
+
+写权天然归各 namespace owner，无覆盖问题；`belief`/未来 namespace 的 tags 即插即用。
 
 ---
 
 ## 迁移后访问模式示例
 
 ```js
-// LoiterBehavior.js
+// LoiterBehavior.js — 读写同 namespace
 const m = npc.mem('loiter');
 m.dir ??= 1;
 m.elapsed += dt;
 if (m.elapsed > m.dur) { /* ... */ }
 
 // ChessActivity.js
-const m = npc.mem('social');
-m.chessSlot = slot;
+npc.mem('social').chessSlot = slot;
 
-// 跨 namespace 只读示例（Motor.js 读 loiter.loiterDir）
-const dir = npc.mem('loiter').loiterDir ?? 0;  // ✓ 只读
+// 跨 namespace 只读（Motor.js 需要知道 loiter 是否激活）
+const loiterDir = npc.mem('loiter').dir;  // ✓ 只读
 
-// clearMem 在状态切换时由 BaseStateMachine 调用
+// clearMem 由 BaseStateMachine.setState() 在状态切换时调用
 npc.clearMem('loiter');
 npc.clearMem('social');
 ```
 
 ---
 
-## 字段总计
+## 最终字段总计
 
-| namespace | 字段数 | 异味数 |
-|-----------|--------|--------|
-| motor     | 16     | 1 (_walkMode 两处写，可接受) |
-| loiter    | 7      | 0 |
-| social    | 11     | 0 |
-| agenda    | 12     | 3 (_exitRegistry 等) |
-| modifier  | 2      | 0 |
-| 不迁移    | 3      | — |
-| **合计**  | **51** | **4** |
-
----
-
-*审核要点：namespace 归属是否合理？`_extraTags` 处理策略？`_exitRegistry` 三件套的 owner 归一方案？*
+| namespace | 字段数 | 说明 |
+|-----------|--------|------|
+| `motor`   | 16 | ⚠️ `_walkMode` 两处写，语义一致，可接受 |
+| `loiter`  | 7  | — |
+| `social`  | 11 | — |
+| `agenda`  | 12 | ⚠️ `_exitRegistry` 等三件套待迁出（服务引用上收） |
+| `modifier`| 2  | ModifierLayer 独立 namespace（写者即 owner） |
+| 不迁移    | 3  | `_sortY`、`_motorInstalled` 渲染接口 |
+| 删除      | 1  | `_extraTags` → 各 ns 的 `.tags` 子字段 + getTags 聚合 |
+| **合计**  | **52** | |
