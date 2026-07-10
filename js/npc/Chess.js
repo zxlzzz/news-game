@@ -39,7 +39,7 @@ export function spawnChess(em, sr, bm, chessPlaza) {
   const handB = chessB.getAnchor('hand_r');
   const hipA  = chessA.getAnchor('hip');
   const hipB  = chessB.getAnchor('hip');
-  const boardMid = { x: (handA.x + handB.x) / 2, y: (handA.y + handB.y-10) / 2 };
+  const boardMid = { x: (handA.x + handB.x) / 2, y: (handA.y + handB.y) / 2 };
 
   // 棋桌：x 居中于双手，腿落到地面 Y，桌面高度 = 地面到双手高度
   const table = em.add(new PropEntity({
@@ -61,12 +61,12 @@ export function spawnChess(em, sr, bm, chessPlaza) {
   // 两把椅子：椅面 = 各自 hip 高度
   const chairA = em.add(new PropEntity({
     propType: 'chair-r', x: hipA.x, y: Y,
-    width: 14, height: 16, seatH: Y - hipA.y - 1,
+    width: 14, height: 16, seatH: Y - hipA.y,
     tags: [],
   }));
   const chairB = em.add(new PropEntity({
     propType: 'chair-l', x: hipB.x, y: Y,
-    width: 14, height: 16, seatH: Y - hipB.y - 1,
+    width: 14, height: 16, seatH: Y - hipB.y,
     tags: [],
   }));
 
