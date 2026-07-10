@@ -9,7 +9,7 @@ import { PARK_BOTTOM, WORLD_WIDTH, BUILDING_BASE_Y } from '../core/Layout.js';
 import { getNavGrid } from '../behavior/nav/NavGrid.js';
 import { makeNPC } from './npcUtil.js';
 import { getProfile } from './NpcProfile.js';
-import { getHeldPoses } from '../behavior/ModifierLayer.js';
+import { getHeldPoses, getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -25,11 +25,12 @@ const SPAWN_TRAIT_CHANCES = { hold_bag: 0.25, umbrella: 0.08 };
 
 function pushTrait(n, traitKey) {
   n.traits.push(traitKey);
-  const hp = getHeldPoses()[traitKey];
-  if (!hp) return;
+  const tp = getTraitProps()[traitKey];
+  if (!tp) return;
+  const variant = resolveTraitVariant(tp, true);  // spawn 时默认 side（walking）
   n.modifiers.push({
     id: traitKey, kind: 'trait', priority: 5,
-    joints: { ...(hp.joints ?? {}) }, timer: -1,
+    joints: { ...(variant?.joints ?? {}) }, timer: -1,
   });
 }
 

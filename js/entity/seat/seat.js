@@ -66,7 +66,9 @@ export function isNear(entities, npc, dxT = 60, dyT = 80) {
 export function sitDown(npc, bench) {
   bench._occupiedBy = npc.id;
   npc._bench = bench;
-  _setXY(npc, clamp(bench.x, npc.minX, npc.maxX), clamp(seatSurfaceY(bench), npc.minY, npc.maxY));
+  const sc = npc.scale || depthScale(bench.y);
+  const sitBodyY = -42;  // sit_bench frame0 body.y (ground-space absolute)
+  _setXY(npc, clamp(bench.x, npc.minX, npc.maxX), clamp(seatSurfaceY(bench) - sitBodyY * sc, npc.minY, npc.maxY));
   const far = bench.facing === 'up' || bench.facing === 'left';
   npc._sortY = far ? bench.y - 1 : bench.y + 1;
 }
