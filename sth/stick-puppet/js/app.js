@@ -679,14 +679,18 @@ function _renderVariant() {
 
 function _renderCurrentOrComposed(cur) {
   if (previewEnabled && previewBaseDecoded?.length > 0) {
-    const baseFrame = previewBaseDecoded[currentFrame % previewBaseDecoded.length];
+    const baseFrameCount = previewBaseDecoded.length;
+    const overlayFrameCount = frames.length;
+    // 总帧数以 base 为准
+    const baseFrame = previewBaseDecoded[currentFrame % baseFrameCount];
+    // overlay 按取模循环，单帧永远取第 0 帧
+    const overlayFrame = frames[currentFrame % overlayFrameCount];
     drawFigure(baseFrame, 0.25, '#2244aa', '#2244aa', false);
-    drawFigure(_composeForPreview(baseFrame, cur), 1, '#1a1a1a', '#e63322', true);
+    drawFigure(_composeForPreview(baseFrame, overlayFrame), 1, '#1a1a1a', '#e63322', true);
   } else {
     drawFigure(cur, 1, '#1a1a1a', '#e63322', true);
   }
 }
-
 function renderThumb(pose, tc) {
   const sk = getSkeleton();
   const t = tc.getContext('2d'), tw = tc.width, th = tc.height, s = 0.25;

@@ -5,6 +5,7 @@
     "r_elbow",
     "r_hand"
   ],
+  "latched": true,
   "keyframes": [
     {
       "dur": 0.15,
