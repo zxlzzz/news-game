@@ -16,7 +16,7 @@ export function drawChairL(g, p) {
   const { x, y } = p;
   const s      = p.scale ?? 1;
   const d      = -1;
-  const seatH  = 10 * s;
+  const seatH  = (p.seatH ?? 10) * s;
   const seatW  = 25 * s;
   const backH  = 20 * s;
   const seatY  = y - seatH;

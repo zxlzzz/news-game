@@ -967,8 +967,9 @@ canvas.addEventListener('mousemove', (e) => {
   if (dragging === '__translate__') {
     const dx = x - _translateLastX, dy = y - _translateLastY;
     _translateLastX = x; _translateLastY = y;
-    const pose = frames[currentFrame];
-    for (const j of getJointNames()) { if (pose[j]) { pose[j].x += dx; pose[j].y += dy; } }
+    for (const pose of frames) {
+      for (const j of getJointNames()) { if (pose[j]) { pose[j].x += dx; pose[j].y += dy; } }
+    }
     render(); return;
   }
 
