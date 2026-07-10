@@ -1,6 +1,4 @@
 {
-  "id": "phone_look",
-  "kind": "overlay",
   "activeJoints": [
     "r_elbow",
     "r_hand"

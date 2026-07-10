@@ -1,6 +1,4 @@
 {
-  "id": "cross_arm",
-  "kind": "overlay",
   "latched": true,
   "activeJoints": [
     "l_elbow",

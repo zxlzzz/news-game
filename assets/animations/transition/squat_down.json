@@ -1,6 +1,4 @@
 {
-  "id": "squat_down",
-  "kind": "transition",
   "facing": "front",
   "from": "stand_front",
   "to": "squat_front",

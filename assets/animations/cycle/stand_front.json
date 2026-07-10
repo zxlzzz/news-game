@@ -1,6 +1,4 @@
 {
-  "id": "stand_front",
-  "kind": "cycle",
   "facing": "front",
   "keyframes": [
     {

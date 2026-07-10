@@ -1,6 +1,4 @@
 {
-  "id": "squat_front",
-  "kind": "cycle",
   "facing": "front",
   "keyframes": [
     {

@@ -1,6 +1,4 @@
 {
-  "id": "human_pet_dog",
-  "kind": "overlay",
   "participants": [
     {
       "role": "human"

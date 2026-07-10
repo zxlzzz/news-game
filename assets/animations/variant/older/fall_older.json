@@ -1,6 +1,4 @@
 {
-  "id": "fall_older",
-  "kind": "transition",
   "variant_of": "fall",
   "from": "walk",
   "to": "lie_ground",

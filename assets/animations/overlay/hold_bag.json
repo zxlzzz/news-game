@@ -1,6 +1,4 @@
 {
-  "id": "hold_bag",
-  "kind": "overlay",
   "activeJoints": [
     "l_elbow",
     "l_hand"

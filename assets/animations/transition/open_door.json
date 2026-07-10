@@ -1,6 +1,4 @@
 {
-  "id": "open_door",
-  "kind": "transition",
   "facing": "front",
   "keyframes": [
     {

@@ -1,6 +1,4 @@
 {
-  "id": "give_item",
-  "kind": "overlay",
   "participants": [
     {
       "role": "a"

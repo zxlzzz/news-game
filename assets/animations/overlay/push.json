@@ -1,6 +1,4 @@
 {
-  "id": "push",
-  "kind": "overlay",
   "participants": [
     {
       "role": "a"

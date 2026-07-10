@@ -1,6 +1,4 @@
 {
-  "id": "fall",
-  "kind": "transition",
   "from": "walk",
   "to": "lie_ground",
   "keyframes": [

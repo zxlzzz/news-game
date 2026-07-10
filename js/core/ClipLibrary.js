@@ -126,10 +126,10 @@ class ClipLibrary {
       globalBend:         raw.globalBend ?? {},
       skeleton:           skelName,
       canonicalDirection: raw.canonicalDirection ?? 1,
-      kind:               raw.kind,
+      kind:               entry.kind,
       activeJoints:       raw.activeJoints ?? null,
       latched:            raw.latched ?? false,
-      facing:             raw.facing ?? null,
+      facing:             entry.facing ?? null,
     };
 
     this._resolved[id] = result;

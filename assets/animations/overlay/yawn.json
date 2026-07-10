@@ -1,6 +1,4 @@
 {
-  "id": "yawn",
-  "kind": "overlay",
   "activeJoints": [
     "head",
     "r_elbow",
