@@ -1,6 +1,4 @@
 {
-  "id": "dog_walk",
-  "kind": "cycle",
   "skeleton": "dog",
   "keyframes": [
     {

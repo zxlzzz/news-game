@@ -1,6 +1,4 @@
 {
-  "id": "mobile",
-  "kind": "cycle",
   "keyframes": [
     {
       "dur": 0.1,

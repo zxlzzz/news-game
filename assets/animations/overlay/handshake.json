@@ -1,6 +1,4 @@
 {
-  "id": "handshake",
-  "kind": "overlay",
   "participants": [
     {
       "role": "a"

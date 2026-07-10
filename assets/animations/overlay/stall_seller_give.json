@@ -1,6 +1,4 @@
 {
-  "id": "stall_seller_give",
-  "kind": "overlay",
   "activeJoints": [
     "r_elbow",
     "r_hand",

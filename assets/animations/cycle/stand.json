@@ -1,6 +1,4 @@
 {
-  "id": "idle_front",
-  "kind": "cycle",
   "facing": "front",
   "keyframes": [
     {

@@ -1,6 +1,4 @@
 {
-  "id": "walk",
-  "kind": "cycle",
   "keyframes": [
     {
       "body": [

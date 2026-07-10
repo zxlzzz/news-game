@@ -1,6 +1,4 @@
 {
-  "id": "umbrella_front",
-  "kind": "overlay",
   "facing": "front",
   "activeJoints": [
     "l_elbow",

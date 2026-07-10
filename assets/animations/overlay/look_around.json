@@ -1,6 +1,4 @@
 {
-  "id": "look_around",
-  "kind": "overlay",
   "activeJoints": [
     "r_elbow",
     "r_hand"

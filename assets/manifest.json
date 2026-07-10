@@ -59,8 +59,16 @@
       "path": "animations/cycle/sit_bench.json",
       "kind": "cycle"
     },
+    "sit_bench_side": {
+      "path": "animations/cycle/sit_bench_side.json",
+      "kind": "cycle"
+    },
     "sit_ground": {
       "path": "animations/cycle/sit_ground.json",
+      "kind": "cycle"
+    },
+    "sit_ground_knees_up": {
+      "path": "animations/cycle/sit_ground_knees_up.json",
       "kind": "cycle"
     },
     "squat": {

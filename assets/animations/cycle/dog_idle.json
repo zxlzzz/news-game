@@ -1,6 +1,4 @@
 {
-  "id": "dog_idle",
-  "kind": "cycle",
   "skeleton": "dog",
   "keyframes": [
     {

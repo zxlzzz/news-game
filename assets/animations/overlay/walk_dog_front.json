@@ -1,6 +1,4 @@
 {
-  "id": "walk_dog_front",
-  "kind": "overlay",
   "facing": "front",
   "activeJoints": [
     "l_elbow",

@@ -1,6 +1,4 @@
 {
-  "id": "get_up",
-  "kind": "transition",
   "from": "lie_ground",
   "to": "walk",
   "keyframes": [

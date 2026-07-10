@@ -1,6 +1,4 @@
 {
-  "id": "walk_older",
-  "kind": "cycle",
   "variant_of": "walk",
   "amp": 0.7,
   "ref_speed": 0.75

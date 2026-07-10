@@ -1,6 +1,4 @@
 {
-  "id": "walk_dog",
-  "kind": "overlay",
   "activeJoints": [
     "l_elbow",
     "l_hand"

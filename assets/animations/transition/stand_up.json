@@ -1,6 +1,4 @@
 {
-  "id": "stand_up",
-  "kind": "transition",
   "facing": "front",
   "from": "squat_front",
   "to": "stand_front",

@@ -1,6 +1,4 @@
 {
-  "id": "sit_bench",
-  "kind": "cycle",
   "keyframes": [
     {
       "dur": 0.15,

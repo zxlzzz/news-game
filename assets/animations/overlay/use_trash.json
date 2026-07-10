@@ -1,6 +1,4 @@
 {
-  "id": "use_trash",
-  "kind": "overlay",
   "activeJoints": [
     "r_elbow",
     "r_hand"

@@ -1,6 +1,4 @@
 {
-  "id": "point_at",
-  "kind": "overlay",
   "participants": [
     {
       "role": "a"

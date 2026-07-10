@@ -1,6 +1,4 @@
 {
-  "id": "wipe_sweat",
-  "kind": "overlay",
   "activeJoints": [
     "r_elbow",
     "r_hand"
