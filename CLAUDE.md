@@ -1,180 +1,181 @@
 # News Game — 项目指南
 
-## 一句话概述
-
-2.5D 街道场景模拟器：PixiJS 原生（无打包器）+ ES modules，NPC 自主行为驱动，玩家用取景框捕捉"新闻场景"。
-
----
-
-## 技术栈
-
-- **PixiJS 5**，纯浏览器，无 bundler，直接 `<script type="module">`
-- 运行：`start.bat`（Windows）或直接打开 `index.html`（需本地 HTTP）
-- 无 TypeScript，无测试框架；调试靠 `js/behavior/DebugLog.js` + DebugOverlay
+2.5D 街道场景模拟器：PixiJS 5 原生（无打包器）+ ES modules，NPC 自主行为驱动。
+运行：`start.bat`（Windows）或本地 HTTP 打开 `index.html`；无 TS，无测试框架。
 
 ---
 
-## 目录结构
+## 坐标约定
 
-```
-assets/
-  scene.json          场景数据（建筑/道具/路线/公交站/斑马线）
-  animations/         火柴人动画 JSON（StickRenderer 读取）
-js/
-  core/
-    Layout.js         全局坐标常量（唯一真值源）
-    EntityManager.js  实体管理，按 Y 深度排序渲染
-    PropEntity.js     通用道具实体（含 smartDef / _slots）
-    StickRenderer.js  火柴人渲染器（不动）
-  behavior/
-    BehaviorManager.js  NPC 行为协调器（主循环入口）
-    BaseStateMachine.js 状态机（setState / tickBaseState / steerRoam）
-    WalkMode.js         走路模式（wander/direct/path_follow/planCrossing）
-    SocialLayer.js      配对 / Activity / 棋局 / 摊位
-    ModifierLayer.js    叠加动作（phone/smoke/gesture）
-    EnvironmentQuery.js 空间查询（bench/slot/wall/obstacle）
-    RouteSelector.js    路线选取（scene.json routes）
-    NpcProfile.js       NPC 档案（行为参数）
-    ActivityRegistry.js Activity 类型注册
-  entity/             各类道具实体（busstop / vehicle / seat / …）
-  npc/                NPC spawner（Pedestrians / Chess / DogWalker / Athletes）
-  scenes/
-    StreetScene.js      主场景（game loop）
-    SceneInitializer.js 场景初始化（建筑/道具/NPC/路线）
-    SceneRenderer.js    场景渲染（背景/地面/斑马线）
-  ui/                 取景框、快门、UI 层
-sth/
-  stick-puppet/       火柴人动画编辑器
-  anim-preview/       双栏动画调试工具
-```
+**铁律**：`npc.y` / `entity.y` = 地面接触线（世界坐标）；关节空间 `y=0` = 地面，负值向上。
 
----
-
-## Y 轴分带常量（`js/core/Layout.js`）
-
-| 分带 | Y 范围 | 关键常量 |
-|------|--------|---------|
-| 天空 | 0 – 210 | `SKY_Y=100`, `BUILDING_BASE_Y=210` |
-| 远人行道 | 210 – 248 | `SIDEWALK_FAR_Y=240` |
-| 远自行车道 | 248 – 268 | `BIKE_LANE_FAR_TOP=248` |
-| 机动车道 | 268 – 333 | `FAR_Y=268`, `NEAR_Y=333` |
-| 近自行车道 | 333 – 353 | `BIKE_LANE_NEAR_BOTTOM=353` |
-| 公园 | 353 – 520 | `PARK_TOP=353` |
-
-NPC 漫游区：远人行道（y≈240）和公园（y≈370–490）。机动车道禁止驻留（`isRoadZone` 守卫）。
-
----
-
-## 绘制规则
-
-### 灰阶调色板（铁律：只用 Layout 常量，不许出现魔法数字）
+原因：StickRenderer 渲染公式 `screen_y = npc.y + joint[1] * scale`，接触点 y=0 才能精准落地。
 
 ```js
-FILL_PAPER = 0xd8d8d8   // 最亮：建筑立面
-FILL_LIGHT = 0xc4c4c4   // 次亮：玻璃/草地斑块/树影
-FILL_MID   = 0xaaaaaa   // 中灰：屋顶/遮篷/车身
-FILL_SHADE = 0x888888   // 最暗：门板/阴影
-ENV_LINE_LIGHT = 0x90   // 环境线条（浅）
-ENV_LINE_DARK  = 0x40   // 环境线条（深）
+// screen_x = npc.x + joint[0] * scale * dir
+// screen_y = npc.y + joint[1] * scale   ← joint y 为负=上方，0=地面线
 ```
 
-### 深度缩放（铁律：`depthT` 是唯一深度源）
-
-```js
-// 唯一正确写法：
-import { depthScale, depthT } from '../core/Layout.js';
-prop.scale = depthScale(prop.y);   // EntityManager 每帧自动调用
-```
-
-禁止出现第二套深度公式（如 `1 + (y - FAR_Y) / 200`）。
-
-### PixiJS 绘图约定
-
-```js
-g.lineStyle(1, ENV_LINE_DARK, 0.6);
-g.beginFill(FILL_PAPER, 1);
-g.drawRect(x, y, w, h);
-g.endFill();
-```
+cycle clip 的全帧全关节最大 abs_y 须 ≤ 0（即地面接触关节 ≈ 0）；
+骑乘白名单 `MOUNTED_CLIPS = ['bike','mobike','mobile']` 例外（接触点经由车辆）。
+ClipLibrary.resolve() 启动时断言，偏移 > ±5 发 `console.warn`，不阻断加载。
+接触点偏差**修 clip JSON**，禁止在运行时用 `npc.y -= N` 补偿。
 
 ---
 
-## 动画规则
+## 深度
 
-- `assets/animations/` 下每个 JSON 是一段火柴人动画（帧序列 + 关节坐标）
-- **StickRenderer 不动**：无状态渲染器，只读 `npc.animation` + `npc.frameIndex` + `npc.overlayPose`
-- 关节坐标写在 JSON 里；`anchorMode` 决定 Y 锚点（`hip` / `back` / `foot`）
-- 新增动画：只改 JSON，不改 StickRenderer
+**铁律**：`depthT(y)` 是唯一深度来源；所有派生量皆由它计算，禁止出现第二套深度公式。
+
+```js
+import { depthScale, depthGray, depthLineWidth } from '../core/Layout.js';
+prop.scale = depthScale(prop.y);  // EntityManager 每帧对非静态实体自动调用
+```
+
+Y 分带（`js/core/Layout.js`）：
+
+| 分带        | Y 范围   | 关键常量                            |
+|-------------|----------|-------------------------------------|
+| 天空        | 0–210    | `BUILDING_BASE_Y=210`               |
+| 远人行道    | 210–248  | `SIDEWALK_FAR_Y=240`                |
+| 远自行车道  | 248–268  | `BIKE_LANE_FAR_TOP=248`             |
+| 机动车道    | 268–333  | `FAR_Y=268`，`NEAR_Y=333`           |
+| 近自行车道  | 333–353  | `BIKE_LANE_NEAR_BOTTOM=353`         |
+| 公园        | 353–520  | `PARK_TOP=353`                      |
+
+NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车道禁止驻留（`isRoadZone` 守卫）。
 
 ---
 
-## 实体模板（以 seat 为例）
+## 动画命名
+
+**铁律**：全库动画唯一标识 = manifest clip id（如 `stand`、`dog_walk`），无别名层。
+
+原因：双注册表（ANIM_MAP + manifest）是历史负债，现已删除；clip id 即 StickRenderer key。
 
 ```js
-// js/entity/seat/seat.js
-export function spawnBench(em, x, y) {
-  const e = em.add(new PropEntity({
-    propType: 'bench',
-    x, y,
-    width: 40, height: 12,
-    obstacle: true, collisionRX: 20, collisionRY: 8,
-  }));
-  e.scale = depthScale(y);
-  return e;
+// StreetScene.js — 以 clip id 直接注册，manifest 是唯一来源
+for (const id of Object.keys(clipLibrary.manifest.clips)) {
+  stickRenderer.loadAnimation(id, clipLibrary.resolve(id));
 }
 ```
 
-新增道具摆放：**写进 `assets/scene.json` 的 `props` 数组，不许硬编码坐标到 JS**。
+- `kind` 唯一权威在 `assets/manifest.json`；clip JSON 文件**不含** `kind` 字段
+- NPC 默认动画：`'stand'`（不是 `'idle'`）；狗：`'dog_walk'`（不是 `'dogwalk'`）
+- keyframe 只存 delta（相对 `skeleton.json defaultPose`）；省略关节 = 零 delta
+- variant clip：ClipLibrary 取 **base** 的 keyframes × amp，variant 自身 keyframes 字段无效
 
 ---
 
-## 行为系统（当前实现）
+## 锚点 API
+
+**铁律**：`npc.getAnchor(name)` 是唯一合法接口；骨架内部关节名（`body`、`r_hand`…）禁止在外部直接引用。
+
+原因：getAnchor 统一处理 overlay 重锚、direction 翻转、scale；绕过会导致镜像/偏移 bug。
+
+```js
+const hand = npc.getAnchor('hand_r');  // ✓ 返回世界坐标 {x, y}
+const hip  = npc.getAnchor('hip');     // ✓ 内部映射 'body' 关节
+// anim.frames[0]['r_hand']            // ✗ 禁止：绕过 direction/scale/overlay
+```
+
+公开锚点名：`head`、`neck`、`hand_l`、`hand_r`、`hip`、`foot_l`、`foot_r`。
+狗：`neck`、`head`、`hip`（映射 `body_back`）。
+
+---
+
+## 绘制铁律
+
+1. 每个 `draw*()` 函数**入口第一行**调 `g.lineStyle(0)`（清除前一次残留线条）
+2. 只用灰阶调色板；禁止三面光或伪 3D 阴影
+
+```js
+import { FILL_PAPER, FILL_LIGHT, FILL_MID, FILL_SHADE,
+         ENV_LINE_LIGHT, ENV_LINE_DARK, depthLineWidth } from '../core/Layout.js';
+// FILL_PAPER=0xd8d8d8  FILL_LIGHT=0xc4c4c4  FILL_MID=0xaaaaaa  FILL_SHADE=0x888888
+```
+
+3. `g.drawEllipse(cx, cy, rx, ry)` 参数是**半轴**（非直径）
+4. 线宽/线色用 `lenv(g, baseY)` 辅助（参见 `entity/seat/drawBench.js`）
+
+---
+
+## Entity 模式
+
+**铁律**：`entity/<name>/draw<Name>.js`（纯绘制，无状态）+ `<name>.js`（行为 + `INTRINSIC` + `footprint()` + spawner）。
+
+原因：绘制与行为分离，`PropEntity.draw()` 统一分发，不需要子类多态。
+
+```js
+// entity/seat/seat.js
+export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23 };
+export function footprint(e) { ... }       // 碰撞半轴
+export function sitDown(npc, bench) { ... } // 行为副作用
+// entity/seat/drawBench.js
+export function drawBench(g, p) { g.lineStyle(0); ... } // 纯绘制
+```
+
+新增道具：坐标写进 `assets/scene.json` 的 `props` 数组，禁止硬编码坐标到 JS。
+
+---
+
+## 数据纪律
+
+**铁律**：关节坐标只来自 `assets/animations/*.json`；JS 文件禁止硬编码任何关节坐标。
+
+原因：硬编码坐标在 clip 调整后立即失效，且无法被 ClipLibrary 断言发现。
+
+```js
+// ✓ 坐标从 clip 数据读取
+const frame = clipLibrary.resolve('chess').frames[0];
+const footY = frame['l_foot'][1];  // abs_y（展开后）
+// ✗ const SIT_BODY_Y = -42;       // 禁止硬编码关节坐标
+```
+
+overlay 运行时按帧对链根（`neck`/`body`）重锚后叠加关节 delta；
+keyframe 中省略的关节 = 零 delta；修改 clip 地面接触后须物化所有关节（避免撕裂）。
+
+---
+
+## 出口语义
+
+**铁律**：NPC 离场走 `ExitRegistry.findExit(npc)`，禁止硬编码消失坐标或 teleport。
+
+原因：出口与场景布局绑定；硬编码坐标在场景更新时静默失效。
+
+```js
+import { findExit } from '../npc/ExitRegistry.js';
+const exit = findExit(npc, 'edge');
+if (exit) { npc.x = exit.x; npc.alive = false; }
+```
+
+---
+
+## 行为系统
 
 ```
 BehaviorManager
-  ├── BaseStateMachine  — 状态机（15 状态冻结）
-  ├── WalkMode          — 走路模式（wander/direct/path_follow）
-  │     └── planCrossing — 守法/闯红灯过马路
+  ├── BaseStateMachine  — 状态机（setState / tickBaseState）
+  ├── WalkMode          — wander / direct / path_follow / planCrossing
   ├── SocialLayer       — Talk / Chess / Stall 配对
-  ├── ModifierLayer     — 叠加动作（phone/smoke）
+  ├── ModifierLayer     — 叠加动作（phone / smoke / gesture）
   ├── EnvironmentQuery  — 空间查询（只读）
   └── RouteSelector     — 路线池（scene.json routes）
 ```
 
-目标架构（分层重构蓝图）见 [docs/behavior-design.md](./docs/behavior-design.md)。
-完整状态规格见 [docs/npc-states.md](./docs/npc-states.md)。
-
-### 关键约定
-
-- **帧率归一**：所有每帧概率判定用 `Math.random() < p * dt * 60`
-- **区域守卫**：`_resolveTimeout` 入口检查 `isRoadZone(npc.y)`，在路上不切状态
-- **槽位释放**：NPC 离场前调 `releaseAllHoldings(npc, envQuery)`
-- **过马路**：跨侧路由必须经 `planCrossing`，禁止直接 teleport
+关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
+槽位释放 `releaseAllHoldings(npc, envQuery)`；过马路必须经 `planCrossing`。
 
 ---
 
-## 场景数据（`assets/scene.json`）
+## 工作流
 
-新增内容必须写进 scene.json：
-
-```jsonc
-{
-  "buildings": [...],
-  "props": [
-    { "propType": "bench", "x": 780, "y": 418 },
-    { "propType": "trash", "x": 1460, "y": 465 }
-  ],
-  "routes": [...],          // RouteSelector 读取
-  "crosswalks": [           // initCrosswalks 读取
-    { "x": 350 }, { "x": 1050 }, { "x": 1700 }
-  ],
-  "busStops": [...]
-}
-```
+- CC 分支命名：`claude/<slug>` 前缀
+- Windows MINGW64 环境：交付**完整文件内容**，不走 patch/diff 格式
+- 调试：`js/behavior/DebugLog.js` + DebugOverlay
 
 ---
 
-## 工具
+## 规划中
 
-- `sth/stick-puppet/` — 火柴人动画编辑器（逐帧拖拽关节）
-- `sth/anim-preview/` — 双栏动画调试工具（多 NPC 同屏预览 + 帧控制）
+**NpcState 槽位系统（`npc.mem(ns)`）**：每个命名状态持有独立内存对象，状态机切换时自动清理前一状态的临时数据。落地后由对应 PR 替换本节。
