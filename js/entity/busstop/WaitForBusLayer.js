@@ -43,21 +43,21 @@ export class WaitForBusLayer {
   }
 
   tickWaiter(npc, dt) {
-    if (npc._boardingBus && npc.state === 'walk') {
+    if (npc.mem('social').boardingBus && npc.state === 'walk') {
       this._releaseWaiter(npc);
       return;
     }
 
-    npc._waitTimer = (npc._waitTimer || 0) + dt;
+    npc.mem('social').waitTimer = (npc.mem('social').waitTimer || 0) + dt;
 
-    if (npc._waitTimer > MAX_WAIT_TIME) {
+    if (npc.mem('social').waitTimer > MAX_WAIT_TIME) {
       this._releaseWaiter(npc);
       setState(npc, 'walk', 'wait_timeout');
       return;
     }
 
-    if (npc.state === 'stand' && npc._waitTimer > (npc._nextFidget || 10)) {
-      npc._nextFidget = npc._waitTimer + 10 + Math.random() * 10;
+    if (npc.state === 'stand' && npc.mem('social').waitTimer > (npc.mem('social').nextFidget || 10)) {
+      npc.mem('social').nextFidget = npc.mem('social').waitTimer + 10 + Math.random() * 10;
       setState(npc, 'loiter', 'wait_fidget');
       npc.stateDur = 4 + Math.random() * 4;
     } else if (npc.state === 'loiter' && npc.stateTimer >= npc.stateDur) {
@@ -68,8 +68,8 @@ export class WaitForBusLayer {
 
   _scanForWaiters(npcs) {
     for (const npc of npcs) {
-      if (!npc.alive || npc._activity || npc._departing) continue;
-      if (npc._waitingBusStop || npc._boardingBus) continue;
+      if (!npc.alive || npc.mem('social').activity || npc.mem('agenda').departing) continue;
+      if (npc.mem('social').waitingBusStop || npc.mem('social').boardingBus) continue;
       if (!WAIT_STATES.has(npc.state)) continue;
 
       for (const zone of WAIT_ZONES) {
@@ -92,23 +92,23 @@ export class WaitForBusLayer {
   }
 
   _addWaiter(npc, stop) {
-    npc._waitingBusStop = stop;
-    npc._waitTimer = 0;
-    npc._nextFidget = 10 + Math.random() * 10;
+    npc.mem('social').waitingBusStop = stop;
+    npc.mem('social').waitTimer = 0;
+    npc.mem('social').nextFidget = 10 + Math.random() * 10;
     stop._waiters.push(npc);
     setState(npc, 'stand', 'wait_bus');
     npc.stateDur = Infinity;
   }
 
   _releaseWaiter(npc) {
-    const stop = npc._waitingBusStop;
+    const stop = npc.mem('social').waitingBusStop;
     if (stop) {
       stop._waiters = stop._waiters.filter(n => n !== npc);
       stop._boardingQueue = stop._boardingQueue.filter(n => n !== npc);
     }
-    npc._waitingBusStop = null;
-    npc._waitTimer = 0;
-    npc._boardingBus = null;
+    npc.mem('social').waitingBusStop = null;
+    npc.mem('social').waitTimer = 0;
+    npc.mem('social').boardingBus = null;
   }
 
   _startBoarding(bus, stop) {
@@ -119,12 +119,12 @@ export class WaitForBusLayer {
     const doorY = stop.direction > 0 ? BIKE_LANE_FAR_TOP : PARK_TOP;
 
     for (const npc of waiters) {
-      npc._boardingBus = bus;
+      npc.mem('social').boardingBus = bus;
       stop._boardingQueue.push(npc);
-      npc._waitingBusStop = stop;
+      npc.mem('social').waitingBusStop = stop;
 
       const routeToDoor = (n) => {
-        n._routeTarget = {
+        n.mem('motor').routeTarget = {
           x: doorX, y: doorY,
           abandonAfter: 15,
           onArrive: (n2) => {
@@ -137,7 +137,7 @@ export class WaitForBusLayer {
 
       if (_needsCrossing(npc.y, doorY)) {
         setState(npc, 'walk', 'boarding_cross');
-        planCrossing(npc, doorY, npc._profile, routeToDoor);
+        planCrossing(npc, doorY, npc.mem('agenda').profile, routeToDoor);
       } else {
         routeToDoor(npc);
       }

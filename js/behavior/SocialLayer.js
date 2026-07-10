@@ -69,23 +69,23 @@ export class SocialLayer {
     // 3) 槽位等待超时（20s 内无第二个人到位） → 放弃，重新 walk
     //    死亡 NPC 的槽位也必须回收（不跳过 !alive）
     for (const npc of npcs) {
-      if (!npc._slotWaitProp) continue;
+      if (!npc.mem('social').slotWaitProp) continue;
       if (!npc.alive) {
-        for (const s of npc._slotWaitProp._slots) {
+        for (const s of npc.mem('social').slotWaitProp._slots) {
           if (s.npc === npc) { s.ready = false; s.npc = null; }
         }
         this.envQuery.releaseSlotReservation(npc);
-        npc._slotWaitProp = null;
+        npc.mem('social').slotWaitProp = null;
         continue;
       }
-      if (npc._activity) continue;
-      npc._slotWaitTimer = (npc._slotWaitTimer || 0) + dt;
-      if (npc._slotWaitTimer > 20) {
-        for (const s of npc._slotWaitProp._slots) {
+      if (npc.mem('social').activity) continue;
+      npc.mem('social').slotWaitTimer = (npc.mem('social').slotWaitTimer || 0) + dt;
+      if (npc.mem('social').slotWaitTimer > 20) {
+        for (const s of npc.mem('social').slotWaitProp._slots) {
           if (s.npc === npc) { s.ready = false; s.npc = null; }
         }
         this.envQuery.releaseSlotReservation(npc);
-        npc._slotWaitProp = null;
+        npc.mem('social').slotWaitProp = null;
         setState(npc, 'walk', 'slot_wait_timeout');
       }
     }
@@ -131,8 +131,8 @@ export class SocialLayer {
     } else {
       setState(npc, 'stand', 'slot_wait');
       npc.stateDur       = Infinity;
-      npc._slotWaitTimer = 0;
-      npc._slotWaitProp  = prop;
+      npc.mem('social').slotWaitTimer = 0;
+      npc.mem('social').slotWaitProp  = prop;
     }
   }
 
@@ -145,8 +145,8 @@ export class SocialLayer {
 
   _tryPairTalk(npcs) {
     const standers = npcs.filter(n =>
-      n.alive && !n._activity && !n._departing && n.state === 'stand' &&
-      n._profile && n._profile.activities.includes('talk'));
+      n.alive && !n.mem('social').activity && !n.mem('agenda').departing && n.state === 'stand' &&
+      n.mem('agenda').profile && n.mem('agenda').profile.activities.includes('talk'));
     let paired = 0;
     for (let i = 0; i < standers.length; i++) {
       for (let j = i + 1; j < standers.length; j++) {
@@ -157,8 +157,8 @@ export class SocialLayer {
         if (dx < 70 && dx > 14 && dy < 24 && chance(0.5)) {
           const act = this.createActivity('talk', [{ npc: a, role: 'speaker' }, { npc: b, role: 'speaker' }]);
           if (act) {
-            a._runner?.setPrimary(new TalkToTask(), a);
-            b._runner?.setPrimary(new TalkToTask(), b);
+            a.mem('agenda').runner?.setPrimary(new TalkToTask(), a);
+            b.mem('agenda').runner?.setPrimary(new TalkToTask(), b);
           }
           paired++;
         }

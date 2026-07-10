@@ -71,22 +71,22 @@ export class DebugOverlay {
 
   // 组装单个 NPC 的浮标文本
   _floatText(npc) {
-    const profile = npc._profile ? npc._profile.name : (npc.npcType || '--');
+    const profile = npc.mem('agenda').profile ? npc.mem('agenda').profile.name : (npc.npcType || '--');
     const raw     = npc.state || npc.animation || '?';
     let state     = raw;
-    if (raw === 'loiter' && npc._microPhaseName) {
-      state = `loiter:${npc._microPhaseName}`;
-    } else if (raw === 'routing' && npc._routeTarget) {
-      const t = npc._routeTarget;
+    if (raw === 'loiter' && npc.mem('loiter').microPhaseName) {
+      state = `loiter:${npc.mem('loiter').microPhaseName}`;
+    } else if (raw === 'routing' && npc.mem('motor').routeTarget) {
+      const t = npc.mem('motor').routeTarget;
       state = `routing→(${Math.round(t.x)},${Math.round(t.y)})`;
     }
     const modStr = npc.modifiers && npc.modifiers.length
       ? npc.modifiers.map(m => `${m.id}(${m.kind[0]})`).join(',')
       : '-';
     let activity  = '-';
-    const act = npc._activity;
+    const act = npc.mem('social').activity;
     if (act) activity = `${act.label}(${act.roleOf(npc) || '?'})`;
-    const dept = npc._departing ? ' [DEPT]' : '';
+    const dept = npc.mem('agenda').departing ? ' [DEPT]' : '';
     return `[${profile}] ${state} | ${modStr} | ${activity}${dept}`;
   }
 
@@ -101,7 +101,7 @@ export class DebugOverlay {
       const b = npc.getBounds();
       t.setText(this._floatText(npc));
       t.setPosition(npc.x, b.y - 3);
-      t.setColor(npc._activity ? '#ffe14d' : '#ffffff');
+      t.setColor(npc.mem('social').activity ? '#ffe14d' : '#ffffff');
       t.setVisible(true);
     }
     for (let i = npcs.length; i < this.floatPool.length; i++) {
@@ -116,8 +116,8 @@ export class DebugOverlay {
     const sl = this.bm.socialLayer;
     const npcs = this.bm.npcs;
     const total    = npcs.length;
-    const locked   = npcs.filter(n => n._activity).length;
-    const departing = npcs.filter(n => n._departing).length;
+    const locked   = npcs.filter(n => n.mem('social').activity).length;
+    const departing = npcs.filter(n => n.mem('agenda').departing).length;
     const free     = total - locked;
 
     const lines = [];
@@ -132,6 +132,18 @@ export class DebugOverlay {
       const sub = act.subState && act.subState !== 'init' ? ` [${act.subState}]` : '';
       lines.push(`  ${act.label}${sub}: ${parts.join(', ')}`);
     }
+
+    // _mem 命名空间摘要（选取第一个可见 NPC）
+    const sample = npcs.find(n => n._mem);
+    if (sample) {
+      lines.push('─── mem (sample NPC#' + sample.id + ') ───');
+      for (const [ns, obj] of Object.entries(sample._mem)) {
+        const keys = Object.keys(obj).filter(k => obj[k] != null && k !== 'tags');
+        const tagStr = obj.tags ? ` tags=[${obj.tags.join(',')}]` : '';
+        lines.push(`  ${ns}: {${keys.join(', ')}${tagStr}}`);
+      }
+    }
+
     return lines.join('\n');
   }
 }

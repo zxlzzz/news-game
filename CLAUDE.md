@@ -176,6 +176,32 @@ BehaviorManager
 
 ---
 
-## 规划中
+## NpcState 槽位系统
 
-**NpcState 槽位系统（`npc.mem(ns)`）**：每个命名状态持有独立内存对象，状态机切换时自动清理前一状态的临时数据。落地后由对应 PR 替换本节。
+**铁律**：NPC 临时状态必须经 `npc.mem(ns)` 读写，禁止直接在 `npc` 上挂 `_xxx` 字段。
+
+```js
+// 读写（惰性创建命名空间对象）
+npc.mem('motor').walkMode = ...;
+npc.mem('social').activity = act;
+
+// 退出状态时清理命名空间
+npc.clearMem('loiter');
+```
+
+**命名空间与 owner：**
+
+| namespace  | owner / 写者            | 典型字段                                              |
+|------------|-------------------------|-------------------------------------------------------|
+| `motor`    | Motor.js / WalkMode.js  | walkMode、walkModeStack、routeTarget、routePts、routeIdx、navPath、navGoalX/Y、navIdx、dirCD、progress、tags |
+| `loiter`   | LoiterBehavior.js       | dir、dur、elapsed、overlay、microPhase、microPhaseName、microTimer、tags |
+| `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、slotWaitProp、slotWaitTimer、chessSlot、onlookerTimer、onlookerDur、tags |
+| `agenda`   | BehaviorManager / Director | profile、runner、agenda、lifespan、ageTimer、departing、pendingDeparture、preferExitType、exitRegistry、waitForBusLayer、busStops |
+| `modifier` | ModifierLayer.js        | heldCooldown、gestureCooldown                        |
+
+**规则：**
+- 写者即 owner；跨 namespace 只读
+- tags 字段：各 owner 写 `npc.mem(ns).tags`；`npc.getTags()` 聚合 `_mem[*].tags`
+- `npc.modifiers.find(...)` 禁止在 ModifierLayer 外部使用；改用 `getHeldModifier(npc)`（从 ModifierLayer.js 导入）
+- `_sortY`、`_motorInstalled`、`_motor` 不迁移（渲染接口 / 热路径守卫）
+- 待迁出：`agenda.exitRegistry/waitForBusLayer/busStops` 是场景级服务引用，应上收到 behavior context；本次机械迁移保留，下次动状态机签名时收掉

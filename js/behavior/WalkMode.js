@@ -66,8 +66,8 @@ const TrafficSignal = { getState: (_x) => 'green' };
 
 /**
  * 规划过马路（从当前侧到 targetY 所在侧）。
- *   守法：走最近斑马线入口 → 竖穿到对侧，_extraTags=['crossing_road']。
- *   乱穿：原地竖穿，切 run 动画，_extraTags=['jaywalking']。
+ *   守法：走最近斑马线入口 → 竖穿到对侧，motor.tags=['crossing_road']。
+ *   乱穿：原地竖穿，切 run 动画，motor.tags=['jaywalking']。
  * onCrossed(npc) 在完成过马路后回调（可选）。
  */
 export function planCrossing(npc, targetY, profile, onCrossed = null) {
@@ -77,11 +77,11 @@ export function planCrossing(npc, targetY, profile, onCrossed = null) {
   const exitY  = goingDown ? NEAR_Y + 2 : FAR_Y - 2;
 
   if (Math.random() < jaywalkChance) {
-    npc._extraTags = ['jaywalking'];
+    npc.mem('motor').tags = ['jaywalking'];
     setAnimation(npc, 'run');
     setSpeed(npc, (npc.walkSpeed || 26) * 2.4);
     pushWalkMode(npc, modeDirect({ x: npc.x, y: exitY }, (n) => {
-      n._extraTags = null;
+      n.mem('motor').tags = null;
       setAnimation(n, 'walk');
       setSpeed(n, n.walkSpeed || 26);
       if (onCrossed) onCrossed(n);
@@ -91,9 +91,9 @@ export function planCrossing(npc, targetY, profile, onCrossed = null) {
     const cwX = cw ? cw.x : npc.x;
     // TODO: if (TrafficSignal.getState(cwX) === 'red') { /* wait */ }
     pushWalkMode(npc, modeDirect({ x: cwX, y: entryY }, (n) => {
-      n._extraTags = ['crossing_road'];
+      n.mem('motor').tags = ['crossing_road'];
       setWalkMode(n, modeDirect({ x: cwX, y: exitY }, (n2) => {
-        n2._extraTags = null;
+        n2.mem('motor').tags = null;
         popWalkMode(n2);
         if (onCrossed) onCrossed(n2);
       }, 30));
@@ -162,9 +162,10 @@ function isBikeLaneZone(y) {
  * 建议由 BehaviorManager 在每帧（或每 N 帧）调用。
  */
 export function checkZoneTransition(npc) {
-  if (!npc._walkMode || npc._departing) return;
+  const wm = npc.mem('motor').walkMode;
+  if (!wm || npc.mem('agenda').departing) return;
   if (npc.state !== 'walk' && npc.state !== 'run') return;
-  if (npc._walkMode.kind !== 'wander') return;   // direct/path_follow 自行负责区域
+  if (wm.kind !== 'wander') return;   // direct/path_follow 自行负责区域
 
   const inRoad     = isRoadZone(npc.y);
   const inBikeLane = !inRoad && isBikeLaneZone(npc.y);
@@ -187,7 +188,7 @@ export function checkZoneTransition(npc) {
  * 在 steerRoam 内 roamTarget == null 时调用。
  */
 export function pickModeTarget(npc, envQuery) {
-  const mode = npc._walkMode;
+  const mode = npc.mem('motor').walkMode;
 
   if (!mode || mode.kind === 'wander') {
     _pickRandom(npc, envQuery);
@@ -222,7 +223,7 @@ export function pickModeTarget(npc, envQuery) {
 }
 
 function _pickRandom(npc, envQuery) {
-  const r = npc._walkMode?.bounds;
+  const r = npc.mem('motor').walkMode?.bounds;
   if (!r) {
     const grid = getNavGrid();
     if (!grid) { npc.roamTarget = null; return; }
@@ -291,7 +292,7 @@ function _crossSide(y1, y2) {
  */
 export function planLegs(npc, target, timeout = 60, onDone = null) {
   if (_crossSide(npc.y, target.y ?? npc.y)) {
-    planCrossing(npc, target.y, npc._profile, (n) => {
+    planCrossing(npc, target.y, npc.mem('agenda').profile, (n) => {
       setWalkMode(n, modeDirect(target, onDone, timeout));
     });
   } else {
@@ -307,7 +308,7 @@ export function planLegs(npc, target, timeout = 60, onDone = null) {
  * 到达检测由 steerRoam 负责。
  */
 export function tickWalkMode(npc, dt) {
-  const mode = npc._walkMode;
+  const mode = npc.mem('motor').walkMode;
   if (!mode) return;
 
   if (mode.kind === 'path_follow' && mode.pausing) {

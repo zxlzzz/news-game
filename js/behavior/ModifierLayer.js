@@ -32,6 +32,11 @@ export function initPoseCache(pc) {
 export function getHeldPoses()  { return HELD_POSES; }
 export function getTraitProps() { return TRAIT_PROPS; }
 
+/** 返回 NPC 当前用户级 held modifier（非内部、非 trait），无则 null */
+export function getHeldModifier(npc) {
+  return npc.modifiers.find(m => m.kind === 'held' && !m.id.startsWith('_')) ?? null;
+}
+
 // trait 在 walk/run 时使用侧面（side）变体，其余状态用正面（front）。
 export function isSideState(state) { return state === 'walk' || state === 'run'; }
 
@@ -92,12 +97,12 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
     m.timer -= dt;
     if (m.timer > 0) return true;
     // 到期：非内部 held 触发冷却
-    if (!m.id.startsWith('_')) npc._heldCooldown = rand(30, 55);
+    if (!m.id.startsWith('_')) npc.mem('modifier').heldCooldown = rand(30, 55);
     return false;
   });
 
   // 冷却倒计时
-  if ((npc._heldCooldown || 0) > 0) npc._heldCooldown -= dt;
+  if ((npc.mem('modifier').heldCooldown || 0) > 0) npc.mem('modifier').heldCooldown -= dt;
 
   // 2) held 状态兼容性检查：状态切换后不再兼容的 held 移除
   //    _ 开头的内部修饰器豁免（由 BaseStateMachine / SocialLayer 自行管理）
@@ -112,8 +117,8 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
     removedByState = true;
     return false;
   });
-  if (removedByState && !((npc._heldCooldown || 0) > 0)) {
-    npc._heldCooldown = rand(30, 55);
+  if (removedByState && !((npc.mem('modifier').heldCooldown || 0) > 0)) {
+    npc.mem('modifier').heldCooldown = rand(30, 55);
   }
 
   // 3) trait front/side 自动切换：walk/run 用 side 变体，其余用 front
@@ -175,8 +180,8 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
     if (m.kind === 'gesture' && m._done) { removedGesture = true; return false; }
     return !m._done;
   });
-  if (removedGesture) npc._gestureCooldown = rand(35, 70);
-  if ((npc._gestureCooldown || 0) > 0) npc._gestureCooldown -= dt;
+  if (removedGesture) npc.mem('modifier').gestureCooldown = rand(35, 70);
+  if ((npc.mem('modifier').gestureCooldown || 0) > 0) npc.mem('modifier').gestureCooldown -= dt;
 
   // 6) 尝试触发新 gesture（与 held 独立：单实例 + 冷却 + 适用状态 + 概率）
   _tryTriggerGesture(npc, profile, dt);
@@ -188,7 +193,7 @@ export function tickModifiers(npc, profile, dt, globalHeldFrac = 0) {
  */
 function _tryTriggerHeld(npc, heldDefs, globalHeldFrac, dt) {
   if (globalHeldFrac >= 0.18) return;
-  if ((npc._heldCooldown || 0) > 0) return;
+  if ((npc.mem('modifier').heldCooldown || 0) > 0) return;
   if (npc.modifiers.some(m => m.kind === 'held' && !m.id.startsWith('_'))) return;
 
   const activeIds = new Set(npc.modifiers.map(m => m.id));
@@ -227,7 +232,7 @@ function _tryTriggerHeld(npc, heldDefs, globalHeldFrac, dt) {
 function _tryTriggerGesture(npc, profile, dt) {
   const gestureDefs = profile.gesturePoses;
   if (!gestureDefs) return;
-  if ((npc._gestureCooldown || 0) > 0) return;
+  if ((npc.mem('modifier').gestureCooldown || 0) > 0) return;
   if (npc.modifiers.some(m => m.kind === 'gesture')) return;
 
   const occ = occupiedHands(npc.modifiers);

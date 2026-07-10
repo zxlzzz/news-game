@@ -46,7 +46,7 @@ export class GotoTask {
     const gen = this._gen;
     const t   = this._target;
     if (_crossSide(npc.y, t.y)) {
-      planCrossing(npc, t.y, npc._profile, (n) => {
+      planCrossing(npc, t.y, npc.mem('agenda').profile, (n) => {
         if (this._gen !== gen) return;
         this._planSameSide(n, t, gen);
       });

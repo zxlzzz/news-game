@@ -59,9 +59,9 @@ export class ChessActivity extends Activity {
     this.onlookers.push(npc);
     this.join(npc, 'onlooker');
     this._setupOnlooker(npc);
-    npc._chessSlot     = slot || null;
-    npc._onlookerTimer = 0;
-    npc._onlookerDur   = rand(15, 40);
+    npc.mem('social').chessSlot     = slot || null;
+    npc.mem('social').onlookerTimer = 0;
+    npc.mem('social').onlookerDur   = rand(15, 40);
     if (this.table) npc.direction = (this.table.x >= npc.x) ? 1 : -1;
   }
 
@@ -70,11 +70,11 @@ export class ChessActivity extends Activity {
     if (i >= 0) this.onlookers.splice(i, 1);
     this.participants = this.participants.filter(p => p.npc !== npc);
     this.release(npc);
-    if (npc._chessSlot) {
-      npc._chessSlot.reserved = null;
-      npc._chessSlot.ready    = false;
-      npc._chessSlot.npc      = null;
-      npc._chessSlot = null;
+    if (npc.mem('social').chessSlot) {
+      npc.mem('social').chessSlot.reserved = null;
+      npc.mem('social').chessSlot.ready    = false;
+      npc.mem('social').chessSlot.npc      = null;
+      npc.mem('social').chessSlot = null;
     }
     if (npc.alive) setState(npc, 'walk', 'onlooker-done');
   }

@@ -21,30 +21,33 @@ export function stuckProbe(npcs, dt) {
     const moved = Math.hypot(n.x - p.x, n.y - p.y);
 
     let cat = null;
-    const m = n._walkMode;
+    const mot = n.mem('motor');
+    const m   = mot.walkMode;
     if ((n.speed > 0 || n.state === 'routing') && moved < 8) {
       cat = `MOVE:${n.state}/${n.state === 'routing' ? 'route' : (m?.kind ?? 'nomode')}`;
     } else if (n.stateDur < Infinity && n.stateTimer > n.stateDur + 10) {
       cat = `STATE:${n.state}`;                    // 转换没触发
-    } else if (n._activity && moved < 8 && n.stateTimer > 60) {
-      cat = `ACT:${n._activity.type}/${n._activity.subState}`;
-    } else if (n.stateDur === Infinity && !n._activity && moved < 8
+    } else if (n.mem('social').activity && moved < 8 && n.stateTimer > 60) {
+      const act = n.mem('social').activity;
+      cat = `ACT:${act.type}/${act.subState}`;
+    } else if (n.stateDur === Infinity && !n.mem('social').activity && moved < 8
                && n.stateTimer > 45 && !['loiter','chess','chess_onlooker','jog'].includes(n.state)) {
       cat = `INF:${n.state}`;                      // 无限时长态滞留
     }
     if (!cat) continue;
 
     const { gx, gy } = grid ? grid.worldToCell(n.x, n.y) : {};
+    const rt = mot.routeTarget;
     const info = {
       id: n.id, cat, at: [n.x | 0, n.y | 0],
       cell: grid ? grid.cost(gx, gy) : '?',
       st: `${n.state} ${n.stateTimer | 0}/${n.stateDur === Infinity ? '∞' : n.stateDur | 0}`,
       mode: m ? `${m.kind} el=${(m._elapsed ?? 0) | 0}/${m.abandonAfter ?? m.maxDuration ?? '-'}` : null,
       roam: n.roamTarget ? [n.roamTarget.x | 0, n.roamTarget.y | 0] : null,
-      route: n._routeTarget
-        ? `→(${n._routeTarget.x | 0},${n._routeTarget.y | 0}) pts=${n._routePts?.length ?? '∅'} idx=${n._routeIdx ?? 0} ${n._routeTarget.exitType ?? ''}`
+      route: rt
+        ? `→(${rt.x | 0},${rt.y | 0}) pts=${mot.routePts?.length ?? '∅'} idx=${mot.routeIdx ?? 0} ${rt.exitType ?? ''}`
         : null,
-      act: n._activity?.type ?? null,
+      act: n.mem('social').activity?.type ?? null,
       anim: `${n.animation} done=${n.animDone}`,
       dir: n.direction, spd: n.speed | 0,
       bounds: [n.minX | 0, n.maxX | 0, n.minY | 0, n.maxY | 0],

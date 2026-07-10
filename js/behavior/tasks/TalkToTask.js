@@ -12,7 +12,7 @@ export class TalkToTask {
   onStart(_npc, _runner) {}
 
   tick(npc, _dt) {
-    return npc._activity ? null : 'done';
+    return npc.mem('social').activity ? null : 'done';
   }
 
   onAbort(_npc)    {}

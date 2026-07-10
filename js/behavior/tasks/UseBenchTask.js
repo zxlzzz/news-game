@@ -55,7 +55,7 @@ export class UseBenchTask {
   /** 登记 bench 占位清理（幂等：standUp 内部已检查 npc._bench）。 */
   _registerBenchHold(npc, runner) {
     runner?.hold(() => {
-      if (!npc._bench) return;
+      if (!npc.mem('social').bench) return;
       standUp(npc);
       if (npc.state === 'sit_bench' || npc.state === 'lie_bench') {
         setState(npc, 'walk', 'bench-released');
