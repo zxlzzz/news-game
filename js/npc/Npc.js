@@ -5,7 +5,7 @@
  */
 
 import { Entity } from '../core/Entity.js';
-import { depthGray } from '../core/Layout.js';
+import { depthGray, BUILDING_BASE_Y } from '../core/Layout.js';
 import { integratePhysics } from '../behavior/Motor.js';
 import { clipLibrary } from '../core/ClipLibrary.js';
 
@@ -72,7 +72,7 @@ export class NPC extends Entity {
 
     this.minX = config.minX ?? -100;
     this.maxX = config.maxX ?? 2100;
-    this.minY = config.minY ?? 250;
+    this.minY = config.minY ?? BUILDING_BASE_Y;
     this.maxY = config.maxY ?? 460;
 
     // 单次播放
