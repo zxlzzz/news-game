@@ -8,29 +8,8 @@
  * Variant:  delta 乘以 amp，从 variant_of 的 keyframes 展开
  */
 
-// 旧 animKey → manifest clip id（维持 stickRenderer.loadAnimation 调用点不变）
-export const ANIM_MAP = {
-  walk:            'walk',
-  run:             'run',
-  jog:             'jog',
-  fall:            'fall',
-  get_up:          'get_up',
-  sit_bench:       'sit_bench',
-  sit_ground:      'sit_ground',
-  lie_bench:       'lie_bench',
-  lie_ground:      'lie_ground',
-  lean_wall:       'lean_wall',
-  idle:            'stand',
-  stand:           'stand',
-  squat:           'squat',
-  bike:            'bike',
-  mobile:          'mobile',
-  mobike:          'mobike',
-  chess:           'chess',
-  chess_onlookers: 'chess_onlookers',
-  dogwalk:         'dog_walk',
-};
-
+// 骑乘类 cycle clip：脚部接触点经由车辆，不做地面接触断言
+const MOUNTED_CLIPS = ['bike', 'mobike', 'mobile'];
 
 class ClipLibrary {
   constructor() {

@@ -28,7 +28,7 @@ import {
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 import { PixiText }         from '../core/PixiText.js';
 import { buildPoseCache } from '../behavior/PoseCacheBuilder.js';
-import { clipLibrary, ANIM_MAP } from '../core/ClipLibrary.js';
+import { clipLibrary } from '../core/ClipLibrary.js';
 import { clockUpdate, gameTimeStr, setClockSpeed, setGameTime } from '../core/GameClock.js';
 import { drawNavDebug } from '../behavior/nav/NavGrid.js';
 
@@ -61,13 +61,10 @@ export class StreetScene {
       if (r.ok) this._json[key] = await r.json();
     };
     await clipLibrary.init();
-    const animIds = new Set([
-      ...Object.values(ANIM_MAP),
-      ...Object.keys(clipLibrary.manifest?.clips ?? {}),
-    ]);
+    const animIds = Object.keys(clipLibrary.manifest?.clips ?? {});
     const jobs = [
       load('scene_data', 'assets/scene.json'),
-      ...Array.from(animIds).map(id => clipLibrary.getClip(id)),
+      ...animIds.map(id => clipLibrary.getClip(id)),
     ];
     await Promise.all(jobs);
   }
@@ -104,8 +101,8 @@ export class StreetScene {
     sceneRenderer.drawAll();
 
     this.stickRenderer = new StickRenderer(this);
-    for (const [key, id] of Object.entries(ANIM_MAP)) {
-      this.stickRenderer.loadAnimation(key, clipLibrary.resolve(id));
+    for (const id of Object.keys(clipLibrary.manifest.clips)) {
+      this.stickRenderer.loadAnimation(id, clipLibrary.resolve(id));
     }
 
     const poseCache = buildPoseCache(clipLibrary);

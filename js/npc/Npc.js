@@ -61,7 +61,7 @@ export class NPC extends Entity {
     this.id = NPC._nextId++;   // 全局唯一稳定 id（供 debug overlay / 日志引用）
 
     this.renderer  = config.renderer;
-    this.animation = config.animation || 'idle';
+    this.animation = config.animation || 'stand';
     this.direction = config.direction || 1;
     this.speed     = config.speed     || 0;
     this.vy        = config.vy ?? 0;
