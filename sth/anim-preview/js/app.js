@@ -25,22 +25,22 @@ import { BagProp } from '../../../js/props/BagProp.js';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ANIM_FILES = [
-  'stand', 'cross_arm', 'idle', 'walk', 'run', 'jog',
+  'stand', 'walk', 'run', 'jog',
   'fall', 'get_up', 'lie_ground',
-  'lean_wall', 'squat', 'squat down', 'stand up', 'sit_ground',
+  'lean_wall', 'squat', 'squat_down', 'stand_up', 'sit_ground',
   'sit_bench', 'lie_bench',
-  'chess', 'chess_onlookers', 'dogwalk', 'bike', 'mobile',
+  'chess', 'chess_onlookers', 'dog_walk', 'bike', 'mobile',
 ];
 
 const ANIM_PATHS = {
-  stand: 'base/stand', idle: 'base/idle', walk: 'base/walk', run: 'base/run', jog: 'base/jog',
-  fall: 'base/fall', get_up: 'base/get_up', lie_ground: 'base/lie_ground',
-  lean_wall: 'base/lean_wall', squat: 'base/squat', 'squat down': 'base/squat down',
-  'stand up': 'base/stand up', sit_ground: 'base/sit_ground',
-  sit_bench: 'base/sit_bench', lie_bench: 'base/lie_bench',
-  bike: 'base/bike', mobile: 'base/mobile', mobike: 'base/mobike',
-  chess: 'variant/chess/chess', chess_onlookers: 'variant/chess/chess_onlookers',
-  dogwalk: 'pet/dog_walk', cross_arm: 'held pose/cross_arm',
+  stand: 'cycle/stand', walk: 'cycle/walk', run: 'cycle/run', jog: 'cycle/jog',
+  fall: 'transition/fall', get_up: 'transition/get_up', lie_ground: 'cycle/lie_ground',
+  lean_wall: 'cycle/lean_wall', squat: 'cycle/squat',
+  squat_down: 'transition/squat_down', stand_up: 'transition/stand_up',
+  sit_ground: 'cycle/sit_ground', sit_bench: 'cycle/sit_bench', lie_bench: 'cycle/lie_bench',
+  bike: 'cycle/bike', mobile: 'cycle/mobile', mobike: 'cycle/mobike',
+  chess: 'cycle/chess', chess_onlookers: 'cycle/chess_onlookers',
+  dog_walk: 'cycle/dog_walk',
 };
 
 // 状态图形元数据（cat / label）
@@ -305,35 +305,34 @@ async function loadPoseCache() {
   };
 
   const heldFiles = {
-    phone_look: 'held pose/phone_look.json',
-    phone_call: 'held pose/phone_call.json',
-    smoke:      'held pose/smoke.json',
-    cross_arm:  'held pose/cross_arm.json',
-    hands_in_pocket: 'held pose/hands_in_pocket.json',
+    phone_look:      'overlay/phone_look.json',
+    phone_call:      'overlay/phone_call.json',
+    smoke:           'overlay/smoke.json',
+    cross_arm:       'overlay/cross_arm.json',
+    hands_in_pocket: 'overlay/hands_in_pocket.json',
   };
   const traitFiles = {
-    hold_bag: 'trait/front/hold_bag.json',
-    walk_dog: 'trait/front/walk_dog.json',
-    backpack: 'trait/front/backpack.json',
-    umbrella: 'trait/front/umbrella.json',
+    hold_bag: 'overlay/hold_bag_front.json',
+    walk_dog: 'overlay/walk_dog_front.json',
+    umbrella: 'overlay/umbrella_front.json',
+    // backpack: 已移除（overlay/backpack_front.json 不存在）
   };
+  console.warn('[poseCache] trait entries removed (no file): backpack');
   const gestureFiles = {
-    check_watch:  'gesture/static/check_watch.json',
-    stretch:      'gesture/static/stretch.json',
-    wave:         'gesture/static/wave.json',
+    check_watch: 'overlay/check_watch.json',
+    stretch:     'overlay/stretch.json',
+    wave:        'overlay/wave.json',
   };
-  const loiterFiles = {
-    phone: 'base/loiter/phone.json',
-    bag_a: 'base/loiter/bag_a.json',
-    bag_b: 'base/loiter/bag_b.json',
-  };
+  // loiterFiles: base/loiter/ 目录不存在，相关条目全部移除
+  console.warn('[poseCache] loiterFiles removed (no files): phone, bag_a, bag_b');
+  const loiterFiles = {};
   const subEventFiles = {
-    push:        'sub_event/push.json',
-    give_item:   'sub_event/give_item.json',
-    handshake:   'sub_event/handshake.json',
-    point_at:    'sub_event/point_at.json',
-    use_vending: 'sub_event/use_vending.json',
-    use_trash:   'sub_event/use_trash.json',
+    push:        'overlay/push.json',
+    give_item:   'overlay/give_item.json',
+    handshake:   'overlay/handshake.json',
+    point_at:    'overlay/point_at.json',
+    use_vending: 'overlay/use_vending.json',
+    use_trash:   'overlay/use_trash.json',
   };
 
   const load = async (map, extract) => {
