@@ -111,6 +111,18 @@ class ClipLibrary {
       facing:             entry.facing ?? null,
     };
 
+    if (entry.kind === 'cycle' && !MOUNTED_CLIPS.includes(id)) {
+      let maxY = -Infinity;
+      for (const frame of frames) {
+        for (const coords of Object.values(frame)) {
+          if (Array.isArray(coords) && coords.length >= 2) maxY = Math.max(maxY, coords[1]);
+        }
+      }
+      if (maxY > 5 || maxY < -5) {
+        console.warn(`[ClipLibrary] ${id} 地面接触偏移 ${maxY}，应≈0`);
+      }
+    }
+
     this._resolved[id] = result;
     return result;
   }
