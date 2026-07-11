@@ -38,7 +38,8 @@ class MovementAudit {
     for (const npc of npcs) {
       const id = this._entry(npc);
       const s  = this._surface.get(id);
-      const cost = grid.cost(Math.round(npc.x), Math.round(npc.y));
+      const { gx, gy } = grid.worldToCell(npc.x, npc.y);
+      const cost = grid.cost(gx, gy);
       const lbl  = costLabel(cost);
       s[lbl] = (s[lbl] ?? 0) + 1;
       s.total++;
