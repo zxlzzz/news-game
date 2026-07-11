@@ -1,3 +1,5 @@
+> **SNAPSHOT** — 2026-07-11. 已由 `docs/contracts/behavior.md` 取代（superseded by contracts/behavior.md）。引用的旧路径（js/BehaviorManager.js、js/NPC.js）已不存在；本文件保留作历史参考，不再维护。
+
 # NPC 行为系统重构：分层架构 + Activity 统一模型
 
 ## 目标

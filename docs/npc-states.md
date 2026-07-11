@@ -1,3 +1,5 @@
+> **SNAPSHOT** — 2026-07-11. 经核对的 STATE_DEFS 与 Profile 表已迁入 `docs/contracts/behavior.md`；本文件含若干非现行状态（bike、mobile、handshake 等），保留作历史参考，不再维护。
+
 # NPC 行为状态机规格文档
 
 ## 状态总览

@@ -1,3 +1,5 @@
+> **status: draft** — 占位草案；正式设计在 AI 场景生成阶段展开。
+
 # photo2entity — 现实照片 → AI 生成场景物体（设计草案 v0）
 
 > 状态：占位草案。正式设计在 AI 场景生成阶段展开（前置：PropEntity 拆解 + Layout 进 scene.json schema）。

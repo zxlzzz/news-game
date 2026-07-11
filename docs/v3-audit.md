@@ -1,3 +1,5 @@
+> **SNAPSHOT** — 审计日期 2026-07-11. 本报告不再更新；后续视觉合规问题以新审计文件替代。
+
 # v3 视觉合规审计
 
 扫描范围：`js/entity/**/draw*.js` + `js/scenes/SceneRenderer.js`

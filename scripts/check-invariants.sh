@@ -14,16 +14,16 @@ green() { printf '\033[0;32m%s\033[0m\n' "$*"; }
 
 # ── Rule 1 ────────────────────────────────────────────────────────────────────
 # _extraTags is a legacy direct field, replaced by npc.mem(ns).tags.
-# Known violation: TalkActivity.js (3 lines) — listed in known-violations.md.
-# Rule is NOT enforced by script yet; see known-violations.md for migration path.
-# When TalkActivity.js is migrated, uncomment the block below.
-#
-# echo "Rule 1: no _extraTags in js/"
-# if grep -Prn "_extraTags" "$ROOT/js/" --include="*.js" \
-#      | grep -v "TalkActivity\.js"; then
-#   red "FAIL: _extraTags outside known-violations"
-#   FAIL=1
-# fi
+# Allowlist: TalkActivity.js — 3 pre-existing writes, tracked in known-violations.md.
+# All other files must have zero _extraTags references.
+echo "Rule 1: no _extraTags in js/ (except TalkActivity.js allowlist)"
+if grep -Prn "_extraTags" "$ROOT/js/" --include="*.js" \
+     | grep -v "js/behavior/activities/TalkActivity\.js"; then
+  red "FAIL: _extraTags outside known-violations allowlist"
+  FAIL=1
+else
+  green "  ok"
+fi
 
 # ── Rule 2 ────────────────────────────────────────────────────────────────────
 # Animation clip JSON files must not contain a "kind" key.

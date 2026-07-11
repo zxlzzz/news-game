@@ -205,3 +205,22 @@ npc.clearMem('loiter');
 - `npc.modifiers.find(...)` 禁止在 ModifierLayer 外部使用；改用 `getHeldModifier(npc)`（从 ModifierLayer.js 导入）
 - `_sortY`、`_motorInstalled`、`_motor` 不迁移（渲染接口 / 热路径守卫）
 - 待迁出：`agenda.exitRegistry/waitForBusLayer/busStops` 是场景级服务引用，应上收到 behavior context；本次机械迁移保留，下次动状态机签名时收掉
+
+---
+
+## 文档索引
+
+| 文件 | 类型 | 范围 |
+|------|------|------|
+| `docs/contracts/movement.md` | 规范性 | 移动子系统字段所有权、Motor 写保护门、NavGrid、WalkMode 协议 |
+| `docs/contracts/behavior.md` | 规范性 | 行为层栈、STATE_DEFS、NPC Profile、状态转换表、Activity/WalkMode/Modifier/Separation |
+| `docs/contracts/known-violations.md` | 规范性 | check-invariants 已知例外白名单 |
+| `docs/design-plans/news-pipeline-mvp.md` | 设计稿（finalized） | 新闻管线 MVP：截图 T2、Provider T3、成稿流 T4 |
+| `docs/design-plans/photo2entity-plan.md` | 设计稿（draft） | 现实照片 → AI 生成场景物体，占位草案 |
+| `docs/design-plans/semantic-destination-design.md` | 设计稿（draft） | 语义目的地层 v2，affordance 池设计 |
+| `docs/behavior-design.md` | 快照 | 行为系统目标架构蓝图（准确内容已迁入 contracts/behavior.md） |
+| `docs/npc-states.md` | 快照 | 状态机规格历史文档（含已淘汰状态，如 bike/mobile） |
+| `docs/npc-behavior-system-v0.md` | 快照 | 行为系统重构 V0 设计（已由 contracts/behavior.md 取代） |
+| `docs/npcstate-migration.md` | 快照 | NPC `_` 字段迁移至 `npc.mem()` 的扫描记录（迁移已完成） |
+| `docs/sorty-audit.md` | 快照 | `_sortY` 深度键审计报告，2026-07-11 |
+| `docs/v3-audit.md` | 快照 | v3 视觉合规审计（draw*.js），2026-07-11 |
