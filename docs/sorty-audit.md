@@ -35,7 +35,7 @@
 | drain（地漏） | `y` | `y + h/2 ≈ y + 13s` | `+h/2 ≈ +13s` | 🐛 锚点漂移（居中锚，非底锚） | `drawDrain.js:12` |
 | fountain | `y` | `y + 6s`（喷嘴圆底） | `+6s` | 🐛 空气锚（次要） | `drawFountain.js:57` |
 | busstop-bench（远站，dy=-14） | `bench.y = FAR_Y - 14 = 254` | `254`（腿底） | 0（entity内） | 🐛 锚点漂移（详见下） | `scene.json` bench.dy=-14 |
-| busstop-sign（公交站牌） | N/A（bgGraphics直绘） | N/A | N/A | ℹ️ 不参与entity排序 | `drawBusStopBay.js` bgGraphics pass |
+| busstop-sign（公交站牌） | `y`（杆底） | `y`（杆底=entity.y） | 0 | ✅ 一致（已实体化） | `drawBusStopSign.js` + `busstop.js` spawnBusStop |
 
 > **s = `depthScale(y)`**，场景中间位置约 1.0。所有 diff 单位为缩放后像素（视觉像素）。
 
@@ -91,13 +91,14 @@
 
 ## 修复建议（按风险排序）
 
-| 优先级 | 实体 | 建议修复方式 |
-|---|---|---|
-| P1 | sign（路牌） | 将 sign entity 的 `_sortY` 设为 `BUILDING_BASE_Y + 1`（或直接 `y + panelHeight`），保证路牌绘于建筑立面之上；或将路牌改为 bgGraphics 先绘（建筑之后、地面之前）。 |
-| P2 | busstop-bench（dy=-14） | `scene.json` 将远站 bench `dy` 改为 `0`（或匹配真实地面偏移），使 bench.y = FAR_Y = 268。 |
-| P2 | drain | 改 `drawDrain.js` 使用底锚：`py = p.y`，矩形 `drawRect(x - w/2, y - h, w, h)`；或将 PropEntity.y 定义为中心并在 spawn 时 +h/2 补偿。 |
-| P3 | newsrack | 改 `drawNewsRack.js` 脚线终点为 `y`（去掉 `+ 9*s`），或将 spawnNewsRack 的 y 下移 9s，或显式设 `entity._sortY = entity.y + 9 * depthScale(entity.y)`。 |
-| P4 | fountain | 暂不修改；若 fountain 升级为 PropEntity 时，设 `_sortY = y + 8 * depthScale(y)`（包住喷嘴底部）。 |
+| 优先级 | 实体 | 状态 | 说明 |
+|---|---|---|---|
+| P1 | sign（路牌） | ✅ 已修复 | `SceneInitializer._spawnProps` 为 sign 设 `_sortY = BUILDING_BASE_Y + 1`，保证绘于建筑立面之上。 |
+| P2 | busstop-bench（dy=-14） | ✅ 已修复 | `scene.json` 远站 bench `dy: -14 → 0`，bench.y = FAR_Y，落地正确。 |
+| P2 | busstop-sign（bgGraphics） | ✅ 已修复 | 抽为 `busstop-sign` PropEntity（`drawBusStopSign.js`），y = 杆底，参与实体排序。 |
+| P3 | newsrack | ✅ 已修复 | `drawNewsRack.js` 脚线终点 `y + 9*s → y`，视觉最低点与 sortY 一致。 |
+| P2 | drain | ⏸ 暂缓 | 居中锚；修复需移动 spawn y 或改绘制，影响碰撞对齐，暂不处理。 |
+| P4 | fountain | ⏸ 暂缓 | 目前为 bgGraphics 预通道；升级为 PropEntity 时再设 `_sortY = y + 8s`。 |
 
 ---
 

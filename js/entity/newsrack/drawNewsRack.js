@@ -50,8 +50,8 @@ export function drawNewsRack(g, p) {
   g.endFill();
 
   lenv(g, y, 0.9);
-  g.moveTo(bpx + 6 * s,      y); g.lineTo(bpx + 6 * s,      y + 9 * s);
-  g.moveTo(bpx + bw - 6 * s, y); g.lineTo(bpx + bw - 6 * s, y + 9 * s);
+  g.moveTo(bpx + 6 * s,      y); g.lineTo(bpx + 6 * s,      y);
+  g.moveTo(bpx + bw - 6 * s, y); g.lineTo(bpx + bw - 6 * s, y);
 
   // Body outline
   lenv(g, y, 0.85);
