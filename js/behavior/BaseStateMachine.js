@@ -50,6 +50,9 @@ const rand = (a, b) => a + Math.random() * (b - a);
 
 // ─── 内部：按 profile.transitions 权重表随机选下一状态，含环境前置检查 ───────
 function _pickNext(npc, profile, envQuery) {
+  const row = profile.transitions?.[npc.state] ?? {};
+  const entries = Object.entries(row);
+  if (!entries.length) return profile.allowedStates.includes(profile.initial) ? profile.initial : 'stand';
   const table = profile.transitions[npc.state];
   if (!table) return null;
   const entries = Object.entries(table);

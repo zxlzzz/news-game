@@ -53,6 +53,7 @@ export function stuckProbe(npcs, dt) {
       bounds: [n.minX | 0, n.maxX | 0, n.minY | 0, n.maxY | 0],
     };
     window.__stuck.push(info);
+    if (!cat.startsWith('ACT:')) audit.count(n, 'stuck');
     tally.set(cat, (tally.get(cat) ?? 0) + 1);
   }
 
