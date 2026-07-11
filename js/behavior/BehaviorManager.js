@@ -30,6 +30,7 @@ import { TaskRunner }           from './TaskRunner.js';
 import { Agenda }               from './Agenda.js';
 import { ExitSceneTask }        from './tasks/ExitSceneTask.js';
 import { stuckProbe } from './StuckProbe.js';
+import { audit } from '../debug/MovementAudit.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -87,7 +88,8 @@ export class BehaviorManager {
     this._dt = dt;
     refreshDebugFlag();
 
-    stuckProbe(this.npcs, dt)
+    stuckProbe(this.npcs, dt);
+    audit.tick(this.npcs, dt);
     
     // 1) Activity 层
     this.socialLayer.update(this.npcs, dt);

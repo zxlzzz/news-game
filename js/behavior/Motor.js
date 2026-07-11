@@ -12,6 +12,7 @@
 import { standUp }  from '../entity/seat/seat.js';
 import { dlog }     from './DebugLog.js';
 import { getNavGrid, CELL } from './nav/NavGrid.js';
+import { audit } from '../debug/MovementAudit.js';
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
 let _writing = false;
@@ -208,19 +209,22 @@ function _slideMove(npc, dx, dy) {
   // Axis separation — normalize to original magnitude to preserve speed
   if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) {
     _mw(npc, 'x', npc.x + Math.sign(dx) * mag);
+    audit.count(npc, 'probe_steer');
     return;
   }
   if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) {
     _mw(npc, 'y', npc.y + Math.sign(dy) * mag);
+    audit.count(npc, 'probe_steer');
     return;
   }
 
   // Wall-slide: pure horizontal blocked → nudge perpendicularly at original speed
   if (dx !== 0 && dy === 0) {
-    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - mag); return; }
-    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + mag); return; }
+    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - mag); audit.count(npc, 'probe_steer'); return; }
+    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + mag); audit.count(npc, 'probe_steer'); return; }
   }
-  // Fully blocked: no movement, no counters
+  // Fully blocked: no movement
+  audit.count(npc, 'blocked_contact');
 }
 
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────

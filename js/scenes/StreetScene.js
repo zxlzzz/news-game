@@ -31,6 +31,7 @@ import { buildPoseCache } from '../behavior/PoseCacheBuilder.js';
 import { clipLibrary, ANIM_MAP } from '../core/ClipLibrary.js';
 import { clockUpdate, gameTimeStr, setClockSpeed, setGameTime } from '../core/GameClock.js';
 import { drawNavDebug } from '../behavior/nav/NavGrid.js';
+import { audit } from '../debug/MovementAudit.js';
 
 
 export class StreetScene {
@@ -165,6 +166,8 @@ export class StreetScene {
       if (k === 'p') this._exportImage();
       else if (k === 'd') this.debugOverlay.toggle();
       else if (k === 'z') { this.zoom = 1; this.scrollY = 0; this._clampScroll(); this._applyCamera(); }
+      else if (k === 'n') { window.__navDebug = !window.__navDebug; console.log('[NavDebug]', window.__navDebug ? 'ON' : 'OFF'); }
+      else if (k === 'm') audit.dump(this.behaviorManager?.npcs ?? []);
     });
     window.addEventListener('keyup', (e) => { if (keyMap[e.key]) this.keys[keyMap[e.key]] = false; });
 
