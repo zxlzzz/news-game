@@ -32,12 +32,15 @@ import { clipLibrary, ANIM_MAP } from '../core/ClipLibrary.js';
 import { clockUpdate, gameTimeStr, setClockSpeed, setGameTime } from '../core/GameClock.js';
 import { drawNavDebug } from '../behavior/nav/NavGrid.js';
 import { audit } from '../debug/MovementAudit.js';
+import { vision, text, setLastSnapshot } from '../news/providers.js';
+import { NewsArchive } from '../news/NewsArchive.js';
+import { NewsUI } from '../news/NewsUI.js';
 
 
 export class StreetScene {
   constructor(app) {
     this.app = app;
-    this.lastPhoto = null;
+
     this.viewW = app.screen.width;
     this.viewH = app.screen.height;
 
@@ -168,6 +171,9 @@ export class StreetScene {
       else if (k === 'z') { this.zoom = 1; this.scrollY = 0; this._clampScroll(); this._applyCamera(); }
       else if (k === 'n') { window.__navDebug = !window.__navDebug; console.log('[NavDebug]', window.__navDebug ? 'ON' : 'OFF'); }
       else if (k === 'm') audit.dump(this.behaviorManager?.npcs ?? []);
+      else if (k === 'c') this._takePhoto();
+      else if (k === 's') this._newsUI?.openSettings();
+      else if (k === 'a') { if (this._newsUI?.isOpen()) this._newsUI.close(); else this._newsUI?.openArchive(); }
     });
     window.addEventListener('keyup', (e) => { if (keyMap[e.key]) this.keys[keyMap[e.key]] = false; });
 
@@ -190,7 +196,7 @@ export class StreetScene {
     const W = this.viewW;
     const H = this.viewH;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  滚轮缩放  Z 重置  |  拖动取景框 · 拖右下角缩放  |  P 导出长图  |  D 调试', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  滚轮缩放  Z 重置  |  拖动取景框 · 拖右下角缩放  |  C 拍照  A 存档  S 设置  |  P 导出  D 调试', {
       fontFamily: '"JetBrains Mono", monospace', fontSize: '13px', color: '#555555',
       backgroundColor: 'rgba(240,236,228,0.85)', padding: { x: 6, y: 4 },
     }).setScrollFactor(0).setDepth(100);
@@ -199,12 +205,6 @@ export class StreetScene {
       fontFamily: '"Noto Sans SC", sans-serif', fontSize: '13px', color: '#cc2200',
       backgroundColor: 'rgba(240,236,228,0.85)', padding: { x: 6, y: 4 },
     }).setScrollFactor(0).setDepth(100);
-
-    this.headlinePanel = this.add.text(10, 64, '', {
-      fontFamily: '"Noto Sans SC", sans-serif', fontSize: '15px', color: '#ffffff',
-      backgroundColor: 'rgba(10,10,30,0.90)', padding: { x: 12, y: 8 },
-      wordWrap: { width: W - 200 },
-    }).setScrollFactor(0).setDepth(200).setVisible(false);
 
     this.flashOverlay = new PIXI.Graphics();
     this.flashOverlay.beginFill(0xffffff, 1).drawRect(0, 0, W, H).endFill();
@@ -215,9 +215,13 @@ export class StreetScene {
     this.btnCapture = this._makeButton(W - 126, H - 50, '[ 拍  照 ]', '#b83000');
     this.btnCapture.on('pointerdown', () => this._takePhoto());
 
-    this.btnPublish = this._makeButton(W - 126, H - 90, '[ 发布新闻 ]', '#1a3d99');
-    this.btnPublish.setVisible(false);
-    this.btnPublish.on('pointerdown', () => this._publishNews());
+    // News pipeline
+    this._newsArchive = new NewsArchive();
+    this._newsUI = new NewsUI(
+      document.getElementById('news-ui-root'),
+      this._newsArchive,
+      { vision, text },
+    );
   }
 
   _makeButton(x, y, label, bgColor) {
@@ -269,45 +273,69 @@ export class StreetScene {
     });
   }
 
-  // ─── 拍照 / 发布 ──────────────────────────────────────────────────────────────
-  _takePhoto() {
-    const count = this.viewfinder.capturedEntities.length;
-    if (count === 0) {
+  // ─── 拍照 ────────────────────────────────────────────────────────────────────
+  async _takePhoto() {
+    if (this.viewfinder.capturedEntities.length === 0) {
       this.captureText.setText('取景框内没有目标！').setColor('#cc2200');
       this._delay(1500, () => this.captureText.setText(''));
       return;
     }
-    this.lastPhoto = { tags: this.viewfinder.getCapturedTags(), count };
+
+    // 1. clamp viewfinder into current viewport
+    this._clampViewfinderToViewport();
+
+    const vf = this.viewfinder;
+    const z  = this.zoom;
+
+    // 2. world coords → screen pixels
+    const sx = Math.round((vf.x - this.scrollX) * z);
+    const sy = Math.round((vf.y - this.scrollY) * z);
+    const sw = Math.max(1, Math.round(vf.width  * z));
+    const sh = Math.max(1, Math.round(vf.height * z));
+
+    // 3. hide viewfinder graphics so they don't appear in screenshot
+    this.vfGraphics.visible = false;
+
+    // 4. extract screenshot
+    const frame  = new PIXI.Rectangle(sx, sy, sw, sh);
+    const canvas = this.app.renderer.extract.canvas(this.app.stage, frame);
+    const photoRef = canvas.toDataURL('image/png');
+
+    // 5. restore
+    this.vfGraphics.visible = true;
+
+    // 6. flash feedback
     this._flashAlpha = 0.80;
     this.flashOverlay.alpha = this._flashAlpha;
-    this.btnPublish.setVisible(true);
-    this.captureText
-      .setText(`已拍摄 ${count} 个目标  [${this.lastPhoto.tags.join('  ')}]`)
-      .setColor('#226600');
+
+    // 7. build snapshot + kick off vision in parallel
+    const entitySnapshot = this._buildEntitySnapshot(vf);
+    setLastSnapshot(entitySnapshot);
+    const visionPromise = vision.describe(photoRef);
+
+    this.captureText.setText(`已拍摄 ${vf.capturedEntities.length} 个目标`).setColor('#226600');
+    this._newsUI.openComposer({ photoRef, entitySnapshot, visionPromise });
   }
 
-  _publishNews() {
-    if (!this.lastPhoto) return;
-    const headline = this._generateHeadline(this.lastPhoto.tags, this.lastPhoto.count);
-    this.headlinePanel.setText(`【快讯】${headline}`).setVisible(true);
-    this._delay(7000, () => this.headlinePanel.setVisible(false));
-    this.lastPhoto = null;
-    this.btnPublish.setVisible(false);
-    this.captureText.setText('新闻已发布！').setColor('#1a3d99');
-    this._delay(2000, () => this.captureText.setText(''));
+  _clampViewfinderToViewport() {
+    const vf   = this.viewfinder;
+    const z    = this.zoom;
+    const maxX = this.scrollX + this.viewW / z;
+    const maxY = this.scrollY + this.viewH / z;
+    vf.x = Math.max(this.scrollX, Math.min(vf.x, maxX - vf.width));
+    vf.y = Math.max(this.scrollY, Math.min(vf.y, maxY - vf.height));
   }
 
-  _generateHeadline(tags, count) {
-    const subject = tags.filter(t => t !== 'building').join('与') || tags[0];
-    const templates = [
-      `${count}个目标聚集现场，真相令人震惊`,
-      `独家现场：${subject}背后的秘密`,
-      `记者深度揭秘：${subject}事件始末`,
-      `突发！${subject}异动，专家紧急发声`,
-      `${subject}事件曝光，舆论哗然`,
-      `疑云！${subject}现场完整记录`,
-    ];
-    return templates[Math.floor(Math.random() * templates.length)];
+  _buildEntitySnapshot(vf) {
+    const entities = this.viewfinder.capturedEntities.map(e => ({
+      id:   e.id ?? e.propType ?? 'unknown',
+      tags: (typeof e.getTags === 'function') ? e.getTags() : (e.tags ?? []),
+    }));
+    return {
+      entities,
+      rect:      { x: vf.x, y: vf.y, w: vf.width, h: vf.height },
+      timestamp: Date.now(),
+    };
   }
 
   // ─── 每帧更新 ─────────────────────────────────────────────────────────────────
@@ -354,7 +382,7 @@ export class StreetScene {
       this.flashOverlay.alpha = this._flashAlpha;
     }
 
-    if (!this.lastPhoto) {
+    if (!this._newsUI.isOpen()) {
       const captured = this.viewfinder.capturedEntities;
       if (captured.length > 0) {
         this.captureText

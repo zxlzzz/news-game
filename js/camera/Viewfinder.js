@@ -132,6 +132,15 @@ export class Viewfinder {
     }
 
     this._drawResizeHandle(g, cx + cw, cy + ch);
+
+    // Highlight outlines for captured entities
+    if (this.capturedEntities.length > 0) {
+      g.lineStyle(2, 0xffcc00, 0.7);
+      for (const e of this.capturedEntities) {
+        const b = e.getBounds();
+        g.drawRect(b.x, b.y, b.width, b.height);
+      }
+    }
   }
 
   _drawResizeHandle(g, hx, hy) {
