@@ -1,5 +1,13 @@
 /**
- * Lookahead — 前瞻探针
+ * CONTRACT  (see docs/contracts/movement.md)
+ *   OWNS:      Per-frame velocity adjustment to avoid BLOCKED cells (cost===0).
+ *   WRITES:    nothing on npc fields — returns adjusted {vx,vy} to caller.
+ *              audit.count(npc, 'probe_steer') on redirect (MovementAudit).
+ *   READS:     NavGrid singleton (getNavGrid); npc.x, npc.y (position only).
+ *   MUST NOT:  write npc.x/y/speed/state/animation;
+ *              treat ROAD cells (cost=250) as blocked — road crossing must stay passable.
+ *
+ * Lookahead — 前瞻探針
  *
  * applyLookahead(npc, vx, vy) → {vx, vy}
  *

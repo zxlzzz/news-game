@@ -1,4 +1,11 @@
 /**
+ * CONTRACT  (see docs/contracts/movement.md)
+ *   OWNS:      A* planning from world coordinates to [{x,y}] waypoint arrays.
+ *   WRITES:    nothing on any NPC or shared state — pure function.
+ *   READS:     NavGrid singleton (getNavGrid) for cost lookups; read-only.
+ *   MUST NOT:  write any npc field; mutate the NavGrid cost map;
+ *              be called with ROAD-cell (cost=250) start/goal without snapping first.
+ *
  * PathPlanner — A* 寻路 + 视距拉直
  *
  * plan(x0, y0, x1, y1) → [{x,y}] 世界坐标路点数组；

@@ -166,6 +166,12 @@ export class BehaviorManager {
     return (ux * dx + uy * dy) / len < -0.4 ? 0.5 : 1;
   }
 
+  // CONTRACT (_separate)  (see docs/contracts/movement.md)
+  //   OWNS:    inter-NPC separation impulses applied via Motor.nudgeXY.
+  //   WRITES:  npc.x/y indirectly via nudgeXY (authorised Motor API).
+  //   READS:   npc.state, npc.mem('social').{activity,bench}, npc.leashTarget,
+  //            npc.mem('motor').walkMode (via _sepScale).
+  //   MUST NOT: call setState or set npc.speed; skip leashed NPCs (leashTarget ≠ null).
   _separate(dt) {
     const MOVING = new Set(['walk', 'run', 'jog']);
     const movers  = this.npcs.filter(n =>

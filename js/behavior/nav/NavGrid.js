@@ -1,4 +1,12 @@
 /**
+ * CONTRACT  (see docs/contracts/movement.md)
+ *   OWNS:      The singleton NavGrid instance (_instance / getNavGrid / setNavGrid);
+ *              cost map encoding (0=BLOCKED, 1=walkable, 8=grass, 250=ROAD).
+ *   WRITES:    _instance (setNavGrid — called once from SceneInitializer.js:96).
+ *   READS:     scene layout (walkPaths, obstacles) at bake time only; read-only after bake.
+ *   MUST NOT:  be replaced or mutated after scene init;
+ *              be called with setNavGrid from anywhere except SceneInitializer.
+ *
  * NavGrid — 10px 格代价图
  *
  * 代价编码（Uint8Array）：

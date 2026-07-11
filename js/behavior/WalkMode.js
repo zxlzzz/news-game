@@ -1,4 +1,17 @@
 /**
+ * CONTRACT  (see docs/contracts/movement.md)
+ *   OWNS:      npc.roamTarget lifecycle (pickModeTarget / _pickRandom / onPathArrival);
+ *              WALK_PATHS module dict (initWalkPaths / addWalkPath);
+ *              npc.mem('motor').tags for crossing labels.
+ *   WRITES:    npc.roamTarget; npc.mem('motor').tags (crossing only);
+ *              npc.vy (planCrossing entry);
+ *              setWalkMode/pushWalkMode/popWalkMode (re-exported from Motor).
+ *   READS:     npc.mem('motor').walkMode, npc.vy, NavGrid singleton,
+ *              npc.mem('agenda').departing (checkZoneTransition guard).
+ *   MUST NOT:  write npc.speed/state/animation/x/y directly;
+ *              write npc.mem('motor').navPath or routeTarget;
+ *              read npc.mem('social') fields.
+ *
  * WalkMode — NPC 走路模式子系统
  *
  * 三种模式：

@@ -8,6 +8,21 @@
  * Debug 写保护（默认开启）：
  *   Object.defineProperty 拦截非授权写入 → console.warn + window.__motorViolations++
  *   关闭：window.__motorDebug = false
+ *
+ * CONTRACT
+ *   OWNS:      npc.{x,y,speed,state,animation} write gate (_mw);
+ *              npc.mem('motor').{walkMode,walkModeStack} lifecycle;
+ *              npc.mem('motor').{progressAnchor,progressAcc} (integratePhysics);
+ *              npc.mem('motor').tags (cleared in _defaultOnExit);
+ *              npc.vy reset on setState; npc.roamTarget null on mode change.
+ *   WRITES:    x, y via setXY/nudgeXY/_slideMove;
+ *              speed via setSpeed/setState; state/animation via setState/setAnimation;
+ *              walkMode/walkModeStack via setWalkMode/pushWalkMode/popWalkMode;
+ *              roamTarget=null on every mode switch.
+ *   READS:     npc.mem('motor').walkMode (integratePhysics, progress monitor);
+ *              NavGrid singleton (getNavGrid) for collision in _slideMove.
+ *   MUST NOT:  call setState from outside Motor; read npc._walkMode (legacy, deleted);
+ *              write npc.mem('social') or npc.mem('agenda').
  */
 
 import { standUp }  from '../entity/seat/seat.js';

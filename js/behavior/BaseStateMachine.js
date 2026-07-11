@@ -1,4 +1,18 @@
 /**
+ * CONTRACT  (see docs/contracts/movement.md)
+ *   OWNS:      steerRoam — the sole per-frame caller of pickModeTarget / Lookahead;
+ *              npc.mem('motor').{navPath,navIdx,navGoalX,navGoalY} lifecycle;
+ *              npc.mem('motor').{routeTarget,routePts,routeIdx} lifecycle;
+ *              npc.vy during routing (set on crossing entry/exit/arrival).
+ *   WRITES:    mot.routeTarget (triggerDeparture:319); mot.navPath/navIdx/navGoal*;
+ *              mot.routePts/routeIdx; npc.vy; npc.direction (steer + departure);
+ *              npc.mem('motor').wallSpot (lean_wall assignment:94).
+ *   READS:     npc.state, npc.speed, npc.roamTarget, npc.mem('motor').walkMode,
+ *              npc.mem('motor').routeTarget, NavGrid singleton.
+ *   MUST NOT:  write npc.speed/state/animation — use Motor.setState/setSpeed/setAnimation;
+ *              write npc.x/y — use Motor.setXY/nudgeXY;
+ *              call pickModeTarget outside of steerRoam.
+ *
  * BaseStateMachine — 集中式转换表状态机（Unity 风格）
  *
  * 架构：
