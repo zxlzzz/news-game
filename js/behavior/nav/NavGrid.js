@@ -194,7 +194,16 @@ export class NavGrid {
     const pool = (Math.random() < 0.7 && pool1.length)
       ? pool1
       : (pool3.length ? pool3 : pool1);
-    if (!pool.length) return null;
+    if (!pool.length) {
+      // Bounds-clamped fallback: snap center to bounds then find nearest walkable
+      if (npc.minX != null) {
+        const clampX = Math.max(npc.minX, Math.min(npc.maxX, cx));
+        const clampY = Math.max(npc.minY, Math.min(npc.maxY, cy));
+        const pt = this.nearestWalkable(clampX, clampY);
+        if (pt) return pt;
+      }
+      return null;
+    }
     const c = pool[Math.floor(Math.random() * pool.length)];
     return this.cellCenter(c.gx, c.gy);
   }

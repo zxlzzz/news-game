@@ -173,13 +173,14 @@ function steerRoam(npc, envQuery, profile, dt) {
   if (npc.state === 'routing') {
     setSpeed(npc, 0);
     npc.vy = 0;
-    if (!mot.routeTarget) { setState(npc, 'walk', 'routing_no_target'); return; }
+    if (!mot.routeTarget) { setWalkMode(npc, modeWander()); setState(npc, 'walk', 'routing_no_target'); return; }
     const t = mot.routeTarget;
     const arriveThreshold = t.exitType === 'building' ? 20 : 8;
 
     if (npc.stateTimer > (t.abandonAfter ?? 30)) {
       envQuery.releaseSlotReservation(npc);
       mot.routeTarget = null; mot.routePts = null; mot.routeIdx = 0;
+      setWalkMode(npc, modeWander());
       setState(npc, 'walk', 'routing_timeout');
       return;
     }
@@ -316,7 +317,7 @@ function _routeToExit(npc, exit) {
   npc.mem('motor').routeTarget = {
     x: tx, y: ty,
     exitType: exit.type,
-    abandonAfter: 999,
+    abandonAfter: 60,
     onArrive: (n) => { n.alive = false; },
   };
 }

@@ -73,8 +73,8 @@ const TrafficSignal = { getState: (_x) => 'green' };
 export function planCrossing(npc, targetY, profile, onCrossed = null) {
   const jaywalkChance = profile?.jaywalkChance ?? 0.1;
   const goingDown = targetY > npc.y;
-  const entryY = goingDown ? FAR_Y - 2  : NEAR_Y + 2;
-  const exitY  = goingDown ? NEAR_Y + 2 : FAR_Y - 2;
+  const entryY = goingDown ? BIKE_LANE_FAR_TOP - 4  : BIKE_LANE_NEAR_BOTTOM + 4;
+  const exitY  = goingDown ? BIKE_LANE_NEAR_BOTTOM + 4 : BIKE_LANE_FAR_TOP - 4;
 
   if (Math.random() < jaywalkChance) {
     npc.mem('motor').tags = ['jaywalking'];
@@ -82,6 +82,7 @@ export function planCrossing(npc, targetY, profile, onCrossed = null) {
     setSpeed(npc, (npc.walkSpeed || 26) * 2.4);
     pushWalkMode(npc, modeDirect({ x: npc.x, y: exitY }, (n) => {
       n.mem('motor').tags = null;
+      popWalkMode(n);
       setAnimation(n, 'walk');
       setSpeed(n, n.walkSpeed || 26);
       if (onCrossed) onCrossed(n);
@@ -162,9 +163,10 @@ function isBikeLaneZone(y) {
  * 建议由 BehaviorManager 在每帧（或每 N 帧）调用。
  */
 export function checkZoneTransition(npc) {
+  if (npc.mem('agenda').departing) return;
+  if (npc.state !== 'walk' && npc.state !== 'run' && npc.state !== 'jog') return;
+  if (!npc.mem('motor').walkMode) setWalkMode(npc, modeWander());
   const wm = npc.mem('motor').walkMode;
-  if (!wm || npc.mem('agenda').departing) return;
-  if (npc.state !== 'walk' && npc.state !== 'run') return;
   if (wm.kind !== 'wander') return;   // direct/path_follow 自行负责区域
 
   const inRoad     = isRoadZone(npc.y);
@@ -232,8 +234,10 @@ function _pickRandom(npc, envQuery) {
     npc.roamTarget = null;
     return;
   }
+  const nearSide = npc.y >= NEAR_Y;
   for (let i = 0; i < 5; i++) {
     const c = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
+    if ((c.y >= NEAR_Y) !== nearSide) continue;
     if (envQuery.pointBlocked(c.x, c.y)) continue;
     npc.roamTarget = c;
     return;
@@ -333,7 +337,8 @@ export function tickWalkMode(npc, dt) {
   if (mode.kind === 'direct') {
     mode._elapsed = (mode._elapsed ?? 0) + dt;
     if (mode._elapsed > (mode.abandonAfter ?? 60)) {
-      setWalkMode(npc, modeWander());
+      if (npc.mem('motor').walkModeStack?.length > 0) popWalkMode(npc);
+      else setWalkMode(npc, modeWander());
     }
   }
 }

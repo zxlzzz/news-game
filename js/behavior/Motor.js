@@ -13,6 +13,7 @@
 import { standUp }  from '../entity/seat/seat.js';
 import { dlog }     from './DebugLog.js';
 import { getNavGrid, CELL } from './nav/NavGrid.js';
+import { audit } from '../debug/MovementAudit.js';
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
 let _writing = false;
@@ -215,19 +216,22 @@ function _slideMove(npc, dx, dy) {
   // Axis separation — normalize to original magnitude to preserve speed
   if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) {
     _mw(npc, 'x', npc.x + Math.sign(dx) * mag);
+    audit.count(npc, 'slide_steer');
     return;
   }
   if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) {
     _mw(npc, 'y', npc.y + Math.sign(dy) * mag);
+    audit.count(npc, 'slide_steer');
     return;
   }
 
   // Wall-slide: pure horizontal blocked → nudge perpendicularly at original speed
   if (dx !== 0 && dy === 0) {
-    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - mag); return; }
-    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + mag); return; }
+    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - mag); audit.count(npc, 'slide_steer'); return; }
+    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + mag); audit.count(npc, 'slide_steer'); return; }
   }
-  // Fully blocked: no movement, no counters
+  // Fully blocked: no movement
+  audit.count(npc, 'blocked_contact');
 }
 
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
@@ -279,17 +283,14 @@ export function integratePhysics(npc, delta) {
   dy = npc.vy * dt;
   if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
 
-  // Progress monitor: every 1.5 s sum cumulative travel; < 15 px with active goal → fail leg
-  if (!mot.progressLast) mot.progressLast = { x: npc.x, y: npc.y };
-  const frameDist = Math.hypot(npc.x - mot.progressLast.x, npc.y - mot.progressLast.y);
-  mot.progressCum  = (mot.progressCum ?? 0) + frameDist;
-  mot.progressLast = { x: npc.x, y: npc.y };
+  // Progress monitor: every 1.5 s measure net displacement from anchor; < 15 px with active goal → fail leg
+  if (!mot.progressAnchor) mot.progressAnchor = { x: npc.x, y: npc.y };
 
   mot.progressAcc = (mot.progressAcc ?? 0) + dt;
   if (mot.progressAcc >= 1.5) {
     mot.progressAcc = 0;
-    const moved = mot.progressCum;
-    mot.progressCum = 0;
+    const moved = Math.hypot(npc.x - mot.progressAnchor.x, npc.y - mot.progressAnchor.y);
+    mot.progressAnchor = { x: npc.x, y: npc.y };
 
     const hasGoal = npc.speed > 0 || npc.state === 'routing';
     if (hasGoal && moved < 15) {
@@ -298,10 +299,9 @@ export function integratePhysics(npc, delta) {
       const mode = mot.walkMode;
       if (mode?.kind === 'direct') {
         if (!mode._stuckOnce) {
-          mode._stuckOnce  = true;
-          mot.navPath      = null;
-          npc.roamTarget   = null;
-          mot.progressCum  = 0;
+          mode._stuckOnce = true;
+          mot.navPath     = null;
+          npc.roamTarget  = null;
         } else {
           mode._elapsed = mode.abandonAfter ?? 60;
         }
