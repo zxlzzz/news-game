@@ -152,20 +152,27 @@ export class PathPlanner {
     return path;
   }
 
-  // ─── 视距拉直（Bresenham 可见性检查）────────────────────────────────────────
+  // ─── 视距拉直（Bresenham 可见性检查，代价感知）──────────────────────────────
+  // 穿越格代价必须 ≤ max(起点格代价, 终点格代价)：
+  //   路上两点(cost-1)间拉直不再穿越草地(cost-8)；
+  //   草地两点间拉直仍可穿草（避免草地内走格子锯齿）。
   _lineOfSight(gx0, gy0, gx1, gy1) {
+    const startC = this._grid.cost(gx0, gy0);
+    const endC   = this._grid.cost(gx1, gy1);
+    if (endC === 0 || endC >= ROAD) return false;
+    const maxCost = Math.max(startC, endC);
+
     const dx = Math.abs(gx1 - gx0), dy = Math.abs(gy1 - gy0);
     const sx = gx0 < gx1 ? 1 : -1, sy = gy0 < gy1 ? 1 : -1;
     let err = dx - dy, x = gx0, y = gy0;
     while (x !== gx1 || y !== gy1) {
       const cv = this._grid.cost(x, y);
-      if (cv === 0 || cv === ROAD) return false;
+      if (cv === 0 || cv >= ROAD || cv > maxCost) return false;
       const e2 = 2 * err;
       if (e2 > -dy) { err -= dy; x += sx; }
       if (e2 < dx)  { err += dx; y += sy; }
     }
-    const endC = this._grid.cost(gx1, gy1);
-    return endC > 0 && endC < ROAD;
+    return true;
   }
 
   _straighten(path) {

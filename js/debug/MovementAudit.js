@@ -1,7 +1,7 @@
 import { getNavGrid } from '../behavior/nav/NavGrid.js';
 
 // Surface cost → label mapping
-const COST_LABEL = { 0: 'blocked', 1: 'sidewalk', 3: 'park', 250: 'road' };
+const COST_LABEL = { 0: 'blocked', 1: 'sidewalk', 8: 'park', 250: 'road' };
 
 function costLabel(c) {
   return COST_LABEL[c] ?? 'other';
