@@ -41,6 +41,7 @@ import {
 
 import { setState, STATE_DEFS, setXY, nudgeXY, setSpeed } from './Motor.js';
 import { getPlanner } from './nav/PathPlanner.js';
+import { applyLookahead } from './nav/Lookahead.js';
 
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
 export { setState, STATE_DEFS } from './Motor.js';
@@ -219,7 +220,8 @@ function steerRoam(npc, envQuery, profile, dt) {
 
     if (Math.abs(dx) > 2) npc.direction = dx > 0 ? 1 : -1;
     const spd = npc.walkSpeed || 26;
-    nudgeXY(npc, (dx / dist) * spd * dt, (dy / dist) * spd * dt);
+    const { vx: rvx, vy: rvy } = applyLookahead(npc, (dx / dist) * spd, (dy / dist) * spd);
+    nudgeXY(npc, rvx * dt, rvy * dt);
     return;
   }
 
@@ -294,7 +296,7 @@ function steerRoam(npc, envQuery, profile, dt) {
 
   // ── Steer toward current waypoint ─────────────────────────────────────
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
-  const vx = dx / dist * total, vy = dy / dist * total;
+  const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total);
   setSpeed(npc, Math.abs(vx));
   npc.vy = vy;
 

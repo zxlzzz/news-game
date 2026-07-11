@@ -30,6 +30,7 @@ import { TaskRunner }           from './TaskRunner.js';
 import { Agenda }               from './Agenda.js';
 import { ExitSceneTask }        from './tasks/ExitSceneTask.js';
 import { stuckProbe } from './StuckProbe.js';
+import { audit } from '../debug/MovementAudit.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -89,7 +90,8 @@ export class BehaviorManager {
     this._dt = dt;
     refreshDebugFlag();
 
-    stuckProbe(this.npcs, dt)
+    stuckProbe(this.npcs, dt);
+    audit.tick(this.npcs, dt);
 
     // 1) Activity 层
     this.socialLayer.update(this.npcs, dt);
@@ -166,8 +168,12 @@ export class BehaviorManager {
 
   _separate(dt) {
     const MOVING = new Set(['walk', 'run', 'jog']);
-    const movers = this.npcs.filter(n =>
+    const movers  = this.npcs.filter(n =>
       n.alive && !n.mem('social').activity && !n.leashTarget && MOVING.has(n.state));
+    const statics = this.npcs.filter(n =>
+      n.alive && !n.leashTarget && !MOVING.has(n.state) && !n.mem('social').bench);
+
+    // 动 vs 动：双方互推（原逻辑不变）
     for (let i = 0; i < movers.length; i++) {
       for (let j = i + 1; j < movers.length; j++) {
         const a = movers[i], b = movers[j];
@@ -181,6 +187,21 @@ export class BehaviorManager {
           const sb = this._sepScale(b, -ux, -uy);
           nudgeXY(a,  ux * f * sa,  uy * f * sa);
           nudgeXY(b, -ux * f * sb, -uy * f * sb);
+        }
+      }
+    }
+
+    // 动 vs 静：静止方零位移，行走方受推
+    for (const m of movers) {
+      for (const s of statics) {
+        const dx = m.x - s.x, dy = m.y - s.y;
+        const d = Math.hypot(dx, dy);
+        const sepR = 24 * ((m.scale + s.scale) / 2 / 0.18);
+        if (d > 0 && d < sepR) {
+          const f  = ((sepR - d) / sepR) * 16 * dt;
+          const ux = dx / d, uy = dy / d;
+          const sm = this._sepScale(m, ux, uy);
+          nudgeXY(m, ux * f * sm, uy * f * sm);
         }
       }
     }

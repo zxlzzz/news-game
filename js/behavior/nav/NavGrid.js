@@ -4,7 +4,7 @@
  * 代价编码（Uint8Array）：
  *   0    = 硬阻挡（BLOCKED）：建筑区、障碍物 AABB
  *   1    = 可规划、可采样（人行道、公园小路、plaza）
- *   3    = 可规划、可采样（公园草地，行走代价高）
+ *   8    = 可规划、可采样（公园草地，行走代价高）
  *   ROAD = 可通行（Motor._slideMove 不拒绝），但不可规划、不可采样：
  *          自行车道 + 机动车道。planCrossing/modeDirect 可穿越，
  *          PathPlanner / sampleWalkableNear / pickRandom 不选它。
@@ -64,7 +64,7 @@ function _zoneDefault(wy) {
   if (wy < BIKE_LANE_FAR_TOP)     return 1;     // 远端人行道 (210-248)
   if (wy < NEAR_Y)                return ROAD;  // 远端自行车道+马路 (248-333)
   if (wy < BIKE_LANE_NEAR_BOTTOM) return ROAD;  // 近端自行车道 (333-353)
-  return 3;                                      // 公园草地
+  return 8;                                      // 公园草地
 }
 
 // ─── 线段到点最短距离 ─────────────────────────────────────────────────────────
@@ -190,8 +190,8 @@ export class NavGrid {
       }
     }
 
-    // 70% 从低代价格采样，30% 从高代价格采样（偶尔抄草坪）
-    const pool = (Math.random() < 0.7 && pool1.length)
+    // 92% 从低代价格采样，8% 从高代价格采样（偶尔抄草坪）
+    const pool = (Math.random() < 0.92 && pool1.length)
       ? pool1
       : (pool3.length ? pool3 : pool1);
     if (!pool.length) {
@@ -313,7 +313,7 @@ export class NavGrid {
     let farRegions = 0, nearRegions = 0;
     for (let i = 0; i < COLS * ROWS; i++) {
       const c = this._cost[i];
-      if ((c !== 1 && c !== 3) || visited[i]) continue;
+      if ((c !== 1 && c !== 8) || visited[i]) continue;
       const seedWy = (Math.floor(i / COLS) + 0.5) * CELL;
       if (seedWy < NEAR_Y) farRegions++; else nearRegions++;
       const stack = [i]; visited[i] = 1;
@@ -326,7 +326,7 @@ export class NavGrid {
           const ng = Math.floor(ni / COLS);
           if (Math.abs(ng - gy) > 1) continue;
           const nc = this._cost[ni];
-          if (nc !== 1 && nc !== 3) continue;
+          if (nc !== 1 && nc !== 8) continue;
           visited[ni] = 1; stack.push(ni);
         }
       }

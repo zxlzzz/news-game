@@ -120,4 +120,20 @@ export function spawnBusStop(em, stop) {
     }));
     bench.scale = depthScale(by);
   }
+
+  if (stop.sign) {
+    const signX = stop.x + stop.sign.dx;
+    // y = pole bottom (ground contact); matches drawing code in drawBusStopSign
+    const signY = far
+      ? FAR_Y + 4 - stop.bayD - 2   // = (FAR_Y + 4) - bayD - 2
+      : BIKE_LANE_NEAR_BOTTOM + 50;
+    const signE = em.add(new PropEntity({
+      propType: 'busstop-sign',
+      x: signX, y: signY,
+      dir: stop.direction,
+      width: 22, height: 0,
+      tags: [],
+    }));
+    signE.scale = depthScale(signY);
+  }
 }

@@ -80,7 +80,7 @@ export class SceneInitializer {
       const cfg = { ...p, propColor: parseColor(p.color) };
       if (p.propType === 'sign') {
         const host = buildings.find(b => p.x >= b.x && p.x <= b.x + b.bWidth);
-        if (host) cfg.y = BUILDING_BASE_Y - 8;
+        if (host) { cfg.y = BUILDING_BASE_Y - 8; cfg._sortY = BUILDING_BASE_Y + 1; }
       }
       const prop = this.em.add(new PropEntity(cfg));
       prop.scale = depthScale(prop.y);
