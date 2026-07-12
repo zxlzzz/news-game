@@ -1,4 +1,4 @@
-> **status: draft** — v2 设计草案，尚未实施。
+> **status: finalized** — v2 设计已定稿，尚未实施。
 
 # 语义目的地层 — 设计稿 v2（affordance 池）
 

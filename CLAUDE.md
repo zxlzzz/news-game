@@ -212,6 +212,7 @@ npc.clearMem('loiter');
 
 | 文件 | 类型 | 范围 |
 |------|------|------|
+| `docs/contracts/docs.md` | 规范性 | 文档分类策略：normative vs snapshot，写前判据，contracts/ 硬上限 |
 | `docs/contracts/movement.md` | 规范性 | 移动子系统字段所有权、Motor 写保护门、NavGrid、WalkMode 协议 |
 | `docs/contracts/behavior.md` | 规范性 | 行为层栈、STATE_DEFS、NPC Profile、状态转换表、Activity/WalkMode/Modifier/Separation |
 | `docs/contracts/known-violations.md` | 规范性 | check-invariants 已知例外白名单 |
