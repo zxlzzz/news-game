@@ -175,6 +175,16 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 | **Readers** | `Motor.js#integratePhysics` (292 — compute moved, 296 — threshold test) |
 | **Invariant** | `progressAcc` resets to 0 each window. `progressAnchor` updated to current position each window regardless of movement. |
 
+### `npc.mem('motor').vel`
+
+| | |
+|---|---|
+| **Semantic** | One-frame velocity vector `{vx, vy}` written by `steerRoam` so `integratePhysics` can apply diagonal movement directly, bypassing the `direction × speed` scalar path. Consumed (set to `null`) by `integratePhysics` on the same frame it is read. |
+| **Owner** | `Motor.js#integratePhysics` (consumer) / `BaseStateMachine.js#steerRoam` (producer) |
+| **Writers** | `BaseStateMachine.js#steerRoam` (sets `{vx,vy}` after `applyLookahead`); `Motor.js#integratePhysics` (clears to `null` after consuming) |
+| **Readers** | `Motor.js#integratePhysics` (consumes when `wm && mot.vel`) |
+| **Invariant** | Only written when `walkMode` is active. `null` between frames — `integratePhysics` always clears it. Non-`walkMode` paths (riders, dogs) never set it; `integratePhysics` falls through to the `speed > 0` scalar path for those. |
+
 ### `audit.count(npc, 'dir_mismatch')` (diagnostic counter)
 
 Incremented in `BaseStateMachine.js#steerRoam` (walk/run/jog branch only) when

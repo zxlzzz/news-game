@@ -281,7 +281,12 @@ export function integratePhysics(npc, delta) {
   const mot = npc.mem('motor');
   const wm  = mot.walkMode;
   let dx = 0, dy = 0;
-  if (npc.speed > 0) {
+  if (wm && mot.vel) {
+    // Velocity vector written by steerRoam — consume and bypass direction×speed path
+    dx = mot.vel.vx * dt;
+    dy = mot.vel.vy * dt;
+    mot.vel = null;
+  } else if (npc.speed > 0) {
     const tentX = npc.x + npc.direction * npc.speed * dt;
     if (!wm) {
       if (npc.maxX != null && tentX > npc.maxX && npc.x <= npc.maxX) npc.direction = -1;
@@ -295,7 +300,7 @@ export function integratePhysics(npc, delta) {
   } else if (npc.minY != null && tentY < npc.minY && npc.y >= npc.minY) {
     npc.vy = wm ? 0 : Math.abs(npc.vy);
   }
-  dy = npc.vy * dt;
+  if (!mot.vel) dy = npc.vy * dt;  // vel path already set dy above
   if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
 
   // Progress monitor: every 1.5 s measure net displacement from anchor; < 15 px with active goal → fail leg
@@ -307,7 +312,9 @@ export function integratePhysics(npc, delta) {
     const moved = Math.hypot(npc.x - mot.progressAnchor.x, npc.y - mot.progressAnchor.y);
     mot.progressAnchor = { x: npc.x, y: npc.y };
 
-    const hasGoal = npc.speed > 0 || npc.state === 'routing';
+    const _walkState = npc.state === 'walk' || npc.state === 'run' || npc.state === 'jog';
+    if (_walkState && wm && npc.speed === 0) audit.count(npc, 'speed0_walk');
+    const hasGoal = npc.state === 'routing' || (_walkState && wm);
     if (hasGoal && moved < 15) {
       // Clear the path layer so steerRoam replans from current position
       mot.navPath = null;

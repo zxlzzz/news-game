@@ -313,9 +313,12 @@ function steerRoam(npc, envQuery, profile, dt) {
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
   const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total);
   if (npc.speed > 0 && vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
-  setSpeed(npc, Math.abs(vx));
+  // Write full velocity vector — integratePhysics consumes mot.vel when present
+  mot.vel = { vx, vy };
+  setSpeed(npc, Math.hypot(vx, vy));
   npc.vy = vy;
 
+  // direction: facing-only, driven by same 0.35 threshold + 0.45 s cooldown
   mot.dirCD = (mot.dirCD || 0) - dt;
   const desired = vx >= 0 ? 1 : -1;
   if (Math.abs(vx) > total * 0.35 && desired !== npc.direction && mot.dirCD <= 0) {
