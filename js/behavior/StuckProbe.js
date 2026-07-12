@@ -1,5 +1,6 @@
 /** 卡死探针:每 2s 扫描,归类冻结 NPC,30s 打一次汇总。window.__stuck 可看明细 */
 import { getNavGrid } from './nav/NavGrid.js';
+import { audit } from '../debug/MovementAudit.js';
 
 const last = new Map();          // id → {x, y}
 let acc = 0, sumAcc = 0;
