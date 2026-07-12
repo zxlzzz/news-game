@@ -44,6 +44,7 @@
  */
 
 import { dlog }        from './DebugLog.js';
+import { audit }        from '../debug/MovementAudit.js';
 import { PARK_TOP }     from '../core/Layout.js';
 import { sitDown, alignLie } from '../entity/seat/seat.js';
 import { tickLoiter } from '../npc/LoiterBehavior.js';
@@ -314,6 +315,7 @@ function steerRoam(npc, envQuery, profile, dt) {
   // ── Steer toward current waypoint ─────────────────────────────────────
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
   const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total);
+  if (npc.speed > 0 && vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
   setSpeed(npc, Math.abs(vx));
   npc.vy = vy;
 

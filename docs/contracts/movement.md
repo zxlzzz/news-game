@@ -175,6 +175,14 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 | **Readers** | `Motor.js#integratePhysics` (292 — compute moved, 296 — threshold test) |
 | **Invariant** | `progressAcc` resets to 0 each window. `progressAnchor` updated to current position each window regardless of movement. |
 
+### `audit.count(npc, 'dir_mismatch')` (diagnostic counter)
+
+Incremented in `BaseStateMachine.js#steerRoam` (walk/run/jog branch only) when
+`Math.sign(vx) !== npc.direction` after `applyLookahead`. Records frames where
+the steering vector opposes the NPC's current facing. Used for before/after
+comparison during the speed-channel refactor; expected to approach zero once
+direction and speed are driven from the same vector.
+
 ---
 
 ### NavGrid singleton (`getNavGrid()` / `setNavGrid()`)
