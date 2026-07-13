@@ -2,6 +2,16 @@
  * NPC — 继承 Entity 的动态人物实体
  * 渲染委托给构造时注入的 StickRenderer。
  * 支持：playOnce 单次播放、leashTarget 绑带跟随、drawExtra 附加绘制、customUpdate 回调。
+ *
+ * CONTRACT
+ *   Npc.update() 帧内执行顺序（代码顺序，非 Motor 托管 NPC 与托管 NPC 均遵守）：
+ *     1. leash 同步：if leashTarget && !_motorInstalled → 直接覆写 x/y/direction
+ *     2. 动画帧推进：frameTimer += delta；playOnce animDone 检测；frameIndex 步进
+ *     3. 物理积分：_motorInstalled → integratePhysics(this, delta)；
+ *                 否则（无 leash）→ 内联 direction×speed / vy 积分
+ *     4. customUpdate 回调（最后执行，可读取已更新的 x/y/direction）
+ *   WRITES:   x, y, direction（leash 路径）；frameIndex, animDone（动画路径）
+ *   MUST NOT: 在 customUpdate 中再次积分位置（步骤 3 已完成）
  */
 
 import { Entity } from '../core/Entity.js';

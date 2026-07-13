@@ -2,7 +2,7 @@
 
 > Normative. Describes present behavior; no fixes.
 >
-> Frame order anchor: `StreetScene.update` line 356 (`behaviorManager.update`) **then** line 362 (`entityManager.update → integratePhysics`). BM runs first; integratePhysics is the last movement step of the same frame.
+> Frame order anchor: `StreetScene#update` (`behaviorManager.update`, line 356) **then** `StreetScene#update` (`entityManager.update → integratePhysics`, line 362). BM runs first; integratePhysics is the last movement step of the same frame.
 
 ---
 
@@ -33,8 +33,8 @@
 | `x`, `y` | `npc` (protected `_mw`) | `setXY`, `nudgeXY` → `_slideMove` | `steerRoam`, `integratePhysics`, `_separate` | next write | px | 8, 12, 13 |
 | `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`); `setSpeed`; `setSpeed(0)` in routing `steerRoam` | `integratePhysics` (scalar fallback path) | `setState`; `setSpeed(0)` at routing entry | px/s | set 6–9, read 13 |
 | `direction` | `npc` | `steerRoam` (walk branch, `dirCD` gate); `triggerDeparture`; `planCrossing` | `integratePhysics` (scalar fallback) | next write | ±1 | written 9, read 13 |
-| `vy` | `npc` | `setState` (=0); `steerRoam` walk branch (= `lookahead.vy`); `planCrossing`; bounce clamp in `integratePhysics` | `integratePhysics` line 297 + 303 | `setState` (=0); bounce clamp | px/s | written 9, read 13 |
-| `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` | `integratePhysics`: only `.vx` is used (`.vy` is ⚠ dead — see §3) | consumed `= null` by `integratePhysics` line 288, same frame | px/s | written 9, consumed 13 |
+| `vy` | `npc` | `setState` (=0); `steerRoam` walk branch (= `lookahead.vy`); `planCrossing`; bounce clamp in `integratePhysics` | `Motor#integratePhysics` (tentY probe, line 297; dy assignment, line 303) | `setState` (=0); bounce clamp | px/s | written 9, read 13 |
+| `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` | `Motor#integratePhysics`: only `.vx` is used (`.vy` is ⚠ dead — see §3) | consumed `= null` by `Motor#integratePhysics` (line 288), same frame | px/s | written 9, consumed 13 |
 | `mot.walkMode` | `motor` | `setWalkMode`, `pushWalkMode`, `popWalkMode` | `steerRoam`, `integratePhysics` (progress + vel gate), `tickWalkMode`, `_separate._sepScale` | `setWalkMode(null)` at departure; `_defaultOnExit` clears stack on `setState` | — | 7–12 |
 | `mot.walkModeStack` | `motor` | `pushWalkMode`, `popWalkMode` | `popWalkMode` | `_defaultOnExit` on `setState` | — | 7–12 |
 | `mot.routeTarget` | `motor` | `_routeToExit` (step 3) | `steerRoam` routing branch (step 8) | cleared on arrival, timeout, or abort | — | 3, 8 |
