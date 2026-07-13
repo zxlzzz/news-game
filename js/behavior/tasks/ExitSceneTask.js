@@ -12,7 +12,7 @@
  *   npc.mem('agenda').busStops          BusStop 数组（可空）
  */
 
-import { triggerDeparture } from '../BaseStateMachine.js';
+import { triggerDeparture, restoreDepartureBounds } from '../BaseStateMachine.js';
 import { NEAR_Y }           from '../../core/Layout.js';
 
 export class ExitSceneTask {
@@ -58,10 +58,14 @@ export class ExitSceneTask {
   }
 
   tick(npc, _dt) {
-    return npc.alive ? null : 'done';
+    if (!npc.alive) return 'done';
+    const ag = npc.mem('agenda');
+    const sc = npc.mem('social');
+    if (!ag.departing && !sc.waitingBusStop && !ag.pendingDeparture) return 'abort';
+    return null;
   }
 
-  onAbort(_npc) {}
+  onAbort(npc) { restoreDepartureBounds(npc); }
   onInterrupt(_npc) {}
   onResume(_npc) {}
 }

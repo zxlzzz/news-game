@@ -131,13 +131,17 @@ export class Director {
     }
   }
 
-  // ─── 单次 spawn：从 spawnPoints 随机选入口 ────────────────────────────────────
+  // ─── 单次 spawn：60% 边缘 / 40% 楼门加权选入口 ───────────────────────────────
   _spawnOne() {
     if (this._spawnPoints.length === 0) return;
     const { mix } = this._currentPeriod();
     const profile = _pickProfile(mix);
 
-    const pt     = this._spawnPoints[Math.floor(Math.random() * this._spawnPoints.length)];
+    const edges = this._spawnPoints.filter(p => p.facing !== 0);
+    const doors = this._spawnPoints.filter(p => p.facing === 0);
+    const useEdge = edges.length > 0 && (doors.length === 0 || Math.random() < 0.60);
+    const pool = useEdge ? edges : doors;
+    const pt   = pool[Math.floor(Math.random() * pool.length)];
     const isDoor = pt.facing === 0;
     this._spawnNPC(profile, pt.x, pt.y, isDoor ? { x: pt.x } : null);
   }

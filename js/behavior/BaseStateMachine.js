@@ -45,7 +45,7 @@
 
 import { dlog }        from './DebugLog.js';
 import { audit }        from '../debug/MovementAudit.js';
-import { PARK_TOP }     from '../core/Layout.js';
+import { PARK_TOP, WORLD_WIDTH } from '../core/Layout.js';
 import { sitDown, alignLie } from '../entity/seat/seat.js';
 import { tickLoiter } from '../npc/LoiterBehavior.js';
 
@@ -195,6 +195,12 @@ function steerRoam(npc, envQuery, profile, dt) {
 
     if (npc.stateTimer > (t.abandonAfter ?? 30)) {
       envQuery.releaseSlotReservation(npc);
+      if (mot.routeTarget?.exitType) {
+        const ag2 = npc.mem('agenda');
+        ag2.departing = false;
+        ag2.lifespan += 30;   // prevent immediate re-trigger (mirrors triggerDeparture no-exit path)
+        restoreDepartureBounds(npc);
+      }
       mot.routeTarget = null; mot.routePts = null; mot.routeIdx = 0;
       setWalkMode(npc, modeWander());
       setState(npc, 'walk', 'routing_timeout');
@@ -335,6 +341,12 @@ function _routeToExit(npc, exit) {
   setWalkMode(npc, null);
   npc.modifiers = npc.modifiers.filter(m => m.kind !== 'held');
   setState(npc, 'routing', 'departure');
+  if (exit.type === 'edge') {
+    const mot = npc.mem('motor');
+    mot.savedBounds = { minX: npc.minX, maxX: npc.maxX };
+    if (exit.x < (npc.minX ?? 0))          npc.minX = exit.x - 10;
+    if (exit.x > (npc.maxX ?? WORLD_WIDTH)) npc.maxX = exit.x + 10;
+  }
   npc.mem('motor').routeTarget = {
     x: tx, y: ty,
     exitType: exit.type,
@@ -359,6 +371,14 @@ export function triggerDeparture(npc, exitRegistry) {
     return;
   }
   _routeToExit(npc, exit);
+}
+
+export function restoreDepartureBounds(npc) {
+  const mot = npc.mem('motor');
+  if (!mot.savedBounds) return;
+  npc.minX = mot.savedBounds.minX;
+  npc.maxX = mot.savedBounds.maxX;
+  mot.savedBounds = null;
 }
 
 // ─── 对外主接口：每帧推进单个 NPC 的基础状态 ──────────────────────────────────

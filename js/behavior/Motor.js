@@ -319,7 +319,17 @@ export function integratePhysics(npc, delta) {
       // Clear the path layer so steerRoam replans from current position
       mot.navPath = null;
       const mode = mot.walkMode;
-      if (mode?.kind === 'direct') {
+      if (npc.state === 'routing') {
+        if (mot.walkMode != null) audit.count(npc, 'routing_with_walkmode');
+        if (!mot.routeReplan) {
+          mot.routePts    = null;
+          mot.routeIdx    = 0;
+          mot.routeReplan = 1;
+        } else {
+          mot.routeReplan = 0;
+          npc.stateTimer  = 9999;
+        }
+      } else if (mode?.kind === 'direct') {
         if (!mode._stuckOnce) {
           mode._stuckOnce = true;
           mot.navPath     = null;
@@ -329,15 +339,6 @@ export function integratePhysics(npc, delta) {
         }
       } else if (mode?.kind === 'wander') {
         npc.roamTarget = null;
-      } else if (npc.state === 'routing') {
-        if (!mot.routeReplan) {
-          mot.routePts    = null;
-          mot.routeIdx    = 0;
-          mot.routeReplan = 1;
-        } else {
-          mot.routeReplan = 0;
-          npc.stateTimer  = 9999;
-        }
       } else if (!mode) {
         npc.direction = -npc.direction;
       }

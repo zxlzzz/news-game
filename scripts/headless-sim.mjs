@@ -56,7 +56,7 @@ const { BehaviorManager }             = await import('../js/behavior/BehaviorMan
 const { ExitRegistry }                = await import('../js/npc/ExitRegistry.js');
 const { initCrosswalks, initWalkPaths } = await import('../js/behavior/WalkMode.js');
 const { audit }                       = await import('../js/debug/MovementAudit.js');
-const { spawnPedestrians }            = await import('../js/npc/Pedestrians.js');
+const { spawnPedestrians, spawnOnePedestrian } = await import('../js/npc/Pedestrians.js');
 const { spawnAthletes }               = await import('../js/npc/Athletes.js');
 const { WORLD_WIDTH, FAR_Y, NEAR_Y, BUILDING_BASE_Y, PARK_BOTTOM } =
   await import('../js/core/Layout.js');
@@ -84,13 +84,13 @@ initCrosswalks(layout.crosswalks ?? []);
 
 // ─── ExitRegistry ────────────────────────────────────────────────────────────
 const exitReg = new ExitRegistry();
-exitReg.register({ id: 'edge_left',  type: 'edge', x: -40,            y: null,
+exitReg.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null,
                    yZone: [BUILDING_BASE_Y, FAR_Y],  facing: -1 });
-exitReg.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 40, y: null,
+exitReg.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 200, y: null,
                    yZone: [BUILDING_BASE_Y, FAR_Y],  facing:  1 });
-exitReg.register({ id: 'park_left',  type: 'edge', x: -40,            y: null,
+exitReg.register({ id: 'park_left',  type: 'edge', x: -200,              y: null,
                    yZone: [NEAR_Y, PARK_BOTTOM],     facing: -1 });
-exitReg.register({ id: 'park_right', type: 'edge', x: WORLD_WIDTH + 40, y: null,
+exitReg.register({ id: 'park_right', type: 'edge', x: WORLD_WIDTH + 200, y: null,
                    yZone: [NEAR_Y, PARK_BOTTOM],     facing:  1 });
 
 // ─── EntityManager + BehaviorManager ─────────────────────────────────────────
@@ -130,7 +130,27 @@ let heartbeatFrame = Math.round(60 * 60);
 let heartbeatMin   = 1;
 let aliveMin = allNpcs.length, aliveMax = 0;
 
+let departedOk = 0;
 for (let frame = 0; frame < TOTAL_FRAMES; frame++) {
+  // Track per-attempt departure duration (harness-only: _depSince must not enter js/ code)
+  for (const npc of allNpcs) {
+    const ag  = npc.mem('agenda');
+    const mot = npc.mem('motor');
+    // New departure attempt starting (routeTarget with exitType just appeared)
+    if (npc.alive && mot.routeTarget?.exitType && npc._depSince == null) {
+      npc._depSince = frame;
+    }
+    // Attempt ended without death: E2 cleared departing or ExitSceneTask aborted
+    if (npc.alive && npc._depSince != null && !ag.departing && !mot.routeTarget?.exitType) {
+      npc._depSince = null;
+    }
+    // Success: NPC died on arrival
+    if (!npc.alive && npc._depSince != null) {
+      departedOk++;
+      npc._depSince = null;
+    }
+  }
+
   em.update(DT_MS);
   bm.update(DT_MS);
 
@@ -140,7 +160,6 @@ for (let frame = 0; frame < TOTAL_FRAMES; frame++) {
   if (alive > aliveMax) aliveMax = alive;
   if (alive < 15) {
     const pt = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
-    const { spawnOnePedestrian } = await import('../js/npc/Pedestrians.js');
     spawnOnePedestrian('pedestrian', em, stubRenderer, bm, { x: pt.x, y: pt.y });
   }
 
@@ -152,6 +171,35 @@ for (let frame = 0; frame < TOTAL_FRAMES; frame++) {
 }
 console.log();
 console.log(`[headless-sim] done. alive range ${aliveMin}–${aliveMax}`);
+
+// ─── post-sim assertions ──────────────────────────────────────────────────────
+// Zombie = alive NPC whose current departure attempt has been running >90s (abandonAfter=60 + grace)
+// In-flight departures (<90s) are normal and excluded.
+const zombies = allNpcs.filter(n => {
+  if (!n.alive || !n.mem('agenda').departing) return false;
+  if (n._depSince == null) return false;
+  return (TOTAL_FRAMES - n._depSince) / 60 > 90;
+}).length;
+const auditRowsRaw  = audit.rows(allNpcs);
+const totalRowRaw   = auditRowsRaw[auditRowsRaw.length - 1];
+const routingWM     = totalRowRaw.routing_with_walkmode ?? 0;
+
+let assertFailed = false;
+if (departedOk === 0) {
+  console.error(`[ASSERT FAIL] departedOk=0 — no NPC successfully departed`);
+  assertFailed = true;
+}
+if (zombies !== 0) {
+  console.error(`[ASSERT FAIL] zombies=${zombies} — alive NPCs stuck in departing >90s`);
+  assertFailed = true;
+}
+if (routingWM > 1) {
+  console.error(`[ASSERT FAIL] routing_with_walkmode=${routingWM} > 1`);
+  assertFailed = true;
+}
+if (!assertFailed) {
+  console.log(`[headless-sim] assertions PASSED  departedOk=${departedOk}  zombies=${zombies}  routing_with_walkmode=${routingWM}`);
+}
 
 // ─── collect results ──────────────────────────────────────────────────────────
 const auditRows  = audit.rows(allNpcs);
@@ -200,10 +248,13 @@ if (COMPARE) {
 
 // embed totals as hidden comment for future --compare reads
 const totalsComment = `<!--totals:${JSON.stringify({
-  stuck:       totalRow.stuck,
-  slide_steer: totalRow.slide_steer,
-  dir_mismatch: totalRow.dir_mismatch,
-  speed0_walk: totalRow.speed0_walk,
+  stuck:                 totalRow.stuck,
+  slide_steer:           totalRow.slide_steer,
+  dir_mismatch:          totalRow.dir_mismatch,
+  speed0_walk:           totalRow.speed0_walk,
+  routing_with_walkmode: totalRow.routing_with_walkmode,
+  departedOk,
+  zombies,
 })}-->`;
 
 // ─── build markdown ───────────────────────────────────────────────────────────

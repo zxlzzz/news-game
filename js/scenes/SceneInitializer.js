@@ -172,7 +172,7 @@ export class SceneInitializer {
       bm.register(seller, 'stall_seller');
 
       slot.reserved = seller.id;   // 预约 seller 槽，防止他人占用（永不释放）
-      seller._routeTarget = {
+      seller.mem('motor').routeTarget = {
         x: stall.x + slot.dx, y: stall.y + slot.dy,
         prop: stall, slot,
         abandonAfter: 60,
