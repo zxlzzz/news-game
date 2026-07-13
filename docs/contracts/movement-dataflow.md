@@ -1,6 +1,8 @@
 # Movement Dataflow Contract
 
 > Normative. Describes present behavior; no fixes.
+>
+> Frame order anchor: `StreetScene.update` line 356 (`behaviorManager.update`) **then** line 362 (`entityManager.update → integratePhysics`). BM runs first; integratePhysics is the last movement step of the same frame.
 
 ---
 
@@ -8,19 +10,19 @@
 
 | # | Caller | Function | What moves |
 |---|--------|----------|-----------|
-| 1 | `EntityManager.update` | `Npc.update` → `integratePhysics` | **Positions committed**: consumes `mot.vel` (if set) or `direction×speed`; calls `_slideMove` |
-| 2 | `BehaviorManager.update` | `SocialLayer.update` | activity pair/tick |
-| 3 | BM | `WaitForBusLayer.update` | bus waiter tick |
-| 4 | BM per-NPC | lifespan check → `triggerDeparture` | sets `ag.departing`, expands bounds (E1), sets `mot.routeTarget` |
-| 5 | BM per-NPC | `Agenda.tick` | selects next desire (no-op if `sc.activity`) |
-| 6 | BM per-NPC | `TaskRunner.tick` | ExitSceneTask / TalkToTask monitor |
-| 7 | BM per-NPC | `tickBaseState` | `stateTimer+=dt` → `_evaluateTransitions` → `setState` |
-| 8 | BM → `_tickState` | `tickWalkMode` | `direct._elapsed`, `path_follow.pauseTimer` |
-| 9 | BM → `_tickState` | `steerRoam` — **routing** branch | `nudgeXY` → `_slideMove` (position committed this frame) |
-| 10 | BM → `_tickState` | `steerRoam` — **walk/run/jog** branch | ⚠ writes `mot.vel`, `setSpeed`, `npc.vy` — **consumed next frame by step 1** |
-| 11 | BM per-NPC | `checkZoneTransition` | `pushWalkMode` if road/bike-lane intrusion |
-| 12 | BM per-NPC | `tickModifiers` | overlay gestures |
-| 13 | BM | `_separate` | inter-NPC `nudgeXY` → `_slideMove` |
+| 1 | `StreetScene.update` → `BehaviorManager.update` | `SocialLayer.update` | activity pair/tick |
+| 2 | BM | `WaitForBusLayer.update` | bus waiter tick |
+| 3 | BM per-NPC | lifespan check → `triggerDeparture` → `_routeToExit` | sets `ag.departing`; saves + expands bounds (edge exits); sets `mot.routeTarget` |
+| 4 | BM per-NPC | `Agenda.tick` | selects next desire (no-op if `sc.activity`) |
+| 5 | BM per-NPC | `TaskRunner.tick` | ExitSceneTask / TalkToTask monitor |
+| 6 | BM per-NPC | `tickBaseState`: `stateTimer += dt` | timer advance; `_evaluateTransitions` → may call `setState` |
+| 7 | BM → `_tickState` | `tickWalkMode` | `direct._elapsed`; `path_follow.pauseTimer` |
+| 8 | BM → `_tickState` → `steerRoam` — **routing** branch | `setSpeed(0)`; timeout check; path plan; `nudgeXY` → `_slideMove` | position committed this step |
+| 9 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}`; `setSpeed(hypot(vx,vy))`; `npc.vy = vy`; updates `npc.direction` (with `dirCD` gate) | no position change yet |
+| 10 | BM per-NPC | `checkZoneTransition` | `pushWalkMode` on road/bike-lane intrusion |
+| 11 | BM per-NPC | `tickModifiers` | overlay gestures |
+| 12 | BM | `_separate` → `nudgeXY` → `_slideMove` | separation pushes committed this step; uses positions from steps 8/9 |
+| 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | consume `mot.vel` (vx channel) + `npc.vy` (vy channel) → `_slideMove` | **final position commitment of the frame** |
 
 ---
 
@@ -28,54 +30,61 @@
 
 | Variable | Namespace | Writer | Reader | Cleared / overwritten | Unit | Active at step |
 |----------|-----------|--------|--------|-----------------------|------|----------------|
-| `x`, `y` | `npc` (protected) | `_mw` via `setXY` / `nudgeXY` / `_slideMove` | `steerRoam`, `integratePhysics`, `_separate` | next write | px | 1, 9, 13 |
-| `speed` | `npc` (protected) | `setState`, `setSpeed` | `integratePhysics` | `setState`(=speedK×walkSpeed); `setSpeed(0)` at routing entry | px/s | set 7–10, read 1 |
-| `direction` | `npc` | `steerRoam` (±1 with `dirCD` gate), `triggerDeparture`, `planCrossing` | `integratePhysics` (scalar path), renderer | next steer write | ±1 | written 9–10, read 1 |
-| `vy` | `npc` | `setState`(=0), `steerRoam`, `planCrossing`; `integratePhysics` (bounce clamp) | `integratePhysics` | `setState`(=0) | px/s | written 9–10, read 1 |
-| `mot.vel` | `motor` | `steerRoam` walk branch (`= {vx,vy}`) | `integratePhysics` | ⚠ consumed `= null` by step 1 of **next** frame | px/s | written 10, consumed 1 (+1 frame) |
-| `mot.walkMode` | `motor` | `setWalkMode`, `pushWalkMode`, `popWalkMode` | `steerRoam`, `integratePhysics` (progress), `tickWalkMode`, `_separate._sepScale` | `setWalkMode(null)` at departure; `_defaultOnExit` pops stack on `setState` | — | 8–11 |
-| `mot.walkModeStack` | `motor` | `pushWalkMode`, `popWalkMode` | `popWalkMode` | `_defaultOnExit` on `setState` (if target is walk/run) | — | 8–11 |
-| `mot.routeTarget` | `motor` | `_routeToExit` | `steerRoam` | cleared on arrival, timeout, or abort | — | 4, 9 |
-| `mot.routePts` / `routeIdx` | `motor` | `steerRoam` (one-shot plan) | `steerRoam` | cleared on arrival/timeout | — | 9 |
-| `mot.navPath` / `navIdx` / `navGoalX` / `navGoalY` | `motor` | `steerRoam` walk branch | `steerRoam` | cleared on roamTarget change or arrival | — | 10 |
-| `mot.dirCD` | `motor` | `steerRoam` walk branch | `steerRoam` | decremented by dt | s | 10 |
-| `mot.progressAnchor` / `progressAcc` | `motor` | `integratePhysics` | `integratePhysics` | reset every 1.5 s | px / s | 1 |
-| `mot.routeReplan` | `motor` | `integratePhysics` (progress monitor) | `integratePhysics` | cleared after second stuck interval (triggers `stateTimer=9999`) | 0\|1 | 1 |
-| `mot.savedBounds` | `motor` | `_routeToExit` (edge exits) | `restoreDepartureBounds` | cleared by `restoreDepartureBounds` | — | 4 |
-| `npc.roamTarget` | `npc` | `pickModeTarget`, `onPathArrival` | `steerRoam` | `null` on mode switch, arrival, or `setState` with wander mode | {x,y}\|null | 10 |
-| `npc.minX` / `maxX` / `minY` / `maxY` | `npc` | `_routeToExit` (E1 expansion), `restoreDepartureBounds` | `_slideMove`, `integratePhysics` (direction bounce) | restored post-departure or abort | px | 1, 4, 9 |
-| `npc.stateTimer` | `npc` | `setState`(=0); `tickBaseState`(+=dt); ⚠ `integratePhysics`(=9999 on double-stuck) | `steerRoam` (timeout), `_evaluateTransitions` | `setState`(=0) | s | 1, 7, 9 |
+| `x`, `y` | `npc` (protected `_mw`) | `setXY`, `nudgeXY` → `_slideMove` | `steerRoam`, `integratePhysics`, `_separate` | next write | px | 8, 12, 13 |
+| `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`); `setSpeed`; `setSpeed(0)` in routing `steerRoam` | `integratePhysics` (scalar fallback path) | `setState`; `setSpeed(0)` at routing entry | px/s | set 6–9, read 13 |
+| `direction` | `npc` | `steerRoam` (walk branch, `dirCD` gate); `triggerDeparture`; `planCrossing` | `integratePhysics` (scalar fallback) | next write | ±1 | written 9, read 13 |
+| `vy` | `npc` | `setState` (=0); `steerRoam` walk branch (= `lookahead.vy`); `planCrossing`; bounce clamp in `integratePhysics` | `integratePhysics` line 297 + 303 | `setState` (=0); bounce clamp | px/s | written 9, read 13 |
+| `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` | `integratePhysics`: only `.vx` is used (`.vy` is ⚠ dead — see §3) | consumed `= null` by `integratePhysics` line 288, same frame | px/s | written 9, consumed 13 |
+| `mot.walkMode` | `motor` | `setWalkMode`, `pushWalkMode`, `popWalkMode` | `steerRoam`, `integratePhysics` (progress + vel gate), `tickWalkMode`, `_separate._sepScale` | `setWalkMode(null)` at departure; `_defaultOnExit` clears stack on `setState` | — | 7–12 |
+| `mot.walkModeStack` | `motor` | `pushWalkMode`, `popWalkMode` | `popWalkMode` | `_defaultOnExit` on `setState` | — | 7–12 |
+| `mot.routeTarget` | `motor` | `_routeToExit` (step 3) | `steerRoam` routing branch (step 8) | cleared on arrival, timeout, or abort | — | 3, 8 |
+| `mot.routePts` / `routeIdx` | `motor` | `steerRoam` routing branch (one-shot plan) | `steerRoam` routing branch | cleared on arrival/timeout | — | 8 |
+| `mot.navPath` / `navIdx` / `navGoalX` / `navGoalY` | `motor` | `steerRoam` walk branch | `steerRoam` walk branch | cleared on roamTarget change, arrival, or progress-monitor stuck | — | 9 |
+| `mot.dirCD` | `motor` | `steerRoam` walk branch (decremented by dt; reset to 0.45 on flip) | `steerRoam` walk branch | decremented by dt each call | s | 9 |
+| `mot.progressAnchor` / `progressAcc` | `motor` | `integratePhysics` | `integratePhysics` | reset every 1.5 s | px / s | 13 |
+| `mot.routeReplan` | `motor` | `integratePhysics` progress monitor (0 → 1 on first stuck, 1 → 0 + `stateTimer=9999` on second) | `integratePhysics` | reset to 0 when displaced ≥ 15 px | 0\|1 | 13 |
+| `mot.savedBounds` | `motor` | `_routeToExit` (edge exits, step 3) | `restoreDepartureBounds` | cleared by `restoreDepartureBounds` | — | 3 |
+| `npc.roamTarget` | `npc` | `pickModeTarget`, `onPathArrival`; `= null` on mode switch / arrival / progress stuck | `steerRoam` walk branch | null on goal change or stuck detection | {x,y}\|null | 9 |
+| `npc.minX` / `maxX` / `minY` / `maxY` | `npc` | `_routeToExit` (E1 edge-exit expansion, step 3); `restoreDepartureBounds` | `_slideMove`, `integratePhysics` (bounce clamp / direction flip) | restored after departure or abort | px | 3, 8, 13 |
+| `npc.stateTimer` | `npc` | `setState` (=0); `tickBaseState` (+=dt, step 6); `integratePhysics` (=9999 on second stuck, step 13) | `steerRoam` timeout check (step 8); `_evaluateTransitions` (step 6) | `setState` (=0) | s | 6, 8, 13 |
 
 ---
 
-## 3 · Goal-Directed → Scalar Compression Point
+## 3 · Goal-Directed → Scalar Compression and vy Dead-Code
 
-`steerRoam` (walk/run/jog branch, step 10) computes a full velocity vector `{vx, vy}` via `applyLookahead` and writes:
-
-```
-mot.vel = { vx, vy }          // goal-directed, full 2-D vector — survives until step 1 next frame
-setSpeed(npc, hypot(vx, vy))  // scalar magnitude (speed field)
-npc.vy = vy                   // Y component duplicated into npc.vy
-npc.direction = sign(vx)      // ⚠ compression: X direction collapsed to ±1 with hysteresis gate
-```
-
-`integratePhysics` (step 1, **next** frame):
+`steerRoam` walk branch (step 9) writes three fields:
 
 ```
-dx = mot.vel.vx * dt          // goal-directed path — vy still intact
-dy = mot.vel.vy * dt
-mot.vel = null                // ⚠ information destroyed here: after _slideMove only x/y remain
+mot.vel  = { vx, vy }           // computed from applyLookahead
+setSpeed(npc, hypot(vx, vy))    // scalar magnitude stored in npc.speed
+npc.vy   = vy                   // explicit copy into vy channel
 ```
 
-**Information loss** occurs at `mot.vel = null`. After that point, the original `{vx, vy}` is gone; only the resulting position and `direction` (±1) persist. The routing branch (step 9) never writes `mot.vel`; it calls `nudgeXY` directly, so no one-frame lag exists there.
+`integratePhysics` (step 13, same frame):
+
+```js
+if (wm && mot.vel) {
+  dx = mot.vel.vx * dt;   // vx channel — used
+  dy = mot.vel.vy * dt;   // ⚠ DEAD: overwritten unconditionally two lines later
+  mot.vel = null;          // clears mot.vel → !mot.vel is now true
+}
+// … bounce-clamp npc.vy (may modify it) …
+if (!mot.vel) dy = npc.vy * dt;   // always true after vel branch; overwrites dy above
+_slideMove(npc, dx, dy);
+```
+
+**Actual data flow:**
+- **vx** travels via `mot.vel.vx` → `dx`
+- **vy** travels via `npc.vy` (bounce-clamped) → `dy`; `mot.vel.vy` is never consumed
+
+**Compression point:** after `_slideMove`, the full `{vx, vy}` vector is gone. `npc.speed = hypot(vx, vy)` retains the magnitude, and `npc.direction` retains only `sign(vx)` (with hysteresis). vy information survives only as the displacement already applied to `npc.y`.
 
 ---
 
 ## 4 · Known Conflict Zones ⚠
 
-| Variable | Conflict | Row above |
-|----------|----------|-----------|
-| `mot.vel` | Written by `steerRoam` at step 10; consumed by `integratePhysics` at step 1 of the **next** frame. If `sc.activity` blocks `tickBaseState` this frame, old `mot.vel` is consumed by step 1 instead of fresh steer output. | `mot.vel` |
-| `mot.vel` | If routing branch fires (`nudgeXY` direct, step 9) on an NPC that still has a stale `mot.vel` from the previous frame's walk-branch steer, `integratePhysics` consumes the stale `mot.vel` first (step 1) before routing begins — one frame double-move. | `mot.vel` |
-| `npc.direction` | Compressed from `vx` to ±1 at step 10 with a 0.45 s cooldown gate (`dirCD`). Y-axis goal information is not reflected in `direction`; `audit.dir_mismatch` fires when `sign(vx) ≠ npc.direction` mid-move. | `direction` |
-| `npc.stateTimer` | Force-set to 9999 by `integratePhysics` progress monitor (step 1) after two consecutive stuck intervals — bypasses `tickBaseState`'s normal increment and triggers `abandonAfter` check in `steerRoam` (step 9) on the same frame's BM pass. | `npc.stateTimer` |
+| # | Variable | Conflict |
+|---|----------|----------|
+| a | `mot.vel`, `npc.speed`, `npc.vy` | **steer skipped** (`sc.activity` or other `continue`): `tickBaseState` is not called → `steerRoam` does not run → `mot.vel` is not set. `integratePhysics` falls to the scalar path: `dx = npc.direction × npc.speed × dt` where `npc.speed = hypot(vx, vy)` from the last steer call. The NPC moves at full vector magnitude in a purely horizontal direction. `npc.vy` (stale from last steer) still contributes `dy`, but `npc.speed` is the hypot scalar, so horizontal motion is inflated if the last steer had significant vy. |
+| b | `npc.x`, `npc.y` | **steer uses pre-separation positions**: `steerRoam` (step 9) computes velocity from NPC position before `_separate` (step 12) has run. `integratePhysics` (step 13) then applies that velocity to the post-separation position. The steering direction may be slightly stale relative to the committed position. |
+| c | `npc.stateTimer` | **one-frame delay on progress-monitor trigger**: `integratePhysics` writes `stateTimer = 9999` at step 13; `steerRoam`'s timeout check (`stateTimer > abandonAfter`) runs at step 8 in the **next** frame's BM pass. The 9999 value has no effect in the frame it is written. |
