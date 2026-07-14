@@ -11,13 +11,13 @@ import { setWalkMode } from '../behavior/Motor.js';
 import { modePathFollow } from '../behavior/WalkMode.js';
 
 export function spawnAthletes(em, sr, bm) {
-  // 远端慢跑者（小）—— 在远侧人行道往返
-  bm.register(makeNPC(em, sr, {
-    x: 980, y: SIDEWALK_FAR_Y, animation: 'jog', direction:  1, speed: 60, vy: 0,
-    minX: 850, maxX: 1320,
-    minY: SIDEWALK_FAR_Y - 10, maxY: SIDEWALK_FAR_Y + 10,
+  // 远端慢跑者（小）—— 沿 sidewalk_far_jog 路线往返（路线即约束，无需 bounds 参数）
+  const farJogger = makeNPC(em, sr, {
+    x: 980, y: SIDEWALK_FAR_Y, animation: 'jog', direction: 1, speed: 60, vy: 0,
     color: 0x1a0818, tags: ['jogger', 'athlete'],
-  }), 'athlete');
+  });
+  bm.register(farJogger, 'athlete');
+  setWalkMode(farJogger, modePathFollow('sidewalk_far_jog'));
 
   // 近端慢跑者（大）—— 沿公园环线 park_loop_jog 绕圈（透视对比）
   const nearJogger = makeNPC(em, sr, {

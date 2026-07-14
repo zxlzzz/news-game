@@ -1226,6 +1226,13 @@
           { "x": 400,  "y": 470 }
         ],
         "loop": true
+      },
+      "sidewalk_far_jog": {
+        "waypoints": [
+          { "x": 850, "y": 230 },
+          { "x": 1320, "y": 230 }
+        ],
+        "loop": true
       }
     },
     "busStops": [
