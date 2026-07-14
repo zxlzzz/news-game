@@ -312,10 +312,6 @@ function _facade(g, x, w, building, baseY) {
   g.beginFill(fill, 1);
   g.drawRect(x, y, w, H);
   g.endFill();
-  // 左侧竖向阴影收边
-  g.beginFill(0x000000, 0.07);
-  g.drawRect(x, y, 3, H);
-  g.endFill();
 
   const groundH = Math.min(A.groundMax, Math.round(H * A.groundFrac));
   const resH    = H - groundH;
@@ -337,6 +333,7 @@ function _facade(g, x, w, building, baseY) {
 // ── 主出口 ────────────────────────────────────────────────────────────────────
 
 export function drawBuilding(g, building) {
+  g.lineStyle(0);
   const { x, bWidth: w, bDepth: d } = building;
   const baseY = building.y + building.facadeH;
   const top   = building.y - d;
@@ -355,11 +352,4 @@ export function drawBuilding(g, building) {
   // 立面
   _facade(g, x, w, building, baseY);
 
-  // 楼间小巷阴影
-  if (building.alleyLeft) {
-    g.lineStyle(0);
-    g.beginFill(0x000000, 0.14);
-    g.drawRect(x - 1, top, 6, baseY - top + 1);
-    g.endFill();
-  }
 }

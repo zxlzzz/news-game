@@ -31,7 +31,7 @@ export class UsePropActivity extends Activity {
     setState(npc, 'stand', 'use-prop');
     npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
     npc.direction  = (prop.x >= npc.x) ? 1 : -1;
-    npc._extraTags = [tag];
+    npc.mem('social').tags = [tag];
 
     if (this.frames[0]) {
       npc.modifiers.push({ id: '_use_prop', kind: 'held', priority: 20,
@@ -60,7 +60,7 @@ export class UsePropActivity extends Activity {
   destroy() {
     if (this.npc.alive) {
       this.npc.modifiers = this.npc.modifiers.filter(m => m.id !== '_use_prop');
-      this.npc._extraTags = null;
+      this.npc.mem('social').tags = null;
       setState(this.npc, 'walk', 'activity-end');
     }
     super.destroy();

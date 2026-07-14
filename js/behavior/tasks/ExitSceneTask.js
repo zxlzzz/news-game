@@ -1,36 +1,37 @@
 /**
  * ExitSceneTask — 驱动 NPC 按 exitBias 离场
  *
- * exitBias（spawn 时由 Director 赋值，存于 npc._exitBias）：
+ * exitBias（spawn 时由 Director 赋值，存于 npc.mem('agenda').exitBias）：
  *   'building' → 就近楼门消失
  *   'bus'      → 加入等车队列，公交到站后上车消失
  *   'edge'     → 步行出画（默认）
  *
  * NPC 上需提前注入（由 Director.installRefs / BM.register 完成）：
- *   npc._exitRegistry      ExitRegistry 实例
- *   npc._waitForBusLayer   WaitForBusLayer 实例（可空）
- *   npc._busStops          BusStop 数组（可空）
+ *   npc.mem('agenda').exitRegistry      ExitRegistry 实例
+ *   npc.mem('agenda').waitForBusLayer   WaitForBusLayer 实例（可空）
+ *   npc.mem('agenda').busStops          BusStop 数组（可空）
  */
 
-import { triggerDeparture } from '../BaseStateMachine.js';
+import { triggerDeparture, restoreDepartureBounds } from '../BaseStateMachine.js';
 import { NEAR_Y }           from '../../core/Layout.js';
 
 export class ExitSceneTask {
   onStart(npc, _runner) {
-    if (npc._departing) return;   // lifespan 路径已触发，仅做占位
+    if (npc.mem('agenda').departing) return;   // lifespan 路径已触发，仅做占位
     this._driveExit(npc);
   }
 
   _driveExit(npc) {
-    const bias    = npc._exitBias ?? 'edge';
-    const exitReg = npc._exitRegistry;
-    const busLay  = npc._waitForBusLayer;
+    const ag     = npc.mem('agenda');
+    const bias   = ag.exitBias ?? 'edge';
+    const exitReg = ag.exitRegistry;
+    const busLay  = ag.waitForBusLayer;
 
     // ── 公交出口 ───────────────────────────────────────────────────────────────
     if (bias === 'bus' && busLay) {
-      const stops   = npc._busStops ?? [];
-      const isNear  = npc.y >= NEAR_Y;
-      const stop    = stops.find(s => (s.direction < 0) === isNear) ?? stops[0];
+      const stops  = ag.busStops ?? [];
+      const isNear = npc.y >= NEAR_Y;
+      const stop   = stops.find(s => (s.direction < 0) === isNear) ?? stops[0];
       if (stop && stop._waiters.length < (stop.maxWaiters ?? 8)) {
         busLay.addWaiterDirect(npc, stop);
         return;
@@ -42,7 +43,7 @@ export class ExitSceneTask {
     if (bias === 'building' && exitReg) {
       const bExit = exitReg.findExit(npc, 'building');
       if (bExit) {
-        npc._preferExitType = 'building';
+        ag.preferExitType = 'building';
         triggerDeparture(npc, exitReg);
         return;
       }
@@ -51,16 +52,20 @@ export class ExitSceneTask {
 
     // ── 默认边缘出口 ──────────────────────────────────────────────────────────
     if (exitReg) {
-      npc._preferExitType = 'edge';
+      ag.preferExitType = 'edge';
       triggerDeparture(npc, exitReg);
     }
   }
 
   tick(npc, _dt) {
-    return npc.alive ? null : 'done';
+    if (!npc.alive) return 'done';
+    const ag = npc.mem('agenda');
+    const sc = npc.mem('social');
+    if (!ag.departing && !sc.waitingBusStop && !ag.pendingDeparture) return 'abort';
+    return null;
   }
 
-  onAbort(_npc) {}
+  onAbort(npc) { restoreDepartureBounds(npc); }
   onInterrupt(_npc) {}
   onResume(_npc) {}
 }

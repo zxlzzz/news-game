@@ -1,6 +1,6 @@
 import {
   depthLineWidth, depthLineColor,
-  FILL_PAPER, FILL_LIGHT, FILL_MID,
+  FILL_PAPER, FILL_LIGHT, FILL_MID, FILL_SHADE,
   ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../../core/Layout.js';
 
@@ -45,13 +45,13 @@ export function drawNewsRack(g, p) {
   g.moveTo(bpx + 6 * s,       bpy + 21 * s); g.lineTo(bpx + bw - 11 * s, bpy + 21 * s);
 
   g.lineStyle(0);
-  g.beginFill(0x000000, 0.6);
+  g.beginFill(FILL_SHADE, 1);
   g.drawRect(bpx + bw / 2 - 6 * s, bpy + bh - 14 * s, 11 * s, 3 * s);
   g.endFill();
 
   lenv(g, y, 0.9);
-  g.moveTo(bpx + 6 * s,      y); g.lineTo(bpx + 6 * s,      y + 9 * s);
-  g.moveTo(bpx + bw - 6 * s, y); g.lineTo(bpx + bw - 6 * s, y + 9 * s);
+  g.moveTo(bpx + 6 * s,      y); g.lineTo(bpx + 6 * s,      y);
+  g.moveTo(bpx + bw - 6 * s, y); g.lineTo(bpx + bw - 6 * s, y);
 
   // Body outline
   lenv(g, y, 0.85);

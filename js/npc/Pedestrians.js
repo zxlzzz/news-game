@@ -83,9 +83,10 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
   applyTraits(n, typeData, profile);
   bm.register(n, typeData.npcType);
 
-  n._lifespan  = rand(90, 210);
-  n._ageTimer  = 0;
-  n._departing = false;
+  const ag = n.mem('agenda');
+  ag.lifespan  = rand(90, 210);
+  ag.ageTimer  = 0;
+  ag.departing = false;
 
   return n;
 }
@@ -104,6 +105,6 @@ export function spawnPedestrians(em, sr, bm, spawnPoints, count = 18) {
     const pt  = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
     const npc = spawnOnePedestrian(t.npcType, em, sr, bm, { x: pt.x, y: pt.y });
     npc.direction = pt.facing !== 0 ? pt.facing : (Math.random() < 0.5 ? 1 : -1);
-    npc._ageTimer = rand(0, npc._lifespan);
+    npc.mem('agenda').ageTimer = rand(0, npc.mem('agenda').lifespan);
   }
 }

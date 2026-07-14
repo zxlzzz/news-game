@@ -1,17 +1,34 @@
 /**
  * Motor — NPC 字段唯一写入层
  *
- * 保护字段：state / speed / animation / _walkMode / x / y
+ * 保护字段：state / speed / animation / x / y
  * 写入路径：仅 Motor 内部函数经由 _mw() 写入；其他层调用 Motor API。
+ * _walkMode 已迁入 npc.mem('motor').walkMode，不再受写保护。
  *
  * Debug 写保护（默认开启）：
  *   Object.defineProperty 拦截非授权写入 → console.warn + window.__motorViolations++
  *   关闭：window.__motorDebug = false
+ *
+ * CONTRACT
+ *   OWNS:      npc.{x,y,speed,state,animation} write gate (_mw);
+ *              npc.mem('motor').{walkMode,walkModeStack} lifecycle;
+ *              npc.mem('motor').{progressAnchor,progressAcc} (integratePhysics);
+ *              npc.mem('motor').tags (cleared in _defaultOnExit);
+ *              npc.vy reset on setState; npc.roamTarget null on mode change.
+ *   WRITES:    x, y via setXY/nudgeXY/_slideMove;
+ *              speed via setSpeed/setState; state/animation via setState/setAnimation;
+ *              walkMode/walkModeStack via setWalkMode/pushWalkMode/popWalkMode;
+ *              roamTarget=null on every mode switch.
+ *   READS:     npc.mem('motor').walkMode (integratePhysics, progress monitor);
+ *              NavGrid singleton (getNavGrid) for collision in _slideMove.
+ *   MUST NOT:  call setState from outside Motor; read npc._walkMode (legacy, deleted);
+ *              write npc.mem('social') or npc.mem('agenda').
  */
 
 import { standUp }  from '../entity/seat/seat.js';
 import { dlog }     from './DebugLog.js';
 import { getNavGrid, CELL } from './nav/NavGrid.js';
+import { audit } from '../debug/MovementAudit.js';
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
 let _writing = false;
@@ -24,7 +41,7 @@ function _mw(npc, field, value) {
   _writing = false;
 }
 
-const PROTECTED = ['state', 'speed', 'animation', '_walkMode', 'x', 'y'];
+const PROTECTED = ['state', 'speed', 'animation', 'x', 'y'];
 
 // ── 写保护安装 ─────────────────────────────────────────────────────────────────
 export function installProtection(npc) {
@@ -54,30 +71,33 @@ export function installProtection(npc) {
 
 // ── WalkMode 栈 ────────────────────────────────────────────────────────────────
 export function setWalkMode(npc, desc) {
-  _mw(npc, '_walkMode', desc);
-  npc._walkModeStack = npc._walkModeStack ?? [];
-  npc.roamTarget     = null;
+  const m = npc.mem('motor');
+  m.walkMode      = desc;
+  m.walkModeStack = m.walkModeStack ?? [];
+  npc.roamTarget  = null;
 }
 
 export function pushWalkMode(npc, desc) {
-  npc._walkModeStack = npc._walkModeStack ?? [];
-  if (npc._walkMode) npc._walkModeStack.push(npc._walkMode);
-  _mw(npc, '_walkMode', desc);
+  const m = npc.mem('motor');
+  m.walkModeStack = m.walkModeStack ?? [];
+  if (m.walkMode) m.walkModeStack.push(m.walkMode);
+  m.walkMode     = desc;
   npc.roamTarget = null;
 }
 
 export function popWalkMode(npc) {
-  const stack = npc._walkModeStack;
+  const stack = npc.mem('motor').walkModeStack;
   if (!stack?.length) return;
-  _mw(npc, '_walkMode', stack.pop());
+  npc.mem('motor').walkMode = stack.pop();
   npc.roamTarget = null;
 }
 
 // ── 状态定义 ───────────────────────────────────────────────────────────────────
 function _defaultOnExit(npc, toState) {
-  npc._extraTags = null;
-  if ((toState === 'walk' || toState === 'run') && npc._walkModeStack?.length > 0) {
-    _mw(npc, '_walkMode', npc._walkModeStack.pop());
+  npc.mem('motor').tags = null;
+  const m = npc.mem('motor');
+  if ((toState === 'walk' || toState === 'run') && m.walkModeStack?.length > 0) {
+    m.walkMode     = m.walkModeStack.pop();
     npc.roamTarget = null;
   }
 }
@@ -96,11 +116,11 @@ export const STATE_DEFS = {
   lean_wall: {
     anim: 'lean_wall', speedK: 0, once: true, dur: [8, 20],
     onExit: (npc, toState) => {
-      if (npc._wallSpot) {
-        const ws = npc._wallSpot;
+      const ws = npc.mem('motor').wallSpot;
+      if (ws) {
         if (ws.side === 'left') ws.building._leanLeft = null;
         else ws.building._leanRight = null;
-        npc._wallSpot = null;
+        npc.mem('motor').wallSpot = null;
       }
       _defaultOnExit(npc, toState);
     },
@@ -117,8 +137,9 @@ export const STATE_DEFS = {
     anim: 'stand', speedK: 0, once: false, dur: null,
     onExit: (npc, toState) => {
       npc.modifiers = npc.modifiers.filter(m => m.id !== '_loiter_micro');
-      if (npc._loiterDir !== undefined) npc.direction = npc._loiterDir;
-      npc._loiterDir = undefined;
+      const lt = npc.mem('loiter');
+      if (lt.dir !== undefined) npc.direction = lt.dir;
+      npc.clearMem('loiter');
       _defaultOnExit(npc, toState);
     },
   },
@@ -148,23 +169,25 @@ export function setState(npc, state, trigger = '?') {
   npc.frameIndex = 0;
   npc.frameTimer = 0;
 
-  if (npc._walkMode?.kind === 'wander' && (state === 'walk' || state === 'run'))
+  if (npc.mem('motor').walkMode?.kind === 'wander' && (state === 'walk' || state === 'run'))
     npc.roamTarget = null;
 
   if (state === 'lie_bench')
-    npc._extraTags = (Math.random() < 0.2) ? ['resting', 'homeless'] : ['resting'];
+    npc.mem('motor').tags = (Math.random() < 0.2) ? ['resting', 'homeless'] : ['resting'];
 
   if (state === 'loiter') {
-    npc._loiterDur     = null;
-    npc._loiterElapsed = 0;
-    npc._microPhase    = null;
-    npc._microTimer    = 0;
-    npc._extraTags     = ['standing', 'idle'];
+    const lt     = npc.mem('loiter');
+    lt.dur       = null;
+    lt.elapsed   = 0;
+    lt.microPhase = null;
+    lt.microTimer = 0;
+    lt.tags      = ['standing', 'idle'];
   }
 
   if (prev && prev !== state) {
     const dur   = npc.stateDur === Infinity ? '∞' : npc.stateDur.toFixed(1) + 's';
-    const extra = npc._extraTags ? `, extra_tags=[${npc._extraTags.join(',')}]` : '';
+    const ltags = npc.mem('loiter').tags ?? npc.mem('motor').tags;
+    const extra = ltags ? `, extra_tags=[${ltags.join(',')}]` : '';
     dlog(`[NPC-${npc.id}] ${prev} → ${state} (dur=${dur}, trigger=${trigger}${extra})`);
   }
 }
@@ -208,19 +231,22 @@ function _slideMove(npc, dx, dy) {
   // Axis separation — normalize to original magnitude to preserve speed
   if (dx !== 0 && !_navBlocked(grid, nx, npc.y)) {
     _mw(npc, 'x', npc.x + Math.sign(dx) * mag);
+    audit.count(npc, 'slide_steer');
     return;
   }
   if (dy !== 0 && !_navBlocked(grid, npc.x, ny)) {
     _mw(npc, 'y', npc.y + Math.sign(dy) * mag);
+    audit.count(npc, 'slide_steer');
     return;
   }
 
   // Wall-slide: pure horizontal blocked → nudge perpendicularly at original speed
   if (dx !== 0 && dy === 0) {
-    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - mag); return; }
-    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + mag); return; }
+    if (!_navBlocked(grid, npc.x, npc.y - CELL * 0.6)) { _mw(npc, 'y', npc.y - mag); audit.count(npc, 'slide_steer'); return; }
+    if (!_navBlocked(grid, npc.x, npc.y + CELL * 0.6)) { _mw(npc, 'y', npc.y + mag); audit.count(npc, 'slide_steer'); return; }
   }
-  // Fully blocked: no movement, no counters
+  // Fully blocked: no movement
+  audit.count(npc, 'blocked_contact');
 }
 
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
@@ -252,10 +278,17 @@ export function integratePhysics(npc, delta) {
     npc.direction = npc.leashTarget.direction;
     return;
   }
+  const mot = npc.mem('motor');
+  const wm  = mot.walkMode;
   let dx = 0, dy = 0;
-  if (npc.speed > 0) {
+  if (wm && mot.vel) {
+    // Velocity vector written by steerRoam — consume and bypass direction×speed path
+    dx = mot.vel.vx * dt;
+    dy = mot.vel.vy * dt;
+    mot.vel = null;
+  } else if (npc.speed > 0) {
     const tentX = npc.x + npc.direction * npc.speed * dt;
-    if (!npc._walkMode) {
+    if (!wm) {
       if (npc.maxX != null && tentX > npc.maxX && npc.x <= npc.maxX) npc.direction = -1;
       else if (npc.minX != null && tentX < npc.minX && npc.x >= npc.minX) npc.direction = 1;
     }
@@ -263,56 +296,55 @@ export function integratePhysics(npc, delta) {
   }
   const tentY = npc.y + npc.vy * dt;
   if (npc.maxY != null && tentY > npc.maxY && npc.y <= npc.maxY) {
-    npc.vy = npc._walkMode ? 0 : -Math.abs(npc.vy);
+    npc.vy = wm ? 0 : -Math.abs(npc.vy);
   } else if (npc.minY != null && tentY < npc.minY && npc.y >= npc.minY) {
-    npc.vy = npc._walkMode ? 0 : Math.abs(npc.vy);
+    npc.vy = wm ? 0 : Math.abs(npc.vy);
   }
-  dy = npc.vy * dt;
+  if (!mot.vel) dy = npc.vy * dt;  // vel path already set dy above
   if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
 
-  // Progress monitor: every 1.5 s sum cumulative travel; < 15 px with active goal → fail leg
-  if (!npc._progressLast) npc._progressLast = { x: npc.x, y: npc.y };
-  const frameDist = Math.hypot(npc.x - npc._progressLast.x, npc.y - npc._progressLast.y);
-  npc._progressCum = (npc._progressCum ?? 0) + frameDist;
-  npc._progressLast = { x: npc.x, y: npc.y };
+  // Progress monitor: every 1.5 s measure net displacement from anchor; < 15 px with active goal → fail leg
+  if (!mot.progressAnchor) mot.progressAnchor = { x: npc.x, y: npc.y };
 
-  npc._progressAcc = (npc._progressAcc ?? 0) + dt;
-  if (npc._progressAcc >= 1.5) {
-    npc._progressAcc = 0;
-    const moved = npc._progressCum;
-    npc._progressCum = 0;
+  mot.progressAcc = (mot.progressAcc ?? 0) + dt;
+  if (mot.progressAcc >= 1.5) {
+    mot.progressAcc = 0;
+    const moved = Math.hypot(npc.x - mot.progressAnchor.x, npc.y - mot.progressAnchor.y);
+    mot.progressAnchor = { x: npc.x, y: npc.y };
 
-    const hasGoal = npc.speed > 0 || npc.state === 'routing';
+    const _walkState = npc.state === 'walk' || npc.state === 'run' || npc.state === 'jog';
+    if (_walkState && wm && npc.speed === 0) audit.count(npc, 'speed0_walk');
+    const hasGoal = npc.state === 'routing' || (_walkState && wm);
     if (hasGoal && moved < 15) {
       // Clear the path layer so steerRoam replans from current position
-      npc._navPath = null;
-      const mode = npc._walkMode;
-      if (mode?.kind === 'direct') {
+      mot.navPath = null;
+      const mode = mot.walkMode;
+      if (npc.state === 'routing') {
+        if (mot.walkMode != null) audit.count(npc, 'routing_with_walkmode');
+        if (!mot.routeReplan) {
+          mot.routePts    = null;
+          mot.routeIdx    = 0;
+          mot.routeReplan = 1;
+        } else {
+          mot.routeReplan = 0;
+          npc.stateTimer  = 9999;
+        }
+      } else if (mode?.kind === 'direct') {
         if (!mode._stuckOnce) {
           mode._stuckOnce = true;
-          npc._navPath   = null;
-          npc.roamTarget = null;
-          npc._progressCum = 0;
+          mot.navPath     = null;
+          npc.roamTarget  = null;
         } else {
           mode._elapsed = mode.abandonAfter ?? 60;
         }
       } else if (mode?.kind === 'wander') {
         npc.roamTarget = null;
-      } else if (npc.state === 'routing') {
-        if (!npc._routeReplan) {
-          npc._routePts    = null;
-          npc._routeIdx    = 0;
-          npc._routeReplan = 1;
-        } else {
-          npc._routeReplan = 0;
-          npc.stateTimer   = 9999;
-        }
       } else if (!mode) {
         npc.direction = -npc.direction;
       }
     } else {
-      npc._routeReplan = 0;
-      if (npc._walkMode?.kind === 'direct') npc._walkMode._stuckOnce = false;
+      mot.routeReplan = 0;
+      if (mot.walkMode?.kind === 'direct') mot.walkMode._stuckOnce = false;
     }
   }
 }

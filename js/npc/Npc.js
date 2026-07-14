@@ -2,10 +2,20 @@
  * NPC — 继承 Entity 的动态人物实体
  * 渲染委托给构造时注入的 StickRenderer。
  * 支持：playOnce 单次播放、leashTarget 绑带跟随、drawExtra 附加绘制、customUpdate 回调。
+ *
+ * CONTRACT
+ *   Npc.update() 帧内执行顺序（代码顺序，非 Motor 托管 NPC 与托管 NPC 均遵守）：
+ *     1. leash 同步：if leashTarget && !_motorInstalled → 直接覆写 x/y/direction
+ *     2. 动画帧推进：frameTimer += delta；playOnce animDone 检测；frameIndex 步进
+ *     3. 物理积分：_motorInstalled → integratePhysics(this, delta)；
+ *                 否则（无 leash）→ 内联 direction×speed / vy 积分
+ *     4. customUpdate 回调（最后执行，可读取已更新的 x/y/direction）
+ *   WRITES:   x, y, direction（leash 路径）；frameIndex, animDone（动画路径）
+ *   MUST NOT: 在 customUpdate 中再次积分位置（步骤 3 已完成）
  */
 
 import { Entity } from '../core/Entity.js';
-import { depthGray } from '../core/Layout.js';
+import { depthGray, BUILDING_BASE_Y } from '../core/Layout.js';
 import { integratePhysics } from '../behavior/Motor.js';
 import { clipLibrary } from '../core/ClipLibrary.js';
 
@@ -61,7 +71,7 @@ export class NPC extends Entity {
     this.id = NPC._nextId++;   // 全局唯一稳定 id（供 debug overlay / 日志引用）
 
     this.renderer  = config.renderer;
-    this.animation = config.animation || 'idle';
+    this.animation = config.animation || 'stand';
     this.direction = config.direction || 1;
     this.speed     = config.speed     || 0;
     this.vy        = config.vy ?? 0;
@@ -72,7 +82,7 @@ export class NPC extends Entity {
 
     this.minX = config.minX ?? -100;
     this.maxX = config.maxX ?? 2100;
-    this.minY = config.minY ?? 250;
+    this.minY = config.minY ?? BUILDING_BASE_Y;
     this.maxY = config.maxY ?? 460;
 
     // 单次播放
@@ -96,6 +106,9 @@ export class NPC extends Entity {
     this.traits    = config.traits ?? [];       // string[]，生成时赋值，之后不变
     this.modifiers = [];                        // Modifier[]，运行时管理
   }
+
+  mem(ns)      { return (this._mem ??= {})[ns] ??= {}; }
+  clearMem(ns) { if (this._mem) delete this._mem[ns]; }
 
   resolveJoints() {
     if (!this.modifiers.length) return null;
@@ -211,8 +224,8 @@ export class NPC extends Entity {
       if (extra) out.add(extra);
     }
 
-    // 4) 临时附加标签（随状态生灭，如躺椅时 resting/homeless）
-    if (this._extraTags) for (const t of this._extraTags) out.add(t);
+    // 4) 命名空间临时标签（各 owner 写入自己 ns 的 .tags，随 clearMem 自动回收）
+    if (this._mem) for (const ns of Object.values(this._mem)) if (ns.tags) for (const t of ns.tags) out.add(t);
 
     // 5) 社交状态
     if (this.bond) out.add('talking');
@@ -272,14 +285,15 @@ export class NPC extends Entity {
     } else if (!this.leashTarget) {
       // 漫游 NPC 的朝向/速度由 steerRoam 每帧决定，到边界只夹取位置、不翻转方向，
       // 否则会在区域边界与转向逻辑互相打架，出现原地左右乱闪。
+      const _wm = this._mem?.motor?.walkMode;
       if (this.speed > 0) {
         this.x += this.direction * this.speed * (delta / 1000);
-        if      (this.x > this.maxX) { this.x = this.maxX; if (!this._walkMode) this.direction = -1; }
-        else if (this.x < this.minX) { this.x = this.minX; if (!this._walkMode) this.direction =  1; }
+        if      (this.x > this.maxX) { this.x = this.maxX; if (!_wm) this.direction = -1; }
+        else if (this.x < this.minX) { this.x = this.minX; if (!_wm) this.direction =  1; }
       }
       this.y += this.vy * (delta / 1000);
-      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = this._walkMode ? 0 : -Math.abs(this.vy); }
-      else if (this.y < this.minY) { this.y = this.minY; this.vy = this._walkMode ? 0 :  Math.abs(this.vy); }
+      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = _wm ? 0 : -Math.abs(this.vy); }
+      else if (this.y < this.minY) { this.y = this.minY; this.vy = _wm ? 0 :  Math.abs(this.vy); }
     }
 
     if (this.customUpdate) this.customUpdate(this, delta);

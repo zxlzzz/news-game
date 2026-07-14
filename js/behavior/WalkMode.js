@@ -1,4 +1,17 @@
 /**
+ * CONTRACT  (see docs/contracts/movement.md)
+ *   OWNS:      npc.roamTarget lifecycle (pickModeTarget / _pickRandom / onPathArrival);
+ *              WALK_PATHS module dict (initWalkPaths / addWalkPath);
+ *              npc.mem('motor').tags for crossing labels.
+ *   WRITES:    npc.roamTarget; npc.mem('motor').tags (crossing only);
+ *              npc.vy (planCrossing entry);
+ *              setWalkMode/pushWalkMode/popWalkMode (re-exported from Motor).
+ *   READS:     npc.mem('motor').walkMode, npc.vy, NavGrid singleton,
+ *              npc.mem('agenda').departing (checkZoneTransition guard).
+ *   MUST NOT:  write npc.speed/state/animation/x/y directly;
+ *              write npc.mem('motor').navPath or routeTarget;
+ *              read npc.mem('social') fields.
+ *
  * WalkMode — NPC 走路模式子系统
  *
  * 三种模式：
@@ -66,22 +79,23 @@ const TrafficSignal = { getState: (_x) => 'green' };
 
 /**
  * 规划过马路（从当前侧到 targetY 所在侧）。
- *   守法：走最近斑马线入口 → 竖穿到对侧，_extraTags=['crossing_road']。
- *   乱穿：原地竖穿，切 run 动画，_extraTags=['jaywalking']。
+ *   守法：走最近斑马线入口 → 竖穿到对侧，motor.tags=['crossing_road']。
+ *   乱穿：原地竖穿，切 run 动画，motor.tags=['jaywalking']。
  * onCrossed(npc) 在完成过马路后回调（可选）。
  */
 export function planCrossing(npc, targetY, profile, onCrossed = null) {
   const jaywalkChance = profile?.jaywalkChance ?? 0.1;
   const goingDown = targetY > npc.y;
-  const entryY = goingDown ? FAR_Y - 2  : NEAR_Y + 2;
-  const exitY  = goingDown ? NEAR_Y + 2 : FAR_Y - 2;
+  const entryY = goingDown ? BIKE_LANE_FAR_TOP - 4  : BIKE_LANE_NEAR_BOTTOM + 4;
+  const exitY  = goingDown ? BIKE_LANE_NEAR_BOTTOM + 4 : BIKE_LANE_FAR_TOP - 4;
 
   if (Math.random() < jaywalkChance) {
-    npc._extraTags = ['jaywalking'];
+    npc.mem('motor').tags = ['jaywalking'];
     setAnimation(npc, 'run');
     setSpeed(npc, (npc.walkSpeed || 26) * 2.4);
     pushWalkMode(npc, modeDirect({ x: npc.x, y: exitY }, (n) => {
-      n._extraTags = null;
+      n.mem('motor').tags = null;
+      popWalkMode(n);
       setAnimation(n, 'walk');
       setSpeed(n, n.walkSpeed || 26);
       if (onCrossed) onCrossed(n);
@@ -91,9 +105,9 @@ export function planCrossing(npc, targetY, profile, onCrossed = null) {
     const cwX = cw ? cw.x : npc.x;
     // TODO: if (TrafficSignal.getState(cwX) === 'red') { /* wait */ }
     pushWalkMode(npc, modeDirect({ x: cwX, y: entryY }, (n) => {
-      n._extraTags = ['crossing_road'];
+      n.mem('motor').tags = ['crossing_road'];
       setWalkMode(n, modeDirect({ x: cwX, y: exitY }, (n2) => {
-        n2._extraTags = null;
+        n2.mem('motor').tags = null;
         popWalkMode(n2);
         if (onCrossed) onCrossed(n2);
       }, 30));
@@ -162,9 +176,11 @@ function isBikeLaneZone(y) {
  * 建议由 BehaviorManager 在每帧（或每 N 帧）调用。
  */
 export function checkZoneTransition(npc) {
-  if (!npc._walkMode || npc._departing) return;
-  if (npc.state !== 'walk' && npc.state !== 'run') return;
-  if (npc._walkMode.kind !== 'wander') return;   // direct/path_follow 自行负责区域
+  if (npc.mem('agenda').departing) return;
+  if (npc.state !== 'walk' && npc.state !== 'run' && npc.state !== 'jog') return;
+  if (!npc.mem('motor').walkMode) setWalkMode(npc, modeWander());
+  const wm = npc.mem('motor').walkMode;
+  if (wm.kind !== 'wander') return;   // direct/path_follow 自行负责区域
 
   const inRoad     = isRoadZone(npc.y);
   const inBikeLane = !inRoad && isBikeLaneZone(npc.y);
@@ -187,7 +203,7 @@ export function checkZoneTransition(npc) {
  * 在 steerRoam 内 roamTarget == null 时调用。
  */
 export function pickModeTarget(npc, envQuery) {
-  const mode = npc._walkMode;
+  const mode = npc.mem('motor').walkMode;
 
   if (!mode || mode.kind === 'wander') {
     _pickRandom(npc, envQuery);
@@ -222,7 +238,7 @@ export function pickModeTarget(npc, envQuery) {
 }
 
 function _pickRandom(npc, envQuery) {
-  const r = npc._walkMode?.bounds;
+  const r = npc.mem('motor').walkMode?.bounds;
   if (!r) {
     const grid = getNavGrid();
     if (!grid) { npc.roamTarget = null; return; }
@@ -231,8 +247,10 @@ function _pickRandom(npc, envQuery) {
     npc.roamTarget = null;
     return;
   }
+  const nearSide = npc.y >= NEAR_Y;
   for (let i = 0; i < 5; i++) {
     const c = { x: rand(r.x0, r.x1), y: rand(r.y0, r.y1) };
+    if ((c.y >= NEAR_Y) !== nearSide) continue;
     if (envQuery.pointBlocked(c.x, c.y)) continue;
     npc.roamTarget = c;
     return;
@@ -291,7 +309,7 @@ function _crossSide(y1, y2) {
  */
 export function planLegs(npc, target, timeout = 60, onDone = null) {
   if (_crossSide(npc.y, target.y ?? npc.y)) {
-    planCrossing(npc, target.y, npc._profile, (n) => {
+    planCrossing(npc, target.y, npc.mem('agenda').profile, (n) => {
       setWalkMode(n, modeDirect(target, onDone, timeout));
     });
   } else {
@@ -307,7 +325,7 @@ export function planLegs(npc, target, timeout = 60, onDone = null) {
  * 到达检测由 steerRoam 负责。
  */
 export function tickWalkMode(npc, dt) {
-  const mode = npc._walkMode;
+  const mode = npc.mem('motor').walkMode;
   if (!mode) return;
 
   if (mode.kind === 'path_follow' && mode.pausing) {
@@ -332,7 +350,8 @@ export function tickWalkMode(npc, dt) {
   if (mode.kind === 'direct') {
     mode._elapsed = (mode._elapsed ?? 0) + dt;
     if (mode._elapsed > (mode.abandonAfter ?? 60)) {
-      setWalkMode(npc, modeWander());
+      if (npc.mem('motor').walkModeStack?.length > 0) popWalkMode(npc);
+      else setWalkMode(npc, modeWander());
     }
   }
 }

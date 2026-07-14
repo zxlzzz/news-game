@@ -23,7 +23,7 @@ export function spawnDogWalker(em, sr, bm, propManager) {
   owner.modifiers.push({ id: 'walk_dog', kind: 'trait', priority: 5, joints: wdJoints, timer: -1 });
 
   const dog = makeNPC(em, sr, {
-    x: 808, y: ownerY, animation: 'dogwalk', direction: 1, speed: 0, vy: 0,
+    x: 808, y: ownerY, animation: 'dog_walk', direction: 1, speed: 0, vy: 0,
     leashTarget: owner, leashOffset: { x: 46, y: 6 },
     color: 0x7a5530, tags: ['dog', 'animal'],
   });

@@ -1,6 +1,6 @@
 import {
   depthLineWidth, depthLineColor,
-  FILL_PAPER, FILL_LIGHT, FILL_MID,
+  FILL_PAPER, FILL_LIGHT, FILL_MID, FILL_SHADE,
   ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../../core/Layout.js';
 
@@ -31,16 +31,12 @@ export function drawPhoneBooth(g, p) {
   g.beginFill(FILL_MID, 1);
   g.drawRect(bpx, bpy, bw, bh);
   g.endFill();
-  // Glass reflection overlay
-  g.beginFill(0xffffff, 0.16);
-  g.drawRect(bpx + 3 * s, bpy + 3 * s, bw - 6 * s, bh * 0.45);
-  g.endFill();
   // Body details
   lenv(g, y, 0.6);
   g.moveTo(bpx + bw / 2, bpy + 3 * s); g.lineTo(bpx + bw / 2, y - 3 * s);
   g.moveTo(bpx + 6 * s,  bpy + bh * 0.5); g.lineTo(bpx + bw - 6 * s, bpy + bh * 0.5);
   g.lineStyle(0);
-  g.beginFill(0x000000, 0.7);
+  g.beginFill(FILL_SHADE, 1);
   g.drawRect(bpx + bw - 14 * s, bpy + 18 * s, 6 * s, 17 * s);
   g.endFill();
   // Body outline

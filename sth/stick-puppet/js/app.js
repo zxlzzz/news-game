@@ -1285,10 +1285,12 @@ function loadJSON() {
   const ta = document.getElementById('jsonInput');
   try {
     const data = JSON.parse(ta.value);
-    if (!data.kind) { alert('缺少 "kind" 字段（新 schema 格式）'); return; }
+    const resolvedKind = (data.id && manifestData?.clips[data.id]?.kind)
+      ?? data.kind
+      ?? 'cycle';
     loadedClipMeta = {
       id:         data.id         ?? null,
-      kind:       data.kind,
+      kind:       resolvedKind,
       facing:     data.facing     ?? null,
       skeleton:   data.skeleton   ?? null,
       variant_of: data.variant_of ?? null,
@@ -1299,7 +1301,7 @@ function loadJSON() {
     _loadClipData(data.id ?? '(pasted)', loadedClipMeta, data);
     document.getElementById('framesStrip').innerHTML = '';
     currentFrame = 0; render();
-    setInfo(`载入 ${data.kind} clip: ${frames.length} 帧`);
+    setInfo(`载入 ${loadedClipMeta.kind} clip: ${frames.length} 帧`);
   } catch (e) { alert('JSON 解析失败: ' + e.message); }
 }
 
@@ -1311,7 +1313,6 @@ function exportJSON() {
   if (variantMode) {
     const data = {
       ...(m?.id != null ? { id: m.id } : {}),
-      kind: 'cycle',
       ...(m?.facing   ? { facing: m.facing } : {}),
       ...(m?.skeleton && m.skeleton !== 'human' ? { skeleton: m.skeleton } : {}),
       ...(variantParams.variant_of ? { variant_of: variantParams.variant_of } : {}),
@@ -1341,7 +1342,6 @@ function exportJSON() {
     }
     const data = {
       ...(m?.id != null ? { id: m.id } : {}),
-      kind: 'overlay',
       ...(m?.facing ? { facing: m.facing } : {}),
       participants: duetRoles.map(r => ({
         role: r.role,
@@ -1357,7 +1357,6 @@ function exportJSON() {
   const dp = sk.defaultPose;
   const data = {
     ...(m?.id != null ? { id: m.id } : {}),
-    kind,
     ...(m?.facing   ? { facing:     m.facing   } : {}),
     ...(m?.skeleton && m.skeleton !== 'human' ? { skeleton: m.skeleton } : {}),
     ...(kind === 'transition' && m?.from ? { from: m.from } : {}),

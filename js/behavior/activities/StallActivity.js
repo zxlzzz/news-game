@@ -36,7 +36,7 @@ export class StallActivity extends Activity {
   _setupSeller(npc) {
     setState(npc, 'stand', 'stall-setup');
     npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
-    npc._extraTags = ['vendor'];
+    npc.mem('social').tags = ['vendor'];
   }
 
   _pickSellerClip() {
@@ -55,7 +55,7 @@ export class StallActivity extends Activity {
     this._buyerDur    = rand(2, 4);
     this._buyerPlayer = new ClipPlayer(npc, '_stall_buyer');
     this._buyerPlayer.play(STALL_GESTURES.buyer_point);
-    npc._extraTags = ['transaction', 'shopping'];
+    npc.mem('social').tags = ['transaction', 'shopping'];
 
     this.seller.direction = (npc.x >= this.seller.x) ? 1 : -1;
     npc.direction         = (this.seller.x >= npc.x) ? 1 : -1;
@@ -118,7 +118,7 @@ export class StallActivity extends Activity {
       this.buyerSlot.npc      = null;
     }
     if (b) {
-      b._extraTags = null;
+      b.mem('social').tags = null;
       this.release(b);
       this.participants = this.participants.filter(p => p.npc !== b);
       if (walkAway && b.alive) setState(b, 'walk', 'stall-done');
@@ -138,7 +138,7 @@ export class StallActivity extends Activity {
     if (this._sellerGivePlayer) this._sellerGivePlayer.clear();
     if (this._sellerPlayer)     this._sellerPlayer.clear();
     if (this.buyer && this.buyer.alive) setState(this.buyer, 'walk', 'stall-interrupt');
-    if (this.seller.alive) this.seller._extraTags = null;
+    if (this.seller.alive) this.seller.mem('social').tags = null;
     if (this.prop) this.prop._stallActivity = null;
     super.destroy();
   }

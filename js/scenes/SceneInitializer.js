@@ -80,7 +80,7 @@ export class SceneInitializer {
       const cfg = { ...p, propColor: parseColor(p.color) };
       if (p.propType === 'sign') {
         const host = buildings.find(b => p.x >= b.x && p.x <= b.x + b.bWidth);
-        if (host) cfg.y = BUILDING_BASE_Y - 8;
+        if (host) { cfg.y = BUILDING_BASE_Y - 8; cfg._sortY = BUILDING_BASE_Y + 1; }
       }
       const prop = this.em.add(new PropEntity(cfg));
       prop.scale = depthScale(prop.y);
@@ -172,7 +172,7 @@ export class SceneInitializer {
       bm.register(seller, 'stall_seller');
 
       slot.reserved = seller.id;   // 预约 seller 槽，防止他人占用（永不释放）
-      seller._routeTarget = {
+      seller.mem('motor').routeTarget = {
         x: stall.x + slot.dx, y: stall.y + slot.dy,
         prop: stall, slot,
         abandonAfter: 60,

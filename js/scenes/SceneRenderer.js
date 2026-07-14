@@ -8,8 +8,14 @@ import {
   SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR, FOG_ALPHA,
   SKYLINE_BACK, SKYLINE_FRONT, SKYLINE_LINE, CLOUD_LINE,
   CURB_EDGE_LINE,
-  depthLineColor, ENV_LINE_LIGHT, ENV_LINE_DARK,
+  depthLineColor, depthLineWidth, ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../core/Layout.js';
+
+function lenv(g, baseY, wScale = 1.0) {
+  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
+  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
+  g.lineStyle(lw, lc, 1);
+}
 import { drawBusStopBays }  from '../entity/busstop/drawBusStopBay.js';
 import { drawChessPlaza }   from '../entity/chess-table/drawChessPlaza.js';
 import { drawMiniPark }     from '../entity/mini-park/drawMiniPark.js';
@@ -30,6 +36,7 @@ export class SceneRenderer {
 
   _drawGround() {
     const g = this.bg;
+    g.lineStyle(0);
     g.beginFill(GRAY_FAR_PAVE, 1);
     g.drawRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
     g.endFill();
@@ -52,7 +59,6 @@ export class SceneRenderer {
 
     this._drawRoadMarkings(g);
     this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, BIKE_LANE_FAR_TOP - 3);
-    this._drawRoadPatches(g);
     this._drawParkGrass(g);
     drawParkPlaza(g, this.layout.parkTrees || []);
     drawMiniPark(g, this.layout.miniPark);
@@ -127,6 +133,7 @@ export class SceneRenderer {
   }
 
   _drawRoadMarkings(g) {
+    g.lineStyle(0);
     g.beginFill(GRAY_CURB, 1);
     g.drawRect(0, FAR_Y - 3, WORLD_WIDTH, 3);
     g.endFill();
@@ -156,20 +163,8 @@ export class SceneRenderer {
     }
   }
 
-  _drawRoadPatches(g) {
-    const rand = (i) => { const s = Math.sin(i * 91.337) * 43758.5453; return s - Math.floor(s); };
-    g.beginFill(0x000000, 0.04);
-    for (let i = 0; i < 3; i++) {
-      const px = (i + 0.5) * WORLD_WIDTH / 3 + (rand(i + 1) - 0.5) * 200;
-      const py = FAR_Y + 18 + rand(i * 3 + 2) * (NEAR_Y - FAR_Y - 36);
-      const pw = 30 + rand(i * 3 + 3) * 40;
-      const ph = 6  + rand(i * 3 + 4) * 6;
-      g.drawRect(px, py, pw, ph);
-    }
-    g.endFill();
-  }
-
   _drawCrosswalk(g, cx) {
+    g.lineStyle(0);
     const roadTop = FAR_Y  + 5;
     const roadBot = NEAR_Y - 5;
     const usable  = roadBot - roadTop;
@@ -195,12 +190,12 @@ export class SceneRenderer {
 
   _drawParkGrass(g) {
     const seed = (i) => { const s = Math.sin(i * 91.337) * 43758.5453; return s - Math.floor(s); };
-    g.lineStyle(0.7, 0x000000, 0.05);
     for (let i = 0; i < 80; i++) {
       const gx  = seed(i * 3 + 1) * WORLD_WIDTH;
       const gy  = PARK_TOP + 5 + seed(i * 3 + 2) * (WORLD_HEIGHT - PARK_TOP - 10);
       const len = 4 + seed(i * 3 + 3) * 2;
       const ang = (seed(i * 5 + 7) - 0.3) * 0.8;
+      lenv(g, gy, 0.15);
       g.moveTo(gx, gy);
       g.lineTo(gx + Math.sin(ang) * len, gy - Math.cos(ang) * len);
     }

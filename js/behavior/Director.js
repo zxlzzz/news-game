@@ -90,7 +90,7 @@ export class Director {
     if (this._spawnTimer > 0) return;
     this._spawnTimer = rand(2, 5);
 
-    const alive = this._bm.npcs.filter(n => n.alive && !n._departing).length;
+    const alive = this._bm.npcs.filter(n => n.alive && !n.mem('agenda').departing).length;
     const { target } = this._currentPeriod();
     if (alive < target) {
       const missing = Math.min(target - alive, 2);
@@ -101,8 +101,9 @@ export class Director {
   // ─── 初始批次后补分配 exitBias / lifespan ────────────────────────────────────
   assignDefaults(npcs) {
     for (const npc of npcs) {
-      if (npc._exitBias == null) {
-        npc._exitBias = _pickBias(npc.npcType ?? 'pedestrian');
+      const ag = npc.mem('agenda');
+      if (ag.exitBias == null) {
+        ag.exitBias = _pickBias(npc.npcType ?? 'pedestrian');
       }
       this._installRefs(npc);
     }
@@ -110,7 +111,7 @@ export class Director {
 
   // ─── 公交到站下客 ─────────────────────────────────────────────────────────────
   _alight(bus, stop) {
-    const alive = this._bm.npcs.filter(n => n.alive && !n._departing).length;
+    const alive = this._bm.npcs.filter(n => n.alive && !n.mem('agenda').departing).length;
     const { target } = this._currentPeriod();
     const headroom = target - alive;
     if (headroom <= 0) return;
@@ -130,13 +131,17 @@ export class Director {
     }
   }
 
-  // ─── 单次 spawn：从 spawnPoints 随机选入口 ────────────────────────────────────
+  // ─── 单次 spawn：60% 边缘 / 40% 楼门加权选入口 ───────────────────────────────
   _spawnOne() {
     if (this._spawnPoints.length === 0) return;
     const { mix } = this._currentPeriod();
     const profile = _pickProfile(mix);
 
-    const pt     = this._spawnPoints[Math.floor(Math.random() * this._spawnPoints.length)];
+    const edges = this._spawnPoints.filter(p => p.facing !== 0);
+    const doors = this._spawnPoints.filter(p => p.facing === 0);
+    const useEdge = edges.length > 0 && (doors.length === 0 || Math.random() < 0.60);
+    const pool = useEdge ? edges : doors;
+    const pt   = pool[Math.floor(Math.random() * pool.length)];
     const isDoor = pt.facing === 0;
     this._spawnNPC(profile, pt.x, pt.y, isDoor ? { x: pt.x } : null);
   }
@@ -153,10 +158,11 @@ export class Director {
       minX: 0, maxX: WORLD_WIDTH,
       minY: BUILDING_BASE_Y, maxY: PARK_BOTTOM,
     });
-    npc.direction  = direction;
-    npc._exitBias  = exitBias;
-    npc._lifespan  = rand(90, 200);
-    npc._ageTimer  = fromDoor ? 0 : rand(0, 20);
+    npc.direction = direction;
+    const ag = npc.mem('agenda');
+    ag.exitBias  = exitBias;
+    ag.lifespan  = rand(90, 200);
+    ag.ageTimer  = fromDoor ? 0 : rand(0, 20);
 
     this._installRefs(npc);
     return npc;
@@ -164,9 +170,10 @@ export class Director {
 
   // ─── 将运行时引用注入到 NPC，供 ExitSceneTask 使用 ─────────────────────────────
   _installRefs(npc) {
-    npc._exitRegistry    = this._exitRegistry;
-    npc._waitForBusLayer = this._bm.waitForBusLayer;
-    npc._busStops        = this._busStops;
+    const ag = npc.mem('agenda');
+    ag.exitRegistry    = this._exitRegistry;
+    ag.waitForBusLayer = this._bm.waitForBusLayer;
+    ag.busStops        = this._busStops;
   }
 
   // ─── 当前时段参数 ─────────────────────────────────────────────────────────────

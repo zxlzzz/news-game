@@ -20,11 +20,11 @@ export class Activity {
 
   join(npc, role) {
     this.participants.push({ npc, role });
-    npc._activity = this;
+    npc.mem('social').activity = this;
   }
 
   release(npc) {
-    npc._activity = null;
+    npc.mem('social').activity = null;
   }
 
   occupy(prop) {

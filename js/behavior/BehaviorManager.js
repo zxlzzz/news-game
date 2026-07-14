@@ -1,15 +1,11 @@
 /**
  * BehaviorManager — 行为系统薄协调器
  *
- * 主循环顺序（每帧，每个存活 NPC）：
- *   1. SocialLayer.update（Activity tick + talk 配对）
- *   2. WaitForBusLayer.update
- *   3. 寿命到期 → releaseAllHoldings + triggerDeparture + 推 ExitSceneTask
- *   4. Agenda.tick（无 primary 时选下一目标，_activity 时跳过）
- *   5. runner.tick（始终执行，含 TalkToTask / ExitSceneTask 等监控任务）
- *   6. if _activity → continue（跳过 BSM / modifiers）
- *   7. tickBaseState + checkZoneTransition
- *   8. tickModifiers
+ * 帧内执行顺序见 docs/contracts/movement-dataflow.md §1。
+ *
+ * BM 私有约定：
+ *   - activity 存在时 `continue`（跳过 BSM / modifiers）
+ *   - `_separate` 由 BM 在每帧末尾统一调用，不由 BSM 调用
  *
  * Smart-object 路由规则（walk → routing）已全部删除；
  * 售货机 / 垃圾桶由 Agenda desires 驱动；chess_onlooker / stall_buyer
@@ -30,17 +26,19 @@ import { TaskRunner }           from './TaskRunner.js';
 import { Agenda }               from './Agenda.js';
 import { ExitSceneTask }        from './tasks/ExitSceneTask.js';
 import { stuckProbe } from './StuckProbe.js';
+import { audit } from '../debug/MovementAudit.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
-/** 释放 NPC 占用的所有槽位（reserved 预约 + slot_wait 就位），清 _slotWaitProp */
+/** 释放 NPC 占用的所有槽位（reserved 预约 + slot_wait 就位），清 slotWaitProp */
 function releaseAllHoldings(npc, envQuery) {
   envQuery.releaseSlotReservation(npc);
-  if (npc._slotWaitProp) {
-    for (const s of npc._slotWaitProp._slots) {
+  const sc = npc.mem('social');
+  if (sc.slotWaitProp) {
+    for (const s of sc.slotWaitProp._slots) {
       if (s.npc === npc) { s.ready = false; s.npc = null; }
     }
-    npc._slotWaitProp = null;
+    sc.slotWaitProp = null;
   }
 }
 
@@ -64,20 +62,21 @@ export class BehaviorManager {
 
   /** 注册 NPC 并指定行为档案；返回该 NPC */
   register(npc, profileName = 'pedestrian') {
-    npc._profile  = getProfile(profileName);
-    npc._activity = null;
+    const ag = npc.mem('agenda');
+    ag.profile  = getProfile(profileName);
+    npc.mem('social').activity = null;
     npc.walkSpeed = npc.speed > 0 ? npc.speed : rand(20, 34);
     this.npcs.push(npc);
     installProtection(npc);
-    setState(npc, npc._profile.initial || 'walk');
+    setState(npc, ag.profile.initial || 'walk');
 
-    npc._runner = new TaskRunner();
-    npc._agenda = new Agenda(npc._profile, this.envQuery);
+    ag.runner = new TaskRunner();
+    ag.agenda = new Agenda(ag.profile, this.envQuery);
 
     // 供 ExitSceneTask 在运行时读取（Director spawn 的 NPC 由 Director._installRefs 覆写）
-    npc._exitRegistry    = this.exitRegistry;
-    npc._waitForBusLayer = this.waitForBusLayer;
-    npc._busStops        = this.waitForBusLayer?._stops ?? [];
+    ag.exitRegistry    = this.exitRegistry;
+    ag.waitForBusLayer = this.waitForBusLayer;
+    ag.busStops        = this.waitForBusLayer?._stops ?? [];
 
     return npc;
   }
@@ -87,8 +86,9 @@ export class BehaviorManager {
     this._dt = dt;
     refreshDebugFlag();
 
-    stuckProbe(this.npcs, dt)
-    
+    stuckProbe(this.npcs, dt);
+    audit.tick(this.npcs, dt);
+
     // 1) Activity 层
     this.socialLayer.update(this.npcs, dt);
 
@@ -103,39 +103,41 @@ export class BehaviorManager {
 
     for (const npc of this.npcs) {
       if (!npc.alive) continue;
+      const ag = npc.mem('agenda');
+      const sc = npc.mem('social');
 
       // 等公交：bus waiter 逻辑独立
-      if (npc._waitingBusStop && npc.state !== 'routing') {
+      if (sc.waitingBusStop && npc.state !== 'routing') {
         if (this.waitForBusLayer) this.waitForBusLayer.tickWaiter(npc, dt);
         continue;
       }
 
       // 寿命到期 → 离场
-      if (!npc._departing && npc._lifespan != null && !npc._waitingBusStop) {
-        npc._ageTimer = (npc._ageTimer || 0) + dt;
-        if (npc._ageTimer >= npc._lifespan) {
+      if (!ag.departing && ag.lifespan != null && !sc.waitingBusStop) {
+        ag.ageTimer = (ag.ageTimer || 0) + dt;
+        if (ag.ageTimer >= ag.lifespan) {
           releaseAllHoldings(npc, this.envQuery);
           triggerDeparture(npc, this.exitRegistry);
-          if (npc._departing) {
-            npc._runner?.setPrimary(new ExitSceneTask(), npc);
+          if (ag.departing) {
+            ag.runner?.setPrimary(new ExitSceneTask(), npc);
           }
         }
       }
 
       // Agenda 选目标（无 Activity 时才评估）
-      if (!npc._activity) {
-        npc._agenda?.tick(npc, npc._runner, dt);
+      if (!sc.activity) {
+        ag.agenda?.tick(npc, ag.runner, dt);
       }
 
       // TaskRunner tick（始终，含 TalkToTask / ExitSceneTask）
-      npc._runner?.tick(npc, dt);
+      ag.runner?.tick(npc, dt);
 
       // Activity 锁定 → 跳过 BSM / modifiers
-      if (npc._activity) continue;
+      if (sc.activity) continue;
 
-      tickBaseState(npc, npc._profile, this.envQuery, dt);
+      tickBaseState(npc, ag.profile, this.envQuery, dt);
       if (npc.state === 'walk' || npc.state === 'run') checkZoneTransition(npc);
-      if (!npc._departing) tickModifiers(npc, npc._profile, dt, globalHeldFrac);
+      if (!ag.departing) tickModifiers(npc, ag.profile, dt, globalHeldFrac);
     }
 
     // 4) NPC 间分离
@@ -151,7 +153,7 @@ export class BehaviorManager {
 
   // 当分离推力方向与 NPC 行进方向相反时衰减为 0.5，避免抖振
   _sepScale(npc, ux, uy) {
-    const mode = npc._walkMode;
+    const mode = npc.mem('motor').walkMode;
     if (!mode || mode.kind !== 'direct') return 1;
     const t = mode.target;
     const dx = t.x - npc.x, dy = t.y - npc.y;
@@ -160,10 +162,20 @@ export class BehaviorManager {
     return (ux * dx + uy * dy) / len < -0.4 ? 0.5 : 1;
   }
 
+  // CONTRACT (_separate)  (see docs/contracts/movement.md)
+  //   OWNS:    inter-NPC separation impulses applied via Motor.nudgeXY.
+  //   WRITES:  npc.x/y indirectly via nudgeXY (authorised Motor API).
+  //   READS:   npc.state, npc.mem('social').{activity,bench}, npc.leashTarget,
+  //            npc.mem('motor').walkMode (via _sepScale).
+  //   MUST NOT: call setState or set npc.speed; skip leashed NPCs (leashTarget ≠ null).
   _separate(dt) {
     const MOVING = new Set(['walk', 'run', 'jog']);
-    const movers = this.npcs.filter(n =>
-      n.alive && !n._activity && !n.leashTarget && MOVING.has(n.state));
+    const movers  = this.npcs.filter(n =>
+      n.alive && !n.mem('social').activity && !n.leashTarget && MOVING.has(n.state));
+    const statics = this.npcs.filter(n =>
+      n.alive && !n.leashTarget && !MOVING.has(n.state) && !n.mem('social').bench);
+
+    // 动 vs 动：双方互推（原逻辑不变）
     for (let i = 0; i < movers.length; i++) {
       for (let j = i + 1; j < movers.length; j++) {
         const a = movers[i], b = movers[j];
@@ -177,6 +189,21 @@ export class BehaviorManager {
           const sb = this._sepScale(b, -ux, -uy);
           nudgeXY(a,  ux * f * sa,  uy * f * sa);
           nudgeXY(b, -ux * f * sb, -uy * f * sb);
+        }
+      }
+    }
+
+    // 动 vs 静：静止方零位移，行走方受推
+    for (const m of movers) {
+      for (const s of statics) {
+        const dx = m.x - s.x, dy = m.y - s.y;
+        const d = Math.hypot(dx, dy);
+        const sepR = 24 * ((m.scale + s.scale) / 2 / 0.18);
+        if (d > 0 && d < sepR) {
+          const f  = ((sepR - d) / sepR) * 16 * dt;
+          const ux = dx / d, uy = dy / d;
+          const sm = this._sepScale(m, ux, uy);
+          nudgeXY(m, ux * f * sm, uy * f * sm);
         }
       }
     }

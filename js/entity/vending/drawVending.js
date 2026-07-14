@@ -33,11 +33,6 @@ export function drawVending(g, p) {
   g.drawRect(gx, gy, gw, gh);
   g.endFill();
 
-  // Glass reflection
-  g.beginFill(0xffffff, 0.18);
-  g.drawRect(gx + 3 * s, gy + 3 * s, gw - 6 * s, gh * 0.4);
-  g.endFill();
-
   // 3. Side control panel (right of glass)
   g.lineStyle(0);
   g.beginFill(FILL_MID, 1);
@@ -52,7 +47,7 @@ export function drawVending(g, p) {
 
   // 5. Dispenser slot
   g.lineStyle(0);
-  g.beginFill(0x000000, 0.9);
+  g.beginFill(FILL_SHADE, 1);
   g.drawRect(px + 6 * s, py + h - 17 * s, w - 11 * s, 9 * s);
   g.endFill();
 

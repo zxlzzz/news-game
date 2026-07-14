@@ -57,6 +57,7 @@ const VARIANTS = [
 ];
 
 export function drawTree(g, p) {
+  g.lineStyle(0);
   const { x, y } = p;
   const s = p.scale ?? 1;
 

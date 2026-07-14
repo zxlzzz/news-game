@@ -1,4 +1,18 @@
 /**
+ * CONTRACT  (see docs/contracts/movement.md)
+ *   OWNS:      steerRoam — the sole per-frame caller of pickModeTarget / Lookahead;
+ *              npc.mem('motor').{navPath,navIdx,navGoalX,navGoalY} lifecycle;
+ *              npc.mem('motor').{routeTarget,routePts,routeIdx} lifecycle;
+ *              npc.vy during routing (set on crossing entry/exit/arrival).
+ *   WRITES:    mot.routeTarget (triggerDeparture:319); mot.navPath/navIdx/navGoal*;
+ *              mot.routePts/routeIdx; npc.vy; npc.direction (steer + departure);
+ *              npc.mem('motor').wallSpot (lean_wall assignment:94).
+ *   READS:     npc.state, npc.speed, npc.roamTarget, npc.mem('motor').walkMode,
+ *              npc.mem('motor').routeTarget, NavGrid singleton.
+ *   MUST NOT:  write npc.speed/state/animation — use Motor.setState/setSpeed/setAnimation;
+ *              write npc.x/y — use Motor.setXY/nudgeXY;
+ *              call pickModeTarget outside of steerRoam.
+ *
  * BaseStateMachine — 集中式转换表状态机（Unity 风格）
  *
  * 架构：
@@ -30,7 +44,8 @@
  */
 
 import { dlog }        from './DebugLog.js';
-import { PARK_TOP }     from '../core/Layout.js';
+import { audit }        from '../debug/MovementAudit.js';
+import { PARK_TOP, WORLD_WIDTH } from '../core/Layout.js';
 import { sitDown, alignLie } from '../entity/seat/seat.js';
 import { tickLoiter } from '../npc/LoiterBehavior.js';
 
@@ -41,6 +56,7 @@ import {
 
 import { setState, STATE_DEFS, setXY, nudgeXY, setSpeed } from './Motor.js';
 import { getPlanner } from './nav/PathPlanner.js';
+import { applyLookahead } from './nav/Lookahead.js';
 
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
 export { setState, STATE_DEFS } from './Motor.js';
@@ -49,7 +65,7 @@ const rand = (a, b) => a + Math.random() * (b - a);
 
 // ─── 内部：按 profile.transitions 权重表随机选下一状态，含环境前置检查 ───────
 function _pickNext(npc, profile, envQuery) {
-  const table = profile.transitions[npc.state];
+  const table = profile.transitions?.[npc.state];
   if (!table) return null;
   const entries = Object.entries(table);
   let total = 0;
@@ -82,7 +98,7 @@ function _resolveTimeout(npc, envQuery, profile) {
     return 'sit_bench';
   }
   // sit_bench→lie_bench: body joint shifts laterally, realign so body maps to seatY
-  if (next === 'lie_bench' && npc._bench) {
+  if (next === 'lie_bench' && npc.mem('social').bench) {
     alignLie(npc, npc.renderer);
   }
   if (next === 'lean_wall') {
@@ -90,7 +106,7 @@ function _resolveTimeout(npc, envQuery, profile) {
     if (!spot) return 'stand';
     if (spot.side === 'left') spot.building._leanLeft = npc.id;
     else spot.building._leanRight = npc.id;
-    npc._wallSpot = { building: spot.building, side: spot.side };
+    npc.mem('motor').wallSpot = { building: spot.building, side: spot.side };
     const halfW = 20 * (npc.scale || 0.45);
     const dx = spot.side === 'left' ? -halfW : halfW;
     setXY(npc,
@@ -160,7 +176,7 @@ function _tickState(npc, envQuery, profile, dt) {
 
   if (isWalking) tickWalkMode(npc, dt);
 
-  const needsSteer = npc.state === 'routing' || (isWalking && npc._walkMode);
+  const needsSteer = npc.state === 'routing' || (isWalking && npc.mem('motor').walkMode);
   if (needsSteer) steerRoam(npc, envQuery, profile, dt);
 
   if (npc.state === 'loiter') tickLoiter(npc, profile, dt);
@@ -168,34 +184,43 @@ function _tickState(npc, envQuery, profile, dt) {
 
 // ─── 二维漫游转向 ─────────────────────────────────────────────────────────────
 function steerRoam(npc, envQuery, profile, dt) {
+  const mot = npc.mem('motor');
+
   if (npc.state === 'routing') {
     setSpeed(npc, 0);
     npc.vy = 0;
-    if (!npc._routeTarget) { setState(npc, 'walk', 'routing_no_target'); return; }
-    const t = npc._routeTarget;
+    if (!mot.routeTarget) { setWalkMode(npc, modeWander()); setState(npc, 'walk', 'routing_no_target'); return; }
+    const t = mot.routeTarget;
     const arriveThreshold = t.exitType === 'building' ? 20 : 8;
 
     if (npc.stateTimer > (t.abandonAfter ?? 30)) {
       envQuery.releaseSlotReservation(npc);
-      npc._routeTarget = null; npc._routePts = null; npc._routeIdx = 0;
+      if (mot.routeTarget?.exitType) {
+        const ag2 = npc.mem('agenda');
+        ag2.departing = false;
+        ag2.lifespan += 30;   // prevent immediate re-trigger (mirrors triggerDeparture no-exit path)
+        restoreDepartureBounds(npc);
+      }
+      mot.routeTarget = null; mot.routePts = null; mot.routeIdx = 0;
+      setWalkMode(npc, modeWander());
       setState(npc, 'walk', 'routing_timeout');
       return;
     }
 
-    // One-shot path planning when _routePts is null
-    if (npc._routePts == null) {
+    // One-shot path planning when routePts is null
+    if (mot.routePts == null) {
       if (!envQuery.raycastObstacle(npc.x, npc.y, t.x, t.y)) {
-        npc._routePts = [t];
+        mot.routePts = [t];
       } else {
         const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
         const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y, _b);
-        npc._routePts = (pts && pts.length > 0) ? pts : [t];
+        mot.routePts = (pts && pts.length > 0) ? pts : [t];
       }
-      npc._routeIdx = 0;
+      mot.routeIdx = 0;
     }
 
-    const pts  = npc._routePts;
-    const idx  = npc._routeIdx ?? 0;
+    const pts  = mot.routePts;
+    const idx  = mot.routeIdx ?? 0;
     const wp   = pts[Math.min(idx, pts.length - 1)];
     const isLast = idx >= pts.length - 1;
     const dx = wp.x - npc.x, dy = wp.y - npc.y;
@@ -205,22 +230,23 @@ function steerRoam(npc, envQuery, profile, dt) {
       if (dist < arriveThreshold) {
         setXY(npc, t.x, t.y);
         const cb = t.onArrive;
-        npc._routeTarget = null; npc._routePts = null; npc._routeIdx = 0;
+        mot.routeTarget = null; mot.routePts = null; mot.routeIdx = 0;
         if (cb) cb(npc);
         return;
       }
     } else if (dist < 8) {
-      npc._routeIdx = idx + 1;
+      mot.routeIdx = idx + 1;
       return;
     }
 
     if (Math.abs(dx) > 2) npc.direction = dx > 0 ? 1 : -1;
     const spd = npc.walkSpeed || 26;
-    nudgeXY(npc, (dx / dist) * spd * dt, (dy / dist) * spd * dt);
+    const { vx: rvx, vy: rvy } = applyLookahead(npc, (dx / dist) * spd, (dy / dist) * spd);
+    nudgeXY(npc, rvx * dt, rvy * dt);
     return;
   }
 
-  if (npc._walkMode?.kind === 'path_follow' && npc._walkMode.pausing) {
+  if (mot.walkMode?.kind === 'path_follow' && mot.walkMode.pausing) {
     setSpeed(npc, 0);
     npc.vy = 0;
     return;
@@ -232,13 +258,11 @@ function steerRoam(npc, envQuery, profile, dt) {
   const t = npc.roamTarget;
 
   // ── Path layer: plan once per roamTarget, follow waypoints ────────────
-  // When roamTarget changes (new goal), plan an A* path.
-  // If planner returns null (e.g. crossing road), fall back to direct steer.
-  if (!npc._navPath || npc._navGoalX !== t.x || npc._navGoalY !== t.y) {
-    npc._navGoalX = t.x;
-    npc._navGoalY = t.y;
-    npc._navPath  = null;
-    npc._navIdx   = 0;
+  if (!mot.navPath || mot.navGoalX !== t.x || mot.navGoalY !== t.y) {
+    mot.navGoalX = t.x;
+    mot.navGoalY = t.y;
+    mot.navPath  = null;
+    mot.navIdx   = 0;
     const planner = getPlanner();
     if (planner) {
       const _b = npc.minX != null
@@ -246,31 +270,31 @@ function steerRoam(npc, envQuery, profile, dt) {
         : null;
       const pts = planner.plan(npc.x, npc.y, t.x, t.y, _b);
       if (pts && pts.length > 0) {
-        npc._navPath = pts;
-        npc._navIdx  = 0;
+        mot.navPath = pts;
+        mot.navIdx  = 0;
       }
     }
   }
 
   // Steering target: current waypoint if path exists, else direct to roamTarget
-  const wp = (npc._navPath && npc._navIdx < npc._navPath.length)
-    ? npc._navPath[npc._navIdx]
+  const wp = (mot.navPath && mot.navIdx < mot.navPath.length)
+    ? mot.navPath[mot.navIdx]
     : t;
 
   const dx = wp.x - npc.x, dy = wp.y - npc.y;
   const dist = Math.hypot(dx, dy);
 
   // ── Waypoint arrival (intermediate) ───────────────────────────────────
-  if (npc._navPath && npc._navIdx < npc._navPath.length - 1 && dist < 8) {
-    npc._navIdx++;
-    return;   // advance; next frame steers toward the next waypoint
+  if (mot.navPath && mot.navIdx < mot.navPath.length - 1 && dist < 8) {
+    mot.navIdx++;
+    return;
   }
 
   // ── Final target arrival (roamTarget) ─────────────────────────────────
   const distToGoal = Math.hypot(t.x - npc.x, t.y - npc.y);
   if (distToGoal < 6) {
-    npc._navPath = null;
-    const mode = npc._walkMode;
+    mot.navPath = null;
+    const mode = mot.walkMode;
     if (mode?.kind === 'path_follow') {
       onPathArrival(mode, npc);
     } else if (mode?.kind === 'direct') {
@@ -293,15 +317,19 @@ function steerRoam(npc, envQuery, profile, dt) {
 
   // ── Steer toward current waypoint ─────────────────────────────────────
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
-  const vx = dx / dist * total, vy = dy / dist * total;
-  setSpeed(npc, Math.abs(vx));
+  const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total);
+  if (npc.speed > 0 && vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
+  // Write full velocity vector — integratePhysics consumes mot.vel when present
+  mot.vel = { vx, vy };
+  setSpeed(npc, Math.hypot(vx, vy));
   npc.vy = vy;
 
-  npc._dirCD = (npc._dirCD || 0) - dt;
+  // direction: facing-only, driven by same 0.35 threshold + 0.45 s cooldown
+  mot.dirCD = (mot.dirCD || 0) - dt;
   const desired = vx >= 0 ? 1 : -1;
-  if (Math.abs(vx) > total * 0.35 && desired !== npc.direction && npc._dirCD <= 0) {
+  if (Math.abs(vx) > total * 0.35 && desired !== npc.direction && mot.dirCD <= 0) {
     npc.direction = desired;
-    npc._dirCD = 0.45;
+    mot.dirCD = 0.45;
   }
 }
 
@@ -313,38 +341,54 @@ function _routeToExit(npc, exit) {
   setWalkMode(npc, null);
   npc.modifiers = npc.modifiers.filter(m => m.kind !== 'held');
   setState(npc, 'routing', 'departure');
-  npc._routeTarget = {
+  if (exit.type === 'edge') {
+    const mot = npc.mem('motor');
+    mot.savedBounds = { minX: npc.minX, maxX: npc.maxX };
+    if (exit.x < (npc.minX ?? 0))          npc.minX = exit.x - 10;
+    if (exit.x > (npc.maxX ?? WORLD_WIDTH)) npc.maxX = exit.x + 10;
+  }
+  npc.mem('motor').routeTarget = {
     x: tx, y: ty,
     exitType: exit.type,
-    abandonAfter: 999,
+    abandonAfter: 60,
     onArrive: (n) => { n.alive = false; },
   };
 }
 
 export function triggerDeparture(npc, exitRegistry) {
   if (!exitRegistry) return;
-  if (npc._departing) return;
-  const preferType = npc._preferExitType ?? npc._profile?.departure?.preferExitType ?? null;
+  const ag = npc.mem('agenda');
+  if (ag.departing) return;
+  const preferType = ag.preferExitType ?? ag.profile?.departure?.preferExitType ?? null;
   const exit = exitRegistry.findExit(npc, preferType);
-  if (!exit) { npc._lifespan += 30; return; }
+  if (!exit) { ag.lifespan += 30; return; }
 
-  npc._departing = true;
+  ag.departing = true;
 
   if (['sit_bench', 'lie_bench', 'sit_ground', 'squat'].includes(npc.state)) {
     setState(npc, 'stand', 'departure');
-    npc._pendingDeparture = exit;
+    ag.pendingDeparture = exit;
     return;
   }
   _routeToExit(npc, exit);
+}
+
+export function restoreDepartureBounds(npc) {
+  const mot = npc.mem('motor');
+  if (!mot.savedBounds) return;
+  npc.minX = mot.savedBounds.minX;
+  npc.maxX = mot.savedBounds.maxX;
+  mot.savedBounds = null;
 }
 
 // ─── 对外主接口：每帧推进单个 NPC 的基础状态 ──────────────────────────────────
 export function tickBaseState(npc, profile, envQuery, dt) {
   npc.stateTimer += dt;
 
-  if (npc._pendingDeparture && npc.state === 'stand') {
-    const exit = npc._pendingDeparture;
-    npc._pendingDeparture = null;
+  const ag = npc.mem('agenda');
+  if (ag.pendingDeparture && npc.state === 'stand') {
+    const exit = ag.pendingDeparture;
+    ag.pendingDeparture = null;
     _routeToExit(npc, exit);
     return;
   }

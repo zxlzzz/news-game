@@ -6,11 +6,13 @@
  */
 
 import { setState } from '../behavior/Motor.js';
+import { getHeldModifier } from '../behavior/ModifierLayer.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
 function _getMicroActionDur(npc) {
-  const ov = npc._loiterOverlay;
+  const lt = npc.mem('loiter');
+  const ov = lt.overlay;
   if (ov === 'phone_call')                            return rand(3, 6);
   if (ov === 'phone_look')                            return rand(5, 10);
   if (npc.traits && npc.traits.includes('smoker'))    return rand(4, 6);
@@ -19,14 +21,15 @@ function _getMicroActionDur(npc) {
 }
 
 function _updateLoiterExtraTags(npc) {
+  const lt   = npc.mem('loiter');
   const base = ['standing', 'idle'];
-  if (npc._microPhase !== 1) { npc._extraTags = base.slice(); return; }
-  const ov = npc._loiterOverlay;
-  if      (ov === 'phone_call')                               npc._extraTags = [...base, 'phone_call', 'communicating'];
-  else if (ov === 'phone_look')                               npc._extraTags = [...base, 'phone_use', 'distracted'];
-  else if (npc.traits && npc.traits.includes('smoker'))       npc._extraTags = [...base, 'smoking'];
-  else if (npc.traits && npc.traits.includes('walk_dog'))     npc._extraTags = [...base, 'dog_owner', 'watching'];
-  else                                                        npc._extraTags = [...base, 'phone_use', 'distracted'];
+  if (lt.microPhase !== 1) { lt.tags = base.slice(); return; }
+  const ov = lt.overlay;
+  if      (ov === 'phone_call')                               lt.tags = [...base, 'phone_call', 'communicating'];
+  else if (ov === 'phone_look')                               lt.tags = [...base, 'phone_use', 'distracted'];
+  else if (npc.traits && npc.traits.includes('smoker'))       lt.tags = [...base, 'smoking'];
+  else if (npc.traits && npc.traits.includes('walk_dog'))     lt.tags = [...base, 'dog_owner', 'watching'];
+  else                                                        lt.tags = [...base, 'phone_use', 'distracted'];
 }
 
 function _applyLoiterVisuals(npc) {
@@ -34,48 +37,48 @@ function _applyLoiterVisuals(npc) {
 }
 
 function _advanceMicroPhase(npc) {
-  if (npc._microPhase === 3 && npc._loiterDir !== undefined) {
-    npc.direction  = npc._loiterDir;
-    npc._loiterDir = undefined;
+  const lt = npc.mem('loiter');
+  if (lt.microPhase === 3 && lt.dir !== undefined) {
+    npc.direction = lt.dir;
+    lt.dir = undefined;
   }
-  const next = (npc._microPhase + 1) % 4;
-  npc._microPhase     = next;
-  npc._microPhaseName = ['look_around', 'micro_action', 'look_around', 'check_around'][next];
+  const next = (lt.microPhase + 1) % 4;
+  lt.microPhase     = next;
+  lt.microPhaseName = ['look_around', 'micro_action', 'look_around', 'check_around'][next];
   switch (next) {
-    case 0: npc._microTimer = rand(3, 6);               break;
+    case 0: lt.microTimer = rand(3, 6);               break;
     case 1:
-      npc._loiterOverlay = npc.modifiers.find(m => m.kind === 'held' && !m.id.startsWith('_'))?.id ?? null;
-      npc._microTimer = _getMicroActionDur(npc);
+      lt.overlay    = getHeldModifier(npc)?.id ?? null;
+      lt.microTimer = _getMicroActionDur(npc);
       break;
-    case 2: npc._microTimer = rand(2, 4);               break;
-    case 3:
-      npc._microTimer = rand(1, 2);
-      break;
+    case 2: lt.microTimer = rand(2, 4);               break;
+    case 3: lt.microTimer = rand(1, 2);               break;
   }
   _updateLoiterExtraTags(npc);
 }
 
 export function tickLoiter(npc, profile, dt) {
-  if (npc._loiterDur === null) {
-    const range         = profile.loiterDurationRange || [15, 45];
-    npc._loiterDur      = rand(range[0], range[1]);
-    npc._loiterElapsed  = 0;
-    npc._loiterOverlay  = npc.modifiers.find(m => m.kind === 'held' && !m.id.startsWith('_'))?.id ?? null;
-    npc._microPhase     = 0;
-    npc._microPhaseName = 'look_around';
-    npc._microTimer     = rand(3, 6);
+  const lt = npc.mem('loiter');
+  if (lt.dur === null) {
+    const range    = profile.loiterDurationRange || [15, 45];
+    lt.dur         = rand(range[0], range[1]);
+    lt.elapsed     = 0;
+    lt.overlay     = getHeldModifier(npc)?.id ?? null;
+    lt.microPhase  = 0;
+    lt.microPhaseName = 'look_around';
+    lt.microTimer  = rand(3, 6);
     _updateLoiterExtraTags(npc);
   }
 
-  npc._loiterElapsed += dt;
+  lt.elapsed += dt;
 
-  if (npc._loiterElapsed >= npc._loiterDur) {
+  if (lt.elapsed >= lt.dur) {
     setState(npc, 'walk', 'loiter-end');
     return;
   }
 
-  npc._microTimer -= dt;
-  if (npc._microTimer <= 0) _advanceMicroPhase(npc);
+  lt.microTimer -= dt;
+  if (lt.microTimer <= 0) _advanceMicroPhase(npc);
 
   _applyLoiterVisuals(npc);
 }

@@ -2,7 +2,7 @@ import { depthT, depthScale } from './Layout.js';
 import { Entity } from './Entity.js';
 
 const SHADOWS_ENABLED = false;  // 影子系统开关；新规范稳定后再决定是否启用
-const _SHADOW_SKIP = new Set(['manhole', 'drain', 'park-path', 'busstop-roof', 'sign']);
+const _SHADOW_SKIP = new Set(['manhole', 'drain', 'park-path', 'busstop-roof', 'busstop-sign', 'sign']);
 
 /**
  * EntityManager

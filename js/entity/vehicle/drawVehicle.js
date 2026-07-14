@@ -83,11 +83,6 @@ function _carWindows(g, cx, baseY, halfL, hs, d) {
   g.lineTo(cx - d * halfL * 0.42, winBot);
   g.closePath();
   g.endFill();
-  g.lineStyle(0);
-  g.beginFill(0xffffff, 0.15);
-  const rwMinX = Math.min(cx - d * halfL * 0.42, pillarX - bw);
-  g.drawRect(rwMinX, winTop + hs * 0.03, halfL * 0.12, hs * 0.15);
-  g.endFill();
 
   // 前窗
   const leftTopX = pillarX + bw;
@@ -107,11 +102,6 @@ function _carWindows(g, cx, baseY, halfL, hs, d) {
   g.lineTo(botFrontX, botFrontY);
   g.lineTo(leftBotX, winBot);
   g.closePath();
-  g.endFill();
-  g.lineStyle(0);
-  g.beginFill(0xffffff, 0.15);
-  const fwMinX = Math.min(leftTopX, topFrontX);
-  g.drawRect(fwMinX, winTop + hs * 0.03, halfL * 0.08, hs * 0.12);
   g.endFill();
 
   // B柱
@@ -143,7 +133,7 @@ function _carDetails(g, cx, baseY, halfL, hs, rs, d, s) {
   const hlH = hs * 0.12;
   const hlx = d > 0 ? front - hlW * 1.2 : front + hlW * 0.2;
   const hly = baseY - hs * 0.26;
-  g.beginFill(0xffffff, 0.5); g.drawRect(hlx, hly, hlW, hlH); g.endFill();
+  g.lineStyle(0); g.beginFill(FILL_PAPER, 1); g.drawRect(hlx, hly, hlW, hlH); g.endFill();
   lenv(g, baseY, 0.4); g.drawRect(hlx, hly, hlW, hlH);
 
   // 尾灯
@@ -157,6 +147,7 @@ function _carDetails(g, cx, baseY, halfL, hs, rs, d, s) {
 }
 
 function _car(g, vehicle, highlight) {
+  g.lineStyle(0);
   const s = vehicle.scale, x = vehicle.x, y = vehicle.y, d = vehicle.direction;
   const { L, H, r } = vehicle._dims();
   const ls = L * s, hs = H * s, rs = r * s;
@@ -170,10 +161,6 @@ function _car(g, vehicle, highlight) {
 
   const fwx = x + d * halfL * 0.56;
   const rwx = x - d * halfL * 0.56;
-
-  g.beginFill(0x000000, 0.06);
-  g.drawEllipse(x, groundY + rs * 0.05, ls * 0.38, rs * 0.13);
-  g.endFill();
 
   _wheel(g, fwx, wcy, rs, groundY);
   _wheel(g, rwx, wcy, rs, groundY);
@@ -234,6 +221,7 @@ function _taxi(g, vehicle, highlight) {
 }
 
 function _bus(g, vehicle, highlight) {
+  g.lineStyle(0);
   const s = vehicle.scale, x = vehicle.x, y = vehicle.y, d = vehicle.direction;
   const { L, H, r } = vehicle._dims();
   const ls = L * s, hs = H * s, rs = r * s;
@@ -247,10 +235,6 @@ function _bus(g, vehicle, highlight) {
 
   const fwx = x + d * halfL * 0.82;
   const rwx = x - d * halfL * 0.82;
-
-  g.beginFill(0x000000, 0.05);
-  g.drawEllipse(x, groundY + rs * 0.05, ls * 0.44, rs * 0.14);
-  g.endFill();
 
   _wheel(g, fwx, wcy, rs, groundY);
   _wheel(g, rwx, wcy, rs, groundY);
@@ -283,7 +267,6 @@ function _bus(g, vehicle, highlight) {
     const wx = winAreaLeft + i * winGap + (winGap - winW) / 2;
     g.lineStyle(0);
     g.beginFill(FILL_LIGHT, 0.65); g.drawRect(wx, winTop, winW, winH); g.endFill();
-    g.beginFill(0xffffff, 0.15); g.drawRect(wx, winTop + winH * 0.05, winW * 0.5, winH * 0.4); g.endFill();
     lenv(g, groundY, 0.5); g.drawRect(wx, winTop, winW, winH);
   }
 
@@ -300,9 +283,6 @@ function _bus(g, vehicle, highlight) {
     g.beginFill(FILL_LIGHT, 0.6);
     g.drawRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.8, doorH * 0.48);
     g.endFill();
-    g.beginFill(0xffffff, 0.15);
-    g.drawRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.35, doorH * 0.2);
-    g.endFill();
     lenv(g, groundY, 0.4);
     g.drawRect(doorLeft + doorW * 0.1, doorTop + doorH * 0.06, doorW * 0.8, doorH * 0.48);
     if (vehicle.doorOpen) {
@@ -315,7 +295,7 @@ function _bus(g, vehicle, highlight) {
   const hlW = Math.max(3, halfL * 0.02), hlH = hs * 0.10;
   const hlx = d > 0 ? front - hlW * 1.3 : front + hlW * 0.3;
   g.lineStyle(0);
-  g.beginFill(0xffffff, 0.5); g.drawRect(hlx, bodyBot - hs * 0.24, hlW, hlH); g.endFill();
+  g.beginFill(FILL_PAPER, 1); g.drawRect(hlx, bodyBot - hs * 0.24, hlW, hlH); g.endFill();
   lenv(g, groundY, 0.4); g.drawRect(hlx, bodyBot - hs * 0.24, hlW, hlH);
 
   const rear = x - d * halfL;
@@ -326,6 +306,7 @@ function _bus(g, vehicle, highlight) {
 }
 
 function _moto(g, vehicle, highlight) {
+  g.lineStyle(0);
   const u = vehicle.scale, x = vehicle.x, d = vehicle.direction;
   const groundY = vehicle.y;
   const rs = u * 0.8;   // 骑手缩放
@@ -418,7 +399,7 @@ function _moto(g, vehicle, highlight) {
 
   // 大灯：前脸小圆
   g.lineStyle(0);
-  g.beginFill(0xffffff, 0.55);
+  g.beginFill(FILL_PAPER, 1);
   g.drawCircle(sh.x + d * 8 * u, sh.y + 12 * u, 4.5 * u);
   g.endFill();
   lenv(g, groundY, 0.6);

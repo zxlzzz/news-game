@@ -65,7 +65,7 @@ export function isNear(entities, npc, dxT = 60, dyT = 80) {
 /** 将 NPC 对齐到座位落座：占位 + x/y 对齐 + 按 facing 设图层 */
 export function sitDown(npc, bench) {
   bench._occupiedBy = npc.id;
-  npc._bench = bench;
+  npc.mem('social').bench = bench;
   const sc = npc.scale || depthScale(bench.y);
   const sitBodyY = -42;  // sit_bench frame0 body.y (ground-space absolute)
   _setXY(npc, clamp(bench.x, npc.minX, npc.maxX), clamp(seatSurfaceY(bench) - sitBodyY * sc, npc.minY, npc.maxY));
@@ -75,9 +75,9 @@ export function sitDown(npc, bench) {
 
 /** 释放座位占位，清 _bench 和 _sortY */
 export function standUp(npc) {
-  if (!npc._bench) return;
-  npc._bench._occupiedBy = null;
-  npc._bench = null;
+  if (!npc.mem('social').bench) return;
+  npc.mem('social').bench._occupiedBy = null;
+  npc.mem('social').bench = null;
   npc._sortY = undefined;
 }
 
@@ -86,7 +86,7 @@ export function standUp(npc) {
  * sit_bench→lie_bench: body joint shifts laterally, realign so body maps to seatY.
  */
 export function alignLie(npc, renderer) {
-  if (!npc._bench) return;
+  if (!npc.mem('social').bench) return;
   let bodyX = -46, bodyY = 79;
   if (renderer) {
     const anim = renderer.getAnimation('lie_bench');
@@ -96,12 +96,12 @@ export function alignLie(npc, renderer) {
     }
   }
   const sc = npc.scale || 0.45;
-  const seatY = seatSurfaceY(npc._bench);
+  const seatY = seatSurfaceY(npc.mem('social').bench);
   const canonDir = renderer?.getAnimation('lie_bench')?.canonicalDirection || 1;
   const dir = npc.direction * canonDir;
   _setXY(npc,
-    clamp(npc._bench.x - Math.round(bodyX * sc * dir), npc.minX, npc.maxX),
+    clamp(npc.mem('social').bench.x - Math.round(bodyX * sc * dir), npc.minX, npc.maxX),
     clamp(seatY - Math.round(bodyY * sc), npc.minY, npc.maxY),
   );
-  npc._sortY = npc._bench.y + 1;
+  npc._sortY = npc.mem('social').bench.y + 1;
 }

@@ -16,6 +16,7 @@ import { drawFountainPool, drawFountainNozzle } from '../entity/fountain/drawFou
 import { drawPhoneBooth }  from '../entity/phonebooth/drawPhoneBooth.js';
 import { drawBusStopRoof }  from '../entity/busstop/drawBusStopRoof.js';
 import { drawBusStopBench } from '../entity/seat/drawBusStopBench.js';
+import { drawBusStopSign }  from '../entity/busstop/drawBusStopSign.js';
 import { drawTree }        from '../entity/tree/drawTree.js';
 import { drawVending }     from '../entity/vending/drawVending.js';
 import { drawChessTable }  from '../entity/chess-table/drawChessTable.js';
@@ -33,6 +34,15 @@ import { footprint as fpMailbox }   from '../entity/mailbox/mailbox.js';
 import { footprint as fpNewsrack }  from '../entity/newsrack/newsrack.js';
 import { footprint as fpPlanter }   from '../entity/planter/planter.js';
 import { footprint as fpPhone }     from '../entity/phonebooth/phonebooth.js';
+
+/** 视觉包围盒 intrinsic（单位 = scale 1 时的世界像素，实际 ×depthScale）
+ *  hw = 半宽；up/down = 自 y（地面接触线）向上/向下延伸
+ *  数值来源 = 各 draw 文件内的硬编码尺寸，改绘制尺寸时须同步 */
+const VISUAL_INTRINSIC = {
+  drain:    { hw: 29,    up: 13.5, down: 13.5 },  // drawDrain: 58×27 以 y 居中
+  fountain: { hw: 232.5, up: 128,  down: 116  },  // 300·0.775 半宽；喷柱顶 −outerRy·1.1；池底 +outerRy
+  stall:    { hw: 145,   up: 200,  down: 14   },  // drawStall: w=290, roofH=200；down=footprint ry
+};
 
 const OBSTACLE_TYPES = new Set([
   'fountain', 'slide', 'stall', 'tree', 'bench', 'trash', 'hydrant',
@@ -105,6 +115,29 @@ export class PropEntity extends Entity {
     }
   }
 
+    getBounds() {
+  const s = this.scale ?? 1;
+
+  // busstop-roof：横向 800·s（drawBusStopRoof 硬编码），纵向用实例绝对坐标
+  if (this.propType === 'busstop-roof') {
+    const hw  = 400 * s;
+    const top = Math.min(this.roofTopY ?? this.y, this.y);
+    const bot = Math.max(this.y, this.pillarBottomY ?? this.y);
+    return { x: this.x - hw, y: top, width: hw * 2, height: Math.max(1, bot - top) };
+  }
+
+  const v = VISUAL_INTRINSIC[this.propType];
+    if (v) {
+      return {
+        x:      this.x - v.hw * s,
+        y:      this.y - v.up * s,
+        width:  v.hw * 2 * s,
+        height: (v.up + v.down) * s,
+      };
+    }
+    return super.getBounds();
+  }
+  
   /** 地面预通道：贴地平面元素（EntityManager.draw 在 Y 排序前调用） */
   drawGround(g) {
     if (!this.visible) return;
@@ -138,6 +171,7 @@ export class PropEntity extends Entity {
       case 'phonebooth':   drawPhoneBooth(g, this);     break;
       case 'busstop-roof':  drawBusStopRoof(g, this);   break;
       case 'busstop-bench': drawBusStopBench(g, this);  break;
+      case 'busstop-sign':  drawBusStopSign(g, this);   break;
       // manhole / drain handled entirely in drawGround; nothing to draw in main pass
     }
   }
