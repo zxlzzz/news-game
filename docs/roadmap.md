@@ -11,9 +11,10 @@
 | Batch-H（usedVel 字段） | `mot.usedVel` 标记机制（设计用途未知） | ❌ 无痕迹 | `grep "usedVel"` 无结果；可能停留在设计阶段未实施 |
 | Batch-I（usedVel 消费） | 消费 `mot.usedVel` 的后续逻辑 | ❌ 无痕迹 | 同 Batch-H；上游未落地，本批次亦无痕迹 |
 | 新闻管线 MVP | Viewfinder 截图、vision/text Provider、成稿面板 NewsUI | 🔲 设计定稿 | `docs/design-plans/news-pipeline-mvp.md`（finalized） |
-| 速度表示统一 V-1 | 全库消费者普查（34处）、movement-dataflow 契约 | ✅ 已落地 | `docs/design-plans/velocity-representation-survey.md`；`docs/contracts/movement-dataflow.md` |
-| 速度表示统一 V-2 | 删除 `mot.vel.vy` 死代码（Motor.js line 287） | 🔲 待实施 | `docs/design-plans/velocity-unification-design-v1.md §V-2` |
-| 速度表示统一 V-3 | 标量路径膨胀修复（steer-skip 时 speed=hypot 问题） | 🔲 待设计 | `docs/design-plans/velocity-unification-design-v1.md §V-3` |
+| 速度统一·前置普查 | 全库消费者普查（34处）、movement-dataflow 契约 | ✅ 已落地 | `docs/design-plans/velocity-representation-survey.md`；`docs/contracts/movement-dataflow.md` |
+| 速度统一 V-1 | integratePhysics 重写（D1）：删标量回退分支，steer 只写 `mot.vel`，Y 钳制迁移 | 🔲 待实施 | `docs/design-plans/velocity-unification-design-v1.md §2` |
+| 速度统一 V-2 | 消费者迁移（D2/D3/D4）：StuckProbe、zone 门、卡死改重规划、facing 单点化 | 🔲 待实施 | 同上 |
+| 速度统一 V-3 | 清理 + 不变量（D5/D6）：内联路径 CONTRACT、check-invariants 加 V1–V3 门 | 🔲 待实施 | 同上 |
 | 挂饰 attachment schema | NPC 可拾取/佩戴道具的声明式 schema | 🔲 定稿未落盘，待从历史找回 | — |
 
 ---
