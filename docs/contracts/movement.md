@@ -1,6 +1,6 @@
 # Movement Subsystem Contract
 
-verified at 8f691609a02528495426ff4ea21abcfa9152065b
+verified at ddc77846154d3cb51fef63ba83f06feeb0accd0c (V-1 velocity unification)
 
 All writers listed as `file#symbol (line)`. Line numbers are parenthetical
 annotations only — anchor is the symbol name. Verified by grep on HEAD.
@@ -27,8 +27,8 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 |---|---|
 | **Semantic** | Scalar speed magnitude in pixels/second; sign-free (direction carries sign). Zero means stationary. |
 | **Owner** | `Motor.js` |
-| **Writers** | `Motor.js#setState` (154, via `_mw`), `Motor.js#setSpeed` (263) |
-| **Readers** | `Motor.js#integratePhysics` (279, 295), `BaseStateMachine.js#steerRoam` (314), `StuckProbe.js` (26) |
+| **Writers** | `Motor.js#setState` (154, via `_mw`), `Motor.js#setSpeed` (263) — routing entry and `path_follow` pausing write `setSpeed(0)`; walk branch no longer writes speed after V-1 |
+| **Readers** | `Motor.js#integratePhysics` progress monitor (`speed === 0` audit), `BaseStateMachine.js#steerRoam` (audit guard), `StuckProbe.js` (26) |
 | **Invariant** | Only via `setState` or `setSpeed`. Raw `npc.speed =` anywhere else is a contract violation. |
 
 ---
@@ -64,7 +64,7 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 | **Semantic** | Horizontal facing: `1` = right, `-1` = left. Used for physics `dx` and rendering mirror. |
 | **Owner** | Unprotected — multiple owners by convention |
 | **Writers** | `Npc.js` constructor (65 — init), `Npc.js#update` (254 — leash sync, 281-282 — bounds fallback); `Motor.js#_defaultOnExit` (141 — loiter dir restore), `Motor.js#integratePhysics` (278 — leash sync, 287-288 — bounds bounce, 335 — reversal); `Pedestrians.js#spawnOnePedestrian` (107 — spawn facing); `LoiterBehavior.js#tickLoiter` (42 — micro-phase dir restore); `TalkActivity.js#_faceEachOther` (74-75 — mutual face); `StallActivity.js#activate` (60 — seller face, 61 — buyer face); `UsePropActivity.js#activate` (33 — face prop); `ChessActivity.js#start` (65 — face table); `Director.js#_spawnNPC` (157 — spawn facing); `BaseStateMachine.js#_resolveTimeout` (118 — lean_wall spot facing), `BaseStateMachine.js#steerRoam` (238 — steer direction, 323 — desired facing), `BaseStateMachine.js#_routeToExit` (332 — exit facing) |
-| **Readers** | `Motor.js#integratePhysics` (270, 275), `CigaretteProp.js` (29, 41), `seat.js#alignLie` (101), `BaseStateMachine.js#steerRoam` (305) |
+| **Readers** | `CigaretteProp.js` (29, 41), `seat.js#alignLie` (101), `BaseStateMachine.js#steerRoam` (audit check, direction update) |
 | **Invariant** | Value must always be exactly `1` or `-1`. No floating-point normalisation. |
 
 ---
@@ -73,11 +73,11 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Vertical velocity in pixels/second (positive = downward in screen space). Used for road crossing and bounce in bounds-limited NPCs. |
-| **Owner** | Shared: `Motor.js` (integration + reset on setState) and `BaseStateMachine.js` (crossing control) |
-| **Writers** | `Motor.js#setState` (166 — reset to 0), `Motor.js#integratePhysics` (294, 296 — bounds bounce); `BaseStateMachine.js#steerRoam` (193 — routing reset, 247 — routing reset), `BaseStateMachine.js#_routeToExit` (318 — set crossing vy) |
-| **Readers** | `Motor.js#integratePhysics` (277, 283), `WalkMode.js#planCrossing` (177 — goingDown test) |
-| **Invariant** | Reset to 0 on every `setState`. Only `planCrossing`/routing paths and Motor integration legitimately set non-zero values. |
+| **Semantic** | Vertical velocity in pixels/second (positive = downward in screen space). Used for road crossing control; no longer read by `integratePhysics` after V-1 (consumed path uses `mot.vel.vy`). |
+| **Owner** | Shared: `Motor.js` (reset on setState) and `BaseStateMachine.js` (crossing control) |
+| **Writers** | `Motor.js#setState` (166 — reset to 0); `BaseStateMachine.js#steerRoam` (routing reset to 0 on entry/exit); `WalkMode.js#planCrossing` (sets non-zero crossing vy) |
+| **Readers** | `WalkMode.js#planCrossing` (goingDown test) |
+| **Invariant** | Reset to 0 on every `setState`. Only `planCrossing` and routing entry/exit legitimately set values. Not read by `integratePhysics`; Y motion driven by `mot.vel.vy` in the unified vel path. |
 
 ---
 
@@ -181,9 +181,9 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 |---|---|
 | **Semantic** | One-frame velocity vector `{vx, vy}` written by `steerRoam` so `integratePhysics` can apply diagonal movement directly, bypassing the `direction × speed` scalar path. Consumed (set to `null`) by `integratePhysics` on the same frame it is read. |
 | **Owner** | `Motor.js#integratePhysics` (consumer) / `BaseStateMachine.js#steerRoam` (producer) |
-| **Writers** | `BaseStateMachine.js#steerRoam` (sets `{vx,vy}` after `applyLookahead`); `Motor.js#integratePhysics` (clears to `null` after consuming) |
-| **Readers** | `Motor.js#integratePhysics` (consumes when `wm && mot.vel`) |
-| **Invariant** | Only written when `walkMode` is active. `null` between frames — `integratePhysics` always clears it. Non-`walkMode` paths (riders, dogs) never set it; `integratePhysics` falls through to the `speed > 0` scalar path for those. |
+| **Writers** | `BaseStateMachine.js#steerRoam` walk branch (sets `{vx,vy}` after `applyLookahead`); `Motor.js#integratePhysics` (clears to `null` after consuming) |
+| **Readers** | `Motor.js#integratePhysics` (consumes when `mot.vel` is set — both `.vx` and `.vy` are used) |
+| **Invariant** | Only written when `walkMode` is active. `null` between frames — `integratePhysics` always clears it. When absent, `integratePhysics` does not move the NPC (stationary frame). Non-`walkMode` paths (riders, inline physics) never set it. |
 
 ### `audit.count(npc, 'dir_mismatch')` (diagnostic counter)
 

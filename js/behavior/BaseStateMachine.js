@@ -321,8 +321,6 @@ function steerRoam(npc, envQuery, profile, dt) {
   if (npc.speed > 0 && vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
   // Write full velocity vector — integratePhysics consumes mot.vel when present
   mot.vel = { vx, vy };
-  setSpeed(npc, Math.hypot(vx, vy));
-  npc.vy = vy;
 
   // direction: facing-only, driven by same 0.35 threshold + 0.45 s cooldown
   mot.dirCD = (mot.dirCD || 0) - dt;

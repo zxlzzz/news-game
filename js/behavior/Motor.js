@@ -280,28 +280,17 @@ export function integratePhysics(npc, delta) {
   }
   const mot = npc.mem('motor');
   const wm  = mot.walkMode;
-  let dx = 0, dy = 0;
-  if (wm && mot.vel) {
-    // Velocity vector written by steerRoam — consume and bypass direction×speed path
-    dx = mot.vel.vx * dt;
-    dy = mot.vel.vy * dt;
+
+  if (mot.vel) {
+    let vx = mot.vel.vx, vy = mot.vel.vy;
+    // Y boundary clamp at consume-time (walkMode: stop at boundary)
+    const tentY = npc.y + vy * dt;
+    if (npc.maxY != null && tentY > npc.maxY && npc.y <= npc.maxY) vy = 0;
+    else if (npc.minY != null && tentY < npc.minY && npc.y >= npc.minY) vy = 0;
     mot.vel = null;
-  } else if (npc.speed > 0) {
-    const tentX = npc.x + npc.direction * npc.speed * dt;
-    if (!wm) {
-      if (npc.maxX != null && tentX > npc.maxX && npc.x <= npc.maxX) npc.direction = -1;
-      else if (npc.minX != null && tentX < npc.minX && npc.x >= npc.minX) npc.direction = 1;
-    }
-    dx = npc.direction * npc.speed * dt;
+    _slideMove(npc, vx * dt, vy * dt);
   }
-  const tentY = npc.y + npc.vy * dt;
-  if (npc.maxY != null && tentY > npc.maxY && npc.y <= npc.maxY) {
-    npc.vy = wm ? 0 : -Math.abs(npc.vy);
-  } else if (npc.minY != null && tentY < npc.minY && npc.y >= npc.minY) {
-    npc.vy = wm ? 0 : Math.abs(npc.vy);
-  }
-  if (!mot.vel) dy = npc.vy * dt;  // vel path already set dy above
-  if (dx !== 0 || dy !== 0) _slideMove(npc, dx, dy);
+  // else: mot.vel absent → stationary this frame
 
   // Progress monitor: every 1.5 s measure net displacement from anchor; < 15 px with active goal → fail leg
   if (!mot.progressAnchor) mot.progressAnchor = { x: npc.x, y: npc.y };
