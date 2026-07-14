@@ -24,7 +24,7 @@ export function stuckProbe(npcs, dt) {
     let cat = null;
     const mot = n.mem('motor');
     const m   = mot.walkMode;
-    if ((n.speed > 0 || n.state === 'routing') && moved < 8) {
+    if (['walk', 'run', 'jog', 'routing'].includes(n.state) && moved < 8) {
       cat = `MOVE:${n.state}/${n.state === 'routing' ? 'route' : (m?.kind ?? 'nomode')}`;
     } else if (n.stateDur < Infinity && n.stateTimer > n.stateDur + 10) {
       cat = `STATE:${n.state}`;                    // 转换没触发

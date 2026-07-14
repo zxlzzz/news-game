@@ -4,9 +4,8 @@
  *              WALK_PATHS module dict (initWalkPaths / addWalkPath);
  *              npc.mem('motor').tags for crossing labels.
  *   WRITES:    npc.roamTarget; npc.mem('motor').tags (crossing only);
- *              npc.vy (planCrossing entry);
  *              setWalkMode/pushWalkMode/popWalkMode (re-exported from Motor).
- *   READS:     npc.mem('motor').walkMode, npc.vy, NavGrid singleton,
+ *   READS:     npc.mem('motor').walkMode, npc.mem('motor').vel (checkZoneTransition), NavGrid singleton,
  *              npc.mem('agenda').departing (checkZoneTransition guard).
  *   MUST NOT:  write npc.speed/state/animation/x/y directly;
  *              write npc.mem('motor').navPath or routeTarget;
@@ -187,7 +186,7 @@ export function checkZoneTransition(npc) {
   if (!inRoad && !inBikeLane) return;
 
   // 误入危险区：压栈，弹回原侧
-  const goingDown = (npc.vy ?? 0) >= 0;
+  const goingDown = (npc.mem('motor').vel?.vy ?? 0) >= 0;
   const targetY   = goingDown ? BIKE_LANE_FAR_TOP - 4 : BIKE_LANE_NEAR_BOTTOM + 4;
   pushWalkMode(npc, modeDirect(
     { x: npc.x, y: targetY },

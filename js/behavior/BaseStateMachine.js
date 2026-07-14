@@ -2,14 +2,13 @@
  * CONTRACT  (see docs/contracts/movement.md)
  *   OWNS:      steerRoam — the sole per-frame caller of pickModeTarget / Lookahead;
  *              npc.mem('motor').{navPath,navIdx,navGoalX,navGoalY} lifecycle;
- *              npc.mem('motor').{routeTarget,routePts,routeIdx} lifecycle;
- *              npc.vy during routing (set on crossing entry/exit/arrival).
+ *              npc.mem('motor').{routeTarget,routePts,routeIdx} lifecycle.
  *   WRITES:    mot.routeTarget (triggerDeparture:319); mot.navPath/navIdx/navGoal*;
- *              mot.routePts/routeIdx; npc.vy; npc.direction (steer + departure);
+ *              mot.routePts/routeIdx; npc.direction (steer + departure);
  *              npc.mem('motor').wallSpot (lean_wall assignment:94).
- *   READS:     npc.state, npc.speed, npc.roamTarget, npc.mem('motor').walkMode,
+ *   READS:     npc.state, npc.roamTarget, npc.mem('motor').walkMode,
  *              npc.mem('motor').routeTarget, NavGrid singleton.
- *   MUST NOT:  write npc.speed/state/animation — use Motor.setState/setSpeed/setAnimation;
+ *   MUST NOT:  write npc.speed/state/animation — use Motor.setState/setAnimation;
  *              write npc.x/y — use Motor.setXY/nudgeXY;
  *              call pickModeTarget outside of steerRoam.
  *
@@ -54,7 +53,7 @@ import {
   setWalkMode, popWalkMode, isRoadZone, modeWander,
 } from './WalkMode.js';
 
-import { setState, STATE_DEFS, setXY, nudgeXY, setSpeed } from './Motor.js';
+import { setState, STATE_DEFS, setXY, nudgeXY } from './Motor.js';
 import { getPlanner } from './nav/PathPlanner.js';
 import { applyLookahead } from './nav/Lookahead.js';
 
@@ -187,8 +186,6 @@ function steerRoam(npc, envQuery, profile, dt) {
   const mot = npc.mem('motor');
 
   if (npc.state === 'routing') {
-    setSpeed(npc, 0);
-    npc.vy = 0;
     if (!mot.routeTarget) { setWalkMode(npc, modeWander()); setState(npc, 'walk', 'routing_no_target'); return; }
     const t = mot.routeTarget;
     const arriveThreshold = t.exitType === 'building' ? 20 : 8;
@@ -247,8 +244,6 @@ function steerRoam(npc, envQuery, profile, dt) {
   }
 
   if (mot.walkMode?.kind === 'path_follow' && mot.walkMode.pausing) {
-    setSpeed(npc, 0);
-    npc.vy = 0;
     return;
   }
 
@@ -318,7 +313,7 @@ function steerRoam(npc, envQuery, profile, dt) {
   // ── Steer toward current waypoint ─────────────────────────────────────
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
   const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total);
-  if (npc.speed > 0 && vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
+  if (vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
   // Write full velocity vector — integratePhysics consumes mot.vel when present
   mot.vel = { vx, vy };
 

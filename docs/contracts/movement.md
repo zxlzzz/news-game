@@ -1,6 +1,6 @@
 # Movement Subsystem Contract
 
-verified at ddc77846154d3cb51fef63ba83f06feeb0accd0c (V-1 velocity unification)
+verified at ddc77846154d3cb51fef63ba83f06feeb0accd0c (V-1 velocity unification); updated for V-2 consumer migration (see velocity-unification-design-v1.md)
 
 All writers listed as `file#symbol (line)`. Line numbers are parenthetical
 annotations only — anchor is the symbol name. Verified by grep on HEAD.
@@ -25,10 +25,10 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Scalar speed magnitude in pixels/second; sign-free (direction carries sign). Zero means stationary. |
+| **Semantic** | Scalar speed magnitude in pixels/second; sign-free (direction carries sign). Effectively always 0 after V-1 (physics driven by `mot.vel`); kept for compatibility with inline cyclists path and rendering consumers. |
 | **Owner** | `Motor.js` |
-| **Writers** | `Motor.js#setState` (154, via `_mw`), `Motor.js#setSpeed` (263) — routing entry and `path_follow` pausing write `setSpeed(0)`; walk branch no longer writes speed after V-1 |
-| **Readers** | `Motor.js#integratePhysics` progress monitor (`speed === 0` audit), `BaseStateMachine.js#steerRoam` (audit guard), `StuckProbe.js` (26) |
+| **Writers** | `Motor.js#setState` (154, via `_mw`); `Motor.js#setSpeed` (263) — `planCrossing` (jaywalk entry/exit); walk / routing / path_follow pausing branches no longer write speed after V-2 |
+| **Readers** | `WalkMode.js#planCrossing` (crossing speed); `StuckProbe.js` — no longer used as gate condition after V-2 |
 | **Invariant** | Only via `setState` or `setSpeed`. Raw `npc.speed =` anywhere else is a contract violation. |
 
 ---
@@ -73,11 +73,11 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Vertical velocity in pixels/second (positive = downward in screen space). Used for road crossing control; no longer read by `integratePhysics` after V-1 (consumed path uses `mot.vel.vy`). |
-| **Owner** | Shared: `Motor.js` (reset on setState) and `BaseStateMachine.js` (crossing control) |
-| **Writers** | `Motor.js#setState` (166 — reset to 0); `BaseStateMachine.js#steerRoam` (routing reset to 0 on entry/exit); `WalkMode.js#planCrossing` (sets non-zero crossing vy) |
-| **Readers** | `WalkMode.js#planCrossing` (goingDown test) |
-| **Invariant** | Reset to 0 on every `setState`. Only `planCrossing` and routing entry/exit legitimately set values. Not read by `integratePhysics`; Y motion driven by `mot.vel.vy` in the unified vel path. |
+| **Semantic** | Vertical velocity field; effectively dead after V-2. `Motor.js#setState` still resets it to 0 for safety. No active reader or meaningful writer remains. |
+| **Owner** | `Motor.js` (reset only) |
+| **Writers** | `Motor.js#setState` (166 — reset to 0); no other legitimate writer after V-2 |
+| **Readers** | None — `checkZoneTransition` migrated to `mot.vel?.vy` in V-2 |
+| **Invariant** | Always 0 in practice post-V-2. The field is retained to avoid property-access errors on NPC objects; Y motion is driven by `mot.vel.vy` only. |
 
 ---
 
@@ -188,10 +188,11 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 ### `audit.count(npc, 'dir_mismatch')` (diagnostic counter)
 
 Incremented in `BaseStateMachine.js#steerRoam` (walk/run/jog branch only) when
-`Math.sign(vx) !== npc.direction` after `applyLookahead`. Records frames where
-the steering vector opposes the NPC's current facing. Used for before/after
-comparison during the speed-channel refactor; expected to approach zero once
-direction and speed are driven from the same vector.
+`vx !== 0 && Math.sign(vx) !== npc.direction` after `applyLookahead`. Records
+frames where the steering vector opposes the NPC's current facing. The
+`npc.speed > 0` prefix guard was removed in V-2 (speed is always 0 post-V-1;
+the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
+`npc.direction` disagree, regardless of speed.
 
 ---
 
@@ -270,7 +271,7 @@ if (this._motorInstalled) {
 |---|---|---|
 | **Period** | Every 2s (module-level `acc`) | Every 1.5s (`mot.progressAcc`) |
 | **Threshold** | `moved < 8` px over 2s window | `moved < 15` px over 1.5s window |
-| **Trigger condition** | `n.speed > 0 \|\| n.state === 'routing'` | `npc.speed > 0 \|\| npc.state === 'routing'` |
+| **Trigger condition** | `state ∈ {walk,run,jog,routing}` (V-2) | `npc.state === 'routing' \|\| walkState && wm` |
 | **Action** | Observational: writes `window.__stuck`, logs to `tally`. **No side-effects on NPC state.** | Reactive: clears `navPath`; on `direct` sets `_stuckOnce` then forces `_elapsed = abandonAfter`; on `wander` nulls `roamTarget`; on `routing` sets `routeReplan` then forces `stateTimer = 9999` |
 | **Scope** | All registered NPCs via `BehaviorManager` | Only NPCs with `_motorInstalled` |
 

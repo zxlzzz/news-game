@@ -302,7 +302,6 @@ export function integratePhysics(npc, delta) {
     mot.progressAnchor = { x: npc.x, y: npc.y };
 
     const _walkState = npc.state === 'walk' || npc.state === 'run' || npc.state === 'jog';
-    if (_walkState && wm && npc.speed === 0) audit.count(npc, 'speed0_walk');
     const hasGoal = npc.state === 'routing' || (_walkState && wm);
     if (hasGoal && moved < 15) {
       // Clear the path layer so steerRoam replans from current position
