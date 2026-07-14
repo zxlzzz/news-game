@@ -8,6 +8,14 @@
 
 ---
 
+## 铁律
+
+1. **draft 不污染 vision**：`playerDraft`（玩家草稿）不得进入 `vision.describe()` 的 prompt；草稿仅传给 `text.compose()` 的 `params.playerDraft`。原因：vision 阶段要求盲看（blind observation），草稿会诱导 vision 模型确认偏差。
+2. **entitySnapshot 不进 vision prompt**：`entitySnapshot` 只用于 mock 模板填空和事后评估对照，禁止作为 `vision.describe()` 的 prompt 输入。原因：vision 的价值在于独立观察；注入结构化标签等于给出答案。
+3. **`extract.base64` 是异步**：PIXI 7 的 `renderer.extract.base64(target, format, quality, frame)` 返回 `Promise<string>`，调用方必须 `await`；MVP 主路径优先用同步的 `extract.canvas` + `toDataURL`，仅在 canvas 路径不可用时才回退到 `extract.base64`（全链路须 async）。
+
+---
+
 ## 1. 取景框交互方案
 
 ### 1.1 现有基础

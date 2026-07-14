@@ -11,6 +11,15 @@
  *   - 不改任何生产代码结构；所有渲染/浏览器依赖用最小 stub 顶掉
  *   - window 全局 shim 必须在所有 import 之前注册（动态 import 保证顺序）
  *   - 固定步长 dt = 1/60 s；帧数 = minutes × 60 × 60
+ *
+ * 能力边界:
+ *   能验：行为状态转换正确性、NPC 离场成功率、stuck 计数、dir_mismatch / speed0_walk 审计指标、
+ *         routing_with_walkmode 互斥约束；种子固定时结果完全确定性可复现。
+ *   不能验：渲染正确性（无 PIXI / Canvas）、玩家交互流程、真实帧率抖动、
+ *            实体视觉深度排序、CSS/DOM 叠加层。
+ *   已修分歧：① NavGrid 空实体烘焙（bake([])走 Y 分带默认值，与游戏主路径等价）；
+ *             ② mot.vel 通道提前清除（integratePhysics line 288 `mot.vel=null` 后
+ *                line 303 `if(!mot.vel)` 恒真，vy 由 npc.vy 单独通道传递，harness 行为与游戏一致）。
  */
 
 import { readFileSync, mkdirSync, writeFileSync } from 'fs';

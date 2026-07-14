@@ -1,15 +1,11 @@
 /**
  * BehaviorManager — 行为系统薄协调器
  *
- * 主循环顺序（每帧，每个存活 NPC）：
- *   1. SocialLayer.update（Activity tick + talk 配对）
- *   2. WaitForBusLayer.update
- *   3. 寿命到期 → releaseAllHoldings + triggerDeparture + 推 ExitSceneTask
- *   4. Agenda.tick（无 primary 时选下一目标，activity 时跳过）
- *   5. runner.tick（始终执行，含 TalkToTask / ExitSceneTask 等监控任务）
- *   6. if activity → continue（跳过 BSM / modifiers）
- *   7. tickBaseState + checkZoneTransition
- *   8. tickModifiers
+ * 帧内执行顺序见 docs/contracts/movement-dataflow.md §1。
+ *
+ * BM 私有约定：
+ *   - activity 存在时 `continue`（跳过 BSM / modifiers）
+ *   - `_separate` 由 BM 在每帧末尾统一调用，不由 BSM 调用
  *
  * Smart-object 路由规则（walk → routing）已全部删除；
  * 售货机 / 垃圾桶由 Agenda desires 驱动；chess_onlooker / stall_buyer

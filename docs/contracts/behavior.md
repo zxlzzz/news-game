@@ -62,7 +62,7 @@ Authoritative state table. `anim` must be a valid `manifest.json` clip id.
 `once: true` → animation plays once to `animDone`, then holds last frame.
 `dur: null` → `stateDur = Infinity`; transition only on external trigger.
 
-States NOT in this table must never appear in `setState` calls (gate: `check-invariants.mjs#S1`).
+States NOT in this table must never appear in `setState` calls (gate: `check-invariants.sh#S1`).
 
 ---
 

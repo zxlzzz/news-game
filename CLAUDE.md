@@ -64,6 +64,8 @@ for (const id of Object.keys(clipLibrary.manifest.clips)) {
 - NPC 默认动画：`'stand'`（不是 `'idle'`）；狗：`'dog_walk'`（不是 `'dogwalk'`）
 - keyframe 只存 delta（相对 `skeleton.json defaultPose`）；省略关节 = 零 delta
 - variant clip：ClipLibrary 取 **base** 的 keyframes × amp，variant 自身 keyframes 字段无效
+- **defaultPose 膨胀历史**：`skeleton.json` human defaultPose 的关节坐标曾因透视感调整整体放大约 1.26×（约 2026-06 批次）；存量 clip keyframe 均已随之重新录制，新增 clip 必须基于当前 defaultPose 录制，禁止用旧比例关节值
+- **`MOUNTED_CLIPS` 白名单**：`['bike','mobike','mobile']` 是唯一允许地面接触关节 abs_y > 0 的 clip 组（骑乘时接触点经由车辆对象），ClipLibrary 断言对此白名单豁免；新增骑乘 clip 须手动加入此列表
 
 ---
 
@@ -173,6 +175,11 @@ BehaviorManager
 - CC 分支命名：`claude/<slug>` 前缀
 - Windows MINGW64 环境：交付**完整文件内容**，不走 patch/diff 格式
 - 调试：`js/behavior/DebugLog.js` + DebugOverlay
+- **禁止运行**：默认禁止运行游戏 / harness / 模拟验证；静态验证（`check-invariants.sh`、读代码、grep）不受限；运行验证仅在用户明确要求时执行
+- **静态验证优先**：有疑问先 grep/读代码，确认后再改；不确定时列出不确定点交用户决策，不猜
+- **验收标准先行**：每个子任务开始前在 CLAUDE.md 或 PR 描述中写清楚验收条件；没有验收标准的任务禁止提交
+- **时序锚点**：涉及帧内执行顺序的描述须附 `StreetScene.js:行号` 锚点；帧序以 `movement-dataflow.md §1` 为权威，不另起炉灶
+- **契约同步**：改 `js/` 逻辑时同步更新 `docs/contracts/`；改合约时须能用 grep 在代码中找到对应实现，找不到视为草案不得升 normative
 
 ---
 
@@ -225,3 +232,8 @@ npc.clearMem('loiter');
 | `docs/npcstate-migration.md` | 快照 | NPC `_` 字段迁移至 `npc.mem()` 的扫描记录（迁移已完成） |
 | `docs/sorty-audit.md` | 快照 | `_sortY` 深度键审计报告，2026-07-11 |
 | `docs/v3-audit.md` | 快照 | v3 视觉合规审计（draw*.js），2026-07-11 |
+| `docs/contracts/movement-dataflow.md` | 规范性 | 帧内移动管线逐步执行顺序（13步）、变量清单、`mot.vel.vy` 死代码证明、三个冲突区 |
+| `docs/design-plans/velocity-representation-survey.md` | 快照 | `npc.direction/speed/vy`、`mot.vel` 全库消费者普查（2026-07-13） |
+| `docs/design-plans/velocity-unification-design-v1.md` | 设计稿（finalized） | 速度表示统一三阶段方案（V-1 审计 / V-2 清理 / V-3 死代码） |
+| `docs/roadmap.md` | 快照 | 功能批次落地状态一览（规范性路线图跟踪） |
+| `docs/design-plans/belief-layer-v0.md` | 设计稿（draft） | 信念层 v0 占位草案：符号化事件声明、LLM 证人污染防护、SIR 传播 |
