@@ -19,7 +19,6 @@ export { registerActivity } from './ActivityRegistry.js';
 // Side-effect imports：触发各 Activity 文件的 registerActivity 自注册
 import './activities/TalkActivity.js';
 import './activities/ChessActivity.js';
-import './activities/DogWalkActivity.js';
 import './activities/StallActivity.js';
 import './activities/UsePropActivity.js';
 

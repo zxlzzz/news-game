@@ -14,6 +14,7 @@
  */
 
 import { CELL, ROAD, getNavGrid } from './NavGrid.js';
+import { WORLD_WIDTH, WORLD_HEIGHT } from '../../core/Layout.js';
 
 const SQRT2 = Math.SQRT2;
 // [dx, dy, moveCostMultiplier]
@@ -75,12 +76,12 @@ export class PathPlanner {
     let e = grid.worldToCell(x1, y1);
 
     const sc = grid.cost(s.gx, s.gy);
-    if (sc === 0 || sc === ROAD) {
+    if (x0 < 0 || x0 > WORLD_WIDTH || y0 < 0 || y0 > WORLD_HEIGHT || sc === 0 || sc === ROAD) {
       const snap = grid.nearestWalkable(x0, y0, bounds);
       s = grid.worldToCell(snap.x, snap.y);
     }
     const ec = grid.cost(e.gx, e.gy);
-    if (ec === 0 || ec === ROAD) {
+    if (x1 < 0 || x1 > WORLD_WIDTH || y1 < 0 || y1 > WORLD_HEIGHT || ec === 0 || ec === ROAD) {
       const snap = grid.nearestWalkable(x1, y1, bounds);
       e = grid.worldToCell(snap.x, snap.y);
     }
@@ -100,6 +101,9 @@ export class PathPlanner {
   // ─── A* ──────────────────────────────────────────────────────────────────────
   _astar(sx, sy, ex, ey, bounds = null) {
     const { COLS, ROWS } = this._grid;
+    console.assert(sx >= 0 && sx < COLS && sy >= 0 && sy < ROWS &&
+                   ex >= 0 && ex < COLS && ey >= 0 && ey < ROWS,
+      `_astar: out-of-range (${sx},${sy})→(${ex},${ey})`);
     const N      = COLS * ROWS;
     const gCost  = new Float32Array(N).fill(Infinity);
     const parent = new Int32Array(N).fill(-1);

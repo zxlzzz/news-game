@@ -116,8 +116,7 @@ export class NavGrid {
   }
 
   cost(gx, gy) {
-    if (gy < 0 || gy >= ROWS) return 0;
-    gx = Math.max(0, Math.min(COLS - 1, gx));
+    console.assert(gx >= 0 && gx < COLS && gy >= 0 && gy < ROWS, `NavGrid.cost out-of-range (${gx},${gy})`);
     return this._cost[gy * COLS + gx];
   }
 
@@ -186,6 +185,7 @@ export class NavGrid {
       for (let dx = -gr; dx <= gr; dx++) {
         if (dx * dx + dy * dy > gr * gr) continue;
         const gx = gxC + dx, gy = gyC + dy;
+        if (gx < 0 || gx >= COLS || gy < 0 || gy >= ROWS) continue;
         const c  = this.cost(gx, gy);
         if (c === 0 || c === ROAD) continue;
         const wx = (gx + 0.5) * CELL;

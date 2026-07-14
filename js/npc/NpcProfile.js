@@ -181,7 +181,7 @@ const DOG_OWNER = {
   allowedStates: ['walk', 'stand'],
   transitions: { walk: { stand: 1.0 }, stand: { walk: 1.0 } },
   heldPoses: {},
-  activities: ['dog_walk'],
+  activities: [],
   traits: {},
   cameraReaction: 'neutral',
 };
