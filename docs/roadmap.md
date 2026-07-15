@@ -1,4 +1,4 @@
-> **status: snapshot** — 盘点截止 2026-07-15（S-2 竣工）；新增功能批次请同步更新本表。
+> **status: snapshot** — 盘点截止 2026-07-15（S-3 竣工）；新增功能批次请同步更新本表。
 
 # 功能路线图 — 落地状态一览
 
@@ -16,6 +16,7 @@
 | 速度统一 V-1.5 | 生产端迁移：Athletes 远端 jogger → `modePathFollow('sidewalk_far_jog')`；DogWalker owner → `modeWander()` | ✅ 已落地 | `js/npc/Athletes.js`；`js/npc/DogWalker.js`；`assets/scene.json walkPaths.sidewalk_far_jog` |
 | S-1（活动旁路修） | DogWalker owner activity bypass 修复（`sc.activity` 短路）；NavGrid 负坐标别名越界修复 | ✅ 已落地 | `js/npc/DogWalker.js`；`js/behavior/nav/NavGrid.js` |
 | S-2（离场竞态根修） | 寿命触发加 `!sc.activity` 门（race 根修）；`departing_orphan` 审计计数器；`SpawnManager.js` 删除；lifespan 单一写入点（profile 驱动）；ExitSceneTask building 分支冗余 `findExit` 删除 | ✅ 已落地 | `js/behavior/BehaviorManager.js:118`；`js/debug/MovementAudit.js`；`js/npc/Pedestrians.js:87`；`js/behavior/Director.js`；`js/behavior/tasks/ExitSceneTask.js` |
+| S-3（despawn 统一钩子 + 生成/离场坐标修正） | `despawnNpc` 单一写入点（leash 级联 / bench 防御）；edge spawn `snap:false` 跳过 NavGrid 吸附；出口坐标 ±200 → ±40；spawn 入口坐标 ±10 → ±30 | ✅ 已落地 | `js/npc/despawn.js`；`js/behavior/BaseStateMachine.js`；`js/entity/busstop/WaitForBusLayer.js`；`js/scenes/SceneInitializer.js`；`scripts/headless-sim.mjs` |
 | 速度统一 V-2 | 消费者迁移（D2/D3/D4）：`npc.vy/speed` 物理角色删除；StuckProbe gate 改 state 集；zone 门改读 `mot.vel?.vy`；`updateFacing` 单写入点（routing + wander 共用）；dead-code `!mode` 分支删除 | ✅ 已落地 | `js/behavior/BaseStateMachine.js`；`js/behavior/Motor.js`；`js/behavior/StuckProbe.js`；`js/debug/MovementAudit.js`；`docs/contracts/movement-dataflow.md` |
 | T1/T2/T3（动画&朝向清理） | walk clip 水平质心归零（T1，shift=+18）；`updateFacing` 提取为 BaseStateMachine 函数（T2）；check-invariants Rule 4（walk-state clip `|meanX|≤4`）（T3） | ✅ 已落地 | `scripts/recenter-clips.py`；`assets/animations/cycle/walk.json`；`scripts/check-invariants.mjs` |
 | F1–F4（足迹统一） | footprint 扩展 `shape/blocks/sortDY`（F1）；PropEntity 收敛 `this.footprint`，删 `collisionRX/RY`，`_sortY` 由 `sortDY` 派生（F2）；NavGrid 改读 `e.footprint`，`OBS_MARGIN=1` → `NPC_HALF_W=7`，shape 分发（F3）；check-invariants Rule 5/6（F4） | ✅ 已落地 | `js/core/PropEntity.js`；`js/behavior/nav/NavGrid.js`；`js/entity/*/`；`scripts/check-invariants.mjs` |
@@ -113,3 +114,24 @@
   `triggerDeparture` 本身处理 no-exit → `ag.lifespan+=30` 兜底。
 
 代码锚点：`js/behavior/BehaviorManager.js:118`；`js/debug/MovementAudit.js#tick`；`js/behavior/tasks/ExitSceneTask.js#_driveExit`
+
+---
+
+### S-3（despawn 统一钩子 + 生成/离场坐标修正）— 已落地
+
+核心变更（commit `bd726af`、`5f1e1c6`）：
+
+- **C1 despawnNpc 统一入口**：新增 `js/npc/despawn.js`，`despawnNpc(npc, reason, ctx)` 成为所有行人 NPC `alive=false` 的单一写入点。
+  资源普查（C1.1）：
+  - **leash** — `ctx.entities` 扫描，owner 死亡时 `e.leashTarget===owner` 的实体（dog）级联 `alive=false`
+  - **modifier** — `NpcPropManager.getDrawables()` 已过滤 `!prop.npc.alive`；`_props` Map 条目保留（接受）
+  - **slot** — `SocialLayer.update()` 下帧自动清理死亡 NPC 槽位，无需 despawnNpc 干预
+  - **bench** — `sit_bench.onExit→standUp` 正常路径先释放；`despawnNpc` 内 defensive `standUp` 兜底非标准路径
+  - **bus queue** — `_startBoarding.onArrive` 自清 `stop._boardingQueue`；lifespan 触发由 `!sc.waitingBusStop` 门控
+- **C1 BaseStateMachine**：`triggerDeparture(npc, registry, ctx={})` + `_routeToExit(npc, exit, ctx={})` 添加 ctx 参数；`onArrive` 改用 `despawnNpc('exit-arrive', ctx)`；`pendingDeparture` 路径同步保存 `ag.pendingDepartureCtx`，`tickBaseState` 消费。
+- **C1 WaitForBusLayer**：`constructor(busStops, entities)` 新增 entities 参数；`_startBoarding.onArrive` 改用 `despawnNpc('boarding-arrive', {entities})`。
+- **C1 BehaviorManager / SceneInitializer**：调用点传 `{entities: em.entities}`。
+- **C2 edge spawn snap**：`spawnOnePedestrian opts.snap !== false` 控制 `nearestWalkable`（默认 true）；`Director._spawnNPC` 传 `snap: fromDoor`（边缘入口 snap=false）。bounds 论据：`_slideMove` 仅对"已在 minX 内侧→外侧"位移钳制（`npc.x >= npc.minX` 前置门），x=−30/minX=0 时条件为 false，NPC 从外侧自由向内行走。
+- **C3 出口/入口坐标**：边缘出口 ±200 → ±40（`SceneInitializer.js`、`headless-sim.mjs` 同提交）；边缘 spawn 入口点 ±10 → ±30。
+
+代码锚点：`js/npc/despawn.js`；`js/behavior/BaseStateMachine.js#triggerDeparture`；`js/entity/busstop/WaitForBusLayer.js#_startBoarding`；`js/scenes/SceneInitializer.js:105`
