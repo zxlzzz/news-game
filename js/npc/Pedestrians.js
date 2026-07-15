@@ -64,8 +64,9 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
   const profile  = getProfile(typeData.npcType);
   const speedRange = profile?.speedRange ?? [20, 34];
 
-  const grid   = getNavGrid();
-  const safePos = grid ? grid.nearestWalkable(pos.x, pos.y) : pos;
+  const grid    = getNavGrid();
+  const snap    = opts.snap !== false;
+  const safePos = (snap && grid) ? grid.nearestWalkable(pos.x, pos.y) : pos;
 
   const n = makeNPC(em, sr, {
     x: safePos.x, y: safePos.y,

@@ -102,8 +102,8 @@ export class SceneInitializer {
 
     // ── ExitRegistry：边缘 + 建筑门（从 scene.json 读取）───────────────────────
     const exitRegistry = new ExitRegistry();
-    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null, yZone: null, facing: -1 });
-    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 200, y: null, yZone: null, facing:  1 });
+    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -40,              y: null, yZone: null, facing: -1 });
+    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 40, y: null, yZone: null, facing:  1 });
 
     const buildingDoors = [];
     for (const b of (sceneData?.buildings ?? [])) {
@@ -121,10 +121,10 @@ export class SceneInitializer {
 
     const spawnPoints = [
       ...buildingDoors.map(d => ({ x: d.x, y: SIDEWALK_FAR_Y, facing: 0 })),
-      { x: -10,              y: SIDEWALK_FAR_Y, facing:  1 },
-      { x: WORLD_WIDTH + 10, y: SIDEWALK_FAR_Y, facing: -1 },
-      { x: -10,              y: PARK_TOP + 30,  facing:  1 },
-      { x: WORLD_WIDTH + 10, y: PARK_TOP + 30,  facing: -1 },
+      { x: -30,              y: SIDEWALK_FAR_Y, facing:  1 },
+      { x: WORLD_WIDTH + 30, y: SIDEWALK_FAR_Y, facing: -1 },
+      { x: -30,              y: PARK_TOP + 30,  facing:  1 },
+      { x: WORLD_WIDTH + 30, y: PARK_TOP + 30,  facing: -1 },
     ];
 
     spawnPedestrians(em, sr, bm, spawnPoints);

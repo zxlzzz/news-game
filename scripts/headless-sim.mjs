@@ -93,13 +93,13 @@ initCrosswalks(layout.crosswalks ?? []);
 
 // ─── ExitRegistry ────────────────────────────────────────────────────────────
 const exitReg = new ExitRegistry();
-exitReg.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null,
+exitReg.register({ id: 'edge_left',  type: 'edge', x: -40,              y: null,
                    yZone: [BUILDING_BASE_Y, FAR_Y],  facing: -1 });
-exitReg.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 200, y: null,
+exitReg.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 40, y: null,
                    yZone: [BUILDING_BASE_Y, FAR_Y],  facing:  1 });
-exitReg.register({ id: 'park_left',  type: 'edge', x: -200,              y: null,
+exitReg.register({ id: 'park_left',  type: 'edge', x: -40,              y: null,
                    yZone: [NEAR_Y, PARK_BOTTOM],     facing: -1 });
-exitReg.register({ id: 'park_right', type: 'edge', x: WORLD_WIDTH + 200, y: null,
+exitReg.register({ id: 'park_right', type: 'edge', x: WORLD_WIDTH + 40, y: null,
                    yZone: [NEAR_Y, PARK_BOTTOM],     facing:  1 });
 
 // ─── EntityManager + BehaviorManager ─────────────────────────────────────────

@@ -157,6 +157,7 @@ export class Director {
     const npc = spawnOnePedestrian(profile, this._em, this._sr, this._bm, { x, y }, {
       minX: 0, maxX: WORLD_WIDTH,
       minY: BUILDING_BASE_Y, maxY: PARK_BOTTOM,
+      snap: fromDoor,
     });
     npc.direction = direction;
     const ag = npc.mem('agenda');
