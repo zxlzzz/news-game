@@ -2,7 +2,7 @@
  * VehicleSpawner — 边缘入场管理器
  *
  * 每 2~4 秒检查各行带密度，不足 target 时以 30% 概率从对应边缘生成一辆新车。
- * 参考 SpawnManager 的密度控制思路，专为机动车设计。
+ * 密度门控 + 边缘入场，专为机动车设计。
  */
 
 import { VehicleEntity }        from '../entity/vehicle/VehicleEntity.js';

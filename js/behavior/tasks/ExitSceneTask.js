@@ -41,13 +41,9 @@ export class ExitSceneTask {
 
     // ── 楼门出口 ───────────────────────────────────────────────────────────────
     if (bias === 'building' && exitReg) {
-      const bExit = exitReg.findExit(npc, 'building');
-      if (bExit) {
-        ag.preferExitType = 'building';
-        triggerDeparture(npc, exitReg);
-        return;
-      }
-      // 无匹配建筑出口 → 降级边缘出口
+      ag.preferExitType = 'building';
+      triggerDeparture(npc, exitReg);
+      return;
     }
 
     // ── 默认边缘出口 ──────────────────────────────────────────────────────────

@@ -161,7 +161,6 @@ export class Director {
     npc.direction = direction;
     const ag = npc.mem('agenda');
     ag.exitBias  = exitBias;
-    ag.lifespan  = rand(90, 200);
     ag.ageTimer  = fromDoor ? 0 : rand(0, 20);
 
     this._installRefs(npc);
