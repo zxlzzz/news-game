@@ -56,6 +56,7 @@ import {
 import { setState, STATE_DEFS, setXY, nudgeXY } from './Motor.js';
 import { getPlanner } from './nav/PathPlanner.js';
 import { applyLookahead } from './nav/Lookahead.js';
+import { despawnNpc } from '../npc/despawn.js';
 
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
 export { setState, STATE_DEFS } from './Motor.js';
@@ -331,7 +332,7 @@ function steerRoam(npc, envQuery, profile, dt) {
 }
 
 // ─── 离场系统 ─────────────────────────────────────────────────────────────────
-function _routeToExit(npc, exit) {
+function _routeToExit(npc, exit, ctx = {}) {
   const tx = exit.x;
   const ty = exit.y ?? npc.y;
   if (exit.facing !== 0) npc.direction = exit.facing;
@@ -348,11 +349,11 @@ function _routeToExit(npc, exit) {
     x: tx, y: ty,
     exitType: exit.type,
     abandonAfter: 60,
-    onArrive: (n) => { n.alive = false; },
+    onArrive: (n) => despawnNpc(n, 'exit-arrive', ctx),
   };
 }
 
-export function triggerDeparture(npc, exitRegistry) {
+export function triggerDeparture(npc, exitRegistry, ctx = {}) {
   if (!exitRegistry) return;
   const ag = npc.mem('agenda');
   if (ag.departing) return;
@@ -365,9 +366,10 @@ export function triggerDeparture(npc, exitRegistry) {
   if (['sit_bench', 'lie_bench', 'sit_ground', 'squat'].includes(npc.state)) {
     setState(npc, 'stand', 'departure');
     ag.pendingDeparture = exit;
+    ag.pendingDepartureCtx = ctx;
     return;
   }
-  _routeToExit(npc, exit);
+  _routeToExit(npc, exit, ctx);
 }
 
 export function restoreDepartureBounds(npc) {
@@ -385,8 +387,10 @@ export function tickBaseState(npc, profile, envQuery, dt) {
   const ag = npc.mem('agenda');
   if (ag.pendingDeparture && npc.state === 'stand') {
     const exit = ag.pendingDeparture;
-    ag.pendingDeparture = null;
-    _routeToExit(npc, exit);
+    const ctx  = ag.pendingDepartureCtx ?? {};
+    ag.pendingDeparture    = null;
+    ag.pendingDepartureCtx = null;
+    _routeToExit(npc, exit, ctx);
     return;
   }
 

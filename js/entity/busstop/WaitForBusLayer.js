@@ -10,6 +10,7 @@
 import { setState } from '../../behavior/Motor.js';
 import { planCrossing } from '../../behavior/WalkMode.js';
 import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP, FAR_Y, NEAR_Y } from '../../core/Layout.js';
+import { despawnNpc } from '../../npc/despawn.js';
 
 function _needsCrossing(y1, y2) {
   return (y1 < FAR_Y && y2 >= NEAR_Y) || (y1 >= NEAR_Y && y2 < FAR_Y);
@@ -25,8 +26,9 @@ const MAX_WAIT_TIME = 120;
 const SCAN_INTERVAL = 0.5;
 
 export class WaitForBusLayer {
-  constructor(busStops) {
-    this._stops = busStops;
+  constructor(busStops, entities) {
+    this._stops    = busStops;
+    this._entities = entities ?? [];
     this._scanTimer = 0;
 
     for (const stop of busStops) {
@@ -124,12 +126,13 @@ export class WaitForBusLayer {
       npc.mem('social').waitingBusStop = stop;
 
       const routeToDoor = (n) => {
+        const entities = this._entities;
         n.mem('motor').routeTarget = {
           x: doorX, y: doorY,
           abandonAfter: 15,
           onArrive: (n2) => {
-            n2.alive = false;
             stop._boardingQueue = stop._boardingQueue.filter(x => x !== n2);
+            despawnNpc(n2, 'boarding-arrive', { entities });
           },
         };
         setState(n, 'routing', 'boarding');

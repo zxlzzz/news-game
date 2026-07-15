@@ -137,7 +137,7 @@ export class SceneInitializer {
     for (const stop of (layout.busStops || [])) spawnBusStop(this.em, stop);
 
     if (this.scene.trafficManager.busStops.length > 0)
-      bm.waitForBusLayer = new WaitForBusLayer(this.scene.trafficManager.busStops);
+      bm.waitForBusLayer = new WaitForBusLayer(this.scene.trafficManager.busStops, em.entities);
 
     // ── Director（替换 SpawnManager）──────────────────────────────────────────
     const director = new Director({

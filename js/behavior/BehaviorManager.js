@@ -117,7 +117,7 @@ export class BehaviorManager {
         ag.ageTimer = (ag.ageTimer || 0) + dt;
         if (ag.ageTimer >= ag.lifespan && !sc.activity) {
           releaseAllHoldings(npc, this.envQuery);
-          triggerDeparture(npc, this.exitRegistry);
+          triggerDeparture(npc, this.exitRegistry, { entities: this.em.entities });
           if (ag.departing) {
             ag.runner?.setPrimary(new ExitSceneTask(), npc);
           }
