@@ -86,11 +86,11 @@
 
 ## 2 · 迁移切片（3 个 CC batch，顺序执行）
 
-| Batch | 内容 | 验收（静态） |
-|---|---|---|
-| **V-1** | integratePhysics 重写（D1）；steer 停写 `npc.vy`/`setSpeed`，只写 `mot.vel`；Y 钳制迁移 | 标量回退分支不存在于代码中；`grep 'direction \* .*speed'` 在 Motor 零命中 |
-| **V-2** | 消费者迁移（D2/D3/D4）：StuckProbe、zone 门、卡死反转改重规划、审计改断言、facing 单点化 | survey 中 [物理积分] 标签下 `direction/speed/vy` 条目全部消失或改读 vel |
-| **V-3** | 清理 + 不变量（D5/D6）：内联路径 CONTRACT、check-invariants 加 V1–V3、死字段/死 API 删除 | `check-invariants.sh` 全绿；survey 重跑对账 |
+| Batch | 内容 | 验收（静态） | 状态 |
+|---|---|---|---|
+| **V-1** | integratePhysics 重写（D1）；steer 停写 `npc.vy`/`setSpeed`，只写 `mot.vel`；Y 钳制迁移 | 标量回退分支不存在于代码中；`grep 'direction \* .*speed'` 在 Motor 零命中 | ✅ 已落地（commit `f1a8ad9`） |
+| **V-2** | 消费者迁移（D2/D3/D4）：StuckProbe gate 改 state 集；zone 门改读 `mot.vel?.vy`；`updateFacing` 单写入点；`npc.vy/speed` 写入删除；dead-code `!mode` 删除 | survey 中 [物理积分] 标签下 `direction/speed/vy` 条目全部消失或改读 vel | ✅ 已落地（commit `c037a59` + `fbb455f`） |
+| **V-3** | 清理 + 不变量（D5/D6）：内联路径 CONTRACT、check-invariants V1–V3 gate（no-direct-xy/no-direction-in-physics/no-npc.vy-in-steer）、死字段/死 API 删除 | `check-invariants.mjs` 全绿（Rules 1–6 已通过，V1–V3 gate 待加）；survey 重跑对账 | 🔲 待实施 |
 
 每个 batch 交付后本对话静态审计；运行验证（harness 确定性冒烟三件套）
 是否执行、何时执行由用户决定。

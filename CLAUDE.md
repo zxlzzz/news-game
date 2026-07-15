@@ -234,6 +234,6 @@ npc.clearMem('loiter');
 | `docs/v3-audit.md` | 快照 | v3 视觉合规审计（draw*.js），2026-07-11 |
 | `docs/contracts/movement-dataflow.md` | 规范性 | 帧内移动管线逐步执行顺序（13步）、变量清单、`mot.vel.vy` 死代码证明、三个冲突区 |
 | `docs/design-plans/velocity-representation-survey.md` | 快照 | `npc.direction/speed/vy`、`mot.vel` 全库消费者普查（2026-07-13） |
-| `docs/design-plans/velocity-unification-design-v1.md` | 设计稿（finalized） | 速度表示统一三阶段方案（V-1 审计 / V-2 清理 / V-3 死代码） |
+| `docs/design-plans/velocity-unification-design-v1.md` | 设计稿（finalized） | 速度表示统一三阶段方案（V-1 ✅ / V-2 ✅ / V-3 待实施） |
 | `docs/roadmap.md` | 快照 | 功能批次落地状态一览（规范性路线图跟踪） |
 | `docs/design-plans/belief-layer-v0.md` | 设计稿（draft） | 信念层 v0 占位草案：符号化事件声明、LLM 证人污染防护、SIR 传播 |

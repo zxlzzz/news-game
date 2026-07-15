@@ -1,6 +1,6 @@
 # Movement Subsystem Contract
 
-verified at ddc77846154d3cb51fef63ba83f06feeb0accd0c (V-1 velocity unification); updated for V-2 consumer migration (see velocity-unification-design-v1.md)
+verified at ddc77846154d3cb51fef63ba83f06feeb0accd0c (V-1); updated for V-2 consumer migration + F1–F4 footprint unification (see velocity-unification-design-v1.md, roadmap.md)
 
 All writers listed as `file#symbol (line)`. Line numbers are parenthetical
 annotations only — anchor is the symbol name. Verified by grep on HEAD.
@@ -206,6 +206,20 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 | **Readers** | `Motor.js#_slideMove` (200), `WalkMode.js#pickModeTarget` (202, 230), `PathPlanner.js#getPlanner` (199), `Lookahead.js#applyLookahead` (32), `EnvironmentQuery.js` (126, 135), `Pedestrians.js#spawnOnePedestrian` (67), `StrollTask.js` (26), `StuckProbe.js` (15) |
 | **Invariant** | Set exactly once at scene initialisation. `null` before init — all consumers must guard (`grid && ...`). Must not be replaced mid-scene. |
 
+### Obstacle footprint (`e.footprint`)
+
+| | |
+|---|---|
+| **Semantic** | Per-entity ground footprint `{shape, rx, ry, blocks, sortDY}` computed once in `PropEntity` constructor via `_computeFootprint()`. `shape: 'rect'` → AABB test; `shape: 'ellipse'` → ellipse test (fountain). `rx/ry` are world-pixel half-axes at the entity's `depthScale(y)`. `blocks: true` for all `OBSTACLE_TYPES`; `false` for decorative props (sign). `sortDY` offsets the Y-sort anchor (`_sortY = y + sortDY`; 0 = use entity.y). |
+| **Owner** | Each entity module (`js/entity/<type>/<type>.js`) exports `footprint(e)`. `PropEntity._computeFootprint()` dispatches by `propType`. |
+| **Writers** | `PropEntity` constructor (one-time, stored as `this.footprint`). Never mutated after construction. |
+| **Readers** | `NavGrid._markObstacle` (obstacle baking); `PropEntity` constructor (sortDY → `_sortY`); `check-invariants.mjs Rule 5` (static gate) |
+| **Invariant** | Every `propType` in `OBSTACLE_TYPES` must have an explicit case in `_computeFootprint()`; missing case throws at construction. `rx/ry` values must not be adjusted without also updating the corresponding `draw*.js` geometry comment. |
+
+### `NPC_HALF_W` (NavGrid Minkowski expansion)
+
+`NavGrid.js:39`: `const NPC_HALF_W = 7` — pixels added to every obstacle's `footprint.rx/ry` before grid cell marking. Represents the NPC's collision half-width: a cell is BLOCKED if the NPC's centre would be within `rx + NPC_HALF_W` of the obstacle centre (AABB), or within the scaled ellipse boundary (fountain). Value 7 was chosen to match the effective NPC ground-contact half-width at mid-scene depth. Rename or change only with a full NavGrid rebake and gameplay visual check.
+
 ---
 
 ### `WALK_PATHS`
@@ -227,7 +241,7 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 **Claim**: `sitDown` places the NPC at the bench's seat surface, which lies inside the bench's obstacle AABB (cost=0 in NavGrid). `standUp` clears the bench reference but does **not** reposition the NPC.
 
 **Evidence**:
-- `PropEntity.js` (38-41): `'bench'` is in `OBSTACLE_TYPES` → `this.obstacle = true` → `NavGrid#_bakeObstacles` sets all cells in the AABB to cost=0 (BLOCKED).
+- `PropEntity.js`: `'bench'` is in `OBSTACLE_TYPES` → `this.obstacle = true`; `this.footprint = _computeFootprint()` → `NavGrid#_bakeObstacles` marks all cells within `footprint.rx/ry + NPC_HALF_W` as BLOCKED.
 - `seat.js#sitDown` (66-74): calls `_setXY(npc, bench.x, seatSurfaceY(bench) - sitBodyY * sc)` — places NPC at seat surface inside bench footprint.
 - `seat.js#standUp` (77-82): clears `bench._occupiedBy`, `npc.mem('social').bench`, and `npc._sortY`. No `_setXY` call — NPC remains at the seated x/y.
 - `Motor.js#_slideMove` (205-208) escape rule: "already in a blocked cell → move freely to get out" — the designated recovery mechanism.
