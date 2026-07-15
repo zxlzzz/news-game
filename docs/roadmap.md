@@ -1,4 +1,4 @@
-> **status: snapshot** — 盘点截止 2026-07-15（S-3 竣工）；新增功能批次请同步更新本表。
+> **status: snapshot** — 盘点截止 2026-07-15（S-4 竣工）；新增功能批次请同步更新本表。
 
 # 功能路线图 — 落地状态一览
 
@@ -17,6 +17,7 @@
 | S-1（活动旁路修） | DogWalker owner activity bypass 修复（`sc.activity` 短路）；NavGrid 负坐标别名越界修复 | ✅ 已落地 | `js/npc/DogWalker.js`；`js/behavior/nav/NavGrid.js` |
 | S-2（离场竞态根修） | 寿命触发加 `!sc.activity` 门（race 根修）；`departing_orphan` 审计计数器；`SpawnManager.js` 删除；lifespan 单一写入点（profile 驱动）；ExitSceneTask building 分支冗余 `findExit` 删除 | ✅ 已落地 | `js/behavior/BehaviorManager.js:118`；`js/debug/MovementAudit.js`；`js/npc/Pedestrians.js:87`；`js/behavior/Director.js`；`js/behavior/tasks/ExitSceneTask.js` |
 | S-3（despawn 统一钩子 + 生成/离场坐标修正） | `despawnNpc` 单一写入点（leash 级联 / bench 防御）；edge spawn `snap:false` 跳过 NavGrid 吸附；出口坐标 ±200 → ±40；spawn 入口坐标 ±10 → ±30 | ✅ 已落地 | `js/npc/despawn.js`；`js/behavior/BaseStateMachine.js`；`js/entity/busstop/WaitForBusLayer.js`；`js/scenes/SceneInitializer.js`；`scripts/headless-sim.mjs` |
+| S-4（Director 密度账目分离 + 超额加速离场） | `transientAlive`（lifespan != null）分账，常驻 NPC 不占 target；超额 `> target+2` 时快进 `ageTimer`，走 BM 全链路减员 | ✅ 已落地 | `js/behavior/Director.js#update`；`js/behavior/Director.js#_alight` |
 | 速度统一 V-2 | 消费者迁移（D2/D3/D4）：`npc.vy/speed` 物理角色删除；StuckProbe gate 改 state 集；zone 门改读 `mot.vel?.vy`；`updateFacing` 单写入点（routing + wander 共用）；dead-code `!mode` 分支删除 | ✅ 已落地 | `js/behavior/BaseStateMachine.js`；`js/behavior/Motor.js`；`js/behavior/StuckProbe.js`；`js/debug/MovementAudit.js`；`docs/contracts/movement-dataflow.md` |
 | T1/T2/T3（动画&朝向清理） | walk clip 水平质心归零（T1，shift=+18）；`updateFacing` 提取为 BaseStateMachine 函数（T2）；check-invariants Rule 4（walk-state clip `|meanX|≤4`）（T3） | ✅ 已落地 | `scripts/recenter-clips.py`；`assets/animations/cycle/walk.json`；`scripts/check-invariants.mjs` |
 | F1–F4（足迹统一） | footprint 扩展 `shape/blocks/sortDY`（F1）；PropEntity 收敛 `this.footprint`，删 `collisionRX/RY`，`_sortY` 由 `sortDY` 派生（F2）；NavGrid 改读 `e.footprint`，`OBS_MARGIN=1` → `NPC_HALF_W=7`，shape 分发（F3）；check-invariants Rule 5/6（F4） | ✅ 已落地 | `js/core/PropEntity.js`；`js/behavior/nav/NavGrid.js`；`js/entity/*/`；`scripts/check-invariants.mjs` |
@@ -135,3 +136,25 @@
 - **C3 出口/入口坐标**：边缘出口 ±200 → ±40（`SceneInitializer.js`、`headless-sim.mjs` 同提交）；边缘 spawn 入口点 ±10 → ±30。
 
 代码锚点：`js/npc/despawn.js`；`js/behavior/BaseStateMachine.js#triggerDeparture`；`js/entity/busstop/WaitForBusLayer.js#_startBoarding`；`js/scenes/SceneInitializer.js:105`
+
+---
+
+### S-4（Director 密度账目分离 + 超额加速离场）— 已落地
+
+核心变更（commit `9f8a791`）：
+
+- **C1 分账**：`Director.update` 与 `_alight` 的存活计数改为 `transientAlive`
+  （`n.alive && !ag.departing && ag.lifespan != null`）。常驻 NPC 无 `departure`
+  字段 → `Pedestrians.js:87` 赋 `lifespan = null` → 不占 target 配额。
+  回落过目（引用 S1 C2.4 清单）：有 `departure.lifespanRange` →
+  `lifespan != null`：pedestrian / businessman / tourist；无 departure →
+  `lifespan = null`：chess_player / chess_onlooker / stall_seller / dog_owner /
+  athlete。无例外。
+
+- **C2 超额加速**：`transientAlive > target + 2` 时，按 `ageTimer/lifespan`
+  降序选最多 2 个候选，执行 `ag.ageTimer = ag.lifespan`。BM 寿命检查在下一帧
+  触发 `triggerDeparture → ExitSceneTask` 全链路，Director 不直调任何离场函数。
+  选人排除条件（`ag.departing / sc.activity / sc.waitingBusStop`）与 BM 门控完全对应：
+  Director 排除 → BM 门也排除 → 快进后必触发，无绕门路径。+2 滞回带防止补员/减员边界抖振。
+
+代码锚点：`js/behavior/Director.js#update`；`js/behavior/Director.js#_alight`
