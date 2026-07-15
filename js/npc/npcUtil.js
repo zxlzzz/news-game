@@ -15,8 +15,7 @@ import { FAR_Y, NEAR_Y } from '../core/Layout.js';
  */
 export function makeNPC(em, sr, cfg) {
   cfg.renderer = sr;
-  if (cfg.minY === undefined) cfg.minY = FAR_Y;
-  if (cfg.maxY === undefined) cfg.maxY = NEAR_Y;
+  // Y 边界默认值由 Npc 构造器提供（BUILDING_BASE_Y..460）；此处禁止再注入马路带默认
   const n = new NPC(cfg);
   n.frameIndex = Math.floor(Math.random() * (sr.getAnimation(cfg.animation)?.frameCount || 8));
   return em.add(n);
