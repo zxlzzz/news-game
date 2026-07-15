@@ -2,11 +2,17 @@
  * Director — 人流源汇调度器（替换 SpawnManager）
  *
  * 职责：
- *   1. 按游戏时段控制场景 NPC 密度目标
+ *   1. 按游戏时段控制场景流动 NPC 密度目标
  *   2. 按权重（建筑门 60% / 边缘 30% / 公交下客 10%）选 spawn 源
  *   3. 公交到站时吐 0~3 名下客 NPC（onArrival 钩子）
  *   4. spawn 时为每个 NPC 分配 exitBias（楼门/公交/边缘）和 lifespan
  *   5. 初始批次的 NPC 通过 assignDefaults() 补齐 exitBias
+ *
+ * 密度语义：
+ *   target 为流动 NPC 目标数（lifespan != null）；常驻 NPC（棋手/摊主/遛狗者/
+ *   运动员，lifespan = null）不计入 transientAlive，不占用 target 配额。
+ *   超额时经寿命快进（ag.ageTimer = ag.lifespan）触发减员，由 BM 寿命检查在
+ *   下一帧统一走 triggerDeparture 全链路，S1 的 !sc.activity 门自动生效。
  *
  * 铁律：Director 只管 spawn/despawn 调度，个体目标选择全部由 Agenda 负责。
  */
@@ -84,17 +90,38 @@ export class Director {
     }
   }
 
-  // ─── 每帧更新：密度检查 + 补充 spawn ──────────────────────────────────────────
+  // ─── 每帧更新：密度检查 + 补充 spawn / 超额加速离场 ────────────────────────────
   update(dt) {
     this._spawnTimer -= dt;
     if (this._spawnTimer > 0) return;
     this._spawnTimer = rand(2, 5);
 
-    const alive = this._bm.npcs.filter(n => n.alive && !n.mem('agenda').departing).length;
+    const transientAlive = this._bm.npcs.filter(n =>
+      n.alive && !n.mem('agenda').departing && n.mem('agenda').lifespan != null
+    ).length;
     const { target } = this._currentPeriod();
-    if (alive < target) {
-      const missing = Math.min(target - alive, 2);
+
+    if (transientAlive < target) {
+      const missing = Math.min(target - transientAlive, 2);
       for (let i = 0; i < missing; i++) this._spawnOne();
+    } else if (transientAlive > target + 2) {
+      // 快进寿命：BM 寿命检查在下一帧经 triggerDeparture 全链路减员
+      const excess = Math.min(transientAlive - target, 2);
+      const candidates = this._bm.npcs
+        .filter(n => {
+          if (!n.alive) return false;
+          const ag = n.mem('agenda');
+          const sc = n.mem('social');
+          return ag.lifespan != null && !ag.departing && !sc.activity && !sc.waitingBusStop;
+        })
+        .sort((a, b) => {
+          const ra = a.mem('agenda').ageTimer / a.mem('agenda').lifespan;
+          const rb = b.mem('agenda').ageTimer / b.mem('agenda').lifespan;
+          return rb - ra;  // 降序：最接近自然离场者先走
+        });
+      for (let i = 0; i < excess && i < candidates.length; i++) {
+        candidates[i].mem('agenda').ageTimer = candidates[i].mem('agenda').lifespan;
+      }
     }
   }
 
@@ -111,9 +138,11 @@ export class Director {
 
   // ─── 公交到站下客 ─────────────────────────────────────────────────────────────
   _alight(bus, stop) {
-    const alive = this._bm.npcs.filter(n => n.alive && !n.mem('agenda').departing).length;
+    const transientAlive = this._bm.npcs.filter(n =>
+      n.alive && !n.mem('agenda').departing && n.mem('agenda').lifespan != null
+    ).length;
     const { target } = this._currentPeriod();
-    const headroom = target - alive;
+    const headroom = target - transientAlive;
     if (headroom <= 0) return;
 
     const count = Math.min(Math.floor(Math.random() * 4), headroom);  // 0-3
