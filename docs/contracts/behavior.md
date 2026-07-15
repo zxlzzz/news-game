@@ -24,7 +24,7 @@ BehaviorManager          — thin orchestrator; owns the update loop order
 Update order each frame (per NPC, `BehaviorManager.js#update`):
 1. `SocialLayer.update` — Activity tick + Talk pairing
 2. `WaitForBusLayer.update` — bus-waiter scan
-3. Lifespan expiry → `releaseAllHoldings` + `triggerDeparture` + `ExitSceneTask`
+3. Lifespan expiry (`!sc.activity` gate) → `releaseAllHoldings` + `triggerDeparture` + `ExitSceneTask`; age accumulates during Activity, trigger fires on first frame after Activity ends
 4. `Agenda.tick` — Goal selection when no Activity
 5. `TaskRunner.tick` — always, including monitor tasks
 6. If `activity` → skip BSM / modifiers

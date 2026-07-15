@@ -115,7 +115,7 @@ export class BehaviorManager {
       // 寿命到期 → 离场
       if (!ag.departing && ag.lifespan != null && !sc.waitingBusStop) {
         ag.ageTimer = (ag.ageTimer || 0) + dt;
-        if (ag.ageTimer >= ag.lifespan) {
+        if (ag.ageTimer >= ag.lifespan && !sc.activity) {
           releaseAllHoldings(npc, this.envQuery);
           triggerDeparture(npc, this.exitRegistry);
           if (ag.departing) {

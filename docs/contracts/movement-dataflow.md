@@ -12,7 +12,7 @@
 |---|--------|----------|-----------|
 | 1 | `StreetScene.update` → `BehaviorManager.update` | `SocialLayer.update` | activity pair/tick |
 | 2 | BM | `WaitForBusLayer.update` | bus waiter tick |
-| 3 | BM per-NPC | lifespan check → `triggerDeparture` → `_routeToExit` | sets `ag.departing`; saves + expands bounds (edge exits); sets `mot.routeTarget` |
+| 3 | BM per-NPC | lifespan check (`!sc.activity` gate) → `triggerDeparture` → `_routeToExit` | sets `ag.departing`; saves + expands bounds (edge exits); sets `mot.routeTarget`; skipped while NPC is in an Activity (age accumulates, triggers on next frame after activity ends) |
 | 4 | BM per-NPC | `Agenda.tick` | selects next desire (no-op if `sc.activity`) |
 | 5 | BM per-NPC | `TaskRunner.tick` | ExitSceneTask / TalkToTask monitor |
 | 6 | BM per-NPC | `tickBaseState`: `stateTimer += dt` | timer advance; `_evaluateTransitions` → may call `setState` |
@@ -87,5 +87,6 @@ if (mot.vel) {
 | # | Variable | Conflict |
 |---|----------|----------|
 | a | `mot.vel` | **steer skipped** (`sc.activity` or other `continue`): `tickBaseState` is not called → `steerRoam` does not run → `mot.vel` is not set. `integratePhysics` finds `mot.vel` absent → NPC is stationary that frame. No stale scalar drift (the `direction × speed` scalar fallback was removed in V-1). |
+| d | `ag.departing` + `npc.state` | **departure-activity race** (resolved in S-1): if `triggerDeparture` fired while `sc.activity` was set, `npc.state` would be set to `routing` but `tickBaseState` would be skipped → routing could never advance; when the Activity ended, `destroy()` would call `setState(walk)`, leaving `ag.departing=true` with no routeTarget (orphan). Fix: step 3 lifespan trigger gated on `!sc.activity`; age still accumulates so departure fires on the frame the Activity ends. |
 | b | `npc.x`, `npc.y` | **steer uses pre-separation positions**: `steerRoam` (step 9) computes velocity from NPC position before `_separate` (step 12) has run. `integratePhysics` (step 13) then applies that velocity to the post-separation position. The steering direction may be slightly stale relative to the committed position. |
 | c | `npc.stateTimer` | **one-frame delay on progress-monitor trigger**: `integratePhysics` writes `stateTimer = 9999` at step 13; `steerRoam`'s timeout check (`stateTimer > abandonAfter`) runs at step 8 in the **next** frame's BM pass. The 9999 value has no effect in the frame it is written. |
