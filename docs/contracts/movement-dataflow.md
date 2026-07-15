@@ -17,8 +17,8 @@
 | 5 | BM per-NPC | `TaskRunner.tick` | ExitSceneTask / TalkToTask monitor |
 | 6 | BM per-NPC | `tickBaseState`: `stateTimer += dt` | timer advance; `_evaluateTransitions` → may call `setState` |
 | 7 | BM → `_tickState` | `tickWalkMode` | `direct._elapsed`; `path_follow.pauseTimer` |
-| 8 | BM → `_tickState` → `steerRoam` — **routing** branch | `setSpeed(0)`; timeout check; path plan; `nudgeXY` → `_slideMove` | position committed this step |
-| 9 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); updates `npc.direction` (with `dirCD` gate) | no position change yet |
+| 8 | BM → `_tickState` → `steerRoam` — **routing** branch | timeout check; path plan; `applyLookahead` → `rvx/rvy`; `updateFacing(rvx, spd, dt)`; `nudgeXY` → `_slideMove` | position committed this step |
+| 9 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); `updateFacing(vx, total, dt)` updates `npc.direction` (with `dirCD` gate) | no position change yet |
 | 10 | BM per-NPC | `checkZoneTransition` | `pushWalkMode` on road/bike-lane intrusion |
 | 11 | BM per-NPC | `tickModifiers` | overlay gestures |
 | 12 | BM | `_separate` → `nudgeXY` → `_slideMove` | separation pushes committed this step; uses positions from steps 8/9 |
@@ -31,9 +31,9 @@
 | Variable | Namespace | Writer | Reader | Cleared / overwritten | Unit | Active at step |
 |----------|-----------|--------|--------|-----------------------|------|----------------|
 | `x`, `y` | `npc` (protected `_mw`) | `setXY`, `nudgeXY` → `_slideMove` | `steerRoam`, `integratePhysics`, `_separate` | next write | px | 8, 12, 13 |
-| `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`); `setSpeed(0)` in routing `steerRoam` and `path_follow` pausing | `integratePhysics` progress monitor (`speed === 0` audit); `steerRoam` audit guard | `setState`; `setSpeed(0)` at routing entry | px/s | set 6–9, read 13 |
-| `direction` | `npc` | `steerRoam` (walk branch, `dirCD` gate); `triggerDeparture`; `planCrossing` | `steerRoam` audit check; rendering | next write | ±1 | written 9 |
-| `vy` | `npc` | `setState` (=0); routing `steerRoam` (=0 on entry/exit); `planCrossing` | `WalkMode.js#planCrossing` (goingDown test) | `setState` (=0) | px/s | written routing, read WalkMode |
+| `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`); `planCrossing` (`setSpeed` for jaywalk) | `planCrossing` crossing speed | `setState` | px/s | set 6, read WalkMode |
+| `direction` | `npc` | `updateFacing(npc, vx, spd, dt)` called from both routing (step 8) and walk/run/jog (step 9) branches of `steerRoam` — `dirCD` 0.45 s hysteresis, `|vx|>spd×0.35` threshold; `triggerDeparture`; activity direct writes; `spot.facing`/`exit.facing` snapshots | `steerRoam` audit check; rendering | next write | ±1 | written 8, 9 |
+| `vy` | `npc` | `setState` (=0); dead post-V-2 (routing writes removed) | none — `checkZoneTransition` migrated to `mot.vel?.vy` in V-2 | `setState` (=0) | px/s | — |
 | `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` after `applyLookahead` | `Motor#integratePhysics`: both `.vx` and `.vy` consumed; Y boundary clamps `vy` before apply | consumed `= null` by `Motor#integratePhysics`, same frame | px/s | written 9, consumed 13 |
 | `mot.walkMode` | `motor` | `setWalkMode`, `pushWalkMode`, `popWalkMode` | `steerRoam`, `integratePhysics` (progress + vel gate), `tickWalkMode`, `_separate._sepScale` | `setWalkMode(null)` at departure; `_defaultOnExit` clears stack on `setState` | — | 7–12 |
 | `mot.walkModeStack` | `motor` | `pushWalkMode`, `popWalkMode` | `popWalkMode` | `_defaultOnExit` on `setState` | — | 7–12 |
@@ -77,8 +77,8 @@ if (mot.vel) {
 - Both **vx** and **vy** travel via `mot.vel` directly into `_slideMove`.
 - `_slideMove` additionally clamps X displacement at `minX`/`maxX`.
 - `npc.direction` carries only `sign(vx)` (with `dirCD` hysteresis) and is set in step 9.
-- `npc.speed` is set by `setState` on state entry and by `setSpeed(0)` in routing/pausing branches; the walk branch no longer writes it.
-- `npc.vy` is written by routing branches and `planCrossing`; it is **not** read by `integratePhysics` after V-1.
+- `npc.speed` is set by `setState` on state entry; routing/pausing branches no longer write it after V-2.
+- `npc.vy` is reset to 0 by `setState` only; effectively dead post-V-2 (routing writes removed; `checkZoneTransition` reads `mot.vel?.vy`).
 
 ---
 

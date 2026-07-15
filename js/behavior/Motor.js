@@ -327,8 +327,6 @@ export function integratePhysics(npc, delta) {
         }
       } else if (mode?.kind === 'wander') {
         npc.roamTarget = null;
-      } else if (!mode) {
-        npc.direction = -npc.direction;
       }
     } else {
       mot.routeReplan = 0;

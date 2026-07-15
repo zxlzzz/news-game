@@ -181,6 +181,17 @@ function _tickState(npc, envQuery, profile, dt) {
   if (npc.state === 'loiter') tickLoiter(npc, profile, dt);
 }
 
+// ─── 朝向更新（单一写入点，带 dirCD 迟滞）───────────────────────────────────────
+function updateFacing(npc, vx, spd, dt) {
+  const mot = npc.mem('motor');
+  mot.dirCD = (mot.dirCD || 0) - dt;
+  const desired = vx >= 0 ? 1 : -1;
+  if (Math.abs(vx) > spd * 0.35 && desired !== npc.direction && mot.dirCD <= 0) {
+    npc.direction = desired;
+    mot.dirCD = 0.45;
+  }
+}
+
 // ─── 二维漫游转向 ─────────────────────────────────────────────────────────────
 function steerRoam(npc, envQuery, profile, dt) {
   const mot = npc.mem('motor');
@@ -236,9 +247,9 @@ function steerRoam(npc, envQuery, profile, dt) {
       return;
     }
 
-    if (Math.abs(dx) > 2) npc.direction = dx > 0 ? 1 : -1;
     const spd = npc.walkSpeed || 26;
     const { vx: rvx, vy: rvy } = applyLookahead(npc, (dx / dist) * spd, (dy / dist) * spd);
+    updateFacing(npc, rvx, spd, dt);
     nudgeXY(npc, rvx * dt, rvy * dt);
     return;
   }
@@ -316,14 +327,7 @@ function steerRoam(npc, envQuery, profile, dt) {
   if (vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
   // Write full velocity vector — integratePhysics consumes mot.vel when present
   mot.vel = { vx, vy };
-
-  // direction: facing-only, driven by same 0.35 threshold + 0.45 s cooldown
-  mot.dirCD = (mot.dirCD || 0) - dt;
-  const desired = vx >= 0 ? 1 : -1;
-  if (Math.abs(vx) > total * 0.35 && desired !== npc.direction && mot.dirCD <= 0) {
-    npc.direction = desired;
-    mot.dirCD = 0.45;
-  }
+  updateFacing(npc, vx, total, dt);
 }
 
 // ─── 离场系统 ─────────────────────────────────────────────────────────────────
