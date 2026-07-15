@@ -36,7 +36,7 @@ export const CELL = 10;
 export const ROAD = 250;   // 可通行但不可规划/采样的格（马路+自行车道）
 const COLS = Math.ceil(WORLD_WIDTH  / CELL);   // 200
 const ROWS = Math.ceil(WORLD_HEIGHT / CELL);   // 52
-const OBS_MARGIN = 1;
+const NPC_HALF_W = 7;  // Minkowski expansion — NPC collision half-width added to every obstacle
 const PATH_TUBE_R = 20;
 
 let _instance = null;
@@ -101,7 +101,7 @@ export class NavGrid {
 
   /** 局部重烘焙（动态道具增删时，供后续使用） */
   localRebake(cx, cy, radius, entities) {
-    const m = OBS_MARGIN + CELL;
+    const m = NPC_HALF_W + CELL;
     const gx0 = Math.max(0,        Math.floor((cx - radius - m) / CELL));
     const gx1 = Math.min(COLS - 1, Math.ceil ((cx + radius + m) / CELL));
     const gy0 = Math.max(0,        Math.floor((cy - radius - m) / CELL));
@@ -293,18 +293,18 @@ export class NavGrid {
   }
 
   _markObstacle(e, gx0, gx1, gy0, gy1) {
-    const rx = (e.collisionRX || e.width  / 2 || 10) + OBS_MARGIN;
-    const ry = (e.collisionRY || e.height / 2 || 10) + OBS_MARGIN;
+    const rx = e.footprint.rx + NPC_HALF_W;
+    const ry = e.footprint.ry + NPC_HALF_W;
     const cgx0 = Math.max(gx0, Math.floor((e.x - rx) / CELL));
     const cgx1 = Math.min(gx1, Math.ceil((e.x + rx) / CELL));
     const cgy0 = Math.max(gy0, Math.floor((e.y - ry) / CELL));
     const cgy1 = Math.min(gy1, Math.ceil((e.y + ry) / CELL));
-    const isFountain = e.propType === 'fountain';
+    const ellipse = e.footprint.shape === 'ellipse';
     for (let gy = cgy0; gy <= cgy1; gy++) {
       const wy = (gy + 0.5) * CELL;
       for (let gx = cgx0; gx <= cgx1; gx++) {
         const wx = (gx + 0.5) * CELL;
-        if (isFountain) {
+        if (ellipse) {
           const ex = (wx - e.x) / rx, ey = (wy - e.y) / ry;
           if (ex * ex + ey * ey > 1) continue;
         } else {

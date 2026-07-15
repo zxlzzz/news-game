@@ -121,6 +121,73 @@ console.log('Rule 4: walk-state clips (speedK>0 in STATE_DEFS) must have |meanX|
   if (ruleOk) okMsg();
 }
 
+// ── Rule 5 ─────────────────────────────────────────────────────────────────
+// Each type in OBSTACLE_TYPES must have a footprint(e) that declares shape + blocks.
+console.log('Rule 5: each OBSTACLE_TYPE has footprint with shape and blocks fields');
+{
+  // Mapping: propType → entity module path (relative to ROOT)
+  const FP_MODULE = {
+    fountain:     'js/entity/fountain/fountain.js',
+    stall:        'js/entity/stall/stall.js',
+    tree:         'js/entity/tree/tree.js',
+    bench:        'js/entity/seat/seat.js',
+    trash:        'js/entity/trash/trash.js',
+    hydrant:      'js/entity/hydrant/hydrant.js',
+    mailbox:      'js/entity/mailbox/mailbox.js',
+    newsrack:     'js/entity/newsrack/newsrack.js',
+    planter:      'js/entity/planter/planter.js',
+    vending:      'js/entity/vending/vending.js',
+    phonebooth:   'js/entity/phonebooth/phonebooth.js',
+    'chess-table':'js/entity/chess-table/chessTable.js',
+  };
+
+  // Extract OBSTACLE_TYPES from PropEntity.js source
+  const propEntitySrc = readText(join(ROOT, 'js', 'core', 'PropEntity.js'));
+  const setMatch = propEntitySrc.match(/const OBSTACLE_TYPES\s*=\s*new Set\(\[([\s\S]*?)\]\)/);
+  const obstacleTypes = setMatch
+    ? [...setMatch[1].matchAll(/'([^']+)'/g)].map(m => m[1])
+    : [];
+
+  let ruleOk = true;
+  for (const t of obstacleTypes) {
+    const modPath = FP_MODULE[t];
+    if (!modPath) {
+      fail(`OBSTACLE_TYPE '${t}' has no entry in FP_MODULE mapping`);
+      ruleOk = false;
+      continue;
+    }
+    const src = readText(join(ROOT, modPath));
+    const hasShape  = /\bshape\s*:/.test(src);
+    const hasBlocks = /\bblocks\s*:/.test(src);
+    const passed = hasShape && hasBlocks;
+    console.log(`  ${t}: shape=${hasShape} blocks=${hasBlocks} ${passed ? '✓' : '✗'}`);
+    if (!passed) { fail(`${t} footprint missing shape or blocks`); ruleOk = false; }
+  }
+  if (ruleOk) okMsg();
+}
+
+// ── Rule 6 ─────────────────────────────────────────────────────────────────
+// No _sortY = outside known allowlist (PropEntity.js + seat.js + Chess.js).
+console.log('Rule 6: _sortY= writes only in PropEntity.js, seat.js, Chess.js');
+{
+  const ALLOWLIST = ['PropEntity.js', 'seat.js', 'Chess.js'];
+  const re = /_sortY\s*=/;
+  const hits = [];
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    if (ALLOWLIST.some(a => p.endsWith(a))) continue;
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (re.test(lines[i]))
+        hits.push(`${p}:${i + 1}: ${lines[i].trim()}`);
+    }
+  }
+  if (hits.length > 0) {
+    fail('_sortY= write outside allowlist:\n  ' + hits.join('\n  '));
+  } else {
+    okMsg();
+  }
+}
+
 // ── Summary ─────────────────────────────────────────────────────────────────
 console.log('');
 if (!FAIL) {

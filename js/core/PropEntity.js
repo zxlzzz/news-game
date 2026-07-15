@@ -1,5 +1,4 @@
 import { Entity } from './Entity.js';
-import { depthScale } from './Layout.js';
 import { drawBench }       from '../entity/seat/drawBench.js';
 import { drawChairL }      from '../entity/seat/drawChairL.js';
 import { drawChairR }      from '../entity/seat/drawChairR.js';
@@ -34,6 +33,7 @@ import { footprint as fpMailbox }   from '../entity/mailbox/mailbox.js';
 import { footprint as fpNewsrack }  from '../entity/newsrack/newsrack.js';
 import { footprint as fpPlanter }   from '../entity/planter/planter.js';
 import { footprint as fpPhone }     from '../entity/phonebooth/phonebooth.js';
+import { footprint as fpSign }      from '../entity/sign/sign.js';
 
 /** 视觉包围盒 intrinsic（单位 = scale 1 时的世界像素，实际 ×depthScale）
  *  hw = 半宽；up/down = 自 y（地面接触线）向上/向下延伸
@@ -45,7 +45,7 @@ const VISUAL_INTRINSIC = {
 };
 
 const OBSTACLE_TYPES = new Set([
-  'fountain', 'slide', 'stall', 'tree', 'bench', 'trash', 'hydrant',
+  'fountain', 'stall', 'tree', 'bench', 'trash', 'hydrant',
   'mailbox', 'newsrack', 'planter', 'vending', 'phonebooth', 'chess-table',
 ]);
 
@@ -59,15 +59,8 @@ export class PropEntity extends Entity {
     this.seatH     = config.seatH     ?? null;
     this.topH      = config.topH      ?? null;
 
-    this.obstacle = OBSTACLE_TYPES.has(this.propType);
-    if (this.obstacle) {
-      const { rx, ry } = this._footprint();
-      this.collisionRX = rx;
-      this.collisionRY = ry;
-      this.collisionRadius = Math.max(rx, ry);
-    } else {
-      this.collisionRX = this.collisionRY = this.collisionRadius = 0;
-    }
+    this.obstacle  = OBSTACLE_TYPES.has(this.propType);
+    this.footprint = this._computeFootprint();
 
     // 公交站上半部分（顶棚 + 柱子）：y = 柱子落地点；几何参数由 drawBusStopRoof 读取
     if (this.propType === 'busstop-roof') {
@@ -78,11 +71,9 @@ export class PropEntity extends Entity {
       this.pillarBottomY = config.pillarBottomY;  // 柱子底端绝对 y
     }
 
-    // 简单 Y 排序偏移：让 stall 遮阳棚 / tree 树冠的排序基准上移，
-    // 从而能遮住从其后方（更小 Y）走过的 NPC。其余 prop 用默认 y。
-    if (this.propType === 'stall') this._sortY = this.y;
-    if (this.propType === 'tree')  this._sortY = this.y - this.height * 0.35;
-    // 显式指定排序基准（如 busstop-roof 的柱子落地点）
+    // 从 footprint.sortDY 推导 Y 排序偏移（stall/tree/sign 等有非零 sortDY）
+    if (this.footprint.sortDY) this._sortY = this.y + this.footprint.sortDY;
+    // 动态排序基准覆盖（busstop-roof 的柱子落地点由 spawnBusStop 传入）
     if (config._sortY != null) this._sortY = config._sortY;
 
     if (config.smartDef) {
@@ -97,7 +88,7 @@ export class PropEntity extends Entity {
     }
   }
 
-  _footprint() {
+  _computeFootprint() {
     switch (this.propType) {
       case 'fountain':    return fpFountain(this);
       case 'stall':       return fpStall(this);
@@ -111,7 +102,11 @@ export class PropEntity extends Entity {
       case 'vending':     return fpVending(this);
       case 'phonebooth':  return fpPhone(this);
       case 'chess-table': return fpChess(this);
-      default:            return { rx: 10 * depthScale(this.y), ry: 10 };
+      case 'sign':        return fpSign(this);
+      default:
+        if (this.obstacle)
+          throw new Error(`PropEntity: no footprint declaration for obstacle type '${this.propType}'`);
+        return { shape: 'rect', rx: 0, ry: 0, blocks: false, sortDY: 0 };
     }
   }
 
