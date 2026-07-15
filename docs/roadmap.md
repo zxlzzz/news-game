@@ -1,4 +1,4 @@
-> **status: snapshot** — 盘点截止 2026-07-15；新增功能批次请同步更新本表。
+> **status: snapshot** — 盘点截止 2026-07-15（S-2 竣工）；新增功能批次请同步更新本表。
 
 # 功能路线图 — 落地状态一览
 
@@ -15,6 +15,7 @@
 | 速度统一 V-1 | integratePhysics 重写（D1）：删标量回退分支，steer 只写 `mot.vel`，Y 钳制迁移 | ✅ 已落地 | `docs/design-plans/velocity-unification-design-v1.md §2`；`js/behavior/Motor.js#integratePhysics` |
 | 速度统一 V-1.5 | 生产端迁移：Athletes 远端 jogger → `modePathFollow('sidewalk_far_jog')`；DogWalker owner → `modeWander()` | ✅ 已落地 | `js/npc/Athletes.js`；`js/npc/DogWalker.js`；`assets/scene.json walkPaths.sidewalk_far_jog` |
 | S-1（活动旁路修） | DogWalker owner activity bypass 修复（`sc.activity` 短路）；NavGrid 负坐标别名越界修复 | ✅ 已落地 | `js/npc/DogWalker.js`；`js/behavior/nav/NavGrid.js` |
+| S-2（离场竞态根修） | 寿命触发加 `!sc.activity` 门（race 根修）；`departing_orphan` 审计计数器；`SpawnManager.js` 删除；lifespan 单一写入点（profile 驱动）；ExitSceneTask building 分支冗余 `findExit` 删除 | ✅ 已落地 | `js/behavior/BehaviorManager.js:118`；`js/debug/MovementAudit.js`；`js/npc/Pedestrians.js:87`；`js/behavior/Director.js`；`js/behavior/tasks/ExitSceneTask.js` |
 | 速度统一 V-2 | 消费者迁移（D2/D3/D4）：`npc.vy/speed` 物理角色删除；StuckProbe gate 改 state 集；zone 门改读 `mot.vel?.vy`；`updateFacing` 单写入点（routing + wander 共用）；dead-code `!mode` 分支删除 | ✅ 已落地 | `js/behavior/BaseStateMachine.js`；`js/behavior/Motor.js`；`js/behavior/StuckProbe.js`；`js/debug/MovementAudit.js`；`docs/contracts/movement-dataflow.md` |
 | T1/T2/T3（动画&朝向清理） | walk clip 水平质心归零（T1，shift=+18）；`updateFacing` 提取为 BaseStateMachine 函数（T2）；check-invariants Rule 4（walk-state clip `|meanX|≤4`）（T3） | ✅ 已落地 | `scripts/recenter-clips.py`；`assets/animations/cycle/walk.json`；`scripts/check-invariants.mjs` |
 | F1–F4（足迹统一） | footprint 扩展 `shape/blocks/sortDY`（F1）；PropEntity 收敛 `this.footprint`，删 `collisionRX/RY`，`_sortY` 由 `sortDY` 派生（F2）；NavGrid 改读 `e.footprint`，`OBS_MARGIN=1` → `NPC_HALF_W=7`，shape 分发（F3）；check-invariants Rule 5/6（F4） | ✅ 已落地 | `js/core/PropEntity.js`；`js/behavior/nav/NavGrid.js`；`js/entity/*/`；`scripts/check-invariants.mjs` |
@@ -87,3 +88,28 @@
 - **F4** — `check-invariants.mjs` Rule 5：OBSTACLE_TYPES 每个类型的 footprint 函数含 `shape` + `blocks`。Rule 6：`_sortY=` 仅出现于 `PropEntity.js`、`seat.js`、`Chess.js`。全 6 规则通过。
 
 代码锚点：`js/core/PropEntity.js#_computeFootprint`；`js/behavior/nav/NavGrid.js:39 NPC_HALF_W`；`scripts/check-invariants.mjs:125`
+
+---
+
+### S-2（离场竞态根修）— 已落地
+
+核心变更（commit `bf0532b`、`d6a05f5`）：
+
+- **C1 竞态根修**：`BehaviorManager.js:118` 寿命触发加 `!sc.activity` 门。
+  原路径：`ag.ageTimer >= ag.lifespan` 在 Activity 期间触发 → `triggerDeparture` 写 `state=routing`
+  → BSM 被 `if (sc.activity) continue` 跳过 → routing 永远不推进 → Activity 结束后
+  `destroy()` 写 `setState(walk)` → `ag.departing=true` 但无 routeTarget（孤儿态）。
+  新路径：ageTimer 照常累计；当且仅当 `!sc.activity` 时触发，Activity 结束后下一帧
+  自动离场，按构造消除孤儿态。
+- **C1 审计**：`MovementAudit.js` 新增 `departing_orphan` 计数器：`departing=true` 且
+  `state!=='routing'` 且非 `pendingDeparture` 且非 `waitingBusStop` → 每秒计入；
+  `dump()` / `rows()` 同步输出，观察期内应恒零。
+- **C2 SpawnManager 删除**：`js/npc/SpawnManager.js` 全库零 import，已由 Director 完全替代，
+  删除；`Pedestrians.js` 注释更新；`VehicleSpawner.js` 移除 SpawnManager 引用。
+- **C2 lifespan 单一写入点**：`Pedestrians.js:87` 改读 `profile.departure.lifespanRange`；
+  `Director.js` 删 `ag.lifespan = rand(90,200)` override；lifespan 现在唯一来源为 NpcProfile。
+- **C2 ExitSceneTask 简化**：building 分支冗余 `findExit` 预检删除；
+  `ExitRegistry.findExit(preferType='building')` 已在无匹配时自动回落全候选集，
+  `triggerDeparture` 本身处理 no-exit → `ag.lifespan+=30` 兜底。
+
+代码锚点：`js/behavior/BehaviorManager.js:118`；`js/debug/MovementAudit.js#tick`；`js/behavior/tasks/ExitSceneTask.js#_driveExit`
