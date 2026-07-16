@@ -13,7 +13,8 @@
  */
 
 import { triggerDeparture, restoreDepartureBounds } from '../BaseStateMachine.js';
-import { NEAR_Y }           from '../../core/Layout.js';
+import { setState } from '../Motor.js';
+import { NEAR_Y }   from '../../core/Layout.js';
 
 export class ExitSceneTask {
   onStart(npc, _runner) {
@@ -33,10 +34,30 @@ export class ExitSceneTask {
       const isNear = npc.y >= NEAR_Y;
       const stop   = stops.find(s => (s.direction < 0) === isNear) ?? stops[0];
       if (stop && stop._waiters.length < (stop.maxWaiters ?? 8)) {
-        busLay.addWaiterDirect(npc, stop);
-        return;
+        if (busLay.isInWaitZone(npc, stop)) {
+          // 已在等候区：直接入队（sc.waitingBusStop 立即生效，tick 不会 abort）
+          busLay.addWaiterDirect(npc, stop);
+          return;
+        }
+        // 不在等候区：路由过去；pendingBusWait 防止 tick 提前 abort
+        const target = busLay.waitZoneTarget(stop);
+        if (target) {
+          ag.pendingBusWait = true;
+          npc.mem('motor').routeTarget = {
+            x: target.x, y: target.y,
+            abandonAfter: 30,
+            onArrive: (n) => {
+              n.mem('agenda').pendingBusWait = false;
+              if (stop._waiters.length < (stop.maxWaiters ?? 8)) {
+                busLay.addWaiterDirect(n, stop);
+              }
+            },
+          };
+          setState(npc, 'routing', 'to_bus_zone');
+          return;
+        }
       }
-      // 候车人满 → 降级边缘出口
+      // 候车人满或无有效区域 → 降级边缘出口
     }
 
     // ── 楼门出口 ───────────────────────────────────────────────────────────────
@@ -55,8 +76,17 @@ export class ExitSceneTask {
 
   tick(npc, _dt) {
     if (!npc.alive) return 'done';
-    const ag = npc.mem('agenda');
-    const sc = npc.mem('social');
+    const ag  = npc.mem('agenda');
+    const sc  = npc.mem('social');
+    const mot = npc.mem('motor');
+    // 正在路由到等候区：若路由意外中断则 abort
+    if (ag.pendingBusWait) {
+      if (!sc.waitingBusStop && !mot.routeTarget) {
+        ag.pendingBusWait = false;
+        return 'abort';
+      }
+      return null;
+    }
     if (!ag.departing && !sc.waitingBusStop && !ag.pendingDeparture) return 'abort';
     return null;
   }

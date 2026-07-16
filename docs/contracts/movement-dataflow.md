@@ -11,7 +11,7 @@
 | # | Caller | Function | What moves |
 |---|--------|----------|-----------|
 | 1 | `StreetScene.update` → `BehaviorManager.update` | `SocialLayer.update` | activity pair/tick |
-| 2 | BM | `WaitForBusLayer.update` | bus waiter tick |
+| 2 | BM | `WaitForBusLayer.update` | bus-waiter zone scan (waiter tick → `WaitBusActivity.update` at step 1) |
 | 3 | BM per-NPC | lifespan check (`!sc.activity` gate) → `triggerDeparture` → `_routeToExit` | sets `ag.departing`; saves + expands bounds (edge exits); sets `mot.routeTarget`; skipped while NPC is in an Activity (age accumulates, triggers on next frame after activity ends) |
 | 4 | BM per-NPC | `Agenda.tick` | selects next desire (no-op if `sc.activity`) |
 | 5 | BM per-NPC | `TaskRunner.tick` | ExitSceneTask / TalkToTask monitor |
