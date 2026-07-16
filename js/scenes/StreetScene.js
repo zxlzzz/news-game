@@ -26,6 +26,7 @@ import {
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
 } from '../core/Layout.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
+import { expandSceneData }  from '../core/sceneData.js';
 import { PixiText }         from '../core/PixiText.js';
 import { buildPoseCache } from '../behavior/PoseCacheBuilder.js';
 import { clipLibrary } from '../core/ClipLibrary.js';
@@ -98,7 +99,7 @@ export class StreetScene {
     this.entityGraphics     = mkLayer(this.worldContainer, 2);
     this.vfGraphics         = mkLayer(this.worldContainer, 4);
 
-    const sceneData = this.cache.json.get('scene_data');
+    const sceneData = expandSceneData(this.cache.json.get('scene_data'));
     const layout = sceneData.layout;
 
     const sceneRenderer = new SceneRenderer(this.bgGraphics, this.skyGraphics, layout);

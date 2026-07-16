@@ -67,6 +67,7 @@ const { initCrosswalks, initWalkPaths } = await import('../js/behavior/WalkMode.
 const { audit }                       = await import('../js/debug/MovementAudit.js');
 const { spawnPedestrians, spawnOnePedestrian } = await import('../js/npc/Pedestrians.js');
 const { spawnAthletes }               = await import('../js/npc/Athletes.js');
+const { expandSceneData }             = await import('../js/core/sceneData.js');
 const { WORLD_WIDTH, FAR_Y, NEAR_Y, BUILDING_BASE_Y, PARK_BOTTOM } =
   await import('../js/core/Layout.js');
 
@@ -77,9 +78,8 @@ const stubRenderer = {
 };
 
 // ─── scene data ──────────────────────────────────────────────────────────────
-const scene   = JSON.parse(readFileSync(join(ROOT, 'assets/scene.json'), 'utf8'));
-const layout  = scene.layout ?? {};
-const routes  = scene.routes ?? [];
+const rawScene = JSON.parse(readFileSync(join(ROOT, 'assets/scene.json'), 'utf8'));
+const { layout } = expandSceneData(rawScene);
 
 // ─── NavGrid ─────────────────────────────────────────────────────────────────
 // Pass empty entities array — Y-band defaults + walkPaths are enough for pedestrian testing.
@@ -107,22 +107,13 @@ const em = new EntityManager();
 const bm = new BehaviorManager(em, null);   // null poseCache → no ModifierLayer poses
 bm.exitRegistry = exitReg;
 
-// ─── spawn points from route entries ─────────────────────────────────────────
-const spawnPoints = routes
-  .filter(r => r.type === 'path' || r.type === 'wander')
-  .map(r => ({
-    x:      r.entry?.x ?? WORLD_WIDTH / 2,
-    y:      r.entry?.y ?? FAR_Y,
-    facing: (r.entry?.x ?? WORLD_WIDTH / 2) < WORLD_WIDTH / 2 ? 1 : -1,
-  }));
-
-if (spawnPoints.length === 0) {
-  // fallback: two edges + park strip
-  spawnPoints.push(
-    { x: 60, y: 230, facing: 1 }, { x: 1940, y: 230, facing: -1 },
-    { x: 60, y: 420, facing: 1 }, { x: 1940, y: 420, facing: -1 },
-  );
-}
+// ─── spawn points (routes deleted from scene.json; use fixed edge points) ─────
+const spawnPoints = [
+  { x: 60,   y: 230, facing:  1 },
+  { x: 1940, y: 230, facing: -1 },
+  { x: 60,   y: 420, facing:  1 },
+  { x: 1940, y: 420, facing: -1 },
+];
 
 spawnPedestrians(em, stubRenderer, bm, spawnPoints, 20);
 spawnAthletes(em, stubRenderer, bm);
