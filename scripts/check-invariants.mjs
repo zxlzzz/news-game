@@ -188,6 +188,61 @@ console.log('Rule 6: _sortY= writes only in PropEntity.js, seat.js, Chess.js');
   }
 }
 
+// ── Rule 7 ─────────────────────────────────────────────────────────────────
+// Distance comparisons (Math.hypot + < number, or dist/moved/disp < number)
+// and timer accumulations (+= dt/delta) outside decision-file whitelist are
+// WARNING-only — they flag code that should migrate into a layer decision file
+// per goal-pipeline-v1.md.  Zero exit-code impact.
+console.log('Rule 7: distance comparisons and timer accums in js/behavior/** (warning only)');
+{
+  const yellow = s => `\x1b[0;33m${s}\x1b[0m`;
+  const warn   = msg => process.stdout.write(yellow('WARN: ' + msg) + '\n');
+
+  // Files that currently legitimately contain these patterns.
+  // N-series annotation = planned migration knife.
+  const WHITELIST = new Set([
+    'Motor.js',           // distance: progress monitor (15 px)       — N-3 target
+    'BaseStateMachine.js',// distance+timer: arrival thresholds + stateTimer — N-1/N-3 target
+    'GotoTask.js',        // distance+timer: watchdog (8 px) + elapsed — N-2/N-3 target
+    'StuckProbe.js',      // distance+timer: observer (permanent)      — keep
+    'SocialLayer.js',     // timer: talkScanTimer                      — low priority
+    'WaitBusActivity.js', // timer: boarding/wait timers
+    'PlayPoseTask.js',    // timer: pose duration
+    'StrollTask.js',      // timer: stroll phase elapsed
+    'UseBenchTask.js',    // timer: sitting elapsed
+    'ChessActivity.js',   // timer: chess phase timers
+    'StallActivity.js',   // timer: stall phase timers
+    'TalkActivity.js',    // timer: talk timers
+  ]);
+
+  // Distance: Math.hypot(...) < <number>  OR  dist*/moved/disp < <number>
+  const DIST_RE  = /Math\.hypot[^)]*\).*<\s*[\d.]|(?:dist\w*|moved|disp)\s*<\s*[\d.]/;
+  // Timer: += dt or += delta
+  const TIMER_RE = /\+=\s*(?:dt|delta)\b/;
+
+  const behaviorDir = join(ROOT, 'js', 'behavior');
+  const navDir      = join(behaviorDir, 'nav');
+
+  const hits = [];
+  for (const p of walkFiles(behaviorDir, f => f.endsWith('.js'))) {
+    // Exclude nav/ subdirectory (A*, NavGrid, Lookahead legitimately use these)
+    if (p.startsWith(navDir)) continue;
+    const base = p.split(/[\\/]/).pop();
+    if (WHITELIST.has(base)) continue;
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (DIST_RE.test(lines[i]) || TIMER_RE.test(lines[i]))
+        hits.push(`${p}:${i + 1}: ${lines[i].trim()}`);
+    }
+  }
+  if (hits.length > 0) {
+    warn(`${hits.length} distance/timer pattern(s) outside whitelist (migrate to decision file):\n  ` + hits.join('\n  '));
+  } else {
+    console.log(`  whitelist size=${WHITELIST.size}, zero unexpected violations`);
+    okMsg();
+  }
+}
+
 // ── Summary ─────────────────────────────────────────────────────────────────
 console.log('');
 if (!FAIL) {

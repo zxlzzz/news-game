@@ -1,11 +1,25 @@
 /** 卡死探针:每 2s 扫描,归类冻结 NPC,30s 打一次汇总。window.__stuck 可看明细 */
-import { getNavGrid } from './nav/NavGrid.js';
+import { getNavGrid, CELL } from './nav/NavGrid.js';
 import { audit } from '../debug/MovementAudit.js';
 
 const last = new Map();          // id → {x, y}
 let acc = 0, sumAcc = 0;
 const tally = new Map();         // 类别 → count
 window.__stuck = [];
+
+/** 从 (x0,y0) 到 (x1,y1) 沿格子逐步检查，遇 cost===0 即阻塞。只读，不写 NPC 状态。 */
+function _rayBlocked(grid, x0, y0, x1, y1) {
+  const dx = x1 - x0, dy = y1 - y0;
+  const dist = Math.hypot(dx, dy);
+  if (dist < 1) return false;
+  const steps = Math.max(1, Math.ceil(dist / CELL));
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    const { gx, gy } = grid.worldToCell(x0 + dx * t, y0 + dy * t);
+    if (grid.cost(gx, gy) === 0) return true;
+  }
+  return false;
+}
 
 export function stuckProbe(npcs, dt) {
   acc += dt; sumAcc += dt;
@@ -40,8 +54,14 @@ export function stuckProbe(npcs, dt) {
     }
     if (!cat) continue;
 
+    tally.set(cat, (tally.get(cat) ?? 0) + 1);
+
+    // WAIT 类仅计 tally，不进 window.__stuck 明细
+    if (cat.startsWith('WAIT:')) continue;
+
     const { gx, gy } = grid ? grid.worldToCell(n.x, n.y) : {};
     const rt = mot.routeTarget;
+    const isDirect = cat.startsWith('MOVE:') && m?.kind === 'direct';
     const info = {
       id: n.id, cat, at: [n.x | 0, n.y | 0],
       cell: grid ? grid.cost(gx, gy) : '?',
@@ -59,9 +79,17 @@ export function stuckProbe(npcs, dt) {
       nb:    npcs.reduce((k, o) => k + (o !== n && o.alive && Math.hypot(o.x - n.x, o.y - n.y) < 30 ? 1 : 0), 0),
       bounds: [n.minX | 0, n.maxX | 0, n.minY | 0, n.maxY | 0],
     };
+
+    if (isDirect && m.target) {
+      info.distToGoal    = Math.hypot(m.target.x - n.x, m.target.y - n.y) | 0;
+      info.hasNextTarget = !!m.nextTarget;
+      info.raycastBlocked = (info.hasNextTarget && grid)
+        ? _rayBlocked(grid, n.x, n.y, m.nextTarget.x, m.nextTarget.y)
+        : null;
+    }
+
     window.__stuck.push(info);
-    if (!cat.startsWith('ACT:') && !cat.startsWith('WAIT:')) audit.count(n, 'stuck');
-    tally.set(cat, (tally.get(cat) ?? 0) + 1);
+    if (!cat.startsWith('ACT:')) audit.count(n, 'stuck');
   }
 
   if (sumAcc >= 30) {

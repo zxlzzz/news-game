@@ -175,7 +175,7 @@ BehaviorManager
 - CC 分支命名：`claude/<slug>` 前缀
 - Windows MINGW64 环境：交付**完整文件内容**，不走 patch/diff 格式
 - 调试：`js/behavior/DebugLog.js` + DebugOverlay
-- **禁止运行**：默认禁止运行游戏 / harness / 模拟验证；静态验证（`check-invariants.sh`、读代码、grep）不受限；运行验证仅在用户明确要求时执行
+- **禁止运行**：默认禁止运行游戏 / harness / 模拟验证；静态验证（`check-invariants.mjs`、读代码、grep）不受限；运行验证仅在用户明确要求时执行
 - **静态验证优先**：有疑问先 grep/读代码，确认后再改；不确定时列出不确定点交用户决策，不猜
 - **验收标准先行**：每个子任务开始前在 CLAUDE.md 或 PR 描述中写清楚验收条件；没有验收标准的任务禁止提交
 - **时序锚点**：涉及帧内执行顺序的描述须附 `StreetScene.js:行号` 锚点；帧序以 `movement-dataflow.md §1` 为权威，不另起炉灶

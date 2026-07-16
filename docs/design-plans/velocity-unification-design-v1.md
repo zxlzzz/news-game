@@ -73,7 +73,7 @@
 - 结构保证已存在（`_motorInstalled` 分流）；补文件头 CONTRACT 声明 + 铁律引用。
 - 狗的 leash 分支不动。
 
-### D6 — 新不变量（进 check-invariants.sh，静态可查）
+### D6 — 新不变量（进 check-invariants.mjs，静态可查）
 
 - **V1**: `js/behavior/`、`js/npc/`（内联分支白名单除外）中禁止出现
   `\.x\s*[+\-]?=` / `\.y\s*[+\-]?=` 对 NPC 的直接位置写入——
