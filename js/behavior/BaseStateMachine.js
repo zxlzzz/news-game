@@ -53,9 +53,10 @@ import {
   setWalkMode, popWalkMode, isRoadZone, modeWander,
 } from './WalkMode.js';
 
-import { setState, STATE_DEFS, setXY, nudgeXY } from './Motor.js';
+import { setState, STATE_DEFS, setXY, nudgeXY, RECOVERY_RULES, SAFETY_RULES } from './Motor.js';
 import { getPlanner } from './nav/PathPlanner.js';
 import { applyLookahead } from './nav/Lookahead.js';
+import { arrived } from './SteeringDecision.js';
 import { despawnNpc } from '../npc/despawn.js';
 
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
@@ -200,9 +201,7 @@ function steerRoam(npc, envQuery, profile, dt) {
   if (npc.state === 'routing') {
     if (!mot.routeTarget) { setWalkMode(npc, modeWander()); setState(npc, 'walk', 'routing_no_target'); return; }
     const t = mot.routeTarget;
-    const arriveThreshold = t.exitType === 'building' ? 20 : 8;
-
-    if (npc.stateTimer > (t.abandonAfter ?? 30)) {
+    if (npc.stateTimer > (t.abandonAfter ?? RECOVERY_RULES.routing_timeout.default)) {
       envQuery.releaseSlotReservation(npc);
       if (mot.routeTarget?.exitType) {
         const ag2 = npc.mem('agenda');
@@ -236,20 +235,20 @@ function steerRoam(npc, envQuery, profile, dt) {
     const dist = Math.hypot(dx, dy);
 
     if (isLast) {
-      if (dist < arriveThreshold) {
+      if (arrived(t.exitType === 'building' ? 'routing_final_building' : 'routing_final', dist)) {
         setXY(npc, t.x, t.y);
         const cb = t.onArrive;
         mot.routeTarget = null; mot.routePts = null; mot.routeIdx = 0;
         if (cb) cb(npc);
         return;
       }
-    } else if (dist < 8) {
+    } else if (arrived('route_waypoint', dist)) {
       mot.routeIdx = idx + 1;
       return;
     }
 
     const spd = npc.walkSpeed || 26;
-    const { vx: rvx, vy: rvy } = applyLookahead(npc, (dx / dist) * spd, (dy / dist) * spd);
+    const { vx: rvx, vy: rvy } = applyLookahead(npc, (dx / dist) * spd, (dy / dist) * spd, SAFETY_RULES.lookahead);
     updateFacing(npc, rvx, spd, dt);
     nudgeXY(npc, rvx * dt, rvy * dt);
     return;
@@ -292,21 +291,21 @@ function steerRoam(npc, envQuery, profile, dt) {
   const dist = Math.hypot(dx, dy);
 
   // ── Waypoint arrival (intermediate) ───────────────────────────────────
-  if (mot.navPath && mot.navIdx < mot.navPath.length - 1 && dist < 8) {
+  if (mot.navPath && mot.navIdx < mot.navPath.length - 1 && arrived('nav_waypoint', dist)) {
     mot.navIdx++;
     return;
   }
 
   // ── Final target arrival (roamTarget) ─────────────────────────────────
   const distToGoal = Math.hypot(t.x - npc.x, t.y - npc.y);
-  if (distToGoal < 6) {
+  if (arrived('walk_goal', distToGoal)) {
     mot.navPath = null;
     const mode = mot.walkMode;
     if (mode?.kind === 'path_follow') {
       onPathArrival(mode, npc);
     } else if (mode?.kind === 'direct') {
       const nt = mode.nextTarget;
-      if (!nt || distToGoal < 2 || !envQuery.raycastObstacle(npc.x, npc.y, nt.x, nt.y)) {
+      if (!nt || arrived('corner_cut', distToGoal) || !envQuery.raycastObstacle(npc.x, npc.y, nt.x, nt.y)) {
         const cb = mode.onArrive;
         setWalkMode(npc, modeWander());
         if (cb) cb(npc);
@@ -324,7 +323,7 @@ function steerRoam(npc, envQuery, profile, dt) {
 
   // ── Steer toward current waypoint ─────────────────────────────────────
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
-  const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total);
+  const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total, SAFETY_RULES.lookahead);
   if (vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
   // Write full velocity vector — integratePhysics consumes mot.vel when present
   mot.vel = { vx, vy };

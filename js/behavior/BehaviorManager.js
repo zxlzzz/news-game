@@ -15,7 +15,7 @@
 import { getProfile }          from '../npc/NpcProfile.js';
 import { EnvironmentQuery }     from './EnvironmentQuery.js';
 import { tickBaseState, setState, triggerDeparture } from './BaseStateMachine.js';
-import { installProtection, nudgeXY } from './Motor.js';
+import { installProtection, nudgeXY, SAFETY_RULES } from './Motor.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
 import { SocialLayer }          from './SocialLayer.js';
 import { CameraReactionLayer }  from '../camera/CameraReactionLayer.js';
@@ -175,7 +175,7 @@ export class BehaviorManager {
         const a = movers[i], b = movers[j];
         const dx = a.x - b.x, dy = a.y - b.y;
         const d = Math.hypot(dx, dy);
-        const sepR = 24 * ((a.scale + b.scale) / 2 / 0.18);
+        const sepR = SAFETY_RULES.separation.baseRadius * ((a.scale + b.scale) / 2 / SAFETY_RULES.separation.atScale);
         if (d > 0 && d < sepR) {
           const f  = ((sepR - d) / sepR) * 16 * dt;
           const ux = dx / d, uy = dy / d;
@@ -192,7 +192,7 @@ export class BehaviorManager {
       for (const s of statics) {
         const dx = m.x - s.x, dy = m.y - s.y;
         const d = Math.hypot(dx, dy);
-        const sepR = 24 * ((m.scale + s.scale) / 2 / 0.18);
+        const sepR = SAFETY_RULES.separation.baseRadius * ((m.scale + s.scale) / 2 / SAFETY_RULES.separation.atScale);
         if (d > 0 && d < sepR) {
           const f  = ((sepR - d) / sepR) * 16 * dt;
           const ux = dx / d, uy = dy / d;

@@ -201,18 +201,19 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** (wa
   // Files that currently legitimately contain these patterns.
   // N-series annotation = planned migration knife.
   const WHITELIST = new Set([
-    'Motor.js',           // distance: progress monitor (15 px)       — N-3 target
-    'BaseStateMachine.js',// distance+timer: arrival thresholds + stateTimer — N-1/N-3 target
-    'GotoTask.js',        // distance+timer: watchdog (8 px) + elapsed — N-2/N-3 target
-    'StuckProbe.js',      // distance+timer: observer (permanent)      — keep
-    'SocialLayer.js',     // timer: talkScanTimer                      — low priority
-    'WaitBusActivity.js', // timer: boarding/wait timers
-    'PlayPoseTask.js',    // timer: pose duration
-    'StrollTask.js',      // timer: stroll phase elapsed
-    'UseBenchTask.js',    // timer: sitting elapsed
-    'ChessActivity.js',   // timer: chess phase timers
-    'StallActivity.js',   // timer: stall phase timers
-    'TalkActivity.js',    // timer: talk timers
+    'SteeringDecision.js',// decision file — permanent
+    'Motor.js',           // decision file (RECOVERY/SAFETY tables) — permanent
+    'StuckProbe.js',      // pure observer — permanent
+    'BaseStateMachine.js',// residual stateTimer accum — N-2/N-3 target
+    'GotoTask.js',        // watchdog timer — N-2 deletion target
+    'SocialLayer.js',     // 非移动政策计时器 — permanent
+    'WaitBusActivity.js', // 非移动政策计时器 — permanent
+    'PlayPoseTask.js',    // 非移动政策计时器 — permanent
+    'StrollTask.js',      // 非移动政策计时器 — permanent
+    'UseBenchTask.js',    // 非移动政策计时器 — permanent
+    'ChessActivity.js',   // 非移动政策计时器 — permanent
+    'StallActivity.js',   // 非移动政策计时器 — permanent
+    'TalkActivity.js',    // 非移动政策计时器 — permanent
   ]);
 
   // Distance: Math.hypot(...) < <number>  OR  dist*/moved/disp < <number>

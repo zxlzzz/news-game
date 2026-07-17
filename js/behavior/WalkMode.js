@@ -30,7 +30,7 @@
  */
 
 import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../core/Layout.js';
-import { setWalkMode, pushWalkMode, popWalkMode, setAnimation, setSpeed } from './Motor.js';
+import { setWalkMode, pushWalkMode, popWalkMode, setAnimation, setSpeed, RECOVERY_RULES } from './Motor.js';
 import { getNavGrid } from './nav/NavGrid.js';
 
 // Re-export for backward-compat
@@ -139,7 +139,7 @@ export function modeWander(bounds = null, maxDuration = null) {
  * @param {Function|null} onArrive  到达回调 (npc) => void；到达后模式自动切回 wander
  * @param {number} abandonAfter  超时放弃（秒），避免卡死
  */
-export function modeDirect(target, onArrive = null, abandonAfter = 60, nextTarget = null) {
+export function modeDirect(target, onArrive = null, abandonAfter = RECOVERY_RULES.direct_timeout.default, nextTarget = null) {
   return { kind: 'direct', target, onArrive, abandonAfter, _elapsed: 0, nextTarget };
 }
 
@@ -348,7 +348,7 @@ export function tickWalkMode(npc, dt) {
 
   if (mode.kind === 'direct') {
     mode._elapsed = (mode._elapsed ?? 0) + dt;
-    if (mode._elapsed > (mode.abandonAfter ?? 60)) {
+    if (mode._elapsed > (mode.abandonAfter ?? RECOVERY_RULES.direct_timeout.default)) {
       if (npc.mem('motor').walkModeStack?.length > 0) popWalkMode(npc);
       else setWalkMode(npc, modeWander());
     }

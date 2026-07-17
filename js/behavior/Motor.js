@@ -30,6 +30,23 @@ import { dlog }     from './DebugLog.js';
 import { getNavGrid, CELL } from './nav/NavGrid.js';
 import { audit } from '../debug/MovementAudit.js';
 
+// ── 恢复裁决表 — Physics 层卡死/超时政策唯一住址（goal-pipeline-v1.md §3）────────
+// 责任2-E StuckProbe：纯观测，永不入表。责任2-F stateDur：per-state 数据非政策常量，不入表。
+export const RECOVERY_RULES = {
+  progress_monitor: { window: 1.5, movedLT: 15, reason: '主恢复层，per-mode 路由',                         src: '责任2-A' },
+  goto_watchdog:    { window: 2,   dispLT: 8,   reason: 'task 级补充检测；N-2 整体删除',                    src: '责任2-B' },
+  direct_timeout:   { default: 60, reason: '直行可等久些；与 routing 30 不一致为既有事实，统一留 N-2 后',   src: '责任2-C' },
+  routing_timeout:  { default: 30, reason: 'routing 应快速超时',                                            src: '责任2-D' },
+};
+
+// ── 安全网裁决表 — Physics 层越界防护策略参数唯一住址（goal-pipeline-v1.md §3）────
+// 责任3-A/B/C/F/G（clamp/escape/wall-slide/Npc夹取/nearestWalkable fallback）：
+// 算法固有行为，无可调策略参数，不入表；机制住址见 movement-dataflow.md。
+export const SAFETY_RULES = {
+  lookahead:  { probeCells: 4, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',  src: '责任3-D' },
+  separation: { baseRadius: 24, atScale: 0.18,               reason: 'NPC 分离冲量半径',              src: '责任8-分离半径' },
+};
+
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
 let _writing = false;
 
@@ -296,14 +313,14 @@ export function integratePhysics(npc, delta) {
   if (!mot.progressAnchor) mot.progressAnchor = { x: npc.x, y: npc.y };
 
   mot.progressAcc = (mot.progressAcc ?? 0) + dt;
-  if (mot.progressAcc >= 1.5) {
+  if (mot.progressAcc >= RECOVERY_RULES.progress_monitor.window) {
     mot.progressAcc = 0;
     const moved = Math.hypot(npc.x - mot.progressAnchor.x, npc.y - mot.progressAnchor.y);
     mot.progressAnchor = { x: npc.x, y: npc.y };
 
     const _walkState = npc.state === 'walk' || npc.state === 'run' || npc.state === 'jog';
     const hasGoal = npc.state === 'routing' || (_walkState && wm);
-    if (hasGoal && moved < 15) {
+    if (hasGoal && moved < RECOVERY_RULES.progress_monitor.movedLT) {
       // Clear the path layer so steerRoam replans from current position
       mot.navPath = null;
       const mode = mot.walkMode;
@@ -323,7 +340,7 @@ export function integratePhysics(npc, delta) {
           mot.navPath     = null;
           npc.roamTarget  = null;
         } else {
-          mode._elapsed = mode.abandonAfter ?? 60;
+          mode._elapsed = mode.abandonAfter ?? RECOVERY_RULES.direct_timeout.default;
         }
       } else if (mode?.kind === 'wander') {
         npc.roamTarget = null;

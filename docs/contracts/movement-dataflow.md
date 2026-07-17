@@ -17,12 +17,12 @@
 | 5 | BM per-NPC | `TaskRunner.tick` | ExitSceneTask / TalkToTask monitor |
 | 6 | BM per-NPC | `tickBaseState`: `stateTimer += dt` | timer advance; `_evaluateTransitions` → may call `setState` |
 | 7 | BM → `_tickState` | `tickWalkMode` | `direct._elapsed`; `path_follow.pauseTimer` |
-| 8 | BM → `_tickState` → `steerRoam` — **routing** branch | timeout check; path plan; `applyLookahead` → `rvx/rvy`; `updateFacing(rvx, spd, dt)`; `nudgeXY` → `_slideMove` | position committed this step |
+| 8 | BM → `_tickState` → `steerRoam` — **routing** branch | timeout check (`t.abandonAfter ?? RECOVERY_RULES.routing_timeout.default`); path plan; `applyLookahead(..., SAFETY_RULES.lookahead)` → `rvx/rvy`; `updateFacing(rvx, spd, dt)`; `nudgeXY` → `_slideMove` | position committed this step |
 | 9 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); `updateFacing(vx, total, dt)` updates `npc.direction` (with `dirCD` gate) | no position change yet |
 | 10 | BM per-NPC | `checkZoneTransition` | `pushWalkMode` on road/bike-lane intrusion |
 | 11 | BM per-NPC | `tickModifiers` | overlay gestures |
 | 12 | BM | `_separate` → `nudgeXY` → `_slideMove` | separation pushes committed this step; uses positions from steps 8/9 |
-| 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | `mot.vel` present: clamp `vel.vy` at Y boundary, consume `{vx,vy}` → `_slideMove`; `mot.vel` absent: stationary (no `_slideMove`) | **final position commitment of the frame** |
+| 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | `mot.vel` present: clamp `vel.vy` at Y boundary, consume `{vx,vy}` → `_slideMove`; `mot.vel` absent: stationary (no `_slideMove`); progress monitor uses `RECOVERY_RULES.progress_monitor` (window 1.5 s, movedLT 15 px) | **final position commitment of the frame** |
 
 ---
 
@@ -41,8 +41,8 @@
 | `mot.routePts` / `routeIdx` | `motor` | `steerRoam` routing branch (one-shot plan) | `steerRoam` routing branch | cleared on arrival/timeout | — | 8 |
 | `mot.navPath` / `navIdx` / `navGoalX` / `navGoalY` | `motor` | `steerRoam` walk branch | `steerRoam` walk branch | cleared on roamTarget change, arrival, or progress-monitor stuck | — | 9 |
 | `mot.dirCD` | `motor` | `steerRoam` walk branch (decremented by dt; reset to 0.45 on flip) | `steerRoam` walk branch | decremented by dt each call | s | 9 |
-| `mot.progressAnchor` / `progressAcc` | `motor` | `integratePhysics` | `integratePhysics` | reset every 1.5 s | px / s | 13 |
-| `mot.routeReplan` | `motor` | `integratePhysics` progress monitor (0 → 1 on first stuck, 1 → 0 + `stateTimer=9999` on second) | `integratePhysics` | reset to 0 when displaced ≥ 15 px | 0\|1 | 13 |
+| `mot.progressAnchor` / `progressAcc` | `motor` | `integratePhysics` | `integratePhysics` | reset every `RECOVERY_RULES.progress_monitor.window` (1.5 s) | px / s | 13 |
+| `mot.routeReplan` | `motor` | `integratePhysics` progress monitor (0 → 1 on first stuck, 1 → 0 + `stateTimer=9999` on second) | `integratePhysics` | reset to 0 when displaced ≥ `RECOVERY_RULES.progress_monitor.movedLT` (15 px) | 0\|1 | 13 |
 | `mot.savedBounds` | `motor` | `_routeToExit` (edge exits, step 3) | `restoreDepartureBounds` | cleared by `restoreDepartureBounds` | — | 3 |
 | `npc.roamTarget` | `npc` | `pickModeTarget`, `onPathArrival`; `= null` on mode switch / arrival / progress stuck | `steerRoam` walk branch | null on goal change or stuck detection | {x,y}\|null | 9 |
 | `npc.minX` / `maxX` / `minY` / `maxY` | `npc` | `_routeToExit` (E1 edge-exit expansion, step 3); `restoreDepartureBounds` | `_slideMove`, `integratePhysics` (bounce clamp / direction flip) | restored after departure or abort | px | 3, 8, 13 |

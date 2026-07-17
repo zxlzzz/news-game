@@ -6,7 +6,7 @@
  * 2s 位移看门狗：静止 < 8px → 重规划一次；再失败 → 'abort'。
  */
 
-import { setWalkMode } from '../Motor.js';
+import { setWalkMode, RECOVERY_RULES } from '../Motor.js';
 import { modeDirect, planCrossing } from '../WalkMode.js';
 import { FAR_Y, NEAR_Y } from '../../core/Layout.js';
 import { getPlanner } from '../nav/PathPlanner.js';
@@ -87,12 +87,12 @@ export class GotoTask {
 
     // 2s 位移看门狗
     this._watchT += dt;
-    if (this._watchT >= 2) {
+    if (this._watchT >= RECOVERY_RULES.goto_watchdog.window) {
       const disp  = Math.hypot(npc.x - this._watchX, npc.y - this._watchY);
       this._watchT = 0;
       this._watchX = npc.x;
       this._watchY = npc.y;
-      if (disp < 8) {
+      if (disp < RECOVERY_RULES.goto_watchdog.dispLT) {
         if (this._replanned) return 'abort';
         this._replanned = true;
         this._plan(npc);

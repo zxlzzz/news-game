@@ -19,10 +19,6 @@
 import { CELL, getNavGrid } from './NavGrid.js';
 import { audit } from '../../debug/MovementAudit.js';
 
-const ANGLE_35 = 35 * Math.PI / 180;
-const COS35 = Math.cos(ANGLE_35);
-const SIN35 = Math.sin(ANGLE_35);
-
 /** 在世界坐标 (px, py) 处探测是否 BLOCKED (cost===0) */
 function _blocked(grid, px, py) {
   const { gx, gy } = grid.worldToCell(px, py);
@@ -34,9 +30,11 @@ function _blocked(grid, px, py) {
  * @param {object} npc
  * @param {number} vx  速度 X（像素/s）
  * @param {number} vy  速度 Y（像素/s）
+ * @param {object|null} params  来自 SAFETY_RULES.lookahead；null 则用内联默认值
  * @returns {{vx:number, vy:number}}
  */
-export function applyLookahead(npc, vx, vy) {
+export function applyLookahead(npc, vx, vy, params = null) {
+  const p = params ?? { probeCells: 4, rotateDeg: 35, nearCells: 1, slowFactor: 0.4 };
   const grid = getNavGrid();
   if (!grid) return { vx, vy };
 
@@ -51,18 +49,23 @@ export function applyLookahead(npc, vx, vy) {
   const ux = vx / speed;
   const uy = vy / speed;
 
+  const angle    = p.rotateDeg * Math.PI / 180;
+  const cos      = Math.cos(angle);
+  const sin      = Math.sin(angle);
+  const rotProbe = p.probeCells >> 1;
+
   // 探测点：y 分量减半（2.5D 世界压扁）
   const probe = (dist, dux, duy) => _blocked(grid,
     npc.x + dux * dist * CELL,
     npc.y + duy * 0.5 * dist * CELL,
   );
 
-  // 远点（4 格）blocked → 尝试旋转 ±35°，各在 2 格处探一次
-  if (probe(4, ux, uy)) {
+  // 远点 blocked → 尝试旋转 ±rotateDeg°，各在 rotProbe 格处探一次
+  if (probe(p.probeCells, ux, uy)) {
     for (const sign of [1, -1]) {
-      const rux = ux * COS35 - uy * SIN35 * sign;
-      const ruy = ux * SIN35 * sign + uy * COS35;
-      if (!probe(2, rux, ruy)) {
+      const rux = ux * cos - uy * sin * sign;
+      const ruy = ux * sin * sign + uy * cos;
+      if (!probe(rotProbe, rux, ruy)) {
         audit.count(npc, 'probe_steer');
         return { vx: rux * speed, vy: ruy * speed };
       }
@@ -70,9 +73,9 @@ export function applyLookahead(npc, vx, vy) {
     // 两侧都堵：不转向，保持原方向（交给 _slideMove 处理）
   }
 
-  // 近点（1 格）blocked → 本帧减速 ×0.4
-  if (probe(1, ux, uy)) {
-    return { vx: vx * 0.4, vy: vy * 0.4 };
+  // 近点 blocked → 本帧减速
+  if (probe(p.nearCells, ux, uy)) {
+    return { vx: vx * p.slowFactor, vy: vy * p.slowFactor };
   }
 
   return { vx, vy };
