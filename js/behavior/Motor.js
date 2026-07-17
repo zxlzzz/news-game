@@ -284,6 +284,12 @@ export function integratePhysics(npc, delta) {
     const tentY = npc.y + vy * dt;
     if (npc.maxY != null && tentY > npc.maxY && npc.y <= npc.maxY) vy = 0;
     else if (npc.minY != null && tentY < npc.minY && npc.y >= npc.minY) vy = 0;
+    // P-1 振荡探针：追踪 vx 符号翻转次数（纯计数，不影响行为）
+    const vxSign = vx > 0 ? 1 : vx < 0 ? -1 : 0;
+    if (vxSign !== 0 && mot._obsVxSign !== undefined && mot._obsVxSign !== 0 && vxSign !== mot._obsVxSign) {
+      mot._obsFlipVx = (mot._obsFlipVx ?? 0) + 1;
+    }
+    mot._obsVxSign = vxSign;
     mot.vel = null;
     _slideMove(npc, vx * dt, vy * dt);
   }

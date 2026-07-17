@@ -82,7 +82,9 @@ export function stuckProbe(npcs, dt) {
       pathIdx:     mot.path?.idx ?? null,
       pathLen:     mot.path?.pts.length ?? null,
       goalElapsed: mot.goal?.elapsed != null ? (mot.goal.elapsed | 0) : null,
+      flips:       mot._obsFlipVx ?? 0,   // P-1: vx 符号翻转次数（探针窗口=2s）
     };
+    mot._obsFlipVx = 0;   // 读取后归零（2s 探针窗口）
 
     if (isDirect && m.target) {
       info.distToGoal    = Math.hypot(m.target.x - n.x, m.target.y - n.y) | 0;
