@@ -24,6 +24,7 @@ import { refreshDebugFlag }     from './DebugLog.js';
 import { checkZoneTransition }  from './WalkMode.js';
 import { TaskRunner }           from './TaskRunner.js';
 import { Agenda }               from './Agenda.js';
+import { ensurePath }           from './nav/PlanService.js';
 import { ExitSceneTask }        from './tasks/ExitSceneTask.js';
 import { stuckProbe } from './StuckProbe.js';
 import { audit } from '../debug/MovementAudit.js';
@@ -126,6 +127,9 @@ export class BehaviorManager {
       // TaskRunner tick（始终，含 TalkToTask / ExitSceneTask）
       ag.runner?.tick(npc, dt);
 
+      // Planning 层同步：确保 mot.path 与 mot.goal 一致（TaskRunner 可能刚 publishGoal）
+      ensurePath(npc);
+
       // Activity 锁定 → 跳过 BSM / modifiers
       if (sc.activity) continue;
 
@@ -147,9 +151,9 @@ export class BehaviorManager {
 
   // 当分离推力方向与 NPC 行进方向相反时衰减为 0.5，避免抖振
   _sepScale(npc, ux, uy) {
-    const mode = npc.mem('motor').walkMode;
-    if (!mode || mode.kind !== 'direct') return 1;
-    const t = mode.target;
+    const mot = npc.mem('motor');
+    if (!mot.goal) return 1;
+    const t = mot.goal.dest;
     const dx = t.x - npc.x, dy = t.y - npc.y;
     const len = Math.hypot(dx, dy);
     if (len < 1) return 1;

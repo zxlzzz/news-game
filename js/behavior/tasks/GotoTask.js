@@ -1,112 +1,53 @@
 /**
  * GotoTask — 导航到目标点（含跨侧过马路）
  *
- * 同侧：PathPlanner 规划路点序列，逐点喂给 modeDirect。
- * 跨侧：planCrossing 后在对侧再规划。
- * 2s 位移看门狗：静止 < 8px → 重规划一次；再失败 → 'abort'。
+ * N-2b：thin publishGoal adapter。
+ * 规划、过马路、超时、卡死重规划全部下沉至 PlanService + Motor。
  */
 
-import { setWalkMode, RECOVERY_RULES } from '../Motor.js';
-import { modeDirect, planCrossing } from '../WalkMode.js';
-import { FAR_Y, NEAR_Y } from '../../core/Layout.js';
-import { getPlanner } from '../nav/PathPlanner.js';
-
-function _crossSide(y1, y2) {
-  const side = y => (y < FAR_Y ? 0 : y >= NEAR_Y ? 1 : -1);
-  const s1 = side(y1), s2 = side(y2);
-  return s1 >= 0 && s2 >= 0 && s1 !== s2;
-}
+import { publishGoal } from '../nav/PlanService.js';
 
 export class GotoTask {
   /**
    * @param {{x:number, y:number}} target
-   * @param {{timeout?:number}} opts
+   * @param {{timeout?:number, wantCross?:boolean}} opts
    */
-  constructor(target, { timeout = 60 } = {}) {
+  constructor(target, { timeout = 60, wantCross = false } = {}) {
     this._target    = target;
     this._timeout   = timeout;
-    this._arrived   = false;
-    this._elapsed   = 0;
-    this._gen       = 0;
-    this._watchT    = 0;
-    this._watchX    = 0;
-    this._watchY    = 0;
-    this._replanned = false;
+    this._wantCross = wantCross;
+    this._result    = null;
   }
 
   onStart(npc, _runner) {
-    this._watchX = npc.x;
-    this._watchY = npc.y;
-    this._watchT = 0;
-    this._plan(npc);
+    publishGoal(npc, this._target, this._timeout, (result) => {
+      this._result = result;
+    }, { wantCross: this._wantCross });
   }
 
-  _plan(npc) {
-    this._gen++;
-    const gen = this._gen;
-    const t   = this._target;
-    if (_crossSide(npc.y, t.y)) {
-      planCrossing(npc, t.y, npc.mem('agenda').profile, (n) => {
-        if (this._gen !== gen) return;
-        this._planSameSide(n, t, gen);
-      });
-    } else {
-      this._planSameSide(npc, t, gen);
-    }
-  }
-
-  _planSameSide(npc, t, gen) {
-    const planner = getPlanner();
-    const bounds  = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
-    const pts     = planner ? planner.plan(npc.x, npc.y, t.x, t.y, bounds) : null;
-    this._chainWaypoints(npc, (pts && pts.length > 0) ? pts : [t], 0, gen);
-  }
-
-  _chainWaypoints(npc, pts, idx, gen) {
-    if (idx >= pts.length) {
-      if (this._gen === gen) this._arrived = true;
-      return;
-    }
-    const remaining  = Math.max(5, this._timeout - this._elapsed);
-    const isLast     = idx === pts.length - 1;
-    const nextTarget = isLast ? null : pts[idx + 1];
-    setWalkMode(npc, modeDirect(pts[idx], (n) => {
-      if (this._gen !== gen) return;
-      if (isLast) {
-        this._arrived = true;
-      } else {
-        this._chainWaypoints(n, pts, idx + 1, gen);
-      }
-    }, remaining, nextTarget));
-  }
-
-  tick(npc, dt) {
-    this._elapsed += dt;
-    if (this._arrived)              return 'done';
-    if (this._elapsed >= this._timeout) return 'abort';
-
-    // 2s 位移看门狗
-    this._watchT += dt;
-    if (this._watchT >= RECOVERY_RULES.goto_watchdog.window) {
-      const disp  = Math.hypot(npc.x - this._watchX, npc.y - this._watchY);
-      this._watchT = 0;
-      this._watchX = npc.x;
-      this._watchY = npc.y;
-      if (disp < RECOVERY_RULES.goto_watchdog.dispLT) {
-        if (this._replanned) return 'abort';
-        this._replanned = true;
-        this._plan(npc);
-      }
-    }
-
+  tick(_npc, _dt) {
+    if (this._result === 'arrived') return 'done';
+    if (this._result === 'timeout') return 'abort';
+    if (this._result === 'blocked') return 'abort';
     return null;
   }
 
-  onAbort(npc)      { setWalkMode(npc, null); }
+  onAbort(npc) {
+    const mot = npc.mem('motor');
+    if (mot.goal) {
+      const cb  = mot.goal.onDone;
+      mot.goal  = null;
+      mot.path  = null;
+      mot.needReplan = undefined;
+      // suppress the callback — task is already aborting
+      void cb;
+    }
+  }
+
   onInterrupt(_npc) {}
+
   onResume(npc) {
-    this._arrived   = false;
-    this._replanned = false;
+    this._result = null;
     this.onStart(npc, null);
   }
 }

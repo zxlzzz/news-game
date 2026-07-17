@@ -11,15 +11,16 @@
  *
  * CONTRACT
  *   OWNS:      npc.{x,y,speed,state,animation} write gate (_mw);
- *              npc.mem('motor').{walkMode,walkModeStack} lifecycle;
+ *              npc.mem('motor').walkMode lifecycle (N-2b: stack deleted);
+ *              npc.mem('motor').{goal,path,needReplan} lifecycle (N-2b);
  *              npc.mem('motor').{progressAnchor,progressAcc} (integratePhysics);
  *              npc.mem('motor').tags (cleared in _defaultOnExit);
  *              npc.vy reset on setState; npc.roamTarget null on mode change.
  *   WRITES:    x, y via setXY/nudgeXY/_slideMove;
  *              speed via setSpeed/setState; state/animation via setState/setAnimation;
- *              walkMode/walkModeStack via setWalkMode/pushWalkMode/popWalkMode;
- *              roamTarget=null on every mode switch.
- *   READS:     npc.mem('motor').walkMode (integratePhysics, progress monitor);
+ *              walkMode via setWalkMode; roamTarget=null on every mode switch;
+ *              goal/path/needReplan lifecycle (fire result, progress two-hit).
+ *   READS:     npc.mem('motor').{walkMode,goal,path} (integratePhysics, progress monitor);
  *              NavGrid singleton (getNavGrid) for collision in _slideMove.
  *   MUST NOT:  call setState from outside Motor; read npc._walkMode (legacy, deleted);
  *              write npc.mem('social') or npc.mem('agenda').
@@ -32,19 +33,20 @@ import { audit } from '../debug/MovementAudit.js';
 
 // ── 恢复裁决表 — Physics 层卡死/超时政策唯一住址（goal-pipeline-v1.md §3）────────
 // 责任2-E StuckProbe：纯观测，永不入表。责任2-F stateDur：per-state 数据非政策常量，不入表。
+// N-2b 删除：goto_watchdog（责任2-B，GotoTask watchdog 整体删除）；
+//            direct_timeout（责任2-C，modeDirect 整体删除）。
 export const RECOVERY_RULES = {
-  progress_monitor: { window: 1.5, movedLT: 15, reason: '主恢复层，per-mode 路由',                         src: '责任2-A' },
-  goto_watchdog:    { window: 2,   dispLT: 8,   reason: 'task 级补充检测；N-2 整体删除',                    src: '责任2-B' },
-  direct_timeout:   { default: 60, reason: '直行可等久些；与 routing 30 不一致为既有事实，统一留 N-2 后',   src: '责任2-C' },
-  routing_timeout:  { default: 30, reason: 'routing 应快速超时',                                            src: '责任2-D' },
+  progress_monitor: { window: 1.5, movedLT: 15, reason: '主恢复层，goal 两击制 + wander 清目标',  src: '责任2-A' },
+  routing_timeout:  { default: 30, reason: 'routing 应快速超时',                                   src: '责任2-D' },
 };
 
 // ── 安全网裁决表 — Physics 层越界防护策略参数唯一住址（goal-pipeline-v1.md §3）────
 // 责任3-A/B/C/F/G（clamp/escape/wall-slide/Npc夹取/nearestWalkable fallback）：
 // 算法固有行为，无可调策略参数，不入表；机制住址见 movement-dataflow.md。
 export const SAFETY_RULES = {
-  lookahead: { probeCells: 4, rotProbeCells: 2, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',  src: '责任3-D' },
-  separation: { baseRadius: 24, atScale: 0.18,               reason: 'NPC 分离冲量半径',              src: '责任8-分离半径' },
+  lookahead:     { probeCells: 4, rotProbeCells: 2, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',                                    src: '责任3-D' },
+  separation:    { baseRadius: 24, atScale: 0.18,                                                  reason: 'NPC 分离冲量半径',                                src: '责任8-分离半径' },
+  jaywalk_sprint:{ speedK: 2.4, anim: 'run',                                                       reason: '马路格速度倍增（空间派生替代 planCrossing setSpeed）', src: 'N-2b' },
 };
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
@@ -86,37 +88,15 @@ export function installProtection(npc) {
   }
 }
 
-// ── WalkMode 栈 ────────────────────────────────────────────────────────────────
+// ── WalkMode ───────────────────────────────────────────────────────────────────
 export function setWalkMode(npc, desc) {
-  const m = npc.mem('motor');
-  m.walkMode      = desc;
-  m.walkModeStack = m.walkModeStack ?? [];
-  npc.roamTarget  = null;
-}
-
-export function pushWalkMode(npc, desc) {
-  const m = npc.mem('motor');
-  m.walkModeStack = m.walkModeStack ?? [];
-  if (m.walkMode) m.walkModeStack.push(m.walkMode);
-  m.walkMode     = desc;
-  npc.roamTarget = null;
-}
-
-export function popWalkMode(npc) {
-  const stack = npc.mem('motor').walkModeStack;
-  if (!stack?.length) return;
-  npc.mem('motor').walkMode = stack.pop();
-  npc.roamTarget = null;
+  npc.mem('motor').walkMode = desc;
+  npc.roamTarget            = null;
 }
 
 // ── 状态定义 ───────────────────────────────────────────────────────────────────
-function _defaultOnExit(npc, toState) {
+function _defaultOnExit(npc, _toState) {
   npc.mem('motor').tags = null;
-  const m = npc.mem('motor');
-  if ((toState === 'walk' || toState === 'run') && m.walkModeStack?.length > 0) {
-    m.walkMode     = m.walkModeStack.pop();
-    npc.roamTarget = null;
-  }
 }
 
 export const STATE_DEFS = {
@@ -281,7 +261,7 @@ export function setSpeed(npc, speed) {
   _mw(npc, 'speed', speed);
 }
 
-// ── 动画直写（供 planCrossing 等非 setState 场景）────────────────────────────
+// ── 动画直写（供 jaywalk_sprint 等非 setState 场景）──────────────────────────
 export function setAnimation(npc, anim) {
   _mw(npc, 'animation', anim);
 }
@@ -309,7 +289,20 @@ export function integratePhysics(npc, delta) {
   }
   // else: mot.vel absent → stationary this frame
 
-  // Progress monitor: every 1.5 s measure net displacement from anchor; < 15 px with active goal → fail leg
+  // Goal elapsed + timeout（铁律③：计时器累加只在裁决文件）
+  const goal = mot.goal;
+  if (goal) {
+    goal.elapsed += dt;
+    if (goal.timeout != null && goal.elapsed > goal.timeout) {
+      const cb       = goal.onDone;
+      mot.goal       = null;
+      mot.path       = null;
+      mot.needReplan = undefined;
+      if (cb) cb('timeout');
+    }
+  }
+
+  // Progress monitor: every 1.5 s 测净位移；< 15 px 且有活跃目标 → 恢复
   if (!mot.progressAnchor) mot.progressAnchor = { x: npc.x, y: npc.y };
 
   mot.progressAcc = (mot.progressAcc ?? 0) + dt;
@@ -319,11 +312,8 @@ export function integratePhysics(npc, delta) {
     mot.progressAnchor = { x: npc.x, y: npc.y };
 
     const _walkState = npc.state === 'walk' || npc.state === 'run' || npc.state === 'jog';
-    const hasGoal = npc.state === 'routing' || (_walkState && wm);
+    const hasGoal = npc.state === 'routing' || (_walkState && (wm || mot.goal));
     if (hasGoal && moved < RECOVERY_RULES.progress_monitor.movedLT) {
-      // Clear the path layer so steerRoam replans from current position
-      mot.navPath = null;
-      const mode = mot.walkMode;
       if (npc.state === 'routing') {
         if (mot.walkMode != null) audit.count(npc, 'routing_with_walkmode');
         if (!mot.routeReplan) {
@@ -334,20 +324,26 @@ export function integratePhysics(npc, delta) {
           mot.routeReplan = 0;
           npc.stateTimer  = 9999;
         }
-      } else if (mode?.kind === 'direct') {
-        if (!mode._stuckOnce) {
-          mode._stuckOnce = true;
-          mot.navPath     = null;
-          npc.roamTarget  = null;
+      } else if (mot.goal) {
+        // 两击制：first stuck → 触发重规划；second stuck → 'blocked'
+        if (!mot.goal._stuck) {
+          mot.goal._stuck = true;
+          mot.needReplan  = true;
         } else {
-          mode._elapsed = mode.abandonAfter ?? RECOVERY_RULES.direct_timeout.default;
+          const cb       = mot.goal.onDone;
+          mot.goal       = null;
+          mot.path       = null;
+          mot.needReplan = undefined;
+          if (cb) cb('blocked');
         }
-      } else if (mode?.kind === 'wander') {
+      } else {
+        // Wander mode: 换目标
         npc.roamTarget = null;
+        mot.path       = null;
       }
     } else {
       mot.routeReplan = 0;
-      if (mot.walkMode?.kind === 'direct') mot.walkMode._stuckOnce = false;
+      if (mot.goal?._stuck) mot.goal._stuck = false;
     }
   }
 }

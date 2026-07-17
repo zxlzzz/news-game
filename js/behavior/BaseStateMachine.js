@@ -1,16 +1,18 @@
 /**
  * CONTRACT  (see docs/contracts/movement.md)
  *   OWNS:      steerRoam — the sole per-frame caller of pickModeTarget / Lookahead;
- *              npc.mem('motor').{navPath,navIdx,navGoalX,navGoalY} lifecycle;
- *              npc.mem('motor').{routeTarget,routePts,routeIdx} lifecycle.
- *   WRITES:    mot.routeTarget (triggerDeparture:319); mot.navPath/navIdx/navGoal*;
- *              mot.routePts/routeIdx; npc.direction (steer + departure);
- *              npc.mem('motor').wallSpot (lean_wall assignment:94).
- *   READS:     npc.state, npc.roamTarget, npc.mem('motor').walkMode,
+ *              mot.path idx advance (arrival detection);
+ *              npc.mem('motor').{routeTarget,routePts,routeIdx} lifecycle (N-3 清).
+ *   WRITES:    mot.vel (walk branch); mot.path.idx (waypoint advance);
+ *              mot.goal = null + onDone callback (arrival);
+ *              mot.routeTarget (triggerDeparture); mot.routePts/routeIdx;
+ *              npc.direction (steer + departure);
+ *              npc.mem('motor').wallSpot (lean_wall assignment).
+ *   READS:     npc.state, npc.roamTarget, npc.mem('motor').{walkMode,goal,path},
  *              npc.mem('motor').routeTarget, NavGrid singleton.
- *   MUST NOT:  write npc.speed/state/animation — use Motor.setState/setAnimation;
+ *   MUST NOT:  write npc.speed/state — use Motor.setState/setSpeed;
  *              write npc.x/y — use Motor.setXY/nudgeXY;
- *              call pickModeTarget outside of steerRoam.
+ *              write mot.path (use PlanService); call pickModeTarget outside steerRoam.
  *
  * BaseStateMachine — 集中式转换表状态机（Unity 风格）
  *
@@ -44,19 +46,21 @@
 
 import { dlog }        from './DebugLog.js';
 import { audit }        from '../debug/MovementAudit.js';
-import { PARK_TOP, WORLD_WIDTH } from '../core/Layout.js';
+import { PARK_TOP, WORLD_WIDTH, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../core/Layout.js';
 import { sitDown, alignLie } from '../entity/seat/seat.js';
 import { tickLoiter } from '../npc/LoiterBehavior.js';
 
 import {
   tickWalkMode, pickModeTarget, onPathArrival,
-  setWalkMode, popWalkMode, isRoadZone, modeWander,
+  setWalkMode, isRoadZone, modeWander,
 } from './WalkMode.js';
 
-import { setState, STATE_DEFS, setXY, nudgeXY, RECOVERY_RULES, SAFETY_RULES } from './Motor.js';
-import { getPlanner } from './nav/PathPlanner.js';
+import { setState, STATE_DEFS, setXY, nudgeXY, setAnimation, RECOVERY_RULES, SAFETY_RULES } from './Motor.js';
+import { getNavGrid, ROAD } from './nav/NavGrid.js';
 import { applyLookahead } from './nav/Lookahead.js';
 import { arrived } from './SteeringDecision.js';
+import { ensureWanderPath } from './nav/PlanService.js';
+import { getPlanner } from './nav/PathPlanner.js';
 import { despawnNpc } from '../npc/despawn.js';
 
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
@@ -177,7 +181,8 @@ function _tickState(npc, envQuery, profile, dt) {
 
   if (isWalking) tickWalkMode(npc, dt);
 
-  const needsSteer = npc.state === 'routing' || (isWalking && npc.mem('motor').walkMode);
+  const mot = npc.mem('motor');
+  const needsSteer = npc.state === 'routing' || (isWalking && (mot.walkMode || mot.goal));
   if (needsSteer) steerRoam(npc, envQuery, profile, dt);
 
   if (npc.state === 'loiter') tickLoiter(npc, profile, dt);
@@ -254,68 +259,51 @@ function steerRoam(npc, envQuery, profile, dt) {
     return;
   }
 
+  // path_follow pausing early exit (preserved)
   if (mot.walkMode?.kind === 'path_follow' && mot.walkMode.pausing) {
     return;
   }
 
-  if (!npc.roamTarget) pickModeTarget(npc, envQuery);
-  if (!npc.roamTarget) return;
-
-  const t = npc.roamTarget;
-
-  // ── Path layer: plan once per roamTarget, follow waypoints ────────────
-  if (!mot.navPath || mot.navGoalX !== t.x || mot.navGoalY !== t.y) {
-    mot.navGoalX = t.x;
-    mot.navGoalY = t.y;
-    mot.navPath  = null;
-    mot.navIdx   = 0;
-    const planner = getPlanner();
-    if (planner) {
-      const _b = npc.minX != null
-        ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY }
-        : null;
-      const pts = planner.plan(npc.x, npc.y, t.x, t.y, _b);
-      if (pts && pts.length > 0) {
-        mot.navPath = pts;
-        mot.navIdx  = 0;
-      }
-    }
+  // Wander NPCs manage their path lazily; goal-driven NPCs already have mot.path from ensurePath
+  if (!mot.goal) {
+    if (!npc.roamTarget) pickModeTarget(npc, envQuery);
+    if (!npc.roamTarget) return;
+    ensureWanderPath(npc, npc.roamTarget);
   }
+  if (!mot.path) return;
 
-  // Steering target: current waypoint if path exists, else direct to roamTarget
-  const wp = (mot.navPath && mot.navIdx < mot.navPath.length)
-    ? mot.navPath[mot.navIdx]
-    : t;
-
+  const path = mot.path;
+  const wp   = path.pts[Math.min(path.idx, path.pts.length - 1)];
+  if (!wp) return;
   const dx = wp.x - npc.x, dy = wp.y - npc.y;
   const dist = Math.hypot(dx, dy);
 
-  // ── Waypoint arrival (intermediate) ───────────────────────────────────
-  if (mot.navPath && mot.navIdx < mot.navPath.length - 1 && arrived('nav_waypoint', dist)) {
-    mot.navIdx++;
+  // ── Intermediate waypoint arrival ──────────────────────────────────────
+  if (path.idx < path.pts.length - 1 && arrived('nav_waypoint', dist)) {
+    path.idx++;
     return;
   }
 
-  // ── Final target arrival (roamTarget) ─────────────────────────────────
-  const distToGoal = Math.hypot(t.x - npc.x, t.y - npc.y);
-  if (arrived('walk_goal', distToGoal)) {
-    mot.navPath = null;
-    const mode = mot.walkMode;
-    if (mode?.kind === 'path_follow') {
-      onPathArrival(mode, npc);
-    } else if (mode?.kind === 'direct') {
-      const nt = mode.nextTarget;
-      if (!nt || arrived('corner_cut', distToGoal) || !envQuery.raycastObstacle(npc.x, npc.y, nt.x, nt.y)) {
-        const cb = mode.onArrive;
-        setWalkMode(npc, modeWander());
-        if (cb) cb(npc);
-      }
+  // ── Final destination arrival ──────────────────────────────────────────
+  const finalDest   = mot.goal ? mot.goal.dest : npc.roamTarget;
+  const distToFinal = Math.hypot(finalDest.x - npc.x, finalDest.y - npc.y);
+  if (arrived('walk_goal', distToFinal)) {
+    mot.path = null;
+    if (mot.goal) {
+      const cb = mot.goal.onDone;
+      mot.goal = null; mot.needReplan = undefined;
+      if (cb) cb('arrived');
     } else {
-      const lc = profile?.loiterChance;
-      if (lc && Math.random() < lc && !isRoadZone(npc.y)) {
-        setState(npc, 'loiter', 'loiter-chance');
+      const mode = mot.walkMode;
+      if (mode?.kind === 'path_follow') {
+        onPathArrival(mode, npc);
       } else {
-        pickModeTarget(npc, envQuery);
+        const lc = profile?.loiterChance;
+        if (lc && Math.random() < lc && !isRoadZone(npc.y)) {
+          setState(npc, 'loiter', 'loiter-chance');
+        } else {
+          pickModeTarget(npc, envQuery);
+        }
       }
     }
     return;
@@ -323,10 +311,26 @@ function steerRoam(npc, envQuery, profile, dt) {
 
   // ── Steer toward current waypoint ─────────────────────────────────────
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
+  if (dist === 0) return;
   const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total, SAFETY_RULES.lookahead);
   if (vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
-  // Write full velocity vector — integratePhysics consumes mot.vel when present
-  mot.vel = { vx, vy };
+
+  // Jaywalk sprint: road-cell → multiply velocity (spatial derivation, replaces planCrossing setSpeed)
+  const _grid  = getNavGrid();
+  const _inLane = npc.y >= BIKE_LANE_FAR_TOP && npc.y < BIKE_LANE_NEAR_BOTTOM;
+  if (_inLane && _grid) {
+    const { gx: _gx, gy: _gy } = _grid.worldToCell(npc.x, npc.y);
+    if (_grid.cost(_gx, _gy) === ROAD) {
+      mot.vel = { vx: vx * SAFETY_RULES.jaywalk_sprint.speedK, vy: vy * SAFETY_RULES.jaywalk_sprint.speedK };
+      setAnimation(npc, SAFETY_RULES.jaywalk_sprint.anim);
+    } else {
+      mot.vel = { vx, vy };
+      if (npc.animation === SAFETY_RULES.jaywalk_sprint.anim && npc.state === 'walk') setAnimation(npc, 'walk');
+    }
+  } else {
+    mot.vel = { vx, vy };
+    if (npc.animation === SAFETY_RULES.jaywalk_sprint.anim && npc.state === 'walk') setAnimation(npc, 'walk');
+  }
   updateFacing(npc, vx, total, dt);
 }
 

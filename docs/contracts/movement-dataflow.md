@@ -1,6 +1,6 @@
 # Movement Dataflow Contract
 
-> Normative. Describes present behavior; no fixes.
+> Normative. Describes present behavior as of N-2b; no fixes.
 >
 > Frame order anchor: `StreetScene#update` (`behaviorManager.update`, line 356) **then** `StreetScene#update` (`entityManager.update → integratePhysics`, line 362). BM runs first; integratePhysics is the last movement step of the same frame.
 
@@ -15,11 +15,12 @@
 | 3 | BM per-NPC | lifespan check (`!sc.activity` gate) → `triggerDeparture` → `_routeToExit` | sets `ag.departing`; saves + expands bounds (edge exits); sets `mot.routeTarget`; skipped while NPC is in an Activity (age accumulates, triggers on next frame after activity ends) |
 | 4 | BM per-NPC | `Agenda.tick` | selects next desire (no-op if `sc.activity`) |
 | 5 | BM per-NPC | `TaskRunner.tick` | ExitSceneTask / TalkToTask monitor |
+| 5.5 | BM per-NPC | `ensurePath(npc)` (`PlanService.js`) | syncs `mot.path` with `mot.goal`; fires 'blocked' if planner fails; resets `mot.needReplan` |
 | 6 | BM per-NPC | `tickBaseState`: `stateTimer += dt` | timer advance; `_evaluateTransitions` → may call `setState` |
-| 7 | BM → `_tickState` | `tickWalkMode` | `direct._elapsed`; `path_follow.pauseTimer` |
+| 7 | BM → `_tickState` | `tickWalkMode` | `path_follow.pauseTimer`; wander `maxDuration` elapsed |
 | 8 | BM → `_tickState` → `steerRoam` — **routing** branch | timeout check (`t.abandonAfter ?? RECOVERY_RULES.routing_timeout.default`); path plan; `applyLookahead(..., SAFETY_RULES.lookahead)` → `rvx/rvy`; `updateFacing(rvx, spd, dt)`; `nudgeXY` → `_slideMove` | position committed this step |
-| 9 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); `updateFacing(vx, total, dt)` updates `npc.direction` (with `dirCD` gate) | no position change yet |
-| 10 | BM per-NPC | `checkZoneTransition` | `pushWalkMode` on road/bike-lane intrusion |
+| 9 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); `updateFacing(vx, total, dt)` updates `npc.direction` (with `dirCD` gate); advances `mot.path.idx`; on goal arrival clears `mot.goal` + fires `onDone`; on ROAD cell applies `SAFETY_RULES.jaywalk_sprint` (speedK×2.4, anim 'run') | no position change yet |
+| 10 | BM per-NPC | `checkZoneTransition` | stateless `mot.vel` override: ejects wander NPC from road/bike-lane each frame (no push/pop stack) |
 | 11 | BM per-NPC | `tickModifiers` | overlay gestures |
 | 12 | BM | `_separate` → `nudgeXY` → `_slideMove` | separation pushes committed this step; uses positions from steps 8/9 |
 | 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | `mot.vel` present: clamp `vel.vy` at Y boundary, consume `{vx,vy}` → `_slideMove`; `mot.vel` absent: stationary (no `_slideMove`); progress monitor uses `RECOVERY_RULES.progress_monitor` (window 1.5 s, movedLT 15 px) | **final position commitment of the frame** |
@@ -35,11 +36,12 @@
 | `direction` | `npc` | `updateFacing(npc, vx, spd, dt)` called from both routing (step 8) and walk/run/jog (step 9) branches of `steerRoam` — `dirCD` 0.45 s hysteresis, `|vx|>spd×0.35` threshold; `triggerDeparture`; activity direct writes; `spot.facing`/`exit.facing` snapshots | `steerRoam` audit check; rendering | next write | ±1 | written 8, 9 |
 | `vy` | `npc` | `setState` (=0); dead post-V-2 (routing writes removed) | none — `checkZoneTransition` migrated to `mot.vel?.vy` in V-2 | `setState` (=0) | px/s | — |
 | `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` after `applyLookahead` | `Motor#integratePhysics`: both `.vx` and `.vy` consumed; Y boundary clamps `vy` before apply | consumed `= null` by `Motor#integratePhysics`, same frame | px/s | written 9, consumed 13 |
-| `mot.walkMode` | `motor` | `setWalkMode`, `pushWalkMode`, `popWalkMode` | `steerRoam`, `integratePhysics` (progress + vel gate), `tickWalkMode`, `_separate._sepScale` | `setWalkMode(null)` at departure; `_defaultOnExit` clears stack on `setState` | — | 7–12 |
-| `mot.walkModeStack` | `motor` | `pushWalkMode`, `popWalkMode` | `popWalkMode` | `_defaultOnExit` on `setState` | — | 7–12 |
+| `mot.goal` | `motor` | `PlanService.publishGoal` (sole writer; clears on arrival/timeout/blocked) | `steerRoam` walk branch (arrival + timeout fire), `integratePhysics` (elapsed tick + timeout + progress two-hit), `BehaviorManager._sepScale` | cleared by whichever path fires result first; `onDone` callback called exactly once | — | 5.5, 9, 13 |
+| `mot.path` | `motor` | `PlanService.ensurePath` / `ensureWanderPath` (sole writers) | `steerRoam` walk branch (idx advance + vel computation) | null on replan, blocked, arrival, or wander-roamTarget change | — | 5.5, 9 |
+| `mot.needReplan` | `motor` | `integratePhysics` progress monitor first hit (→ `true`); cleared by `ensurePath` | `ensurePath` (step 5.5) | cleared by `ensurePath` after replan | bool | 5.5, 13 |
+| `mot.walkMode` | `motor` | `setWalkMode` | `steerRoam`, `integratePhysics` (vel gate), `tickWalkMode`, `checkZoneTransition` | `setWalkMode(null)` at departure; `_defaultOnExit` clears tags on `setState` | — | 7–12 |
 | `mot.routeTarget` | `motor` | `_routeToExit` (step 3) | `steerRoam` routing branch (step 8) | cleared on arrival, timeout, or abort | — | 3, 8 |
 | `mot.routePts` / `routeIdx` | `motor` | `steerRoam` routing branch (one-shot plan) | `steerRoam` routing branch | cleared on arrival/timeout | — | 8 |
-| `mot.navPath` / `navIdx` / `navGoalX` / `navGoalY` | `motor` | `steerRoam` walk branch | `steerRoam` walk branch | cleared on roamTarget change, arrival, or progress-monitor stuck | — | 9 |
 | `mot.dirCD` | `motor` | `steerRoam` walk branch (decremented by dt; reset to 0.45 on flip) | `steerRoam` walk branch | decremented by dt each call | s | 9 |
 | `mot.progressAnchor` / `progressAcc` | `motor` | `integratePhysics` | `integratePhysics` | reset every `RECOVERY_RULES.progress_monitor.window` (1.5 s) | px / s | 13 |
 | `mot.routeReplan` | `motor` | `integratePhysics` progress monitor (0 → 1 on first stuck, 1 → 0 + `stateTimer=9999` on second) | `integratePhysics` | reset to 0 when displaced ≥ `RECOVERY_RULES.progress_monitor.movedLT` (15 px) | 0\|1 | 13 |

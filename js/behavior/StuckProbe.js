@@ -78,6 +78,10 @@ export function stuckProbe(npcs, dt) {
       board: !!sc.boardingBus,
       nb:    npcs.reduce((k, o) => k + (o !== n && o.alive && Math.hypot(o.x - n.x, o.y - n.y) < 30 ? 1 : 0), 0),
       bounds: [n.minX | 0, n.maxX | 0, n.minY | 0, n.maxY | 0],
+      hasGoal:     !!mot.goal,
+      pathIdx:     mot.path?.idx ?? null,
+      pathLen:     mot.path?.pts.length ?? null,
+      goalElapsed: mot.goal?.elapsed != null ? (mot.goal.elapsed | 0) : null,
     };
 
     if (isDirect && m.target) {

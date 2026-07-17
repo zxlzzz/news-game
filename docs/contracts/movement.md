@@ -27,8 +27,8 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 |---|---|
 | **Semantic** | Scalar speed magnitude in pixels/second; sign-free (direction carries sign). Effectively always 0 after V-1 (physics driven by `mot.vel`); kept for compatibility with inline cyclists path and rendering consumers. |
 | **Owner** | `Motor.js` |
-| **Writers** | `Motor.js#setState` (154, via `_mw`); `Motor.js#setSpeed` (263) — `planCrossing` (jaywalk entry/exit); walk / routing / path_follow pausing branches no longer write speed after V-2 |
-| **Readers** | `WalkMode.js#planCrossing` (crossing speed); `StuckProbe.js` — no longer used as gate condition after V-2 |
+| **Writers** | `Motor.js#setState` (154, via `_mw`); `Motor.js#setSpeed` (263) — reserved for future use; no active caller after N-2b (planCrossing deleted) |
+| **Readers** | `StuckProbe.js` — not used as gate condition; inline cyclist path only |
 | **Invariant** | Only via `setState` or `setSpeed`. Raw `npc.speed =` anywhere else is a contract violation. |
 
 ---

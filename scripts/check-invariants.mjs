@@ -205,7 +205,6 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** (wa
     'Motor.js',           // decision file (RECOVERY/SAFETY tables) — permanent
     'StuckProbe.js',      // pure observer — permanent
     'BaseStateMachine.js',// residual stateTimer accum — N-2/N-3 target
-    'GotoTask.js',        // watchdog timer — N-2 deletion target
     'SocialLayer.js',     // 非移动政策计时器 — permanent
     'WaitBusActivity.js', // 非移动政策计时器 — permanent
     'PlayPoseTask.js',    // 非移动政策计时器 — permanent

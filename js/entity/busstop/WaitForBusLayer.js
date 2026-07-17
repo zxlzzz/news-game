@@ -10,14 +10,9 @@
  */
 
 import { setState }    from '../../behavior/Motor.js';
-import { planCrossing } from '../../behavior/WalkMode.js';
 import { WaitBusActivity } from '../../behavior/activities/WaitBusActivity.js';
-import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP, FAR_Y, NEAR_Y } from '../../core/Layout.js';
+import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../../core/Layout.js';
 import { despawnNpc } from '../../npc/despawn.js';
-
-function _needsCrossing(y1, y2) {
-  return (y1 < FAR_Y && y2 >= NEAR_Y) || (y1 >= NEAR_Y && y2 < FAR_Y);
-}
 
 const WAIT_ZONES = [
   { stopDir: +1, xRange: [380, 620],  yRange: [SIDEWALK_FAR_Y - 20, BIKE_LANE_FAR_TOP] },
@@ -77,9 +72,10 @@ export class WaitForBusLayer {
       if (npc.mem('social').waitingBusStop || npc.mem('social').boardingBus) continue;
       if (!WAIT_STATES.has(npc.state)) continue;
 
-      // 排除非 wander 模式（direct/path_follow/crossing）的 NPC
-      const modeKind = npc.mem('motor').walkMode?.kind;
-      if (modeKind && modeKind !== 'wander') continue;
+      // 排除非 wander 模式或有 goal 的 NPC
+      const mot      = npc.mem('motor');
+      const modeKind = mot.walkMode?.kind;
+      if ((modeKind && modeKind !== 'wander') || mot.goal) continue;
 
       for (const zone of WAIT_ZONES) {
         if (npc.x < zone.xRange[0] || npc.x > zone.xRange[1]) continue;
@@ -135,12 +131,7 @@ export class WaitForBusLayer {
         setState(n, 'routing', 'boarding');
       };
 
-      if (_needsCrossing(npc.y, doorY)) {
-        setState(npc, 'walk', 'boarding_cross');
-        planCrossing(npc, doorY, npc.mem('agenda').profile, routeToDoor);
-      } else {
-        routeToDoor(npc);
-      }
+      routeToDoor(npc);
     }
   }
 }
