@@ -1,7 +1,7 @@
-# 目标管线立法 v1 (r2.2)
+# 目标管线立法 v1 (r2.3)
 
 **类型**：normative（失效代码变更须同 commit 更新本文件）
-**状态**：finalized（2026-07-17）；N-1 已落地（commit 3cd1f99）
+**状态**：finalized（2026-07-17）；N-1 已落地（commit 3cd1f99）；N-2a 已落地（97c1e44）；N-2b 已落地（TBD）
 **取代**：`docs/audits/behavior-redundancy-2026-07.md` 附录 C（作废）；本文件 r1（2026-07-16，被否决——三刀降级为常量改名、Goal 接口伪造为现状、冻结 bug 缺失）
 **地面真值**：审计文档责任表 1–8 为所有"起始值"数字的唯一来源，本文引用不复制。
 
@@ -119,16 +119,20 @@ StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单
 
 **验收（静态）**：`check-invariants.mjs` 全绿含 Rule 8；`=== ROAD` 计数 4（end snap / A* eff×3）；`grep -n "import" NavGrid.js` 无 PathPlanner。
 
-### N-2b：Goal 通道（任务退化为发 Goal 收 result）
+### N-2b：Goal 通道（任务退化为发 Goal 收 result）✅ TBD
 
 **交付**：
 - 引入 `mot.goal`（§1.1 接口）与 `mot.path`（路点数组 + 游标，二者为仅存的每目标状态位）
-- 全部 Task 改写为：发 Goal → 收 result。timeout 判定进恢复裁决表（result='timeout'），恢复穷尽判定进恢复裁决表（result='blocked'），到达判定在到达裁决表（result='arrived'）
+- 新建 `PlanService.js`（Planning 层胶水）：`publishGoal` / `ensurePath` / `ensureWanderPath`；`mot.path` 唯一写入点
+- 全部 Task 改写为：发 Goal → 收 result。timeout 判定进恢复裁决表（goal.elapsed > goal.timeout → result='timeout'），恢复穷尽判定进恢复裁决表（两击制：first stuck → needReplan；second stuck → result='blocked'），到达判定在 steerRoam（result='arrived'）
+- `crossing` / `jaywalking` 标签改为 NavGrid 格值空间派生（`Npc.getTags()` 中读 cost，取代 `planCrossing` 标签声明周期）；jaywalk_sprint 进 SAFETY_RULES；`checkZoneTransition` 改为无状态 vel 覆写（删除 pushWalkMode 调用）
 - **删除**：`planCrossing`（穿越归代价）、`pushWalkMode`/`popWalkMode`/walkModeStack、`modeDirect` 及任务侧 onArrive 链式路点接力（路点推进归 Steering 按 `mot.path` 游标走）
 - **删除**：GotoTask watchdog（2s/8px、`_watchT`/`_replanned`）——职责已并入恢复裁决表
+- **删除**：`navPath`/`navIdx`/`navGoalX`/`navGoalY`（BSM walk branch）；`direct_timeout`/`goto_watchdog` RECOVERY_RULES 行（无消费者）
 - ExitSceneTask 留 routing 至 N-3 一并迁（routing 链 N-3 整体删除）；path_follow 不在死刑名单
+- **亡者逐名**（被删机制的现存回落默认值）：`modeDirect.abandonAfter=60`（RECOVERY_RULES.direct_timeout.default）；`modeDirect.nextTarget=null`；`planCrossing.jaywalkChance=0.1`；`GotoTask.timeout=60`（保留为 publishGoal 参数）；`_chainWaypoints.remaining=max(5, ...)`（无等效默认）
 
-**验收（静态）**：grep `planCrossing|pushWalkMode|popWalkMode|modeDirect` 零命中；grep `onDone` 覆盖全部 Task；`_watchT|_replanned` 零命中。
+**验收（静态）**：grep `planCrossing|pushWalkMode|popWalkMode|modeDirect` 零命中；grep `onDone` 覆盖全部 Task；`_watchT|_replanned|_stuckOnce|_sanitized|navPath|navIdx|navGoalX|navGoalY|walkModeStack` 零命中。
 
 ### N-3：杀行
 
@@ -145,12 +149,14 @@ StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单
 
 ## 5. 四数验收表（全三刀完成后）
 
-| 指标 | 起始（审计锚点） | 目标 | 度量 |
-|------|-----------------|------|------|
-| 到达阈值语义 | **6 种**（责任 1：routing 终点 / 路点推进 / navPath 推进 / walk 终点 / 角切 / 长椅半径） | **1 张表** | 裸距离比较 grep 零命中（Rule 7 error） |
-| 卡死/超时机制 | **6 套**（责任 2 A–F） | **1 张表 + StuckProbe 纯观测** | grep `_watchT|_stuckOnce|abandonAfter.*\?\?` 零命中 |
-| 位置写入路径 | **4 条**（责任 5：mot.vel / nudgeXY 步进 / setXY 传送 / Npc 内联） | **1 条**（mot.vel → integratePhysics；分离冲量与安全网为层内授权） | grep `npc\.[xy]\s*[+\-]?=` |
-| 每目标状态位 | **≥10**（roamTarget / routeTarget / routePts / routeIdx / navPath / navIdx / mode.target / mode.nextTarget / \_watchT / \_replanned / \_stuckOnce / \_sanitized…） | **2**（`mot.goal` + `mot.path`） | grep 逐项零命中 |
+N-2b 后当前状态注释见括号。
+
+| 指标 | 起始（审计锚点） | 目标 | N-2b 后状态 | 度量 |
+|------|-----------------|------|-------------|------|
+| 到达阈值语义 | **6 种**（责任 1：routing 终点 / 路点推进 / navPath 推进 / walk 终点 / 角切 / 长椅半径） | **1 张表** | 1 张表（corner_cut 行为死码，N-3 删） | 裸距离比较 grep 零命中（Rule 7 error） |
+| 卡死/超时机制 | **6 套**（责任 2 A–F） | **1 张表 + StuckProbe 纯观测** | 2（RECOVERY_RULES 两击制 + StuckProbe）+ routing 超时（N-3 清） | grep `_watchT\|_stuckOnce\|abandonAfter.*\?\?` 零命中 |
+| 位置写入路径 | **4 条**（责任 5：mot.vel / nudgeXY 步进 / setXY 传送 / Npc 内联） | **1 条**（mot.vel → integratePhysics；分离冲量与安全网为层内授权） | routing 的 nudgeXY 步进 + setXY 传送还剩（N-3 清）；Npc 内联还剩（N-3 清） | grep `npc\.[xy]\s*[+\-]?=` |
+| 每目标状态位 | **≥10**（roamTarget / routeTarget / routePts / routeIdx / navPath / navIdx / mode.target / mode.nextTarget / \_watchT / \_replanned / \_stuckOnce / \_sanitized…） | **2**（`mot.goal` + `mot.path`） | 2 + routing 三件套（N-3 清）+ npc.roamTarget（wander 辅助，非每目标状态位，语义清晰） | grep 逐项零命中 |
 
 重构真伪判据：这四个数字降了才算根修；只加常量名、只补注释属化妆，直接打回。
 
