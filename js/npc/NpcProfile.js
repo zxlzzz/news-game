@@ -195,6 +195,7 @@ const ATHLETE = {
   activities: [],
   traits: {},
   cameraReaction: 'neutral',
+  agenda: false,   // 常驻布景：不挂 Agenda，path_follow 环线全权管理漫游
 };
 
 export const PROFILES = {

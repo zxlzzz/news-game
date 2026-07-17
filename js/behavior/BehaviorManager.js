@@ -72,7 +72,8 @@ export class BehaviorManager {
     setState(npc, ag.profile.initial || 'walk');
 
     ag.runner = new TaskRunner();
-    ag.agenda = new Agenda(ag.profile, this.envQuery);
+    // profile.agenda === false → 常驻布景 NPC（athlete 等），不构造 Agenda；ag.agenda?.tick 天然跳过
+    ag.agenda = ag.profile.agenda === false ? undefined : new Agenda(ag.profile, this.envQuery);
 
     // 供 ExitSceneTask 在运行时读取（Director spawn 的 NPC 由 Director._installRefs 覆写）
     ag.exitRegistry    = this.exitRegistry;
