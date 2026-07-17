@@ -119,12 +119,13 @@ StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单
 
 **验收（静态）**：`check-invariants.mjs` 全绿含 Rule 8；`=== ROAD` 计数 4（end snap / A* eff×3）；`grep -n "import" NavGrid.js` 无 PathPlanner。
 
-### N-2b：Goal 通道（任务退化为发 Goal 收 result）✅ TBD
+### N-2b：Goal 通道（任务退化为发 Goal 收 result）✅ 0dcf420
 
 **交付**：
 - 引入 `mot.goal`（§1.1 接口）与 `mot.path`（路点数组 + 游标，二者为仅存的每目标状态位）
 - 新建 `PlanService.js`（Planning 层胶水）：`publishGoal` / `ensurePath` / `ensureWanderPath`；`mot.path` 唯一写入点
 - 全部 Task 改写为：发 Goal → 收 result。timeout 判定进恢复裁决表（goal.elapsed > goal.timeout → result='timeout'），恢复穷尽判定进恢复裁决表（两击制：first stuck → needReplan；second stuck → result='blocked'），到达判定在 steerRoam（result='arrived'）
+  - **J1-a 修正**：StrollTask blocked 回落改为有限重发（连续 `STROLL_BLOCKED_LIMIT=2` 次后退化 modeWander），不再无条件重发——原无条件重发在 plan 必败场景下导致永冻（见 J1 bug report）
 - `crossing` / `jaywalking` 标签改为 NavGrid 格值空间派生（`Npc.getTags()` 中读 cost，取代 `planCrossing` 标签声明周期）；jaywalk_sprint 进 SAFETY_RULES；`checkZoneTransition` 改为无状态 vel 覆写（删除 pushWalkMode 调用）
 - **删除**：`planCrossing`（穿越归代价）、`pushWalkMode`/`popWalkMode`/walkModeStack、`modeDirect` 及任务侧 onArrive 链式路点接力（路点推进归 Steering 按 `mot.path` 游标走）
 - **删除**：GotoTask watchdog（2s/8px、`_watchT`/`_replanned`）——职责已并入恢复裁决表
