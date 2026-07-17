@@ -200,7 +200,7 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 
 | | |
 |---|---|
-| **Semantic** | Module-level `_instance` holding the single `NavGrid` cost map for the current scene. Cost encoding: 0=BLOCKED, 1=walkable, 8=grass, 250=ROAD (passable but not plannable). |
+| **Semantic** | Module-level `_instance` holding the single `NavGrid` cost map for the current scene. Cost encoding: 0=BLOCKED, 1=walkable, 8=grass, 250=ROAD (passable; plannable at high cost via PLANNING_RULES; not sampable or usable as destination). |
 | **Owner** | `NavGrid.js` |
 | **Writers** | `NavGrid.js` module (35-36 — `getNavGrid`/`setNavGrid` exports); `SceneInitializer.js` (96 — sole call to `setNavGrid`) |
 | **Readers** | `Motor.js#_slideMove` (200), `WalkMode.js#pickModeTarget` (202, 230), `PathPlanner.js#getPlanner` (199), `Lookahead.js#applyLookahead` (32), `EnvironmentQuery.js` (126, 135), `Pedestrians.js#spawnOnePedestrian` (67), `StrollTask.js` (26), `StuckProbe.js` (15) |

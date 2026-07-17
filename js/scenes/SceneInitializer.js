@@ -20,6 +20,7 @@ import {
 } from '../core/Layout.js';
 import { initCrosswalks } from '../behavior/WalkMode.js';
 import { NavGrid, setNavGrid } from '../behavior/nav/NavGrid.js';
+import { PLANNING_RULES }     from '../behavior/nav/PathPlanner.js';
 
 export class SceneInitializer {
   constructor(scene, em, sr, poseCache) {
@@ -92,7 +93,7 @@ export class SceneInitializer {
 
     // NavGrid — 在所有静态道具（props/trees）入场后烘焙
     const navGrid = new NavGrid();
-    navGrid.bake(em.entities, layout);
+    navGrid.bake(em.entities, layout, PLANNING_RULES);
     setNavGrid(navGrid);
 
     const bm = new BehaviorManager(em, poseCache);

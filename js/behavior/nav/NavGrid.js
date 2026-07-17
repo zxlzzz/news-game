@@ -13,9 +13,9 @@
  *   0    = 硬阻挡（BLOCKED）：建筑区、障碍物 AABB
  *   1    = 可规划、可采样（人行道、公园小路、plaza）
  *   8    = 可规划、可采样（公园草地，行走代价高）
- *   ROAD = 可通行（Motor._slideMove 不拒绝），但不可规划、不可采样：
- *          自行车道 + 机动车道。planCrossing/modeDirect 可穿越，
- *          PathPlanner / sampleWalkableNear / pickRandom 不选它。
+ *   ROAD = 可通行（Motor._slideMove 不拒绝），可规划（有效代价由 PLANNING_RULES/profile 决定），
+ *          不可采样、不可作目的地：自行车道 + 机动车道。
+ *          PathPlanner 以高代价格规划穿越；sampleWalkableNear / pickRandom 不选它。
  *
  * 烘焙来源：
  *   1. Y 分带默认代价
@@ -93,8 +93,8 @@ export class NavGrid {
   }
 
   /** 全场烘焙（场景初始化时调用一次） */
-  bake(entities, layout) {
-    this._bakeZones(layout);
+  bake(entities, layout, planningRules) {
+    this._bakeZones(layout, planningRules);
     this._bakeObstacles(entities, 0, COLS - 1, 0, ROWS - 1);
     this._assertSingleRegions();
   }
@@ -216,8 +216,8 @@ export class NavGrid {
     return this.cellCenter(c.gx, c.gy);
   }
 
-  // ─── 内部：区带 + 路径代价 ─────────────────────────────────────────────────
-  _bakeZones(layout) {
+  // ─── 内部：区带 + 路径代价 + 斑马线 ─────────────────────────────────────────
+  _bakeZones(layout, planningRules) {
     // 1. 区带默认
     for (let gy = 0; gy < ROWS; gy++) {
       const wy  = (gy + 0.5) * CELL;
@@ -280,8 +280,28 @@ export class NavGrid {
       }
     }
 
-    // 保存区带基础代价（不含障碍）
+    // 斑马线管：政策注参，覆盖 ROAD 格为低代价（BLOCKED 保持不变）
+    if (planningRules) this._bakeCrosswalks(layout, planningRules);
+
+    // 保存区带基础代价（不含障碍；含斑马线覆盖，供 localRebake 还原）
     this._baseZone.set(this._cost);
+  }
+
+  // ─── 内部：斑马线管烘焙（政策经参数注入，nav 零 import 增量）────────────────
+  _bakeCrosswalks(layout, rules) {
+    if (!layout?.crosswalks?.length) return;
+    for (const { x: cwx } of layout.crosswalks) {
+      for (let gy = 0; gy < ROWS; gy++) {
+        const wy = (gy + 0.5) * CELL;
+        if (wy < BIKE_LANE_FAR_TOP || wy >= BIKE_LANE_NEAR_BOTTOM) continue;
+        for (let gx = 0; gx < COLS; gx++) {
+          const wx = (gx + 0.5) * CELL;
+          if (Math.abs(wx - cwx) > rules.crosswalkHalfW) continue;
+          const idx = gy * COLS + gx;
+          if (this._cost[idx] === ROAD) this._cost[idx] = rules.crosswalkCost;
+        }
+      }
+    }
   }
 
   // ─── 内部：障碍物 AABB + 边距 → BLOCKED ──────────────────────────────────

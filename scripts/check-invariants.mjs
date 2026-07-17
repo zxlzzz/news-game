@@ -244,6 +244,29 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** (wa
   }
 }
 
+// ── Rule 8 ─────────────────────────────────────────────────────────────────
+// PLANNING_RULES field names must not appear as literal numeric definitions
+// outside PathPlanner.js — prevents policy values from scattering back out.
+console.log('Rule 8: crosswalkCost|jaywalkRoadCost|roadCostDefault numeric definitions only in PathPlanner.js');
+{
+  const POLICY_RE = /\b(?:crosswalkCost|jaywalkRoadCost|roadCostDefault)\s*:/;
+  const hits = [];
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))
+      .concat(walkFiles(join(ROOT, 'scripts'), f => f.endsWith('.js') || f.endsWith('.mjs')))) {
+    if (p.endsWith('PathPlanner.js')) continue;
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (POLICY_RE.test(lines[i]))
+        hits.push(`${p}:${i + 1}: ${lines[i].trim()}`);
+    }
+  }
+  if (hits.length > 0) {
+    fail('PLANNING_RULES policy definition outside PathPlanner.js:\n  ' + hits.join('\n  '));
+  } else {
+    okMsg();
+  }
+}
+
 // ── Summary ─────────────────────────────────────────────────────────────────
 console.log('');
 if (!FAIL) {

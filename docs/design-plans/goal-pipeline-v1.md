@@ -1,4 +1,4 @@
-# 目标管线立法 v1 (r2.1)
+# 目标管线立法 v1 (r2.2)
 
 **类型**：normative（失效代码变更须同 commit 更新本文件）
 **状态**：finalized（2026-07-17）；N-1 已落地（commit 3cd1f99）
@@ -78,15 +78,16 @@ Intent ──► Planning ──► Steering ──► Physics
 
 ---
 
-## 3. 三张裁决表（N-1 交付物）
+## 3. 四张裁决表（N-1 + N-2a 交付物）
 
-与审计责任表 1/2/3 一一对应：
+与审计责任表 1/2/3/4 一一对应：
 
 | 表 | 层 | 住址 | 归拢来源（审计行号） |
 |----|----|------|--------------------|
 | **到达裁决表** `ARRIVAL_RULES` | Steering | `js/behavior/SteeringDecision.js` | 责任 1 A–H：routing 终点 20/8、路点推进 8、navPath 推进 8、walk 终点 6、nextTarget 角切 2、长椅半径 80×2 |
 | **恢复裁决表** `RECOVERY_RULES` | Physics | `js/behavior/Motor.js` | 责任 2 A–F：progress monitor 1.5s/15px、GotoTask watchdog 2s/8px、modeDirect 超时 ??60、routing 超时 ??30、（StuckProbe 除外）、stateDur 转换 |
 | **安全网裁决表** `SAFETY_RULES` | Physics | `js/behavior/Motor.js` | 责任 3 A–G：bounds clamp、escape、wall-slide、Lookahead 参数、zone 修正、Npc 夹取、nearestWalkable fallback |
+| **规划裁决表** `PLANNING_RULES` | Planning | `js/behavior/nav/PathPlanner.js` | 责任 4/8：ROAD 代价政策（default 250/jaywalk 3）、斑马线管代价 2/半宽 20 |
 
 StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单注 keep）。
 
@@ -105,13 +106,27 @@ StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单
 
 **验收（静态）**：`check-invariants.mjs` 通过；Rule 7 白名单从 12 文件缩至裁决文件 + StuckProbe + 活动计时器；grep 责任 1 表列出的 8 个判定点原址零残留。
 
-### N-2：Goal 通道（任务退化为发 Goal 收 result）
+### N-2a：规划层（斑马线入格 + ROAD 代价准入 + cost profile）✅ 待填 hash
+
+**交付**：
+- 建第四张裁决表 `PLANNING_RULES`（§3，4 字段）
+- `PathPlanner.plan()` 增 `opts.roadCost` 参数，A* 邻居扩展改用有效代价（ROAD → roadCost）；起点 snap 不再拒绝 ROAD（修分离冲量被推入者）
+- `NavGrid.bake()` 增 `planningRules` 参数（政策注入，nav 零 import 增量）；`_bakeCrosswalks` 覆盖 ROAD 格为 cost=2 供路线吸附
+- bake 调用方（SceneInitializer.js / headless-sim.mjs）传入 `PLANNING_RULES`
+- `check-invariants.mjs` Rule 8：PLANNING_RULES 字段名定义只能出现在 PathPlanner.js
+- 预期行为变更两条：同侧路径可能被吸向斑马线管沿线（管 cost 2 < 草 8）；起点恰在 ROAD 格不再 snap 到路外，直接从原地规划离开
+- 跨侧能力装膛不击发：现存调用方均有同侧检查，无人请求跨侧路径
+
+**验收（静态）**：`check-invariants.mjs` 全绿含 Rule 8；`=== ROAD` 计数 4（end snap / A* eff×3）；`grep -n "import" NavGrid.js` 无 PathPlanner。
+
+### N-2b：Goal 通道（任务退化为发 Goal 收 result）
 
 **交付**：
 - 引入 `mot.goal`（§1.1 接口）与 `mot.path`（路点数组 + 游标，二者为仅存的每目标状态位）
 - 全部 Task 改写为：发 Goal → 收 result。timeout 判定进恢复裁决表（result='timeout'），恢复穷尽判定进恢复裁决表（result='blocked'），到达判定在到达裁决表（result='arrived'）
 - **删除**：`planCrossing`（穿越归代价）、`pushWalkMode`/`popWalkMode`/walkModeStack、`modeDirect` 及任务侧 onArrive 链式路点接力（路点推进归 Steering 按 `mot.path` 游标走）
 - **删除**：GotoTask watchdog（2s/8px、`_watchT`/`_replanned`）——职责已并入恢复裁决表
+- ExitSceneTask 留 routing 至 N-3 一并迁（routing 链 N-3 整体删除）；path_follow 不在死刑名单
 
 **验收（静态）**：grep `planCrossing|pushWalkMode|popWalkMode|modeDirect` 零命中；grep `onDone` 覆盖全部 Task；`_watchT|_replanned` 零命中。
 
