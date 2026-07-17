@@ -18,5 +18,19 @@ export function makeNPC(em, sr, cfg) {
   // Y 边界默认值由 Npc 构造器提供（BUILDING_BASE_Y..460）；此处禁止再注入马路带默认
   const n = new NPC(cfg);
   n.frameIndex = Math.floor(Math.random() * (sr.getAnimation(cfg.animation)?.frameCount || 8));
+
+  // 出生点守卫：仅当 cfg 明确提供四边界时检查，避免默认宽边界 NPC 误报。
+  // 防止编程错误：出生坐标超出声明活动范围（如近端跑者 y=508 > default maxY=460）。
+  if (cfg.minX !== undefined && cfg.maxX !== undefined &&
+      cfg.minY !== undefined && cfg.maxY !== undefined) {
+    if (n.x < n.minX || n.x > n.maxX || n.y < n.minY || n.y > n.maxY) {
+      throw new Error(
+        `makeNPC: 出生点 (${n.x}, ${n.y}) 超出声明 bounds ` +
+        `[${n.minX}..${n.maxX}] × [${n.minY}..${n.maxY}]` +
+        (cfg.tags ? `  tags=${JSON.stringify(cfg.tags)}` : '')
+      );
+    }
+  }
+
   return em.add(n);
 }
