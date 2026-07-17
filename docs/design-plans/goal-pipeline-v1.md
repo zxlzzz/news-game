@@ -1,7 +1,9 @@
-# 目标管线立法 v1
+# 目标管线立法 v1 (r2.1)
 
-**状态**：finalized（2026-07-16）
-**取代**：`docs/audits/behavior-redundancy-2026-07.md` 附录 C（收敛提案）
+**类型**：normative（失效代码变更须同 commit 更新本文件）
+**状态**：finalized（2026-07-17）；N-1 已落地（commit 3cd1f99）
+**取代**：`docs/audits/behavior-redundancy-2026-07.md` 附录 C（作废）；本文件 r1（2026-07-16，被否决——三刀降级为常量改名、Goal 接口伪造为现状、冻结 bug 缺失）
+**地面真值**：审计文档责任表 1–8 为所有"起始值"数字的唯一来源，本文引用不复制。
 
 ---
 
@@ -11,138 +13,142 @@
 Intent ──► Planning ──► Steering ──► Physics
 ```
 
-每层只向下传输，禁止反向写入上层状态。
+每层只向下传输，禁止反向写入上层状态。**以下各层接口均为目标态**（N-2/N-3 完成后成立）；现状文件清单标注了各自与目标态的差距。
 
 ### 1.1 Intent 层（意图层）
 
-**职责**：发布目标；响应结果回调。
+**职责**：发布 Goal；收 result 回调。除此之外无移动政策——不检距离、不计时、不选路。
 
-**接口**：
+**目标态接口**（N-2 引入，当前代码中不存在）：
 ```js
-// Goal 对象
+// mot.goal
 {
-  dest:    { x, y },    // 目的地世界坐标
-  timeout: number,      // 最长等待秒数（null = 无限）
+  dest:    { x, y },          // 语义目的地折算后的世界坐标
+  timeout: number | null,     // 最长秒数（null = 无限）
   onDone:  (result) => void,  // result ∈ { 'arrived', 'timeout', 'blocked' }
 }
 ```
 
-**当前实现文件**：
-- `js/behavior/Agenda.js` — 欲望评分 + Goal 发布
-- `js/behavior/tasks/ExitSceneTask.js` — 离场 Goal
-- `js/behavior/tasks/GotoTask.js` — 通用 Goto Goal（含 watchdog）
-- `js/behavior/tasks/UseBenchTask.js` / `UseSmartPropTask.js` — 道具使用 Goal
+**现状文件**：`Agenda.js`、`tasks/*.js`。差距：任务通过 `modeDirect` 链 / `mot.routeTarget` / `pushWalkMode` 三条私路直接驱动导向层，且 GotoTask 自带 watchdog（越层做卡死检测，审计责任 2-B）。
 
 ### 1.2 Planning 层（规划层）
 
-**职责**：dest → path（格子序列）。路径代价包含道路穿越（高代价格子），不由本层执行穿越判定——穿越是"代价"而非"流程"。
+**职责**：dest → 路点序列。道路穿越是**代价**（ROAD cost=250 的格子）而非**流程**——不存在"过街子程序"。
 
-**当前实现文件**：
-- `js/behavior/nav/NavGrid.js` — 代价格网（CELL=10，道路 cost=250）
-- `js/behavior/nav/AStar.js` — A* 路径搜索
-- `js/behavior/WalkMode.js#planCrossing` — 过街路线组合
+**现状文件**：`nav/NavGrid.js`、`nav/AStar.js`、`nav/PathPlanner.js`。差距：`WalkMode.js#planCrossing` 把穿越做成了流程组合，属违章建筑，N-2 拆除。
 
 ### 1.3 Steering 层（导向层）
 
-**职责**：path → desired velocity；决定到达（arrival decision）。
+**职责**：路点 → 期望速度（写 `mot.vel`）；**到达裁决**（本层唯一的距离判定职责）。
 
-**当前实现文件**：
-- `js/behavior/BaseStateMachine.js#steerRoam` — 漫游帧驱动，写 `mot.vel`
-- `js/behavior/WalkMode.js` — wander / direct / path_follow / planCrossing 模式选择
-- `js/behavior/nav/Lookahead.js` — 3 探针速度调整（障碍回避）
+**现状文件**：`BaseStateMachine.js#steerRoam`、`WalkMode.js`、`nav/Lookahead.js`。差距：到达阈值 6 种语义散布（审计责任 1）；wander/direct/path_follow/routing 四套模式并存。
 
 ### 1.4 Physics 层（物理层）
 
-**职责**：desired velocity → 位置积分；恢复决策；安全网决策。
-**铁律**：Physics 层是唯一合法的位置写入点（`nudgeXY` / `setXY` / `integratePhysics`）。
+**职责**：期望速度 → 位置积分（唯一）；**恢复裁决**；**安全网裁决**。
 
-**当前实现文件**：
-- `js/behavior/Motor.js#integratePhysics` — 唯一位置积分（步骤 13）
-- `js/behavior/Motor.js#_progress` — 卡死探测 + 恢复路由（per-mode）
-- `js/behavior/BehaviorManager.js#_separate` — NPC 间分离冲量（`nudgeXY`）
+**铁律**：Physics 层是唯一合法位置写入点。目标态下 `Motor.js#integratePhysics` 消费 `mot.vel` 是唯一移动路径；`nudgeXY`（分离冲量）与安全网夹取为 Physics 层内部授权操作。
+
+**现状文件**：`Motor.js`、`BehaviorManager.js#_separate`。差距：steerRoam routing 分支经 `nudgeXY` 直接步进 + `setXY` 到达传送（审计责任 5-B/C）；`Npc.js#update` 内联积分为平行第四条路（责任 5-G）。
 
 ---
 
 ## 2. 三条铁律
 
-### 铁律 ①：按层切分，不按用例切分
+### 铁律 ①：只按层次拆分，禁止按应用场合拆分
 
-每个文件只能属于一个层。禁止"Goto 文件同时做规划 + 导向 + 到达判定"的用例内聚写法。
+每个文件属于且只属于一层。禁止"Goto 文件同时做规划+导向+到达判定"的场合内聚。场合文件（各 Task / Activity）**只发数据（Goal），不带政策**（阈值、计时、距离判定）。
 
-### 铁律 ②：同层同职责的规则必须共存于该层唯一的决策文件，以声明式表格表达
+### 铁律 ②：允许多规则，禁止多住址
 
-表格列：`条件 | 阈值 | 动作 | 优先级 | 原因`
+同一职责的全部规则共存于该层**唯一**裁决文件，以声明式表格表达，列为：
 
-禁止将同一职责（如"到达判定"）的阈值散布在多处以魔法数字形式存在。
+`条件 | 阈值 | 动作 | 优先级 | 理由`
 
-### 铁律 ③：距离比较与计时器累加只能出现在决策文件中
+样板：`BaseStateMachine.js#PED_TRANSITIONS`。不同场景可以有不同阈值（多规则合法），但必须是同一张表里的不同行（多住址非法）。
 
-- 距离比较：`Math.hypot(...) < <number>` 或 `dist* < <number>`
+### 铁律 ③：距离比较与计时器累加只出现在裁决文件
+
+- 距离比较：`Math.hypot(...) < n` / `dist* < n` / `moved < n`
 - 计时器累加：`+= dt` / `+= delta`
 
-在决策文件之外出现上述模式 → `check-invariants.mjs Rule 7` 发 WARN，注明迁移刀号。
+裁决文件对外导出**裁决函数**（如 `arrivalCheck(...)` 返回动作），调用方只收动作、不做比较——否则比较仍散布在调用方，铁律形同虚设。
+
+执法：`check-invariants.mjs Rule 7`。渐进收紧：现在 WARN + 白名单（12 文件，各注刀号）→ **N-3 完成时移动相关文件转 error**。活动相位计时器（ChessActivity 等，非移动政策）长期保留白名单并注明理由。
 
 ---
 
-## 3. 决策文件清单（按层）
+## 3. 三张裁决表（N-1 交付物）
 
-| 层 | 决策文件（目标态） | 当前分散位置 | 迁移刀 |
-|----|-------------------|--------------|--------|
-| Intent | `js/behavior/tasks/GotoTask.js` | GotoTask.js watchdog (2s/8px) | N-2 |
-| Planning | `js/behavior/nav/NavGrid.js` | — | — |
-| Steering | `js/behavior/SteeringDecision.js`（新建） | BaseStateMachine.js arrival 阈值、WalkMode.js abandonAfter | N-1 |
-| Physics | `js/behavior/Motor.js` | Motor.js progress monitor (1.5s/15px) | N-3 |
+与审计责任表 1/2/3 一一对应：
+
+| 表 | 层 | 住址 | 归拢来源（审计行号） |
+|----|----|------|--------------------|
+| **到达裁决表** `ARRIVAL_RULES` | Steering | `js/behavior/SteeringDecision.js` | 责任 1 A–H：routing 终点 20/8、路点推进 8、navPath 推进 8、walk 终点 6、nextTarget 角切 2、长椅半径 80×2 |
+| **恢复裁决表** `RECOVERY_RULES` | Physics | `js/behavior/Motor.js` | 责任 2 A–F：progress monitor 1.5s/15px、GotoTask watchdog 2s/8px、modeDirect 超时 ??60、routing 超时 ??30、（StuckProbe 除外）、stateDur 转换 |
+| **安全网裁决表** `SAFETY_RULES` | Physics | `js/behavior/Motor.js` | 责任 3 A–G：bounds clamp、escape、wall-slide、Lookahead 参数、zone 修正、Npc 夹取、nearestWalkable fallback |
+
+StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单注 keep）。
 
 ---
 
 ## 4. 三刀序列
 
-### N-1：abandonAfter 统一（Steering 层）
+每刀独立新会话；CC prompt 必须写**前后状态变量数/写入点数/阈值住址数对比**、静态验证条款（仿真需显式批准）、契约文档同 commit 更新。
 
-**问题**：`routing` 模式默认 `?? 30`，`direct` 模式默认 `?? 60`，语义不一致。
-**交付物**：
-- 在 `Motor.js` 定义 `ABANDON_ROUTING = 30`、`ABANDON_DIRECT = 60` 具名常量
-- `BaseStateMachine.js` / `WalkMode.js` 所有 `abandonAfter` 调用点引用具名常量
-- 删除 `WalkMode.js` 中 `setWalkMode` / `pushWalkMode` / `popWalkMode` 的 `@deprecated` compat 重导出（前提：grep 确认零外部消费者）
+### N-1：归表（行为保真，只改住址）✅ 3cd1f99
 
-**验收**：`check-invariants.mjs` 通过；grep `abandonAfter.*\?\?.*[0-9]` 零结果。
+**交付**：
+- 建三张裁决表（§3），全部现行阈值原值入表，每行带理由注释
+- 调用方改为调用裁决函数；`BaseStateMachine.js` / `WalkMode.js` / `GotoTask.js` / `Motor.js` 内的裸距离比较与超时比较全部迁走
+- **零行为变化**——数字不改、语义不改，只改住址。abandonAfter 默认值 30/60 不一致照原样入表（两行、各注理由），统一与否留待 N-2 后用表格视角再裁
 
-### N-2：卡死检测整合（Intent 层）
+**验收（静态）**：`check-invariants.mjs` 通过；Rule 7 白名单从 12 文件缩至裁决文件 + StuckProbe + 活动计时器；grep 责任 1 表列出的 8 个判定点原址零残留。
 
-**问题**：GotoTask watchdog（2s/8px）与 Motor progress monitor（1.5s/15px）双重检测，触发顺序不一致。
-**交付物**：
-- Motor progress monitor 负责 per-mode 恢复（routing→routeReplan, direct→_stuckOnce→abandon, wander→roamTarget=null）
-- GotoTask watchdog 负责 task 级放弃（`onDone('blocked')`）
-- 两者阈值写入同一声明式表（GotoTask.js 顶部 `WATCHDOG` 常量块）
-- StuckProbe 保持纯观测，`_stuckOnce` 标志生命周期文档化
+### N-2：Goal 通道（任务退化为发 Goal 收 result）
 
-**验收**：`check-invariants.mjs` 通过；两套检测各司其职，无重复触发。
+**交付**：
+- 引入 `mot.goal`（§1.1 接口）与 `mot.path`（路点数组 + 游标，二者为仅存的每目标状态位）
+- 全部 Task 改写为：发 Goal → 收 result。timeout 判定进恢复裁决表（result='timeout'），恢复穷尽判定进恢复裁决表（result='blocked'），到达判定在到达裁决表（result='arrived'）
+- **删除**：`planCrossing`（穿越归代价）、`pushWalkMode`/`popWalkMode`/walkModeStack、`modeDirect` 及任务侧 onArrive 链式路点接力（路点推进归 Steering 按 `mot.path` 游标走）
+- **删除**：GotoTask watchdog（2s/8px、`_watchT`/`_replanned`）——职责已并入恢复裁决表
 
-### N-3：compat 重导出删除 + walkSpeed 常量（跨层）
+**验收（静态）**：grep `planCrossing|pushWalkMode|popWalkMode|modeDirect` 零命中；grep `onDone` 覆盖全部 Task；`_watchT|_replanned` 零命中。
 
-**问题**：`walkSpeed` 魔法数字 `26`（或 `|| 26`）出现 5 处；`@deprecated` compat 重导出残留。
-**交付物**：
-- `Motor.js` 定义并导出 `DEFAULT_WALK_SPEED = 26`
-- 所有 5 处 `26` / `|| 26` 改为引用 `DEFAULT_WALK_SPEED`
-- 删除 `BaseStateMachine.js` 中 `setState` / `STATE_DEFS` 的 `@deprecated` compat 重导出
+### N-3：杀行
 
-**验收**：grep `\|\| 26\b` 零结果；grep `= 26\b` 只剩 `DEFAULT_WALK_SPEED` 定义处；`check-invariants.mjs` 通过。
+**交付**：
+- **删除** routing 模式整条链：`routeTarget`/`routePts`/`routeIdx`、steerRoam routing 分支（含 `nudgeXY` 直接步进与 `setXY` 到达传送）——离场/公交改发 Goal
+- **删除** `nextTarget` 机制（`modeDirect` 签名、StrollTask/GotoTask 传参、steerRoam 角切行）
+- **删除** `Npc.js#update` 内联积分（289–296）——非托管 NPC 并入 Motor 积分或改挂件定位，具体方案在 N-3 prompt 中先行核定（cyclist 未注册绕过 NavGrid 为既有约束，不得顺手改动）
+- **删除** 重复恢复行（`_stuckOnce` 与表内规则二选一，表胜）、`@deprecated` compat 重导出（审计 B-1，grep 已证零消费者）
+- Rule 7 移动相关文件转 error
 
----
-
-## 5. 三数验证表
-
-验收目标（全三刀完成后）：
-
-| 指标 | 起始值 | 目标值 | 度量方式 |
-|------|--------|--------|----------|
-| 距离/计时器阈值魔法数分布文件数 | 6 | 1 | `check-invariants.mjs Rule 7` 白名单缩减 |
-| 多文件重复同一机制的实例数 | 6 | 0（表格化） | grep `abandonAfter.*\?\?` + `_stuckOnce` + `|| 26` |
-| 位置写入路径数 | 4 | 1（Motor） | grep `npc\.[xy]\s*[+\-]?=` 非 Motor/nudgeXY |
+**验收（静态）**：grep `routeTarget|routePts|routeIdx|nextTarget|_stuckOnce` 零命中；grep `npc\.[xy]\s*[+\-]?=` 仅 Motor 授权点；`check-invariants.mjs` 全绿（含 error 级 Rule 7）。
 
 ---
 
-## 6. 与审计文档的关系
+## 5. 四数验收表（全三刀完成后）
 
-本文件取代 `docs/audits/behavior-redundancy-2026-07.md` 附录 C 中的收敛提案。
-审计文档本身保留为历史快照，不更新。
+| 指标 | 起始（审计锚点） | 目标 | 度量 |
+|------|-----------------|------|------|
+| 到达阈值语义 | **6 种**（责任 1：routing 终点 / 路点推进 / navPath 推进 / walk 终点 / 角切 / 长椅半径） | **1 张表** | 裸距离比较 grep 零命中（Rule 7 error） |
+| 卡死/超时机制 | **6 套**（责任 2 A–F） | **1 张表 + StuckProbe 纯观测** | grep `_watchT|_stuckOnce|abandonAfter.*\?\?` 零命中 |
+| 位置写入路径 | **4 条**（责任 5：mot.vel / nudgeXY 步进 / setXY 传送 / Npc 内联） | **1 条**（mot.vel → integratePhysics；分离冲量与安全网为层内授权） | grep `npc\.[xy]\s*[+\-]?=` |
+| 每目标状态位 | **≥10**（roamTarget / routeTarget / routePts / routeIdx / navPath / navIdx / mode.target / mode.nextTarget / \_watchT / \_replanned / \_stuckOnce / \_sanitized…） | **2**（`mot.goal` + `mot.path`） | grep 逐项零命中 |
+
+重构真伪判据：这四个数字降了才算根修；只加常量名、只补注释属化妆，直接打回。
+
+---
+
+## 6. 冻结死区 bug 的死亡路径
+
+**起因**（N 系列直接动机）：`steerRoam` direct 分支，`nextTarget` 存在 + raycast 阻挡 + `distToGoal ∈ [2, 6)` 时无条件 `return`，不写 `mot.vel`——V-1 删标量回落后暴露（第③类迁移教训：删参数暴露回落路径）。
+
+**处置**：**禁止单独 hotfix**。N-2 删 modeDirect 链后 `nextTarget` 失去全部来源；N-3 删角切行后死区代码本体消失。P-0 已在 StuckProbe 加 `distToGoal`/`hasNextTarget`/`raycastBlocked` 只读字段，迁移期间可观测该死区的发生频次。
+
+---
+
+## 7. 与审计文档的关系
+
+审计责任表 1–8 保留为地面真值 snapshot，不更新；附录 C 全部作废（含 C-1～C-5——其中 C-2 常量化、C-3 删重导出的**内容**被 N-1/N-3 吸收，但以归表/杀行形式执行，不以孤立常量化执行）。
