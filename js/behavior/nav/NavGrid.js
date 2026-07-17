@@ -218,6 +218,7 @@ export class NavGrid {
 
   // ─── 内部：区带 + 路径代价 + 斑马线 ─────────────────────────────────────────
   _bakeZones(layout, planningRules) {
+    if (!planningRules) throw new Error('_bakeZones: planningRules is required');
     // 1. 区带默认
     for (let gy = 0; gy < ROWS; gy++) {
       const wy  = (gy + 0.5) * CELL;
