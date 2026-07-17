@@ -106,7 +106,7 @@ StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单
 
 **验收（静态）**：`check-invariants.mjs` 通过；Rule 7 白名单从 12 文件缩至裁决文件 + StuckProbe + 活动计时器；grep 责任 1 表列出的 8 个判定点原址零残留。
 
-### N-2a：规划层（斑马线入格 + ROAD 代价准入 + cost profile）✅ 待填 hash
+### N-2a：规划层（斑马线入格 + ROAD 代价准入 + cost profile）✅ 97c1e44
 
 **交付**：
 - 建第四张裁决表 `PLANNING_RULES`（§3，4 字段）
