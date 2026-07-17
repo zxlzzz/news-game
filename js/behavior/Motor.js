@@ -43,7 +43,7 @@ export const RECOVERY_RULES = {
 // 责任3-A/B/C/F/G（clamp/escape/wall-slide/Npc夹取/nearestWalkable fallback）：
 // 算法固有行为，无可调策略参数，不入表；机制住址见 movement-dataflow.md。
 export const SAFETY_RULES = {
-  lookahead:  { probeCells: 4, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',  src: '责任3-D' },
+  lookahead: { probeCells: 4, rotProbeCells: 2, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',  src: '责任3-D' },
   separation: { baseRadius: 24, atScale: 0.18,               reason: 'NPC 分离冲量半径',              src: '责任8-分离半径' },
 };
 

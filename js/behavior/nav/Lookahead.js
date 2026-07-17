@@ -33,8 +33,8 @@ function _blocked(grid, px, py) {
  * @param {object|null} params  来自 SAFETY_RULES.lookahead；null 则用内联默认值
  * @returns {{vx:number, vy:number}}
  */
-export function applyLookahead(npc, vx, vy, params = null) {
-  const p = params ?? { probeCells: 4, rotateDeg: 35, nearCells: 1, slowFactor: 0.4 };
+export function applyLookahead(npc, vx, vy, p) {
+  const rotProbe = p.rotProbeCells;
   const grid = getNavGrid();
   if (!grid) return { vx, vy };
 
@@ -52,7 +52,6 @@ export function applyLookahead(npc, vx, vy, params = null) {
   const angle    = p.rotateDeg * Math.PI / 180;
   const cos      = Math.cos(angle);
   const sin      = Math.sin(angle);
-  const rotProbe = p.probeCells >> 1;
 
   // 探测点：y 分量减半（2.5D 世界压扁）
   const probe = (dist, dux, duy) => _blocked(grid,
