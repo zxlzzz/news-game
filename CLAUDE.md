@@ -64,7 +64,9 @@ for (const id of Object.keys(clipLibrary.manifest.clips)) {
 - NPC 默认动画：`'stand'`（不是 `'idle'`）；狗：`'dog_walk'`（不是 `'dogwalk'`）
 - keyframe 只存 delta（相对 `skeleton.json defaultPose`）；省略关节 = 零 delta
 - variant clip：ClipLibrary 取 **base** 的 keyframes × amp，variant 自身 keyframes 字段无效
-- **defaultPose 膨胀历史**：`skeleton.json` human defaultPose 的关节坐标曾因透视感调整整体放大约 1.26×（约 2026-06 批次）；存量 clip keyframe 均已随之重新录制，新增 clip 必须基于当前 defaultPose 录制，禁止用旧比例关节值
+- **defaultPose 历史注记**（2026-07-18 验证）：defaultPose 与 `joints.len` 比值全为 1.000，总高恰 144 单位，现为一致基准。
+  历史：human defaultPose 坐标曾因透视感调整整体放大约 1.26×（约 2026-06 批次），clip keyframe 静默补偿；该补偿已不存在，clip 与 skeleton 现已对齐。
+  铁律：JS 不得硬编码关节坐标；任何工具不得直接产出关节坐标，唯一路径是角度空间 → fk_bake → ClipLibrary 断言 + preview 目检。
 - **`MOUNTED_CLIPS` 白名单**：`['bike','mobike','mobile']` 是唯一允许地面接触关节 abs_y > 0 的 clip 组（骑乘时接触点经由车辆对象），ClipLibrary 断言对此白名单豁免；新增骑乘 clip 须手动加入此列表
 
 ---
