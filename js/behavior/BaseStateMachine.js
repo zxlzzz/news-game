@@ -59,7 +59,7 @@ import { setState, STATE_DEFS, setXY, nudgeXY, setAnimation, RECOVERY_RULES, SAF
 import { getNavGrid, ROAD } from './nav/NavGrid.js';
 import { applyLookahead } from './nav/Lookahead.js';
 import { arrived } from './SteeringDecision.js';
-import { ensureWanderPath } from './nav/PlanService.js';
+import { ensureWanderPath, publishGoal } from './nav/PlanService.js';
 import { getPlanner } from './nav/PathPlanner.js';
 import { despawnNpc } from '../npc/despawn.js';
 
@@ -93,6 +93,7 @@ function _pickNext(npc, profile, envQuery) {
 
 // ─── 内部：timeout 触发时解析最终目标（含 sit_bench 占位/对齐副作用）──────────
 function _resolveTimeout(npc, envQuery, profile) {
+  if (npc.mem('agenda').departing) return null;
   if (isRoadZone(npc.y)) return null;
   const next = _pickNext(npc, profile, envQuery);
   if (!next) return null;
@@ -287,7 +288,9 @@ function steerRoam(npc, envQuery, profile, dt) {
   // ── Final destination arrival ──────────────────────────────────────────
   const finalDest   = mot.goal ? mot.goal.dest : npc.roamTarget;
   const distToFinal = Math.hypot(finalDest.x - npc.x, finalDest.y - npc.y);
-  if (arrived('walk_goal', distToFinal)) {
+  const _offWorld   = mot.goal?.meta?.offWorld;
+  if ((_offWorld && (npc.x < 0 || npc.x > WORLD_WIDTH)) ||
+      arrived(mot.goal?.meta?.arrivalRule ?? 'walk_goal', distToFinal)) {
     mot.path = null;
     if (mot.goal) {
       const cb = mot.goal.onDone;
@@ -341,19 +344,20 @@ function _routeToExit(npc, exit, ctx = {}) {
   if (exit.facing !== 0) npc.direction = exit.facing;
   setWalkMode(npc, null);
   npc.modifiers = npc.modifiers.filter(m => m.kind !== 'held');
-  setState(npc, 'routing', 'departure');
+  setState(npc, 'walk', 'departure');
   if (exit.type === 'edge') {
     const mot = npc.mem('motor');
     mot.savedBounds = { minX: npc.minX, maxX: npc.maxX };
     if (exit.x < (npc.minX ?? 0))          npc.minX = exit.x - 10;
     if (exit.x > (npc.maxX ?? WORLD_WIDTH)) npc.maxX = exit.x + 10;
+    publishGoal(npc, { x: tx, y: ty }, 60, (result) => {
+      if (result === 'arrived') despawnNpc(npc, 'exit-arrive', ctx);
+    }, { offWorld: true });
+  } else {
+    publishGoal(npc, { x: tx, y: ty }, 60, (result) => {
+      if (result === 'arrived') despawnNpc(npc, 'exit-arrive', ctx);
+    }, { arrivalRule: 'exit_building' });
   }
-  npc.mem('motor').routeTarget = {
-    x: tx, y: ty,
-    exitType: exit.type,
-    abandonAfter: 60,
-    onArrive: (n) => despawnNpc(n, 'exit-arrive', ctx),
-  };
 }
 
 export function triggerDeparture(npc, exitRegistry, ctx = {}) {

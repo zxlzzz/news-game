@@ -7,6 +7,7 @@ import { NpcPropManager }  from '../npc/props/NpcPropManager.js';
 import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
 import { spawnBusStop }    from '../entity/busstop/busstop.js';
 import { setState }        from '../behavior/Motor.js';
+import { publishGoal }     from '../behavior/nav/PlanService.js';
 import { spawnPedestrians } from '../npc/Pedestrians.js';
 import { makeNPC }          from '../npc/npcUtil.js';
 import { spawnChess }       from '../npc/Chess.js';
@@ -173,13 +174,10 @@ export class SceneInitializer {
       bm.register(seller, 'stall_seller');
 
       slot.reserved = seller.id;   // 预约 seller 槽，防止他人占用（永不释放）
-      seller.mem('motor').routeTarget = {
-        x: stall.x + slot.dx, y: stall.y + slot.dy,
-        prop: stall, slot,
-        abandonAfter: 60,
-        onArrive: (n) => bm.socialLayer.onSlotArrival(n, stall, slot),
-      };
-      setState(seller, 'routing', 'stall_seller_entry');
+      publishGoal(seller, { x: stall.x + slot.dx, y: stall.y + slot.dy }, 60, (result) => {
+        if (result === 'arrived') bm.socialLayer.onSlotArrival(seller, stall, slot);
+      }, {});
+      setState(seller, 'walk', 'stall_seller_entry');
     }
   }
 }

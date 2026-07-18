@@ -10,6 +10,8 @@
  */
 
 import { getPlanner, PLANNING_RULES } from './PathPlanner.js';
+import { CELL }        from './NavGrid.js';
+import { WORLD_WIDTH } from '../../core/Layout.js';
 
 /**
  * 发布目标（Intent 层调用）。
@@ -24,7 +26,17 @@ export function publishGoal(npc, dest, timeout, onDone, opts) {
   const mot     = npc.mem('motor');
   const jaywalk = opts?.wantCross === true
     && Math.random() < (npc.mem('agenda').profile?.jaywalkChance ?? 0.1);
-  mot.goal       = { dest, timeout: timeout ?? null, onDone, meta: { jaywalk }, elapsed: 0 };
+  mot.goal = {
+    dest,
+    timeout:  timeout ?? null,
+    onDone,
+    meta: {
+      jaywalk,
+      arrivalRule: opts?.arrivalRule ?? undefined,
+      offWorld:    opts?.offWorld    ?? false,
+    },
+    elapsed: 0,
+  };
   mot.path       = null;
   mot.needReplan = undefined;
 }
@@ -48,9 +60,15 @@ export function ensurePath(npc) {
     : null;
   let roadCost = PLANNING_RULES.roadCostDefault;
   if (goal.meta.jaywalk) roadCost = PLANNING_RULES.jaywalkRoadCost;
-  const pts      = planner.plan(npc.x, npc.y, goal.dest.x, goal.dest.y, bounds, { roadCost });
+
+  // offWorld: clamp planning dest to grid boundary; append real exit as final path point
+  const planDest = goal.meta.offWorld
+    ? { x: Math.max(CELL / 2, Math.min(WORLD_WIDTH - CELL / 2, goal.dest.x)), y: goal.dest.y }
+    : goal.dest;
+  const pts      = planner.plan(npc.x, npc.y, planDest.x, planDest.y, bounds, { roadCost });
 
   if (!pts || pts.length === 0) { _fireBlocked(mot, goal); return; }
+  if (goal.meta.offWorld) pts.push({ x: goal.dest.x, y: goal.dest.y });
   mot.path = { pts, idx: 0 };
 }
 

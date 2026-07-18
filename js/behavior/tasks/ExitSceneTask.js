@@ -14,6 +14,7 @@
 
 import { triggerDeparture, restoreDepartureBounds } from '../BaseStateMachine.js';
 import { setState } from '../Motor.js';
+import { publishGoal } from '../nav/PlanService.js';
 import { NEAR_Y }   from '../../core/Layout.js';
 
 export class ExitSceneTask {
@@ -43,17 +44,13 @@ export class ExitSceneTask {
         const target = busLay.waitZoneTarget(stop);
         if (target) {
           ag.pendingBusWait = true;
-          npc.mem('motor').routeTarget = {
-            x: target.x, y: target.y,
-            abandonAfter: 30,
-            onArrive: (n) => {
-              n.mem('agenda').pendingBusWait = false;
-              if (stop._waiters.length < (stop.maxWaiters ?? 8)) {
-                busLay.addWaiterDirect(n, stop);
-              }
-            },
-          };
-          setState(npc, 'routing', 'to_bus_zone');
+          publishGoal(npc, target, 30, (result) => {
+            npc.mem('agenda').pendingBusWait = false;
+            if (result === 'arrived' && stop._waiters.length < (stop.maxWaiters ?? 8)) {
+              busLay.addWaiterDirect(npc, stop);
+            }
+          }, {});
+          setState(npc, 'walk', 'to_bus_zone');
           return;
         }
       }
@@ -81,7 +78,7 @@ export class ExitSceneTask {
     const mot = npc.mem('motor');
     // 正在路由到等候区：若路由意外中断则 abort
     if (ag.pendingBusWait) {
-      if (!sc.waitingBusStop && !mot.routeTarget) {
+      if (!sc.waitingBusStop && !mot.goal) {
         ag.pendingBusWait = false;
         return 'abort';
       }

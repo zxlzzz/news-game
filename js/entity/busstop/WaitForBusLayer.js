@@ -10,6 +10,7 @@
  */
 
 import { setState }    from '../../behavior/Motor.js';
+import { publishGoal } from '../../behavior/nav/PlanService.js';
 import { WaitBusActivity } from '../../behavior/activities/WaitBusActivity.js';
 import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../../core/Layout.js';
 import { despawnNpc } from '../../npc/despawn.js';
@@ -120,15 +121,13 @@ export class WaitForBusLayer {
 
       const routeToDoor = (n) => {
         const entities = this._entities;
-        n.mem('motor').routeTarget = {
-          x: doorX, y: doorY,
-          abandonAfter: 15,
-          onArrive: (n2) => {
-            stop._boardingQueue = stop._boardingQueue.filter(x => x !== n2);
-            despawnNpc(n2, 'boarding-arrive', { entities });
-          },
-        };
-        setState(n, 'routing', 'boarding');
+        publishGoal(n, { x: doorX, y: doorY }, 15, (result) => {
+          if (result === 'arrived') {
+            stop._boardingQueue = stop._boardingQueue.filter(x => x !== n);
+            despawnNpc(n, 'boarding-arrive', { entities });
+          }
+        }, {});
+        setState(n, 'walk', 'boarding');
       };
 
       routeToDoor(npc);

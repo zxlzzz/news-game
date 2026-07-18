@@ -1,7 +1,7 @@
-# 目标管线立法 v1 (r2.3)
+# 目标管线立法 v1 (r2.4)
 
 **类型**：normative（失效代码变更须同 commit 更新本文件）
-**状态**：finalized（2026-07-17）；N-1 已落地（commit 3cd1f99）；N-2a 已落地（97c1e44）；N-2b 已落地（0dcf420）
+**状态**：finalized（2026-07-17）；N-1 已落地（commit 3cd1f99）；N-2a 已落地（97c1e44）；N-2b 已落地（0dcf420）；N-3a 已落地
 **取代**：`docs/audits/behavior-redundancy-2026-07.md` 附录 C（作废）；本文件 r1（2026-07-16，被否决——三刀降级为常量改名、Goal 接口伪造为现状、冻结 bug 缺失）
 **地面真值**：审计文档责任表 1–8 为所有"起始值"数字的唯一来源，本文引用不复制。
 
@@ -19,13 +19,19 @@ Intent ──► Planning ──► Steering ──► Physics
 
 **职责**：发布 Goal；收 result 回调。除此之外无移动政策——不检距离、不计时、不选路。
 
-**目标态接口**（N-2 引入，当前代码中不存在）：
+**目标态接口**（N-2 引入，N-3a 扩展 meta）：
 ```js
 // mot.goal
 {
   dest:    { x, y },          // 语义目的地折算后的世界坐标
   timeout: number | null,     // 最长秒数（null = 无限）
   onDone:  (result) => void,  // result ∈ { 'arrived', 'timeout', 'blocked' }
+  meta: {
+    jaywalk:      boolean,         // 随机决定是否横穿马路（publishGoal 封入）
+    arrivalRule?: string,          // ARRIVAL_RULES 行 id；缺省 'walk_goal'
+    offWorld?:    boolean,         // true = 边缘离场；到达判据为 npc.x 越界而非距离
+  },
+  elapsed: number,            // Motor 每帧累加
 }
 ```
 
