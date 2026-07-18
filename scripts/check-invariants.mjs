@@ -195,20 +195,16 @@ console.log('Rule 6: _sortY= writes only in PropEntity.js, seat.js, Chess.js');
 // ── Rule 7 ─────────────────────────────────────────────────────────────────
 // Distance comparisons (Math.hypot + < number, or dist/moved/disp < number)
 // and timer accumulations (+= dt/delta) outside decision-file whitelist are
-// WARNING-only — they flag code that should migrate into a layer decision file
-// per goal-pipeline-v1.md.  Zero exit-code impact.
-console.log('Rule 7: distance comparisons and timer accums in js/behavior/** (warning only)');
+// ERRORS — new raw distance/timer comparisons must go into a decision file.
+// N3-e: promoted from warning to error; routing/direct migration complete.
+console.log('Rule 7: distance comparisons and timer accums in js/behavior/** must be in whitelist');
 {
-  const yellow = s => `\x1b[0;33m${s}\x1b[0m`;
-  const warn   = msg => process.stdout.write(yellow('WARN: ' + msg) + '\n');
-
-  // Files that currently legitimately contain these patterns.
-  // N-series annotation = planned migration knife.
+  // Files that legitimately contain these patterns.
   const WHITELIST = new Set([
     'SteeringDecision.js',// decision file — permanent
     'Motor.js',           // decision file (RECOVERY/SAFETY tables) — permanent
     'StuckProbe.js',      // pure observer — permanent
-    'BaseStateMachine.js',// residual stateTimer accum — N-2/N-3 target
+    'BaseStateMachine.js',// stateTimer accum — permanent (core state-machine bookkeeping)
     'SocialLayer.js',     // 非移动政策计时器 — permanent
     'WaitBusActivity.js', // 非移动政策计时器 — permanent
     'PlayPoseTask.js',    // 非移动政策计时器 — permanent
@@ -240,9 +236,9 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** (wa
     }
   }
   if (hits.length > 0) {
-    warn(`${hits.length} distance/timer pattern(s) outside whitelist (migrate to decision file):\n  ` + hits.join('\n  '));
+    fail(`${hits.length} distance/timer pattern(s) outside whitelist (add to decision file):\n  ` + hits.join('\n  '));
   } else {
-    console.log(`  whitelist size=${WHITELIST.size}, zero unexpected violations`);
+    console.log(`  whitelist size=${WHITELIST.size}, zero violations`);
     okMsg();
   }
 }
