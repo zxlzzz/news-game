@@ -76,9 +76,6 @@ export class DebugOverlay {
     let state     = raw;
     if (raw === 'loiter' && npc.mem('loiter').microPhaseName) {
       state = `loiter:${npc.mem('loiter').microPhaseName}`;
-    } else if (raw === 'routing' && npc.mem('motor').routeTarget) {
-      const t = npc.mem('motor').routeTarget;
-      state = `routing→(${Math.round(t.x)},${Math.round(t.y)})`;
     }
     const modStr = npc.modifiers && npc.modifiers.length
       ? npc.modifiers.map(m => `${m.id}(${m.kind[0]})`).join(',')

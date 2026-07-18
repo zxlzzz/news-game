@@ -1,15 +1,13 @@
 /**
  * CONTRACT  (see docs/contracts/movement.md)
  *   OWNS:      steerRoam — the sole per-frame caller of pickModeTarget / Lookahead;
- *              mot.path idx advance (arrival detection);
- *              npc.mem('motor').{routeTarget,routePts,routeIdx} lifecycle (N-3 清).
+ *              mot.path idx advance (arrival detection).
  *   WRITES:    mot.vel (walk branch); mot.path.idx (waypoint advance);
  *              mot.goal = null + onDone callback (arrival);
- *              mot.routeTarget (triggerDeparture); mot.routePts/routeIdx;
  *              npc.direction (steer + departure);
  *              npc.mem('motor').wallSpot (lean_wall assignment).
  *   READS:     npc.state, npc.roamTarget, npc.mem('motor').{walkMode,goal,path},
- *              npc.mem('motor').routeTarget, NavGrid singleton.
+ *              NavGrid singleton.
  *   MUST NOT:  write npc.speed/state — use Motor.setState/setSpeed;
  *              write npc.x/y — use Motor.setXY/nudgeXY;
  *              write mot.path (use PlanService); call pickModeTarget outside steerRoam.
@@ -60,7 +58,6 @@ import { getNavGrid, ROAD } from './nav/NavGrid.js';
 import { applyLookahead } from './nav/Lookahead.js';
 import { arrived } from './SteeringDecision.js';
 import { ensureWanderPath, publishGoal } from './nav/PlanService.js';
-import { getPlanner } from './nav/PathPlanner.js';
 import { despawnNpc } from '../npc/despawn.js';
 
 // @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
@@ -183,7 +180,7 @@ function _tickState(npc, envQuery, profile, dt) {
   if (isWalking) tickWalkMode(npc, dt);
 
   const mot = npc.mem('motor');
-  const needsSteer = npc.state === 'routing' || (isWalking && (mot.walkMode || mot.goal));
+  const needsSteer = isWalking && (mot.walkMode || mot.goal);
   if (needsSteer) steerRoam(npc, envQuery, profile, dt);
 
   if (npc.state === 'loiter') tickLoiter(npc, profile, dt);
@@ -203,62 +200,6 @@ function updateFacing(npc, vx, spd, dt) {
 // ─── 二维漫游转向 ─────────────────────────────────────────────────────────────
 function steerRoam(npc, envQuery, profile, dt) {
   const mot = npc.mem('motor');
-
-  if (npc.state === 'routing') {
-    if (!mot.routeTarget) { setWalkMode(npc, modeWander()); setState(npc, 'walk', 'routing_no_target'); return; }
-    const t = mot.routeTarget;
-    if (npc.stateTimer > (t.abandonAfter ?? RECOVERY_RULES.routing_timeout.default)) {
-      envQuery.releaseSlotReservation(npc);
-      if (mot.routeTarget?.exitType) {
-        const ag2 = npc.mem('agenda');
-        ag2.departing = false;
-        ag2.lifespan += 30;   // prevent immediate re-trigger (mirrors triggerDeparture no-exit path)
-        restoreDepartureBounds(npc);
-      }
-      mot.routeTarget = null; mot.routePts = null; mot.routeIdx = 0;
-      setWalkMode(npc, modeWander());
-      setState(npc, 'walk', 'routing_timeout');
-      return;
-    }
-
-    // One-shot path planning when routePts is null
-    if (mot.routePts == null) {
-      if (!envQuery.raycastObstacle(npc.x, npc.y, t.x, t.y)) {
-        mot.routePts = [t];
-      } else {
-        const _b = npc.minX != null ? { minX: npc.minX, maxX: npc.maxX, minY: npc.minY, maxY: npc.maxY } : null;
-        const pts = getPlanner()?.plan(npc.x, npc.y, t.x, t.y, _b);
-        mot.routePts = (pts && pts.length > 0) ? pts : [t];
-      }
-      mot.routeIdx = 0;
-    }
-
-    const pts  = mot.routePts;
-    const idx  = mot.routeIdx ?? 0;
-    const wp   = pts[Math.min(idx, pts.length - 1)];
-    const isLast = idx >= pts.length - 1;
-    const dx = wp.x - npc.x, dy = wp.y - npc.y;
-    const dist = Math.hypot(dx, dy);
-
-    if (isLast) {
-      if (arrived(t.exitType === 'building' ? 'routing_final_building' : 'routing_final', dist)) {
-        setXY(npc, t.x, t.y);
-        const cb = t.onArrive;
-        mot.routeTarget = null; mot.routePts = null; mot.routeIdx = 0;
-        if (cb) cb(npc);
-        return;
-      }
-    } else if (arrived('route_waypoint', dist)) {
-      mot.routeIdx = idx + 1;
-      return;
-    }
-
-    const spd = npc.walkSpeed || 26;
-    const { vx: rvx, vy: rvy } = applyLookahead(npc, (dx / dist) * spd, (dy / dist) * spd, SAFETY_RULES.lookahead);
-    updateFacing(npc, rvx, spd, dt);
-    nudgeXY(npc, rvx * dt, rvy * dt);
-    return;
-  }
 
   // path_follow pausing early exit (preserved)
   if (mot.walkMode?.kind === 'path_follow' && mot.walkMode.pausing) {

@@ -41,8 +41,8 @@ export function stuckProbe(npcs, dt) {
     const m   = mot.walkMode;
     if (sc.waitingBusStop && moved < 8) {
       cat = `WAIT:${n.state}`;                     // 公交等待者单列，不入 MOVE
-    } else if (['walk', 'run', 'jog', 'routing'].includes(n.state) && moved < 8) {
-      cat = `MOVE:${n.state}/${n.state === 'routing' ? 'route' : (m?.kind ?? 'nomode')}`;
+    } else if (['walk', 'run', 'jog'].includes(n.state) && moved < 8) {
+      cat = `MOVE:${n.state}/${m?.kind ?? 'nomode'}`;
     } else if (n.stateDur < Infinity && n.stateTimer > n.stateDur + 10) {
       cat = `STATE:${n.state}`;                    // 转换没触发
     } else if (n.mem('social').activity && moved < 8 && n.stateTimer > 60) {
@@ -60,7 +60,6 @@ export function stuckProbe(npcs, dt) {
     if (cat.startsWith('WAIT:')) continue;
 
     const { gx, gy } = grid ? grid.worldToCell(n.x, n.y) : {};
-    const rt = mot.routeTarget;
     const isDirect = cat.startsWith('MOVE:') && m?.kind === 'direct';
     const info = {
       id: n.id, cat, at: [n.x | 0, n.y | 0],
@@ -68,9 +67,6 @@ export function stuckProbe(npcs, dt) {
       st: `${n.state} ${n.stateTimer | 0}/${n.stateDur === Infinity ? '∞' : n.stateDur | 0}`,
       mode: m ? `${m.kind} el=${(m._elapsed ?? 0) | 0}/${m.abandonAfter ?? m.maxDuration ?? '-'}` : null,
       roam: n.roamTarget ? [n.roamTarget.x | 0, n.roamTarget.y | 0] : null,
-      route: rt
-        ? `→(${rt.x | 0},${rt.y | 0}) pts=${mot.routePts?.length ?? '∅'} idx=${mot.routeIdx ?? 0} ${rt.exitType ?? ''}`
-        : null,
       act: sc.activity?.type ?? null,
       anim: `${n.animation} done=${n.animDone}`,
       dir: n.direction,

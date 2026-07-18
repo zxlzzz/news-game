@@ -37,7 +37,7 @@ import { audit } from '../debug/MovementAudit.js';
 //            direct_timeout（责任2-C，modeDirect 整体删除）。
 export const RECOVERY_RULES = {
   progress_monitor: { window: 1.5, movedLT: 15, reason: '主恢复层，goal 两击制 + wander 清目标',  src: '责任2-A' },
-  routing_timeout:  { default: 30, reason: 'routing 应快速超时',                                   src: '责任2-D' },
+  // N-3b 删除：routing_timeout（责任2-D，routing 链整体删除）
 };
 
 // ── 安全网裁决表 — Physics 层越界防护策略参数唯一住址（goal-pipeline-v1.md §3）────
@@ -140,7 +140,6 @@ export const STATE_DEFS = {
       _defaultOnExit(npc, toState);
     },
   },
-  routing:        { anim: 'walk',            speedK: 1.0, once: false, dur: null, onExit: _defaultOnExit },
   chess:          { anim: 'chess',           speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
   chess_onlooker: { anim: 'chess_onlookers', speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
 };
@@ -318,19 +317,9 @@ export function integratePhysics(npc, delta) {
     mot.progressAnchor = { x: npc.x, y: npc.y };
 
     const _walkState = npc.state === 'walk' || npc.state === 'run' || npc.state === 'jog';
-    const hasGoal = npc.state === 'routing' || (_walkState && (wm || mot.goal));
+    const hasGoal = _walkState && (wm || mot.goal);
     if (hasGoal && moved < RECOVERY_RULES.progress_monitor.movedLT) {
-      if (npc.state === 'routing') {
-        if (mot.walkMode != null) audit.count(npc, 'routing_with_walkmode');
-        if (!mot.routeReplan) {
-          mot.routePts    = null;
-          mot.routeIdx    = 0;
-          mot.routeReplan = 1;
-        } else {
-          mot.routeReplan = 0;
-          npc.stateTimer  = 9999;
-        }
-      } else if (mot.goal) {
+      if (mot.goal) {
         // 两击制：first stuck → 触发重规划；second stuck → 'blocked'
         if (!mot.goal._stuck) {
           mot.goal._stuck = true;
@@ -348,7 +337,6 @@ export function integratePhysics(npc, delta) {
         mot.path       = null;
       }
     } else {
-      mot.routeReplan = 0;
       if (mot.goal?._stuck) mot.goal._stuck = false;
     }
   }

@@ -167,7 +167,7 @@ const CHESS_ONLOOKER = {
 const STALL_SELLER = {
   name: 'stall_seller',
   initial: 'walk',
-  allowedStates: ['walk', 'stand', 'routing'],
+  allowedStates: ['walk', 'stand'],
   transitions: { walk: { stand: 1.0 }, stand: { stand: 1.0 } },
   heldPoses: {},
   activities: ['stall_seller'],

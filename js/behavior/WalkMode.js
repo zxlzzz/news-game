@@ -6,7 +6,7 @@
  *   READS:     npc.mem('motor').{walkMode,vel,goal} (checkZoneTransition), NavGrid singleton,
  *              npc.mem('agenda').departing (checkZoneTransition guard).
  *   MUST NOT:  write npc.speed/state/animation/x/y directly;
- *              write npc.mem('motor').{path,goal,routeTarget};
+ *              write npc.mem('motor').{path,goal};
  *              read npc.mem('social') fields.
  *
  * WalkMode — NPC 走路模式子系统

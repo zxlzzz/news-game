@@ -28,7 +28,6 @@ const STATE_TAGS = {
   lean_wall: 'leaning', squat: 'squatting', sit_ground: 'sitting',
   lie_bench: 'lying', get_up: 'getting_up',
   loiter: 'loitering',
-  routing: 'walking',
 };
 // overlay → 额外语义标签（overlay 名本身也会作为标签加入）
 const OVERLAY_EXTRA_TAGS = {
