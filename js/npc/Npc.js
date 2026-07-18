@@ -291,21 +291,9 @@ export class NPC extends Entity {
       }
     }
 
-    // 物理积分：Motor 托管 NPC 经 Motor 写保护路径；其余 NPC 走原内联逻辑
+    // 物理积分：全部 NPC 经 Motor.integratePhysics；未注册 NPC（仅 leash 狗）原地保持
     if (this._motorInstalled) {
       integratePhysics(this, delta);
-    } else if (!this.leashTarget) {
-      // 漫游 NPC 的朝向/速度由 steerRoam 每帧决定，到边界只夹取位置、不翻转方向，
-      // 否则会在区域边界与转向逻辑互相打架，出现原地左右乱闪。
-      const _wm = this._mem?.motor?.walkMode;
-      if (this.speed > 0) {
-        this.x += this.direction * this.speed * (delta / 1000);
-        if      (this.x > this.maxX) { this.x = this.maxX; if (!_wm) this.direction = -1; }
-        else if (this.x < this.minX) { this.x = this.minX; if (!_wm) this.direction =  1; }
-      }
-      this.y += this.vy * (delta / 1000);
-      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = _wm ? 0 : -Math.abs(this.vy); }
-      else if (this.y < this.minY) { this.y = this.minY; this.vy = _wm ? 0 :  Math.abs(this.vy); }
     }
 
     if (this.customUpdate) this.customUpdate(this, delta);

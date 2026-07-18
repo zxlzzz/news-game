@@ -11,9 +11,9 @@ import { VehicleSpawner }     from '../../behavior/VehicleSpawner.js';
 import { CyclistSpawner }     from './CyclistSpawner.js';
 import { drawBicycle, drawEbike } from './drawBicycle.js';
 
-export function initVehicleSystem(em, sr) {
+export function initVehicleSystem(em, sr, bm) {
   const cyclistSpawner = new CyclistSpawner({
-    em, sr, draw: { bicycle: drawBicycle, ebike: drawEbike },
+    em, sr, bm, draw: { bicycle: drawBicycle, ebike: drawEbike },
   });
   cyclistSpawner.spawnInitial();
 

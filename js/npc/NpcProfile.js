@@ -198,6 +198,20 @@ const ATHLETE = {
   agenda: false,   // 常驻布景：不挂 Agenda，path_follow 环线全权管理漫游
 };
 
+// 骑手：单态 ride，Motor._tickState 每帧写 mot.vel；不参与分离；不挂 Agenda
+const CYCLIST = {
+  name: 'cyclist',
+  initial: 'ride',
+  allowedStates: ['ride'],
+  transitions: {},
+  heldPoses: {},
+  activities: [],
+  traits: {},
+  cameraReaction: 'neutral',
+  agenda: false,    // 常驻布景，CyclistSpawner 全权管理密度
+  separate: false,  // 不参与 BM._separate（骑手速度高，分离半径无意义）
+};
+
 export const PROFILES = {
   pedestrian:     PEDESTRIAN,
   businessman:    BUSINESSMAN,
@@ -207,6 +221,7 @@ export const PROFILES = {
   stall_seller:   STALL_SELLER,
   dog_owner:      DOG_OWNER,
   athlete:        ATHLETE,
+  cyclist:        CYCLIST,
 };
 
 /** 取得指定 profile；缺失时回退到 pedestrian */

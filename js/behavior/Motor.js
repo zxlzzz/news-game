@@ -142,6 +142,8 @@ export const STATE_DEFS = {
   },
   chess:          { anim: 'chess',           speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
   chess_onlooker: { anim: 'chess_onlookers', speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
+  // N3-c: 骑手单态；anim 仅用于 setState fallback，CyclistSpawner 用 setAnimation 覆写实际 clip
+  ride:           { anim: 'bike',            speedK: 1.0, once: false, dur: null, onExit: _defaultOnExit },
 };
 
 const rand = (a, b) => a + Math.random() * (b - a);

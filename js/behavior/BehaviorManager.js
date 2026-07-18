@@ -172,7 +172,8 @@ export class BehaviorManager {
     const movers  = this.npcs.filter(n =>
       n.alive && !n.mem('social').activity && !n.leashTarget && MOVING.has(n.state));
     const statics = this.npcs.filter(n =>
-      n.alive && !n.leashTarget && !MOVING.has(n.state) && !n.mem('social').bench);
+      n.alive && !n.leashTarget && !MOVING.has(n.state) && !n.mem('social').bench
+      && n.mem('agenda').profile?.separate !== false);
 
     // 动 vs 动：双方互推（原逻辑不变）
     for (let i = 0; i < movers.length; i++) {

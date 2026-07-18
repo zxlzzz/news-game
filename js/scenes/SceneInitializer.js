@@ -135,7 +135,7 @@ export class SceneInitializer {
     this.scene.propManager = new NpcPropManager(em);
     spawnDogWalker(em, sr, bm, this.scene.propManager);
     spawnAthletes(em, sr, bm);
-    this.scene.trafficManager = initVehicleSystem(em, sr);
+    this.scene.trafficManager = initVehicleSystem(em, sr, bm);
     for (const stop of (layout.busStops || [])) spawnBusStop(this.em, stop);
 
     if (this.scene.trafficManager.busStops.length > 0)

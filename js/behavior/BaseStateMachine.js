@@ -183,6 +183,11 @@ function _tickState(npc, envQuery, profile, dt) {
   const needsSteer = isWalking && (mot.walkMode || mot.goal);
   if (needsSteer) steerRoam(npc, envQuery, profile, dt);
 
+  // N3-c: 骑手每帧由状态驱动速度；不走 steerRoam，直接写 mot.vel
+  if (npc.state === 'ride') {
+    mot.vel = { vx: npc.direction * npc.speed, vy: 0 };
+  }
+
   if (npc.state === 'loiter') tickLoiter(npc, profile, dt);
 }
 

@@ -84,6 +84,9 @@ console.log('Rule 3: npc.{speed,state,animation} = only in Motor.js (and Npc.js 
 // Walk-state clips (speedK > 0 in STATE_DEFS) must have |meanX| ≤ 4.
 // "Walk-state" = any state whose NPC is visibly moving; currently walk/run/jog.
 // dog/mounted clips are not referenced in STATE_DEFS and are exempt automatically.
+// N3-c exemption: 'bike'/'mobile' are cyclist ride-state clips; position is motor-vel-driven
+// (not steerRoam), so clip meanX does not cause visual drift and is intentionally large.
+const RULE4_EXEMPT = new Set(['bike', 'mobile']);
 console.log('Rule 4: walk-state clips (speedK>0 in STATE_DEFS) must have |meanX| ≤ 4');
 {
   const motorSrc  = readText(join(ROOT, 'js', 'behavior', 'Motor.js'));
@@ -108,6 +111,7 @@ console.log('Rule 4: walk-state clips (speedK>0 in STATE_DEFS) must have |meanX|
 
   let ruleOk = true;
   for (const animId of walkAnims) {
+    if (RULE4_EXEMPT.has(animId)) { console.log(`  SKIP ${animId}: motor-vel-driven (RULE4_EXEMPT)`); continue; }
     const entry = manifest.clips[animId];
     if (!entry) { process.stderr.write(`  WARN: ${animId} not in manifest\n`); continue; }
     const raw = readJson(join(ROOT, 'assets', entry.path));

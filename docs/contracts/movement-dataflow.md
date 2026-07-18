@@ -1,6 +1,6 @@
 # Movement Dataflow Contract
 
-> Normative. Updated through N-3b; routing chain deleted.
+> Normative. Updated through N-3c; routing chain deleted; Npc.js inline movement deleted; CYCLIST profile added.
 >
 > Frame order anchor: `StreetScene#update` (`behaviorManager.update`, line 356) **then** `StreetScene#update` (`entityManager.update → integratePhysics`, line 362). BM runs first; integratePhysics is the last movement step of the same frame.
 
@@ -19,10 +19,11 @@
 | 6 | BM per-NPC | `tickBaseState`: `stateTimer += dt` | timer advance; `_evaluateTransitions` → may call `setState` |
 | 7 | BM → `_tickState` | `tickWalkMode` | `path_follow.pauseTimer`; wander `maxDuration` elapsed |
 | 8 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); `updateFacing(vx, total, dt)` updates `npc.direction` (with `dirCD` gate); advances `mot.path.idx`; on goal arrival (distance or offWorld spatial) clears `mot.goal` + fires `onDone`; on ROAD cell applies `SAFETY_RULES.jaywalk_sprint` (speedK×2.4, anim 'run') | no position change yet |
+| 8b | BM → `_tickState` — **ride** branch (N-3c) | writes `mot.vel = { vx: direction × speed, vy: 0 }` directly; no steerRoam, no goal, no path; CYCLIST profile `separate:false` skips `_separate` | no position change yet |
 | 10 | BM per-NPC | `checkZoneTransition` | stateless `mot.vel` override: ejects wander NPC from road/bike-lane each frame (no push/pop stack) |
 | 11 | BM per-NPC | `tickModifiers` | overlay gestures |
-| 12 | BM | `_separate` → `nudgeXY` → `_slideMove` | separation pushes committed this step; uses positions from steps 8/9 |
-| 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | `mot.vel` present: clamp `vel.vy` at Y boundary, consume `{vx,vy}` → `_slideMove`; `mot.vel` absent: stationary (no `_slideMove`); progress monitor uses `RECOVERY_RULES.progress_monitor` (window 1.5 s, movedLT 15 px) | **final position commitment of the frame** |
+| 12 | BM | `_separate` → `nudgeXY` → `_slideMove` | separation pushes committed this step; uses positions from steps 8/9; NPCs with `profile.separate === false` excluded from both movers and statics |
+| 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | `mot.vel` present: clamp `vel.vy` at Y boundary, consume `{vx,vy}` → `_slideMove`; `mot.vel` absent: stationary (no `_slideMove`); progress monitor uses `RECOVERY_RULES.progress_monitor` (window 1.5 s, movedLT 15 px); Npc.js inline movement deleted in N-3c — all registered NPCs use this path | **final position commitment of the frame** |
 
 ---
 
