@@ -1,4 +1,4 @@
-> **status: snapshot** — 盘点截止 2026-07-15（S-4 竣工）；新增功能批次请同步更新本表。
+> **status: snapshot** — 盘点截止 2026-07-18（V-H 竣工）；新增功能批次请同步更新本表。
 
 # 功能路线图 — 落地状态一览
 
@@ -22,6 +22,8 @@
 | T1/T2/T3（动画&朝向清理） | walk clip 水平质心归零（T1，shift=+18）；`updateFacing` 提取为 BaseStateMachine 函数（T2）；check-invariants Rule 4（walk-state clip `|meanX|≤4`）（T3） | ✅ 已落地 | `scripts/recenter-clips.py`；`assets/animations/cycle/walk.json`；`scripts/check-invariants.mjs` |
 | F1–F4（足迹统一） | footprint 扩展 `shape/blocks/sortDY`（F1）；PropEntity 收敛 `this.footprint`，删 `collisionRX/RY`，`_sortY` 由 `sortDY` 派生（F2）；NavGrid 改读 `e.footprint`，`OBS_MARGIN=1` → `NPC_HALF_W=7`，shape 分发（F3）；check-invariants Rule 5/6（F4） | ✅ 已落地 | `js/core/PropEntity.js`；`js/behavior/nav/NavGrid.js`；`js/entity/*/`；`scripts/check-invariants.mjs` |
 | 速度统一 V-3 | 清理 + 不变量（D5/D6）：内联路径 CONTRACT（D5）；check-invariants V1–V3 gate（no-direct-xy / no-direction-in-physics / no-npc.vy-in-steer）；死字段/死 API 删除 | 🔲 待实施 | 设计见 `docs/design-plans/velocity-unification-design-v1.md §2 V-3`；check-invariants 基础设施已备（Rules 1–6 ✅） |
+| N-3（骑手集成 + 路由链删除 + 不变量加固） | CYCLIST profile + `ride` STATE_DEFS + BM._separate 豁免；CyclistSpawner 接入 BM；Npc.js 内联移动分支删除；StuckProbe `_rayBlocked/isDirect/nextTarget` + SteeringDecision `corner_cut` 删除；check-invariants Rule 7 升级为 error | ✅ 已落地 | `js/npc/NpcProfile.js`；`js/behavior/Motor.js#STATE_DEFS`；`js/behavior/BaseStateMachine.js#_tickState`；`js/entity/vehicle/CyclistSpawner.js`；`js/behavior/StuckProbe.js`；`js/behavior/SteeringDecision.js`；`scripts/check-invariants.mjs Rule7` |
+| V-H（车辆绘制锚点硬编码去除） | drawBicycle/drawEbike/_moto 全部脱离 getAnchor/getFrame 骑手骨架锚点；改为 FK 推导常量 × scale × direction；drawEbike 删除 `*1.2` 因子折入常量；新增 derive-vehicle-anchors.mjs 推导脚本 | ✅ 已落地 | `js/entity/vehicle/drawBicycle.js`；`js/entity/vehicle/drawVehicle.js#_moto`；`scripts/derive-vehicle-anchors.mjs` |
 | 挂饰 attachment schema | NPC 可拾取/佩戴道具的声明式 schema | 🔲 定稿未落盘，待从历史找回 | — |
 
 ---
@@ -158,3 +160,43 @@
   Director 排除 → BM 门也排除 → 快进后必触发，无绕门路径。+2 滞回带防止补员/减员边界抖振。
 
 代码锚点：`js/behavior/Director.js#update`；`js/behavior/Director.js#_alight`
+
+---
+
+### N-3（骑手集成 + 路由链删除 + 不变量加固）— 已落地
+
+核心变更（commits on `claude/velocity-unification-v1-946h9l`）：
+
+- **N3-c CYCLIST profile + ride 状态**：`NpcProfile.js` 新增 `CYCLIST`（`agenda:false, separate:false, initial:'ride'`）；Motor STATE_DEFS 新增 `ride` 行（`anim:'bike', speedK:1.0`）；`BaseStateMachine._tickState` 新增 ride 分支——每帧直写 `mot.vel = {vx: direction×speed, vy:0}`，绕开 steerRoam。
+  - `CyclistSpawner` 接入 BM：构造函数接受 `bm` 参数，`_spawn` 内调 `bm.register(n,'cyclist')` + `setAnimation(n, kind==='ebike'?'mobile':'bike')`。
+  - `BehaviorManager._separate` 过滤加 `&& n.mem('agenda').profile?.separate !== false` 门——骑手不参与分离物理。
+  - `vehicleSpawner.initVehicleSystem(em, sr, bm)` + `SceneInitializer` 传 `bm` 参数。
+  - `Npc.js` 删除 L297–309 内联移动分支（`else if (!this.leashTarget)`），替换为仅当 `_motorInstalled` 时调 `integratePhysics`。
+
+- **N3-c Rule 4 豁免**：`check-invariants.mjs` 新增 `RULE4_EXEMPT = new Set(['bike','mobile'])`——motor-vel 驱动的骑手 clip meanX 大是设计意图，不是漂移 bug。
+
+- **N3-d 路由遗迹删除**：`StuckProbe.js` 删除 `_rayBlocked` 函数、`isDirect` 变量、nextTarget 分支；`SteeringDecision.js` 删除 ARRIVAL_RULES 中 `corner_cut` 行。
+
+- **N3-e Rule 7 升级**：check-invariants Rule 7（距离/时间累积器白名单）从黄色 warn 升级为 red fail；`BaseStateMachine.js` 白名单注释更新为 "permanent"（非临时例外）。
+
+- **movement-dataflow.md 同步**：新增 step 8b（ride 分支写 vel）；step 12 注释（separate:false 豁免）；step 13 注释（Npc.js 内联删除确认）。
+
+代码锚点：`js/npc/NpcProfile.js#CYCLIST`；`js/behavior/Motor.js#STATE_DEFS:ride`；`js/behavior/BaseStateMachine.js#_tickState`；`js/entity/vehicle/CyclistSpawner.js#_spawn`；`js/behavior/BehaviorManager.js#_separate`；`scripts/check-invariants.mjs RULE4_EXEMPT`
+
+---
+
+### V-H（车辆绘制锚点硬编码去除）— 已落地
+
+核心变更（commit `7865e9c`）：
+
+- **drawBicycle（自行车）**：删除 `forwardHand()` 辅助函数（逐帧 getAnchor 选手动态选取）。改用 bike clip frame-0 FK 常量：hip `jx=0 jy=-82`；把手 r_hand `jx=65 jy=-66`（所有 16 帧均靠前，无需动态判断）；曲柄中心取全帧平均 `jx≈28 jy≈-37`。保留 `getAnchor('foot_l')` + `getAnchor('foot_r')` ——踏板接触点随动画旋转，不可硬编码。
+
+- **drawEbike（电动车）**：删除全部 `getAnchor` 调用；删除 `s = n.scale * 1.2`，将 1.2 折入各维度常量（视觉完全不变）：`wR 14.4→17.28`，`rwx 偏移 19.2→23.04`，`fwx 偏移 4.8→5.76`，`platY 偏移 2.4→2.88`，`boxW 14.4→17.28`，`boxH 13.2→15.84`，`boxCx 偏移 21.6→25.92`。FK 来源：mobile clip，hip `jx=-9 jy=-59`，l_hand `jx=32 jy=-81`。
+
+- **_moto（摩托）**：删除 `vehicle._sr?.getFrame('mobike', 0)` 实时查帧；删除 `W(joint, fallback)` 骨架名查找模式；改为纯 FK 辅助 `W(jx, jy) => {x: x+d*jx*rs, y: groundY+jy*rs}`。常量来自 mobike frame-0：hip `[0,-82]`，l_hand `[50,-76]`，r_hand `[47,-75]`，r_foot `[-28,-42]`，l_foot `[-37,-46]`（原 fallback 值已正确，live lookup 为死权重）。
+
+- **derive-vehicle-anchors.mjs**（D-1 同批）：`scripts/derive-vehicle-anchors.mjs` 读取 `skeleton.json` + manifest + 三个骑乘 clip，输出 frame-0 FK 常量、全帧平均曲柄中心、ebike 折 1.2 后的最终常量，为以上常量提供可复现依据。
+
+验收：`getAnchor` 在 drawEbike / `_moto` = 0；drawBicycle 中恰好 `foot_l` + `foot_r`；drawEbike 无 `*1.2` 运算；`js/behavior/` + `js/npc/` 未改动；check-invariants 全 8 条通过。
+
+代码锚点：`js/entity/vehicle/drawBicycle.js`；`js/entity/vehicle/drawVehicle.js#_moto`；`scripts/derive-vehicle-anchors.mjs`
