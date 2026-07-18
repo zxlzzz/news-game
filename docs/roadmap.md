@@ -22,6 +22,15 @@
 | T1/T2/T3（动画&朝向清理） | walk clip 水平质心归零（T1，shift=+18）；`updateFacing` 提取为 BaseStateMachine 函数（T2）；check-invariants Rule 4（walk-state clip `|meanX|≤4`）（T3） | ✅ 已落地 | `scripts/recenter-clips.py`；`assets/animations/cycle/walk.json`；`scripts/check-invariants.mjs` |
 | F1–F4（足迹统一） | footprint 扩展 `shape/blocks/sortDY`（F1）；PropEntity 收敛 `this.footprint`，删 `collisionRX/RY`，`_sortY` 由 `sortDY` 派生（F2）；NavGrid 改读 `e.footprint`，`OBS_MARGIN=1` → `NPC_HALF_W=7`，shape 分发（F3）；check-invariants Rule 5/6（F4） | ✅ 已落地 | `js/core/PropEntity.js`；`js/behavior/nav/NavGrid.js`；`js/entity/*/`；`scripts/check-invariants.mjs` |
 | 速度统一 V-3 | 清理 + 不变量（D5/D6）：内联路径 CONTRACT（D5）；check-invariants V1–V3 gate（no-direct-xy / no-direction-in-physics / no-npc.vy-in-steer）；死字段/死 API 删除 | 🔲 待实施 | 设计见 `docs/design-plans/velocity-unification-design-v1.md §2 V-3`；check-invariants 基础设施已备（Rules 1–6 ✅） |
+| P-0（StuckProbe 补盲） | WAIT 分类新增（公交等待者单列，排除误入 MOVE 桶）；info 字段扩展 `wait/board/nb`；删除死字段 `spd` | ✅ 已落地 | `js/behavior/StuckProbe.js`（commit `d93605f`） |
+| B-1（公交等待 Activity 化） | 新增 `WaitBusActivity.js`；删除 BM 平行调度旁路 `if(waitingBusStop) tickWaiter`；`WaitForBusLayer.tickWaiter/_releaseWaiter` 迁入 Activity；`ExitSceneTask` 公交分支加区域校验 + `pendingBusWait` 标记 | ✅ 已落地 | `js/behavior/activities/WaitBusActivity.js`；`js/entity/busstop/WaitForBusLayer.js`；`js/behavior/BehaviorManager.js`；`js/behavior/tasks/ExitSceneTask.js` |
+| Scene-1（场景数据归一化） | 新增 `propDefaults.js`（类型级默认）、`sceneData.js`（`expandSceneData()` 纯函数）、`buildingKinds.js`（KIND_TAGS）；`scene.json` 压缩（`at[]` 分组、buildings kind 字段、trees 紧凑数组）；`StreetScene.js` 调用 expandSceneData | ✅ 已落地 | `js/core/propDefaults.js`；`js/core/sceneData.js`；`js/entity/building/buildingKinds.js`；`assets/scene.json` |
+| N-0（目标管线立法 + P-0 StuckProbe 扩展） | `goal-pipeline-v1.md` 四层架构（Intent/Planning/Steering/Physics）+ 三铁律；check-invariants Rule 7（warning）+ 12 文件白名单；StuckProbe observer 字段扩展（`_rayBlocked` 纯观测）；check-invariants.sh → .mjs 文档引用统一 | ✅ 已落地 | `docs/design-plans/goal-pipeline-v1.md`；`js/behavior/StuckProbe.js`；`scripts/check-invariants.mjs Rule7`（commit `10ad85f`） |
+| N-1（归表） | ARRIVAL_RULES（`SteeringDecision.js`）、RECOVERY_RULES / SAFETY_RULES（`Motor.js`）三张裁决表立起；`arrived(ruleId, dist)` 调用模式；Lookahead 参数注入（删内联 fallback）；`check-invariants.sh` 删除 | ✅ 已落地 | `js/behavior/SteeringDecision.js`；`js/behavior/Motor.js`；`scripts/check-invariants.mjs`（commit `3cd1f99`） |
+| N-2a（规划层） | `PLANNING_RULES`（`PathPlanner.js`）；`_bakeCrosswalks` 斑马线烘焙进 NavGrid；A* 有效代价准入（ROAD 格可用）；check-invariants Rule 8（crosswalk/jaywalk/roadCost 数值定义唯一住址） | ✅ 已落地 | `js/behavior/nav/PathPlanner.js`；`js/behavior/nav/NavGrid.js`（commit `97c1e44`） |
+| N-2b（Goal 通道） | `PlanService.js` 成为 `mot.path` 唯一写入方；`mot.goal` 结构体（x/y/radius/meta）；jaywalk 空间派生（不再 walkModeStack）；zone 弹回无状态化；`modeDirect` / `planCrossing` / `walkModeStack` 删除 | ✅ 已落地 | `js/behavior/nav/PlanService.js`；`js/behavior/tasks/GotoTask.js`；`docs/design-plans/goal-pipeline-v1.md r2.3`（commit `0dcf420`） |
+| J1（跑者/Agenda 集成修复） | J1-a: StrollTask `STROLL_BLOCKED_LIMIT=2` 有限重发回落（plan 必败不再死循环）；J1-b: Athletes 跑者显式 bounds + `makeNPC` 出生点守卫；J1-c: ATHLETE profile `agenda:false`，BM.register 跳过 Agenda 实例化 | ✅ 已落地 | `js/behavior/tasks/StrollTask.js`；`js/npc/Athletes.js`；`js/npc/npcUtil.js`；`js/npc/NpcProfile.js#ATHLETE`（commits `3476eb3`–`4897677`） |
+| P-1（vx 振荡探针） | Motor `integratePhysics` 追踪 vx 符号翻转（`mot._obsFlipVx/_obsVxSign`，纯只读观测）；StuckProbe MOVE 明细新增 `flips` 字段（读取即归零） | ✅ 已落地 | `js/behavior/Motor.js#integratePhysics`；`js/behavior/StuckProbe.js`（commit `28eb558`） |
 | N-3（骑手集成 + 路由链删除 + 不变量加固） | CYCLIST profile + `ride` STATE_DEFS + BM._separate 豁免；CyclistSpawner 接入 BM；Npc.js 内联移动分支删除；StuckProbe `_rayBlocked/isDirect/nextTarget` + SteeringDecision `corner_cut` 删除；check-invariants Rule 7 升级为 error | ✅ 已落地 | `js/npc/NpcProfile.js`；`js/behavior/Motor.js#STATE_DEFS`；`js/behavior/BaseStateMachine.js#_tickState`；`js/entity/vehicle/CyclistSpawner.js`；`js/behavior/StuckProbe.js`；`js/behavior/SteeringDecision.js`；`scripts/check-invariants.mjs Rule7` |
 | V-H（车辆绘制锚点硬编码去除） | drawBicycle/drawEbike/_moto 全部脱离 getAnchor/getFrame 骑手骨架锚点；改为 FK 推导常量 × scale × direction；drawEbike 删除 `*1.2` 因子折入常量；新增 derive-vehicle-anchors.mjs 推导脚本 | ✅ 已落地 | `js/entity/vehicle/drawBicycle.js`；`js/entity/vehicle/drawVehicle.js#_moto`；`scripts/derive-vehicle-anchors.mjs` |
 | 挂饰 attachment schema | NPC 可拾取/佩戴道具的声明式 schema | 🔲 定稿未落盘，待从历史找回 | — |
@@ -200,3 +209,118 @@
 验收：`getAnchor` 在 drawEbike / `_moto` = 0；drawBicycle 中恰好 `foot_l` + `foot_r`；drawEbike 无 `*1.2` 运算；`js/behavior/` + `js/npc/` 未改动；check-invariants 全 8 条通过。
 
 代码锚点：`js/entity/vehicle/drawBicycle.js`；`js/entity/vehicle/drawVehicle.js#_moto`；`scripts/derive-vehicle-anchors.mjs`
+
+---
+
+### P-0（StuckProbe 补盲）— 已落地
+
+核心变更（commit `d93605f`）：
+
+- WAIT 分类新增：`sc.waitingBusStop && moved<8` → `cat=WAIT:{state}`，在 MOVE 判断前求值，公交等待者不再误入 MOVE 桶。
+- info 字段扩展：删 `spd`（V-2 后 `npc.speed` 为死字段）；新增 `wait`（候车态）、`board`（上车态）、`nb`（30px 内邻居数）。
+- 审计豁免：WAIT 类不计入 stuck 计数器，与 ACT 类对称。
+
+代码锚点：`js/behavior/StuckProbe.js:29`
+
+---
+
+### B-1（公交等待 Activity 化）— 已落地
+
+核心变更（commit `21937da`）：
+
+- **新增** `js/behavior/activities/WaitBusActivity.js`：单 NPC Activity，管理 stand/loiter 交替等待、`waitTimer` 超时自退、boarding 路径；`_destroyed` 守卫确保 `destroy()` 幂等。
+- **WaitForBusLayer**：删除 `tickWaiter`/`_releaseWaiter`（逻辑全量迁入 Activity）；`_addWaiter` 改为实例化 WaitBusActivity push 进 `socialLayer.activities`；新增 `isInWaitZone` / `waitZoneTarget` 供 ExitSceneTask 路由判断；`_startBoarding` 新增 `ag.departing=true` 防寿命重触发。
+- **BehaviorManager**：删除 `if (sc.waitingBusStop && state!=='routing') { tickWaiter; continue }` 旁路块；寿命条件 `!sc.waitingBusStop` 移除（由 `!sc.activity` 门覆盖，语义等价）。
+- **ExitSceneTask**：公交分支加区域校验——已在等候区直接入队，否则路由到 `waitZoneTarget`；新增 `ag.pendingBusWait` 标记阻止路由中 tick abort。
+
+代码锚点：`js/behavior/activities/WaitBusActivity.js`；`js/entity/busstop/WaitForBusLayer.js`；`js/behavior/BehaviorManager.js`；`js/behavior/tasks/ExitSceneTask.js`
+
+---
+
+### Scene-1（场景数据归一化）— 已落地
+
+核心变更（commit `1b6f6a2`）：
+
+- **新增** `js/core/propDefaults.js`：道具类型级 `{tags, smartDef, w, h, facing}` 权威表，消除 scene.json 逐实例重复字段。
+- **新增** `js/core/sceneData.js`：`expandSceneData()` 纯函数（无 PIXI 依赖），将紧凑 scene.json 展开为 SceneInitializer 已期望的格式。
+- **新增** `js/entity/building/buildingKinds.js`：`KIND_TAGS` 映射表，sceneData + BuildingEntity 共用单一定义。
+- **scene.json**：buildings 改用 `kind` 字段；props 按类型分组 + `at[]` 数组；trees 紧凑数组；busStops 删除几何常量；routes 删除（已无消费者）。
+- **SceneInitializer.js**：`create()` 调用 `expandSceneData`；自身零业务变更。
+
+代码锚点：`js/core/propDefaults.js`；`js/core/sceneData.js`；`js/entity/building/buildingKinds.js`；`assets/scene.json`
+
+---
+
+### N-0（目标管线立法）— 已落地
+
+核心变更（commit `10ad85f`）：
+
+- **goal-pipeline-v1.md** 立法：四层架构（Intent / Planning / Steering / Physics）+ 三铁律（层切割 / 规则共居 / 阈值唯一住址）；决策文件清单；N-1/N-2/N-3 刀序；三数验证表（5/15/22 跨层引用归零目标）。
+- **check-invariants.mjs Rule 7**（warning-only）：标记 `js/behavior/**` 内距离比较和时间累积器，仅白名单 12 文件例外；零意外违规确认后升 error（见 N3-e）。
+- **StuckProbe observer 扩展**：`_rayBlocked()` 纯只读辅助；MOVE:*/direct 明细增 `distToGoal/hasNextTarget/raycastBlocked` 字段；无任何 NPC 状态写入。
+- **文档引用统一**：`check-invariants.sh` → `check-invariants.mjs` 全库替换（CLAUDE.md、behavior.md、known-violations.md、velocity-unification-design-v1.md）。
+
+代码锚点：`docs/design-plans/goal-pipeline-v1.md`；`js/behavior/StuckProbe.js`；`scripts/check-invariants.mjs`
+
+---
+
+### N-1（归表）— 已落地
+
+核心变更（commit `3cd1f99` + `a0bc2fb`）：
+
+- **ARRIVAL_RULES**（`SteeringDecision.js`）：到达阈值裁决表，`arrived(ruleId, dist)` 调用替代内联数值比较。
+- **RECOVERY_RULES**（`Motor.js`）：卡死恢复策略参数唯一住址。
+- **SAFETY_RULES**（`Motor.js`）：物理层安全网参数表；`lookahead` 条目注入 `applyLookahead`，删除 Lookahead.js 内联 fallback（`params = null` 默认移除）。
+- **check-invariants.sh 删除**（`a0bc2fb`）：全部 gate 已迁入 `.mjs`，shell 版本无人使用。
+
+代码锚点：`js/behavior/SteeringDecision.js#ARRIVAL_RULES`；`js/behavior/Motor.js#RECOVERY_RULES,SAFETY_RULES`；`js/behavior/nav/Lookahead.js#applyLookahead`
+
+---
+
+### N-2a（规划层）— 已落地
+
+核心变更（commit `97c1e44`）：
+
+- **PLANNING_RULES**（`PathPlanner.js`）：`crosswalkCost / jaywalkRoadCost / roadCostDefault` 数值定义唯一住址。
+- **`_bakeCrosswalks`**（`NavGrid.js`）：斑马线单元格烘焙进网格（低代价通道），A* 无需运行时查询斑马线位置。
+- **ROAD 格代价准入**：A* 允许 road 区格参与规划（以 `roadCostDefault` 代价），跨马路路径可行。
+- **check-invariants Rule 8**：crosswalk/jaywalk/road cost 数值定义只允许出现在 PathPlanner.js。
+
+代码锚点：`js/behavior/nav/PathPlanner.js#PLANNING_RULES`；`js/behavior/nav/NavGrid.js#_bakeCrosswalks`；`scripts/check-invariants.mjs Rule8`
+
+---
+
+### N-2b（Goal 通道）— 已落地
+
+核心变更（commit `0dcf420`）：
+
+- **PlanService.js**：成为 `mot.path` 唯一写入方；接收 `mot.goal {x,y,radius,meta}` 结构体，统一触发 A* 规划 + `mot.path` 写入。
+- **mot.goal 结构体**：`GotoTask` / `StrollTask` 等 Task 层统一改为发布 `mot.goal`，不再直接写 path；Task 退化为"发 Goal 收 result"模式。
+- **jaywalk 空间派生**：过马路目的地坐标由 PlanService 在规划时派生，不再由 Task 预计算。
+- **`modeDirect` / `planCrossing` / `walkModeStack` 删除**：三个旧通道全部删除，Goal 通道成为唯一路径规划入口。
+- **zone 弹回无状态化**：弹回逻辑不再维护 walkMode 栈，由 PlanService 重规划替代。
+
+代码锚点：`js/behavior/nav/PlanService.js`；`js/behavior/tasks/GotoTask.js`；`docs/design-plans/goal-pipeline-v1.md r2.3`
+
+---
+
+### J1（跑者/Agenda 集成修复）— 已落地
+
+核心变更（commits `3476eb3`、`970a663`、`4897677`）：
+
+- **J1-a**：`StrollTask` 新增 `STROLL_BLOCKED_LIMIT=2`——连续 blocked 达上限退化 `modeWander`，任务继续 tick 至 duration；修复 plan 必败场景（出生点超 bounds）的 NPC 永冻。
+- **J1-b**：`Athletes.js` 两个跑者显式传 `minX/maxX/minY/maxY`（近端跑者含 y=508 出生点）；`npcUtil.makeNPC` 末尾加出生点守卫——仅当明确提供四边界且出生点在世界范围内时 assert，超范围抛出含 tags 的 Error。
+- **J1-c**：`NpcProfile ATHLETE` 加 `agenda: false`；`BehaviorManager.register` 对 `profile.agenda===false` 跳过 Agenda 实例化——阻止 Agenda 推 StrollTask 干扰跑者环线。
+
+代码锚点：`js/behavior/tasks/StrollTask.js#STROLL_BLOCKED_LIMIT`；`js/npc/Athletes.js`；`js/npc/npcUtil.js#makeNPC`；`js/npc/NpcProfile.js#ATHLETE`
+
+---
+
+### P-1（vx 振荡探针）— 已落地
+
+核心变更（commit `28eb558`）：
+
+- **Motor.js `integratePhysics`**：消费 `mot.vel` 时追踪 `mot._obsVxSign`（当前 vx 符号），翻转则 `mot._obsFlipVx++`；纯只读观测，不影响任何速度计算。
+- **StuckProbe.js**：MOVE 类明细 `info` 新增 `flips: mot._obsFlipVx`（探针窗口 2s 累计），读取后归零；用于调查 id:50 类 NPC 振荡现象的证据收集。
+
+代码锚点：`js/behavior/Motor.js#integratePhysics`；`js/behavior/StuckProbe.js#info`
