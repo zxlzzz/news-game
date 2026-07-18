@@ -311,19 +311,14 @@ function _moto(g, vehicle, highlight) {
   const groundY = vehicle.y;
   const rs = u * 0.8;   // 骑手缩放
 
-  // mobike 帧为锚点空间绝对坐标（y=0=地面，负值向上），与 StickRenderer 同一变换：
-  // world = (x + d·jx·rs, groundY + jy·rs)
-  const fr = vehicle._sr?.getFrame('mobike', 0) ?? {};
-  const W  = (j, fb) => {
-    const p = fr[j] ?? fb;
-    return { x: x + d * p[0] * rs, y: groundY + p[1] * rs };
-  };
-  const hip   = W('body',   [0,  -82]);
-  const handL = W('l_hand', [50, -76]);
-  const handR = W('r_hand', [47, -75]);
-  const bar   = (handL.x * d >= handR.x * d) ? handL : handR;
-  const footF = W('r_foot', [-28, -42]);
-  const footR = W('l_foot', [-37, -46]);
+  // 量自 mobike 首帧 FK 推导 2026-07
+  const W     = (jx, jy) => ({ x: x + d * jx * rs, y: groundY + jy * rs });
+  const hip   = W(  0, -82);
+  const handL = W( 50, -76);   // l_hand
+  const handR = W( 47, -75);   // r_hand
+  const bar   = handL.x * d >= handR.x * d ? handL : handR;
+  const footF = W(-28, -42);   // r_foot (forward peg)
+  const footR = W(-37, -46);   // l_foot (rear peg)
 
   // 局部坐标：ux 沿行驶方向，uy 向上为正（单位 u）
   const P = (ux, uy) => ({ x: x + d * ux * u, y: groundY - uy * u });
