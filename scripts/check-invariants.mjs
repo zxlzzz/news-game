@@ -272,9 +272,8 @@ console.log('Rule 8: crosswalkCost|jaywalkRoadCost|roadCostDefault numeric defin
 // Npc.js may write this.x / this.y only for leashTarget sync (binding, not steering).
 console.log('Rule 9: no direct npc.x/npc.y assignment outside Motor.js');
 {
-  // Pattern: npc.x or npc.y assignment (including += / -=), excluding comparisons
+  // Primary: npc.x / npc.y assignment in behavior/npc/entity dirs
   const ASSIGN_RE = /\bnpc\.[xy]\s*[+\-]?=(?!=)/;
-
   const scanDirs = [
     join(ROOT, 'js', 'behavior'),
     join(ROOT, 'js', 'npc'),
@@ -292,37 +291,37 @@ console.log('Rule 9: no direct npc.x/npc.y assignment outside Motor.js');
   }
   if (hits.length > 0) {
     fail('direct npc.x/y assignment (use Motor setXY/nudgeXY):\n  ' + hits.join('\n  '));
-  } else {
-    // Secondary: Npc.js this.x / this.y assigns must all be leashTarget sync
-    const NPC_ASSIGN_RE = /\bthis\.[xy]\s*[+\-]?=(?!=)/;
-    const npcSrc = readText(join(ROOT, 'js', 'npc', 'Npc.js')).split('\n');
-    const npcHits = [];
-    for (let i = 0; i < npcSrc.length; i++) {
-      if (NPC_ASSIGN_RE.test(npcSrc[i]) && !npcSrc[i].includes('leashTarget'))
-        npcHits.push(`Npc.js:${i + 1}: ${npcSrc[i].trim()}`);
-    }
-    if (npcHits.length > 0) {
-      fail('Npc.js this.x/y assign outside leashTarget whitelist:\n  ' + npcHits.join('\n  '));
-    } else {
-      okMsg();
-    }
   }
+
+  // Secondary (independent): Npc.js this.x / this.y assigns must all be leashTarget sync
+  const NPC_ASSIGN_RE = /\bthis\.[xy]\s*[+\-]?=(?!=)/;
+  const npcSrc = readText(join(ROOT, 'js', 'npc', 'Npc.js')).split('\n');
+  const npcHits = [];
+  for (let i = 0; i < npcSrc.length; i++) {
+    if (NPC_ASSIGN_RE.test(npcSrc[i]) && !npcSrc[i].includes('leashTarget'))
+      npcHits.push(`Npc.js:${i + 1}: ${npcSrc[i].trim()}`);
+  }
+  if (npcHits.length > 0) {
+    fail('Npc.js this.x/y assign outside leashTarget whitelist:\n  ' + npcHits.join('\n  '));
+  }
+
+  if (hits.length === 0 && npcHits.length === 0) okMsg();
 }
 
 // ── Rule 10 ────────────────────────────────────────────────────────────────
 // npc.direction references in Motor.js and BaseStateMachine.js must match
-// one of three whitelist categories — prevents direction policy from scattering.
+// one of four whitelist categories — prevents direction policy from scattering.
 // Category A: updateFacing — steer layer derives direction from velocity sign
 // Category B: dir_mismatch audit — read-only observation, not a policy write
 // Category C: ride/leash/departure config — lane direction at spawn or exit, not steer-derived
-// Category D: vel-init read — direction read for velocity vector construction (npc.direction * speed)
+// Category D: vel-init read — exact form: ride state constructs mot.vel (唯一合法行：ride 状态配置读取)
 console.log('Rule 10: npc.direction in Motor.js / BaseStateMachine.js must match whitelist');
 {
   const WHITELIST_PATTERNS = [
     /desired/,                                   // A: updateFacing
     /dir_mismatch/,                              // B: audit observation
     /lt\.dir|leashTarget|spot\.facing|exit\.facing/, // C: ride/leash/departure config
-    /npc\.direction\s*\*/,                       // D: vel-init read
+    /vx: npc\.direction \* npc\.speed/,          // D: vel-init read (ride state only)
   ];
 
   const targets = [

@@ -32,7 +32,7 @@
 | Variable | Namespace | Writer | Reader | Cleared / overwritten | Unit | Active at step |
 |----------|-----------|--------|--------|-----------------------|------|----------------|
 | `x`, `y` | `npc` (protected `_mw`) | `setXY`, `nudgeXY` → `_slideMove` | `steerRoam`, `integratePhysics`, `_separate` | next write | px | 8, 12, 13 |
-| `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`) | — | `setState` | px/s | set 6, read WalkMode |
+| `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`) | BaseStateMachine ride 状态（`mot.vel` 构造）；BehaviorManager 出生時 `walkSpeed` 初始化 | `setState` | px/s | set 6, read WalkMode |
 | `direction` | `npc` | `updateFacing(npc, vx, spd, dt)` from `steerRoam` walk branch — `dirCD` 0.45 s hysteresis, `|vx|>spd×0.35` threshold; `triggerDeparture`; activity direct writes; `spot.facing`/`exit.facing` snapshots | `steerRoam` audit check; rendering | next write | ±1 | written 8 |
 | `vy` | `npc` | **deleted V3-a** (was dead post-V-2; `setState`归零行与字段同步删除) | — | — | — | — |
 | `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` after `applyLookahead` | `Motor#integratePhysics`: both `.vx` and `.vy` consumed; Y boundary clamps `vy` before apply | consumed `= null` by `Motor#integratePhysics`, same frame | px/s | written 8, consumed 13 |
