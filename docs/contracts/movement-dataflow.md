@@ -2,7 +2,7 @@
 
 > Normative. Updated through N-3c; routing chain deleted; Npc.js inline movement deleted; CYCLIST profile added.
 >
-> Frame order anchor: `StreetScene#update` (`behaviorManager.update`, line 356) **then** `StreetScene#update` (`entityManager.update → integratePhysics`, line 362). BM runs first; integratePhysics is the last movement step of the same frame.
+> Frame order anchor: `StreetScene#update` (`behaviorManager.update`, line 356) **then** `StreetScene#update` (`entityManager.update → integratePhysics`, line 363). BM runs first; integratePhysics is the last movement step of the same frame.
 
 ---
 

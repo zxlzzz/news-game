@@ -28,6 +28,7 @@
 - `Motor.js:37` 注释提到 `modeDirect`（N-2b 删除的标识符）
 - `Npc.js:231` 注释提到 `planCrossing`（N-2b 删除的标识符）
 - `SteeringDecision.js:14` reason 字符串字面量含 `navPath`
+- `Lookahead.js:16` 注释提到 `_navPath`（N-2b 删除的标识符）
 
 以上三处均为字符串/注释内容，不产生运行时语义，无需修改。
 
