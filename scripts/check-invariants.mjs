@@ -266,6 +266,107 @@ console.log('Rule 8: crosswalkCost|jaywalkRoadCost|roadCostDefault numeric defin
   }
 }
 
+// ── Rule 9 ─────────────────────────────────────────────────────────────────
+// NPC position (x/y) must only be written via Motor API (setXY/nudgeXY/_slideMove).
+// Direct npc.x= / npc.y= outside Motor is prohibited.
+// Npc.js may write this.x / this.y only for leashTarget sync (binding, not steering).
+console.log('Rule 9: no direct npc.x/npc.y assignment outside Motor.js');
+{
+  // Pattern: npc.x or npc.y assignment (including += / -=), excluding comparisons
+  const ASSIGN_RE = /\bnpc\.[xy]\s*[+\-]?=(?!=)/;
+
+  const scanDirs = [
+    join(ROOT, 'js', 'behavior'),
+    join(ROOT, 'js', 'npc'),
+    join(ROOT, 'js', 'entity'),
+  ];
+  const hits = [];
+  for (const dir of scanDirs) {
+    for (const p of walkFiles(dir, f => f.endsWith('.js'))) {
+      const lines = readText(p).split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        if (ASSIGN_RE.test(lines[i]))
+          hits.push(`${p}:${i + 1}: ${lines[i].trim()}`);
+      }
+    }
+  }
+  if (hits.length > 0) {
+    fail('direct npc.x/y assignment (use Motor setXY/nudgeXY):\n  ' + hits.join('\n  '));
+  } else {
+    // Secondary: Npc.js this.x / this.y assigns must all be leashTarget sync
+    const NPC_ASSIGN_RE = /\bthis\.[xy]\s*[+\-]?=(?!=)/;
+    const npcSrc = readText(join(ROOT, 'js', 'npc', 'Npc.js')).split('\n');
+    const npcHits = [];
+    for (let i = 0; i < npcSrc.length; i++) {
+      if (NPC_ASSIGN_RE.test(npcSrc[i]) && !npcSrc[i].includes('leashTarget'))
+        npcHits.push(`Npc.js:${i + 1}: ${npcSrc[i].trim()}`);
+    }
+    if (npcHits.length > 0) {
+      fail('Npc.js this.x/y assign outside leashTarget whitelist:\n  ' + npcHits.join('\n  '));
+    } else {
+      okMsg();
+    }
+  }
+}
+
+// ── Rule 10 ────────────────────────────────────────────────────────────────
+// npc.direction references in Motor.js and BaseStateMachine.js must match
+// one of three whitelist categories — prevents direction policy from scattering.
+// Category A: updateFacing — steer layer derives direction from velocity sign
+// Category B: dir_mismatch audit — read-only observation, not a policy write
+// Category C: ride/leash/departure config — lane direction at spawn or exit, not steer-derived
+// Category D: vel-init read — direction read for velocity vector construction (npc.direction * speed)
+console.log('Rule 10: npc.direction in Motor.js / BaseStateMachine.js must match whitelist');
+{
+  const WHITELIST_PATTERNS = [
+    /desired/,                                   // A: updateFacing
+    /dir_mismatch/,                              // B: audit observation
+    /lt\.dir|leashTarget|spot\.facing|exit\.facing/, // C: ride/leash/departure config
+    /npc\.direction\s*\*/,                       // D: vel-init read
+  ];
+
+  const targets = [
+    join(ROOT, 'js', 'behavior', 'Motor.js'),
+    join(ROOT, 'js', 'behavior', 'BaseStateMachine.js'),
+  ];
+  const hits = [];
+  for (const p of targets) {
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (!lines[i].includes('npc.direction')) continue;
+      const trimmed = lines[i].trim();
+      // Skip comment-only lines (JSDoc or inline //)
+      if (trimmed.startsWith('*') || trimmed.startsWith('//')) continue;
+      if (!WHITELIST_PATTERNS.some(re => re.test(lines[i])))
+        hits.push(`${p}:${i + 1}: ${trimmed}`);
+    }
+  }
+  if (hits.length > 0) {
+    fail('npc.direction outside whitelist in physics files:\n  ' + hits.join('\n  '));
+  } else {
+    okMsg();
+  }
+}
+
+// ── Rule 11 ────────────────────────────────────────────────────────────────
+// npc.vy must not exist in js/ — field deleted in V3-a; this rule prevents regression.
+console.log('Rule 11: no npc.vy in js/ (field deleted in V3-a)');
+{
+  const hits = [];
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (/\bnpc\.vy\b/.test(lines[i]))
+        hits.push(`${p}:${i + 1}: ${lines[i].trim()}`);
+    }
+  }
+  if (hits.length > 0) {
+    fail('npc.vy reference found (dead field, use mot.vel.vy):\n  ' + hits.join('\n  '));
+  } else {
+    okMsg();
+  }
+}
+
 // ── Summary ─────────────────────────────────────────────────────────────────
 console.log('');
 if (!FAIL) {
