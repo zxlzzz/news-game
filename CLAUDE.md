@@ -230,7 +230,7 @@ npc.clearMem('loiter');
 | `docs/contracts/known-violations.md` | 规范性 | check-invariants 已知例外白名单 |
 | `docs/design-plans/news-pipeline-mvp.md` | 设计稿（finalized） | 新闻管线 MVP：截图 T2、Provider T3、成稿流 T4 |
 | `docs/design-plans/photo2entity-plan.md` | 设计稿（draft） | 现实照片 → AI 生成场景物体，占位草案 |
-| `docs/design-plans/semantic-destination-design.md` | 设计稿（draft） | 语义目的地层 v2，affordance 池设计 |
+| `docs/design-plans/semantic-destination-design.md` | 设计稿（finalized） | 语义目的地层 v2，affordance 池设计 |
 | `docs/behavior-design.md` | 快照 | 行为系统目标架构蓝图（准确内容已迁入 contracts/behavior.md） |
 | `docs/npc-states.md` | 快照 | 状态机规格历史文档（含已淘汰状态，如 bike/mobile） |
 | `docs/npc-behavior-system-v0.md` | 快照 | 行为系统重构 V0 设计（已由 contracts/behavior.md 取代） |
@@ -241,4 +241,5 @@ npc.clearMem('loiter');
 | `docs/design-plans/velocity-representation-survey.md` | 快照 | `npc.direction/speed/vy`、`mot.vel` 全库消费者普查（2026-07-13） |
 | `docs/design-plans/velocity-unification-design-v1.md` | 设计稿（finalized） | 速度表示统一三阶段方案（V-1 ✅ / V-2 ✅ / V-3 待实施） |
 | `docs/roadmap.md` | 快照 | 功能批次落地状态一览（规范性路线图跟踪） |
+| `docs/design-plans/goal-pipeline-v1.md` | 规范性 | 四层目标管线立法；三铁律；ARRIVAL/RECOVERY/SAFETY/PLANNING 裁决表；N-1/N-2/N-3 刀序；四数验收表 |
 | `docs/design-plans/belief-layer-v0.md` | 设计稿（draft） | 信念层 v0 占位草案：符号化事件声明、LLM 证人污染防护、SIR 传播 |
