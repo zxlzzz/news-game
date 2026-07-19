@@ -8,7 +8,7 @@
  *              npc.mem('motor').wallSpot (lean_wall assignment).
  *   READS:     npc.state, npc.roamTarget, npc.mem('motor').{walkMode,goal,path},
  *              NavGrid singleton.
- *   MUST NOT:  write npc.speed/state — use Motor.setState/setSpeed;
+ *   MUST NOT:  write npc.speed/state — use Motor.setState;
  *              write npc.x/y — use Motor.setXY/nudgeXY;
  *              write mot.path (use PlanService); call pickModeTarget outside steerRoam.
  *
@@ -261,7 +261,7 @@ function steerRoam(npc, envQuery, profile, dt) {
   const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total, SAFETY_RULES.lookahead);
   if (vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
 
-  // Jaywalk sprint: road-cell → multiply velocity (spatial derivation, replaces planCrossing setSpeed)
+  // Jaywalk sprint: road-cell → multiply velocity (NavGrid cell cost spatial derivation)
   const _grid  = getNavGrid();
   const _inLane = npc.y >= BIKE_LANE_FAR_TOP && npc.y < BIKE_LANE_NEAR_BOTTOM;
   if (_inLane && _grid) {

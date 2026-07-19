@@ -33,7 +33,7 @@ const BENCH_SEAT_H = 12;
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
 function _setXY(npc, x, y) {
-  if (typeof _motorSetXY === 'function') { _motorSetXY(npc, x, y); } else { npc.x = x; npc.y = y; }
+  _motorSetXY(npc, x, y);
 }
 
 /** 座面世界 Y（NPC 臀部应落于此） */

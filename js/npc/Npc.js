@@ -50,8 +50,7 @@ export class NPC extends Entity {
    * @param {string}        config.animation     - 动画名称
    * @param {number}        config.direction     - 1=右，-1=左
    * @param {number}        config.speed         - 水平速度（像素/秒）
-   * @param {number}        config.vy            - 纵深漂移速度（像素/秒）
-   * @param {number}        config.scale         - 初始缩放（EntityManager每帧会按Y覆盖）
+     * @param {number}        config.scale         - 初始缩放（EntityManager每帧会按Y覆盖）
    * @param {number}        config.minX/maxX     - X活动边界
    * @param {number}        config.minY/maxY     - Y活动边界
    * @param {boolean}       config.playOnce      - true=动画只播放一次，结束后设 animDone=true
@@ -74,7 +73,6 @@ export class NPC extends Entity {
     this.animation = config.animation || 'stand';
     this.direction = config.direction || 1;
     this.speed     = config.speed     || 0;
-    this.vy        = config.vy ?? 0;
     this.scale     = config.scale     ?? 0.45;
 
     this.frameIndex = 0;

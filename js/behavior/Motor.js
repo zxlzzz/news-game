@@ -15,9 +15,9 @@
  *              npc.mem('motor').{goal,path,needReplan} lifecycle (N-2b);
  *              npc.mem('motor').{progressAnchor,progressAcc} (integratePhysics);
  *              npc.mem('motor').tags (cleared in _defaultOnExit);
- *              npc.vy reset on setState; npc.roamTarget null on mode change.
+ *              npc.roamTarget null on mode change.
  *   WRITES:    x, y via setXY/nudgeXY/_slideMove;
- *              speed via setSpeed/setState; state/animation via setState/setAnimation;
+ *              speed via setState; state/animation via setState/setAnimation;
  *              walkMode via setWalkMode; roamTarget=null on every mode switch;
  *              goal/path/needReplan lifecycle (fire result, progress two-hit).
  *   READS:     npc.mem('motor').{walkMode,goal,path} (integratePhysics, progress monitor);
@@ -46,7 +46,7 @@ export const RECOVERY_RULES = {
 export const SAFETY_RULES = {
   lookahead:     { probeCells: 4, rotProbeCells: 2, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',                                    src: '责任3-D' },
   separation:    { baseRadius: 24, atScale: 0.18,                                                  reason: 'NPC 分离冲量半径',                                src: '责任8-分离半径' },
-  jaywalk_sprint:{ speedK: 2.4, anim: 'run',                                                       reason: '马路格速度倍增（空间派生替代 planCrossing setSpeed）', src: 'N-2b' },
+  jaywalk_sprint:{ speedK: 2.4, anim: 'run',                                                       reason: '马路格速度倍增（NavGrid cell cost 空间派生）', src: 'N-2b' },
 };
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
@@ -161,7 +161,6 @@ export function setState(npc, state, trigger = '?') {
   _mw(npc, 'speed',     def.speedK * (npc.walkSpeed || 26));
   npc.stateTimer = 0;
   npc.stateDur   = def.dur ? rand(def.dur[0], def.dur[1]) : Infinity;
-  npc.vy         = 0;
   npc.playOnce   = def.once;
   npc.animDone   = false;
   npc.frameIndex = 0;
@@ -255,11 +254,6 @@ export function setXY(npc, x, y) {
 
 export function nudgeXY(npc, dx, dy) {
   _slideMove(npc, dx, dy);
-}
-
-// ── 速度写入（供 steerRoam）──────────────────────────────────────────────────
-export function setSpeed(npc, speed) {
-  _mw(npc, 'speed', speed);
 }
 
 // ── 动画直写（供 jaywalk_sprint 等非 setState 场景）──────────────────────────
