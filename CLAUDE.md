@@ -160,15 +160,18 @@ if (exit) { npc.x = exit.x; npc.alive = false; }
 ```
 BehaviorManager
   ├── BaseStateMachine  — 状态机（setState / tickBaseState）
-  ├── WalkMode          — wander / direct / path_follow / planCrossing
+  ├── WalkMode          — wander / path_follow
+  │     └── nav/PlanService  — A* 规划；publishGoal 是唯一目标入口
   ├── SocialLayer       — Talk / Chess / Stall 配对
   ├── ModifierLayer     — 叠加动作（phone / smoke / gesture）
-  ├── EnvironmentQuery  — 空间查询（只读）
-  └── RouteSelector     — 路线池（scene.json routes）
+  └── EnvironmentQuery  — 空间查询（只读）
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
-槽位释放 `releaseAllHoldings(npc, envQuery)`；过马路必须经 `planCrossing`。
+槽位释放 `releaseAllHoldings(npc, envQuery)`；`crossing / jaywalking` 标签由 NavGrid
+格代价空间派生（`Npc.getTags()` 读格 cost，`PathPlanner.PLANNING_RULES` 中
+`crosswalkCost / jaywalkRoadCost`）；不存在过街子程序。
+骑手 profile：`{agenda:false, separate:false, initial:'ride'}`（N-3 集成）。
 
 ---
 
@@ -202,7 +205,7 @@ npc.clearMem('loiter');
 
 | namespace  | owner / 写者            | 典型字段                                              |
 |------------|-------------------------|-------------------------------------------------------|
-| `motor`    | Motor.js / WalkMode.js  | walkMode、walkModeStack、routeTarget、routePts、routeIdx、navPath、navGoalX/Y、navIdx、dirCD、progress、tags |
+| `motor`    | Motor.js / WalkMode.js  | walkMode、goal、path、vel、dirCD、savedBounds、needReplan、progressAcc、progressAnchor、wallSpot、tags（`_obsFlipVx / _obsVxSign` 只读观测，非状态位） |
 | `loiter`   | LoiterBehavior.js       | dir、dur、elapsed、overlay、microPhase、microPhaseName、microTimer、tags |
 | `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、slotWaitProp、slotWaitTimer、chessSlot、onlookerTimer、onlookerDur、tags |
 | `agenda`   | BehaviorManager / Director | profile、runner、agenda、lifespan、ageTimer、departing、pendingDeparture、preferExitType、exitRegistry、waitForBusLayer、busStops |
