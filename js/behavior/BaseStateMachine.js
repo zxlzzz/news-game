@@ -50,10 +50,10 @@ import { tickLoiter } from '../npc/LoiterBehavior.js';
 
 import {
   tickWalkMode, pickModeTarget, onPathArrival,
-  setWalkMode, isRoadZone, modeWander,
+  isRoadZone, modeWander,
 } from './WalkMode.js';
 
-import { setState, STATE_DEFS, setXY, nudgeXY, setAnimation, RECOVERY_RULES, SAFETY_RULES } from './Motor.js';
+import { setState, STATE_DEFS, setXY, nudgeXY, setAnimation, RECOVERY_RULES, SAFETY_RULES, setWalkMode } from './Motor.js';
 import { getNavGrid, ROAD } from './nav/NavGrid.js';
 import { applyLookahead } from './nav/Lookahead.js';
 import { arrived } from './SteeringDecision.js';
