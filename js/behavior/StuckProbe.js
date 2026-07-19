@@ -30,8 +30,8 @@ export function stuckProbe(npcs, dt) {
       cat = `WAIT:${n.state}`;                     // 公交等待者单列，不入 MOVE
     } else if (['walk', 'run', 'jog'].includes(n.state) && moved < 8) {
       cat = `MOVE:${n.state}/${m?.kind ?? 'nomode'}`;
-    } else if (n.stateDur < Infinity && n.stateTimer > n.stateDur + 10) {
-      cat = `STATE:${n.state}`;                    // 转换没触发
+    } else if (n.stateDur < Infinity && n.stateTimer > n.stateDur + 10 && !n.mem('motor').goal) {
+      cat = `STATE:${n.state}`;                    // 转换没触发（带 goal 的长距离行走不计入）
     } else if (n.mem('social').activity && moved < 8 && n.stateTimer > 60) {
       const act = n.mem('social').activity;
       cat = `ACT:${act.type}/${act.subState}`;

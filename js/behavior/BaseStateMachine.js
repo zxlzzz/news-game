@@ -87,7 +87,9 @@ function _pickNext(npc, profile, envQuery) {
 
 // ─── 内部：timeout 触发时解析最终目标（含 sit_bench 占位/对齐副作用）──────────
 function _resolveTimeout(npc, envQuery, profile) {
-  if (npc.mem('agenda').departing) return null;
+  // 离场中且 goal 仍活跃：抑制转换（正常离场路由中）
+  // 离场中但 goal 已消失：放行常规选择（异常态，应由 no-drive 安全网或寿命门处置）
+  if (npc.mem('agenda').departing && npc.mem('motor').goal) return null;
   if (isRoadZone(npc.y)) return null;
   const next = _pickNext(npc, profile, envQuery);
   if (!next) return null;
@@ -139,6 +141,18 @@ const TRANSITIONS = [
   },
 
   // ── 1~9：日常 timeout ──────────────────────────────────────────────────────
+  // G-1：无驱动行走安全网——walk/run 既无 walkMode 又无 goal 超过 2s → 转 stand
+  // 按构造消灭"雕像"形态；MovementAudit 计数便于观测。
+  {
+    from: 'any', to: 'stand',
+    priority: 8,    trigger: 'no-drive',
+    condition: (npc) => {
+      const mot = npc.mem('motor');
+      return (npc.state === 'walk' || npc.state === 'run') &&
+             !mot.walkMode && !mot.goal && npc.stateTimer > 2;
+    },
+    resolve: (npc) => { audit.count(npc, 'no_drive'); return 'stand'; },
+  },
   {
     from: 'any', to: null,
     priority: 5,    trigger: 'timeout',
