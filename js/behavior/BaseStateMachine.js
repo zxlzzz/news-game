@@ -281,6 +281,8 @@ function steerRoam(npc, envQuery, profile, dt) {
 }
 
 // ─── 离场系统 ─────────────────────────────────────────────────────────────────
+const DEPART_RETRY_LIMIT = 2;
+
 function _routeToExit(npc, exit, ctx = {}) {
   const tx = exit.x;
   const ty = exit.y ?? npc.y;
@@ -293,14 +295,27 @@ function _routeToExit(npc, exit, ctx = {}) {
     mot.savedBounds = { minX: npc.minX, maxX: npc.maxX };
     if (exit.x < (npc.minX ?? 0))          npc.minX = exit.x - 10;
     if (exit.x > (npc.maxX ?? WORLD_WIDTH)) npc.maxX = exit.x + 10;
-    publishGoal(npc, { x: tx, y: ty }, 60, (result) => {
-      if (result === 'arrived') despawnNpc(npc, 'exit-arrive', ctx);
-    }, { offWorld: true });
-  } else {
-    publishGoal(npc, { x: tx, y: ty }, 60, (result) => {
-      if (result === 'arrived') despawnNpc(npc, 'exit-arrive', ctx);
-    }, { arrivalRule: 'exit_building' });
   }
+  // 超时按距离派生：步速兜底 26，×2 容忍绕路与让行；60s 为下限
+  const dist    = Math.hypot(tx - npc.x, ty - npc.y);
+  const timeout = Math.max(60, (dist / (npc.walkSpeed || 26)) * 2);
+  const meta    = exit.type === 'edge' ? { offWorld: true } : { arrivalRule: 'exit_building' };
+  const onDone  = (result) => {
+    if (result === 'arrived') { despawnNpc(npc, 'exit-arrive', ctx); return; }
+    // timeout / blocked：有限重发，用尽后放弃本次离场回归日常
+    const ag = npc.mem('agenda');
+    ag._departRetries = (ag._departRetries ?? 0) + 1;
+    if (ag._departRetries <= DEPART_RETRY_LIMIT) {
+      publishGoal(npc, { x: tx, y: ty }, timeout, onDone, meta);
+    } else {
+      ag._departRetries = 0;
+      restoreDepartureBounds(npc);
+      ag.departing = false;
+      ag.lifespan += 30;                 // 稍后由寿命门重新触发离场（可能换出口）
+      setWalkMode(npc, modeWander());
+    }
+  };
+  publishGoal(npc, { x: tx, y: ty }, timeout, onDone, meta);
 }
 
 export function triggerDeparture(npc, exitRegistry, ctx = {}) {
