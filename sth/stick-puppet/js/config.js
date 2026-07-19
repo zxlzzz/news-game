@@ -9,12 +9,13 @@ const _EDITOR_DATA = {
       l_elbow:'左肘', r_elbow:'右肘', l_hand:'左手', r_hand:'右手',
       l_knee:'左膝', r_knee:'右膝', l_foot:'左脚', r_foot:'右脚',
     },
+    // Line widths mirror js/core/StickRenderer.js BONES — game side is authoritative.
     bones: [
-      ['body','neck',6,0], ['neck','head',5,0],
-      ['neck','l_elbow',5,0], ['l_elbow','l_hand',4,0],
-      ['neck','r_elbow',5,0], ['r_elbow','r_hand',4,0],
-      ['body','l_knee',5,0], ['l_knee','l_foot',4,0],
-      ['body','r_knee',5,0], ['r_knee','r_foot',4,0],
+      ['body','neck',4,0], ['neck','head',3,0],
+      ['neck','l_elbow',3,0], ['l_elbow','l_hand',2.5,0],
+      ['neck','r_elbow',3,0], ['r_elbow','r_hand',2.5,0],
+      ['body','l_knee',3.5,0], ['l_knee','l_foot',2.5,0],
+      ['body','r_knee',3.5,0], ['r_knee','r_foot',2.5,0],
     ],
     mirrorPairs: [
       ['l_elbow','r_elbow'], ['l_hand','r_hand'],
@@ -54,13 +55,14 @@ const _EDITOR_DATA = {
       bl_upper:'左后上腿', bl_lower:'左后下腿',
       br_upper:'右后上腿', br_lower:'右后下腿',
     },
+    // Line widths mirror js/core/StickRenderer.js DOG_BONES — game side is authoritative.
     bones: [
-      ['body_back','body_front',6,0], ['body_front','neck',5,0], ['neck','head',4,0],
-      ['body_back','tail',3,0],
-      ['body_front','fl_upper',4,0], ['fl_upper','fl_lower',3,0],
-      ['body_front','fr_upper',4,0], ['fr_upper','fr_lower',3,0],
-      ['body_back','bl_upper',4,0],  ['bl_upper','bl_lower',3,0],
-      ['body_back','br_upper',4,0],  ['br_upper','br_lower',3,0],
+      ['body_back','body_front',4,0], ['body_front','neck',3,0], ['neck','head',3,0],
+      ['body_back','tail',2,0],
+      ['body_front','fl_upper',2.5,0], ['fl_upper','fl_lower',2,0],
+      ['body_front','fr_upper',2.5,0], ['fr_upper','fr_lower',2,0],
+      ['body_back','bl_upper',2.5,0],  ['bl_upper','bl_lower',2,0],
+      ['body_back','br_upper',2.5,0],  ['br_upper','br_lower',2,0],
     ],
     mirrorPairs: [
       ['fl_upper','fr_upper'], ['fl_lower','fr_lower'],

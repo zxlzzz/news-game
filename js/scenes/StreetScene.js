@@ -106,6 +106,7 @@ export class StreetScene {
     sceneRenderer.drawAll();
 
     this.stickRenderer = new StickRenderer(this);
+    this.stickRenderer.setSkeletons(clipLibrary.skeletons);
     for (const id of Object.keys(clipLibrary.manifest.clips)) {
       this.stickRenderer.loadAnimation(id, clipLibrary.resolve(id));
     }
