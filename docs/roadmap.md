@@ -35,6 +35,7 @@
 | V-H（车辆绘制锚点硬编码去除） | drawBicycle/drawEbike/_moto 全部脱离 getAnchor/getFrame 骑手骨架锚点；改为 FK 推导常量 × scale × direction；drawEbike 删除 `*1.2` 因子折入常量；新增 derive-vehicle-anchors.mjs 推导脚本 | ✅ 已落地 | `js/entity/vehicle/drawBicycle.js`；`js/entity/vehicle/drawVehicle.js#_moto`；`scripts/derive-vehicle-anchors.mjs` |
 | 挂饰 attachment schema | NPC 可拾取/佩戴道具的声明式 schema | 🔲 定稿未落盘，待从历史找回 | — |
 | V-final（速度统一线收尾核账） | 五处已知修正（Rule 10 正则收紧、Rule 9 结构修、哈希订正、Npc.js 缩进、speed 读者描述）；A–H 八段核账；封存报告 | ✅ 已落地 | `docs/audits/velocity-unification-closing-2026-07.md` |
+| G-1（publishGoal 完备化 + 无驱动安全网） | 铁律 ④（goal-pipeline r2.6）；ExitSceneTask 公交分支降级边缘出口；SceneInitializer 摊主有限重发→setXY 就位；WaitForBusLayer 车门 timeout→modeWander；`_resolveTimeout` 收紧（departing && goal）；TRANSITIONS 'no-drive' priority 8 安全网（walk/run 无驱动 2s→stand）；StuckProbe STATE: 排除带 goal 行走 | ✅ 已落地 | `js/behavior/BaseStateMachine.js`；`js/behavior/tasks/ExitSceneTask.js`；`js/scenes/SceneInitializer.js`；`js/entity/busstop/WaitForBusLayer.js`；`js/behavior/StuckProbe.js`；`js/debug/MovementAudit.js` |
 
 ---
 
