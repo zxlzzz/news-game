@@ -14,8 +14,8 @@
 
 import { getProfile }          from '../npc/NpcProfile.js';
 import { EnvironmentQuery }     from './EnvironmentQuery.js';
-import { tickBaseState, setState, triggerDeparture } from './BaseStateMachine.js';
-import { installProtection, nudgeXY, SAFETY_RULES } from './Motor.js';
+import { tickBaseState, triggerDeparture } from './BaseStateMachine.js';
+import { installProtection, nudgeXY, SAFETY_RULES, setState } from './Motor.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
 import { SocialLayer }          from './SocialLayer.js';
 import { CameraReactionLayer }  from '../camera/CameraReactionLayer.js';

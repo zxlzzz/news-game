@@ -31,10 +31,6 @@ import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } fro
 import { setWalkMode } from './Motor.js';
 import { getNavGrid } from './nav/NavGrid.js';
 
-// Re-export for backward-compat
-// @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
-export { setWalkMode } from './Motor.js';
-
 const rand = (a, b) => a + Math.random() * (b - a);
 
 // ─── 区域判断 ─────────────────────────────────────────────────────────────────

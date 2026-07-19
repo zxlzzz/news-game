@@ -60,9 +60,6 @@ import { arrived } from './SteeringDecision.js';
 import { ensureWanderPath, publishGoal } from './nav/PlanService.js';
 import { despawnNpc } from '../npc/despawn.js';
 
-// @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
-export { setState, STATE_DEFS } from './Motor.js';
-
 const rand = (a, b) => a + Math.random() * (b - a);
 
 // ─── 内部：按 profile.transitions 权重表随机选下一状态，含环境前置检查 ───────
