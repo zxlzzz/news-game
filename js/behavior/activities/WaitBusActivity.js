@@ -1,6 +1,5 @@
 /** WaitBusActivity — 公交等待行为（单 NPC Activity） */
-import { setState }    from '../Motor.js';
-import { setWalkMode } from '../Motor.js';
+import { setState,setWalkMode }    from '../Motor.js';
 import { Activity }    from './Activity.js';
 
 const MAX_WAIT_TIME = 120;

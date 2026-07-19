@@ -1,7 +1,7 @@
 # 目标管线立法 v1 (r2.5)
 
 **类型**：normative（失效代码变更须同 commit 更新本文件）
-**状态**：finalized（2026-07-17）；N-1 已落地（3cd1f99）；N-2a 已落地（97c1e44）；N-2b 已落地（0dcf420）；N-3 已落地（3607cbc / f7899b7 / 603307f / 1c0f789 / 74d277a）；@deprecated compat 迁移：D2-d
+**状态**：finalized（2026-07-17；r2.5 修订 2026-07-19）；N-1 已落地（3cd1f99）；N-2a 已落地（97c1e44）；N-2b 已落地（0dcf420）；N-3 已落地（3607cbc / f7899b7 / 603307f / 1c0f789 / 74d277a）；@deprecated compat 迁移：D2-d
 **取代**：`docs/audits/behavior-redundancy-2026-07.md` 附录 C（作废）；本文件 r1（2026-07-16，被否决——三刀降级为常量改名、Goal 接口伪造为现状、冻结 bug 缺失）
 **地面真值**：审计文档责任表 1–8 为所有"起始值"数字的唯一来源，本文引用不复制。
 
@@ -163,9 +163,13 @@ N-3 后状态（D2-c 实测）。
 |------|-----------------|------|------------|------|
 | 到达阈值语义 | **6 种**（责任 1：routing 终点 / 路点推进 / navPath 推进 / walk 终点 / 角切 / 长椅半径） | **1 张表** | **1 张表**（corner_cut 已删，N3-d） | 裸距离比较 grep 零命中（Rule 7 error） |
 | 卡死/超时机制 | **6 套**（责任 2 A–F） | **1 张表 + StuckProbe 纯观测** | **2**（RECOVERY_RULES 两击制 + StuckProbe） | grep `_watchT\|_stuckOnce\|abandonAfter.*\?\?` 零命中 |
-| 位置写入路径 | **4 条**（责任 5：mot.vel / nudgeXY 步进 / setXY 传送 / Npc 内联） | **1 条**（mot.vel → integratePhysics；分离冲量与安全网为层内授权） | **1 条**（nudgeXY 步进 + setXY 传送已删，N3-b；Npc 内联已删，N3-c） | grep `npc\.[xy]\s*[+\-]?=` |
+| 位置写入路径 | **4 条**（责任 5：mot.vel / nudgeXY 步进 / setXY 传送 / Npc 内联） | **1 条**（mot.vel → integratePhysics；分离冲量与安全网为层内授权） | **2 条**（mot.vel → integratePhysics；+ seat.js:36 循环依赖兜底裸写，待 V-3 清） | grep `npc\.[xy]\s*[+\-]?=` |
 | 每目标状态位 | **≥10**（roamTarget / routeTarget / routePts / routeIdx / navPath / navIdx / mode.target / mode.nextTarget / \_watchT / \_replanned / \_stuckOnce / \_sanitized…） | **2**（`mot.goal` + `mot.path`） | **2**（mot.goal + mot.path）+ npc.roamTarget（wander 辅助，非每目标状态位，语义清晰） | grep 逐项零命中 |
 
+> **位置写入路径差距说明（D2-f 修正）**：D2-c 报「1 条」有误。`js/entity/seat/seat.js:36`
+> 存在 `else { npc.x = x; npc.y = y; }` —— seat 与 Motor 循环依赖的兜底分支，是 Motor
+> 之外的第二条坐标写入路径。`check-invariants` Rule 7 仅扫 `js/behavior/**`，扫不到
+> `js/entity/`。该条留待 V-3 的 no-direct-xy gate 处置（需先解循环依赖，非文档问题）。
 重构真伪判据：这四个数字降了才算根修；只加常量名、只补注释属化妆，直接打回。
 
 ---

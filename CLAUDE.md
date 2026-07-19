@@ -161,10 +161,13 @@ if (exit) { npc.x = exit.x; npc.alive = false; }
 BehaviorManager
   ├── BaseStateMachine  — 状态机（setState / tickBaseState）
   ├── WalkMode          — wander / path_follow
-  │     └── nav/PlanService  — A* 规划；publishGoal 是唯一目标入口
   ├── SocialLayer       — Talk / Chess / Stall 配对
   ├── ModifierLayer     — 叠加动作（phone / smoke / gesture）
   └── EnvironmentQuery  — 空间查询（只读）
+
+nav/PlanService — Planning 层横切服务，不隶属上述任一子层。
+消费者：BaseStateMachine、BehaviorManager、GotoTask / StrollTask / ExitSceneTask、
+SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.path` 唯一写入方。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
