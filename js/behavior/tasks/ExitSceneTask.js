@@ -48,6 +48,10 @@ export class ExitSceneTask {
             npc.mem('agenda').pendingBusWait = false;
             if (result === 'arrived' && stop._waiters.length < (stop.maxWaiters ?? 8)) {
               busLay.addWaiterDirect(npc, stop);
+            } else {
+              // timeout / blocked / arrived-but-full: 降级边缘出口
+              npc.mem('agenda').exitBias = 'edge';
+              this._driveExit(npc);
             }
           }, {});
           setState(npc, 'walk', 'to_bus_zone');

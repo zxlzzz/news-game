@@ -6,7 +6,7 @@ import { Director }        from '../behavior/Director.js';
 import { NpcPropManager }  from '../npc/props/NpcPropManager.js';
 import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
 import { spawnBusStop }    from '../entity/busstop/busstop.js';
-import { setState }        from '../behavior/Motor.js';
+import { setState, setXY } from '../behavior/Motor.js';
 import { publishGoal }     from '../behavior/nav/PlanService.js';
 import { spawnPedestrians } from '../npc/Pedestrians.js';
 import { makeNPC }          from '../npc/npcUtil.js';
@@ -174,9 +174,21 @@ export class SceneInitializer {
       bm.register(seller, 'stall_seller');
 
       slot.reserved = seller.id;   // 预约 seller 槽，防止他人占用（永不释放）
-      publishGoal(seller, { x: stall.x + slot.dx, y: stall.y + slot.dy }, 60, (result) => {
-        if (result === 'arrived') bm.socialLayer.onSlotArrival(seller, stall, slot);
-      }, {});
+      const _destX = stall.x + slot.dx, _destY = stall.y + slot.dy;
+      let _slotRetries = 0;
+      const _onSlotDone = (result) => {
+        if (result === 'arrived') {
+          bm.socialLayer.onSlotArrival(seller, stall, slot);
+        } else if (_slotRetries < 2) {
+          _slotRetries++;
+          publishGoal(seller, { x: _destX, y: _destY }, 60, _onSlotDone, {});
+        } else {
+          // 摊主是场景基础设施，有限重发后强制就位（setXY 是合法写入 API）
+          setXY(seller, _destX, _destY);
+          bm.socialLayer.onSlotArrival(seller, stall, slot);
+        }
+      };
+      publishGoal(seller, { x: _destX, y: _destY }, 60, _onSlotDone, {});
       setState(seller, 'walk', 'stall_seller_entry');
     }
   }

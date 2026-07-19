@@ -1,7 +1,7 @@
-# 目标管线立法 v1 (r2.5)
+# 目标管线立法 v1 (r2.6)
 
 **类型**：normative（失效代码变更须同 commit 更新本文件）
-**状态**：finalized（2026-07-17；r2.5 修订 2026-07-19）；N-1 已落地（3cd1f99）；N-2a 已落地（97c1e44）；N-2b 已落地（0dcf420）；N-3 已落地（3607cbc / f7899b7 / 603307f / 1c0f789 / 74d277a）；@deprecated compat 迁移：D2-d
+**状态**：finalized（2026-07-17；r2.6 修订 2026-07-19）；N-1 已落地（3cd1f99）；N-2a 已落地（97c1e44）；N-2b 已落地（0dcf420）；N-3 已落地（3607cbc / f7899b7 / 603307f / 1c0f789 / 74d277a）；@deprecated compat 迁移：D2-d；onDone 完备化 + 安全网：G-1
 **取代**：`docs/audits/behavior-redundancy-2026-07.md` 附录 C（作废）；本文件 r1（2026-07-16，被否决——三刀降级为常量改名、Goal 接口伪造为现状、冻结 bug 缺失）
 **地面真值**：审计文档责任表 1–8 为所有"起始值"数字的唯一来源，本文引用不复制。
 
@@ -81,6 +81,21 @@ Intent ──► Planning ──► Steering ──► Physics
 裁决文件对外导出**裁决函数**（如 `arrivalCheck(...)` 返回动作），调用方只收动作、不做比较——否则比较仍散布在调用方，铁律形同虚设。
 
 执法：`check-invariants.mjs Rule 7`。渐进收紧：现在 WARN + 白名单（12 文件，各注刀号）→ **N-3 完成时移动相关文件转 error**。活动相位计时器（ChessActivity 等，非移动政策）长期保留白名单并注明理由。
+
+### 铁律 ④：publishGoal onDone 必须处理三种 result（G-1 新增）
+
+任何 `publishGoal` 的 `onDone` 回调必须对 `'arrived'`、`'timeout'`、`'blocked'` 三种 result 全部有**明确处置**。若某种情形确实不需要操作，必须写成**显式注释的决定**，例如：
+
+```js
+publishGoal(npc, dest, timeout, (result) => {
+  if (result === 'arrived') { /* 到达处理 */ }
+  // timeout / blocked: 不重发；由寿命门稍后重触发离场
+}, meta);
+```
+
+只处理 `arrived` 的 onDone 是 **silent failure**——failed 结果被丢弃，NPC 遗留在 walk 状态无驱动源。G-1 完成后该形态按构造最多持续 2s（TRANSITIONS 'no-drive' 安全网兜底）。
+
+执法：代码审查。G-1 核账（ExitSceneTask / SceneInitializer / WaitForBusLayer）为参照标准。
 
 ---
 

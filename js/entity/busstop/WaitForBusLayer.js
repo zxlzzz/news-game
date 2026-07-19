@@ -9,7 +9,8 @@
  * 本层 update() 仅做扫描，不再 tick 单个等待者。
  */
 
-import { setState }    from '../../behavior/Motor.js';
+import { setState, setWalkMode } from '../../behavior/Motor.js';
+import { modeWander }            from '../../behavior/WalkMode.js';
 import { publishGoal } from '../../behavior/nav/PlanService.js';
 import { WaitBusActivity } from '../../behavior/activities/WaitBusActivity.js';
 import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../../core/Layout.js';
@@ -125,6 +126,14 @@ export class WaitForBusLayer {
           if (result === 'arrived') {
             stop._boardingQueue = stop._boardingQueue.filter(x => x !== n);
             despawnNpc(n, 'boarding-arrive', { entities });
+          } else {
+            // timeout / blocked: 未到车门，从 _boardingQueue 移除，恢复日常漫游
+            // 禁止原地 despawn——未到车门凭空消失违反出口语义
+            stop._boardingQueue = stop._boardingQueue.filter(x => x !== n);
+            n.mem('agenda').departing = false;
+            n.mem('social').boardingBus = null;
+            n.mem('social').waitingBusStop = null;
+            setWalkMode(n, modeWander());
           }
         }, {});
         setState(n, 'walk', 'boarding');
