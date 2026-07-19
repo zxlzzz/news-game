@@ -32,9 +32,9 @@
 | Variable | Namespace | Writer | Reader | Cleared / overwritten | Unit | Active at step |
 |----------|-----------|--------|--------|-----------------------|------|----------------|
 | `x`, `y` | `npc` (protected `_mw`) | `setXY`, `nudgeXY` → `_slideMove` | `steerRoam`, `integratePhysics`, `_separate` | next write | px | 8, 12, 13 |
-| `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`); `planCrossing` (`setSpeed` for jaywalk) | `planCrossing` crossing speed | `setState` | px/s | set 6, read WalkMode |
+| `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`) | — | `setState` | px/s | set 6, read WalkMode |
 | `direction` | `npc` | `updateFacing(npc, vx, spd, dt)` from `steerRoam` walk branch — `dirCD` 0.45 s hysteresis, `|vx|>spd×0.35` threshold; `triggerDeparture`; activity direct writes; `spot.facing`/`exit.facing` snapshots | `steerRoam` audit check; rendering | next write | ±1 | written 8 |
-| `vy` | `npc` | `setState` (=0); dead post-V-2 (routing writes removed) | none — `checkZoneTransition` migrated to `mot.vel?.vy` in V-2 | `setState` (=0) | px/s | — |
+| `vy` | `npc` | **deleted V3-a** (was dead post-V-2; `setState`归零行与字段同步删除) | — | — | — | — |
 | `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` after `applyLookahead` | `Motor#integratePhysics`: both `.vx` and `.vy` consumed; Y boundary clamps `vy` before apply | consumed `= null` by `Motor#integratePhysics`, same frame | px/s | written 8, consumed 13 |
 | `mot.goal` | `motor` | `PlanService.publishGoal` (sole writer; clears on arrival/timeout/blocked) | `steerRoam` walk branch (arrival + timeout fire), `integratePhysics` (elapsed tick + timeout + progress two-hit), `BehaviorManager._sepScale` | cleared by whichever path fires result first; `onDone` callback called exactly once | — | 5.5, 8, 13 |
 | `mot.path` | `motor` | `PlanService.ensurePath` / `ensureWanderPath` (sole writers) | `steerRoam` walk branch (idx advance + vel computation) | null on replan, blocked, arrival, or wander-roamTarget change | — | 5.5, 8 |
@@ -77,7 +77,7 @@ if (mot.vel) {
 - `_slideMove` additionally clamps X displacement at `minX`/`maxX`.
 - `npc.direction` carries only `sign(vx)` (with `dirCD` hysteresis) and is set in step 9.
 - `npc.speed` is set by `setState` on state entry only.
-- `npc.vy` is reset to 0 by `setState` only; effectively dead (`checkZoneTransition` reads `mot.vel?.vy`).
+- `npc.vy` 已在 V3-a 删除（字段及 setState 归零行均移除；`checkZoneTransition` 早于此已迁至 `mot.vel?.vy`）。
 
 ---
 

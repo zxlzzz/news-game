@@ -90,7 +90,7 @@
 |---|---|---|---|
 | **V-1** | integratePhysics 重写（D1）；steer 停写 `npc.vy`/`setSpeed`，只写 `mot.vel`；Y 钳制迁移 | 标量回退分支不存在于代码中；`grep 'direction \* .*speed'` 在 Motor 零命中 | ✅ 已落地（commit `f1a8ad9`） |
 | **V-2** | 消费者迁移（D2/D3/D4）：StuckProbe gate 改 state 集；zone 门改读 `mot.vel?.vy`；`updateFacing` 单写入点；`npc.vy/speed` 写入删除；dead-code `!mode` 删除 | survey 中 [物理积分] 标签下 `direction/speed/vy` 条目全部消失或改读 vel | ✅ 已落地（commit `c037a59` + `fbb455f`） |
-| **V-3** | 清理 + 不变量（D5/D6）：内联路径 CONTRACT、check-invariants V1–V3 gate（no-direct-xy/no-direction-in-physics/no-npc.vy-in-steer）、死字段/死 API 删除 | `check-invariants.mjs` 全绿（Rules 1–6 已通过，V1–V3 gate 待加）；survey 重跑对账 | 🔲 待实施 |
+| **V-3** | 清理（D6）+ 不变量：死字段 npc.vy 删除（D6-1）；死 API setSpeed 删除（D6-2）；seat.js typeof 守卫删除（D6-3）；check-invariants Rule 9/10/11 新增。注：D5 内联路径 CONTRACT 已被 N-3 取代（Npc.js 内联积分已删、骑手由 BehaviorManager ride 状态托管），D5 不再执行。 | `check-invariants.mjs` Rules 1–11 全绿；grep npc.vy/setSpeed 零命中 | ✅ 已落地（V3-a: `107951d`；V3-b: `832c621`） |
 
 每个 batch 交付后本对话静态审计；运行验证（harness 确定性冒烟三件套）
 是否执行、何时执行由用户决定。
