@@ -137,12 +137,14 @@ for (let frame = 0; frame < TOTAL_FRAMES; frame++) {
   for (const npc of allNpcs) {
     const ag  = npc.mem('agenda');
     const mot = npc.mem('motor');
-    // New departure attempt starting (routeTarget with exitType just appeared)
-    if (npc.alive && mot.routeTarget?.exitType && npc._depSince == null) {
+    // New departure attempt starting (offWorld edge-exit or exit_building goal published)
+    const isExitGoal = mot.goal?.meta &&
+      (mot.goal.meta.offWorld === true || mot.goal.meta.arrivalRule === 'exit_building');
+    if (npc.alive && ag.departing && isExitGoal && npc._depSince == null) {
       npc._depSince = frame;
     }
-    // Attempt ended without death: E2 cleared departing or ExitSceneTask aborted
-    if (npc.alive && npc._depSince != null && !ag.departing && !mot.routeTarget?.exitType) {
+    // Attempt ended without death: ag.departing cleared (ExitSceneTask aborted)
+    if (npc.alive && npc._depSince != null && !ag.departing) {
       npc._depSince = null;
     }
     // Success: NPC died on arrival
