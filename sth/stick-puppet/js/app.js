@@ -585,7 +585,7 @@ function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = '#f5f0eb'; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const gy = CY + 82;
+  const gy = CY + getSkeleton().groundY;
   ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.width, gy);
   ctx.strokeStyle = '#ccc'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]);
 

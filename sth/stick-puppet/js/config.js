@@ -246,6 +246,11 @@ export async function initSkeletons() {
   } catch (e) {
     console.warn('[stick-puppet] skeleton.json 加载失败，使用内置定义', e.message);
   }
+
+  // 为每套骨架计算 groundY = 编辑器空间 defaultPose 最大 y（地面接触线在 CY 以下的偏移）
+  for (const sk of Object.values(SKELETONS)) {
+    sk.groundY = Math.max(...Object.values(sk.defaultPose).map(p => p.y));
+  }
 }
 
 export const JOINT_RADIUS = 6;
