@@ -3,6 +3,7 @@ import {
   depthLineWidth, depthLineColor,
   ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../../core/Layout.js';
+import { vehicleAnchors } from '../../../assets/vehicle-anchors.js';
 
 function lenv(g, baseY, wScale = 1.0) {
   const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
@@ -311,14 +312,14 @@ function _moto(g, vehicle, highlight) {
   const groundY = vehicle.y;
   const rs = u * 0.8;   // 骑手缩放
 
-  // 量自 mobike 首帧 FK 推导 2026-07
+  const va    = vehicleAnchors.mobike;
   const W     = (jx, jy) => ({ x: x + d * jx * rs, y: groundY + jy * rs });
-  const hip   = W(  0, -82);
-  const handL = W( 50, -76);   // l_hand
-  const handR = W( 47, -75);   // r_hand
+  const hip   = W(va.hip_jx,   va.hip_jy);
+  const handL = W(va.handL_jx, va.handL_jy);
+  const handR = W(va.handR_jx, va.handR_jy);
   const bar   = handL.x * d >= handR.x * d ? handL : handR;
-  const footF = W(-28, -42);   // r_foot (forward peg)
-  const footR = W(-37, -46);   // l_foot (rear peg)
+  const footF = W(va.footF_jx, va.footF_jy);
+  const footR = W(va.footR_jx, va.footR_jy);
 
   // 局部坐标：ux 沿行驶方向，uy 向上为正（单位 u）
   const P = (ux, uy) => ({ x: x + d * ux * u, y: groundY - uy * u });

@@ -9,6 +9,7 @@
 import { readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const ROOT = dirname(dirname(__filename));
@@ -364,6 +365,16 @@ console.log('Rule 11: no npc.vy in js/ (field deleted in V3-a)');
   } else {
     okMsg();
   }
+}
+
+// ── Rule 12 ────────────────────────────────────────────────────────────────
+// assets/vehicle-anchors.js must match current FK derivation from skeleton+clips.
+console.log('Rule 12: vehicle-anchors.js matches FK derivation');
+try {
+  execSync(`node ${join(ROOT, 'scripts', 'derive-vehicle-anchors.mjs')} --check`, { stdio: 'inherit' });
+  okMsg();
+} catch {
+  fail('vehicle-anchors.js is stale; run: node scripts/derive-vehicle-anchors.mjs --write');
 }
 
 // ── Summary ─────────────────────────────────────────────────────────────────

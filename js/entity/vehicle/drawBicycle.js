@@ -3,6 +3,7 @@ import {
   depthLineWidth, depthLineColor,
   ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../../core/Layout.js';
+import { vehicleAnchors } from '../../../assets/vehicle-anchors.js';
 
 function lenv(g, baseY, wScale = 1.0) {
   const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
@@ -15,18 +16,17 @@ export function drawBicycle(g, n) {
   g.lineStyle(0);
   const s = n.scale, d = n.direction, ground = n.y;
 
-  // 量自 bike 首帧 FK 推导 2026-07
-  // world = (n.x + jx*s*d,  n.y + jy*s);  jy 负值 = 地面以上
-  const hipX   = n.x;                    // body   jx= 0,  jy=-82
-  const hipY   = n.y - 82 * s;
-  const barX   = n.x + 65 * s * d;       // r_hand jx=65,  jy=-66  (always forward)
-  const barY   = n.y - 66 * s;
-  const crankX = n.x + 28 * s * d;       // avg foot-midpoint across all frames: jx≈28, jy≈-37
-  const crankY = n.y - 37 * s;
-  const wR     = 25 * s;
+  const va     = vehicleAnchors.bike;
+  const hipX   = n.x + va.hip_jx   * s * d;
+  const hipY   = n.y + va.hip_jy   * s;
+  const barX   = n.x + va.bar_jx   * s * d;
+  const barY   = n.y + va.bar_jy   * s;
+  const crankX = n.x + va.crank_jx * s * d;
+  const crankY = n.y + va.crank_jy * s;
+  const wR     = va.wR * s;
   const wCy    = ground - wR;
-  const rwx    = n.x - 5 * s * d;        // hip_jx(0) - 5
-  const fwx    = n.x + 72 * s * d;       // bar_jx(65) + 7
+  const rwx    = n.x + va.rw_x_coeff * s * d;
+  const fwx    = n.x + va.fw_x_coeff * s * d;
 
   // feet: getAnchor preserved — animation contact points (crank arms rotate each frame)
   const footL = n.getAnchor('foot_l');
@@ -65,17 +65,18 @@ export function drawBicycle(g, n) {
 
 export function drawEbike(g, n) {
   g.lineStyle(0);
-  // 量自 mobile 首帧 FK 推导 2026-07（s=n.scale；原 *1.2 已折入常量，视觉不变）
   const s = n.scale, d = n.direction, ground = n.y;
-  const hipX  = n.x + (-9)  * s * d;    // body   jx=-9,  jy=-59
-  const hipY  = n.y + (-59) * s;
-  const barX  = n.x +  32   * s * d;    // l_hand jx=32,  jy=-81  (forward hand)
-  const barY  = n.y + (-81) * s;
-  const wR    = 17.28 * s;              // 14.4 * 1.2
+
+  const va    = vehicleAnchors.mobile;
+  const hipX  = n.x + va.hip_jx      * s * d;
+  const hipY  = n.y + va.hip_jy      * s;
+  const barX  = n.x + va.bar_jx      * s * d;
+  const barY  = n.y + va.bar_jy      * s;
+  const wR    = va.wR * s;
   const wCy   = ground - wR;
-  const rwx   = n.x + (-32) * s * d;   // hip_jx(-9) − 23.04 (=19.2×1.2)
-  const fwx   = n.x +  38   * s * d;   // bar_jx(32) + 5.76  (=4.8×1.2)
-  const platY = n.y + (-17) * s;       // foot-mid jy(-19.5) + 2.88 (=2.4×1.2)
+  const rwx   = n.x + va.rw_x_coeff  * s * d;
+  const fwx   = n.x + va.fw_x_coeff  * s * d;
+  const platY = n.y + va.plat_y_coeff * s;
 
   // wheels
   lenv(g, ground, 0.9);
@@ -94,9 +95,9 @@ export function drawEbike(g, n) {
 
   // battery box
   g.lineStyle(0);
-  const boxW  = 17.28 * s;             // 14.4 * 1.2
-  const boxH  = 15.84 * s;             // 13.2 * 1.2
-  const boxCx = n.x + (-35) * s * d;   // hip_jx(-9) − 25.92 (=21.6×1.2)
+  const boxW  = va.boxW * s;
+  const boxH  = va.boxH * s;
+  const boxCx = n.x + va.boxCx_x_coeff * s * d;
   g.beginFill(FILL_SHADE, 1);
   g.drawRect(boxCx - boxW / 2, hipY - boxH, boxW, boxH);
   g.endFill();
