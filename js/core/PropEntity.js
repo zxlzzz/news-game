@@ -86,6 +86,8 @@ export class PropEntity extends Entity {
         reserved: null,
       }));
     }
+
+    if (config.affordances != null) this.affordances = config.affordances;
   }
 
   _computeFootprint() {

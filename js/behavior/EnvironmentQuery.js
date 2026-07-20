@@ -8,6 +8,7 @@
 
 import { SIDEWALK_FAR_Y, FAR_Y, NEAR_Y } from '../core/Layout.js';
 import { getNavGrid, CELL, ROAD } from './nav/NavGrid.js';
+import { AffordanceDefaults } from '../core/AffordanceDefaults.js';
 
 function _sameSide(y1, y2) {
   const side = y => y < FAR_Y ? 'far' : y >= NEAR_Y ? 'near' : 'road';
@@ -17,10 +18,25 @@ import { findFree as _findFreeBench,   isNear as _isNearBench   } from '../entit
 import { findFree as _findFreeVending, isNear as _isNearVending  } from '../entity/vending/vending.js';
 import { findFree as _findFreeChess,   isNear as _isNearChess    } from '../entity/chess-table/chessTable.js';
 
+// Sample a position from an affordance descriptor relative to entity.
+// Returns {x,y} or null (ambient anchor handled separately).
+function _samplePos(aff, entity) {
+  if (aff.ring) {
+    const [r0, r1] = aff.ring;
+    const angle = Math.random() * Math.PI * 2;
+    const r = r0 + Math.random() * (r1 - r0);
+    return { x: entity.x + Math.cos(angle) * r, y: entity.y + Math.sin(angle) * r };
+  }
+  const dx = Array.isArray(aff.dx) ? aff.dx[0] + Math.random() * (aff.dx[1] - aff.dx[0]) : (aff.dx ?? 0);
+  const dy = Array.isArray(aff.dy) ? aff.dy[0] + Math.random() * (aff.dy[1] - aff.dy[0]) : (aff.dy ?? 0);
+  return { x: entity.x + dx, y: entity.y + dy };
+}
+
 export class EnvironmentQuery {
   /** @param {EntityManager} entityManager */
   constructor(entityManager) {
     this.em = entityManager;
+    this._ambientAffordances = [];
   }
 
   /** 半径内最近的指定 propType 道具；无则返回 null */
@@ -194,5 +210,157 @@ export class EnvironmentQuery {
         if (s.reserved === npc.id) s.reserved = null;
       }
     }
+  }
+
+  // ─── Affordance Pool ──────────────────────────────────────────────────────
+
+  /** 注册无实体的 ambient 声明（如 grass_rest）；anchor 为 (npc)=>{x,y}|null 函数 */
+  registerAmbientAffordance(decl) {
+    this._ambientAffordances.push(decl);
+  }
+
+  /**
+   * 从半径内可用 affordance 中加权随机抽取一个目的地。
+   * @param {object} npc
+   * @param {number} [radius=350]
+   * @returns {{x,y,entity,aff}|null}
+   */
+  drawAffordance(npc, radius = 350) {
+    const candidates = [];
+
+    // 1. Entity-sourced affordances
+    for (const e of this.em.entities) {
+      if (!e.alive) continue;
+      if (Math.hypot(e.x - npc.x, e.y - npc.y) > radius) continue;
+      if (!_sameSide(npc.y, e.y)) continue;
+
+      // explicit entity.affordances overrides defaults; may be array or single object
+      const raw = e.affordances ?? AffordanceDefaults[e.propType];
+      if (!raw) continue;
+      const affList = Array.isArray(raw) ? raw : [raw];
+
+      for (const a of affList) {
+        if (a.slots != null && (e._affOcc?.[a.kind] ?? 0) >= a.slots) continue;
+
+        // ring: up to 5 sample attempts for a clear spot; dx/dy: single attempt
+        let pos = null;
+        const tries = a.ring ? 5 : 1;
+        for (let i = 0; i < tries; i++) {
+          const p = _samplePos(a, e);
+          if (p && this.isClearSpot(p.x, p.y)) { pos = p; break; }
+        }
+        if (!pos) continue;
+
+        const w = a.weight * (a.weightMul ? a.weightMul(npc, this) : 1);
+        if (w > 0) candidates.push({ x: pos.x, y: pos.y, entity: e, aff: a, w });
+      }
+    }
+
+    // 2. Ambient affordances (no entity)
+    for (const a of this._ambientAffordances) {
+      const pos = a.anchor(npc);
+      if (!pos) continue;
+      if (!this.isClearSpot(pos.x, pos.y)) continue;
+      const w = a.weight * (a.weightMul ? a.weightMul(npc, this) : 1);
+      if (w > 0) candidates.push({ x: pos.x, y: pos.y, entity: null, aff: a, w });
+    }
+
+    if (candidates.length === 0) return null;
+
+    // 3. Weighted random pick
+    let total = 0;
+    for (const c of candidates) total += c.w;
+    let r = Math.random() * total;
+    for (const c of candidates) {
+      r -= c.w;
+      if (r <= 0) return { x: c.x, y: c.y, entity: c.entity, aff: c.aff };
+    }
+    const last = candidates[candidates.length - 1];
+    return { x: last.x, y: last.y, entity: last.entity, aff: last.aff };
+  }
+
+  /**
+   * 净空检查：NavGrid 格 cost > 0 且无驻留 NPC（state ∉ {walk,run,jog}）。
+   * @param {number} x @param {number} y @param {number} [R=16]
+   */
+  isClearSpot(x, y, R = 16) {
+    const grid = getNavGrid();
+    if (grid) {
+      const steps = Math.ceil(R / CELL);
+      for (let gx = -steps; gx <= steps; gx++) {
+        for (let gy = -steps; gy <= steps; gy++) {
+          const wx = x + gx * CELL, wy = y + gy * CELL;
+          if (Math.hypot(wx - x, wy - y) > R) continue;
+          const cell = grid.worldToCell(wx, wy);
+          if (grid.cost(cell.gx, cell.gy) === 0) return false;
+        }
+      }
+    }
+    const MOVING = new Set(['walk', 'run', 'jog']);
+    for (const e of this.em.entities) {
+      if (!e.alive || !e.renderer) continue;
+      if (MOVING.has(e.state)) continue;
+      if (Math.hypot(e.x - x, e.y - y) < R) return false;
+    }
+    return true;
+  }
+
+  /**
+   * 占用 affordance 槽（_affOcc 唯一写入点）。
+   * @param {object|null} entity  关联实体（ambient 为 null）
+   * @param {string} kind         affordance.kind
+   */
+  occupyAffordance(entity, kind) {
+    if (!entity) return;
+    if (!entity._affOcc) entity._affOcc = {};
+    entity._affOcc[kind] = (entity._affOcc[kind] ?? 0) + 1;
+  }
+
+  /**
+   * 释放 affordance 槽（_affOcc 唯一写入点）。
+   * @param {object|null} entity
+   * @param {string} kind
+   */
+  releaseAffordance(entity, kind) {
+    if (!entity?._affOcc) return;
+    entity._affOcc[kind] = Math.max(0, (entity._affOcc[kind] ?? 1) - 1);
+  }
+
+  /** 按 tag 查找 ambient 声明（tags 数组包含 tag 即匹配） */
+  findAffordanceByTag(tag) {
+    return this._ambientAffordances.filter(a => a.tags?.includes(tag));
+  }
+
+  /**
+   * 调试：console.table 该 NPC 半径内的完整候选池快照（含过滤原因）。
+   * @param {object} npc @param {number} [radius=350]
+   */
+  debugPool(npc, radius = 350) {
+    if (!npc) { console.log('[AffordancePool] no npc'); return; }
+    const rows = [];
+
+    for (const e of this.em.entities) {
+      if (!e.alive) continue;
+      const d = Math.hypot(e.x - npc.x, e.y - npc.y);
+      const raw = e.affordances ?? AffordanceDefaults[e.propType];
+      if (!raw) continue;
+      const affList = Array.isArray(raw) ? raw : [raw];
+      for (const a of affList) {
+        let reason = '';
+        if (d > radius)                                                reason = 'out_of_range';
+        else if (!_sameSide(npc.y, e.y))                               reason = 'wrong_side';
+        else if (a.slots != null && (e._affOcc?.[a.kind] ?? 0) >= a.slots) reason = 'slots_full';
+        const effW = a.weight * (a.weightMul ? a.weightMul(npc, this) : 1);
+        rows.push({ kind: a.kind, propType: e.propType, dist: Math.round(d), use: a.use,
+          weight: a.weight, eff_w: +effW.toFixed(3), slots: a.slots ?? '-',
+          occ: e._affOcc?.[a.kind] ?? 0, reason: reason || 'ok' });
+      }
+    }
+    for (const a of this._ambientAffordances) {
+      const effW = a.weight * (a.weightMul ? a.weightMul(npc, this) : 1);
+      rows.push({ kind: a.kind, propType: 'ambient', dist: '-', use: a.use,
+        weight: a.weight, eff_w: +effW.toFixed(3), slots: '-', occ: '-', reason: 'ok' });
+    }
+    console.table(rows);
   }
 }

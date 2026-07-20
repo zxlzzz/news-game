@@ -170,6 +170,7 @@ export class StreetScene {
       else if (k === 'z') { this.zoom = 1; this.scrollY = 0; this._clampScroll(); this._applyCamera(); }
       else if (k === 'n') { window.__navDebug = !window.__navDebug; console.log('[NavDebug]', window.__navDebug ? 'ON' : 'OFF'); }
       else if (k === 'm') audit.dump(this.behaviorManager?.npcs ?? []);
+      else if (k === 'o') this.behaviorManager?.envQuery?.debugPool(this.behaviorManager?.npcs?.[0]);
       else if (k === 'c') this._takePhoto();
       else if (k === 's') this._newsUI?.openSettings();
       else if (k === 'a') { if (this._newsUI?.isOpen()) this._newsUI.close(); else this._newsUI?.openArchive(); }
