@@ -23,7 +23,7 @@
 | 10 | BM per-NPC | `checkZoneTransition` | stateless `mot.vel` override: ejects wander NPC from road/bike-lane each frame (no push/pop stack) |
 | 11 | BM per-NPC | `tickModifiers` | overlay gestures |
 | 12 | BM | `_separate` → `nudgeXY` → `_slideMove` | separation pushes committed this step; uses positions from steps 8/9; NPCs with `profile.separate === false` excluded from both movers and statics |
-| 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | `mot.vel` present: clamp `vel.vy` at Y boundary, consume `{vx,vy}` → `_slideMove`; `mot.vel` absent: stationary (no `_slideMove`); progress monitor uses `RECOVERY_RULES.progress_monitor` (window 1.5 s, movedLT 15 px); Npc.js inline movement deleted in N-3c — all registered NPCs use this path | **final position commitment of the frame** |
+| 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | `mot.vel` present: clamp `vel.vy` at Y boundary, consume `{vx,vy}` → **`_lookaheadDeflect`** (NavGrid read: probes `SAFETY_RULES.wall_avoid.probeCells` cells ahead; if blocked and current cell walkable, rotates velocity 90° to clear perpendicular side; counts `avoid_steer`; no-op if both sides blocked) → `_slideMove`; `mot.vel` absent: stationary (no `_slideMove`); progress monitor uses `RECOVERY_RULES.progress_monitor` (window 1.5 s, movedLT 15 px); Npc.js inline movement deleted in N-3c — all registered NPCs use this path | **final position commitment of the frame** |
 
 ---
 
@@ -67,7 +67,10 @@ if (mot.vel) {
   if (npc.maxY != null && tentY > npc.maxY && npc.y <= npc.maxY) vy = 0;
   else if (npc.minY != null && tentY < npc.minY && npc.y >= npc.minY) vy = 0;
   mot.vel = null;
-  _slideMove(npc, vx * dt, vy * dt);
+  // Motor-level lookahead deflect (責任3-E): NavGrid read, perpendicular 90° rotation,
+  // fires after separation (step 12) which can push NPC near walls.
+  const defl = _lookaheadDeflect(npc, vx, vy);
+  _slideMove(npc, defl.vx * dt, defl.vy * dt);
 }
 // else: no vel → stationary this frame (no _slideMove called)
 ```

@@ -47,6 +47,11 @@ export const SAFETY_RULES = {
   lookahead:     { probeCells: 4, rotProbeCells: 2, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',                                    src: '责任3-D' },
   separation:    { baseRadius: 24, atScale: 0.18,                                                  reason: 'NPC 分离冲量半径',                                src: '责任8-分离半径' },
   jaywalk_sprint:{ speedK: 2.4, anim: 'run',                                                       reason: '马路格速度倍增（NavGrid cell cost 空间派生）', src: 'N-2b' },
+  // separation（step 12）可将 NPC 推至墙边，令 step-8 的 applyLookahead 速度在接触前已过期。
+  // wall_avoid 在 step-13 消费 vel 时补做一次 Motor 级前瞻：若正前方 probeCells 格被阻，
+  // 且当前格可走，则把速度旋转 90° 到可通行的垂直侧，保持速度模长，不做降速。
+  // 骑手在道路格（cost=250≠0）行驶，前方道路格同样非阻挡，天然不触发；无需特判。
+  wall_avoid:    { probeCells: 2, rotProbeCells: 1,                                                 reason: 'step-13 撞墙预判：separation 后末帧前瞻垂直偏转', src: '责任3-E' },
 };
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
@@ -196,6 +201,44 @@ function _navBlocked(grid, wx, wy) {
 }
 
 /**
+ * Motor 级末帧前瞻偏转（责任3-E）。
+ * separation（step 12）可将 NPC 推至墙边；此函数在 integratePhysics（step 13）消费
+ * mot.vel 后、_slideMove 前运行，预判正前方阻挡并垂直偏转，保持速度模长不减速。
+ *   • 当前格已阻挡（逃逸模式）→ 直通 _slideMove
+ *   • 前方 probeCells 格无阻挡 → 不修改速度
+ *   • 两侧垂直均阻挡 → 不修改（交 _slideMove 处理）
+ *   • 一侧或双侧可通 → 取可通侧旋转 90°，双侧可通取左侧（确定性，无振荡）
+ */
+function _lookaheadDeflect(npc, vx, vy) {
+  const grid = getNavGrid();
+  if (!grid) return { vx, vy };
+
+  const mag = Math.hypot(vx, vy);
+  if (mag < 0.001) return { vx, vy };
+
+  // Escape mode: already in blocked cell → pass through
+  if (_navBlocked(grid, npc.x, npc.y)) return { vx, vy };
+
+  const wa = SAFETY_RULES.wall_avoid;
+  const nx = vx / mag, ny = vy / mag;
+
+  // Probe ahead
+  if (!_navBlocked(grid, npc.x + nx * wa.probeCells * CELL, npc.y + ny * wa.probeCells * CELL))
+    return { vx, vy };
+
+  // Ahead blocked — check perpendicular sides (left: rotate +90°, right: rotate -90°)
+  const leftOk  = !_navBlocked(grid, npc.x + (-ny) * wa.rotProbeCells * CELL, npc.y + nx * wa.rotProbeCells * CELL);
+  const rightOk = !_navBlocked(grid, npc.x +   ny  * wa.rotProbeCells * CELL, npc.y - nx * wa.rotProbeCells * CELL);
+
+  if (!leftOk && !rightOk) return { vx, vy };
+
+  audit.count(npc, 'avoid_steer');
+  // Both clear → prefer left (deterministic, avoids oscillation)
+  if (leftOk) return { vx: -ny * mag, vy:  nx * mag };
+  return          { vx:  ny * mag, vy: -nx * mag };
+}
+
+/**
  * 尝试移动 (dx, dy)，NavGrid 阻挡时做轴分离滑行，位移归一化到原速度模长（贴边不减速）。
  *   0. 自身格已 BLOCKED → 无条件放行（逃逸）。
  *   1. 全向 → 单轴 → 垂直让行逐级尝试。
@@ -286,7 +329,8 @@ export function integratePhysics(npc, delta) {
     }
     mot._obsVxSign = vxSign;
     mot.vel = null;
-    _slideMove(npc, vx * dt, vy * dt);
+    const defl = _lookaheadDeflect(npc, vx, vy);
+    _slideMove(npc, defl.vx * dt, defl.vy * dt);
   }
   // else: mot.vel absent → stationary this frame
 

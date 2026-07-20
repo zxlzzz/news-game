@@ -37,6 +37,7 @@
 | V-final（速度统一线收尾核账） | 五处已知修正（Rule 10 正则收紧、Rule 9 结构修、哈希订正、Npc.js 缩进、speed 读者描述）；A–H 八段核账；封存报告 | ✅ 已落地 | `docs/audits/velocity-unification-closing-2026-07.md` |
 | G-1（publishGoal 完备化 + 无驱动安全网） | 铁律 ④（goal-pipeline r2.6）；ExitSceneTask 公交分支降级边缘出口；SceneInitializer 摊主有限重发→setXY 就位；WaitForBusLayer 车门 timeout→modeWander；`_resolveTimeout` 收紧（departing && goal）；TRANSITIONS 'no-drive' priority 8 安全网（walk/run 无驱动 2s→stand）；StuckProbe STATE: 排除带 goal 行走 | ✅ 已落地 | `js/behavior/BaseStateMachine.js`；`js/behavior/tasks/ExitSceneTask.js`；`js/scenes/SceneInitializer.js`；`js/entity/busstop/WaitForBusLayer.js`；`js/behavior/StuckProbe.js`；`js/debug/MovementAudit.js` |
 | 资产渲染一致性（A/B/C） | A：编辑器地面线改用 skeleton groundY（删硬编码 CY+82）；B：StickRenderer 头半径改读 skeleton.json（人 10→16，狗 7→8）；C：车辆绘制锚点改用 assets/vehicle-anchors.js（FK 生成，check-invariants Rule 12） | ✅ 已落地 | `sth/stick-puppet/js/app.js`；`js/core/StickRenderer.js`；`js/entity/vehicle/drawBicycle.js`；`js/entity/vehicle/drawVehicle.js`；`assets/vehicle-anchors.js`；`scripts/derive-vehicle-anchors.mjs` |
+| Motor 前瞻避让（撞墙问题根修第一刀） | `SAFETY_RULES.wall_avoid`（probeCells=2, rotProbeCells=1）；`_lookaheadDeflect` 在 `integratePhysics` step-13 消费 vel 后、`_slideMove` 前运行：正前方阻挡且当前格可走时垂直偏转 90°，保持速度模长；两侧均阻挡直通 `_slideMove`；`avoid_steer` 计数器加入 `MovementAudit` | ✅ 已落地 | `js/behavior/Motor.js#SAFETY_RULES,_lookaheadDeflect,integratePhysics`；`js/debug/MovementAudit.js`；`docs/contracts/movement-dataflow.md §1 step-13` |
 
 ---
 
