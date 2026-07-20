@@ -22,6 +22,8 @@ import { StrollTask }       from './tasks/StrollTask.js';
 import { UseBenchTask }     from './tasks/UseBenchTask.js';
 import { UseSmartPropTask } from './tasks/UseSmartPropTask.js';
 import { ExitSceneTask }    from './tasks/ExitSceneTask.js';
+import { VisitTask }        from './tasks/VisitTask.js';
+import { StrollLoopTask }   from './tasks/StrollLoopTask.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const MAX_ABORTS = 3;
@@ -38,6 +40,12 @@ export class Agenda {
     this._abortCounts  = new Map();
     this._readyToExit  = false;
     this._scanTimer    = rand(0, 2);  // stagger first evaluation across NPCs
+
+    if (profile.agendaTemplate === 'park_idler') {
+      this._parkCredits = Math.floor(rand(1, 4));  // 1, 2, or 3
+      this._parkAborts  = 0;
+      this._parkPhase   = 'stroll';
+    }
   }
 
   /** 从 profile.desires 随机取 0-2 个，加上始终存在的 'stroll' */
@@ -64,7 +72,11 @@ export class Agenda {
     this._scanTimer -= dt;
     if (runner.primary) return;
     if (this._scanTimer > 0) return;
-    this._pickGoal(npc, runner);
+    if (this._profile.agendaTemplate === 'park_idler') {
+      this._pickParkIdlerGoal(npc, runner);
+    } else {
+      this._pickGoal(npc, runner);
+    }
   }
 
   _pickGoal(npc, runner) {
@@ -139,6 +151,74 @@ export class Agenda {
       case 'use_trash':   return new UseSmartPropTask('use_trash', this._envQuery);
       case 'stroll':
       default:            return new StrollTask({ duration: rand(8, 22) });
+    }
+  }
+
+  // ── park_idler 模板 ─────────────────────────────────────────────────────────
+
+  _pickParkIdlerGoal(npc, runner) {
+    this._scanTimer = rand(1, 3);
+
+    if (this._parkCredits <= 0 || this._readyToExit) {
+      this._readyToExit = true;
+      runner.setPrimary(new ExitSceneTask(), npc);
+      return;
+    }
+
+    if (this._parkPhase === 'stroll') {
+      const segs = Math.floor(rand(2, 5));  // 2, 3, or 4 waypoints
+      runner.setPrimary(new StrollLoopTask(segs), npc, (result) => {
+        if (result === 'done') {
+          this._parkPhase  = 'visit';
+          this._parkAborts = 0;
+        } else {
+          this._parkAborts++;
+          if (this._parkAborts >= MAX_ABORTS) {
+            this._parkCredits--;
+            this._parkPhase  = 'stroll';
+            this._parkAborts = 0;
+          }
+        }
+      });
+      return;
+    }
+
+    // parkPhase === 'visit': draw affordance and route
+    const poi = this._envQuery.drawAffordance(npc, 350);
+    if (!poi) {
+      this._parkCredits--;
+      this._parkPhase = 'stroll';
+      return;
+    }
+
+    const task = this._routePoi(poi);
+    if (!task) {
+      this._parkCredits--;
+      this._parkPhase = 'stroll';
+      return;
+    }
+
+    runner.setPrimary(task, npc, (result) => {
+      if (result === 'done') {
+        this._parkCredits--;
+      } else {
+        this._parkAborts++;
+        if (this._parkAborts >= MAX_ABORTS) {
+          this._parkCredits--;
+          this._parkAborts = 0;
+        }
+      }
+      this._parkPhase = 'stroll';
+    });
+  }
+
+  /** POI → task 路由：use:'visit'→VisitTask; 'bench'→UseBenchTask; 'smart_prop'→UseSmartPropTask */
+  _routePoi(poi) {
+    switch (poi.aff.use) {
+      case 'bench':      return new UseBenchTask(this._envQuery);
+      case 'smart_prop': return new UseSmartPropTask(poi.aff.kind, this._envQuery);
+      case 'visit':
+      default:           return new VisitTask(poi, this._envQuery);
     }
   }
 }

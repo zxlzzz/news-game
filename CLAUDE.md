@@ -176,13 +176,17 @@ SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.
 `crosswalkCost / jaywalkRoadCost`）；不存在过街子程序。
 骑手 profile：`{agenda:false, separate:false, initial:'ride'}`（N-3 集成）。
 
+**affordance 池**：`EnvironmentQuery.drawAffordance(npc, radius)` 加权随机抽取目的地；
+声明来源：`AffordanceDefaults.js`（propType 默认）、`entity.affordances`（scene.json 覆盖）、`registerAmbientAffordance`（区域型 POI）。
+`_affOcc` 唯一写入点 = `occupyAffordance / releaseAffordance`（EnvironmentQuery.js）；park_idler NPC 用 `{agendaTemplate:'park_idler'}` profile 驱动 stroll→visit 循环。
+
 ---
 
 ## 工作流
 
 - CC 分支命名：`claude/<slug>` 前缀
 - Windows MINGW64 环境：交付**完整文件内容**，不走 patch/diff 格式
-- 调试：`js/behavior/DebugLog.js` + DebugOverlay
+- 调试：`js/behavior/DebugLog.js` + DebugOverlay；键 'o' → `envQuery.debugPool(npcs[0])` 打印 affordance 候选池快照（kind/weight/eff_w/reason）
 - **禁止运行**：默认禁止运行游戏 / harness / 模拟验证；静态验证（`check-invariants.mjs`、读代码、grep）不受限；运行验证仅在用户明确要求时执行
 - **静态验证优先**：有疑问先 grep/读代码，确认后再改；不确定时列出不确定点交用户决策，不猜
 - **验收标准先行**：每个子任务开始前在 CLAUDE.md 或 PR 描述中写清楚验收条件；没有验收标准的任务禁止提交

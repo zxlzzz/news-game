@@ -8,7 +8,8 @@ import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
 import { spawnBusStop }    from '../entity/busstop/busstop.js';
 import { setState, setXY } from '../behavior/Motor.js';
 import { publishGoal }     from '../behavior/nav/PlanService.js';
-import { spawnPedestrians } from '../npc/Pedestrians.js';
+import { spawnPedestrians, spawnOnePedestrian } from '../npc/Pedestrians.js';
+import { Agenda } from '../behavior/Agenda.js';
 import { makeNPC }          from '../npc/npcUtil.js';
 import { spawnChess }       from '../npc/Chess.js';
 import { spawnDogWalker }   from '../npc/DogWalker.js';
@@ -129,7 +130,41 @@ export class SceneInitializer {
       { x: WORLD_WIDTH + 30, y: PARK_TOP + 30,  facing: -1 },
     ];
 
+    // ── Ambient affordance: 公园草地休息点（无实体，区域采样）─────────────────────
+    bm.envQuery.registerAmbientAffordance({
+      kind:         'grass_rest',
+      arrivalState: 'sit_ground',
+      dur:          [10, 25],
+      weight:       0.10,
+      slots:        null,
+      facing:       null,
+      use:          'visit',
+      tags:         ['grass_rest'],
+      anchor:       (npc) => npc.y >= PARK_TOP ? navGrid.sampleWalkableNear(npc, 200) : null,
+      weightMul:    (npc, env) => env.nearestFreeBench(npc, 200) ? 0.3 : 1,
+    });
+
     spawnPedestrians(em, sr, bm, spawnPoints);
+
+    // ── Park idlers：3-5 个公园常驻闲逛 NPC ─────────────────────────────────
+    {
+      const PARK_MID_Y = PARK_TOP + (PARK_BOTTOM - PARK_TOP) * 0.35;
+      const count = 3 + Math.floor(Math.random() * 3); // 3, 4, or 5
+      for (let i = 0; i < count; i++) {
+        const px = 80 + Math.random() * (WORLD_WIDTH - 160);
+        const npc = spawnOnePedestrian('pedestrian', em, sr, bm,
+          { x: px, y: PARK_MID_Y },
+          { minY: PARK_TOP, maxY: PARK_BOTTOM });
+        const ag = npc.mem('agenda');
+        ag.agenda = new Agenda(
+          { ...ag.profile, agendaTemplate: 'park_idler' },
+          bm.envQuery,
+        );
+        ag.lifespan = 120 + Math.random() * 180; // 2-5 min park lifespan
+        ag.ageTimer = Math.random() * 30;         // stagger initial departure
+      }
+    }
+
     spawnChess(em, sr, bm, layout.chessPlaza);
     this._spawnStallSellers(bm);
     this.scene.propManager = new NpcPropManager(em);
