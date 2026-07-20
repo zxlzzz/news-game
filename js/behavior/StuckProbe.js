@@ -28,7 +28,7 @@ export function stuckProbe(npcs, dt) {
     const m   = mot.walkMode;
     if (sc.waitingBusStop && moved < 8) {
       cat = `WAIT:${n.state}`;                     // 公交等待者单列，不入 MOVE
-    } else if (['walk', 'run', 'jog'].includes(n.state) && moved < 8) {
+    } else if (['walk', 'run', 'jog'].includes(n.state) && moved < 8 && n.stateTimer > 3) {
       cat = `MOVE:${n.state}/${m?.kind ?? 'nomode'}`;
     } else if (n.stateDur < Infinity && n.stateTimer > n.stateDur + 10 && !n.mem('motor').goal) {
       cat = `STATE:${n.state}`;                    // 转换没触发（带 goal 的长距离行走不计入）

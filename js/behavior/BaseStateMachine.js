@@ -44,7 +44,7 @@
 
 import { dlog }        from './DebugLog.js';
 import { audit }        from '../debug/MovementAudit.js';
-import { PARK_TOP, WORLD_WIDTH, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../core/Layout.js';
+import { FAR_Y, NEAR_Y, PARK_TOP, WORLD_WIDTH, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../core/Layout.js';
 import { sitDown, alignLie } from '../entity/seat/seat.js';
 import { tickLoiter } from '../npc/LoiterBehavior.js';
 
@@ -162,6 +162,20 @@ const TRANSITIONS = [
 
   // ── 10~49：环境触发（预留）────────────────────────────────────────────────────
 
+    {
+      from: 'any', to: 'walk',
+      priority: 12, trigger: 'road-evacuate',
+      condition: (npc) =>
+        !['walk', 'run', 'jog', 'ride'].includes(npc.state) &&
+        isRoadZone(npc.y) && !npc.mem('motor').goal,
+      resolve: (npc) => {
+        audit.count(npc, 'road_evacuate');
+        const targetY = (npc.y - FAR_Y < NEAR_Y - npc.y)
+          ? BIKE_LANE_FAR_TOP - 4 : BIKE_LANE_NEAR_BOTTOM + 4;
+        publishGoal(npc, { x: npc.x, y: targetY }, 15, () => {});
+        return 'walk';
+      },
+    },
   // ── 50~98：社交触发（SocialLayer 通过 registerTransition 注入）────────────────
 ];
 
