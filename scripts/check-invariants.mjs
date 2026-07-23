@@ -215,6 +215,7 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** mus
     'StallActivity.js',   // 非移动政策计时器 — permanent
     'TalkActivity.js',    // 非移动政策计时器 — permanent
     'VisitTask.js',       // 非移动政策计时器（elapsed + waitTimer） — permanent
+    'ChainTask.js',       // 非移动政策计时器（pose elapsed + goto waitTimer） — permanent
   ]);
 
   // Distance: Math.hypot(...) < <number>  OR  dist*/moved/disp < <number>

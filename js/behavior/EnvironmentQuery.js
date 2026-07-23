@@ -223,9 +223,10 @@ export class EnvironmentQuery {
    * 从半径内可用 affordance 中加权随机抽取一个目的地。
    * @param {object} npc
    * @param {number} [radius=350]
+   * @param {string|null} [kind=null]  若指定，仅抽取 aff.kind === kind 的候选
    * @returns {{x,y,entity,aff}|null}
    */
-  drawAffordance(npc, radius = 350) {
+  drawAffordance(npc, radius = 350, kind = null) {
     const candidates = [];
 
     // 1. Entity-sourced affordances
@@ -240,6 +241,7 @@ export class EnvironmentQuery {
       const affList = Array.isArray(raw) ? raw : [raw];
 
       for (const a of affList) {
+        if (kind && a.kind !== kind) continue;
         if (a.slots != null && (e._affOcc?.[a.kind] ?? 0) >= a.slots) continue;
 
         // ring: up to 5 sample attempts for a clear spot; dx/dy: single attempt
@@ -258,6 +260,7 @@ export class EnvironmentQuery {
 
     // 2. Ambient affordances (no entity)
     for (const a of this._ambientAffordances) {
+      if (kind && a.kind !== kind) continue;
       const pos = a.anchor(npc);
       if (!pos) continue;
       if (!this.isClearSpot(pos.x, pos.y)) continue;
