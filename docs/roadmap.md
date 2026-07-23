@@ -1,4 +1,4 @@
-> **status: snapshot** — 盘点截止 2026-07-18（V-H 竣工）；新增功能批次请同步更新本表。
+> **status: snapshot** — 盘点截止 2026-07-22；新增功能批次请同步更新本表。
 
 # 功能路线图 — 落地状态一览
 
@@ -33,7 +33,9 @@
 | P-1（vx 振荡探针） | Motor `integratePhysics` 追踪 vx 符号翻转（`mot._obsFlipVx/_obsVxSign`，纯只读观测）；StuckProbe MOVE 明细新增 `flips` 字段（读取即归零） | ✅ 已落地 | `js/behavior/Motor.js#integratePhysics`；`js/behavior/StuckProbe.js`（commit `28eb558`） |
 | N-3（骑手集成 + 路由链删除 + 不变量加固） | CYCLIST profile + `ride` STATE_DEFS + BM._separate 豁免；CyclistSpawner 接入 BM；Npc.js 内联移动分支删除；StuckProbe `_rayBlocked/isDirect/nextTarget` + SteeringDecision `corner_cut` 删除；check-invariants Rule 7 升级为 error | ✅ 已落地 | `js/npc/NpcProfile.js`；`js/behavior/Motor.js#STATE_DEFS`；`js/behavior/BaseStateMachine.js#_tickState`；`js/entity/vehicle/CyclistSpawner.js`；`js/behavior/StuckProbe.js`；`js/behavior/SteeringDecision.js`；`scripts/check-invariants.mjs Rule7` |
 | V-H（车辆绘制锚点硬编码去除） | drawBicycle/drawEbike/_moto 全部脱离 getAnchor/getFrame 骑手骨架锚点；改为 FK 推导常量 × scale × direction；drawEbike 删除 `*1.2` 因子折入常量；新增 derive-vehicle-anchors.mjs 推导脚本 | ✅ 已落地 | `js/entity/vehicle/drawBicycle.js`；`js/entity/vehicle/drawVehicle.js#_moto`；`scripts/derive-vehicle-anchors.mjs` |
-| 挂饰 attachment schema | NPC 可拾取/佩戴道具的声明式 schema | 🔲 定稿未落盘，待从历史找回 | — |
+| 链条行为系统（B-①a 道具基建） | `AttachmentDefs.js`（物品声明表）；`SimpleProp.js`（通用道具渲染）；`NpcPropManager` MODIFIER_TO_PROP 扩展；attach 走 held 通道 | 🔲 设计定稿 | `docs/design-plans/chain-task-design.md` |
+| 链条行为系统（B-①b 执行器） | `ChainTask.js`（六原语解释器）；`BehaviorScripts.js`（脚本数据表）；`check-behavior-data.mjs`（校验）；eat_snack 样板脚本 | 🔲 设计定稿 | `docs/design-plans/chain-task-design.md` |
+| 批次 A-③ / B-②（passerby + stroll 退役） | passerby 模板（途中掷骰停留）；desire 池升级为脚本 id；与 B-① 文件零重叠 | 🔲 设计定稿 | `docs/design-plans/semantic-destination-design.md §4` |
 | V-final（速度统一线收尾核账） | 五处已知修正（Rule 10 正则收紧、Rule 9 结构修、哈希订正、Npc.js 缩进、speed 读者描述）；A–H 八段核账；封存报告 | ✅ 已落地 | `docs/audits/velocity-unification-closing-2026-07.md` |
 | G-1（publishGoal 完备化 + 无驱动安全网） | 铁律 ④（goal-pipeline r2.6）；ExitSceneTask 公交分支降级边缘出口；SceneInitializer 摊主有限重发→setXY 就位；WaitForBusLayer 车门 timeout→modeWander；`_resolveTimeout` 收紧（departing && goal）；TRANSITIONS 'no-drive' priority 8 安全网（walk/run 无驱动 2s→stand）；StuckProbe STATE: 排除带 goal 行走 | ✅ 已落地 | `js/behavior/BaseStateMachine.js`；`js/behavior/tasks/ExitSceneTask.js`；`js/scenes/SceneInitializer.js`；`js/entity/busstop/WaitForBusLayer.js`；`js/behavior/StuckProbe.js`；`js/debug/MovementAudit.js` |
 | 资产渲染一致性（A/B/C） | A：编辑器地面线改用 skeleton groundY（删硬编码 CY+82）；B：StickRenderer 头半径改读 skeleton.json（人 10→16，狗 7→8）；C：车辆绘制锚点改用 assets/vehicle-anchors.js（FK 生成，check-invariants Rule 12） | ✅ 已落地 | `sth/stick-puppet/js/app.js`；`js/core/StickRenderer.js`；`js/entity/vehicle/drawBicycle.js`；`js/entity/vehicle/drawVehicle.js`；`assets/vehicle-anchors.js`；`scripts/derive-vehicle-anchors.mjs` |

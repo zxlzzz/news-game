@@ -180,6 +180,13 @@ SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.
 声明来源：`AffordanceDefaults.js`（propType 默认）、`entity.affordances`（scene.json 覆盖）、`registerAmbientAffordance`（区域型 POI）。
 `_affOcc` 唯一写入点 = `occupyAffordance / releaseAffordance`（EnvironmentQuery.js）；park_idler NPC 用 `{agendaTemplate:'park_idler'}` profile 驱动 stroll→visit 循环。
 
+**链条行为系统**（设计定稿，B-① 待实施）：
+三概念分工：Task（ChainTask 单 NPC 顺序行为）/ Activity（SocialLayer 多 NPC 协调，不动）/ State（BSM 姿势转换，被上两层驱动）。
+`ChainTask` 解释器六原语：goto / attach / detach / pose / use / loop。脚本纯数据在 `BehaviorScripts.js`。
+`AttachmentDefs.js` 声明道具（anchor / heldPose / acquire / dispose），attach 走 ModifierLayer held 通道（不新建道具写入点）。
+`interruptible` 控制社交劫持；处置由 `runner.hold` 统一兜底。
+设计文档：`docs/design-plans/chain-task-design.md`。
+
 ---
 
 ## 工作流
@@ -238,6 +245,7 @@ npc.clearMem('loiter');
 | `docs/design-plans/news-pipeline-mvp.md` | 设计稿（finalized） | 新闻管线 MVP：截图 T2、Provider T3、成稿流 T4 |
 | `docs/design-plans/photo2entity-plan.md` | 设计稿（draft） | 现实照片 → AI 生成场景物体，占位草案 |
 | `docs/design-plans/semantic-destination-design.md` | 设计稿（finalized） | 语义目的地层 v2，affordance 池设计 |
+| `docs/design-plans/chain-task-design.md` | 设计稿（finalized） | 链条行为系统：ChainTask / AttachmentDefs / BehaviorScripts |
 | `docs/behavior-design.md` | 快照 | 行为系统目标架构蓝图（准确内容已迁入 contracts/behavior.md） |
 | `docs/npc-states.md` | 快照 | 状态机规格历史文档（含已淘汰状态，如 bike/mobile） |
 | `docs/npc-behavior-system-v0.md` | 快照 | 行为系统重构 V0 设计（已由 contracts/behavior.md 取代） |
