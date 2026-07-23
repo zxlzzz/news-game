@@ -23,6 +23,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const { BEHAVIOR_SCRIPTS } = await import('../js/behavior/data/BehaviorScripts.js');
 const { ATTACHMENT_DEFS }  = await import('../js/behavior/data/AttachmentDefs.js');
 const { AffordanceDefaults } = await import('../js/core/AffordanceDefaults.js');
+const { PROFILES }           = await import('../js/npc/NpcProfile.js');
 
 const manifest = JSON.parse(readFileSync(join(ROOT, 'assets', 'manifest.json'), 'utf8'));
 const CLIP_IDS = new Set(Object.keys(manifest.clips ?? {}));
@@ -119,6 +120,26 @@ for (const [scriptId, script] of Object.entries(BEHAVIOR_SCRIPTS)) {
     }
   }
 
+  console.log('');
+}
+
+// ── Profile desires 校验 ──────────────────────────────────────────────────────
+
+console.log('Profile desires (validating all ids are in BEHAVIOR_SCRIPTS)\n');
+
+const SCRIPT_IDS = new Set(Object.keys(BEHAVIOR_SCRIPTS));
+
+for (const [profileName, profile] of Object.entries(PROFILES)) {
+  const desires = profile.desires;
+  if (!desires || desires.length === 0) continue;
+  console.log(`Profile: ${profileName}`);
+  for (const id of desires) {
+    if (!SCRIPT_IDS.has(id)) {
+      fail(`profile '${profileName}' desires contains unknown script id '${id}'`);
+    } else {
+      ok(`desires '${id}' found in BEHAVIOR_SCRIPTS`);
+    }
+  }
   console.log('');
 }
 

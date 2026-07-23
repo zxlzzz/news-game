@@ -1,21 +1,11 @@
 /**
- * Agenda — 单 NPC 的欲望 / 效用选目标系统
+ * Agenda — 单 NPC 的目标选取系统
  *
- * 每个 NPC 在注册时获得一份 Agenda 实例（BehaviorManager.register 创建）。
- * Agenda 在 runner.primary 为空时从 desires 池中选效用最高的目标，
- * 向 runner 提交对应的 task。
- *
- * desires 池：
- *   'stroll'       — 始终存在的默认漫游目标（不计入完成条件）
- *   'rest'         — 找空椅子坐下（UseBenchTask）
- *   'use_vending'  — 用自动贩卖机（UseSmartPropTask）
- *   'use_trash'    — 扔垃圾（UseSmartPropTask）
- *
- * 完成逻辑：
- *   每个非 stroll 的 desire 完成（task done）后从列表移除；
- *   若连续 abort 3 次，视为放弃并移除；
- *   当所有非 stroll desires 都移除后，_readyToExit = true，
- *   下一轮 Agenda.tick 推 ExitSceneTask 取代 StrollTask。
+ * agendaTemplate 路由：
+ *   park_idler  → _pickParkIdlerGoal  (stroll→visit 循环，消耗 parkCredits)
+ *   passerby /  → _pickPasserbyGoal   (60% 直通离场；40% 途中 1-2 次停留)
+ *   (undefined)
+ *   else        → _pickGoal            (desires 池 weighted ChainTask)
  */
 
 import { StrollTask }       from './tasks/StrollTask.js';
@@ -24,6 +14,8 @@ import { UseSmartPropTask } from './tasks/UseSmartPropTask.js';
 import { ExitSceneTask }    from './tasks/ExitSceneTask.js';
 import { VisitTask }        from './tasks/VisitTask.js';
 import { StrollLoopTask }   from './tasks/StrollLoopTask.js';
+import { ChainTask }        from './tasks/ChainTask.js';
+import { BEHAVIOR_SCRIPTS } from './data/BehaviorScripts.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const MAX_ABORTS = 3;
@@ -34,36 +26,26 @@ export class Agenda {
    * @param {EnvironmentQuery} envQuery
    */
   constructor(profile, envQuery) {
-    this._profile      = profile;
-    this._envQuery     = envQuery;
-    this._desires      = this._buildDesires(profile);
-    this._abortCounts  = new Map();
-    this._readyToExit  = false;
-    this._scanTimer    = rand(0, 2);  // stagger first evaluation across NPCs
+    this._profile     = profile;
+    this._envQuery    = envQuery;
+    this._desires     = [...(profile.desires ?? [])];
+    this._abortCounts = new Map();
+    this._readyToExit = false;
+    this._scanTimer   = rand(0, 2);
 
     if (profile.agendaTemplate === 'park_idler') {
-      this._parkCredits = Math.floor(rand(1, 4));  // 1, 2, or 3
+      this._parkCredits = Math.floor(rand(1, 4));
       this._parkAborts  = 0;
       this._parkPhase   = 'stroll';
+    } else if (!profile.agendaTemplate || profile.agendaTemplate === 'passerby') {
+      this._passThrough  = Math.random() < 0.6;
+      this._stopCredits  = this._passThrough ? 0 : Math.floor(rand(1, 3));
+      this._stopAborts   = 0;
     }
-  }
-
-  /** 从 profile.desires 随机取 0-2 个，加上始终存在的 'stroll' */
-  _buildDesires(profile) {
-    const result = ['stroll'];
-    const pool   = profile.desires ?? [];
-    if (!pool.length) return result;
-    const count = Math.floor(Math.random() * 3);  // 0, 1 or 2
-    const seen  = new Set();
-    for (let i = 0; i < count; i++) {
-      const d = pool[Math.floor(Math.random() * pool.length)];
-      if (!seen.has(d)) { result.push(d); seen.add(d); }
-    }
-    return result;
   }
 
   /**
-   * 每帧调用。若 runner 无 primary，选效用最高欲望并提交 task。
+   * 每帧调用。若 runner 无 primary，按模板选下一目标。
    * @param {NPC}        npc
    * @param {TaskRunner} runner
    * @param {number}     dt
@@ -74,84 +56,94 @@ export class Agenda {
     if (this._scanTimer > 0) return;
     if (this._profile.agendaTemplate === 'park_idler') {
       this._pickParkIdlerGoal(npc, runner);
+    } else if (!this._profile.agendaTemplate || this._profile.agendaTemplate === 'passerby') {
+      this._pickPasserbyGoal(npc, runner);
     } else {
       this._pickGoal(npc, runner);
     }
   }
 
-  _pickGoal(npc, runner) {
+  // ── 路人模板 ────────────────────────────────────────────────────────────────
+
+  _pickPasserbyGoal(npc, runner) {
     this._scanTimer = rand(1, 3);
 
-    // 所有特定 desires 完成 → 触发离场
     if (this._readyToExit) {
       runner.setPrimary(new ExitSceneTask(), npc);
       return;
     }
 
-    const active = this._desires.filter(d => d !== 'stroll');
-
-    let bestDesire = 'stroll', bestScore = 0.3;
-    for (const d of active) {
-      const score = this._utility(d, npc);
-      if (score > bestScore) { bestScore = score; bestDesire = d; }
+    if (this._passThrough) {
+      runner.setPrimary(new StrollTask({ duration: rand(8, 22) }), npc, (_result) => {
+        this._readyToExit = true;
+      });
+      return;
     }
 
-    const task = this._makeTask(bestDesire);
-    if (!task) return;
-
-    if (bestDesire !== 'stroll') {
-      runner.setPrimary(task, npc, (result) => this._onTaskDone(bestDesire, result));
-    } else {
-      runner.setPrimary(task, npc);
-    }
-  }
-
-  _onTaskDone(desire, result) {
-    if (desire === 'stroll') return;
-
-    if (result === 'done') {
-      this._desires = this._desires.filter(d => d !== desire);
-    } else if (result === 'abort') {
-      const cnt = (this._abortCounts.get(desire) ?? 0) + 1;
-      this._abortCounts.set(desire, cnt);
-      if (cnt >= MAX_ABORTS) {
-        this._desires = this._desires.filter(d => d !== desire);
-      }
-    }
-
-    // 检查是否所有特定 desires 已完成/放弃
-    if (this._desires.every(d => d === 'stroll')) {
+    if (this._stopCredits <= 0) {
       this._readyToExit = true;
+      runner.setPrimary(new ExitSceneTask(), npc);
+      return;
     }
+
+    runner.setPrimary(new StrollTask({ duration: rand(8, 22) }), npc, (result) => {
+      if (result === 'done') {
+        const poi = this._envQuery.drawAffordance(npc, 250);
+        if (poi) {
+          const task = this._routePoi(poi);
+          if (task) {
+            runner.setPrimary(task, npc, () => { this._stopCredits--; });
+            return;
+          }
+        }
+        this._stopCredits--;
+      } else {
+        this._stopAborts++;
+        if (this._stopAborts >= MAX_ABORTS) this._stopCredits = 0;
+      }
+    });
   }
 
-  _utility(desire, npc) {
-    switch (desire) {
-      case 'stroll': return 0.3;
-      case 'rest': {
-        const b = this._envQuery.nearestFreeBench(npc, 350);
-        return b ? 0.55 : 0;
-      }
-      case 'use_vending': {
-        const f = this._envQuery.findAvailableSlot('use_vending', npc, 300);
-        return f ? 0.50 : 0;
-      }
-      case 'use_trash': {
-        const f = this._envQuery.findAvailableSlot('use_trash', npc, 300);
-        return f ? 0.45 : 0;
-      }
-      default: return 0;
+  // ── desires-池模板（非 passerby 模板的其他 agendaTemplate） ─────────────────
+
+  _pickGoal(npc, runner) {
+    this._scanTimer = rand(1, 3);
+
+    if (this._readyToExit) {
+      runner.setPrimary(new ExitSceneTask(), npc);
+      return;
     }
+
+    const candidates = [];
+    for (const id of this._desires) {
+      const s = BEHAVIOR_SCRIPTS[id];
+      if (s) candidates.push({ id, weight: s.weight ?? 0.3 });
+    }
+
+    if (candidates.length === 0 || Math.random() < 0.3) {
+      runner.setPrimary(new StrollTask({ duration: rand(8, 22) }), npc);
+      return;
+    }
+
+    let total = 0;
+    for (const c of candidates) total += c.weight;
+    let r = Math.random() * total;
+    let picked = candidates[0].id;
+    for (const c of candidates) { r -= c.weight; if (r <= 0) { picked = c.id; break; } }
+
+    const task = new ChainTask(BEHAVIOR_SCRIPTS[picked], this._envQuery);
+    runner.setPrimary(task, npc, (result) => this._onTaskDone(picked, result));
   }
 
-  _makeTask(desire) {
-    switch (desire) {
-      case 'rest':        return new UseBenchTask(this._envQuery);
-      case 'use_vending': return new UseSmartPropTask('use_vending', this._envQuery);
-      case 'use_trash':   return new UseSmartPropTask('use_trash', this._envQuery);
-      case 'stroll':
-      default:            return new StrollTask({ duration: rand(8, 22) });
+  _onTaskDone(id, result) {
+    if (result === 'done') {
+      this._desires = this._desires.filter(d => d !== id);
+    } else {
+      const cnt = (this._abortCounts.get(id) ?? 0) + 1;
+      this._abortCounts.set(id, cnt);
+      if (cnt >= MAX_ABORTS) this._desires = this._desires.filter(d => d !== id);
     }
+    if (this._desires.length === 0) this._readyToExit = true;
   }
 
   // ── park_idler 模板 ─────────────────────────────────────────────────────────
@@ -166,7 +158,7 @@ export class Agenda {
     }
 
     if (this._parkPhase === 'stroll') {
-      const segs = Math.floor(rand(2, 5));  // 2, 3, or 4 waypoints
+      const segs = Math.floor(rand(2, 5));
       runner.setPrimary(new StrollLoopTask(segs), npc, (result) => {
         if (result === 'done') {
           this._parkPhase  = 'visit';

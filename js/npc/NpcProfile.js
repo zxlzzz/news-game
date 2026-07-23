@@ -77,7 +77,7 @@ const PEDESTRIAN = {
   gesturePoses: PED_GESTURES,
   spawnTraits: ['hold_bag', 'umbrella'],
   activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
-  desires: ['rest', 'use_vending', 'use_trash'],
+  desires: ['rest_bench', 'use_vending', 'use_trash', 'eat_snack'],
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
@@ -111,7 +111,7 @@ const BUSINESSMAN = {
 const TOURIST = {
   ...PEDESTRIAN,
   name: 'tourist',
-  desires: ['rest', 'use_vending'],
+  desires: ['rest_bench', 'use_vending'],
   transitions: {
     ...PED_TRANSITIONS,
     walk:  { stand: 0.55, run: 0.06, squat: 0.02, sit_ground: 0.05, lean_wall: 0.01 },

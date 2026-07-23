@@ -29,6 +29,27 @@ export const BEHAVIOR_SCRIPTS = {
     ],
   },
 
+  rest_bench: {
+    tier: 0,
+    weight: 0.55,
+    interruptible: true,
+    steps: [ { op: 'use', task: 'bench' } ],
+  },
+
+  use_vending: {
+    tier: 0,
+    weight: 0.50,
+    interruptible: true,
+    steps: [ { op: 'goto', aff: 'use_vending' } ],
+  },
+
+  use_trash: {
+    tier: 0,
+    weight: 0.45,
+    interruptible: true,
+    steps: [ { op: 'goto', aff: 'use_trash' } ],
+  },
+
   /*
   // sweep — tier 1，需要 sweep clip 入库后启用
   sweep: {

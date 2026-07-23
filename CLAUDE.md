@@ -180,11 +180,12 @@ SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.
 声明来源：`AffordanceDefaults.js`（propType 默认）、`entity.affordances`（scene.json 覆盖）、`registerAmbientAffordance`（区域型 POI）。
 `_affOcc` 唯一写入点 = `occupyAffordance / releaseAffordance`（EnvironmentQuery.js）；park_idler NPC 用 `{agendaTemplate:'park_idler'}` profile 驱动 stroll→visit 循环。
 
-**链条行为系统**（设计定稿，B-① 待实施）：
+**链条行为系统**（B-①②已落地）：
 三概念分工：Task（ChainTask 单 NPC 顺序行为）/ Activity（SocialLayer 多 NPC 协调，不动）/ State（BSM 姿势转换，被上两层驱动）。
 `ChainTask` 解释器六原语：goto / attach / detach / pose / use / loop。脚本纯数据在 `BehaviorScripts.js`。
 `AttachmentDefs.js` 声明道具（anchor / heldPose / acquire / dispose），attach 走 ModifierLayer held 通道（不新建道具写入点）。
 `interruptible` 控制社交劫持；处置由 `runner.hold` 统一兜底。
+**passerby 模板**（B-②）：60% 直通（single stroll → exit）/ 40% 途中停留（`_stopCredits` 1-2 次）；desire 池改为 `BEHAVIOR_SCRIPTS` 键；`check-behavior-data.mjs` 静态校验 profile.desires 所有 id 存在于脚本表。
 设计文档：`docs/design-plans/chain-task-design.md`。
 
 ---
