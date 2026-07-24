@@ -4,7 +4,8 @@
  *   WRITES:    nothing on any NPC or shared state — pure function.
  *   READS:     NavGrid singleton (getNavGrid) for cost lookups; read-only.
  *   MUST NOT:  write any npc field; mutate the NavGrid cost map;
- *              be called with ROAD-cell (cost=250) start/goal without snapping first.
+ *              be called with ROAD-cell (cost=250) goal — goal must be sanitized to walkable;
+ *              ROAD-cell start is valid (planner routes out from any non-BLOCKED position).
  *
  * PathPlanner — A* 寻路 + 视距拉直
  *
@@ -14,6 +15,16 @@
  */
 
 import { CELL, ROAD, getNavGrid } from './NavGrid.js';
+import { WORLD_WIDTH, WORLD_HEIGHT } from '../../core/Layout.js';
+
+// ── 规划裁决表 — Planning 层代价政策唯一住址（goal-pipeline-v1.md §3）──────────
+// 道路穿越是代价而非流程：ROAD 格可规划，代价由 profile 决定。
+export const PLANNING_RULES = {
+  roadCostDefault: 250, // ROAD 格默认有效代价（= NavGrid.ROAD 哨兵值；≈9 格横穿 2250，任何合理绕行必胜 → 默认人格不横穿）
+  jaywalkRoadCost: 3,   // jaywalk profile 的 ROAD 覆盖代价（直穿 ≈27，胜过绝大多数绕行；N-2b 掷 jaywalkChance 时取用）
+  crosswalkCost:   2,   // 斑马线管格代价（低于草 8、高于人行道 1：有斑马线必走斑马线，且不把同侧路径全吸进管）
+  crosswalkHalfW:  20,  // 斑马线管半宽 px（沿用 PATH_TUBE_R 同款几何，独立常量不共享——语义不同）
+};
 
 const SQRT2 = Math.SQRT2;
 // [dx, dy, moveCostMultiplier]
@@ -68,38 +79,44 @@ export class PathPlanner {
    * @param {number} x0 @param {number} y0 起点
    * @param {number} x1 @param {number} y1 终点
    * @param {{minX,maxX,minY,maxY}|null} bounds  可选活动边界（格中心在界外的格跳过）
+   * @param {{roadCost?:number}} opts  规划选项；roadCost 覆盖 ROAD 格有效代价
    */
-  plan(x0, y0, x1, y1, bounds = null) {
+  plan(x0, y0, x1, y1, bounds = null, opts = {}) {
+    const roadCost = opts.roadCost ?? PLANNING_RULES.roadCostDefault;
     const grid = this._grid;
     let s = grid.worldToCell(x0, y0);
     let e = grid.worldToCell(x1, y1);
 
     const sc = grid.cost(s.gx, s.gy);
-    if (sc === 0 || sc === ROAD) {
+    if (x0 < 0 || x0 > WORLD_WIDTH || y0 < 0 || y0 > WORLD_HEIGHT || sc === 0) {
       const snap = grid.nearestWalkable(x0, y0, bounds);
       s = grid.worldToCell(snap.x, snap.y);
     }
     const ec = grid.cost(e.gx, e.gy);
-    if (ec === 0 || ec === ROAD) {
+    if (x1 < 0 || x1 > WORLD_WIDTH || y1 < 0 || y1 > WORLD_HEIGHT || ec === 0 || ec === ROAD) {
+      // 目的地不可是 ROAD——目标经 sanitize，此为不变量而非限制
       const snap = grid.nearestWalkable(x1, y1, bounds);
       e = grid.worldToCell(snap.x, snap.y);
     }
 
     if (s.gx === e.gx && s.gy === e.gy) return [{ x: x1, y: y1 }];
 
-    const cellPath = this._astar(s.gx, s.gy, e.gx, e.gy, bounds);
+    const cellPath = this._astar(s.gx, s.gy, e.gx, e.gy, bounds, roadCost);
     if (!cellPath || cellPath.length === 0) return null;
 
     const straight = this._straighten(cellPath);
     const pts = straight.map(c => grid.cellCenter(c.gx, c.gy));
-    // 最后一点用精确目标坐标（仅当终点原本在可走格时覆盖）
+    // 目的地不可是 ROAD——目标经 sanitize，此为不变量而非限制
     if (pts.length > 0 && ec !== 0 && ec !== ROAD) pts[pts.length - 1] = { x: x1, y: y1 };
     return pts;
   }
 
   // ─── A* ──────────────────────────────────────────────────────────────────────
-  _astar(sx, sy, ex, ey, bounds = null) {
+  _astar(sx, sy, ex, ey, bounds = null, roadCost = ROAD) {
     const { COLS, ROWS } = this._grid;
+    console.assert(sx >= 0 && sx < COLS && sy >= 0 && sy < ROWS &&
+                   ex >= 0 && ex < COLS && ey >= 0 && ey < ROWS,
+      `_astar: out-of-range (${sx},${sy})→(${ex},${ey})`);
     const N      = COLS * ROWS;
     const gCost  = new Float32Array(N).fill(Infinity);
     const parent = new Int32Array(N).fill(-1);
@@ -126,17 +143,20 @@ export class PathPlanner {
           const wx = (nx + 0.5) * CELL, wy = (ny + 0.5) * CELL;
           if (wx < bounds.minX || wx > bounds.maxX || wy < bounds.minY || wy > bounds.maxY) continue;
         }
-        const nc = this._grid.cost(nx, ny);
-        if (nc === 0 || nc === ROAD) continue;
+        const nc  = this._grid.cost(nx, ny);
+        const eff = nc === ROAD ? roadCost : nc;
+        if (eff === 0) continue;
         // Block diagonal moves that cut through a blocked corner
         if (dx !== 0 && dy !== 0) {
           const c1 = this._grid.cost(gx + dx, gy);
           const c2 = this._grid.cost(gx, gy + dy);
-          if (c1 === 0 || c1 === ROAD || c2 === 0 || c2 === ROAD) continue;
+          const e1 = c1 === ROAD ? roadCost : c1;
+          const e2 = c2 === ROAD ? roadCost : c2;
+          if (e1 === 0 || e2 === 0) continue;
         }
         const ni = ny * COLS + nx;
         if (closed[ni]) continue;
-        const ng = gCost[ci] + mul * nc;
+        const ng = gCost[ci] + mul * eff;
         if (ng < gCost[ni]) {
           gCost[ni]  = ng;
           parent[ni] = ci;
@@ -166,6 +186,7 @@ export class PathPlanner {
   _lineOfSight(gx0, gy0, gx1, gy1) {
     const startC = this._grid.cost(gx0, gy0);
     const endC   = this._grid.cost(gx1, gy1);
+    // 拉直不得斜穿马路——否则斑马线折线被拉直成 jaywalk；jaywalk profile 经 maxCost 参数另行放行
     if (endC === 0 || endC >= ROAD) return false;
     const maxCost = Math.max(startC, endC);
 
@@ -174,6 +195,7 @@ export class PathPlanner {
     let err = dx - dy, x = gx0, y = gy0;
     while (x !== gx1 || y !== gy1) {
       const cv = this._grid.cost(x, y);
+      // 拉直不得斜穿马路——否则斑马线折线被拉直成 jaywalk；jaywalk profile 经 maxCost 参数另行放行
       if (cv === 0 || cv >= ROAD || cv > maxCost) return false;
       const e2 = 2 * err;
       if (e2 > -dy) { err -= dy; x += sx; }

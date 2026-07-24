@@ -3,25 +3,21 @@
  */
 
 import { SIDEWALK_NEAR_Y } from '../core/Layout.js';
+// ⚠️ SIDEWALK_NEAR_Y = 508，实为公园深处，非近侧人行道；owner y 仅取其数值做生成点，modeWander 在 minY/maxY 约束内漫游。
 import { makeNPC } from './npcUtil.js';
-import { getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
+import { setWalkMode } from '../behavior/Motor.js';
+import { modeWander } from '../behavior/WalkMode.js';
 
 export function spawnDogWalker(em, sr, bm, propManager) {
   const ownerY = SIDEWALK_NEAR_Y;
 
   const owner = makeNPC(em, sr, {
-    x: 760, y: ownerY, animation: 'walk', direction: 1, speed: 26, vy: 0,
+    x: 700, y: ownerY, animation: 'walk', direction: 1, speed: 26, vy: 0,
     minX: 600, maxX: 755,
     minY: ownerY - 8, maxY: ownerY + 8,
     color: 0x1a1a10, tags: ['pedestrian', 'dog-owner'],
     traits: ['walk_dog'],
   });
-  // walk_dog trait modifier must be pushed manually (owner._activity skips tickModifiers step 3)
-  const tp = getTraitProps().walk_dog;
-  const variant = resolveTraitVariant(tp, true);  // true = side view (walking)
-  const wdJoints = { ...(variant?.joints ?? {}) };
-  owner.modifiers.push({ id: 'walk_dog', kind: 'trait', priority: 5, joints: wdJoints, timer: -1 });
-
   const dog = makeNPC(em, sr, {
     x: 808, y: ownerY, animation: 'dog_walk', direction: 1, speed: 0, vy: 0,
     leashTarget: owner, leashOffset: { x: 46, y: 6 },
@@ -41,8 +37,7 @@ export function spawnDogWalker(em, sr, bm, propManager) {
     };
   }
 
-  // 纳入行为系统：owner 注册 dog_owner，dog 作为绑带从属交给 DogWalkActivity
+  // 纳入行为系统：owner 注册 dog_owner
   bm.register(owner, 'dog_owner');
-  bm.socialLayer.createActivity('dog_walk',
-    [{ npc: owner, role: 'owner' }, { npc: dog, role: 'dog' }]);
+  setWalkMode(owner, modeWander());
 }

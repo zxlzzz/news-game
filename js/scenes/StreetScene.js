@@ -26,6 +26,7 @@ import {
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
 } from '../core/Layout.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
+import { expandSceneData }  from '../core/sceneData.js';
 import { PixiText }         from '../core/PixiText.js';
 import { buildPoseCache } from '../behavior/PoseCacheBuilder.js';
 import { clipLibrary } from '../core/ClipLibrary.js';
@@ -98,13 +99,14 @@ export class StreetScene {
     this.entityGraphics     = mkLayer(this.worldContainer, 2);
     this.vfGraphics         = mkLayer(this.worldContainer, 4);
 
-    const sceneData = this.cache.json.get('scene_data');
+    const sceneData = expandSceneData(this.cache.json.get('scene_data'));
     const layout = sceneData.layout;
 
     const sceneRenderer = new SceneRenderer(this.bgGraphics, this.skyGraphics, layout);
     sceneRenderer.drawAll();
 
     this.stickRenderer = new StickRenderer(this);
+    this.stickRenderer.setSkeletons(clipLibrary.skeletons);
     for (const id of Object.keys(clipLibrary.manifest.clips)) {
       this.stickRenderer.loadAnimation(id, clipLibrary.resolve(id));
     }
@@ -168,6 +170,7 @@ export class StreetScene {
       else if (k === 'z') { this.zoom = 1; this.scrollY = 0; this._clampScroll(); this._applyCamera(); }
       else if (k === 'n') { window.__navDebug = !window.__navDebug; console.log('[NavDebug]', window.__navDebug ? 'ON' : 'OFF'); }
       else if (k === 'm') audit.dump(this.behaviorManager?.npcs ?? []);
+      else if (k === 'o') this.behaviorManager?.envQuery?.debugPool(this.behaviorManager?.npcs?.[0]);
       else if (k === 'c') this._takePhoto();
       else if (k === 's') this._newsUI?.openSettings();
       else if (k === 'a') { if (this._newsUI?.isOpen()) this._newsUI.close(); else this._newsUI?.openArchive(); }

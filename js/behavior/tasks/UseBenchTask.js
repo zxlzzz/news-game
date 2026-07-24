@@ -10,6 +10,7 @@
  */
 
 import { setState }         from '../Motor.js';
+import { ARRIVAL_RULES }   from '../SteeringDecision.js';
 import { sitDown, standUp } from '../../entity/seat/seat.js';
 import { GotoTask }         from './GotoTask.js';
 
@@ -31,7 +32,7 @@ export class UseBenchTask {
     this._runner = runner;
 
     // Already adjacent to a bench? Sit immediately.
-    const near = this._envQuery.nearestFreeBench(npc, 80);
+    const near = this._envQuery.nearestFreeBench(npc, ARRIVAL_RULES.bench_radius.threshold);
     if (near) {
       this._bench = near;
       sitDown(npc, near);
@@ -71,7 +72,7 @@ export class UseBenchTask {
         const r = this._goto.tick(npc, dt);
         if (r === 'abort') return 'abort';
         if (r === 'done') {
-          const bench = this._envQuery.nearestFreeBench(npc, 80);
+          const bench = this._envQuery.nearestFreeBench(npc, ARRIVAL_RULES.bench_radius.threshold);
           if (!bench) return 'abort';
           this._bench = bench;
           sitDown(npc, bench);

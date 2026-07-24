@@ -13,9 +13,9 @@
  *   0    = 硬阻挡（BLOCKED）：建筑区、障碍物 AABB
  *   1    = 可规划、可采样（人行道、公园小路、plaza）
  *   8    = 可规划、可采样（公园草地，行走代价高）
- *   ROAD = 可通行（Motor._slideMove 不拒绝），但不可规划、不可采样：
- *          自行车道 + 机动车道。planCrossing/modeDirect 可穿越，
- *          PathPlanner / sampleWalkableNear / pickRandom 不选它。
+ *   ROAD = 可通行（Motor._slideMove 不拒绝），可规划（有效代价由 PLANNING_RULES/profile 决定），
+ *          不可采样、不可作目的地：自行车道 + 机动车道。
+ *          PathPlanner 以高代价格规划穿越；sampleWalkableNear / pickRandom 不选它。
  *
  * 烘焙来源：
  *   1. Y 分带默认代价
@@ -36,7 +36,7 @@ export const CELL = 10;
 export const ROAD = 250;   // 可通行但不可规划/采样的格（马路+自行车道）
 const COLS = Math.ceil(WORLD_WIDTH  / CELL);   // 200
 const ROWS = Math.ceil(WORLD_HEIGHT / CELL);   // 52
-const OBS_MARGIN = 1;
+const NPC_HALF_W = 7;  // Minkowski expansion — NPC collision half-width added to every obstacle
 const PATH_TUBE_R = 20;
 
 let _instance = null;
@@ -93,15 +93,15 @@ export class NavGrid {
   }
 
   /** 全场烘焙（场景初始化时调用一次） */
-  bake(entities, layout) {
-    this._bakeZones(layout);
+  bake(entities, layout, planningRules) {
+    this._bakeZones(layout, planningRules);
     this._bakeObstacles(entities, 0, COLS - 1, 0, ROWS - 1);
     this._assertSingleRegions();
   }
 
   /** 局部重烘焙（动态道具增删时，供后续使用） */
   localRebake(cx, cy, radius, entities) {
-    const m = OBS_MARGIN + CELL;
+    const m = NPC_HALF_W + CELL;
     const gx0 = Math.max(0,        Math.floor((cx - radius - m) / CELL));
     const gx1 = Math.min(COLS - 1, Math.ceil ((cx + radius + m) / CELL));
     const gy0 = Math.max(0,        Math.floor((cy - radius - m) / CELL));
@@ -116,8 +116,7 @@ export class NavGrid {
   }
 
   cost(gx, gy) {
-    if (gy < 0 || gy >= ROWS) return 0;
-    gx = Math.max(0, Math.min(COLS - 1, gx));
+    console.assert(gx >= 0 && gx < COLS && gy >= 0 && gy < ROWS, `NavGrid.cost out-of-range (${gx},${gy})`);
     return this._cost[gy * COLS + gx];
   }
 
@@ -186,6 +185,7 @@ export class NavGrid {
       for (let dx = -gr; dx <= gr; dx++) {
         if (dx * dx + dy * dy > gr * gr) continue;
         const gx = gxC + dx, gy = gyC + dy;
+        if (gx < 0 || gx >= COLS || gy < 0 || gy >= ROWS) continue;
         const c  = this.cost(gx, gy);
         if (c === 0 || c === ROAD) continue;
         const wx = (gx + 0.5) * CELL;
@@ -216,8 +216,9 @@ export class NavGrid {
     return this.cellCenter(c.gx, c.gy);
   }
 
-  // ─── 内部：区带 + 路径代价 ─────────────────────────────────────────────────
-  _bakeZones(layout) {
+  // ─── 内部：区带 + 路径代价 + 斑马线 ─────────────────────────────────────────
+  _bakeZones(layout, planningRules) {
+    if (!planningRules) throw new Error('_bakeZones: planningRules is required');
     // 1. 区带默认
     for (let gy = 0; gy < ROWS; gy++) {
       const wy  = (gy + 0.5) * CELL;
@@ -280,8 +281,28 @@ export class NavGrid {
       }
     }
 
-    // 保存区带基础代价（不含障碍）
+    // 斑马线管：政策注参，覆盖 ROAD 格为低代价（BLOCKED 保持不变）
+    if (planningRules) this._bakeCrosswalks(layout, planningRules);
+
+    // 保存区带基础代价（不含障碍；含斑马线覆盖，供 localRebake 还原）
     this._baseZone.set(this._cost);
+  }
+
+  // ─── 内部：斑马线管烘焙（政策经参数注入，nav 零 import 增量）────────────────
+  _bakeCrosswalks(layout, rules) {
+    if (!layout?.crosswalks?.length) return;
+    for (const { x: cwx } of layout.crosswalks) {
+      for (let gy = 0; gy < ROWS; gy++) {
+        const wy = (gy + 0.5) * CELL;
+        if (wy < BIKE_LANE_FAR_TOP || wy >= BIKE_LANE_NEAR_BOTTOM) continue;
+        for (let gx = 0; gx < COLS; gx++) {
+          const wx = (gx + 0.5) * CELL;
+          if (Math.abs(wx - cwx) > rules.crosswalkHalfW) continue;
+          const idx = gy * COLS + gx;
+          if (this._cost[idx] === ROAD) this._cost[idx] = rules.crosswalkCost;
+        }
+      }
+    }
   }
 
   // ─── 内部：障碍物 AABB + 边距 → BLOCKED ──────────────────────────────────
@@ -293,18 +314,18 @@ export class NavGrid {
   }
 
   _markObstacle(e, gx0, gx1, gy0, gy1) {
-    const rx = (e.collisionRX || e.width  / 2 || 10) + OBS_MARGIN;
-    const ry = (e.collisionRY || e.height / 2 || 10) + OBS_MARGIN;
+    const rx = e.footprint.rx + NPC_HALF_W;
+    const ry = e.footprint.ry + NPC_HALF_W;
     const cgx0 = Math.max(gx0, Math.floor((e.x - rx) / CELL));
     const cgx1 = Math.min(gx1, Math.ceil((e.x + rx) / CELL));
     const cgy0 = Math.max(gy0, Math.floor((e.y - ry) / CELL));
     const cgy1 = Math.min(gy1, Math.ceil((e.y + ry) / CELL));
-    const isFountain = e.propType === 'fountain';
+    const ellipse = e.footprint.shape === 'ellipse';
     for (let gy = cgy0; gy <= cgy1; gy++) {
       const wy = (gy + 0.5) * CELL;
       for (let gx = cgx0; gx <= cgx1; gx++) {
         const wx = (gx + 0.5) * CELL;
-        if (isFountain) {
+        if (ellipse) {
           const ex = (wx - e.x) / rx, ey = (wy - e.y) / ry;
           if (ex * ex + ey * ey > 1) continue;
         } else {

@@ -14,8 +14,8 @@
 
 import { getProfile }          from '../npc/NpcProfile.js';
 import { EnvironmentQuery }     from './EnvironmentQuery.js';
-import { tickBaseState, setState, triggerDeparture } from './BaseStateMachine.js';
-import { installProtection, nudgeXY } from './Motor.js';
+import { tickBaseState, triggerDeparture } from './BaseStateMachine.js';
+import { installProtection, nudgeXY, SAFETY_RULES, setState } from './Motor.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
 import { SocialLayer }          from './SocialLayer.js';
 import { CameraReactionLayer }  from '../camera/CameraReactionLayer.js';
@@ -24,6 +24,7 @@ import { refreshDebugFlag }     from './DebugLog.js';
 import { checkZoneTransition }  from './WalkMode.js';
 import { TaskRunner }           from './TaskRunner.js';
 import { Agenda }               from './Agenda.js';
+import { ensurePath }           from './nav/PlanService.js';
 import { ExitSceneTask }        from './tasks/ExitSceneTask.js';
 import { stuckProbe } from './StuckProbe.js';
 import { audit } from '../debug/MovementAudit.js';
@@ -71,7 +72,8 @@ export class BehaviorManager {
     setState(npc, ag.profile.initial || 'walk');
 
     ag.runner = new TaskRunner();
-    ag.agenda = new Agenda(ag.profile, this.envQuery);
+    // profile.agenda === false → 常驻布景 NPC（athlete 等），不构造 Agenda；ag.agenda?.tick 天然跳过
+    ag.agenda = ag.profile.agenda === false ? undefined : new Agenda(ag.profile, this.envQuery);
 
     // 供 ExitSceneTask 在运行时读取（Director spawn 的 NPC 由 Director._installRefs 覆写）
     ag.exitRegistry    = this.exitRegistry;
@@ -106,18 +108,12 @@ export class BehaviorManager {
       const ag = npc.mem('agenda');
       const sc = npc.mem('social');
 
-      // 等公交：bus waiter 逻辑独立
-      if (sc.waitingBusStop && npc.state !== 'routing') {
-        if (this.waitForBusLayer) this.waitForBusLayer.tickWaiter(npc, dt);
-        continue;
-      }
-
-      // 寿命到期 → 离场
-      if (!ag.departing && ag.lifespan != null && !sc.waitingBusStop) {
+      // 寿命到期 → 离场（等待中 NPC 由 sc.activity 门阻断）
+      if (!ag.departing && ag.lifespan != null) {
         ag.ageTimer = (ag.ageTimer || 0) + dt;
-        if (ag.ageTimer >= ag.lifespan) {
+        if (ag.ageTimer >= ag.lifespan && !sc.activity) {
           releaseAllHoldings(npc, this.envQuery);
-          triggerDeparture(npc, this.exitRegistry);
+          triggerDeparture(npc, this.exitRegistry, { entities: this.em.entities });
           if (ag.departing) {
             ag.runner?.setPrimary(new ExitSceneTask(), npc);
           }
@@ -131,6 +127,9 @@ export class BehaviorManager {
 
       // TaskRunner tick（始终，含 TalkToTask / ExitSceneTask）
       ag.runner?.tick(npc, dt);
+
+      // Planning 层同步：确保 mot.path 与 mot.goal 一致（TaskRunner 可能刚 publishGoal）
+      ensurePath(npc);
 
       // Activity 锁定 → 跳过 BSM / modifiers
       if (sc.activity) continue;
@@ -153,9 +152,9 @@ export class BehaviorManager {
 
   // 当分离推力方向与 NPC 行进方向相反时衰减为 0.5，避免抖振
   _sepScale(npc, ux, uy) {
-    const mode = npc.mem('motor').walkMode;
-    if (!mode || mode.kind !== 'direct') return 1;
-    const t = mode.target;
+    const mot = npc.mem('motor');
+    if (!mot.goal) return 1;
+    const t = mot.goal.dest;
     const dx = t.x - npc.x, dy = t.y - npc.y;
     const len = Math.hypot(dx, dy);
     if (len < 1) return 1;
@@ -173,7 +172,8 @@ export class BehaviorManager {
     const movers  = this.npcs.filter(n =>
       n.alive && !n.mem('social').activity && !n.leashTarget && MOVING.has(n.state));
     const statics = this.npcs.filter(n =>
-      n.alive && !n.leashTarget && !MOVING.has(n.state) && !n.mem('social').bench);
+      n.alive && !n.leashTarget && !MOVING.has(n.state) && !n.mem('social').bench
+      && n.mem('agenda').profile?.separate !== false);
 
     // 动 vs 动：双方互推（原逻辑不变）
     for (let i = 0; i < movers.length; i++) {
@@ -181,7 +181,7 @@ export class BehaviorManager {
         const a = movers[i], b = movers[j];
         const dx = a.x - b.x, dy = a.y - b.y;
         const d = Math.hypot(dx, dy);
-        const sepR = 24 * ((a.scale + b.scale) / 2 / 0.18);
+        const sepR = SAFETY_RULES.separation.baseRadius * ((a.scale + b.scale) / 2 / SAFETY_RULES.separation.atScale);
         if (d > 0 && d < sepR) {
           const f  = ((sepR - d) / sepR) * 16 * dt;
           const ux = dx / d, uy = dy / d;
@@ -198,7 +198,7 @@ export class BehaviorManager {
       for (const s of statics) {
         const dx = m.x - s.x, dy = m.y - s.y;
         const d = Math.hypot(dx, dy);
-        const sepR = 24 * ((m.scale + s.scale) / 2 / 0.18);
+        const sepR = SAFETY_RULES.separation.baseRadius * ((m.scale + s.scale) / 2 / SAFETY_RULES.separation.atScale);
         if (d > 0 && d < sepR) {
           const f  = ((sepR - d) / sepR) * 16 * dt;
           const ux = dx / d, uy = dy / d;

@@ -23,8 +23,8 @@ export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 1
 export function footprint(e) {
   const ds = depthScale(e.y);
   return (e.facing === 'left' || e.facing === 'right')
-    ? { rx: Math.max(3, 8 * ds), ry: 150 * ds }
-    : { rx: 150 * ds, ry: Math.max(3, 8 * ds) };
+    ? { shape: 'rect', rx: Math.max(3, 8 * ds), ry: 150 * ds, blocks: true, sortDY: 0 }
+    : { shape: 'rect', rx: 150 * ds, ry: Math.max(3, 8 * ds), blocks: true, sortDY: 0 };
 }
 
 /** 座面距 prop.y 的默认偏移（像素），与 drawBench 座板锚点一致 */
@@ -33,7 +33,7 @@ const BENCH_SEAT_H = 12;
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
 function _setXY(npc, x, y) {
-  if (typeof _motorSetXY === 'function') { _motorSetXY(npc, x, y); } else { npc.x = x; npc.y = y; }
+  _motorSetXY(npc, x, y);
 }
 
 /** 座面世界 Y（NPC 臀部应落于此） */

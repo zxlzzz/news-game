@@ -1,15 +1,12 @@
 /**
  * CONTRACT  (see docs/contracts/movement.md)
  *   OWNS:      npc.roamTarget lifecycle (pickModeTarget / _pickRandom / onPathArrival);
- *              WALK_PATHS module dict (initWalkPaths / addWalkPath);
- *              npc.mem('motor').tags for crossing labels.
- *   WRITES:    npc.roamTarget; npc.mem('motor').tags (crossing only);
- *              npc.vy (planCrossing entry);
- *              setWalkMode/pushWalkMode/popWalkMode (re-exported from Motor).
- *   READS:     npc.mem('motor').walkMode, npc.vy, NavGrid singleton,
+ *              WALK_PATHS module dict (initWalkPaths / addWalkPath).
+ *   WRITES:    npc.roamTarget; setWalkMode (re-exported from Motor).
+ *   READS:     npc.mem('motor').{walkMode,vel,goal} (checkZoneTransition), NavGrid singleton,
  *              npc.mem('agenda').departing (checkZoneTransition guard).
  *   MUST NOT:  write npc.speed/state/animation/x/y directly;
- *              write npc.mem('motor').navPath or routeTarget;
+ *              write npc.mem('motor').{path,goal};
  *              read npc.mem('social') fields.
  *
  * WalkMode — NPC 走路模式子系统
@@ -27,16 +24,12 @@
  *   tickWalkMode   — 在 _tickState 内、steerRoam 之前调用（管理暂停计时 / 超时）
  *   pickModeTarget — 替代 BaseStateMachine 中的 pickRoamTarget（目标选取分派）
  *   onPathArrival  — steerRoam 到达 waypoint 时调用（前进 / 暂停判断）
- *   setWalkMode / pushWalkMode / popWalkMode — 模式切换 / 优先级打断保存恢复
+ *   setWalkMode — 模式切换（N-2b: push/pop 栈删除）
  */
 
 import { FAR_Y, NEAR_Y, PARK_TOP, BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM } from '../core/Layout.js';
-import { setWalkMode, pushWalkMode, popWalkMode, setAnimation, setSpeed } from './Motor.js';
+import { setWalkMode } from './Motor.js';
 import { getNavGrid } from './nav/NavGrid.js';
-
-// Re-export for backward-compat
-// @deprecated — 兼容层，仅供 activities/*.js 过渡期；第三刀迁移完成后删除
-export { setWalkMode, pushWalkMode, popWalkMode } from './Motor.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -77,43 +70,6 @@ function _nearestCrosswalk(x) {
 // TODO: export real signal state and wire up to vehicle system
 const TrafficSignal = { getState: (_x) => 'green' };
 
-/**
- * 规划过马路（从当前侧到 targetY 所在侧）。
- *   守法：走最近斑马线入口 → 竖穿到对侧，motor.tags=['crossing_road']。
- *   乱穿：原地竖穿，切 run 动画，motor.tags=['jaywalking']。
- * onCrossed(npc) 在完成过马路后回调（可选）。
- */
-export function planCrossing(npc, targetY, profile, onCrossed = null) {
-  const jaywalkChance = profile?.jaywalkChance ?? 0.1;
-  const goingDown = targetY > npc.y;
-  const entryY = goingDown ? BIKE_LANE_FAR_TOP - 4  : BIKE_LANE_NEAR_BOTTOM + 4;
-  const exitY  = goingDown ? BIKE_LANE_NEAR_BOTTOM + 4 : BIKE_LANE_FAR_TOP - 4;
-
-  if (Math.random() < jaywalkChance) {
-    npc.mem('motor').tags = ['jaywalking'];
-    setAnimation(npc, 'run');
-    setSpeed(npc, (npc.walkSpeed || 26) * 2.4);
-    pushWalkMode(npc, modeDirect({ x: npc.x, y: exitY }, (n) => {
-      n.mem('motor').tags = null;
-      popWalkMode(n);
-      setAnimation(n, 'walk');
-      setSpeed(n, n.walkSpeed || 26);
-      if (onCrossed) onCrossed(n);
-    }, 30));
-  } else {
-    const cw = _nearestCrosswalk(npc.x);
-    const cwX = cw ? cw.x : npc.x;
-    // TODO: if (TrafficSignal.getState(cwX) === 'red') { /* wait */ }
-    pushWalkMode(npc, modeDirect({ x: cwX, y: entryY }, (n) => {
-      n.mem('motor').tags = ['crossing_road'];
-      setWalkMode(n, modeDirect({ x: cwX, y: exitY }, (n2) => {
-        n2.mem('motor').tags = null;
-        popWalkMode(n2);
-        if (onCrossed) onCrossed(n2);
-      }, 30));
-    }, 60));
-  }
-}
 
 // ─── 预定义路线（运行时从 scene.json 注入）──────────────────────────────────────
 // waypoints: [{x, y, pause?}]  pause = 到达后停留秒数（缺省/0 = 不停留）
@@ -135,16 +91,6 @@ export function modeWander(bounds = null, maxDuration = null) {
 }
 
 /**
- * 直线目标模式
- * @param {{x,y}}  target       目标世界坐标
- * @param {Function|null} onArrive  到达回调 (npc) => void；到达后模式自动切回 wander
- * @param {number} abandonAfter  超时放弃（秒），避免卡死
- */
-export function modeDirect(target, onArrive = null, abandonAfter = 60, nextTarget = null) {
-  return { kind: 'direct', target, onArrive, abandonAfter, _elapsed: 0, nextTarget };
-}
-
-/**
  * 路线跟随模式
  * @param {string} pathKey    WALK_PATHS 中的路线键名
  * @param {number} startIndex 起始 waypoint 下标（默认 0）
@@ -163,7 +109,7 @@ export function modePathFollow(pathKey, startIndex = 0) {
   };
 }
 
-// ─── 区域自动切换（安全网）────────────────────────────────────────────────────
+// ─── 区域自动切换（安全网，无状态 vel 覆写版）────────────────────────────────
 
 /** 是否在自行车道区（两侧自行车道） */
 function isBikeLaneZone(y) {
@@ -172,28 +118,30 @@ function isBikeLaneZone(y) {
 }
 
 /**
- * 检测 wander NPC 是否误入马路或自行车道，若是则自动压栈并切 direct 穿越到安全区。
- * 建议由 BehaviorManager 在每帧（或每 N 帧）调用。
+ * 检测 wander NPC 是否误入马路或自行车道，若是则覆写 mot.vel 弹回安全区。
+ * goal 驱动的 NPC 直接 return（规划层通过代价处理区域）。
+ * steerRoam 之后、integratePhysics 之前由 BehaviorManager 每帧调用。
  */
 export function checkZoneTransition(npc) {
   if (npc.mem('agenda').departing) return;
   if (npc.state !== 'walk' && npc.state !== 'run' && npc.state !== 'jog') return;
-  if (!npc.mem('motor').walkMode) setWalkMode(npc, modeWander());
-  const wm = npc.mem('motor').walkMode;
-  if (wm.kind !== 'wander') return;   // direct/path_follow 自行负责区域
+  const mot = npc.mem('motor');
+  if (mot.goal) return;                        // goal 驱动：规划层处理区域
+  if (!mot.walkMode) {
+    setWalkMode(npc, modeWander());            // 初始化 wander（保证 needsSteer）
+    return;
+  }
+  if (mot.walkMode.kind !== 'wander') return;  // path_follow 自行负责
 
   const inRoad     = isRoadZone(npc.y);
   const inBikeLane = !inRoad && isBikeLaneZone(npc.y);
   if (!inRoad && !inBikeLane) return;
 
-  // 误入危险区：压栈，弹回原侧
-  const goingDown = (npc.vy ?? 0) >= 0;
+  // 无状态弹出：覆写本帧 vel，弹回近侧安全区
+  const goingDown = (mot.vel?.vy ?? 0) >= 0;
   const targetY   = goingDown ? BIKE_LANE_FAR_TOP - 4 : BIKE_LANE_NEAR_BOTTOM + 4;
-  pushWalkMode(npc, modeDirect(
-    { x: npc.x, y: targetY },
-    (n) => { popWalkMode(n); },
-    20,
-  ));
+  const dy        = targetY - npc.y;
+  mot.vel         = { vx: mot.vel?.vx ?? 0, vy: Math.sign(dy) * (npc.walkSpeed || 26) };
 }
 
 // ─── 目标点选取（替代 BaseStateMachine 中的 pickRoamTarget）──────────────────
@@ -207,16 +155,6 @@ export function pickModeTarget(npc, envQuery) {
 
   if (!mode || mode.kind === 'wander') {
     _pickRandom(npc, envQuery);
-    return;
-  }
-
-  if (mode.kind === 'direct') {
-    if (!mode._sanitized) {
-      const grid = getNavGrid();
-      if (grid) mode.target = grid.nearestWalkable(mode.target.x, mode.target.y);
-      mode._sanitized = true;
-    }
-    npc.roamTarget = mode.target;
     return;
   }
 
@@ -289,34 +227,6 @@ export function onPathArrival(mode, npc) {
   }
 }
 
-// ─── 简单导航辅助 ─────────────────────────────────────────────────────────────
-
-function _crossSide(y1, y2) {
-  const side = y => (y < FAR_Y ? 0 : y >= NEAR_Y ? 1 : -1);
-  const s1 = side(y1), s2 = side(y2);
-  return s1 >= 0 && s2 >= 0 && s1 !== s2;
-}
-
-/**
- * 规划从 npc 当前位置到 target 的一次行程（不用 PathPlanner）。
- * 跨侧时先 planCrossing，再 modeDirect；同侧直接 modeDirect。
- * GotoTask / StrollTask 使用 PathPlanner 获得更精确的路径；
- * planLegs 供简单场景（无需绕障）快速设置目标。
- *
- * @param {{x:number, y:number}} target
- * @param {number} timeout  放弃超时（秒）
- * @param {Function|null} onDone  到达回调 (npc) => void
- */
-export function planLegs(npc, target, timeout = 60, onDone = null) {
-  if (_crossSide(npc.y, target.y ?? npc.y)) {
-    planCrossing(npc, target.y, npc.mem('agenda').profile, (n) => {
-      setWalkMode(n, modeDirect(target, onDone, timeout));
-    });
-  } else {
-    setWalkMode(npc, modeDirect(target, onDone, timeout));
-  }
-}
-
 // ─── 每帧 tick ────────────────────────────────────────────────────────────────
 
 /**
@@ -347,11 +257,4 @@ export function tickWalkMode(npc, dt) {
     return;
   }
 
-  if (mode.kind === 'direct') {
-    mode._elapsed = (mode._elapsed ?? 0) + dt;
-    if (mode._elapsed > (mode.abandonAfter ?? 60)) {
-      if (npc.mem('motor').walkModeStack?.length > 0) popWalkMode(npc);
-      else setWalkMode(npc, modeWander());
-    }
-  }
 }

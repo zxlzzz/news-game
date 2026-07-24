@@ -2,7 +2,7 @@
  * Pedestrians — 普通行人
  *
  * spawnPedestrians() 初始化场景内行人。
- * spawnOnePedestrian() 供 SpawnManager 动态补充复用。
+ * spawnOnePedestrian() 供 Director 动态补充复用。
  */
 
 import { PARK_BOTTOM, WORLD_WIDTH, BUILDING_BASE_Y } from '../core/Layout.js';
@@ -64,8 +64,9 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
   const profile  = getProfile(typeData.npcType);
   const speedRange = profile?.speedRange ?? [20, 34];
 
-  const grid   = getNavGrid();
-  const safePos = grid ? grid.nearestWalkable(pos.x, pos.y) : pos;
+  const grid    = getNavGrid();
+  const snap    = opts.snap !== false;
+  const safePos = (snap && grid) ? grid.nearestWalkable(pos.x, pos.y) : pos;
 
   const n = makeNPC(em, sr, {
     x: safePos.x, y: safePos.y,
@@ -84,7 +85,9 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
   bm.register(n, typeData.npcType);
 
   const ag = n.mem('agenda');
-  ag.lifespan  = rand(90, 210);
+  ag.lifespan  = profile?.departure?.lifespanRange
+    ? rand(...profile.departure.lifespanRange)
+    : null;
   ag.ageTimer  = 0;
   ag.departing = false;
 

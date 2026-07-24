@@ -6,8 +6,10 @@ import { Director }        from '../behavior/Director.js';
 import { NpcPropManager }  from '../npc/props/NpcPropManager.js';
 import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
 import { spawnBusStop }    from '../entity/busstop/busstop.js';
-import { setState }        from '../behavior/Motor.js';
-import { spawnPedestrians } from '../npc/Pedestrians.js';
+import { setState, setXY } from '../behavior/Motor.js';
+import { publishGoal }     from '../behavior/nav/PlanService.js';
+import { spawnPedestrians, spawnOnePedestrian } from '../npc/Pedestrians.js';
+import { Agenda } from '../behavior/Agenda.js';
 import { makeNPC }          from '../npc/npcUtil.js';
 import { spawnChess }       from '../npc/Chess.js';
 import { spawnDogWalker }   from '../npc/DogWalker.js';
@@ -20,6 +22,7 @@ import {
 } from '../core/Layout.js';
 import { initCrosswalks } from '../behavior/WalkMode.js';
 import { NavGrid, setNavGrid } from '../behavior/nav/NavGrid.js';
+import { PLANNING_RULES }     from '../behavior/nav/PathPlanner.js';
 
 export class SceneInitializer {
   constructor(scene, em, sr, poseCache) {
@@ -80,7 +83,7 @@ export class SceneInitializer {
       const cfg = { ...p, propColor: parseColor(p.color) };
       if (p.propType === 'sign') {
         const host = buildings.find(b => p.x >= b.x && p.x <= b.x + b.bWidth);
-        if (host) { cfg.y = BUILDING_BASE_Y - 8; cfg._sortY = BUILDING_BASE_Y + 1; }
+        if (host) cfg.y = BUILDING_BASE_Y - 8;
       }
       const prop = this.em.add(new PropEntity(cfg));
       prop.scale = depthScale(prop.y);
@@ -92,7 +95,7 @@ export class SceneInitializer {
 
     // NavGrid — 在所有静态道具（props/trees）入场后烘焙
     const navGrid = new NavGrid();
-    navGrid.bake(em.entities, layout);
+    navGrid.bake(em.entities, layout, PLANNING_RULES);
     setNavGrid(navGrid);
 
     const bm = new BehaviorManager(em, poseCache);
@@ -102,8 +105,8 @@ export class SceneInitializer {
 
     // ── ExitRegistry：边缘 + 建筑门（从 scene.json 读取）───────────────────────
     const exitRegistry = new ExitRegistry();
-    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null, yZone: null, facing: -1 });
-    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 200, y: null, yZone: null, facing:  1 });
+    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -40,              y: null, yZone: null, facing: -1 });
+    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 40, y: null, yZone: null, facing:  1 });
 
     const buildingDoors = [];
     for (const b of (sceneData?.buildings ?? [])) {
@@ -121,23 +124,57 @@ export class SceneInitializer {
 
     const spawnPoints = [
       ...buildingDoors.map(d => ({ x: d.x, y: SIDEWALK_FAR_Y, facing: 0 })),
-      { x: -10,              y: SIDEWALK_FAR_Y, facing:  1 },
-      { x: WORLD_WIDTH + 10, y: SIDEWALK_FAR_Y, facing: -1 },
-      { x: -10,              y: PARK_TOP + 30,  facing:  1 },
-      { x: WORLD_WIDTH + 10, y: PARK_TOP + 30,  facing: -1 },
+      { x: -30,              y: SIDEWALK_FAR_Y, facing:  1 },
+      { x: WORLD_WIDTH + 30, y: SIDEWALK_FAR_Y, facing: -1 },
+      { x: -30,              y: PARK_TOP + 30,  facing:  1 },
+      { x: WORLD_WIDTH + 30, y: PARK_TOP + 30,  facing: -1 },
     ];
 
+    // ── Ambient affordance: 公园草地休息点（无实体，区域采样）─────────────────────
+    bm.envQuery.registerAmbientAffordance({
+      kind:         'grass_rest',
+      arrivalState: 'sit_ground',
+      dur:          [10, 25],
+      weight:       0.10,
+      slots:        null,
+      facing:       null,
+      use:          'visit',
+      tags:         ['grass_rest'],
+      anchor:       (npc) => npc.y >= PARK_TOP ? navGrid.sampleWalkableNear(npc, 200) : null,
+      weightMul:    (npc, env) => env.nearestFreeBench(npc, 200) ? 0.3 : 1,
+    });
+
     spawnPedestrians(em, sr, bm, spawnPoints);
+
+    // ── Park idlers：3-5 个公园常驻闲逛 NPC ─────────────────────────────────
+    {
+      const PARK_MID_Y = PARK_TOP + (PARK_BOTTOM - PARK_TOP) * 0.35;
+      const count = 3 + Math.floor(Math.random() * 3); // 3, 4, or 5
+      for (let i = 0; i < count; i++) {
+        const px = 80 + Math.random() * (WORLD_WIDTH - 160);
+        const npc = spawnOnePedestrian('pedestrian', em, sr, bm,
+          { x: px, y: PARK_MID_Y },
+          { minY: PARK_TOP, maxY: PARK_BOTTOM });
+        const ag = npc.mem('agenda');
+        ag.agenda = new Agenda(
+          { ...ag.profile, agendaTemplate: 'park_idler' },
+          bm.envQuery,
+        );
+        ag.lifespan = 120 + Math.random() * 180; // 2-5 min park lifespan
+        ag.ageTimer = Math.random() * 30;         // stagger initial departure
+      }
+    }
+
     spawnChess(em, sr, bm, layout.chessPlaza);
     this._spawnStallSellers(bm);
     this.scene.propManager = new NpcPropManager(em);
     spawnDogWalker(em, sr, bm, this.scene.propManager);
     spawnAthletes(em, sr, bm);
-    this.scene.trafficManager = initVehicleSystem(em, sr);
+    this.scene.trafficManager = initVehicleSystem(em, sr, bm);
     for (const stop of (layout.busStops || [])) spawnBusStop(this.em, stop);
 
     if (this.scene.trafficManager.busStops.length > 0)
-      bm.waitForBusLayer = new WaitForBusLayer(this.scene.trafficManager.busStops);
+      bm.waitForBusLayer = new WaitForBusLayer(this.scene.trafficManager.busStops, em.entities, bm.socialLayer);
 
     // ── Director（替换 SpawnManager）──────────────────────────────────────────
     const director = new Director({
@@ -172,13 +209,22 @@ export class SceneInitializer {
       bm.register(seller, 'stall_seller');
 
       slot.reserved = seller.id;   // 预约 seller 槽，防止他人占用（永不释放）
-      seller.mem('motor').routeTarget = {
-        x: stall.x + slot.dx, y: stall.y + slot.dy,
-        prop: stall, slot,
-        abandonAfter: 60,
-        onArrive: (n) => bm.socialLayer.onSlotArrival(n, stall, slot),
+      const _destX = stall.x + slot.dx, _destY = stall.y + slot.dy;
+      let _slotRetries = 0;
+      const _onSlotDone = (result) => {
+        if (result === 'arrived') {
+          bm.socialLayer.onSlotArrival(seller, stall, slot);
+        } else if (_slotRetries < 2) {
+          _slotRetries++;
+          publishGoal(seller, { x: _destX, y: _destY }, 60, _onSlotDone, {});
+        } else {
+          // 摊主是场景基础设施，有限重发后强制就位（setXY 是合法写入 API）
+          setXY(seller, _destX, _destY);
+          bm.socialLayer.onSlotArrival(seller, stall, slot);
+        }
       };
-      setState(seller, 'routing', 'stall_seller_entry');
+      publishGoal(seller, { x: _destX, y: _destY }, 60, _onSlotDone, {});
+      setState(seller, 'walk', 'stall_seller_entry');
     }
   }
 }

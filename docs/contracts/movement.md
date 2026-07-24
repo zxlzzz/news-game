@@ -1,6 +1,6 @@
 # Movement Subsystem Contract
 
-verified at 8f691609a02528495426ff4ea21abcfa9152065b
+verified at ddc77846154d3cb51fef63ba83f06feeb0accd0c (V-1); updated for V-2 consumer migration + F1–F4 footprint unification (see velocity-unification-design-v1.md, roadmap.md)
 
 All writers listed as `file#symbol (line)`. Line numbers are parenthetical
 annotations only — anchor is the symbol name. Verified by grep on HEAD.
@@ -25,10 +25,10 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Scalar speed magnitude in pixels/second; sign-free (direction carries sign). Zero means stationary. |
+| **Semantic** | Scalar speed magnitude in pixels/second; sign-free (direction carries sign). Effectively always 0 after V-1 (physics driven by `mot.vel`); kept for compatibility with inline cyclists path and rendering consumers. |
 | **Owner** | `Motor.js` |
-| **Writers** | `Motor.js#setState` (154, via `_mw`), `Motor.js#setSpeed` (263) |
-| **Readers** | `Motor.js#integratePhysics` (279, 295), `BaseStateMachine.js#steerRoam` (314), `StuckProbe.js` (26) |
+| **Writers** | `Motor.js#setState` (154, via `_mw`); `Motor.js#setSpeed` (263) — reserved for future use; no active caller after N-2b (planCrossing deleted) |
+| **Readers** | `StuckProbe.js` — not used as gate condition; inline cyclist path only |
 | **Invariant** | Only via `setState` or `setSpeed`. Raw `npc.speed =` anywhere else is a contract violation. |
 
 ---
@@ -64,7 +64,7 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 | **Semantic** | Horizontal facing: `1` = right, `-1` = left. Used for physics `dx` and rendering mirror. |
 | **Owner** | Unprotected — multiple owners by convention |
 | **Writers** | `Npc.js` constructor (65 — init), `Npc.js#update` (254 — leash sync, 281-282 — bounds fallback); `Motor.js#_defaultOnExit` (141 — loiter dir restore), `Motor.js#integratePhysics` (278 — leash sync, 287-288 — bounds bounce, 335 — reversal); `Pedestrians.js#spawnOnePedestrian` (107 — spawn facing); `LoiterBehavior.js#tickLoiter` (42 — micro-phase dir restore); `TalkActivity.js#_faceEachOther` (74-75 — mutual face); `StallActivity.js#activate` (60 — seller face, 61 — buyer face); `UsePropActivity.js#activate` (33 — face prop); `ChessActivity.js#start` (65 — face table); `Director.js#_spawnNPC` (157 — spawn facing); `BaseStateMachine.js#_resolveTimeout` (118 — lean_wall spot facing), `BaseStateMachine.js#steerRoam` (238 — steer direction, 323 — desired facing), `BaseStateMachine.js#_routeToExit` (332 — exit facing) |
-| **Readers** | `Motor.js#integratePhysics` (270, 275), `CigaretteProp.js` (29, 41), `seat.js#alignLie` (101), `BaseStateMachine.js#steerRoam` (305) |
+| **Readers** | `CigaretteProp.js` (29, 41), `seat.js#alignLie` (101), `BaseStateMachine.js#steerRoam` (audit check, direction update) |
 | **Invariant** | Value must always be exactly `1` or `-1`. No floating-point normalisation. |
 
 ---
@@ -73,11 +73,11 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Vertical velocity in pixels/second (positive = downward in screen space). Used for road crossing and bounce in bounds-limited NPCs. |
-| **Owner** | Shared: `Motor.js` (integration + reset on setState) and `BaseStateMachine.js` (crossing control) |
-| **Writers** | `Motor.js#setState` (166 — reset to 0), `Motor.js#integratePhysics` (294, 296 — bounds bounce); `BaseStateMachine.js#steerRoam` (193 — routing reset, 247 — routing reset), `BaseStateMachine.js#_routeToExit` (318 — set crossing vy) |
-| **Readers** | `Motor.js#integratePhysics` (277, 283), `WalkMode.js#planCrossing` (177 — goingDown test) |
-| **Invariant** | Reset to 0 on every `setState`. Only `planCrossing`/routing paths and Motor integration legitimately set non-zero values. |
+| **Semantic** | Vertical velocity field; effectively dead after V-2. `Motor.js#setState` still resets it to 0 for safety. No active reader or meaningful writer remains. |
+| **Owner** | `Motor.js` (reset only) |
+| **Writers** | `Motor.js#setState` (166 — reset to 0); no other legitimate writer after V-2 |
+| **Readers** | None — `checkZoneTransition` migrated to `mot.vel?.vy` in V-2 |
+| **Invariant** | Always 0 in practice post-V-2. The field is retained to avoid property-access errors on NPC objects; Y motion is driven by `mot.vel.vy` only. |
 
 ---
 
@@ -181,17 +181,18 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 |---|---|
 | **Semantic** | One-frame velocity vector `{vx, vy}` written by `steerRoam` so `integratePhysics` can apply diagonal movement directly, bypassing the `direction × speed` scalar path. Consumed (set to `null`) by `integratePhysics` on the same frame it is read. |
 | **Owner** | `Motor.js#integratePhysics` (consumer) / `BaseStateMachine.js#steerRoam` (producer) |
-| **Writers** | `BaseStateMachine.js#steerRoam` (sets `{vx,vy}` after `applyLookahead`); `Motor.js#integratePhysics` (clears to `null` after consuming) |
-| **Readers** | `Motor.js#integratePhysics` (consumes when `wm && mot.vel`) |
-| **Invariant** | Only written when `walkMode` is active. `null` between frames — `integratePhysics` always clears it. Non-`walkMode` paths (riders, dogs) never set it; `integratePhysics` falls through to the `speed > 0` scalar path for those. |
+| **Writers** | `BaseStateMachine.js#steerRoam` walk branch (sets `{vx,vy}` after `applyLookahead`); `Motor.js#integratePhysics` (clears to `null` after consuming) |
+| **Readers** | `Motor.js#integratePhysics` (consumes when `mot.vel` is set — both `.vx` and `.vy` are used) |
+| **Invariant** | Only written when `walkMode` is active. `null` between frames — `integratePhysics` always clears it. When absent, `integratePhysics` does not move the NPC (stationary frame). Non-`walkMode` paths (riders, inline physics) never set it. |
 
 ### `audit.count(npc, 'dir_mismatch')` (diagnostic counter)
 
 Incremented in `BaseStateMachine.js#steerRoam` (walk/run/jog branch only) when
-`Math.sign(vx) !== npc.direction` after `applyLookahead`. Records frames where
-the steering vector opposes the NPC's current facing. Used for before/after
-comparison during the speed-channel refactor; expected to approach zero once
-direction and speed are driven from the same vector.
+`vx !== 0 && Math.sign(vx) !== npc.direction` after `applyLookahead`. Records
+frames where the steering vector opposes the NPC's current facing. The
+`npc.speed > 0` prefix guard was removed in V-2 (speed is always 0 post-V-1;
+the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
+`npc.direction` disagree, regardless of speed.
 
 ---
 
@@ -199,11 +200,25 @@ direction and speed are driven from the same vector.
 
 | | |
 |---|---|
-| **Semantic** | Module-level `_instance` holding the single `NavGrid` cost map for the current scene. Cost encoding: 0=BLOCKED, 1=walkable, 8=grass, 250=ROAD (passable but not plannable). |
+| **Semantic** | Module-level `_instance` holding the single `NavGrid` cost map for the current scene. Cost encoding: 0=BLOCKED, 1=walkable, 8=grass, 250=ROAD (passable; plannable at high cost via PLANNING_RULES; not sampable or usable as destination). |
 | **Owner** | `NavGrid.js` |
 | **Writers** | `NavGrid.js` module (35-36 — `getNavGrid`/`setNavGrid` exports); `SceneInitializer.js` (96 — sole call to `setNavGrid`) |
 | **Readers** | `Motor.js#_slideMove` (200), `WalkMode.js#pickModeTarget` (202, 230), `PathPlanner.js#getPlanner` (199), `Lookahead.js#applyLookahead` (32), `EnvironmentQuery.js` (126, 135), `Pedestrians.js#spawnOnePedestrian` (67), `StrollTask.js` (26), `StuckProbe.js` (15) |
 | **Invariant** | Set exactly once at scene initialisation. `null` before init — all consumers must guard (`grid && ...`). Must not be replaced mid-scene. |
+
+### Obstacle footprint (`e.footprint`)
+
+| | |
+|---|---|
+| **Semantic** | Per-entity ground footprint `{shape, rx, ry, blocks, sortDY}` computed once in `PropEntity` constructor via `_computeFootprint()`. `shape: 'rect'` → AABB test; `shape: 'ellipse'` → ellipse test (fountain). `rx/ry` are world-pixel half-axes at the entity's `depthScale(y)`. `blocks: true` for all `OBSTACLE_TYPES`; `false` for decorative props (sign). `sortDY` offsets the Y-sort anchor (`_sortY = y + sortDY`; 0 = use entity.y). |
+| **Owner** | Each entity module (`js/entity/<type>/<type>.js`) exports `footprint(e)`. `PropEntity._computeFootprint()` dispatches by `propType`. |
+| **Writers** | `PropEntity` constructor (one-time, stored as `this.footprint`). Never mutated after construction. |
+| **Readers** | `NavGrid._markObstacle` (obstacle baking); `PropEntity` constructor (sortDY → `_sortY`); `check-invariants.mjs Rule 5` (static gate) |
+| **Invariant** | Every `propType` in `OBSTACLE_TYPES` must have an explicit case in `_computeFootprint()`; missing case throws at construction. `rx/ry` values must not be adjusted without also updating the corresponding `draw*.js` geometry comment. |
+
+### `NPC_HALF_W` (NavGrid Minkowski expansion)
+
+`NavGrid.js:39`: `const NPC_HALF_W = 7` — pixels added to every obstacle's `footprint.rx/ry` before grid cell marking. Represents the NPC's collision half-width: a cell is BLOCKED if the NPC's centre would be within `rx + NPC_HALF_W` of the obstacle centre (AABB), or within the scaled ellipse boundary (fountain). Value 7 was chosen to match the effective NPC ground-contact half-width at mid-scene depth. Rename or change only with a full NavGrid rebake and gameplay visual check.
 
 ---
 
@@ -226,7 +241,7 @@ direction and speed are driven from the same vector.
 **Claim**: `sitDown` places the NPC at the bench's seat surface, which lies inside the bench's obstacle AABB (cost=0 in NavGrid). `standUp` clears the bench reference but does **not** reposition the NPC.
 
 **Evidence**:
-- `PropEntity.js` (38-41): `'bench'` is in `OBSTACLE_TYPES` → `this.obstacle = true` → `NavGrid#_bakeObstacles` sets all cells in the AABB to cost=0 (BLOCKED).
+- `PropEntity.js`: `'bench'` is in `OBSTACLE_TYPES` → `this.obstacle = true`; `this.footprint = _computeFootprint()` → `NavGrid#_bakeObstacles` marks all cells within `footprint.rx/ry + NPC_HALF_W` as BLOCKED.
 - `seat.js#sitDown` (66-74): calls `_setXY(npc, bench.x, seatSurfaceY(bench) - sitBodyY * sc)` — places NPC at seat surface inside bench footprint.
 - `seat.js#standUp` (77-82): clears `bench._occupiedBy`, `npc.mem('social').bench`, and `npc._sortY`. No `_setXY` call — NPC remains at the seated x/y.
 - `Motor.js#_slideMove` (205-208) escape rule: "already in a blocked cell → move freely to get out" — the designated recovery mechanism.
@@ -270,7 +285,7 @@ if (this._motorInstalled) {
 |---|---|---|
 | **Period** | Every 2s (module-level `acc`) | Every 1.5s (`mot.progressAcc`) |
 | **Threshold** | `moved < 8` px over 2s window | `moved < 15` px over 1.5s window |
-| **Trigger condition** | `n.speed > 0 \|\| n.state === 'routing'` | `npc.speed > 0 \|\| npc.state === 'routing'` |
+| **Trigger condition** | `state ∈ {walk,run,jog,routing}` (V-2) | `npc.state === 'routing' \|\| walkState && wm` |
 | **Action** | Observational: writes `window.__stuck`, logs to `tally`. **No side-effects on NPC state.** | Reactive: clears `navPath`; on `direct` sets `_stuckOnce` then forces `_elapsed = abandonAfter`; on `wander` nulls `roamTarget`; on `routing` sets `routeReplan` then forces `stateTimer = 9999` |
 | **Scope** | All registered NPCs via `BehaviorManager` | Only NPCs with `_motorInstalled` |
 

@@ -60,6 +60,7 @@ globalThis.window = { __stuck: [], __motorViolations: 0, __motorDebug: false };
 
 // ─── all game module imports (dynamic so window shim is already set) ─────────
 const { NavGrid, setNavGrid }         = await import('../js/behavior/nav/NavGrid.js');
+const { PLANNING_RULES }              = await import('../js/behavior/nav/PathPlanner.js');
 const { EntityManager }               = await import('../js/core/EntityManager.js');
 const { BehaviorManager }             = await import('../js/behavior/BehaviorManager.js');
 const { ExitRegistry }                = await import('../js/npc/ExitRegistry.js');
@@ -67,6 +68,7 @@ const { initCrosswalks, initWalkPaths } = await import('../js/behavior/WalkMode.
 const { audit }                       = await import('../js/debug/MovementAudit.js');
 const { spawnPedestrians, spawnOnePedestrian } = await import('../js/npc/Pedestrians.js');
 const { spawnAthletes }               = await import('../js/npc/Athletes.js');
+const { expandSceneData }             = await import('../js/core/sceneData.js');
 const { WORLD_WIDTH, FAR_Y, NEAR_Y, BUILDING_BASE_Y, PARK_BOTTOM } =
   await import('../js/core/Layout.js');
 
@@ -77,14 +79,13 @@ const stubRenderer = {
 };
 
 // ─── scene data ──────────────────────────────────────────────────────────────
-const scene   = JSON.parse(readFileSync(join(ROOT, 'assets/scene.json'), 'utf8'));
-const layout  = scene.layout ?? {};
-const routes  = scene.routes ?? [];
+const rawScene = JSON.parse(readFileSync(join(ROOT, 'assets/scene.json'), 'utf8'));
+const { layout } = expandSceneData(rawScene);
 
 // ─── NavGrid ─────────────────────────────────────────────────────────────────
 // Pass empty entities array — Y-band defaults + walkPaths are enough for pedestrian testing.
 const navGrid = new NavGrid();
-navGrid.bake([], layout);
+navGrid.bake([], layout, PLANNING_RULES);
 setNavGrid(navGrid);
 
 // ─── WalkMode paths + crosswalks ─────────────────────────────────────────────
@@ -93,13 +94,13 @@ initCrosswalks(layout.crosswalks ?? []);
 
 // ─── ExitRegistry ────────────────────────────────────────────────────────────
 const exitReg = new ExitRegistry();
-exitReg.register({ id: 'edge_left',  type: 'edge', x: -200,              y: null,
+exitReg.register({ id: 'edge_left',  type: 'edge', x: -40,              y: null,
                    yZone: [BUILDING_BASE_Y, FAR_Y],  facing: -1 });
-exitReg.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 200, y: null,
+exitReg.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 40, y: null,
                    yZone: [BUILDING_BASE_Y, FAR_Y],  facing:  1 });
-exitReg.register({ id: 'park_left',  type: 'edge', x: -200,              y: null,
+exitReg.register({ id: 'park_left',  type: 'edge', x: -40,              y: null,
                    yZone: [NEAR_Y, PARK_BOTTOM],     facing: -1 });
-exitReg.register({ id: 'park_right', type: 'edge', x: WORLD_WIDTH + 200, y: null,
+exitReg.register({ id: 'park_right', type: 'edge', x: WORLD_WIDTH + 40, y: null,
                    yZone: [NEAR_Y, PARK_BOTTOM],     facing:  1 });
 
 // ─── EntityManager + BehaviorManager ─────────────────────────────────────────
@@ -107,22 +108,13 @@ const em = new EntityManager();
 const bm = new BehaviorManager(em, null);   // null poseCache → no ModifierLayer poses
 bm.exitRegistry = exitReg;
 
-// ─── spawn points from route entries ─────────────────────────────────────────
-const spawnPoints = routes
-  .filter(r => r.type === 'path' || r.type === 'wander')
-  .map(r => ({
-    x:      r.entry?.x ?? WORLD_WIDTH / 2,
-    y:      r.entry?.y ?? FAR_Y,
-    facing: (r.entry?.x ?? WORLD_WIDTH / 2) < WORLD_WIDTH / 2 ? 1 : -1,
-  }));
-
-if (spawnPoints.length === 0) {
-  // fallback: two edges + park strip
-  spawnPoints.push(
-    { x: 60, y: 230, facing: 1 }, { x: 1940, y: 230, facing: -1 },
-    { x: 60, y: 420, facing: 1 }, { x: 1940, y: 420, facing: -1 },
-  );
-}
+// ─── spawn points (routes deleted from scene.json; use fixed edge points) ─────
+const spawnPoints = [
+  { x: 60,   y: 230, facing:  1 },
+  { x: 1940, y: 230, facing: -1 },
+  { x: 60,   y: 420, facing:  1 },
+  { x: 1940, y: 420, facing: -1 },
+];
 
 spawnPedestrians(em, stubRenderer, bm, spawnPoints, 20);
 spawnAthletes(em, stubRenderer, bm);
@@ -145,12 +137,14 @@ for (let frame = 0; frame < TOTAL_FRAMES; frame++) {
   for (const npc of allNpcs) {
     const ag  = npc.mem('agenda');
     const mot = npc.mem('motor');
-    // New departure attempt starting (routeTarget with exitType just appeared)
-    if (npc.alive && mot.routeTarget?.exitType && npc._depSince == null) {
+    // New departure attempt starting (offWorld edge-exit or exit_building goal published)
+    const isExitGoal = mot.goal?.meta &&
+      (mot.goal.meta.offWorld === true || mot.goal.meta.arrivalRule === 'exit_building');
+    if (npc.alive && ag.departing && isExitGoal && npc._depSince == null) {
       npc._depSince = frame;
     }
-    // Attempt ended without death: E2 cleared departing or ExitSceneTask aborted
-    if (npc.alive && npc._depSince != null && !ag.departing && !mot.routeTarget?.exitType) {
+    // Attempt ended without death: ag.departing cleared (ExitSceneTask aborted)
+    if (npc.alive && npc._depSince != null && !ag.departing) {
       npc._depSince = null;
     }
     // Success: NPC died on arrival

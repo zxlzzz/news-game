@@ -64,7 +64,9 @@ for (const id of Object.keys(clipLibrary.manifest.clips)) {
 - NPC 默认动画：`'stand'`（不是 `'idle'`）；狗：`'dog_walk'`（不是 `'dogwalk'`）
 - keyframe 只存 delta（相对 `skeleton.json defaultPose`）；省略关节 = 零 delta
 - variant clip：ClipLibrary 取 **base** 的 keyframes × amp，variant 自身 keyframes 字段无效
-- **defaultPose 膨胀历史**：`skeleton.json` human defaultPose 的关节坐标曾因透视感调整整体放大约 1.26×（约 2026-06 批次）；存量 clip keyframe 均已随之重新录制，新增 clip 必须基于当前 defaultPose 录制，禁止用旧比例关节值
+- **defaultPose 历史注记**（2026-07-18 验证）：defaultPose 与 `joints.len` 比值全为 1.000，总高恰 144 单位，现为一致基准。
+  历史：human defaultPose 坐标曾因透视感调整整体放大约 1.26×（约 2026-06 批次），clip keyframe 静默补偿；该补偿已不存在，clip 与 skeleton 现已对齐。
+  铁律：JS 不得硬编码关节坐标；任何工具不得直接产出关节坐标，唯一路径是角度空间 → fk_bake → ClipLibrary 断言 + preview 目检。
 - **`MOUNTED_CLIPS` 白名单**：`['bike','mobike','mobile']` 是唯一允许地面接触关节 abs_y > 0 的 clip 组（骑乘时接触点经由车辆对象），ClipLibrary 断言对此白名单豁免；新增骑乘 clip 须手动加入此列表
 
 ---
@@ -158,15 +160,33 @@ if (exit) { npc.x = exit.x; npc.alive = false; }
 ```
 BehaviorManager
   ├── BaseStateMachine  — 状态机（setState / tickBaseState）
-  ├── WalkMode          — wander / direct / path_follow / planCrossing
+  ├── WalkMode          — wander / path_follow
   ├── SocialLayer       — Talk / Chess / Stall 配对
   ├── ModifierLayer     — 叠加动作（phone / smoke / gesture）
-  ├── EnvironmentQuery  — 空间查询（只读）
-  └── RouteSelector     — 路线池（scene.json routes）
+  └── EnvironmentQuery  — 空间查询（只读）
+
+nav/PlanService — Planning 层横切服务，不隶属上述任一子层。
+消费者：BaseStateMachine、BehaviorManager、GotoTask / StrollTask / ExitSceneTask、
+SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.path` 唯一写入方。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
-槽位释放 `releaseAllHoldings(npc, envQuery)`；过马路必须经 `planCrossing`。
+槽位释放 `releaseAllHoldings(npc, envQuery)`；`crossing / jaywalking` 标签由 NavGrid
+格代价空间派生（`Npc.getTags()` 读格 cost，`PathPlanner.PLANNING_RULES` 中
+`crosswalkCost / jaywalkRoadCost`）；不存在过街子程序。
+骑手 profile：`{agenda:false, separate:false, initial:'ride'}`（N-3 集成）。
+
+**affordance 池**：`EnvironmentQuery.drawAffordance(npc, radius)` 加权随机抽取目的地；
+声明来源：`AffordanceDefaults.js`（propType 默认）、`entity.affordances`（scene.json 覆盖）、`registerAmbientAffordance`（区域型 POI）。
+`_affOcc` 唯一写入点 = `occupyAffordance / releaseAffordance`（EnvironmentQuery.js）；park_idler NPC 用 `{agendaTemplate:'park_idler'}` profile 驱动 stroll→visit 循环。
+
+**链条行为系统**（B-①②已落地）：
+三概念分工：Task（ChainTask 单 NPC 顺序行为）/ Activity（SocialLayer 多 NPC 协调，不动）/ State（BSM 姿势转换，被上两层驱动）。
+`ChainTask` 解释器六原语：goto / attach / detach / pose / use / loop。脚本纯数据在 `BehaviorScripts.js`。
+`AttachmentDefs.js` 声明道具（anchor / heldPose / acquire / dispose），attach 走 ModifierLayer held 通道（不新建道具写入点）。
+`interruptible` 控制社交劫持；处置由 `runner.hold` 统一兜底。
+**passerby 模板**（B-②）：60% 直通（single stroll → exit）/ 40% 途中停留（`_stopCredits` 1-2 次）；desire 池改为 `BEHAVIOR_SCRIPTS` 键；`check-behavior-data.mjs` 静态校验 profile.desires 所有 id 存在于脚本表。
+设计文档：`docs/design-plans/chain-task-design.md`。
 
 ---
 
@@ -174,8 +194,8 @@ BehaviorManager
 
 - CC 分支命名：`claude/<slug>` 前缀
 - Windows MINGW64 环境：交付**完整文件内容**，不走 patch/diff 格式
-- 调试：`js/behavior/DebugLog.js` + DebugOverlay
-- **禁止运行**：默认禁止运行游戏 / harness / 模拟验证；静态验证（`check-invariants.sh`、读代码、grep）不受限；运行验证仅在用户明确要求时执行
+- 调试：`js/behavior/DebugLog.js` + DebugOverlay；键 'o' → `envQuery.debugPool(npcs[0])` 打印 affordance 候选池快照（kind/weight/eff_w/reason）
+- **禁止运行**：默认禁止运行游戏 / harness / 模拟验证；静态验证（`check-invariants.mjs`、读代码、grep）不受限；运行验证仅在用户明确要求时执行
 - **静态验证优先**：有疑问先 grep/读代码，确认后再改；不确定时列出不确定点交用户决策，不猜
 - **验收标准先行**：每个子任务开始前在 CLAUDE.md 或 PR 描述中写清楚验收条件；没有验收标准的任务禁止提交
 - **时序锚点**：涉及帧内执行顺序的描述须附 `StreetScene.js:行号` 锚点；帧序以 `movement-dataflow.md §1` 为权威，不另起炉灶
@@ -200,7 +220,7 @@ npc.clearMem('loiter');
 
 | namespace  | owner / 写者            | 典型字段                                              |
 |------------|-------------------------|-------------------------------------------------------|
-| `motor`    | Motor.js / WalkMode.js  | walkMode、walkModeStack、routeTarget、routePts、routeIdx、navPath、navGoalX/Y、navIdx、dirCD、progress、tags |
+| `motor`    | Motor.js / WalkMode.js  | walkMode、goal、path、vel、dirCD、savedBounds、needReplan、progressAcc、progressAnchor、wallSpot、tags（`_obsFlipVx / _obsVxSign` 只读观测，非状态位） |
 | `loiter`   | LoiterBehavior.js       | dir、dur、elapsed、overlay、microPhase、microPhaseName、microTimer、tags |
 | `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、slotWaitProp、slotWaitTimer、chessSlot、onlookerTimer、onlookerDur、tags |
 | `agenda`   | BehaviorManager / Director | profile、runner、agenda、lifespan、ageTimer、departing、pendingDeparture、preferExitType、exitRegistry、waitForBusLayer、busStops |
@@ -225,7 +245,8 @@ npc.clearMem('loiter');
 | `docs/contracts/known-violations.md` | 规范性 | check-invariants 已知例外白名单 |
 | `docs/design-plans/news-pipeline-mvp.md` | 设计稿（finalized） | 新闻管线 MVP：截图 T2、Provider T3、成稿流 T4 |
 | `docs/design-plans/photo2entity-plan.md` | 设计稿（draft） | 现实照片 → AI 生成场景物体，占位草案 |
-| `docs/design-plans/semantic-destination-design.md` | 设计稿（draft） | 语义目的地层 v2，affordance 池设计 |
+| `docs/design-plans/semantic-destination-design.md` | 设计稿（finalized） | 语义目的地层 v2，affordance 池设计 |
+| `docs/design-plans/chain-task-design.md` | 设计稿（finalized） | 链条行为系统：ChainTask / AttachmentDefs / BehaviorScripts |
 | `docs/behavior-design.md` | 快照 | 行为系统目标架构蓝图（准确内容已迁入 contracts/behavior.md） |
 | `docs/npc-states.md` | 快照 | 状态机规格历史文档（含已淘汰状态，如 bike/mobile） |
 | `docs/npc-behavior-system-v0.md` | 快照 | 行为系统重构 V0 设计（已由 contracts/behavior.md 取代） |
@@ -234,6 +255,7 @@ npc.clearMem('loiter');
 | `docs/v3-audit.md` | 快照 | v3 视觉合规审计（draw*.js），2026-07-11 |
 | `docs/contracts/movement-dataflow.md` | 规范性 | 帧内移动管线逐步执行顺序（13步）、变量清单、`mot.vel.vy` 死代码证明、三个冲突区 |
 | `docs/design-plans/velocity-representation-survey.md` | 快照 | `npc.direction/speed/vy`、`mot.vel` 全库消费者普查（2026-07-13） |
-| `docs/design-plans/velocity-unification-design-v1.md` | 设计稿（finalized） | 速度表示统一三阶段方案（V-1 审计 / V-2 清理 / V-3 死代码） |
+| `docs/design-plans/velocity-unification-design-v1.md` | 设计稿（finalized） | 速度表示统一三阶段方案（V-1 ✅ / V-2 ✅ / V-3 待实施） |
 | `docs/roadmap.md` | 快照 | 功能批次落地状态一览（规范性路线图跟踪） |
+| `docs/design-plans/goal-pipeline-v1.md` | 规范性 | 四层目标管线立法；三铁律；ARRIVAL/RECOVERY/SAFETY/PLANNING 裁决表；N-1/N-2/N-3 刀序；四数验收表 |
 | `docs/design-plans/belief-layer-v0.md` | 设计稿（draft） | 信念层 v0 占位草案：符号化事件声明、LLM 证人污染防护、SIR 传播 |

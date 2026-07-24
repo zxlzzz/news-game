@@ -77,7 +77,7 @@ const PEDESTRIAN = {
   gesturePoses: PED_GESTURES,
   spawnTraits: ['hold_bag', 'umbrella'],
   activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
-  desires: ['rest', 'use_vending', 'use_trash'],
+  desires: ['rest_bench', 'use_vending', 'use_trash', 'eat_snack'],
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
@@ -111,7 +111,7 @@ const BUSINESSMAN = {
 const TOURIST = {
   ...PEDESTRIAN,
   name: 'tourist',
-  desires: ['rest', 'use_vending'],
+  desires: ['rest_bench', 'use_vending'],
   transitions: {
     ...PED_TRANSITIONS,
     walk:  { stand: 0.55, run: 0.06, squat: 0.02, sit_ground: 0.05, lean_wall: 0.01 },
@@ -167,7 +167,7 @@ const CHESS_ONLOOKER = {
 const STALL_SELLER = {
   name: 'stall_seller',
   initial: 'walk',
-  allowedStates: ['walk', 'stand', 'routing'],
+  allowedStates: ['walk', 'stand'],
   transitions: { walk: { stand: 1.0 }, stand: { stand: 1.0 } },
   heldPoses: {},
   activities: ['stall_seller'],
@@ -181,7 +181,7 @@ const DOG_OWNER = {
   allowedStates: ['walk', 'stand'],
   transitions: { walk: { stand: 1.0 }, stand: { walk: 1.0 } },
   heldPoses: {},
-  activities: ['dog_walk'],
+  activities: [],
   traits: {},
   cameraReaction: 'neutral',
 };
@@ -195,6 +195,21 @@ const ATHLETE = {
   activities: [],
   traits: {},
   cameraReaction: 'neutral',
+  agenda: false,   // 常驻布景：不挂 Agenda，path_follow 环线全权管理漫游
+};
+
+// 骑手：单态 ride，Motor._tickState 每帧写 mot.vel；不参与分离；不挂 Agenda
+const CYCLIST = {
+  name: 'cyclist',
+  initial: 'ride',
+  allowedStates: ['ride'],
+  transitions: {},
+  heldPoses: {},
+  activities: [],
+  traits: {},
+  cameraReaction: 'neutral',
+  agenda: false,    // 常驻布景，CyclistSpawner 全权管理密度
+  separate: false,  // 不参与 BM._separate（骑手速度高，分离半径无意义）
 };
 
 export const PROFILES = {
@@ -206,6 +221,7 @@ export const PROFILES = {
   stall_seller:   STALL_SELLER,
   dog_owner:      DOG_OWNER,
   athlete:        ATHLETE,
+  cyclist:        CYCLIST,
 };
 
 /** 取得指定 profile；缺失时回退到 pedestrian */

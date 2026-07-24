@@ -817,7 +817,7 @@ class PreviewCanvas {
       ctx.lineWidth   = w * s * 1.8;
       drawBone(ctx, jx(from), jy(from), jx(to), jy(to), bend);
     }
-    const headR = (isDog ? 6 : 9) * s;
+    const headR = ((isDog ? _skeletonHeadR['dog'] : _skeletonHeadR['human']) ?? (isDog ? 6 : 9)) * s;
     ctx.fillStyle = pose['head'] ? ovCol : npc.pal.stroke;
     ctx.beginPath(); ctx.arc(jx('head'), jy('head'), headR, 0, Math.PI*2); ctx.fill();
     ctx.fillStyle = ovCol;
@@ -1491,8 +1491,24 @@ class AnimatorDebugger {
   }
 }
 
+// ── Skeleton head radii (loaded from skeleton.json) ──
+let _skeletonHeadR = {};
+async function loadSkeletonData() {
+  try {
+    const r = await fetch('../../assets/skeleton.json');
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    for (const [name, skel] of Object.entries(data.skeletons ?? {})) {
+      if (skel.headRadius != null) _skeletonHeadR[name] = skel.headRadius;
+    }
+  } catch (e) {
+    console.warn('[anim-preview] skeleton.json 加载失败，使用内置头半径', e.message);
+  }
+}
+
 // ── Bootstrap ──
 (async () => {
+  await loadSkeletonData();
   await loadPoseCache();
   window.app = new AnimatorDebugger();
 })();

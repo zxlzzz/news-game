@@ -2,38 +2,41 @@
  * WaitForBusLayer — 公交站乘客行为管理
  *
  * 职责：
- *   1. 周期扫描自由 NPC，小概率触发"等车"意图
- *   2. 管理等车 NPC 的状态（stand/loiter 交替模拟无聊等待）
- *   3. 响应公交到站，驱动 boarding 流程（走向车门 → 上车消失）
+ *   1. 周期扫描自由 NPC（仅 wander 模式），小概率触发 WaitBusActivity
+ *   2. 响应公交到站，驱动 boarding 流程（走向车门 → 上车消失）
+ *
+ * 等待行为由 WaitBusActivity 全权驱动（stand/loiter 交替 + 超时自退）；
+ * 本层 update() 仅做扫描，不再 tick 单个等待者。
  */
 
-import { setState } from '../../behavior/Motor.js';
-import { planCrossing } from '../../behavior/WalkMode.js';
-import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP, FAR_Y, NEAR_Y } from '../../core/Layout.js';
-
-function _needsCrossing(y1, y2) {
-  return (y1 < FAR_Y && y2 >= NEAR_Y) || (y1 >= NEAR_Y && y2 < FAR_Y);
-}
+import { setState, setWalkMode } from '../../behavior/Motor.js';
+import { modeWander }            from '../../behavior/WalkMode.js';
+import { publishGoal } from '../../behavior/nav/PlanService.js';
+import { WaitBusActivity } from '../../behavior/activities/WaitBusActivity.js';
+import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../../core/Layout.js';
+import { despawnNpc } from '../../npc/despawn.js';
 
 const WAIT_ZONES = [
   { stopDir: +1, xRange: [380, 620],  yRange: [SIDEWALK_FAR_Y - 20, BIKE_LANE_FAR_TOP] },
   { stopDir: -1, xRange: [1380, 1620], yRange: [PARK_TOP, PARK_TOP + 25] },
 ];
 
-const WAIT_STATES = new Set(['walk', 'stand', 'loiter']);
-const MAX_WAIT_TIME = 120;
+const WAIT_STATES   = new Set(['walk', 'stand', 'loiter']);
 const SCAN_INTERVAL = 0.5;
 
 export class WaitForBusLayer {
-  constructor(busStops) {
-    this._stops = busStops;
-    this._scanTimer = 0;
+  constructor(busStops, entities, socialLayer) {
+    this._stops       = busStops;
+    this._entities    = entities ?? [];
+    this._socialLayer = socialLayer ?? null;
+    this._scanTimer   = 0;
 
     for (const stop of busStops) {
       stop.onBoarding = (bus, s) => this._startBoarding(bus, s);
     }
   }
 
+  // update() 仅做扫描；等待者 tick 由 SocialLayer → WaitBusActivity.update() 驱动
   update(npcs, dt) {
     this._scanTimer -= dt;
     if (this._scanTimer <= 0) {
@@ -42,28 +45,27 @@ export class WaitForBusLayer {
     }
   }
 
-  tickWaiter(npc, dt) {
-    if (npc.mem('social').boardingBus && npc.state === 'walk') {
-      this._releaseWaiter(npc);
-      return;
-    }
+  /** ExitSceneTask 直接入队（NPC 已在等候区内） */
+  addWaiterDirect(npc, stop) {
+    this._addWaiter(npc, stop);
+  }
 
-    npc.mem('social').waitTimer = (npc.mem('social').waitTimer || 0) + dt;
+  /** NPC 是否已在对应等候区内 */
+  isInWaitZone(npc, stop) {
+    const z = WAIT_ZONES.find(z => z.stopDir === stop.direction);
+    if (!z) return false;
+    return npc.x >= z.xRange[0] && npc.x <= z.xRange[1]
+        && npc.y >= z.yRange[0] && npc.y <= z.yRange[1];
+  }
 
-    if (npc.mem('social').waitTimer > MAX_WAIT_TIME) {
-      this._releaseWaiter(npc);
-      setState(npc, 'walk', 'wait_timeout');
-      return;
-    }
-
-    if (npc.state === 'stand' && npc.mem('social').waitTimer > (npc.mem('social').nextFidget || 10)) {
-      npc.mem('social').nextFidget = npc.mem('social').waitTimer + 10 + Math.random() * 10;
-      setState(npc, 'loiter', 'wait_fidget');
-      npc.stateDur = 4 + Math.random() * 4;
-    } else if (npc.state === 'loiter' && npc.stateTimer >= npc.stateDur) {
-      setState(npc, 'stand', 'wait_resume');
-      npc.stateDur = Infinity;
-    }
+  /** 等候区中心坐标（ExitSceneTask 路由目标） */
+  waitZoneTarget(stop) {
+    const z = WAIT_ZONES.find(z => z.stopDir === stop.direction);
+    if (!z) return null;
+    return {
+      x: (z.xRange[0] + z.xRange[1]) / 2,
+      y: (z.yRange[0] + z.yRange[1]) / 2,
+    };
   }
 
   _scanForWaiters(npcs) {
@@ -71,6 +73,11 @@ export class WaitForBusLayer {
       if (!npc.alive || npc.mem('social').activity || npc.mem('agenda').departing) continue;
       if (npc.mem('social').waitingBusStop || npc.mem('social').boardingBus) continue;
       if (!WAIT_STATES.has(npc.state)) continue;
+
+      // 排除非 wander 模式或有 goal 的 NPC
+      const mot      = npc.mem('motor');
+      const modeKind = mot.walkMode?.kind;
+      if ((modeKind && modeKind !== 'wander') || mot.goal) continue;
 
       for (const zone of WAIT_ZONES) {
         if (npc.x < zone.xRange[0] || npc.x > zone.xRange[1]) continue;
@@ -87,28 +94,11 @@ export class WaitForBusLayer {
     }
   }
 
-  addWaiterDirect(npc, stop) {
-    this._addWaiter(npc, stop);
-  }
-
   _addWaiter(npc, stop) {
-    npc.mem('social').waitingBusStop = stop;
-    npc.mem('social').waitTimer = 0;
-    npc.mem('social').nextFidget = 10 + Math.random() * 10;
-    stop._waiters.push(npc);
-    setState(npc, 'stand', 'wait_bus');
-    npc.stateDur = Infinity;
-  }
-
-  _releaseWaiter(npc) {
-    const stop = npc.mem('social').waitingBusStop;
-    if (stop) {
-      stop._waiters = stop._waiters.filter(n => n !== npc);
-      stop._boardingQueue = stop._boardingQueue.filter(n => n !== npc);
-    }
-    npc.mem('social').waitingBusStop = null;
-    npc.mem('social').waitTimer = 0;
-    npc.mem('social').boardingBus = null;
+    const sl  = this._socialLayer;
+    const id  = sl ? sl._idSeq++ : Math.random();
+    const act = new WaitBusActivity(id, npc, stop);
+    if (sl) sl.activities.push(act);
   }
 
   _startBoarding(bus, stop) {
@@ -119,28 +109,37 @@ export class WaitForBusLayer {
     const doorY = stop.direction > 0 ? BIKE_LANE_FAR_TOP : PARK_TOP;
 
     for (const npc of waiters) {
+      // 防止寿命计时在 boarding 路由期间重复触发离场
+      npc.mem('agenda').departing = true;
       npc.mem('social').boardingBus = bus;
       stop._boardingQueue.push(npc);
       npc.mem('social').waitingBusStop = stop;
 
+      // 同步销毁 WaitBusActivity（boarding 路径）；SocialLayer 下帧再调 destroy() 时
+      // _destroyed 守卫保证幂等
+      const act = npc.mem('social').activity;
+      if (act) { act.interrupt('boarding'); act.destroy(); }
+
       const routeToDoor = (n) => {
-        n.mem('motor').routeTarget = {
-          x: doorX, y: doorY,
-          abandonAfter: 15,
-          onArrive: (n2) => {
-            n2.alive = false;
-            stop._boardingQueue = stop._boardingQueue.filter(x => x !== n2);
-          },
-        };
-        setState(n, 'routing', 'boarding');
+        const entities = this._entities;
+        publishGoal(n, { x: doorX, y: doorY }, 15, (result) => {
+          if (result === 'arrived') {
+            stop._boardingQueue = stop._boardingQueue.filter(x => x !== n);
+            despawnNpc(n, 'boarding-arrive', { entities });
+          } else {
+            // timeout / blocked: 未到车门，从 _boardingQueue 移除，恢复日常漫游
+            // 禁止原地 despawn——未到车门凭空消失违反出口语义
+            stop._boardingQueue = stop._boardingQueue.filter(x => x !== n);
+            n.mem('agenda').departing = false;
+            n.mem('social').boardingBus = null;
+            n.mem('social').waitingBusStop = null;
+            setWalkMode(n, modeWander());
+          }
+        }, {});
+        setState(n, 'walk', 'boarding');
       };
 
-      if (_needsCrossing(npc.y, doorY)) {
-        setState(npc, 'walk', 'boarding_cross');
-        planCrossing(npc, doorY, npc.mem('agenda').profile, routeToDoor);
-      } else {
-        routeToDoor(npc);
-      }
+      routeToDoor(npc);
     }
   }
 }

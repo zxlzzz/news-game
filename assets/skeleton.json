@@ -2,7 +2,7 @@
   "skeletons": {
     "human": {
       "root": "body",
-      "headRadius": 16,
+      "headRadius": 12,
       "scale": 1,
       "unit_height": 144,
       "defaultPose": {

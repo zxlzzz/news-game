@@ -14,6 +14,10 @@ import {
   depthScale,
 } from '../../core/Layout.js';
 
+// 公交站几何常量 — 与 sceneData.js#FAR_STOP / NEAR_STOP 保持同步
+export const FAR_STOP_GEOMETRY  = { roofW: 818, roofH: 26, pillarOffset: 366, bayW: 202, bayD: 9, signDx: 106 };
+export const NEAR_STOP_GEOMETRY = { roofW: 812, roofH: 19, pillarOffset: 364, bayW: 266, bayD: 9, signDx: 138 };
+
 export class BusStop {
   constructor(cfg) {
     this.x         = cfg.x;

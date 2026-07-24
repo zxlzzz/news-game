@@ -1,6 +1,6 @@
 # Known Contract Violations
 
-Violations that pre-date the check-invariants.sh script and cannot be
+Violations that pre-date the check-invariants.mjs script and cannot be
 cleaned up in the same pass. Each entry records the file:line, the rule
 it breaks, and the migration path.
 
@@ -21,4 +21,4 @@ it breaks, and the migration path.
 
 **Migration**: Replace with `npc.mem('social').tags` (or a new `'talk'` namespace). The NpcState migration pass (Batch-M3 second half) should migrate these three writes. Until then, the check-invariants gate cannot enforce the `_extraTags` rule without false-positiving on TalkActivity.js.
 
-**Current status**: Rule is documented in movement.md but NOT enforced in check-invariants.sh.
+**Current status**: Rule is documented in movement.md but NOT enforced in check-invariants.mjs.

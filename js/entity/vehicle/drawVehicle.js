@@ -3,6 +3,7 @@ import {
   depthLineWidth, depthLineColor,
   ENV_LINE_LIGHT, ENV_LINE_DARK,
 } from '../../core/Layout.js';
+import { vehicleAnchors } from '../../../assets/vehicle-anchors.js';
 
 function lenv(g, baseY, wScale = 1.0) {
   const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
@@ -311,19 +312,14 @@ function _moto(g, vehicle, highlight) {
   const groundY = vehicle.y;
   const rs = u * 0.8;   // 骑手缩放
 
-  // mobike 帧为锚点空间绝对坐标（y=0=地面，负值向上），与 StickRenderer 同一变换：
-  // world = (x + d·jx·rs, groundY + jy·rs)
-  const fr = vehicle._sr?.getFrame('mobike', 0) ?? {};
-  const W  = (j, fb) => {
-    const p = fr[j] ?? fb;
-    return { x: x + d * p[0] * rs, y: groundY + p[1] * rs };
-  };
-  const hip   = W('body',   [0,  -82]);
-  const handL = W('l_hand', [50, -76]);
-  const handR = W('r_hand', [47, -75]);
-  const bar   = (handL.x * d >= handR.x * d) ? handL : handR;
-  const footF = W('r_foot', [-28, -42]);
-  const footR = W('l_foot', [-37, -46]);
+  const va    = vehicleAnchors.mobike;
+  const W     = (jx, jy) => ({ x: x + d * jx * rs, y: groundY + jy * rs });
+  const hip   = W(va.hip_jx,   va.hip_jy);
+  const handL = W(va.handL_jx, va.handL_jy);
+  const handR = W(va.handR_jx, va.handR_jy);
+  const bar   = handL.x * d >= handR.x * d ? handL : handR;
+  const footF = W(va.footF_jx, va.footF_jy);
+  const footR = W(va.footR_jx, va.footR_jy);
 
   // 局部坐标：ux 沿行驶方向，uy 向上为正（单位 u）
   const P = (ux, uy) => ({ x: x + d * ux * u, y: groundY - uy * u });

@@ -12,7 +12,8 @@
  * 绘制函数 drawBicycle / drawEbike 保留在 Vehicles.js，经构造参数注入。
  */
 
-import { makeNPC }     from '../../npc/npcUtil.js';
+import { makeNPC }        from '../../npc/npcUtil.js';
+import { setAnimation }   from '../../behavior/Motor.js';
 import { bikeLaneFarY, bikeLaneNearY, WORLD_WIDTH } from '../../core/Layout.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -34,11 +35,13 @@ export class CyclistSpawner {
    * @param {object} opts
    * @param {EntityManager} opts.em
    * @param {StickRenderer} opts.sr
+   * @param {BehaviorManager} opts.bm
    * @param {{ bicycle: Function, ebike: Function }} opts.draw  - drawExtra 绘制函数
    */
-  constructor({ em, sr, draw }) {
+  constructor({ em, sr, bm, draw }) {
     this.em       = em;
     this.sr       = sr;
+    this.bm       = bm;
     this.draw     = draw;
     this.cyclists = [];     // 本类生成的骑手（用于密度统计 + 剔除）
     this._timer   = 0;
@@ -100,6 +103,9 @@ export class CyclistSpawner {
     });
     n.drawExtra  = kind === 'ebike' ? this.draw.ebike : this.draw.bicycle;
     n.steadyFoot = true;
+    // N3-c: 注册到 BM 启用 Motor 写保护 + ride 状态; setAnimation 覆写实际 clip
+    this.bm.register(n, 'cyclist');
+    setAnimation(n, kind === 'ebike' ? 'mobile' : 'bike');
     this.cyclists.push(n);
     return n;
   }

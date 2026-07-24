@@ -12,7 +12,7 @@ same commit. Symbol anchors: `File.js#symbolName` (line numbers parenthetical).
 ```
 BehaviorManager          — thin orchestrator; owns the update loop order
   ├── SocialLayer        — Activity tick + Talk pairing
-  ├── WaitForBusLayer    — bus-waiter FSM
+  ├── WaitForBusLayer    — bus-waiter zone scan (waiter tick → WaitBusActivity)
   ├── Agenda             — per-NPC desire → Goal selection (no activity)
   ├── TaskRunner         — primary/monitor task slots
   ├── BaseStateMachine   — state transitions + steerRoam
@@ -23,8 +23,8 @@ BehaviorManager          — thin orchestrator; owns the update loop order
 
 Update order each frame (per NPC, `BehaviorManager.js#update`):
 1. `SocialLayer.update` — Activity tick + Talk pairing
-2. `WaitForBusLayer.update` — bus-waiter scan
-3. Lifespan expiry → `releaseAllHoldings` + `triggerDeparture` + `ExitSceneTask`
+2. `WaitForBusLayer.update` — zone scan only (waiter tick migrated to `WaitBusActivity`)
+3. Lifespan expiry (`!sc.activity` gate) → `releaseAllHoldings` + `triggerDeparture` + `ExitSceneTask`; age accumulates during Activity, trigger fires on first frame after Activity ends
 4. `Agenda.tick` — Goal selection when no Activity
 5. `TaskRunner.tick` — always, including monitor tasks
 6. If `activity` → skip BSM / modifiers
@@ -62,7 +62,7 @@ Authoritative state table. `anim` must be a valid `manifest.json` clip id.
 `once: true` → animation plays once to `animDone`, then holds last frame.
 `dur: null` → `stateDur = Infinity`; transition only on external trigger.
 
-States NOT in this table must never appear in `setState` calls (gate: `check-invariants.sh#S1`).
+States NOT in this table must never appear in `setState` calls (gate: `check-invariants.mjs#S1`).
 
 ---
 
@@ -117,8 +117,12 @@ Activities lock the NPC out of BSM/modifiers (`BehaviorManager.js#update`, 139:
 | `StallActivity` | seller + 1 buyer | seller stays `stand`; buyer uses `stall_buyer_*` overlays |
 | `DogWalkActivity` | owner + leashed dog | owner keeps walking; dog via `leashTarget` |
 | `UsePropActivity` | 1 NPC | `stand` at vending/trash |
+| `WaitBusActivity` | 1 NPC (waiter) | `stand`/`loiter` fidget cycle; timeout → `walk`; boarding → despawn |
 
 `SocialLayer.js#createActivity` instantiates and registers activity instances.
+`WaitBusActivity` is pushed directly onto `SocialLayer.activities` by `WaitForBusLayer._addWaiter`
+(not via registry). `_destroyed` guard makes `destroy()` idempotent — `_startBoarding` calls
+it synchronously (boarding path) before SocialLayer's next `update()` sweep.
 `npc.mem('social').activity` is the lock field; cleared by `Activity#end`.
 
 ---

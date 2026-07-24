@@ -13,6 +13,8 @@ import { PhoneProp } from './PhoneProp.js';
 import { CigaretteProp } from './CigaretteProp.js';
 import { BagProp } from './BagProp.js';
 import { LeashProp } from './LeashProp.js';
+import { ATTACHMENT_DEFS } from '../../behavior/data/AttachmentDefs.js';
+import { SimpleProp }      from './SimpleProp.js';
 
 const MODIFIER_TO_PROP = {
   phone_look: 'phone',
@@ -37,7 +39,12 @@ export class NpcPropManager {
       case 'phone':     prop = new PhoneProp(npc); break;
       case 'cigarette': prop = new CigaretteProp(npc); break;
       case 'bag':       prop = new BagProp(npc); break;
-      default: return null;
+      default: {
+        const def = Object.values(ATTACHMENT_DEFS).find(d => d.propType === type);
+        if (!def?.draw) return null;
+        prop = new SimpleProp(npc, def.anchor, def.draw);
+        break;
+      }
     }
     this._props.set(k, prop);
     return prop;
@@ -58,7 +65,12 @@ export class NpcPropManager {
       if (!e.alive || !e.renderer) continue;
 
       for (const m of (e.modifiers || [])) {
-        const propType = MODIFIER_TO_PROP[m.id];
+        let propType = MODIFIER_TO_PROP[m.id];
+        if (!propType && m.id.startsWith('_chain_')) {
+          const itemId = m.id.slice('_chain_'.length);
+          const def = ATTACHMENT_DEFS[itemId];
+          if (def) propType = def.propType;
+        }
         if (!propType) continue;
         const prop = this._getOrCreate(e, propType);
         if (!prop) continue;

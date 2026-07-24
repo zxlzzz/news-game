@@ -18,6 +18,7 @@ import { Entity } from '../core/Entity.js';
 import { depthGray, BUILDING_BASE_Y } from '../core/Layout.js';
 import { integratePhysics } from '../behavior/Motor.js';
 import { clipLibrary } from '../core/ClipLibrary.js';
+import { getNavGrid, ROAD } from '../behavior/nav/NavGrid.js';
 
 // 行为状态 → 标签
 const STATE_TAGS = {
@@ -27,7 +28,6 @@ const STATE_TAGS = {
   lean_wall: 'leaning', squat: 'squatting', sit_ground: 'sitting',
   lie_bench: 'lying', get_up: 'getting_up',
   loiter: 'loitering',
-  routing: 'walking',
 };
 // overlay → 额外语义标签（overlay 名本身也会作为标签加入）
 const OVERLAY_EXTRA_TAGS = {
@@ -50,7 +50,6 @@ export class NPC extends Entity {
    * @param {string}        config.animation     - 动画名称
    * @param {number}        config.direction     - 1=右，-1=左
    * @param {number}        config.speed         - 水平速度（像素/秒）
-   * @param {number}        config.vy            - 纵深漂移速度（像素/秒）
    * @param {number}        config.scale         - 初始缩放（EntityManager每帧会按Y覆盖）
    * @param {number}        config.minX/maxX     - X活动边界
    * @param {number}        config.minY/maxY     - Y活动边界
@@ -74,7 +73,6 @@ export class NPC extends Entity {
     this.animation = config.animation || 'stand';
     this.direction = config.direction || 1;
     this.speed     = config.speed     || 0;
-    this.vy        = config.vy ?? 0;
     this.scale     = config.scale     ?? 0.45;
 
     this.frameIndex = 0;
@@ -230,7 +228,19 @@ export class NPC extends Entity {
     // 5) 社交状态
     if (this.bond) out.add('talking');
 
-    // 6) 空间关系（near:建筑类型 / near:道具）
+    // 6) 空间道路标签（crossing / jaywalking — N-2b: 从 NavGrid 格代价空间派生，取代 planCrossing 标签生命周期）
+    if (this._motorInstalled) {
+      const grid = getNavGrid();
+      if (grid) {
+        const { gx, gy } = grid.worldToCell(this.x, this.y);
+        if (grid.cost(gx, gy) === ROAD) {
+          out.add('crossing');
+          if (this.mem('motor').goal?.meta?.jaywalk) out.add('jaywalking');
+        }
+      }
+    }
+
+    // 7) 空间关系（near:建筑类型 / near:道具）
     if (this.manager) this._addSpatialTags(out);
 
     return Array.from(out);
@@ -279,21 +289,9 @@ export class NPC extends Entity {
       }
     }
 
-    // 物理积分：Motor 托管 NPC 经 Motor 写保护路径；其余 NPC 走原内联逻辑
+    // 物理积分：全部 NPC 经 Motor.integratePhysics；未注册 NPC（仅 leash 狗）原地保持
     if (this._motorInstalled) {
       integratePhysics(this, delta);
-    } else if (!this.leashTarget) {
-      // 漫游 NPC 的朝向/速度由 steerRoam 每帧决定，到边界只夹取位置、不翻转方向，
-      // 否则会在区域边界与转向逻辑互相打架，出现原地左右乱闪。
-      const _wm = this._mem?.motor?.walkMode;
-      if (this.speed > 0) {
-        this.x += this.direction * this.speed * (delta / 1000);
-        if      (this.x > this.maxX) { this.x = this.maxX; if (!_wm) this.direction = -1; }
-        else if (this.x < this.minX) { this.x = this.minX; if (!_wm) this.direction =  1; }
-      }
-      this.y += this.vy * (delta / 1000);
-      if      (this.y > this.maxY) { this.y = this.maxY; this.vy = _wm ? 0 : -Math.abs(this.vy); }
-      else if (this.y < this.minY) { this.y = this.minY; this.vy = _wm ? 0 :  Math.abs(this.vy); }
     }
 
     if (this.customUpdate) this.customUpdate(this, delta);

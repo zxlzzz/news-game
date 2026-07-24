@@ -1,4 +1,4 @@
-import { setState }         from '../BaseStateMachine.js';
+import { setState }         from '../Motor.js';
 import { Activity }         from './Activity.js';
 import { ClipPlayer }       from '../ClipPlayer.js';
 import { registerActivity } from '../ActivityRegistry.js';

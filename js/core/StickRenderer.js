@@ -36,8 +36,8 @@ const DOG_BONES = [
   ['br_upper',   'br_lower',   2  ],
 ];
 
-const HEAD_RADIUS  = 10;
-const DOG_HEAD_R   = 7;
+// Fallback: used only if setSkeletons() has not been called.
+const _HEAD_R_FALLBACK = { human: 10, dog: 7 };
 const CURVE_SEGS   = 10; // 贝塞尔曲线折线段数
 
 function getBend(from, to, frame, globalBend) {
@@ -81,6 +81,14 @@ export class StickRenderer {
   constructor(scene) {
     this.scene      = scene;
     this.animations = {};
+    this._headRadius = {};
+  }
+
+  setSkeletons(skeletons) {
+    this._headRadius = {};
+    for (const [name, skel] of Object.entries(skeletons ?? {})) {
+      if (skel.headRadius != null) this._headRadius[name] = skel.headRadius;
+    }
   }
 
   loadAnimation(name, data) {
@@ -130,7 +138,7 @@ export class StickRenderer {
     }
 
     g.beginFill(color, alpha);
-    g.drawCircle(jx('head'), jy('head'), HEAD_RADIUS * s);
+    g.drawCircle(jx('head'), jy('head'), (this._headRadius['human'] ?? _HEAD_R_FALLBACK.human) * s);
     g.endFill();
   }
 
@@ -146,7 +154,7 @@ export class StickRenderer {
     }
 
     g.beginFill(color, alpha);
-    g.drawCircle(jx('head'), jy('head'), DOG_HEAD_R * s);
+    g.drawCircle(jx('head'), jy('head'), (this._headRadius['dog'] ?? _HEAD_R_FALLBACK.dog) * s);
     g.endFill();
   }
 }
