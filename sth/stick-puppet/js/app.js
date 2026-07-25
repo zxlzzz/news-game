@@ -243,9 +243,12 @@ function _loadClipData(id, meta, data) {
   if (isOverlay) {
     gestureMode = true;
     activeJoints = new Set(Array.isArray(data.activeJoints) ? data.activeJoints : []);
+    if (data.latched) loadedClipMeta.latched = true;
     document.getElementById('gestureModeBtn').classList.add('active-toggle');
     document.getElementById('jointSelectPanel').style.display = '';
     _buildJointCheckboxes();
+    // auto-enable preview with 'walk' or 'stand' as base
+    _autoEnableOverlayPreview();
   }
 
   frames = []; frameDurs = [];
@@ -484,6 +487,26 @@ async function loadPreviewBase() {
   render();
 }
 
+function _autoEnableOverlayPreview() {
+  if (!manifestData) return;
+  const sel = document.getElementById('previewBaseSelect');
+  // pick 'walk' or 'stand' as default base
+  const preferred = ['walk', 'stand'];
+  for (const id of preferred) {
+    const entry = manifestData.clips?.[id];
+    if (entry && (entry.kind === 'cycle' || entry.kind === 'transition')) {
+      sel.value = id;
+      break;
+    }
+  }
+  if (!sel.value) return;  // no suitable base found
+  const chk = document.getElementById('previewEnable');
+  chk.checked = true;
+  previewEnabled = true;
+  document.getElementById('previewControls').style.display = '';
+  loadPreviewBase();
+}
+
 function _composeForPreview(base, current) {
   const dp = getSkeleton().defaultPose;
   const composed = {};
@@ -544,10 +567,13 @@ function drawFigure(pose, alpha=1, color='#1a1a1a', jColor='#e63322', showBendHa
   for (const name of getJointNames()) {
     if (!pose[name]) continue;
     const p = toScreen(pose[name]);
+    const locked = gestureMode && activeJoints.size > 0 && !activeJoints.has(name);
     ctx.beginPath(); ctx.arc(p.x, p.y, JOINT_RADIUS, 0, Math.PI * 2);
-    ctx.fillStyle = (name === dragging) ? '#ffcc00' : jColor;
+    ctx.fillStyle = locked ? 'rgba(150,150,150,0.3)'
+      : (name === dragging) ? '#ffcc00' : jColor;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.strokeStyle = locked ? 'rgba(200,200,200,0.3)' : 'rgba(255,255,255,0.5)';
+    ctx.lineWidth = 1.5; ctx.stroke();
   }
   if (document.getElementById('showLabels').checked) {
     ctx.font = '10px "JetBrains Mono",monospace'; ctx.fillStyle = '#555';
@@ -724,6 +750,8 @@ function findJointAt(mx, my) {
   let closest = null, minD = GRAB_RADIUS;
   for (const name of getJointNames()) {
     if (!pose[name]) continue;
+    // gestureMode: only activeJoints are draggable
+    if (gestureMode && activeJoints.size > 0 && !activeJoints.has(name)) continue;
     const p = toScreen(pose[name]);
     const d = Math.hypot(mx - p.x, my - p.y);
     if (d < minD) { minD = d; closest = name; }
@@ -1160,12 +1188,27 @@ function togglePlay() {
   const btn = document.getElementById('playBtn');
   if (playing) {
     btn.textContent = '⏹ 停止';
-    const fps = parseInt(document.getElementById('fpsInput').value) || 8;
-    playTimer = setInterval(() => { currentFrame = (currentFrame + 1) % frames.length; render(); }, 1000 / fps);
+    if (gestureMode) {
+      // overlay/gesture: use per-frame dur
+      _playNextDur();
+    } else {
+      const fps = parseInt(document.getElementById('fpsInput').value) || 8;
+      playTimer = setInterval(() => { currentFrame = (currentFrame + 1) % frames.length; render(); }, 1000 / fps);
+    }
   } else {
     btn.textContent = '▶ 播放';
-    clearInterval(playTimer); playTimer = null;
+    clearTimeout(playTimer); clearInterval(playTimer); playTimer = null;
   }
+}
+
+function _playNextDur() {
+  if (!playing) return;
+  const dur = (frameDurs[currentFrame] ?? 0.15) * 1000;  // seconds → ms
+  playTimer = setTimeout(() => {
+    currentFrame = (currentFrame + 1) % frames.length;
+    render();
+    _playNextDur();
+  }, dur);
 }
 
 // ── 补帧插值 ──────────────────────────────────────────────────────────────────
@@ -1297,6 +1340,7 @@ function loadJSON() {
       from:       data.from       ?? null,
       to:         data.to         ?? null,
       ref_speed:  data.ref_speed  ?? null,
+      latched:    data.latched    ?? null,
     };
     _loadClipData(data.id ?? '(pasted)', loadedClipMeta, data);
     document.getElementById('framesStrip').innerHTML = '';
@@ -1362,6 +1406,7 @@ function exportJSON() {
     ...(kind === 'transition' && m?.from ? { from: m.from } : {}),
     ...(kind === 'transition' && m?.to   ? { to:   m.to   } : {}),
     ...(kind === 'overlay' && activeJoints.size > 0 ? { activeJoints: [...activeJoints] } : {}),
+    ...(kind === 'overlay' && m?.latched ? { latched: true } : {}),
     ...(m?.ref_speed  != null ? { ref_speed:  m.ref_speed  } : {}),
     ...(m?.variant_of != null ? { variant_of: m.variant_of } : {}),
     keyframes: frames.map((pose, i) => {
