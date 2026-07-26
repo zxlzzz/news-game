@@ -23,6 +23,7 @@
 import fs   from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ATTACHMENT_DEFS } from '../../js/behavior/data/AttachmentDefs.js';
 
 const __dirname      = path.dirname(fileURLToPath(import.meta.url));
 const ANIM_DIR       = path.resolve(__dirname, '../../assets/animations');
@@ -49,6 +50,7 @@ const WHITELIST = new Set([
   'ref_speed',
   'variant_of', 'when', 'amp',
   'participants',
+  'context',
 ]);
 
 const VALID_KINDS    = new Set(['cycle', 'transition', 'overlay']);
@@ -153,6 +155,14 @@ function validateFile(abs, allClips) {
   if (clip.variant_of) {
     if (!allClips[clip.variant_of])
       W(`variant_of "${clip.variant_of}" not found in manifest`);
+  }
+
+  // context cross-check: held item's heldPose should reference this clip
+  if (clip.context?.held) {
+    const def = ATTACHMENT_DEFS[clip.context.held];
+    if (!def) E(`context.held "${clip.context.held}" not in ATTACHMENT_DEFS`);
+    else if (def.heldPose && def.heldPose !== clip.id)
+      W(`context.held "${clip.context.held}": ATTACHMENT_DEFS.heldPose="${def.heldPose}" does not reference this clip id "${clip.id}"`);
   }
 
   // 8. Validate keyframes

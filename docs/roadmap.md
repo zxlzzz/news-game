@@ -42,6 +42,7 @@
 | Motor 前瞻避让（撞墙问题根修第一刀） | `SAFETY_RULES.wall_avoid`（probeCells=2, rotProbeCells=1）；`_lookaheadDeflect` 在 `integratePhysics` step-13 消费 vel 后、`_slideMove` 前运行：正前方阻挡且当前格可走时垂直偏转 90°，保持速度模长；两侧均阻挡直通 `_slideMove`；`avoid_steer` 计数器加入 `MovementAudit` | ✅ 已落地 | `js/behavior/Motor.js#SAFETY_RULES,_lookaheadDeflect,integratePhysics`；`js/debug/MovementAudit.js`；`docs/contracts/movement-dataflow.md §1 step-13` |
 | 批次 A-①（声明端 + affordance 池） | `AffordanceDefaults.js`（tree_shade/fountain_edge/rest/use_vending/use_trash + 2 注释占位）；`PropEntity.affordances` passthrough；`EnvironmentQuery` 6 新方法（registerAmbientAffordance / drawAffordance / isClearSpot / occupyAffordance / releaseAffordance / findAffordanceByTag）；`_affOcc` 唯一写入 EnvironmentQuery；键 'o' 调试快照 | ✅ 已落地 | `js/core/AffordanceDefaults.js`；`js/core/PropEntity.js`；`js/behavior/EnvironmentQuery.js`；`js/scenes/StreetScene.js` |
 | 批次 A-②（VisitTask + park_idler） | `VisitTask.js`（seeking→arriving→doing 状态机）；`StrollLoopTask.js`（park_loop_cw + wpIndex 计段）；`Agenda.park_idler` 模板（credits 1-3 + stroll→visit 循环）；`SceneInitializer` 注册 grass_rest ambient affordance + 生成 3-5 名公园常驻 NPC | ✅ 已落地 | `js/behavior/tasks/VisitTask.js`；`js/behavior/tasks/StrollLoopTask.js`；`js/behavior/Agenda.js`；`js/scenes/SceneInitializer.js` |
+| C-1（编辑器参照层 + 双人改进） | 参照层（context 字段 + ATTACHMENT_DEFS/PROP_DEFAULTS 绘制）；双人新建/偏移持久化/接触距离显示/关节保护；panel 按 kind 过滤；删除 MediaPipe/SpriteSheet；六处小修 | 🔄 进行中 | `sth/stick-puppet/js/app.js`；`sth/stick-puppet/index.html`；`sth/tools/validate.mjs` |
 
 ---
 

@@ -68,6 +68,8 @@ for (const id of Object.keys(clipLibrary.manifest.clips)) {
   历史：human defaultPose 坐标曾因透视感调整整体放大约 1.26×（约 2026-06 批次），clip keyframe 静默补偿；该补偿已不存在，clip 与 skeleton 现已对齐。
   铁律：JS 不得硬编码关节坐标；任何工具不得直接产出关节坐标，唯一路径是角度空间 → fk_bake → ClipLibrary 断言 + preview 目检。
 - **`MOUNTED_CLIPS` 白名单**：`['bike','mobike','mobile']` 是唯一允许地面接触关节 abs_y > 0 的 clip 组（骑乘时接触点经由车辆对象），ClipLibrary 断言对此白名单豁免；新增骑乘 clip 须手动加入此列表
+- `context` 字段：作画期元数据，声明 clip 依赖的参照物（`held`: 手持道具 id，`prop`: 环境物件 propType）；只写引用名，不抄几何。运行时不消费 context。
+- overlay `participants` 数组：每个参与者对象包含 `role`（角色名）和可选 `dx`（与 role 0 的水平站位偏移，默认 70px）；`skeleton` 仅在非 human 时出现。
 
 ---
 

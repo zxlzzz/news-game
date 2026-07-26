@@ -9,6 +9,8 @@ import {
   getGlobalBoneLength, setGlobalBoneLength,
 } from './config.js';
 import { History } from './history.js';
+import { ATTACHMENT_DEFS } from '../../js/behavior/data/AttachmentDefs.js';
+import { PROP_DEFAULTS }   from '../../js/core/propDefaults.js';
 
 // ── 状态 ──────────────────────────────────────────────────────────────────────
 const canvas = document.getElementById('stage');
@@ -51,6 +53,9 @@ let variantMode = false;
 let variantParams = { variant_of: '', amp: 1, ref_speed: null, overlay: null };
 let variantBaseDecoded = null; // decoded base clip frames for variant preview
 
+const DUET_DEFAULT_DX = 70;
+let clipContext = null;
+
 // Screen offset used during duet rendering so toScreen() accounts for role position
 let _screenOffsetX = 0, _screenOffsetY = 0;
 
@@ -74,12 +79,14 @@ function showLoading(text) {
 function hideLoading() { document.getElementById('loadingOverlay').classList.add('hidden'); }
 
 function switchSkeleton(name) {
+  if (duetMode && !confirm('切换骨骼会清空双人模式数据，确定吗？')) return;
   history.save(frames, currentFrame);
   setSkeleton(name);
   frames = [defaultPose()];
   frameDurs = [0.3];
   currentFrame = 0;
   loadedClipMeta = null;
+  clipContext = null;
   previewBaseDecoded = null;
   transitionOnion = null;
   duetMode = false; duetRoles = [];
@@ -88,6 +95,7 @@ function switchSkeleton(name) {
   document.getElementById('coordsPanel').dataset.built = '';
   document.getElementById('boneLengthPanel').dataset.built = '';
   document.getElementById('transitionSection').style.display = 'none';
+  _syncPanels();
   render();
   setInfo(`切换到: ${getSkeleton().name}`);
 }
@@ -230,13 +238,17 @@ function _loadClipData(id, meta, data) {
   document.getElementById('gestureModeBtn').classList.remove('active-toggle');
   document.getElementById('jointSelectPanel').style.display = 'none';
 
+  clipContext = data.context ?? null;
+
   if (isDuet) {
     _enterDuetMode(data);
+    _syncPanels();
     return;
   }
 
   if (isVariant) {
     _enterVariantMode(data);
+    _syncPanels();
     return;
   }
 
@@ -258,6 +270,7 @@ function _loadClipData(id, meta, data) {
   }
   if (!frames.length) { frames = [defaultPose()]; frameDurs = [0.3]; }
   currentFrame = 0;
+  _syncPanels();
 }
 
 function _isRoleGrouped(kfs) {
@@ -277,18 +290,14 @@ function _hideAllModePanels() {
 
 function _enterDuetMode(data) {
   duetMode = true;
+  clipContext = null;
   const participants = data.participants;
-  duetRoles = participants.map(p => ({
+  duetRoles = participants.map((p, i) => ({
     role: p.role,
     skelName: p.skeleton ?? 'human',
-    offset: { x: 0, y: 0 },
+    offset: { x: i === 0 ? 0 : (p.dx ?? DUET_DEFAULT_DX), y: 0 },
     frames: [],
   }));
-  // Default horizontal spread: role 0 at -80, role 1 at +80
-  if (duetRoles.length >= 2) {
-    duetRoles[0].offset = { x: -80, y: 0 };
-    duetRoles[1].offset = { x: 80, y: 0 };
-  }
   // Decode frames per role
   const kfs = data.keyframes ?? [];
   frameDurs = [];
@@ -296,8 +305,16 @@ function _enterDuetMode(data) {
     frameDurs.push(typeof kf.dur === 'number' ? kf.dur : 0.3);
   }
   for (const roleInfo of duetRoles) {
-    const sk = SKELETONS[roleInfo.skelName] ?? getSkeleton();
     roleInfo.frames = kfs.map(kf => _decodeKfForSkel(kf[roleInfo.role] ?? {}, roleInfo.skelName));
+  }
+  // Compute allowedJoints per role from existing keyframes
+  for (const roleInfo of duetRoles) {
+    const allowed = new Set();
+    for (const kf of kfs) {
+      const roleKf = kf[roleInfo.role] ?? {};
+      for (const j of Object.keys(roleKf)) { if (j !== 'dur') allowed.add(j); }
+    }
+    roleInfo.allowedJoints = allowed; // empty = all allowed (new clip)
   }
   activeDuetRoleIdx = 0;
   _applyActiveDuetRole();
@@ -316,6 +333,11 @@ function _applyActiveDuetRole() {
   _screenOffsetX = role.offset.x;
   _screenOffsetY = role.offset.y;
   currentFrame = Math.min(currentFrame, frames.length - 1);
+  // Apply role's joint restrictions
+  activeJoints = role.allowedJoints ?? new Set();
+  gestureMode = activeJoints.size > 0;
+  document.getElementById('gestureModeBtn').classList.toggle('active-toggle', gestureMode);
+  document.getElementById('jointSelectPanel').style.display = gestureMode ? '' : 'none';
 }
 
 function _buildDuetRoleButtons() {
@@ -610,14 +632,16 @@ function _drawTransitionDeviations(onionFrame, editFrame) {
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = '#f5f0eb'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  document.getElementById('gestureModeBtn').style.display = duetMode ? 'none' : '';
 
   const gy = CY + getSkeleton().groundY;
   ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.width, gy);
   ctx.strokeStyle = '#ccc'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]);
 
+  const activeRoleOffX = duetMode ? (duetRoles[activeDuetRoleIdx]?.offset.x ?? 0) : 0;
   ctx.beginPath();
-  ctx.moveTo(CX - 8, CY); ctx.lineTo(CX + 8, CY);
-  ctx.moveTo(CX, CY - 8); ctx.lineTo(CX, CY + 8);
+  ctx.moveTo(CX + activeRoleOffX - 8, CY); ctx.lineTo(CX + activeRoleOffX + 8, CY);
+  ctx.moveTo(CX + activeRoleOffX, CY - 8); ctx.lineTo(CX + activeRoleOffX, CY + 8);
   ctx.strokeStyle = '#ddd'; ctx.lineWidth = 1; ctx.stroke();
 
   if (duetMode) {
@@ -626,6 +650,7 @@ function render() {
     _renderVariant();
   } else {
     const cur = frames[currentFrame];
+    _drawContextRef();
     // 洋葱皮（前一帧）
     if (document.getElementById('onionSkin').checked && currentFrame > 0)
       drawFigure(frames[currentFrame - 1], 0.2, '#aaaacc', '#aaaacc', false);
@@ -682,6 +707,33 @@ function _renderDuet() {
   }
   _screenOffsetX = duetRoles[activeDuetRoleIdx]?.offset.x ?? 0;
   _screenOffsetY = duetRoles[activeDuetRoleIdx]?.offset.y ?? 0;
+
+  // Contact distance display between role 0 and role 1
+  if (duetRoles.length >= 2) {
+    const role0 = duetRoles[0], role1 = duetRoles[1];
+    const f0 = (activeDuetRoleIdx === 0 ? frames : role0.frames)[currentFrame]
+            ?? (activeDuetRoleIdx === 0 ? frames : role0.frames)[0];
+    const f1 = (activeDuetRoleIdx === 1 ? frames : role1.frames)[currentFrame]
+            ?? (activeDuetRoleIdx === 1 ? frames : role1.frames)[0];
+    if (f0 && f1) {
+      let minDist = Infinity, jointA = '', jointB = '';
+      for (const ja of Object.keys(f0)) {
+        if (ja.startsWith('_bend_') || f0[ja]?.x === undefined) continue;
+        const pa = { x: CX + f0[ja].x + role0.offset.x, y: CY + f0[ja].y + role0.offset.y };
+        for (const jb of Object.keys(f1)) {
+          if (jb.startsWith('_bend_') || f1[jb]?.x === undefined) continue;
+          const pb = { x: CX + f1[jb].x + role1.offset.x, y: CY + f1[jb].y + role1.offset.y };
+          const d = Math.hypot(pa.x - pb.x, pa.y - pb.y);
+          if (d < minDist) { minDist = d; jointA = ja; jointB = jb; }
+        }
+      }
+      if (isFinite(minDist)) {
+        ctx.fillStyle = '#555';
+        ctx.font = '11px monospace';
+        ctx.fillText(`接触距离: ${minDist.toFixed(1)}px  (${jointA}↔${jointB})`, 10, canvas.height - 10);
+      }
+    }
+  }
 }
 
 function _renderVariant() {
@@ -987,7 +1039,7 @@ canvas.addEventListener('mousemove', (e) => {
     const rpose = (role.frames[currentFrame] ?? role.frames[0]);
     const rsk = SKELETONS[role.skelName] ?? getSkeleton();
     const body = rpose?.[rsk.root] ?? (rpose ? Object.values(rpose)[0] : null);
-    if (body) { role.offset.x = x - CX - body.x; role.offset.y = y - CY - body.y; }
+    if (body) { role.offset.x = x - CX - body.x; role.offset.y = 0; }
     render(); return;
   }
 
@@ -1251,77 +1303,7 @@ function interpolateFrames() {
   render(); setInfo(`已插入 ${count} 帧`);
 }
 
-// ── 图片提取（仅 human 骨骼）──────────────────────────────────────────────────
-let poseLandmarker = null, mpLoading = false;
 
-async function loadMediaPipe() {
-  if (poseLandmarker) return poseLandmarker;
-  if (mpLoading) return null;
-  mpLoading = true; showLoading('正在加载 MediaPipe 模型...');
-  try {
-    const { PoseLandmarker, FilesetResolver } = await import(
-      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs'
-    );
-    const vision = await FilesetResolver.forVisionTasks(
-      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm'
-    );
-    poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
-      baseOptions: {
-        modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task',
-      },
-      runningMode: 'IMAGE', numPoses: 1,
-    });
-    hideLoading(); return poseLandmarker;
-  } catch (e) {
-    hideLoading(); mpLoading = false;
-    alert('MediaPipe 加载失败: ' + e.message); return null;
-  }
-}
-
-async function handleImageUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  if (getSkeleton() !== SKELETONS.human) { alert('图片提取仅支持人体骨骼'); event.target.value = ''; return; }
-  const lm = await loadMediaPipe();
-  if (!lm) return;
-  showLoading('正在识别姿势...');
-  const img = new Image();
-  img.onload = () => {
-    try {
-      const result = lm.detect(img);
-      if (!result.landmarks?.length) { hideLoading(); alert('未检测到人体姿态'); return; }
-      const marks = result.landmarks[0];
-      const w = img.width, h = img.height;
-      const lm2 = (idx) => [marks[idx].x * w, marks[idx].y * h];
-      const nose=lm2(0),lSh=lm2(11),rSh=lm2(12),lEl=lm2(13),rEl=lm2(14),lWr=lm2(15),rWr=lm2(16);
-      const lHi=lm2(23),rHi=lm2(24),lKn=lm2(25),rKn=lm2(26),lAn=lm2(27),rAn=lm2(28);
-      const neck = [(lSh[0]+rSh[0])/2, (lSh[1]+rSh[1])/2];
-      const body = [(lHi[0]+rHi[0])/2, (lHi[1]+rHi[1])/2];
-      const n2n = Math.hypot(nose[0]-neck[0], nose[1]-neck[1]);
-      const hd = [nose[0]-neck[0], nose[1]-neck[1]], hl = Math.hypot(hd[0],hd[1]) || 1;
-      const head = [nose[0]+(hd[0]/hl)*n2n*0.5, nose[1]+(hd[1]/hl)*n2n*0.5];
-      const rel = (p) => ({x: p[0]-body[0], y: p[1]-body[1]});
-      const raw = {
-        head:rel(head), neck:rel(neck),
-        l_elbow:rel(lEl), r_elbow:rel(rEl), l_hand:rel(lWr), r_hand:rel(rWr),
-        body:{x:0,y:0},
-        l_knee:rel(lKn), r_knee:rel(rKn), l_foot:rel(lAn), r_foot:rel(rAn),
-      };
-      const scale = (Math.max(raw.l_foot.y, raw.r_foot.y) - raw.head.y) > 0
-        ? 170 / (Math.max(raw.l_foot.y, raw.r_foot.y) - raw.head.y) : 1;
-      history.save(frames, currentFrame);
-      const pose = {};
-      for (const name of getJointNames()) {
-        pose[name] = { x: Math.round((raw[name]?.x ?? 0)*scale), y: Math.round((raw[name]?.y ?? 0)*scale) };
-      }
-      frames[currentFrame] = pose;
-      hideLoading(); render(); setInfo('姿势提取成功！');
-    } catch (e) { hideLoading(); alert('提取失败: ' + e.message); console.error(e); }
-  };
-  img.onerror = () => { hideLoading(); alert('图片加载失败'); };
-  img.src = URL.createObjectURL(file);
-  event.target.value = '';
-}
 
 // ── JSON 导入 / 导出 ──────────────────────────────────────────────────────────
 function loadJSON() {
@@ -1341,6 +1323,7 @@ function loadJSON() {
       to:         data.to         ?? null,
       ref_speed:  data.ref_speed  ?? null,
       latched:    data.latched    ?? null,
+      context:    data.context    ?? null,
     };
     _loadClipData(data.id ?? '(pasted)', loadedClipMeta, data);
     document.getElementById('framesStrip').innerHTML = '';
@@ -1390,6 +1373,7 @@ function exportJSON() {
       participants: duetRoles.map(r => ({
         role: r.role,
         ...(r.skelName !== 'human' ? { skeleton: r.skelName } : {}),
+        ...(r.offset.x !== 0 ? { dx: r.offset.x } : {}),
       })),
       keyframes,
     };
@@ -1430,15 +1414,6 @@ function exportJSON() {
 }
 
 // ── 辅助导出 ──────────────────────────────────────────────────────────────────
-function _poseAbs(jointNames) {
-  const pose = frames[currentFrame];
-  const joints = {};
-  for (const name of jointNames) {
-    if (pose[name]) joints[name] = [Math.round(pose[name].x), Math.round(pose[name].y)];
-  }
-  return joints;
-}
-
 function _emitData(obj, label) {
   const ta = document.getElementById('jsonInput');
   ta.value = JSON.stringify(obj, null, 2);
@@ -1448,45 +1423,6 @@ function _emitData(obj, label) {
   );
 }
 
-// ── Sprite Sheet ──────────────────────────────────────────────────────────────
-function exportSpriteSheet() {
-  const sk = getSkeleton();
-  const fw = 200, fh = 250;
-  const cols = Math.min(frames.length, 8), rows = Math.ceil(frames.length / cols);
-  const out = document.createElement('canvas');
-  out.width = fw * cols; out.height = fh * rows;
-  const oc = out.getContext('2d');
-  oc.clearRect(0, 0, out.width, out.height);
-  for (let i = 0; i < frames.length; i++) {
-    const col = i % cols, row = Math.floor(i / cols);
-    const ox = col * fw + fw / 2, oy = row * fh + fh / 2 + 20;
-    const pose = frames[i];
-    for (const [from, to, w] of sk.bones) {
-      if (!pose[from] || !pose[to]) continue;
-      const bend = getBend(from, to, pose);
-      const a = {x: ox + pose[from].x, y: oy + pose[from].y};
-      const b = {x: ox + pose[to].x,   y: oy + pose[to].y};
-      if (bend === 0) {
-        oc.beginPath(); oc.moveTo(a.x, a.y); oc.lineTo(b.x, b.y);
-      } else {
-        const mx = (a.x+b.x)/2, my = (a.y+b.y)/2;
-        const dx = b.x-a.x, dy = b.y-a.y, len = Math.hypot(dx,dy) || 1;
-        const nx = -dy/len, ny = dx/len;
-        oc.beginPath(); oc.moveTo(a.x, a.y);
-        oc.quadraticCurveTo(mx + nx*bend, my + ny*bend, b.x, b.y);
-      }
-      oc.strokeStyle = '#1a1a1a'; oc.lineWidth = w; oc.lineCap = 'round'; oc.stroke();
-    }
-    if (pose[sk.headJoint]) {
-      const hp = pose[sk.headJoint];
-      oc.beginPath(); oc.arc(ox+hp.x, oy+hp.y, sk.headRadius, 0, Math.PI*2);
-      oc.fillStyle = '#1a1a1a'; oc.fill();
-    }
-  }
-  const link = document.createElement('a');
-  link.download = 'spritesheet.png'; link.href = out.toDataURL('image/png'); link.click();
-  setInfo(`导出 ${frames.length} 帧 (${out.width}x${out.height})`);
-}
 
 // ── 键盘快捷键 ────────────────────────────────────────────────────────────────
 document.addEventListener('keydown', (e) => {
@@ -1505,17 +1441,139 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// ── Panel sync ────────────────────────────────────────────────────────────────
+function _syncPanels() {
+  const kind = loadedClipMeta?.kind ?? null;
+  const showInterp = kind === 'cycle' || kind === 'transition';
+  document.getElementById('interpSection')?.style && (document.getElementById('interpSection').style.display = showInterp ? '' : 'none');
+  const showBoneLen = kind === 'cycle' || kind === 'transition';
+  document.getElementById('boneLengthSection')?.style && (document.getElementById('boneLengthSection').style.display = showBoneLen ? '' : 'none');
+  const showPreview = kind === 'overlay' && !duetMode;
+  document.getElementById('previewSection').style.display = showPreview ? '' : 'none';
+}
+
+// ── Context reference layer ───────────────────────────────────────────────────
+function _drawContextRef() {
+  if (!clipContext) return;
+  const cur = frames[currentFrame];
+  if (!cur) return;
+  const ANCHOR_TO_JOINT = {
+    head: 'head', neck: 'neck',
+    hand_l: 'l_hand', hand_r: 'r_hand',
+    hip: 'body',
+    foot_l: 'l_foot', foot_r: 'r_foot',
+  };
+  function hexToCSS(c) { return '#' + c.toString(16).padStart(6, '0'); }
+
+  if (clipContext.held !== undefined) {
+    const def = ATTACHMENT_DEFS[clipContext.held];
+    if (!def) throw new Error('context references unknown item: ' + JSON.stringify(clipContext));
+    const anchorJoint = ANCHOR_TO_JOINT[def.anchor] ?? def.anchor;
+    if (!cur[anchorJoint]) return;
+    const ap = toScreen(cur[anchorJoint]);
+    const draw = def.draw;
+    if (!draw) return;
+    ctx.save();
+    ctx.globalAlpha = draw.alpha ?? 0.7;
+    if (draw.shape === 'line') {
+      const len = draw.length;
+      const rad = (draw.angle ?? 0) * Math.PI / 180;
+      const dx = Math.sin(rad) * len;
+      const dy = Math.cos(rad) * len;
+      ctx.beginPath();
+      ctx.moveTo(ap.x, ap.y);
+      ctx.lineTo(ap.x + dx, ap.y + dy);
+      ctx.strokeStyle = draw.color ? hexToCSS(draw.color) : '#8b7355';
+      ctx.lineWidth = draw.lineWidth ?? 2;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    } else if (draw.shape === 'rect') {
+      const w = draw.w, h = draw.h;
+      const ox = draw.offsetX ?? 0, oy = draw.offsetY ?? 0;
+      ctx.fillStyle = draw.color ? hexToCSS(draw.color) : '#888888';
+      ctx.fillRect(ap.x + ox - w / 2, ap.y + oy - h / 2, w, h);
+    } else if (draw.shape === 'circle') {
+      const r = draw.r;
+      const ox = draw.offsetX ?? 0, oy = draw.offsetY ?? 0;
+      ctx.fillStyle = draw.color ? hexToCSS(draw.color) : '#888888';
+      ctx.beginPath();
+      ctx.arc(ap.x + ox, ap.y + oy, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  } else if (clipContext.prop !== undefined) {
+    const def = PROP_DEFAULTS[clipContext.prop];
+    if (!def) throw new Error('context references unknown item: ' + JSON.stringify(clipContext));
+    const w = def.w ?? 30, h = def.h ?? 30;
+    const slot = def.smartDef?.slots?.[0];
+    const propCX = slot ? CX - slot.dx : CX;
+    const boxX = propCX - w / 2;
+    const boxY = CY - h;
+    ctx.save();
+    ctx.globalAlpha = 0.3;
+    ctx.fillStyle = '#888888';
+    ctx.fillRect(boxX, boxY, w, h);
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.strokeStyle = '#666666';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.strokeRect(boxX, boxY, w, h);
+    ctx.setLineDash([]);
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = 0.4;
+    ctx.strokeStyle = '#ff4444';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, CY - h * 0.6);
+    ctx.lineTo(canvas.width, CY - h * 0.6);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  } else {
+    throw new Error('context references unknown item: ' + JSON.stringify(clipContext));
+  }
+}
+
+// ── New duet clip ─────────────────────────────────────────────────────────────
+function newDuetClip() {
+  history.save(frames, currentFrame);
+  variantMode = false;
+  variantParams = { variant_of: '', amp: 1, ref_speed: null, overlay: null };
+  variantBaseDecoded = null;
+  _screenOffsetX = 0; _screenOffsetY = 0;
+  clipContext = null;
+  _hideAllModePanels();
+  _enterDuetMode({ participants: [{ role: 'a' }, { role: 'b' }], keyframes: [] });
+  // Initialize empty frames with default pose
+  for (const r of duetRoles) {
+    if (!r.frames.length) r.frames = [defaultPose()];
+  }
+  frameDurs = [0.3];
+  frames = duetRoles[activeDuetRoleIdx]?.frames ?? [defaultPose()];
+  currentFrame = 0;
+  _screenOffsetX = duetRoles[activeDuetRoleIdx]?.offset.x ?? 0;
+  _screenOffsetY = 0;
+  loadedClipMeta = { id: null, kind: 'overlay', facing: null, skeleton: null, variant_of: null, from: null, to: null, ref_speed: null, latched: null };
+  _syncPanels();
+  render();
+}
+
 // ── 暴露到全局 ────────────────────────────────────────────────────────────────
 window.app = {
   render, undo, redo, mirrorPose, toggleBoneLock,
   addFrame, dupFrame, delFrame, resetPose, togglePlay,
-  interpolateFrames, handleImageUpload,
-  loadJSON, exportJSON, exportSpriteSheet,
+  interpolateFrames,
+  loadJSON, exportJSON,
   moveFrameLeft, moveFrameRight, switchSkeleton,
   toggleGestureMode, toggleTranslateMode,
   filterClips, loadClipFromBrowser,
   togglePreview, loadPreviewBase,
   setTransitionRef, updateVariantParam,
+  newDuetClip,
 };
 
 // ── 初始化 ────────────────────────────────────────────────────────────────────
