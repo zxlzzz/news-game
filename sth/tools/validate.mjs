@@ -37,8 +37,12 @@ const manifestClips = manifestData.clips ?? {};
 
 /** rel-path-from-ANIM_DIR → kind (undefined = not in manifest) */
 const FILE_TO_KIND = {};
-for (const entry of Object.values(manifestClips)) {
-  FILE_TO_KIND[entry.path.replace(/^animations\//, '')] = entry.kind;
+/** rel-path-from-ANIM_DIR → clip id */
+const FILE_TO_ID = {};
+for (const [id, entry] of Object.entries(manifestClips)) {
+  const rel = entry.path.replace(/^animations\//, '');
+  FILE_TO_KIND[rel] = entry.kind;
+  FILE_TO_ID[rel] = id;
 }
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
@@ -161,8 +165,11 @@ function validateFile(abs, allClips) {
   if (clip.context?.held) {
     const def = ATTACHMENT_DEFS[clip.context.held];
     if (!def) E(`context.held "${clip.context.held}" not in ATTACHMENT_DEFS`);
-    else if (def.heldPose && def.heldPose !== clip.id)
-      W(`context.held "${clip.context.held}": ATTACHMENT_DEFS.heldPose="${def.heldPose}" does not reference this clip id "${clip.id}"`);
+    else {
+      const clipId = FILE_TO_ID[rel] ?? clip.id;
+      if (def.heldPose && def.heldPose !== clipId)
+        W(`context.held "${clip.context.held}": ATTACHMENT_DEFS.heldPose="${def.heldPose}" does not reference this clip id "${clipId}"`);
+    }
   }
 
   // 8. Validate keyframes
