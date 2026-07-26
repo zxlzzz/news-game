@@ -2,9 +2,12 @@
 /**
  * validate.mjs — 校验 assets/animations/ 所有 clip JSON（新 schema）
  *
+ * kind / id 权威来源：assets/manifest.json（clip 文件不含这两个字段）。
+ * 未在 manifest 注册的文件单独报告，不纳入 clip 错误计数。
+ *
  * 检查项:
- *   1. 顶层字段白名单（12 字段 + participants）
- *   2. kind 合法值
+ *   1. 顶层字段白名单（13 字段 + participants）
+ *   2. kind 合法值（来自 manifest.json，clip 文件中可选出现）
  *   3. transition: from/to 必须存在
  *   4. overlay: activeJoints 必须存在
  *   5. variant_of / overlay id 可解析（warn 不中止）
@@ -21,9 +24,21 @@ import fs   from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ANIM_DIR  = path.resolve(__dirname, '../../assets/animations');
-const SKEL_FILE = path.resolve(__dirname, '../../assets/skeleton.json');
+const __dirname      = path.dirname(fileURLToPath(import.meta.url));
+const ANIM_DIR       = path.resolve(__dirname, '../../assets/animations');
+const SKEL_FILE      = path.resolve(__dirname, '../../assets/skeleton.json');
+const MANIFEST_FILE  = path.resolve(__dirname, '../../assets/manifest.json');
+
+// ─── Manifest (kind authority) ───────────────────────────────────────────────
+
+const manifestData  = JSON.parse(fs.readFileSync(MANIFEST_FILE, 'utf8'));
+const manifestClips = manifestData.clips ?? {};
+
+/** rel-path-from-ANIM_DIR → kind (undefined = not in manifest) */
+const FILE_TO_KIND = {};
+for (const entry of Object.values(manifestClips)) {
+  FILE_TO_KIND[entry.path.replace(/^animations\//, '')] = entry.kind;
+}
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
@@ -105,32 +120,31 @@ function validateFile(abs, allClips) {
   const E = msg => errors.push(msg);
   const W = msg => warns.push(msg);
 
+  // kind comes from manifest; clip may also carry it (editor-legacy) but it is not required
+  const kind = FILE_TO_KIND[rel];
+
   // 1. Field whitelist
   for (const k of Object.keys(clip)) {
     if (!WHITELIST.has(k)) E(`unknown field: "${k}"`);
   }
 
-  // 2. kind
-  if (!clip.kind) E('missing "kind"');
-  else if (!VALID_KINDS.has(clip.kind)) E(`invalid kind: "${clip.kind}"`);
+  // 2. kind from manifest must be a known value when present
+  if (kind && !VALID_KINDS.has(kind)) E(`invalid kind in manifest: "${kind}"`);
 
-  // 3. id
-  if (!clip.id) E('missing "id"');
-
-  // 4. skeleton / facing defaults
+  // 3. skeleton / facing defaults
   if (clip.skeleton && !VALID_SKELETONS.has(clip.skeleton))
     E(`invalid skeleton: "${clip.skeleton}"`);
   if (clip.facing && !VALID_FACINGS.has(clip.facing))
     E(`invalid facing: "${clip.facing}"`);
 
-  // 5. transition requires from/to
-  if (clip.kind === 'transition') {
+  // 4. transition requires from/to
+  if (kind === 'transition') {
     if (!clip.from) W('"from" missing on transition');
     if (!clip.to)   W('"to" missing on transition');
   }
 
-  // 6. overlay requires activeJoints (unless duet with participants only)
-  if (clip.kind === 'overlay' && !clip.participants) {
+  // 5. overlay requires activeJoints (unless duet with participants only)
+  if (kind === 'overlay' && !clip.participants) {
     if (!clip.activeJoints || !Array.isArray(clip.activeJoints) || clip.activeJoints.length === 0)
       W('"activeJoints" missing or empty on overlay');
   }
@@ -209,7 +223,7 @@ function validateFile(abs, allClips) {
     }
 
     // 10. cycle: first/last frame closure
-    if (clip.kind === 'cycle' && kfs.length > 1 && !isRoleGrouped) {
+    if (kind === 'cycle' && kfs.length > 1 && !isRoleGrouped) {
       const kf0 = kfs[0];
       const kfN = kfs[kfs.length - 1];
       for (const j of Object.keys(kf0)) {
@@ -250,9 +264,9 @@ function validateFile(abs, allClips) {
         }
       }
     }
-  } else if (clip.kind && clip.kind !== 'cycle') {
+  } else if (kind && kind !== 'cycle') {
     // variant parameter-only clips may have no keyframes (ok for cycle with variant_of)
-    if (!clip.variant_of && clip.kind !== 'overlay') {
+    if (!clip.variant_of && kind !== 'overlay') {
       W('no keyframes');
     }
   }
@@ -265,11 +279,17 @@ function validateFile(abs, allClips) {
 const files = walkDir(ANIM_DIR);
 const allClips = loadAll(files);
 
-let errCount = 0, warnCount = 0;
+let errCount = 0, warnCount = 0, unregisteredCount = 0;
 const warnLines = [];
 
 for (const abs of files) {
   const rel = path.relative(ANIM_DIR, abs);
+
+  if (!Object.prototype.hasOwnProperty.call(FILE_TO_KIND, rel)) {
+    unregisteredCount++;
+    console.error(`  UNREGISTERED  ${rel}: not in manifest.json`);
+  }
+
   const { errors, warns } = validateFile(abs, allClips);
 
   if (errors.length > 0) {
@@ -285,4 +305,6 @@ for (const abs of files) {
 for (const l of warnLines) console.warn(l);
 
 console.log(`\nValidated ${files.length} clips: ${errCount} errors, ${warnCount} warnings`);
-if (errCount > 0) process.exit(1);
+if (unregisteredCount > 0)
+  console.error(`${unregisteredCount} file(s) not registered in manifest.json`);
+if (errCount > 0 || unregisteredCount > 0) process.exit(1);
