@@ -188,6 +188,7 @@ SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.
 `AttachmentDefs.js` 声明道具（anchor / heldPose / acquire / dispose），attach 走 ModifierLayer held 通道（不新建道具写入点）。
 `interruptible` 控制社交劫持；处置由 `runner.hold` 统一兜底。
 **passerby 模板**（B-②）：60% 直通（single stroll → exit）/ 40% 途中停留（`_stopCredits` 1-2 次）；desire 池改为 `BEHAVIOR_SCRIPTS` 键；`check-behavior-data.mjs` 静态校验 profile.desires 所有 id 存在于脚本表。
+**B-③ passerby desires 集成**：`_tryDesire` 提取为独立方法（加权随机 + 30% 跳过）；`_pickPasserbyGoal` stroll 回调优先从 desires 池抽 ChainTask，fallback affordance draw；`_pickGoal` 复用 `_tryDesire`。
 设计文档：`docs/design-plans/chain-task-design.md`。
 
 ---
