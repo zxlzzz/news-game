@@ -413,7 +413,7 @@ function migrate() {
     ['check_watch',        'gesture/moving/check_watch.json'],
     ['wipe_sweat',         'gesture/moving/wipe_sweat.json'],
     ['adjust_clothes',     'gesture/static/adjust_clothes.json'],
-    ['check_watch_static', 'gesture/static/check_watch.json'],
+    ['check_watch_side',   'gesture/static/check_watch.json'],
     ['look_around',        'gesture/static/look_around.json'],
     ['stretch',            'gesture/static/stretch.json'],
     ['yawn',               'gesture/static/yawn.json'],

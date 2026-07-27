@@ -106,8 +106,8 @@
       "path": "animations/overlay/check_watch.json",
       "kind": "overlay"
     },
-    "check_watch_static": {
-      "path": "animations/overlay/check_watch_static.json",
+    "check_watch_side": {
+      "path": "animations/overlay/check_watch_side.json",
       "kind": "overlay"
     },
     "cross_arm": {
