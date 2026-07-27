@@ -261,3 +261,14 @@ npc.clearMem('loiter');
 | `docs/roadmap.md` | 快照 | 功能批次落地状态一览（规范性路线图跟踪） |
 | `docs/design-plans/goal-pipeline-v1.md` | 规范性 | 四层目标管线立法；三铁律；ARRIVAL/RECOVERY/SAFETY/PLANNING 裁决表；N-1/N-2/N-3 刀序；四数验收表 |
 | `docs/design-plans/belief-layer-v0.md` | 设计稿（draft） | 信念层 v0 占位草案：符号化事件声明、LLM 证人污染防护、SIR 传播 |
+| `Visual design spec.md` | 规范性 | 全场景视觉规范：纯 2D 平面黑白灰，draw*.js 合规基线 |
+| `Visual spec cc.md` | 规范性 | 视觉规范实施参考（CC 用）：公共函数模板、draw 改造清单 |
+| `docs/audits/behavior-redundancy-2026-07.md` | 快照 | 行为层冗余机制审计（2026-07），Cleanup-1 输入文件 |
+| `docs/audits/velocity-unification-closing-2026-07.md` | 快照 | 速度统一收尾核账报告（2026-07-19） |
+| `docs/baselines/2026-07-12-ddd9eb2f-s42-pre.md` | 快照 | check-invariants 基线快照 s42 前（2026-07-12） |
+| `docs/baselines/2026-07-12-27a45503-s42-post.md` | 快照 | check-invariants 基线快照 s42 后（2026-07-12） |
+| `docs/baselines/2026-07-13-e3c9ec1c-s42-pre.md` | 快照 | check-invariants 基线快照（2026-07-13） |
+| `docs/design-plans/duet-interaction-design-v1.md` | 设计稿（finalized） | 双人互动设计 v1：overlay 参与者 dx 偏移、duet clip 格式、编辑器 newDuetClip() |
+| `docs/design-plans/editor-reference-layer-v1.md` | 设计稿（finalized） | 编辑器参照层设计 v1：context 字段、held/prop 参照物可视化 |
+| `sth/stick-puppet/README.md` | 快照 | StickPuppet 工具启动、操作与 clip 导出说明 |
+| `assets/animations/new_assets/docx.md` | 快照 | new_assets/ 校对说明：接地规则、child 骨架说明、待处理 clip 清单 |

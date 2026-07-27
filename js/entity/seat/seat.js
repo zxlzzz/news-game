@@ -37,7 +37,7 @@ function _setXY(npc, x, y) {
 }
 
 /** 座面世界 Y（NPC 臀部应落于此） */
-export function seatSurfaceY(bench) {
+function seatSurfaceY(bench) {
   return bench.y - (bench.seatH ?? BENCH_SEAT_H);
 }
 

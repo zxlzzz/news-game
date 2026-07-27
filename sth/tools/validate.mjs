@@ -157,7 +157,7 @@ function validateFile(abs, allClips) {
 
   // 7. variant_of resolves
   if (clip.variant_of) {
-    if (!allClips[clip.variant_of])
+    if (!manifestClips[clip.variant_of])
       W(`variant_of "${clip.variant_of}" not found in manifest`);
   }
 

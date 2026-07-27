@@ -89,12 +89,6 @@ export function buildPoseCache(clipLibrary) {
     }
   }
 
-  // Aliases for profile keys that reference old "moving" gesture names
-  if (!gesture.moving_check_watch && gesture.check_watch)
-    gesture.moving_check_watch = gesture.check_watch;
-  if (!gesture.moving_wipe_sweat && gesture.wipe_sweat)
-    gesture.moving_wipe_sweat = gesture.wipe_sweat;
-
   const trait = {};
   for (const [id, entry] of Object.entries(clips)) {
     if (entry.kind !== 'overlay') continue;

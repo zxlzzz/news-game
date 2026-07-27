@@ -208,8 +208,7 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** mus
     'BaseStateMachine.js',// stateTimer accum — permanent (core state-machine bookkeeping)
     'SocialLayer.js',     // 非移动政策计时器 — permanent
     'WaitBusActivity.js', // 非移动政策计时器 — permanent
-    'PlayPoseTask.js',    // 非移动政策计时器 — permanent
-    'StrollTask.js',      // 非移动政策计时器 — permanent
+'StrollTask.js',      // 非移动政策计时器 — permanent
     'UseBenchTask.js',    // 非移动政策计时器 — permanent
     'ChessActivity.js',   // 非移动政策计时器 — permanent
     'StallActivity.js',   // 非移动政策计时器 — permanent

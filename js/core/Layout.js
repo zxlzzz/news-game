@@ -30,8 +30,6 @@ export const SIDEWALK_NEAR_Y = 508;
 // ─── 区域内插值辅助函数 ───────────────────────────────────────────────────────
 
 export const roadY = (f) => Math.round(FAR_Y + (NEAR_Y - FAR_Y) * f);
-export const sidewalkFarY = (f) => Math.round(BUILDING_BASE_Y + (FAR_Y - BUILDING_BASE_Y) * f);
-export const parkY = (f) => Math.round(PARK_TOP + (PARK_BOTTOM - PARK_TOP) * f);
 export const worldX = (f) => Math.round(WORLD_WIDTH * f);
 export const bikeLaneFarY  = (f) => Math.round(BIKE_LANE_FAR_TOP  + (BIKE_LANE_FAR_BOTTOM  - BIKE_LANE_FAR_TOP)  * f);
 export const bikeLaneNearY = (f) => Math.round(BIKE_LANE_NEAR_TOP + (BIKE_LANE_NEAR_BOTTOM - BIKE_LANE_NEAR_TOP) * f);
@@ -82,23 +80,9 @@ export const SKYLINE_FRONT = 0xe6e6e6;
 export const SKYLINE_LINE  = 0xd6d6d6;
 export const CLOUD_LINE    = 0xd2d2d2;
 
-export const LINE_FAR_COLOR  = 0x9a9a9a;
 export const LINE_FAR_WIDTH  = 0.8;
-export const LINE_MID_COLOR  = 0x5a5a5a;
-export const LINE_MID_WIDTH  = 1.4;
 export const LINE_NEAR_COLOR = 0x1f1f1f;
 export const LINE_NEAR_WIDTH = 2.2;
-
-// 兼容旧名
-export const SHADE_BG            = GRAY_SKY;
-export const SHADE_FAR           = GRAY_FAR_PAVE;
-export const SHADE_FAR_ALT       = GRAY_BUILDING_MID;
-export const SHADE_ROAD          = GRAY_ROAD;
-export const SHADE_NEAR          = GRAY_NEAR_PAVE;
-export const SHADE_CURB          = GRAY_CURB;
-export const BUILDING_FILL_LIGHT = GRAY_BUILDING_HI;
-export const BUILDING_FILL_MID   = GRAY_BUILDING_MID;
-export const BUILDING_FILL_DARK  = GRAY_BUILDING_LO;
 
 // ─── 深度辅助函数 ─────────────────────────────────────────────────────────────
 

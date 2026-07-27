@@ -51,15 +51,13 @@ const HANDS_IN_POCKET = {
 // 路人共用的 gesture 触发表
 //   chance 为每帧触发概率；dur 由 clip 关键帧累计决定，无需在此声明
 const PED_GESTURES = {
-  check_watch:    { on: ['stand', 'loiter'],         chance: 0.0003,  traitExcludes: ['hold_bag', 'walk_dog'] },
-  stretch:        { on: ['stand', 'loiter'],         chance: 0.00008, traitExcludes: ['hold_bag', 'walk_dog'] },
-  yawn:           { on: ['stand', 'loiter'],         chance: 0.0001 },
-  look_around:    { on: ['stand', 'loiter'],         chance: 0.0002 },
-  adjust_clothes: { on: ['stand', 'loiter'],         chance: 0.0001,  traitExcludes: ['hold_bag', 'walk_dog'] },
-  wave:           { on: ['stand', 'loiter'],         chance: 0.0002 },
-  // moving gesture：行走/奔跑中触发
-  moving_check_watch: { on: ['walk', 'run'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
-  moving_wipe_sweat:  { on: ['walk', 'run'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
+  check_watch:    { on: ['stand', 'loiter', 'walk', 'run'], chance: 0.0003,  traitExcludes: ['hold_bag', 'walk_dog'] },
+  stretch:        { on: ['stand', 'loiter'],                chance: 0.00008, traitExcludes: ['hold_bag', 'walk_dog'] },
+  yawn:           { on: ['stand', 'loiter'],                chance: 0.0001 },
+  look_around:    { on: ['stand', 'loiter'],                chance: 0.0002 },
+  adjust_clothes: { on: ['stand', 'loiter'],                chance: 0.0001,  traitExcludes: ['hold_bag', 'walk_dog'] },
+  wave:           { on: ['stand', 'loiter'],                chance: 0.0002 },
+  wipe_sweat:     { on: ['walk', 'run'],                    chance: 0.0003,  traitExcludes: ['hold_bag', 'walk_dog'] },
 };
 
 const PEDESTRIAN = {

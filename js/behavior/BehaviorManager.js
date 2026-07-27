@@ -18,7 +18,6 @@ import { tickBaseState, triggerDeparture } from './BaseStateMachine.js';
 import { installProtection, nudgeXY, SAFETY_RULES, setState } from './Motor.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
 import { SocialLayer }          from './SocialLayer.js';
-import { CameraReactionLayer }  from '../camera/CameraReactionLayer.js';
 import { WaitForBusLayer }      from '../entity/busstop/WaitForBusLayer.js';
 import { refreshDebugFlag }     from './DebugLog.js';
 import { checkZoneTransition }  from './WalkMode.js';
@@ -55,7 +54,6 @@ export class BehaviorManager {
     }
 
     this.socialLayer     = new SocialLayer(this.envQuery, poseCache);
-    this.cameraLayer     = new CameraReactionLayer();
     this.npcs            = [];
     this.waitForBusLayer = null;
     this.exitRegistry    = null;

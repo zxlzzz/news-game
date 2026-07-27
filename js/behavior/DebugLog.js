@@ -9,7 +9,7 @@
 
 let _cache = null;   // null=未探测；true/false=已探测结果
 
-export function debugEnabled() {
+function debugEnabled() {
   try {
     if (typeof localStorage === 'undefined') return false;
     return localStorage.getItem('npc-debug') === '1';

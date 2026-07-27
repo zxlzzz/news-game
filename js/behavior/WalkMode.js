@@ -35,14 +35,6 @@ const rand = (a, b) => a + Math.random() * (b - a);
 
 // ─── 区域判断 ─────────────────────────────────────────────────────────────────
 
-/** 返回 Y 坐标所在区域名 */
-export function zoneOf(y) {
-  if (y < FAR_Y)    return 'far_sidewalk';
-  if (y < NEAR_Y)   return 'road';
-  if (y < PARK_TOP) return 'near_sidewalk';
-  return 'park';
-}
-
 /** 是否在机动车道区（FAR_Y ≤ y < NEAR_Y） */
 export function isRoadZone(y) {
   return y >= FAR_Y && y < NEAR_Y;
@@ -66,11 +58,6 @@ function _nearestCrosswalk(x) {
   return best;
 }
 
-// TrafficSignal stub — always green; replace with real implementation when needed
-// TODO: export real signal state and wire up to vehicle system
-const TrafficSignal = { getState: (_x) => 'green' };
-
-
 // ─── 预定义路线（运行时从 scene.json 注入）──────────────────────────────────────
 // waypoints: [{x, y, pause?}]  pause = 到达后停留秒数（缺省/0 = 不停留）
 
@@ -81,7 +68,7 @@ export { WALK_PATHS };
 export function initWalkPaths(paths) { WALK_PATHS = paths || {}; }
 
 /** 动态注入单条路线 */
-export function addWalkPath(key, def) { WALK_PATHS[key] = def; }
+function addWalkPath(key, def) { WALK_PATHS[key] = def; }
 
 // ─── 模式描述符工厂 ───────────────────────────────────────────────────────────
 

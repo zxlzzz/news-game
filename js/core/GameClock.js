@@ -23,8 +23,8 @@ export function clockUpdate(dt) {
 }
 
 export function gameClock()  { return _hours; }
-export function gameHour()   { return Math.floor(_hours); }
-export function gameMinute() { return Math.floor((_hours % 1) * 60); }
+function gameHour()   { return Math.floor(_hours); }
+function gameMinute() { return Math.floor((_hours % 1) * 60); }
 
 export function gameTimeStr() {
   const h = String(gameHour()).padStart(2, '0');

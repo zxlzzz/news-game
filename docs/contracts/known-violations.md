@@ -21,4 +21,5 @@ it breaks, and the migration path.
 
 **Migration**: Replace with `npc.mem('social').tags` (or a new `'talk'` namespace). The NpcState migration pass (Batch-M3 second half) should migrate these three writes. Until then, the check-invariants gate cannot enforce the `_extraTags` rule without false-positiving on TalkActivity.js.
 
-**Current status**: Rule is documented in movement.md but NOT enforced in check-invariants.mjs.
+**Current status**: Rule IS enforced in check-invariants.mjs (Rule 1) with TalkActivity.js
+in the allowlist. All other files must not use `_extraTags`.
