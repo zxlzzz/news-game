@@ -15,8 +15,6 @@ function _sameSide(y1, y2) {
   return side(y1) === side(y2);
 }
 import { findFree as _findFreeBench,   isNear as _isNearBench   } from '../entity/seat/seat.js';
-import { findFree as _findFreeVending, isNear as _isNearVending  } from '../entity/vending/vending.js';
-import { findFree as _findFreeChess,   isNear as _isNearChess    } from '../entity/chess-table/chessTable.js';
 
 // Sample a position from an affordance descriptor relative to entity.
 // Returns {x,y} or null (ambient anchor handled separately).
@@ -37,28 +35,6 @@ export class EnvironmentQuery {
   constructor(entityManager) {
     this.em = entityManager;
     this._ambientAffordances = [];
-  }
-
-  /** 半径内最近的指定 propType 道具；无则返回 null */
-  nearestProp(npc, propType, radius) {
-    let best = null;
-    let bestD = radius;
-    for (const e of this.em.entities) {
-      if (!e.alive || e.propType !== propType) continue;
-      const d = Math.hypot(e.x - npc.x, e.y - npc.y);
-      if (d <= bestD) { bestD = d; best = e; }
-    }
-    return best;
-  }
-
-  /** 半径内的其他 NPC 列表 */
-  nearbyNPCs(npc, radius) {
-    const out = [];
-    for (const e of this.em.entities) {
-      if (e === npc || !e.alive || !e.renderer) continue;   // renderer 标识 NPC
-      if (Math.hypot(e.x - npc.x, e.y - npc.y) <= radius) out.push(e);
-    }
-    return out;
   }
 
   /**
@@ -97,15 +73,6 @@ export class EnvironmentQuery {
     return best;
   }
 
-  /** 释放某 NPC 占用的墙面靠点 */
-  releaseWallSpot(npc) {
-    for (const e of this.em.entities) {
-      if (e.bWidth === undefined) continue;
-      if (e._leanLeft  === npc.id) e._leanLeft  = null;
-      if (e._leanRight === npc.id) e._leanRight = null;
-    }
-  }
-
   /** 附近是否有长椅（复刻重构前 _nearBench：|dx|<60, |dy|<80） */
   isNearBench(npc, dxT = 60, dyT = 80) {
     return _isNearBench(this.em.entities, npc, dxT, dyT);
@@ -116,26 +83,6 @@ export class EnvironmentQuery {
     return _findFreeBench(this.em.entities, npc, radius);
   }
 
-  /** 附近是否有贩卖机（|dx| < dxT && |dy| < dyT） */
-  isNearVending(npc, dxT = 60, dyT = 80) {
-    return _isNearVending(this.em.entities, npc, dxT, dyT);
-  }
-
-  /** 附近最近的空闲贩卖机；无则 null */
-  nearestFreeVending(npc, radius = 150) {
-    return _findFreeVending(this.em.entities, npc, radius);
-  }
-
-  /** 附近是否有棋桌（|dx| < dxT && |dy| < dyT） */
-  isNearChessTable(npc, dxT = 80, dyT = 80) {
-    return _isNearChess(this.em.entities, npc, dxT, dyT);
-  }
-
-  /** 附近最近的有空闲玩家槽的棋桌；无则 null */
-  nearestFreeChessTable(npc, radius = 200) {
-    return _findFreeChess(this.em.entities, npc, radius);
-  }
-
   // ─── 障碍物查询（NavGrid 单一真值源）──────────────────────────────────────
   /** 点 (x,y) 是否为不可选目标（BLOCKED 或 ROAD）；是则返回真值，否则 null */
   pointBlocked(x, y, _npcRadius = 12) {
@@ -144,36 +91,6 @@ export class EnvironmentQuery {
     const { gx, gy } = grid.worldToCell(x, y);
     const c = grid.cost(gx, gy);
     return (c === 0 || c === ROAD) ? { x, y } : null;
-  }
-
-  /** 线段 (x,y)→(tx,ty) 沿途是否经过不可选格（BLOCKED 或 ROAD）；有则返回首个碰撞点，否则 null */
-  raycastObstacle(x, y, tx, ty, _npcRadius = 12) {
-    const grid = getNavGrid();
-    if (!grid) return null;
-    const dx = tx - x, dy = ty - y;
-    const len = Math.hypot(dx, dy);
-    if (len < 1) return null;
-    const steps = Math.ceil(len / (CELL * 0.5));
-    for (let i = 1; i <= steps; i++) {
-      const t  = i / steps;
-      const wx = x + dx * t, wy = y + dy * t;
-      const { gx, gy } = grid.worldToCell(wx, wy);
-      const c = grid.cost(gx, gy);
-      if (c === 0) return { x: wx, y: wy };
-    }
-    return null;
-  }
-
-  /** 在 center 半径内找一个无人占用的指定 propType 道具（如空棋桌）；无则 null */
-  findVacantProp(propType, radius, center) {
-    let best = null;
-    let bestD = radius;
-    for (const e of this.em.entities) {
-      if (!e.alive || e.propType !== propType || e._occupiedBy) continue;
-      const d = Math.hypot(e.x - center.x, e.y - center.y);
-      if (d <= bestD) { bestD = d; best = e; }
-    }
-    return best;
   }
 
   /**
@@ -327,11 +244,6 @@ export class EnvironmentQuery {
   releaseAffordance(entity, kind) {
     if (!entity?._affOcc) return;
     entity._affOcc[kind] = Math.max(0, (entity._affOcc[kind] ?? 1) - 1);
-  }
-
-  /** 按 tag 查找 ambient 声明（tags 数组包含 tag 即匹配） */
-  findAffordanceByTag(tag) {
-    return this._ambientAffordances.filter(a => a.tags?.includes(tag));
   }
 
   /**

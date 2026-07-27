@@ -11,14 +11,13 @@
  *
  * WalkMode — NPC 走路模式子系统
  *
- * 三种模式：
+ * 两种模式：
  *   wander      在 bounds 区域内随机漂移（默认）
- *   direct      直线奔赴指定目标点，到达后回调并切回 wander
  *   path_follow 沿 WALK_PATHS 中预定义的 waypoint 序列行走，支持途中暂停
  *
  * 区域约束：
- *   马路区（FAR_Y ≤ y < NEAR_Y）只允许 direct/path_follow，不允许暂停。
- *   wander NPC 闯入马路时 checkZoneTransition 会自动压栈并切 direct 穿越。
+ *   马路区（FAR_Y ≤ y < NEAR_Y）只允许 path_follow，不允许暂停。
+ *   wander NPC 闯入马路时 checkZoneTransition 覆写 vel 弹回安全区。
  *
  * 与现有系统接入：
  *   tickWalkMode   — 在 _tickState 内、steerRoam 之前调用（管理暂停计时 / 超时）
@@ -218,7 +217,7 @@ export function onPathArrival(mode, npc) {
 
 /**
  * 每帧在 steerRoam 之前调用（由 _tickState 驱动）。
- * 仅处理时间驱动的内部状态：path_follow 暂停计时、direct 超时放弃。
+ * 仅处理时间驱动的内部状态：path_follow 暂停计时。
  * 到达检测由 steerRoam 负责。
  */
 export function tickWalkMode(npc, dt) {
