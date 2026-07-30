@@ -1,4 +1,33 @@
 {
+  "world": { "width": 2000, "height": 520 },
+
+  "depth": {
+    "anchors": [
+      [210, 0.00],
+      [268, 0.30],
+      [333, 0.50],
+      [353, 0.55],
+      [520, 1.00]
+    ],
+    "scaleFar": 0.182,
+    "scaleNear": 0.434
+  },
+
+  "yBands": {
+    "SKY_Y": 100,
+    "BUILDING_BASE_Y": 210,
+    "SIDEWALK_FAR_Y": 240,
+    "BIKE_LANE_FAR_TOP": 248,
+    "BIKE_LANE_FAR_BOTTOM": 268,
+    "FAR_Y": 268,
+    "NEAR_Y": 333,
+    "BIKE_LANE_NEAR_TOP": 333,
+    "BIKE_LANE_NEAR_BOTTOM": 353,
+    "PARK_TOP": 353,
+    "SIDEWALK_NEAR_Y": 508,
+    "PARK_BOTTOM": 520
+  },
+
   "buildings": [
     {"x":0,    "bWidth":120,"bDepth":24,"facadeH":116,"waterTower":true,                  "kind":"resi",        "door":60  },
     {"x":120,  "bWidth": 72,"bDepth":20,"facadeH": 84,                                    "kind":"oldmix",      "door":156 },

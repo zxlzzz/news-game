@@ -24,6 +24,7 @@ import { SceneInitializer } from './SceneInitializer.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT,
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
+  initLayout,
 } from '../core/Layout.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 import { expandSceneData }  from '../core/sceneData.js';
@@ -100,6 +101,8 @@ export class StreetScene {
     this.vfGraphics         = mkLayer(this.worldContainer, 4);
 
     const sceneData = expandSceneData(this.cache.json.get('scene_data'));
+    // 布局参数注入：必须在 SceneRenderer / SceneInitializer / 任何 entity 创建之前
+    initLayout(sceneData);
     const layout = sceneData.layout;
 
     const sceneRenderer = new SceneRenderer(this.bgGraphics, this.skyGraphics, layout);

@@ -27,6 +27,10 @@ const NEAR_STOP = {
 // ── 主入口 ──────────────────────────────────────────────────────────────────────
 export function expandSceneData(raw) {
   return {
+    // 布局参数三件套：原样透传给 Layout.initLayout（本模块不解释其语义）
+    world:     raw.world,
+    depth:     raw.depth,
+    yBands:    raw.yBands,
     buildings: _expandBuildings(raw.buildings ?? []),
     props:     _expandProps(raw.props ?? {}),
     layout:    _expandLayout(raw.layout ?? {}),
