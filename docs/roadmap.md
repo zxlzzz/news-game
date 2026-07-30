@@ -29,6 +29,7 @@
 | N-1（归表） | ARRIVAL_RULES（`SteeringDecision.js`）、RECOVERY_RULES / SAFETY_RULES（`Motor.js`）三张裁决表立起；`arrived(ruleId, dist)` 调用模式；Lookahead 参数注入（删内联 fallback）；`check-invariants.sh` 删除 | ✅ 已落地 | `js/behavior/SteeringDecision.js`；`js/behavior/Motor.js`；`scripts/check-invariants.mjs`（commit `3cd1f99`） |
 | N-2a（规划层） | `PLANNING_RULES`（`PathPlanner.js`）；`_bakeCrosswalks` 斑马线烘焙进 NavGrid；A* 有效代价准入（ROAD 格可用）；check-invariants Rule 8（crosswalk/jaywalk/roadCost 数值定义唯一住址） | ✅ 已落地（**Z-1 已取代**） | `js/behavior/nav/PathPlanner.js`；`js/behavior/nav/NavGrid.js`（commit `97c1e44`） |
 | Z-1（zone-profile split） | NavGrid 从 cost map 重构为 zone map + profile cost table：`ZONE` 枚举 + `DEFAULT_ZONE_COSTS`；`cost()`→`zone()`；`ROAD=250` 哨兵值 / `PLANNING_RULES` / `roadCost` / `planningRules` / `_bakeCrosswalks` 全部删除；斑马线直接烘焙为 `ZONE.CROSSWALK`；代价装配唯一住址 `PlanService._zoneCostsFor()`；`_lineOfSight` 改为纯 zone 检查 | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`js/behavior/nav/PathPlanner.js`；`js/behavior/nav/PlanService.js`；`js/npc/NpcProfile.js` |
+| Z-2a（Layout 参数化） | Layout.js 世界尺寸 / Y 分带 / 深度锚点 `export const` → `export let` + `initLayout(config)`；scene.json 新增 `world` / `depth` / `yBands` 三顶层字段（数值不变，原地搬家）；sceneData 透传；StreetScene.create() 注入。借 live binding，66 个 import 站点零改动 | ✅ 已落地 | `js/core/Layout.js`；`assets/scene.json`；`js/core/sceneData.js`；`js/scenes/StreetScene.js` |
 | Z-1b（拉直草地约束复原） | `ZONE_ROUGHNESS` 表（铺装 1 / 草地 2 / ROAD·BLOCKED 999）；`_lineOfSight` 中间格 roughness 超两端 max 即拒绝，与 Z-1 前 `maxCost` 规则语义等价；roughness 不参与 A\*，与 `zoneCosts` 两套独立序 | ✅ 已落地 | `js/behavior/nav/PathPlanner.js#ZONE_ROUGHNESS` |
 | N-2b（Goal 通道） | `PlanService.js` 成为 `mot.path` 唯一写入方；`mot.goal` 结构体（x/y/radius/meta）；jaywalk 空间派生（不再 walkModeStack）；zone 弹回无状态化；`modeDirect` / `planCrossing` / `walkModeStack` 删除 | ✅ 已落地 | `js/behavior/nav/PlanService.js`；`js/behavior/tasks/GotoTask.js`；`docs/design-plans/goal-pipeline-v1.md r2.3`（commit `0dcf420`） |
 | J1（跑者/Agenda 集成修复） | J1-a: StrollTask `STROLL_BLOCKED_LIMIT=2` 有限重发回落（plan 必败不再死循环）；J1-b: Athletes 跑者显式 bounds + `makeNPC` 出生点守卫；J1-c: ATHLETE profile `agenda:false`，BM.register 跳过 Agenda 实例化 | ✅ 已落地 | `js/behavior/tasks/StrollTask.js`；`js/npc/Athletes.js`；`js/npc/npcUtil.js`；`js/npc/NpcProfile.js#ATHLETE`（commits `3476eb3`–`4897677`） |
@@ -323,6 +324,37 @@ NavGrid 从「cost map」重构为「zone map + profile cost table」两层：
 
 代码锚点：`js/behavior/nav/NavGrid.js#ZONE,DEFAULT_ZONE_COSTS`；
 `js/behavior/nav/PathPlanner.js#plan,_astar,_lineOfSight`；`js/behavior/nav/PlanService.js#_zoneCostsFor`
+
+---
+
+### Z-2a（Layout 参数化）— 已落地
+
+`Layout.js` 从硬编码常量改为场景配置注入，利用 ES module live binding 使 66 个
+`import` 站点零改动。
+
+- **`export const` → `export let`**：世界尺寸、12 个 Y 分带、`BUILDING_EXIT_XS`；
+  文件内字面量降级为 fallback 默认值。颜色仍是 `export const`（画风不是场景结构）。
+- **`initLayout(config)`**：读 `world` / `yBands` / `depth`，逐字段 `??` 覆盖，
+  末尾就地重算 `BUILDING_EXIT_XS`。缺字段即保留默认值——config 是覆盖不是替换。
+- **scene.json 新增 `world` / `depth` / `yBands`**：`yBands` 的 12 个键名与 Layout
+  export 名一一对应，值与旧硬编码完全一致（原地搬家，非新数据）。
+- **注入时序**：`StreetScene.create()` 内 `expandSceneData` 之后、`SceneRenderer` 之前。
+
+**live binding 的边界（重要）**：注入晚于所有模块顶层求值，因此**在模块顶层从 Layout
+值派生的量冻结在 fallback 默认值上**，不随注入更新。现存三处：
+
+| 站点 | 冻结量 | 依赖 |
+|------|--------|------|
+| `NavGrid.js` | `COLS` / `ROWS` | `WORLD_WIDTH` / `WORLD_HEIGHT` |
+| `VehicleSpawner.js` | `LANES` | `roadY()` / `WORLD_WIDTH` |
+| `WaitForBusLayer.js` | `WAIT_ZONES` | `SIDEWALK_FAR_Y` / `BIKE_LANE_FAR_TOP` / `PARK_TOP` |
+
+Z-2a 的注入值与默认值相同，故零行为差异；**任何真正改动这些数值的场景必须先处理这三处**
+（改为函数或延后到 init 之后计算）。另注：`headless-sim.mjs` 用解构动态 import
+取 Layout 值，那是拷贝而非 live binding，且不调 `initLayout`，故始终用默认值。
+
+代码锚点：`js/core/Layout.js#initLayout`；`js/core/sceneData.js#expandSceneData`；
+`js/scenes/StreetScene.js#create`
 
 ---
 

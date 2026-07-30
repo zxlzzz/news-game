@@ -45,6 +45,16 @@ Y 分带（`js/core/Layout.js`）：
 
 NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车道禁止驻留（`isRoadZone` 守卫）。
 
+**参数化**（Z-2a）：上表数值、世界尺寸、深度锚点不再是硬编码常量，而是 `export let`，
+由 `initLayout(sceneData)` 从 `scene.json` 的 `world` / `yBands` / `depth` 注入
+（`StreetScene.create()` 内，`SceneRenderer` 之前）；Layout.js 里的字面量只是 fallback。
+`yBands` 的键名必须与 Layout export 名一致。消费侧照常 `import { NEAR_Y }`——live binding。
+
+**⚠️ 禁止在模块顶层从 Layout 值派生量**（写成函数，或延后到 init 之后计算）：注入晚于
+所有模块顶层求值，顶层派生会冻结在 fallback 默认值上。现存三处待偿：`NavGrid.js`
+`COLS/ROWS`、`VehicleSpawner.js` `LANES`、`WaitForBusLayer.js` `WAIT_ZONES`
+（详见 `docs/roadmap.md#Z-2a`）。
+
 ---
 
 ## 动画命名
