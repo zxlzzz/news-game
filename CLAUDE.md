@@ -50,6 +50,19 @@ NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车�
 （`StreetScene.create()` 内，`SceneRenderer` 之前）；Layout.js 里的字面量只是 fallback。
 `yBands` 的键名必须与 Layout export 名一致。消费侧照常 `import { NEAR_Y }`——live binding。
 
+**scene.json 五块布局配置**（数值唯一真相在 `yBands`，其余段落只写**名字**引用它）：
+
+| 段 | 消费者 | 内容 |
+|----|--------|------|
+| `world` / `depth` / `yBands` | `Layout.initLayout` | 世界尺寸、深度锚点、12 个 Y 分带数值 |
+| `zones`（Z-2b） | `NavGrid.bake` | bands / overlays / paving / crossings → zone 烘焙 |
+| `ground`（Z-2c） | `SceneRenderer` | bands / edgeLines / tiling / grass → 地面色带 |
+
+符号解析：Y 边界写分带名经 `resolveY()`，颜色写调色板名经 `resolveColor()`（`Layout.js`），
+拼错立刻抛错。**配置缺失一律抛错，不退回硬编码 fallback。**
+`zones` 与 `ground` 是**两套不同划分**：远人行道铺装色画到 `FAR_Y`（含远自行车道），
+而那段导航上是 `ZONE.ROAD`——视觉按材质切，zone 按通行性切，不可互相套用。
+
 **⚠️ 禁止在模块顶层从 Layout 值派生量**（写成函数，或延后到 init 之后计算）：注入晚于
 所有模块顶层求值，顶层派生会冻结在 fallback 默认值上。现存三处待偿：`NavGrid.js`
 `COLS/ROWS`、`VehicleSpawner.js` `LANES`、`WaitForBusLayer.js` `WAIT_ZONES`
@@ -194,6 +207,9 @@ zone 空间派生（`Npc.getTags()` 判 `grid.zone(gx,gy) === ZONE.ROAD`）；�
 `DEFAULT_ZONE_COSTS`（NavGrid.js）→ `profile.zoneCosts` 覆盖 → jaywalk 覆盖（`ROAD → 3`）；
 表值 `0` 即不可通行。`PathPlanner.plan()` 第 6 参收 `zoneCosts`，自身不持有代价政策。
 铁律：NavGrid 不得出现代价数字，PathPlanner 不得自带代价政策——表一律由参数传入。
+Z-2b 追加：NavGrid 亦不得出现 Y 分带数字——烘焙几何一律来自 `scene.json#zones`。
+拉直另有 `ZONE_ROUGHNESS`（`PathPlanner.js`，铺装 1 / 草 2 / ROAD·BLOCKED 999）：
+中间格 roughness 超两端 max 即拒绝拉直，保证铺装点之间不抄草坪；roughness 不参与 A*。
 
 **affordance 池**：`EnvironmentQuery.drawAffordance(npc, radius)` 加权随机抽取目的地；
 声明来源：`AffordanceDefaults.js`（propType 默认）、`entity.affordances`（scene.json 覆盖）、`registerAmbientAffordance`（区域型 POI）。

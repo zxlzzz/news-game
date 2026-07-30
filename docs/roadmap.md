@@ -30,6 +30,8 @@
 | N-2a（规划层） | `PLANNING_RULES`（`PathPlanner.js`）；`_bakeCrosswalks` 斑马线烘焙进 NavGrid；A* 有效代价准入（ROAD 格可用）；check-invariants Rule 8（crosswalk/jaywalk/roadCost 数值定义唯一住址） | ✅ 已落地（**Z-1 已取代**） | `js/behavior/nav/PathPlanner.js`；`js/behavior/nav/NavGrid.js`（commit `97c1e44`） |
 | Z-1（zone-profile split） | NavGrid 从 cost map 重构为 zone map + profile cost table：`ZONE` 枚举 + `DEFAULT_ZONE_COSTS`；`cost()`→`zone()`；`ROAD=250` 哨兵值 / `PLANNING_RULES` / `roadCost` / `planningRules` / `_bakeCrosswalks` 全部删除；斑马线直接烘焙为 `ZONE.CROSSWALK`；代价装配唯一住址 `PlanService._zoneCostsFor()`；`_lineOfSight` 改为纯 zone 检查 | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`js/behavior/nav/PathPlanner.js`；`js/behavior/nav/PlanService.js`；`js/npc/NpcProfile.js` |
 | Z-2a（Layout 参数化） | Layout.js 世界尺寸 / Y 分带 / 深度锚点 `export const` → `export let` + `initLayout(config)`；scene.json 新增 `world` / `depth` / `yBands` 三顶层字段（数值不变，原地搬家）；sceneData 透传；StreetScene.create() 注入。借 live binding，66 个 import 站点零改动 | ✅ 已落地 | `js/core/Layout.js`；`assets/scene.json`；`js/core/sceneData.js`；`js/scenes/StreetScene.js` |
+| Z-2b（NavGrid zone bake 数据驱动） | `_zoneDefault(wy)` 删除；`zones` 配置（bands / overlays / paving / crossings）驱动全部 zone 烘焙；`PATH_TUBE_R` / `CROSSWALK_HALF_W` 移入配置；`bake()` 第 3 参收 zones，缺配置抛错；`Layout.resolveY` 符号解析（配置写分带名，数值仍只在 yBands） | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`assets/scene.json`；`js/core/Layout.js#resolveY` |
+| Z-2c（SceneRenderer 数据驱动地面） | 四段硬编码色带 + 两条边界线 → 遍历 `ground` 配置；砖缝 / 草丛区间参数化；`Layout.resolveColor` 颜色符号解析（配置写颜色名，hex 仍在 Layout）；SceneRenderer 第 4 参收 ground，缺则抛错 | ✅ 已落地 | `js/scenes/SceneRenderer.js`；`assets/scene.json`；`js/core/Layout.js#resolveColor` |
 | Z-1b（拉直草地约束复原） | `ZONE_ROUGHNESS` 表（铺装 1 / 草地 2 / ROAD·BLOCKED 999）；`_lineOfSight` 中间格 roughness 超两端 max 即拒绝，与 Z-1 前 `maxCost` 规则语义等价；roughness 不参与 A\*，与 `zoneCosts` 两套独立序 | ✅ 已落地 | `js/behavior/nav/PathPlanner.js#ZONE_ROUGHNESS` |
 | N-2b（Goal 通道） | `PlanService.js` 成为 `mot.path` 唯一写入方；`mot.goal` 结构体（x/y/radius/meta）；jaywalk 空间派生（不再 walkModeStack）；zone 弹回无状态化；`modeDirect` / `planCrossing` / `walkModeStack` 删除 | ✅ 已落地 | `js/behavior/nav/PlanService.js`；`js/behavior/tasks/GotoTask.js`；`docs/design-plans/goal-pipeline-v1.md r2.3`（commit `0dcf420`） |
 | J1（跑者/Agenda 集成修复） | J1-a: StrollTask `STROLL_BLOCKED_LIMIT=2` 有限重发回落（plan 必败不再死循环）；J1-b: Athletes 跑者显式 bounds + `makeNPC` 出生点守卫；J1-c: ATHLETE profile `agenda:false`，BM.register 跳过 Agenda 实例化 | ✅ 已落地 | `js/behavior/tasks/StrollTask.js`；`js/npc/Athletes.js`；`js/npc/npcUtil.js`；`js/npc/NpcProfile.js#ATHLETE`（commits `3476eb3`–`4897677`） |
@@ -355,6 +357,63 @@ Z-2a 的注入值与默认值相同，故零行为差异；**任何真正改动�
 
 代码锚点：`js/core/Layout.js#initLayout`；`js/core/sceneData.js#expandSceneData`；
 `js/scenes/StreetScene.js#create`
+
+---
+
+### Z-2b（NavGrid zone bake 数据驱动）— 已落地
+
+`NavGrid._bakeZones` 全程配置驱动，文件内不再有任何 Y 分带数字。`_zoneDefault(wy)`、
+`PATH_TUBE_R`、`CROSSWALK_HALF_W` 全部删除。
+
+`scene.json#zones` 四段：
+
+| 段 | 作用 | 取代的硬编码 |
+|----|------|-------------|
+| `bands[]` | 6 条 Y 分带默认 zone（按序首个 `wy < to` 命中，越过末带沿用末带） | `_zoneDefault` 的 5 个 if |
+| `overlays[]` | 附加带（公园顶部入口带 `PARK_TOP` +28） | `_bakeZones` 第 2 段 |
+| `paving` | walkPaths 管道半径 20 + plaza 椭圆缩放（chessPlaza 1.0/1.0、miniPark 0.85/0.7） | `PATH_TUBE_R` + 两处 shrink 因子 |
+| `crossings` | 斑马线管半宽 20 + 生效 Y 区间 + `over: "ROAD"`（只覆盖 ROAD 格） | `CROSSWALK_HALF_W` + 两个分带边界 |
+
+**符号引用**：边界值在配置里写分带**名字**（`"to": "FAR_Y"`），经 `Layout.resolveY`
+解析成当前注入值，数值仍只有 `yBands` 一处，无重复真相。`Layout.Y_BAND_NAMES` 导出
+合法键名；`initLayout` 校验 `config.yBands` 的键，拼错即抛。zone 名同理经 `_zoneId`
+映射，拼错即抛。**全链路无静默 fallback**——配置缺失就炸，不退回硬编码。
+
+`overlays` 的行区间沿用 Z-2b 前的既有算法（`floor(y/CELL)` 端点闭区间，非格中心判定），
+以保证逐格等价；这是个既有的小 wart，配置注释里标了。
+
+代码锚点：`js/behavior/nav/NavGrid.js#_bakeZones`；`js/core/Layout.js#resolveY,Y_BAND_NAMES`
+
+遗留：NavGrid 仍直接用 `NEAR_Y` 做「同侧」判定（`sampleWalkableNear`、
+`_assertSingleRegions`）——那是采样政策而非 zone 烘焙，不在本刀范围。
+
+---
+
+### Z-2c（SceneRenderer 数据驱动地面）— 已落地
+
+`_drawGround` 的地面色带改为遍历 `scene.json#ground`，文件内不再有地面色带的 Y 数值，
+也不再直接引用 `GRAY_*` 画带。
+
+| 段 | 作用 |
+|----|------|
+| `bands[]` | 4 条填充色带（远人行道 / 车行道 / 近人行道 / 公园），按数组顺序绘制 |
+| `edgeLines[]` | 2 条带边界线（线色由该 Y 的景深算，宽度可配） |
+| `tiling` | 人行道砖缝：区间 + `inset` + `spacing` + 颜色/alpha/线宽 |
+| `grass` | 草丛散布：区间 + `inset` + `tufts` 根数（确定性 seed，非随机） |
+
+**颜色写名字不写 hex**（`"color": "GRAY_ROAD"`），经 `Layout.resolveColor` 解析。
+场景配置说「这条带用路面色」，具体是哪个灰仍由 Layout.js 说了算——延续 Z-2a
+「颜色是画风不是场景结构」的划分，画风不外流到场景数据。
+
+**⚠️ ground 色带与 NavGrid 的 zone 是两套不同划分，不可互相套用。**
+远侧人行道的铺装色一路画到 `FAR_Y`（含远端自行车道 248–268），而那段在导航上是
+`ZONE.ROAD`。视觉分带按「看起来是什么材质」切，zone 按「能不能走 / 多贵」切。
+所以 `ground` 是独立配置，不是 `zones` 的渲染视图——这点已写进 SceneRenderer 头注释。
+
+代码锚点：`js/scenes/SceneRenderer.js#_drawGround`；`js/core/Layout.js#resolveColor,PALETTE_NAMES`
+
+遗留（下刀候选）：路缘石唇口、车道虚线、斑马线条纹（`_drawRoadMarkings` /
+`_drawCrosswalk`）仍是代码内硬编码几何——逐要素装饰几何，不是地面色带。
 
 ---
 

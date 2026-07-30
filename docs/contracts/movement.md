@@ -204,7 +204,17 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 | **Owner** | `NavGrid.js` |
 | **Writers** | `NavGrid.js` module (`getNavGrid`/`setNavGrid` exports); `SceneInitializer.js` (97 — sole call to `setNavGrid`) |
 | **Readers** | `Motor.js#_navBlocked` (200), `WalkMode.js#pickModeTarget` (202, 230), `PathPlanner.js#getPlanner`, `Lookahead.js#applyLookahead` (38), `EnvironmentQuery.js` (142, 151, 290), `Npc.js#getTags` (233), `BaseStateMachine.js#steerRoam` (293), `Pedestrians.js#spawnOnePedestrian` (67), `StrollTask.js` (26), `StuckProbe.js` (15) |
-| **Invariant** | Set exactly once at scene initialisation. `null` before init — all consumers must guard (`grid && ...`). Must not be replaced mid-scene. `grid.zone(gx,gy)` is the only cell accessor; there is no `grid.cost()`. |
+| **Invariant** | Set exactly once at scene initialisation. `null` before init — all consumers must guard (`grid && ...`). Must not be replaced mid-scene. `grid.zone(gx,gy)` is the only cell accessor; there is no `grid.cost()`. NavGrid must hold neither cost numbers (Z-1) nor Y-band numbers (Z-2b) — bake geometry arrives entirely via the `zones` config. |
+
+### Zone bake config (`scene.json#zones` → `NavGrid.bake`)
+
+| | |
+|---|---|
+| **Semantic** | Declarative description of how the zone map is painted, in four ordered stages: `bands[]` (Y-band defaults; first `wy < to` wins, last band is the catch-all), `overlays[]` (extra bands rewriting non-BLOCKED cells), `paving` (walkPaths tubes + plaza ellipses → paved zone), `crossings` (crosswalk tubes, only over the zone named by `over`). Y boundaries are written as **band names** (`"to": "FAR_Y"`) and resolved through `Layout.resolveY`, so numbers still live only in `yBands`. Zone names resolve through `NavGrid._zoneId`. |
+| **Owner** | `assets/scene.json` (data); `NavGrid._bakeZones` (interpreter) |
+| **Writers** | Nobody at runtime — read once at bake. Passed as `bake()`'s 3rd argument by `SceneInitializer.js` (`sceneData.zones`) and `headless-sim.mjs`. |
+| **Readers** | `NavGrid._bakeZones` only. |
+| **Invariant** | No silent fallback: a missing `zones`, `zones.bands`, or any required sub-field throws at bake; an unknown zone name or Y-band name throws. Obstacle cells are *not* config-driven — they come from `entity.footprint`. `overlays` row ranges use `floor(y/CELL)` inclusive endpoints rather than a cell-centre test (legacy arithmetic, preserved deliberately for bit-equivalence). |
 
 ### Zone cost table (`DEFAULT_ZONE_COSTS` / `profile.zoneCosts`)
 
