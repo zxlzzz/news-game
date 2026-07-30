@@ -50,6 +50,44 @@
     }
   },
 
+  "exits": {
+    "edges": [
+      { "id": "edge_left",  "side": "left",  "margin": 40, "facing": -1 },
+      { "id": "edge_right", "side": "right", "margin": 40, "facing": 1 }
+    ],
+    "buildingDoor": {
+      "yBand": "SIDEWALK_FAR_Y", "yOffset": -8,
+      "yZone": ["BUILDING_BASE_Y", "FAR_Y"]
+    }
+  },
+
+  "spawnPoints": [
+    { "side": "left",  "margin": 30, "yBand": "SIDEWALK_FAR_Y", "facing": 1 },
+    { "side": "right", "margin": 30, "yBand": "SIDEWALK_FAR_Y", "facing": -1 },
+    { "side": "left",  "margin": 30, "yBand": "PARK_TOP", "yOffset": 30, "facing": 1 },
+    { "side": "right", "margin": 30, "yBand": "PARK_TOP", "yOffset": 30, "facing": -1 }
+  ],
+
+  "features": [
+    {
+      "type": "ambient_affordance", "kind": "grass_rest", "arrivalState": "sit_ground",
+      "dur": [10, 25], "weight": 0.10, "tags": ["grass_rest"], "use": "visit",
+      "minYBand": "PARK_TOP", "radius": 200, "benchAvoidRadius": 200, "benchAvoidFactor": 0.3
+    },
+    { "type": "pedestrians", "count": 18 },
+    {
+      "type": "park_idlers", "countRange": [3, 5], "midYFrac": 0.35, "xMargin": 80,
+      "lifespanRange": [120, 300], "ageTimerMax": 30, "agendaTemplate": "park_idler",
+      "minYBand": "PARK_TOP", "maxYBand": "PARK_BOTTOM"
+    },
+    { "type": "chess", "plaza": "chessPlaza" },
+    { "type": "stall_sellers" },
+    { "type": "dog_walker" },
+    { "type": "athletes" },
+    { "type": "vehicles" },
+    { "type": "bus_stops" }
+  ],
+
   "zones": {
     "bands": [
       { "name": "building",  "zone": "BLOCKED",  "to": "BUILDING_BASE_Y" },
