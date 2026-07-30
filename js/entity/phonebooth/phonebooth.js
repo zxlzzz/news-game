@@ -5,3 +5,7 @@ export function footprint(e) {
   const ds = depthScale(e.y);
   return { shape: 'rect', rx: 40 * ds, ry: Math.max(3, 12 * ds), blocks: true, sortDY: 0 };
 }
+// ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
+import { registerProp } from '../../core/propRegistry.js';
+import { drawPhoneBooth } from './drawPhoneBooth.js';
+registerProp('phonebooth', { draw: drawPhoneBooth, footprint, obstacle: true });

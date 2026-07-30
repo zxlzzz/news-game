@@ -5,3 +5,7 @@ export function footprint(e) {
   const ds = depthScale(e.y);
   return { shape: 'rect', rx: 20 * ds, ry: Math.max(3, 6 * ds), blocks: true, sortDY: 0 };
 }
+// ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
+import { registerProp } from '../../core/propRegistry.js';
+import { drawMailbox } from './drawMailbox.js';
+registerProp('mailbox', { draw: drawMailbox, footprint, obstacle: true });

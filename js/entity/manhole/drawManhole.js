@@ -37,3 +37,8 @@ export function drawManhole(g, p) {
     g.lineTo(x + half, ly);
   }
 }
+
+// ─── 自注册（Z-2d propRegistry）──────────────────────────────────────────────
+// 全部绘制在地面预通道，主通道无内容
+import { registerProp } from '../../core/propRegistry.js';
+registerProp('manhole', { drawGround: drawManhole });

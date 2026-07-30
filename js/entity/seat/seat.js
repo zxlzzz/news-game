@@ -105,3 +105,14 @@ export function alignLie(npc, renderer) {
   );
   npc._sortY = npc.mem('social').bench.y + 1;
 }
+// ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
+// seat/ 下四种可坐物：bench 是障碍（有 footprint），其余三种仅绘制。
+import { registerProp } from '../../core/propRegistry.js';
+import { drawBench }         from './drawBench.js';
+import { drawChairL }        from './drawChairL.js';
+import { drawChairR }        from './drawChairR.js';
+import { drawBusStopBench }  from './drawBusStopBench.js';
+registerProp('bench',         { draw: drawBench, footprint, obstacle: true });
+registerProp('chair-l',       { draw: drawChairL });
+registerProp('chair-r',       { draw: drawChairR });
+registerProp('busstop-bench', { draw: drawBusStopBench });

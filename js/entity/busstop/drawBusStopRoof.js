@@ -36,3 +36,20 @@ export function drawBusStopRoof(g, p) {
   lenv(g, rY, 0.85);
   g.drawRect(rX, rY, rW, rH);
 }
+
+// ─── 自注册（Z-2d propRegistry）──────────────────────────────────────────────
+// 注册写在本 draw 文件而非 busstop.js：后者 import PropEntity，
+// 而 PropEntity import props.all barrel —— 放那儿会成环。
+import { registerProp } from '../../core/propRegistry.js';
+registerProp('busstop-roof', {
+  draw: drawBusStopRoof,
+  // 顶棚几何由 spawnBusStop 经 config 传入（y = 柱子落地点）
+  config: ['roofW', 'roofH', 'roofTopY', 'pillarOffset', 'pillarBottomY'],
+  // 横向 800·s（drawBusStopRoof 硬编码），纵向用实例绝对坐标
+  bounds: (e, s) => {
+    const hw  = 400 * s;
+    const top = Math.min(e.roofTopY ?? e.y, e.y);
+    const bot = Math.max(e.y, e.pillarBottomY ?? e.y);
+    return { x: e.x - hw, y: top, width: hw * 2, height: Math.max(1, bot - top) };
+  },
+});

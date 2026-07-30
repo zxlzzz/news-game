@@ -55,3 +55,7 @@ export function drawBusStopSign(g, p) {
     _drawSignPanel(g, p.x, poleTy, BIKE_LANE_NEAR_BOTTOM);
   }
 }
+
+// ─── 自注册（Z-2d propRegistry）──────────────────────────────────────────────
+import { registerProp } from '../../core/propRegistry.js';
+registerProp('busstop-sign', { draw: drawBusStopSign });

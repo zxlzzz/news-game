@@ -127,48 +127,50 @@ console.log('Rule 4: walk-state clips (speedK>0 in STATE_DEFS) must have |meanX|
 }
 
 // ── Rule 5 ─────────────────────────────────────────────────────────────────
-// Each type in OBSTACLE_TYPES must have a footprint(e) that declares shape + blocks.
-console.log('Rule 5: each OBSTACLE_TYPE has footprint with shape and blocks fields');
+// Every registerProp(..., { obstacle: true, ... }) call site's host file must
+// also declare a footprint literal with shape + blocks fields.
+// (Z-2d: obstacle types are no longer a PropEntity.js OBSTACLE_TYPES set —
+//  each prop module self-registers via propRegistry.registerProp(); this rule
+//  statically finds those call sites instead of reading a deleted constant.)
+console.log('Rule 5: each registerProp(obstacle:true) call has shape + blocks in its file');
 {
-  // Mapping: propType → entity module path (relative to ROOT)
-  const FP_MODULE = {
-    fountain:     'js/entity/fountain/fountain.js',
-    stall:        'js/entity/stall/stall.js',
-    tree:         'js/entity/tree/tree.js',
-    bench:        'js/entity/seat/seat.js',
-    trash:        'js/entity/trash/trash.js',
-    hydrant:      'js/entity/hydrant/hydrant.js',
-    mailbox:      'js/entity/mailbox/mailbox.js',
-    newsrack:     'js/entity/newsrack/newsrack.js',
-    planter:      'js/entity/planter/planter.js',
-    vending:      'js/entity/vending/vending.js',
-    phonebooth:   'js/entity/phonebooth/phonebooth.js',
-    'chess-table':'js/entity/chess-table/chessTable.js',
-  };
-
-  // Extract OBSTACLE_TYPES from PropEntity.js source
-  const propEntitySrc = readText(join(ROOT, 'js', 'core', 'PropEntity.js'));
-  const setMatch = propEntitySrc.match(/const OBSTACLE_TYPES\s*=\s*new Set\(\[([\s\S]*?)\]\)/);
-  const obstacleTypes = setMatch
-    ? [...setMatch[1].matchAll(/'([^']+)'/g)].map(m => m[1])
-    : [];
-
-  let ruleOk = true;
-  for (const t of obstacleTypes) {
-    const modPath = FP_MODULE[t];
-    if (!modPath) {
-      fail(`OBSTACLE_TYPE '${t}' has no entry in FP_MODULE mapping`);
-      ruleOk = false;
-      continue;
+  // Find every `registerProp('type', ...)` call site across js/entity/ and js/core/,
+  // paren-depth-matched so nested arrow-function bodies (e.g. busstop-roof's
+  // `bounds: (e, s) => { ... }`) don't truncate the scan early.
+  const callSites = []; // { type, file, obstacle }
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    if (p.endsWith('propRegistry.js')) continue;  // defines registerProp; its JSDoc example isn't a call site
+    const src = readText(p);
+    const re = /registerProp\(\s*'([\w-]+)'\s*,/g;
+    let m;
+    while ((m = re.exec(src))) {
+      const openParen = src.indexOf('(', m.index + 'registerProp'.length);
+      let depth = 1, i = openParen + 1;
+      while (i < src.length && depth > 0) {
+        if (src[i] === '(') depth++;
+        else if (src[i] === ')') depth--;
+        i++;
+      }
+      const body = src.slice(openParen + 1, i - 1);
+      callSites.push({ type: m[1], file: p, obstacle: /\bobstacle\s*:\s*true\b/.test(body) });
     }
-    const src = readText(join(ROOT, modPath));
-    const hasShape  = /\bshape\s*:/.test(src);
-    const hasBlocks = /\bblocks\s*:/.test(src);
-    const passed = hasShape && hasBlocks;
-    console.log(`  ${t}: shape=${hasShape} blocks=${hasBlocks} ${passed ? '✓' : '✗'}`);
-    if (!passed) { fail(`${t} footprint missing shape or blocks`); ruleOk = false; }
   }
-  if (ruleOk) okMsg();
+
+  if (callSites.length === 0) {
+    fail('Rule 5: zero registerProp() call sites found — propRegistry wiring missing?');
+  } else {
+    let ruleOk = true;
+    const obstacleSites = callSites.filter(c => c.obstacle);
+    for (const { type, file } of obstacleSites) {
+      const src = readText(file);
+      const hasShape  = /\bshape\s*:/.test(src);
+      const hasBlocks = /\bblocks\s*:/.test(src);
+      const passed = hasShape && hasBlocks;
+      console.log(`  ${type}: shape=${hasShape} blocks=${hasBlocks} ${passed ? '✓' : '✗'}`);
+      if (!passed) { fail(`${type} (${file}) footprint missing shape or blocks`); ruleOk = false; }
+    }
+    if (ruleOk) okMsg();
+  }
 }
 
 // ── Rule 6 ─────────────────────────────────────────────────────────────────
@@ -376,6 +378,35 @@ try {
   okMsg();
 } catch {
   fail('vehicle-anchors.js is stale; run: node scripts/derive-vehicle-anchors.mjs --write');
+}
+
+// ── Rule 13 ────────────────────────────────────────────────────────────────
+// Every module that calls registerProp() must be imported by the props.all.js
+// barrel (Z-2d) — otherwise the type "silently doesn't draw" (registration
+// never fires, PropEntity's draw()/drawGround() no-op for that propType).
+console.log('Rule 13: every registerProp() module is imported by props.all.js barrel');
+{
+  const barrelPath = join(ROOT, 'js', 'entity', 'props.all.js');
+  const barrelSrc  = readText(barrelPath);
+  const barrelDir  = dirname(barrelPath);
+  const imported = new Set(
+    [...barrelSrc.matchAll(/^import\s+'(\.[^']+)'/gm)]
+      .map(m => join(barrelDir, m[1]).replace(/\\/g, '/'))
+  );
+
+  const registerModules = new Set();
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    if (p.endsWith('propRegistry.js') || p.endsWith('props.all.js')) continue;
+    if (/registerProp\(\s*'[\w-]+'\s*,/.test(readText(p))) registerModules.add(p.replace(/\\/g, '/'));
+  }
+
+  const missing = [...registerModules].filter(p => !imported.has(p));
+  if (missing.length > 0) {
+    fail('registerProp() module(s) missing from props.all.js barrel:\n  ' + missing.join('\n  '));
+  } else {
+    console.log(`  ${registerModules.size} registerProp() module(s), all present in barrel`);
+    okMsg();
+  }
 }
 
 // ── Summary ─────────────────────────────────────────────────────────────────

@@ -5,3 +5,13 @@ export function footprint(e) {
   const ds = depthScale(e.y);
   return { shape: 'rect', rx: 145 * ds, ry: Math.max(3, 14 * ds), blocks: true, sortDY: 0 };
 }
+// ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
+import { registerProp } from '../../core/propRegistry.js';
+import { drawStall } from './drawStall.js';
+registerProp('stall', {
+  draw: drawStall,
+  footprint,
+  obstacle: true,
+  // drawStall: w=290, roofH=200；down=footprint ry
+  visual: { hw: 145, up: 200, down: 14 },
+});
