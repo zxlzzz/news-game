@@ -134,6 +134,30 @@ export const LINE_FAR_WIDTH  = 0.8;
 export const LINE_NEAR_COLOR = 0x1f1f1f;
 export const LINE_NEAR_WIDTH = 2.2;
 
+// ─── 调色板符号解析（数据驱动配置用）─────────────────────────────────────────
+// scene.json 的 ground 用颜色**名字**（`"color": "GRAY_ROAD"`）而非 hex：
+// 场景配置说「这条带用路面色」，具体是哪个灰仍由本文件说了算——画风不外流。
+
+const _PALETTE = {
+  FILL_PAPER, FILL_LIGHT, FILL_MID, FILL_SHADE,
+  ENV_LINE_LIGHT, ENV_LINE_DARK,
+  SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR,
+  GRAY_SKY, GRAY_FAR_PAVE, GRAY_BUILDING_HI, GRAY_BUILDING_MID, GRAY_BUILDING_LO,
+  GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB, GRAY_PARK, CURB_EDGE_LINE,
+  SKYLINE_BACK, SKYLINE_FRONT, SKYLINE_LINE, CLOUD_LINE, LINE_NEAR_COLOR,
+};
+
+/** 合法调色板名（静态检查用） */
+export const PALETTE_NAMES = Object.keys(_PALETTE);
+
+/** 解析颜色：数字原样返回，字符串按调色板名查；未知名抛错 */
+export function resolveColor(v) {
+  if (typeof v === 'number') return v;
+  const c = _PALETTE[v];
+  if (c == null) throw new Error(`Layout.resolveColor: unknown palette name '${v}'`);
+  return c;
+}
+
 // ─── 深度辅助函数 ─────────────────────────────────────────────────────────────
 
 // 分段锚点：[y, t]。y 范围外夹取到 [0,1]。由 initLayout 从 config.depth.anchors 覆盖。

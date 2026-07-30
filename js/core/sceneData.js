@@ -30,10 +30,12 @@ export function expandSceneData(raw) {
     // 布局参数：原样透传，本模块不解释其语义
     //   world / depth / yBands → Layout.initLayout
     //   zones                  → NavGrid.bake
+    //   ground                 → SceneRenderer
     world:     raw.world,
     depth:     raw.depth,
     yBands:    raw.yBands,
     zones:     raw.zones,
+    ground:    raw.ground,
     buildings: _expandBuildings(raw.buildings ?? []),
     props:     _expandProps(raw.props ?? {}),
     layout:    _expandLayout(raw.layout ?? {}),

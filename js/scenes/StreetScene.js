@@ -105,7 +105,7 @@ export class StreetScene {
     initLayout(sceneData);
     const layout = sceneData.layout;
 
-    const sceneRenderer = new SceneRenderer(this.bgGraphics, this.skyGraphics, layout);
+    const sceneRenderer = new SceneRenderer(this.bgGraphics, this.skyGraphics, layout, sceneData.ground);
     sceneRenderer.drawAll();
 
     this.stickRenderer = new StickRenderer(this);

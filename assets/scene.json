@@ -28,6 +28,28 @@
     "PARK_BOTTOM": 520
   },
 
+  "ground": {
+    "bands": [
+      { "name": "sidewalk_far",  "color": "GRAY_FAR_PAVE",  "from": "BUILDING_BASE_Y", "to": "FAR_Y" },
+      { "name": "roadway",       "color": "GRAY_ROAD",      "from": "FAR_Y",           "to": "NEAR_Y" },
+      { "name": "sidewalk_near", "color": "GRAY_NEAR_PAVE", "from": "NEAR_Y",          "to": "BIKE_LANE_NEAR_BOTTOM" },
+      { "name": "park",          "color": "GRAY_PARK",      "from": "PARK_TOP",        "to": "PARK_BOTTOM" }
+    ],
+    "edgeLines": [
+      { "at": "BIKE_LANE_FAR_TOP",     "width": 1.5 },
+      { "at": "BIKE_LANE_NEAR_BOTTOM", "width": 1.5 }
+    ],
+    "tiling": {
+      "from": "BUILDING_BASE_Y", "to": "BIKE_LANE_FAR_TOP",
+      "inset": 3, "spacing": 20,
+      "color": "FILL_MID", "alpha": 0.06, "width": 0.8
+    },
+    "grass": {
+      "from": "PARK_TOP", "to": "PARK_BOTTOM",
+      "inset": 5, "tufts": 80
+    }
+  },
+
   "zones": {
     "bands": [
       { "name": "building",  "zone": "BLOCKED",  "to": "BUILDING_BASE_Y" },

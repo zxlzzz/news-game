@@ -1,15 +1,32 @@
+/**
+ * SceneRenderer — 天空 + 地面底图绘制
+ *
+ * 地面**色带**（填充带、带边界线、人行道砖缝、草丛散布范围）Z-2c 起由
+ * scene.json 的 `ground` 配置驱动：本文件不含地面色带的 Y 数值，也不直接引用
+ * GRAY_* 名字画带——颜色名写在配置里，经 `Layout.resolveColor` 解析成本项目的灰阶。
+ *
+ * ⚠️ ground 色带与 NavGrid 的 zone 是**两套不同的划分**，不可互相套用：
+ * 远侧人行道的铺装色一路画到 FAR_Y（含远端自行车道 248-268），而那段在导航上是
+ * ZONE.ROAD。视觉分带按"看起来是什么材质"切，zone 按"能不能走/多贵"切。
+ *
+ * 仍留在代码里的硬编码几何：路缘石唇口 / 车道虚线 / 斑马线条纹（`_drawRoadMarkings`
+ * `_drawCrosswalk`）、天际线与云。那些是逐要素装饰几何，不是地面色带，另刀处理。
+ */
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
-  PARK_TOP,
-  GRAY_SKY, GRAY_FAR_PAVE, GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB, GRAY_PARK,
-  FILL_MID,
+  GRAY_SKY, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
-  BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
   SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR, FOG_ALPHA,
   SKYLINE_BACK, SKYLINE_FRONT, SKYLINE_LINE, CLOUD_LINE,
   CURB_EDGE_LINE,
   depthLineColor, depthLineWidth, ENV_LINE_LIGHT, ENV_LINE_DARK,
+  resolveY, resolveColor,
 } from '../core/Layout.js';
+
+function _need(v, what) {
+  if (v == null) throw new Error(`SceneRenderer: scene config 缺 ${what}`);
+  return v;
+}
 
 function lenv(g, baseY, wScale = 1.0) {
   const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
@@ -22,10 +39,17 @@ import { drawMiniPark }     from '../entity/mini-park/drawMiniPark.js';
 import { drawParkPaths, drawParkPlaza } from '../entity/park-path/drawParkPath.js';
 
 export class SceneRenderer {
-  constructor(bgGraphics, skyGraphics, layout) {
+  /**
+   * @param bgGraphics  地面层 Graphics
+   * @param skyGraphics 天空层 Graphics
+   * @param layout      sceneData.layout（busStops / clouds / plaza 几何）
+   * @param ground      sceneData.ground（地面色带配置；缺则抛错，无硬编码 fallback）
+   */
+  constructor(bgGraphics, skyGraphics, layout, ground) {
     this.bg     = bgGraphics;
     this.sky    = skyGraphics;
     this.layout = layout;
+    this.ground = _need(ground, 'ground');
   }
 
   drawAll() {
@@ -35,31 +59,30 @@ export class SceneRenderer {
   }
 
   _drawGround() {
-    const g = this.bg;
-    g.lineStyle(0);
-    g.beginFill(GRAY_FAR_PAVE, 1);
-    g.drawRect(0, BUILDING_BASE_Y, WORLD_WIDTH, FAR_Y - BUILDING_BASE_Y);
-    g.endFill();
-    g.beginFill(GRAY_ROAD, 1);
-    g.drawRect(0, FAR_Y, WORLD_WIDTH, NEAR_Y - FAR_Y);
-    g.endFill();
-    g.beginFill(GRAY_NEAR_PAVE, 1);
-    g.drawRect(0, NEAR_Y, WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM - NEAR_Y);
-    g.endFill();
-    g.beginFill(GRAY_PARK, 1);
-    g.drawRect(0, PARK_TOP, WORLD_WIDTH, WORLD_HEIGHT - PARK_TOP);
-    g.endFill();
+    const g  = this.bg;
+    const cf = this.ground;
 
-    const lcFar  = depthLineColor(BIKE_LANE_FAR_TOP,      { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
-    const lcNear = depthLineColor(BIKE_LANE_NEAR_BOTTOM,   { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
-    g.lineStyle(1.5, lcFar,  1);
-    g.moveTo(0, BIKE_LANE_FAR_TOP);     g.lineTo(WORLD_WIDTH, BIKE_LANE_FAR_TOP);
-    g.lineStyle(1.5, lcNear, 1);
-    g.moveTo(0, BIKE_LANE_NEAR_BOTTOM); g.lineTo(WORLD_WIDTH, BIKE_LANE_NEAR_BOTTOM);
+    // 1. 填充色带（按配置数组顺序绘制，后者盖前者）
+    g.lineStyle(0);
+    for (const b of _need(cf.bands, 'ground.bands')) {
+      const y0 = resolveY(_need(b.from, `ground.bands[${b.name}].from`));
+      const y1 = resolveY(_need(b.to,   `ground.bands[${b.name}].to`));
+      g.beginFill(resolveColor(_need(b.color, `ground.bands[${b.name}].color`)), 1);
+      g.drawRect(0, y0, WORLD_WIDTH, y1 - y0);
+      g.endFill();
+    }
+
+    // 2. 带边界线（线色由该 Y 的景深决定）
+    for (const e of (cf.edgeLines ?? [])) {
+      const y  = resolveY(_need(e.at, 'ground.edgeLines[].at'));
+      const lc = depthLineColor(y, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
+      g.lineStyle(e.width ?? 1.5, lc, 1);
+      g.moveTo(0, y); g.lineTo(WORLD_WIDTH, y);
+    }
 
     this._drawRoadMarkings(g);
-    this._drawSidewalkTiles(g, BUILDING_BASE_Y + 3, BIKE_LANE_FAR_TOP - 3);
-    this._drawParkGrass(g);
+    if (cf.tiling) this._drawSidewalkTiles(g, cf.tiling);
+    if (cf.grass)  this._drawParkGrass(g, cf.grass);
     drawParkPlaza(g, this.layout.parkTrees || []);
     drawMiniPark(g, this.layout.miniPark);
     drawChessPlaza(g, this.layout.chessPlaza);
@@ -181,18 +204,24 @@ export class SceneRenderer {
     g.endFill();
   }
 
-  _drawSidewalkTiles(g, topY, botY) {
-    g.lineStyle(0.8, FILL_MID, 0.06);
-    for (let y = topY; y <= botY; y += 20) {
+  /** 人行道砖缝横线：带内 inset 收边，spacing 间距 */
+  _drawSidewalkTiles(g, cf) {
+    const topY = resolveY(_need(cf.from, 'ground.tiling.from')) + (cf.inset ?? 0);
+    const botY = resolveY(_need(cf.to,   'ground.tiling.to'))   - (cf.inset ?? 0);
+    g.lineStyle(cf.width ?? 0.8, resolveColor(_need(cf.color, 'ground.tiling.color')), cf.alpha ?? 0.06);
+    for (let y = topY; y <= botY; y += _need(cf.spacing, 'ground.tiling.spacing')) {
       g.moveTo(0, y); g.lineTo(WORLD_WIDTH, y);
     }
   }
 
-  _drawParkGrass(g) {
+  /** 草丛散布：带内 inset 收边，tufts 根数（确定性 seed，非随机） */
+  _drawParkGrass(g, cf) {
     const seed = (i) => { const s = Math.sin(i * 91.337) * 43758.5453; return s - Math.floor(s); };
-    for (let i = 0; i < 80; i++) {
+    const top  = resolveY(_need(cf.from, 'ground.grass.from')) + (cf.inset ?? 0);
+    const span = resolveY(_need(cf.to, 'ground.grass.to')) - resolveY(cf.from) - 2 * (cf.inset ?? 0);
+    for (let i = 0; i < _need(cf.tufts, 'ground.grass.tufts'); i++) {
       const gx  = seed(i * 3 + 1) * WORLD_WIDTH;
-      const gy  = PARK_TOP + 5 + seed(i * 3 + 2) * (WORLD_HEIGHT - PARK_TOP - 10);
+      const gy  = top + seed(i * 3 + 2) * span;
       const len = 4 + seed(i * 3 + 3) * 2;
       const ang = (seed(i * 5 + 7) - 0.3) * 0.8;
       lenv(g, gy, 0.15);
