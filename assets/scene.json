@@ -28,6 +28,37 @@
     "PARK_BOTTOM": 520
   },
 
+  "zones": {
+    "bands": [
+      { "name": "building",  "zone": "BLOCKED",  "to": "BUILDING_BASE_Y" },
+      { "name": "sidewalk_far", "zone": "SIDEWALK", "to": "BIKE_LANE_FAR_TOP" },
+      { "name": "bike_far",  "zone": "ROAD",     "to": "BIKE_LANE_FAR_BOTTOM" },
+      { "name": "roadway",   "zone": "ROAD",     "to": "NEAR_Y" },
+      { "name": "bike_near", "zone": "ROAD",     "to": "BIKE_LANE_NEAR_BOTTOM" },
+      { "name": "park",      "zone": "GRASS",    "to": "PARK_BOTTOM" }
+    ],
+    "overlays": [
+      { "name": "park_entry", "zone": "SIDEWALK", "from": "PARK_TOP", "height": 28 }
+    ],
+    "paving": {
+      "zone": "SIDEWALK",
+      "from": "PARK_TOP",
+      "pathTubeRadius": 20,
+      "plazas": [
+        { "ref": "chessPlaza", "shrink": [1.0, 1.0] },
+        { "ref": "miniPark",   "shrink": [0.85, 0.7] }
+      ]
+    },
+    "crossings": {
+      "zone": "CROSSWALK",
+      "over": "ROAD",
+      "ref": "crosswalks",
+      "halfWidth": 20,
+      "from": "BIKE_LANE_FAR_TOP",
+      "to": "BIKE_LANE_NEAR_BOTTOM"
+    }
+  },
+
   "buildings": [
     {"x":0,    "bWidth":120,"bDepth":24,"facadeH":116,"waterTower":true,                  "kind":"resi",        "door":60  },
     {"x":120,  "bWidth": 72,"bDepth":20,"facadeH": 84,                                    "kind":"oldmix",      "door":156 },

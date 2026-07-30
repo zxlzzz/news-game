@@ -42,6 +42,39 @@ export let BIKE_LANE_NEAR_BOTTOM = 353;
 export let SIDEWALK_FAR_Y  = 240;
 export let SIDEWALK_NEAR_Y = 508;
 
+// ─── Y 分带符号解析（数据驱动配置用）─────────────────────────────────────────
+// scene.json 的 zones / ground 用分带**名字**表达边界（`"to": "FAR_Y"`），
+// 数值仍只有 yBands 一处；此处 getter 每次调用读模块变量，故注入后自动生效。
+
+const _Y_BAND_GETTERS = {
+  SKY_Y:                 () => SKY_Y,
+  BUILDING_BASE_Y:       () => BUILDING_BASE_Y,
+  SIDEWALK_FAR_Y:        () => SIDEWALK_FAR_Y,
+  BIKE_LANE_FAR_TOP:     () => BIKE_LANE_FAR_TOP,
+  BIKE_LANE_FAR_BOTTOM:  () => BIKE_LANE_FAR_BOTTOM,
+  FAR_Y:                 () => FAR_Y,
+  NEAR_Y:                () => NEAR_Y,
+  BIKE_LANE_NEAR_TOP:    () => BIKE_LANE_NEAR_TOP,
+  BIKE_LANE_NEAR_BOTTOM: () => BIKE_LANE_NEAR_BOTTOM,
+  PARK_TOP:              () => PARK_TOP,
+  SIDEWALK_NEAR_Y:       () => SIDEWALK_NEAR_Y,
+  PARK_BOTTOM:           () => PARK_BOTTOM,
+};
+
+/** 合法 yBands 键名（initLayout 校验 + 静态检查用） */
+export const Y_BAND_NAMES = Object.keys(_Y_BAND_GETTERS);
+
+/**
+ * 解析 Y 坐标：数字原样返回，字符串按 yBands 名查当前值。
+ * 未知名字直接抛错——配置拼写错误应在场景加载时炸掉，不该静默变 undefined。
+ */
+export function resolveY(v) {
+  if (typeof v === 'number') return v;
+  const get = _Y_BAND_GETTERS[v];
+  if (!get) throw new Error(`Layout.resolveY: unknown Y band name '${v}'`);
+  return get();
+}
+
 // ─── 区域内插值辅助函数 ───────────────────────────────────────────────────────
 // 函数体每次调用时读模块变量，故注入后自动生效。
 
@@ -173,6 +206,9 @@ export function initLayout(config) {
 
   if (config.yBands) {
     const b = config.yBands;
+    for (const k of Object.keys(b)) {
+      if (!_Y_BAND_GETTERS[k]) throw new Error(`initLayout: unknown yBands key '${k}'`);
+    }
     SKY_Y                 = b.SKY_Y                 ?? SKY_Y;
     BUILDING_BASE_Y       = b.BUILDING_BASE_Y       ?? BUILDING_BASE_Y;
     SIDEWALK_FAR_Y        = b.SIDEWALK_FAR_Y        ?? SIDEWALK_FAR_Y;

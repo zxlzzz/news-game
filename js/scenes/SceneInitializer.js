@@ -94,7 +94,7 @@ export class SceneInitializer {
 
     // NavGrid — 在所有静态道具（props/trees）入场后烘焙
     const navGrid = new NavGrid();
-    navGrid.bake(em.entities, layout);
+    navGrid.bake(em.entities, layout, sceneData.zones);
     setNavGrid(navGrid);
 
     const bm = new BehaviorManager(em, poseCache);
