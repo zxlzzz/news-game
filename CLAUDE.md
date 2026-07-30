@@ -146,6 +146,26 @@ export function drawBench(g, p) { g.lineStyle(0); ... } // 纯绘制
 
 新增道具：坐标写进 `assets/scene.json` 的 `props` 数组，禁止硬编码坐标到 JS。
 
+**自注册**（Z-2d propRegistry）：`PropEntity.draw/drawGround/_computeFootprint/getBounds`
+不再是 `switch(this.propType)`，而是每个 prop 模块顶层调
+`registerProp(type, { draw, drawGround, footprint, obstacle, visual, bounds, config })`。
+`PropEntity.js` 不逐个 import draw 文件，只 import `propRegistry.js` +
+`entity/props.all.js`（副作用 barrel，触发所有注册）。
+
+```js
+// entity/trash/trash.js（尾部）
+import { registerProp } from '../../core/propRegistry.js';
+import { drawTrash } from './drawTrash.js';
+registerProp('trash', { draw: drawTrash, footprint, obstacle: true });
+```
+
+新增 prop 类型：在自己模块顶层 `registerProp()`，并把该模块加进 `props.all.js` 的
+import 列表——漏加则该类型静默不绘制（`check-invariants.mjs` Rule 13 静态挡这个）。
+`obstacle: true` 但缺 `footprint` 会在注册时立即抛错（Rule 5 另外核对 shape/blocks 字段）。
+
+`busstop-roof/bench/sign` 不进 barrel：`busstop.js` 本身 import `PropEntity`，
+若也被 barrel import 会成环；这三种改在各自 `draw*.js` 里注册。
+
 ---
 
 ## 数据纪律

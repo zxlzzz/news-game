@@ -31,6 +31,7 @@
 | Z-1（zone-profile split） | NavGrid 从 cost map 重构为 zone map + profile cost table：`ZONE` 枚举 + `DEFAULT_ZONE_COSTS`；`cost()`→`zone()`；`ROAD=250` 哨兵值 / `PLANNING_RULES` / `roadCost` / `planningRules` / `_bakeCrosswalks` 全部删除；斑马线直接烘焙为 `ZONE.CROSSWALK`；代价装配唯一住址 `PlanService._zoneCostsFor()`；`_lineOfSight` 改为纯 zone 检查 | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`js/behavior/nav/PathPlanner.js`；`js/behavior/nav/PlanService.js`；`js/npc/NpcProfile.js` |
 | Z-2a（Layout 参数化） | Layout.js 世界尺寸 / Y 分带 / 深度锚点 `export const` → `export let` + `initLayout(config)`；scene.json 新增 `world` / `depth` / `yBands` 三顶层字段（数值不变，原地搬家）；sceneData 透传；StreetScene.create() 注入。借 live binding，66 个 import 站点零改动 | ✅ 已落地 | `js/core/Layout.js`；`assets/scene.json`；`js/core/sceneData.js`；`js/scenes/StreetScene.js` |
 | Z-2b（NavGrid zone bake 数据驱动） | `_zoneDefault(wy)` 删除；`zones` 配置（bands / overlays / paving / crossings）驱动全部 zone 烘焙；`PATH_TUBE_R` / `CROSSWALK_HALF_W` 移入配置；`bake()` 第 3 参收 zones，缺配置抛错；`Layout.resolveY` 符号解析（配置写分带名，数值仍只在 yBands） | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`assets/scene.json`；`js/core/Layout.js#resolveY` |
+| Z-2d（PropEntity registry） | `PropEntity` 四处 `switch(propType)` + `OBSTACLE_TYPES` + `VISUAL_INTRINSIC` → 每个 prop 模块顶层自注册 `registerProp()`；新增 `propRegistry.js`（零 import）+ `entity/props.all.js`（副作用 barrel）；check-invariants Rule 5 重写（原实现读已删除的 `OBSTACLE_TYPES` 常量会静默变空）+ 新增 Rule 13（barrel 漏注册模块） | ✅ 已落地 | `js/core/propRegistry.js`；`js/entity/props.all.js`；`js/core/PropEntity.js`；19 个 prop 模块；`scripts/check-invariants.mjs` |
 | Z-2c（SceneRenderer 数据驱动地面） | 四段硬编码色带 + 两条边界线 → 遍历 `ground` 配置；砖缝 / 草丛区间参数化；`Layout.resolveColor` 颜色符号解析（配置写颜色名，hex 仍在 Layout）；SceneRenderer 第 4 参收 ground，缺则抛错 | ✅ 已落地 | `js/scenes/SceneRenderer.js`；`assets/scene.json`；`js/core/Layout.js#resolveColor` |
 | Z-1b（拉直草地约束复原） | `ZONE_ROUGHNESS` 表（铺装 1 / 草地 2 / ROAD·BLOCKED 999）；`_lineOfSight` 中间格 roughness 超两端 max 即拒绝，与 Z-1 前 `maxCost` 规则语义等价；roughness 不参与 A\*，与 `zoneCosts` 两套独立序 | ✅ 已落地 | `js/behavior/nav/PathPlanner.js#ZONE_ROUGHNESS` |
 | N-2b（Goal 通道） | `PlanService.js` 成为 `mot.path` 唯一写入方；`mot.goal` 结构体（x/y/radius/meta）；jaywalk 空间派生（不再 walkModeStack）；zone 弹回无状态化；`modeDirect` / `planCrossing` / `walkModeStack` 删除 | ✅ 已落地 | `js/behavior/nav/PlanService.js`；`js/behavior/tasks/GotoTask.js`；`docs/design-plans/goal-pipeline-v1.md r2.3`（commit `0dcf420`） |
@@ -386,6 +387,39 @@ Z-2a 的注入值与默认值相同，故零行为差异；**任何真正改动�
 
 遗留：NavGrid 仍直接用 `NEAR_Y` 做「同侧」判定（`sampleWalkableNear`、
 `_assertSingleRegions`）——那是采样政策而非 zone 烘焙，不在本刀范围。
+
+---
+
+### Z-2d（PropEntity registry）— 已落地
+
+`PropEntity` 的四处 `switch(this.propType)`（`draw` / `drawGround` / `_computeFootprint` /
+`getBounds` 的 `VISUAL_INTRINSIC` 查表）+ `OBSTACLE_TYPES` 集合，改为每个 prop 模块
+顶层自注册；`PropEntity.js` 不再逐个 `import` 19 个 draw 文件 + 13 个 footprint 函数。
+
+- **`propRegistry.js`**（新增，**零 import**）：`registerProp(type, def)`，
+  `def = {draw, drawGround, footprint, obstacle, visual, bounds, config}`。
+  重复注册同名类型抛错；`obstacle:true` 但缺 `footprint` 抛错。
+- **`props.all.js`**（新增，副作用 barrel）：import 全部 18 个注册模块。
+  **不** import `busstop/busstop.js`——它 import `PropEntity`，会与
+  `PropEntity → barrel` 成环；`busstop-roof/bench/sign` 三种改在各自
+  `draw*.js` 里注册。
+- **`PropEntity.js`**：`_def = getPropDef(propType)`；四处 switch 全部改为
+  `this._def?.xxx?.(...)` 可选链；`def.config` 取代 `busstop-roof` 专属的
+  五行手写字段抄写。未注册类型静默不绘制（与旧 `switch default` 行为一致）。
+
+**check-invariants 联动修复**：Rule 5 原实现从 `PropEntity.js` 源码正则提取
+`OBSTACLE_TYPES = new Set([...])`；该常量删除后若不改会静默变空数组、规则恒绿
+（同 Z-1 后 Rule 8 的教训）。本刀当场重写：扫描全仓 `registerProp()` 调用
+（括号深度匹配定位调用体），对 `obstacle:true` 的调用核对宿主文件含
+`shape`/`blocks` 字面量。新增 **Rule 13**：每个调用 `registerProp()` 的模块必须
+出现在 `props.all.js` barrel 里，防止"注册了但没接线"回归。两条规则都做了
+故意破坏 + 复原的双向验证（去掉 hydrant 的 `blocks` 字段、从 barrel 删一行
+import），确认不是摆设。
+
+代码锚点：`js/core/propRegistry.js`；`js/entity/props.all.js`；
+`js/core/PropEntity.js`；`scripts/check-invariants.mjs Rule5,Rule13`
+
+遗留：`busstop.js` 仍直接 `import PropEntity`，未接入 barrel（结构性排除，见上）。
 
 ---
 
