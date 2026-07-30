@@ -21,6 +21,21 @@
 import { CELL, ZONE, DEFAULT_ZONE_COSTS, getNavGrid } from './NavGrid.js';
 import { WORLD_WIDTH, WORLD_HEIGHT } from '../../core/Layout.js';
 
+/**
+ * 拉直粗糙度 —— 只服务 _lineOfSight 的"不穿更粗糙地面"约束，与规划代价无关
+ * （代价住 zoneCosts 表；roughness 是地面质地的序，不参与 A*）。
+ * 铺装（SIDEWALK/CROSSWALK）1 < 草地 2 << ROAD/BLOCKED 999（后两者另有显式拒绝，
+ * 999 只是保证它们永不放宽 maxR）。
+ */
+const ZONE_ROUGHNESS = {
+  [ZONE.SIDEWALK]:  1,
+  [ZONE.CROSSWALK]: 1,
+  [ZONE.GRASS]:     2,
+  [ZONE.ROAD]:      999,
+  [ZONE.BLOCKED]:   999,
+};
+const _roughness = (z) => ZONE_ROUGHNESS[z] ?? 999;
+
 const SQRT2 = Math.SQRT2;
 // [dx, dy, moveCostMultiplier]
 const DIRS = [
@@ -172,11 +187,16 @@ export class PathPlanner {
   }
 
   // ─── 视距拉直（Bresenham 可见性检查，zone 感知）──────────────────────────────
-  // 拉直不得穿 BLOCKED，也不得斜穿 ROAD——否则斑马线折线被拉直成 jaywalk。
-  // CROSSWALK 可拉直（管内本就是合法穿越通道）。
+  // 两道约束：
+  //   1. 拉直不得穿 BLOCKED，也不得斜穿 ROAD——否则斑马线折线被拉直成 jaywalk。
+  //      CROSSWALK 可拉直（管内本就是合法穿越通道）。
+  //   2. 中间格 roughness 不得超过两端 roughness 的 max（ZONE_ROUGHNESS）：
+  //      铺装点之间拉直不穿草（公园 walkPaths 专门 bake 了 SIDEWALK 走廊穿过草地，
+  //      拉直若抄草等于白修路）；草地内部两点仍可穿草，避免草地内走格子锯齿。
   _lineOfSight(gx0, gy0, gx1, gy1) {
     const endZ = this._grid.zone(gx1, gy1);
     if (endZ === ZONE.BLOCKED || endZ === ZONE.ROAD) return false;
+    const maxR = Math.max(_roughness(this._grid.zone(gx0, gy0)), _roughness(endZ));
 
     const dx = Math.abs(gx1 - gx0), dy = Math.abs(gy1 - gy0);
     const sx = gx0 < gx1 ? 1 : -1, sy = gy0 < gy1 ? 1 : -1;
@@ -184,6 +204,7 @@ export class PathPlanner {
     while (x !== gx1 || y !== gy1) {
       const z = this._grid.zone(x, y);
       if (z === ZONE.BLOCKED || z === ZONE.ROAD) return false;
+      if (_roughness(z) > maxR) return false;
       const e2 = 2 * err;
       if (e2 > -dy) { err -= dy; x += sx; }
       if (e2 < dx)  { err += dx; y += sy; }

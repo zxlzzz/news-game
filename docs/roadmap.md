@@ -28,7 +28,8 @@
 | N-0（目标管线立法 + P-0 StuckProbe 扩展） | `goal-pipeline-v1.md` 四层架构（Intent/Planning/Steering/Physics）+ 三铁律；check-invariants Rule 7（warning）+ 12 文件白名单；StuckProbe observer 字段扩展（`_rayBlocked` 纯观测）；check-invariants.sh → .mjs 文档引用统一 | ✅ 已落地 | `docs/design-plans/goal-pipeline-v1.md`；`js/behavior/StuckProbe.js`；`scripts/check-invariants.mjs Rule7`（commit `10ad85f`） |
 | N-1（归表） | ARRIVAL_RULES（`SteeringDecision.js`）、RECOVERY_RULES / SAFETY_RULES（`Motor.js`）三张裁决表立起；`arrived(ruleId, dist)` 调用模式；Lookahead 参数注入（删内联 fallback）；`check-invariants.sh` 删除 | ✅ 已落地 | `js/behavior/SteeringDecision.js`；`js/behavior/Motor.js`；`scripts/check-invariants.mjs`（commit `3cd1f99`） |
 | N-2a（规划层） | `PLANNING_RULES`（`PathPlanner.js`）；`_bakeCrosswalks` 斑马线烘焙进 NavGrid；A* 有效代价准入（ROAD 格可用）；check-invariants Rule 8（crosswalk/jaywalk/roadCost 数值定义唯一住址） | ✅ 已落地（**Z-1 已取代**） | `js/behavior/nav/PathPlanner.js`；`js/behavior/nav/NavGrid.js`（commit `97c1e44`） |
-| Z-1（zone-profile split） | NavGrid 从 cost map 重构为 zone map + profile cost table：`ZONE` 枚举 + `DEFAULT_ZONE_COSTS`；`cost()`→`zone()`；`ROAD=250` 哨兵值 / `PLANNING_RULES` / `roadCost` / `planningRules` / `_bakeCrosswalks` 全部删除；斑马线直接烘焙为 `ZONE.CROSSWALK`；代价装配唯一住址 `PlanService._zoneCostsFor()`；`_lineOfSight` 简化为纯 zone 检查 | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`js/behavior/nav/PathPlanner.js`；`js/behavior/nav/PlanService.js`；`js/npc/NpcProfile.js` |
+| Z-1（zone-profile split） | NavGrid 从 cost map 重构为 zone map + profile cost table：`ZONE` 枚举 + `DEFAULT_ZONE_COSTS`；`cost()`→`zone()`；`ROAD=250` 哨兵值 / `PLANNING_RULES` / `roadCost` / `planningRules` / `_bakeCrosswalks` 全部删除；斑马线直接烘焙为 `ZONE.CROSSWALK`；代价装配唯一住址 `PlanService._zoneCostsFor()`；`_lineOfSight` 改为纯 zone 检查 | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`js/behavior/nav/PathPlanner.js`；`js/behavior/nav/PlanService.js`；`js/npc/NpcProfile.js` |
+| Z-1b（拉直草地约束复原） | `ZONE_ROUGHNESS` 表（铺装 1 / 草地 2 / ROAD·BLOCKED 999）；`_lineOfSight` 中间格 roughness 超两端 max 即拒绝，与 Z-1 前 `maxCost` 规则语义等价；roughness 不参与 A\*，与 `zoneCosts` 两套独立序 | ✅ 已落地 | `js/behavior/nav/PathPlanner.js#ZONE_ROUGHNESS` |
 | N-2b（Goal 通道） | `PlanService.js` 成为 `mot.path` 唯一写入方；`mot.goal` 结构体（x/y/radius/meta）；jaywalk 空间派生（不再 walkModeStack）；zone 弹回无状态化；`modeDirect` / `planCrossing` / `walkModeStack` 删除 | ✅ 已落地 | `js/behavior/nav/PlanService.js`；`js/behavior/tasks/GotoTask.js`；`docs/design-plans/goal-pipeline-v1.md r2.3`（commit `0dcf420`） |
 | J1（跑者/Agenda 集成修复） | J1-a: StrollTask `STROLL_BLOCKED_LIMIT=2` 有限重发回落（plan 必败不再死循环）；J1-b: Athletes 跑者显式 bounds + `makeNPC` 出生点守卫；J1-c: ATHLETE profile `agenda:false`，BM.register 跳过 Agenda 实例化 | ✅ 已落地 | `js/behavior/tasks/StrollTask.js`；`js/npc/Athletes.js`；`js/npc/npcUtil.js`；`js/npc/NpcProfile.js#ATHLETE`（commits `3476eb3`–`4897677`） |
 | P-1（vx 振荡探针） | Motor `integratePhysics` 追踪 vx 符号翻转（`mot._obsFlipVx/_obsVxSign`，纯只读观测）；StuckProbe MOVE 明细新增 `flips` 字段（读取即归零） | ✅ 已落地 | `js/behavior/Motor.js#integratePhysics`；`js/behavior/StuckProbe.js`（commit `28eb558`） |
@@ -316,12 +317,30 @@ NavGrid 从「cost map」重构为「zone map + profile cost table」两层：
   一并删除；`plan()` 第 6 参改收 `zoneCosts` 表，代价查询 `zoneCosts[zone] ?? 0`（0 = 不可通行）。
 - **代价装配唯一住址** = `PlanService._zoneCostsFor()`：默认表 → `profile.zoneCosts` 覆盖
   → jaywalk 覆盖（`ROAD → 3`）。profile 新增可选 `zoneCosts` 字段（当前无 profile 使用，机制就位）。
-- **`_lineOfSight` 简化为纯 zone 检查**（BLOCKED/ROAD 不可拉直，CROSSWALK 可）；
-  `maxCost` 比较逻辑删除 —— **行为变更**：铺装点之间的拉直不再规避草地。
+- **`_lineOfSight` 改为纯 zone 检查**（BLOCKED/ROAD 不可拉直，CROSSWALK 可）；旧 `maxCost`
+  比较删除后曾短暂丢失「铺装点之间不穿草」约束，随即以 `ZONE_ROUGHNESS` 表复原（见 Z-1b）。
 - 数字对比：代价哨兵值 4→0；外部注入代价参数 2→0；`=== ROAD` 比较 ~15 处 → `=== ZONE.ROAD` 6 处。
 
 代码锚点：`js/behavior/nav/NavGrid.js#ZONE,DEFAULT_ZONE_COSTS`；
 `js/behavior/nav/PathPlanner.js#plan,_astar,_lineOfSight`；`js/behavior/nav/PlanService.js#_zoneCostsFor`
+
+---
+
+### Z-1b（拉直草地约束复原）— 已落地
+
+Z-1 删 `maxCost` 时连带丢了「铺装点之间拉直不穿草」约束。公园的 `walkPaths` 专门 bake
+了 `ZONE.SIDEWALK` 走廊穿过草地，A* 沿走廊规划，拉直若抄草等于白修路。
+
+以 `ZONE_ROUGHNESS`（`PathPlanner.js` 模块级）复原，与旧规则语义一一等价：
+铺装 1 / 草地 2 / ROAD·BLOCKED 999；`_lineOfSight` 中间格 roughness 超过两端 max 即拒绝。
+
+- 铺装↔铺装：maxR=1，草地 2 > 1 → 不穿草（旧：maxCost=1，草 8 > 1）
+- 草地↔草地：maxR=2，草地 2 ≤ 2 → 可穿草（旧：maxCost=8，草 8 ≤ 8）
+- 起点在 ROAD（被挤上路者）：maxR=999 不设限，中间 ROAD 格仍由显式检查拒绝（旧同）
+
+roughness 不参与 A\*，与 `zoneCosts` 是两套独立的序：代价管选路，roughness 管拉直。
+
+代码锚点：`js/behavior/nav/PathPlanner.js#ZONE_ROUGHNESS,_lineOfSight`
 
 遗留：`check-invariants.mjs` Rule 8 的三个字段名已全部消失，规则变为空守卫（恒绿），待 Z-2 系列改写。
 
