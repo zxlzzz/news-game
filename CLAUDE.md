@@ -174,9 +174,16 @@ SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
 槽位释放 `releaseAllHoldings(npc, envQuery)`；`crossing / jaywalking` 标签由 NavGrid
-格代价空间派生（`Npc.getTags()` 读格 cost，`PathPlanner.PLANNING_RULES` 中
-`crosswalkCost / jaywalkRoadCost`）；不存在过街子程序。
+zone 空间派生（`Npc.getTags()` 判 `grid.zone(gx,gy) === ZONE.ROAD`）；不存在过街子程序。
 骑手 profile：`{agenda:false, separate:false, initial:'ride'}`（N-3 集成）。
+
+**导航两层结构**（Z-1 zone-profile split）：NavGrid 只烘焙 **zone 语义 ID**
+（`ZONE = {BLOCKED:0, SIDEWALK:1, GRASS:2, ROAD:3, CROSSWALK:4}`），不含任何代价数字；
+有效代价经 zone→cost 表查得。`grid.zone(gx,gy)` 是唯一格访问器（无 `grid.cost()`）。
+代价表装配唯一住址 = `PlanService._zoneCostsFor()`：
+`DEFAULT_ZONE_COSTS`（NavGrid.js）→ `profile.zoneCosts` 覆盖 → jaywalk 覆盖（`ROAD → 3`）；
+表值 `0` 即不可通行。`PathPlanner.plan()` 第 6 参收 `zoneCosts`，自身不持有代价政策。
+铁律：NavGrid 不得出现代价数字，PathPlanner 不得自带代价政策——表一律由参数传入。
 
 **affordance 池**：`EnvironmentQuery.drawAffordance(npc, radius)` 加权随机抽取目的地；
 声明来源：`AffordanceDefaults.js`（propType 默认）、`entity.affordances`（scene.json 覆盖）、`registerAmbientAffordance`（区域型 POI）。

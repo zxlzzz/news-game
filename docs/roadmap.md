@@ -27,7 +27,8 @@
 | Scene-1（场景数据归一化） | 新增 `propDefaults.js`（类型级默认）、`sceneData.js`（`expandSceneData()` 纯函数）、`buildingKinds.js`（KIND_TAGS）；`scene.json` 压缩（`at[]` 分组、buildings kind 字段、trees 紧凑数组）；`StreetScene.js` 调用 expandSceneData | ✅ 已落地 | `js/core/propDefaults.js`；`js/core/sceneData.js`；`js/entity/building/buildingKinds.js`；`assets/scene.json` |
 | N-0（目标管线立法 + P-0 StuckProbe 扩展） | `goal-pipeline-v1.md` 四层架构（Intent/Planning/Steering/Physics）+ 三铁律；check-invariants Rule 7（warning）+ 12 文件白名单；StuckProbe observer 字段扩展（`_rayBlocked` 纯观测）；check-invariants.sh → .mjs 文档引用统一 | ✅ 已落地 | `docs/design-plans/goal-pipeline-v1.md`；`js/behavior/StuckProbe.js`；`scripts/check-invariants.mjs Rule7`（commit `10ad85f`） |
 | N-1（归表） | ARRIVAL_RULES（`SteeringDecision.js`）、RECOVERY_RULES / SAFETY_RULES（`Motor.js`）三张裁决表立起；`arrived(ruleId, dist)` 调用模式；Lookahead 参数注入（删内联 fallback）；`check-invariants.sh` 删除 | ✅ 已落地 | `js/behavior/SteeringDecision.js`；`js/behavior/Motor.js`；`scripts/check-invariants.mjs`（commit `3cd1f99`） |
-| N-2a（规划层） | `PLANNING_RULES`（`PathPlanner.js`）；`_bakeCrosswalks` 斑马线烘焙进 NavGrid；A* 有效代价准入（ROAD 格可用）；check-invariants Rule 8（crosswalk/jaywalk/roadCost 数值定义唯一住址） | ✅ 已落地 | `js/behavior/nav/PathPlanner.js`；`js/behavior/nav/NavGrid.js`（commit `97c1e44`） |
+| N-2a（规划层） | `PLANNING_RULES`（`PathPlanner.js`）；`_bakeCrosswalks` 斑马线烘焙进 NavGrid；A* 有效代价准入（ROAD 格可用）；check-invariants Rule 8（crosswalk/jaywalk/roadCost 数值定义唯一住址） | ✅ 已落地（**Z-1 已取代**） | `js/behavior/nav/PathPlanner.js`；`js/behavior/nav/NavGrid.js`（commit `97c1e44`） |
+| Z-1（zone-profile split） | NavGrid 从 cost map 重构为 zone map + profile cost table：`ZONE` 枚举 + `DEFAULT_ZONE_COSTS`；`cost()`→`zone()`；`ROAD=250` 哨兵值 / `PLANNING_RULES` / `roadCost` / `planningRules` / `_bakeCrosswalks` 全部删除；斑马线直接烘焙为 `ZONE.CROSSWALK`；代价装配唯一住址 `PlanService._zoneCostsFor()`；`_lineOfSight` 简化为纯 zone 检查 | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`js/behavior/nav/PathPlanner.js`；`js/behavior/nav/PlanService.js`；`js/npc/NpcProfile.js` |
 | N-2b（Goal 通道） | `PlanService.js` 成为 `mot.path` 唯一写入方；`mot.goal` 结构体（x/y/radius/meta）；jaywalk 空间派生（不再 walkModeStack）；zone 弹回无状态化；`modeDirect` / `planCrossing` / `walkModeStack` 删除 | ✅ 已落地 | `js/behavior/nav/PlanService.js`；`js/behavior/tasks/GotoTask.js`；`docs/design-plans/goal-pipeline-v1.md r2.3`（commit `0dcf420`） |
 | J1（跑者/Agenda 集成修复） | J1-a: StrollTask `STROLL_BLOCKED_LIMIT=2` 有限重发回落（plan 必败不再死循环）；J1-b: Athletes 跑者显式 bounds + `makeNPC` 出生点守卫；J1-c: ATHLETE profile `agenda:false`，BM.register 跳过 Agenda 实例化 | ✅ 已落地 | `js/behavior/tasks/StrollTask.js`；`js/npc/Athletes.js`；`js/npc/npcUtil.js`；`js/npc/NpcProfile.js#ATHLETE`（commits `3476eb3`–`4897677`） |
 | P-1（vx 振荡探针） | Motor `integratePhysics` 追踪 vx 符号翻转（`mot._obsFlipVx/_obsVxSign`，纯只读观测）；StuckProbe MOVE 明细新增 `flips` 字段（读取即归零） | ✅ 已落地 | `js/behavior/Motor.js#integratePhysics`；`js/behavior/StuckProbe.js`（commit `28eb558`） |
@@ -297,6 +298,32 @@
 - **check-invariants Rule 8**：crosswalk/jaywalk/road cost 数值定义只允许出现在 PathPlanner.js。
 
 代码锚点：`js/behavior/nav/PathPlanner.js#PLANNING_RULES`；`js/behavior/nav/NavGrid.js#_bakeCrosswalks`；`scripts/check-invariants.mjs Rule8`
+
+> 上述四项均已被 **Z-1（zone-profile split）** 取代，见下文 Z-1 条目。本条目保留为历史。
+
+---
+
+### Z-1（zone-profile split）— 已落地
+
+NavGrid 从「cost map」重构为「zone map + profile cost table」两层：
+
+- **`ZONE` 枚举 + `DEFAULT_ZONE_COSTS`**（`NavGrid.js`）：格子只存语义 ID
+  （BLOCKED/SIDEWALK/GRASS/ROAD/CROSSWALK），代价改由表查得；`ROAD=250` 哨兵值删除。
+- **`cost(gx,gy)` → `zone(gx,gy)`**；内部 `_cost`/`_baseZone` → `_zone`/`_baseZoneMap`。
+- **`_bakeCrosswalks` 删除**：斑马线几何在 `_bakeZones` 内直接烘焙为 `ZONE.CROSSWALK`；
+  半宽 20 变为 NavGrid 局部几何常量 `CROSSWALK_HALF_W`（不再是代价政策）。
+- **`PLANNING_RULES` 删除**，`bake()` 的 `planningRules` 参数与 `plan()` 的 `opts.roadCost`
+  一并删除；`plan()` 第 6 参改收 `zoneCosts` 表，代价查询 `zoneCosts[zone] ?? 0`（0 = 不可通行）。
+- **代价装配唯一住址** = `PlanService._zoneCostsFor()`：默认表 → `profile.zoneCosts` 覆盖
+  → jaywalk 覆盖（`ROAD → 3`）。profile 新增可选 `zoneCosts` 字段（当前无 profile 使用，机制就位）。
+- **`_lineOfSight` 简化为纯 zone 检查**（BLOCKED/ROAD 不可拉直，CROSSWALK 可）；
+  `maxCost` 比较逻辑删除 —— **行为变更**：铺装点之间的拉直不再规避草地。
+- 数字对比：代价哨兵值 4→0；外部注入代价参数 2→0；`=== ROAD` 比较 ~15 处 → `=== ZONE.ROAD` 6 处。
+
+代码锚点：`js/behavior/nav/NavGrid.js#ZONE,DEFAULT_ZONE_COSTS`；
+`js/behavior/nav/PathPlanner.js#plan,_astar,_lineOfSight`；`js/behavior/nav/PlanService.js#_zoneCostsFor`
+
+遗留：`check-invariants.mjs` Rule 8 的三个字段名已全部消失，规则变为空守卫（恒绿），待 Z-2 系列改写。
 
 ---
 

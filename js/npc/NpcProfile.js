@@ -9,6 +9,12 @@
  *
  * heldPoses 中每条定义 pose 数据由 ModifierLayer 从 HeldPoses.js 查取，
  * profile 只声明触发条件（on / chance / dur / traitRequired）。
+ *
+ * 可选字段 zoneCosts（Z-1 zone-profile split）：{ [ZONE.*]: cost } 局部覆盖，
+ * PlanService 以 `{...DEFAULT_ZONE_COSTS, ...profile.zoneCosts}` 装配本次规划的代价表；
+ * 值 0 = 该 zone 对本人格不可通行。不写则整表取 NavGrid.DEFAULT_ZONE_COSTS。
+ * 例：`zoneCosts: { [ZONE.GRASS]: 1 }` = 该人格视草地与人行道等价，抄近路无所谓。
+ * 注意 jaywalk 覆盖（goal.meta.jaywalk → ROAD=3）在 profile 覆盖之后生效，优先级更高。
  */
 
 // 路人共用的状态转换表

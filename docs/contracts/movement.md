@@ -200,11 +200,21 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 
 | | |
 |---|---|
-| **Semantic** | Module-level `_instance` holding the single `NavGrid` cost map for the current scene. Cost encoding: 0=BLOCKED, 1=walkable, 8=grass, 250=ROAD (passable; plannable at high cost via PLANNING_RULES; not sampable or usable as destination). |
+| **Semantic** | Module-level `_instance` holding the single `NavGrid` **zone map** for the current scene (Z-1 zone-profile split). The grid stores semantic zone IDs only — no cost numbers. `ZONE = { BLOCKED:0, SIDEWALK:1, GRASS:2, ROAD:3, CROSSWALK:4 }`. `ZONE.ROAD` = passable (`_slideMove` does not reject it), plannable at whatever cost the caller's table assigns, never sampled and never a destination. `ZONE.CROSSWALK` = low-cost crossing tube inside the road bands; sampable and usable as destination. |
 | **Owner** | `NavGrid.js` |
-| **Writers** | `NavGrid.js` module (35-36 — `getNavGrid`/`setNavGrid` exports); `SceneInitializer.js` (96 — sole call to `setNavGrid`) |
-| **Readers** | `Motor.js#_slideMove` (200), `WalkMode.js#pickModeTarget` (202, 230), `PathPlanner.js#getPlanner` (199), `Lookahead.js#applyLookahead` (32), `EnvironmentQuery.js` (126, 135), `Pedestrians.js#spawnOnePedestrian` (67), `StrollTask.js` (26), `StuckProbe.js` (15) |
-| **Invariant** | Set exactly once at scene initialisation. `null` before init — all consumers must guard (`grid && ...`). Must not be replaced mid-scene. |
+| **Writers** | `NavGrid.js` module (`getNavGrid`/`setNavGrid` exports); `SceneInitializer.js` (97 — sole call to `setNavGrid`) |
+| **Readers** | `Motor.js#_navBlocked` (200), `WalkMode.js#pickModeTarget` (202, 230), `PathPlanner.js#getPlanner`, `Lookahead.js#applyLookahead` (38), `EnvironmentQuery.js` (142, 151, 290), `Npc.js#getTags` (233), `BaseStateMachine.js#steerRoam` (293), `Pedestrians.js#spawnOnePedestrian` (67), `StrollTask.js` (26), `StuckProbe.js` (15) |
+| **Invariant** | Set exactly once at scene initialisation. `null` before init — all consumers must guard (`grid && ...`). Must not be replaced mid-scene. `grid.zone(gx,gy)` is the only cell accessor; there is no `grid.cost()`. |
+
+### Zone cost table (`DEFAULT_ZONE_COSTS` / `profile.zoneCosts`)
+
+| | |
+|---|---|
+| **Semantic** | The zone→effective-planning-cost map. Table value `0` means *impassable* (A* skips the cell). Defaults: `BLOCKED 0, SIDEWALK 1, GRASS 8, ROAD 250, CROSSWALK 2`. This is the single address of planning cost policy — it replaces the deleted `PLANNING_RULES` object and the `roadCost` / `planningRules` parameter chain. |
+| **Owner** | `NavGrid.js` (`DEFAULT_ZONE_COSTS` export) |
+| **Writers** | Nobody mutates the exported table. `PlanService._zoneCostsFor()` is the sole assembler: `{...DEFAULT_ZONE_COSTS, ...profile.zoneCosts}`, then `ROAD → JAYWALK_ROAD_COST (3)` when `goal.meta.jaywalk`. |
+| **Readers** | `PathPlanner.plan()` / `_astar()` — 6th parameter `zoneCosts`; cost of a cell is `zoneCosts[grid.zone(gx,gy)] ?? 0`. |
+| **Invariant** | NavGrid must not hold cost numbers, and PathPlanner must not own cost policy — the table always arrives as a parameter. jaywalk override applies *after* the profile override, so a profile cannot out-rank a jaywalk goal. |
 
 ### Obstacle footprint (`e.footprint`)
 
@@ -218,7 +228,7 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 
 ### `NPC_HALF_W` (NavGrid Minkowski expansion)
 
-`NavGrid.js:39`: `const NPC_HALF_W = 7` — pixels added to every obstacle's `footprint.rx/ry` before grid cell marking. Represents the NPC's collision half-width: a cell is BLOCKED if the NPC's centre would be within `rx + NPC_HALF_W` of the obstacle centre (AABB), or within the scaled ellipse boundary (fountain). Value 7 was chosen to match the effective NPC ground-contact half-width at mid-scene depth. Rename or change only with a full NavGrid rebake and gameplay visual check.
+`NavGrid.js:75`: `const NPC_HALF_W = 7` — pixels added to every obstacle's `footprint.rx/ry` before grid cell marking. Represents the NPC's collision half-width: a cell is BLOCKED if the NPC's centre would be within `rx + NPC_HALF_W` of the obstacle centre (AABB), or within the scaled ellipse boundary (fountain). Value 7 was chosen to match the effective NPC ground-contact half-width at mid-scene depth. Rename or change only with a full NavGrid rebake and gameplay visual check.
 
 ---
 
@@ -229,7 +239,7 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 | **Semantic** | Module-level dict `{key → {waypoints, loop?, ...}}` of named walkable paths loaded from `assets/scene.json`. Used by `modePathFollow`. |
 | **Owner** | `WalkMode.js` |
 | **Writers** | `WalkMode.js#initWalkPaths` (125 — bulk init, called from `StreetScene.js:113`); `WalkMode.js#addWalkPath` (128 — incremental add) |
-| **Readers** | `WalkMode.js#modePathFollow` (140 — lookup path def); `NavGrid.js#NavGrid` bake constructor (233 — paint path-tube cells cost=1) |
+| **Readers** | `WalkMode.js#modePathFollow` (140 — lookup path def); `NavGrid.js#_bakeZones` (paint path-tube cells `ZONE.SIDEWALK`) |
 | **Invariant** | Initialised once before any NPC is registered. `NavGrid` reads `walkPaths` from the scene layout object at bake time independently — it does not read the exported `WALK_PATHS` object. |
 
 ---
@@ -238,7 +248,7 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 
 ### (a) NPC position in BLOCKED cell after `standUp`
 
-**Claim**: `sitDown` places the NPC at the bench's seat surface, which lies inside the bench's obstacle AABB (cost=0 in NavGrid). `standUp` clears the bench reference but does **not** reposition the NPC.
+**Claim**: `sitDown` places the NPC at the bench's seat surface, which lies inside the bench's obstacle AABB (`ZONE.BLOCKED` in NavGrid). `standUp` clears the bench reference but does **not** reposition the NPC.
 
 **Evidence**:
 - `PropEntity.js`: `'bench'` is in `OBSTACLE_TYPES` → `this.obstacle = true`; `this.footprint = _computeFootprint()` → `NavGrid#_bakeObstacles` marks all cells within `footprint.rx/ry + NPC_HALF_W` as BLOCKED.

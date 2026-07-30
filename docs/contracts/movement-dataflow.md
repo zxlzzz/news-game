@@ -18,7 +18,7 @@
 | 5.5 | BM per-NPC | `ensurePath(npc)` (`PlanService.js`) | syncs `mot.path` with `mot.goal`; fires 'blocked' if planner fails; resets `mot.needReplan` |
 | 6 | BM per-NPC | `tickBaseState`: `stateTimer += dt` | timer advance; `_evaluateTransitions` → may call `setState` |
 | 7 | BM → `_tickState` | `tickWalkMode` | `path_follow.pauseTimer`; wander `maxDuration` elapsed |
-| 8 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); `updateFacing(vx, total, dt)` updates `npc.direction` (with `dirCD` gate); advances `mot.path.idx`; on goal arrival (distance or offWorld spatial) clears `mot.goal` + fires `onDone`; on ROAD cell applies `SAFETY_RULES.jaywalk_sprint` (speedK×2.4, anim 'run') | no position change yet |
+| 8 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); `updateFacing(vx, total, dt)` updates `npc.direction` (with `dirCD` gate); advances `mot.path.idx`; on goal arrival (distance or offWorld spatial) clears `mot.goal` + fires `onDone`; on `ZONE.ROAD` cell applies `SAFETY_RULES.jaywalk_sprint` (speedK×2.4, anim 'run') | no position change yet |
 | 8b | BM → `_tickState` — **ride** branch (N-3c) | writes `mot.vel = { vx: direction × speed, vy: 0 }` directly; no steerRoam, no goal, no path; CYCLIST profile `separate:false` skips `_separate` | no position change yet |
 | 10 | BM per-NPC | `checkZoneTransition` | stateless `mot.vel` override: ejects wander NPC from road/bike-lane each frame (no push/pop stack) |
 | 11 | BM per-NPC | `tickModifiers` | overlay gestures |

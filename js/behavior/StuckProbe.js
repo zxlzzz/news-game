@@ -49,7 +49,7 @@ export function stuckProbe(npcs, dt) {
     const { gx, gy } = grid ? grid.worldToCell(n.x, n.y) : {};
     const info = {
       id: n.id, cat, at: [n.x | 0, n.y | 0],
-      cell: grid ? grid.cost(gx, gy) : '?',
+      cell: grid ? grid.zone(gx, gy) : '?',
       st: `${n.state} ${n.stateTimer | 0}/${n.stateDur === Infinity ? '∞' : n.stateDur | 0}`,
       mode: m ? `${m.kind} el=${(m._elapsed ?? 0) | 0}/${m.abandonAfter ?? m.maxDuration ?? '-'}` : null,
       roam: n.roamTarget ? [n.roamTarget.x | 0, n.roamTarget.y | 0] : null,

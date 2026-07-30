@@ -7,7 +7,7 @@
  */
 
 import { SIDEWALK_FAR_Y, FAR_Y, NEAR_Y } from '../core/Layout.js';
-import { getNavGrid, CELL, ROAD } from './nav/NavGrid.js';
+import { getNavGrid, CELL, ZONE } from './nav/NavGrid.js';
 import { AffordanceDefaults } from '../core/AffordanceDefaults.js';
 
 function _sameSide(y1, y2) {
@@ -142,8 +142,8 @@ export class EnvironmentQuery {
     const grid = getNavGrid();
     if (!grid) return null;
     const { gx, gy } = grid.worldToCell(x, y);
-    const c = grid.cost(gx, gy);
-    return (c === 0 || c === ROAD) ? { x, y } : null;
+    const z = grid.zone(gx, gy);
+    return (z === ZONE.BLOCKED || z === ZONE.ROAD) ? { x, y } : null;
   }
 
   /** 线段 (x,y)→(tx,ty) 沿途是否经过不可选格（BLOCKED 或 ROAD）；有则返回首个碰撞点，否则 null */
@@ -158,8 +158,7 @@ export class EnvironmentQuery {
       const t  = i / steps;
       const wx = x + dx * t, wy = y + dy * t;
       const { gx, gy } = grid.worldToCell(wx, wy);
-      const c = grid.cost(gx, gy);
-      if (c === 0) return { x: wx, y: wy };
+      if (grid.zone(gx, gy) === ZONE.BLOCKED) return { x: wx, y: wy };
     }
     return null;
   }
@@ -295,7 +294,7 @@ export class EnvironmentQuery {
           const wx = x + gx * CELL, wy = y + gy * CELL;
           if (Math.hypot(wx - x, wy - y) > R) continue;
           const cell = grid.worldToCell(wx, wy);
-          if (grid.cost(cell.gx, cell.gy) === 0) return false;
+          if (grid.zone(cell.gx, cell.gy) === ZONE.BLOCKED) return false;
         }
       }
     }

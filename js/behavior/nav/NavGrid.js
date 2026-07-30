@@ -1,27 +1,35 @@
 /**
  * CONTRACT  (see docs/contracts/movement.md)
  *   OWNS:      The singleton NavGrid instance (_instance / getNavGrid / setNavGrid);
- *              cost map encoding (0=BLOCKED, 1=walkable, 8=grass, 250=ROAD).
+ *              zone map encoding (ZONE.* semantic IDs) and DEFAULT_ZONE_COSTS.
  *   WRITES:    _instance (setNavGrid — called once from SceneInitializer.js:96).
- *   READS:     scene layout (walkPaths, obstacles) at bake time only; read-only after bake.
+ *   READS:     scene layout (walkPaths, obstacles, crosswalks) at bake time only;
+ *              read-only after bake.
  *   MUST NOT:  be replaced or mutated after scene init;
- *              be called with setNavGrid from anywhere except SceneInitializer.
+ *              be called with setNavGrid from anywhere except SceneInitializer;
+ *              hold planning cost numbers — cost lives in the profile cost table
+ *              (DEFAULT_ZONE_COSTS / profile.zoneCosts), the grid stores zones only.
  *
- * NavGrid — 10px 格代价图
+ * NavGrid — 10px 格 zone 图
  *
- * 代价编码（Uint8Array）：
- *   0    = 硬阻挡（BLOCKED）：建筑区、障碍物 AABB
- *   1    = 可规划、可采样（人行道、公园小路、plaza）
- *   8    = 可规划、可采样（公园草地，行走代价高）
- *   ROAD = 可通行（Motor._slideMove 不拒绝），可规划（有效代价由 PLANNING_RULES/profile 决定），
- *          不可采样、不可作目的地：自行车道 + 机动车道。
- *          PathPlanner 以高代价格规划穿越；sampleWalkableNear / pickRandom 不选它。
+ * 两层结构（Z-1 zone-profile split）：
+ *   本模块烘焙 **zone**（语义 ID，无代价含义）；
+ *   有效代价由消费者从 zone → cost 表查得（DEFAULT_ZONE_COSTS，profile 可覆盖）。
+ *
+ * zone 编码（Uint8Array）：
+ *   ZONE.BLOCKED   — 硬阻挡：建筑区、障碍物 AABB（cost 表值 0 即不可通行）
+ *   ZONE.SIDEWALK  — 人行道 / 公园小路 / plaza（可规划、可采样）
+ *   ZONE.GRASS     — 公园草地（可规划、可采样，代价高）
+ *   ZONE.ROAD      — 自行车道 + 机动车道：可通行（Motor._slideMove 不拒绝）、
+ *                    可规划（有效代价由 profile 表决定）、不可采样、不可作目的地
+ *   ZONE.CROSSWALK — 斑马线管：ROAD 带内的低代价穿越通道，可采样、可作目的地
  *
  * 烘焙来源：
- *   1. Y 分带默认代价
- *   2. walkPaths 管道（PATH_TUBE_R px 内 → cost 1）
- *   3. chessPlaza / miniPark 椭圆 → cost 1
- *   4. 道具 AABB + OBS_MARGIN → 0（BLOCKED）
+ *   1. Y 分带默认 zone
+ *   2. walkPaths 管道（PATH_TUBE_R px 内 → SIDEWALK）
+ *   3. chessPlaza / miniPark 椭圆 → SIDEWALK
+ *   4. crosswalks 管道（CROSSWALK_HALF_W px 内、ROAD 带内 → CROSSWALK）
+ *   5. 道具 AABB + OBS_MARGIN → BLOCKED
  *
  * 单例：getNavGrid() / setNavGrid()
  */
@@ -33,18 +41,47 @@ import {
 } from '../../core/Layout.js';
 
 export const CELL = 10;
-export const ROAD = 250;   // 可通行但不可规划/采样的格（马路+自行车道）
+
+/** zone 语义 ID — 格子「是什么」，不含代价含义。BLOCKED 取 0 以便真值判断。 */
+export const ZONE = {
+  BLOCKED:   0,
+  SIDEWALK:  1,
+  GRASS:     2,
+  ROAD:      3,
+  CROSSWALK: 4,
+};
+
+/**
+ * zone → 有效规划代价 的默认表（Planning 层代价政策唯一住址，goal-pipeline-v1.md §3）。
+ * 道路穿越是代价而非流程：ROAD 可规划，代价由此表 / profile.zoneCosts 决定。
+ *   BLOCKED   0  — 代价 0 = 不可通行（A* skip）
+ *   SIDEWALK  1  — 基准
+ *   GRASS     8  — 可抄近路但不划算
+ *   ROAD    250  — ≈9 格横穿 2250，任何合理绕行必胜 → 默认人格不横穿
+ *                  （jaywalk 目标由 PlanService 覆盖为 3：直穿 ≈27，胜过绝大多数绕行）
+ *   CROSSWALK 2  — 低于草 8、高于人行道 1：有斑马线必走斑马线，
+ *                  且不把同侧路径全吸进管
+ */
+export const DEFAULT_ZONE_COSTS = {
+  [ZONE.BLOCKED]:   0,
+  [ZONE.SIDEWALK]:  1,
+  [ZONE.GRASS]:     8,
+  [ZONE.ROAD]:      250,
+  [ZONE.CROSSWALK]: 2,
+};
+
 const COLS = Math.ceil(WORLD_WIDTH  / CELL);   // 200
 const ROWS = Math.ceil(WORLD_HEIGHT / CELL);   // 52
 const NPC_HALF_W = 7;  // Minkowski expansion — NPC collision half-width added to every obstacle
 const PATH_TUBE_R = 20;
+const CROSSWALK_HALF_W = 20;  // 斑马线管半宽 px（与 PATH_TUBE_R 同款几何，独立常量不共享——语义不同）
 
 let _instance = null;
 export const getNavGrid = () => _instance;
 export const setNavGrid = (g) => { _instance = g; };
 
 /**
- * 调试用：BLOCKED(0) 画 alpha 0.15，ROAD(250) 画 alpha 0.05。
+ * 调试用：BLOCKED 画 alpha 0.15，ROAD 画 alpha 0.05。
  * window.__navDebug=true 时由 StreetScene 调用。
  */
 export function drawNavDebug(g) {
@@ -52,12 +89,12 @@ export function drawNavDebug(g) {
   g.lineStyle(0);
   for (let gy = 0; gy < ROWS; gy++) {
     for (let gx = 0; gx < COLS; gx++) {
-      const c = _instance._cost[gy * COLS + gx];
-      if (c === 0) {
+      const z = _instance._zone[gy * COLS + gx];
+      if (z === ZONE.BLOCKED) {
         g.beginFill(0x000000, 0.15);
         g.drawRect(gx * CELL, gy * CELL, CELL, CELL);
         g.endFill();
-      } else if (c === ROAD) {
+      } else if (z === ZONE.ROAD) {
         g.beginFill(0x000000, 0.05);
         g.drawRect(gx * CELL, gy * CELL, CELL, CELL);
         g.endFill();
@@ -66,13 +103,13 @@ export function drawNavDebug(g) {
   }
 }
 
-// ─── Y 分带默认代价 ───────────────────────────────────────────────────────────
+// ─── Y 分带默认 zone ─────────────────────────────────────────────────────────
 function _zoneDefault(wy) {
-  if (wy < BUILDING_BASE_Y)       return 0;     // 建筑区（硬阻挡）
-  if (wy < BIKE_LANE_FAR_TOP)     return 1;     // 远端人行道 (210-248)
-  if (wy < NEAR_Y)                return ROAD;  // 远端自行车道+马路 (248-333)
-  if (wy < BIKE_LANE_NEAR_BOTTOM) return ROAD;  // 近端自行车道 (333-353)
-  return 8;                                      // 公园草地
+  if (wy < BUILDING_BASE_Y)       return ZONE.BLOCKED;   // 建筑区（硬阻挡）
+  if (wy < BIKE_LANE_FAR_TOP)     return ZONE.SIDEWALK;  // 远端人行道 (210-248)
+  if (wy < NEAR_Y)                return ZONE.ROAD;      // 远端自行车道+马路 (248-333)
+  if (wy < BIKE_LANE_NEAR_BOTTOM) return ZONE.ROAD;      // 近端自行车道 (333-353)
+  return ZONE.GRASS;                                      // 公园草地
 }
 
 // ─── 线段到点最短距离 ─────────────────────────────────────────────────────────
@@ -88,13 +125,13 @@ export class NavGrid {
   constructor() {
     this.COLS  = COLS;
     this.ROWS  = ROWS;
-    this._cost = new Uint8Array(COLS * ROWS);
-    this._baseZone = new Uint8Array(COLS * ROWS);  // zone cost without obstacles
+    this._zone = new Uint8Array(COLS * ROWS);
+    this._baseZoneMap = new Uint8Array(COLS * ROWS);  // zone map without obstacles
   }
 
   /** 全场烘焙（场景初始化时调用一次） */
-  bake(entities, layout, planningRules) {
-    this._bakeZones(layout, planningRules);
+  bake(entities, layout) {
+    this._bakeZones(layout);
     this._bakeObstacles(entities, 0, COLS - 1, 0, ROWS - 1);
     this._assertSingleRegions();
   }
@@ -106,18 +143,19 @@ export class NavGrid {
     const gx1 = Math.min(COLS - 1, Math.ceil ((cx + radius + m) / CELL));
     const gy0 = Math.max(0,        Math.floor((cy - radius - m) / CELL));
     const gy1 = Math.min(ROWS - 1, Math.ceil ((cy + radius + m) / CELL));
-    // 还原区带基础代价
+    // 还原区带基础 zone
     for (let gy = gy0; gy <= gy1; gy++) {
       for (let gx = gx0; gx <= gx1; gx++) {
-        this._cost[gy * COLS + gx] = this._baseZone[gy * COLS + gx];
+        this._zone[gy * COLS + gx] = this._baseZoneMap[gy * COLS + gx];
       }
     }
     this._bakeObstacles(entities, gx0, gx1, gy0, gy1);
   }
 
-  cost(gx, gy) {
-    console.assert(gx >= 0 && gx < COLS && gy >= 0 && gy < ROWS, `NavGrid.cost out-of-range (${gx},${gy})`);
-    return this._cost[gy * COLS + gx];
+  /** 格 zone ID（ZONE.*）；代价查询由消费者经 zoneCosts 表完成 */
+  zone(gx, gy) {
+    console.assert(gx >= 0 && gx < COLS && gy >= 0 && gy < ROWS, `NavGrid.zone out-of-range (${gx},${gy})`);
+    return this._zone[gy * COLS + gx];
   }
 
   worldToCell(wx, wy) {
@@ -131,11 +169,11 @@ export class NavGrid {
     return { x: (gx + 0.5) * CELL, y: (gy + 0.5) * CELL };
   }
 
-  /** BFS 找最近可走格（cost 1 或 3，不含 ROAD），返回其中心世界坐标 */
+  /** BFS 找最近可走格（SIDEWALK / GRASS / CROSSWALK，不含 BLOCKED / ROAD），返回其中心世界坐标 */
   nearestWalkable(wx, wy, bounds = null) {
     const { gx: sx, gy: sy } = this.worldToCell(wx, wy);
-    const c0 = this.cost(sx, sy);
-    if (c0 > 0 && c0 < ROAD) {
+    const z0 = this.zone(sx, sy);
+    if (z0 !== ZONE.BLOCKED && z0 !== ZONE.ROAD) {
       if (!bounds) return { x: wx, y: wy };
       if (wx >= bounds.minX && wx <= bounds.maxX && wy >= bounds.minY && wy <= bounds.maxY)
         return { x: wx, y: wy };
@@ -146,8 +184,8 @@ export class NavGrid {
     visited[sy * COLS + sx] = 1;
     while (queue.length) {
       const { gx, gy } = queue.shift();
-      const cv = this._cost[gy * COLS + gx];
-      if (cv > 0 && cv < ROAD) {
+      const zv = this._zone[gy * COLS + gx];
+      if (zv !== ZONE.BLOCKED && zv !== ZONE.ROAD) {
         const { x: cx, y: cy } = this.cellCenter(gx, gy);
         if (!bounds || (cx >= bounds.minX && cx <= bounds.maxX && cy >= bounds.minY && cy <= bounds.maxY))
           return { x: cx, y: cy };
@@ -169,7 +207,7 @@ export class NavGrid {
   }
 
   /**
-   * 从 NPC 附近采样一个可走点（偏好代价 1 的格子）。
+   * 从 NPC 附近采样一个可走点（偏好铺装格：SIDEWALK / CROSSWALK）。
    * 自动过滤掉会跨越马路的点（同侧约束）。
    */
   sampleWalkableNear(npc, radius = 350) {
@@ -180,28 +218,28 @@ export class NavGrid {
 
     const isNearSide = cy >= NEAR_Y;  // park side vs far sidewalk side
 
-    const pool1 = [], pool3 = [];  // cost-1 and cost-3 candidates
+    const poolPaved = [], poolGrass = [];
     for (let dy = -gr; dy <= gr; dy++) {
       for (let dx = -gr; dx <= gr; dx++) {
         if (dx * dx + dy * dy > gr * gr) continue;
         const gx = gxC + dx, gy = gyC + dy;
         if (gx < 0 || gx >= COLS || gy < 0 || gy >= ROWS) continue;
-        const c  = this.cost(gx, gy);
-        if (c === 0 || c === ROAD) continue;
+        const z  = this.zone(gx, gy);
+        if (z === ZONE.BLOCKED || z === ZONE.ROAD) continue;
         const wx = (gx + 0.5) * CELL;
         const wy = (gy + 0.5) * CELL;
         if ((wy >= NEAR_Y) !== isNearSide) continue;  // 不跨侧
         if (npc.minX != null && (wx < npc.minX || wx > npc.maxX)) continue;
         if (npc.minY != null && (wy < npc.minY || wy > npc.maxY)) continue;
-        if (c === 1) pool1.push({ gx, gy });
-        else         pool3.push({ gx, gy });
+        if (z === ZONE.SIDEWALK || z === ZONE.CROSSWALK) poolPaved.push({ gx, gy });
+        else if (z === ZONE.GRASS)                       poolGrass.push({ gx, gy });
       }
     }
 
-    // 92% 从低代价格采样，8% 从高代价格采样（偶尔抄草坪）
-    const pool = (Math.random() < 0.92 && pool1.length)
-      ? pool1
-      : (pool3.length ? pool3 : pool1);
+    // 92% 从铺装格采样，8% 从草地采样（偶尔抄草坪）
+    const pool = (Math.random() < 0.92 && poolPaved.length)
+      ? poolPaved
+      : (poolGrass.length ? poolGrass : poolPaved);
     if (!pool.length) {
       // Bounds-clamped fallback: snap center to bounds then find nearest walkable
       if (npc.minX != null) {
@@ -216,28 +254,28 @@ export class NavGrid {
     return this.cellCenter(c.gx, c.gy);
   }
 
-  // ─── 内部：区带 + 路径代价 + 斑马线 ─────────────────────────────────────────
-  _bakeZones(layout, planningRules) {
-    if (!planningRules) throw new Error('_bakeZones: planningRules is required');
+  // ─── 内部：区带 + 路径 + 斑马线 zone 烘焙 ───────────────────────────────────
+  _bakeZones(layout) {
     // 1. 区带默认
     for (let gy = 0; gy < ROWS; gy++) {
       const wy  = (gy + 0.5) * CELL;
       const def = _zoneDefault(wy);
       for (let gx = 0; gx < COLS; gx++) {
-        this._cost[gy * COLS + gx] = def;
+        this._zone[gy * COLS + gx] = def;
       }
     }
 
-    // 2. 公园顶部入口带 (PARK_TOP ~ PARK_TOP+28) → cost 1
+    // 2. 公园顶部入口带 (PARK_TOP ~ PARK_TOP+28) → SIDEWALK
     const gyEntry0 = Math.floor(PARK_TOP / CELL);
     const gyEntry1 = Math.min(ROWS - 1, Math.floor((PARK_TOP + 28) / CELL));
     for (let gy = gyEntry0; gy <= gyEntry1; gy++) {
       for (let gx = 0; gx < COLS; gx++) {
-        if (this._cost[gy * COLS + gx] > 0) this._cost[gy * COLS + gx] = 1;
+        const idx = gy * COLS + gx;
+        if (this._zone[idx] !== ZONE.BLOCKED) this._zone[idx] = ZONE.SIDEWALK;
       }
     }
 
-    // 3. walkPaths 管道 → cost 1
+    // 3. walkPaths 管道 → SIDEWALK
     const pathSegs = [];
     for (const def of Object.values(layout?.walkPaths ?? {})) {
       const wps = def.waypoints ?? [];
@@ -250,7 +288,7 @@ export class NavGrid {
       }
     }
 
-    // 4. chessPlaza / miniPark 椭圆 → cost 1
+    // 4. chessPlaza / miniPark 椭圆 → SIDEWALK
     const plazas = [];
     if (layout?.chessPlaza) {
       const { cx, cy, rx, ry } = layout.chessPlaza;
@@ -261,48 +299,42 @@ export class NavGrid {
       plazas.push({ cx, cy, rx: rx * 0.85, ry: ry * 0.7 });
     }
 
-    // 仅对公园区域执行路径/plaza 降代价
+    // 仅对公园区域执行路径/plaza 铺装
     for (let gy = Math.floor(PARK_TOP / CELL); gy < ROWS; gy++) {
       const wy = (gy + 0.5) * CELL;
       for (let gx = 0; gx < COLS; gx++) {
-        if (this._cost[gy * COLS + gx] === 0) continue;
+        if (this._zone[gy * COLS + gx] === ZONE.BLOCKED) continue;
         const wx = (gx + 0.5) * CELL;
-        let low = false;
+        let paved = false;
         for (const [ax, ay, bx, by] of pathSegs) {
-          if (_segDist(ax, ay, bx, by, wx, wy) <= PATH_TUBE_R) { low = true; break; }
+          if (_segDist(ax, ay, bx, by, wx, wy) <= PATH_TUBE_R) { paved = true; break; }
         }
-        if (!low) {
+        if (!paved) {
           for (const { cx, cy, rx, ry } of plazas) {
             const ex = (wx - cx) / rx, ey = (wy - cy) / ry;
-            if (ex * ex + ey * ey <= 1) { low = true; break; }
+            if (ex * ex + ey * ey <= 1) { paved = true; break; }
           }
         }
-        if (low) this._cost[gy * COLS + gx] = 1;
+        if (paved) this._zone[gy * COLS + gx] = ZONE.SIDEWALK;
       }
     }
 
-    // 斑马线管：政策注参，覆盖 ROAD 格为低代价（BLOCKED 保持不变）
-    if (planningRules) this._bakeCrosswalks(layout, planningRules);
-
-    // 保存区带基础代价（不含障碍；含斑马线覆盖，供 localRebake 还原）
-    this._baseZone.set(this._cost);
-  }
-
-  // ─── 内部：斑马线管烘焙（政策经参数注入，nav 零 import 增量）────────────────
-  _bakeCrosswalks(layout, rules) {
-    if (!layout?.crosswalks?.length) return;
-    for (const { x: cwx } of layout.crosswalks) {
+    // 5. 斑马线管：ROAD 带内的管道格 → CROSSWALK（BLOCKED 保持不变）
+    for (const { x: cwx } of layout?.crosswalks ?? []) {
       for (let gy = 0; gy < ROWS; gy++) {
         const wy = (gy + 0.5) * CELL;
         if (wy < BIKE_LANE_FAR_TOP || wy >= BIKE_LANE_NEAR_BOTTOM) continue;
         for (let gx = 0; gx < COLS; gx++) {
           const wx = (gx + 0.5) * CELL;
-          if (Math.abs(wx - cwx) > rules.crosswalkHalfW) continue;
+          if (Math.abs(wx - cwx) > CROSSWALK_HALF_W) continue;
           const idx = gy * COLS + gx;
-          if (this._cost[idx] === ROAD) this._cost[idx] = rules.crosswalkCost;
+          if (this._zone[idx] === ZONE.ROAD) this._zone[idx] = ZONE.CROSSWALK;
         }
       }
     }
+
+    // 保存区带基础 zone（不含障碍；含斑马线，供 localRebake 还原）
+    this._baseZoneMap.set(this._zone);
   }
 
   // ─── 内部：障碍物 AABB + 边距 → BLOCKED ──────────────────────────────────
@@ -331,18 +363,18 @@ export class NavGrid {
         } else {
           if (wx < e.x - rx || wx > e.x + rx || wy < e.y - ry || wy > e.y + ry) continue;
         }
-        this._cost[gy * COLS + gx] = 0;
+        this._zone[gy * COLS + gx] = ZONE.BLOCKED;
       }
     }
   }
-  /** 烘焙后断言：每侧可走格应构成单一连通区域。 */
+  /** 烘焙后断言：每侧驻留格（SIDEWALK / GRASS）应构成单一连通区域。 */
   _assertSingleRegions() {
     const visited = new Uint8Array(COLS * ROWS);
     const DIRS = [-1, 1, -COLS, COLS, -COLS - 1, -COLS + 1, COLS - 1, COLS + 1];
+    const isRegion = (z) => z === ZONE.SIDEWALK || z === ZONE.GRASS;
     let farRegions = 0, nearRegions = 0;
     for (let i = 0; i < COLS * ROWS; i++) {
-      const c = this._cost[i];
-      if ((c !== 1 && c !== 8) || visited[i]) continue;
+      if (!isRegion(this._zone[i]) || visited[i]) continue;
       const seedWy = (Math.floor(i / COLS) + 0.5) * CELL;
       if (seedWy < NEAR_Y) farRegions++; else nearRegions++;
       const stack = [i]; visited[i] = 1;
@@ -354,8 +386,7 @@ export class NavGrid {
           if (ni < 0 || ni >= COLS * ROWS || visited[ni]) continue;
           const ng = Math.floor(ni / COLS);
           if (Math.abs(ng - gy) > 1) continue;
-          const nc = this._cost[ni];
-          if (nc !== 1 && nc !== 8) continue;
+          if (!isRegion(this._zone[ni])) continue;
           visited[ni] = 1; stack.push(ni);
         }
       }
@@ -364,4 +395,3 @@ export class NavGrid {
     console.assert(nearRegions <= 1, `NavGrid: near side has ${nearRegions} walkable regions (expected 1)`);
   }
 }
-

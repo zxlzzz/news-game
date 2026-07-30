@@ -28,7 +28,7 @@
 
 import { standUp }  from '../entity/seat/seat.js';
 import { dlog }     from './DebugLog.js';
-import { getNavGrid, CELL } from './nav/NavGrid.js';
+import { getNavGrid, CELL, ZONE } from './nav/NavGrid.js';
 import { audit } from '../debug/MovementAudit.js';
 
 // ── 恢复裁决表 — Physics 层卡死/超时政策唯一住址（goal-pipeline-v1.md §3）────────
@@ -197,7 +197,7 @@ export function setState(npc, state, trigger = '?') {
 // ── 碰撞辅助 ────────────────────────────────────────────────────────────────
 function _navBlocked(grid, wx, wy) {
   const { gx, gy } = grid.worldToCell(wx, wy);
-  return grid.cost(gx, gy) === 0;
+  return grid.zone(gx, gy) === ZONE.BLOCKED;
 }
 
 /**

@@ -18,7 +18,7 @@ import { Entity } from '../core/Entity.js';
 import { depthGray, BUILDING_BASE_Y } from '../core/Layout.js';
 import { integratePhysics } from '../behavior/Motor.js';
 import { clipLibrary } from '../core/ClipLibrary.js';
-import { getNavGrid, ROAD } from '../behavior/nav/NavGrid.js';
+import { getNavGrid, ZONE } from '../behavior/nav/NavGrid.js';
 
 // 行为状态 → 标签
 const STATE_TAGS = {
@@ -228,12 +228,12 @@ export class NPC extends Entity {
     // 5) 社交状态
     if (this.bond) out.add('talking');
 
-    // 6) 空间道路标签（crossing / jaywalking — N-2b: 从 NavGrid 格代价空间派生，取代 planCrossing 标签生命周期）
+    // 6) 空间道路标签（crossing / jaywalking — N-2b: 从 NavGrid zone 空间派生，取代 planCrossing 标签生命周期）
     if (this._motorInstalled) {
       const grid = getNavGrid();
       if (grid) {
         const { gx, gy } = grid.worldToCell(this.x, this.y);
-        if (grid.cost(gx, gy) === ROAD) {
+        if (grid.zone(gx, gy) === ZONE.ROAD) {
           out.add('crossing');
           if (this.mem('motor').goal?.meta?.jaywalk) out.add('jaywalking');
         }

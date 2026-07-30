@@ -54,7 +54,7 @@ import {
 } from './WalkMode.js';
 
 import { setState, STATE_DEFS, setXY, nudgeXY, setAnimation, RECOVERY_RULES, SAFETY_RULES, setWalkMode } from './Motor.js';
-import { getNavGrid, ROAD } from './nav/NavGrid.js';
+import { getNavGrid, ZONE } from './nav/NavGrid.js';
 import { applyLookahead } from './nav/Lookahead.js';
 import { arrived } from './SteeringDecision.js';
 import { ensureWanderPath, publishGoal } from './nav/PlanService.js';
@@ -289,12 +289,12 @@ function steerRoam(npc, envQuery, profile, dt) {
   const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total, SAFETY_RULES.lookahead);
   if (vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
 
-  // Jaywalk sprint: road-cell → multiply velocity (NavGrid cell cost spatial derivation)
+  // Jaywalk sprint: road-cell → multiply velocity (NavGrid zone spatial derivation)
   const _grid  = getNavGrid();
   const _inLane = npc.y >= BIKE_LANE_FAR_TOP && npc.y < BIKE_LANE_NEAR_BOTTOM;
   if (_inLane && _grid) {
     const { gx: _gx, gy: _gy } = _grid.worldToCell(npc.x, npc.y);
-    if (_grid.cost(_gx, _gy) === ROAD) {
+    if (_grid.zone(_gx, _gy) === ZONE.ROAD) {
       mot.vel = { vx: vx * SAFETY_RULES.jaywalk_sprint.speedK, vy: vy * SAFETY_RULES.jaywalk_sprint.speedK };
       setAnimation(npc, SAFETY_RULES.jaywalk_sprint.anim);
     } else {

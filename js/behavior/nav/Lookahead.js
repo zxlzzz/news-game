@@ -1,28 +1,28 @@
 /**
  * CONTRACT  (see docs/contracts/movement.md)
- *   OWNS:      Per-frame velocity adjustment to avoid BLOCKED cells (cost===0).
+ *   OWNS:      Per-frame velocity adjustment to avoid BLOCKED cells (ZONE.BLOCKED).
  *   WRITES:    nothing on npc fields — returns adjusted {vx,vy} to caller.
  *              audit.count(npc, 'probe_steer') on redirect (MovementAudit).
  *   READS:     NavGrid singleton (getNavGrid); npc.x, npc.y (position only).
  *   MUST NOT:  write npc.x/y/speed/state/animation;
- *              treat ROAD cells (cost=250) as blocked — road crossing must stay passable.
+ *              treat ZONE.ROAD cells as blocked — road crossing must stay passable.
  *
  * Lookahead — 前瞻探針
  *
  * applyLookahead(npc, vx, vy) → {vx, vy}
  *
  * 沿速度方向采 3 个探测点，距离 [1, 2, 4]×CELL，y 分量减半（压扁世界）。
- * blocked 判定：仅 cost === 0（ROAD=250 可通行，不干扰过马路）。
+ * blocked 判定：仅 ZONE.BLOCKED（ROAD 可通行，不干扰过马路）。
  * 只调整本帧速度输出，不改 _navPath / waypoint / roamTarget。
  */
 
-import { CELL, getNavGrid } from './NavGrid.js';
+import { CELL, ZONE, getNavGrid } from './NavGrid.js';
 import { audit } from '../../debug/MovementAudit.js';
 
-/** 在世界坐标 (px, py) 处探测是否 BLOCKED (cost===0) */
+/** 在世界坐标 (px, py) 处探测是否 ZONE.BLOCKED */
 function _blocked(grid, px, py) {
   const { gx, gy } = grid.worldToCell(px, py);
-  return grid.cost(gx, gy) === 0;
+  return grid.zone(gx, gy) === ZONE.BLOCKED;
 }
 
 /**
@@ -43,7 +43,7 @@ export function applyLookahead(npc, vx, vy, p) {
 
   // 自身格已 blocked → 逃逸中，不干预
   const { gx: sgx, gy: sgy } = grid.worldToCell(npc.x, npc.y);
-  if (grid.cost(sgx, sgy) === 0) return { vx, vy };
+  if (grid.zone(sgx, sgy) === ZONE.BLOCKED) return { vx, vy };
 
   // 归一化速度方向
   const ux = vx / speed;
