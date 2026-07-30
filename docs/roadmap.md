@@ -31,6 +31,7 @@
 | Z-1（zone-profile split） | NavGrid 从 cost map 重构为 zone map + profile cost table：`ZONE` 枚举 + `DEFAULT_ZONE_COSTS`；`cost()`→`zone()`；`ROAD=250` 哨兵值 / `PLANNING_RULES` / `roadCost` / `planningRules` / `_bakeCrosswalks` 全部删除；斑马线直接烘焙为 `ZONE.CROSSWALK`；代价装配唯一住址 `PlanService._zoneCostsFor()`；`_lineOfSight` 改为纯 zone 检查 | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`js/behavior/nav/PathPlanner.js`；`js/behavior/nav/PlanService.js`；`js/npc/NpcProfile.js` |
 | Z-2a（Layout 参数化） | Layout.js 世界尺寸 / Y 分带 / 深度锚点 `export const` → `export let` + `initLayout(config)`；scene.json 新增 `world` / `depth` / `yBands` 三顶层字段（数值不变，原地搬家）；sceneData 透传；StreetScene.create() 注入。借 live binding，66 个 import 站点零改动 | ✅ 已落地 | `js/core/Layout.js`；`assets/scene.json`；`js/core/sceneData.js`；`js/scenes/StreetScene.js` |
 | Z-2b（NavGrid zone bake 数据驱动） | `_zoneDefault(wy)` 删除；`zones` 配置（bands / overlays / paving / crossings）驱动全部 zone 烘焙；`PATH_TUBE_R` / `CROSSWALK_HALF_W` 移入配置；`bake()` 第 3 参收 zones，缺配置抛错；`Layout.resolveY` 符号解析（配置写分带名，数值仍只在 yBands） | ✅ 已落地 | `js/behavior/nav/NavGrid.js`；`assets/scene.json`；`js/core/Layout.js#resolveY` |
+| Z-2e（Feature registry + SceneInitializer 声明化） | 目标：一个 JSON 文件独立构建一个场景。`SceneInitializer` 分层：infra（NavGrid/BehaviorManager/ExitRegistry/Director）留代码，可选内容（9 个 feature：pedestrians/park_idlers/chess/stall_sellers/dog_walker/athletes/vehicles/bus_stops/ambient_affordance）改 `scene.json#features` 数组 + `featureRegistry` 驱动；exits/spawnPoints 几何迁入 `scene.json#exits`/`#spawnPoints`（side+margin / yBand+yOffset 符号解析）；`_spawnStallSellers` 方法迁入 `sceneFeatures.js` | ✅ 已落地 | `js/core/featureRegistry.js`；`js/scenes/sceneFeatures.js`；`js/scenes/SceneInitializer.js`；`assets/scene.json` |
 | Z-2d（PropEntity registry） | `PropEntity` 四处 `switch(propType)` + `OBSTACLE_TYPES` + `VISUAL_INTRINSIC` → 每个 prop 模块顶层自注册 `registerProp()`；新增 `propRegistry.js`（零 import）+ `entity/props.all.js`（副作用 barrel）；check-invariants Rule 5 重写（原实现读已删除的 `OBSTACLE_TYPES` 常量会静默变空）+ 新增 Rule 13（barrel 漏注册模块） | ✅ 已落地 | `js/core/propRegistry.js`；`js/entity/props.all.js`；`js/core/PropEntity.js`；19 个 prop 模块；`scripts/check-invariants.mjs` |
 | Z-2c（SceneRenderer 数据驱动地面） | 四段硬编码色带 + 两条边界线 → 遍历 `ground` 配置；砖缝 / 草丛区间参数化；`Layout.resolveColor` 颜色符号解析（配置写颜色名，hex 仍在 Layout）；SceneRenderer 第 4 参收 ground，缺则抛错 | ✅ 已落地 | `js/scenes/SceneRenderer.js`；`assets/scene.json`；`js/core/Layout.js#resolveColor` |
 | Z-1b（拉直草地约束复原） | `ZONE_ROUGHNESS` 表（铺装 1 / 草地 2 / ROAD·BLOCKED 999）；`_lineOfSight` 中间格 roughness 超两端 max 即拒绝，与 Z-1 前 `maxCost` 规则语义等价；roughness 不参与 A\*，与 `zoneCosts` 两套独立序 | ✅ 已落地 | `js/behavior/nav/PathPlanner.js#ZONE_ROUGHNESS` |
@@ -387,6 +388,68 @@ Z-2a 的注入值与默认值相同，故零行为差异；**任何真正改动�
 
 遗留：NavGrid 仍直接用 `NEAR_Y` 做「同侧」判定（`sampleWalkableNear`、
 `_assertSingleRegions`）——那是采样政策而非 zone 烘焙，不在本刀范围。
+
+---
+
+### Z-2e（Feature registry + SceneInitializer 声明化）— 已落地
+
+目标：一个 scene.json 独立构建一个场景（学校 / 街区 / 商业街），不改 JS。
+
+**分层决策**（用户确认，见对话记录）：`SceneInitializer` 里 13 件事分两类——
+NavGrid bake / BehaviorManager / ExitRegistry / Director 是每个场景都必须有的
+**infra**（引导代码，留在类方法里，不进 registry）；pedestrians / park_idlers /
+chess / stall_sellers / dog_walker / athletes / vehicles / bus_stops /
+ambient_affordance 是**可选内容**（改 `scene.json#features` 数组驱动）。
+exits/spawnPoints 是 infra 消费的数据，不算 feature，单独一段配置。
+
+- **`featureRegistry.js`**（新增，零 import，镜像 `propRegistry.js`）：
+  `registerFeature(type, initFn)`，`initFn: (ctx, cfg) => void`。
+- **`sceneFeatures.js`**（新增，包装层，**不是** propRegistry 式各模块自注册）：
+  这 9 个 spawn 函数签名各异、散落在 `npc/` 和 `entity/vehicle/`，塞进各自模块
+  会强改 5+ 既有文件且徒增循环依赖风险；改为单文件把既有函数包成
+  `(ctx, cfg) => void` 契约再注册，被包装函数本身零改动。
+  `_spawnStallSellers` 方法体逐字迁入（原样搬家，只把 `this.em/this.sr` 换成
+  `ctx.em/ctx.sr`）。
+- **`scene.json` 新增 `exits` / `spawnPoints` / `features`**：
+  `exits.edges[]`（`side`+`margin`→X）、`exits.buildingDoor`（`yBand`+`yOffset`→Y，
+  `yZone` 两个分带名）；`spawnPoints[]` 同款 side/margin/yBand/yOffset；
+  `features[]` 每条 `{type, ...cfg}`，声明顺序 = 初始化顺序。
+- **`SceneInitializer.js`**：`_spawnNPCs` 里 exits/spawnPoints 构建照旧但读配置
+  （新增 `_resolveSideX` 辅助）；features 循环替换原本 9 段内联调用；
+  `Director` 的 `busStops` 改可选链（`vehicles` feature 未声明时 `trafficManager`
+  不存在，须防御——这是"内容可选"必然要求下游防御的样例）。
+
+**已知不动的重排**：`WaitForBusLayer` 原本在公交视觉实体（`bus_stops`）生成之后
+才 wiring，现在因两者拆成独立 feature、`vehicles` 先于 `bus_stops` 声明，
+wiring 提前到公交视觉实体生成之前。核实为安全：`WaitForBusLayer` 存的是
+`em.entities` 数组引用（非拷贝），`em.add()` 用 `push` 原地追加，故后生成的
+公交实体仍对已构造的 `WaitForBusLayer` 可见；且两者都不消费 `Math.random()`，
+不影响其余 feature 的随机数消费顺序。
+
+⚠️ **已知遗留**（本刀发现，未修，非 Z-2e 引入）：`vehicles` feature 内的
+`initVehicleSystem()` 内部硬编码两个公交站坐标（x=500 direction+1、x=1500
+direction−1），与 `bus_stops` feature 读的 `layout.busStops`（scene.json，
+当前 x=650/1500）是两个独立位置真相，已经不一致（500≠650）。这是一个先于
+本刀存在的 bug，不属于"数据驱动化"范围，未合并两者、未修正坐标，原样保留
+其现有（有缺陷的）行为。
+
+**验证**（用户已知情并批准：本刀违反了 CLAUDE.md「默认禁止运行游戏/harness/
+模拟验证」的工作流铁律——用 `git worktree` 对比改造前后的
+`SceneInitializer.spawnAll()`，并直接跑了 `headless-sim.mjs`；杂散输出文件已删；
+用户决定保留验证结果记录在案，后续同级别重构仍需事先明确授权才能运行）：
+- 用 `git worktree` 拉出改造前 HEAD（`8f367e3`），写一个无 PIXI 的最小 harness
+  （复用 `headless-sim.mjs` 的 window shim + `mulberry32` seeded RNG 手法），
+  分别在改造前/后代码树上跑 `SceneInitializer.spawnAll()` 全流程，
+  两个随机种子（42、7）下**152 个生成实体逐个字段（类型/位置/scale/tags/
+  direction/state）完全相同**；ExitRegistry 条目、Director 收到的
+  spawnPoints/buildingDoors/busStops 数量、propManager/trafficManager/
+  WaitForBusLayer 是否存在，均相同；同树同种子二次运行结果相同（harness
+  自身确定性核验）。
+- `check-invariants.mjs` 全绿；`check-behavior-data.mjs` 全绿；四文件 ESM
+  parse 通过；scene.json 合法。
+
+代码锚点：`js/core/featureRegistry.js`；`js/scenes/sceneFeatures.js`；
+`js/scenes/SceneInitializer.js#_spawnNPCs`
 
 ---
 

@@ -50,13 +50,15 @@ NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车�
 （`StreetScene.create()` 内，`SceneRenderer` 之前）；Layout.js 里的字面量只是 fallback。
 `yBands` 的键名必须与 Layout export 名一致。消费侧照常 `import { NEAR_Y }`——live binding。
 
-**scene.json 五块布局配置**（数值唯一真相在 `yBands`，其余段落只写**名字**引用它）：
+**scene.json 布局配置**（数值唯一真相在 `yBands`，其余段落只写**名字**引用它）：
 
 | 段 | 消费者 | 内容 |
 |----|--------|------|
 | `world` / `depth` / `yBands` | `Layout.initLayout` | 世界尺寸、深度锚点、12 个 Y 分带数值 |
 | `zones`（Z-2b） | `NavGrid.bake` | bands / overlays / paving / crossings → zone 烘焙 |
 | `ground`（Z-2c） | `SceneRenderer` | bands / edgeLines / tiling / grass → 地面色带 |
+| `exits` / `spawnPoints`（Z-2e） | `SceneInitializer._spawnNPCs` | 出口/生成点几何：`side`(left/right)+`margin` 解出 X，`yBand`+`yOffset` 解出 Y |
+| `features`（Z-2e） | `SceneInitializer` → `featureRegistry` | 可选场景内容数组，见下方「Feature registry」 |
 
 符号解析：Y 边界写分带名经 `resolveY()`，颜色写调色板名经 `resolveColor()`（`Layout.js`），
 拼错立刻抛错。**配置缺失一律抛错，不退回硬编码 fallback。**
@@ -165,6 +167,39 @@ import 列表——漏加则该类型静默不绘制（`check-invariants.mjs` Ru
 
 `busstop-roof/bench/sign` 不进 barrel：`busstop.js` 本身 import `PropEntity`，
 若也被 barrel import 会成环；这三种改在各自 `draw*.js` 里注册。
+
+**Feature registry**（Z-2e）：目标是「一个 JSON 文件即可独立构建一个场景」（学校/街区/
+商业街）。`SceneInitializer` 分两层：**infra**（NavGrid bake / BehaviorManager /
+ExitRegistry / Director）是每个场景都必须有的引导代码，留在类方法里不进 registry；
+**feature**（pedestrians / park_idlers / chess / stall_sellers / dog_walker /
+athletes / vehicles / bus_stops / ambient_affordance）是可选场景内容，改为
+`scene.json#features` 数组驱动，每条 `{type, ...cfg}` 经 `featureRegistry.getFeatureInit(type)`
+查到初始化函数执行。
+
+```json
+{ "type": "pedestrians", "count": 18 }
+```
+
+注册写在 `js/scenes/sceneFeatures.js`（单一包装层，非 propRegistry 那种各模块自注册——
+这 9 个 spawn 函数签名各异、散落在 npc/ 和 entity/vehicle/，塞进各自模块会强改 5+ 文件
+且徒增循环依赖风险）：
+
+```js
+registerFeature('pedestrians', (ctx, cfg) => {
+  spawnPedestrians(ctx.em, ctx.sr, ctx.bm, ctx.spawnPoints, cfg.count ?? 18);
+});
+```
+
+`ctx`（SceneInitializer 构建，只读）：`{em, sr, bm, scene, layout, sceneData, propManager,
+navGrid, spawnPoints, worldWidth}`。**features 数组顺序 = 初始化顺序 = `Math.random()`
+消费顺序**——调换顺序会改变具体生成结果（位置/数量），即使各 feature 逻辑上互不依赖；
+无跨 feature 依赖机制，`vehicles` 与其绑定的 `WaitForBusLayer` 因此捆成一个 feature。
+未声明某 feature（如学校场景不要 `vehicles`）时下游必须防御——`Director` 的
+`busStops: scene.trafficManager?.busStops ?? []` 是样例。
+
+⚠️ **已知遗留**（非 Z-2e 引入，未修）：`vehicles` feature 内的 `initVehicleSystem()`
+内部硬编码两个公交站坐标，与 `bus_stops` feature 读的 `layout.busStops`（scene.json 数据）
+是两个独立位置真相，当前已不一致（500 vs 650）。发现时未合并，原样保留。
 
 ---
 
