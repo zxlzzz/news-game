@@ -337,10 +337,12 @@ NavGrid 从「cost map」重构为「zone map + profile cost table」两层：
 `Layout.js` 从硬编码常量改为场景配置注入，利用 ES module live binding 使 66 个
 `import` 站点零改动。
 
-- **`export const` → `export let`**：世界尺寸、12 个 Y 分带、`BUILDING_EXIT_XS`；
-  文件内字面量降级为 fallback 默认值。颜色仍是 `export const`（画风不是场景结构）。
-- **`initLayout(config)`**：读 `world` / `yBands` / `depth`，逐字段 `??` 覆盖，
-  末尾就地重算 `BUILDING_EXIT_XS`。缺字段即保留默认值——config 是覆盖不是替换。
+- **`export const` → `export let`**：世界尺寸、12 个 Y 分带、~~`BUILDING_EXIT_XS`~~
+  （已删，见下方「BUILDING_EXIT_XS 清理」）；文件内字面量降级为 fallback 默认值。
+  颜色仍是 `export const`（画风不是场景结构）。
+- **`initLayout(config)`**：读 `world` / `yBands` / `depth`，逐字段 `??` 覆盖
+  （原末尾还会就地重算 `BUILDING_EXIT_XS`，现已随其一并删除）。缺字段即保留
+  默认值——config 是覆盖不是替换。
 - **scene.json 新增 `world` / `depth` / `yBands`**：`yBands` 的 12 个键名与 Layout
   export 名一一对应，值与旧硬编码完全一致（原地搬家，非新数据）。
 - **注入时序**：`StreetScene.create()` 内 `expandSceneData` 之后、`SceneRenderer` 之前。
@@ -364,6 +366,13 @@ Z-2a 的注入值与默认值相同，故零行为差异；**任何真正改动�
 「公交站坐标 500≠650」不一致问题——`vehicleSpawner.js#initVehicleSystem` 现接收
 `busStopsCfg` 参数，由 `sceneFeatures.js` 的 `vehicles` feature 传入 `ctx.layout.busStops`
 （即 `bus_stops` feature 渲染顶棚用的同一份数据），不再自带一份硬编码坐标。
+
+**BUILDING_EXIT_XS 清理**（后续独立小刀）：巡查发现 `BUILDING_EXIT_XS` 是 Z-2a 遗留
+死代码——全库只有 `Layout.js` 自身（定义 + `initLayout` 末尾就地重算）和
+`entity/building/building.js` 头部注释引用这个名字，但实际出口坐标早已由
+`SceneInitializer._spawnNPCs` 按 `scene.json#buildings[].door` 逐栋注册（`Z-2e` 落地时
+即如此），`BUILDING_EXIT_XS` 从未被读取消费。已删除该数组及其重算逻辑，并把
+`building.js` 头部过时注释改为描述实际生效的 `buildings[].door` 机制。
 
 代码锚点：`js/core/Layout.js#initLayout`；`js/core/sceneData.js#expandSceneData`；
 `js/scenes/StreetScene.js#create`

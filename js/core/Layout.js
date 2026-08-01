@@ -84,15 +84,6 @@ export const worldX = (f) => Math.round(WORLD_WIDTH * f);
 export const bikeLaneFarY  = (f) => Math.round(BIKE_LANE_FAR_TOP  + (BIKE_LANE_FAR_BOTTOM  - BIKE_LANE_FAR_TOP)  * f);
 export const bikeLaneNearY = (f) => Math.round(BIKE_LANE_NEAR_TOP + (BIKE_LANE_NEAR_BOTTOM - BIKE_LANE_NEAR_TOP) * f);
 
-// ─── 建筑出口 X（行为系统 ExitRegistry 用） ──────────────────────────────────
-// 依赖 WORLD_WIDTH，initLayout 末尾就地重算（保持数组身份不变，供已持有引用者）
-export let BUILDING_EXIT_XS = [
-  worldX(0.10),   // building_a ≈ 200
-  worldX(0.30),   // building_b ≈ 600
-  worldX(0.55),   // building_c ≈ 1100
-  worldX(0.85),   // building_d ≈ 1700
-];
-
 // ─── 统一填充色阶（4 档，全场景 draw 文件共用，禁止额外随手灰） ──────────────────
 // 目标：从亮到暗四档，眯眼可分辨四个层次
 //   天空/天际线 > FILL_PAPER(建筑立面) > FILL_LIGHT(窗/玻璃) > FILL_MID(屋顶/雨棚)
@@ -253,10 +244,4 @@ export function initLayout(config) {
     _FAR_SCALE  = config.depth.scaleFar  ?? _FAR_SCALE;
     _NEAR_SCALE = config.depth.scaleNear ?? _NEAR_SCALE;
   }
-
-  // 依赖 WORLD_WIDTH 的派生量：就地重算（不重建数组，保持引用身份）
-  BUILDING_EXIT_XS[0] = worldX(0.10);
-  BUILDING_EXIT_XS[1] = worldX(0.30);
-  BUILDING_EXIT_XS[2] = worldX(0.55);
-  BUILDING_EXIT_XS[3] = worldX(0.85);
 }
