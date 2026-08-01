@@ -2,13 +2,14 @@
 
 > 冻结决策记录。日期：2026-08-02。
 > 范围：claim 五槽 schema、感知质量 → 填槽裁决表、mutation 转移表、目击者数量设计目标。
-> 不含：审问接线（W-6，未实施）。
 > W-1（`WorldEventLog.js#emitEvent` + `EventDefs.js`）已实施，但 `EVENT_DEFS`
 > 目前只有 `TalkActivity.js` 迁移过来的 5 个 kind，不是完整的世界事件词表——
 > 其他事件源接入 `emitEvent()` 时按需在 `EventDefs.js` 里加新 kind。
-> W-5（`Belief.js#generateClaims` + `ClaimDecisionTables.js`）已实施，但尚无
-> 调用方把 `WorldEventLog` 的事件接到 `generateClaims()`——两个地基还没接线，
-> 这是留给后续批次的工作，不在本文档范围。
+> W-5（`Belief.js#generateClaims` + `ClaimDecisionTables.js`）已实施，W-7a 把
+> `WorldEventLog.drainNewEvents()` 接到了 `generateClaims()`（`BehaviorManager.
+> update()` 帧序 1.5，唯一消费点）——两个地基已接线。W-6（审问接线）已实施，
+> 见第七节。mutation 转移表（第四节）仍未接线——SIR 传播触发点沿用
+> `belief-layer-v0.md` I-3 草案，尚未实现，不在本文档范围。
 > 本文档只锁 schema 与数值表，供后续批次按此表实现，实现前禁止另起一套字段名/取值域。
 
 ## 背景

@@ -434,6 +434,31 @@ console.log('Rule 14: emitEvent() call sites confined to js/behavior/activities/
   }
 }
 
+// ── Rule 15 ────────────────────────────────────────────────────────────────
+// generateClaims() call sites: exactly one, and it must live in
+// BehaviorManager.js (W-7a — the single consumption point for WorldEventLog
+// events). Belief.js itself defines the function (contains "function
+// generateClaims(") — that's not a call site, skip it explicitly.
+console.log('Rule 15: generateClaims() called exactly once, from BehaviorManager.js');
+{
+  const hits = [];
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith('*') || trimmed.startsWith('//')) continue;
+      if (/\bfunction\s+generateClaims\s*\(/.test(lines[i])) continue; // definition, not a call
+      if (/\bgenerateClaims\(/.test(lines[i])) hits.push(`${p}:${i + 1}`);
+    }
+  }
+  const outsideBM = hits.filter(h => !h.replace(/\\/g, '/').includes('BehaviorManager.js'));
+  if (hits.length !== 1 || outsideBM.length > 0) {
+    fail(`generateClaims() must be called exactly once, from BehaviorManager.js; found ${hits.length} call site(s):\n  ` + hits.join('\n  '));
+  } else {
+    okMsg();
+  }
+}
+
 // ── Summary ─────────────────────────────────────────────────────────────────
 console.log('');
 if (!FAIL) {

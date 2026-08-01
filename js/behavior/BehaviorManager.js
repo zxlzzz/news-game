@@ -27,6 +27,8 @@ import { ensurePath }           from './nav/PlanService.js';
 import { ExitSceneTask }        from './tasks/ExitSceneTask.js';
 import { stuckProbe } from './StuckProbe.js';
 import { audit } from '../debug/MovementAudit.js';
+import { drainNewEvents } from './WorldEventLog.js';
+import { generateClaims } from './Belief.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -91,6 +93,12 @@ export class BehaviorManager {
 
     // 1) Activity 层
     this.socialLayer.update(this.npcs, dt);
+
+    // 1.5) 世界事件 → 目击 claim（W-7a：drainNewEvents() 唯一消费点）
+    for (const event of drainNewEvents()) {
+      const actorNpcs = event.actors.map(id => this.npcs.find(n => n.id === id) ?? null);
+      generateClaims(event, actorNpcs, this.npcs);
+    }
 
     // 2) WaitForBusLayer 扫描
     if (this.waitForBusLayer) this.waitForBusLayer.update(this.npcs, dt);

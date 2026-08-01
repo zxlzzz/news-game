@@ -264,8 +264,10 @@ WorldEventLog.js — 世界事件流水账（W-1）。`emitEvent({kind, actors, 
 gameClock()`）。`emitEvent()` 调用点只允许出现在 `js/behavior/activities/`
 下（check-invariants Rule 14）。目前唯一调用方是 `TalkActivity.js`（push /
 push_land / give_item / handshake / point_at 五种 kind，取代旧版直接挂在
-NPC 上的私有标签字段）。只记录不消费——本模块自己不接 Belief.js，两者仍是
-独立地基，接哪个事件源触发目击生成是后续批次的接线工作。
+NPC 上的私有标签字段）。`drainNewEvents()` 是唯一游标推进读取点（`getEvents()`
+是只读全量查询，不推进游标）；`EVENT_LOG_CAP=500` 是长度上限唯一住址，超限
+从头裁剪且游标同步平移，保证已读事件不会被重读。消费者：`BehaviorManager.js`
+（W-7a，唯一消费点，`SocialLayer.update()` 之后）。
 
 Belief.js — npc.mem('belief').claims 唯一 owner（W-5/W-6）。`generateClaims(event,
 actorNpcs, candidateNpcs)` 是"witness"来源 claim 的唯一写入点：对候选池逐个跑
@@ -273,8 +275,10 @@ actorNpcs, candidateNpcs)` 是"witness"来源 claim 的唯一写入点：对候�
 [2,4] 目标取样，再按 `ClaimDecisionTables.js` 的 q→填槽表决定每槽 fine/coarse/
 tag/null。`selectWitnesses()` 单独导出，供
 `scripts/check-witness-distribution.mjs` 静态采样验证数量分布，不依赖
-NavGrid/EntityManager，可脱离游戏运行。消费者：暂无调用方接入
-`generateClaims()`（W-5 地基阶段，WorldEventLog 尚未接到这里，无行为变化）。
+NavGrid/EntityManager，可脱离游戏运行。消费者：`BehaviorManager.js`（W-7a，
+`generateClaims()` 全库唯一调用点，check-invariants Rule 15 守）。`Belief.js`
+不 import `WorldEventLog.js`——被调用方不主动拉事件，谁触发目击生成由调用方
+（`BehaviorManager`）决定。
 
 `injectSuggestion(npc, slot, value)` 是"suggested"来源 claim 的唯一写入点
 （W-6，与 `generateClaims()` 严格分开，provenance 不能混）：`NewsUI` 的审问

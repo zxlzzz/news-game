@@ -12,6 +12,7 @@ same commit. Symbol anchors: `File.js#symbolName` (line numbers parenthetical).
 ```
 BehaviorManager          — thin orchestrator; owns the update loop order
   ├── SocialLayer        — Activity tick + Talk pairing
+  ├── WorldEventLog/Belief — drain new events → witness claims (W-7a)
   ├── WaitForBusLayer    — bus-waiter zone scan (waiter tick → WaitBusActivity)
   ├── Agenda             — per-NPC desire → Goal selection (no activity)
   ├── TaskRunner         — primary/monitor task slots
@@ -23,14 +24,18 @@ BehaviorManager          — thin orchestrator; owns the update loop order
 
 Update order each frame (per NPC, `BehaviorManager.js#update`):
 1. `SocialLayer.update` — Activity tick + Talk pairing
-2. `WaitForBusLayer.update` — zone scan only (waiter tick migrated to `WaitBusActivity`)
-3. Lifespan expiry (`!sc.activity` gate) → `releaseAllHoldings` + `triggerDeparture` + `ExitSceneTask`; age accumulates during Activity, trigger fires on first frame after Activity ends
-4. `Agenda.tick` — Goal selection when no Activity
-5. `TaskRunner.tick` — always, including monitor tasks
-6. If `activity` → skip BSM / modifiers
-7. `tickBaseState` + `checkZoneTransition`
-8. `tickModifiers`
-9. `_separate` — inter-NPC separation impulses
+2. `WorldEventLog.drainNewEvents()` → `Belief.generateClaims()` (W-7a) — the
+   single consumption point for events emitted this frame (currently only
+   `TalkActivity.js` calls `emitEvent()`); actor ids resolved against
+   `this.npcs`, missing actors passed through as `null` (`Belief` tolerates)
+3. `WaitForBusLayer.update` — zone scan only (waiter tick migrated to `WaitBusActivity`)
+4. Lifespan expiry (`!sc.activity` gate) → `releaseAllHoldings` + `triggerDeparture` + `ExitSceneTask`; age accumulates during Activity, trigger fires on first frame after Activity ends
+5. `Agenda.tick` — Goal selection when no Activity
+6. `TaskRunner.tick` — always, including monitor tasks
+7. If `activity` → skip BSM / modifiers
+8. `tickBaseState` + `checkZoneTransition`
+9. `tickModifiers`
+10. `_separate` — inter-NPC separation impulses
 
 ---
 

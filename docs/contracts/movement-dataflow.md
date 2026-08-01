@@ -1,6 +1,6 @@
 # Movement Dataflow Contract
 
-> Normative. Updated through N-3c; routing chain deleted; Npc.js inline movement deleted; CYCLIST profile added.
+> Normative. Updated through N-3c; routing chain deleted; Npc.js inline movement deleted; CYCLIST profile added; W-7a adds step 1.5 (event → witness claim consumption).
 >
 > Frame order anchor: `StreetScene#update` (`behaviorManager.update`, line 356) **then** `StreetScene#update` (`entityManager.update → integratePhysics`, line 363). BM runs first; integratePhysics is the last movement step of the same frame.
 
@@ -11,6 +11,7 @@
 | # | Caller | Function | What moves |
 |---|--------|----------|-----------|
 | 1 | `StreetScene.update` → `BehaviorManager.update` | `SocialLayer.update` | activity pair/tick |
+| 1.5 | BM | `WorldEventLog.drainNewEvents` → `Belief.generateClaims` (W-7a) | converts events emitted this frame (currently only `TalkActivity.js#emitEvent`) into witness claims written to `npc.mem('belief').claims`; `event.actors[]` ids resolved against `this.npcs` (missing → `null`, `Belief` tolerates); no position/state change |
 | 2 | BM | `WaitForBusLayer.update` | bus-waiter zone scan (waiter tick → `WaitBusActivity.update` at step 1) |
 | 3 | BM per-NPC | lifespan check (`!sc.activity` gate) → `triggerDeparture` → `_routeToExit` | sets `ag.departing`; saves + expands bounds (edge exits); publishes `mot.goal` (via `publishGoal`); skipped while NPC is in an Activity (age accumulates, triggers on next frame after activity ends) |
 | 4 | BM per-NPC | `Agenda.tick` | selects next desire (no-op if `sc.activity`) |
