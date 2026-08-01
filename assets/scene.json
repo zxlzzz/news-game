@@ -83,7 +83,14 @@
     { "type": "chess", "plaza": "chessPlaza" },
     { "type": "stall_sellers" },
     { "type": "dog_walker" },
-    { "type": "athletes" },
+    {
+      "type": "athletes", "runners": [
+        { "route": "sidewalk_far_jog", "spawnX": 980,  "spawnYBand": "SIDEWALK_FAR_Y",
+          "direction": 1,  "speed": 60, "color": "#1a0818", "margin": 40 },
+        { "route": "park_loop_jog",    "spawnX": 1220, "spawnYBand": "SIDEWALK_NEAR_Y",
+          "direction": -1, "speed": 66, "color": "#0a1808", "margin": 40 }
+      ]
+    },
     { "type": "vehicles" },
     { "type": "bus_stops" }
   ],

@@ -114,9 +114,9 @@ registerFeature('dog_walker', (ctx) => {
   spawnDogWalker(ctx.em, ctx.sr, ctx.bm, ctx.propManager);
 });
 
-// ─── athletes：常驻布景跑者（内部硬编码路线名，须与 layout.walkPaths 存在的键匹配）
-registerFeature('athletes', (ctx) => {
-  spawnAthletes(ctx.em, ctx.sr, ctx.bm);
+// ─── athletes：常驻布景跑者，每个 runner 的路线名须与 layout.walkPaths 存在的键匹配 ──
+registerFeature('athletes', (ctx, cfg) => {
+  spawnAthletes(ctx.em, ctx.sr, ctx.bm, ctx.layout, cfg);
 });
 
 // ─── vehicles：车流系统 + 公交等待层（两者强耦合，捆成一个 feature）───────────
