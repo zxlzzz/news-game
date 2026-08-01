@@ -64,11 +64,18 @@ claim 只有一种、只有一个来源入口（`generateClaims()`）；"这条 
 
 | 槽 | 细粒度（fine） | 粗粒度（coarse） | null 语义 |
 |----|---------------|------------------|-----------|
-| `actor`  | entity_id（如 `npc_42`） | tag（如 `'jogger'`，只知道类别不知道具体是谁） | 未能识别主体 |
+| `actor`  | `npcType#id` 字符串（如 `'jogger#42'`，W-7d 序列化——不是裸 `entity_id`，claim 存的必须是 schema 声明的 `string`） | tag（如 `'jogger'`，只知道类别不知道具体是谁） | 未能识别主体 |
 | `action` | 具体动作字符串（`EventDefs.js#EVENT_DEFS` 的 kind 键，如 `'push'`/`'handshake'`） | `EVENT_DEFS[kind].category`（如 `'social'`/`'conflict'`），只知道"发生了社交/冲突类的事"不知道具体是什么 | 完全没看清在做什么 |
-| `target` | entity_id \| tag，同 `actor` | 同 `actor` | 两种成因不区分记录（见「已知简化」）：①动作本身无对象（如 `'sit'`）②未能感知到对象 |
-| `place`  | prop id / 精确坐标 | yBand 名（如 `'park'`/`'sidewalk_far'`） | 完全没定位到地点 |
+| `target` | `npcType#id` 字符串，同 `actor` | 同 `actor` | 两种成因不区分记录（见「已知简化」）：①动作本身无对象（如 `'sit'`）②未能感知到对象 |
+| `place`  | NavGrid zone 名 + 坐标后缀（如 `'SIDEWALK(650,240)'`，W-7d 序列化——不是裸 `{x,y}` 对象） | NavGrid zone 名（如 `'GRASS'`/`'ROAD'`，无坐标后缀） | 完全没定位到地点（NavGrid 未 bake 时也返回 null，不抛错） |
 | `time`   | 绝对 timestamp | 粗桶（`'just_now'`/`'a_while_ago'`/`'long_ago'`） | 几乎不出现在产出时（见下方 channel 表），只会在复述 mutation 后出现 |
+
+`actor`/`target`/`place` 的 fine 粒度值统一经 `Belief.js#_describeSlotValue()`
+产出（W-7d，唯一序列化住址）——claim 存的从来都应该是这个函数的输出，不是
+"原始值，留给消费方格式化"；早期实现（W-6/W-7c）曾经直接存 `npc.id`（数字）
+和 `{x,y}`（对象），两者都不满足本节 schema 声明的 `string | null`，喂进
+`claimsToTestimony()` 拼出来的证词分别是 `谁=17`、`地点=[object Object]`——
+这是 W-7d 修的两个具体 bug，不是新功能。
 
 ---
 

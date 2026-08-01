@@ -289,9 +289,14 @@ claim**）：只能把某条既有 claim 上 `sources[slot]===null` 的槽填上
 `NewsUI` 审问面板决定往哪写。provenance 是槽级的（`claim.sources` 对象），
 claim 无顶层 `source` 字段（v1.1，见 `witness-memory-v1.md` 第一节）。
 `NewsUI` 调 `providers.interrogate.ask()` 把玩家提问解析成 `{slot,value}`
-（LLM 只翻译，不直接写 belief）。`claimsToTestimony(npc)` 把 claims 转成
-人类可读字符串数组，喂给 `providers.text.compose({testimony})`——`testimony`
-不再硬编码 `[]`。
+（LLM 只翻译，不直接写 belief）。`_describeSlotValue(kind, raw)` 是槽值
+序列化唯一住址（W-7d）：actor/target 的 fine 值存 `npcType#id` 字符串、
+place 的 fine/coarse 值存 NavGrid zone 名（+坐标后缀），claim 里存的就是
+这个函数的输出，不是待格式化的 npc 对象/坐标——schema 声明这三槽是
+`string`，产出时就必须已经是字符串。`claimsToTestimony(npc)` 把 claims
+转成人类可读字符串数组，按槽标注来源（哪个字是问出来的，不是整条打一个
+标签），喂给 `providers.text.compose({testimony})`——`testimony` 不再
+硬编码 `[]`。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；

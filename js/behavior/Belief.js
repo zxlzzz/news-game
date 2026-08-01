@@ -64,8 +64,34 @@ function _pick(entries) {
   return entries[entries.length - 1][1];
 }
 
+/**
+ * _describeSlotValue — 槽值序列化唯一住址（W-7d）。
+ *
+ * schema（witness-memory-v1.md 第一节）声明 actor/target/place 都是
+ * `string | null`，但改造前 fine 粒度直接存了原始值：actor/target 存裸
+ * `npc.id`（数字），place 存 `{x,y}` 对象——两者都不是字符串，喂进
+ * `claimsToTestimony()` 拼出来的证词分别是 `谁=17`、`地点=[object Object]`，
+ * 对玩家和 LLM 都不可读。这两处 bug 的修法收在同一个函数里，不散落成
+ * 各自打补丁：claim 里存的就应该是这个函数的输出，不是待格式化的原始值。
+ */
+function _describeSlotValue(kind, raw) {
+  if (kind === 'npc') {
+    return `${raw.npcType ?? 'npc'}#${raw.id}`;
+  }
+  if (kind === 'place') {
+    const { x, y, precise } = raw;
+    const grid = getNavGrid();
+    if (!grid) return null;
+    const z = grid.zone(Math.floor(x / CELL), Math.floor(y / CELL));
+    const zoneName = ZONE_NAME[z];
+    if (!zoneName) return null;
+    return precise ? `${zoneName}(${Math.round(x)},${Math.round(y)})` : zoneName;
+  }
+  return null;
+}
+
 function _actorFidelityValue(npc, fidelity) {
-  if (fidelity === 'fine') return npc.id;
+  if (fidelity === 'fine') return _describeSlotValue('npc', npc);
   if (fidelity === 'tag')  return npc.npcType ?? [...npc.getTags()][0] ?? null;
   return null;
 }
@@ -77,13 +103,8 @@ function _actionFidelityValue(kind, fidelity) {
 }
 
 function _placeFidelityValue(x, y, fidelity) {
-  if (fidelity === 'fine') return { x: Math.round(x), y: Math.round(y) };
-  if (fidelity === 'coarse') {
-    const grid = getNavGrid();
-    if (!grid) return null;
-    const z = grid.zone(Math.floor(x / CELL), Math.floor(y / CELL));
-    return ZONE_NAME[z] ?? null;
-  }
+  if (fidelity === 'fine')   return _describeSlotValue('place', { x, y, precise: true });
+  if (fidelity === 'coarse') return _describeSlotValue('place', { x, y, precise: false });
   return null;
 }
 
@@ -187,18 +208,21 @@ const SLOT_LABEL = { actor: '谁', action: '做了什么', target: '对象', pla
 /**
  * claims → testimony[]（人类可读字符串），供 providers.text.compose({testimony}) 消费。
  *
- * W-7c 暂用"整条是否含任一 suggested 槽"这一粗粒度标注过渡——按槽级来源
- * 精确标注（"哪个字是问出来的"）是 W-7d「证词序列化收口」的范围，这里先
- * 保证 schema 迁移后不崩、语义不倒退（不会把 suggested 的内容误标成目击）。
+ * W-7d：按槽标注来源，不再整条打一个标签——一条 claim 完全可能 action 是
+ * 目击、actor 是问出来的，"（未经证实）"只跟在被问出来的那个槽后面，
+ * 不该盖住整条（那样会让真正目击到的部分也被读者当成道听途说）。
+ * `providers.js` 的 live system prompt 明确认这个子串（"只能转述不能当
+ * 确证事实"），字面量不能改。
  */
 export function claimsToTestimony(npc) {
   const claims = npc.mem('belief').claims ?? [];
   const lines = [];
   for (const claim of claims) {
-    const parts = SLOTS.filter(s => claim[s] != null).map(s => `${SLOT_LABEL[s]}=${claim[s]}`);
+    const parts = SLOTS
+      .filter(s => claim[s] != null)
+      .map(s => `${SLOT_LABEL[s]}=${claim[s]}${claim.sources[s] === 'suggested' ? '（未经证实）' : ''}`);
     if (parts.length === 0) continue;
-    const anySuggested = SLOTS.some(s => claim.sources[s] === 'suggested');
-    lines.push(`${parts.join('，')}${anySuggested ? '（部分未经证实）' : '（目击）'}`);
+    lines.push(parts.join('，'));
   }
   return lines;
 }
