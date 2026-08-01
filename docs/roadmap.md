@@ -52,6 +52,7 @@
 | 批次 A-②（VisitTask + park_idler） | `VisitTask.js`（seeking→arriving→doing 状态机）；`StrollLoopTask.js`（park_loop_cw + wpIndex 计段）；`Agenda.park_idler` 模板（credits 1-3 + stroll→visit 循环）；`SceneInitializer` 注册 grass_rest ambient affordance + 生成 3-5 名公园常驻 NPC | ✅ 已落地 | `js/behavior/tasks/VisitTask.js`；`js/behavior/tasks/StrollLoopTask.js`；`js/behavior/Agenda.js`；`js/scenes/SceneInitializer.js` |
 | C-1（编辑器参照层 + 双人改进） | 参照层（context 字段 + ATTACHMENT_DEFS/PROP_DEFAULTS 绘制）；双人新建/偏移持久化/接触距离显示/关节保护；panel 按 kind 过滤；删除 MediaPipe/SpriteSheet；六处小修 | ✅ 已落地 | `sth/stick-puppet/js/app.js`；`sth/stick-puppet/index.html`；`sth/tools/validate.mjs` |
 | Cleanup-1（死代码删除 + 工具修复） | 删除 3 个孤立模块（TrafficSignal / CameraReactionLayer / PlayPoseTask）；Layout.js 删除 14 个零引用导出（9 兼容别名 + 5 LINE 常量 + 2 辅助函数）；6 处内部符号去 export；UsePropActivity 改用 ClipPlayer；NpcProfile PED_GESTURES 假键修正；gen-manifest.mjs id/kind 派生逻辑修复（从文件名/目录派生，两遍扫 variant/）；validate.mjs variant_of 误报修复；3 处文档错误修正；CLAUDE.md 补录 11 条文档索引 | ✅ 已落地 | `js/behavior/`；`js/core/Layout.js`；`js/entity/`；`sth/tools/`；`docs/` |
+| 批次 W（目击/感知地基） | W-2：`witness-memory-v1.md`——claim 五槽 schema + channel×槽可填表（sound 通道 `actor` 硬 null，非概率）+ q→填槽裁决表 + mutation 转移表（照 Talk of the Town）+ 2–4 目击者设计目标，纯文档零代码。W-4：`Perception.js`——视觉三项（dist/facing/attention）+ 听觉两项（dist/attention）双通道裁决，`perceive(witness,eventX,eventY)→{channel,q}\|null`，视距/听距上限唯一住址，纯函数未接入任何调用点，无行为变化 | ✅ 已落地（W-2/W-4）；W-1（EventDefs/WorldEventLog/emitEvent）未实施，本批次不含；W-3（registerProp occludesSight）用户决定废弃，不做 | `docs/design-plans/witness-memory-v1.md`；`js/behavior/Perception.js` |
 
 ---
 

@@ -252,6 +252,12 @@ BehaviorManager
 nav/PlanService — Planning 层横切服务，不隶属上述任一子层。
 消费者：BaseStateMachine、BehaviorManager、GotoTask / StrollTask / ExitSceneTask、
 SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.path` 唯一写入方。
+
+Perception.js — 感知裁决横切服务（视觉/听觉双通道，纯函数，不写 npc.mem）。
+`perceive(witness, eventX, eventY) → {channel, q} | null`；视距/听距上限唯一住址
+在本文件内（`SIGHT_MAX_DIST` / `SOUND_MAX_DIST`），硬截断，不得在别处复制。
+消费者：暂无（W-4 地基阶段，未接入任何调用点，无行为变化）；未来 belief 层
+（`docs/design-plans/witness-memory-v1.md`）按其输出的 q 走裁决表填 claim 槽位。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
@@ -354,6 +360,7 @@ npc.clearMem('loiter');
 | `docs/roadmap.md` | 快照 | 功能批次落地状态一览（规范性路线图跟踪） |
 | `docs/design-plans/goal-pipeline-v1.md` | 规范性 | 四层目标管线立法；三铁律；ARRIVAL/RECOVERY/SAFETY/PLANNING 裁决表；N-1/N-2/N-3 刀序；四数验收表 |
 | `docs/design-plans/belief-layer-v0.md` | 设计稿（draft） | 信念层 v0 占位草案：符号化事件声明、LLM 证人污染防护、SIR 传播 |
+| `docs/design-plans/witness-memory-v1.md` | 设计稿（finalized） | 目击记忆 claim 五槽 schema；channel×槽可填表（sound.actor 硬 null）；q→填槽裁决表；mutation 转移表；2–4 目击者设计目标 |
 | `Visual design spec.md` | 规范性 | 全场景视觉规范：纯 2D 平面黑白灰，draw*.js 合规基线 |
 | `Visual spec cc.md` | 规范性 | 视觉规范实施参考（CC 用）：公共函数模板、draw 改造清单 |
 | `docs/audits/behavior-redundancy-2026-07.md` | 快照 | 行为层冗余机制审计（2026-07），Cleanup-1 输入文件 |
