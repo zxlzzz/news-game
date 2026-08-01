@@ -11,7 +11,10 @@ import { VehicleSpawner }     from '../../behavior/VehicleSpawner.js';
 import { CyclistSpawner }     from './CyclistSpawner.js';
 import { drawBicycle, drawEbike } from './drawBicycle.js';
 
-export function initVehicleSystem(em, sr, bm) {
+const BUS_WAIT_RANGE = [5000, 20000];
+
+/** busStopsCfg：layout.busStops（scene.json 驱动，见 sceneData.js#_expandLayout） */
+export function initVehicleSystem(em, sr, bm, busStopsCfg = []) {
   const cyclistSpawner = new CyclistSpawner({
     em, sr, bm, draw: { bicycle: drawBicycle, ebike: drawEbike },
   });
@@ -19,8 +22,9 @@ export function initVehicleSystem(em, sr, bm) {
 
   const tm = new TrafficManager({ em });
 
-  tm.busStops.push(new BusStop({ x: 500,  direction: +1, waitRange: [5000, 20000] }));
-  tm.busStops.push(new BusStop({ x: 1500, direction: -1, waitRange: [5000, 20000] }));
+  for (const stop of busStopsCfg) {
+    tm.busStops.push(new BusStop({ x: stop.x, direction: stop.direction, waitRange: BUS_WAIT_RANGE }));
+  }
 
   tm.spawner = new VehicleSpawner({ trafficManager: tm, sr });
   tm.spawner.spawnInitial();

@@ -66,9 +66,10 @@ NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车�
 而那段导航上是 `ZONE.ROAD`——视觉按材质切，zone 按通行性切，不可互相套用。
 
 **⚠️ 禁止在模块顶层从 Layout 值派生量**（写成函数，或延后到 init 之后计算）：注入晚于
-所有模块顶层求值，顶层派生会冻结在 fallback 默认值上。现存三处待偿：`NavGrid.js`
-`COLS/ROWS`、`VehicleSpawner.js` `LANES`、`WaitForBusLayer.js` `WAIT_ZONES`
-（详见 `docs/roadmap.md#Z-2a`）。
+所有模块顶层求值，顶层派生会冻结在 fallback 默认值上。现存两处待偿：`NavGrid.js`
+`COLS/ROWS`、`VehicleSpawner.js` `LANES`
+（详见 `docs/roadmap.md#Z-2a`）。`WaitForBusLayer.js` 原 `WAIT_ZONES` 曾是第三处，
+已随公交站坐标收口（见下方）一并改为构造函数内按 `busStops` 现算，不再冻结。
 
 ---
 
@@ -197,9 +198,12 @@ navGrid, spawnPoints, worldWidth}`。**features 数组顺序 = 初始化顺序 =
 未声明某 feature（如学校场景不要 `vehicles`）时下游必须防御——`Director` 的
 `busStops: scene.trafficManager?.busStops ?? []` 是样例。
 
-⚠️ **已知遗留**（非 Z-2e 引入，未修）：`vehicles` feature 内的 `initVehicleSystem()`
-内部硬编码两个公交站坐标，与 `bus_stops` feature 读的 `layout.busStops`（scene.json 数据）
-是两个独立位置真相，当前已不一致（500 vs 650）。发现时未合并，原样保留。
+`vehicles` feature 内的 `initVehicleSystem(em, sr, bm, busStopsCfg)` 现直接读
+`layout.busStops`（scene.json `layout.busStops`，即 `bus_stops` feature 渲染顶棚/长椅
+用的同一份数据）构建 `BusStop`，`WaitForBusLayer` 的等候区（原 `WAIT_ZONES`）也在构造
+函数内按同一批 `busStops.x` ± 半宽现算——公交站坐标不再有多份互相冲突的硬编码副本。
+（历史注记：曾有 `vehicleSpawner.js` 硬编码 x=500/1500 与 `layout.busStops` 的
+x=650/1500 不一致的已知 bug，已随此次收口一并修复。）
 
 ---
 

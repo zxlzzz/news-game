@@ -10,12 +10,6 @@
  *   { em, sr, bm, scene, layout, sceneData, propManager, navGrid, spawnPoints }
  *
  * cfg 是该 feature 在 scene.json `features[]` 里的那一条（已去掉 `type` 键）。
- *
- * ⚠️ 已知遗留（非本刀引入，不在此修）：`vehicles` feature 内部的
- * `initVehicleSystem()` 硬编码两个公交站 x=500(+1)/1500(-1)，与
- * `layout.busStops`（`bus_stops` feature 读取，当前 scene.json 为 x=650(+1)/1500(-1)）
- * 是两个独立的位置真相——650 与 500 对不上。这是既有 bug，不属于 Z-2e
- * 范围，未合并/未修正，原样保留其现有（有缺陷的）行为。
  */
 
 import { registerFeature } from '../core/featureRegistry.js';
@@ -126,10 +120,10 @@ registerFeature('athletes', (ctx) => {
 });
 
 // ─── vehicles：车流系统 + 公交等待层（两者强耦合，捆成一个 feature）───────────
-// ⚠️ initVehicleSystem 内部硬编码 busStops（x=500/1500），与 bus_stops feature
-// 读取的 layout.busStops（x=650/1500）是独立数据源，见文件头注释。
+// busStops 坐标唯一来源 = layout.busStops（scene.json），与 bus_stops feature
+// 渲染顶棚/长椅用的是同一份数据，不再各自硬编码。
 registerFeature('vehicles', (ctx) => {
-  const tm = initVehicleSystem(ctx.em, ctx.sr, ctx.bm);
+  const tm = initVehicleSystem(ctx.em, ctx.sr, ctx.bm, ctx.layout.busStops);
   ctx.scene.trafficManager = tm;
   if (tm.busStops.length > 0) {
     ctx.bm.waitForBusLayer = new WaitForBusLayer(tm.busStops, ctx.em.entities, ctx.bm.socialLayer);

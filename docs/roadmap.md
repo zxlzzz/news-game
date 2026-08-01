@@ -346,17 +346,24 @@ NavGrid 从「cost map」重构为「zone map + profile cost table」两层：
 - **注入时序**：`StreetScene.create()` 内 `expandSceneData` 之后、`SceneRenderer` 之前。
 
 **live binding 的边界（重要）**：注入晚于所有模块顶层求值，因此**在模块顶层从 Layout
-值派生的量冻结在 fallback 默认值上**，不随注入更新。现存三处：
+值派生的量冻结在 fallback 默认值上**，不随注入更新。当时现存三处：
 
 | 站点 | 冻结量 | 依赖 |
 |------|--------|------|
 | `NavGrid.js` | `COLS` / `ROWS` | `WORLD_WIDTH` / `WORLD_HEIGHT` |
 | `VehicleSpawner.js` | `LANES` | `roadY()` / `WORLD_WIDTH` |
-| `WaitForBusLayer.js` | `WAIT_ZONES` | `SIDEWALK_FAR_Y` / `BIKE_LANE_FAR_TOP` / `PARK_TOP` |
+| ~~`WaitForBusLayer.js`~~ | ~~`WAIT_ZONES`~~ | 已解决，见下方「公交站坐标收口」 |
 
-Z-2a 的注入值与默认值相同，故零行为差异；**任何真正改动这些数值的场景必须先处理这三处**
-（改为函数或延后到 init 之后计算）。另注：`headless-sim.mjs` 用解构动态 import
+Z-2a 的注入值与默认值相同，故零行为差异；**任何真正改动这些数值的场景必须先处理剩余
+两处**（改为函数或延后到 init 之后计算）。另注：`headless-sim.mjs` 用解构动态 import
 取 Layout 值，那是拷贝而非 live binding，且不调 `initLayout`，故始终用默认值。
+
+**公交站坐标收口**（后续独立小刀，晚于 Z-2e）：`WaitForBusLayer.js` 的 `WAIT_ZONES`
+改为构造函数内按传入的 `busStops`（`stop.x` ± 半宽常量 `WAIT_ZONE_HALF_WIDTH`）现算，
+不再是模块顶层字面量数组，同时解决了此处的顶层冻结问题和下方 Z-2e 记录的
+「公交站坐标 500≠650」不一致问题——`vehicleSpawner.js#initVehicleSystem` 现接收
+`busStopsCfg` 参数，由 `sceneFeatures.js` 的 `vehicles` feature 传入 `ctx.layout.busStops`
+（即 `bus_stops` feature 渲染顶棚用的同一份数据），不再自带一份硬编码坐标。
 
 代码锚点：`js/core/Layout.js#initLayout`；`js/core/sceneData.js#expandSceneData`；
 `js/scenes/StreetScene.js#create`
@@ -427,12 +434,12 @@ wiring 提前到公交视觉实体生成之前。核实为安全：`WaitForBusLa
 公交实体仍对已构造的 `WaitForBusLayer` 可见；且两者都不消费 `Math.random()`，
 不影响其余 feature 的随机数消费顺序。
 
-⚠️ **已知遗留**（本刀发现，未修，非 Z-2e 引入）：`vehicles` feature 内的
+~~⚠️ **已知遗留**（本刀发现，未修，非 Z-2e 引入）：`vehicles` feature 内的
 `initVehicleSystem()` 内部硬编码两个公交站坐标（x=500 direction+1、x=1500
 direction−1），与 `bus_stops` feature 读的 `layout.busStops`（scene.json，
 当前 x=650/1500）是两个独立位置真相，已经不一致（500≠650）。这是一个先于
 本刀存在的 bug，不属于"数据驱动化"范围，未合并两者、未修正坐标，原样保留
-其现有（有缺陷的）行为。
+其现有（有缺陷的）行为。~~ 已修复，见上方 Z-2a 小节「公交站坐标收口」。
 
 **验证**（用户已知情并批准：本刀违反了 CLAUDE.md「默认禁止运行游戏/harness/
 模拟验证」的工作流铁律——用 `git worktree` 对比改造前后的

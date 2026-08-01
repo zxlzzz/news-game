@@ -16,10 +16,24 @@ import { WaitBusActivity } from '../../behavior/activities/WaitBusActivity.js';
 import { SIDEWALK_FAR_Y, BIKE_LANE_FAR_TOP, PARK_TOP } from '../../core/Layout.js';
 import { despawnNpc } from '../../npc/despawn.js';
 
-const WAIT_ZONES = [
-  { stopDir: +1, xRange: [380, 620],  yRange: [SIDEWALK_FAR_Y - 20, BIKE_LANE_FAR_TOP] },
-  { stopDir: -1, xRange: [1380, 1620], yRange: [PARK_TOP, PARK_TOP + 25] },
-];
+// 等候区半宽：候车区中心 = busStop.x（scene.json#layout.busStops，唯一坐标真相），
+// 不再另存一份独立的 xRange 字面量，避免与站台实际位置脱节。
+const WAIT_ZONE_HALF_WIDTH = 120;
+
+/** y 方向仍按 direction 走（远侧人行道/近侧公园缘的车道几何不同），非按站点各自配置 */
+function _waitZoneYRange(direction) {
+  return direction > 0
+    ? [SIDEWALK_FAR_Y - 20, BIKE_LANE_FAR_TOP]
+    : [PARK_TOP, PARK_TOP + 25];
+}
+
+function _buildWaitZones(busStops) {
+  return busStops.map(stop => ({
+    stopDir: stop.direction,
+    xRange: [stop.x - WAIT_ZONE_HALF_WIDTH, stop.x + WAIT_ZONE_HALF_WIDTH],
+    yRange: _waitZoneYRange(stop.direction),
+  }));
+}
 
 const WAIT_STATES   = new Set(['walk', 'stand', 'loiter']);
 const SCAN_INTERVAL = 0.5;
@@ -30,6 +44,7 @@ export class WaitForBusLayer {
     this._entities    = entities ?? [];
     this._socialLayer = socialLayer ?? null;
     this._scanTimer   = 0;
+    this._waitZones   = _buildWaitZones(busStops);
 
     for (const stop of busStops) {
       stop.onBoarding = (bus, s) => this._startBoarding(bus, s);
@@ -52,7 +67,7 @@ export class WaitForBusLayer {
 
   /** NPC 是否已在对应等候区内 */
   isInWaitZone(npc, stop) {
-    const z = WAIT_ZONES.find(z => z.stopDir === stop.direction);
+    const z = this._waitZones.find(z => z.stopDir === stop.direction);
     if (!z) return false;
     return npc.x >= z.xRange[0] && npc.x <= z.xRange[1]
         && npc.y >= z.yRange[0] && npc.y <= z.yRange[1];
@@ -60,7 +75,7 @@ export class WaitForBusLayer {
 
   /** 等候区中心坐标（ExitSceneTask 路由目标） */
   waitZoneTarget(stop) {
-    const z = WAIT_ZONES.find(z => z.stopDir === stop.direction);
+    const z = this._waitZones.find(z => z.stopDir === stop.direction);
     if (!z) return null;
     return {
       x: (z.xRange[0] + z.xRange[1]) / 2,
@@ -79,7 +94,7 @@ export class WaitForBusLayer {
       const modeKind = mot.walkMode?.kind;
       if ((modeKind && modeKind !== 'wander') || mot.goal) continue;
 
-      for (const zone of WAIT_ZONES) {
+      for (const zone of this._waitZones) {
         if (npc.x < zone.xRange[0] || npc.x > zone.xRange[1]) continue;
         if (npc.y < zone.yRange[0] || npc.y > zone.yRange[1]) continue;
 

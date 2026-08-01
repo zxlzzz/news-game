@@ -13,11 +13,12 @@
  *
  * ⚠️ live binding 的边界：注入发生在 `StreetScene.create()`，而所有模块的顶层代码
  * 早于它求值。因此**在模块顶层从这些值派生出的量会冻结在 fallback 默认值上**，
- * 不随注入更新。现存三处（Z-2a 时注入值与默认值相同，故无行为差异，但改值前必须处理）：
+ * 不随注入更新。现存两处（Z-2a 时注入值与默认值相同，故无行为差异，但改值前必须处理）：
  *   - `NavGrid.js` `COLS/ROWS`（由 WORLD_WIDTH/HEIGHT 算格数）
  *   - `VehicleSpawner.js` `LANES`（roadY() / WORLD_WIDTH）
- *   - `WaitForBusLayer.js` `WAIT_ZONES`（SIDEWALK_FAR_Y / BIKE_LANE_FAR_TOP / PARK_TOP）
  * 新增派生量请写成函数或在 init 之后计算，勿放模块顶层。
+ * （`WaitForBusLayer.js` 原 `WAIT_ZONES` 曾是第三处，已随公交站坐标收口一并改为
+ * 构造函数内按 busStops 现算，见 docs/roadmap.md。）
  */
 
 // ─── 世界尺寸 ─────────────────────────────────────────────────────────────────
