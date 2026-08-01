@@ -4,6 +4,8 @@
  * 挂载到 #news-ui-root（pointer-events:none），面板显示时内部元素 pointer-events:auto。
  */
 
+import { injectSuggestion, claimsToTestimony } from '../behavior/Belief.js';
+
 const PANEL_STYLE = `
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
   background:rgba(14,14,26,0.96); color:#e0ddd8; border:1px solid #444;
@@ -42,7 +44,7 @@ export class NewsUI {
   }
 
   // ── 成稿面板 ──────────────────────────────────────────────────────────────────
-  openComposer({ photoRef, entitySnapshot, visionPromise }) {
+  openComposer({ photoRef, entitySnapshot, visionPromise, witnesses = [] }) {
     this.close();
     const panel = el('div', PANEL_STYLE);
 
@@ -65,6 +67,69 @@ export class NewsUI {
     const visionBox = el('div', 'flex:1;background:#1a1a2e;padding:8px;border-radius:4px;font-size:13px;line-height:1.6;min-height:60px;white-space:pre-wrap;color:#bbb;', '⏳ 分析中…');
     midRow.appendChild(img); midRow.appendChild(visionBox);
     panel.appendChild(midRow);
+
+    // ── 目击者审问（W-6）：LLM 只把提问解析成 (槽位,候选值)，写入信念的是
+    //    injectSuggestion() 这个显式游戏内机制，不是 LLM 直接写 belief ──────────
+    const witnessRow = el('div', 'padding:0 16px 8px;border-top:1px solid #222;padding-top:8px;');
+    if (witnesses.length === 0) {
+      witnessRow.appendChild(el('div', 'color:#666;font-size:12px;', '（本次拍摄未捕捉到可审问的目击者）'));
+    } else {
+      witnessRow.appendChild(el('div', 'color:#888;font-size:12px;margin-bottom:6px;', '审问目击者：'));
+
+      const pickerRow = el('div', 'display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;');
+      const qaBox = el('div', 'background:#1a1a2e;padding:8px;border-radius:4px;font-size:12px;line-height:1.6;color:#bbb;white-space:pre-wrap;display:none;');
+      const qRow  = el('div', 'display:none;gap:6px;margin-top:6px;');
+      const qInput = document.createElement('input');
+      qInput.type = 'text';
+      qInput.placeholder = '问点什么…（比如"是谁干的" / "在哪儿"）';
+      qInput.style.cssText = 'flex:1;background:#111;color:#ddd;border:1px solid #444;padding:5px 8px;border-radius:3px;font-family:inherit;font-size:12px;box-sizing:border-box;';
+      const askBtn = el('button', `${BTN} background:#3a3a6e;font-size:12px;padding:4px 12px;`, '提问');
+      qRow.style.display = 'none';
+      qRow.appendChild(qInput); qRow.appendChild(askBtn);
+
+      let activeWitness = null;
+      const renderQA = () => {
+        if (!activeWitness) return;
+        const lines = claimsToTestimony(activeWitness);
+        qaBox.textContent = lines.length > 0 ? lines.join('\n') : '（还没问出什么）';
+      };
+
+      for (const w of witnesses) {
+        const label = w.npcType ? `${w.npcType}#${w.id}` : `NPC${w.id}`;
+        const btn = el('button', `${BTN} background:#333;font-size:12px;padding:4px 10px;`, label);
+        btn.addEventListener('click', () => {
+          activeWitness = w;
+          qaBox.style.display = '';
+          qRow.style.display = 'flex';
+          renderQA();
+        });
+        pickerRow.appendChild(btn);
+      }
+
+      askBtn.addEventListener('click', async () => {
+        const question = qInput.value.trim();
+        if (!question || !activeWitness) return;
+        askBtn.textContent = '…';
+        askBtn.style.pointerEvents = 'none';
+        try {
+          const knownClaims = activeWitness.mem('belief').claims ?? [];
+          const result = await this._providers.interrogate.ask({ question, knownClaims });
+          injectSuggestion(activeWitness, result.slot, result.value);
+          qInput.value = '';
+          renderQA();
+        } catch (err) {
+          console.error('[NewsUI] interrogate error', err);
+        } finally {
+          askBtn.textContent = '提问';
+          askBtn.style.pointerEvents = 'auto';
+        }
+      });
+
+      witnessRow.appendChild(pickerRow);
+      witnessRow.appendChild(qaBox);
+      witnessRow.appendChild(qRow);
+    }
+    panel.appendChild(witnessRow);
 
     // ── stance + draft ──
     const stanceRow = el('div', 'padding:8px 16px;display:flex;align-items:center;gap:12px;border-top:1px solid #222;');
@@ -124,9 +189,10 @@ export class NewsUI {
       genBtn.style.pointerEvents = 'none';
       const stance = Object.values(stanceInput).find(r => r.checked)?.value ?? 'neutral';
       const draft  = textarea.value.trim();
+      const testimony = witnesses.flatMap(w => claimsToTestimony(w));
       try {
         const result = await this._providers.text.compose({
-          visionReport, playerStance: stance, playerDraft: draft, testimony: [],
+          visionReport, playerStance: stance, playerDraft: draft, testimony,
         });
         if (result.mock) mockBadge.style.display = '';
         artText.textContent = result.text;

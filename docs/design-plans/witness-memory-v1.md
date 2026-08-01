@@ -147,3 +147,25 @@ q≥0.20 才计入候选，按 q 降序取样，候选数 <2 时如实反映（�
   本文档不预先假设一个尚不存在的完整列表。
 - claim 到 `npc.mem('belief').claims` 的实际写入时机、SIR 传播的具体触发点（Talk
   activity 配对时？）沿用 `belief-layer-v0.md` 的 I-1/I-3 集成点草案，本文档不重复展开。
+
+---
+
+## 七、W-6 追加：`source: 'suggested'` 与 `strength`
+
+原 schema（第一节）只定义了 `source: 'witness'`。W-6（审问接口）落地时新增第二种
+provenance，本文档在此追记，不回头改第一节的冻结代码块：
+
+```js
+{
+  ...同五槽,
+  q: null, channel: null,     // 'suggested' claim 不经 Perception，这两个字段恒 null
+  source: 'suggested',        // 被提问引导后"想起来"的，不是亲眼/亲耳目击
+  strength: number,           // 同一 (slot,value) 每被复述一次 +1，初始 1
+}
+```
+
+`source:'suggested'` 的写入点是 `Belief.js#injectSuggestion(npc, slot, value)`，与
+`generateClaims()`（witness 来源）严格分开——两个函数各自是各自 provenance 的唯一
+写入点，不合并。LLM（`providers.js` 的 `interrogate.ask()`）只把玩家提问解析成
+`{slot, value}`，从不直接碰 `npc.mem('belief')`，呼应 `belief-layer-v0.md` 的
+"LLM 只做翻译，不直接写 belief" 铁律。

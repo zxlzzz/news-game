@@ -1,4 +1,8 @@
 > **status: finalized** — 设计已定稿，实施跟踪见各分支提交记录。
+> **过期提示**：本文档写作时 `testimony` 接口预留但恒为 `[]`（见下方 §3/§7）；
+> W-6（`docs/roadmap.md` 批次 W）已实装审问接线，`testimony` 现由
+> `NewsUI.openComposer` 的 `witnesses` 参数经 `Belief.claimsToTestimony()` 产出，
+> 不再恒空。本文档保留原样作为 MVP 阶段的历史决策记录，不回填。
 
 # 新闻管线 MVP — 设计文档
 

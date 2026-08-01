@@ -267,7 +267,7 @@ push_land / give_item / handshake / point_at 五种 kind，取代旧版直接挂
 NPC 上的私有标签字段）。只记录不消费——本模块自己不接 Belief.js，两者仍是
 独立地基，接哪个事件源触发目击生成是后续批次的接线工作。
 
-Belief.js — npc.mem('belief').claims 唯一 owner（W-5）。`generateClaims(event,
+Belief.js — npc.mem('belief').claims 唯一 owner（W-5/W-6）。`generateClaims(event,
 actorNpcs, candidateNpcs)` 是"witness"来源 claim 的唯一写入点：对候选池逐个跑
 `Perception.perceive()`，q≥0.20 才计入候选，按 `witness-memory-v1.md` §5 的
 [2,4] 目标取样，再按 `ClaimDecisionTables.js` 的 q→填槽表决定每槽 fine/coarse/
@@ -275,6 +275,14 @@ tag/null。`selectWitnesses()` 单独导出，供
 `scripts/check-witness-distribution.mjs` 静态采样验证数量分布，不依赖
 NavGrid/EntityManager，可脱离游戏运行。消费者：暂无调用方接入
 `generateClaims()`（W-5 地基阶段，WorldEventLog 尚未接到这里，无行为变化）。
+
+`injectSuggestion(npc, slot, value)` 是"suggested"来源 claim 的唯一写入点
+（W-6，与 `generateClaims()` 严格分开，provenance 不能混）：`NewsUI` 的审问
+面板调 `providers.interrogate.ask()` 把玩家提问解析成 `{slot,value}`（LLM 只
+翻译，不直接写 belief），再调本函数写入；同一 (slot,value) 重复注入只加
+`strength` 不重复建 claim。`claimsToTestimony(npc)` 把 claims 转成人类可读
+字符串数组，喂给 `providers.text.compose({testimony})`——`testimony` 不再
+硬编码 `[]`。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；

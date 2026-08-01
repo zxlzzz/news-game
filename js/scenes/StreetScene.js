@@ -34,7 +34,7 @@ import { clipLibrary } from '../core/ClipLibrary.js';
 import { clockUpdate, gameTimeStr, setClockSpeed, setGameTime } from '../core/GameClock.js';
 import { drawNavDebug } from '../behavior/nav/NavGrid.js';
 import { audit } from '../debug/MovementAudit.js';
-import { vision, text, setLastSnapshot } from '../news/providers.js';
+import { vision, text, interrogate, setLastSnapshot } from '../news/providers.js';
 import { NewsArchive } from '../news/NewsArchive.js';
 import { NewsUI } from '../news/NewsUI.js';
 
@@ -223,7 +223,7 @@ export class StreetScene {
     this._newsUI = new NewsUI(
       document.getElementById('news-ui-root'),
       this._newsArchive,
-      { vision, text },
+      { vision, text, interrogate },
     );
   }
 
@@ -316,8 +316,12 @@ export class StreetScene {
     setLastSnapshot(entitySnapshot);
     const visionPromise = vision.describe(photoRef);
 
+    // 可审问目击者 = 本次拍摄捕捉到的、真正是 NPC（有 mem() 能力）的实体
+    // ——道具/建筑同样可能落入取景框，用 typeof e.mem === 'function' 排除它们
+    const witnesses = vf.capturedEntities.filter(e => typeof e.mem === 'function');
+
     this.captureText.setText(`已拍摄 ${vf.capturedEntities.length} 个目标`).setColor('#226600');
-    this._newsUI.openComposer({ photoRef, entitySnapshot, visionPromise });
+    this._newsUI.openComposer({ photoRef, entitySnapshot, visionPromise, witnesses });
   }
 
   _clampViewfinderToViewport() {

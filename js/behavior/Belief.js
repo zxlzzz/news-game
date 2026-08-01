@@ -118,3 +118,50 @@ export function generateClaims(event, actorNpcs, candidateNpcs) {
   }
   return produced;
 }
+
+/**
+ * injectSuggestion — 审问注入（W-6），claims 的第二个写入点。
+ *
+ * 与 generateClaims() 严格分开，不合并成一个入口：两种 provenance（亲眼
+ * 目击 vs 被提问引导后"想起来"的）必须能各自单独追责，混进同一个写入函数
+ * 会让"这条 claim 是不是被污染过"这个问题在代码里变得不可回答。
+ *
+ * 同一 (slot, value) 重复注入（复述）只增加 strength，不重复建 claim——
+ * "反复问同一件事、得到同样的答案"应该强化信念而不是刷 claims 数组长度。
+ * NPC 本身不会因为被注入而改变任何行为（"无自觉"）：本函数只写数据，
+ * 不触发状态机/情绪/记忆巩固之类的副作用。
+ */
+export function injectSuggestion(npc, slot, value) {
+  if (value == null) return null;
+  const mem = npc.mem('belief');
+  if (!mem.claims) mem.claims = [];
+  const existing = mem.claims.find(c => c.source === 'suggested' && c[slot] === value);
+  if (existing) {
+    existing.strength = (existing.strength ?? 1) + 1;
+    return existing;
+  }
+  const claim = {
+    actor: null, action: null, target: null, place: null, time: null,
+    q: null, channel: null, source: 'suggested', strength: 1,
+  };
+  claim[slot] = value;
+  mem.claims.push(claim);
+  return claim;
+}
+
+const SLOT_LABEL = { actor: '谁', action: '做了什么', target: '对象', place: '地点', time: '时间' };
+
+/** claims → testimony[]（人类可读字符串），供 providers.text.compose({testimony}) 消费 */
+export function claimsToTestimony(npc) {
+  const claims = npc.mem('belief').claims ?? [];
+  const lines = [];
+  for (const claim of claims) {
+    const parts = ['actor', 'action', 'target', 'place', 'time']
+      .filter(slot => claim[slot] != null)
+      .map(slot => `${SLOT_LABEL[slot]}=${claim[slot]}`);
+    if (parts.length === 0) continue;
+    const provenance = claim.source === 'suggested' ? '（未经证实）' : '（目击）';
+    lines.push(`${parts.join('，')}${provenance}`);
+  }
+  return lines;
+}
