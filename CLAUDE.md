@@ -258,6 +258,15 @@ Perception.js — 感知裁决横切服务（视觉/听觉双通道，纯函数�
 在本文件内（`SIGHT_MAX_DIST` / `SOUND_MAX_DIST`），硬截断，不得在别处复制。
 消费者：暂无（W-4 地基阶段，未接入任何调用点，无行为变化）；未来 belief 层
 （`docs/design-plans/witness-memory-v1.md`）按其输出的 q 走裁决表填 claim 槽位。
+
+WorldEventLog.js — 世界事件流水账（W-1）。`emitEvent({kind, actors, x, y})`
+是唯一写入点，`kind` 须在 `js/behavior/data/EventDefs.js#EVENT_DEFS` 声明过，
+未声明直接抛错；结构 `{id, kind, actors[], x, y, t}`（`t` 取自 `GameClock.
+gameClock()`）。`emitEvent()` 调用点只允许出现在 `js/behavior/activities/`
+下（check-invariants Rule 14）。目前唯一调用方是 `TalkActivity.js`（push /
+push_land / give_item / handshake / point_at 五种 kind，取代旧版直接挂在
+NPC 上的私有标签字段）。只记录不消费——`getEvents()`/`clearEvents()` 暂无
+消费者，接入本模块不改变任何现有行为。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；

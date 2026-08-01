@@ -35,13 +35,14 @@ function walkFiles(dir, filter) {
 }
 
 // ── Rule 1 ─────────────────────────────────────────────────────────────────
-// _extraTags is a legacy direct field; only TalkActivity.js is allowlisted.
-console.log('Rule 1: no _extraTags in js/ (except TalkActivity.js allowlist)');
+// _extraTags is fully retired (W-1: TalkActivity.js migrated to
+// WorldEventLog.emitEvent()); no allowlist remains.
+console.log('Rule 1: no _extraTags anywhere in js/');
 {
   const hits = walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))
-    .filter(p => !p.endsWith('TalkActivity.js') && readText(p).includes('_extraTags'));
+    .filter(p => readText(p).includes('_extraTags'));
   if (hits.length > 0) {
-    fail('_extraTags outside known-violations allowlist:\n  ' + hits.join('\n  '));
+    fail('_extraTags found (field is fully retired):\n  ' + hits.join('\n  '));
   } else {
     okMsg();
   }
@@ -405,6 +406,30 @@ console.log('Rule 13: every registerProp() module is imported by props.all.js ba
     fail('registerProp() module(s) missing from props.all.js barrel:\n  ' + missing.join('\n  '));
   } else {
     console.log(`  ${registerModules.size} registerProp() module(s), all present in barrel`);
+    okMsg();
+  }
+}
+
+// ── Rule 14 ────────────────────────────────────────────────────────────────
+// emitEvent() call sites must live in js/behavior/activities/ (W-1: single
+// entry point WorldEventLog.js is exempt — that's the definition, not a call).
+console.log('Rule 14: emitEvent() call sites confined to js/behavior/activities/');
+{
+  const activitiesDir = join(ROOT, 'js', 'behavior', 'activities');
+  const hits = [];
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    if (p.endsWith('WorldEventLog.js')) continue;
+    if (p.startsWith(activitiesDir)) continue;
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith('*') || trimmed.startsWith('//')) continue; // doc comments
+      if (/\bemitEvent\(/.test(lines[i])) hits.push(`${p}:${i + 1}`);
+    }
+  }
+  if (hits.length > 0) {
+    fail('emitEvent() called outside js/behavior/activities/:\n  ' + hits.join('\n  '));
+  } else {
     okMsg();
   }
 }

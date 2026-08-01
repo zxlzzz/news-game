@@ -2,9 +2,11 @@
 
 > 冻结决策记录。日期：2026-08-02。
 > 范围：claim 五槽 schema、感知质量 → 填槽裁决表、mutation 转移表、目击者数量设计目标。
-> 不含：WorldEventLog/emitEvent（W-1，未实施）、审问接线（W-6，未实施）、
-> claim 实际写入 npc.mem('belief')（W-5，未实施）。本文档只锁 schema 与数值表，
-> 供后续批次按此表实现，实现前禁止另起一套字段名/取值域。
+> 不含：审问接线（W-6，未实施）、claim 实际写入 npc.mem('belief')（W-5，未实施）。
+> W-1（`WorldEventLog.js#emitEvent` + `EventDefs.js`）已实施，但 `EVENT_DEFS`
+> 目前只有 `TalkActivity.js` 迁移过来的 5 个 kind，不是完整的世界事件词表——
+> 其他事件源接入 `emitEvent()` 时按需在 `EventDefs.js` 里加新 kind。
+> 本文档只锁 schema 与数值表，供后续批次按此表实现，实现前禁止另起一套字段名/取值域。
 
 ## 背景
 
@@ -40,7 +42,7 @@
 | 槽 | 细粒度（fine） | 粗粒度（coarse） | null 语义 |
 |----|---------------|------------------|-----------|
 | `actor`  | entity_id（如 `npc_42`） | tag（如 `'jogger'`，只知道类别不知道具体是谁） | 未能识别主体 |
-| `action` | 具体动作字符串（未来接 W-1 `EventDefs.kind` 枚举，如 `'quarrel'`/`'chat'`） | 动作大类（如 `'social'`/`'movement'`），只知道"发生了社交类的事"不知道具体是什么 | 完全没看清在做什么 |
+| `action` | 具体动作字符串（`EventDefs.js#EVENT_DEFS` 的 kind 键，如 `'push'`/`'handshake'`） | `EVENT_DEFS[kind].category`（如 `'social'`/`'conflict'`），只知道"发生了社交/冲突类的事"不知道具体是什么 | 完全没看清在做什么 |
 | `target` | entity_id \| tag，同 `actor` | 同 `actor` | 两种成因不区分记录（见「已知简化」）：①动作本身无对象（如 `'sit'`）②未能感知到对象 |
 | `place`  | prop id / 精确坐标 | yBand 名（如 `'park'`/`'sidewalk_far'`） | 完全没定位到地点 |
 | `time`   | 绝对 timestamp | 粗桶（`'just_now'`/`'a_while_ago'`/`'long_ago'`） | 几乎不出现在产出时（见下方 channel 表），只会在复述 mutation 后出现 |
@@ -136,7 +138,9 @@ claim 经 NPC 间复述传播时，每跳按槽独立抽样是否失真。**只�
   个人"这两种叙事效果不同），需要扩展 schema，本 v1 不做。
 - 裁决表和 mutation 表的具体数值都是占位值，待 headless-sim 敏感性分析调整；表结构本身
   是冻结项。
-- `action` 的 fine/coarse 两级枚举尚未定义具体取值集合——依赖 W-1 的 `EventDefs.js`
-  （未实施）来提供权威的 kind 列表，本文档只约定"存在细/粗两级"这一结构。
+- `action` 的 fine/coarse 两级枚举已有权威来源（`EventDefs.js#EVENT_DEFS` 的
+  `kind` / `category`），但目前只覆盖 `TalkActivity.js` 的 5 个 kind——其他事件源
+  （非 talk 触发的冲突/交通事故等）接入 `emitEvent()` 时才会把词表填完整，
+  本文档不预先假设一个尚不存在的完整列表。
 - claim 到 `npc.mem('belief').claims` 的实际写入时机、SIR 传播的具体触发点（Talk
   activity 配对时？）沿用 `belief-layer-v0.md` 的 I-1/I-3 集成点草案，本文档不重复展开。

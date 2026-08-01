@@ -2,6 +2,7 @@ import { setState }         from '../Motor.js';
 import { dlog }             from '../DebugLog.js';
 import { Activity }         from './Activity.js';
 import { registerActivity } from '../ActivityRegistry.js';
+import { emitEvent }        from '../WorldEventLog.js';
 
 const rand   = (a, b) => a + Math.random() * (b - a);
 const chance = (p) => Math.random() < p;
@@ -16,25 +17,21 @@ export function initSubEventPoses(poses) {
       aDelta: SUB_EVENT_POSES.push?.aDelta,
       bDelta: SUB_EVENT_POSES.push?.bDelta,
       reach: 0.4, hold: 0.2, release: 0.5,
-      aTags: ['conflict'], bTags: ['conflict', 'victim'],
     },
     give_item: {
       aDelta: SUB_EVENT_POSES.give_item?.aDelta,
       bDelta: SUB_EVENT_POSES.give_item?.bDelta,
       reach: 0.5, holdRange: [1, 2], release: 0.5,
-      aTags: ['transaction', 'exchange'], bTags: ['transaction', 'exchange'],
     },
     handshake: {
       aDelta: SUB_EVENT_POSES.handshake?.aDelta,
       bDelta: SUB_EVENT_POSES.handshake?.bDelta,
       reach: 0.5, hold: 1.5, release: 0.5,
-      aTags: null, bTags: null,
     },
     point_at: {
       aDelta: SUB_EVENT_POSES.point_at?.aDelta,
       bDelta: SUB_EVENT_POSES.point_at?.bDelta,
       reach: 0.4, holdRange: [2, 3], release: 0.4,
-      aTags: ['pointing', 'observing'], bTags: ['pointing', 'observing'],
     },
   };
 }
@@ -126,15 +123,10 @@ export class TalkActivity extends Activity {
       ? rand(cfg.holdRange[0], cfg.holdRange[1])
       : (cfg.hold ?? 1.0);
 
-    let aTags = cfg.aTags ? [...cfg.aTags] : [];
-    let bTags = cfg.bTags ? [...cfg.bTags] : [];
-    if (type === 'handshake') {
-      const tag = chance(0.5) ? 'greeting' : 'agreement';
-      aTags = [tag];
-      bTags = [tag];
-    }
-    this.a._extraTags = aTags.length > 0 ? aTags : null;
-    this.b._extraTags = bTags.length > 0 ? bTags : null;
+    emitEvent({
+      kind: type, actors: [this.a.id, this.b.id],
+      x: (this.a.x + this.b.x) / 2, y: (this.a.y + this.b.y) / 2,
+    });
 
     this.subState = type;
     dlog(`[Activity ${this.label}] sub-event: ${type}`);
@@ -160,7 +152,7 @@ export class TalkActivity extends Activity {
           this.b.bond = null;
           this.participants = this.participants.filter(p => p.npc !== this.b);
           setState(this.b, 'fall', 'push');
-          this.b._extraTags = ['conflict', 'victim'];
+          emitEvent({ kind: 'push_land', actors: [this.a.id, this.b.id], x: this.b.x, y: this.b.y });
         }
       }
     } else if (this._subPhase === 'hold') {
