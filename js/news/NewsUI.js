@@ -44,7 +44,7 @@ export class NewsUI {
   }
 
   // ── 成稿面板 ──────────────────────────────────────────────────────────────────
-  openComposer({ photoRef, entitySnapshot, visionPromise, witnesses = [] }) {
+  openComposer({ photoRef, entitySnapshot, visionPromise, witnesses = [], hasUnwitnessingNpc = false }) {
     this.close();
     const panel = el('div', PANEL_STYLE);
 
@@ -72,7 +72,15 @@ export class NewsUI {
     //    injectSuggestion() 这个显式游戏内机制，不是 LLM 直接写 belief ──────────
     const witnessRow = el('div', 'padding:0 16px 8px;border-top:1px solid #222;padding-top:8px;');
     if (witnesses.length === 0) {
-      witnessRow.appendChild(el('div', 'color:#666;font-size:12px;', '（本次拍摄未捕捉到可审问的目击者）'));
+      // 两种成因不是一回事：框里根本没人 vs 框里有人但谁都没看见——后者是
+      // Perception.js 裁决的真实结果（背对/太远/分心），是玩法反馈不是错误提示。
+      const msg = hasUnwitnessingNpc
+        ? '（取景框里的人这时候什么都没看见——离得太远、背对着，或者在玩手机）'
+        : '（本次取景框里没有 NPC，没有目击者可审问）';
+      const style = hasUnwitnessingNpc
+        ? 'color:#8899aa;font-size:12px;font-style:italic;'
+        : 'color:#666;font-size:12px;';
+      witnessRow.appendChild(el('div', style, msg));
     } else {
       witnessRow.appendChild(el('div', 'color:#888;font-size:12px;margin-bottom:6px;', '审问目击者：'));
 

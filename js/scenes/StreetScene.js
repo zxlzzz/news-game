@@ -316,12 +316,22 @@ export class StreetScene {
     setLastSnapshot(entitySnapshot);
     const visionPromise = vision.describe(photoRef);
 
-    // 可审问目击者 = 本次拍摄捕捉到的、真正是 NPC（有 mem() 能力）的实体
-    // ——道具/建筑同样可能落入取景框，用 typeof e.mem === 'function' 排除它们
-    const witnesses = vf.capturedEntities.filter(e => typeof e.mem === 'function');
+    // 可审问目击者 = 本次拍摄捕捉到的、真正"目击过点什么"的 NPC。
+    // 入镜 ≠ 目击——视觉/听觉双通道感知裁决只在事件发生的那一刻跑
+    // （W-7a：BehaviorManager 帧序 1.5，drain 事件时对候选 NPC 逐个裁决），
+    // 不在拍照这一刻跑；拍照只负责从已经产生的 claims 里筛，不得为了这次
+    // 取景重新触发一轮裁决判定，本文件因此不接触该裁决层的任何符号。
+    // 有 mem('belief').claims 非空才算真正目击过，只是入镜但什么都没看见的
+    // NPC（背对事件/隔太远/在玩手机）不出现在可审问列表里。
+    const witnesses = vf.capturedEntities.filter(
+      e => typeof e.mem === 'function' && (e.mem('belief').claims?.length > 0)
+    );
+    const hasUnwitnessingNpc = vf.capturedEntities.some(
+      e => typeof e.mem === 'function' && !(e.mem('belief').claims?.length > 0)
+    );
 
     this.captureText.setText(`已拍摄 ${vf.capturedEntities.length} 个目标`).setColor('#226600');
-    this._newsUI.openComposer({ photoRef, entitySnapshot, visionPromise, witnesses });
+    this._newsUI.openComposer({ photoRef, entitySnapshot, visionPromise, witnesses, hasUnwitnessingNpc });
   }
 
   _clampViewfinderToViewport() {
