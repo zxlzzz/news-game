@@ -280,13 +280,18 @@ NavGrid/EntityManager，可脱离游戏运行。消费者：`BehaviorManager.js`
 不 import `WorldEventLog.js`——被调用方不主动拉事件，谁触发目击生成由调用方
 （`BehaviorManager`）决定。
 
-`injectSuggestion(npc, slot, value)` 是"suggested"来源 claim 的唯一写入点
-（W-6，与 `generateClaims()` 严格分开，provenance 不能混）：`NewsUI` 的审问
-面板调 `providers.interrogate.ask()` 把玩家提问解析成 `{slot,value}`（LLM 只
-翻译，不直接写 belief），再调本函数写入；同一 (slot,value) 重复注入只加
-`strength` 不重复建 claim。`claimsToTestimony(npc)` 把 claims 转成人类可读
-字符串数组，喂给 `providers.text.compose({testimony})`——`testimony` 不再
-硬编码 `[]`。
+`injectSuggestion(npc, claimId, slot, value)` 是"suggested"来源的唯一写入点
+（W-6/W-7c，与 `generateClaims()` 严格分开，provenance 不能混，且**不建新
+claim**）：只能把某条既有 claim 上 `sources[slot]===null` 的槽填上，找不到
+这条 claim 或该槽已有来源就返回 `null` 不写入；同一 (claim,slot,value) 重复
+注入只加 `strength[slot]`，换值或该槽已是 witness 来源一律拒绝。
+`findFillableClaim(npc, slot)` 是配套查找——哪条 claim 这个槽还空着，供
+`NewsUI` 审问面板决定往哪写。provenance 是槽级的（`claim.sources` 对象），
+claim 无顶层 `source` 字段（v1.1，见 `witness-memory-v1.md` 第一节）。
+`NewsUI` 调 `providers.interrogate.ask()` 把玩家提问解析成 `{slot,value}`
+（LLM 只翻译，不直接写 belief）。`claimsToTestimony(npc)` 把 claims 转成
+人类可读字符串数组，喂给 `providers.text.compose({testimony})`——`testimony`
+不再硬编码 `[]`。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；

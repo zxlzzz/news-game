@@ -1,15 +1,18 @@
-# 目击记忆 Claim Schema v1.0
+# 目击记忆 Claim Schema v1.1
 
-> 冻结决策记录。日期：2026-08-02。
-> 范围：claim 五槽 schema、感知质量 → 填槽裁决表、mutation 转移表、目击者数量设计目标。
+> 冻结决策记录。v1.0 日期：2026-08-02；v1.1（槽级 provenance 改造，W-7c）同日追加。
+> 范围：claim 五槽 schema、感知质量 → 填槽裁决表、mutation 转移表、目击者数量设计目标、
+> 审问注入的槽级 provenance。
 > W-1（`WorldEventLog.js#emitEvent` + `EventDefs.js`）已实施，但 `EVENT_DEFS`
 > 目前只有 `TalkActivity.js` 迁移过来的 5 个 kind，不是完整的世界事件词表——
 > 其他事件源接入 `emitEvent()` 时按需在 `EventDefs.js` 里加新 kind。
 > W-5（`Belief.js#generateClaims` + `ClaimDecisionTables.js`）已实施，W-7a 把
 > `WorldEventLog.drainNewEvents()` 接到了 `generateClaims()`（`BehaviorManager.
-> update()` 帧序 1.5，唯一消费点）——两个地基已接线。W-6（审问接线）已实施，
-> 见第七节。mutation 转移表（第四节）仍未接线——SIR 传播触发点沿用
-> `belief-layer-v0.md` I-3 草案，尚未实现，不在本文档范围。
+> update()` 帧序 1.5，唯一消费点）——两个地基已接线。W-6（审问接线）已实施；
+> W-7c 把 provenance 从 claim 级收窄到槽级，`injectSuggestion` 不再新建
+> claim，第一节与第七节按 v1.1 现状改写（v1.0 的 claim 级 `source` 字段已
+> 完全删除，不作为兼容层保留）。mutation 转移表（第四节）仍未接线——SIR
+> 传播触发点沿用 `belief-layer-v0.md` I-3 草案，尚未实现，不在本文档范围。
 > 本文档只锁 schema 与数值表，供后续批次按此表实现，实现前禁止另起一套字段名/取值域。
 
 ## 背景
@@ -26,20 +29,36 @@
 
 ---
 
-## 一、Claim 五槽 schema
+## 一、Claim 五槽 schema（v1.1：槽级 provenance）
 
 ```js
 {
-  actor:  string | null,   // 触发事件的主体
-  action: string | null,   // 事件类型（verb）
-  target: string | null,   // 动作的对象/协作者
-  place:  string | null,   // 发生地点
-  time:   number | null,   // 发生时刻
-  q:      number,          // 目击质量 [0,1]，产出时的原始值，不随复述改变
-  channel:'sight'|'sound', // 目击通道
-  source: 'witness',       // v1 只覆盖亲眼/亲耳目击；'news'/'rumor' 是 belief-layer-v0 的后续来源，本文档不重复定义
+  id:     string,           // injectSuggestion() 定位目标 claim 用（W-7c）
+  actor:  string | null,    // 触发事件的主体
+  action: string | null,    // 事件类型（verb）
+  target: string | null,    // 动作的对象/协作者
+  place:  string | null,    // 发生地点
+  time:   number | null,    // 发生时刻
+  sources: {                // 槽级 provenance（W-7c；v1.0 的 claim 级 source 已删除）
+    actor:  'witness' | 'suggested' | null,
+    action: 'witness' | 'suggested' | null,
+    target: 'witness' | 'suggested' | null,
+    place:  'witness' | 'suggested' | null,
+    time:   'witness' | 'suggested' | null,
+    // 某槽值为 null ⟺ 该槽 sources 也为 null；两者必须同步，不允许
+    // "值是 null 但 sources 说是 witness/suggested" 这种矛盾状态。
+  },
+  strength: { [slot: string]: number },  // 只有被 injectSuggestion 填过的槽才会出现在这里；
+                                          // 同一 (claim, slot, value) 每次重复注入 +1，初始 1
+  q:       number,          // 目击质量 [0,1]，claim 只能由 generateClaims() 产出，
+  channel: 'sight'|'sound', // 因此这两个字段恒有值，不存在"suggested 来源的 claim"这个概念——
+                             // suggested 只发生在槽级，claim 本身永远源自一次真实目击
 }
 ```
+
+claim 只有一种、只有一个来源入口（`generateClaims()`）；"这条 claim 是不是被污染过"
+这个问题现在要按槽问，不能整条问——同一条 claim 完全可能 `action` 是真看见的、
+`actor` 是被审问引导后填进去的，`sources` 就是用来精确表达这种混合状态的字段。
 
 每槽的取值域：
 
@@ -151,22 +170,29 @@ q≥0.20 才计入候选，按 q 降序取样，候选数 <2 时如实反映（�
 
 ---
 
-## 七、W-6 追加：`source: 'suggested'` 与 `strength`
+## 七、审问注入：`sources[slot] = 'suggested'` 与槽级 `strength`（W-6 → W-7c）
 
-原 schema（第一节）只定义了 `source: 'witness'`。W-6（审问接口）落地时新增第二种
-provenance，本文档在此追记，不回头改第一节的冻结代码块：
+W-6 落地时曾经是 claim 级 `source: 'suggested'`、遇到没有既有 claim 时新建一条——
+这个设计在实践中和"空槽就是审问的注入口"这个初衷冲突：真实世界里一次审问问出来的
+往往只是某个既有目击 claim 里缺的一角（"你看到有人推人，但没看清是谁"→审问补上
+`actor`），而不是凭空生出一整条新事实。claim 级 `source` 表达不了"这条 claim 一部分
+是目击、一部分是问出来的"这种混合状态。W-7c 把 provenance 收窄到槽级，本节按现状
+改写，不再是"追加"，第一节的 schema 已经是这次改写后的版本。
 
-```js
-{
-  ...同五槽,
-  q: null, channel: null,     // 'suggested' claim 不经 Perception，这两个字段恒 null
-  source: 'suggested',        // 被提问引导后"想起来"的，不是亲眼/亲耳目击
-  strength: number,           // 同一 (slot,value) 每被复述一次 +1，初始 1
-}
-```
+`Belief.js#injectSuggestion(npc, claimId, slot, value)` 是"suggested"来源的唯一
+写入点，规则：
 
-`source:'suggested'` 的写入点是 `Belief.js#injectSuggestion(npc, slot, value)`，与
-`generateClaims()`（witness 来源）严格分开——两个函数各自是各自 provenance 的唯一
-写入点，不合并。LLM（`providers.js` 的 `interrogate.ask()`）只把玩家提问解析成
-`{slot, value}`，从不直接碰 `npc.mem('belief')`，呼应 `belief-layer-v0.md` 的
-"LLM 只做翻译，不直接写 belief" 铁律。
+- 只能把某条既有 claim（`claimId` 定位）上 `sources[slot] === null` 的槽填上；
+  **不允许新建 claim**——找不到这条 claim，或者这个槽已经有来源（无论是 witness
+  还是更早一次 suggested），一律返回 `null` 且不写入。
+- 唯一例外是**同一 (claim, slot, value) 的重复注入**——判定为"复述同一件事、
+  得到同样的答案"，不算覆盖，只把 `strength[slot]` 加一。换一个不同的值、或者
+  这个槽本来就是 witness 来源，都不允许覆盖：已确立的 provenance 不能被事后改写。
+- `Belief.js#findFillableClaim(npc, slot)` 是配套的查找辅助：在某个 NPC 的
+  claims 里找一条这个槽还空着的 claim，供审问 UI 决定往哪条 claim 写；找不到
+  就意味着"这个问题现在没处安放答案"，不是 LLM 解析失败。
+
+`generateClaims()`（witness 来源）与 `injectSuggestion()`（suggested 来源）依旧是
+两个严格分开的写入点，不合并成一个入口。LLM（`providers.js` 的 `interrogate.ask()`）
+只把玩家提问解析成 `{slot, value}`，从不直接碰 `npc.mem('belief')`，呼应
+`belief-layer-v0.md` 的"LLM 只做翻译，不直接写 belief"铁律。

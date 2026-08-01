@@ -4,7 +4,7 @@
  * 挂载到 #news-ui-root（pointer-events:none），面板显示时内部元素 pointer-events:auto。
  */
 
-import { injectSuggestion, claimsToTestimony } from '../behavior/Belief.js';
+import { injectSuggestion, findFillableClaim, claimsToTestimony } from '../behavior/Belief.js';
 
 const PANEL_STYLE = `
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
@@ -122,7 +122,12 @@ export class NewsUI {
         try {
           const knownClaims = activeWitness.mem('belief').claims ?? [];
           const result = await this._providers.interrogate.ask({ question, knownClaims });
-          injectSuggestion(activeWitness, result.slot, result.value);
+          // W-7c：injectSuggestion 只填某条既有 claim 上还空着的槽，不建新
+          // claim——先找一条这个槽还是 null 的 claim，没有就没处安放这个答案。
+          const fillable = findFillableClaim(activeWitness, result.slot);
+          if (fillable && result.value != null) {
+            injectSuggestion(activeWitness, fillable.id, result.slot, result.value);
+          }
           qInput.value = '';
           renderQA();
         } catch (err) {
