@@ -11,6 +11,10 @@
  * 设置项——三个 provider 里 vision 单独一套 key（多模态），text/interrogate
  * 共享一套（都是纯文本任务），这是刻意的范围控制，不是遗漏。
  *
+ * interrogate 的唯一职责（W-7e）：把中文问句归类到五个槽位之一，并抽取
+ * **问句措辞里出现过的**候选值——不推断、不编造、不用常识或已知线索补全。
+ * 抽不到就是 value:null，这是合法结果，调用方不会拿 null 去写 belief。
+ *
  * key / base URL 仅读写 localStorage，永不落盘，永不进 repo。
  * key 缺失或请求失败 → 自动降级 mock，返回 provider 标记。
  */
@@ -122,13 +126,18 @@ async function _liveInterrogate({ question, knownClaims }) {
         {
           role: 'system',
           content: '你是审问记录员。玩家会用中文向目击者提一个问题。把问题归类到五个槽位之一：'
-            + 'actor(谁做的)/action(做了什么)/target(对谁做的)/place(在哪)/time(什么时候)，'
-            + '并给出这个槽位的候选答案——优先从"已知线索"里找匹配的值，找不到就基于问题措辞合理推断一个简短答案。'
-            + '只输出 JSON，形如 {"slot":"actor","value":"..."}，不要输出任何其他文字。',
+            + 'actor(谁做的)/action(做了什么)/target(对谁做的)/place(在哪)/time(什么时候)。'
+            + '候选答案只能从玩家问句本身的措辞里抽取——比如"是不是那个穿西装的推的？"里'
+            + '"穿西装的"就是 actor 的候选值。"已知线索"只用来帮你判断这句问题问的是哪个'
+            + '槽位，绝对不能当成候选答案的来源；不要推断、不要编造、不要用常识或已知线索'
+            + '去补全一个问句里没有出现过的答案。如果问句本身没有暗示任何具体值，value 必须'
+            + '是 null——这是合法结果，不是失败。只输出 JSON，形如'
+            + '{"slot":"actor","value":"穿西装的"} 或 {"slot":"actor","value":null}，'
+            + '不要输出任何其他文字。',
         },
         {
           role: 'user',
-          content: `已知线索：${JSON.stringify(knownClaims)}\n玩家提问：${question}`,
+          content: `已知线索（仅供判断槽位，不得当作答案来源）：${JSON.stringify(knownClaims)}\n玩家提问：${question}`,
         },
       ],
     }),
@@ -137,8 +146,9 @@ async function _liveInterrogate({ question, knownClaims }) {
   const data = await resp.json();
   const raw = data.choices[0].message.content.trim().replace(/^```json\s*|```$/g, '');
   const parsed = JSON.parse(raw);
-  if (!parsed.slot || parsed.value == null) throw new Error('interrogate: 返回值缺 slot/value');
-  return { slot: parsed.slot, value: parsed.value };
+  // value:null 是合法结果（问句没暗示具体答案），只有 slot 缺失才算真的解析失败
+  if (!parsed.slot) throw new Error('interrogate: 返回值缺 slot');
+  return { slot: parsed.slot, value: parsed.value ?? null };
 }
 
 // ── mock：interrogate ────────────────────────────────────────────────────────
@@ -157,10 +167,15 @@ function _detectSlot(question) {
   return 'action';
 }
 
+// mock 没有真实语言理解能力，抽不出"问句措辞里的候选值"——只能退而求其次，
+// 从 knownClaims 里找这个槽已有的值当候选（这是 mock 唯一可行的近似，不是
+// 违反"LLM 只抽取不发明"：live 版才真的做措辞抽取，mock 只是查表）。
+// 找不到就是 value:null，不再用一句占位客套话兜底——那样的字符串会被当成
+// 真实候选值直接注入进信念，而它根本不是任何人说过的话。
 function _mockInterrogate({ question, knownClaims }) {
   const slot  = _detectSlot(question);
   const known = knownClaims.find(c => c[slot] != null);
-  const value = known ? known[slot] : '说不清楚';
+  const value = known ? known[slot] : null;
   return { slot, value };
 }
 

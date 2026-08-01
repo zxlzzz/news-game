@@ -94,6 +94,7 @@ export class NewsUI {
       const askBtn = el('button', `${BTN} background:#3a3a6e;font-size:12px;padding:4px 12px;`, '提问');
       qRow.style.display = 'none';
       qRow.appendChild(qInput); qRow.appendChild(askBtn);
+      const feedback = el('div', 'font-size:11px;color:#997;font-style:italic;margin-top:4px;min-height:14px;');
 
       let activeWitness = null;
       const renderQA = () => {
@@ -109,6 +110,7 @@ export class NewsUI {
           activeWitness = w;
           qaBox.style.display = '';
           qRow.style.display = 'flex';
+          feedback.textContent = '';
           renderQA();
         });
         pickerRow.appendChild(btn);
@@ -122,11 +124,20 @@ export class NewsUI {
         try {
           const knownClaims = activeWitness.mem('belief').claims ?? [];
           const result = await this._providers.interrogate.ask({ question, knownClaims });
-          // W-7c：injectSuggestion 只填某条既有 claim 上还空着的槽，不建新
-          // claim——先找一条这个槽还是 null 的 claim，没有就没处安放这个答案。
-          const fillable = findFillableClaim(activeWitness, result.slot);
-          if (fillable && result.value != null) {
-            injectSuggestion(activeWitness, fillable.id, result.slot, result.value);
+          // W-7e：value:null 是合法结果（问句没暗示具体答案），不是错误——
+          // LLM 只抽取问句措辞里出现过的候选值，抽不到不会替玩家编一个。
+          if (result.value == null) {
+            feedback.textContent = '这个问题没有暗示任何具体答案';
+          } else {
+            // W-7c：injectSuggestion 只填某条既有 claim 上还空着的槽，不建新
+            // claim——先找一条这个槽还是 null 的 claim，没有就没处安放这个答案。
+            const fillable = findFillableClaim(activeWitness, result.slot);
+            if (fillable) {
+              injectSuggestion(activeWitness, fillable.id, result.slot, result.value);
+              feedback.textContent = '';
+            } else {
+              feedback.textContent = '问出了答案，但这个目击者没有对应的空白可以记上';
+            }
           }
           qInput.value = '';
           renderQA();
@@ -141,6 +152,7 @@ export class NewsUI {
       witnessRow.appendChild(pickerRow);
       witnessRow.appendChild(qaBox);
       witnessRow.appendChild(qRow);
+      witnessRow.appendChild(feedback);
     }
     panel.appendChild(witnessRow);
 
