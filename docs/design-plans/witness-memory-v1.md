@@ -2,10 +2,13 @@
 
 > 冻结决策记录。日期：2026-08-02。
 > 范围：claim 五槽 schema、感知质量 → 填槽裁决表、mutation 转移表、目击者数量设计目标。
-> 不含：审问接线（W-6，未实施）、claim 实际写入 npc.mem('belief')（W-5，未实施）。
+> 不含：审问接线（W-6，未实施）。
 > W-1（`WorldEventLog.js#emitEvent` + `EventDefs.js`）已实施，但 `EVENT_DEFS`
 > 目前只有 `TalkActivity.js` 迁移过来的 5 个 kind，不是完整的世界事件词表——
 > 其他事件源接入 `emitEvent()` 时按需在 `EventDefs.js` 里加新 kind。
+> W-5（`Belief.js#generateClaims` + `ClaimDecisionTables.js`）已实施，但尚无
+> 调用方把 `WorldEventLog` 的事件接到 `generateClaims()`——两个地基还没接线，
+> 这是留给后续批次的工作，不在本文档范围。
 > 本文档只锁 schema 与数值表，供后续批次按此表实现，实现前禁止另起一套字段名/取值域。
 
 ## 背景
@@ -69,8 +72,8 @@ then actor=null`），不得混进裁决表的概率抽样逻辑，避免小概�
 ## 三、目击质量 q → 填槽裁决表
 
 q 来自 `Perception.perceive()` 的输出。**q < 0.20 视为阈下，不产出 claim**（对应
-`Perception.js` 里 `_distFactor` 硬截断之外的"软阈值"，由消费方即未来 W-5 实现，本文档
-只定义数值）。
+`Perception.js` 里 `_distFactor` 硬截断之外的"软阈值"；`Belief.js#WITNESS_Q_THRESHOLD`
+已按此值实现，表结构本身的数值住址仍在 `ClaimDecisionTables.js`，不在 `Belief.js` 里）。
 
 ### sight 通道
 
@@ -117,9 +120,9 @@ claim 经 NPC 间复述传播时，每跳按槽独立抽样是否失真。**只�
 
 ## 五、设计目标：每事件 2–4 名质量各异的目击者
 
-未来 W-5 的目击者筛选逻辑应对事件发生范围内的候选 NPC 逐个跑
-`Perception.perceive()`，按 q 排序或加权随机，**抽取 2–4 名**产出各自的 claim（具体抽样
-算法留给 W-5 实现，本文档只锁定数量区间）。
+`Belief.js#selectWitnesses()` 已按此目标实现：对候选池逐个跑 `Perception.perceive()`，
+q≥0.20 才计入候选，按 q 降序取样，候选数 <2 时如实反映（不强行凑数），候选充足时在
+[2,4] 内随机取数。`scripts/check-witness-distribution.mjs` 静态采样验证该分布。
 
 理由：
 - 少于 2 人：事件近乎不可能被社交传播开（SIR 模型里 `I` 起始状态过小，传播链条随时可能

@@ -256,8 +256,7 @@ SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.
 Perception.js — 感知裁决横切服务（视觉/听觉双通道，纯函数，不写 npc.mem）。
 `perceive(witness, eventX, eventY) → {channel, q} | null`；视距/听距上限唯一住址
 在本文件内（`SIGHT_MAX_DIST` / `SOUND_MAX_DIST`），硬截断，不得在别处复制。
-消费者：暂无（W-4 地基阶段，未接入任何调用点，无行为变化）；未来 belief 层
-（`docs/design-plans/witness-memory-v1.md`）按其输出的 q 走裁决表填 claim 槽位。
+消费者：`Belief.js`（W-5）。
 
 WorldEventLog.js — 世界事件流水账（W-1）。`emitEvent({kind, actors, x, y})`
 是唯一写入点，`kind` 须在 `js/behavior/data/EventDefs.js#EVENT_DEFS` 声明过，
@@ -265,8 +264,17 @@ WorldEventLog.js — 世界事件流水账（W-1）。`emitEvent({kind, actors, 
 gameClock()`）。`emitEvent()` 调用点只允许出现在 `js/behavior/activities/`
 下（check-invariants Rule 14）。目前唯一调用方是 `TalkActivity.js`（push /
 push_land / give_item / handshake / point_at 五种 kind，取代旧版直接挂在
-NPC 上的私有标签字段）。只记录不消费——`getEvents()`/`clearEvents()` 暂无
-消费者，接入本模块不改变任何现有行为。
+NPC 上的私有标签字段）。只记录不消费——本模块自己不接 Belief.js，两者仍是
+独立地基，接哪个事件源触发目击生成是后续批次的接线工作。
+
+Belief.js — npc.mem('belief').claims 唯一 owner（W-5）。`generateClaims(event,
+actorNpcs, candidateNpcs)` 是"witness"来源 claim 的唯一写入点：对候选池逐个跑
+`Perception.perceive()`，q≥0.20 才计入候选，按 `witness-memory-v1.md` §5 的
+[2,4] 目标取样，再按 `ClaimDecisionTables.js` 的 q→填槽表决定每槽 fine/coarse/
+tag/null。`selectWitnesses()` 单独导出，供
+`scripts/check-witness-distribution.mjs` 静态采样验证数量分布，不依赖
+NavGrid/EntityManager，可脱离游戏运行。消费者：暂无调用方接入
+`generateClaims()`（W-5 地基阶段，WorldEventLog 尚未接到这里，无行为变化）。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
@@ -335,6 +343,7 @@ npc.clearMem('loiter');
 | `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、slotWaitProp、slotWaitTimer、chessSlot、onlookerTimer、onlookerDur、tags |
 | `agenda`   | BehaviorManager / Director | profile、runner、agenda、lifespan、ageTimer、departing、pendingDeparture、preferExitType、exitRegistry、waitForBusLayer、busStops |
 | `modifier` | ModifierLayer.js        | heldCooldown、gestureCooldown                        |
+| `belief`   | Belief.js                | claims（目击 claim 数组，schema 见 witness-memory-v1.md） |
 
 **规则：**
 - 写者即 owner；跨 namespace 只读
