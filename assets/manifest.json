@@ -245,6 +245,14 @@
       "path": "animations/transition/get_up.json",
       "kind": "transition"
     },
+    "hand_stand_down": {
+      "path": "animations/transition/hand_stand_down.json",
+      "kind": "transition"
+    },
+    "hand_stand_up": {
+      "path": "animations/transition/hand_stand_up.json",
+      "kind": "transition"
+    },
     "open_door": {
       "path": "animations/transition/open_door.json",
       "kind": "transition",

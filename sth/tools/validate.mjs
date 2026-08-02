@@ -59,7 +59,6 @@ const WHITELIST = new Set([
 
 const VALID_KINDS    = new Set(['cycle', 'transition', 'overlay']);
 const VALID_FACINGS  = new Set(['side', 'front']);
-const VALID_SKELETONS = new Set(['human', 'dog']);
 const DELTA_WARN     = 180;
 const GROUND_TOL     = 2;    // y > 2 → warn (入地)
 const CLOSURE_TOL    = 12;   // cycle 首末帧闭合容差 px
@@ -71,6 +70,10 @@ const BONE_LEN_TOL   = 3;    // 骨长偏差容差 px（仅非人类骨架；人
 const skelData = JSON.parse(fs.readFileSync(SKEL_FILE, 'utf8'));
 const SKELETONS = skelData.skeletons;
 if (!SKELETONS) { console.error('skeleton.json missing "skeletons" key'); process.exit(1); }
+
+// 合法骨架名派生自 skeleton.json 本身，不再另立一份硬编码列表——A-2 加 child
+// 骨架时就是因为这里曾经手写 ['human','dog']，忘了同步而报"invalid skeleton"。
+const VALID_SKELETONS = new Set(Object.keys(SKELETONS));
 
 /** All valid joint names for a skeleton (including root) */
 function buildValidJoints(skel) {
@@ -116,7 +119,7 @@ function loadAll(files) {
 // ─── Per-file validation ──────────────────────────────────────────────────────
 
 function validateFile(abs, allClips) {
-  const rel = path.relative(ANIM_DIR, abs);
+  const rel = path.relative(ANIM_DIR, abs).replace(/\\/g, '/');
   let clip;
   try { clip = JSON.parse(fs.readFileSync(abs, 'utf8')); }
   catch (e) { return { errors: [`parse error: ${e.message}`], warns: [] }; }
@@ -300,7 +303,7 @@ let errCount = 0, warnCount = 0, unregisteredCount = 0;
 const warnLines = [];
 
 for (const abs of files) {
-  const rel = path.relative(ANIM_DIR, abs);
+  const rel = path.relative(ANIM_DIR, abs).replace(/\\/g, '/');
 
   if (!Object.prototype.hasOwnProperty.call(FILE_TO_KIND, rel)) {
     unregisteredCount++;

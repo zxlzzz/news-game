@@ -5,8 +5,12 @@
 没有任何独立姿势信息。小孩不需要单独的 clip——assets/skeleton.json 新增了
 `child` 骨架（复用 human 的 joints/defaultPose，直接吃现有全部 human clip），
 见 docs/roadmap.md「A-2」行。
-hand_stand_up 为小孩倒立
-hand_stand_down 为小孩由倒立回到站立态
+~~hand_stand_up 为小孩倒立~~ / ~~hand_stand_down 为小孩由倒立回到站立态~~
+已在 A-3 用 scripts/rezero-clips.py 归零接地、移入
+assets/animations/transition/ 并注册进 manifest.json（未手改任何关节坐标）。
+两者各自仍有 1 条"首帧未接地"警告未消除——那是动作中段悬空姿势的正常表现
+（保证全片段不穿地这条正确算法的必然副作用），不是遗留 bug，详见
+docs/roadmap.md「A-3」行的完整说明。
 
 （原 "2. overlay" 小节的 lift.json 已在 A-1 完成接线并移出本目录，
 见 assets/animations/overlay/lift.json + manifest.json + AttachmentDefs.js。
