@@ -255,8 +255,13 @@
       {"x":1840,"y":40,"scale":1.0}
     ],
     "crosswalks": [{"x":100},{"x":1900}],
-    "roadStripeSpacing": 56,
-    "roadStripeLength": 28,
+    "roadMarkings": {
+      "curbFar":    {"thickness": 3, "edgeLineAlpha": 0.65},
+      "roadEdge":   {"height": 4, "alpha": 0.85},
+      "curbNear":   {"thickness": 4, "lineWidthFactor": 0.7, "lineAlpha": 0.55},
+      "laneStripe": {"spacing": 56, "length": 28, "width": 2, "color": "MARKING_PAINT", "alpha": 0.6},
+      "crosswalk":  {"roadMargin": 5, "stripeCount": 5, "stripeLength": 200, "xOffset": -18, "color": "MARKING_PAINT", "alpha": 0.68}
+    },
     "chessPlaza": {"cx":620,"cy":443,"rx":130,"ry":56},
     "miniPark":   {"cx":1150,"cy":453,"rx":210,"ry":78},
     "walkPaths": {

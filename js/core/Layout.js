@@ -115,6 +115,7 @@ export const GRAY_NEAR_PAVE   = 0xb0b0b0;   // 近端人行道（was 0xbc）
 export const GRAY_CURB        = 0xd8d8d8;   // 路缘石（was 0xe8，略亮于 FAR_PAVE）
 export const GRAY_PARK        = 0xaaaaaa;   // 公园地面（≈ FILL_MID）
 export const CURB_EDGE_LINE   = 0x7a7a7a;   // 路缘上边缘线（介于 FAR/MID 线色之间）
+export const MARKING_PAINT    = 0xffffff;   // 车道虚线 / 斑马线条纹漆色（E-1）
 
 // ─── 天际线 / 云（SceneRenderer 用） ──────────────────────────────────────────
 export const SKYLINE_BACK  = 0xf1f1f1;
@@ -135,7 +136,7 @@ const _PALETTE = {
   ENV_LINE_LIGHT, ENV_LINE_DARK,
   SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR,
   GRAY_SKY, GRAY_FAR_PAVE, GRAY_BUILDING_HI, GRAY_BUILDING_MID, GRAY_BUILDING_LO,
-  GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB, GRAY_PARK, CURB_EDGE_LINE,
+  GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB, GRAY_PARK, CURB_EDGE_LINE, MARKING_PAINT,
   SKYLINE_BACK, SKYLINE_FRONT, SKYLINE_LINE, CLOUD_LINE, LINE_NEAR_COLOR,
 };
 

@@ -59,6 +59,7 @@ NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车�
 | `ground`（Z-2c） | `SceneRenderer` | bands / edgeLines / tiling / grass → 地面色带 |
 | `exits` / `spawnPoints`（Z-2e） | `SceneInitializer._spawnNPCs` | 出口/生成点几何：`side`(left/right)+`margin` 解出 X，`yBand`+`yOffset` 解出 Y |
 | `features`（Z-2e） | `SceneInitializer` → `featureRegistry` | 可选场景内容数组，见下方「Feature registry」 |
+| `layout`（散列，非单一 schema） | 多消费者：`SceneRenderer`（`roadMarkings`（E-1）/ `clouds` / `chessPlaza` / `miniPark`）、`Athletes.js`（`walkPaths`）、`vehicleSpawner.js`/`WaitForBusLayer.js`（`busStops`） | 场景装饰几何/站点数据的分散配置，没有统一子 schema，每个字段各自被对应消费者读取，新增字段时各消费者自行 `_need()` 校验 |
 
 符号解析：Y 边界写分带名经 `resolveY()`，颜色写调色板名经 `resolveColor()`（`Layout.js`），
 拼错立刻抛错。**配置缺失一律抛错，不退回硬编码 fallback。**

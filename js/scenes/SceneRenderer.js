@@ -9,8 +9,13 @@
  * 远侧人行道的铺装色一路画到 FAR_Y（含远端自行车道 248-268），而那段在导航上是
  * ZONE.ROAD。视觉分带按"看起来是什么材质"切，zone 按"能不能走/多贵"切。
  *
- * 仍留在代码里的硬编码几何：路缘石唇口 / 车道虚线 / 斑马线条纹（`_drawRoadMarkings`
- * `_drawCrosswalk`）、天际线与云。那些是逐要素装饰几何，不是地面色带，另刀处理。
+ * 路缘石唇口 / 车道虚线 / 斑马线条纹（`_drawRoadMarkings` / `_drawCrosswalk`）
+ * 的几何数值 E-1 起由 `layout.roadMarkings` 驱动，同样不是地面色带、不套用
+ * `ground` 的 bands 结构——这三者是"沿路"的逐要素装饰几何，`ground` 是横跨
+ * 整个 Y 分带的色带，两者形状不同，配置各自独立。
+ *
+ * 天际线与云仍是纯代码几何（seed 生成的随机化建筑轮廓 / clouds 位置来自
+ * `layout.clouds`），不在本刀范围。
  */
 import {
   WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
@@ -155,51 +160,56 @@ export class SceneRenderer {
     }
   }
 
+  /** 路缘石唇口 / 车道虚线：几何数值全部来自 scene.json layout.roadMarkings（E-1） */
   _drawRoadMarkings(g) {
+    const rm     = _need(this.layout.roadMarkings, 'layout.roadMarkings');
+    const curbF  = _need(rm.curbFar,    'layout.roadMarkings.curbFar');
+    const edge   = _need(rm.roadEdge,   'layout.roadMarkings.roadEdge');
+    const curbN  = _need(rm.curbNear,   'layout.roadMarkings.curbNear');
+    const stripe = _need(rm.laneStripe, 'layout.roadMarkings.laneStripe');
+
     g.lineStyle(0);
     g.beginFill(GRAY_CURB, 1);
-    g.drawRect(0, FAR_Y - 3, WORLD_WIDTH, 3);
+    g.drawRect(0, FAR_Y - curbF.thickness, WORLD_WIDTH, curbF.thickness);
     g.endFill();
-    g.lineStyle(LINE_FAR_WIDTH, CURB_EDGE_LINE, 0.65);
-    g.moveTo(0, FAR_Y - 3); g.lineTo(WORLD_WIDTH, FAR_Y - 3);
-    g.moveTo(0, FAR_Y);     g.lineTo(WORLD_WIDTH, FAR_Y);
-    g.beginFill(GRAY_ROAD, 0.85);
-    g.drawRect(0, FAR_Y, WORLD_WIDTH, 4);
+    g.lineStyle(LINE_FAR_WIDTH, CURB_EDGE_LINE, curbF.edgeLineAlpha);
+    g.moveTo(0, FAR_Y - curbF.thickness); g.lineTo(WORLD_WIDTH, FAR_Y - curbF.thickness);
+    g.moveTo(0, FAR_Y);                   g.lineTo(WORLD_WIDTH, FAR_Y);
+    g.beginFill(GRAY_ROAD, edge.alpha);
+    g.drawRect(0, FAR_Y, WORLD_WIDTH, edge.height);
     g.endFill();
 
     g.beginFill(GRAY_CURB, 1);
-    g.drawRect(0, NEAR_Y, WORLD_WIDTH, 4);
+    g.drawRect(0, NEAR_Y, WORLD_WIDTH, curbN.thickness);
     g.endFill();
-    g.lineStyle(LINE_NEAR_WIDTH * 0.7, LINE_NEAR_COLOR, 0.55);
-    g.moveTo(0, NEAR_Y + 4); g.lineTo(WORLD_WIDTH, NEAR_Y + 4);
+    g.lineStyle(LINE_NEAR_WIDTH * curbN.lineWidthFactor, LINE_NEAR_COLOR, curbN.lineAlpha);
+    g.moveTo(0, NEAR_Y + curbN.thickness); g.lineTo(WORLD_WIDTH, NEAR_Y + curbN.thickness);
 
     const midY = Math.round((FAR_Y + NEAR_Y) / 2);
-    const spacing = this.layout.roadStripeSpacing || 56;
-    const length  = this.layout.roadStripeLength  || 28;
-    g.lineStyle(2, 0xffffff, 0.6);
-    for (let x = 0; x < WORLD_WIDTH; x += spacing) {
-      g.moveTo(x, midY); g.lineTo(x + length, midY);
+    g.lineStyle(stripe.width, resolveColor(stripe.color), stripe.alpha);
+    for (let x = 0; x < WORLD_WIDTH; x += stripe.spacing) {
+      g.moveTo(x, midY); g.lineTo(x + stripe.length, midY);
     }
 
     for (const cw of (this.layout.crosswalks || [])) {
-      this._drawCrosswalk(g, cw.x);
+      this._drawCrosswalk(g, cw.x, _need(rm.crosswalk, 'layout.roadMarkings.crosswalk'));
     }
   }
 
-  _drawCrosswalk(g, cx) {
+  /** 斑马线条纹：几何数值全部来自 scene.json layout.roadMarkings.crosswalk（E-1） */
+  _drawCrosswalk(g, cx, cf) {
     g.lineStyle(0);
-    const roadTop = FAR_Y  + 5;
-    const roadBot = NEAR_Y - 5;
+    const roadTop = FAR_Y  + cf.roadMargin;
+    const roadBot = NEAR_Y - cf.roadMargin;
     const usable  = roadBot - roadTop;
-    const count   = 5;
+    const count   = cf.stripeCount;
     const step    = Math.floor(usable / (count * 2 - 1));
-    const cw      = 200;
-    const x0      = cx - 18;
-    g.beginFill(0xffffff, 0.68);
+    const x0      = cx + cf.xOffset;
+    g.beginFill(resolveColor(cf.color), cf.alpha);
     for (let i = 0; i < count; i++) {
       const y  = roadTop + i * step * 2;
       const sh = step - 1 + i;
-      g.drawRect(x0, y, cw, sh);
+      g.drawRect(x0, y, cf.stripeLength, sh);
     }
     g.endFill();
   }
