@@ -138,12 +138,10 @@ const TOURIST = {
 };
 
 // A-2：小孩预设，复用 pedestrian 全套行为（转换表/held/activities/desires 不变），
-// 只加一个 skeleton 声明。⚠️ skeleton 字段目前无消费者——NPC 的实际渲染大小由
-// EntityManager 每帧写的 npc.scale = depthScale(npc.y) 决定，跟骨架名无关；
-// StickRenderer._drawHuman 的头半径也是硬编码只读 this._headRadius['human']，
-// 不按 anim.skeleton 查表。也就是说 child NPC 现在生成出来视觉上和成人一样大，
-// 这批不新增跨实体的缩放机制（含 EntityManager.js/Npc.js 改动）——范围已与
-// 用户确认，见 docs/roadmap.md「A-2」行。
+// 只加一个 skeleton 声明。R-1 起该字段有消费者：Npc 构造时读 profile.skeleton，
+// 从 skeleton.json 查 scale 覆盖 npc.skeletonScale（EntityManager 每帧乘进
+// npc.scale），并把 skeleton 名传给 StickRenderer 作 headRadius 查表键——
+// child NPC 现在视觉上矮小，clip 数据仍复用 human 骨架（无需 child 专属 clip）。
 const CHILD = {
   ...PEDESTRIAN,
   name:     'child',

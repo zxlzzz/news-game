@@ -19,6 +19,7 @@ import { depthGray, BUILDING_BASE_Y } from '../core/Layout.js';
 import { integratePhysics } from '../behavior/Motor.js';
 import { clipLibrary } from '../core/ClipLibrary.js';
 import { getNavGrid, ZONE } from '../behavior/nav/NavGrid.js';
+import { getProfile } from './NpcProfile.js';
 
 // 行为状态 → 标签
 const STATE_TAGS = {
@@ -99,6 +100,15 @@ export class NPC extends Entity {
     this.npcType   = config.npcType ?? null;   // 自身属性（businessman/tourist...）
     this.state     = config.state   ?? null;   // 当前行为状态（walk/run/stand...）
     this.bond      = null;                      // 活跃社交关系（SocialBond）
+
+    // 骨架体型（R-1）：默认取当前动画 clip 自带的 skeleton 名（human/dog），
+    // profile.skeleton 声明时优先覆盖（如 child 复用 human clip 但按小体型渲染）。
+    // skeletonScale 是 skeleton.json 对应条目的 scale，EntityManager 每帧乘进 npc.scale；
+    // skeletonName 传给 StickRenderer 作 headRadius 查表键。
+    const profile = this.npcType ? getProfile(this.npcType) : null;
+    const initialAnim = this.renderer?.getAnimation(this.animation);
+    this.skeletonName  = profile?.skeleton ?? initialAnim?.skeleton ?? 'human';
+    this.skeletonScale = clipLibrary.skeletons?.[this.skeletonName]?.scale ?? 1;
 
     // Modifier 系统（替代旧的 overlay / overlayPose / persistentOverlay）
     this.traits    = config.traits ?? [];       // string[]，生成时赋值，之后不变
@@ -311,7 +321,7 @@ export class NPC extends Entity {
     this.renderer.draw(
       g, this.animation, this.frameIndex,
       this.x, this._renderY(), this.scale, this.direction,
-      color, 1, overrides
+      color, 1, overrides, this.skeletonName
     );
   }
 }

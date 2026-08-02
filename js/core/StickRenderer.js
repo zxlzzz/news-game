@@ -114,19 +114,22 @@ export class StickRenderer {
   }
 
   draw(g, animName, frameIndex, x, y, scale = 0.45, direction = 1,
-       color = 0x1a1a1a, alpha = 1, jointOverrides = null) {
+       color = 0x1a1a1a, alpha = 1, jointOverrides = null, skeletonOverride = null) {
     const anim = this.animations[animName];
     if (!anim) return;
     const frame = anim.frames[frameIndex % anim.frameCount];
     const dir   = direction * anim.canonicalDirection;
+    // headKey 决定 headRadius 查表桶：正常走 anim 自带骨架名（human/dog），
+    // NPC 声明了 profile.skeleton 覆盖（如 child）时优先用覆盖值，骨骼连线算法不变。
+    const headKey = skeletonOverride ?? anim.skeleton;
     if (anim.skeleton === 'dog') {
-      this._drawDog(g, anim, frame, x, y, scale, dir, color, alpha, jointOverrides);
+      this._drawDog(g, anim, frame, x, y, scale, dir, color, alpha, jointOverrides, headKey);
     } else {
-      this._drawHuman(g, anim, frame, x, y, scale, dir, color, alpha, jointOverrides);
+      this._drawHuman(g, anim, frame, x, y, scale, dir, color, alpha, jointOverrides, headKey);
     }
   }
 
-  _drawHuman(g, anim, frame, x, y, s, d, color, alpha, ov) {
+  _drawHuman(g, anim, frame, x, y, s, d, color, alpha, ov, headKey) {
     const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
     const jx = (j) => x + coord(j)[0] * s * d;
     const jy = (j) => y + coord(j)[1] * s;
@@ -138,11 +141,11 @@ export class StickRenderer {
     }
 
     g.beginFill(color, alpha);
-    g.drawCircle(jx('head'), jy('head'), (this._headRadius['human'] ?? _HEAD_R_FALLBACK.human) * s);
+    g.drawCircle(jx('head'), jy('head'), (this._headRadius[headKey] ?? _HEAD_R_FALLBACK.human) * s);
     g.endFill();
   }
 
-  _drawDog(g, anim, frame, x, y, s, d, color, alpha, ov) {
+  _drawDog(g, anim, frame, x, y, s, d, color, alpha, ov, headKey) {
     const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
     const jx = (j) => x + coord(j)[0] * s * d;
     const jy = (j) => y + coord(j)[1] * s;
@@ -154,7 +157,7 @@ export class StickRenderer {
     }
 
     g.beginFill(color, alpha);
-    g.drawCircle(jx('head'), jy('head'), (this._headRadius['dog'] ?? _HEAD_R_FALLBACK.dog) * s);
+    g.drawCircle(jx('head'), jy('head'), (this._headRadius[headKey] ?? _HEAD_R_FALLBACK.dog) * s);
     g.endFill();
   }
 }
