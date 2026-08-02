@@ -145,6 +145,8 @@ StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单
 > 代价改由 `DEFAULT_ZONE_COSTS` + `profile.zoneCosts` 查表，`plan()` 第 6 参收 `zoneCosts`。
 > 上述交付项作为历史保留，当前住址见 §3 表与 `docs/contracts/movement.md`。
 > check-invariants Rule 8 因三个字段名全部消失而变为空守卫（恒绿），保留待 Z-2 系列改写。
+> **M-1 已改写**（见 docs/roadmap.md）：Rule 8 现守 `DEFAULT_ZONE_COSTS`
+> （`NavGrid.js`）+ `_zoneCostsFor`（`PlanService.js`）这一真实住址，不再是空规则。
 
 ### N-2b：Goal 通道（任务退化为发 Goal 收 result）✅ 0dcf420
 

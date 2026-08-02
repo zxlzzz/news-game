@@ -249,23 +249,46 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** mus
 }
 
 // ── Rule 8 ─────────────────────────────────────────────────────────────────
-// PLANNING_RULES field names must not appear as literal numeric definitions
-// outside PathPlanner.js — prevents policy values from scattering back out.
-console.log('Rule 8: crosswalkCost|jaywalkRoadCost|roadCostDefault numeric definitions only in PathPlanner.js');
+// M-1: rewritten — the field names this rule used to guard
+// (crosswalkCost/jaywalkRoadCost/roadCostDefault) were PLANNING_RULES-era
+// names that Z-1 (zone-profile split) deleted outright; the regex had zero
+// possible hits left in the codebase and was permanently green regardless
+// of what anyone wrote. The real single address for zone→cost policy today
+// is NavGrid.js#DEFAULT_ZONE_COSTS, overridden by PlanService.js#_zoneCostsFor
+// (profile.zoneCosts merge + jaywalk override) — see PlanService.js's own
+// header comment ("代价表装配...唯一住址"). This rule guards THAT.
+//
+// Detection: a zone-keyed numeric literal — `[ZONE.xxx]: <number>` or
+// `[ZONE.xxx] = <number>` — appearing anywhere outside NavGrid.js /
+// PlanService.js. PathPlanner.js is exempted too, but for a different
+// reason: it hosts ZONE_ROUGHNESS, a *distinct* table (line-of-sight
+// straightening friction, explicitly documented as unrelated to planning
+// cost — "roughness 不参与 A*，与 zoneCosts 两套独立序") that happens to
+// share the same `[ZONE.x]: n` shape. Exempting the file doesn't mean
+// PathPlanner.js is allowed to define cost policy — it isn't (see its own
+// CONTRACT: "自身不持有代价政策").
+//
+// Verify this rule actually bites: add a line like `[ZONE.GRASS]: 5,` to
+// any file other than NavGrid.js/PlanService.js/PathPlanner.js (e.g. drop
+// it into NpcProfile.js) and rerun this script — Rule 8 should fail.
+console.log('Rule 8: zone cost policy (DEFAULT_ZONE_COSTS/_zoneCostsFor) numeric definitions confined to NavGrid.js + PlanService.js');
 {
-  const POLICY_RE = /\b(?:crosswalkCost|jaywalkRoadCost|roadCostDefault)\s*:/;
+  const ZONE_COST_RE = /\[ZONE\.\w+\]\s*[:=]\s*\d/;
+  const EXEMPT = new Set(['NavGrid.js', 'PlanService.js', 'PathPlanner.js']);
   const hits = [];
   for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))
       .concat(walkFiles(join(ROOT, 'scripts'), f => f.endsWith('.js') || f.endsWith('.mjs')))) {
-    if (p.endsWith('PathPlanner.js')) continue;
+    if (EXEMPT.has(p.split(/[\\/]/).pop())) continue;
     const lines = readText(p).split('\n');
     for (let i = 0; i < lines.length; i++) {
-      if (POLICY_RE.test(lines[i]))
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith('*') || trimmed.startsWith('//')) continue; // doc comments/examples
+      if (ZONE_COST_RE.test(lines[i]))
         hits.push(`${p}:${i + 1}: ${lines[i].trim()}`);
     }
   }
   if (hits.length > 0) {
-    fail('PLANNING_RULES policy definition outside PathPlanner.js:\n  ' + hits.join('\n  '));
+    fail('zone cost policy value defined outside NavGrid.js/PlanService.js:\n  ' + hits.join('\n  '));
   } else {
     okMsg();
   }

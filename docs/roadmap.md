@@ -58,6 +58,7 @@
 | W-7c（槽级 provenance） | claim 新增 `id`（`injectSuggestion` 定位用）+ `sources` 对象（五槽各自 `'witness'\|'suggested'\|null`，值为 null 的槽 sources 必为 null）；`strength` 从 claim 级降为槽级 `strength[slot]`；`generateClaims()` 产出时所有有值槽标 `'witness'`；`injectSuggestion` 改签名 `(npc, claimId, slot, value)`，**不再新建 claim**——只填某条既有 claim 上 `sources[slot]===null` 的槽，同 (claim,slot,value) 复述才 `strength+1`，换值或该槽已是 witness 来源一律拒绝；新增 `findFillableClaim(npc, slot)` 配套查找，`NewsUI` 审问面板用它决定往哪条 claim 写；顶层 `source` 字段完全删除，不留兼容层；`claimsToTestimony` 过渡为"整条含任一 suggested 槽即标注"（按槽精确标注是 W-7d 范围）。`witness-memory-v1.md` 标题升 v1.1，第一/七节按新 schema 改写 | ✅ 已落地 | `js/behavior/Belief.js`；`js/news/NewsUI.js`；`docs/design-plans/witness-memory-v1.md`；`CLAUDE.md` |
 | W-7d（证词序列化收口） | 修两个 bug：actor/target 的 fine 值此前直接存裸 `npc.id`（数字），place 的 fine 值直接存 `{x,y}`（对象）——两者都不满足 schema 声明的 `string`，拼出来的证词分别是 `谁=17`、`地点=[object Object]`。新增 `_describeSlotValue(kind, raw)`（唯一序列化住址）：`kind==='npc'` 产出 `npcType#id`，`kind==='place'` 产出 NavGrid zone 名（fine 额外带坐标后缀，coarse 不带）；`_actorFidelityValue`/`_placeFidelityValue` 的 fine/coarse 分支改调它，claim 里存的从此就是可读字符串，不是待格式化原始值。`claimsToTestimony` 改按槽标注来源（只有被问出来的那个槽后面跟"（未经证实）"），不再整条打一个标签盖住目击到的部分。`NewsUI.js` 全程只经 `claimsToTestimony()` 拿文本，不碰 claim 字段，无需改动。`witness-memory-v1.md` 第一节取值域表同步更新 | ✅ 已落地 | `js/behavior/Belief.js`；`docs/design-plans/witness-memory-v1.md`；`CLAUDE.md` |
 | W-7e（审问语义修正） | `_liveInterrogate` 系统提示词改写：候选值只能从玩家问句措辞里抽取，`knownClaims` 仅供判断槽位不得当答案来源，明令禁止推断/编造/常识补全，抽不到就是 `value:null`（合法结果，不是失败）；`{!parsed.slot \|\| parsed.value==null}` 的旧抛错条件改为只在缺 `slot` 时才抛——`value:null` 不再触发 mock 降级。`_mockInterrogate` 删除 `'说不清楚'` 字符串兜底（会被当成真实候选值注入进信念），`knownClaims` 里找不到就是 `value:null`（mock 无真实语言理解能力，仍只能查表近似，不强求它做措辞抽取）。`NewsUI.js` 新增 `feedback` 提示区：`value===null` 显式分支提示"这个问题没有暗示任何具体答案"；连带处理"问出了值但没有空槽可填"（`findFillableClaim` 返回 null）的提示，避免用户以为提问失败。`providers.js` 头注释补 interrogate 唯一职责声明 | ✅ 已落地 | `js/news/providers.js`；`js/news/NewsUI.js` |
+| M-1（check-invariants Rule 8 改写） | 旧 Rule 8 守的 `crosswalkCost`/`jaywalkRoadCost`/`roadCostDefault` 三个字段名在 Z-1 之后全库消失，规则恒绿、不再守护任何东西（该债务此前已在 `goal-pipeline-v1.md` N-2a 小节和本文件 Z-1b 小节记录为已知遗留）。改写为守真实住址：`[ZONE.x]: n` / `[ZONE.x] = n` 这类 zone 代价字面量只允许出现在 `NavGrid.js`（`DEFAULT_ZONE_COSTS`）和 `PlanService.js`（`_zoneCostsFor`）；`PathPlanner.js` 单独豁免——它的 `ZONE_ROUGHNESS` 是形状相同但语义无关的拉直摩擦表（早有文档说明与代价"两套独立序"），豁免不等于允许它定义代价。规则注释里写清楚验证手法：在第三个文件里加一行 `[ZONE.x]: n` 应该会让规则失败（已实测：临时加违规行触发 FAIL，删除后复绿）。规则新增了跳过文档注释行的逻辑，避免 `NpcProfile.js` 里举例用的 `` `zoneCosts: { [ZONE.GRASS]: 1 }` `` 这类注释文字被误判 | ✅ 已落地 | `scripts/check-invariants.mjs`（Rule 8）；`docs/design-plans/goal-pipeline-v1.md`；`docs/roadmap.md` |
 
 ---
 
@@ -553,7 +554,7 @@ roughness 不参与 A\*，与 `zoneCosts` 是两套独立的序：代价管选�
 
 代码锚点：`js/behavior/nav/PathPlanner.js#ZONE_ROUGHNESS,_lineOfSight`
 
-遗留：`check-invariants.mjs` Rule 8 的三个字段名已全部消失，规则变为空守卫（恒绿），待 Z-2 系列改写。
+~~遗留：`check-invariants.mjs` Rule 8 的三个字段名已全部消失，规则变为空守卫（恒绿），待 Z-2 系列改写。~~ 已在 M-1 改写，见下表「M-1」行。
 
 ---
 
