@@ -4,6 +4,7 @@ child_single 统一作为所有的小孩站立态骨架
 hand_stand_up 为小孩倒立
 hand_stand_down 为小孩由倒立回到站立态
 
-
-2. overlay
-lift.json   右手举起吉他的姿势，可走路
+（原 "2. overlay" 小节的 lift.json 已在 A-1 完成接线并移出本目录，
+见 assets/animations/overlay/lift.json + manifest.json + AttachmentDefs.js。
+右手举起吉他的姿势、可走路——本批接线用作 ChainTask pose 步骤的静态站立
+持握姿势，未利用其"可走路"这层设计余量，见 docs/roadmap.md「A-1」行说明。）

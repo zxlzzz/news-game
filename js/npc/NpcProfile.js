@@ -81,7 +81,7 @@ const PEDESTRIAN = {
   gesturePoses: PED_GESTURES,
   spawnTraits: ['hold_bag', 'umbrella'],
   activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
-  desires: ['rest_bench', 'use_vending', 'use_trash', 'eat_snack'],
+  desires: ['rest_bench', 'use_vending', 'use_trash', 'eat_snack', 'play_guitar'],
   traits: {},
   cameraReaction: 'neutral',
   socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },

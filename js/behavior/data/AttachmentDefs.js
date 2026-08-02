@@ -3,7 +3,10 @@
  *
  * key      = item id（ChainTask 和 NpcPropManager 共同使用）
  * anchor   = getAnchor() 锚点名
- * heldPose = manifest clip id；null = 无姿势叠加（后续有 clip 后改为 clip id）
+ * heldPose = manifest clip id；null = 无姿势叠加。⚠️ 声明性字段，当前无消费者
+ *            （NpcPropManager 只读 propType/draw/anchor，不读 heldPose；
+ *            ModifierLayer 的姿势叠加走 profile.heldPoses，是另一套机制）。
+ *            填了 clip id 不代表运行时会真的叠加姿势，见 guitar 条目注释。
  * propType = NpcPropManager _getOrCreate 的 type key
  * acquire  = 道具获取来源
  * dispose  = 道具销毁方式：'destroy' | 'return'
@@ -47,6 +50,29 @@ export const ATTACHMENT_DEFS = {
       color:     0x8b7355,
       alpha:     0.9,
       lineWidth: 2,
+    },
+  },
+
+  // 全库第一个非 null heldPose（A-1）。'lift' clip 本身设计为可走路叠加
+  // （见 assets/animations/new_assets/docx.md 的历史校对说明），但 heldPose
+  // 这个字段目前没有消费者（NpcPropManager/ModifierLayer 都不读它，只读
+  // propType/draw/anchor）——本条目只是把字段填上第一个真实值，不代表
+  // heldPose 已经接线生效；play_guitar 脚本（BehaviorScripts.js）里"举吉他"
+  // 的视觉效果实际来自 ChainTask pose 步骤直接播 'lift' 这个 STATE_DEFS
+  // 状态（Motor.js 新增），跟 heldPose 字段是两条独立路径。
+  guitar: {
+    anchor:   'hand_r',
+    heldPose: 'lift',
+    propType: 'guitar',
+    acquire:  { from: 'spawn' },
+    dispose:  'destroy',
+    draw: {
+      shape:     'line',
+      length:    32,
+      angle:     -10,
+      color:     0x6b4a2f,
+      alpha:     0.9,
+      lineWidth: 5,
     },
   },
 

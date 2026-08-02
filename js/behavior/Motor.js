@@ -149,6 +149,10 @@ export const STATE_DEFS = {
   chess_onlooker: { anim: 'chess_onlookers', speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
   // N3-c: 骑手单态；anim 仅用于 setState fallback，CyclistSpawner 用 setAnimation 覆写实际 clip
   ride:           { anim: 'bike',            speedK: 1.0, once: false, dur: null, onExit: _defaultOnExit },
+  // A-1: play_guitar 脚本的 pose 步骤用；anim='lift' 是 manifest kind:overlay
+  // 的 clip（只声明 r_elbow/r_hand 两个关节 delta），其余关节零 delta=停在
+  // defaultPose——静止站立、右臂抬起，不是行走态，故 speedK=0。
+  lift:           { anim: 'lift',            speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
 };
 
 const rand = (a, b) => a + Math.random() * (b - a);

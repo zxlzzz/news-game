@@ -50,6 +50,19 @@ export const BEHAVIOR_SCRIPTS = {
     steps: [ { op: 'goto', aff: 'use_trash' } ],
   },
 
+  // play_guitar — tier 1，A-1 首个非 null heldPose 的接线样板
+  play_guitar: {
+    tier: 1,
+    weight: 0.15,
+    interruptible: true,
+    steps: [
+      { op: 'attach', item: 'guitar' },
+      { op: 'goto',   aff:  'tree_shade' },
+      { op: 'pose',   clip: 'lift', dur: [10, 20] },
+      { op: 'detach', item: 'guitar' },
+    ],
+  },
+
   /*
   // sweep — tier 1，需要 sweep clip 入库后启用
   sweep: {

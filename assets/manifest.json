@@ -143,6 +143,10 @@
       "path": "animations/overlay/hunched.json",
       "kind": "overlay"
     },
+    "lift": {
+      "path": "animations/overlay/lift.json",
+      "kind": "overlay"
+    },
     "look_around": {
       "path": "animations/overlay/look_around.json",
       "kind": "overlay"
