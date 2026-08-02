@@ -83,7 +83,7 @@ States NOT in this table must never appear in `setState` calls (gate: `check-inv
 | `stall_seller` | `stand` | `SceneInitializer.js` (172) |
 | `dog_owner` | `walk` | `DogWalker.js` (45) |
 | `athlete` | `jog` | `Athletes.js` (15, 27) |
-| `child` | `walk` | none yet — declarative preset (A-2), no spawner assigns it; `skeleton:'child'` field has no renderer consumer either (see `assets/skeleton.json` child entry comment / `docs/roadmap.md` A-2 row) |
+| `child` | `walk` | `Pedestrians.js#spawnOnePedestrian` (via `TYPES`, weighted low), `Director.js#PERIODS` (10–19h mix only). `skeleton:'child'` is live since R-1: `Npc.js` constructor resolves it to `skeletonScale` (× into `npc.scale` by `EntityManager`) + `skeletonName` (StickRenderer `headRadius` lookup key) |
 
 All profiles registered via `BehaviorManager.js#register` (74), which calls
 `installProtection` and creates `TaskRunner` + `Agenda` instances.

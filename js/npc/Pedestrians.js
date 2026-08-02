@@ -12,7 +12,6 @@ import { getProfile } from './NpcProfile.js';
 import { getHeldPoses, getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
-const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 // weight 缺省 = 1；child 定低权重，避免初始人流里小孩占比失真（R-1）
 const TYPES = [
