@@ -3,9 +3,8 @@
  *
  * CONTRACT:
  *   WRITES: 内部数组 `_events`；`emitEvent()` 是唯一写入点。
- *   READS:  `drainNewEvents()` 是唯一的游标推进读取点——返回自上次调用以来
- *           的新事件并把游标移到数组末尾；`getEvents()` 是只读全量查询，
- *           不推进游标（调试/审计用，不得当消费入口用）。
+ *   READS:  `drainNewEvents()` 是唯一的读取点——返回自上次调用以来的新事件
+ *           并把游标移到数组末尾。
  *   MUST NOT: 任何模块绕过 emitEvent() 直接 push 进 `_events`；任何模块绕过
  *             drainNewEvents() 自行维护"我读到哪了"的游标。
  *
@@ -50,6 +49,3 @@ export function drainNewEvents() {
   _drainCursor = _events.length;
   return fresh;
 }
-
-export function getEvents()   { return _events; }
-export function clearEvents() { _events.length = 0; _drainCursor = 0; }

@@ -265,8 +265,8 @@ WorldEventLog.js — 世界事件流水账（W-1）。`emitEvent({kind, actors, 
 gameClock()`）。`emitEvent()` 调用点只允许出现在 `js/behavior/activities/`
 下（check-invariants Rule 14）。目前唯一调用方是 `TalkActivity.js`（push /
 push_land / give_item / handshake / point_at 五种 kind，取代旧版直接挂在
-NPC 上的私有标签字段）。`drainNewEvents()` 是唯一游标推进读取点（`getEvents()`
-是只读全量查询，不推进游标）；`EVENT_LOG_CAP=500` 是长度上限唯一住址，超限
+NPC 上的私有标签字段）。`drainNewEvents()` 是唯一读取点（游标推进，无旁路只读
+查询）；`EVENT_LOG_CAP=500` 是长度上限唯一住址，超限
 从头裁剪且游标同步平移，保证已读事件不会被重读。消费者：`BehaviorManager.js`
 （W-7a，唯一消费点，`SocialLayer.update()` 之后）。
 
