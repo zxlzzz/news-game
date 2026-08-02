@@ -83,6 +83,7 @@ States NOT in this table must never appear in `setState` calls (gate: `check-inv
 | `stall_seller` | `stand` | `SceneInitializer.js` (172) |
 | `dog_owner` | `walk` | `DogWalker.js` (45) |
 | `athlete` | `jog` | `Athletes.js` (15, 27) |
+| `child` | `walk` | none yet — declarative preset (A-2), no spawner assigns it; `skeleton:'child'` field has no renderer consumer either (see `assets/skeleton.json` child entry comment / `docs/roadmap.md` A-2 row) |
 
 All profiles registered via `BehaviorManager.js#register` (74), which calls
 `installProtection` and creates `TaskRunner` + `Agenda` instances.

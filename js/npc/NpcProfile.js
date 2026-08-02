@@ -137,6 +137,19 @@ const TOURIST = {
   speedRange: [16, 26],
 };
 
+// A-2：小孩预设，复用 pedestrian 全套行为（转换表/held/activities/desires 不变），
+// 只加一个 skeleton 声明。⚠️ skeleton 字段目前无消费者——NPC 的实际渲染大小由
+// EntityManager 每帧写的 npc.scale = depthScale(npc.y) 决定，跟骨架名无关；
+// StickRenderer._drawHuman 的头半径也是硬编码只读 this._headRadius['human']，
+// 不按 anim.skeleton 查表。也就是说 child NPC 现在生成出来视觉上和成人一样大，
+// 这批不新增跨实体的缩放机制（含 EntityManager.js/Npc.js 改动）——范围已与
+// 用户确认，见 docs/roadmap.md「A-2」行。
+const CHILD = {
+  ...PEDESTRIAN,
+  name:     'child',
+  skeleton: 'child',
+};
+
 const CHESS_PLAYER = {
   name: 'chess_player',
   initial: 'walk',
@@ -220,6 +233,7 @@ export const PROFILES = {
   pedestrian:     PEDESTRIAN,
   businessman:    BUSINESSMAN,
   tourist:        TOURIST,
+  child:          CHILD,
   chess_player:   CHESS_PLAYER,
   chess_onlooker: CHESS_ONLOOKER,
   stall_seller:   STALL_SELLER,
