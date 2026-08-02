@@ -39,7 +39,7 @@ Update order each frame (per NPC, `BehaviorManager.js#update`):
 
 ---
 
-## STATE_DEFS (Motor.js#STATE_DEFS, line 105)
+## STATE_DEFS (Motor.js#STATE_DEFS)
 
 Authoritative state table. `anim` must be a valid `manifest.json` clip id.
 
@@ -59,11 +59,16 @@ Authoritative state table. `anim` must be a valid `manifest.json` clip id.
 | `get_up` | `get_up` | 0 | true | null (∞) |
 | `talk` | `stand` | 0 | false | null (∞) |
 | `loiter` | `stand` | 0 | false | null (∞) |
-| `routing` | `walk` | 1.0 | false | null (∞) |
 | `chess` | `chess` | 0 | true | null (∞) |
 | `chess_onlooker` | `chess_onlookers` | 0 | true | null (∞) |
+| `ride` | `bike` | 1.0 | false | null (∞) |
+| `lift` | `lift` | 0 | true | null (∞) |
 
-`speedK` × `npc.walkSpeed` (default 26 px/s) = `npc.speed`.
+The `routing` state was deleted along with its whole state-machine chain in N3-b;
+exit routing now runs as an ordinary `walk` driven by `ExitSceneTask` + `mot.goal`.
+
+`speedK` × `npc.walkSpeed` (default 26 px/s) = `npc.speed`, written through the
+`Motor.js#_mw` gate on every state entry (not a direct assignment).
 `once: true` → animation plays once to `animDone`, then holds last frame.
 `dur: null` → `stateDur = Infinity`; transition only on external trigger.
 
@@ -71,26 +76,28 @@ States NOT in this table must never appear in `setState` calls (gate: `check-inv
 
 ---
 
-## NPC Profiles (NpcProfile.js#PROFILES, line 200)
+## NPC Profiles (NpcProfile.js#PROFILES)
 
 | Profile key | `initial` | Registered by |
 |---|---|---|
-| `pedestrian` | `walk` | `Pedestrians.js#spawnOnePedestrian` (84), `SceneInitializer.js` (172 as `stall_seller` fallback) |
+| `pedestrian` | `walk` | `Pedestrians.js#spawnOnePedestrian`, `SceneInitializer.js` (as `stall_seller` fallback) |
 | `businessman` | `walk` | `Pedestrians.js#spawnOnePedestrian` |
 | `tourist` | `walk` | `Pedestrians.js#spawnOnePedestrian` |
-| `chess_player` | `chess` | `Chess.js` (82, 83) |
-| `chess_onlooker` | `chess_onlooker` | `Chess.js` |
-| `stall_seller` | `stand` | `SceneInitializer.js` (172) |
-| `dog_owner` | `walk` | `DogWalker.js` (45) |
-| `athlete` | `jog` | `Athletes.js` (15, 27) |
+| `chess_player` | `chess` | `Chess.js#spawnChess` |
+| `chess_onlooker` | `chess_onlooker` | `Chess.js#spawnChess` |
+| `stall_seller` | `stand` | `SceneInitializer.js` |
+| `dog_owner` | `walk` | `DogWalker.js#spawnDogWalker` |
+| `athlete` | `jog` | `Athletes.js#spawnAthletes` |
+| `cyclist` | `ride` | `CyclistSpawner.js#_spawn` |
 | `child` | `walk` | `Pedestrians.js#spawnOnePedestrian` (via `TYPES`, weighted low), `Director.js#PERIODS` (10–19h mix only). `skeleton:'child'` is live since R-1: `Npc.js` constructor resolves it to `skeletonScale` (× into `npc.scale` by `EntityManager`) + `skeletonName` (StickRenderer `headRadius` lookup key) |
 
-All profiles registered via `BehaviorManager.js#register` (74), which calls
-`installProtection` and creates `TaskRunner` + `Agenda` instances.
+All profiles registered via `BehaviorManager.js#register`, which calls
+`installProtection` and creates a `TaskRunner`, plus an `Agenda` unless the
+profile sets `agenda: false` (`athlete`, `cyclist` — permanent scenery).
 
 ---
 
-## Transition Table (BaseStateMachine.js#TRANSITIONS, line 129)
+## Transition Table (BaseStateMachine.js#TRANSITIONS)
 
 Priority scheme (higher = earlier evaluation):
 
@@ -98,22 +105,26 @@ Priority scheme (higher = earlier evaluation):
 |---|---|---|
 | 99+ | `animDone` forced | `fall → lie_ground`, `get_up → stand` |
 | 5 | `timeout` | any finite-dur state → `_resolveTimeout` |
-| 50–98 | Social injection | `SocialLayer` via `registerTransition` |
 
-`_resolveTimeout` (`BaseStateMachine.js#_resolveTimeout`, 92): picks next state
+`BaseStateMachine.js#registerTransition` is an exported extension point for
+injecting extra rules at any priority, but **currently has zero callers** —
+`SocialLayer` drives its NPCs through `Activity` + the `sc.activity` lock, not
+through injected transitions. Treat it as reserved API, not as live machinery.
+
+`_resolveTimeout` (`BaseStateMachine.js#_resolveTimeout`): picks next state
 from `profile.transitions[npc.state]` weighted table, applies environment
 pre-checks (bench availability, wall proximity), handles `sit_bench`/`lean_wall`
 side-effects (slot occupation).
 
-`sit_bench` is removed from `walk`/`stand` transition rows in `NpcProfile.js`
-(PED_TRANSITIONS comment, line 17) — `UseBenchTask` drives bench seating via
+`sit_bench` is removed from `walk`/`stand` transition rows in
+`NpcProfile.js#PED_TRANSITIONS` — `UseBenchTask` drives bench seating via
 `Agenda` instead.
 
 ---
 
 ## Activity System (SocialLayer.js)
 
-Activities lock the NPC out of BSM/modifiers (`BehaviorManager.js#update`, 139:
+Activities lock the NPC out of BSM/modifiers (`BehaviorManager.js#update`:
 `if (sc.activity) continue`).
 
 | Activity | Participants | Drives state |
@@ -121,7 +132,6 @@ Activities lock the NPC out of BSM/modifiers (`BehaviorManager.js#update`, 139:
 | `TalkActivity` | 2 NPCs | `talk` |
 | `ChessActivity` | 1 player + optional onlookers | `chess` / `chess_onlooker` |
 | `StallActivity` | seller + 1 buyer | seller stays `stand`; buyer uses `stall_buyer_*` overlays |
-| `DogWalkActivity` | owner + leashed dog | owner keeps walking; dog via `leashTarget` |
 | `UsePropActivity` | 1 NPC | `stand` at vending/trash |
 | `WaitBusActivity` | 1 NPC (waiter) | `stand`/`loiter` fidget cycle; timeout → `walk`; boarding → despawn |
 
@@ -131,23 +141,33 @@ Activities lock the NPC out of BSM/modifiers (`BehaviorManager.js#update`, 139:
 it synchronously (boarding path) before SocialLayer's next `update()` sweep.
 `npc.mem('social').activity` is the lock field; cleared by `Activity#end`.
 
+Dog walking is **not** an Activity: `DogWalker.js#spawnDogWalker` registers only
+the owner (profile `dog_owner`) and ties the dog to it via `leashTarget`, which
+`Npc.js#update` / `Motor.js#integratePhysics` resolve positionally each frame.
+There is no `DogWalkActivity` class.
+
 ---
 
 ## WalkMode Kinds (WalkMode.js)
 
 | kind | Description | Constructed by |
 |---|---|---|
-| `wander` | Random drift within bounds; replans on each arrival | `WalkMode.js#modeWander` (133) |
-| `direct` | Straight-line to a fixed target; callback on arrive | `WalkMode.js#modeDirect` (143) |
-| `path_follow` | Follows `WALK_PATHS[key]` waypoint sequence; supports pausing | `WalkMode.js#modePathFollow` (152) |
+| `wander` | Random drift within bounds; replans on each arrival | `WalkMode.js#modeWander` |
+| `path_follow` | Follows `WALK_PATHS[key]` waypoint sequence; supports pausing | `WalkMode.js#modePathFollow` |
 
-Stack API: `setWalkMode` (replace), `pushWalkMode` (save + replace), `popWalkMode`
-(restore). `planCrossing` pushes before crossing; `_defaultOnExit` pops on
-walk/run state entry if stack non-empty.
+Only these two kinds exist. The former `direct` kind and its `modeDirect`
+constructor were deleted in N-2b — goal-directed movement now goes through
+`mot.goal` + `mot.path` (see `contracts/movement.md`), not through a walk mode.
 
-Zone guards (`WalkMode.js#checkZoneTransition`, 178): if a wander NPC drifts
-into road/bike zone, installs a `direct` mode to cross through. Covers states
-`walk`, `run`, `jog`.
+API: `setWalkMode` (replace) is the only entry point. The push/pop stack
+(`pushWalkMode` / `popWalkMode` / `walkModeStack`) was deleted in N-2b: an
+interrupted mode is not saved or restored, the next mode is chosen fresh.
+
+Zone guards (`WalkMode.js#checkZoneTransition`): if a wander NPC drifts into the
+road or a bike lane, the guard **overwrites `mot.vel` for that frame** to bounce
+it back to the nearest safe band — it does not install a mode and keeps no state.
+Goal-driven NPCs return early (the planner handles zones through cost). Covers
+states `walk`, `run`, `jog`.
 
 ---
 

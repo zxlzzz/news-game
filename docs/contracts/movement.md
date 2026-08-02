@@ -1,9 +1,19 @@
 # Movement Subsystem Contract
 
-verified at ddc77846154d3cb51fef63ba83f06feeb0accd0c (V-1); updated for V-2 consumer migration + F1–F4 footprint unification (see velocity-unification-design-v1.md, roadmap.md)
+verified at d7cd5c1ff33dc0601b9d1510c21086283374a0c0 — full re-verification after
+N-2b / N-3 / V-2 / V3-a. Four field sections describing deleted state
+(`npc.vy`, `walkModeStack`, `navPath/navIdx/navGoalX/navGoalY`,
+`routeTarget/routePts/routeIdx`) were removed; `mot.goal` / `mot.path` /
+`mot.needReplan` were added; all `file#symbol` anchors re-grepped.
 
-All writers listed as `file#symbol (line)`. Line numbers are parenthetical
-annotations only — anchor is the symbol name. Verified by grep on HEAD.
+All writers listed as `file#symbol`. **Line numbers are deliberately omitted** —
+they rot faster than symbol names and were wrong across the board at the previous
+revision. The symbol name is the anchor; grep for it.
+
+⚠️ **Grep caveat**: `Motor.js` writes protected fields through the `_mw(npc, field, value)`
+gate, not by direct assignment. `grep '\.speed ='` / `'\.x ='` will therefore
+*miss* the Motor write path entirely and make a field look unwritten. Always
+check `_mw(npc, '<field>'` as well before concluding a field is dead.
 
 ---
 
@@ -15,9 +25,9 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 |---|---|
 | **Semantic** | World-coordinate ground-contact point; `y` is the pixel line where the NPC's feet touch the ground. Rendering formula: `screen_y = npc.y + joint[1] * scale` (joint y=0 = ground). |
 | **Owner** | `Motor.js#_mw` — sole authorised writer gate |
-| **Writers** | `Motor.js#setXY` (253), `Motor.js#_slideMove` (207-250, all move branches), `Motor.js#integratePhysics` (278 leash path); `seat.js#_setXY` (36) — conditional fallback only when `_motorInstalled` is false (cyclists hit this path) |
+| **Writers** | `Motor.js#setXY`, `Motor.js#_slideMove` (all move branches), `Motor.js#integratePhysics` (leash path); `seat.js#_setXY` — conditional fallback only when `_motorInstalled` is false |
 | **Readers** | All rendering code, `StuckProbe.js`, `BehaviorManager.js#_separate`, `EnvironmentQuery.js`, `WalkMode.js`, `NavGrid.js`, `BaseStateMachine.js#steerRoam`, `seat.js` |
-| **Invariant** | Must not be written outside Motor.js API (`setXY`/`nudgeXY`). `npc.y` offsets must never compensate for clip ground-contact errors — fix the clip JSON instead. |
+| **Invariant** | Must not be written outside Motor.js API (`setXY`/`nudgeXY`) — enforced by `check-invariants.mjs` Rule 9. `npc.y` offsets must never compensate for clip ground-contact errors — fix the clip JSON instead. |
 
 ---
 
@@ -25,11 +35,11 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Scalar speed magnitude in pixels/second; sign-free (direction carries sign). Effectively always 0 after V-1 (physics driven by `mot.vel`); kept for compatibility with inline cyclists path and rendering consumers. |
-| **Owner** | `Motor.js` |
-| **Writers** | `Motor.js#setState` (154, via `_mw`); `Motor.js#setSpeed` (263) — reserved for future use; no active caller after N-2b (planCrossing deleted) |
-| **Readers** | `StuckProbe.js` — not used as gate condition; inline cyclist path only |
-| **Invariant** | Only via `setState` or `setSpeed`. Raw `npc.speed =` anywhere else is a contract violation. |
+| **Semantic** | Scalar speed magnitude in px/s for the *current state*, recomputed on every state entry as `STATE_DEFS[state].speedK × (npc.walkSpeed \|\| 26)` — so it is 0 in every stationary state and non-zero only in `walk`/`run`/`jog`/`ride`. It is **not** the general physics channel (that is `mot.vel`, since V-1), but it is not vestigial either: the `ride` branch still derives velocity from it directly. At construction it carries a different meaning — the spawn-time pace seed that `BehaviorManager#register` converts into `npc.walkSpeed`. |
+| **Owner** | `Motor.js` (per-state value) / `Npc.js` constructor (spawn seed) |
+| **Writers** | `Motor.js#setState` — via the `_mw` write gate, **not** a direct assignment, so a `grep '\.speed ='` will not find it; `Npc.js` constructor (`this.speed = config.speed \|\| 0`). The old `setSpeed` API was deleted in V3-a and has no replacement. |
+| **Readers** | `BehaviorManager.js#register` (seeds `walkSpeed`, once); `BaseStateMachine.js#_tickState` `ride` branch (`mot.vel = {vx: direction * speed, vy: 0}` — N3-c, the one live physics read); `StuckProbe.js` (diagnostic, not a gate) |
+| **Invariant** | Only `setState` (via `_mw`) or the `Npc.js` constructor may write it — enforced by `check-invariants.mjs` Rule 3. Do not reintroduce it as the general physics channel; non-`ride` movement goes through `mot.vel`. |
 
 ---
 
@@ -37,11 +47,11 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Current behaviour state string: `walk`, `run`, `jog`, `stand`, `sit_bench`, `lie_bench`, `lean_wall`, `squat`, `sit_ground`, `lie_ground`, `get_up`, `fall`, `talk`, `loiter`, `routing`, `chess`, `chess_onlooker`. Full definitions in `Motor.js#STATE_DEFS`. |
+| **Semantic** | Current behaviour state string: `walk`, `run`, `jog`, `stand`, `sit_bench`, `lie_bench`, `lean_wall`, `squat`, `sit_ground`, `lie_ground`, `get_up`, `fall`, `talk`, `loiter`, `ride`, `chess`, `chess_onlooker`. Full definitions in `Motor.js#STATE_DEFS`. |
 | **Owner** | `Motor.js` |
-| **Writers** | `Motor.js#setState` (154, via `_mw`) — sole write path |
-| **Readers** | `BaseStateMachine.js#_tickState` (176), `BaseStateMachine.js#steerRoam` (188), `BaseStateMachine.js#tickBaseState` (363), `BehaviorManager.js#update` (143), `WaitForBusLayer.js` (46, 59, 63), `UseBenchTask.js` (60), `StuckProbe.js` (26, 27) |
-| **Invariant** | All state transitions go through `setState(npc, state, trigger)`. `npc.state =` anywhere except `Motor.js` and `Npc.js` constructor is a violation. |
+| **Writers** | `Motor.js#setState` (via `_mw`) — sole write path |
+| **Readers** | `BaseStateMachine.js#_tickState`, `BaseStateMachine.js#steerRoam`, `BaseStateMachine.js#tickBaseState`, `BehaviorManager.js#update`, `WaitForBusLayer.js`, `UseBenchTask.js`, `StuckProbe.js` |
+| **Invariant** | All state transitions go through `setState(npc, state, trigger)`. `npc.state =` anywhere except `Motor.js` and the `Npc.js` constructor is a violation — enforced by Rule 3. |
 
 ---
 
@@ -51,9 +61,9 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 |---|---|
 | **Semantic** | Current clip id string (from `manifest.json`). `StickRenderer` uses this as the lookup key — no alias layer. Default is `'stand'` (not `'idle'`). |
 | **Owner** | `Motor.js` |
-| **Writers** | `Motor.js#setState` (154, via `_mw`), `Motor.js#setAnimation` (268) |
-| **Readers** | `Npc.js#update` (animation loop), `StuckProbe.js` (51), rendering layer |
-| **Invariant** | Must be a valid clip id from `manifest.json`. Only `setState` or `setAnimation` may write it. |
+| **Writers** | `Motor.js#setState` (via `_mw`), `Motor.js#setAnimation` |
+| **Readers** | `Npc.js#update` (animation loop), `StuckProbe.js`, rendering layer |
+| **Invariant** | Must be a valid clip id from `manifest.json`. Only `setState` or `setAnimation` may write it — enforced by Rule 3. |
 
 ---
 
@@ -63,21 +73,9 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 |---|---|
 | **Semantic** | Horizontal facing: `1` = right, `-1` = left. Used for physics `dx` and rendering mirror. |
 | **Owner** | Unprotected — multiple owners by convention |
-| **Writers** | `Npc.js` constructor (65 — init), `Npc.js#update` (254 — leash sync, 281-282 — bounds fallback); `Motor.js#_defaultOnExit` (141 — loiter dir restore), `Motor.js#integratePhysics` (278 — leash sync, 287-288 — bounds bounce, 335 — reversal); `Pedestrians.js#spawnOnePedestrian` (107 — spawn facing); `LoiterBehavior.js#tickLoiter` (42 — micro-phase dir restore); `TalkActivity.js#_faceEachOther` (74-75 — mutual face); `StallActivity.js#activate` (60 — seller face, 61 — buyer face); `UsePropActivity.js#activate` (33 — face prop); `ChessActivity.js#start` (65 — face table); `Director.js#_spawnNPC` (157 — spawn facing); `BaseStateMachine.js#_resolveTimeout` (118 — lean_wall spot facing), `BaseStateMachine.js#steerRoam` (238 — steer direction, 323 — desired facing), `BaseStateMachine.js#_routeToExit` (332 — exit facing) |
-| **Readers** | `CigaretteProp.js` (29, 41), `seat.js#alignLie` (101), `BaseStateMachine.js#steerRoam` (audit check, direction update) |
-| **Invariant** | Value must always be exactly `1` or `-1`. No floating-point normalisation. |
-
----
-
-### `npc.vy`
-
-| | |
-|---|---|
-| **Semantic** | Vertical velocity field; effectively dead after V-2. `Motor.js#setState` still resets it to 0 for safety. No active reader or meaningful writer remains. |
-| **Owner** | `Motor.js` (reset only) |
-| **Writers** | `Motor.js#setState` (166 — reset to 0); no other legitimate writer after V-2 |
-| **Readers** | None — `checkZoneTransition` migrated to `mot.vel?.vy` in V-2 |
-| **Invariant** | Always 0 in practice post-V-2. The field is retained to avoid property-access errors on NPC objects; Y motion is driven by `mot.vel.vy` only. |
+| **Writers** | `Npc.js` constructor (init), `Npc.js#update` (leash sync); `Motor.js#_defaultOnExit` (loiter dir restore), `Motor.js#integratePhysics` (leash sync, bounds bounce, reversal); `Pedestrians.js#spawnOnePedestrian` (spawn facing); `LoiterBehavior.js#tickLoiter` (micro-phase dir restore); `TalkActivity.js#_faceEachOther` (mutual face); `StallActivity.js#addBuyer` (seller + buyer face); `UsePropActivity.js` constructor (face prop); `ChessActivity.js#addOnlooker` (face table); `Director.js#_spawnNPC` (spawn facing); `BaseStateMachine.js#_resolveTimeout` (lean_wall spot facing), `BaseStateMachine.js#updateFacing` (sole steering-driven writer, with `mot.dirCD` hysteresis), `BaseStateMachine.js#_routeToExit` (exit facing) |
+| **Readers** | `CigaretteProp.js`, `seat.js#alignLie`, `StickRenderer#draw` (mirror), `Npc.js#getAnchor` |
+| **Invariant** | Value must always be exactly `1` or `-1`. No floating-point normalisation. Writes inside the physics path are restricted to a whitelist — enforced by `check-invariants.mjs` Rule 10. |
 
 ---
 
@@ -87,9 +85,9 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 |---|---|
 | **Semantic** | Current short-range steer target `{x, y}` for `steerRoam`. `null` when no target; `steerRoam` calls `pickModeTarget` when null (unless `pausing=true` in path_follow mode). |
 | **Owner** | `WalkMode.js` (target lifecycle) and `Motor.js` (reset on mode change) |
-| **Writers** | `WalkMode.js#pickModeTarget` (219 — direct, 236 — path_follow, 247 — null fallback, 255 — wander random); `WalkMode.js#_pickRandom` (258 — null on fail); `WalkMode.js#onPathArrival` (286, 288 — null); `WalkMode.js#tickWalkMode` (335 — null on arrival); `Motor.js#setWalkMode` (77), `Motor.js#pushWalkMode` (85), `Motor.js#popWalkMode` (92), `Motor.js#_defaultOnExit` (101), `Motor.js#setState` (173), `Motor.js#integratePhysics` (319, 324 — progress monitor) |
-| **Readers** | `BaseStateMachine.js#steerRoam` (251, 252, 254), `StuckProbe.js` (46) |
-| **Invariant** | Nulled on every `setWalkMode`/`pushWalkMode`/`popWalkMode`. Never left as stale non-null from a previous walk mode. |
+| **Writers** | `WalkMode.js#pickModeTarget` (path_follow waypoint / wander random), `WalkMode.js#_pickRandom` (null on fail), `WalkMode.js#onPathArrival` (null), `WalkMode.js#tickWalkMode` (null on pause release); `Motor.js#setWalkMode`, `Motor.js#_defaultOnExit`, `Motor.js#setState`, `Motor.js#integratePhysics` (progress monitor, wander branch) |
+| **Readers** | `BaseStateMachine.js#steerRoam`, `StuckProbe.js` |
+| **Invariant** | Nulled on every `setWalkMode`. Never left as stale non-null from a previous walk mode. |
 
 ---
 
@@ -97,47 +95,47 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Current walk mode descriptor: `{kind:'wander',...}`, `{kind:'direct',...}`, `{kind:'path_follow',...}`, or `null` for raw physics only. |
-| **Owner** | `Motor.js` (API: `setWalkMode` / `pushWalkMode` / `popWalkMode`) |
-| **Writers** | `Motor.js#setWalkMode` (73), `Motor.js#pushWalkMode` (80), `Motor.js#popWalkMode` (88, stack pop), `Motor.js#_defaultOnExit` (101, stack pop on walk/run) |
-| **Readers** | `WalkMode.js#checkZoneTransition` (178), `WalkMode.js#pickModeTarget` (205), `WalkMode.js#_pickRandom` (228), `WalkMode.js#tickWalkMode` (327); `BehaviorManager.js#_sepScale` (160); `BaseStateMachine.js#_tickState` (181); `Motor.js#setState` (157), `Motor.js#integratePhysics` (266, 287, 299, 308, 324, 335) |
-| **Invariant** | Never written directly — always via `setWalkMode`/`pushWalkMode`/`popWalkMode`. Switching walk mode always nulls `npc.roamTarget`. |
+| **Semantic** | Current walk mode descriptor: `{kind:'wander',...}`, `{kind:'path_follow',...}`, or `null` for raw physics only. The `direct` kind was deleted in N-2b — goal-directed movement now goes through `mot.goal` + `mot.path`. |
+| **Owner** | `Motor.js` (API: `setWalkMode` — replace only; the push/pop stack was deleted in N-2b) |
+| **Writers** | `Motor.js#setWalkMode`, `Motor.js#_defaultOnExit`, `Motor.js#setState` |
+| **Readers** | `WalkMode.js#checkZoneTransition`, `WalkMode.js#pickModeTarget`, `WalkMode.js#_pickRandom`, `WalkMode.js#tickWalkMode`; `BehaviorManager.js#_sepScale`; `BaseStateMachine.js#_tickState`; `Motor.js#setState`, `Motor.js#integratePhysics` |
+| **Invariant** | Never written directly — always via `setWalkMode`. Switching walk mode always nulls `npc.roamTarget`. There is no mode stack: an interrupted mode is not restored, the next mode is chosen fresh. |
 
 ---
 
-### `npc.mem('motor').walkModeStack`
+### `npc.mem('motor').goal`
 
 | | |
 |---|---|
-| **Semantic** | LIFO stack of suspended walk mode descriptors. `pushWalkMode` saves current mode before priority interrupt; `popWalkMode` restores it. |
-| **Owner** | `Motor.js` |
-| **Writers** | `Motor.js#setWalkMode` (74 — init), `Motor.js#pushWalkMode` (82-84 — push), `Motor.js#popWalkMode` (88-91 — pop), `Motor.js#_defaultOnExit` (100-101 — pop on walk/run transition) |
-| **Readers** | `Motor.js#popWalkMode` (88), `Motor.js#_defaultOnExit` (100), `WalkMode.js#tickWalkMode` (340) |
-| **Invariant** | Only modified via `pushWalkMode`/`popWalkMode`. Crossing (`planCrossing`) pushes before starting; `popWalkMode` or `_defaultOnExit` restores. |
+| **Semantic** | Active high-level destination `{x, y, radius, meta, onDone, _stuck}` published by the Planning layer. `meta.jaywalk` flips the ROAD cost override in `PlanService._zoneCostsFor`. `_stuck` is the progress monitor's two-strike latch. Replaces the deleted `routeTarget` channel. |
+| **Owner** | `nav/PlanService.js` — `publishGoal` is the sole constructor of a non-null goal |
+| **Writers** | `PlanService.js#publishGoal` (set); cleared to null by `PlanService.js#_fireBlocked`, `Motor.js#integratePhysics` (arrival fire + progress two-strike `'blocked'`), `BaseStateMachine.js#steerRoam` (arrival), `GotoTask.js`, `StrollTask.js` |
+| **Readers** | `Motor.js#integratePhysics`, `BaseStateMachine.js#steerRoam`, `PlanService.js#ensurePath`, `Npc.js#getTags` (`meta.jaywalk`), `StuckProbe.js` |
+| **Invariant** | Only `publishGoal` may create one — no module constructs a goal object inline. `onDone` fires exactly once, with `'arrived'` or `'blocked'`, and the goal is nulled in the same step. |
 
 ---
 
-### `npc.mem('motor').navPath` / `.navIdx` / `.navGoalX` / `.navGoalY`
+### `npc.mem('motor').path`
 
 | | |
 |---|---|
-| **Semantic** | Sub-path from `PathPlanner#plan` for `steerRoam` to follow toward `roamTarget`. `navPath` is `[{x,y}]`; `navIdx` is current waypoint index; `navGoalX/Y` cache-invalidation key (replanned when mismatched). |
-| **Owner** | `BaseStateMachine.js#steerRoam` |
-| **Writers** | `BaseStateMachine.js#steerRoam` (257-261 — goal mismatch replan, 269-270 — store result, 285 — arrival clear); `Motor.js#integratePhysics` (298, 303 — progress monitor clear) |
-| **Readers** | `BaseStateMachine.js#steerRoam` (257, 276-277, 284-285) |
-| **Invariant** | Nulled on goal change (`navGoalX/Y` mismatch) and on progress-monitor stuck. `steerRoam` replans next frame after null. |
+| **Semantic** | Computed waypoint sequence `{pts, idx, goalX?, goalY?}` for the steering layer to follow. `idx` is the current waypoint cursor; `goalX/goalY` (wander paths only) act as a cache-invalidation key. Replaces the deleted `navPath`/`navIdx`/`navGoalX`/`navGoalY` quartet. |
+| **Owner** | `nav/PlanService.js` — sole producer of a **non-null** path (`ensurePath` / `ensureWanderPath`) |
+| **Writers** | `PlanService.js#ensurePath`, `PlanService.js#ensureWanderPath` (construct); cleared to null by `PlanService.js#publishGoal`, `PlanService.js#_fireBlocked`, `Motor.js#integratePhysics` (arrival, progress monitor), `BaseStateMachine.js#steerRoam`, `GotoTask.js`, `StrollTask.js` |
+| **Readers** | `BaseStateMachine.js#steerRoam` (waypoint advance), `Lookahead.js#applyLookahead`, `DebugOverlay.js` |
+| **Invariant** | No module outside `PlanService` may build a path — clearing to `null` is unrestricted, constructing is not. A non-null `path` always corresponds to either an active `goal` or an active wander `roamTarget`. |
 
 ---
 
-### `npc.mem('motor').routeTarget` / `.routePts` / `.routeIdx`
+### `npc.mem('motor').needReplan`
 
 | | |
 |---|---|
-| **Semantic** | High-level routing destination `{x, y, exitType?, abandonAfter?}` set by callers before entering `routing` state. `routePts` is the computed waypoint sequence; `routeIdx` is current index. |
-| **Owner** | `BaseStateMachine.js#steerRoam` (consumes), set by callers before entering `routing` |
-| **Writers** | `BaseStateMachine.js#triggerDeparture` (336 — set destination); `WaitForBusLayer.js#_startBoarding` (127, via inner `routeToDoor`); `BaseStateMachine.js#steerRoam` (200, 229 — clear on arrival/timeout); `Motor.js#integratePhysics` (312, 313 — clear on stuck) |
-| **Readers** | `BaseStateMachine.js#steerRoam` (194, 195), `DebugOverlay.js` (79, 80), `StuckProbe.js` (40, 48) |
-| **Invariant** | `routeTarget` must be set before `setState(npc, 'routing')`. `abandonAfter` cap is 60s. Cleared on arrival, timeout, or `routing_no_target` fallback. |
+| **Semantic** | One-shot flag forcing `ensurePath` to discard the cached path and replan. Set by the progress monitor's first stuck strike. |
+| **Owner** | `Motor.js#integratePhysics` (producer) / `nav/PlanService.js#ensurePath` (consumer) |
+| **Writers** | `Motor.js#integratePhysics` (set `true` on first strike, `undefined` on clear); `PlanService.js#publishGoal`/`ensurePath` (`undefined` after honouring); `BaseStateMachine.js#steerRoam` (`undefined` on arrival) |
+| **Readers** | `PlanService.js#ensurePath` (`if (mot.path && !mot.needReplan) return`) |
+| **Invariant** | Cleared (`undefined`) as soon as it has been honoured — never left latched across frames. |
 
 ---
 
@@ -145,11 +143,11 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Optional string array for motor-layer behaviour labels: `['resting']`, `['resting','homeless']`, `['jaywalking']`, `['crossing_road']`. Surfaced via `npc.getTags()`. |
-| **Owner** | `Motor.js` (cleared in `_defaultOnExit`) and `WalkMode.js` (crossing tags) |
-| **Writers** | `Motor.js#_defaultOnExit` (97 — clear to null); `Motor.js#setState` (176 — set `['resting'...]` on `lie_bench`); `WalkMode.js#planCrossing` (93 — `['jaywalking']`, 95 — `['crossing_road']`, 97 — null clear, 108 — null on complete) |
-| **Readers** | `Motor.js#setState` (189 — dlog), aggregated by `npc.getTags()` |
-| **Invariant** | Cleared to `null` on every state exit (`_defaultOnExit`). Only set during `setState` or `planCrossing`. |
+| **Semantic** | Optional string array for motor-layer behaviour labels. Current vocabulary is only `['resting']` / `['resting','homeless']`, set on `lie_bench`. Surfaced via `npc.getTags()`. The `crossing` / `jaywalking` tags are **not** here — since N-2b they are derived spatially in `Npc.js#getTags` from the NavGrid zone under the NPC, not stored. |
+| **Owner** | `Motor.js` |
+| **Writers** | `Motor.js#_defaultOnExit` (clear to null); `Motor.js#setState` (set on `lie_bench`) |
+| **Readers** | `Motor.js#setState` (dlog), aggregated by `npc.getTags()` |
+| **Invariant** | Cleared to `null` on every state exit (`_defaultOnExit`). Only `setState` sets it. |
 
 ---
 
@@ -159,8 +157,8 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 |---|---|
 | **Semantic** | `{building, side}` recording which wall slot the NPC occupies in `lean_wall` state. Cleared by `lean_wall`'s `onExit` hook which also releases the building slot. |
 | **Owner** | `BaseStateMachine.js` (write) / `Motor.js#_defaultOnExit` for `lean_wall` (clear) |
-| **Writers** | `BaseStateMachine.js#_resolveTimeout` (111 — set on lean_wall entry); `Motor.js#STATE_DEFS.lean_wall.onExit` (104-108 — clear and release) |
-| **Readers** | `Motor.js#STATE_DEFS.lean_wall.onExit` (104) |
+| **Writers** | `BaseStateMachine.js#_resolveTimeout` (set on lean_wall entry); `Motor.js#STATE_DEFS.lean_wall.onExit` (clear and release) |
+| **Readers** | `Motor.js#STATE_DEFS.lean_wall.onExit` |
 | **Invariant** | Must be `null` when NPC is not in `lean_wall` state. `lean_wall` `onExit` always clears it before releasing the slot. |
 
 ---
@@ -169,30 +167,33 @@ annotations only — anchor is the symbol name. Verified by grep on HEAD.
 
 | | |
 |---|---|
-| **Semantic** | Anchor-based stuck monitor: `progressAnchor` is the NPC's position at the start of each 1.5s window; `progressAcc` accumulates `dt`. When the window fires, net displacement < 15px with an active goal triggers stuck recovery. |
+| **Semantic** | Anchor-based stuck monitor: `progressAnchor` is the NPC's position at the start of each window; `progressAcc` accumulates `dt`. Window length and displacement threshold live in `Motor.js#RECOVERY_RULES.progress_monitor` (`window` / `movedLT`) — not hardcoded at the call site. |
 | **Owner** | `Motor.js#integratePhysics` |
-| **Writers** | `Motor.js#integratePhysics` (287 — lazy init anchor, 289 — accumulate, 290-293 — window fire + anchor reset) |
-| **Readers** | `Motor.js#integratePhysics` (292 — compute moved, 296 — threshold test) |
+| **Writers** | `Motor.js#integratePhysics` (lazy init anchor, accumulate, window fire + anchor reset) |
+| **Readers** | `Motor.js#integratePhysics` (compute moved, threshold test) |
 | **Invariant** | `progressAcc` resets to 0 each window. `progressAnchor` updated to current position each window regardless of movement. |
+
+---
 
 ### `npc.mem('motor').vel`
 
 | | |
 |---|---|
-| **Semantic** | One-frame velocity vector `{vx, vy}` written by `steerRoam` so `integratePhysics` can apply diagonal movement directly, bypassing the `direction × speed` scalar path. Consumed (set to `null`) by `integratePhysics` on the same frame it is read. |
+| **Semantic** | One-frame velocity vector `{vx, vy}` written by `steerRoam` so `integratePhysics` can apply diagonal movement directly. Consumed (set to `null`) by `integratePhysics` on the same frame it is read. Since V-1 this is the **only** physics channel — there is no scalar fallback. |
 | **Owner** | `Motor.js#integratePhysics` (consumer) / `BaseStateMachine.js#steerRoam` (producer) |
-| **Writers** | `BaseStateMachine.js#steerRoam` walk branch (sets `{vx,vy}` after `applyLookahead`); `Motor.js#integratePhysics` (clears to `null` after consuming) |
-| **Readers** | `Motor.js#integratePhysics` (consumes when `mot.vel` is set — both `.vx` and `.vy` are used) |
-| **Invariant** | Only written when `walkMode` is active. `null` between frames — `integratePhysics` always clears it. When absent, `integratePhysics` does not move the NPC (stationary frame). Non-`walkMode` paths (riders, inline physics) never set it. |
+| **Writers** | `BaseStateMachine.js#steerRoam` walk branch (sets `{vx,vy}` after `applyLookahead`); `WalkMode.js#checkZoneTransition` (overwrite to bounce out of road/bike-lane); `Motor.js#integratePhysics` (clears to `null` after consuming) |
+| **Readers** | `Motor.js#integratePhysics` (both `.vx` and `.vy` are used); `WalkMode.js#checkZoneTransition` (reads `vy` sign to pick bounce direction) |
+| **Invariant** | `null` between frames — `integratePhysics` always clears it. When absent, `integratePhysics` does not move the NPC (stationary frame). |
+
+---
 
 ### `audit.count(npc, 'dir_mismatch')` (diagnostic counter)
 
 Incremented in `BaseStateMachine.js#steerRoam` (walk/run/jog branch only) when
 `vx !== 0 && Math.sign(vx) !== npc.direction` after `applyLookahead`. Records
 frames where the steering vector opposes the NPC's current facing. The
-`npc.speed > 0` prefix guard was removed in V-2 (speed is always 0 post-V-1;
-the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
-`npc.direction` disagree, regardless of speed.
+`npc.speed > 0` prefix guard was removed in V-2 (speed is no longer a physics
+channel; the guard silenced all `dir_mismatch` counts).
 
 ---
 
@@ -202,9 +203,18 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 |---|---|
 | **Semantic** | Module-level `_instance` holding the single `NavGrid` **zone map** for the current scene (Z-1 zone-profile split). The grid stores semantic zone IDs only — no cost numbers. `ZONE = { BLOCKED:0, SIDEWALK:1, GRASS:2, ROAD:3, CROSSWALK:4 }`. `ZONE.ROAD` = passable (`_slideMove` does not reject it), plannable at whatever cost the caller's table assigns, never sampled and never a destination. `ZONE.CROSSWALK` = low-cost crossing tube inside the road bands; sampable and usable as destination. |
 | **Owner** | `NavGrid.js` |
-| **Writers** | `NavGrid.js` module (`getNavGrid`/`setNavGrid` exports); `SceneInitializer.js` (97 — sole call to `setNavGrid`) |
-| **Readers** | `Motor.js#_navBlocked` (200), `WalkMode.js#pickModeTarget` (202, 230), `PathPlanner.js#getPlanner`, `Lookahead.js#applyLookahead` (38), `EnvironmentQuery.js` (142, 151, 290), `Npc.js#getTags` (233), `BaseStateMachine.js#steerRoam` (293), `Pedestrians.js#spawnOnePedestrian` (67), `StrollTask.js` (26), `StuckProbe.js` (15) |
+| **Writers** | `NavGrid.js` module (`getNavGrid`/`setNavGrid` exports); `SceneInitializer.js` — sole call to `setNavGrid` |
+| **Readers** | `Motor.js#_navBlocked`, `WalkMode.js#pickModeTarget`, `PathPlanner.js#getPlanner`, `Lookahead.js#applyLookahead`, `EnvironmentQuery.js`, `Npc.js#getTags`, `BaseStateMachine.js#steerRoam`, `Pedestrians.js#spawnOnePedestrian`, `StrollTask.js`, `StuckProbe.js` |
 | **Invariant** | Set exactly once at scene initialisation. `null` before init — all consumers must guard (`grid && ...`). Must not be replaced mid-scene. `grid.zone(gx,gy)` is the only cell accessor; there is no `grid.cost()`. NavGrid must hold neither cost numbers (Z-1) nor Y-band numbers (Z-2b) — bake geometry arrives entirely via the `zones` config. |
+
+**Known debt**: `NavGrid.js` derives `COLS`/`ROWS` from `WORLD_WIDTH`/`WORLD_HEIGHT`
+at *module top level*, which evaluates before `initLayout()` injects the scene's
+real dimensions. Today this is invisible because `scene.json#world` happens to
+match the Layout fallbacks exactly; a scene with different dimensions would leave
+the grid sized to the fallback and silently clamp all out-of-range cells. See
+`docs/roadmap.md#Z-2a`.
+
+---
 
 ### Zone bake config (`scene.json#zones` → `NavGrid.bake`)
 
@@ -216,6 +226,8 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 | **Readers** | `NavGrid._bakeZones` only. |
 | **Invariant** | No silent fallback: a missing `zones`, `zones.bands`, or any required sub-field throws at bake; an unknown zone name or Y-band name throws. Obstacle cells are *not* config-driven — they come from `entity.footprint`. `overlays` row ranges use `floor(y/CELL)` inclusive endpoints rather than a cell-centre test (legacy arithmetic, preserved deliberately for bit-equivalence). |
 
+---
+
 ### Zone cost table (`DEFAULT_ZONE_COSTS` / `profile.zoneCosts`)
 
 | | |
@@ -224,21 +236,31 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 | **Owner** | `NavGrid.js` (`DEFAULT_ZONE_COSTS` export) |
 | **Writers** | Nobody mutates the exported table. `PlanService._zoneCostsFor()` is the sole assembler: `{...DEFAULT_ZONE_COSTS, ...profile.zoneCosts}`, then `ROAD → JAYWALK_ROAD_COST (3)` when `goal.meta.jaywalk`. |
 | **Readers** | `PathPlanner.plan()` / `_astar()` — 6th parameter `zoneCosts`; cost of a cell is `zoneCosts[grid.zone(gx,gy)] ?? 0`. |
-| **Invariant** | NavGrid must not hold cost numbers, and PathPlanner must not own cost policy — the table always arrives as a parameter. jaywalk override applies *after* the profile override, so a profile cannot out-rank a jaywalk goal. |
+| **Invariant** | NavGrid must not hold cost numbers, and PathPlanner must not own cost policy — the table always arrives as a parameter. jaywalk override applies *after* the profile override, so a profile cannot out-rank a jaywalk goal. Enforced by `check-invariants.mjs` Rule 8. |
+
+---
 
 ### Obstacle footprint (`e.footprint`)
 
 | | |
 |---|---|
 | **Semantic** | Per-entity ground footprint `{shape, rx, ry, blocks, sortDY}` computed once in `PropEntity` constructor via `_computeFootprint()`. `shape: 'rect'` → AABB test; `shape: 'ellipse'` → ellipse test (fountain). `rx/ry` are world-pixel half-axes at the entity's `depthScale(y)`. `blocks: true` for all `OBSTACLE_TYPES`; `false` for decorative props (sign). `sortDY` offsets the Y-sort anchor (`_sortY = y + sortDY`; 0 = use entity.y). |
-| **Owner** | Each entity module (`js/entity/<type>/<type>.js`) exports `footprint(e)`. `PropEntity._computeFootprint()` dispatches by `propType`. |
+| **Owner** | Each entity module (`js/entity/<type>/<type>.js`) exports `footprint(e)`, registered through `registerProp`. |
 | **Writers** | `PropEntity` constructor (one-time, stored as `this.footprint`). Never mutated after construction. |
-| **Readers** | `NavGrid._markObstacle` (obstacle baking); `PropEntity` constructor (sortDY → `_sortY`); `check-invariants.mjs Rule 5` (static gate) |
-| **Invariant** | Every `propType` in `OBSTACLE_TYPES` must have an explicit case in `_computeFootprint()`; missing case throws at construction. `rx/ry` values must not be adjusted without also updating the corresponding `draw*.js` geometry comment. |
+| **Readers** | `NavGrid._markObstacle` (obstacle baking); `PropEntity` constructor (sortDY → `_sortY`); `check-invariants.mjs` Rule 5 (static gate) |
+| **Invariant** | Every prop registered with `obstacle: true` must supply a `footprint` — missing one throws at registration. `rx/ry` values must not be adjusted without also updating the corresponding `draw*.js` geometry comment. |
+
+---
 
 ### `NPC_HALF_W` (NavGrid Minkowski expansion)
 
-`NavGrid.js:75`: `const NPC_HALF_W = 7` — pixels added to every obstacle's `footprint.rx/ry` before grid cell marking. Represents the NPC's collision half-width: a cell is BLOCKED if the NPC's centre would be within `rx + NPC_HALF_W` of the obstacle centre (AABB), or within the scaled ellipse boundary (fountain). Value 7 was chosen to match the effective NPC ground-contact half-width at mid-scene depth. Rename or change only with a full NavGrid rebake and gameplay visual check.
+`NavGrid.js`: `const NPC_HALF_W = 7` — pixels added to every obstacle's
+`footprint.rx/ry` before grid cell marking. Represents the NPC's collision
+half-width: a cell is BLOCKED if the NPC's centre would be within
+`rx + NPC_HALF_W` of the obstacle centre (AABB), or within the scaled ellipse
+boundary (fountain). Value 7 was chosen to match the effective NPC ground-contact
+half-width at mid-scene depth. Rename or change only with a full NavGrid rebake
+and gameplay visual check.
 
 ---
 
@@ -248,9 +270,22 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 |---|---|
 | **Semantic** | Module-level dict `{key → {waypoints, loop?, ...}}` of named walkable paths loaded from `assets/scene.json`. Used by `modePathFollow`. |
 | **Owner** | `WalkMode.js` |
-| **Writers** | `WalkMode.js#initWalkPaths` (125 — bulk init, called from `StreetScene.js:113`); `WalkMode.js#addWalkPath` (128 — incremental add) |
-| **Readers** | `WalkMode.js#modePathFollow` (140 — lookup path def); `NavGrid.js#_bakeZones` (paint path-tube cells `ZONE.SIDEWALK`) |
+| **Writers** | `WalkMode.js#initWalkPaths` (bulk init, called from `StreetScene.js`); `WalkMode.js#addWalkPath` (incremental add) |
+| **Readers** | `WalkMode.js#modePathFollow` (lookup path def); `NavGrid.js#_bakeZones` (paint path-tube cells `ZONE.SIDEWALK`) |
 | **Invariant** | Initialised once before any NPC is registered. `NavGrid` reads `walkPaths` from the scene layout object at bake time independently — it does not read the exported `WALK_PATHS` object. |
+
+---
+
+## Not yet covered
+
+Two live `npc.mem('motor')` fields have no section above. They are narrow and
+single-owner, but listed here so the registry is not silently incomplete:
+
+- **`dirCD`** — facing-flip cooldown timer (seconds). Owner `BaseStateMachine.js#updateFacing`;
+  blocks a direction flip while `> 0`, reset to `0.45` on each accepted flip.
+- **`savedBounds`** — `{minX, maxX}` saved before departure widens an NPC's X bounds
+  so it can walk off-screen. Owner `BaseStateMachine.js` (`triggerDeparture` saves,
+  `restoreDepartureBounds` restores).
 
 ---
 
@@ -258,55 +293,34 @@ the guard silenced all `dir_mismatch` counts). Now fires whenever `vx` and
 
 ### (a) NPC position in BLOCKED cell after `standUp`
 
-**Claim**: `sitDown` places the NPC at the bench's seat surface, which lies inside the bench's obstacle AABB (`ZONE.BLOCKED` in NavGrid). `standUp` clears the bench reference but does **not** reposition the NPC.
+**Claim**: `sitDown` places the NPC at the bench's seat surface, which lies inside
+the bench's obstacle AABB (`ZONE.BLOCKED` in NavGrid). `standUp` clears the bench
+reference but does **not** reposition the NPC.
 
 **Evidence**:
-- `PropEntity.js`: `'bench'` is in `OBSTACLE_TYPES` → `this.obstacle = true`; `this.footprint = _computeFootprint()` → `NavGrid#_bakeObstacles` marks all cells within `footprint.rx/ry + NPC_HALF_W` as BLOCKED.
-- `seat.js#sitDown` (66-74): calls `_setXY(npc, bench.x, seatSurfaceY(bench) - sitBodyY * sc)` — places NPC at seat surface inside bench footprint.
-- `seat.js#standUp` (77-82): clears `bench._occupiedBy`, `npc.mem('social').bench`, and `npc._sortY`. No `_setXY` call — NPC remains at the seated x/y.
-- `Motor.js#_slideMove` (205-208) escape rule: "already in a blocked cell → move freely to get out" — the designated recovery mechanism.
+- `'bench'` is an obstacle prop → `NavGrid#_bakeObstacles` marks all cells within
+  `footprint.rx/ry + NPC_HALF_W` as BLOCKED.
+- `seat.js#sitDown` calls `_setXY(npc, bench.x, seatSurfaceY(bench) - sitBodyY * sc)`
+  — places NPC at seat surface inside bench footprint.
+- `seat.js#standUp` clears `bench._occupiedBy`, `npc.mem('social').bench`, and
+  `npc._sortY`. No `_setXY` call — NPC remains at the seated x/y.
+- `Motor.js#_slideMove` escape rule: "already in a blocked cell → move freely to
+  get out" — the designated recovery mechanism.
 
-**Status**: Intentional. The escape rule in `Motor.js#_slideMove` is the documented recovery path. The coupling is implicit — no comment in `standUp` references it.
-
----
-
-### (b) `Npc.js` inline physics path (lines 275-287) — who uses it?
-
-**Code path** (`Npc.js#update`, 272-287):
-```js
-if (this._motorInstalled) {
-  integratePhysics(this, delta);
-} else if (!this.leashTarget) {
-  // inline x/y integration — no NavGrid collision
-  this.x += this.direction * this.speed * (delta / 1000);
-  ...
-}
-```
-
-**NPC types**:
-
-| NPC type | Created by | `bm.register`? | `_motorInstalled` | `leashTarget` | Physics path |
-|---|---|---|---|---|---|
-| Pedestrians | `Pedestrians.js#spawnOnePedestrian` (84) | Yes | Yes | No | `integratePhysics` |
-| Athletes / joggers | `Athletes.js` (15, 27) | Yes | Yes | No | `integratePhysics` |
-| Dog owner | `DogWalker.js` (45) | Yes | Yes | No | `integratePhysics` |
-| Dog | `DogWalker.js` (27, `leashTarget: owner`) | No | No | Yes | **skipped** (line 275) |
-| Cyclists / e-bikes | `CyclistSpawner.js#_spawn` (93) | No | No | No | **inline path** |
-| Stall sellers | `SceneInitializer.js` (172) | Yes | Yes | No | `integratePhysics` |
-| Chess players | `Chess.js` (82, 83) | Yes | Yes | No | `integratePhysics` |
-
-**Conclusion**: The inline path is **not dead code**. Used exclusively by cyclists/e-bikes from `CyclistSpawner.js#_spawn`. Comment at `CyclistSpawner.js:8`: "骑手是 NPC（makeNPC 创建，drawExtra 画车），不进 BehaviorManager". Cyclists pass through obstacle cells — no NavGrid collision. Intentional but undocumented as a consequence.
+**Status**: Intentional. The escape rule in `Motor.js#_slideMove` is the documented
+recovery path. The coupling is implicit — no comment in `standUp` references it.
 
 ---
 
-### (c) Overlap: `StuckProbe` vs `Motor.integratePhysics` progress monitor
+### (b) Overlap: `StuckProbe` vs `Motor.integratePhysics` progress monitor
 
 | | `StuckProbe.js#stuckProbe` | `Motor.js#integratePhysics` progress monitor |
 |---|---|---|
-| **Period** | Every 2s (module-level `acc`) | Every 1.5s (`mot.progressAcc`) |
-| **Threshold** | `moved < 8` px over 2s window | `moved < 15` px over 1.5s window |
-| **Trigger condition** | `state ∈ {walk,run,jog,routing}` (V-2) | `npc.state === 'routing' \|\| walkState && wm` |
-| **Action** | Observational: writes `window.__stuck`, logs to `tally`. **No side-effects on NPC state.** | Reactive: clears `navPath`; on `direct` sets `_stuckOnce` then forces `_elapsed = abandonAfter`; on `wander` nulls `roamTarget`; on `routing` sets `routeReplan` then forces `stateTimer = 9999` |
+| **Period** | Every 2 s (module-level `acc`) | `RECOVERY_RULES.progress_monitor.window` (`mot.progressAcc`) |
+| **Threshold** | `moved < 8` px over the 2 s window | `RECOVERY_RULES.progress_monitor.movedLT` over the window |
+| **Trigger condition** | `state ∈ {walk,run,jog}` plus separate WAIT / activity / frozen buckets | `state ∈ {walk,run,jog}` **and** an active `walkMode` or `mot.goal` |
+| **Action** | Observational: writes `window.__stuck`, logs to `tally`. **No side-effects on NPC state.** | Reactive, two-strike: with a `goal`, first strike sets `mot.goal._stuck` + `mot.needReplan`, second fires `onDone('blocked')` and nulls `goal`/`path`; without a goal (wander) nulls `roamTarget` + `path` |
 | **Scope** | All registered NPCs via `BehaviorManager` | Only NPCs with `_motorInstalled` |
 
-These are complementary: StuckProbe is a **debug instrument**; the progress monitor is the **recovery actuator**. Not redundant.
+These are complementary: StuckProbe is a **debug instrument**; the progress monitor
+is the **recovery actuator**. Not redundant.
