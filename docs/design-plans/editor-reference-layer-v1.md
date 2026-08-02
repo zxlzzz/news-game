@@ -1,6 +1,19 @@
 # 编辑器参照层设计 v1.0
 
 > 冻结决策记录。日期：2026-07-25。
+> **C-1b 补完记录**（日期：2026-08-02）：C-1 当时只实现了 D1 三种引用里的
+> 「手持道具」「环境物件」两种的读侧渲染（`_drawContextRef`），`exportJSON`
+> 三个分支（cycle/overlay、duet、variant）都没有写出 `context`，`index.html`
+> 也没有设置面板——全库零 clip 带 `context`，D5 的交叉检查从未被真实数据
+> 触发过。C-1b 补上了写路径（三个 exportJSON 分支 + 侧栏面板）、duet 分支
+> 加载时不再无条件清空 `clipContext`，并补上第三种引用「对手方角色」
+> （`context.counterpart`，取值来自 skeleton 名）——但 D3 的「两档画法」
+> 只定义了道具/环境物件的几何渲染规格，没有给第三种定规格，所以
+> `counterpart` 只在画布左上角标一行文字（"对手骨架: xxx"），不画完整的
+> 第二具骨架，这不是偷懒漏做，是 D3 本来就没要求。第一个真实数据用例是
+> `assets/animations/overlay/lift.json` 补的 `context:{held:'guitar'}`，
+> 跟 A-1 新增的 `ATTACHMENT_DEFS.guitar.heldPose:'lift'` 互相指回，让
+> D5 的交叉检查（`sth/tools/validate.mjs`）第一次被真实跑到并通过。
 
 ## 背景
 

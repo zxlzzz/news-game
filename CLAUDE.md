@@ -410,6 +410,6 @@ npc.clearMem('loiter');
 | `docs/baselines/2026-07-12-27a45503-s42-post.md` | 快照 | check-invariants 基线快照 s42 后（2026-07-12） |
 | `docs/baselines/2026-07-13-e3c9ec1c-s42-pre.md` | 快照 | check-invariants 基线快照（2026-07-13） |
 | `docs/design-plans/duet-interaction-design-v1.md` | 设计稿（finalized） | 双人互动设计 v1：overlay 参与者 dx 偏移、duet clip 格式、编辑器 newDuetClip() |
-| `docs/design-plans/editor-reference-layer-v1.md` | 设计稿（finalized） | 编辑器参照层设计 v1：context 字段、held/prop 参照物可视化 |
+| `docs/design-plans/editor-reference-layer-v1.md` | 设计稿（finalized） | 编辑器参照层设计 v1：context 字段、held/prop/counterpart 三种引用可视化；C-1b 补完写路径（exportJSON 三分支 + 面板 UI） |
 | `sth/stick-puppet/README.md` | 快照 | StickPuppet 工具启动、操作与 clip 导出说明 |
 | `assets/animations/new_assets/docx.md` | 快照 | new_assets/ 校对说明：接地规则、child 骨架说明；原 4 个待处理 clip（lift/child_single/hand_stand_up/hand_stand_down）已在 A-1~A-3 全部处理完，目录里现在只剩这份说明文档 |

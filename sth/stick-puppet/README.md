@@ -34,7 +34,7 @@ npx serve .
 - **左右互换**：一键镜像翻转姿势，做循环动画时很方便
 - **补帧插值**：选两个关键帧，自动生成中间过渡帧
 - **双人模式**：新建双人 Clip，独立编辑每个角色，实时显示接触距离
-- **参照层**：clip 声明 context.held/prop 时自动在画布上显示参照物轮廓
+- **参照层**：侧栏「参照物 (context)」面板选类型（手持道具/环境物件/对手方角色）+ 引用（下拉取值分别来自 ATTACHMENT_DEFS / propDefaults / skeleton.json 的键名），只写引用名，不抄几何数值；held/prop 画布上显示轮廓，counterpart 只在左上角标文字（无第三档几何渲染规格，纯文档提示）。载入 clip 时面板自动回填当前 context；导出（含 cycle/overlay、duet、variant 三种模式）都会带上
 - **JSON 导入/导出**：完整动画数据可保存和加载
 
 ## 文件结构

@@ -167,6 +167,26 @@
       <div style="font-size:10px;color:#c44;margin-top:3px">红圈 = 偏差 &gt;5px 的关节</div>
     </div>
 
+    <div class="panel-section" id="contextSection">
+      <h3>参照物 (context)</h3>
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px">
+        <span style="font-size:11px;color:#888;min-width:28px">类型</span>
+        <select id="contextKindSelect" title="context 引用类型" onchange="app.setContextKind(this.value)" style="flex:1;padding:2px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
+          <option value="">-- 无 --</option>
+          <option value="held">手持道具</option>
+          <option value="prop">环境物件</option>
+          <option value="counterpart">对手方角色</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px">
+        <span style="font-size:11px;color:#888;min-width:28px">引用</span>
+        <select id="contextValueSelect" title="context 引用值" onchange="app.setContextValue(this.value)" disabled style="flex:1;padding:2px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px">
+          <option value="">-- 无 --</option>
+        </select>
+      </div>
+      <div style="font-size:10px;color:#888;margin-top:4px">只写引用名——长度/角度/偏移住在 AttachmentDefs.js / propDefaults.js，这里不抄</div>
+    </div>
+
     <div class="json-area">
       <h3>JSON 导入/导出</h3>
       <textarea id="jsonInput" placeholder='粘贴动画 JSON...'></textarea>

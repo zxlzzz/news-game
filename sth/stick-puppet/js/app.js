@@ -290,7 +290,10 @@ function _hideAllModePanels() {
 
 function _enterDuetMode(data) {
   duetMode = true;
-  clipContext = null;
+  // C-1b：不再无条件清空——duet clip 也能有 context（"对手方角色"这一引用
+  // 类型本来就主要是给 duet 场景用的），data.context 已经在调用方
+  // _loadClipData 里读进 clipContext 了，这里不覆盖。newDuetClip()（新建
+  // 空白双人 clip）单独在自己的入口清空，不靠这里。
   const participants = data.participants;
   duetRoles = participants.map((p, i) => ({
     role: p.role,
@@ -1323,7 +1326,9 @@ function loadJSON() {
       to:         data.to         ?? null,
       ref_speed:  data.ref_speed  ?? null,
       latched:    data.latched    ?? null,
-      context:    data.context    ?? null,
+      // context 不放这里——真正的读写路径是模块级 clipContext 变量
+      // （_loadClipData 里从 data.context 读、exportJSON 从它写回），
+      // 这个字段以前设了从没读过，是纯冗余，删掉不留死数据。
     };
     _loadClipData(data.id ?? '(pasted)', loadedClipMeta, data);
     document.getElementById('framesStrip').innerHTML = '';
@@ -1346,6 +1351,7 @@ function exportJSON() {
       ...(variantParams.amp !== 1   ? { amp: variantParams.amp } : {}),
       ...(variantParams.ref_speed != null ? { ref_speed: variantParams.ref_speed } : {}),
       ...(variantParams.overlay     ? { overlay: variantParams.overlay } : {}),
+      ...(clipContext ? { context: clipContext } : {}),
     };
     _emitData(data, 'JSON'); return;
   }
@@ -1375,6 +1381,7 @@ function exportJSON() {
         ...(r.skelName !== 'human' ? { skeleton: r.skelName } : {}),
         ...(r.offset.x !== 0 ? { dx: r.offset.x } : {}),
       })),
+      ...(clipContext ? { context: clipContext } : {}),
       keyframes,
     };
     _emitData(data, 'JSON'); return;
@@ -1393,6 +1400,7 @@ function exportJSON() {
     ...(kind === 'overlay' && m?.latched ? { latched: true } : {}),
     ...(m?.ref_speed  != null ? { ref_speed:  m.ref_speed  } : {}),
     ...(m?.variant_of != null ? { variant_of: m.variant_of } : {}),
+    ...(clipContext ? { context: clipContext } : {}),
     keyframes: frames.map((pose, i) => {
       const kf = {};
       const dur = frameDurs[i] ?? 0.3;
@@ -1450,9 +1458,55 @@ function _syncPanels() {
   document.getElementById('boneLengthSection')?.style && (document.getElementById('boneLengthSection').style.display = showBoneLen ? '' : 'none');
   const showPreview = kind === 'overlay' && !duetMode;
   document.getElementById('previewSection').style.display = showPreview ? '' : 'none';
+  _syncContextPanel();
 }
 
 // ── Context reference layer ───────────────────────────────────────────────────
+
+const CONTEXT_KIND_SOURCE = {
+  held:        () => Object.keys(ATTACHMENT_DEFS),
+  prop:        () => Object.keys(PROP_DEFAULTS),
+  counterpart: () => Object.keys(SKELETONS),
+};
+
+/** kind 变化时重建"引用值"下拉的候选列表（C-1b） */
+function _populateContextValueSelect(kind, selected) {
+  const sel = document.getElementById('contextValueSelect');
+  sel.innerHTML = '<option value="">-- 无 --</option>';
+  const source = CONTEXT_KIND_SOURCE[kind];
+  if (!source) { sel.disabled = true; return; }
+  sel.disabled = false;
+  for (const key of source()) {
+    const opt = document.createElement('option');
+    opt.value = key; opt.textContent = key;
+    sel.appendChild(opt);
+  }
+  sel.value = selected ?? '';
+}
+
+/** "类型"下拉变化：换一批候选值，清空当前引用（C-1b） */
+function setContextKind(kind) {
+  _populateContextValueSelect(kind, null);
+  clipContext = null;
+  render();
+}
+
+/** "引用"下拉变化：写入 clipContext——只存引用名，不抄任何几何数值（D1） */
+function setContextValue(value) {
+  const kind = document.getElementById('contextKindSelect').value;
+  clipContext = (kind && value) ? { [kind]: value } : null;
+  render();
+}
+
+/** 载入 clip / 切换模式后，让 context 面板如实反映当前 clipContext（C-1b） */
+function _syncContextPanel() {
+  const kindSel = document.getElementById('contextKindSelect');
+  if (!kindSel) return; // index.html 未挂载该面板时安全跳过
+  const kind = clipContext ? Object.keys(clipContext)[0] : '';
+  kindSel.value = kind;
+  _populateContextValueSelect(kind, clipContext ? clipContext[kind] : null);
+}
+
 function _drawContextRef() {
   if (!clipContext) return;
   const cur = frames[currentFrame];
@@ -1533,6 +1587,19 @@ function _drawContextRef() {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.restore();
+  } else if (clipContext.counterpart !== undefined) {
+    // 对手方角色：D3（editor-reference-layer-v1.md）只定义了道具"画准"和
+    // 环境物件"画示意"两档，没有第三档几何渲染规格——把整条第二个骨架画
+    // 出来是另一个量级的活，不是本条目的范围。这里只做纯文档性质的文字
+    // 标注，让作画时至少能看到"这个 clip 假设对面站着什么骨架"这个事实，
+    // 不产生任何几何数值（不违反 D1 的"只写引用"）。
+    if (!SKELETONS[clipContext.counterpart])
+      throw new Error('context references unknown item: ' + JSON.stringify(clipContext));
+    ctx.save();
+    ctx.font = '11px "JetBrains Mono",monospace';
+    ctx.fillStyle = '#c48a3a';
+    ctx.fillText(`对手骨架: ${clipContext.counterpart}`, 10, 20);
+    ctx.restore();
   } else {
     throw new Error('context references unknown item: ' + JSON.stringify(clipContext));
   }
@@ -1574,6 +1641,7 @@ window.app = {
   togglePreview, loadPreviewBase,
   setTransitionRef, updateVariantParam,
   newDuetClip,
+  setContextKind, setContextValue,
 };
 
 // ── 初始化 ────────────────────────────────────────────────────────────────────
