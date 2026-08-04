@@ -1371,13 +1371,22 @@ function exportJSON() {
       for (const roleInfo of duetRoles) {
         const pose = roleInfo.frames[i] ?? roleInfo.frames[roleInfo.frames.length - 1];
         if (!pose) continue;
-        kf[roleInfo.role] = _encodeKfForSkel(pose, roleInfo.skelName);
+        let encoded = _encodeKfForSkel(pose, roleInfo.skelName);
+        if (roleInfo.allowedJoints && roleInfo.allowedJoints.size > 0) {
+          const filtered = {};
+          for (const k of Object.keys(encoded)) {
+            if (roleInfo.allowedJoints.has(k)) filtered[k] = encoded[k];
+          }
+          encoded = filtered;
+        }
+        kf[roleInfo.role] = encoded;
       }
       keyframes.push(kf);
     }
     const data = {
       ...(m?.id != null ? { id: m.id } : {}),
       ...(m?.facing ? { facing: m.facing } : {}),
+      kind: 'overlay',
       participants: duetRoles.map(r => ({
         role: r.role,
         ...(r.skelName !== 'human' ? { skeleton: r.skelName } : {}),

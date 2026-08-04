@@ -49,16 +49,28 @@ export function buildPoseCache(clipLibrary) {
 
   function decodeSubEvent(rawJson) {
     if (!rawJson || !rawJson.participants) return null;
-    const kf0   = rawJson.keyframes?.[0] ?? {};
+    const kfs   = rawJson.keyframes ?? [];
     const roles = rawJson.participants.map(p => p.role);
-    const aDelta = {}, bDelta = {};
-    for (const [j, v] of Object.entries(kf0[roles[0]] ?? {})) {
-      if (Array.isArray(v)) aDelta[j] = abs(j, v);
+
+    function decodeRolePose(kf) {
+      const joints = {};
+      for (const [j, v] of Object.entries(kf)) {
+        if (Array.isArray(v)) joints[j] = abs(j, v);
+      }
+      return joints;
     }
-    for (const [j, v] of Object.entries(kf0[roles[1]] ?? {})) {
-      if (Array.isArray(v)) bDelta[j] = abs(j, v);
-    }
-    return { ...rawJson, aDelta, bDelta };
+
+    // 每 role 的水平站位偏移相对 role 0（隐式 dx=0），role 1 缺省时沿用编辑器默认间距 70px
+    // （sth/stick-puppet/js/app.js DUET_DEFAULT_DX）
+    const designGap = rawJson.participants[1]?.dx ?? 70;
+
+    const frames = kfs.map(kf => ({
+      dur: typeof kf.dur === 'number' ? kf.dur : undefined,
+      a: decodeRolePose(kf[roles[0]] ?? {}),
+      b: decodeRolePose(kf[roles[1]] ?? {}),
+    }));
+
+    return { ...rawJson, frames, sustain: rawJson.sustain === true, designGap };
   }
 
   const held           = {};

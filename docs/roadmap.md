@@ -597,3 +597,61 @@ roughness 不参与 A\*，与 `zoneCosts` 是两套独立的序：代价管选�
 - **StuckProbe.js**：MOVE 类明细 `info` 新增 `flips: mot._obsFlipVx`（探针窗口 2s 累计），读取后归零；用于调查 id:50 类 NPC 振荡现象的证据收集。
 
 代码锚点：`js/behavior/Motor.js#integratePhysics`；`js/behavior/StuckProbe.js#info`
+
+---
+
+### SE-1（编辑器 duet 导出修复）— 已落地
+
+`exportJSON()` duet 分支导出的 JSON 缺 `kind` 字段，重新粘贴导入时 `_loadClipData` 的
+`isDuet` 检测（依赖 `kind==='overlay'`）永远判定失败；同一分支给每个 role 编码
+关节时也没respect `allowedJoints`，只编辑了 2 个关节的 role 会把其余全部关节的
+零值噪声（依 defaultPose 微小偏差）一并写进导出 JSON。
+
+- **`kind: 'overlay'`**：补进 duet 分支导出的顶层 `data` 对象，与 `participants` 同级。
+- **`allowedJoints` 过滤**：`_encodeKfForSkel()` 编码结果在写入 `kf[roleInfo.role]` 前，
+  若 `roleInfo.allowedJoints.size > 0` 则只保留落在该集合内的关节 key（`allowedJoints`
+  本身已在 `_enterDuetMode` 载入 clip 时从既有 keyframes 反推出来，本次只是导出侧第一次
+  真正用上它）。
+
+代码锚点：`sth/stick-puppet/js/app.js#exportJSON`
+
+---
+
+### SE-2（多帧 sub-event 播放 + dx 位置同步）— 已落地
+
+`decodeSubEvent` 此前只读 `keyframes[0]` 产生一对静态 `aDelta`/`bDelta`，`TalkActivity`
+用 reach → hold(静止) → release 三段播放；无法表达"一段动作"，也从不同步两个 NPC 的
+站位间距。改为消费整段 `keyframes` 序列，reach → play(逐帧步进) → release。
+
+- **`PoseCacheBuilder.decodeSubEvent()`**：不再只解码 `kf0`，遍历全部 `keyframes`，
+  每帧产出 `{dur, a:{joints}, b:{joints}}`（`a`/`b` 固定对应 `participants[0]`/`[1]`，
+  关节 delta 仍用既有 `abs()` 转绝对坐标）；新增 `sustain`（`rawJson.sustain===true`）
+  和 `designGap`（`participants[1].dx ?? 70`，与编辑器 `DUET_DEFAULT_DX` 同值）两个
+  派生字段。旧的单帧 clip 原样走同一条解码路径，退化成 `frames.length===1`。
+- **`TalkActivity.js`**：`SUB_EVENTS` 每个事件类型现持有 `frames`/`sustain`/`designGap`
+  （来自 poseCache）+ 各自的 `reach`/`release`/`hold`(Range)`（沿用旧配置，未删）。
+  - `_startSubEvent`：记录 `_aOrigX`/`_bOrigX`，按 `designGap` 算出 `_aTargetX`/
+    `_bTargetX`（中点不变，维持原本左右相对顺序）；base pose 改成取全体帧联合关节集
+    （`_unionJoints`），避免后续帧出现 base 里没有的关节。
+  - `_tickSubEvent` 三段：`reach` 同时 lerp 关节到 `frames[0]` 和 x 到目标位置；
+    `play`（原 `hold` 改名）按 `_currentFrameDur()` 逐帧步进、直接整帧覆盖
+    `_talk_sub_event` modifier 的 joints（不做帧间插值）；播完末帧后
+    `sustain:false` 自动转 `release`，`sustain:true` 停在末帧不动，只能靠外部
+    `destroy()` 收尾；`release` lerp 回 base 姿态与原始 x。
+  - `_currentFrameDur`：帧自带 `dur` 优先；单帧旧格式落回 `hold`/`holdRange`
+    （随机量 `_holdDur` 仍在 `_startSubEvent` 里预先掷好，保证同一 hold 期间数值不跳变）；
+    多帧新格式缺 `dur` 落回 0.15s。
+  - `push` 事件在 reach→play 边界提前 release `b`（原逻辑不变，只是改名后的同一处
+    if 块）；之后任何阶段一律 `!this._pushBReleased` 守卫跳过对 `b` 的 joints/x 写入。
+  - `destroy()`：无论在哪个阶段被打断（含 `sustain` 停留态），统一清 modifier +
+    把 `a`/`b` 的 x 立即复位到 `_aOrigX`/`_bOrigX`（`null` 说明从未进入 sub-event，
+    跳过复位）。
+- **兼容性**：`push`/`give_item`/`handshake`/`point_at` 四个既有单帧 clip 不用改
+  JSON——`frames.length===1` 且无 `sustain` 字段时，reach→play→release 的时长来源和
+  播放效果与改动前的 reach→hold→release 逐帧等价；唯一新增的可见效果是 x 会向
+  `designGap`（无 `dx` 时回退 70px）收拢再还原，这是本批新加的通用行为，不是
+  遗留 bug。
+
+代码锚点：`js/behavior/PoseCacheBuilder.js#decodeSubEvent`；
+`js/behavior/activities/TalkActivity.js`；`assets/animations/new_assets/docx.md`
+「多帧 sub-event overlay 格式」节

@@ -1,4 +1,4 @@
-import { setState }         from '../Motor.js';
+import { setState, setXY }  from '../Motor.js';
 import { dlog }             from '../DebugLog.js';
 import { Activity }         from './Activity.js';
 import { registerActivity } from '../ActivityRegistry.js';
@@ -12,27 +12,17 @@ let SUB_EVENTS      = {};
 
 export function initSubEventPoses(poses) {
   SUB_EVENT_POSES = poses || {};
+  const build = (id, extra) => ({
+    frames:   SUB_EVENT_POSES[id]?.frames ?? [],
+    sustain:  SUB_EVENT_POSES[id]?.sustain ?? false,
+    designGap: SUB_EVENT_POSES[id]?.designGap ?? 70,
+    ...extra,
+  });
   SUB_EVENTS = {
-    push: {
-      aDelta: SUB_EVENT_POSES.push?.aDelta,
-      bDelta: SUB_EVENT_POSES.push?.bDelta,
-      reach: 0.4, hold: 0.2, release: 0.5,
-    },
-    give_item: {
-      aDelta: SUB_EVENT_POSES.give_item?.aDelta,
-      bDelta: SUB_EVENT_POSES.give_item?.bDelta,
-      reach: 0.5, holdRange: [1, 2], release: 0.5,
-    },
-    handshake: {
-      aDelta: SUB_EVENT_POSES.handshake?.aDelta,
-      bDelta: SUB_EVENT_POSES.handshake?.bDelta,
-      reach: 0.5, hold: 1.5, release: 0.5,
-    },
-    point_at: {
-      aDelta: SUB_EVENT_POSES.point_at?.aDelta,
-      bDelta: SUB_EVENT_POSES.point_at?.bDelta,
-      reach: 0.4, holdRange: [2, 3], release: 0.4,
-    },
+    push:      build('push',      { reach: 0.4, hold: 0.2,        release: 0.5 }),
+    give_item: build('give_item', { reach: 0.5, holdRange: [1, 2], release: 0.5 }),
+    handshake: build('handshake', { reach: 0.5, hold: 1.5,        release: 0.5 }),
+    point_at:  build('point_at',  { reach: 0.4, holdRange: [2, 3], release: 0.4 }),
   };
 }
 
@@ -58,6 +48,12 @@ export class TalkActivity extends Activity {
     this._bBase         = null;
     this._holdDur       = 0;
     this._pushBReleased = false;
+    this._frameIdx      = 0;
+    this._frameTimer    = 0;
+    this._aOrigX        = null;
+    this._bOrigX        = null;
+    this._aTargetX      = null;
+    this._bTargetX      = null;
   }
 
   _enterTalk(npc) {
@@ -109,15 +105,25 @@ export class TalkActivity extends Activity {
 
   _startSubEvent(type) {
     const cfg = SUB_EVENTS[type];
-    if (!cfg) return;
+    if (!cfg || !cfg.frames.length) return;
 
     this._subEvent      = type;
     this._subPhase      = 'reach';
     this._subTimer      = 0;
     this._pushBReleased = false;
+    this._frameIdx      = 0;
+    this._frameTimer    = 0;
 
-    this._aBase = cfg.aDelta ? this._captureBasePose(this.a, Object.keys(cfg.aDelta)) : {};
-    this._bBase = cfg.bDelta ? this._captureBasePose(this.b, Object.keys(cfg.bDelta)) : {};
+    this._aBase = this._captureBasePose(this.a, this._unionJoints(cfg.frames, 'a'));
+    this._bBase = this._captureBasePose(this.b, this._unionJoints(cfg.frames, 'b'));
+
+    this._aOrigX = this.a.x;
+    this._bOrigX = this.b.x;
+    const mid    = (this.a.x + this.b.x) / 2;
+    const aIsLeft = this.a.x <= this.b.x;
+    const half   = cfg.designGap / 2;
+    this._aTargetX = mid + (aIsLeft ? -half : half);
+    this._bTargetX = mid + (aIsLeft ? half : -half);
 
     this._holdDur = cfg.holdRange
       ? rand(cfg.holdRange[0], cfg.holdRange[1])
@@ -132,19 +138,41 @@ export class TalkActivity extends Activity {
     dlog(`[Activity ${this.label}] sub-event: ${type}`);
   }
 
+  _unionJoints(frames, role) {
+    const s = new Set();
+    for (const f of frames) for (const j of Object.keys(f[role] ?? {})) s.add(j);
+    return [...s];
+  }
+
+  /** 当前帧的播放时长：显式 dur 优先；单帧旧格式回退到 SUB_EVENTS 的 hold/holdRange；多帧新格式无 dur 时用 0.15 */
+  _currentFrameDur(cfg) {
+    const frame = cfg.frames[this._frameIdx];
+    if (typeof frame.dur === 'number') return frame.dur;
+    if (cfg.frames.length === 1) return this._holdDur;
+    return 0.15;
+  }
+
   _tickSubEvent(dt) {
     const cfg = SUB_EVENTS[this._subEvent];
     if (!cfg) return false;
     this._subTimer += dt;
 
     if (this._subPhase === 'reach') {
-      const t = Math.min(1, this._subTimer / cfg.reach);
-      this._applyLerpPose(this.a, this._aBase, cfg.aDelta, t);
-      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, cfg.bDelta, t);
+      const t  = Math.min(1, this._subTimer / cfg.reach);
+      const f0 = cfg.frames[0];
+      this._applyLerpPose(this.a, this._aBase, f0.a, t);
+      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, f0.b, t);
+      setXY(this.a, this._aOrigX + (this._aTargetX - this._aOrigX) * t, this.a.y);
+      if (!this._pushBReleased) setXY(this.b, this._bOrigX + (this._bTargetX - this._bOrigX) * t, this.b.y);
 
       if (this._subTimer >= cfg.reach) {
-        this._subPhase = 'hold';
-        this._subTimer = 0;
+        this._subPhase   = 'play';
+        this._subTimer   = 0;
+        this._frameIdx   = 0;
+        this._frameTimer = 0;
+        this._applyFrame(f0);
+        setXY(this.a, this._aTargetX, this.a.y);
+        if (!this._pushBReleased) setXY(this.b, this._bTargetX, this.b.y);
 
         if (this._subEvent === 'push' && !this._pushBReleased) {
           this._pushBReleased = true;
@@ -155,17 +183,32 @@ export class TalkActivity extends Activity {
           emitEvent({ kind: 'push_land', actors: [this.a.id, this.b.id], x: this.b.x, y: this.b.y });
         }
       }
-    } else if (this._subPhase === 'hold') {
-      if (this._subTimer >= this._holdDur) {
-        this._subPhase = 'release';
-        this._subTimer = 0;
+    } else if (this._subPhase === 'play') {
+      this._frameTimer += dt;
+      const curDur = this._currentFrameDur(cfg);
+
+      if (this._frameTimer >= curDur) {
+        this._frameTimer = 0;
+        if (this._frameIdx < cfg.frames.length - 1) {
+          this._frameIdx++;
+          this._applyFrame(cfg.frames[this._frameIdx]);
+        } else if (!cfg.sustain) {
+          this._subPhase = 'release';
+          this._subTimer = 0;
+        }
+        // sustain=true 且已在末帧：保持末帧 joints 不变，等待外部 destroy()
       }
     } else if (this._subPhase === 'release') {
       const t = Math.max(0, 1 - this._subTimer / cfg.release);
-      this._applyLerpPose(this.a, this._aBase, cfg.aDelta, t);
-      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, cfg.bDelta, t);
+      const lastFrame = cfg.frames[cfg.frames.length - 1];
+      this._applyLerpPose(this.a, this._aBase, lastFrame.a, t);
+      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, lastFrame.b, t);
+      setXY(this.a, this._aOrigX + (this._aTargetX - this._aOrigX) * t, this.a.y);
+      if (!this._pushBReleased) setXY(this.b, this._bOrigX + (this._bTargetX - this._bOrigX) * t, this.b.y);
 
       if (this._subTimer >= cfg.release) {
+        setXY(this.a, this._aOrigX, this.a.y);
+        if (!this._pushBReleased) setXY(this.b, this._bOrigX, this.b.y);
         this.a.modifiers = this.a.modifiers.filter(m => m.id !== '_talk_sub_event');
         if (!this._pushBReleased) this.b.modifiers = this.b.modifiers.filter(m => m.id !== '_talk_sub_event');
         return false;
@@ -185,6 +228,12 @@ export class TalkActivity extends Activity {
     return base;
   }
 
+  /** 逐帧步进播放：直接把该帧的绝对关节坐标写入 modifier，不做帧间插值 */
+  _applyFrame(frame) {
+    this._setModifierJoints(this.a, frame.a);
+    if (!this._pushBReleased) this._setModifierJoints(this.b, frame.b);
+  }
+
   _applyLerpPose(npc, basePose, targetPose, t) {
     if (!targetPose) return;
     const joints = {};
@@ -192,6 +241,10 @@ export class TalkActivity extends Activity {
       const base = basePose[j] || [0, 0];
       joints[j] = [base[0] + (target[0] - base[0]) * t, base[1] + (target[1] - base[1]) * t];
     }
+    this._setModifierJoints(npc, joints);
+  }
+
+  _setModifierJoints(npc, joints) {
     let mod = npc.modifiers.find(m => m.id === '_talk_sub_event');
     if (!mod) {
       npc.modifiers.push({ id: '_talk_sub_event', kind: 'held', priority: 20, joints, timer: -1 });
@@ -203,8 +256,14 @@ export class TalkActivity extends Activity {
   interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
-    if (this.a.alive) this.a.modifiers = this.a.modifiers.filter(m => m.id !== '_talk_sub_event');
-    if (!this._pushBReleased && this.b.alive) this.b.modifiers = this.b.modifiers.filter(m => m.id !== '_talk_sub_event');
+    if (this.a.alive) {
+      this.a.modifiers = this.a.modifiers.filter(m => m.id !== '_talk_sub_event');
+      if (this._aOrigX != null) setXY(this.a, this._aOrigX, this.a.y);
+    }
+    if (!this._pushBReleased && this.b.alive) {
+      this.b.modifiers = this.b.modifiers.filter(m => m.id !== '_talk_sub_event');
+      if (this._bOrigX != null) setXY(this.b, this._bOrigX, this.b.y);
+    }
 
     for (const { npc } of this.participants) {
       npc.bond = null;
