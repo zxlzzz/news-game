@@ -9,8 +9,8 @@ import {
   getGlobalBoneLength, setGlobalBoneLength,
 } from './config.js';
 import { History } from './history.js';
-import { ATTACHMENT_DEFS } from '../../js/behavior/data/AttachmentDefs.js';
-import { PROP_DEFAULTS }   from '../../js/core/propDefaults.js';
+import { ATTACHMENT_DEFS } from '../../../js/behavior/data/AttachmentDefs.js';
+import { PROP_DEFAULTS }   from '../../../js/core/propDefaults.js';
 
 // ── 状态 ──────────────────────────────────────────────────────────────────────
 const canvas = document.getElementById('stage');
@@ -80,7 +80,7 @@ function hideLoading() { document.getElementById('loadingOverlay').classList.add
 
 function switchSkeleton(name) {
   if (duetMode && !confirm('切换骨骼会清空双人模式数据，确定吗？')) return;
-  history.save(frames, currentFrame);
+  history.clear(); // 关节集会变，旧快照不再兼容，撤销栈必须清空而非留着待撤销
   setSkeleton(name);
   frames = [defaultPose()];
   frameDurs = [0.3];
@@ -208,7 +208,7 @@ async function loadClipFromBrowser() {
 
 function _loadClipData(id, meta, data) {
   const kind = meta.kind ?? (data.kind ?? 'cycle');
-  history.save(frames, currentFrame);
+  history.clear(); // 载入新 clip 可能切骨骼/切模式，旧快照不再兼容
 
   // Reset mode flags
   duetMode = false;
@@ -853,7 +853,7 @@ function updateCoordsDisplay() {
       const axis  = e.target.dataset.axis;
       const val   = parseFloat(e.target.value);
       if (isNaN(val)) return;
-      history.save(frames, currentFrame);
+      history.save(frames, currentFrame, frameDurs);
       frames[currentFrame][joint][axis] = val;
       render();
     });
@@ -908,7 +908,7 @@ function updateBoneLengths() {
       if (e.target.classList.contains('len-input')) {
         const newLen = parseFloat(e.target.value);
         if (isNaN(newLen) || newLen < 1) return;
-        history.save(frames, currentFrame);
+        history.save(frames, currentFrame, frameDurs);
         if (lengthLocked) {
           setGlobalBoneLength(from, to, newLen, frames);
         } else {
@@ -925,7 +925,7 @@ function updateBoneLengths() {
       } else if (e.target.classList.contains('bend-input')) {
         const val = parseFloat(e.target.value);
         if (isNaN(val)) return;
-        history.save(frames, currentFrame);
+        history.save(frames, currentFrame, frameDurs);
         setBend(from, to, val, frames[currentFrame], frames);
         render();
       }
@@ -1017,7 +1017,7 @@ canvas.addEventListener('mousedown', (e) => {
 
   // 全局平移模式：单击画布即开始整体平移
   if (translateMode) {
-    history.save(frames, currentFrame);
+    history.save(frames, currentFrame, frameDurs);
     dragging = '__translate__';
     _translateLastX = x; _translateLastY = y;
     dragStarted = true;
@@ -1056,7 +1056,7 @@ canvas.addEventListener('mousemove', (e) => {
     render(); return;
   }
 
-  if (!dragStarted) { history.save(frames, currentFrame); dragStarted = true; }
+  if (!dragStarted) { history.save(frames, currentFrame, frameDurs); dragStarted = true; }
   const pose = frames[currentFrame];
   const sk = getSkeleton();
   // Pose space: subtract screen offset so coordinates stay in role-local space
@@ -1106,6 +1106,7 @@ canvas.addEventListener('mouseleave', () => { dragging = null; draggingRoleOffse
 function applySnapshot(snap) {
   frames = snap.frames;
   currentFrame = snap.currentFrame;
+  frameDurs = snap.frameDurs && snap.frameDurs.length ? snap.frameDurs.slice() : frames.map(() => 0.3);
   if (snap.globalBend) {
     for (const b of getSkeleton().bones) {
       const key = `${b[0]}__${b[1]}`;
@@ -1113,13 +1114,13 @@ function applySnapshot(snap) {
     }
   }
 }
-function undo() { const s = history.undo(frames, currentFrame); if (s) { applySnapshot(s); render(); setInfo('撤销'); } }
-function redo() { const s = history.redo(frames, currentFrame); if (s) { applySnapshot(s); render(); setInfo('重做'); } }
+function undo() { const s = history.undo(frames, currentFrame, frameDurs); if (s) { applySnapshot(s); render(); setInfo('撤销'); } }
+function redo() { const s = history.redo(frames, currentFrame, frameDurs); if (s) { applySnapshot(s); render(); setInfo('重做'); } }
 
 // ── 左右互换 ──────────────────────────────────────────────────────────────────
 function mirrorPose() {
   const sk = getSkeleton();
-  history.save(frames, currentFrame);
+  history.save(frames, currentFrame, frameDurs);
   const pose = frames[currentFrame];
   for (const [l, r] of sk.mirrorPairs) {
     const tmpX = pose[l].x, tmpY = pose[l].y;
@@ -1201,37 +1202,37 @@ function _buildJointCheckboxes() {
 
 // ── 帧管理 ────────────────────────────────────────────────────────────────────
 function addFrame() {
-  history.save(frames, currentFrame);
+  history.save(frames, currentFrame, frameDurs);
   frames.push(defaultPose()); frameDurs.push(0.3);
   currentFrame = frames.length - 1; render();
 }
 function dupFrame() {
-  history.save(frames, currentFrame);
+  history.save(frames, currentFrame, frameDurs);
   frames.splice(currentFrame + 1, 0, clonePose(frames[currentFrame]));
   frameDurs.splice(currentFrame + 1, 0, frameDurs[currentFrame] ?? 0.3);
   currentFrame++; render();
 }
 function delFrame() {
   if (frames.length <= 1) return;
-  history.save(frames, currentFrame);
+  history.save(frames, currentFrame, frameDurs);
   frames.splice(currentFrame, 1); frameDurs.splice(currentFrame, 1);
   if (currentFrame >= frames.length) currentFrame = frames.length - 1;
   render();
 }
 function resetPose() {
-  history.save(frames, currentFrame);
+  history.save(frames, currentFrame, frameDurs);
   frames[currentFrame] = defaultPose(); render();
 }
 function moveFrameLeft() {
   if (currentFrame <= 0) return;
-  history.save(frames, currentFrame);
+  history.save(frames, currentFrame, frameDurs);
   [frames[currentFrame - 1], frames[currentFrame]] = [frames[currentFrame], frames[currentFrame - 1]];
   [frameDurs[currentFrame - 1], frameDurs[currentFrame]] = [frameDurs[currentFrame], frameDurs[currentFrame - 1]];
   currentFrame--; render();
 }
 function moveFrameRight() {
   if (currentFrame >= frames.length - 1) return;
-  history.save(frames, currentFrame);
+  history.save(frames, currentFrame, frameDurs);
   [frames[currentFrame], frames[currentFrame + 1]] = [frames[currentFrame + 1], frames[currentFrame]];
   [frameDurs[currentFrame], frameDurs[currentFrame + 1]] = [frameDurs[currentFrame + 1], frameDurs[currentFrame]];
   currentFrame++; render();
@@ -1276,7 +1277,7 @@ function interpolateFrames() {
   if (fromIdx === toIdx) { alert('起始帧和结束帧不能相同'); return; }
   if (count < 1 || count > 30) { alert('插入帧数 1-30'); return; }
 
-  history.save(frames, currentFrame);
+  history.save(frames, currentFrame, frameDurs);
   const sk = getSkeleton();
   const poseA = frames[fromIdx], poseB = frames[toIdx];
   const newFrames = [];
@@ -1302,6 +1303,7 @@ function interpolateFrames() {
   }
   const insertIdx = Math.min(fromIdx, toIdx) + 1;
   frames.splice(insertIdx, 0, ...newFrames);
+  frameDurs.splice(insertIdx, 0, ...newFrames.map(() => 0.3));
   currentFrame = insertIdx;
   render(); setInfo(`已插入 ${count} 帧`);
 }
@@ -1607,7 +1609,7 @@ function _drawContextRef() {
 
 // ── New duet clip ─────────────────────────────────────────────────────────────
 function newDuetClip() {
-  history.save(frames, currentFrame);
+  history.clear(); // 进入双人模式后 frames 会被替换为某个 role 的帧数组，旧快照不再兼容
   variantMode = false;
   variantParams = { variant_of: '', amp: 1, ref_speed: null, overlay: null };
   variantBaseDecoded = null;

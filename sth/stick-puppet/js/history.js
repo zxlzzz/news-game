@@ -15,25 +15,25 @@ export class History {
     this.redoStack = [];
   }
 
-  save(frames, currentFrame) {
-    this.undoStack.push(this._snapshot(frames, currentFrame));
+  save(frames, currentFrame, frameDurs) {
+    this.undoStack.push(this._snapshot(frames, currentFrame, frameDurs));
     if (this.undoStack.length > MAX_HISTORY) this.undoStack.shift();
     this.redoStack = [];
   }
 
-  undo(frames, currentFrame) {
+  undo(frames, currentFrame, frameDurs) {
     if (this.undoStack.length === 0) return null;
-    this.redoStack.push(this._snapshot(frames, currentFrame));
+    this.redoStack.push(this._snapshot(frames, currentFrame, frameDurs));
     return this.undoStack.pop();
   }
 
-  redo(frames, currentFrame) {
+  redo(frames, currentFrame, frameDurs) {
     if (this.redoStack.length === 0) return null;
-    this.undoStack.push(this._snapshot(frames, currentFrame));
+    this.undoStack.push(this._snapshot(frames, currentFrame, frameDurs));
     return this.redoStack.pop();
   }
 
-  _snapshot(frames, currentFrame) {
+  _snapshot(frames, currentFrame, frameDurs) {
     return {
       frames: frames.map(pose => {
         const p = {};
@@ -44,8 +44,15 @@ export class History {
         return p;
       }),
       currentFrame,
+      frameDurs: (frameDurs ?? []).slice(),
       globalBend: captureGlobalBend(),
     };
+  }
+
+  /** 骨骼切换 / 载入新 clip 时调用：旧快照的关节名/骨骼与新状态不兼容，不能再被撤销应用 */
+  clear() {
+    this.undoStack = [];
+    this.redoStack = [];
   }
 
   get canUndo() { return this.undoStack.length > 0; }
