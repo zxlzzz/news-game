@@ -7,23 +7,12 @@ import { emitEvent }        from '../WorldEventLog.js';
 const rand   = (a, b) => a + Math.random() * (b - a);
 const chance = (p) => Math.random() < p;
 
+// poseCache.sub_event 本身就是完整配置源（PoseCacheBuilder.decodeSubEvent 的输出：
+// frames/roles/sustain/designGap，外加 clip 自带的 reach/release）——不再另建一份硬编码表
 let SUB_EVENT_POSES = {};
-let SUB_EVENTS      = {};
 
 export function initSubEventPoses(poses) {
   SUB_EVENT_POSES = poses || {};
-  const build = (id, extra) => ({
-    frames:   SUB_EVENT_POSES[id]?.frames ?? [],
-    sustain:  SUB_EVENT_POSES[id]?.sustain ?? false,
-    designGap: SUB_EVENT_POSES[id]?.designGap ?? 70,
-    ...extra,
-  });
-  SUB_EVENTS = {
-    push:      build('push',      { reach: 0.4, hold: 0.2,        release: 0.5 }),
-    give_item: build('give_item', { reach: 0.5, holdRange: [1, 2], release: 0.5 }),
-    handshake: build('handshake', { reach: 0.5, hold: 1.5,        release: 0.5 }),
-    point_at:  build('point_at',  { reach: 0.4, holdRange: [2, 3], release: 0.4 }),
-  };
 }
 
 export class TalkActivity extends Activity {
@@ -46,7 +35,6 @@ export class TalkActivity extends Activity {
     this._subTimer      = 0;
     this._aBase         = null;
     this._bBase         = null;
-    this._holdDur       = 0;
     this._pushBReleased = false;
     this._frameIdx      = 0;
     this._frameTimer    = 0;
@@ -54,6 +42,8 @@ export class TalkActivity extends Activity {
     this._bOrigX        = null;
     this._aTargetX      = null;
     this._bTargetX      = null;
+    this._roleA         = null;
+    this._roleB         = null;
   }
 
   _enterTalk(npc) {
@@ -91,21 +81,15 @@ export class TalkActivity extends Activity {
 
   _selectSubEvent() {
     const w = (this.a._profile && this.a._profile.socialWeights) || {};
-    const candidates = [
-      ['push',      w.push      ?? 0.04],
-      ['give_item', w.give_item ?? 0.05],
-      ['handshake', w.handshake ?? 0.06],
-      ['point_at',  w.point_at  ?? 0.05],
-    ];
-    for (const [type, p] of candidates) {
-      if (chance(p)) return type;
+    for (const type of Object.keys(SUB_EVENT_POSES)) {
+      if (chance(w[type] ?? 0.05)) return type;
     }
     return null;
   }
 
   _startSubEvent(type) {
-    const cfg = SUB_EVENTS[type];
-    if (!cfg || !cfg.frames.length) return;
+    const cfg = SUB_EVENT_POSES[type];
+    if (!cfg || !cfg.frames || !cfg.frames.length) return;
 
     this._subEvent      = type;
     this._subPhase      = 'reach';
@@ -113,9 +97,11 @@ export class TalkActivity extends Activity {
     this._pushBReleased = false;
     this._frameIdx      = 0;
     this._frameTimer    = 0;
+    this._roleA = cfg.roles?.[0] ?? 'a';
+    this._roleB = cfg.roles?.[1] ?? 'b';
 
-    this._aBase = this._captureBasePose(this.a, this._unionJoints(cfg.frames, 'a'));
-    this._bBase = this._captureBasePose(this.b, this._unionJoints(cfg.frames, 'b'));
+    this._aBase = this._captureBasePose(this.a, this._unionJoints(cfg.frames, this._roleA));
+    this._bBase = this._captureBasePose(this.b, this._unionJoints(cfg.frames, this._roleB));
 
     this._aOrigX = this.a.x;
     this._bOrigX = this.b.x;
@@ -124,10 +110,6 @@ export class TalkActivity extends Activity {
     const half   = cfg.designGap / 2;
     this._aTargetX = mid + (aIsLeft ? -half : half);
     this._bTargetX = mid + (aIsLeft ? half : -half);
-
-    this._holdDur = cfg.holdRange
-      ? rand(cfg.holdRange[0], cfg.holdRange[1])
-      : (cfg.hold ?? 1.0);
 
     emitEvent({
       kind: type, actors: [this.a.id, this.b.id],
@@ -144,28 +126,28 @@ export class TalkActivity extends Activity {
     return [...s];
   }
 
-  /** 当前帧的播放时长：显式 dur 优先；单帧旧格式回退到 SUB_EVENTS 的 hold/holdRange；多帧新格式无 dur 时用 0.15 */
+  /** 当前帧的播放时长：显式 dur 优先，否则 0.3 */
   _currentFrameDur(cfg) {
     const frame = cfg.frames[this._frameIdx];
-    if (typeof frame.dur === 'number') return frame.dur;
-    if (cfg.frames.length === 1) return this._holdDur;
-    return 0.15;
+    return typeof frame.dur === 'number' ? frame.dur : 0.3;
   }
 
   _tickSubEvent(dt) {
-    const cfg = SUB_EVENTS[this._subEvent];
+    const cfg = SUB_EVENT_POSES[this._subEvent];
     if (!cfg) return false;
     this._subTimer += dt;
+    const reachDur   = cfg.reach   ?? 0.4;
+    const releaseDur = cfg.release ?? 0.4;
 
     if (this._subPhase === 'reach') {
-      const t  = Math.min(1, this._subTimer / cfg.reach);
+      const t  = Math.min(1, this._subTimer / reachDur);
       const f0 = cfg.frames[0];
-      this._applyLerpPose(this.a, this._aBase, f0.a, t);
-      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, f0.b, t);
+      this._applyLerpPose(this.a, this._aBase, f0[this._roleA], t);
+      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, f0[this._roleB], t);
       setXY(this.a, this._aOrigX + (this._aTargetX - this._aOrigX) * t, this.a.y);
       if (!this._pushBReleased) setXY(this.b, this._bOrigX + (this._bTargetX - this._bOrigX) * t, this.b.y);
 
-      if (this._subTimer >= cfg.reach) {
+      if (this._subTimer >= reachDur) {
         this._subPhase   = 'play';
         this._subTimer   = 0;
         this._frameIdx   = 0;
@@ -199,14 +181,14 @@ export class TalkActivity extends Activity {
         // sustain=true 且已在末帧：保持末帧 joints 不变，等待外部 destroy()
       }
     } else if (this._subPhase === 'release') {
-      const t = Math.max(0, 1 - this._subTimer / cfg.release);
+      const t = Math.max(0, 1 - this._subTimer / releaseDur);
       const lastFrame = cfg.frames[cfg.frames.length - 1];
-      this._applyLerpPose(this.a, this._aBase, lastFrame.a, t);
-      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, lastFrame.b, t);
+      this._applyLerpPose(this.a, this._aBase, lastFrame[this._roleA], t);
+      if (!this._pushBReleased) this._applyLerpPose(this.b, this._bBase, lastFrame[this._roleB], t);
       setXY(this.a, this._aOrigX + (this._aTargetX - this._aOrigX) * t, this.a.y);
       if (!this._pushBReleased) setXY(this.b, this._bOrigX + (this._bTargetX - this._bOrigX) * t, this.b.y);
 
-      if (this._subTimer >= cfg.release) {
+      if (this._subTimer >= releaseDur) {
         setXY(this.a, this._aOrigX, this.a.y);
         if (!this._pushBReleased) setXY(this.b, this._bOrigX, this.b.y);
         this.a.modifiers = this.a.modifiers.filter(m => m.id !== '_talk_sub_event');
@@ -230,8 +212,8 @@ export class TalkActivity extends Activity {
 
   /** 逐帧步进播放：直接把该帧的绝对关节坐标写入 modifier，不做帧间插值 */
   _applyFrame(frame) {
-    this._setModifierJoints(this.a, frame.a);
-    if (!this._pushBReleased) this._setModifierJoints(this.b, frame.b);
+    this._setModifierJoints(this.a, frame[this._roleA]);
+    if (!this._pushBReleased) this._setModifierJoints(this.b, frame[this._roleB]);
   }
 
   _applyLerpPose(npc, basePose, targetPose, t) {

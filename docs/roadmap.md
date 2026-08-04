@@ -655,3 +655,39 @@ roughness 不参与 A\*，与 `zoneCosts` 是两套独立的序：代价管选�
 代码锚点：`js/behavior/PoseCacheBuilder.js#decodeSubEvent`；
 `js/behavior/activities/TalkActivity.js`；`assets/animations/new_assets/docx.md`
 「多帧 sub-event overlay 格式」节
+
+---
+
+### SE-3（sub-event 类型/role 名去硬编码）— 已落地
+
+SE-2 落地后 `TalkActivity.js` 里还留了两处硬编码：`SUB_EVENTS`/`build()` 给四个
+固定事件类型（`push`/`give_item`/`handshake`/`point_at`）手填 `reach`/`release`，
+`_selectSubEvent` 也是这四个类型的固定候选列表；`frame.a`/`frame.b` 又把 clip JSON
+里任意的 `participants[].role` 字面翻译死成 `a`/`b` 两个字。新增一个 sub-event
+clip（改个 role 名、调个过渡时长）此前都要连带改代码。
+
+- **`PoseCacheBuilder.decodeSubEvent()`**：`frames[i]` 的 key 从固定 `a`/`b` 改成
+  `participants[].role` 的原始字符串（`{[role]: {joints}, dur}`）；新增 `roles`
+  数组（`participants.map(p=>p.role)`，按声明顺序）随结构返回；`...rawJson` 展开
+  本就带出 clip 自己写的 `reach`/`release`（如果有），不用额外处理。
+  `push`/`give_item`/`handshake`/`point_at` 的 role 字面量本来就是 `"a"`/`"b"`，
+  纯属既有 JSON 内容的巧合，不是新规则要求。
+- **`TalkActivity.js`**：删 `SUB_EVENTS`/`build()`，`SUB_EVENT_POSES`（即
+  `poseCache.sub_event`）本身当唯一配置源直接读。`_startSubEvent` 从
+  `cfg.roles[0]/[1]` 取 role 名存 `this._roleA`/`this._roleB`，后续所有
+  `frame[this._roleA]`/`frame[this._roleB]` 按位置取值，不再认字面量
+  `a`/`b`。`_selectSubEvent` 改成遍历 `Object.keys(SUB_EVENT_POSES)`，权重从
+  `profile.socialWeights[type] ?? 0.05` 取——新增/删除一个 sub-event clip 只用
+  改 manifest 注册和（可选）`NpcProfile.js` 的 `socialWeights`，不用碰这个文件。
+  `reach`/`release` 缺省统一回退 0.4s，`_currentFrameDur` 缺省统一回退 0.3s——
+  不再有 `hold`/`holdRange`/单帧特例这套按事件类型手调的隐藏参数表；
+  `push` 提前 release `b` 的特判逻辑保留（那是 `push` 这个具体动作的语义，不是
+  可数据驱动的通用机制）。
+- **兼容性代价**：四个既有 clip 无需改 JSON 就能继续被选中、播放，但过渡/停留
+  时长从原先手调的数值（如 handshake hold 1.5s）退化成统一默认值（0.4s/0.3s）——
+  这是本批明确接受的代价，想恢复某个事件的原手感，直接给对应 JSON 补
+  `reach`/`release`/`keyframes[0].dur` 字段即可，不改代码。
+
+代码锚点：`js/behavior/PoseCacheBuilder.js#decodeSubEvent`；
+`js/behavior/activities/TalkActivity.js`；`assets/animations/new_assets/docx.md`
+「多帧 sub-event overlay 格式」节

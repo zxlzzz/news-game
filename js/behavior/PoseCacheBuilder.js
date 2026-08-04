@@ -64,13 +64,16 @@ export function buildPoseCache(clipLibrary) {
     // （sth/stick-puppet/js/app.js DUET_DEFAULT_DX）
     const designGap = rawJson.participants[1]?.dx ?? 70;
 
-    const frames = kfs.map(kf => ({
-      dur: typeof kf.dur === 'number' ? kf.dur : undefined,
-      a: decodeRolePose(kf[roles[0]] ?? {}),
-      b: decodeRolePose(kf[roles[1]] ?? {}),
-    }));
+    // 帧 key 保留原始 role 名（不翻译成 a/b）——TalkActivity 按 roles[0]/roles[1] 的
+    // 实际字符串去取，同一份数据可以驱动任意 role 命名的 duet clip
+    const frames = kfs.map(kf => {
+      const frame = { dur: typeof kf.dur === 'number' ? kf.dur : undefined };
+      for (const role of roles) frame[role] = decodeRolePose(kf[role] ?? {});
+      return frame;
+    });
 
-    return { ...rawJson, frames, sustain: rawJson.sustain === true, designGap };
+    // reach/release 由 clip 自带（可选），TalkActivity 读取时缺省回退 0.4；sustain 同理归一成布尔
+    return { ...rawJson, frames, roles, sustain: rawJson.sustain === true, designGap };
   }
 
   const held           = {};
