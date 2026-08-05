@@ -89,7 +89,15 @@ const PEDESTRIAN = {
   loiterDurationRange: [15, 45],
   jaywalkChance: 0.10,
   departure: { lifespanRange: [90, 210], preferExitType: null },
-  speedRange: [20, 34],
+  // U-2d（补漏）：speedRange 骨架单位/秒（消费时乘 npc.scale）。原世界像素值
+  // [20,34] 是 U-2 迁移时漏改的字段——Pedestrians.js#spawnOnePedestrian 用它
+  // 播种 npc.speed，而 BehaviorManager.register() 的 `npc.speed>0 ? npc.speed
+  // : rand(106,181)` 分支会直接把这个"世界像素值"当骨架单位塞进 walkSpeed，
+  // 导致全库主力行人（pedestrians/park_idlers/Director 动态补充，三处消费点
+  // 均走 spawnOnePedestrian）实际速度只有 3–14px/s，远低于设计值，是"看着很慢
+  // /贴墙卡死"的真正主因（换算基准同 U-2b：SIDEWALK_FAR_Y scale 0.188）。
+  // 20/0.188≈106、34/0.188≈181。
+  speedRange: [106, 181],
 };
 
 const BUSINESSMAN = {
@@ -109,7 +117,8 @@ const BUSINESSMAN = {
   loiterDurationRange: [15, 40],
   jaywalkChance: 0.20,
   departure: { lifespanRange: [90, 210], preferExitType: 'building' },
-  speedRange: [28, 40],
+  // U-2d（补漏）：骨架单位/秒，同 PEDESTRIAN 注记。28/0.188≈149、40/0.188≈213。
+  speedRange: [149, 213],
 };
 
 const TOURIST = {
@@ -134,7 +143,8 @@ const TOURIST = {
   loiterDurationRange: [20, 60],
   jaywalkChance: 0.15,
   departure: { lifespanRange: [90, 210], preferExitType: null },
-  speedRange: [16, 26],
+  // U-2d（补漏）：骨架单位/秒，同 PEDESTRIAN 注记。16/0.188≈85、26/0.188≈138。
+  speedRange: [85, 138],
 };
 
 // A-2：小孩预设，复用 pedestrian 全套行为（转换表/held/activities/desires 不变），

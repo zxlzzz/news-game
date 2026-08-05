@@ -104,6 +104,20 @@ const sepR = SAFETY_RULES.separation.baseRadius * (scale / SAFETY_RULES.separati
   贴近障碍物即被误判卡死、反复重规划（观感：贴墙抖动/卡死）；已改骨架单位并在
   消费处乘 `npc.scale`。`EnvironmentQuery.js` 的各类半径常数仍是世界像素，是已知
   但暂未处理的历史债务，不在本次范围内。
+- **U-2d 补漏（真正主因，2026-08-05）**：U-2 只改了 `BehaviorManager.js#register`
+  里 `npc.speed>0 ? npc.speed : rand(...)` 的**兜底分支**，但全库真正大量走的是
+  **`npc.speed>0` 这条分支**——`Pedestrians.js`（`NpcProfile.js` 的 `PEDESTRIAN/
+  BUSINESSMAN/TOURIST.speedRange`，覆盖 pedestrians/park_idlers/Director 动态
+  补充三处调用点）、`DogWalker.js`、`sceneFeatures.js`（stall_sellers）里播种
+  `npc.speed` 的字面量全是 U-2 之前的世界像素值（如 `[20,34]`），从未跟着 U-2
+  换算。`register()` 把这些"世界像素值"原样当骨架单位塞进 `walkSpeed`，实际
+  速度只有设计值的 1/5～1/7（3–14px/s）——这是全库绝大多数 NPC（不是只有远
+  人行道）"看着几乎不动/贴墙卡死"的**真正主因**，U-2b/U-2c 只是修了从未被
+  实际触发的兜底路径和卡死判定的次要放大因素。已按同一基准（0.188）换算全部
+  五处：`speedRange` 三档 `[106,181]/[149,213]/[85,138]`，`DogWalker.js`
+  owner `26→138`，`sceneFeatures.js` stall_seller `28→149`。**教训**：往后任何
+  "改单位常数默认值"的迁移，必须先 grep 实际消费路径确认默认值分支是否真的
+  会被触发，不能只看字面量出现的位置。
 
 ---
 

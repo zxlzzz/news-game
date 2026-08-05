@@ -81,9 +81,12 @@ registerFeature('stall_sellers', (ctx) => {
     if (!slot || slot.reserved != null) continue;
 
     const fromLeft = stall.x < WORLD_WIDTH / 2;
+    // U-2d（补漏）：speed 骨架单位/秒（走 bm.register 的 npc.speed>0 分支直接
+    // 播种 walkSpeed，语义须与 U-2 全库一致）。原世界像素值 28 ÷ 主漫游区
+    // scale 0.188 换算：28/0.188≈149。
     const seller = makeNPC(em, sr, {
       x: fromLeft ? 10 : WORLD_WIDTH - 10, y: stall.y,
-      animation: 'walk', direction: fromLeft ? 1 : -1, speed: 28, vy: 0,
+      animation: 'walk', direction: fromLeft ? 1 : -1, speed: 149, vy: 0,
       minX: 0, maxX: WORLD_WIDTH, minY: resolveY('BUILDING_BASE_Y'), maxY: resolveY('PARK_BOTTOM'),
       tags: ['vendor'], npcType: 'stall_seller',
     });

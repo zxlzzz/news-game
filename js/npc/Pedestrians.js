@@ -72,7 +72,11 @@ function applyTraits(n, t, profile) {
 export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
   const typeData = TYPES.find(t => t.npcType === npcType) ?? TYPES[0];
   const profile  = getProfile(typeData.npcType);
-  const speedRange = profile?.speedRange ?? [20, 34];
+  // U-2d（补漏）：speedRange 骨架单位/秒（NpcProfile.js 注记），下方 speed:
+  // 直接播种 npc.speed，走 BehaviorManager.register() 的 npc.speed>0 分支
+  // 当 walkSpeed 用，语义须与 U-2 全库一致，兜底值同基准换算（20/0.188≈106、
+  // 34/0.188≈181）。
+  const speedRange = profile?.speedRange ?? [106, 181];
 
   const grid    = getNavGrid();
   const snap    = opts.snap !== false;
