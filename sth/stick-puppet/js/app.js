@@ -347,11 +347,23 @@ function _buildDuetRoleButtons() {
   const container = document.getElementById('duetRoleButtons');
   container.innerHTML = '';
   for (let i = 0; i < duetRoles.length; i++) {
+    const idx = i;
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;gap:2px;flex:1;min-width:120px';
+
+    // 角色名——纯标记用，同时也是导出 JSON 里 participants[].role / keyframe key
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.value = duetRoles[i].role;
+    nameInput.title = '角色名（标记用，同时是导出 JSON 的 role key）';
+    nameInput.style.cssText = 'width:56px;padding:2px 4px;font-size:11px;font-family:\'JetBrains Mono\',monospace;background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:3px';
+    nameInput.onchange = () => renameDuetRole(idx, nameInput.value);
+    nameInput.onclick = (e) => e.stopPropagation();
+
     const btn = document.createElement('button');
-    btn.textContent = `[${duetRoles[i].role}] ${duetRoles[i].skelName}`;
+    btn.textContent = duetRoles[i].skelName;
     btn.className = i === activeDuetRoleIdx ? 'active-toggle' : '';
     btn.style.flex = '1';
-    const idx = i;
     btn.onclick = () => {
       duetRoles[activeDuetRoleIdx].frames = frames; // save current edits
       activeDuetRoleIdx = idx;
@@ -359,8 +371,26 @@ function _buildDuetRoleButtons() {
       _buildDuetRoleButtons();
       render();
     };
-    container.appendChild(btn);
+
+    wrap.appendChild(nameInput);
+    wrap.appendChild(btn);
+    container.appendChild(wrap);
   }
+}
+
+/** 改角色名——纯标记，不影响关节数据；导出 JSON 时就是 participants[].role / keyframe key，
+ * 所以拒绝空名和跟另一个角色重名（会导致导出时两个角色的 keyframe 互相覆盖） */
+function renameDuetRole(idx, value) {
+  const name = value.trim();
+  if (!name || duetRoles.some((r, j) => j !== idx && r.role === name)) {
+    if (!name) alert('角色名不能为空');
+    else alert(`角色名 "${name}" 已被占用，同一 clip 内 role 名不能重复`);
+    _buildDuetRoleButtons();
+    return;
+  }
+  history.save(frames, currentFrame, frameDurs, _duetHistoryState());
+  duetRoles[idx].role = name;
+  _buildDuetRoleButtons();
 }
 
 function _decodeKfForSkel(kf, skelName) {
@@ -375,6 +405,20 @@ function _decodeKfForSkel(kf, skelName) {
     if (dp[name]) pose[name] = { x: dp[name].x + val[0], y: dp[name].y + val[1] };
   }
   return pose;
+}
+
+/** clonePose()（config.js）的按 skelName 版本——用于 duet 模式给非当前角色的帧做深拷贝，
+ * 不能直接用 clonePose()，它固定读当前激活骨骼的关节名 */
+function _clonePoseForSkel(pose, skelName) {
+  const sk = SKELETONS[skelName] ?? getSkeleton();
+  const out = {};
+  for (const j of Object.keys(sk.hierarchy)) {
+    out[j] = pose[j] ? { x: pose[j].x, y: pose[j].y } : { x: 0, y: 0 };
+  }
+  for (const k of Object.keys(pose)) {
+    if (k.startsWith('_bend_')) out[k] = pose[k];
+  }
+  return out;
 }
 
 function _encodeKfForSkel(pose, skelName) {
@@ -853,7 +897,7 @@ function updateCoordsDisplay() {
       const axis  = e.target.dataset.axis;
       const val   = parseFloat(e.target.value);
       if (isNaN(val)) return;
-      history.save(frames, currentFrame, frameDurs);
+      history.save(frames, currentFrame, frameDurs, _duetHistoryState());
       frames[currentFrame][joint][axis] = val;
       render();
     });
@@ -908,7 +952,7 @@ function updateBoneLengths() {
       if (e.target.classList.contains('len-input')) {
         const newLen = parseFloat(e.target.value);
         if (isNaN(newLen) || newLen < 1) return;
-        history.save(frames, currentFrame, frameDurs);
+        history.save(frames, currentFrame, frameDurs, _duetHistoryState());
         if (lengthLocked) {
           setGlobalBoneLength(from, to, newLen, frames);
         } else {
@@ -925,7 +969,7 @@ function updateBoneLengths() {
       } else if (e.target.classList.contains('bend-input')) {
         const val = parseFloat(e.target.value);
         if (isNaN(val)) return;
-        history.save(frames, currentFrame, frameDurs);
+        history.save(frames, currentFrame, frameDurs, _duetHistoryState());
         setBend(from, to, val, frames[currentFrame], frames);
         render();
       }
@@ -1017,7 +1061,7 @@ canvas.addEventListener('mousedown', (e) => {
 
   // 全局平移模式：单击画布即开始整体平移
   if (translateMode) {
-    history.save(frames, currentFrame, frameDurs);
+    history.save(frames, currentFrame, frameDurs, _duetHistoryState());
     dragging = '__translate__';
     _translateLastX = x; _translateLastY = y;
     dragStarted = true;
@@ -1038,6 +1082,7 @@ canvas.addEventListener('mousemove', (e) => {
 
   // Duet: dragging an inactive role's position handle
   if (draggingRoleOffset >= 0) {
+    if (!dragStarted) { history.save(frames, currentFrame, frameDurs, _duetHistoryState()); dragStarted = true; }
     const role = duetRoles[draggingRoleOffset];
     const rpose = (role.frames[currentFrame] ?? role.frames[0]);
     const rsk = SKELETONS[role.skelName] ?? getSkeleton();
@@ -1056,7 +1101,7 @@ canvas.addEventListener('mousemove', (e) => {
     render(); return;
   }
 
-  if (!dragStarted) { history.save(frames, currentFrame, frameDurs); dragStarted = true; }
+  if (!dragStarted) { history.save(frames, currentFrame, frameDurs, _duetHistoryState()); dragStarted = true; }
   const pose = frames[currentFrame];
   const sk = getSkeleton();
   // Pose space: subtract screen offset so coordinates stay in role-local space
@@ -1103,10 +1148,34 @@ canvas.addEventListener('mouseup', () => { dragging = null; draggingRoleOffset =
 canvas.addEventListener('mouseleave', () => { dragging = null; draggingRoleOffset = -1; render(); });
 
 // ── 撤销 / 重做 ────────────────────────────────────────────────────────────────
+// duet 模式下把当前完整 duetRoles 状态交给 history——addFrame/dupFrame/改名/拖别的 role
+// 位置都是跨 role 的改动，只快照当前 role 的 frames 不够，撤销时会拿旧快照套错 role
+function _duetHistoryState() {
+  if (!duetMode) return null;
+  duetRoles[activeDuetRoleIdx].frames = frames; // 双保险：确保别名没脱钩
+  return { activeDuetRoleIdx, roles: duetRoles };
+}
+
 function applySnapshot(snap) {
-  frames = snap.frames;
   currentFrame = snap.currentFrame;
+
+  if (snap.duet) {
+    activeDuetRoleIdx = snap.duet.activeDuetRoleIdx;
+    duetRoles = snap.duet.roles.map(r => ({
+      role: r.role,
+      skelName: r.skelName,
+      offset: { x: r.offset.x, y: r.offset.y },
+      frames: JSON.parse(JSON.stringify(r.frames)),
+      allowedJoints: new Set(r.allowedJoints || []),
+    }));
+    _applyActiveDuetRole();
+    _buildDuetRoleButtons();
+  } else {
+    frames = snap.frames;
+  }
+
   frameDurs = snap.frameDurs && snap.frameDurs.length ? snap.frameDurs.slice() : frames.map(() => 0.3);
+
   if (snap.globalBend) {
     for (const b of getSkeleton().bones) {
       const key = `${b[0]}__${b[1]}`;
@@ -1114,13 +1183,13 @@ function applySnapshot(snap) {
     }
   }
 }
-function undo() { const s = history.undo(frames, currentFrame, frameDurs); if (s) { applySnapshot(s); render(); setInfo('撤销'); } }
-function redo() { const s = history.redo(frames, currentFrame, frameDurs); if (s) { applySnapshot(s); render(); setInfo('重做'); } }
+function undo() { const s = history.undo(frames, currentFrame, frameDurs, _duetHistoryState()); if (s) { applySnapshot(s); render(); setInfo('撤销'); } }
+function redo() { const s = history.redo(frames, currentFrame, frameDurs, _duetHistoryState()); if (s) { applySnapshot(s); render(); setInfo('重做'); } }
 
 // ── 左右互换 ──────────────────────────────────────────────────────────────────
 function mirrorPose() {
   const sk = getSkeleton();
-  history.save(frames, currentFrame, frameDurs);
+  history.save(frames, currentFrame, frameDurs, _duetHistoryState());
   const pose = frames[currentFrame];
   for (const [l, r] of sk.mirrorPairs) {
     const tmpX = pose[l].x, tmpY = pose[l].y;
@@ -1201,38 +1270,53 @@ function _buildJointCheckboxes() {
 }
 
 // ── 帧管理 ────────────────────────────────────────────────────────────────────
+// duet 模式下 addFrame/dupFrame 对所有 role 同步同位置插入（各 role 用各自骨骼/各自
+// 姿势，只同步帧数和位置，不搬姿势数据）；moveFrameLeft/Right/delFrame 不同步——
+// 只对当前正在编辑的 role 生效
 function addFrame() {
-  history.save(frames, currentFrame, frameDurs);
-  frames.push(defaultPose()); frameDurs.push(0.3);
+  history.save(frames, currentFrame, frameDurs, _duetHistoryState());
+  if (duetMode) {
+    for (const role of duetRoles) role.frames.push(_decodeKfForSkel({}, role.skelName));
+  } else {
+    frames.push(defaultPose());
+  }
+  frameDurs.push(0.3);
   currentFrame = frames.length - 1; render();
 }
 function dupFrame() {
-  history.save(frames, currentFrame, frameDurs);
-  frames.splice(currentFrame + 1, 0, clonePose(frames[currentFrame]));
+  history.save(frames, currentFrame, frameDurs, _duetHistoryState());
+  if (duetMode) {
+    for (const role of duetRoles) {
+      const src = role.frames[currentFrame] ?? role.frames[role.frames.length - 1];
+      role.frames.splice(currentFrame + 1, 0, _clonePoseForSkel(src, role.skelName));
+    }
+  } else {
+    frames.splice(currentFrame + 1, 0, clonePose(frames[currentFrame]));
+  }
   frameDurs.splice(currentFrame + 1, 0, frameDurs[currentFrame] ?? 0.3);
   currentFrame++; render();
 }
 function delFrame() {
   if (frames.length <= 1) return;
-  history.save(frames, currentFrame, frameDurs);
+  history.save(frames, currentFrame, frameDurs, _duetHistoryState());
   frames.splice(currentFrame, 1); frameDurs.splice(currentFrame, 1);
   if (currentFrame >= frames.length) currentFrame = frames.length - 1;
   render();
 }
 function resetPose() {
-  history.save(frames, currentFrame, frameDurs);
+  history.save(frames, currentFrame, frameDurs, _duetHistoryState());
   frames[currentFrame] = defaultPose(); render();
 }
 function moveFrameLeft() {
   if (currentFrame <= 0) return;
-  history.save(frames, currentFrame, frameDurs);
+  history.save(frames, currentFrame, frameDurs, _duetHistoryState());
   [frames[currentFrame - 1], frames[currentFrame]] = [frames[currentFrame], frames[currentFrame - 1]];
   [frameDurs[currentFrame - 1], frameDurs[currentFrame]] = [frameDurs[currentFrame], frameDurs[currentFrame - 1]];
   currentFrame--; render();
 }
 function moveFrameRight() {
   if (currentFrame >= frames.length - 1) return;
-  history.save(frames, currentFrame, frameDurs);
+  history.save(frames, currentFrame, frameDurs, _duetHistoryState());
   [frames[currentFrame], frames[currentFrame + 1]] = [frames[currentFrame + 1], frames[currentFrame]];
   [frameDurs[currentFrame], frameDurs[currentFrame + 1]] = [frameDurs[currentFrame + 1], frameDurs[currentFrame]];
   currentFrame++; render();
@@ -1277,7 +1361,7 @@ function interpolateFrames() {
   if (fromIdx === toIdx) { alert('起始帧和结束帧不能相同'); return; }
   if (count < 1 || count > 30) { alert('插入帧数 1-30'); return; }
 
-  history.save(frames, currentFrame, frameDurs);
+  history.save(frames, currentFrame, frameDurs, _duetHistoryState());
   const sk = getSkeleton();
   const poseA = frames[fromIdx], poseB = frames[toIdx];
   const newFrames = [];
