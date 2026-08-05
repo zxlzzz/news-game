@@ -103,7 +103,11 @@ export function alignLie(npc, renderer) {
     clamp(npc.mem('social').bench.x - Math.round(bodyX * sc * dir), npc.minX, npc.maxX),
     clamp(seatY - Math.round(bodyY * sc), npc.minY, npc.maxY),
   );
-  npc._sortY = npc.mem('social').bench.y + 1;
+  // 与 sitDown 用同一 far 判定：up/left 朝向长椅落座时 NPC 在椅后（bench.y-1），
+  // 躺下必须沿用，否则坐→躺会把 _sortY 从椅后翻到椅前，出现遮挡跳变。
+  const bench = npc.mem('social').bench;
+  const far = bench.facing === 'up' || bench.facing === 'left';
+  npc._sortY = far ? bench.y - 1 : bench.y + 1;
 }
 // ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
 // seat/ 下四种可坐物：bench 是障碍（有 footprint），其余三种仅绘制。
