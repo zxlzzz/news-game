@@ -60,8 +60,11 @@ export function buildPoseCache(clipLibrary) {
       return joints;
     }
 
-    // 每 role 的水平站位偏移相对 role 0（隐式 dx=0），role 1 缺省时沿用编辑器默认间距 70px
-    // （sth/stick-puppet/js/app.js DUET_DEFAULT_DX）
+    // 每 role 的水平站位偏移相对 role 0（隐式 dx=0）。单位是骨架单位——编辑器坐标与骨架
+    // 坐标同一空间，dx 就是 clip 关节坐标那把尺子，不需要换算就能直接比较；role 1 缺省时
+    // 沿用编辑器默认间距 70（sth/stick-puppet/js/app.js DUET_DEFAULT_DX，同样是骨架单位）。
+    // 消费侧（TalkActivity._startSubEvent）落到世界坐标前必须乘 npc.scale——designGap 本身
+    // 不是世界像素，U-1 之前 TalkActivity 曾把它直接当 world px 用，是错的（见该文件注释）。
     const designGap = rawJson.participants[1]?.dx ?? 70;
 
     // 帧 key 保留原始 role 名（不翻译成 a/b）——TalkActivity 按 roles[0]/roles[1] 的

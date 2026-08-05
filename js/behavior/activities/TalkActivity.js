@@ -107,7 +107,12 @@ export class TalkActivity extends Activity {
     this._bOrigX = this.b.x;
     const mid    = (this.a.x + this.b.x) / 2;
     const aIsLeft = this.a.x <= this.b.x;
-    const half   = cfg.designGap / 2;
+    // U-1：designGap 是骨架单位（编辑器坐标同空间，见 PoseCacheBuilder#decodeSubEvent），
+    // 落到世界坐标必须乘 scale——用 a/b 两者 scale 的平均，因为两人常常不在同一深度。
+    // 之前直接把 designGap 当世界像素用，近侧 scale≈0.262 时 70 骨架单位应渲染成 18px，
+    // 实际站开了 70px，约 4 倍，且错的倍数随 y 变。
+    const avgScale = (this.a.scale + this.b.scale) / 2;
+    const half   = cfg.designGap * avgScale / 2;
     this._aTargetX = mid + (aIsLeft ? -half : half);
     this._bTargetX = mid + (aIsLeft ? half : -half);
 
