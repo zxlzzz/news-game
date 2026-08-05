@@ -16,12 +16,17 @@
  *              npc.mem('motor').{progressAnchor,progressAcc} (integratePhysics);
  *              npc.mem('motor').tags (cleared in _defaultOnExit);
  *              npc.mem('motor').faceAcc (facing dead-zone accumulator, L-1);
+ *              npc.mem('motor').{frontAccDx,frontAccDy} (front/side variant dead-zone
+ *              accumulators, L-3 — independent of faceAcc, see _updateFrontVariant);
  *              npc.roamTarget null on mode change.
  *   WRITES:    x, y via setXY/nudgeXY/_slideMove;
  *              speed via setState; state/animation via setState/setAnimation;
  *              npc.direction in walk/run/jog/ride states, derived from real x
  *              displacement written this frame by _slideMove (L-1; sole address —
  *              see movement.md, BaseStateMachine MUST NOT write it in these states);
+ *              npc.animation swap to/from '<id>_front' variants when vertical
+ *              displacement dominates in walk/run/jog/ride states (L-3,
+ *              _updateFrontVariant; resets npc.phase/frameIndex on switch);
  *              walkMode via setWalkMode; roamTarget=null on every mode switch;
  *              goal/path/needReplan lifecycle (fire result, progress two-hit).
  *   READS:     npc.mem('motor').{walkMode,goal,path} (integratePhysics, progress monitor);
@@ -34,6 +39,7 @@ import { standUp }  from '../entity/seat/seat.js';
 import { dlog }     from './DebugLog.js';
 import { getNavGrid, CELL, ZONE } from './nav/NavGrid.js';
 import { audit } from '../debug/MovementAudit.js';
+import { clipLibrary } from '../core/ClipLibrary.js';
 
 // ── 恢复裁决表 — Physics 层卡死/超时政策唯一住址（goal-pipeline-v1.md §3）────────
 // 责任2-E StuckProbe：纯观测，永不入表。责任2-F stateDur：per-state 数据非政策常量，不入表。
@@ -322,6 +328,52 @@ function _updateDirection(npc, dx) {
   }
 }
 
+// ── 竖视变体切换（唯一住址，L-3）─────────────────────────────────────────────
+// walk_front / stand_front / idle_front / squat_front 已在 manifest 注册但此前
+// 全库零消费点（PoseCacheBuilder 的 front/side 配对只服务 kind==='overlay' 的
+// trait，这几个是 kind==='cycle'，落不进去）。以竖直位移为主时切到 _front 变体。
+//
+// FRONT_VARIANTS 只声明"配对关系"（新增变体在此登记）；是否真的切换看下方对
+// manifest 的存在性查表（查表，不是兜底）——manifest 里删掉某个 clip 时这里
+// 自动降级为保持当前 clip，不会引用到不存在的资产。
+const FRONT_VARIANTS = {
+  walk:  'walk_front',
+  stand: 'stand_front',
+  idle:  'idle_front',
+  squat: 'squat_front',
+};
+const SIDE_OF_FRONT = Object.fromEntries(
+  Object.entries(FRONT_VARIANTS).map(([side, front]) => [front, side])
+);
+
+// 迟滞复用 L-1 的空间死区阈值（SAFETY_RULES.facing.deadZone），不新增阈值；
+// 但用独立的 dx/dy 累加器，不直接复用 mot.faceAcc——faceAcc 的清零时机绑定朝向
+// 翻转判定，与本判据的清零时机混用会产生不受控的隐式耦合。
+// 切换时相位归零（npc.phase/frameIndex=0）——walk 20 帧、walk_front 13 帧，
+// 帧数不同，两个变体的帧未必逐帧姿势对应，归零避免瞬间跳到不对应的姿势。
+function _updateFrontVariant(npc, dx, dy) {
+  if (!FACING_STATES.has(npc.state) || (dx === 0 && dy === 0)) return;
+  const mot = npc.mem('motor');
+  const accDx = (mot.frontAccDx || 0) + dx;
+  const accDy = (mot.frontAccDy || 0) + dy;
+  const dz = SAFETY_RULES.facing.deadZone * npc.scale;
+  if (Math.abs(accDx) < dz && Math.abs(accDy) < dz) {
+    mot.frontAccDx = accDx;
+    mot.frontAccDy = accDy;
+    return;
+  }
+  const wantFront = Math.abs(accDy) > Math.abs(accDx);
+  mot.frontAccDx = 0;
+  mot.frontAccDy = 0;
+
+  const targetId = wantFront ? FRONT_VARIANTS[npc.animation] : SIDE_OF_FRONT[npc.animation];
+  if (targetId && clipLibrary.manifest?.clips[targetId]) {
+    setAnimation(npc, targetId);
+    npc.phase = 0;
+    npc.frameIndex = 0;
+  }
+}
+
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
 export function setXY(npc, x, y) {
   _mw(npc, 'x', x);
@@ -363,9 +415,11 @@ export function integratePhysics(npc, delta) {
     mot._obsVxSign = vxSign;
     mot.vel = null;
     const defl = _lookaheadDeflect(npc, vx, vy);
-    const _prevX = npc.x;
+    const _prevX = npc.x, _prevY = npc.y;
     _slideMove(npc, defl.vx * dt, defl.vy * dt);
-    _updateDirection(npc, npc.x - _prevX);
+    const _dx = npc.x - _prevX, _dy = npc.y - _prevY;
+    _updateDirection(npc, _dx);
+    _updateFrontVariant(npc, _dx, _dy);
   }
   // else: mot.vel absent → stationary this frame
 
