@@ -124,10 +124,11 @@ export function checkZoneTransition(npc) {
   if (!inRoad && !inBikeLane) return;
 
   // 无状态弹出：覆写本帧 vel，弹回近侧安全区
+  // U-2: walkSpeed 是骨架单位/秒，世界像素速度须乘 npc.scale。
   const goingDown = (mot.vel?.vy ?? 0) >= 0;
   const targetY   = goingDown ? BIKE_LANE_FAR_TOP - 4 : BIKE_LANE_NEAR_BOTTOM + 4;
   const dy        = targetY - npc.y;
-  mot.vel         = { vx: mot.vel?.vx ?? 0, vy: Math.sign(dy) * (npc.walkSpeed || 26) };
+  mot.vel         = { vx: mot.vel?.vx ?? 0, vy: Math.sign(dy) * npc.walkSpeed * npc.scale };
 }
 
 // ─── 目标点选取（替代 BaseStateMachine 中的 pickRoamTarget）──────────────────

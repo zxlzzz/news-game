@@ -35,11 +35,23 @@ check `_mw(npc, '<field>'` as well before concluding a field is dead.
 
 | | |
 |---|---|
-| **Semantic** | Scalar speed magnitude in px/s for the *current state*, recomputed on every state entry as `STATE_DEFS[state].speedK × (npc.walkSpeed \|\| 26)` — so it is 0 in every stationary state and non-zero only in `walk`/`run`/`jog`/`ride`. It is **not** the general physics channel (that is `mot.vel`, since V-1), but it is not vestigial either: the `ride` branch still derives velocity from it directly. At construction it carries a different meaning — the spawn-time pace seed that `BehaviorManager#register` converts into `npc.walkSpeed`. |
-| **Owner** | `Motor.js` (per-state value) / `Npc.js` constructor (spawn seed) |
-| **Writers** | `Motor.js#setState` — via the `_mw` write gate, **not** a direct assignment, so a `grep '\.speed ='` will not find it; `Npc.js` constructor (`this.speed = config.speed \|\| 0`). The old `setSpeed` API was deleted in V3-a and has no replacement. |
+| **Semantic** | Scalar speed magnitude in **world px/s**, recomputed as `STATE_DEFS[state].speedK × npc.walkSpeed(skeleton units/s) × npc.scale` (U-2: `npc.scale` factor added — `npc.walkSpeed` itself is skeleton units, not px, since U-2). Recomputed twice per state-entry frame: once in `setState` (immediate snapshot, using whatever `npc.scale` holds at that instant) and then every frame after in `integratePhysics` (using that frame's fresh `npc.scale`, since scale drifts continuously with `npc.y` — a state-entry-only computation would go stale as the NPC changes depth). It is 0 in every stationary state and non-zero only in `walk`/`run`/`jog`/`ride`. It is **not** the general physics channel (that is `mot.vel`, since V-1), but it is not vestigial either: the `ride` branch still derives velocity from it directly. At construction it carries a different meaning — the spawn-time pace seed that `BehaviorManager#register` converts into `npc.walkSpeed`. |
+| **Owner** | `Motor.js` (per-frame value) / `Npc.js` constructor (spawn seed) |
+| **Writers** | `Motor.js#setState` and `Motor.js#integratePhysics` — both via the `_mw` write gate, **not** a direct assignment, so a `grep '\.speed ='` will not find it; `Npc.js` constructor (`this.speed = config.speed \|\| 0`). The old `setSpeed` API was deleted in V3-a and has no replacement. |
 | **Readers** | `BehaviorManager.js#register` (seeds `walkSpeed`, once); `BaseStateMachine.js#_tickState` `ride` branch (`mot.vel = {vx: direction * speed, vy: 0}` — N3-c, the one live physics read); `StuckProbe.js` (diagnostic, not a gate) |
-| **Invariant** | Only `setState` (via `_mw`) or the `Npc.js` constructor may write it — enforced by `check-invariants.mjs` Rule 3. Do not reintroduce it as the general physics channel; non-`ride` movement goes through `mot.vel`. |
+| **Invariant** | Only `setState`/`integratePhysics` (via `_mw`) or the `Npc.js` constructor may write it — enforced by `check-invariants.mjs` Rule 3. Do not reintroduce it as the general physics channel; non-`ride` movement goes through `mot.vel`. |
+
+---
+
+### `npc.walkSpeed` / `npc.mem('motor').speedK`
+
+| | |
+|---|---|
+| **Semantic** | `npc.walkSpeed`: pace magnitude in **skeleton units/s** (U-2 — not world px, unlike almost everything else on `npc` proper; consumed by multiplying `npc.scale`). Seeded once at registration: `npc.speed > 0 ? npc.speed : rand(76, 130)` — the `rand` range is the skeleton-unit migration of the pre-U-2 `rand(20, 34)` px/s range, calibrated so behavior is unchanged at the near-sidewalk reference depth (`scale≈0.262`). `mot.speedK`: `STATE_DEFS[state].speedK` snapshotted at `setState` time so `integratePhysics` can recompute `npc.speed` every frame without re-reading `STATE_DEFS`. |
+| **Owner** | `BehaviorManager.js#register` (`walkSpeed`, unprotected, not a Motor field) / `Motor.js#setState` (`mot.speedK`) |
+| **Writers** | `BehaviorManager.js#register` (`walkSpeed`, once, spawn time); `Motor.js#setState` (`mot.speedK = def.speedK`, every state transition) |
+| **Readers** | `Motor.js#setState` / `Motor.js#integratePhysics` (`npc.speed` recompute); `BaseStateMachine.js#steerRoam` (`total` — walk-branch target speed, ×`npc.scale`); `BaseStateMachine.js#_routeToExit` (departure timeout estimate, ×`npc.scale`); `WalkMode.js#checkZoneTransition` (bounce-out `vy`, ×`npc.scale`) |
+| **Invariant** | `npc.walkSpeed` must be set before any `setState` call for that NPC — guaranteed by `register()`'s call order (seed, then `installProtection`, then `setState`), so no consumer defends against it being unset (no `\|\| fallback`, per U-2: a missing value is a spawn-path bug, not something to paper over). Every consumer of `walkSpeed` must multiply by `npc.scale` before comparing against or combining with a world-px quantity — world pixels are never a legal unit for `walkSpeed` itself. |
 
 ---
 

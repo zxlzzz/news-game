@@ -74,6 +74,32 @@ NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车�
 
 ---
 
+## 长度量纲（U-2/U-3）
+
+**铁律**：凡有长度量纲的常数，只允许两种住址——**骨架单位**（消费时乘 `npc.scale`）
+或 **NavGrid 格**（消费时乘 `CELL`）。世界像素不是长度常数的合法单位：同一个像素值
+在近侧（`scale≈0.262`）与远侧的实际尺寸相差数倍，只在一个深度成立，换了深度就错。
+
+```js
+// ✓ 正确范式（BehaviorManager.js#_separate）
+const sepR = SAFETY_RULES.separation.baseRadius * (scale / SAFETY_RULES.separation.atScale);
+// ✗ 禁止：const THRESHOLD_PX = 30;（裸世界像素常数，缺单位换算）
+```
+
+- `npc.walkSpeed`（骨架单位/秒）、`ARRIVAL_RULES.*.threshold`（骨架单位）、
+  `SAFETY_RULES.{separation.baseRadius, facing.deadZone}`（骨架单位）、
+  `SAFETY_RULES.{lookahead,wall_avoid}.{probeCells,rotProbeCells,nearCells}`
+  （NavGrid 格）都遵循此律；`arrived(ruleId, dist, scale)` 的第三参数不可省略。
+- `check-invariants.mjs` Rule 17 静态门 `ARRIVAL_RULES` / `SAFETY_RULES` /
+  `PoseCacheBuilder` 输出：长度字段所在行（或 `PoseCacheBuilder.js` 声明行上方
+  注释块）必须命中「骨架单位」或「NavGrid 格」字样，缺失即失败。新增长度字段名
+  需同步加入该规则的字段名白名单，否则静默不受保护。
+- 本律不追溯改写 `RECOVERY_RULES.progress_monitor.movedLT`、
+  `EnvironmentQuery.js` 的各类半径常数——这些仍是世界像素，是已知但暂未处理的
+  历史债务，不在 U-2/U-3 范围内。
+
+---
+
 ## 动画命名
 
 **铁律**：全库动画唯一标识 = manifest clip id（如 `stand`、`dog_walk`），无别名层。
@@ -364,7 +390,7 @@ npc.clearMem('loiter');
 
 | namespace  | owner / 写者            | 典型字段                                              |
 |------------|-------------------------|-------------------------------------------------------|
-| `motor`    | Motor.js / WalkMode.js  | walkMode、goal、path、vel、faceAcc、frontAccDx、frontAccDy、savedBounds、needReplan、progressAcc、progressAnchor、wallSpot、tags（`_obsFlipVx / _obsVxSign` 只读观测，非状态位） |
+| `motor`    | Motor.js / WalkMode.js  | walkMode、goal、path、vel、faceAcc、frontAccDx、frontAccDy、speedK、savedBounds、needReplan、progressAcc、progressAnchor、wallSpot、tags（`_obsFlipVx / _obsVxSign` 只读观测，非状态位） |
 | `loiter`   | LoiterBehavior.js       | dir、dur、elapsed、overlay、microPhase、microPhaseName、microTimer、tags |
 | `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、slotWaitProp、slotWaitTimer、chessSlot、onlookerTimer、onlookerDur、tags |
 | `agenda`   | BehaviorManager / Director | profile、runner、agenda、lifespan、ageTimer、departing、pendingDeparture、preferExitType、exitRegistry、waitForBusLayer、busStops |

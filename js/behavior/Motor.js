@@ -53,16 +53,21 @@ export const RECOVERY_RULES = {
 // ── 安全网裁决表 — Physics 层越界防护策略参数唯一住址（goal-pipeline-v1.md §3）────
 // 责任3-A/B/C/F/G（clamp/escape/wall-slide/Npc夹取/nearestWalkable fallback）：
 // 算法固有行为，无可调策略参数，不入表；机制住址见 movement-dataflow.md。
+// U-3: 每条 reason 里的长度常数须标注单位——骨架单位（消费时乘 npc.scale）或
+// NavGrid 格（消费时乘 CELL）；非长度量（角度 rotateDeg、比例 slowFactor/speedK/
+// atScale、字符串 anim）不标注。正确范式参照 BehaviorManager.js#_separate 的
+// `baseRadius * (scale / atScale)`——baseRadius 骨架单位，atScale 是缩放基准点
+// 本身不是长度。check-invariants.mjs Rule 17 静态门此表。
 export const SAFETY_RULES = {
-  lookahead:     { probeCells: 4, rotProbeCells: 2, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',                                    src: '责任3-D' },
-  separation:    { baseRadius: 24, atScale: 0.18,                                                  reason: 'NPC 分离冲量半径',                                src: '责任8-分离半径' },
-  jaywalk_sprint:{ speedK: 2.4, anim: 'run',                                                       reason: '马路格速度倍增（NavGrid cell cost 空间派生）', src: 'N-2b' },
+  lookahead:     { probeCells: 4, rotProbeCells: 2, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数（probeCells/rotProbeCells/nearCells 为 NavGrid 格；rotateDeg 角度、slowFactor 比例，均非长度）', src: '责任3-D' },
+  separation:    { baseRadius: 24, atScale: 0.18,                                                  reason: 'NPC 分离冲量半径（baseRadius 骨架单位，消费见 baseRadius*(scale/atScale)；atScale 是缩放基准点，非长度）', src: '责任8-分离半径' },
+  jaywalk_sprint:{ speedK: 2.4, anim: 'run',                                                       reason: '马路格速度倍增（NavGrid cell cost 空间派生；speedK 为比例，非长度）', src: 'N-2b' },
   facing:        { deadZone: 10,                                                                    reason: '朝向翻转空间死区（骨架单位，消费时乘 npc.scale）；替代旧版转向意图速度 + 时间冷却迟滞', src: 'L-1' },
   // separation（step 12）可将 NPC 推至墙边，令 step-8 的 applyLookahead 速度在接触前已过期。
   // wall_avoid 在 step-13 消费 vel 时补做一次 Motor 级前瞻：若正前方 probeCells 格被阻，
   // 且当前格可走，则把速度旋转 90° 到可通行的垂直侧，保持速度模长，不做降速。
   // 骑手在道路格（cost=250≠0）行驶，前方道路格同样非阻挡，天然不触发；无需特判。
-  wall_avoid:    { probeCells: 2, rotProbeCells: 1,                                                 reason: 'step-13 撞墙预判：separation 后末帧前瞻垂直偏转', src: '责任3-E' },
+  wall_avoid:    { probeCells: 2, rotProbeCells: 1,                                                 reason: 'step-13 撞墙预判：separation 后末帧前瞻垂直偏转（probeCells/rotProbeCells 为 NavGrid 格）', src: '责任3-E' },
 };
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
@@ -176,9 +181,14 @@ export function setState(npc, state, trigger = '?') {
 
   if (prev && STATE_DEFS[prev]) STATE_DEFS[prev].onExit?.(npc, state);
 
+  const mot = npc.mem('motor');
+  // U-2: npc.speed 世界像素/秒 = speedK × walkSpeed(骨架单位/秒) × npc.scale。
+  // scale 随 y 变，这里只是状态切换瞬间的初始值；speedK 存入 mot 供
+  // integratePhysics 每帧用当帧最新 scale 重算，Motor 仍是唯一写入点。
+  mot.speedK = def.speedK;
   _mw(npc, 'state',     state);
   _mw(npc, 'animation', def.anim);
-  _mw(npc, 'speed',     def.speedK * (npc.walkSpeed || 26));
+  _mw(npc, 'speed',     def.speedK * npc.walkSpeed * npc.scale);
   npc.stateTimer = 0;
   npc.stateDur   = def.dur ? rand(def.dur[0], def.dur[1]) : Infinity;
   npc.playOnce   = def.once;
@@ -186,11 +196,11 @@ export function setState(npc, state, trigger = '?') {
   npc.frameIndex = 0;
   npc.frameTimer = 0;
 
-  if (npc.mem('motor').walkMode?.kind === 'wander' && (state === 'walk' || state === 'run'))
+  if (mot.walkMode?.kind === 'wander' && (state === 'walk' || state === 'run'))
     npc.roamTarget = null;
 
   if (state === 'lie_bench')
-    npc.mem('motor').tags = (Math.random() < 0.2) ? ['resting', 'homeless'] : ['resting'];
+    mot.tags = (Math.random() < 0.2) ? ['resting', 'homeless'] : ['resting'];
 
   if (state === 'loiter') {
     const lt     = npc.mem('loiter');
@@ -399,6 +409,9 @@ export function integratePhysics(npc, delta) {
     return;
   }
   const mot = npc.mem('motor');
+  // U-2: npc.speed 每帧从 speedK × walkSpeed × scale 重算——scale 随 y 变，
+  // setState 的初值只是切换瞬间的快照，此处才是持续正确的唯一来源。
+  _mw(npc, 'speed', mot.speedK * npc.walkSpeed * npc.scale);
   const wm  = mot.walkMode;
 
   if (mot.vel) {

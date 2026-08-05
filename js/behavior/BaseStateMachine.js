@@ -242,7 +242,7 @@ function steerRoam(npc, envQuery, profile, dt) {
   const dist = Math.hypot(dx, dy);
 
   // ── Intermediate waypoint arrival ──────────────────────────────────────
-  if (path.idx < path.pts.length - 1 && arrived('nav_waypoint', dist)) {
+  if (path.idx < path.pts.length - 1 && arrived('nav_waypoint', dist, npc.scale)) {
     path.idx++;
     return;
   }
@@ -252,7 +252,7 @@ function steerRoam(npc, envQuery, profile, dt) {
   const distToFinal = Math.hypot(finalDest.x - npc.x, finalDest.y - npc.y);
   const _offWorld   = mot.goal?.meta?.offWorld;
   if ((_offWorld && (npc.x < 0 || npc.x > WORLD_WIDTH)) ||
-      arrived(mot.goal?.meta?.arrivalRule ?? 'walk_goal', distToFinal)) {
+      arrived(mot.goal?.meta?.arrivalRule ?? 'walk_goal', distToFinal, npc.scale)) {
     mot.path = null;
     if (mot.goal) {
       const cb = mot.goal.onDone;
@@ -275,7 +275,9 @@ function steerRoam(npc, envQuery, profile, dt) {
   }
 
   // ── Steer toward current waypoint ─────────────────────────────────────
-  const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
+  // U-2: walkSpeed 是骨架单位/秒，落到世界像素的 vx/vy 必须乘 npc.scale
+  // （scale 随 y 变，不能预先假设一个深度）。
+  const total = npc.walkSpeed * npc.scale * (npc.state === 'run' ? 2.4 : 1);
   if (dist === 0) return;
   const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total, SAFETY_RULES.lookahead);
 
@@ -313,9 +315,12 @@ function _routeToExit(npc, exit, ctx = {}) {
     if (exit.x < (npc.minX ?? 0))          npc.minX = exit.x - 10;
     if (exit.x > (npc.maxX ?? WORLD_WIDTH)) npc.maxX = exit.x + 10;
   }
-  // 超时按距离派生：步速兜底 26，×2 容忍绕路与让行；60s 为下限
+  // 超时按距离派生（U-2：dist 是世界像素，walkSpeed 是骨架单位/秒，
+  // 分母须换算成世界像素/秒才能相除）：步速兜底 99 骨架单位/秒（原 26 世界像素/秒
+  // ÷ 近侧人行道有效 scale 0.262 换算，防除零，正常不会触发——register() 保证
+  // 已注册 NPC 的 walkSpeed 恒非空），×2 容忍绕路与让行；60s 为下限
   const dist    = Math.hypot(tx - npc.x, ty - npc.y);
-  const timeout = Math.max(60, (dist / (npc.walkSpeed || 26)) * 2);
+  const timeout = Math.max(60, (dist / ((npc.walkSpeed || 99) * npc.scale)) * 2);
   const meta    = exit.type === 'edge' ? { offWorld: true } : { arrivalRule: 'exit_building' };
   const onDone  = (result) => {
     if (result === 'arrived') { despawnNpc(npc, 'exit-arrive', ctx); return; }

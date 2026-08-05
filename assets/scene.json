@@ -84,11 +84,13 @@
     { "type": "stall_sellers" },
     { "type": "dog_walker" },
     {
-      "type": "athletes", "runners": [
+      "type": "athletes",
+      "_speedUnit": "骨架单位/秒（U-2；消费时乘 npc.scale，换算基准见 docs/roadmap.md U-2 条目）",
+      "runners": [
         { "route": "sidewalk_far_jog", "spawnX": 980,  "spawnYBand": "SIDEWALK_FAR_Y",
-          "direction": 1,  "speed": 60, "color": "#1a0818", "margin": 40 },
+          "direction": 1,  "speed": 229, "color": "#1a0818", "margin": 40 },
         { "route": "park_loop_jog",    "spawnX": 1220, "spawnYBand": "SIDEWALK_NEAR_Y",
-          "direction": -1, "speed": 66, "color": "#0a1808", "margin": 40 }
+          "direction": -1, "speed": 252, "color": "#0a1808", "margin": 40 }
       ]
     },
     { "type": "vehicles" },
