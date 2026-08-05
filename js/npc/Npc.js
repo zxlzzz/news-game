@@ -6,11 +6,14 @@
  * CONTRACT
  *   Npc.update() 帧内执行顺序（代码顺序，非 Motor 托管 NPC 与托管 NPC 均遵守）：
  *     1. leash 同步：if leashTarget && !_motorInstalled → 直接覆写 x/y/direction
- *     2. 动画帧推进：frameTimer += delta；playOnce animDone 检测；frameIndex 步进
+ *     2. 动画帧推进：cycle 且 groundTravel 有效的 clip → 距离驱动（L-2，见下）；
+ *                 其余 clip → frameTimer += delta；playOnce animDone 检测；frameIndex 步进
  *     3. 物理积分：_motorInstalled → integratePhysics(this, delta)；
  *                 否则（无 leash）→ 内联 direction×speed / vy 积分
  *     4. customUpdate 回调（最后执行，可读取已更新的 x/y/direction）
- *   WRITES:   x, y, direction（leash 路径）；frameIndex, animDone（动画路径）
+ *   WRITES:   x, y, direction（leash 路径）；frameIndex, animDone（动画路径）；
+ *             phase, phaseAnchorX/Y（距离驱动相位，L-2，Npc 自记，不向 Motor/
+ *             BehaviorManager 取，避免与帧内执行顺序耦合）
  *   MUST NOT: 在 customUpdate 中再次积分位置（步骤 3 已完成）
  */
 
@@ -41,6 +44,18 @@ const ANIM_TAGS = {
   sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling',
 };
 
+
+// ─── L-2: 距离驱动相位 → frameIndex 查表 ────────────────────────────────────
+// anim.frameCumFrac[i] = 该帧开始前占循环的累积占比（ClipLibrary#_buildFrameCumFrac，
+// 均匀 dur 时退化为 i/frameCount）。取满足 cumFrac[i] <= phase 的最后一个 i。
+function _frameFromPhase(anim, phase) {
+  const table = anim.frameCumFrac;
+  let idx = 0;
+  for (let i = 0; i < table.length; i++) {
+    if (table[i] <= phase) idx = i; else break;
+  }
+  return idx;
+}
 
 export class NPC extends Entity {
   static _nextId = 1;
@@ -78,6 +93,13 @@ export class NPC extends Entity {
 
     this.frameIndex = 0;
     this.frameTimer = 0;
+
+    // 距离驱动相位（L-2）：cycle 且 groundTravel 有效的 clip 用，其余 clip 不消费。
+    // phase 是 [0,1) 循环内位置；phaseAnchorX/Y 是上次推进时的位置，用来算本帧
+    // 实际位移模长——Npc 自己维护，不向 Motor/BehaviorManager 取。
+    this.phase        = 0;
+    this.phaseAnchorX = this.x;
+    this.phaseAnchorY = this.y;
 
     this.minX = config.minX ?? -100;
     this.maxX = config.maxX ?? 2100;
@@ -287,17 +309,35 @@ export class NPC extends Entity {
     // 动画帧推进
     const anim = this.renderer.getAnimation(this.animation);
     if (anim && !this.animDone) {
-      this.frameTimer += delta;
-      const interval = 1000 / anim.fps;
-      if (this.frameTimer >= interval) {
-        this.frameTimer -= interval;
-        if (this.playOnce && this.frameIndex >= anim.frameCount - 1) {
-          this.animDone = true;
-        } else {
-          this.frameIndex = (this.frameIndex + 1) % anim.frameCount;
+      if (anim.kind === 'cycle' && anim.groundTravel) {
+        // L-2：距离驱动相位——cycle 且 groundTravel 有效的 clip，相位由「自上次推进
+        // 以来的实际位移模长 / (groundTravel × npc.scale)」推进，与 fps/delta 无关。
+        // Npc 自己记 phaseAnchorX/Y，不向 Motor/BehaviorManager 取（避免和帧内执行
+        // 顺序耦合，见 movement-dataflow.md）。phase 是 [0,1) 循环内位置，跨 clip 切换
+        // 不清零（连续的步频概念）；映射到 frameIndex 用 anim.frameCumFrac 累积时间表
+        // （非均匀 dur 时按各帧占循环的真实比例取帧，均匀 dur 退化为等分）。
+        const dist       = Math.hypot(this.x - this.phaseAnchorX, this.y - this.phaseAnchorY);
+        const travelUnit = anim.groundTravel * this.scale;
+        if (dist > 0 && travelUnit > 0) {
+          this.phase = (this.phase + dist / travelUnit) % 1;
+          this.frameIndex = _frameFromPhase(anim, this.phase);
+        }
+      } else {
+        // 时间驱动路径（非 cycle，或 cycle 但 groundTravel 无效）——不变
+        this.frameTimer += delta;
+        const interval = 1000 / anim.fps;
+        if (this.frameTimer >= interval) {
+          this.frameTimer -= interval;
+          if (this.playOnce && this.frameIndex >= anim.frameCount - 1) {
+            this.animDone = true;
+          } else {
+            this.frameIndex = (this.frameIndex + 1) % anim.frameCount;
+          }
         }
       }
     }
+    this.phaseAnchorX = this.x;
+    this.phaseAnchorY = this.y;
 
     // 物理积分：全部 NPC 经 Motor.integratePhysics；未注册 NPC（仅 leash 狗）原地保持
     if (this._motorInstalled) {

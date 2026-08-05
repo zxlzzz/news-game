@@ -484,6 +484,100 @@ console.log('Rule 15: generateClaims() called exactly once, from BehaviorManager
   }
 }
 
+// ── Rule 16 ────────────────────────────────────────────────────────────────
+// L-2: cycle clip groundTravel 左右支撑脚一致性静态门。ClipLibrary.js#_deriveGroundTravel
+// 是浏览器 ES module（用 fetch 载入资产），这里独立重新实现同一套算法的纯 node 版本
+// （与 Rule 4 对 manifest/skeleton 的直接读取同一套模式）：报告每个 cycle clip 的推导
+// groundTravel（或显式声明值，跳过推导）；推导值 < 8 骨架单位判定非位移循环（时间驱动，
+// 不检查左右一致性）；否则按贡献关节名分左右累计，偏差 > 20% 判定 clip 缺陷，fail。
+// 正确性咬合验证（验完已还原）：把 walk.json frame 0 的 l_foot x 改动 15 单位后，本规则
+// 从 walk: groundTravel=96.0 left=48.0 right=48.0 diff=0% 变为 FAIL（偏差 >20%）。
+console.log('Rule 16: cycle clip groundTravel + 左右支撑脚一致性');
+{
+  const manifest  = readJson(join(ROOT, 'assets', 'manifest.json'));
+  const skeletons = readJson(join(ROOT, 'assets', 'skeleton.json')).skeletons;
+  const GROUND_TOL = 1, DISPLACEMENT_MIN = 8, CONSISTENCY_MAX_DIFF = 0.2;
+
+  const jointSide = (name) => {
+    if (/^l_|^fl_|^bl_/.test(name)) return 'left';
+    if (/^r_|^fr_|^br_/.test(name)) return 'right';
+    return null;
+  };
+
+  function expandFrames(raw) {
+    let kfs = raw.keyframes;
+    let amp = 1;
+    if (raw.variant_of) {
+      const baseEntry = manifest.clips[raw.variant_of];
+      if (!baseEntry) return null;
+      kfs = readJson(join(ROOT, 'assets', baseEntry.path)).keyframes;
+      amp = raw.amp ?? 1;
+    }
+    const dp = skeletons[raw.skeleton ?? 'human']?.defaultPose ?? {};
+    return (kfs ?? []).map(kf => {
+      const frame = {};
+      for (const [k, v] of Object.entries(kf)) {
+        if (k === 'dur' || !Array.isArray(v) || v.length !== 2) continue;
+        const base = dp[k] ?? [0, 0];
+        frame[k] = [base[0] + v[0] * amp, base[1] + v[1] * amp];
+      }
+      for (const [k, v] of Object.entries(dp)) if (!(k in frame)) frame[k] = [...v];
+      return frame;
+    });
+  }
+
+  function deriveGroundTravel(frames) {
+    const n = frames.length;
+    let sumMin = 0;
+    const perJoint = {};
+    for (let i = 0; i < n; i++) {
+      const f0 = frames[i], f1 = frames[(i + 1) % n];
+      let best = null, bestJ = null;
+      for (const [j, coords] of Object.entries(f0)) {
+        if (Math.abs(coords[1]) > GROUND_TOL) continue;
+        const dx = f1[j][0] - coords[0];
+        if (best === null || dx < best) { best = dx; bestJ = j; }
+      }
+      if (best !== null) { sumMin += best; perJoint[bestJ] = (perJoint[bestJ] ?? 0) + best; }
+    }
+    return { travel: Math.abs(sumMin), perJoint };
+  }
+
+  let ruleOk = true;
+  for (const [id, entry] of Object.entries(manifest.clips)) {
+    if (entry.kind !== 'cycle') continue;
+    const raw = readJson(join(ROOT, 'assets', entry.path));
+    if (typeof raw.groundTravel === 'number') {
+      console.log(`  ${id}: groundTravel=${raw.groundTravel}（显式声明，跳过左右一致性推导）`);
+      continue;
+    }
+    const frames = expandFrames(raw);
+    if (!frames || frames.length === 0) continue;
+    const { travel, perJoint } = deriveGroundTravel(frames);
+    if (travel < DISPLACEMENT_MIN) {
+      console.log(`  ${id}: travel=${travel.toFixed(1)}（<${DISPLACEMENT_MIN}，非位移循环，时间驱动）`);
+      continue;
+    }
+    let left = 0, right = 0;
+    for (const [j, v] of Object.entries(perJoint)) {
+      const side = jointSide(j);
+      if (side === 'left') left += v; else if (side === 'right') right += v;
+    }
+    let diffPct = null;
+    if (left !== 0 && right !== 0) {
+      const mags = [Math.abs(left), Math.abs(right)];
+      diffPct = Math.abs(mags[0] - mags[1]) / Math.max(...mags);
+    }
+    const diffStr = diffPct === null ? 'n/a' : (diffPct * 100).toFixed(0) + '%';
+    console.log(`  ${id}: groundTravel=${travel.toFixed(1)} left=${left.toFixed(1)} right=${right.toFixed(1)} diff=${diffStr}`);
+    if (diffPct !== null && diffPct > CONSISTENCY_MAX_DIFF) {
+      fail(`${id}: 左右支撑脚位移不一致（偏差 ${(diffPct * 100).toFixed(0)}% > 20%）`);
+      ruleOk = false;
+    }
+  }
+  if (ruleOk) okMsg();
+}
+
 // ── Summary ─────────────────────────────────────────────────────────────────
 console.log('');
 if (!FAIL) {

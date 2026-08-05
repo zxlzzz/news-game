@@ -192,6 +192,7 @@
       "root": "body_back",
       "headRadius": 8,
       "scale": 0.85,
+      "unit_height": 50.2,
       "defaultPose": {
         "body_back": [
           40,

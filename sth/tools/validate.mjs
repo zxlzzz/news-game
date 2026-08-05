@@ -6,7 +6,7 @@
  * 未在 manifest 注册的文件单独报告，不纳入 clip 错误计数。
  *
  * 检查项:
- *   1. 顶层字段白名单（13 字段 + participants）
+ *   1. 顶层字段白名单（14 字段 + participants，L-2 新增 groundTravel）
  *   2. kind 合法值（来自 manifest.json，clip 文件中可选出现）
  *   3. transition: from/to 必须存在
  *   4. overlay: activeJoints 必须存在
@@ -55,6 +55,7 @@ const WHITELIST = new Set([
   'variant_of', 'when', 'amp',
   'participants',
   'context',
+  'groundTravel',   // L-2：cycle clip 显式声明的循环地面位移（骨架单位/循环）
 ]);
 
 const VALID_KINDS    = new Set(['cycle', 'transition', 'overlay']);

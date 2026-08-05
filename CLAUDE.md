@@ -97,6 +97,9 @@ for (const id of Object.keys(clipLibrary.manifest.clips)) {
 - **`MOUNTED_CLIPS` 白名单**：`['bike','mobike','mobile']` 是唯一允许地面接触关节 abs_y > 0 的 clip 组（骑乘时接触点经由车辆对象），ClipLibrary 断言对此白名单豁免；新增骑乘 clip 须手动加入此列表
 - `context` 字段：作画期元数据，声明 clip 依赖的参照物（`held`: 手持道具 id，`prop`: 环境物件 propType）；只写引用名，不抄几何。运行时不消费 context。
 - overlay `participants` 数组：每个参与者对象包含 `role`（角色名）和可选 `dx`（与 role 0 的水平站位偏移，默认 70px）；`skeleton` 仅在非 human 时出现。
+- **`groundTravel`（L-2）**：cycle clip 可选顶层字段，骨架单位/循环，驱动 `Npc.js` 的距离相位推进（取代该 clip 的 fps 时间推进）。JSON 显式声明优先；未声明则 `ClipLibrary.resolve()` 自动推导——逐帧转场取贴地关节（y 与地面线 `y=0` 之差 ≤1 骨架单位）中 Δx 最小值（最负者=真正支撑脚）沿循环累加；推导值绝对值 <8 判定非位移循环（stand/sit/chess 等），保持时间驱动；按贡献关节名分左右（`l_/fl_/bl_` 左，`r_/fr_/br_` 右）分别累加，相对偏差 >20% 视为 clip 缺陷并抛出（同判据见 `check-invariants.mjs` Rule 16）。`bike`（脚在踏板不接触地面）、`walk_front`（脚原地抬落、水平位移为零）、`dog_walk`（临时值 55，所有脚 y 从不到 0，见下条）三个 clip 因无法/不宜自动推导而显式声明。
+- **`dog_walk` 已知缺陷（待重画）**：所有腿关节 y 全程在 -2~-9，从不触及地面线 `y=0`，自动推导会因此完全失效（贴地判据零候选）；`fl_lower`/`br_lower` 若强行推导会给出互相矛盾的位移量。已显式声明 `groundTravel:55`（按狗身长约 50 骨架单位、步幅约等于身长估算）绕过推导，非最终数值，等 clip 重画后应改回自动推导。
+- `skeleton.json` 的 `unit_height`（human 144、child 100、dog 50.2）目前无渲染代码读取，纯声明性数据（同 A-2 批次注记）；dog 的值取自 `joints.body_front.len`（root 到肩部的身长骨长），语义是"身长"不是"身高"（四足动物躺卧姿态，无直立高度概念）。
 
 ---
 
