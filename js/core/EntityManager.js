@@ -1,8 +1,5 @@
-import { depthT, depthScale } from './Layout.js';
+import { depthScale } from './Layout.js';
 import { Entity } from './Entity.js';
-
-const SHADOWS_ENABLED = false;  // 影子系统开关；新规范稳定后再决定是否启用
-const _SHADOW_SKIP = new Set(['manhole', 'drain', 'park-path', 'busstop-roof', 'busstop-sign', 'sign']);
 
 /**
  * EntityManager
@@ -24,27 +21,6 @@ export class EntityManager {
   }
 
   /**
-   * 返回与矩形区域有 AABB 交叠的所有可见实体
-   * @param {number} rx - 矩形左边 X
-   * @param {number} ry - 矩形上边 Y
-   * @param {number} rw - 矩形宽
-   * @param {number} rh - 矩形高
-   * @returns {Entity[]}
-   */
-  getEntitiesInRect(rx, ry, rw, rh) {
-    return this.entities.filter(e => {
-      if (!e.alive || !e.visible) return false;
-      const b = e.getBounds();
-      return !(
-        b.x + b.width  < rx ||
-        b.x            > rx + rw ||
-        b.y + b.height < ry ||
-        b.y            > ry + rh
-      );
-    });
-  }
-
-  /**
    * 更新所有实体
    * - 非静态且有 scale 属性的实体（NPC）自动写入深度缩放值
    * - 静态实体的 update() 是空操作，调用无副作用
@@ -61,32 +37,6 @@ export class EntityManager {
     if (this._pruneTimer <= 0) {
       this.entities = this.entities.filter(e => e.alive);
       this._pruneTimer = 10000;
-    }
-  }
-
-  /**
-   * 统一地面影子预通道（必须在 draw() 之前调用）。
-   * 为所有实体在 (x, y) 处绘制椭圆投影，alpha 和尺寸随景深变化。
-   * 跳过建筑、地面贴图类道具（manhole/drain/park-path）、以及不适合投影的结构（sign/busstop-roof）。
-   */
-  drawShadows(g, extras = []) {
-    if (!SHADOWS_ENABLED) return;
-    const visible = this.entities.filter(e => e.alive && e.visible);
-    const list = extras.length ? visible.concat(extras) : visible;
-    list.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
-    g.lineStyle(0);
-    for (const e of list) {
-      if (e.bWidth !== undefined) continue;                          // building
-      if (e.propType && _SHADOW_SKIP.has(e.propType)) continue;
-      const y     = e._sortY ?? e.y;
-      const t     = depthT(y);
-      const sc    = e.scale ?? 1;
-      const rx    = Math.max(6 * sc, (e.width ?? 40) * 0.5 * sc);
-      const ry    = Math.max(2 * sc, rx * 0.22);
-      const alpha = 0.04 + 0.11 * t;
-      g.beginFill(0x000000, alpha);
-      g.drawEllipse(e.x, y, rx, ry);
-      g.endFill();
     }
   }
 

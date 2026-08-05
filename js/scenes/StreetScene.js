@@ -385,7 +385,6 @@ export class StreetScene {
 
     this.entityGraphics.clear();
     const _extras = this.propManager ? this.propManager.getDrawables() : [];
-    this.entityManager.drawShadows(this.entityGraphics, _extras);
     this.entityManager.draw(this.entityGraphics, _extras);
     if (window.__navDebug) drawNavDebug(this.entityGraphics);
 
