@@ -4,13 +4,15 @@
  *              mot.path idx advance (arrival detection).
  *   WRITES:    mot.vel (walk branch); mot.path.idx (waypoint advance);
  *              mot.goal = null + onDone callback (arrival);
- *              npc.direction (steer + departure);
+ *              npc.direction (non-walk-state only: lean_wall spot facing, departure exit facing);
  *              npc.mem('motor').wallSpot (lean_wall assignment).
  *   READS:     npc.state, npc.roamTarget, npc.mem('motor').{walkMode,goal,path},
  *              NavGrid singleton.
  *   MUST NOT:  write npc.speed/state — use Motor.setState;
  *              write npc.x/y — use Motor.setXY/nudgeXY;
- *              write mot.path (use PlanService); call pickModeTarget outside steerRoam.
+ *              write mot.path (use PlanService); call pickModeTarget outside steerRoam;
+ *              write npc.direction while npc.state ∈ {walk,run,jog,ride} — that address is
+ *              Motor.js#integratePhysics (L-1: real-displacement-derived, see movement.md).
  *
  * BaseStateMachine — 集中式转换表状态机（Unity 风格）
  *
@@ -216,17 +218,6 @@ function _tickState(npc, envQuery, profile, dt) {
   if (npc.state === 'loiter') tickLoiter(npc, profile, dt);
 }
 
-// ─── 朝向更新（单一写入点，带 dirCD 迟滞）───────────────────────────────────────
-function updateFacing(npc, vx, spd, dt) {
-  const mot = npc.mem('motor');
-  mot.dirCD = (mot.dirCD || 0) - dt;
-  const desired = vx >= 0 ? 1 : -1;
-  if (Math.abs(vx) > spd * 0.35 && desired !== npc.direction && mot.dirCD <= 0) {
-    npc.direction = desired;
-    mot.dirCD = 0.45;
-  }
-}
-
 // ─── 二维漫游转向 ─────────────────────────────────────────────────────────────
 function steerRoam(npc, envQuery, profile, dt) {
   const mot = npc.mem('motor');
@@ -287,7 +278,6 @@ function steerRoam(npc, envQuery, profile, dt) {
   const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
   if (dist === 0) return;
   const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total, SAFETY_RULES.lookahead);
-  if (vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
 
   // Jaywalk sprint: road-cell → multiply velocity (NavGrid zone spatial derivation)
   const _grid  = getNavGrid();
@@ -305,7 +295,6 @@ function steerRoam(npc, envQuery, profile, dt) {
     mot.vel = { vx, vy };
     if (npc.animation === SAFETY_RULES.jaywalk_sprint.anim && npc.state === 'walk') setAnimation(npc, 'walk');
   }
-  updateFacing(npc, vx, total, dt);
 }
 
 // ─── 离场系统 ─────────────────────────────────────────────────────────────────

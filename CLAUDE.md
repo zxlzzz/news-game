@@ -361,7 +361,7 @@ npc.clearMem('loiter');
 
 | namespace  | owner / 写者            | 典型字段                                              |
 |------------|-------------------------|-------------------------------------------------------|
-| `motor`    | Motor.js / WalkMode.js  | walkMode、goal、path、vel、dirCD、savedBounds、needReplan、progressAcc、progressAnchor、wallSpot、tags（`_obsFlipVx / _obsVxSign` 只读观测，非状态位） |
+| `motor`    | Motor.js / WalkMode.js  | walkMode、goal、path、vel、faceAcc、savedBounds、needReplan、progressAcc、progressAnchor、wallSpot、tags（`_obsFlipVx / _obsVxSign` 只读观测，非状态位） |
 | `loiter`   | LoiterBehavior.js       | dir、dur、elapsed、overlay、microPhase、microPhaseName、microTimer、tags |
 | `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、slotWaitProp、slotWaitTimer、chessSlot、onlookerTimer、onlookerDur、tags |
 | `agenda`   | BehaviorManager / Director | profile、runner、agenda、lifespan、ageTimer、departing、pendingDeparture、preferExitType、exitRegistry、waitForBusLayer、busStops |

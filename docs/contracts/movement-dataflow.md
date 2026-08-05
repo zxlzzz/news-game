@@ -19,12 +19,12 @@
 | 5.5 | BM per-NPC | `ensurePath(npc)` (`PlanService.js`) | syncs `mot.path` with `mot.goal`; fires 'blocked' if planner fails; resets `mot.needReplan` |
 | 6 | BM per-NPC | `tickBaseState`: `stateTimer += dt` | timer advance; `_evaluateTransitions` → may call `setState` |
 | 7 | BM → `_tickState` | `tickWalkMode` | `path_follow.pauseTimer`; wander `maxDuration` elapsed |
-| 8 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); `updateFacing(vx, total, dt)` updates `npc.direction` (with `dirCD` gate); advances `mot.path.idx`; on goal arrival (distance or offWorld spatial) clears `mot.goal` + fires `onDone`; on `ZONE.ROAD` cell applies `SAFETY_RULES.jaywalk_sprint` (speedK×2.4, anim 'run') | no position change yet |
+| 8 | BM → `_tickState` → `steerRoam` — **walk/run/jog** branch | writes `mot.vel = {vx,vy}` (after `applyLookahead`); advances `mot.path.idx`; on goal arrival (distance or offWorld spatial) clears `mot.goal` + fires `onDone`; on `ZONE.ROAD` cell applies `SAFETY_RULES.jaywalk_sprint` (speedK×2.4, anim 'run') | no position change yet; `npc.direction` untouched here since L-1 — see step 13 |
 | 8b | BM → `_tickState` — **ride** branch (N-3c) | writes `mot.vel = { vx: direction × speed, vy: 0 }` directly; no steerRoam, no goal, no path; CYCLIST profile `separate:false` skips `_separate` | no position change yet |
 | 10 | BM per-NPC | `checkZoneTransition` | stateless `mot.vel` override: ejects wander NPC from road/bike-lane each frame (no push/pop stack) |
 | 11 | BM per-NPC | `tickModifiers` | overlay gestures |
 | 12 | BM | `_separate` → `nudgeXY` → `_slideMove` | separation pushes committed this step; uses positions from steps 8/9; NPCs with `profile.separate === false` excluded from both movers and statics |
-| 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | `mot.vel` present: clamp `vel.vy` at Y boundary, consume `{vx,vy}` → **`_lookaheadDeflect`** (NavGrid read: probes `SAFETY_RULES.wall_avoid.probeCells` cells ahead; if blocked and current cell walkable, rotates velocity 90° to clear perpendicular side; counts `avoid_steer`; no-op if both sides blocked) → `_slideMove`; `mot.vel` absent: stationary (no `_slideMove`); progress monitor uses `RECOVERY_RULES.progress_monitor` (window 1.5 s, movedLT 15 px); Npc.js inline movement deleted in N-3c — all registered NPCs use this path | **final position commitment of the frame** |
+| 13 | `StreetScene.update` → `EntityManager.update` → `Npc.update` → **`integratePhysics`** | `mot.vel` present: clamp `vel.vy` at Y boundary, consume `{vx,vy}` → **`_lookaheadDeflect`** (NavGrid read: probes `SAFETY_RULES.wall_avoid.probeCells` cells ahead; if blocked and current cell walkable, rotates velocity 90° to clear perpendicular side; counts `avoid_steer`; no-op if both sides blocked) → `_slideMove` → **`_updateDirection(npc, realDx)`** (L-1: `realDx = npc.x` before/after `_slideMove`; in `walk`/`run`/`jog`/`ride` states only, accumulates real dx into `mot.faceAcc`, flips `npc.direction` past `SAFETY_RULES.facing.deadZone × npc.scale`, resets accumulator on flip; also counts `dir_mismatch` when `sign(realDx) !== npc.direction`); `mot.vel` absent: stationary (no `_slideMove`, no facing update); progress monitor uses `RECOVERY_RULES.progress_monitor` (window 1.5 s, movedLT 15 px); Npc.js inline movement deleted in N-3c — all registered NPCs use this path | **final position commitment of the frame; final facing commitment of the frame (L-1)** |
 
 ---
 
@@ -34,14 +34,14 @@
 |----------|-----------|--------|--------|-----------------------|------|----------------|
 | `x`, `y` | `npc` (protected `_mw`) | `setXY`, `nudgeXY` → `_slideMove` | `steerRoam`, `integratePhysics`, `_separate` | next write | px | 8, 12, 13 |
 | `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`) | BaseStateMachine ride 状态（`mot.vel` 构造）；BehaviorManager 出生時 `walkSpeed` 初始化 | `setState` | px/s | set 6, read WalkMode |
-| `direction` | `npc` | `updateFacing(npc, vx, spd, dt)` from `steerRoam` walk branch — `dirCD` 0.45 s hysteresis, `|vx|>spd×0.35` threshold; `triggerDeparture`; activity direct writes; `spot.facing`/`exit.facing` snapshots | `steerRoam` audit check; rendering | next write | ±1 | written 8 |
+| `direction` | `npc` | `Motor.js#_updateDirection(npc, realDx)` (L-1) — **sole writer while `state ∈ {walk,run,jog,ride}`**: space dead-zone over real x displacement (`mot.faceAcc`, threshold `SAFETY_RULES.facing.deadZone × npc.scale`), no time hysteresis; outside those states: `triggerDeparture`; activity direct writes; `spot.facing`/`exit.facing` snapshots | `_updateDirection` `dir_mismatch` audit check; rendering | next write | ±1 | written 13 |
 | `vy` | `npc` | **deleted V3-a** (was dead post-V-2; `setState`归零行与字段同步删除) | — | — | — | — |
 | `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` after `applyLookahead` | `Motor#integratePhysics`: both `.vx` and `.vy` consumed; Y boundary clamps `vy` before apply | consumed `= null` by `Motor#integratePhysics`, same frame | px/s | written 8, consumed 13 |
 | `mot.goal` | `motor` | `PlanService.publishGoal` (sole writer; clears on arrival/timeout/blocked) | `steerRoam` walk branch (arrival + timeout fire), `integratePhysics` (elapsed tick + timeout + progress two-hit), `BehaviorManager._sepScale` | cleared by whichever path fires result first; `onDone` callback called exactly once | — | 5.5, 8, 13 |
 | `mot.path` | `motor` | `PlanService.ensurePath` / `ensureWanderPath` (sole writers) | `steerRoam` walk branch (idx advance + vel computation) | null on replan, blocked, arrival, or wander-roamTarget change | — | 5.5, 8 |
 | `mot.needReplan` | `motor` | `integratePhysics` progress monitor first hit (→ `true`); cleared by `ensurePath` | `ensurePath` (step 5.5) | cleared by `ensurePath` after replan | bool | 5.5, 13 |
 | `mot.walkMode` | `motor` | `setWalkMode` | `steerRoam`, `integratePhysics` (vel gate), `tickWalkMode`, `checkZoneTransition` | `setWalkMode(null)` at departure; `_defaultOnExit` clears tags on `setState` | — | 7–12 |
-| `mot.dirCD` | `motor` | `steerRoam` walk branch (decremented by dt; reset to 0.45 on flip) | `steerRoam` walk branch | decremented by dt each call | s | 8 |
+| `mot.faceAcc` | `motor` | `Motor.js#_updateDirection` (accumulate real dx each frame in `walk`/`run`/`jog`/`ride`; reset to 0 on flip) — replaces the deleted `mot.dirCD` time cooldown (L-1) | `Motor.js#_updateDirection` | reset to 0 on flip; stale-but-inert outside the four facing states | px (world, at current depth scale) | 13 |
 | `mot.progressAnchor` / `progressAcc` | `motor` | `integratePhysics` | `integratePhysics` | reset every `RECOVERY_RULES.progress_monitor.window` (1.5 s) | px / s | 13 |
 | `mot.savedBounds` | `motor` | `_routeToExit` (edge exits, step 3) | `restoreDepartureBounds` | cleared by `restoreDepartureBounds` | — | 3 |
 | `npc.roamTarget` | `npc` | `pickModeTarget`, `onPathArrival`; `= null` on mode switch / arrival / progress stuck | `steerRoam` walk branch | null on goal change or stuck detection | {x,y}\|null | 9 |
@@ -71,15 +71,19 @@ if (mot.vel) {
   // Motor-level lookahead deflect (責任3-E): NavGrid read, perpendicular 90° rotation,
   // fires after separation (step 12) which can push NPC near walls.
   const defl = _lookaheadDeflect(npc, vx, vy);
+  const _prevX = npc.x;
   _slideMove(npc, defl.vx * dt, defl.vy * dt);
+  _updateDirection(npc, npc.x - _prevX);   // L-1: real-displacement facing, walk/run/jog/ride only
 }
-// else: no vel → stationary this frame (no _slideMove called)
+// else: no vel → stationary this frame (no _slideMove, no facing update)
 ```
 
 **Data flow:**
 - Both **vx** and **vy** travel via `mot.vel` directly into `_slideMove`.
 - `_slideMove` additionally clamps X displacement at `minX`/`maxX`.
-- `npc.direction` carries only `sign(vx)` (with `dirCD` hysteresis) and is set in step 9.
+- `npc.direction` in `walk`/`run`/`jog`/`ride` states is derived from the *real* x
+  displacement `_slideMove` just committed (space dead-zone over `mot.faceAcc`,
+  L-1) — not from `vx`'s sign, and not set in step 9 anymore.
 - `npc.speed` is set by `setState` on state entry only.
 - `npc.vy` 已在 V3-a 删除（字段及 setState 归零行均移除；`checkZoneTransition` 早于此已迁至 `mot.vel?.vy`）。
 

@@ -339,14 +339,16 @@ console.log('Rule 9: no direct npc.x/npc.y assignment outside Motor.js');
 // ── Rule 10 ────────────────────────────────────────────────────────────────
 // npc.direction references in Motor.js and BaseStateMachine.js must match
 // one of four whitelist categories — prevents direction policy from scattering.
-// Category A: updateFacing — steer layer derives direction from velocity sign
+// Category A: Motor.js#_updateDirection — walk/run/jog/ride facing derived from real x
+//             displacement (space dead-zone, L-1; replaces the old steer-intent-velocity
+//             + time hysteresis previously in BaseStateMachine.js, symbol deleted)
 // Category B: dir_mismatch audit — read-only observation, not a policy write
 // Category C: ride/leash/departure config — lane direction at spawn or exit, not steer-derived
 // Category D: vel-init read — exact form: ride state constructs mot.vel (唯一合法行：ride 状态配置读取)
 console.log('Rule 10: npc.direction in Motor.js / BaseStateMachine.js must match whitelist');
 {
   const WHITELIST_PATTERNS = [
-    /desired/,                                   // A: updateFacing
+    /desired/,                                   // A: _updateDirection
     /dir_mismatch/,                              // B: audit observation
     /lt\.dir|leashTarget|spot\.facing|exit\.facing/, // C: ride/leash/departure config
     /vx: npc\.direction \* npc\.speed/,          // D: vel-init read (ride state only)

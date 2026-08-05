@@ -71,11 +71,11 @@ check `_mw(npc, '<field>'` as well before concluding a field is dead.
 
 | | |
 |---|---|
-| **Semantic** | Horizontal facing: `1` = right, `-1` = left. Used for physics `dx` and rendering mirror. |
-| **Owner** | Unprotected — multiple owners by convention |
-| **Writers** | `Npc.js` constructor (init), `Npc.js#update` (leash sync); `Motor.js#_defaultOnExit` (loiter dir restore), `Motor.js#integratePhysics` (leash sync, bounds bounce, reversal); `Pedestrians.js#spawnOnePedestrian` (spawn facing); `LoiterBehavior.js#tickLoiter` (micro-phase dir restore); `TalkActivity.js#_faceEachOther` (mutual face); `StallActivity.js#addBuyer` (seller + buyer face); `UsePropActivity.js` constructor (face prop); `ChessActivity.js#addOnlooker` (face table); `Director.js#_spawnNPC` (spawn facing); `BaseStateMachine.js#_resolveTimeout` (lean_wall spot facing), `BaseStateMachine.js#updateFacing` (sole steering-driven writer, with `mot.dirCD` hysteresis), `BaseStateMachine.js#_routeToExit` (exit facing) |
+| **Semantic** | Horizontal facing: `1` = right, `-1` = left. Used for physics `dx` and rendering mirror. In `walk`/`run`/`jog`/`ride` states it is a **pure derivation of real x displacement** (L-1) — no other writer may touch it while the NPC is in one of those four states. |
+| **Owner** | Unprotected — multiple owners by convention; exclusive in `walk`/`run`/`jog`/`ride` states (`Motor.js#_updateDirection`, see Invariant) |
+| **Writers** | `Npc.js` constructor (init), `Npc.js#update` (leash sync); `Motor.js#integratePhysics` (leash sync); `Motor.js#_updateDirection` (**sole writer while `npc.state ∈ {walk,run,jog,ride}`** — space dead-zone over real x displacement, L-1; replaces the deleted `BaseStateMachine.js#updateFacing` + `mot.dirCD` time hysteresis); `Motor.js` STATE_DEFS.loiter.onExit (micro-phase dir restore); `Pedestrians.js#spawnOnePedestrian` (spawn facing); `LoiterBehavior.js#tickLoiter` (micro-phase dir restore); `TalkActivity.js#_faceEachOther` (mutual face); `StallActivity.js#addBuyer` (seller + buyer face); `UsePropActivity.js` constructor (face prop); `ChessActivity.js#addOnlooker` (face table); `Director.js#_spawnNPC` (spawn facing); `BaseStateMachine.js#_resolveTimeout` (lean_wall spot facing — non-walk state), `BaseStateMachine.js#_routeToExit` (exit facing — set before the NPC enters `walk`) |
 | **Readers** | `CigaretteProp.js`, `seat.js#alignLie`, `StickRenderer#draw` (mirror), `Npc.js#getAnchor` |
-| **Invariant** | Value must always be exactly `1` or `-1`. No floating-point normalisation. Writes inside the physics path are restricted to a whitelist — enforced by `check-invariants.mjs` Rule 10. |
+| **Invariant** | Value must always be exactly `1` or `-1`. No floating-point normalisation. Writes inside the physics path are restricted to a whitelist — enforced by `check-invariants.mjs` Rule 10. All non-`Motor.js#_updateDirection` writers listed above only ever fire while `npc.state` is **not** `walk`/`run`/`jog`/`ride` (spawn, seating, activities, departure hand-off before `setState(..., 'walk', ...)`, loiter) — enforced by convention, not a static rule. |
 
 ---
 
@@ -187,13 +187,26 @@ check `_mw(npc, '<field>'` as well before concluding a field is dead.
 
 ---
 
+### `npc.mem('motor').faceAcc`
+
+| | |
+|---|---|
+| **Semantic** | Signed accumulator of real x displacement (px, at the NPC's current depth scale) since the last facing flip. Space dead-zone: only when `\|faceAcc\|` crosses `SAFETY_RULES.facing.deadZone × npc.scale` does `npc.direction` flip; the accumulator then resets to `0`. Replaces the deleted `mot.dirCD` time-based cooldown (L-1). |
+| **Owner** | `Motor.js#_updateDirection` |
+| **Writers** | `Motor.js#_updateDirection` (accumulate each frame the NPC is in `walk`/`run`/`jog`/`ride`; reset to `0` on flip) |
+| **Readers** | `Motor.js#_updateDirection` |
+| **Invariant** | Only accumulated/read inside `_updateDirection`; untouched (stale but harmless) while the NPC is outside `walk`/`run`/`jog`/`ride` — it does not need clearing on state exit because it is only ever consumed while re-entering one of those four states. |
+
+---
+
 ### `audit.count(npc, 'dir_mismatch')` (diagnostic counter)
 
-Incremented in `BaseStateMachine.js#steerRoam` (walk/run/jog branch only) when
-`vx !== 0 && Math.sign(vx) !== npc.direction` after `applyLookahead`. Records
-frames where the steering vector opposes the NPC's current facing. The
-`npc.speed > 0` prefix guard was removed in V-2 (speed is no longer a physics
-channel; the guard silenced all `dir_mismatch` counts).
+Incremented in `Motor.js#_updateDirection` (walk/run/jog/ride states only) when
+`Math.sign(dx) !== npc.direction`, where `dx` is the NPC's **real** x displacement
+written by `_slideMove` this frame (L-1). Before L-1 this compared the steering
+*intent* velocity (`vx`) against facing in `BaseStateMachine.js#steerRoam`; comparing
+real displacement instead makes the counter a regression indicator for facing lag —
+it should stay near zero outside of dead-zone buildup and lookahead deflection.
 
 ---
 
@@ -278,14 +291,14 @@ and gameplay visual check.
 
 ## Not yet covered
 
-Two live `npc.mem('motor')` fields have no section above. They are narrow and
+One live `npc.mem('motor')` field has no section above. It is narrow and
 single-owner, but listed here so the registry is not silently incomplete:
 
-- **`dirCD`** — facing-flip cooldown timer (seconds). Owner `BaseStateMachine.js#updateFacing`;
-  blocks a direction flip while `> 0`, reset to `0.45` on each accepted flip.
 - **`savedBounds`** — `{minX, maxX}` saved before departure widens an NPC's X bounds
   so it can walk off-screen. Owner `BaseStateMachine.js` (`triggerDeparture` saves,
   `restoreDepartureBounds` restores).
+
+(`dirCD` was deleted in L-1 — replaced by `faceAcc`, documented above.)
 
 ---
 

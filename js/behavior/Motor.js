@@ -15,9 +15,13 @@
  *              npc.mem('motor').{goal,path,needReplan} lifecycle (N-2b);
  *              npc.mem('motor').{progressAnchor,progressAcc} (integratePhysics);
  *              npc.mem('motor').tags (cleared in _defaultOnExit);
+ *              npc.mem('motor').faceAcc (facing dead-zone accumulator, L-1);
  *              npc.roamTarget null on mode change.
  *   WRITES:    x, y via setXY/nudgeXY/_slideMove;
  *              speed via setState; state/animation via setState/setAnimation;
+ *              npc.direction in walk/run/jog/ride states, derived from real x
+ *              displacement written this frame by _slideMove (L-1; sole address —
+ *              see movement.md, BaseStateMachine MUST NOT write it in these states);
  *              walkMode via setWalkMode; roamTarget=null on every mode switch;
  *              goal/path/needReplan lifecycle (fire result, progress two-hit).
  *   READS:     npc.mem('motor').{walkMode,goal,path} (integratePhysics, progress monitor);
@@ -47,6 +51,7 @@ export const SAFETY_RULES = {
   lookahead:     { probeCells: 4, rotProbeCells: 2, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',                                    src: '责任3-D' },
   separation:    { baseRadius: 24, atScale: 0.18,                                                  reason: 'NPC 分离冲量半径',                                src: '责任8-分离半径' },
   jaywalk_sprint:{ speedK: 2.4, anim: 'run',                                                       reason: '马路格速度倍增（NavGrid cell cost 空间派生）', src: 'N-2b' },
+  facing:        { deadZone: 10,                                                                    reason: '朝向翻转空间死区（骨架单位，消费时乘 npc.scale）；替代旧版转向意图速度 + 时间冷却迟滞', src: 'L-1' },
   // separation（step 12）可将 NPC 推至墙边，令 step-8 的 applyLookahead 速度在接触前已过期。
   // wall_avoid 在 step-13 消费 vel 时补做一次 Motor 级前瞻：若正前方 probeCells 格被阻，
   // 且当前格可走，则把速度旋转 90° 到可通行的垂直侧，保持速度模长，不做降速。
@@ -293,6 +298,30 @@ function _slideMove(npc, dx, dy) {
   audit.count(npc, 'blocked_contact');
 }
 
+// ── 朝向（唯一住址，L-1）─────────────────────────────────────────────────────
+// walk/run/jog/ride 状态下，npc.direction 由本帧真实 x 位移（_slideMove 写入后的
+// 实际增量，非转向意图速度）派生。迟滞用空间死区取代旧版时间冷却迟滞：
+// mot.faceAcc 累加带符号真实 dx，越过 SAFETY_RULES.facing.deadZone × npc.scale
+// 才翻转，翻转后清零。其余状态（落座/离场朝向、Director 出生朝向、
+// LoiterBehavior 等）的直接写入不受影响——本函数对它们是空操作（状态白名单守卫）。
+const FACING_STATES = new Set(['walk', 'run', 'jog', 'ride']);
+
+function _updateDirection(npc, dx) {
+  if (!FACING_STATES.has(npc.state) || dx === 0) return;
+  const mot = npc.mem('motor');
+  // dir_mismatch：可回归指标，比较本帧真实 dx 符号与当前朝向（翻转判据之外的观测）
+  if (Math.sign(dx) !== npc.direction) audit.count(npc, 'dir_mismatch');
+  const acc = (mot.faceAcc || 0) + dx;
+  const dz  = SAFETY_RULES.facing.deadZone * npc.scale;
+  const desired = acc >= dz ? 1 : acc <= -dz ? -1 : null;
+  if (desired !== null) {
+    npc.direction = desired;
+    mot.faceAcc   = 0;
+  } else {
+    mot.faceAcc = acc;
+  }
+}
+
 // ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
 export function setXY(npc, x, y) {
   _mw(npc, 'x', x);
@@ -334,7 +363,9 @@ export function integratePhysics(npc, delta) {
     mot._obsVxSign = vxSign;
     mot.vel = null;
     const defl = _lookaheadDeflect(npc, vx, vy);
+    const _prevX = npc.x;
     _slideMove(npc, defl.vx * dt, defl.vy * dt);
+    _updateDirection(npc, npc.x - _prevX);
   }
   // else: mot.vel absent → stationary this frame
 
