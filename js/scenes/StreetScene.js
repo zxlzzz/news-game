@@ -7,7 +7,8 @@
  *   worldContainer     — 受相机（scroll/zoom）控制：
  *     bgGraphics         静态地面（道路/人行道/树木），只绘制一次
  *     entityGraphics     所有 Entity（建筑、道具、NPC），每帧按Y排序重绘
- *                        （stall/tree 用 _sortY 上移排序基准以遮挡后方 NPC）
+ *                        （_sortY 覆盖排序基准：sign +9 排得更靠前；tree 负偏移排得
+ *                         更靠后让 NPC 走树前；stall 用默认 y。见各 footprint 的 sortDY）
  *     vfGraphics         取景框 UI（世界坐标）
  *     （DebugOverlay 的世界浮标也挂这里）
  *   uiContainer        — 屏幕固定 HUD（文本/按钮/闪光/调试面板）

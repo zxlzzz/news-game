@@ -1,6 +1,6 @@
 # News Game — 项目指南
 
-2.5D 街道场景模拟器：PixiJS 5 原生（无打包器）+ ES modules，NPC 自主行为驱动。
+2.5D 街道场景模拟器：PixiJS 7 原生（无打包器）+ ES modules，NPC 自主行为驱动。
 运行：`start.bat`（Windows）或本地 HTTP 打开 `index.html`；无 TS，无测试框架。
 
 ---
@@ -217,8 +217,11 @@ registerProp('trash', { draw: drawTrash, footprint, obstacle: true });
 import 列表——漏加则该类型静默不绘制（`check-invariants.mjs` Rule 13 静态挡这个）。
 `obstacle: true` 但缺 `footprint` 会在注册时立即抛错（Rule 5 另外核对 shape/blocks 字段）。
 
-`busstop-roof/bench/sign` 不进 barrel：`busstop.js` 本身 import `PropEntity`，
-若也被 barrel import 会成环；这三种改在各自 `draw*.js` 里注册。
+`busstop.js` 本身不进 barrel：它 import `PropEntity`，若被 barrel import 会成环。
+但 `busstop-roof` / `busstop-sign` 的注册在各自 `draw*.js` 里（`drawBusStopRoof.js` /
+`drawBusStopSign.js` 不 import PropEntity，安全进 barrel）；`busstop-bench` 注册在
+`seat.js`（随 seat.js 进 barrel）。即：这三个 prop 类型都在 barrel 内被拉取，只有
+`busstop.js` 本体在外。
 
 **Feature registry**（Z-2e）：目标是「一个 JSON 文件即可独立构建一个场景」（学校/街区/
 商业街）。`SceneInitializer` 分两层：**infra**（NavGrid bake / BehaviorManager /

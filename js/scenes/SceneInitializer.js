@@ -37,8 +37,10 @@ export class SceneInitializer {
     this._spawnNPCs(layout, sceneData);
   }
 
-  // 行道树 / 公园树：从 bg 移到 entity 层。y = 树根落地点（layout 树坐标），
-  // 不设 _sortY（用默认 y 参与 Y 排序）。渲染交给 PropDrawer.drawTree，半径 r → width = 2r。
+  // 行道树 / 公园树：从 bg 移到 entity 层。y = 树根落地点（layout 树坐标）。
+  // 排序基准由 tree.js footprint 的负 sortDY(-height*0.35) 决定（PropEntity 构造时
+  // 据此推出 _sortY，比树根更靠后），让近处路过的 NPC 走在树前。
+  // 渲染交给 drawTree，半径 r → width = 2r。
   _spawnTrees(layout) {
     const { em } = this;
     const groups = [
