@@ -28,7 +28,7 @@ function _routeBounds(layout, routeKey, margin) {
 export function spawnAthletes(em, sr, bm, layout, cfg) {
   // U-2: r.speed 是骨架单位/秒（scene.json#features[athletes]._speedUnit 标注），
   // 走 makeNPC → bm.register 的 npc.speed>0 分支直接播种 walkSpeed，语义须与
-  // BehaviorManager.register 的默认 rand(76,130) 一致，不能再是世界像素。
+  // BehaviorManager.register 的默认 rand(106,181) 一致，不能再是世界像素。
   for (const r of (cfg?.runners ?? [])) {
     const bounds = _routeBounds(layout, r.route, r.margin ?? 40);
     const jogger = makeNPC(em, sr, {

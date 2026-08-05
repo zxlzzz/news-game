@@ -66,11 +66,14 @@ export class BehaviorManager {
     const ag = npc.mem('agenda');
     ag.profile  = getProfile(profileName);
     npc.mem('social').activity = null;
-    // U-2: walkSpeed 语义为骨架单位/秒（消费时乘 npc.scale）。迁移基准：近侧人行道
-    // 有效 scale 0.262（depthScale(NEAR_Y)=0.308 × human skeletonScale 0.85），
-    // 换算后该深度行为不变：20/0.262≈76、34/0.262≈130。npc.speed>0 分支走的是
+    // U-2: walkSpeed 语义为骨架单位/秒（消费时乘 npc.scale）。迁移基准（U-2b 重校准，
+    // 2026-08-05）：主漫游区远人行道 SIDEWALK_FAR_Y=240 有效 scale 0.188
+    // （depthScale(240)=0.221 × human skeletonScale 0.85），换算后该深度行为不变：
+    // 20/0.188≈106、34/0.188≈181。原基准 NEAR_Y=333（scale 0.262，机动车道边界，
+    // NPC 不驻留）与实际漫游区深度不符，曾导致远人行道步速比重构前慢约 30%
+    // （14–24px/s vs 原 20–34px/s），已改按主漫游区校准。npc.speed>0 分支走的是
     // 生成器显式指定的速度（Athletes/CyclistSpawner，已同步换算为同一语义）。
-    npc.walkSpeed = npc.speed > 0 ? npc.speed : rand(76, 130);
+    npc.walkSpeed = npc.speed > 0 ? npc.speed : rand(106, 181);
     this.npcs.push(npc);
     installProtection(npc);
     setState(npc, ag.profile.initial || 'walk');

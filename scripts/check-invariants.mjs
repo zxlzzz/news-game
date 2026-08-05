@@ -584,18 +584,20 @@ console.log('Rule 16: cycle clip groundTravel + 左右支撑脚一致性');
 // BehaviorManager.js#_separate 的 `baseRadius * (scale / atScale)`——baseRadius
 // 骨架单位，atScale 是缩放基准点本身不是长度，注释里应说明。
 //
-// 检查范围（tasks.md U-3 原文）：ARRIVAL_RULES（SteeringDecision.js）、
-// SAFETY_RULES（Motor.js）、PoseCacheBuilder 输出（designGap）。不扫描
-// RECOVERY_RULES 或 EnvironmentQuery.js 等其它长度常数——那些不在本次任务范围。
+// 检查范围（tasks.md U-3 原文 + U-2c 补债）：ARRIVAL_RULES（SteeringDecision.js）、
+// SAFETY_RULES + RECOVERY_RULES（Motor.js，同文件同一次扫描）、PoseCacheBuilder
+// 输出（designGap）。不扫描 EnvironmentQuery.js 等其它长度常数——那些不在本次
+// 任务范围。
 //
 // 判定方式：ARRIVAL_RULES 每条都有 `threshold`（全是长度），逐行要求命中单位
-// 关键字。SAFETY_RULES 用已知长度字段名白名单（新增字段需同步加入这里，否则
+// 关键字。Motor.js 用已知长度字段名白名单（新增字段需同步加入这里，否则
 // 静默不受本规则保护——同 Rule 4 的 RULE4_EXEMPT 维护方式）：baseRadius、
-// deadZone、probeCells、rotProbeCells、nearCells 命中即要求该行带单位关键字；
-// rotateDeg/slowFactor/speedK/atScale 等非长度字段不要求。PoseCacheBuilder.js
+// deadZone、probeCells、rotProbeCells、nearCells（SAFETY_RULES）、movedLT
+// （RECOVERY_RULES，U-2c 补债）命中即要求该行带单位关键字；rotateDeg/
+// slowFactor/speedK/atScale/window 等非长度字段不要求。PoseCacheBuilder.js
 // 检查 `designGap` 声明行前 5 行内是否出现单位关键字（该行本身是纯赋值语句，
 // 单位写在上方注释块里）。
-console.log('Rule 17: ARRIVAL_RULES/SAFETY_RULES/PoseCacheBuilder 长度常数须带单位标注');
+console.log('Rule 17: ARRIVAL_RULES/SAFETY_RULES/RECOVERY_RULES/PoseCacheBuilder 长度常数须带单位标注');
 {
   const UNIT_MARKERS = ['骨架单位', 'NavGrid 格'];
   const hasUnit = (s) => UNIT_MARKERS.some(m => s.includes(m));
@@ -613,15 +615,16 @@ console.log('Rule 17: ARRIVAL_RULES/SAFETY_RULES/PoseCacheBuilder 长度常数�
     }
   }
 
-  // SAFETY_RULES：已知长度字段名命中才要求标注（新增字段需同步加入 LENGTH_FIELDS）。
+  // SAFETY_RULES/RECOVERY_RULES：已知长度字段名命中才要求标注（新增字段需同步
+  // 加入 LENGTH_FIELDS）。同一次扫描覆盖 Motor.js 全文，两张表都在此文件内。
   {
-    const LENGTH_FIELDS = ['baseRadius', 'deadZone', 'probeCells', 'rotProbeCells', 'nearCells'];
+    const LENGTH_FIELDS = ['baseRadius', 'deadZone', 'probeCells', 'rotProbeCells', 'nearCells', 'movedLT'];
     const src   = readText(join(ROOT, 'js', 'behavior', 'Motor.js'));
     const lines = src.split('\n');
     for (let i = 0; i < lines.length; i++) {
       const hasLengthField = LENGTH_FIELDS.some(f => new RegExp(`\\b${f}\\s*:`).test(lines[i]));
       if (hasLengthField && !hasUnit(lines[i])) {
-        fail(`Motor.js:${i + 1}: SAFETY_RULES 条目含长度字段但无单位标注:\n    ${lines[i].trim()}`);
+        fail(`Motor.js:${i + 1}: SAFETY_RULES/RECOVERY_RULES 条目含长度字段但无单位标注:\n    ${lines[i].trim()}`);
         ok = false;
       }
     }

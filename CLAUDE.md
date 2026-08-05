@@ -89,14 +89,21 @@ const sepR = SAFETY_RULES.separation.baseRadius * (scale / SAFETY_RULES.separati
 - `npc.walkSpeed`（骨架单位/秒）、`ARRIVAL_RULES.*.threshold`（骨架单位）、
   `SAFETY_RULES.{separation.baseRadius, facing.deadZone}`（骨架单位）、
   `SAFETY_RULES.{lookahead,wall_avoid}.{probeCells,rotProbeCells,nearCells}`
-  （NavGrid 格）都遵循此律；`arrived(ruleId, dist, scale)` 的第三参数不可省略。
+  （NavGrid 格）、`RECOVERY_RULES.progress_monitor.movedLT`（骨架单位，U-2c 补债）
+  都遵循此律；`arrived(ruleId, dist, scale)` 的第三参数不可省略。
 - `check-invariants.mjs` Rule 17 静态门 `ARRIVAL_RULES` / `SAFETY_RULES` /
-  `PoseCacheBuilder` 输出：长度字段所在行（或 `PoseCacheBuilder.js` 声明行上方
-  注释块）必须命中「骨架单位」或「NavGrid 格」字样，缺失即失败。新增长度字段名
-  需同步加入该规则的字段名白名单，否则静默不受保护。
-- 本律不追溯改写 `RECOVERY_RULES.progress_monitor.movedLT`、
-  `EnvironmentQuery.js` 的各类半径常数——这些仍是世界像素，是已知但暂未处理的
-  历史债务，不在 U-2/U-3 范围内。
+  `RECOVERY_RULES` / `PoseCacheBuilder` 输出：长度字段所在行（或 `PoseCacheBuilder.js`
+  声明行上方注释块）必须命中「骨架单位」或「NavGrid 格」字样，缺失即失败。新增长度
+  字段名需同步加入该规则的字段名白名单，否则静默不受保护。
+- **U-2b 重校准（2026-08-05）**：`npc.walkSpeed` 等骨架单位常数的换算基准点从
+  `NEAR_Y`（机动车道边界，scale 0.262，NPC 不驻留）改为主漫游区 `SIDEWALK_FAR_Y`
+  （y=240，scale 0.188）——原基准点不在实际漫游区内，导致远人行道步速比重构前
+  慢约 30%。**U-2c 补债（同批）**：`RECOVERY_RULES.progress_monitor.movedLT` 曾
+  遗留为裸世界像素常数（15px），U-2 把速度改骨架单位后，低 scale 区实际位移随之
+  下降，叠加 `SAFETY_RULES.lookahead.slowFactor` 近墙减速后必然跌破阈值，NPC
+  贴近障碍物即被误判卡死、反复重规划（观感：贴墙抖动/卡死）；已改骨架单位并在
+  消费处乘 `npc.scale`。`EnvironmentQuery.js` 的各类半径常数仍是世界像素，是已知
+  但暂未处理的历史债务，不在本次范围内。
 
 ---
 

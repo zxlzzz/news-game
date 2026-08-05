@@ -94,9 +94,9 @@ export class CyclistSpawner {
     const yFn   = lane.yFn;
     // U-2: speed 是骨架单位/秒（走 BehaviorManager.register 的 npc.speed>0 分支直接
     // 播种 walkSpeed，语义须与 U-2 全库一致）。原世界像素值 rand(95,120)/rand(110,130)
-    // ÷ 近侧人行道有效 scale 0.262 换算：95/0.262≈363、120/0.262≈458、
-    // 110/0.262≈420、130/0.262≈496。
-    const speed = kind === 'ebike' ? rand(420, 496) : rand(363, 458);
+    // ÷ 主漫游区（远人行道 SIDEWALK_FAR_Y）有效 scale 0.188 换算（U-2b 重校准）：
+    // 95/0.188≈505、120/0.188≈638、110/0.188≈585、130/0.188≈692。
+    const speed = kind === 'ebike' ? rand(585, 692) : rand(505, 638);
     const n = makeNPC(this.em, this.sr, {
       x, y: yFn(0.5),
       animation: kind === 'ebike' ? 'mobile' : 'bike',
