@@ -29,7 +29,7 @@ export class EntityManager {
     for (const e of this.entities) {
       if (!e.alive) continue;
       if (!e.static && 'scale' in e) {
-        e.scale = depthScale(e.y) * (e.skeletonScale ?? 1);
+        e.scale = depthScale(e.y) * (e.skeletonScale ?? 1) * (e.renderScale ?? 1);
       }
       e.update(delta);
     }

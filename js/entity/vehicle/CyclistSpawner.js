@@ -107,6 +107,8 @@ export class CyclistSpawner {
     });
     n.drawExtra  = kind === 'ebike' ? this.draw.ebike : this.draw.bicycle;
     n.steadyFoot = true;
+    // 骑手与车辆保持原尺寸/原速度，不随 foot NPC 的全局 40% 缩放（drawBicycle 读 n.scale）。
+    n.renderScale = 1;
     // N3-c: 注册到 BM 启用 Motor 写保护 + ride 状态; setAnimation 覆写实际 clip
     this.bm.register(n, 'cyclist');
     setAnimation(n, kind === 'ebike' ? 'mobile' : 'bike');

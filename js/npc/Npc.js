@@ -24,6 +24,14 @@ import { clipLibrary } from '../core/ClipLibrary.js';
 import { getNavGrid, ZONE } from '../behavior/nav/NavGrid.js';
 import { getProfile } from './NpcProfile.js';
 
+// 全局 NPC 视觉缩放（art-direction）：foot NPC 渲染到原尺寸的 60%（缩小 40%）。
+// EntityManager 每帧把它乘进 npc.scale，因而所有「骨架单位 × npc.scale」的量——
+// 渲染尺寸、移动速度（speed = speedK × walkSpeed × scale）、分离半径、到达阈值、
+// facing 死区——全部按同比例缩小；**步频不变**（距离驱动相位按
+// 位移 / (groundTravel × scale) 推进，与 scale 无关，故只是步幅变小、走得变慢）。
+// 骑手（CyclistSpawner）显式覆写 renderScale=1，让自行车/电动车保持原尺寸。
+export const NPC_SCALE = 0.6;
+
 // 行为状态 → 标签
 const STATE_TAGS = {
   walk: 'walking', run: 'running', stand: 'standing',
@@ -131,6 +139,9 @@ export class NPC extends Entity {
     const initialAnim = this.renderer?.getAnimation(this.animation);
     this.skeletonName  = profile?.skeleton ?? initialAnim?.skeleton ?? 'human';
     this.skeletonScale = clipLibrary.skeletons?.[this.skeletonName]?.scale ?? 1;
+
+    // 全局 NPC 缩放（见 NPC_SCALE）。骑手在 CyclistSpawner 覆写为 1，保持车辆原尺寸。
+    this.renderScale = NPC_SCALE;
 
     // Modifier 系统（替代旧的 overlay / overlayPose / persistentOverlay）
     this.traits    = config.traits ?? [];       // string[]，生成时赋值，之后不变
