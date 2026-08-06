@@ -69,8 +69,11 @@ export const DEFAULT_ZONE_COSTS = {
   [ZONE.CROSSWALK]: 2,
 };
 
-const COLS = Math.ceil(WORLD_WIDTH  / CELL);   // 200
-const ROWS = Math.ceil(WORLD_HEIGHT / CELL);   // 52
+// COLS/ROWS 是 fallback：模块顶层求值早于 initLayout，此处用 fallback 世界尺寸兜底。
+// NavGrid 构造时（晚于 initLayout）会按注入后的 WORLD_* 现算并覆写这两个 let，
+// 让所有引用它们的方法跟随世界尺寸（世界可频繁重新生成，尺寸各异）。
+let COLS = Math.ceil(WORLD_WIDTH  / CELL);
+let ROWS = Math.ceil(WORLD_HEIGHT / CELL);
 const NPC_HALF_W = 7;  // Minkowski expansion — NPC collision half-width added to every obstacle
 
 /** zone 名 → ID；配置里写名字，拼错立刻抛错（不静默变 undefined） */
@@ -123,6 +126,11 @@ function _segDist(ax, ay, bx, by, px, py) {
 
 export class NavGrid {
   constructor() {
+    // 按当前（注入后的）世界尺寸现算格数，覆写模块级 COLS/ROWS——NavGrid 在
+    // initLayout 之后构造，故 WORLD_* 已是真值。这样所有引用模块级 COLS/ROWS 的
+    // 方法（含独立函数 drawNavDebug）都跟随世界尺寸，解除顶层冻结的历史债。
+    COLS = Math.ceil(WORLD_WIDTH  / CELL);
+    ROWS = Math.ceil(WORLD_HEIGHT / CELL);
     this.COLS  = COLS;
     this.ROWS  = ROWS;
     this._zone = new Uint8Array(COLS * ROWS);

@@ -67,10 +67,11 @@ NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车�
 而那段导航上是 `ZONE.ROAD`——视觉按材质切，zone 按通行性切，不可互相套用。
 
 **⚠️ 禁止在模块顶层从 Layout 值派生量**（写成函数，或延后到 init 之后计算）：注入晚于
-所有模块顶层求值，顶层派生会冻结在 fallback 默认值上。现存两处待偿：`NavGrid.js`
-`COLS/ROWS`、`VehicleSpawner.js` `LANES`
-（详见 `docs/roadmap.md#Z-2a`）。`WaitForBusLayer.js` 原 `WAIT_ZONES` 曾是第三处，
-已随公交站坐标收口（见下方）一并改为构造函数内按 `busStops` 现算，不再冻结。
+所有模块顶层求值，顶层派生会冻结在 fallback 默认值上。原有三处冻结均已收口（世界可
+频繁重新生成、尺寸各异，冻结会导致导航/车道/候车区错位）：`NavGrid.js` `COLS/ROWS`
+（改 fallback `let` + 构造函数按注入尺寸现算覆写）、`VehicleSpawner.js` `LANES`
+（改 `buildLanes()`，构造函数内现算）、`WaitForBusLayer.js` 原 `WAIT_ZONES`
+（随公交站坐标收口，构造函数内按 `busStops` 现算）。新增派生量务必照此办理。
 
 ---
 
