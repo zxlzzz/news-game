@@ -35,7 +35,7 @@ Update order each frame (per NPC, `BehaviorManager.js#update`):
 7. If `activity` → skip BSM / modifiers
 8. `tickBaseState` + `checkZoneTransition`
 9. `tickModifiers`
-10. `_separate` — inter-NPC separation impulses
+10. ~~`_separate` — inter-NPC separation impulses~~ — M-1 已删除（信任无碰撞路径重构）
 
 ---
 
@@ -186,17 +186,10 @@ modifier's `on` list. Cleared on Activity lock.
 
 ---
 
-## Separation (BehaviorManager.js#_separate)
+## Separation — M-1 已删除
 
-Two passes per frame:
-1. **mover vs mover** — mutual repulsion, both pushed
-2. **mover vs static** — mover pushed, static zero displacement
-
-`static` set excludes benched NPCs (`!n.mem('social').bench`).
-Repulsion radius: `24 * ((a.scale + b.scale) / 2 / 0.18)` px.
-Force `f = ((sepR - d) / sepR) * 16 * dt`; scaled down 0.5× when push direction
-opposes travel direction (`_sepScale` — `direct` mode only).
-All position updates via `Motor.js#nudgeXY` (authorised gate).
+`BehaviorManager.js#_separate`/`_sepScale`（mover-vs-mover / mover-vs-static 分离冲量）
+随「信任无碰撞路径」重构一并删除；A* 路径本身不产生碰撞，反应式分离不再需要。
 
 ---
 

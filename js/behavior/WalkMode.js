@@ -21,7 +21,7 @@
  *
  * 与现有系统接入：
  *   tickWalkMode   — 在 _tickState 内、steerRoam 之前调用（管理暂停计时 / 超时）
- *   pickModeTarget — 替代 BaseStateMachine 中的 pickRoamTarget（目标选取分派）
+ *   pickModeTarget — 目标选取分派（wander 随机点 / path_follow 下一 waypoint）
  *   onPathArrival  — steerRoam 到达 waypoint 时调用（前进 / 暂停判断）
  *   setWalkMode — 模式切换（N-2b: push/pop 栈删除）
  */
@@ -131,7 +131,7 @@ export function checkZoneTransition(npc) {
   mot.vel         = { vx: mot.vel?.vx ?? 0, vy: Math.sign(dy) * npc.walkSpeed * npc.scale };
 }
 
-// ─── 目标点选取（替代 BaseStateMachine 中的 pickRoamTarget）──────────────────
+// ─── 目标点选取 ────────────────────────────────────────────────────────────
 
 /**
  * 根据当前 walk mode 选取下一个 roamTarget。

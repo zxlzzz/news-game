@@ -55,14 +55,13 @@ export function publishGoal(npc, dest, timeout, onDone, opts) {
 
 /**
  * 确保 mot.path 与当前 mot.goal 同步（BehaviorManager 在 tickBaseState 之前调用）。
- * needReplan=true（由 Motor 两击卡死机制写入）时强制重规划。
+ * M-1：卡死重规划机制已删除，`needReplan` 全库无人再置 true，故本函数不再检测它。
  */
 export function ensurePath(npc) {
   const mot  = npc.mem('motor');
   const goal = mot.goal;
   if (!goal) return;
-  if (mot.path && !mot.needReplan) return;
-  mot.needReplan = undefined;
+  if (mot.path) return;
 
   const planner = getPlanner();
   if (!planner) { _fireBlocked(mot, goal); return; }

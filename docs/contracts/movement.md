@@ -36,7 +36,7 @@ check `_mw(npc, '<field>'` as well before concluding a field is dead.
 | **Semantic** | World-coordinate ground-contact point; `y` is the pixel line where the NPC's feet touch the ground. Rendering formula: `screen_y = npc.y + joint[1] * scale` (joint y=0 = ground). |
 | **Owner** | `Motor.js#_mw` — sole authorised writer gate |
 | **Writers** | `Motor.js#setXY`, `Motor.js#_slideMove` (all move branches), `Motor.js#integratePhysics` (leash path); `seat.js#_setXY` — conditional fallback only when `_motorInstalled` is false |
-| **Readers** | All rendering code, `StuckProbe.js`, `BehaviorManager.js#_separate`, `EnvironmentQuery.js`, `WalkMode.js`, `NavGrid.js`, `BaseStateMachine.js#steerRoam`, `seat.js` |
+| **Readers** | All rendering code, `StuckProbe.js`, `EnvironmentQuery.js`, `WalkMode.js`, `NavGrid.js`, `BaseStateMachine.js#steerRoam`, `seat.js` (`BehaviorManager.js#_separate` deleted, M-1) |
 | **Invariant** | Must not be written outside Motor.js API (`setXY`/`nudgeXY`) — enforced by `check-invariants.mjs` Rule 9. `npc.y` offsets must never compensate for clip ground-contact errors — fix the clip JSON instead. |
 
 ---
@@ -120,7 +120,7 @@ check `_mw(npc, '<field>'` as well before concluding a field is dead.
 | **Semantic** | Current walk mode descriptor: `{kind:'wander',...}`, `{kind:'path_follow',...}`, or `null` for raw physics only. The `direct` kind was deleted in N-2b — goal-directed movement now goes through `mot.goal` + `mot.path`. |
 | **Owner** | `Motor.js` (API: `setWalkMode` — replace only; the push/pop stack was deleted in N-2b) |
 | **Writers** | `Motor.js#setWalkMode`, `Motor.js#_defaultOnExit`, `Motor.js#setState` |
-| **Readers** | `WalkMode.js#checkZoneTransition`, `WalkMode.js#pickModeTarget`, `WalkMode.js#_pickRandom`, `WalkMode.js#tickWalkMode`; `BehaviorManager.js#_sepScale`; `BaseStateMachine.js#_tickState`; `Motor.js#setState`, `Motor.js#integratePhysics` |
+| **Readers** | `WalkMode.js#checkZoneTransition`, `WalkMode.js#pickModeTarget`, `WalkMode.js#_pickRandom`, `WalkMode.js#tickWalkMode`; `BaseStateMachine.js#_tickState`; `Motor.js#setState`, `Motor.js#integratePhysics` (`BehaviorManager.js#_sepScale` deleted, M-1) |
 | **Invariant** | Never written directly — always via `setWalkMode`. Switching walk mode always nulls `npc.roamTarget`. There is no mode stack: an interrupted mode is not restored, the next mode is chosen fresh. |
 
 ---
@@ -144,7 +144,7 @@ check `_mw(npc, '<field>'` as well before concluding a field is dead.
 | **Semantic** | Computed waypoint sequence `{pts, idx, goalX?, goalY?}` for the steering layer to follow. `idx` is the current waypoint cursor; `goalX/goalY` (wander paths only) act as a cache-invalidation key. Replaces the deleted `navPath`/`navIdx`/`navGoalX`/`navGoalY` quartet. |
 | **Owner** | `nav/PlanService.js` — sole producer of a **non-null** path (`ensurePath` / `ensureWanderPath`) |
 | **Writers** | `PlanService.js#ensurePath`, `PlanService.js#ensureWanderPath` (construct); cleared to null by `PlanService.js#publishGoal`, `PlanService.js#_fireBlocked`, `Motor.js#integratePhysics` (arrival, progress monitor), `BaseStateMachine.js#steerRoam`, `GotoTask.js`, `StrollTask.js` |
-| **Readers** | `BaseStateMachine.js#steerRoam` (waypoint advance), `Lookahead.js#applyLookahead`, `DebugOverlay.js` |
+| **Readers** | `BaseStateMachine.js#steerRoam` (waypoint advance), `DebugOverlay.js` (`Lookahead.js#applyLookahead` deleted, M-1) |
 | **Invariant** | No module outside `PlanService` may build a path — clearing to `null` is unrestricted, constructing is not. A non-null `path` always corresponds to either an active `goal` or an active wander `roamTarget`. |
 
 ---
@@ -156,7 +156,7 @@ check `_mw(npc, '<field>'` as well before concluding a field is dead.
 | **Semantic** | One-shot flag forcing `ensurePath` to discard the cached path and replan. Set by the progress monitor's first stuck strike. |
 | **Owner** | `Motor.js#integratePhysics` (producer) / `nav/PlanService.js#ensurePath` (consumer) |
 | **Writers** | `Motor.js#integratePhysics` (set `true` on first strike, `undefined` on clear); `PlanService.js#publishGoal`/`ensurePath` (`undefined` after honouring); `BaseStateMachine.js#steerRoam` (`undefined` on arrival) |
-| **Readers** | `PlanService.js#ensurePath` (`if (mot.path && !mot.needReplan) return`) |
+| **Readers** | None (M-1: `PlanService.js#ensurePath` dropped the `!mot.needReplan` check — no code branches on this field's value anymore; only clearing writers remain, listed above) |
 | **Invariant** | Cleared (`undefined`) as soon as it has been honoured — never left latched across frames. |
 
 ---
@@ -203,7 +203,7 @@ check `_mw(npc, '<field>'` as well before concluding a field is dead.
 |---|---|
 | **Semantic** | One-frame velocity vector `{vx, vy}` written by `steerRoam` so `integratePhysics` can apply diagonal movement directly. Consumed (set to `null`) by `integratePhysics` on the same frame it is read. Since V-1 this is the **only** physics channel — there is no scalar fallback. |
 | **Owner** | `Motor.js#integratePhysics` (consumer) / `BaseStateMachine.js#steerRoam` (producer) |
-| **Writers** | `BaseStateMachine.js#steerRoam` walk branch (sets `{vx,vy}` after `applyLookahead`); `WalkMode.js#checkZoneTransition` (overwrite to bounce out of road/bike-lane); `Motor.js#integratePhysics` (clears to `null` after consuming) |
+| **Writers** | `BaseStateMachine.js#steerRoam` walk branch (sets `{vx,vy}` toward waypoint, M-1: no longer post-processed by `applyLookahead`); `WalkMode.js#checkZoneTransition` (overwrite to bounce out of road/bike-lane); `Motor.js#integratePhysics` (clears to `null` after consuming) |
 | **Readers** | `Motor.js#integratePhysics` (both `.vx` and `.vy` are used); `WalkMode.js#checkZoneTransition` (reads `vy` sign to pick bounce direction) |
 | **Invariant** | `null` between frames — `integratePhysics` always clears it. When absent, `integratePhysics` does not move the NPC (stationary frame). |
 
@@ -228,7 +228,8 @@ Incremented in `Motor.js#_updateDirection` (walk/run/jog/ride states only) when
 written by `_slideMove` this frame (L-1). Before L-1 this compared the steering
 *intent* velocity (`vx`) against facing in `BaseStateMachine.js#steerRoam`; comparing
 real displacement instead makes the counter a regression indicator for facing lag —
-it should stay near zero outside of dead-zone buildup and lookahead deflection.
+it should stay near zero outside of dead-zone buildup (M-1: the former lookahead-deflection
+source of drift no longer exists — `applyLookahead` was deleted).
 
 ---
 
@@ -239,7 +240,7 @@ it should stay near zero outside of dead-zone buildup and lookahead deflection.
 | **Semantic** | Module-level `_instance` holding the single `NavGrid` **zone map** for the current scene (Z-1 zone-profile split). The grid stores semantic zone IDs only — no cost numbers. `ZONE = { BLOCKED:0, SIDEWALK:1, GRASS:2, ROAD:3, CROSSWALK:4 }`. `ZONE.ROAD` = passable (`_slideMove` does not reject it), plannable at whatever cost the caller's table assigns, never sampled and never a destination. `ZONE.CROSSWALK` = low-cost crossing tube inside the road bands; sampable and usable as destination. |
 | **Owner** | `NavGrid.js` |
 | **Writers** | `NavGrid.js` module (`getNavGrid`/`setNavGrid` exports); `SceneInitializer.js` — sole call to `setNavGrid` |
-| **Readers** | `Motor.js#_navBlocked`, `WalkMode.js#pickModeTarget`, `PathPlanner.js#getPlanner`, `Lookahead.js#applyLookahead`, `EnvironmentQuery.js`, `Npc.js#getTags`, `BaseStateMachine.js#steerRoam`, `Pedestrians.js#spawnOnePedestrian`, `StrollTask.js`, `StuckProbe.js` |
+| **Readers** | `Motor.js#_navBlocked`, `WalkMode.js#pickModeTarget`, `PathPlanner.js#getPlanner`, `EnvironmentQuery.js`, `Npc.js#getTags`, `BaseStateMachine.js#steerRoam`, `Pedestrians.js#spawnOnePedestrian`, `StrollTask.js`, `StuckProbe.js` (`Lookahead.js#applyLookahead` deleted, M-1) |
 | **Invariant** | Set exactly once at scene initialisation. `null` before init — all consumers must guard (`grid && ...`). Must not be replaced mid-scene. `grid.zone(gx,gy)` is the only cell accessor; there is no `grid.cost()`. NavGrid must hold neither cost numbers (Z-1) nor Y-band numbers (Z-2b) — bake geometry arrives entirely via the `zones` config. |
 
 **Known debt**: `NavGrid.js` derives `COLS`/`ROWS` from `WORLD_WIDTH`/`WORLD_HEIGHT`
