@@ -95,8 +95,14 @@ function getDefaultPose(skelName) {
 
 // ─── Walk directory ───────────────────────────────────────────────────────────
 
+// new_assets/ is excluded: it's the playground for clips still being drawn/
+// edited (not yet registered in manifest.json), not production clips this
+// gate should hold to schema.
+const EXCLUDE_DIRS = new Set(['new_assets']);
+
 function walkDir(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (e.isDirectory() && EXCLUDE_DIRS.has(e.name)) continue;
     const full = path.join(dir, e.name);
     if (e.isDirectory()) walkDir(full, out);
     else if (e.name.endsWith('.json')) out.push(full);

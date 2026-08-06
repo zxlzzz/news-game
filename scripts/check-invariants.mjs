@@ -24,11 +24,12 @@ const okMsg = ()  => process.stdout.write(green('  ok') + '\n');
 function readText(p)  { return readFileSync(p, 'utf8'); }
 function readJson(p)  { return JSON.parse(readText(p)); }
 
-function walkFiles(dir, filter) {
+function walkFiles(dir, filter, excludeDirs = []) {
   const out = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory() && excludeDirs.includes(entry.name)) continue;
     const full = join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...walkFiles(full, filter));
+    if (entry.isDirectory()) out.push(...walkFiles(full, filter, excludeDirs));
     else if (filter(entry.name)) out.push(full);
   }
   return out;
@@ -50,9 +51,11 @@ console.log('Rule 1: no _extraTags anywhere in js/');
 
 // ── Rule 2 ─────────────────────────────────────────────────────────────────
 // Animation clip JSON files must not contain a "kind" key.
+// new_assets/ is excluded: it's the playground for clips still being drawn/
+// edited, not yet migrated to the manifest-driven schema this rule enforces.
 console.log('Rule 2: animation clip JSONs must not contain "kind"');
 {
-  const hits = walkFiles(join(ROOT, 'assets', 'animations'), f => f.endsWith('.json'))
+  const hits = walkFiles(join(ROOT, 'assets', 'animations'), f => f.endsWith('.json'), ['new_assets'])
     .filter(p => /"kind"/.test(readText(p)));
   if (hits.length > 0) {
     fail('"kind" in clip JSON files:\n  ' + hits.join('\n  '));
