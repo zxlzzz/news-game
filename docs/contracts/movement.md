@@ -1,5 +1,15 @@
 # Movement Subsystem Contract
 
+> **⚠️ M-1「信任路径」重构后记（超越下方部分行）**：已删除三层反应式避障 + 位置分离 +
+> 卡死重规划——`Lookahead.js`(applyLookahead) 整文件、`Motor.js#_lookaheadDeflect`、
+> `BehaviorManager.js#_separate`/`_sepScale`、`Motor.js` progress-monitor 与 `RECOVERY_RULES`。
+> 因此下文凡提及 `applyLookahead` / `_separate` / progress-monitor / `progressAnchor`·
+> `progressAcc` / `_stuck` 两击 / `RECOVERY_RULES` 的行均已失效：steerRoam 直接朝
+> waypoint 出速度，`_slideMove` 是唯一"绝不踏入 BLOCKED 格"硬兜底；`mot.needReplan`
+> 不再被置 true；不可达目标规划期处理（goal→`_fireBlocked`，wander→steerRoam 丢
+> roamTarget）。`StuckProbe` 保留（纯观测 debug，不影响移动）。权威帧序见
+> movement-dataflow.md 的 M-1 更新。
+
 verified at d7cd5c1ff33dc0601b9d1510c21086283374a0c0 — full re-verification after
 N-2b / N-3 / V-2 / V3-a. Four field sections describing deleted state
 (`npc.vy`, `walkModeStack`, `navPath/navIdx/navGoalX/navGoalY`,

@@ -1,5 +1,11 @@
 # 目标管线立法 v1 (r2.6)
 
+> **⚠️ M-1 后记（信任路径重构，晚于本文）**：本文描述的恢复层已大幅缩减——
+> `RECOVERY_RULES`（progress-monitor 两击制）、`SAFETY_RULES.{lookahead,separation,
+> wall_avoid}` 及 `BehaviorManager#_separate` 均已删除。现存卡死/超时机制仅剩
+> `goal.timeout`（goal 驱动）+ 规划期 `_fireBlocked`/wander 重选 + `StuckProbe`（纯观测）。
+> 下文涉及这些表/机制的行为历史记录，权威现状见 `docs/contracts/movement-dataflow.md`。
+
 **类型**：normative（失效代码变更须同 commit 更新本文件）
 **状态**：finalized（2026-07-17；r2.6 修订 2026-07-19）；N-1 已落地（3cd1f99）；N-2a 已落地（97c1e44）；N-2b 已落地（0dcf420）；N-3 已落地（3607cbc / f7899b7 / 603307f / 1c0f789 / 74d277a）；@deprecated compat 迁移：D2-d；onDone 完备化 + 安全网：G-1
 **取代**：`docs/audits/behavior-redundancy-2026-07.md` 附录 C（作废）；本文件 r1（2026-07-16，被否决——三刀降级为常量改名、Goal 接口伪造为现状、冻结 bug 缺失）

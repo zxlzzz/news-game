@@ -82,16 +82,18 @@ NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车�
 在近侧（`scale≈0.262`）与远侧的实际尺寸相差数倍，只在一个深度成立，换了深度就错。
 
 ```js
-// ✓ 正确范式（BehaviorManager.js#_separate）
-const sepR = SAFETY_RULES.separation.baseRadius * (scale / SAFETY_RULES.separation.atScale);
+// ✓ 正确范式（Motor.js#_updateDirection）
+const dz = SAFETY_RULES.facing.deadZone * npc.scale;
 // ✗ 禁止：const THRESHOLD_PX = 30;（裸世界像素常数，缺单位换算）
 ```
 
 - `npc.walkSpeed`（骨架单位/秒）、`ARRIVAL_RULES.*.threshold`（骨架单位）、
-  `SAFETY_RULES.{separation.baseRadius, facing.deadZone}`（骨架单位）、
-  `SAFETY_RULES.{lookahead,wall_avoid}.{probeCells,rotProbeCells,nearCells}`
-  （NavGrid 格）、`RECOVERY_RULES.progress_monitor.movedLT`（骨架单位，U-2c 补债）
-  都遵循此律；`arrived(ruleId, dist, scale)` 的第三参数不可省略。
+  `SAFETY_RULES.facing.deadZone`（骨架单位）都遵循此律；
+  `arrived(ruleId, dist, scale)` 的第三参数不可省略。
+  （**M-1**「信任路径」重构已删除 `lookahead`/`wall_avoid`/`separation` 三组常数与整个
+  `RECOVERY_RULES`——原属此律的 `separation.baseRadius`、`{probeCells,rotProbeCells,
+  nearCells}`、`progress_monitor.movedLT` 随反应式避障/分离/卡死重规划一并移除；
+  见 movement-dataflow.md 与 Motor.js `SAFETY_RULES` 上方注记。）
 - `check-invariants.mjs` Rule 17 静态门 `ARRIVAL_RULES` / `SAFETY_RULES` /
   `RECOVERY_RULES` / `PoseCacheBuilder` 输出：长度字段所在行（或 `PoseCacheBuilder.js`
   声明行上方注释块）必须命中「骨架单位」或「NavGrid 格」字样，缺失即失败。新增长度
@@ -105,6 +107,10 @@ const sepR = SAFETY_RULES.separation.baseRadius * (scale / SAFETY_RULES.separati
   贴近障碍物即被误判卡死、反复重规划（观感：贴墙抖动/卡死）；已改骨架单位并在
   消费处乘 `npc.scale`。`EnvironmentQuery.js` 的各类半径常数仍是世界像素，是已知
   但暂未处理的历史债务，不在本次范围内。
+  **M-1 后记（信任路径重构）**：U-2c 描述的 `progress_monitor.movedLT` 与
+  `lookahead.slowFactor` 这套"近墙减速→误判卡死→重规划churn"机制已整体删除——
+  根因是反应式避障在无碰撞 A* 路径上添乱，而非阈值没调好。上述 U-2c 校准现已moot，
+  保留仅作历史记录。
 - **U-2d 补漏（真正主因，2026-08-05）**：U-2 只改了 `BehaviorManager.js#register`
   里 `npc.speed>0 ? npc.speed : rand(...)` 的**兜底分支**，但全库真正大量走的是
   **`npc.speed>0` 这条分支**——`Pedestrians.js`（`NpcProfile.js` 的 `PEDESTRIAN/
