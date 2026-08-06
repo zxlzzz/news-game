@@ -55,9 +55,8 @@ import {
   isRoadZone, modeWander,
 } from './WalkMode.js';
 
-import { setState, STATE_DEFS, setXY, nudgeXY, setAnimation, RECOVERY_RULES, SAFETY_RULES, setWalkMode } from './Motor.js';
+import { setState, STATE_DEFS, setXY, setAnimation, SAFETY_RULES, setWalkMode } from './Motor.js';
 import { getNavGrid, ZONE } from './nav/NavGrid.js';
-import { applyLookahead } from './nav/Lookahead.js';
 import { arrived } from './SteeringDecision.js';
 import { ensureWanderPath, publishGoal } from './nav/PlanService.js';
 import { despawnNpc } from '../npc/despawn.js';
@@ -232,6 +231,9 @@ function steerRoam(npc, envQuery, profile, dt) {
     if (!npc.roamTarget) pickModeTarget(npc, envQuery);
     if (!npc.roamTarget) return;
     ensureWanderPath(npc, npc.roamTarget);
+    // M-1: 目标不可达（规划失败）→ 当帧丢弃 roamTarget，下帧 pickModeTarget 重选。
+    // 取代已删除的 progress-monitor wander 分支（1.5s 定时清目标）；即时、无 churn。
+    if (!mot.path) { npc.roamTarget = null; return; }
   }
   if (!mot.path) return;
 
@@ -279,7 +281,8 @@ function steerRoam(npc, envQuery, profile, dt) {
   // （scale 随 y 变，不能预先假设一个深度）。
   const total = npc.walkSpeed * npc.scale * (npc.state === 'run' ? 2.4 : 1);
   if (dist === 0) return;
-  const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total, SAFETY_RULES.lookahead);
+  // M-1: 直接朝当前 waypoint 出速度——A* 路径已无碰撞，无需前瞻旋转/近墙减速。
+  const vx = dx / dist * total, vy = dy / dist * total;
 
   // Jaywalk sprint: road-cell → multiply velocity (NavGrid zone spatial derivation)
   const _grid  = getNavGrid();

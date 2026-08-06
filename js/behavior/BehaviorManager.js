@@ -5,7 +5,7 @@
  *
  * BM 私有约定：
  *   - activity 存在时 `continue`（跳过 BSM / modifiers）
- *   - `_separate` 由 BM 在每帧末尾统一调用，不由 BSM 调用
+ *   - M-1: NPC 位置分离 `_separate` 已删除（C1 直接穿过；见 update() step 4 注记）
  *
  * Smart-object 路由规则（walk → routing）已全部删除；
  * 售货机 / 垃圾桶由 Agenda desires 驱动；chess_onlooker / stall_buyer
@@ -15,7 +15,7 @@
 import { getProfile }          from '../npc/NpcProfile.js';
 import { EnvironmentQuery }     from './EnvironmentQuery.js';
 import { tickBaseState, triggerDeparture } from './BaseStateMachine.js';
-import { installProtection, nudgeXY, SAFETY_RULES, setState } from './Motor.js';
+import { installProtection, setState } from './Motor.js';
 import { tickModifiers, initPoseCache as initModPoseCache } from './ModifierLayer.js';
 import { SocialLayer }          from './SocialLayer.js';
 import { WaitForBusLayer }      from '../entity/busstop/WaitForBusLayer.js';
@@ -152,8 +152,9 @@ export class BehaviorManager {
       if (!ag.departing) tickModifiers(npc, ag.profile, dt, globalHeldFrac);
     }
 
-    // 4) NPC 间分离
-    this._separate(dt);
+    // 4) M-1「信任路径」重构：NPC 位置分离（_separate）已删除（C1 直接穿过）。
+    //    位置分离会把 NPC 从无碰撞 A* 路径上推离、顶进墙角造成死锁，是"卡死+乱"的
+    //    根因之一。未来的预测式避让 / 接触碰撞解算作为独立层再引入。
 
     // 5) 定期清理死亡 NPC
     this._pruneTimer = (this._pruneTimer ?? 0) - dt;
@@ -163,62 +164,4 @@ export class BehaviorManager {
     }
   }
 
-  // 当分离推力方向与 NPC 行进方向相反时衰减为 0.5，避免抖振
-  _sepScale(npc, ux, uy) {
-    const mot = npc.mem('motor');
-    if (!mot.goal) return 1;
-    const t = mot.goal.dest;
-    const dx = t.x - npc.x, dy = t.y - npc.y;
-    const len = Math.hypot(dx, dy);
-    if (len < 1) return 1;
-    return (ux * dx + uy * dy) / len < -0.4 ? 0.5 : 1;
-  }
-
-  // CONTRACT (_separate)  (see docs/contracts/movement.md)
-  //   OWNS:    inter-NPC separation impulses applied via Motor.nudgeXY.
-  //   WRITES:  npc.x/y indirectly via nudgeXY (authorised Motor API).
-  //   READS:   npc.state, npc.mem('social').{activity,bench}, npc.leashTarget,
-  //            npc.mem('motor').walkMode (via _sepScale).
-  //   MUST NOT: call setState or set npc.speed; skip leashed NPCs (leashTarget ≠ null).
-  _separate(dt) {
-    const MOVING = new Set(['walk', 'run', 'jog']);
-    const movers  = this.npcs.filter(n =>
-      n.alive && !n.mem('social').activity && !n.leashTarget && MOVING.has(n.state));
-    const statics = this.npcs.filter(n =>
-      n.alive && !n.leashTarget && !MOVING.has(n.state) && !n.mem('social').bench
-      && n.mem('agenda').profile?.separate !== false);
-
-    // 动 vs 动：双方互推（原逻辑不变）
-    for (let i = 0; i < movers.length; i++) {
-      for (let j = i + 1; j < movers.length; j++) {
-        const a = movers[i], b = movers[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const d = Math.hypot(dx, dy);
-        const sepR = SAFETY_RULES.separation.baseRadius * ((a.scale + b.scale) / 2 / SAFETY_RULES.separation.atScale);
-        if (d > 0 && d < sepR) {
-          const f  = ((sepR - d) / sepR) * 16 * dt;
-          const ux = dx / d, uy = dy / d;
-          const sa = this._sepScale(a,  ux,  uy);
-          const sb = this._sepScale(b, -ux, -uy);
-          nudgeXY(a,  ux * f * sa,  uy * f * sa);
-          nudgeXY(b, -ux * f * sb, -uy * f * sb);
-        }
-      }
-    }
-
-    // 动 vs 静：静止方零位移，行走方受推
-    for (const m of movers) {
-      for (const s of statics) {
-        const dx = m.x - s.x, dy = m.y - s.y;
-        const d = Math.hypot(dx, dy);
-        const sepR = SAFETY_RULES.separation.baseRadius * ((m.scale + s.scale) / 2 / SAFETY_RULES.separation.atScale);
-        if (d > 0 && d < sepR) {
-          const f  = ((sepR - d) / sepR) * 16 * dt;
-          const ux = dx / d, uy = dy / d;
-          const sm = this._sepScale(m, ux, uy);
-          nudgeXY(m, ux * f * sm, uy * f * sm);
-        }
-      }
-    }
-  }
 }
