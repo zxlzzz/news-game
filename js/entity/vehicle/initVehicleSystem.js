@@ -1,5 +1,7 @@
 /**
- * vehicleSpawner — 自行车 + 摩托（仅在马路上，车架与骑手对齐）
+ * initVehicleSystem — 车流系统装配（一次性）：TrafficManager + CyclistSpawner
+ * + BusStop（按 layout.busStops）+ 机动车 VehicleSpawner，返回 TrafficManager。
+ * （原文件名 vehicleSpawner.js 与 behavior/VehicleSpawner.js 仅大小写不同，已改名。）
  */
 
 import { roadY, worldX, bikeLaneFarY, bikeLaneNearY } from '../../core/Layout.js';

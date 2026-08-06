@@ -19,7 +19,7 @@ import { Agenda } from '../behavior/Agenda.js';
 import { spawnChess } from '../npc/Chess.js';
 import { spawnDogWalker } from '../npc/DogWalker.js';
 import { spawnAthletes } from '../npc/Athletes.js';
-import { initVehicleSystem } from '../entity/vehicle/vehicleSpawner.js';
+import { initVehicleSystem } from '../entity/vehicle/initVehicleSystem.js';
 import { spawnBusStop } from '../entity/busstop/busstop.js';
 import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
 import { setState, setXY } from '../behavior/Motor.js';
