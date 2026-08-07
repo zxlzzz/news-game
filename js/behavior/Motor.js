@@ -152,7 +152,15 @@ export const STATE_DEFS = {
       _defaultOnExit(npc, toState);
     },
   },
-  chess:          { anim: 'chess',           speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
+  // Patch F 修正：anim 从 'chess' 改 'stand'（零 delta 基座）。ChessActivity 的落子
+  // 手势用 ClipPlayer 驱动 modifier 覆盖全身 11 个关节（含 neck/body/legs），若基座仍是
+  // 'chess' 自身（不再被主动推进、冻结在任意一帧），Npc.js#_buildJointOverrides 的
+  // 链根重锚（neck/legs 相对 frame.body/frame.neck 平移）会把这个冻结帧的 body/neck
+  // 位移当成常量偏移叠加进每一帧手势里，整个姿势跟着错位。'stand' 全零 delta，
+  // 重锚退化成 no-op——Stall/Talk/UsePropTask 全部用 'stand' 做 ClipPlayer 基座正是
+  // 同一个原因。npc.state 仍是 'chess'（tag/StuckProbe 等按 state 走，不受影响，
+  // Npc.js#STATE_TAGS 已补 chess:'sitting' 保住原有语义标签）。
+  chess:          { anim: 'stand',           speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
   chess_onlooker: { anim: 'chess_onlookers', speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
   // N3-c: 骑手单态；anim 仅用于 setState fallback，CyclistSpawner 用 setAnimation 覆写实际 clip
   ride:           { anim: 'bike',            speedK: 1.0, once: false, dur: null, onExit: _defaultOnExit },

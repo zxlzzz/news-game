@@ -32,6 +32,9 @@ const STATE_TAGS = {
   lean_wall: 'leaning', squat: 'squatting', sit_ground: 'sitting',
   lie_bench: 'lying', get_up: 'getting_up',
   loiter: 'loitering',
+  // Patch F：STATE_DEFS.chess.anim 改 'stand' 后不能再指望 ANIM_TAGS['chess'] 兜底
+  // （那条现在读不到，因为 npc.animation 已经是 'stand'），标签改走这里。
+  chess: 'sitting',
 };
 // overlay → 额外语义标签（overlay 名本身也会作为标签加入）
 const OVERLAY_EXTRA_TAGS = {
