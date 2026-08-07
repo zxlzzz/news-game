@@ -10,6 +10,15 @@
 > 丢 roamTarget）。下表 step 8/12/13、§3 代码、§2 变量表已按此更新。
 >
 > Frame order anchor: `StreetScene#update` (`behaviorManager.update`, line 356) **then** `StreetScene#update` (`entityManager.update → integratePhysics`, line 363). BM runs first; integratePhysics is the last movement step of the same frame.
+>
+> **M-1b（走路卡死修复，2026-08-07）**：step 8 的"Final destination arrival"改判
+> `path.pts[path.pts.length-1]`（路径真实终点），不再判 `mot.goal.dest`/`roamTarget`
+> 原始请求点——后者落在 `ZONE.BLOCKED`/`ROAD` 格时 `PathPlanner.plan()` 会把路径终点
+> 吸附到最近可走格，原始点从此不可达，NPC 卡在吸附点永远判不到达、原地抖动直到
+> goal 超时。同批把 `SteeringDecision.js#ARRIVAL_RULES` 的 `nav_waypoint`（30→16）
+> `walk_goal`（23→14）调紧至不超过 `NPC_HALF_W` 换算的世界像素上限，见
+> movement.md `NPC_HALF_W` 条目下的耦合注记——原阈值在人形骨架最大 scale 下会
+> 超出安全边，让 NPC 停在贴近障碍物边缘的位置，下一腿走位被两侧都挡死。
 
 ---
 

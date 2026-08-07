@@ -298,6 +298,20 @@ boundary (fountain). Value 7 was chosen to match the effective NPC ground-contac
 half-width at mid-scene depth. Rename or change only with a full NavGrid rebake
 and gameplay visual check.
 
+**M-1b coupling (2026-08-07)**: `SteeringDecision.js#ARRIVAL_RULES.nav_waypoint`
+and `.walk_goal` must satisfy `threshold × scale_max ≤ NPC_HALF_W` (`scale_max`
+≈ 0.369, human peak `npc.scale` at `PARK_BOTTOM` depth) — a waypoint/goal is
+guaranteed to sit at a safe cell centre (built from this same `NPC_HALF_W`
+margin), but the arrival *tolerance* can let the NPC stop up to `threshold ×
+scale` pixels short of it; if that exceeds the margin, the NPC can end a leg
+close enough to an obstacle edge that the next leg's `_slideMove` finds both
+the full move and the single-axis fallback blocked, leaving only the
+perpendicular wall-slide — which cannot make forward progress, so the NPC
+jitters in place until the goal times out. Currently `nav_waypoint=16`,
+`walk_goal=14` (7 / 0.369 ≈ 19 ceiling, with margin). Do not raise either
+value above the ceiling without re-deriving `scale_max` from the current
+`depth.scaleNear` config.
+
 ---
 
 ### `WALK_PATHS`

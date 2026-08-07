@@ -250,7 +250,17 @@ function steerRoam(npc, envQuery, profile, dt) {
   }
 
   // ── Final destination arrival ──────────────────────────────────────────
-  const finalDest   = mot.goal ? mot.goal.dest : npc.roamTarget;
+  // M-1b（走路卡死修复）：判到达用路径的真实终点（path.pts 最后一个点），不用
+  // 原始 goal.dest / roamTarget。原因：目的地落在 ZONE.BLOCKED/ROAD 格（比如自行车
+  // 道、障碍物内部）时，PathPlanner.plan() 会把路径终点吸附到最近可走格中心，
+  // 这个吸附点和原始请求点可能差出好几个骨架单位——超过 arrived() 的判定半径。
+  // NPC 走到（且只能走到）这个吸附终点后 dist→0，但如果还拿原始点算 distToFinal，
+  // 这个距离会卡在吸附差值上永远大于阈值：到不了、也不判定到达，NPC 就贴着终点
+  // 原地小步来回抖（每帧超调、方向来回翻转），直到 goal 超时才解脱（M-1 删除了
+  // 卡死重规划兜底，没人会提前打断它）。path.pts 的最后一个点就是 wp 在
+  // path.idx 走到底时的值，天然可达——离场（offWorld）目标是例外，ensurePath 已经
+  // 把真实的场外坐标手动 push 成路径最后一点，此处取值与原逻辑一致。
+  const finalDest   = path.pts[path.pts.length - 1];
   const distToFinal = Math.hypot(finalDest.x - npc.x, finalDest.y - npc.y);
   const _offWorld   = mot.goal?.meta?.offWorld;
   if ((_offWorld && (npc.x < 0 || npc.x > WORLD_WIDTH)) ||
