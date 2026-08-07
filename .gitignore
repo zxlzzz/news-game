@@ -3,4 +3,4 @@ package-lock.json
 package.json
 *.patch
 
-tasks.md
+/tasks.md
