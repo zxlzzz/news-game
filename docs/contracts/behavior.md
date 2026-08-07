@@ -13,7 +13,7 @@ same commit. Symbol anchors: `File.js#symbolName` (line numbers parenthetical).
 BehaviorManager          — thin orchestrator; owns the update loop order
   ├── SocialLayer        — Activity tick + Talk pairing
   ├── WorldEventLog/Belief — drain new events → witness claims (W-7a)
-  ├── WaitForBusLayer    — bus-waiter zone scan (waiter tick → WaitBusActivity)
+  ├── WaitForBusLayer    — bus-waiter zone scan (waiter tick → WaitBusTask via TaskRunner)
   ├── Agenda             — per-NPC desire → Goal selection (no activity)
   ├── TaskRunner         — primary/monitor task slots
   ├── BaseStateMachine   — state transitions + steerRoam
@@ -26,10 +26,19 @@ Update order each frame (per NPC, `BehaviorManager.js#update`):
 1. `SocialLayer.update` — Activity tick + Talk pairing
 2. `WorldEventLog.drainNewEvents()` → `Belief.generateClaims()` (W-7a) — the
    single consumption point for events emitted this frame (currently only
-   `TalkActivity.js` calls `emitEvent()`); actor ids resolved against
-   `this.npcs`, missing actors passed through as `null` (`Belief` tolerates)
-3. `WaitForBusLayer.update` — zone scan only (waiter tick migrated to `WaitBusActivity`)
-4. Lifespan expiry (`!sc.activity` gate) → `releaseAllHoldings` + `triggerDeparture` + `ExitSceneTask`; age accumulates during Activity, trigger fires on first frame after Activity ends
+   `TalkActivity.js`/`ContactActivity.js` call `emitEvent()`, confined to
+   `js/behavior/activities/` by `check-invariants.mjs` Rule 14); actor ids
+   resolved against `this.npcs`, missing actors passed through as `null`
+   (`Belief` tolerates)
+3. `WaitForBusLayer.update` — zone scan only; waiter tick is a per-NPC
+   `WaitBusTask` (Patch C), driven at step 6 like any other task, not by
+   this layer
+4. Lifespan expiry (`!sc.activity && !sc.waitingBusStop` gate) →
+   `releaseAllHoldings` + `triggerDeparture` + `ExitSceneTask`; age
+   accumulates during Activity/bus-wait, trigger fires on first frame after
+   either ends (`sc.waitingBusStop` added in Patch C — waiting is a Task now
+   and doesn't set `sc.activity`, so it needs its own guard to keep the old
+   "can't expire while waiting for the bus" behavior)
 5. `Agenda.tick` — Goal selection when no Activity
 6. `TaskRunner.tick` — always, including monitor tasks
 7. If `activity` → skip BSM / modifiers
@@ -129,17 +138,23 @@ Activities lock the NPC out of BSM/modifiers (`BehaviorManager.js#update`:
 
 | Activity | Participants | Drives state |
 |---|---|---|
-| `TalkActivity` | 2 NPCs | `talk` |
-| `ChessActivity` | 1 player + optional onlookers | `chess` / `chess_onlooker` |
-| `StallActivity` | seller + 1 buyer | seller stays `stand`; buyer uses `stall_buyer_*` overlays |
-| `UsePropActivity` | 1 NPC | `stand` at vending/trash |
-| `WaitBusActivity` | 1 NPC (waiter) | `stand`/`loiter` fidget cycle; timeout → `walk`; boarding → despawn |
+| `TalkActivity` | 2 NPCs | `talk` (sub-events hand off to `ContactActivity`, see below) |
+| `ChessActivity` | 2 players (always full roster from `Create`; onlookers are a separate single-NPC `ChessOnlookerTask`, not an Activity member) | `chess` |
+| `StallActivity` | seller + buyer (full roster from `Create` — Patch H, prop-as-host; seller alone is a separate single-NPC `StallSellerTask`, not an Activity member) | seller stays `stand`; buyer uses `stall_buyer_*` overlays |
+| `ContactActivity` | 2 NPCs, role names come from the clip itself (e.g. `receiver`/`approacher`) | driven by `DuetStager` (reach→play→release), see `docs/contracts/activity-lifecycle-v1.md` §6 |
 
-`SocialLayer.js#createActivity` instantiates and registers activity instances.
-`WaitBusActivity` is pushed directly onto `SocialLayer.activities` by `WaitForBusLayer._addWaiter`
-(not via registry). `_destroyed` guard makes `destroy()` idempotent — `_startBoarding` calls
-it synchronously (boarding path) before SocialLayer's next `update()` sweep.
-`npc.mem('social').activity` is the lock field; cleared by `Activity#end`.
+`SocialLayer.js#createActivity` instantiates and registers activity instances via
+`ActivityRegistry.js`. `npc.mem('social').activity` is the lock field; cleared by
+`Activity#destroy` (via `release()`).
+
+Single-NPC behaviors that used to be (or could be mistaken for) Activities, and where they
+actually live now: `UsePropActivity` → inlined into `UseSmartPropTask` (Patch A);
+chess onlooker → `ChessOnlookerTask` (Patch D); stall seller solo → `StallSellerTask`
+(Patch H); bus waiting → `WaitBusTask` (Patch C, `WaitForBusLayer._addWaiter` does
+`runner.setPrimary(new WaitBusTask(stop), npc)`, not `SocialLayer.activities.push`).
+None of these set `npc.mem('social').activity` — they run via `TaskRunner.primary` and
+cooperate with BSM instead of locking it out, matching the `activity-lifecycle-v1.md` §1
+boundary rule ("Activity = 严格 ≥2 NPC 的协调").
 
 Dog walking is **not** an Activity: `DogWalker.js#spawnDogWalker` registers only
 the owner (profile `dog_owner`) and ties the dog to it via `leashTarget`, which

@@ -466,7 +466,7 @@ npc.clearMem('loiter');
 | `docs/contracts/movement.md` | 规范性 | 移动子系统字段所有权、Motor 写保护门、NavGrid、WalkMode 协议 |
 | `docs/contracts/behavior.md` | 规范性 | 行为层栈、STATE_DEFS、NPC Profile、状态转换表、Activity/WalkMode/Modifier/Separation |
 | `docs/contracts/known-violations.md` | 规范性 | check-invariants 已知例外白名单 |
-| `docs/contracts/activity-lifecycle-v1.md` | 规范性 | Activity 五 phase 契约：Create/Admit/Drive/Dismiss/End；落地顺序 1～6 全部完成（Patch E/F/G/H/D/A），含 ContactActivity 抽离（Patch G）与 prop-as-host（Patch H，stall 卖家独自守摊移出 StallSellerTask） |
+| `docs/contracts/activity-lifecycle-v1.md` | 规范性 | Activity 五 phase 契约：Create/Admit/Drive/Dismiss/End；落地顺序 1～6 全部完成（Patch E/F/G/H/D/A），含 ContactActivity 抽离（Patch G）与 prop-as-host（Patch H，stall 卖家独自守摊移出 StallSellerTask）；`WaitBusActivity` 已删除（Patch C，等车改走单人 `WaitBusTask`，不再有违背单人边界的 Activity） |
 | `docs/design-plans/news-pipeline-mvp.md` | 设计稿（finalized） | 新闻管线 MVP：截图 T2、Provider T3、成稿流 T4 |
 | `docs/design-plans/photo2entity-plan.md` | 设计稿（draft） | 现实照片 → AI 生成场景物体，占位草案 |
 | `docs/design-plans/semantic-destination-design.md` | 设计稿（finalized） | 语义目的地层 v2，affordance 池设计 |

@@ -126,8 +126,13 @@ export class SocialLayer {
   }
 
   _tryPairTalk(npcs) {
+    // !waitingBusStop（Patch C）：候车不再是 Activity 锁（WaitBusTask 是单人
+    // ChainTask，不置位 sc.activity），普通行人 profile 又都含 'talk'，不额外
+    // 排除的话候车中的人会被这里捞去聊天——同一个信号已经是 BehaviorManager.js
+    // 寿命门用来保护候车者的那个字段，这里复用，不新开一条判据。
     const standers = npcs.filter(n =>
-      n.alive && !n.mem('social').activity && !n.mem('agenda').departing && n.state === 'stand' &&
+      n.alive && !n.mem('social').activity && !n.mem('agenda').departing &&
+      !n.mem('social').waitingBusStop && n.state === 'stand' &&
       n.mem('agenda').profile && n.mem('agenda').profile.activities.includes('talk'));
     let paired = 0;
     for (let i = 0; i < standers.length; i++) {

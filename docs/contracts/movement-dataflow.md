@@ -28,10 +28,10 @@
 |---|--------|----------|-----------|
 | 1 | `StreetScene.update` → `BehaviorManager.update` | `SocialLayer.update` | activity pair/tick |
 | 1.5 | BM | `WorldEventLog.drainNewEvents` → `Belief.generateClaims` (W-7a) | converts events emitted this frame (currently only `TalkActivity.js#emitEvent`) into witness claims written to `npc.mem('belief').claims`; `event.actors[]` ids resolved against `this.npcs` (missing → `null`, `Belief` tolerates); no position/state change |
-| 2 | BM | `WaitForBusLayer.update` | bus-waiter zone scan (waiter tick → `WaitBusActivity.update` at step 1) |
-| 3 | BM per-NPC | lifespan check (`!sc.activity` gate) → `triggerDeparture` → `_routeToExit` | sets `ag.departing`; saves + expands bounds (edge exits); publishes `mot.goal` (via `publishGoal`); skipped while NPC is in an Activity (age accumulates, triggers on next frame after activity ends) |
-| 4 | BM per-NPC | `Agenda.tick` | selects next desire (no-op if `sc.activity`) |
-| 5 | BM per-NPC | `TaskRunner.tick` | ExitSceneTask / TalkToTask monitor |
+| 2 | BM | `WaitForBusLayer.update` | bus-waiter zone scan only; waiter tick is a per-NPC `WaitBusTask` (Patch C), driven at step 5 like any other task |
+| 3 | BM per-NPC | lifespan check (`!sc.activity && !sc.waitingBusStop` gate) → `triggerDeparture` → `_routeToExit` | sets `ag.departing`; saves + expands bounds (edge exits); publishes `mot.goal` (via `publishGoal`); skipped while NPC is in an Activity or waiting for a bus (age accumulates, triggers on next frame after either ends; `sc.waitingBusStop` half added in Patch C since waiting is now a Task and doesn't set `sc.activity`) |
+| 4 | BM per-NPC | `Agenda.tick` | selects next desire (no-op if `sc.activity` or `runner.primary` already set) |
+| 5 | BM per-NPC | `TaskRunner.tick` | ExitSceneTask / TalkToTask / WaitBusTask / StallSellerTask / ChessOnlookerTask / GotoTask etc. |
 | 5.5 | BM per-NPC | `ensurePath(npc)` (`PlanService.js`) | syncs `mot.path` with `mot.goal`; fires 'blocked' if planner fails; resets `mot.needReplan` |
 | 6 | BM per-NPC | `tickBaseState`: `stateTimer += dt` | timer advance; `_evaluateTransitions` → may call `setState` |
 | 7 | BM → `_tickState` | `tickWalkMode` | `path_follow.pauseTimer`; wander `maxDuration` elapsed |

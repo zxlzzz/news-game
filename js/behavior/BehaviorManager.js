@@ -120,10 +120,12 @@ export class BehaviorManager {
       const ag = npc.mem('agenda');
       const sc = npc.mem('social');
 
-      // 寿命到期 → 离场（等待中 NPC 由 sc.activity 门阻断）
+      // 寿命到期 → 离场（等待中 NPC 由 sc.activity 门阻断；候车中 NPC 由
+      // sc.waitingBusStop 门阻断——WaitBusTask 是单人 ChainTask 不占 sc.activity，
+      // Patch C 前靠 Activity 锁顺带挡住的寿命打断，改靠这个字段单独挡）
       if (!ag.departing && ag.lifespan != null) {
         ag.ageTimer = (ag.ageTimer || 0) + dt;
-        if (ag.ageTimer >= ag.lifespan && !sc.activity) {
+        if (ag.ageTimer >= ag.lifespan && !sc.activity && !sc.waitingBusStop) {
           releaseAllHoldings(npc, this.envQuery);
           triggerDeparture(npc, this.exitRegistry, { entities: this.em.entities });
           if (ag.departing) {

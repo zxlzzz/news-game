@@ -4,22 +4,25 @@
 > 范围：一个新 `Activity` 如何把自己的事件接入既有的目击/证词管线
 > （`WorldEventLog` → `Perception` → `Belief`）。管线本身（W-1/W-4/W-5/W-7a）
 > 已实施，见 `docs/design-plans/witness-memory-v1.md`；本文档只回答
-> "要让 Chess/Stall/UseProp/WaitBus 这类还没接线的 Activity 也能发事件，
-> 需要动哪些文件"。
+> "要让 Chess/Stall 这类还没接线的 Activity 也能发事件，需要动哪些文件"。
+>
+> **注（Patch H/C 后更新）**：本节原举例里的 `UsePropActivity.js`（Patch A）、
+> `WaitBusActivity.js`（Patch C）已先后不再是 Activity——分别内联进
+> `UseSmartPropTask`/`WaitBusTask`，emitEvent 调用点被 `check-invariants.mjs`
+> Rule 14 限定在 `js/behavior/activities/`，单人 Task 不适用本文档的扩展点，
+> 已从下方候选列表中移除；`TalkActivity.js` 一节的行号/方法名也已因 Patch G
+> （`push`/`give_item`/`handshake`/`point_at` 抽成 `ContactActivity`）漂移，
+> 未在本次一并核对更新，读者自行以当前源码为准。
 
 ## 现状
 
-目击/证词管线目前只有一个事件生产者：`TalkActivity.js`。
+目击/证词管线目前只有两个事件生产者：`TalkActivity.js`（子事件掷骰命中后
+`handoff('contact', ...)`）与 `ContactActivity.js`（真正调用 `emitEvent`
+的地方，见该文件；Patch G 抽离，行号已随之变化，此处不再列旧行号）。
 
-- `TalkActivity.js:119`（`_startSubEvent`）：`emitEvent({ kind: type, actors: [this.a.id, this.b.id], x, y })`
-  —— `type` 取自该次 sub-event 的类型（`push` / `give_item` / `handshake` / `point_at`）。
-- `TalkActivity.js:170`：`emitEvent({ kind: 'push_land', actors: [this.a.id, this.b.id], x, y })`
-  —— push 落地时补发的第二条事件。
-
-`js/behavior/activities/` 下其余四个 Activity —— `ChessActivity.js`、
-`StallActivity.js`、`UsePropActivity.js`、`WaitBusActivity.js` —— 目前
-零 `emitEvent()` 调用，是内容瓶颈：玩家能审问出的"目击证词"只覆盖
-talk 互动，覆盖不到下棋、摆摊、候车这些场景。
+`js/behavior/activities/` 下其余两个 Activity —— `ChessActivity.js`、
+`StallActivity.js` —— 目前零 `emitEvent()` 调用，是内容瓶颈：玩家能审问出
+的"目击证词"覆盖不到下棋、摆摊这些场景。
 
 ## 管线四步（既有代码，未改动）
 

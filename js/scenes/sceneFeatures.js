@@ -116,7 +116,7 @@ registerFeature('vehicles', (ctx) => {
   const tm = initVehicleSystem(ctx.em, ctx.sr, ctx.bm, ctx.layout.busStops);
   ctx.scene.trafficManager = tm;
   if (tm.busStops.length > 0) {
-    ctx.bm.waitForBusLayer = new WaitForBusLayer(tm.busStops, ctx.em.entities, ctx.bm.socialLayer);
+    ctx.bm.waitForBusLayer = new WaitForBusLayer(tm.busStops, ctx.em.entities);
   }
 });
 

@@ -8,7 +8,9 @@
 > 成员；stall 卖家独自守摊已移出成 `StallSellerTask`，`StallActivity` 现在只在买家已经
 > 到位时才 Create、roster 从一开始就是满的（Patch H，prop-as-host）。买家路由本身仍是
 > 已知空缺（无人真的把买家送到槽位，见 `BehaviorManager.js` 头注释），不影响本文档
-> 描述的契约正确性。全部落地后 `file#symbol` 锚点补齐，本行删除。
+> 描述的契约正确性。**WaitBusActivity 已删除**（Patch C，见 tasks.md）：等车改走单人
+> `WaitBusTask`，`WaitBusActivity` 不再是 Activity 系统成员，§7 表中原有的"单人违规"
+> 行随之移除。全部落地后 `file#symbol` 锚点补齐，本行删除。
 >
 > 锚点用 `file#symbol`，**不写行号**（行号腐烂比符号名快）。
 
@@ -157,15 +159,16 @@ phase 不按「发生了什么」列（那会把「播动画」这种*能力*和
 | **ChessActivity** | ✓ 2 player+桌，走 `admit` | ✓ `admit` override（setState('chess')） | ✓ 回合制（ClipPlayer，Patch F） | 无（旁观者已移出成 `ChessOnlookerTask`，两名 player 同生共死，无单成员退场场景） | ✓ `destroy` | 否（旁观者违规已随 Patch D 消除） |
 | **StallActivity**（Patch H 改版） | ✓ 买家已到位才建（seller+buyer 双人同时 `admit`，roster 从一开始就满） | ✓ `admit` override（按 role 分派 seller/buyer 姿势） | ✓ 卖家手势循环 + 买家分相（ClipPlayer） | 无（买家走 = 整场 End，不再有"买家走、卖家续"的单成员退场——原 `dismiss`/`addBuyer`/`_endBuyer` 已随 prop-as-host 删除） | ✓ `destroy`（卖家存活则重新交回 `StallSellerTask`，回到独自守摊态） | 否 |
 | **ContactActivity**（Patch G 新增） | ✓ 2 参与者，role 名来自 clip 自身（如 `receiver`/`approacher`），走 `admit` | 不 override 基类（join-only）——DuetStager 的 reach 阶段要从"当前姿势"平滑过渡，Admit 若清 modifier/重设 state 反而破坏过渡 | ✓ 委托 `DuetStager.tick()`（reach→play→release） | ✓ 基类默认版足够——`ejectRole` 命中时自己的 `_onEject` 直接 release/setState/emit，不经通用 `dismiss()`（落地态因 clip 而异，如 `fall`，不是 `dismiss()` 硬编码的 `walk`） | ✓ `destroy`（`DuetStager.cancel()` 复位未弹出的一方） | 否 |
-| **WaitBusActivity** | 构造绑 1 NPC（绕过注册表） | — | stand↔loiter 抖动 | — | `destroy` | **是**（单人，应移出成 Task/BSM 态，Patch C 待定见下方注记） |
 
 要点：UsePropActivity 已随 Patch A 内联进 `UseSmartPropTask` 删除，不再在此表列出。Chess 旁观者
 已随 Patch D 移出成单人 `ChessOnlookerTask`；Stall 卖家独自守摊已随 Patch H 移出成单人
-`StallSellerTask`，`StallActivity` 不再允许部分 roster。Talk/Chess/Stall/Contact 的 Admit 已
-收口到基类契约（Patch E/G/H）；四者的 Drive 均已用 `ClipPlayer`/`DuetStager` 统一动画
-（Patch F/G）。`push`/`give_item`/`handshake`/`point_at` 从 TalkActivity 抽成独立
-`ContactActivity`，Talk 降为消费者（`handoff('contact', ...)`，Patch G）。WaitBus 仍违背单人
-边界，是否重新界定为「NPC+公交车」的合法 ≥2 方例外由用户决定（见 tasks.md Patch C）。
+`StallSellerTask`，`StallActivity` 不再允许部分 roster；等车已随 Patch C 移出成单人
+`WaitBusTask`，`WaitBusActivity` 整个删除，不再在此表列出（原表最后一行"是否重新界定为
+NPC+公交车合法例外"的开放问题，最终选择是不界定——直接按单人 ChainTask 边界铁律处理）。
+Talk/Chess/Stall/Contact 的 Admit 已收口到基类契约（Patch E/G/H）；四者的 Drive 均已用
+`ClipPlayer`/`DuetStager` 统一动画（Patch F/G）。`push`/`give_item`/`handshake`/`point_at`
+从 TalkActivity 抽成独立 `ContactActivity`，Talk 降为消费者（`handoff('contact', ...)`，
+Patch G）。至此表中不再有违背单人边界的 Activity。
 
 ---
 
@@ -189,8 +192,12 @@ phase 不按「发生了什么」列（那会把「播动画」这种*能力*和
    chess 本就永远由 `spawnChess` 直接 Create 满员两人，不受影响。
 5. ✅ **旁观者移出成员制**（Patch D）：ChessActivity 删 `addOnlooker`/`onlooker` 数组，改单人
    `ChessOnlookerTask` + 前置条件（`table._occupiedBy`，即棋局是否存活）。
-6. ✅ **单人移出**（Patch A）：UseProp → 内联进 `UseSmartPropTask`；WaitBus → 未落地，待定
-   （见 tasks.md Patch C 的边界讨论：上车是否算「NPC+公交车」的合法 ≥2 方例外）。
+6. ✅ **单人移出**（Patch A + Patch C）：UseProp → 内联进 `UseSmartPropTask`（Patch A）；
+   WaitBus → 内联进 `WaitBusTask`（Patch C）：不采纳「NPC+公交车」例外，改按单人边界铁律
+   处理——等待纯粹是单人 stand/loiter，上车那一刻的"NPC+公交车"协调不需要 Activity 式的
+   锁定/共享 tick，公交车到站直接 `runner.setPrimary(new GotoTask(...走向车门...), npc, cb)`
+   顶替等待 task 即可，不需要为此单独立一类"非 NPC 协调方"的 Activity。
 
 > 依赖关系：3 依赖 2（要先有 DuetStager）——已一起在 Patch G 落地；3 的接触调参依赖那一个手绘
-> 接触姿势——已由用户在 C-1b 编辑器完成；剩下的 4（prop-as-host）可独立推进。
+> 接触姿势——已由用户在 C-1b 编辑器完成；4（prop-as-host）与 6 的 WaitBus 半段彼此独立，
+> 均已推进完毕。
