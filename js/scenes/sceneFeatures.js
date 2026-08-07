@@ -22,8 +22,7 @@ import { spawnAthletes } from '../npc/Athletes.js';
 import { initVehicleSystem } from '../entity/vehicle/initVehicleSystem.js';
 import { spawnBusStop } from '../entity/busstop/busstop.js';
 import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
-import { setState, setXY } from '../behavior/Motor.js';
-import { publishGoal } from '../behavior/nav/PlanService.js';
+import { StallSellerTask } from '../behavior/tasks/StallSellerTask.js';
 import { makeNPC } from '../npc/npcUtil.js';
 
 function _need(v, what) {
@@ -72,7 +71,9 @@ registerFeature('chess', (ctx, cfg) => {
 });
 
 // ─── stall_sellers：为每个带 smartDef 的摊位生成常驻摊主 ─────────────────────
-// 原 SceneInitializer#_spawnStallSellers 方法逐字迁入，只把 this.em/this.sr 换成 ctx.em/ctx.sr。
+// prop-as-host（Patch H）：卖家独自守摊改走 StallSellerTask（ChainTask），走到
+// 槽位 + 原地叫卖循环 + 失败重试落位兜底全部收进该 task，这里只负责生成 NPC
+// 并把它交给 runner——不再手搓 publishGoal/onSlotArrival 回调链。
 registerFeature('stall_sellers', (ctx) => {
   const { em, sr, bm, worldWidth: WORLD_WIDTH } = ctx;
   const stalls = em.entities.filter(e => e.alive && e.smartDef?.activityType === 'stall' && e._slots);
@@ -94,21 +95,7 @@ registerFeature('stall_sellers', (ctx) => {
     bm.register(seller, 'stall_seller');
 
     slot.reserved = seller.id;
-    const _destX = stall.x + slot.dx, _destY = stall.y + slot.dy;
-    let _slotRetries = 0;
-    const _onSlotDone = (result) => {
-      if (result === 'arrived') {
-        bm.socialLayer.onSlotArrival(seller, stall, slot);
-      } else if (_slotRetries < 2) {
-        _slotRetries++;
-        publishGoal(seller, { x: _destX, y: _destY }, 60, _onSlotDone, {});
-      } else {
-        setXY(seller, _destX, _destY);
-        bm.socialLayer.onSlotArrival(seller, stall, slot);
-      }
-    };
-    publishGoal(seller, { x: _destX, y: _destY }, 60, _onSlotDone, {});
-    setState(seller, 'walk', 'stall_seller_entry');
+    seller.mem('agenda').runner.setPrimary(new StallSellerTask(stall, slot), seller);
   }
 });
 

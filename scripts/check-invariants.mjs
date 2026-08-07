@@ -219,6 +219,7 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** mus
     'ChessActivity.js',   // 非移动政策计时器 — permanent
     'ChessOnlookerTask.js', // 非移动政策计时器（旁观计时，Patch D） — permanent
     'StallActivity.js',   // 非移动政策计时器 — permanent
+    'StallSellerTask.js', // 非移动政策计时器（叫卖手势切换计时，Patch H） — permanent
     'TalkActivity.js',    // 非移动政策计时器 — permanent
     'DuetStager.js',      // 非移动政策计时器（reach/play/release 播放计时，Patch G） — permanent
     'VisitTask.js',       // 非移动政策计时器（elapsed + waitTimer） — permanent

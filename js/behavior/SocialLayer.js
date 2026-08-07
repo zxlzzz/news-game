@@ -26,7 +26,7 @@ import './activities/ContactActivity.js';
 
 // poseCache 初始化入口（由 SocialLayer 构造函数转发到各 Activity 模块）
 import { initTalkGestures }  from './activities/TalkActivity.js';
-import { initStallGestures } from './activities/StallActivity.js';
+import { initStallGestures } from './data/StallPoseStore.js';
 import { initChessMove }     from './activities/ChessActivity.js';
 import { initSubEventPoses } from './activities/ContactActivity.js';
 
@@ -76,30 +76,6 @@ export class SocialLayer {
       this.talkScanTimer = 0;
       this._tryPairTalk(npcs);
     }
-
-    // 3) 槽位等待超时（20s 内无第二个人到位） → 放弃，重新 walk
-    //    死亡 NPC 的槽位也必须回收（不跳过 !alive）
-    for (const npc of npcs) {
-      if (!npc.mem('social').slotWaitProp) continue;
-      if (!npc.alive) {
-        for (const s of npc.mem('social').slotWaitProp._slots) {
-          if (s.npc === npc) { s.ready = false; s.npc = null; }
-        }
-        this.envQuery.releaseSlotReservation(npc);
-        npc.mem('social').slotWaitProp = null;
-        continue;
-      }
-      if (npc.mem('social').activity) continue;
-      npc.mem('social').slotWaitTimer = (npc.mem('social').slotWaitTimer || 0) + dt;
-      if (npc.mem('social').slotWaitTimer > 20) {
-        for (const s of npc.mem('social').slotWaitProp._slots) {
-          if (s.npc === npc) { s.ready = false; s.npc = null; }
-        }
-        this.envQuery.releaseSlotReservation(npc);
-        npc.mem('social').slotWaitProp = null;
-        setState(npc, 'walk', 'slot_wait_timeout');
-      }
-    }
   }
 
   // 外部触发：创建指定类型的 Activity。meta 原样透传给工厂第 5 参
@@ -122,7 +98,13 @@ export class SocialLayer {
     if (act) act.interrupt(reason);
   }
 
-  /** Smart Object 槽位到达：优先用注册项的 onSlotArrival 钩子，否则走默认多槽凑齐逻辑 */
+  /**
+   * Smart Object 槽位到达：分派给注册项的 onSlotArrival 钩子（prop-as-host，
+   * Patch H）——凑人待机不再是 SocialLayer 兜底的通用机制，改由各 activity
+   * 自己声明的钩子负责（如 StallActivity 把独占卖家路由进 StallSellerTask，
+   * 买家到位才凑满 roster 去 Create）。没声明钩子的 activityType 视为不支持
+   * 槽位待人，直接放弃。
+   */
   onSlotArrival(npc, prop, slot) {
     slot.ready = true;
     slot.npc   = npc;
@@ -131,20 +113,8 @@ export class SocialLayer {
 
     if (entry?.onSlotArrival) {
       entry.onSlotArrival(npc, prop, slot, this);
-      return;
-    }
-
-    // 默认（单/多槽）：凑齐所有槽位即创建 Activity，否则原地站等
-    const allReady = prop._slots.every(s => s.ready);
-    if (allReady) {
-      const participants = prop._slots.map(s => ({ npc: s.npc, role: s.role }));
-      this.createActivity(type, participants, [prop]);
-      for (const s of prop._slots) { s.reserved = null; s.ready = false; s.npc = null; }
     } else {
-      setState(npc, 'stand', 'slot_wait');
-      npc.stateDur       = Infinity;
-      npc.mem('social').slotWaitTimer = 0;
-      npc.mem('social').slotWaitProp  = prop;
+      this._abandonSlot(npc, slot, 'no_onSlotArrival_hook');
     }
   }
 

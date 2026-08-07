@@ -9,8 +9,11 @@
  *
  * Smart-object 路由规则（walk → routing）已全部删除；
  * 售货机 / 垃圾桶由 Agenda desires 驱动；chess_onlooker 由 Agenda 的 affordance
- * 池路由（Patch D，ChessOnlookerTask，单人、非 Activity 成员）；stall_buyer
- * 仍待迁移，目前暂无 buyer 路由。
+ * 池路由（Patch D，ChessOnlookerTask，单人、非 Activity 成员）；stall 卖家独自
+ * 守摊已改走 StallSellerTask（Patch H，prop-as-host，ChainTask、非 Activity
+ * 成员）；stall_buyer 仍待迁移，目前暂无 buyer 路由——StallActivity 的
+ * onSlotArrival 钩子已经是"买家到位才凑满 roster 去 Create"的正确实现，
+ * 只是还没有东西会真的把买家送到那个槽位。
  */
 
 import { getProfile }          from '../npc/NpcProfile.js';
@@ -33,16 +36,11 @@ import { generateClaims } from './Belief.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
-/** 释放 NPC 占用的所有槽位（reserved 预约 + slot_wait 就位），清 slotWaitProp */
+/** 释放 NPC 占用的所有槽位预约（prop-as-host / Patch H：slot_wait 就位态已随
+ *  SocialLayer 默认 onSlotArrival 分支一并删除，各 activity 自己的槽位持有物
+ *  改经 TaskRunner holdings 机制回收，这里只兜底扫一遍 reserved）。 */
 function releaseAllHoldings(npc, envQuery) {
   envQuery.releaseSlotReservation(npc);
-  const sc = npc.mem('social');
-  if (sc.slotWaitProp) {
-    for (const s of sc.slotWaitProp._slots) {
-      if (s.npc === npc) { s.ready = false; s.npc = null; }
-    }
-    sc.slotWaitProp = null;
-  }
 }
 
 export class BehaviorManager {
