@@ -16,6 +16,13 @@ const chance = (p) => Math.random() < p;
 // 以后要覆盖更大起始距离，再展开成真正的相遇层。
 const REACH_SLACK = 2.5;
 
+// P-2：接触掷骰周期（秒）。原来只在 duration 到期那一刻掷一次，是证词管线唯一
+// 的进料口却只有一次机会。duration 是 rand(8,18)，取几秒量级的周期能让一场
+// 对话摇上若干轮（约 duration/SUB_EVENT_ROLL_INTERVAL 次，8s 对话 2 轮起，
+// 18s 对话可达 6 轮）；具体每轮命中率见 NpcProfile.js#socialWeights 的新口径
+// 注释（P-2 一并重标定）。
+const SUB_EVENT_ROLL_INTERVAL = 3;
+
 // talk_* 说话手势池（PoseCacheBuilder 的 talk_gestures 分类，id 前缀已剥离）
 let TALK_GESTURES = {};
 
@@ -31,6 +38,7 @@ export class TalkActivity extends Activity {
     this.b = b;
     this.duration = rand(8, 18);
     this.subState = 'talking';
+    this._rollTimer = 0; // P-2：接触掷骰周期计时，见 SUB_EVENT_ROLL_INTERVAL
     this.admit(a, 'speaker');
     this.admit(b, 'speaker');
     a.bond = this;
@@ -79,16 +87,27 @@ export class TalkActivity extends Activity {
   update(dt) {
     if (!this.a.alive || !this.b.alive) return false;
     this.timer += dt;
+    this._rollTimer += dt;
 
     this._faceEachOther();
     this._tickGesture(this.a, this._aGesture, dt);
     this._tickGesture(this.b, this._bGesture, dt);
 
-    if (this.timer >= this.duration) {
+    // P-2：接触掷骰改周期性——duration 期间每隔 SUB_EVENT_ROLL_INTERVAL 掷一轮，
+    // 命中就 handoff 并结束本场 talk；REACH_SLACK 距离否决（_handoffContact 内部
+    // 判定，命中但站太远时不会真的 handoff）不算这场对话失败，只当这一轮没掷中，
+    // 继续说话等下一轮——用 this._followUp 是否被设置来判断这一轮是不是真正成功
+    // handoff 了（否决时 _handoffContact 直接 return，不会设置它）。
+    if (this._rollTimer >= SUB_EVENT_ROLL_INTERVAL) {
+      this._rollTimer = 0;
       const type = this._selectSubEvent();
-      if (type) this._handoffContact(type);
-      return false;
+      if (type) {
+        this._handoffContact(type);
+        if (this._followUp) return false;
+      }
     }
+
+    if (this.timer >= this.duration) return false;
     return true;
   }
 

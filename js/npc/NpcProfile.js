@@ -84,7 +84,14 @@ const PEDESTRIAN = {
   desires: ['rest_bench', 'use_vending', 'use_trash', 'eat_snack', 'play_guitar'],
   traits: {},
   cameraReaction: 'neutral',
-  socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
+  // P-2 重标定：这批数值是 TalkActivity 每次掷骰（周期见
+  // TalkActivity.js#SUB_EVENT_ROLL_INTERVAL，约 3 秒一轮）命中某个接触类型
+  // 的概率，不是"整场对话"的概率——P-1 修复权重读取路径之前它们从未生效，
+  // 旧数值（0.02~0.08）是按"整场对话只掷一次"的口径写的，现在改周期性掷之后
+  // 沿用旧数值会让每场对话的总命中率暴涨。新数值按同一缩放比例（×0.6）从旧值
+  // 换算，保留各 profile 内部/之间原有的相对高低关系，目标是一场对话（约
+  // 2~6 轮）大致有三成到一半概率产出至少一次接触。
+  socialWeights: { push: 0.02, give_item: 0.03, handshake: 0.04, point_at: 0.03 },
   loiterChance: 0.10,
   loiterDurationRange: [15, 45],
   jaywalkChance: 0.10,
@@ -112,7 +119,8 @@ const BUSINESSMAN = {
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
   },
-  socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
+  // P-2 重标定：同 PEDESTRIAN 注记（每次掷骰概率，×0.6 换算自旧值）。
+  socialWeights: { push: 0.01, give_item: 0.03, handshake: 0.05, point_at: 0.03 },
   loiterChance: 0.06,
   loiterDurationRange: [15, 40],
   jaywalkChance: 0.20,
@@ -138,7 +146,8 @@ const TOURIST = {
     hands_in_pocket: HANDS_IN_POCKET,
   },
   activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
-  socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
+  // P-2 重标定：同 PEDESTRIAN 注记（每次掷骰概率，×0.6 换算自旧值）。
+  socialWeights: { push: 0.02, give_item: 0.04, handshake: 0.03, point_at: 0.04 },
   loiterChance: 0.18,
   loiterDurationRange: [20, 60],
   jaywalkChance: 0.15,
@@ -185,7 +194,8 @@ const CHESS_ONLOOKER = {
   activities: ['talk', 'chess_watch'],
   traits: {},
   cameraReaction: 'neutral',
-  socialWeights: { push: 0.02, give_item: 0.04, handshake: 0.05, point_at: 0.04 },
+  // P-2 重标定：同 PEDESTRIAN 注记（每次掷骰概率，×0.6 换算自旧值）。
+  socialWeights: { push: 0.01, give_item: 0.02, handshake: 0.03, point_at: 0.02 },
 };
 
 // 摊主：从地图边缘入场 → 路由到 stall 的 seller 槽 → 常驻经营，无正常状态机转换
