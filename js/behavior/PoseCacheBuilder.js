@@ -2,7 +2,10 @@
  * PoseCacheBuilder — 从 ClipLibrary 自动构建 poseCache。
  *
  * 分类规则（读取 manifest.clips）：
- *   overlay + participants          → sub_event
+ *   overlay + participants          → sub_event（任一 role 声明 skeleton 覆盖的
+ *                                      跨骨架 duet 除外，如 human_pet_dog——
+ *                                      TalkActivity 只配对人类，这类 clip 暂无
+ *                                      消费者，不进这个池）
  *   id 以 "stall_" 开头             → stall_gestures（key 去掉 "stall_" 前缀）
  *   id 以 "talk_" 开头              → talk_gestures（key 去掉 "talk_" 前缀）
  *   overlay + latched               → held
@@ -99,7 +102,16 @@ export function buildPoseCache(clipLibrary) {
 
     if (kind === 'overlay') {
       if (raw.participants) {
-        sub_event[id] = decodeSubEvent(raw);
+        // 跨骨架 duet（某个 role 声明了非默认 skeleton，如 human_pet_dog 的
+        // dog role）不进 sub_event 池：这个池唯一的消费者 TalkActivity 只配对
+        // 两个人类 NPC，随机抽到时会把 human role 的低头蹲姿套到随机聊天对象
+        // 身上（纯视觉 bug），dog role 的关节名在人类骨架里则直接找不到、被
+        // 静默忽略；且 TalkActivity._selectSubEvent 选中的 type 直接拿去
+        // emitEvent({kind:type})，未注册进 EventDefs.js 会在 emitEvent 里报错
+        // （human_pet_dog 目前正是这个下场）。这类 clip 暂无真正消费者
+        // （DogWalker.js 只有牵绳跟随，没有互动行为），先排除在外；等 owner-dog
+        // 互动机制落地时再给它建专属入口，不必勉强塞进人对人的池子。
+        if (!raw.participants.some(p => p.skeleton)) sub_event[id] = decodeSubEvent(raw);
       } else if (id.startsWith('stall_')) {
         const key = id.slice('stall_'.length);
         stall_gestures[key] = decodeGesture(raw);
