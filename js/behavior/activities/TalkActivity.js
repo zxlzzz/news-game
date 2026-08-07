@@ -92,12 +92,26 @@ export class TalkActivity extends Activity {
     return true;
   }
 
+  /**
+   * 加权单次抽样（P-1 缺陷 2 修复）：不再是"遍历 keys、第一个掷中就 return"
+   * （靠 Object.keys() 插入序决定优先级，不是真正的加权抽样）。总权重
+   * `total = Σw[type]` 即本轮"发生接触"的概率（`chance()` 对 `total>=1`
+   * 天然恒真，不需要额外 clamp）；一旦发生，具体类型按权重比例抽——
+   * 权重缺失（profile 没声明某个类型）视为 0，不给隐性默认值。
+   */
   _selectSubEvent() {
-    const w = (this.a._profile && this.a._profile.socialWeights) || {};
-    for (const type of Object.keys(getSubEventPoses())) {
-      if (chance(w[type] ?? 0.05)) return type;
+    const w = this.a.mem('agenda').profile?.socialWeights || {};
+    const types   = Object.keys(getSubEventPoses());
+    const weights = types.map(type => w[type] ?? 0);
+    const total   = weights.reduce((s, x) => s + x, 0);
+    if (total <= 0 || !chance(total)) return null;
+
+    let r = Math.random() * total;
+    for (let i = 0; i < types.length; i++) {
+      r -= weights[i];
+      if (r <= 0) return types[i];
     }
-    return null;
+    return types[types.length - 1]; // 浮点误差兜底，权重比例已在上面的循环里体现
   }
 
   /**

@@ -2,8 +2,8 @@
  * SocialLayer — 社交 / Activity 统一模型
  *
  * Activity 是多个 NPC（+道具）共同参与的高层行为单元（对话/下棋/遛狗…）。
- * 加入 Activity 的 NPC 被"锁定"（npc._activity 置位），BehaviorManager 跳过其
- * 基础状态机，由 Activity 全权驱动；释放后归还给 BaseStateMachine。
+ * 加入 Activity 的 NPC 被"锁定"（npc.mem('social').activity 置位），
+ * BehaviorManager 跳过其基础状态机，由 Activity 全权驱动；释放后归还给 BaseStateMachine。
  *
  * Activity 类型通过 registerActivity（ActivityRegistry.js）注册工厂。
  * 各 Activity 文件 import registerActivity 并自注册；SocialLayer 负责 side-effect import。
@@ -138,7 +138,9 @@ export class SocialLayer {
     for (let i = 0; i < standers.length; i++) {
       for (let j = i + 1; j < standers.length; j++) {
         const a = standers[i], b = standers[j];
-        if (a._activity || b._activity) continue;
+        // P-1 缺陷 3：这里原有一条读取 npc 上不存在的裸 `_activity` 字段的判据，
+        // 恒假（真字段是 mem('social').activity，且上面 standers 的过滤已经
+        // 排除过一次），是重复且失效的死判据，直接删除。
         const dx = Math.abs(a.x - b.x);
         const dy = Math.abs(a.y - b.y);
         if (dx < 70 && dx > 14 && dy < 24 && chance(0.5)) {
