@@ -15,15 +15,15 @@ export function initStallGestures(gestures) {
 export class StallActivity extends Activity {
   constructor(id, seller, prop) {
     super(id, 'stall');
+    this.requiredRoster = 2; // 卖家先建，买家后到——部分 roster 是合法态，见 §5
     this.seller    = seller;
     this.prop      = prop;
     this.buyer     = null;
     this.buyerSlot = null;
-    this.join(seller, 'seller');
+    this.admit(seller, 'seller');
     this.occupy(prop);
     prop._stallActivity = this;
 
-    this._setupSeller(seller);
     this._sellerPlayer = new ClipPlayer(seller, '_stall');
     this._sellerSwitch = rand(4, 8);
     this._sellerTimer  = 0;
@@ -33,10 +33,17 @@ export class StallActivity extends Activity {
     this._sellerGivePlayer = null;
   }
 
-  _setupSeller(npc) {
-    setState(npc, 'stand', 'stall-setup');
-    npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
-    npc.mem('social').tags = ['vendor'];
+  /** Admit（②）— seller/buyer 共用同一入口，按 role 分派各自的初始姿势配置。 */
+  admit(npc, role) {
+    super.admit(npc, role);
+    if (role === 'seller') {
+      setState(npc, 'stand', 'stall-setup');
+      npc.modifiers  = npc.modifiers.filter(m => m.kind === 'trait');
+      npc.mem('social').tags = ['vendor'];
+    } else if (role === 'buyer') {
+      setState(npc, 'stand', 'stall-buyer-setup');
+      npc.modifiers = npc.modifiers.filter(m => m.kind === 'trait');
+    }
   }
 
   _pickSellerClip() {
@@ -47,8 +54,7 @@ export class StallActivity extends Activity {
     if (this.buyer) return false;
     this.buyer     = npc;
     this.buyerSlot = slot;
-    this.join(npc, 'buyer');
-    this._setupBuyer(npc);
+    this.admit(npc, 'buyer');
 
     this._buyerPhase  = 'point';
     this._buyerTimer  = 0;
@@ -60,11 +66,6 @@ export class StallActivity extends Activity {
     this.seller.direction = (npc.x >= this.seller.x) ? 1 : -1;
     npc.direction         = (this.seller.x >= npc.x) ? 1 : -1;
     return true;
-  }
-
-  _setupBuyer(npc) {
-    setState(npc, 'stand', 'stall-buyer-setup');
-    npc.modifiers = npc.modifiers.filter(m => m.kind === 'trait');
   }
 
   update(dt) {
@@ -87,7 +88,7 @@ export class StallActivity extends Activity {
   }
 
   _tickBuyer(dt) {
-    if (!this.buyer.alive) { this._endBuyer(false); return; }
+    if (!this.buyer.alive) { this.dismiss(this.buyer, 'stall-buyer-dead'); return; }
     this._buyerTimer += dt;
 
     if (this._buyerPhase === 'point') {
@@ -102,12 +103,13 @@ export class StallActivity extends Activity {
     } else if (this._buyerPhase === 'give') {
       this._buyerPlayer.update(dt);
       const sDone = !this._sellerGivePlayer || this._sellerGivePlayer.done;
-      if (this._buyerPlayer.done && sDone) this._endBuyer(true);
+      if (this._buyerPlayer.done && sDone) this.dismiss(this.buyer, 'stall-done');
     }
   }
 
-  _endBuyer(walkAway) {
-    const b = this.buyer;
+  /** Dismiss（④）— 买家单独退场，卖家继续叫卖等下一个；子类扩展槽位/ClipPlayer 清理，
+   *  再 super.dismiss() 走公共部分（release + 摘除 participants +（存活时）setState('walk')）。 */
+  dismiss(npc, reason) {
     if (this._buyerPlayer)      this._buyerPlayer.clear();
     if (this._sellerGivePlayer) { this._sellerGivePlayer.clear(); this._sellerGivePlayer = null; }
     this._giving = false;
@@ -117,11 +119,9 @@ export class StallActivity extends Activity {
       this.buyerSlot.ready    = false;
       this.buyerSlot.npc      = null;
     }
-    if (b) {
-      b.mem('social').tags = null;
-      this.release(b);
-      this.participants = this.participants.filter(p => p.npc !== b);
-      if (walkAway && b.alive) setState(b, 'walk', 'stall-done');
+    if (npc) {
+      npc.mem('social').tags = null;
+      super.dismiss(npc, reason);
     }
     this.buyer     = null;
     this.buyerSlot = null;

@@ -18,11 +18,12 @@ function freezeAt0(npc) {
 export class ChessActivity extends Activity {
   constructor(id, players, props) {
     super(id, 'chess');
+    this.requiredRoster = 2;
     this.a = players[0];
     this.b = players[1];
     this.table = props[0] || null;
-    this.join(this.a, 'player_a');
-    this.join(this.b, 'player_b');
+    this.admit(this.a, 'player_a');
+    this.admit(this.b, 'player_b');
     for (const p of props) this.occupy(p);
 
     this.subState = 'playing';
@@ -30,14 +31,12 @@ export class ChessActivity extends Activity {
     this.waiting  = false;
     this.waitMs   = 0;
 
-    this._setupPlayer(this.a);
-    this._setupPlayer(this.b);
-
     startPlay(this.a);
     freezeAt0(this.b);
   }
 
-  _setupPlayer(npc) {
+  admit(npc, role) {
+    super.admit(npc, role);
     setState(npc, 'chess', 'chess-setup');
   }
 

@@ -26,16 +26,15 @@ export function initTalkGestures(gestures) {
 export class TalkActivity extends Activity {
   constructor(id, a, b) {
     super(id, 'talk');
+    this.requiredRoster = 2;
     this.a = a;
     this.b = b;
     this.duration = rand(8, 18);
     this.subState = 'talking';
-    this.join(a, 'speaker');
-    this.join(b, 'speaker');
+    this.admit(a, 'speaker');
+    this.admit(b, 'speaker');
     a.bond = this;
     b.bond = this;
-    this._enterTalk(a);
-    this._enterTalk(b);
     this._faceEachOther();
 
     // 说话手势轮播：每个说话者独立一个 ClipPlayer，从 talk_gestures 随机抽一条、
@@ -64,7 +63,8 @@ export class TalkActivity extends Activity {
     this._roleB         = null;
   }
 
-  _enterTalk(npc) {
+  admit(npc, role) {
+    super.admit(npc, role);
     setState(npc, 'talk', 'talk-enter');
     npc.modifiers = npc.modifiers.filter(m => m.kind === 'trait');
   }
@@ -199,6 +199,9 @@ export class TalkActivity extends Activity {
         if (!this._pushBReleased) setXY(this.b, this._bTargetX, this.b.y);
 
         if (this._subEvent === 'push' && !this._pushBReleased) {
+          // 手写 release，不走 dismiss()：dismiss 的 base 版落地状态硬编码 'walk'，
+          // 而被推倒的一方要落 'fall'，语义不同不能借道——留给 Patch G（ContactActivity
+          // 抽离时 push 统一为 clip 声明的 per-role 后效）一并处理。
           this._pushBReleased = true;
           this.release(this.b);
           this.b.bond = null;

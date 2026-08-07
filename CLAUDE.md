@@ -445,6 +445,7 @@ npc.clearMem('loiter');
 | `docs/contracts/movement.md` | 规范性 | 移动子系统字段所有权、Motor 写保护门、NavGrid、WalkMode 协议 |
 | `docs/contracts/behavior.md` | 规范性 | 行为层栈、STATE_DEFS、NPC Profile、状态转换表、Activity/WalkMode/Modifier/Separation |
 | `docs/contracts/known-violations.md` | 规范性 | check-invariants 已知例外白名单 |
+| `docs/contracts/activity-lifecycle-v1.md` | 规范性 | Activity 五 phase 契约：Create/Admit/Drive/Dismiss/End；`admit`/`dismiss`/`requiredRoster` 已落地（Patch E），ContactActivity 抽离/prop-as-host 未落地 |
 | `docs/design-plans/news-pipeline-mvp.md` | 设计稿（finalized） | 新闻管线 MVP：截图 T2、Provider T3、成稿流 T4 |
 | `docs/design-plans/photo2entity-plan.md` | 设计稿（draft） | 现实照片 → AI 生成场景物体，占位草案 |
 | `docs/design-plans/semantic-destination-design.md` | 设计稿（finalized） | 语义目的地层 v2，affordance 池设计 |
