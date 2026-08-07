@@ -1,6 +1,7 @@
 import { setState, setXY }  from '../Motor.js';
 import { dlog }             from '../DebugLog.js';
 import { Activity }         from './Activity.js';
+import { ClipPlayer }       from '../ClipPlayer.js';
 import { registerActivity } from '../ActivityRegistry.js';
 import { emitEvent }        from '../WorldEventLog.js';
 
@@ -13,6 +14,13 @@ let SUB_EVENT_POSES = {};
 
 export function initSubEventPoses(poses) {
   SUB_EVENT_POSES = poses || {};
+}
+
+// talk_* 说话手势池（PoseCacheBuilder 的 talk_gestures 分类，id 前缀已剥离）
+let TALK_GESTURES = {};
+
+export function initTalkGestures(gestures) {
+  TALK_GESTURES = gestures || {};
 }
 
 export class TalkActivity extends Activity {
@@ -29,6 +37,16 @@ export class TalkActivity extends Activity {
     this._enterTalk(a);
     this._enterTalk(b);
     this._faceEachOther();
+
+    // 说话手势轮播：每个说话者独立一个 ClipPlayer，从 talk_gestures 随机抽一条、
+    // 每 rand(4,8) 秒换一条（照抄 StallActivity 卖家 _pickSellerClip 的模式）。
+    // 只在 subState === 'talking' 时 tick（见 update()）——子事件触发后 subState
+    // 变为事件类型，手势播放器自然暂停（不再被 tick），子事件结束若 subState
+    // 变回 'talking' 则自动恢复。
+    this._aGesture = { player: new ClipPlayer(a, '_talk_gesture'), timer: 0, next: rand(4, 8) };
+    this._bGesture = { player: new ClipPlayer(b, '_talk_gesture'), timer: 0, next: rand(4, 8) };
+    this._pickTalkClip(this._aGesture.player);
+    this._pickTalkClip(this._bGesture.player);
 
     this._subEvent      = null;
     this._subPhase      = null;
@@ -59,12 +77,31 @@ export class TalkActivity extends Activity {
     }
   }
 
+  _pickTalkClip(player) {
+    const keys = Object.keys(TALK_GESTURES);
+    if (!keys.length) return;
+    const key = keys[Math.floor(Math.random() * keys.length)];
+    player.play(TALK_GESTURES[key]);
+  }
+
+  _tickGesture(npc, g, dt) {
+    g.player.update(dt);
+    g.timer += dt;
+    if (g.timer >= g.next) {
+      g.timer = 0;
+      g.next  = rand(4, 8);
+      this._pickTalkClip(g.player);
+    }
+  }
+
   update(dt) {
     if (!this.a.alive || !this.b.alive) return false;
     this.timer += dt;
 
     if (this.subState === 'talking') {
       this._faceEachOther();
+      this._tickGesture(this.a, this._aGesture, dt);
+      this._tickGesture(this.b, this._bGesture, dt);
       if (this.timer >= this.duration) {
         const type = this._selectSubEvent();
         if (type) {
@@ -245,8 +282,13 @@ export class TalkActivity extends Activity {
   destroy() {
     if (this.a.alive) {
       this.a.modifiers = this.a.modifiers.filter(m => m.id !== '_talk_sub_event');
+      this._aGesture.player.clear();
       if (this._aOrigX != null) setXY(this.a, this._aOrigX, this.a.y);
     }
+    // b 的手势播放器与 push 早退无关（那是 _talk_sub_event 的地盘），不受
+    // _pushBReleased 门控：即使 b 被推倒提前退出，_talk_gesture 也要清掉，
+    // 否则会残留在 b 的 fall 动画上（modifier timer:-1 永不自动过期）。
+    if (this.b.alive) this._bGesture.player.clear();
     if (!this._pushBReleased && this.b.alive) {
       this.b.modifiers = this.b.modifiers.filter(m => m.id !== '_talk_sub_event');
       if (this._bOrigX != null) setXY(this.b, this._bOrigX, this.b.y);

@@ -4,6 +4,7 @@
  * 分类规则（读取 manifest.clips）：
  *   overlay + participants          → sub_event
  *   id 以 "stall_" 开头             → stall_gestures（key 去掉 "stall_" 前缀）
+ *   id 以 "talk_" 开头              → talk_gestures（key 去掉 "talk_" 前缀）
  *   overlay + latched               → held
  *   overlay + _front 变体存在        → trait（side+front 双视角）
  *   overlay（其余）                  → gesture（含 use_vending / use_trash）
@@ -12,7 +13,7 @@
 /**
  * 同步构建 poseCache；调用前须确保所有相关 clip 已通过 clipLibrary.getClip() 缓存。
  * @param {import('../core/ClipLibrary.js').ClipLibrary} clipLibrary
- * @returns {{ held, gesture, sub_event, stall_gestures, trait }}
+ * @returns {{ held, gesture, sub_event, stall_gestures, talk_gestures, trait }}
  */
 export function buildPoseCache(clipLibrary) {
   const clips   = clipLibrary.manifest?.clips ?? {};
@@ -83,6 +84,7 @@ export function buildPoseCache(clipLibrary) {
   const gesture        = {};
   const sub_event      = {};
   const stall_gestures = {};
+  const talk_gestures  = {};
 
   for (const [id, entry] of Object.entries(clips)) {
     const raw = clipLibrary.getCachedClip(id);
@@ -97,6 +99,9 @@ export function buildPoseCache(clipLibrary) {
       } else if (id.startsWith('stall_')) {
         const key = id.slice('stall_'.length);
         stall_gestures[key] = decodeGesture(raw);
+      } else if (id.startsWith('talk_')) {
+        const key = id.slice('talk_'.length);
+        talk_gestures[key] = decodeGesture(raw);
       } else if (raw.latched) {
         held[id] = decodeHeld(raw);
       } else if (clipIds.has(id + '_front')) {
@@ -112,11 +117,11 @@ export function buildPoseCache(clipLibrary) {
     if (entry.kind !== 'overlay') continue;
     const raw = clipLibrary.getCachedClip(id);
     if (!raw) continue;
-    if (raw.participants || id.startsWith('stall_') || raw.latched || id.endsWith('_front')) continue;
+    if (raw.participants || id.startsWith('stall_') || id.startsWith('talk_') || raw.latched || id.endsWith('_front')) continue;
     if (!clipIds.has(id + '_front')) continue;
     const frontRaw = clipLibrary.getCachedClip(id + '_front');
     trait[id] = { side: decodeHeld(raw), front: decodeHeld(frontRaw) };
   }
 
-  return { held, gesture, sub_event, stall_gestures, trait };
+  return { held, gesture, sub_event, stall_gestures, talk_gestures, trait };
 }
