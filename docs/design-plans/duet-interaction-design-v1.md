@@ -1,6 +1,22 @@
 # 双人互动设计 v1.0
 
 > 冻结决策记录。日期：2026-07-25。
+>
+> **落地状态（Patch G，2026-08-07）**：D1（单 clip 多角色）/D3（语义角色名）/
+> D5（互动表脱离 TalkActivity，`ContactActivity` + `DuetStager`）已落地——
+> 详见 `js/behavior/DuetStager.js` + `js/behavior/activities/ContactActivity.js`，
+> CLAUDE.md「行为系统」有摘要。D2（`participants` 站位声明）此前已随 U-1 落地
+> （`decodeSubEvent` 读 `dx`）。D4（同深度）沿用 `SocialLayer._tryPairTalk` 既有
+> `dy<24` 前置条件，未单独加判定。D6（先走到间距再触发）**简化落地**：没有做
+> 独立的 goto 相遇阶段，沿用 reach 阶段的位置插值直接"走"到 `designGap` 站位，
+> 写死一个起始间距上限（`REACH_SLACK=2.5`，`TalkActivity.js`）挡掉起点太远导致
+> 位移过大瞬移的情况——真正的相遇层仍是本文档「M-1 后附记」描述的未来工作，
+> 只是优先级降低到"够用即可"。D7（`validate.mjs` 接触关节距离校验）**未做**，
+> 仍是待办。首条真正打磨过的多帧 duet clip 是新版 `handshake.json`（用 C-1b
+> 参照层编辑器画的，9 帧，`receiver`/`approacher` 语义角色名），`push`/
+> `give_item`/`point_at` 三个仍是早期 1 帧占位（继续可用，只是没有真实接触
+> 数据）；`push.json` 新增 `ejectRole` 字段替代原来硬编码在 `TalkActivity`
+> 里的受害者提前退场逻辑。
 
 ## 背景
 

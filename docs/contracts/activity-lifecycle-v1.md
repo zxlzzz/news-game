@@ -1,10 +1,12 @@
 # Activity Lifecycle Contract (v1)
 
-> **状态**：§8 落地顺序中 1（五 phase 契约化）/5（旁观者移出成员制）/6（单人移出）已完成
-> （Patch E / D / A）：基类 `Activity` 现含 `admit`/`dismiss`/`requiredRoster`，Talk/Chess/Stall
-> 的成员配置/退场已收口到这两个方法；UseProp 已内联进 `UseSmartPropTask`、chess 旁观者已
-> 移出成 `ChessOnlookerTask`，均不再是 Activity 成员。2（动画统一）/3（ContactActivity 抽离）/
-> 4（prop-as-host）尚未落地——下文 §7 一致性差距表已按当前状态更新。全部落地后
+> **状态**：§8 落地顺序中 1（五 phase 契约化）/2（动画统一）/3（ContactActivity 抽离）/
+> 5（旁观者移出成员制）/6（单人移出）已完成（Patch E / F+G / G / D / A）：基类 `Activity`
+> 现含 `admit`/`dismiss`/`requiredRoster`/`handoff`，Talk/Chess/Stall 的成员配置/退场已
+> 收口到 admit/dismiss；Chess 换 `ClipPlayer`（Patch F）；`push`/`give_item`/`handshake`/
+> `point_at` 从 TalkActivity 抽成独立 `ContactActivity`+`DuetStager`（Patch G）；UseProp
+> 已内联进 `UseSmartPropTask`、chess 旁观者已移出成 `ChessOnlookerTask`，均不再是 Activity
+> 成员。4（prop-as-host）尚未落地——下文 §7 一致性差距表已按当前状态更新。全部落地后
 > `file#symbol` 锚点补齐，本行删除。
 >
 > 锚点用 `file#symbol`，**不写行号**（行号腐烂比符号名快）。
@@ -23,7 +25,8 @@ Activity 是**多个 NPC（+道具）共同参与、需要跨 NPC 协调**的高
 - 单人顺序行为 → **ChainTask**（协作式：`pose` 用 `setState + stateDur=Infinity` 挂住，BSM 仍在，
   不接管）。单人**不该**是 Activity。
 - 旁观者 / 目击者 / 反应者 = **单人 ChainTask + 一个前置条件**（如「桌上有活局」
-  `table._chessActivity` 存活），**永远不是 Activity 成员**。
+  `table._occupiedBy` 非空——Activity.occupy()/destroy() 已经维护的占用标记，见
+  `ChessOnlookerTask`），**永远不是 Activity 成员**。
 
 ---
 
@@ -124,29 +127,37 @@ phase 不按「发生了什么」列（那会把「播动画」这种*能力*和
 
 - **动画**：是 Admit（摆初始姿势）和 Drive（每帧播）调用的**服务**，不占独立时刻。约定：
   收敛到 **`ClipPlayer`**（干净的单人「帧 → held modifier」）。Chess 的 `playOnce`/`animDone`
-  裸标志、Talk 的手搓逐帧（`_applyFrame`/`_tickSubEvent`）都是重复它，应替换。**双人接触** =
-  两个 `ClipPlayer`（一角色一个）+ 一层薄 **DuetStager**（reach→play→release + designGap 站位 +
-  emit）；编排不塞进 ClipPlayer。
+  裸标志已换 `ClipPlayer`（Patch F）。**双人接触** = `DuetStager`（`js/behavior/DuetStager.js`，
+  reach→play→release + designGap 站位 + `ejectRole` 声明式后效；不是字面上的"两个 ClipPlayer"，
+  是同一套关节写入手法但一个类里管两个角色，因为 reach/release 阶段的位置插值是跨两人的相对
+  关系，拆成两个独立 ClipPlayer 反而没法共享 t）；编排不塞进 ClipPlayer；`ContactActivity`
+  持一个 `DuetStager` 实例驱动，自己管 join/dismiss/emit（Patch G，已落地）。
 - **配对 / 相遇**：发生在 Create **之前**、跨 NPC，不属于任何单个 activity 的内部流程，单列在五
   phase 之外。见 `duet-interaction-design-v1.md` D6：泛化的配对表 → 给两人发接近 Goal（复用四层
-  goal 管线，`profile.separate` 回归防撞旁人本职）→ 都到 gap 且相向 → Create。
+  goal 管线，`profile.separate` 回归防撞旁人本职）→ 都到 gap 且相向 → Create。**Patch G 简化
+  落地**：没有做独立的 goto 相遇阶段，`TalkActivity` 掷骰命中后直接检查起始间距是否在
+  `designGap` 的 `REACH_SLACK` 倍以内，够近才 `handoff('contact',...)`，够近之后由 `DuetStager`
+  的 reach 阶段插值补齐剩余间距——D6 描述的真正相遇层仍是待办，见 `duet-interaction-design-v1.md`
+  「M-1 后附记」。
 
 ---
 
-## 7. 现有 activity 一致性差距（Patch A/D/E 落地后）
+## 7. 现有 activity 一致性差距（Patch A/D/E/F/G 落地后）
 
 | activity | Create | Admit | Drive | Dismiss | End | 违背边界？ |
 |---|---|---|---|---|---|---|
-| **TalkActivity** | 构造绑 2 speaker，走 `admit` | ✓ `admit` override（setState('talk')+清 modifier） | 手搓（应换 ClipPlayer/DuetStager，Talk 的说话手势轮播已换 ClipPlayer，子事件逐帧仍手搓） | △ push 分支临时 `release` 受害者=事实上的 Dismiss，但落地态是 `fall` 不是 `dismiss()` 硬编码的 `walk`，语义不同不能借道，留给 ContactActivity 抽离 | 依赖基类 + 子事件 release | 否 |
-| **ChessActivity** | ✓ 2 player+桌，走 `admit` | ✓ `admit` override（setState('chess')） | 回合制（裸标志，应换 ClipPlayer，见 Patch F） | 无（旁观者已移出成 `ChessOnlookerTask`，两名 player 同生共死，无单成员退场场景） | ✓ `destroy` | 否（旁观者违规已随 Patch D 消除） |
+| **TalkActivity** | 构造绑 2 speaker，走 `admit` | ✓ `admit` override（setState('talk')+清 modifier） | ✓ 说话手势轮播（ClipPlayer）+ 掷骰；子事件本体已抽给 ContactActivity | 无（两人同生共死，无单成员退场场景；push 早退已随 Patch G 移出成 ContactActivity 的 `_onEject`） | ✓ `destroy`（区分 handoff/正常两条收场路径，见文件内注释） | 否 |
+| **ChessActivity** | ✓ 2 player+桌，走 `admit` | ✓ `admit` override（setState('chess')） | ✓ 回合制（ClipPlayer，Patch F） | 无（旁观者已移出成 `ChessOnlookerTask`，两名 player 同生共死，无单成员退场场景） | ✓ `destroy` | 否（旁观者违规已随 Patch D 消除） |
 | **StallActivity** | ✓ 卖家先建（部分 roster），走 `admit` | ✓ `admit` override（按 role 分派 seller/buyer 姿势） | ✓ 卖家手势循环 + 买家分相（ClipPlayer） | ✓ `dismiss` override（买家走、卖家续，原 `_endBuyer`） | ✓ `destroy` | 否（卖家待机应改单人 use，§5，未落地） |
+| **ContactActivity**（Patch G 新增） | ✓ 2 参与者，role 名来自 clip 自身（如 `receiver`/`approacher`），走 `admit` | 不 override 基类（join-only）——DuetStager 的 reach 阶段要从"当前姿势"平滑过渡，Admit 若清 modifier/重设 state 反而破坏过渡 | ✓ 委托 `DuetStager.tick()`（reach→play→release） | ✓ 基类默认版足够——`ejectRole` 命中时自己的 `_onEject` 直接 release/setState/emit，不经通用 `dismiss()`（落地态因 clip 而异，如 `fall`，不是 `dismiss()` 硬编码的 `walk`） | ✓ `destroy`（`DuetStager.cancel()` 复位未弹出的一方） | 否 |
 | **WaitBusActivity** | 构造绑 1 NPC（绕过注册表） | — | stand↔loiter 抖动 | — | `destroy` | **是**（单人，应移出成 Task/BSM 态，Patch C 待定见下方注记） |
 
 要点：UsePropActivity 已随 Patch A 内联进 `UseSmartPropTask` 删除，不再在此表列出。Chess 旁观者
-已随 Patch D 移出成单人 `ChessOnlookerTask`。Talk/Chess/Stall 的 Admit/Dismiss 已收口到基类契约
-（Patch E）；Talk 仍缺 Dismiss（push 分支的落地态语义与 `dismiss()` 冲突，待 ContactActivity 抽离时
-一并处理）；三者的 Drive 仍各自手搓动画（ClipPlayer 化见 §8 item 2 / Patch F）。WaitBus 仍违背单人
-边界，是否重新界定为「NPC+公交车」的合法 ≥2 方例外由用户决定（见 tasks.md Patch C）。
+已随 Patch D 移出成单人 `ChessOnlookerTask`。Talk/Chess/Stall/Contact 的 Admit/Dismiss 已收口到
+基类契约（Patch E/G）；四者的 Drive 均已用 `ClipPlayer`/`DuetStager` 统一动画（Patch F/G）。
+`push`/`give_item`/`handshake`/`point_at` 从 TalkActivity 抽成独立 `ContactActivity`，Talk 降为
+消费者（`handoff('contact', ...)`，Patch G）。WaitBus 仍违背单人边界，是否重新界定为
+「NPC+公交车」的合法 ≥2 方例外由用户决定（见 tasks.md Patch C）。
 
 ---
 
@@ -154,15 +165,21 @@ phase 不按「发生了什么」列（那会把「播动画」这种*能力*和
 
 1. ✅ **五 phase 契约化**（Patch E）：基类 `Activity` 提供 `admit`/`dismiss`/`requiredRoster` +
    三入口汇聚的 End；Talk/Chess/Stall 迁到契约（未改行为，四门 patch 前后逐字节一致）。
-2. **动画统一**：Chess 换 ClipPlayer（Patch F）；Talk 子事件逐帧手搓仍不动；建 DuetStager（§6）。
-3. **ContactActivity 抽离**：把 reach/play/release + emit 从 TalkActivity 抽成独立 ≥2 NPC Activity，
-   Talk 降为消费者（`createActivity('contact')`）；push 统一为 clip 声明的 per-role 后效。
-   **硬前置**：先用 C-1b 编辑器带参照层画一个真接触姿势，量出真 gap + 接触关节距离
-   （现设计文档里的 ≤2px 是估的）。
+2. ✅ **动画统一**（Patch F/G）：Chess 换 ClipPlayer（Patch F）；建 DuetStager，Talk 子事件
+   逐帧手搓随 Patch G 一并抽走。
+3. ✅ **ContactActivity 抽离**（Patch G）：把 reach/play/release + emit 从 TalkActivity 抽成独立
+   ≥2 NPC Activity（`js/behavior/activities/ContactActivity.js`），Talk 降为消费者
+   （`this.handoff('contact', participants, {clip:type})`，基类新增 `handoff()`，
+   `SocialLayer.update()` 在 `destroy()` 之后统一消费创建后继）；push 统一为 clip 声明的
+   `ejectRole` 后效。硬前置（C-1b 参照层画真接触姿势）已由用户完成，产出新版
+   `handshake.json`（9 帧，`receiver`/`approacher`）替换原 1 帧占位；`push`/`give_item`/
+   `point_at` 三个仍是占位，机制已通用但没有真实接触数据。相遇层用 `TalkActivity.js`
+   的 `REACH_SLACK` 简化（见 §6「配对/相遇」），不是 D6 描述的独立 goto 相遇阶段。
 4. **prop-as-host**（§5，chess / stall）：设备凑人满员才 Create，删 `slotWait*`。
 5. ✅ **旁观者移出成员制**（Patch D）：ChessActivity 删 `addOnlooker`/`onlooker` 数组，改单人
    `ChessOnlookerTask` + 前置条件（`table._occupiedBy`，即棋局是否存活）。
 6. ✅ **单人移出**（Patch A）：UseProp → 内联进 `UseSmartPropTask`；WaitBus → 未落地，待定
    （见 tasks.md Patch C 的边界讨论：上车是否算「NPC+公交车」的合法 ≥2 方例外）。
 
-> 依赖关系：3 依赖 2（要先有 DuetStager）；3 的接触调参依赖那一个手绘接触姿势；其余可较独立推进。
+> 依赖关系：3 依赖 2（要先有 DuetStager）——已一起在 Patch G 落地；3 的接触调参依赖那一个手绘
+> 接触姿势——已由用户在 C-1b 编辑器完成；剩下的 4（prop-as-host）可独立推进。

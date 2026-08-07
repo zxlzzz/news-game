@@ -22,11 +22,13 @@ export { registerActivity } from './ActivityRegistry.js';
 import './activities/TalkActivity.js';
 import './activities/ChessActivity.js';
 import './activities/StallActivity.js';
+import './activities/ContactActivity.js';
 
 // poseCache 初始化入口（由 SocialLayer 构造函数转发到各 Activity 模块）
-import { initSubEventPoses, initTalkGestures } from './activities/TalkActivity.js';
+import { initTalkGestures }  from './activities/TalkActivity.js';
 import { initStallGestures } from './activities/StallActivity.js';
 import { initChessMove }     from './activities/ChessActivity.js';
+import { initSubEventPoses } from './activities/ContactActivity.js';
 
 const chance = (p) => Math.random() < p;
 
@@ -49,7 +51,7 @@ export class SocialLayer {
   }
 
   update(npcs, dt) {
-    // 1) tick 所有活跃 Activity；结束的 destroy
+    // 1) tick 所有活跃 Activity；结束的 destroy；声明了 handoff() 的紧接着创建后继
     for (let i = this.activities.length - 1; i >= 0; i--) {
       const act = this.activities[i];
       const alive = act.alive && act.update(dt);
@@ -57,6 +59,14 @@ export class SocialLayer {
         dlog(`[Activity ${act.label}] destroyed(reason=${act._endReason})`);
         act.destroy();
         this.activities.splice(i, 1);
+        if (act._followUp) {
+          const { type, participants, meta } = act._followUp;
+          const next = this.createActivity(type, participants, [], meta);
+          // 这个循环从数组尾部往前走，本帧新 push 的 next 排在更靠后的下标，
+          // 不会被这一轮 for 再扫到——立刻补一次 tick，避免它平白等到下一帧
+          // 才开始播（旧版子事件是同一帧内联执行，这里补齐同等时效）。
+          next?.update(dt);
+        }
       }
     }
 
@@ -92,11 +102,13 @@ export class SocialLayer {
     }
   }
 
-  // 外部触发：创建指定类型的 Activity
-  createActivity(type, participants, props = []) {
+  // 外部触发：创建指定类型的 Activity。meta 原样透传给工厂第 5 参
+  // （ActivityRegistry.js 头部注释），供 'contact' 这类"一个 type 对应多条
+  // clip"的场景区分具体播哪条——如 ContactActivity 用 meta.clip。
+  createActivity(type, participants, props = [], meta) {
     const id = ++this._idSeq;
     const entry = getRegistry()[type];
-    const act = entry ? entry.factory(id, participants, props, type) : null;
+    const act = entry ? entry.factory(id, participants, props, type, meta) : null;
     if (act) {
       this.activities.push(act);
       dlog(`[Activity ${act.label}] created`);

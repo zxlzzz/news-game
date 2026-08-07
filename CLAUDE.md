@@ -306,7 +306,7 @@ if (exit) { npc.x = exit.x; npc.alive = false; }
 BehaviorManager
   ├── BaseStateMachine  — 状态机（setState / tickBaseState）
   ├── WalkMode          — wander / path_follow
-  ├── SocialLayer       — Talk / Chess / Stall 配对
+  ├── SocialLayer       — Talk / Chess / Stall / Contact 配对
   ├── ModifierLayer     — 叠加动作（phone / smoke / gesture）
   └── EnvironmentQuery  — 空间查询（只读）
 
@@ -323,12 +323,33 @@ WorldEventLog.js — 世界事件流水账（W-1）。`emitEvent({kind, actors, 
 是唯一写入点，`kind` 须在 `js/behavior/data/EventDefs.js#EVENT_DEFS` 声明过，
 未声明直接抛错；结构 `{id, kind, actors[], x, y, t}`（`t` 取自 `GameClock.
 gameClock()`）。`emitEvent()` 调用点只允许出现在 `js/behavior/activities/`
-下（check-invariants Rule 14）。目前唯一调用方是 `TalkActivity.js`（push /
-push_land / give_item / handshake / point_at 五种 kind，取代旧版直接挂在
-NPC 上的私有标签字段）。`drainNewEvents()` 是唯一读取点（游标推进，无旁路只读
+下（check-invariants Rule 14）。目前唯一调用方是 `ContactActivity.js`
+（Patch G 从 `TalkActivity.js` 抽出：push / push_land / give_item /
+handshake / point_at 五种 kind，取代旧版直接挂在 NPC 上的私有标签字段）。
+`drainNewEvents()` 是唯一读取点（游标推进，无旁路只读
 查询）；`EVENT_LOG_CAP=500` 是长度上限唯一住址，超限
 从头裁剪且游标同步平移，保证已读事件不会被重读。消费者：`BehaviorManager.js`
 （W-7a，唯一消费点，`SocialLayer.update()` 之后）。
+
+ContactActivity.js / DuetStager.js — 双人接触互动（Patch G，从 TalkActivity
+抽出，`docs/design-plans/duet-interaction-design-v1.md` D1/D3/D5）。
+`DuetStager`（`js/behavior/DuetStager.js`）是纯编排引擎：reach（插值走到
+`designGap`×scale 对应站位 + 从当前姿势过渡到第 0 帧）→ play（逐帧步进）→
+release（插值放开 + 走回原位）三段式，只碰位置/modifier，不碰 roster；
+`ContactActivity` 持一个 `DuetStager` 实例驱动，自己管 join/dismiss/emit。
+`ejectRole`（clip 顶层可选字段，如 `push.json`）声明"play 阶段开始时把某个
+role 提前弹出"的后效（`{role, toState, emitKind}`），`DuetStager` 命中时回调
+`onEject(npc, otherNpc, effect)` 交给 `ContactActivity` 做 release/setState/
+emitEvent——取代旧版硬编码在 `TalkActivity` 里的 `push` 专属分支，新增同类
+clip 不需要再改代码。触发方：`TalkActivity` 子事件掷骰命中后
+`this.handoff('contact', participants, {clip:type})`（`Activity` 基类新增的
+`handoff()`，`SocialLayer.update()` 在 `destroy()` 之后统一消费创建后继，
+见 `activities/Activity.js` 头部注释）——起始间距超过 `designGap`×scale 的
+`REACH_SLACK`（写死 2.5）倍则放弃这轮，避免 reach 阶段的位置插值在 0.4s
+内位移过大看起来像瞬移；真正的"先 goto 到声明间距再触发"独立相遇层留待
+以后（见设计文档"M-1 后附记"）。`getSubEventPoses()`（`ContactActivity.js`
+导出）是 `poseCache.sub_event` 的唯一读取入口，`TalkActivity` 的掷骰
+（`_selectSubEvent`）反过来 import 它，不再自己持有一份。
 
 Belief.js — npc.mem('belief').claims 唯一 owner（W-5/W-6）。`generateClaims(event,
 actorNpcs, candidateNpcs)` 是"witness"来源 claim 的唯一写入点：对候选池逐个跑
@@ -423,7 +444,7 @@ npc.clearMem('loiter');
 |------------|-------------------------|-------------------------------------------------------|
 | `motor`    | Motor.js / WalkMode.js  | walkMode、goal、path、vel、faceAcc、frontAccDx、frontAccDy、speedK、savedBounds、needReplan、progressAcc、progressAnchor、wallSpot、tags（`_obsFlipVx / _obsVxSign` 只读观测，非状态位） |
 | `loiter`   | LoiterBehavior.js       | dir、dur、elapsed、overlay、microPhase、microPhaseName、microTimer、tags |
-| `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、slotWaitProp、slotWaitTimer、chessSlot、onlookerTimer、onlookerDur、tags |
+| `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、slotWaitProp、slotWaitTimer、tags |
 | `agenda`   | BehaviorManager / Director | profile、runner、agenda、lifespan、ageTimer、departing、pendingDeparture、preferExitType、exitRegistry、waitForBusLayer、busStops |
 | `modifier` | ModifierLayer.js        | heldCooldown、gestureCooldown                        |
 | `belief`   | Belief.js                | claims（目击 claim 数组，schema 见 witness-memory-v1.md） |

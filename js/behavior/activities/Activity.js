@@ -12,6 +12,10 @@
  *               子类 override 时先做自己的槽位清理，再 super.dismiss()。
  *   ⑤ End     — destroy()：整体散场，自然结束（update→false）/ interrupt / 参与者死亡
  *               三个入口都汇到这里。
+ *
+ * 移交（Patch G，非五 phase 之一，是 End 之后的可选后续）：一个 activity 散场时
+ * 可以声明"紧接着创建下一个 activity"（如 TalkActivity 中途触发接触互动，把
+ * 控制权交给 ContactActivity）。见 handoff()。
  */
 import { setState } from '../Motor.js';
 
@@ -65,6 +69,17 @@ export class Activity {
   update(dt) { return this.alive; }
 
   interrupt(reason) { this._endReason = reason || 'interrupt'; this.alive = false; }
+
+  /**
+   * 声明散场后立即创建的下一个 activity（type + participants + 可选 meta，
+   * 格式同 SocialLayer#createActivity 的调用参数）。SocialLayer.update() 在
+   * 调用完 destroy() 之后统一消费——不能在这里直接创建：destroy() 还没把
+   * 本 activity 的参与者 release 干净，此时创建会让新 activity 的 join()
+   * 被随后而来的 release() 立刻覆盖清空。
+   */
+  handoff(type, participants, meta) {
+    this._followUp = { type, participants, meta };
+  }
 
   destroy() {
     for (const { npc } of this.participants) this.release(npc);

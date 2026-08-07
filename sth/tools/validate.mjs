@@ -56,6 +56,10 @@ const WHITELIST = new Set([
   'participants',
   'context',
   'groundTravel',   // L-2：cycle clip 显式声明的循环地面位移（骨架单位/循环）
+  'reach', 'release', 'sustain', // SE-2/SE-3：duet clip 的进入/退出过渡时长与末帧停留开关
+                                  // （PoseCacheBuilder#decodeSubEvent 消费，见 new_assets/docx.md）
+  'ejectRole',      // Patch G：duet clip 声明"播到 play 阶段时提前弹出某个 role"
+                     // 的后效（DuetStager 消费，取代硬编码在 TalkActivity 里的 push 分支）
 ]);
 
 const VALID_KINDS    = new Set(['cycle', 'transition', 'overlay']);
