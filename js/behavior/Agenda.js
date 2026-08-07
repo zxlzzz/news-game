@@ -8,14 +8,15 @@
  *   else        → _pickGoal            (desires 池 weighted ChainTask，无 affordance fallback)
  */
 
-import { StrollTask }       from './tasks/StrollTask.js';
-import { UseBenchTask }     from './tasks/UseBenchTask.js';
-import { UseSmartPropTask } from './tasks/UseSmartPropTask.js';
-import { ExitSceneTask }    from './tasks/ExitSceneTask.js';
-import { VisitTask }        from './tasks/VisitTask.js';
-import { StrollLoopTask }   from './tasks/StrollLoopTask.js';
-import { ChainTask }        from './tasks/ChainTask.js';
-import { BEHAVIOR_SCRIPTS } from './data/BehaviorScripts.js';
+import { StrollTask }        from './tasks/StrollTask.js';
+import { UseBenchTask }      from './tasks/UseBenchTask.js';
+import { UseSmartPropTask }  from './tasks/UseSmartPropTask.js';
+import { ChessOnlookerTask } from './tasks/ChessOnlookerTask.js';
+import { ExitSceneTask }     from './tasks/ExitSceneTask.js';
+import { VisitTask }         from './tasks/VisitTask.js';
+import { StrollLoopTask }    from './tasks/StrollLoopTask.js';
+import { ChainTask }         from './tasks/ChainTask.js';
+import { BEHAVIOR_SCRIPTS }  from './data/BehaviorScripts.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const MAX_ABORTS = 3;
@@ -223,13 +224,15 @@ export class Agenda {
     });
   }
 
-  /** POI → task 路由：use:'visit'→VisitTask; 'bench'→UseBenchTask; 'smart_prop'→UseSmartPropTask */
+  /** POI → task 路由：use:'visit'→VisitTask; 'bench'→UseBenchTask; 'smart_prop'→UseSmartPropTask;
+   *  'chess_onlooker'→ChessOnlookerTask */
   _routePoi(poi) {
     switch (poi.aff.use) {
-      case 'bench':      return new UseBenchTask(this._envQuery);
-      case 'smart_prop': return new UseSmartPropTask(poi.aff.kind, this._envQuery);
+      case 'bench':          return new UseBenchTask(this._envQuery);
+      case 'smart_prop':     return new UseSmartPropTask(poi.aff.kind, this._envQuery);
+      case 'chess_onlooker': return new ChessOnlookerTask(this._envQuery);
       case 'visit':
-      default:           return new VisitTask(poi, this._envQuery);
+      default:               return new VisitTask(poi, this._envQuery);
     }
   }
 }

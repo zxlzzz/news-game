@@ -2,8 +2,6 @@ import { setState }         from '../Motor.js';
 import { Activity }         from './Activity.js';
 import { registerActivity } from '../ActivityRegistry.js';
 
-const rand = (a, b) => a + Math.random() * (b - a);
-
 const CHESS_WAIT_MS = 3500;
 
 function startPlay(npc) {
@@ -18,17 +16,14 @@ function freezeAt0(npc) {
 }
 
 export class ChessActivity extends Activity {
-  constructor(id, players, onlookers, props) {
+  constructor(id, players, props) {
     super(id, 'chess');
     this.a = players[0];
     this.b = players[1];
-    this.onlookers = onlookers || [];
     this.table = props[0] || null;
     this.join(this.a, 'player_a');
     this.join(this.b, 'player_b');
-    for (const o of this.onlookers) this.join(o, 'onlooker');
     for (const p of props) this.occupy(p);
-    if (this.table) this.table._chessActivity = this;
 
     this.subState = 'playing';
     this.active   = 'A';
@@ -37,7 +32,6 @@ export class ChessActivity extends Activity {
 
     this._setupPlayer(this.a);
     this._setupPlayer(this.b);
-    for (const o of this.onlookers) this._setupOnlooker(o);
 
     startPlay(this.a);
     freezeAt0(this.b);
@@ -45,38 +39,6 @@ export class ChessActivity extends Activity {
 
   _setupPlayer(npc) {
     setState(npc, 'chess', 'chess-setup');
-  }
-
-  _setupOnlooker(npc) {
-    setState(npc, 'chess_onlooker', 'chess-onlooker-setup');
-  }
-
-  _tickOnlooker(npc, dt) {
-    // animDone=true + playOnce=true → StickRenderer 自动冻结最后一帧，无需处理
-  }
-
-  addOnlooker(npc, slot) {
-    this.onlookers.push(npc);
-    this.join(npc, 'onlooker');
-    this._setupOnlooker(npc);
-    npc.mem('social').chessSlot     = slot || null;
-    npc.mem('social').onlookerTimer = 0;
-    npc.mem('social').onlookerDur   = rand(15, 40);
-    if (this.table) npc.direction = (this.table.x >= npc.x) ? 1 : -1;
-  }
-
-  releaseOnlooker(npc) {
-    const i = this.onlookers.indexOf(npc);
-    if (i >= 0) this.onlookers.splice(i, 1);
-    this.participants = this.participants.filter(p => p.npc !== npc);
-    this.release(npc);
-    if (npc.mem('social').chessSlot) {
-      npc.mem('social').chessSlot.reserved = null;
-      npc.mem('social').chessSlot.ready    = false;
-      npc.mem('social').chessSlot.npc      = null;
-      npc.mem('social').chessSlot = null;
-    }
-    if (npc.alive) setState(npc, 'walk', 'onlooker-done');
   }
 
   update(dt) {
@@ -98,32 +60,12 @@ export class ChessActivity extends Activity {
         freezeAt0(prev);
       }
     }
-    for (let i = this.onlookers.length - 1; i >= 0; i--) {
-      const o = this.onlookers[i];
-      if (!o.alive) {
-        this.onlookers.splice(i, 1);
-        this.participants = this.participants.filter(p => p.npc !== o);
-        continue;
-      }
-      this._tickOnlooker(o, dt);
-      o._onlookerTimer = (o._onlookerTimer || 0) + dt;
-      if (o._onlookerDur != null && o._onlookerTimer >= o._onlookerDur) {
-        this.releaseOnlooker(o);
-      }
-    }
     return true;
   }
 
   interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
-    for (const o of this.onlookers) {
-      if (o._chessSlot) {
-        o._chessSlot.reserved = null; o._chessSlot.ready = false; o._chessSlot.npc = null;
-        o._chessSlot = null;
-      }
-    }
-    if (this.table) this.table._chessActivity = null;
     for (const { npc } of this.participants) {
       if (npc.alive) setState(npc, 'walk', 'activity-end');
     }
@@ -132,13 +74,6 @@ export class ChessActivity extends Activity {
 }
 
 registerActivity('chess', (id, participants, props) => {
-  const players   = participants.filter(p => p.role.startsWith('player')).map(p => p.npc);
-  const onlookers = participants.filter(p => p.role === 'onlooker').map(p => p.npc);
-  return new ChessActivity(id, players, onlookers, props);
-}, {
-  onSlotArrival(npc, prop, slot, socialLayer) {
-    const act = prop._chessActivity;
-    if (act && act.alive && act.addOnlooker) act.addOnlooker(npc, slot);
-    else socialLayer._abandonSlot(npc, slot, 'chess_no_game');
-  },
+  const players = participants.filter(p => p.role.startsWith('player')).map(p => p.npc);
+  return new ChessActivity(id, players, props);
 });

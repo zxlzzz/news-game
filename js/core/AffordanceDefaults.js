@@ -14,7 +14,7 @@
  *   weight       — base selection weight (relative)
  *   slots        — max simultaneous occupants (null = unlimited / handled externally)
  *   facing       — 'entity'|'away'|null
- *   use          — task router: 'visit'|'bench'|'smart_prop'
+ *   use          — task router: 'visit'|'bench'|'smart_prop'|'chess_onlooker'
  *   weightMul    — optional (npc, env) => multiplier hook for persona weighting
  */
 
@@ -89,14 +89,14 @@ export const AffordanceDefaults = {
   //   use:          'smart_prop',
   // },
 
-  // 'chess-table': {
-  //   kind:         'watch_chess',
-  //   dx:           0, dy: 0,
-  //   arrivalState: 'chess_onlooker',
-  //   dur:          [15, 40],
-  //   weight:       0.30,
-  //   slots:        null,   // existing slot system
-  //   facing:       'entity',
-  //   use:          'smart_prop',
-  // },
+  'chess-table': {
+    kind:         'watch_chess',
+    dx:           0, dy: 0,
+    arrivalState: null,   // ChessOnlookerTask 自己 setState('chess_onlooker')
+    dur:          [15, 40],
+    weight:       0.30,
+    slots:        null,   // 排他性交给 findAvailableSlot 的棋桌 _slots（onlooker 槽）
+    facing:       'entity',
+    use:          'chess_onlooker',
+  },
 };

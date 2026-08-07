@@ -8,8 +8,9 @@
  *   - M-1: NPC 位置分离 `_separate` 已删除（C1 直接穿过；见 update() step 4 注记）
  *
  * Smart-object 路由规则（walk → routing）已全部删除；
- * 售货机 / 垃圾桶由 Agenda desires 驱动；chess_onlooker / stall_buyer
- * 将在第三刀迁移为 Agenda desires，目前暂无 onlooker / buyer 路由。
+ * 售货机 / 垃圾桶由 Agenda desires 驱动；chess_onlooker 由 Agenda 的 affordance
+ * 池路由（Patch D，ChessOnlookerTask，单人、非 Activity 成员）；stall_buyer
+ * 仍待迁移，目前暂无 buyer 路由。
  */
 
 import { getProfile }          from '../npc/NpcProfile.js';
