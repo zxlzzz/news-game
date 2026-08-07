@@ -7,7 +7,9 @@
  *
  * Activity 类型通过 registerActivity（ActivityRegistry.js）注册工厂。
  * 各 Activity 文件 import registerActivity 并自注册；SocialLayer 负责 side-effect import。
- * createActivity 查 REGISTRY['*'] 为通配符兜底（UsePropActivity）。
+ *
+ * Patch A：单人道具使用（trash/vending）已收口进 UseSmartPropTask，不再走 Activity；
+ * REGISTRY 不再有 '*' 通配符兜底，createActivity 查不到 type 时返回 null。
  */
 
 import { setState }       from './Motor.js';
@@ -20,11 +22,9 @@ export { registerActivity } from './ActivityRegistry.js';
 import './activities/TalkActivity.js';
 import './activities/ChessActivity.js';
 import './activities/StallActivity.js';
-import './activities/UsePropActivity.js';
 
 // poseCache 初始化入口（由 SocialLayer 构造函数转发到各 Activity 模块）
 import { initSubEventPoses } from './activities/TalkActivity.js';
-import { initGestureClips }  from './activities/UsePropActivity.js';
 import { initStallGestures } from './activities/StallActivity.js';
 
 const chance = (p) => Math.random() < p;
@@ -41,7 +41,6 @@ export class SocialLayer {
 
     if (poseCache) {
       initSubEventPoses(poseCache.sub_event      || {});
-      initGestureClips(poseCache.gesture         || {});
       initStallGestures(poseCache.stall_gestures || {});
     }
   }
@@ -93,8 +92,7 @@ export class SocialLayer {
   // 外部触发：创建指定类型的 Activity
   createActivity(type, participants, props = []) {
     const id = ++this._idSeq;
-    const REGISTRY = getRegistry();
-    const entry = REGISTRY[type] ?? REGISTRY['*'];
+    const entry = getRegistry()[type];
     const act = entry ? entry.factory(id, participants, props, type) : null;
     if (act) {
       this.activities.push(act);

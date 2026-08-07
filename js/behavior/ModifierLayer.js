@@ -29,8 +29,9 @@ export function initPoseCache(pc) {
   GESTURE_CLIPS = pc.gesture || {};
 }
 
-export function getHeldPoses()  { return HELD_POSES; }
-export function getTraitProps() { return TRAIT_PROPS; }
+export function getHeldPoses()    { return HELD_POSES; }
+export function getTraitProps()   { return TRAIT_PROPS; }
+export function getGestureClips() { return GESTURE_CLIPS; }
 
 /** 返回 NPC 当前用户级 held modifier（非内部、非 trait），无则 null */
 export function getHeldModifier(npc) {
