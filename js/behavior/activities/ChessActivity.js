@@ -1,18 +1,18 @@
 import { setState }         from '../Motor.js';
 import { Activity }         from './Activity.js';
+import { ClipPlayer }       from '../ClipPlayer.js';
 import { registerActivity } from '../ActivityRegistry.js';
 
 const CHESS_WAIT_MS = 3500;
 
-function startPlay(npc) {
-  npc.playOnce   = true;
-  npc.animDone   = false;
-  npc.frameIndex = 0;
-  npc.frameTimer = 0;
-}
-function freezeAt0(npc) {
-  npc.animDone   = true;
-  npc.frameIndex = 0;
+// 落子手势（poseCache.chess_move，见 PoseCacheBuilder 的 chess 特例）——单条 clip，
+// 覆盖全身 11 个关节，落到 ClipPlayer 的 '_chess_move' modifier 上会完全盖住
+// STATE_DEFS.chess 自身的基座动画，因此 setState(npc,'chess',...) 仍然保留
+// （StuckProbe / getTags 等系统认 npc.state，不认这条 modifier）。
+let CHESS_MOVE = null;
+
+export function initChessMove(clip) {
+  CHESS_MOVE = clip;
 }
 
 export class ChessActivity extends Activity {
@@ -31,8 +31,12 @@ export class ChessActivity extends Activity {
     this.waiting  = false;
     this.waitMs   = 0;
 
-    startPlay(this.a);
-    freezeAt0(this.b);
+    // 双方各持一个 ClipPlayer：当前落子的一方每帧 update() 播完即冻结在末帧；
+    // 等待的一方 play() 后不再 update()，天然停在首帧（原 freezeAt0 语义）。
+    this._aPlayer = new ClipPlayer(this.a, '_chess_move');
+    this._bPlayer = new ClipPlayer(this.b, '_chess_move');
+    this._aPlayer.play(CHESS_MOVE);
+    this._bPlayer.play(CHESS_MOVE);
   }
 
   admit(npc, role) {
@@ -42,9 +46,10 @@ export class ChessActivity extends Activity {
 
   update(dt) {
     if (!this.a.alive || !this.b.alive) return false;
-    const cur = this.active === 'A' ? this.a : this.b;
-    if (!this.waiting && cur.animDone) {
-      cur.frameIndex = 0;
+    const curPlayer = this.active === 'A' ? this._aPlayer : this._bPlayer;
+    curPlayer.update(dt);
+
+    if (!this.waiting && curPlayer.done) {
       this.waiting = true;
       this.waitMs  = 0;
     }
@@ -53,10 +58,10 @@ export class ChessActivity extends Activity {
       if (this.waitMs >= CHESS_WAIT_MS) {
         this.waiting = false;
         this.active  = this.active === 'A' ? 'B' : 'A';
-        const next = this.active === 'A' ? this.a : this.b;
-        const prev = this.active === 'A' ? this.b : this.a;
-        startPlay(next);
-        freezeAt0(prev);
+        // 双方都从头播：新落子方接下来会被 update() 逐帧推进；新等待方
+        // 就此停在首帧，直到轮到它。
+        this._aPlayer.play(CHESS_MOVE);
+        this._bPlayer.play(CHESS_MOVE);
       }
     }
     return true;
@@ -65,6 +70,8 @@ export class ChessActivity extends Activity {
   interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
+    this._aPlayer.clear();
+    this._bPlayer.clear();
     for (const { npc } of this.participants) {
       if (npc.alive) setState(npc, 'walk', 'activity-end');
     }

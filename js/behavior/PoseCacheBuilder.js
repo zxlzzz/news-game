@@ -8,12 +8,15 @@
  *   overlay + latched               → held
  *   overlay + _front 变体存在        → trait（side+front 双视角）
  *   overlay（其余）                  → gesture（含 use_vending / use_trash）
+ *   id === "chess"（cycle，特例）    → chess_move（单条 clip，供 ChessActivity 的
+ *                                      ClipPlayer 消费落子手势，Patch F；不影响
+ *                                      它作为 kind:'cycle' 的其余既有消费路径）
  */
 
 /**
  * 同步构建 poseCache；调用前须确保所有相关 clip 已通过 clipLibrary.getClip() 缓存。
  * @param {import('../core/ClipLibrary.js').ClipLibrary} clipLibrary
- * @returns {{ held, gesture, sub_event, stall_gestures, talk_gestures, trait }}
+ * @returns {{ held, gesture, sub_event, stall_gestures, talk_gestures, trait, chess_move }}
  */
 export function buildPoseCache(clipLibrary) {
   const clips   = clipLibrary.manifest?.clips ?? {};
@@ -85,6 +88,7 @@ export function buildPoseCache(clipLibrary) {
   const sub_event      = {};
   const stall_gestures = {};
   const talk_gestures  = {};
+  let   chess_move     = null;
 
   for (const [id, entry] of Object.entries(clips)) {
     const raw = clipLibrary.getCachedClip(id);
@@ -109,6 +113,14 @@ export function buildPoseCache(clipLibrary) {
       } else {
         gesture[id] = decodeGesture(raw);
       }
+    } else if (id === 'chess') {
+      // 特例（Patch F）：chess 本体是 kind:'cycle'（npc.animation 的基座，落子间歇的
+      // 待机站姿），但它的 19 帧每帧都显式声明全部 11 个关节、无省略——decodeGesture
+      // 的 delta→绝对坐标公式对它同样成立，可以原样复用同一份 keyframes 喂给
+      // ChessActivity 的 ClipPlayer（驱动"落子"手势覆盖全身关节）。不改 manifest
+      // kind：cycle 的其余消费路径（groundTravel 推导、check-invariants Rule16 /
+      // validate.mjs 的 cycle 专属校验）不受影响，只是多解码一份。
+      chess_move = decodeGesture(raw);
     }
   }
 
@@ -123,5 +135,5 @@ export function buildPoseCache(clipLibrary) {
     trait[id] = { side: decodeHeld(raw), front: decodeHeld(frontRaw) };
   }
 
-  return { held, gesture, sub_event, stall_gestures, talk_gestures, trait };
+  return { held, gesture, sub_event, stall_gestures, talk_gestures, trait, chess_move };
 }

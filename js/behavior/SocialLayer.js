@@ -26,6 +26,7 @@ import './activities/StallActivity.js';
 // poseCache 初始化入口（由 SocialLayer 构造函数转发到各 Activity 模块）
 import { initSubEventPoses, initTalkGestures } from './activities/TalkActivity.js';
 import { initStallGestures } from './activities/StallActivity.js';
+import { initChessMove }     from './activities/ChessActivity.js';
 
 const chance = (p) => Math.random() < p;
 
@@ -43,6 +44,7 @@ export class SocialLayer {
       initSubEventPoses(poseCache.sub_event      || {});
       initStallGestures(poseCache.stall_gestures || {});
       initTalkGestures(poseCache.talk_gestures   || {});
+      initChessMove(poseCache.chess_move ?? null);
     }
   }
 
