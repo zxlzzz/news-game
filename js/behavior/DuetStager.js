@@ -18,9 +18,20 @@
  *   emitEvent 这类操作。取代原来硬编码在 TalkActivity 里的
  *   `if (this._subEvent === 'push') {...}` 分支——push.json 现在自己声明
  *   "谁被弹出、弹出后什么状态、发什么事件"，新增同类 clip 不需要再改代码。
+ *
+ * 位置写入通道（P-5）：_setX 走 Motor.nudgeXY（_slideMove 的对外壳），不再是
+ * Motor 模块那个绝对坐标裸写函数。M-1 之后 _slideMove 是文档明文的"绝不踏入
+ * BLOCKED 格"唯一硬兜底，此前 DuetStager 直接调用那个裸写函数写 x/y，从这个
+ * 兜底旁边绕了过去——reach/release 两段的位置插值理论上能把 NPC 推进 BLOCKED
+ * 格。nudgeXY 收位移量（增量）而不是绝对目标 x，_setX 内部用「目标 x − 当前
+ * 实际 x」现算增量。语义变化：reach/release 沿途若被挡，实际位置会落后于
+ * 插值目标；release 末尾和 cancel() 试图把 NPC 精确复位回 _aOrigX/_bOrigX
+ * 时，如果原地到复位点的路径上有阻挡，可能到不了——这种情况下停在能到的
+ * 地方即为正确行为，不为此加特例回退到绝对坐标裸写（那样又会重新绕开
+ * BLOCKED 兜底）。
  */
 
-import { setXY } from './Motor.js';
+import { nudgeXY } from './Motor.js';
 
 const clamp01 = (t) => Math.max(0, Math.min(1, t));
 
@@ -147,7 +158,11 @@ export class DuetStager {
 
   // ── 位置/关节写入 ──────────────────────────────────────────────────────────
 
-  _setX(npc, x) { setXY(npc, x, npc.y); }
+  /** x 是绝对目标坐标（沿用调用方既有语义）；nudgeXY 收位移量，这里现算增量。 */
+  _setX(npc, x) {
+    const dx = x - npc.x;
+    if (dx !== 0) nudgeXY(npc, dx, 0);
+  }
 
   _unionJoints(frames, role) {
     const s = new Set();

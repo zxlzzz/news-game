@@ -39,6 +39,24 @@ check `_mw(npc, '<field>'` as well before concluding a field is dead.
 | **Readers** | All rendering code, `StuckProbe.js`, `EnvironmentQuery.js`, `WalkMode.js`, `NavGrid.js`, `BaseStateMachine.js#steerRoam`, `seat.js` (`BehaviorManager.js#_separate` deleted, M-1) |
 | **Invariant** | Must not be written outside Motor.js API (`setXY`/`nudgeXY`) — enforced by `check-invariants.mjs` Rule 9. `npc.y` offsets must never compensate for clip ground-contact errors — fix the clip JSON instead. |
 
+**`setXY` vs `nudgeXY` — the BLOCKED-avoidance split (P-5 gap analysis)**: both go
+through `Motor.js`'s `_mw` gate (Rule 9 is satisfied by either), but only
+`nudgeXY` (the public wrapper around `_slideMove`) carries the "never step into a
+BLOCKED cell" guarantee described in the M-1 banner above. `setXY` is an absolute
+teleport — the deliberate choice for callers that need exact placement regardless
+of the grid (`seat.js` snapping an NPC onto a bench, `StallSellerTask`'s
+multi-retry-failure fallback landing a seller exactly on their slot). This split
+was never called out as a caveat before P-5 — it should have been, because it let
+a bug hide in plain sight: `DuetStager.js`'s `_setX` (reach/play/release position
+interpolation for two-person contact clips) used `setXY` from Patch G onward,
+meaning it could interpolate an NPC straight into a BLOCKED cell with no
+safety net, unlike every other movement path in the game. Fixed in P-5 —
+`DuetStager._setX` now computes a delta and calls `nudgeXY`, so it inherits the
+same BLOCKED-avoidance as normal walking; see the file's header comment for the
+resulting semantic change (release-phase repositioning back to `_aOrigX`/
+`_bOrigX` may now stop short if the path there is blocked, instead of always
+landing exactly on target).
+
 ---
 
 ### `npc.speed`

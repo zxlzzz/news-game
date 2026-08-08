@@ -345,7 +345,8 @@ function _updateFrontVariant(npc, dx, dy) {
   }
 }
 
-// ── 位置写入（setXY 供落座/对齐；nudgeXY 保留为公开 API，M-1 后暂无调用方）────────
+// ── 位置写入（setXY 供落座/对齐——裸写，绕过 _slideMove 的 BLOCKED 兜底；
+//    nudgeXY 是 _slideMove 的对外壳，唯一调用方是 DuetStager._setX，P-5）────────
 export function setXY(npc, x, y) {
   _mw(npc, 'x', x);
   _mw(npc, 'y', y);
