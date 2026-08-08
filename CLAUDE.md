@@ -400,7 +400,20 @@ claim 的每个槽独立掷一次变异：遗忘（值退 null，`sources` 同�
 `evolveMemory`，不触碰 GameClock 本身。`slotFidelity(slot,value)` 是
 "这个槽当前是 fine/coarse/null"的纯字符串形状判定唯一住址，
 `scripts/check-memory-mutation.mjs`（五个静态门之一）复用它统计保真率，
-不在检查脚本里另外实现一遍。
+不在检查脚本里另外实现一遍。claim 另带 `eventId`（P-7，产出时固定为
+`WorldEventLog` 的 `event.id`），不属于槽、不受任何写入点改写，纯粹是
+"同一事件的不同目击者"的稳定关联键。
+
+`js/news/NewsBackflow.js#propagateArticleToWitnesses(witnesses)`（P-7）是
+"框架建构现实"闭环：报道发表后（`NewsUI.js` 发布按钮，唯一调用点，
+`check-invariants.mjs` Rule 18 守）按 `eventId` 把本次报道的目击者分组，
+组内互相拿对方已确立的槽值去补自己还空着的槽（`injectSuggestion`，来源标
+`'suggested'`——报道和审问诱导认识论上是同一件事，不新开一种 source 值）。
+传播范围规则 `MemoryMutationTables.js#NEWS_BACKFLOW`（声明式，含
+`maxFillsPerArticle` 单次上限）：只影响本来就对同一事件有 claim 的 NPC
+（即这批目击者自身），不外溢给未贡献过目击 claim 的旁观者——那需要给
+非目击者新建 claim，与 `injectSuggestion` "不建新 claim" 的硬约束冲突，
+故未采用。回流写入的槽不豁免 `evolveMemory`，照常参与后续演化。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
@@ -449,7 +462,8 @@ Z-2b 追加：NavGrid 亦不得出现 Y 分带数字——烘焙几何一律来�
   `node scripts/check-witness-distribution.mjs`、`node sth/tools/validate.mjs`
   （不在 `scripts/` 下）、`node scripts/check-memory-mutation.mjs`（P-6 新增，
   验证 `Belief.js#evolveMemory` 的记忆演化层：保真率随时间下降且趋缓、
-  strength 越高越抗变异、转移变异不跨 NPC 串号）
+  strength 越高越抗变异、转移变异不跨 NPC 串号；P-7 追加第四场景：报道回流
+  增加 `sources='suggested'` 槽数，且回流槽不享受变异豁免）
 
 ---
 

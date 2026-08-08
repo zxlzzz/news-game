@@ -5,6 +5,7 @@
  */
 
 import { injectSuggestion, findFillableClaim, claimsToTestimony } from '../behavior/Belief.js';
+import { propagateArticleToWitnesses } from './NewsBackflow.js';
 
 const PANEL_STYLE = `
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
@@ -246,6 +247,10 @@ export class NewsUI {
         timestamp:      Date.now(),
       };
       this._archive.publishArticle(article);
+      // 报道回流（tasks.md P-7）：发表这一刻把报道贡献者（本次 openComposer
+      // 的 witnesses）互相之间还没填上的槽用同一事件里别人已确立的值补上，
+      // 见 NewsBackflow.js 头注释。唯一调用点，check-invariants.mjs Rule 18 守。
+      propagateArticleToWitnesses(witnesses);
       this.close();
     });
 

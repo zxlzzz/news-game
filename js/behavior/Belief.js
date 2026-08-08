@@ -1,12 +1,16 @@
 /**
- * Belief — npc.mem('belief') 的唯一 owner（W-5/W-6/W-7c/P-6）
+ * Belief — npc.mem('belief') 的唯一 owner（W-5/W-6/W-7c/P-6/P-7）
  *
  * CONTRACT:
  *   OWNS:   npc.mem('belief').claims（数组）。claim 无顶层 source 字段
  *           （W-7c 删除）——provenance 是槽级的：`claim.sources[slot]` ∈
  *           'witness' | 'suggested' | 'fabricated' | null（P-6 新增
  *           'fabricated'——见下方 WRITES 的 evolveMemory 一条），值为 null
- *           的槽其 sources 必为 null。
+ *           的槽其 sources 必为 null。claim 另有 `eventId`（P-7，产出时
+ *           固定为 `event.id`）——不属于槽，不受任何写入点改写，是同一
+ *           WorldEvent 的所有目击者共享的稳定关联键，供
+ *           `js/news/NewsBackflow.js` 分组用；'suggested' 来源同样复用
+ *           `injectSuggestion()`，不因触发方是审问还是报道发表而分叉。
  *   WRITES: generateClaims() 是新 claim 的唯一写入点（产出时所有槽标
  *           'witness'）。injectSuggestion() 是"suggested"来源的唯一写入
  *           点，但**不建新 claim**——只能把某条既有 claim 上 sources 为
@@ -145,7 +149,12 @@ function _fillClaim(event, actorNpcs, channel, q) {
   const sources = {};
   for (const slot of SLOTS) sources[slot] = values[slot] != null ? 'witness' : null;
 
-  return { ...values, sources, strength: {}, q, channel, id: `claim_${++_claimIdSeq}` };
+  // eventId（P-7）：同一 WorldEvent 的所有目击者 claim 共享同一个值（event.id，
+  // WorldEventLog.js#emitEvent 产出），供 NewsBackflow.js 把"同一事件的不同
+  // 目击者"分组——不属于 SLOTS，不参与 claimsToTestimony/evolveMemory 的槽
+  // 级遍历（两处都显式按 SLOTS 取值，新字段天然被跳过），是稳定的元数据，
+  // 不会被记忆演化改写或退化。
+  return { ...values, sources, strength: {}, q, channel, eventId: event.id, id: `claim_${++_claimIdSeq}` };
 }
 
 /**

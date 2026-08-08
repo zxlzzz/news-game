@@ -656,6 +656,31 @@ console.log('Rule 17: ARRIVAL_RULES/SAFETY_RULES/RECOVERY_RULES/PoseCacheBuilder
   if (ok) okMsg();
 }
 
+// ── Rule 18 ────────────────────────────────────────────────────────────────
+// propagateArticleToWitnesses() call sites: exactly one, and it must live in
+// NewsUI.js (tasks.md P-7 — the single 发布 → 回流写入 call point, same
+// single-address discipline as Rule 15's generateClaims()). NewsBackflow.js
+// itself defines the function — that's not a call site, skip it explicitly.
+console.log('Rule 18: propagateArticleToWitnesses() called exactly once, from NewsUI.js');
+{
+  const hits = [];
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith('*') || trimmed.startsWith('//')) continue;
+      if (/\bexport function propagateArticleToWitnesses\s*\(/.test(lines[i])) continue; // definition, not a call
+      if (/\bpropagateArticleToWitnesses\(/.test(lines[i])) hits.push(`${p}:${i + 1}`);
+    }
+  }
+  const outsideUI = hits.filter(h => !h.replace(/\\/g, '/').includes('NewsUI.js'));
+  if (hits.length !== 1 || outsideUI.length > 0) {
+    fail(`propagateArticleToWitnesses() must be called exactly once, from NewsUI.js; found ${hits.length} call site(s):\n  ` + hits.join('\n  '));
+  } else {
+    okMsg();
+  }
+}
+
 // ── Summary ─────────────────────────────────────────────────────────────────
 console.log('');
 if (!FAIL) {

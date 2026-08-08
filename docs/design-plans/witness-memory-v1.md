@@ -64,6 +64,10 @@
   q:       number,          // 目击质量 [0,1]，claim 只能由 generateClaims() 产出，
   channel: 'sight'|'sound', // 因此这两个字段恒有值，不存在"suggested 来源的 claim"这个概念——
                              // suggested 只发生在槽级，claim 本身永远源自一次真实目击
+  eventId: string,          // v1.2/P-7 新增：产出时固定为 WorldEventLog 的 event.id，
+                             // 不属于槽（不受 injectSuggestion/evolveMemory 任何写入点
+                             // 改写），是同一 WorldEvent 的所有目击者共享的稳定关联键，
+                             // 供 NewsBackflow.js 把"同一事件的不同目击者"分组用
 }
 ```
 
@@ -230,3 +234,11 @@ W-6 落地时曾经是 claim 级 `source: 'suggested'`、遇到没有既有 clai
 两个严格分开的写入点，不合并成一个入口。LLM（`providers.js` 的 `interrogate.ask()`）
 只把玩家提问解析成 `{slot, value}`，从不直接碰 `npc.mem('belief')`，呼应
 `belief-layer-v0.md` 的"LLM 只做翻译，不直接写 belief"铁律。
+
+**`injectSuggestion()` 的第二个调用方（tasks.md P-7）**：`js/news/NewsBackflow.js
+#propagateArticleToWitnesses()`，报道发表后触发——审问（玩家问出答案）和报道回流
+（玩家发表的报道被目击者当成"新闻上都这么说"记住）在认识论上是同一件事：外部输入
+被当成自己的记忆，因此复用同一个 `'suggested'` 来源标记、同一条写入规则，不新开
+一种 source 值，也不给 `injectSuggestion()` 本身加任何"调用方是谁"的分支。回流的
+候选值来自"同一事件（`claim.eventId`）的其他目击者已经确立的槽值"，不是玩家现场
+输入——传播范围规则见 `MemoryMutationTables.js#NEWS_BACKFLOW`。

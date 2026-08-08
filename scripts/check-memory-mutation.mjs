@@ -7,13 +7,16 @@
  * 所需字段）反复调用 Belief.evolveMemory()。属于 check-invariants.mjs 同类
  * "静态验证"工具，不算 CLAUDE.md 里禁止默认运行的游戏/harness/模拟验证。
  *
- * 覆盖 tasks.md P-6 要求的三个场景：
+ * 覆盖 tasks.md P-6 要求的三个场景 + P-7 追加的第四个场景：
  *   ① 时间推进后槽位保真率单调下降，且降到某个下界后不再继续降（衰减减速）
  *   ② strength 高的槽显著比 strength 低的槽更耐变异
  *   ③ 转移变异只会取到同一 NPC 自己其他 claim 的值，不会凭空取到别人的
+ *   ④（P-7）报道回流后 sources='suggested' 的槽数量增加，且这些槽在后续
+ *     演化中和其他槽走同一套变异概率（不给回流开豁免）
  */
 
 import { evolveMemory, slotFidelity } from '../js/behavior/Belief.js';
+import { propagateArticleToWitnesses } from '../js/news/NewsBackflow.js';
 import { EVENT_DEFS } from '../js/behavior/data/EventDefs.js';
 
 const red   = s => `\x1b[0;31m${s}\x1b[0m`;
@@ -151,6 +154,77 @@ console.log('场景 3: 转移变异只会取到同一 NPC 自己其他 claim 的
     fail(`${TICKS} 个 tick 后没有任何槽发生变化，测试未能触发变异（阳性对照缺失，无法验证转移边界）`);
   } else {
     ok(`零跨 NPC 串号；${mutatedWithinScope}/${CLAIMS_PER_NPC * 2} 个槽在演化中发生了变化（含转移/退化/遗忘），均未越出各自 NPC 的范围`);
+  }
+}
+
+// ── 场景 4（P-7）：报道回流增加 'suggested' 槽数，且回流槽不享受变异豁免 ──
+console.log("场景 4: 报道回流后 sources='suggested' 的槽数量应增加，且不豁免后续变异");
+{
+  // 4a：propagateArticleToWitnesses 功能性检查——两个目击者共享同一
+  // eventId，各自缺对方有的那个槽，回流后应互相补上。
+  function countSuggested(npcs) {
+    let n = 0;
+    for (const npc of npcs) for (const claim of npc.mem('belief').claims) {
+      for (const s of ['actor', 'action', 'target', 'place', 'time']) {
+        if (claim.sources[s] === 'suggested') n++;
+      }
+    }
+    return n;
+  }
+
+  const npcA = mockNpc();
+  npcA.mem('belief').claims = [{
+    id: 'ca', eventId: 'ev1', q: 0.9, channel: 'sight',
+    actor: 'A#1', action: null, target: null, place: null, time: null,
+    sources: { actor: 'witness', action: null, target: null, place: null, time: null },
+    strength: {},
+  }];
+  const npcB = mockNpc();
+  npcB.mem('belief').claims = [{
+    id: 'cb', eventId: 'ev1', q: 0.6, channel: 'sound',
+    actor: null, action: 'push', target: null, place: null, time: null,
+    sources: { actor: null, action: 'witness', target: null, place: null, time: null },
+    strength: {},
+  }];
+
+  const before = countSuggested([npcA, npcB]);
+  const writtenCount = propagateArticleToWitnesses([npcA, npcB]).length;
+  const after = countSuggested([npcA, npcB]);
+
+  if (!(after > before)) {
+    fail(`报道回流后 'suggested' 槽数未增加：before=${before} after=${after}（写入 ${writtenCount} 条）`);
+  } else {
+    ok(`报道回流后 'suggested' 槽数从 ${before} 增至 ${after}（写入 ${writtenCount} 条）`);
+  }
+
+  // 4b：'suggested' 来源的槽和同等 strength 的 'witness' 来源槽，演化存活率
+  // 应在噪声范围内一致——代码没有为回流槽开特殊豁免分支的统计佐证。
+  const N = 800, TICKS_4B = 15;
+  function buildPop(source) {
+    return Array.from({ length: N }, () => {
+      const npc = mockNpc();
+      npc.mem('belief').claims = [{
+        id: 'c', eventId: 'ev', q: 0.9, channel: 'sight',
+        actor: 'x#1', action: null, target: null, place: null, time: null,
+        sources: { actor: source, action: null, target: null, place: null, time: null },
+        strength: { actor: 1 },
+      }];
+      return npc;
+    });
+  }
+  const suggestedPop = buildPop('suggested');
+  const witnessPop   = buildPop('witness');
+  evolveMemory(suggestedPop, TICKS_4B);
+  evolveMemory(witnessPop, TICKS_4B);
+  const survival = pop => pop.filter(n => n.mem('belief').claims[0].actor === 'x#1').length / pop.length;
+  const sSurvival = survival(suggestedPop);
+  const wSurvival = survival(witnessPop);
+  const diff = Math.abs(sSurvival - wSurvival);
+
+  if (diff > 0.1) {
+    fail(`'suggested' 与 'witness' 来源槽的演化存活率差距过大（${diff.toFixed(3)} > 0.1），像是被特殊处理了：suggested=${sSurvival.toFixed(3)} witness=${wSurvival.toFixed(3)}`);
+  } else {
+    ok(`'suggested'（存活率 ${sSurvival.toFixed(3)}）与 'witness'（存活率 ${wSurvival.toFixed(3)}）来源槽演化概率一致，无回流豁免`);
   }
 }
 

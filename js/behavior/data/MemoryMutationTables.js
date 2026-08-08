@@ -1,5 +1,6 @@
 /**
- * MemoryMutationTables — 记忆演化变异概率表（tasks.md P-6，纯数据，无 import）
+ * MemoryMutationTables — 记忆演化变异概率表 + 报道回流传播规则（tasks.md
+ * P-6/P-7，纯数据，无 import）
  *
  * MUTATION_TABLE 数值照抄 docs/design-plans/witness-memory-v1.md 第四节
  * "Mutation 转移表"（2026-08-02 冻结的设计决策）——原表是为"复述传播"场景设计的
@@ -56,3 +57,21 @@ export function effectiveMutationProbs(slot, strength = 0) {
     forget:   forget * scale,
   };
 }
+
+/**
+ * NEWS_BACKFLOW（tasks.md P-7）——报道回流的传播规则，声明式。
+ *
+ * 玩家发表报道后，js/news/NewsBackflow.js#propagateArticleToWitnesses() 把
+ * "本次报道贡献了 testimony 的目击者群体"互相之间还没填上的槽，用同一事件
+ * （claim.eventId 匹配）里别人已经确立的值补上——不创建新 claim（复用
+ * `Belief.js#injectSuggestion` 的既有硬约束），不外溢到没有为这次报道
+ * 贡献过目击 claim 的旁观 NPC。这是设计文档里"影响范围要有边界"给出的两个
+ * 候选规则之一（另一个"事件发生地附近"需要给非目击者新建 claim，与
+ * injectSuggestion 的既有语义冲突，未采用，见 NewsBackflow.js 头注释）。
+ *
+ * maxFillsPerArticle：单次发表最多写入的槽数上限——防止一篇文章把一整群
+ * 目击者的所有空槽一次性全填满，"信息随报道扩散"应该是渐进的，不是开关。
+ */
+export const NEWS_BACKFLOW = {
+  maxFillsPerArticle: 8,
+};
