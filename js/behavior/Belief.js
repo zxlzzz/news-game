@@ -45,7 +45,10 @@ import { PROFILES } from '../npc/NpcProfile.js';
 export const WITNESS_Q_THRESHOLD = 0.20;
 const WITNESS_COUNT_RANGE = [2, 4];
 
-const SLOTS = ['actor', 'action', 'target', 'place', 'time'];
+// P-8：导出供 js/debug/WitnessDebugPanel.js（一次性调试工具）现取槽位名，
+// 不在面板文件里另抄一份字面量数组。这是 tasks.md P-8 唯一允许为了面板
+// 改动 Belief.js 的地方（新增 export，不改行为）。
+export const SLOTS = ['actor', 'action', 'target', 'place', 'time'];
 
 const ZONE_NAME = Object.fromEntries(Object.entries(ZONE).map(([k, v]) => [v, k]));
 

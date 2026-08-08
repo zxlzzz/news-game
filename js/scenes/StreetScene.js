@@ -38,6 +38,7 @@ import { audit } from '../debug/MovementAudit.js';
 import { vision, text, interrogate, setLastSnapshot } from '../news/providers.js';
 import { NewsArchive } from '../news/NewsArchive.js';
 import { NewsUI } from '../news/NewsUI.js';
+import { WitnessDebugPanel } from '../debug/WitnessDebugPanel.js'; // 一次性调试工具，tasks.md P-8，可整体删除
 
 
 export class StreetScene {
@@ -178,6 +179,12 @@ export class StreetScene {
       else if (k === 'c') this._takePhoto();
       else if (k === 's') this._newsUI?.openSettings();
       else if (k === 'a') { if (this._newsUI?.isOpen()) this._newsUI.close(); else this._newsUI?.openArchive(); }
+      else if (k === 'w') {
+        // 一次性调试工具（tasks.md P-8）：跟 NewsUI 面板互斥，避免两个居中
+        // overlay 叠在一起
+        this._newsUI?.close();
+        if (this._witnessPanel?.isOpen()) this._witnessPanel.close(); else this._witnessPanel?.open();
+      }
     });
     window.addEventListener('keyup', (e) => { if (keyMap[e.key]) this.keys[keyMap[e.key]] = false; });
 
@@ -200,7 +207,7 @@ export class StreetScene {
     const W = this.viewW;
     const H = this.viewH;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  滚轮缩放  Z 重置  |  拖动取景框 · 拖右下角缩放  |  C 拍照  A 存档  S 设置  |  P 导出  D 调试', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  滚轮缩放  Z 重置  |  拖动取景框 · 拖右下角缩放  |  C 拍照  A 存档  S 设置  |  P 导出  D 调试  W 目击调试面板', {
       fontFamily: '"JetBrains Mono", monospace', fontSize: '13px', color: '#555555',
       backgroundColor: 'rgba(240,236,228,0.85)', padding: { x: 6, y: 4 },
     }).setScrollFactor(0).setDepth(100);
@@ -225,6 +232,12 @@ export class StreetScene {
       document.getElementById('news-ui-root'),
       this._newsArchive,
       { vision, text, interrogate },
+    );
+
+    // 一次性调试工具（tasks.md P-8），可整体删除——见 WitnessDebugPanel.js 头注释
+    this._witnessPanel = new WitnessDebugPanel(
+      document.getElementById('news-ui-root'),
+      this.behaviorManager,
     );
   }
 

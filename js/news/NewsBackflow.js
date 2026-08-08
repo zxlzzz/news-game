@@ -23,6 +23,16 @@ import { NEWS_BACKFLOW } from '../behavior/data/MemoryMutationTables.js';
 
 const SLOTS = ['actor', 'action', 'target', 'place', 'time'];
 
+// P-8：一次性调试工具（WitnessDebugPanel.js）"看报道回流"功能要读"最近一次
+// 发表的报道写了什么"，但不能改 NewsUI.js 拿它的返回值——所以在这里自己
+// 缓存一份。纯只读缓存，不影响 propagateArticleToWitnesses 本身的行为；
+// 若 WitnessDebugPanel.js 整体删除，这两行（_lastResult 声明 +
+// getLastBackflowResult 导出）也可以一并删掉，不影响 P-7 的功能。
+let _lastResult = [];
+
+// 最近一次回流写入结果（供调试面板读取），见上方缓存写入点。
+export function getLastBackflowResult() { return _lastResult; }
+
 /**
  * 报道发表 → 回流写入的唯一调用点（check-invariants.mjs Rule 18 守住，
  * 只允许出现在 NewsUI.js）。
@@ -61,5 +71,6 @@ export function propagateArticleToWitnesses(witnesses) {
     }
   }
 
+  _lastResult = written;
   return written;
 }
