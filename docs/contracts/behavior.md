@@ -26,9 +26,9 @@ Update order each frame (per NPC, `BehaviorManager.js#update`):
 1. `SocialLayer.update` — Activity tick + Talk pairing
 2. `WorldEventLog.drainNewEvents()` → `Belief.generateClaims()` (W-7a) — the
    single consumption point for events emitted this frame (currently
-   `TalkActivity.js`/`ContactActivity.js` and `ChessActivity.js` (tasks.md P-3)
-   call `emitEvent()`, confined to `js/behavior/activities/` by
-   `check-invariants.mjs` Rule 14); actor ids
+   `TalkActivity.js`/`ContactActivity.js`, `ChessActivity.js` (tasks.md P-3),
+   and `StallActivity.js` (tasks.md P-4) call `emitEvent()`, confined to
+   `js/behavior/activities/` by `check-invariants.mjs` Rule 14); actor ids
    resolved against `this.npcs`, missing actors passed through as `null`
    (`Belief` tolerates)
 3. `WaitForBusLayer.update` — zone scan only; waiter tick is a per-NPC

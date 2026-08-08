@@ -21,4 +21,6 @@ export const EVENT_DEFS = {
   // 下棋落子：双方合意、非对抗性的日常互动，同 give_item/handshake 归 'social'
   // 而非 'conflict'——'conflict' 专指有攻击/受害方向性的场面（push 系）。
   chess_move: { actorRoles: ['mover', 'opponent'], category: 'social' },
+  // 摊位交易完成（tasks.md P-4）：同下棋，双方合意的日常互动，归 'social'。
+  stall_trade: { actorRoles: ['seller', 'buyer'], category: 'social' },
 };

@@ -19,17 +19,21 @@
 > kind 是 `chess_move`（回合切换/落子完成点，`CHESS_EVENT_PROB` 低概率
 > 发出，见 `docs/roadmap.md` W-10），两者是同一扩展点的两种可能用法，
 > 不冲突——真正接线的是 `chess_move` 一条，`game_win` 仍只是教学示例。
+>
+> **注（tasks.md P-4 后更新）**：`StallActivity.js` 也已接入（`stall_trade`，
+> 交易完成点，一场只发一次不降频，见 `docs/roadmap.md` W-11）——本文档下方
+> "现状"一节原说它是"内容瓶颈"，已不再成立；候选的下一个空白是尚未接入
+> emitEvent 的其他 Activity（当前四个 registerActivity 类型 talk/chess/
+> stall/contact 均已有生产者，contact 由 talk 掷骰驱动、不算独立生产者，
+> 但也已通路），暂无已知悬空目标。
 
 ## 现状
 
 目击/证词管线目前有三个事件生产者：`TalkActivity.js`（子事件掷骰命中后
 `handoff('contact', ...)`）驱动的 `ContactActivity.js`（真正调用 `emitEvent`
 的地方，见该文件；Patch G 抽离，行号已随之变化，此处不再列旧行号）；
-`ChessActivity.js`（P-3 新增，回合切换点低概率发 `chess_move`）。
-
-`js/behavior/activities/` 下的 `StallActivity.js` 目前仍是零 `emitEvent()`
-调用，是内容瓶颈：玩家能审问出的"目击证词"覆盖不到摆摊交易（tasks.md P-4
-待落地）。
+`ChessActivity.js`（P-3，回合切换点低概率发 `chess_move`）；`StallActivity.js`
+（P-4，交易完成点发 `stall_trade`，一场只发一次）。
 
 ## 管线四步（既有代码，未改动）
 

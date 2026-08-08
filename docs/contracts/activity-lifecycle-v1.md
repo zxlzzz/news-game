@@ -130,6 +130,11 @@ phase 不按「发生了什么」列（那会把「播动画」这种*能力*和
   各 activity 的注册项 `onSlotArrival` 钩子），作为"买家路由建成那天"的正确落点。
   **talk 类主动配对不受影响。**
 
+  **更新（tasks.md P-4，买家路由建成）**：上一段"stall 买家路由至今未接线"已成历史——
+  `StallBuyerTask`（`js/behavior/tasks/StallBuyerTask.js`）经 `BehaviorScripts.js#stall_buyer`
+  → `ChainTask` 的 `use` 原语接入，走到 buyer 槽位后调 `SocialLayer.onSlotArrival()`，
+  正是当年保留这套机制时设想的落点，无需改动 `SocialLayer`/`StallActivity` 任何一行。
+
 ---
 
 ## 6. 两个不是 phase 的东西

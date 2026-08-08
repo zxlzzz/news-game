@@ -5,6 +5,7 @@ import { registerActivity }  from '../ActivityRegistry.js';
 import { TalkToTask }        from '../tasks/TalkToTask.js';
 import { StallSellerTask }   from '../tasks/StallSellerTask.js';
 import { getStallGestures } from '../data/StallPoseStore.js';
+import { emitEvent }         from '../WorldEventLog.js';
 
 const rand   = (a, b) => a + Math.random() * (b - a);
 
@@ -82,7 +83,15 @@ export class StallActivity extends Activity {
     } else if (this._buyerPhase === 'give') {
       this._buyerPlayer.update(dt);
       const sDone = !this._sellerGivePlayer || this._sellerGivePlayer.done;
-      if (this._buyerPlayer.done && sDone) this._done = true;
+      if (this._buyerPlayer.done && sDone) {
+        this._done = true;
+        // 交易完成点（P-4）：两个 ClipPlayer 都播完 'give' 阶段那一刻。同 P-3，
+        // 一场交易只发一次，不需要像 chess_move 那样降频。
+        emitEvent({
+          kind: 'stall_trade', actors: [this.seller.id, this.buyer.id],
+          x: (this.seller.x + this.buyer.x) / 2, y: (this.seller.y + this.buyer.y) / 2,
+        });
+      }
     }
   }
 

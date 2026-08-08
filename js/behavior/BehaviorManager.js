@@ -11,9 +11,11 @@
  * 售货机 / 垃圾桶由 Agenda desires 驱动；chess_onlooker 由 Agenda 的 affordance
  * 池路由（Patch D，ChessOnlookerTask，单人、非 Activity 成员）；stall 卖家独自
  * 守摊已改走 StallSellerTask（Patch H，prop-as-host，ChainTask、非 Activity
- * 成员）；stall_buyer 仍待迁移，目前暂无 buyer 路由——StallActivity 的
- * onSlotArrival 钩子已经是"买家到位才凑满 roster 去 Create"的正确实现，
- * 只是还没有东西会真的把买家送到那个槽位。
+ * 成员）；stall_buyer 路由已补齐（tasks.md P-4）：走同一套 Agenda desires →
+ * ChainTask 路径（BehaviorScripts.js#stall_buyer → StallBuyerTask），到达槽位
+ * 后调 `this.envQuery.socialLayer.onSlotArrival()`（本文件构造函数里挂的，
+ * 见下方 constructor）交给 StallActivity 既有的"买家到位才凑满 roster 去
+ * Create"钩子接手。
  */
 
 import { getProfile }          from '../npc/NpcProfile.js';
@@ -55,6 +57,10 @@ export class BehaviorManager {
     }
 
     this.socialLayer     = new SocialLayer(this.envQuery, poseCache);
+    // P-4：StallBuyerTask（envQuery 是所有 Task/Agenda 共有的依赖，SocialLayer
+    // 不是）到达买家槽位后要调 socialLayer.onSlotArrival——挂在 envQuery 上是
+    // 复用既有的公共穿透点，不是新开一条穿参路径。
+    this.envQuery.socialLayer = this.socialLayer;
     this.npcs            = [];
     this.waitForBusLayer = null;
     this.exitRegistry    = null;

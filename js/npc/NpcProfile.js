@@ -81,7 +81,9 @@ const PEDESTRIAN = {
   gesturePoses: PED_GESTURES,
   spawnTraits: ['hold_bag', 'umbrella'],
   activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
-  desires: ['rest_bench', 'use_vending', 'use_trash', 'eat_snack', 'play_guitar'],
+  // stall_buyer 加入 P-4：desires 池实际驱动 _tryDesire → ChainTask，
+  // 只在 activities 里声明而不进这里，路由永远不会被抽中（P-4 修复的正是这个）。
+  desires: ['rest_bench', 'use_vending', 'use_trash', 'eat_snack', 'play_guitar', 'stall_buyer'],
   traits: {},
   cameraReaction: 'neutral',
   // P-2 重标定：这批数值是 TalkActivity 每次掷骰（周期见
@@ -110,7 +112,7 @@ const PEDESTRIAN = {
 const BUSINESSMAN = {
   ...PEDESTRIAN,
   name: 'businessman',
-  desires: ['use_vending'],
+  desires: ['use_vending', 'stall_buyer'],
   activities: ['talk', 'use_vending', 'stall_buyer'],
   heldPoses: {
     phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0006, dur: [8, 30] },
@@ -132,7 +134,7 @@ const BUSINESSMAN = {
 const TOURIST = {
   ...PEDESTRIAN,
   name: 'tourist',
-  desires: ['rest_bench', 'use_vending'],
+  desires: ['rest_bench', 'use_vending', 'stall_buyer'],
   transitions: {
     ...PED_TRANSITIONS,
     walk:  { stand: 0.55, run: 0.06, squat: 0.02, sit_ground: 0.05, lean_wall: 0.01 },
@@ -191,7 +193,11 @@ const CHESS_ONLOOKER = {
     phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [8, 25] },
     cross_arm:  CROSS_ARM,
   },
-  activities: ['talk', 'chess_watch'],
+  // 'chess_watch' 曾在此声明但全库无任何实现（BEHAVIOR_SCRIPTS/registerActivity/
+  // 直连 Task 均无对应），是命名历史遗留的死声明——真正的路由是同名的
+  // 'chess_onlooker'（下面已声明），check-behavior-data.mjs 新规则（tasks.md P-4）
+  // 抓到后核实删除，非本轮改动引入。
+  activities: ['talk', 'chess_onlooker'],
   traits: {},
   cameraReaction: 'neutral',
   // P-2 重标定：同 PEDESTRIAN 注记（每次掷骰概率，×0.6 换算自旧值）。
