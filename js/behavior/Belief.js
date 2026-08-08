@@ -1,28 +1,42 @@
 /**
- * Belief — npc.mem('belief') 的唯一 owner（W-5/W-6/W-7c）
+ * Belief — npc.mem('belief') 的唯一 owner（W-5/W-6/W-7c/P-6）
  *
  * CONTRACT:
  *   OWNS:   npc.mem('belief').claims（数组）。claim 无顶层 source 字段
  *           （W-7c 删除）——provenance 是槽级的：`claim.sources[slot]` ∈
- *           'witness' | 'suggested' | null，值为 null 的槽其 sources 必为 null。
+ *           'witness' | 'suggested' | 'fabricated' | null（P-6 新增
+ *           'fabricated'——见下方 WRITES 的 evolveMemory 一条），值为 null
+ *           的槽其 sources 必为 null。
  *   WRITES: generateClaims() 是新 claim 的唯一写入点（产出时所有槽标
  *           'witness'）。injectSuggestion() 是"suggested"来源的唯一写入
  *           点，但**不建新 claim**——只能把某条既有 claim 上 sources 为
  *           null 的槽填上；两者严格分开，不合并成一个入口（provenance 必须
- *           能各自单独追责）。
+ *           能各自单独追责）。evolveMemory()（P-6）是第三个写入点，按周期对
+ *           每条 claim 的每个槽独立掷一次变异（遗忘/变形/转移/虚构之一或
+ *           不变）——遗忘把槽退回 null（sources 同步退回 null，重新成为
+ *           injectSuggestion 的注入口）；虚构把空槽自发填上一个值，标记
+ *           'fabricated'（区别于 'witness'/'suggested'，是本批新增的第三种
+ *           来源）；变形/转移只改槽值，不碰 sources/strength——NPC 对自己的
+ *           记忆失真没有自觉，provenance 类别（这条信息最初怎么进来的）不
+ *           因为内容漂移而改写。
  *   READS:  Perception.perceive()（W-4）判定目击通道/质量；EventDefs.js 的
  *           EVENT_DEFS 提供 action 槽的 fine/coarse 取值来源；
- *           ClaimDecisionTables.js 提供 q → 填槽概率表。
+ *           ClaimDecisionTables.js 提供 q → 填槽概率表；
+ *           MemoryMutationTables.js 提供变异概率表（P-6）。
  *
  * 目击者数量目标 [2,4]（witness-memory-v1.md §5）：候选池不足 2 人时如实
  * 反映实际人数，不强行凑数；q < WITNESS_Q_THRESHOLD 的候选不计入候选池。
- * 静态分布验证见 scripts/check-witness-distribution.mjs。
+ * 静态分布验证见 scripts/check-witness-distribution.mjs；记忆演化验证见
+ * scripts/check-memory-mutation.mjs（P-6，五个静态门之一）。
  */
 
 import { EVENT_DEFS } from './data/EventDefs.js';
 import { SIGHT_TABLE, SOUND_TABLE, qBand } from './data/ClaimDecisionTables.js';
+import { MUTATION_TABLE, FABRICATE_PROB, effectiveMutationProbs } from './data/MemoryMutationTables.js';
 import { perceive } from './Perception.js';
 import { getNavGrid, CELL, ZONE } from './nav/NavGrid.js';
+import { gameClock } from '../core/GameClock.js';
+import { PROFILES } from '../npc/NpcProfile.js';
 
 export const WITNESS_Q_THRESHOLD = 0.20;
 const WITNESS_COUNT_RANGE = [2, 4];
@@ -225,4 +239,140 @@ export function claimsToTestimony(npc) {
     lines.push(parts.join('，'));
   }
   return lines;
+}
+
+// ─── 记忆演化（P-6：复述使信念变强 / 记忆随时间失真）─────────────────────────
+
+// 演化周期的具名住址（游戏分钟，不是实秒）。调用方（BehaviorManager 每帧）用
+// GameClock 实际经过的游戏分钟数累加喂给 evolveMemory；P-8 调试面板的"时间
+// 快进"直接把「N 分钟 ÷ 本常量」算成整数 ticks 传入，绕开真实帧循环、不触碰
+// GameClock 本身——这正是"快进只推进记忆演化所需的时钟"的实现方式。
+export const MEMORY_EVOLUTION_INTERVAL_MIN = 5;
+
+// time 槽退化（fine→coarse）后的三档粗桶命名沿用 witness-memory-v1.md §1
+// 的 time 行；分界阈值（游戏小时）是本批新增、文档未锁定的具体数值，按
+// "半天内=常见记忆窗口"的直觉取值，不是设计冻结项，可按体验调整。
+const TIME_BUCKET_HOURS = { justNow: 1, aWhileAgo: 4 };
+const TIME_BUCKETS = ['just_now', 'a_while_ago', 'long_ago'];
+
+function _timeToBucket(t) {
+  const now = gameClock();
+  let delta = now - t;
+  if (delta < 0) delta += 24; // GameClock 24 小时回绕
+  if (delta < TIME_BUCKET_HOURS.justNow) return 'just_now';
+  if (delta < TIME_BUCKET_HOURS.aWhileAgo) return 'a_while_ago';
+  return 'long_ago';
+}
+
+// 虚构值的取值池：actor/target 借用 NpcProfile.js 的 profile 名当"猜测的类别"
+// （虚构从不产出 fine 粒度的具体身份——那是编造一个具体人物，比编造一个类别
+// 更不可信，本批不做那么细）；action 借用 EVENT_DEFS 里出现过的 category 去重
+// 集合；place 借用 ZONE 键（剔除 BLOCKED——不是可停留的语义地点）；time 直接
+// 复用退化档的三个桶名，保持粒度一致。
+const FABRICATE_ACTOR_POOL = Object.keys(PROFILES);
+const FABRICATE_ACTION_POOL = [...new Set(Object.values(EVENT_DEFS).map(d => d.category))];
+const FABRICATE_PLACE_POOL = Object.keys(ZONE).filter(k => k !== 'BLOCKED');
+
+function _randOf(pool) { return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null; }
+
+function _fabricatedValue(slot) {
+  if (slot === 'actor' || slot === 'target') return _randOf(FABRICATE_ACTOR_POOL);
+  if (slot === 'action') return _randOf(FABRICATE_ACTION_POOL);
+  if (slot === 'place')  return _randOf(FABRICATE_PLACE_POOL);
+  if (slot === 'time')   return _randOf(TIME_BUCKETS);
+  return null;
+}
+
+/**
+ * slotFidelity — 槽当前表征细度的纯字符串形状判定：'fine'（原始细粒度值）｜
+ * 'coarse'（已退化，含 tag/category/zone/时间桶）｜'null'（无值）。唯一住址——
+ * _distortSlot 用它判断"还能不能继续退化"，scripts/check-memory-mutation.mjs
+ * 用它统计保真率，不在两处分别实现一套判定逻辑。
+ */
+export function slotFidelity(slot, value) {
+  if (value == null) return 'null';
+  if (slot === 'actor' || slot === 'target') return value.includes('#') ? 'fine' : 'coarse';
+  if (slot === 'action') return EVENT_DEFS[value] ? 'fine' : 'coarse';
+  if (slot === 'place')  return value.includes('(') ? 'fine' : 'coarse';
+  if (slot === 'time')   return typeof value === 'number' ? 'fine' : 'coarse';
+  return 'coarse';
+}
+
+/** 遗忘：槽退回 null，sources 同步退回 null，累计的 strength 一并清空
+ *  （重新成为空槽，之后再被 injectSuggestion 填上时从 strength=1 重新计）。 */
+function _forgetSlot(claim, slot) {
+  claim[slot] = null;
+  claim.sources[slot] = null;
+  delete claim.strength[slot];
+}
+
+/** 变形：fine → coarse 退化一档；已经是 coarse（或该槽无退化阶梯可退）则本轮
+ *  变异无效果——"遗忘"和"变形"是两种独立判定，不会因为已经退化到底就顺带遗忘。 */
+function _distortSlot(claim, slot) {
+  if (slotFidelity(slot, claim[slot]) !== 'fine') return;
+  if (slot === 'actor' || slot === 'target') claim[slot] = claim[slot].split('#')[0];
+  else if (slot === 'action') claim[slot] = EVENT_DEFS[claim[slot]].category;
+  else if (slot === 'place')  claim[slot] = claim[slot].split('(')[0];
+  else if (slot === 'time')   claim[slot] = _timeToBucket(claim[slot]);
+}
+
+/** 置换：槽值被替换成同一 NPC（allClaims 的作用域）别的 claim 里同槽的值；
+ *  没有别的 claim 在这个槽上有值就放弃这轮（不是"没找到就遗忘"）。
+ *  sources/strength 不改——provenance 类别不因内容被记混而改写（见文件头注释）。 */
+function _transferSlot(claim, slot, allClaims) {
+  const donors = allClaims.filter(c => c !== claim && c[slot] != null);
+  if (donors.length === 0) return;
+  claim[slot] = donors[Math.floor(Math.random() * donors.length)][slot];
+}
+
+/** 虚构：空槽（sources[slot]===null）自发填上一个值，标记来源 'fabricated'。 */
+function _fabricateSlot(claim, slot) {
+  const value = _fabricatedValue(slot);
+  if (value == null) return;
+  claim[slot] = value;
+  claim.sources[slot] = 'fabricated';
+}
+
+function _pickOutcome(probs) {
+  const r = Math.random();
+  let acc = 0;
+  for (const k of ['stay', 'distort', 'transfer', 'forget']) {
+    acc += probs[k];
+    if (r < acc) return k;
+  }
+  return 'stay';
+}
+
+/** 对单条 claim 的每个槽独立掷一次（一次演化 tick）。allClaims 是同一 NPC 的
+ *  完整 claims 数组，供 _transferSlot 划定"只能取到自己其他 claim"的范围。 */
+function _mutateClaim(claim, allClaims) {
+  for (const slot of SLOTS) {
+    if (claim.sources[slot] == null) {
+      if (Math.random() < FABRICATE_PROB[slot]) _fabricateSlot(claim, slot);
+      continue;
+    }
+    const outcome = _pickOutcome(effectiveMutationProbs(slot, claim.strength[slot] ?? 0));
+    if (outcome === 'forget')   _forgetSlot(claim, slot);
+    else if (outcome === 'distort')  _distortSlot(claim, slot);
+    else if (outcome === 'transfer') _transferSlot(claim, slot, allClaims);
+    // 'stay'：不动
+  }
+}
+
+/**
+ * evolveMemory — 记忆演化步骤唯一入口（P-6）。ticks 是离散的演化周期数
+ * （每个周期 = MEMORY_EVOLUTION_INTERVAL_MIN 游戏分钟），不是时间本身——
+ * 攒够一个周期才算一次 tick 是调用方（BehaviorManager）的职责，这里只管
+ * "给定 N 个周期，把每个 NPC 的每条 claim 的每个槽独立按变异表滚一次"，
+ * 纯粹、可重复调用、不持有任何计时状态，P-8 调试面板的"时间快进"和本文件
+ * 自身都可以直接调用而不必先攒时间。
+ */
+export function evolveMemory(npcs, ticks = 1) {
+  for (let i = 0; i < ticks; i++) {
+    for (const npc of npcs) {
+      const claims = npc.mem('belief').claims;
+      if (!claims || claims.length === 0) continue;
+      for (const claim of claims) _mutateClaim(claim, claims);
+    }
+  }
 }

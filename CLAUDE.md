@@ -383,6 +383,24 @@ place 的 fine/coarse 值存 NavGrid zone 名（+坐标后缀），claim 里存�
 转成人类可读字符串数组，按槽标注来源（哪个字是问出来的，不是整条打一个
 标签），喂给 `providers.text.compose({testimony})`——`testimony` 不再
 硬编码 `[]`。
+
+`evolveMemory(npcs, ticks)`（P-6）是 claims 的第三个写入点——按周期对每条
+claim 的每个槽独立掷一次变异：遗忘（值退 null，`sources` 同步退 null，
+重新成为 `injectSuggestion` 的注入口）/ 变形（fine→coarse 一档，复用
+`slotFidelity`/`_actorFidelityValue` 等既有阶梯，不新发明一套）/ 转移
+（换成同一 NPC 别的 claim 里同槽的值，`sources`/`strength` 不变——NPC
+对自己的记忆失真没有自觉）/ 虚构（空槽自发填值，来源标 `'fabricated'`，
+是 `sources[slot]` 除 `'witness'`/`'suggested'`/`null` 外的第三种取值）。
+概率表 `js/behavior/data/MemoryMutationTables.js`（数值照抄
+`witness-memory-v1.md` 第四节 Mutation 转移表）：`strength` 越高，
+"非不变"概率按 `STRENGTH_DECAY` 指数衰减（下限 `STRENGTH_FLOOR`，不完全
+免疫）——这是"复述使信念变强"的机制落点。`MEMORY_EVOLUTION_INTERVAL_MIN`
+是周期常量（游戏分钟，非实秒）；`BehaviorManager.js` 用 `gameClock()`
+帧间差值攒计时器触发；P-8 调试面板"时间快进"直接算好 ticks 数调用
+`evolveMemory`，不触碰 GameClock 本身。`slotFidelity(slot,value)` 是
+"这个槽当前是 fine/coarse/null"的纯字符串形状判定唯一住址，
+`scripts/check-memory-mutation.mjs`（五个静态门之一）复用它统计保真率，
+不在检查脚本里另外实现一遍。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
@@ -426,6 +444,12 @@ Z-2b 追加：NavGrid 亦不得出现 Y 分带数字——烘焙几何一律来�
 - **验收标准先行**：每个子任务开始前在 CLAUDE.md 或 PR 描述中写清楚验收条件；没有验收标准的任务禁止提交
 - **时序锚点**：涉及帧内执行顺序的描述须附 `StreetScene.js:行号` 锚点；帧序以 `movement-dataflow.md §1` 为权威，不另起炉灶
 - **契约同步**：改 `js/` 逻辑时同步更新 `docs/contracts/`；改合约时须能用 grep 在代码中找到对应实现，找不到视为草案不得升 normative
+- **静态门**（tasks.md P-6 起五个，全部无报错才算完成一批改动）：
+  `node scripts/check-invariants.mjs`、`node scripts/check-behavior-data.mjs`、
+  `node scripts/check-witness-distribution.mjs`、`node sth/tools/validate.mjs`
+  （不在 `scripts/` 下）、`node scripts/check-memory-mutation.mjs`（P-6 新增，
+  验证 `Belief.js#evolveMemory` 的记忆演化层：保真率随时间下降且趋缓、
+  strength 越高越抗变异、转移变异不跨 NPC 串号）
 
 ---
 

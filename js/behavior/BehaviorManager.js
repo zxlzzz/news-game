@@ -34,7 +34,8 @@ import { ExitSceneTask }        from './tasks/ExitSceneTask.js';
 import { stuckProbe } from './StuckProbe.js';
 import { audit } from '../debug/MovementAudit.js';
 import { drainNewEvents } from './WorldEventLog.js';
-import { generateClaims } from './Belief.js';
+import { generateClaims, evolveMemory, MEMORY_EVOLUTION_INTERVAL_MIN } from './Belief.js';
+import { gameClock } from '../core/GameClock.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -64,6 +65,10 @@ export class BehaviorManager {
     this.npcs            = [];
     this.waitForBusLayer = null;
     this.exitRegistry    = null;
+    // P-6：记忆演化攒帧计时器，累计"游戏分钟"（不是实秒）——见 update() 里
+    // 用 gameClock() 前后帧差值换算的那一段，以及 Belief.js#evolveMemory 头注释。
+    this._memEvoAccMin  = 0;
+    this._lastGameHours = gameClock();
   }
 
   /** 注册 NPC 并指定行为档案；返回该 NPC */
@@ -110,6 +115,22 @@ export class BehaviorManager {
     for (const event of drainNewEvents()) {
       const actorNpcs = event.actors.map(id => this.npcs.find(n => n.id === id) ?? null);
       generateClaims(event, actorNpcs, this.npcs);
+    }
+
+    // 1.6) 记忆演化（P-6）：按 GameClock 实际经过的游戏分钟数攒计时器，攒够
+    // MEMORY_EVOLUTION_INTERVAL_MIN 才滚一次——不是每帧都滚，量级参考
+    // TalkActivity/ChessActivity 的周期化掷骰。跨午夜回绕（24→0）按正向流逝处理。
+    {
+      const nowH = gameClock();
+      let dH = nowH - this._lastGameHours;
+      if (dH < 0) dH += 24;
+      this._lastGameHours = nowH;
+      this._memEvoAccMin += dH * 60;
+      if (this._memEvoAccMin >= MEMORY_EVOLUTION_INTERVAL_MIN) {
+        const ticks = Math.floor(this._memEvoAccMin / MEMORY_EVOLUTION_INTERVAL_MIN);
+        this._memEvoAccMin -= ticks * MEMORY_EVOLUTION_INTERVAL_MIN;
+        evolveMemory(this.npcs, ticks);
+      }
     }
 
     // 2) WaitForBusLayer 扫描

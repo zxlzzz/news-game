@@ -31,21 +31,26 @@ Update order each frame (per NPC, `BehaviorManager.js#update`):
    `js/behavior/activities/` by `check-invariants.mjs` Rule 14); actor ids
    resolved against `this.npcs`, missing actors passed through as `null`
    (`Belief` tolerates)
-3. `WaitForBusLayer.update` — zone scan only; waiter tick is a per-NPC
-   `WaitBusTask` (Patch C), driven at step 6 like any other task, not by
+3. `Belief.evolveMemory` (tasks.md P-6) — memory mutation step, gated by an
+   accumulator of elapsed *game* minutes (`gameClock()` delta this frame ×60,
+   not real `dt`), only fires once `_memEvoAccMin` crosses
+   `MEMORY_EVOLUTION_INTERVAL_MIN`; independent of step 2, runs every frame
+   regardless of whether any event was drained
+4. `WaitForBusLayer.update` — zone scan only; waiter tick is a per-NPC
+   `WaitBusTask` (Patch C), driven at step 7 like any other task, not by
    this layer
-4. Lifespan expiry (`!sc.activity && !sc.waitingBusStop` gate) →
+5. Lifespan expiry (`!sc.activity && !sc.waitingBusStop` gate) →
    `releaseAllHoldings` + `triggerDeparture` + `ExitSceneTask`; age
    accumulates during Activity/bus-wait, trigger fires on first frame after
    either ends (`sc.waitingBusStop` added in Patch C — waiting is a Task now
    and doesn't set `sc.activity`, so it needs its own guard to keep the old
    "can't expire while waiting for the bus" behavior)
-5. `Agenda.tick` — Goal selection when no Activity
-6. `TaskRunner.tick` — always, including monitor tasks
-7. If `activity` → skip BSM / modifiers
-8. `tickBaseState` + `checkZoneTransition`
-9. `tickModifiers`
-10. ~~`_separate` — inter-NPC separation impulses~~ — M-1 已删除（信任无碰撞路径重构）
+6. `Agenda.tick` — Goal selection when no Activity
+7. `TaskRunner.tick` — always, including monitor tasks
+8. If `activity` → skip BSM / modifiers
+9. `tickBaseState` + `checkZoneTransition`
+10. `tickModifiers`
+11. ~~`_separate` — inter-NPC separation impulses~~ — M-1 已删除（信任无碰撞路径重构）
 
 ---
 

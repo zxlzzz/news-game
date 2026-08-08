@@ -3,16 +3,26 @@
 > 冻结决策记录。v1.0 日期：2026-08-02；v1.1（槽级 provenance 改造，W-7c）同日追加。
 > 范围：claim 五槽 schema、感知质量 → 填槽裁决表、mutation 转移表、目击者数量设计目标、
 > 审问注入的槽级 provenance。
-> W-1（`WorldEventLog.js#emitEvent` + `EventDefs.js`）已实施，但 `EVENT_DEFS`
-> 目前只有 `TalkActivity.js` 迁移过来的 5 个 kind，不是完整的世界事件词表——
-> 其他事件源接入 `emitEvent()` 时按需在 `EventDefs.js` 里加新 kind。
+> W-1（`WorldEventLog.js#emitEvent` + `EventDefs.js`）已实施，`EVENT_DEFS`
+> 最初只有 `TalkActivity.js` 迁移过来的 5 个 kind，tasks.md P-3/P-4 分别加了
+> `chess_move`/`stall_trade`（现 7 个），仍不是完整的世界事件词表——其他事件源
+> 接入 `emitEvent()` 时按需在 `EventDefs.js` 里加新 kind。
 > W-5（`Belief.js#generateClaims` + `ClaimDecisionTables.js`）已实施，W-7a 把
 > `WorldEventLog.drainNewEvents()` 接到了 `generateClaims()`（`BehaviorManager.
 > update()` 帧序 1.5，唯一消费点）——两个地基已接线。W-6（审问接线）已实施；
 > W-7c 把 provenance 从 claim 级收窄到槽级，`injectSuggestion` 不再新建
 > claim，第一节与第七节按 v1.1 现状改写（v1.0 的 claim 级 `source` 字段已
-> 完全删除，不作为兼容层保留）。mutation 转移表（第四节）仍未接线——SIR
-> 传播触发点沿用 `belief-layer-v0.md` I-3 草案，尚未实现，不在本文档范围。
+> 完全删除，不作为兼容层保留）。
+> **v1.2（tasks.md P-6 追加）**：第四节 Mutation 转移表已接线——但触发时机
+> 不是本节原先设想的"复述传播"（SIR，NPC 间转告触发一次变异跳），而是
+> `Belief.js#evolveMemory` 按游戏时间周期性触发（`BehaviorManager.update()`
+> 帧序 1.6）；表的数值和"不变/退化/置换/丢失"四档结构原样复用，P-6 在此之上
+> 叠加了 strength 抗性（原表没有的维度，见 `MemoryMutationTables.js` 头注释）
+> 和新增的第五种结果"虚构"（只对 null 槽生效，原表明文不覆盖 null 槽，见
+> 第四节引言）。`sources[slot]` 取值集合因此从 `'witness'|'suggested'|null`
+> 扩到 `'witness'|'suggested'|'fabricated'|null`，第一节 schema 按此改写。
+> SIR 式"复述传播"触发点仍未实现，`belief-layer-v0.md` I-3 草案仍是那部分的
+> 唯一记录，不在本文档范围。
 > 本文档只锁 schema 与数值表，供后续批次按此表实现，实现前禁止另起一套字段名/取值域。
 
 ## 背景
@@ -39,14 +49,15 @@
   target: string | null,    // 动作的对象/协作者
   place:  string | null,    // 发生地点
   time:   number | null,    // 发生时刻
-  sources: {                // 槽级 provenance（W-7c；v1.0 的 claim 级 source 已删除）
-    actor:  'witness' | 'suggested' | null,
-    action: 'witness' | 'suggested' | null,
-    target: 'witness' | 'suggested' | null,
-    place:  'witness' | 'suggested' | null,
-    time:   'witness' | 'suggested' | null,
+  sources: {                // 槽级 provenance（W-7c；v1.0 的 claim 级 source 已删除；
+                             // v1.2/P-6 加 'fabricated'，见文档头注记）
+    actor:  'witness' | 'suggested' | 'fabricated' | null,
+    action: 'witness' | 'suggested' | 'fabricated' | null,
+    target: 'witness' | 'suggested' | 'fabricated' | null,
+    place:  'witness' | 'suggested' | 'fabricated' | null,
+    time:   'witness' | 'suggested' | 'fabricated' | null,
     // 某槽值为 null ⟺ 该槽 sources 也为 null；两者必须同步，不允许
-    // "值是 null 但 sources 说是 witness/suggested" 这种矛盾状态。
+    // "值是 null 但 sources 说是 witness/suggested/fabricated" 这种矛盾状态。
   },
   strength: { [slot: string]: number },  // 只有被 injectSuggestion 填过的槽才会出现在这里；
                                           // 同一 (claim, slot, value) 每次重复注入 +1，初始 1
@@ -126,11 +137,22 @@ q 来自 `Perception.perceive()` 的输出。**q < 0.20 视为阈下，不产出
 
 ---
 
-## 四、Mutation 转移表（复述失真，参照 Talk of the Town）
+## 四、Mutation 转移表（记忆失真，参照 Talk of the Town）
+
+> **已接线（tasks.md P-6）**：数值与结构原样进了
+> `js/behavior/data/MemoryMutationTables.js#MUTATION_TABLE`，触发时机是
+> `Belief.js#evolveMemory` 的周期性演化（`BehaviorManager.update()` 帧序
+> 1.6），**不是**本节标题原先设想的"NPC 间复述传播"——那种"claim 经转告
+> 产生新副本、每一跳独立失真"的 SIR 式机制仍未实现（见文档头注记）。P-6
+> 选择了更简单的落点："同一条 claim 自己随游戏时间演化"，用的是同一份
+> 先验数值，但语义是"记忆自然衰退"而不是"转述失真"——两者数值上不冲突
+> （原表本来就是没有的经验先验，套哪种触发时机都成立），但概念上是两回事，
+> 以后真正实现"转告产生新副本"时不应该默认复用同一张表不重新论证。
 
 claim 经 NPC 间复述传播时，每跳按槽独立抽样是否失真。**只对"当前有值"的槽生效**——
 本来就是 `null`（无论是结构性 null 还是 sound.actor 的硬约束 null）不参与本表，不会凭空
-"变出"一个值。
+"变出"一个值（P-6 的"虚构"结果正是为了填这个口子新加的第五档，不在这张表里，见
+`MemoryMutationTables.js#FABRICATE_PROB`）。
 
 | 槽 | 不变 | 退化（fine→coarse/tag） | 置换（记错成别的实体/地点） | 丢失（→null） |
 |----|------|------------------------|----------------------------|---------------|
@@ -139,6 +161,11 @@ claim 经 NPC 间复述传播时，每跳按槽独立抽样是否失真。**只�
 | `target` | 0.78 | 0.10 | 0.08 | 0.04 |
 | `place`  | 0.75 | 0.15 | 0.05 | 0.05 |
 | `time`   | 0.90 | 0.07 | 0.01 | 0.02 |
+
+P-6 在此之上叠加了原表没有的一个维度——**strength 抗性**：`claim.strength[slot]`
+（由 `injectSuggestion` 的同值复述累加，见第七节）越高，本表"非不变"三档的合计
+概率按 `STRENGTH_DECAY` 指数衰减（下限 `STRENGTH_FLOOR`，不完全免疫），这是
+"复述使信念变强"这句设计口号第一次真正落地成数值。
 
 每行概率和为 1.0。`time` 的"不变"概率最高、`place` 最低——记忆研究里空间细节比时间顺序
 更容易在转述中漂移，这条先验直接抄自 Talk of the Town 的既有取舍，不是本项目的新发现。

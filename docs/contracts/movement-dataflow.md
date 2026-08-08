@@ -1,6 +1,6 @@
 # Movement Dataflow Contract
 
-> Normative. Updated through N-3c; routing chain deleted; Npc.js inline movement deleted; CYCLIST profile added; W-7a adds step 1.5 (event → witness claim consumption).
+> Normative. Updated through N-3c; routing chain deleted; Npc.js inline movement deleted; CYCLIST profile added; W-7a adds step 1.5 (event → witness claim consumption); tasks.md P-6 adds step 1.6 (memory mutation).
 >
 > **M-1「信任路径」重构**：删除三层反应式避障 + 位置分离 + 卡死重规划——
 > step 8 的 `applyLookahead`（Lookahead.js，含 35° 旋转 + 近墙减速）、step 12 `_separate`、
@@ -27,7 +27,8 @@
 | # | Caller | Function | What moves |
 |---|--------|----------|-----------|
 | 1 | `StreetScene.update` → `BehaviorManager.update` | `SocialLayer.update` | activity pair/tick |
-| 1.5 | BM | `WorldEventLog.drainNewEvents` → `Belief.generateClaims` (W-7a) | converts events emitted this frame (currently only `TalkActivity.js#emitEvent`) into witness claims written to `npc.mem('belief').claims`; `event.actors[]` ids resolved against `this.npcs` (missing → `null`, `Belief` tolerates); no position/state change |
+| 1.5 | BM | `WorldEventLog.drainNewEvents` → `Belief.generateClaims` (W-7a) | converts events emitted this frame (currently `TalkActivity.js`/`ContactActivity.js`, `ChessActivity.js` (P-3), `StallActivity.js` (P-4) call `emitEvent`) into witness claims written to `npc.mem('belief').claims`; `event.actors[]` ids resolved against `this.npcs` (missing → `null`, `Belief` tolerates); no position/state change |
+| 1.6 | BM | `Belief.evolveMemory` (tasks.md P-6) | per-claim, per-slot memory mutation (forget/distort/transfer/fabricate); gated by an accumulator of elapsed *game* minutes (`gameClock()` delta this frame × 60, not real `dt`) crossing `MEMORY_EVOLUTION_INTERVAL_MIN`; runs independently of whether step 1.5 drained any events this frame; no position/state change |
 | 2 | BM | `WaitForBusLayer.update` | bus-waiter zone scan only; waiter tick is a per-NPC `WaitBusTask` (Patch C), driven at step 5 like any other task |
 | 3 | BM per-NPC | lifespan check (`!sc.activity && !sc.waitingBusStop` gate) → `triggerDeparture` → `_routeToExit` | sets `ag.departing`; saves + expands bounds (edge exits); publishes `mot.goal` (via `publishGoal`); skipped while NPC is in an Activity or waiting for a bus (age accumulates, triggers on next frame after either ends; `sc.waitingBusStop` half added in Patch C since waiting is now a Task and doesn't set `sc.activity`) |
 | 4 | BM per-NPC | `Agenda.tick` | selects next desire (no-op if `sc.activity` or `runner.primary` already set) |
