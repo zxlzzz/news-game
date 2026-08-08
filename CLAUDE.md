@@ -323,9 +323,12 @@ WorldEventLog.js — 世界事件流水账（W-1）。`emitEvent({kind, actors, 
 是唯一写入点，`kind` 须在 `js/behavior/data/EventDefs.js#EVENT_DEFS` 声明过，
 未声明直接抛错；结构 `{id, kind, actors[], x, y, t}`（`t` 取自 `GameClock.
 gameClock()`）。`emitEvent()` 调用点只允许出现在 `js/behavior/activities/`
-下（check-invariants Rule 14）。目前唯一调用方是 `ContactActivity.js`
+下（check-invariants Rule 14）。调用方之一是 `ContactActivity.js`
 （Patch G 从 `TalkActivity.js` 抽出：push / push_land / give_item /
-handshake / point_at 五种 kind，取代旧版直接挂在 NPC 上的私有标签字段）。
+handshake / point_at 五种 kind，取代旧版直接挂在 NPC 上的私有标签字段）；
+`ChessActivity.js`（P-3）是第二个调用方，回合切换（落子完成）时低概率
+（`CHESS_EVENT_PROB`）发 `chess_move`，打破"唯一事件生产者是 TalkActivity
+系"的局面。
 `drainNewEvents()` 是唯一读取点（游标推进，无旁路只读
 查询）；`EVENT_LOG_CAP=500` 是长度上限唯一住址，超限
 从头裁剪且游标同步平移，保证已读事件不会被重读。消费者：`BehaviorManager.js`

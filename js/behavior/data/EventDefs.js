@@ -18,4 +18,7 @@ export const EVENT_DEFS = {
   give_item: { actorRoles: ['giver', 'receiver'],   category: 'social' },
   handshake: { actorRoles: ['a', 'b'],              category: 'social' },
   point_at:  { actorRoles: ['pointer', 'observer'], category: 'social' },
+  // 下棋落子：双方合意、非对抗性的日常互动，同 give_item/handshake 归 'social'
+  // 而非 'conflict'——'conflict' 专指有攻击/受害方向性的场面（push 系）。
+  chess_move: { actorRoles: ['mover', 'opponent'], category: 'social' },
 };

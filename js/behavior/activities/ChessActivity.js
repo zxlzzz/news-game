@@ -2,8 +2,15 @@ import { setState }         from '../Motor.js';
 import { Activity }         from './Activity.js';
 import { ClipPlayer }       from '../ClipPlayer.js';
 import { registerActivity } from '../ActivityRegistry.js';
+import { emitEvent }        from '../WorldEventLog.js';
 
 const CHESS_WAIT_MS = 3500;
+
+// 每次回合切换（一次落子完成）时以此概率发一条 chess_move 事件。刻意调低：
+// 一局棋回合切换数十次，每回合都发会把 EVENT_LOG_CAP=500 的流水账刷爆、
+// 也会让证词管线被下棋淹没——目标是平均约十回合出一条，让"这盘棋在下"
+// 偶尔被目击到即可，不需要逐手记录。
+const CHESS_EVENT_PROB = 0.1;
 
 // 落子手势（poseCache.chess_move，见 PoseCacheBuilder 的 chess 特例）——单条 clip，
 // 覆盖全身 11 个关节，落到 ClipPlayer 的 '_chess_move' modifier 上会完全盖住
@@ -57,6 +64,12 @@ export class ChessActivity extends Activity {
       this.waitMs += dt * 1000;
       if (this.waitMs >= CHESS_WAIT_MS) {
         this.waiting = false;
+        // 刚落子的一方是切换前的 this.active；actors 第一位是落子方，第二位对手。
+        if (Math.random() < CHESS_EVENT_PROB) {
+          const mover    = this.active === 'A' ? this.a : this.b;
+          const opponent = this.active === 'A' ? this.b : this.a;
+          emitEvent({ kind: 'chess_move', actors: [mover.id, opponent.id], x: mover.x, y: mover.y });
+        }
         this.active  = this.active === 'A' ? 'B' : 'A';
         // 双方都从头播：新落子方接下来会被 update() 逐帧推进；新等待方
         // 就此停在首帧，直到轮到它。

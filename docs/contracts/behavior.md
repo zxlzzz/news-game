@@ -25,9 +25,10 @@ BehaviorManager          — thin orchestrator; owns the update loop order
 Update order each frame (per NPC, `BehaviorManager.js#update`):
 1. `SocialLayer.update` — Activity tick + Talk pairing
 2. `WorldEventLog.drainNewEvents()` → `Belief.generateClaims()` (W-7a) — the
-   single consumption point for events emitted this frame (currently only
-   `TalkActivity.js`/`ContactActivity.js` call `emitEvent()`, confined to
-   `js/behavior/activities/` by `check-invariants.mjs` Rule 14); actor ids
+   single consumption point for events emitted this frame (currently
+   `TalkActivity.js`/`ContactActivity.js` and `ChessActivity.js` (tasks.md P-3)
+   call `emitEvent()`, confined to `js/behavior/activities/` by
+   `check-invariants.mjs` Rule 14); actor ids
    resolved against `this.npcs`, missing actors passed through as `null`
    (`Belief` tolerates)
 3. `WaitForBusLayer.update` — zone scan only; waiter tick is a per-NPC

@@ -13,16 +13,23 @@
 > 已从下方候选列表中移除；`TalkActivity.js` 一节的行号/方法名也已因 Patch G
 > （`push`/`give_item`/`handshake`/`point_at` 抽成 `ContactActivity`）漂移，
 > 未在本次一并核对更新，读者自行以当前源码为准。
+>
+> **注（tasks.md P-3 后更新）**：下方"新增一个事件生产者"一节举的
+> `game_win` 例子仍是假想的，未落地；`ChessActivity.js` 实际接入的
+> kind 是 `chess_move`（回合切换/落子完成点，`CHESS_EVENT_PROB` 低概率
+> 发出，见 `docs/roadmap.md` W-10），两者是同一扩展点的两种可能用法，
+> 不冲突——真正接线的是 `chess_move` 一条，`game_win` 仍只是教学示例。
 
 ## 现状
 
-目击/证词管线目前只有两个事件生产者：`TalkActivity.js`（子事件掷骰命中后
-`handoff('contact', ...)`）与 `ContactActivity.js`（真正调用 `emitEvent`
-的地方，见该文件；Patch G 抽离，行号已随之变化，此处不再列旧行号）。
+目击/证词管线目前有三个事件生产者：`TalkActivity.js`（子事件掷骰命中后
+`handoff('contact', ...)`）驱动的 `ContactActivity.js`（真正调用 `emitEvent`
+的地方，见该文件；Patch G 抽离，行号已随之变化，此处不再列旧行号）；
+`ChessActivity.js`（P-3 新增，回合切换点低概率发 `chess_move`）。
 
-`js/behavior/activities/` 下其余两个 Activity —— `ChessActivity.js`、
-`StallActivity.js` —— 目前零 `emitEvent()` 调用，是内容瓶颈：玩家能审问出
-的"目击证词"覆盖不到下棋、摆摊这些场景。
+`js/behavior/activities/` 下的 `StallActivity.js` 目前仍是零 `emitEvent()`
+调用，是内容瓶颈：玩家能审问出的"目击证词"覆盖不到摆摊交易（tasks.md P-4
+待落地）。
 
 ## 管线四步（既有代码，未改动）
 
