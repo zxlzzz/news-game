@@ -1,4 +1,3 @@
-import { depthScale } from './Layout.js';
 import { Entity } from './Entity.js';
 
 /**
@@ -29,7 +28,9 @@ export class EntityManager {
     for (const e of this.entities) {
       if (!e.alive) continue;
       if (!e.static && 'scale' in e) {
-        e.scale = depthScale(e.y) * (e.skeletonScale ?? 1);
+        // O-1：世界坐标各向同性，不再有随 y 变化的景深缩放坡。
+        // scale 现在纯是体型比例（成人 1.0、儿童 0.694），道具/车 scale = 1。
+        e.scale = e.skeletonScale ?? 1;
       }
       e.update(delta);
     }

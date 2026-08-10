@@ -8,9 +8,9 @@ import { drawBuilding }  from './drawBuilding.js';
 
 export class BuildingEntity extends Entity {
   constructor(config) {
-    super({ ...config, width: config.bWidth ?? 100, height: config.bDepth ?? 70, static: true });
-    this.bWidth     = config.bWidth     ?? 100;
-    this.bDepth     = config.bDepth     ?? 70;
+    super({ ...config, width: config.bWidth ?? 529, height: config.bDepth ?? 371, static: true });
+    this.bWidth     = config.bWidth     ?? 529;
+    this.bDepth     = config.bDepth     ?? 371;
     this.waterTower = config.waterTower ?? false;
     this.solar      = config.solar      ?? false;
     this.billboard  = config.billboard  ?? false;
@@ -18,7 +18,7 @@ export class BuildingEntity extends Entity {
     const t = (this.tags ?? []).find(tag => tag in ARCH) || 'default';
     this.arch = t;
     this.A    = ARCH[t];
-    this.facadeH = config.facadeH ?? 90;
+    this.facadeH = config.facadeH ?? 476;
   }
 
   get _sortY() { return this.y + this.facadeH; }

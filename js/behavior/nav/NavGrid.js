@@ -39,7 +39,7 @@
 
 import { WORLD_WIDTH, WORLD_HEIGHT, NEAR_Y, resolveY } from '../../core/Layout.js';
 
-export const CELL = 10;
+export const CELL = 53; // O-1：世界单位重标，10 → 53（骨架单位，随 UNIT_REBASE_FACTOR）
 
 /** zone 语义 ID — 格子「是什么」，不含代价含义。BLOCKED 取 0 以便真值判断。 */
 export const ZONE = {
@@ -74,7 +74,7 @@ export const DEFAULT_ZONE_COSTS = {
 // 让所有引用它们的方法跟随世界尺寸（世界可频繁重新生成，尺寸各异）。
 let COLS = Math.ceil(WORLD_WIDTH  / CELL);
 let ROWS = Math.ceil(WORLD_HEIGHT / CELL);
-const NPC_HALF_W = 7;  // Minkowski expansion — NPC collision half-width added to every obstacle
+const NPC_HALF_W = 37;  // O-1：10 → 53 CELL 换算下的等比值，7 → 37。Minkowski expansion — NPC collision half-width added to every obstacle
 
 /** zone 名 → ID；配置里写名字，拼错立刻抛错（不静默变 undefined） */
 function _zoneId(name) {

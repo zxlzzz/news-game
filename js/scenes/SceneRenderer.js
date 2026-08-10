@@ -25,7 +25,7 @@ import {
   SKYLINE_BACK, SKYLINE_FRONT, SKYLINE_LINE, CLOUD_LINE,
   CURB_EDGE_LINE,
   depthLineColor, depthLineWidth, ENV_LINE_LIGHT, ENV_LINE_DARK,
-  resolveY, resolveColor,
+  resolveY, resolveColor, lenv,
 } from '../core/Layout.js';
 
 function _need(v, what) {
@@ -33,11 +33,6 @@ function _need(v, what) {
   return v;
 }
 
-function lenv(g, baseY, wScale = 1.0) {
-  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
-  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
-  g.lineStyle(lw, lc, 1);
-}
 import { drawBusStopBays }  from '../entity/busstop/drawBusStopBay.js';
 import { drawChessPlaza }   from '../entity/chess-table/drawChessPlaza.js';
 import { drawMiniPark }     from '../entity/mini-park/drawMiniPark.js';

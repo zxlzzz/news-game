@@ -706,3 +706,88 @@ clip（改个 role 名、调个过渡时长）此前都要连带改代码。
 代码锚点：`js/behavior/PoseCacheBuilder.js#decodeSubEvent`；
 `js/behavior/activities/TalkActivity.js`；`assets/animations/new_assets/docx.md`
 「多帧 sub-event overlay 格式」节
+
+---
+
+### O-1（世界单位重标，删除景深缩放坡）— 已落地
+
+斜投影线（O 系列）第一刀：世界坐标从"屏幕像素 + 随 y 变化的景深缩放坡
+（`depthScale`）"改成"骨架单位、各向同性"。本补丁只换坐标系，不改画面结构——
+绘制仍是平贴画法，三面体积/倾角留给 O-2 起。
+
+- **Layout.js**：新增 `UNITS_PER_METER`(84.70588) / `PX_PER_UNIT`(0.388889，
+  唯一屏幕缩放常量) / `UNIT_REBASE_FACTOR`(5.294118，迁移脚本用)；删
+  `depthScale`/`_FAR_SCALE`/`_NEAR_SCALE`；`depthT` 改线性（删 `_SEG` 分段锚点，
+  只喂 `depthGray`/`depthLineWidth`/`depthLineColor` 三个画风消费者）；
+  `depthLineWidth` 默认值 0.8/2.2 → 2.06/5.66（除以 `PX_PER_UNIT` 补偿容器缩放）；
+  `LINE_FAR_WIDTH`/`LINE_NEAR_WIDTH` 同乘 1/`PX_PER_UNIT`；world/yBands 新默认值；
+  `initLayout` 不再读 `config.depth`。28 份重复的 `lenv()` 收成本文件单一
+  export，各 draw 文件改 import。
+- **EntityManager.js**：`e.scale = depthScale(e.y) * (e.skeletonScale ?? 1)` →
+  `e.scale = e.skeletonScale ?? 1`（成人 1.0、儿童 0.694）；~15 个 `depthScale`
+  直接消费点（chessTable/phonebooth/fountain/vending/busstop/drawParkPath/
+  mailbox/newsrack/stall/planter/hydrant/tree/trash/seat/Chess.js/
+  sceneFeatures.js/SceneInitializer.js/VehicleEntity.js）按统一规则改写：
+  `const ds = depthScale(e.y)` → `const ds = e.scale ?? 1`；
+  `e.scale = depthScale(e.y)…` → `e.scale = 1`（或 `skeletonScale ?? 1`）；
+  footprint() 内部的 `× ds` 数值本身不变（道具几何在无量纲空间声明，绘制时乘
+  `prop.scale`，O-1 起该值恒为 1，道具不需要改尺寸——只有建筑是裸世界像素、
+  需要重报）。
+- **建筑重报**：`building.js` `INTRINSIC`(facadeH/bDepth/bWidth) 与 `ARCH` 表的
+  `floorH`/`groundMax`、`BuildingEntity.js` 默认值、`drawBuilding.js` 内部窗格/
+  门/屋顶细节的位置与尺寸常量，全部 × `UNIT_REBASE_FACTOR`；裸的
+  `g.lineStyle()` 描边宽度字面量不在此列（留给 O-3/O-4 盒子模板化时一并处理）。
+- **车辆**：`VehicleSpawner.js` car/bus 速度 rand(70,130)→rand(706,1059)
+  30~45km/h，moto rand(100,150)→rand(1059,1412) 45~60km/h；
+  `VehicleStateMachine.js` 蠕行目标 15→118，停车阈值 0.5→5；`VehicleEntity.js`
+  车身浮动幅度 3→10，`scale` 恒为 1（不再随车道 y 变化）。骑手/行人 speedRange
+  已是骨架单位（U-2/U-2d），未动。
+- **相机 + Viewfinder**：`StreetScene._applyCamera` 的 `worldContainer` 额外乘
+  `PX_PER_UNIT`；`_clampScroll`/`_getWorldCoords` 同步换算。`skyContainer` 整体
+  `scale` 不受 `PX_PER_UNIT` 影响（天空/云/天际线仍是画风几何，O-6 天际线平贴层
+  前不重绘），但其视差位移公式的 `scrollX`/`scrollY` 现在是骨架单位，仍同乘
+  `PX_PER_UNIT` 以保持"比世界慢 0.45 倍"的视觉比例——这是唯一在字面"不受
+  PX_PER_UNIT 影响"之外做的补偿，理由是这里的 `PX_PER_UNIT` 是无可选择的单位
+  换算而非画风选择；见 `StreetScene.js` `_applyCamera` 上方注释。
+  `Viewfinder` 默认/最小/最大宽高 × `UNIT_REBASE_FACTOR`。
+- **scene.json**：一次性脚本 `scripts/rebase-scene-units.mjs`（保留在仓库供
+  复核）原地重写：world/yBands 换成固定新值，`depth` 顶层键整体删除；x 类
+  字段（位置横坐标/宽度/半径等）× `UNIT_REBASE_FACTOR`；y 类字段走 yBands
+  新旧值构成的分段线性插值表；`ry`（椭圆纵深半轴）× 7.652；`yOffset`/
+  `zones.overlays[].height` 等"相对偏移/长度"字段按其锚点所在分段的局部斜率
+  变换（不是绝对位置查表——在锚点上重合时按偏移方向选入段/出段斜率，两者在
+  `PARK_TOP` 处相差 24%，已用任务书给定的 `overlays.height: 28→296` 验证选对
+  了方向）。**`props.*.w`/`.h`（含 `at[]` 内的覆盖值）与
+  `layout.sidewalkTrees`/`parkTrees` 的半径 `r` 刻意不缩放**——同建筑重报一节
+  的理由，这些是"尺寸"不是"位置"。
+- **NavGrid**：`CELL` 10→53，`NPC_HALF_W` 7→37；核对 `SAFETY_RULES`（`Motor.js`/
+  `SteeringDecision.js`）里标注"NavGrid 格"的常量——当前实际不存在此类常量
+  （`facing.deadZone` 是骨架单位，`jaywalk_sprint.speedK` 是比例），`ARRIVAL_RULES`
+  的 M-1b 安全边推导前提虽随 `npc.scale` 不再随 y 变化而过期，但按新
+  `NPC_HALF_W`(37) 重算两条 threshold 仍在新安全边内（16×0.85=13.6、
+  14×0.85=11.9，均 < 37），未发现"对不上"，故未改动 threshold 数值，仅更新
+  注释记录前提已变（`SteeringDecision.js` O-1 后记）。
+- **已知遗留（未在本补丁范围内，供后续参考）**：`js/core/sceneData.js` 的
+  `FAR_STOP`/`NEAR_STOP` 公交站结构常量（`roofW`/`bayD` 等）未随本补丁重报——
+  任务书明确"楼是唯一要重报尺寸的实体"，且 `roofW`/`pillarOffset` 在
+  `drawBusStopRoof.js` 里实际是死配置（绘制硬编码 800/30/325，不读
+  `p.roofW`），只有 `bayD`（用于从 `FAR_Y` 减出停靠点）在新 y 尺度下比例上
+  比旧版更贴近路缘，是个已知但很小的几何误差。`EnvironmentQuery.js` 的半径
+  常数仍是世界像素，是既有已知债务（U-2c 已记录），不因本补丁扩大。
+- **预期副作用（不是 bug）**：世界屏幕高度 520→约 1195px（`VIEW_H` 仍 500，
+  O-2 才用倾角压回去）；街道屏幕长度 2000→约 4118px（NPC 显得稀疏，
+  `Director.PERIODS` 密度本补丁不调）；`chessPlaza`/`miniPark`/喷泉的椭圆纵
+  半轴用全局线性近似，O-2 见真几何后再手调。
+
+—— 验收（grep 可查，均已过）——
+`grep -rn "depthScale" js` → 0；`grep -rn "scaleFar\|scaleNear" js assets` → 0；
+`grep -n "function lenv" js` → 只有 `js/core/Layout.js`；`grep -n "PX_PER_UNIT"
+js/scenes/StreetScene.js` → 6 处；`assets/scene.json` 无 `depth` 顶层键，
+`world.width=10588`，`world.height=3072`；四个静态门全绿。
+
+代码锚点：`js/core/Layout.js`；`js/core/EntityManager.js`；
+`js/entity/building/{building,BuildingEntity,drawBuilding}.js`；
+`js/behavior/VehicleSpawner.js`；`js/entity/vehicle/{VehicleEntity,
+VehicleStateMachine}.js`；`js/scenes/StreetScene.js#_applyCamera`；
+`js/camera/Viewfinder.js`；`scripts/rebase-scene-units.mjs`；
+`js/behavior/nav/NavGrid.js`（`CELL`/`NPC_HALF_W`）

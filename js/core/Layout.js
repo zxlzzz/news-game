@@ -5,8 +5,8 @@
  * 本文件只保留行为系统和渲染引擎共用的结构性参数。
  *
  * ─── 参数化（Z-2a）─────────────────────────────────────────────────────────
- * 世界尺寸、Y 分带、深度锚点是 `export let`，由 `initLayout(sceneData)` 从
- * scene.json 的 `world` / `yBands` / `depth` 字段注入；此处字面量是 fallback 默认值。
+ * 世界尺寸、Y 分带是 `export let`，由 `initLayout(sceneData)` 从
+ * scene.json 的 `world` / `yBands` 字段注入；此处字面量是 fallback 默认值。
  * 借 ES module live binding，`import { NEAR_Y }` 的站点无需改动即可看到注入后的值。
  *
  * 颜色仍是 `export const`：颜色是画风，不是场景结构，不参数化。
@@ -18,29 +18,40 @@
  *   - `NavGrid.js` `COLS/ROWS`：改 fallback let + 构造函数按注入尺寸现算覆写。
  *   - `VehicleSpawner.js` `LANES`：改 `buildLanes()`，构造函数内现算。
  *   - `WaitForBusLayer.js` 原 `WAIT_ZONES`：随公交站坐标收口，构造函数内按 busStops 现算。
+ *
+ * ─── 世界单位（O-1）─────────────────────────────────────────────────────────
+ * 世界坐标是骨架单位、各向同性（不再有随 y 变化的景深缩放坡——
+ * 那套坡把纵深压扁成不到 12 米，且让 x/y 两个方向的"一米"不等长，见
+ * docs/roadmap.md O-1 条目）。屏幕像素只在渲染最后一步经 PX_PER_UNIT 换算，
+ * 是全项目唯一的屏幕缩放常量。
  */
 
+// ─── 世界单位换算（O-1，唯一住址）───────────────────────────────────────────────
+export const UNITS_PER_METER    = 84.70588;  // 骨架 144 单位 = 1.7 米
+export const PX_PER_UNIT        = 0.388889;  // 人高 56px ÷ 144 单位；唯一的屏幕缩放常量
+export const UNIT_REBASE_FACTOR = 5.294118;  // 迁移脚本用（旧世界像素 → 新骨架单位），落地后可删
+
 // ─── 世界尺寸 ─────────────────────────────────────────────────────────────────
-export let WORLD_WIDTH  = 2000;
-export let WORLD_HEIGHT = 520;
+export let WORLD_WIDTH  = 10588;
+export let WORLD_HEIGHT = 3072;
 
 // ─── 纵向分带边界 ─────────────────────────────────────────────────────────────
-export let SKY_Y           = 100;
-export let BUILDING_BASE_Y = 210;
-export let FAR_Y           = 268;
-export let NEAR_Y          = 333;
-export let PARK_TOP        = 353;
+export let SKY_Y           = 333;
+export let BUILDING_BASE_Y = 700;
+export let FAR_Y           = 1166;
+export let NEAR_Y          = 1928;
+export let PARK_TOP        = 2098;
 export let PARK_BOTTOM     = WORLD_HEIGHT;
 
 // 非机动车道边界
-export let BIKE_LANE_FAR_TOP     = 248;
-export let BIKE_LANE_FAR_BOTTOM  = 268;
-export let BIKE_LANE_NEAR_TOP    = 333;
-export let BIKE_LANE_NEAR_BOTTOM = 353;
+export let BIKE_LANE_FAR_TOP     = 996;
+export let BIKE_LANE_FAR_BOTTOM  = 1166;
+export let BIKE_LANE_NEAR_TOP    = 1928;
+export let BIKE_LANE_NEAR_BOTTOM = 2098;
 
 // 步行带（NPC 典型 Y）
-export let SIDEWALK_FAR_Y  = 240;
-export let SIDEWALK_NEAR_Y = 508;
+export let SIDEWALK_FAR_Y  = 934;
+export let SIDEWALK_NEAR_Y = 3014;
 
 // ─── Y 分带符号解析（数据驱动配置用）─────────────────────────────────────────
 // scene.json 的 zones / ground 用分带**名字**表达边界（`"to": "FAR_Y"`），
@@ -122,9 +133,11 @@ export const SKYLINE_FRONT = 0xe6e6e6;
 export const SKYLINE_LINE  = 0xd6d6d6;
 export const CLOUD_LINE    = 0xd2d2d2;
 
-export const LINE_FAR_WIDTH  = 0.8;
+// O-1：容器整体乘 PX_PER_UNIT 渲染，线宽须先除以 PX_PER_UNIT 补偿，
+// 否则会细到 <1px 而消失。数值 = 旧世界像素值 / PX_PER_UNIT。
+export const LINE_FAR_WIDTH  = 2.06;
 export const LINE_NEAR_COLOR = 0x1f1f1f;
-export const LINE_NEAR_WIDTH = 2.2;
+export const LINE_NEAR_WIDTH = 5.66;
 
 // ─── 调色板符号解析（数据驱动配置用）─────────────────────────────────────────
 // scene.json 的 ground 用颜色**名字**（`"color": "GRAY_ROAD"`）而非 hex：
@@ -150,27 +163,16 @@ export function resolveColor(v) {
   return c;
 }
 
-// ─── 深度辅助函数 ─────────────────────────────────────────────────────────────
+// ─── 深度辅助函数（画风，非几何缩放）───────────────────────────────────────────
+// O-1 删掉了随 y 变化的屏幕缩放坡：世界坐标各向同性，不再有近大远小。
+// depthT 现在只喂 depthGray/depthLineWidth/depthLineColor 三个画风消费者
+// （"远处偏灰、线更细"），在 [BUILDING_BASE_Y, PARK_BOTTOM] 上线性。
 
-// 分段锚点：[y, t]。y 范围外夹取到 [0,1]。由 initLayout 从 config.depth.anchors 覆盖。
-let _SEG = [
-  [BUILDING_BASE_Y, 0.00],
-  [FAR_Y,           0.30],
-  [NEAR_Y,          0.50],
-  [PARK_TOP,        0.55],
-  [PARK_BOTTOM,     1.00],
-];
-
-/** Y 坐标 → 景深参数 t∈[0,1]（分段线性，0=最远，1=最近） */
+/** Y 坐标 → 景深参数 t∈[0,1]（线性，0=最远，1=最近） */
 export function depthT(y) {
   if (y <= BUILDING_BASE_Y) return 0;
   if (y >= PARK_BOTTOM)     return 1;
-  for (let i = 1; i < _SEG.length; i++) {
-    const [y0, t0] = _SEG[i - 1];
-    const [y1, t1] = _SEG[i];
-    if (y <= y1) return t0 + (y - y0) / (y1 - y0) * (t1 - t0);
-  }
-  return 1;
+  return (y - BUILDING_BASE_Y) / (PARK_BOTTOM - BUILDING_BASE_Y);
 }
 
 export function depthGray(y, opts = {}) {
@@ -180,9 +182,10 @@ export function depthGray(y, opts = {}) {
   return (g << 16) | (g << 8) | g;
 }
 
+/** wMin/wMax 默认值已按 O-1 除以 PX_PER_UNIT 补偿容器缩放（见 LINE_FAR/NEAR_WIDTH 注释） */
 export function depthLineWidth(y, opts = {}) {
-  const wMin = opts.wMin ?? 0.8;
-  const wMax = opts.wMax ?? 2.2;
+  const wMin = opts.wMin ?? 2.06;
+  const wMax = opts.wMax ?? 5.66;
   return wMin + (wMax - wMin) * depthT(y);
 }
 
@@ -193,12 +196,16 @@ export function depthLineColor(y, opts = {}) {
   return (v << 16) | (v << 8) | v;
 }
 
-let _FAR_SCALE  = 0.182;
-let _NEAR_SCALE = 0.434;
-
-/** Y → screen scale */
-export function depthScale(y) {
-  return _FAR_SCALE + depthT(y) * (_NEAR_SCALE - _FAR_SCALE);
+/**
+ * lenv — 环境线统一 lineStyle 辅助（O-1 收编：原 28 份文件内各自复制的同一份
+ * 实现，现在唯一住址在此）。设置 g.lineStyle 并返回线色供调用方复用 stroke。
+ */
+export function lenv(g, baseY, wScale = 1.0) {
+  // wMin/wMax 是旧世界像素覆盖值 0.5/1.3 按 O-1 除以 PX_PER_UNIT 补偿容器缩放。
+  const lw = depthLineWidth(baseY, { wMin: 1.29, wMax: 3.34 }) * wScale;
+  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
+  g.lineStyle(lw, lc, 1);
+  return lc;
 }
 
 // ─── 场景注入 ─────────────────────────────────────────────────────────────────
@@ -209,8 +216,7 @@ export function depthScale(y) {
  *
  * 缺字段即保留上方的 fallback 默认值——config 是覆盖，不是全量替换。
  *
- * @param {{world?:{width,height}, yBands?:Object<string,number>,
- *          depth?:{anchors:Array<[number,number]>, scaleFar?:number, scaleNear?:number}}} config
+ * @param {{world?:{width,height}, yBands?:Object<string,number>}} config
  */
 export function initLayout(config) {
   if (!config) return;
@@ -237,11 +243,5 @@ export function initLayout(config) {
     PARK_TOP              = b.PARK_TOP              ?? PARK_TOP;
     SIDEWALK_NEAR_Y       = b.SIDEWALK_NEAR_Y       ?? SIDEWALK_NEAR_Y;
     PARK_BOTTOM           = b.PARK_BOTTOM           ?? PARK_BOTTOM;
-  }
-
-  if (config.depth) {
-    if (config.depth.anchors) _SEG = config.depth.anchors.map(([y, t]) => [y, t]);
-    _FAR_SCALE  = config.depth.scaleFar  ?? _FAR_SCALE;
-    _NEAR_SCALE = config.depth.scaleNear ?? _NEAR_SCALE;
   }
 }

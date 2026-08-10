@@ -73,7 +73,9 @@ export class VehicleSpawner {
     const kind    = this._pickKind(weights);
 
     const y     = rand(lane.yRange[0], lane.yRange[1]);
-    const speed = kind === 'moto' ? rand(100, 150) : rand(70, 130);
+    // 骨架单位/秒（O-1）：car/bus rand(70,130)→rand(706,1059) 30~45km/h；
+    // moto rand(100,150)→rand(1059,1412) 45~60km/h。
+    const speed = kind === 'moto' ? rand(1059, 1412) : rand(706, 1059);
     const tagName = kind === 'taxi' ? 'taxi' : kind === 'bus' ? 'transit' : kind;
 
     const v = new VehicleEntity({

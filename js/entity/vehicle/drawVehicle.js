@@ -1,16 +1,9 @@
 import {
   FILL_PAPER, FILL_LIGHT, FILL_MID, FILL_SHADE,
   depthLineWidth, depthLineColor,
-  ENV_LINE_LIGHT, ENV_LINE_DARK,
+  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
 } from '../../core/Layout.js';
 import { vehicleAnchors } from '../../../assets/vehicle-anchors.js';
-
-function lenv(g, baseY, wScale = 1.0) {
-  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
-  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
-  g.lineStyle(lw, lc, 1);
-  return lc;
-}
 
 const CAR_SHAPE = [
   [-1.00, 0.00], [-1.00, 0.36], [-0.94, 0.42], [-0.78, 0.46],

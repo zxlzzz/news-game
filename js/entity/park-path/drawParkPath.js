@@ -1,17 +1,8 @@
 import {
   PARK_TOP, WORLD_WIDTH, WORLD_HEIGHT,
   FILL_PAPER, FILL_LIGHT, FILL_MID,
-  depthScale,
-  depthLineWidth, depthLineColor,
-  ENV_LINE_LIGHT, ENV_LINE_DARK,
+  lenv,
 } from '../../core/Layout.js';
-
-function lenv(g, baseY, wScale = 1.0) {
-  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
-  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
-  g.lineStyle(lw, lc, 1);
-  return lc;
-}
 
 function rand(x, salt = 0) {
   const s = Math.sin(x * 12.9898 + salt * 78.233) * 43758.5453;
@@ -111,7 +102,7 @@ export function drawParkPlaza(g, parkTrees = []) {
 
   // Tree shadow ellipses
   for (const t of parkTrees) {
-    const sc = depthScale(t.y);
+    const sc = t.scale ?? 1;
     const jitter = 0.85 + rand(t.x, 0) * 0.30;
     const crownR = 150 * sc * jitter;
     g.lineStyle(0);

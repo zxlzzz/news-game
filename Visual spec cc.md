@@ -1,7 +1,11 @@
 # 视觉规范 — 实施参考（CC 用）
 
 > 先读 `Visual design spec.md`。本文件给代码模板和改造清单。
-> 核心变更：**删掉所有三面体积和阴影，回归纯 2D 平面。**
+> 历史核心变更（已被 O 系列取代）：曾经"删掉所有三面体积和阴影，回归纯 2D
+> 平面"——O-1 起本项目重新引入三面体积（O-3 `drawObliqueBox` 盒子模板）与
+> 斜投影（O-2 `Projection.js`），这条不再是当前画风承诺，具体规则以
+> `docs/roadmap.md` O 系列落地状态为准，本文件其余模板/改造清单仍按纯 2D
+> 平贴画法编写，尚未随 O 系列更新。
 
 ---
 
@@ -9,18 +13,14 @@
 
 ### lenv
 
-```js
-import {
-  depthLineWidth, depthLineColor,
-  ENV_LINE_LIGHT, ENV_LINE_DARK,
-} from '../../core/Layout.js';
+O-1 起 `lenv()` 收编成 `js/core/Layout.js` 的单一 export（原 28 份文件各自复制的
+同一份实现已删除），各 draw 文件直接 import，不再本地定义：
 
-function lenv(g, baseY, wScale = 1.0) {
-  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
-  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
-  g.lineStyle(lw, lc, 1);
-  return lc;
-}
+```js
+import { lenv } from '../../core/Layout.js';
+
+// 用法不变：
+const lc = lenv(g, baseY, wScale);  // 设置 g.lineStyle，返回线色供后续 stroke 复用
 ```
 
 ---

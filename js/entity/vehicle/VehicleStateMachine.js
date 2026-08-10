@@ -108,19 +108,19 @@ export class VehicleStateMachine {
         v.currentSpeed = lerp(v.currentSpeed, v.targetSpeed, dt * 3);
         break;
       case 'decelerating':
-        // 减速至低速（15）而非直接停止，避免在距站点/前车较远时就完全停下
-        v.currentSpeed = lerp(v.currentSpeed, 15, dt * 3);
+        // 减速至低速（骨架单位/秒，O-1：15→118）而非直接停止，避免在距站点/前车较远时就完全停下
+        v.currentSpeed = lerp(v.currentSpeed, 118, dt * 3);
         break;
       case 'stopped':
         v.currentSpeed = lerp(v.currentSpeed, 0, dt * 8);
-        if (v.currentSpeed < 0.5) v.currentSpeed = 0;
+        if (v.currentSpeed < 5) v.currentSpeed = 0; // 停车阈值（骨架单位/秒，O-1：0.5→5）
         break;
       case 'accelerating':
         v.currentSpeed = lerp(v.currentSpeed, v.targetSpeed, dt * 2);
         break;
       case 'braking':
         v.currentSpeed = lerp(v.currentSpeed, 0, dt * 10);
-        if (v.currentSpeed < 0.5) v.currentSpeed = 0;
+        if (v.currentSpeed < 5) v.currentSpeed = 0;
         break;
     }
   }

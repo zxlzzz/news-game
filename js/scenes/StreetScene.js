@@ -25,6 +25,7 @@ import { SceneInitializer } from './SceneInitializer.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT,
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
+  PX_PER_UNIT,
   initLayout,
 } from '../core/Layout.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
@@ -127,7 +128,7 @@ export class StreetScene {
     this.viewfinder = new Viewfinder({
       app: this.app,
       getWorldCoords: (cx, cy) => this._getWorldCoords(cx, cy),
-    }, { x: 310, y: 295, width: 210, height: 145 });
+    }, { x: 1641, y: 1562, width: 1112, height: 768 }); // O-1：世界单位，× 5.294118（原 310/295/210/145）
     this._createUI();
     this.debugOverlay = new DebugOverlay(this, this.behaviorManager, this.entityManager);
 
@@ -141,16 +142,23 @@ export class StreetScene {
   }
 
   // ─── 相机 ──────────────────────────────────────────────────────────────────
+  // O-1：worldContainer 额外乘 PX_PER_UNIT（世界坐标是骨架单位，PX_PER_UNIT 是唯一的
+  // 屏幕缩放常量）。skyContainer 的整体 scale 不受 PX_PER_UNIT 影响（天空/云/天际线
+  // 仍是与骨架单位无关的屏幕像素画风几何，O-6 天际线平贴层前不重绘），但 scrollX/
+  // scrollY 本身现在是骨架单位，视差位移公式仍需同乘 PX_PER_UNIT 才能保持“比世界慢
+  // 0.45 倍”的视觉比例，否则天空在滚动时会跑得比世界快、迅速出屏——这是唯一在字面
+  // “不受 PX_PER_UNIT 影响”之外做的补偿，理由是 PX_PER_UNIT 在这里是无可选择的单位
+  // 换算，不是画风选择。
   _applyCamera() {
-    const z = this.zoom;
+    const z = this.zoom * PX_PER_UNIT;
     this.worldContainer.scale.set(z);
     this.worldContainer.position.set(-this.scrollX * z, -this.scrollY * z);
-    this.skyContainer.scale.set(z);
-    this.skyContainer.position.set(-this.scrollX * 0.45 * z, -this.scrollY * 0.45 * z);
+    this.skyContainer.scale.set(this.zoom);
+    this.skyContainer.position.set(-this.scrollX * PX_PER_UNIT * 0.45 * this.zoom, -this.scrollY * PX_PER_UNIT * 0.45 * this.zoom);
   }
 
   _clampScroll() {
-    const z = this.zoom;
+    const z = this.zoom * PX_PER_UNIT;
     const maxX = Math.max(0, WORLD_WIDTH  - this.viewW / z);
     const maxY = Math.max(0, WORLD_HEIGHT - this.viewH / z);
     this.scrollX = Math.min(Math.max(0, this.scrollX), maxX);
@@ -161,7 +169,8 @@ export class StreetScene {
     const rect = this.app.view.getBoundingClientRect();
     const sx = (clientX - rect.left) * (this.app.screen.width  / rect.width);
     const sy = (clientY - rect.top)  * (this.app.screen.height / rect.height);
-    return { x: sx / this.zoom + this.scrollX, y: sy / this.zoom + this.scrollY };
+    const z  = this.zoom * PX_PER_UNIT;
+    return { x: sx / z + this.scrollX, y: sy / z + this.scrollY };
   }
 
   // ─── 输入 ──────────────────────────────────────────────────────────────────

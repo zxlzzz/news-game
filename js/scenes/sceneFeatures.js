@@ -13,7 +13,7 @@
  */
 
 import { registerFeature } from '../core/featureRegistry.js';
-import { resolveY, depthScale } from '../core/Layout.js';
+import { resolveY } from '../core/Layout.js';
 import { spawnPedestrians, spawnOnePedestrian } from '../npc/Pedestrians.js';
 import { Agenda } from '../behavior/Agenda.js';
 import { spawnChess } from '../npc/Chess.js';
@@ -91,7 +91,7 @@ registerFeature('stall_sellers', (ctx) => {
       minX: 0, maxX: WORLD_WIDTH, minY: resolveY('BUILDING_BASE_Y'), maxY: resolveY('PARK_BOTTOM'),
       tags: ['vendor'], npcType: 'stall_seller',
     });
-    seller.scale = depthScale(stall.y);
+    seller.scale = seller.skeletonScale ?? 1;
     bm.register(seller, 'stall_seller');
 
     slot.reserved = seller.id;

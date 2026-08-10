@@ -23,38 +23,68 @@ ClipLibrary.resolve() 启动时断言，偏移 > ±5 发 `console.warn`，不阻
 
 ---
 
+## 世界单位（O-1）
+
+**铁律**：世界坐标是骨架单位、各向同性——不存在随 y 变化的景深缩放坡。
+`Layout.js` 三个换算常量：`UNITS_PER_METER`(84.70588，骨架 144 单位=1.7 米)、
+`PX_PER_UNIT`(0.388889，唯一的屏幕缩放常量，容器整体乘它渲染)、
+`UNIT_REBASE_FACTOR`(5.294118，一次性迁移脚本用)。
+
+```js
+import { PX_PER_UNIT } from '../core/Layout.js';
+// worldContainer.scale.set(zoom * PX_PER_UNIT);  ← StreetScene._applyCamera，
+// 全项目唯一把世界坐标换算成屏幕像素的地方
+```
+
+`npc.scale` / `entity.scale` 现在纯是**体型比例**（成人 1.0、儿童 0.694，道具/车
+恒为 1），不再随 y 变化；全库长度常数乘 `npc.scale` 换算成世界单位仍照旧（见下方
+「长度量纲」）。楼是唯一裸世界像素、需要按 `UNIT_REBASE_FACTOR` 重报尺寸的实体
+（`building.js`/`drawBuilding.js`）；道具几何在无量纲空间声明、绘制时乘
+`prop.scale`（恒为 1），不需要改尺寸。历史：本节铁律替代了此前"随 y 变化的
+景深缩放坡 `depthScale`"（近大远小的伪透视），删除原因、换算细节见
+`docs/roadmap.md` O-1 条目；后续 O-2 起的斜投影（`Projection.js`）是另一套独立
+机制，不是 `depthScale` 的复活。
+
+---
+
 ## 深度
 
 **铁律**：`depthT(y)` 是唯一深度来源；所有派生量皆由它计算，禁止出现第二套深度公式。
+O-1 起 `depthT` 只是纯画风函数（"远处偏灰、线更细"），线性映射，不再驱动任何
+几何缩放——`depthScale`（近大远小）已删除，见上方「世界单位」。
 
 ```js
-import { depthScale, depthGray, depthLineWidth } from '../core/Layout.js';
-prop.scale = depthScale(prop.y);  // EntityManager 每帧对非静态实体自动调用
+import { depthGray, depthLineWidth, depthLineColor } from '../core/Layout.js';
+// 三者都只消费 depthT(y)，产出灰度/线宽/线色——画风，不影响尺寸/位置
 ```
 
-Y 分带（`js/core/Layout.js`）：
+Y 分带（`js/core/Layout.js`，O-1 起为骨架单位）：
 
-| 分带        | Y 范围   | 关键常量                            |
-|-------------|----------|-------------------------------------|
-| 天空        | 0–210    | `BUILDING_BASE_Y=210`               |
-| 远人行道    | 210–248  | `SIDEWALK_FAR_Y=240`                |
-| 远自行车道  | 248–268  | `BIKE_LANE_FAR_TOP=248`             |
-| 机动车道    | 268–333  | `FAR_Y=268`，`NEAR_Y=333`           |
-| 近自行车道  | 333–353  | `BIKE_LANE_NEAR_BOTTOM=353`         |
-| 公园        | 353–520  | `PARK_TOP=353`                      |
+| 分带        | Y 范围      | 关键常量                            |
+|-------------|-------------|--------------------------------------|
+| 天空        | 0–700       | `BUILDING_BASE_Y=700`                |
+| 远人行道    | 700–996     | `SIDEWALK_FAR_Y=934`                 |
+| 远自行车道  | 996–1166    | `BIKE_LANE_FAR_TOP=996`              |
+| 机动车道    | 1166–1928   | `FAR_Y=1166`，`NEAR_Y=1928`          |
+| 近自行车道  | 1928–2098   | `BIKE_LANE_NEAR_BOTTOM=2098`         |
+| 公园        | 2098–3072   | `PARK_TOP=2098`                      |
 
-NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车道禁止驻留（`isRoadZone` 守卫）。
+NPC 漫游：远人行道（y≈934）和公园（y≈2280–2900，按旧 y≈370–490 等比换算）。
+机动车道禁止驻留（`isRoadZone` 守卫）。
 
-**参数化**（Z-2a）：上表数值、世界尺寸、深度锚点不再是硬编码常量，而是 `export let`，
-由 `initLayout(sceneData)` 从 `scene.json` 的 `world` / `yBands` / `depth` 注入
+**参数化**（Z-2a）：上表数值、世界尺寸不再是硬编码常量，而是 `export let`，
+由 `initLayout(sceneData)` 从 `scene.json` 的 `world` / `yBands` 注入
 （`StreetScene.create()` 内，`SceneRenderer` 之前）；Layout.js 里的字面量只是 fallback。
 `yBands` 的键名必须与 Layout export 名一致。消费侧照常 `import { NEAR_Y }`——live binding。
+`depth` 顶层字段（`depth.anchors`/`scaleFar`/`scaleNear`）随 `depthScale` 一并于 O-1
+删除，`initLayout` 不再读取，scene.json 不再声明——这不是"缺字段回退 fallback"，
+是这套配置本身已经作废。
 
 **scene.json 布局配置**（数值唯一真相在 `yBands`，其余段落只写**名字**引用它）：
 
 | 段 | 消费者 | 内容 |
 |----|--------|------|
-| `world` / `depth` / `yBands` | `Layout.initLayout` | 世界尺寸、深度锚点、12 个 Y 分带数值 |
+| `world` / `yBands` | `Layout.initLayout` | 世界尺寸、12 个 Y 分带数值 |
 | `zones`（Z-2b） | `NavGrid.bake` | bands / overlays / paving / crossings → zone 烘焙 |
 | `ground`（Z-2c） | `SceneRenderer` | bands / edgeLines / tiling / grass → 地面色带 |
 | `exits` / `spawnPoints`（Z-2e） | `SceneInitializer._spawnNPCs` | 出口/生成点几何：`side`(left/right)+`margin` 解出 X，`yBand`+`yOffset` 解出 Y |
@@ -78,8 +108,10 @@ NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车�
 ## 长度量纲（U-2/U-3）
 
 **铁律**：凡有长度量纲的常数，只允许两种住址——**骨架单位**（消费时乘 `npc.scale`）
-或 **NavGrid 格**（消费时乘 `CELL`）。世界像素不是长度常数的合法单位：同一个像素值
-在近侧（`scale≈0.262`）与远侧的实际尺寸相差数倍，只在一个深度成立，换了深度就错。
+或 **NavGrid 格**（消费时乘 `CELL`）。世界像素不是长度常数的合法单位：`npc.scale`
+按 NPC 类型固定（成人 1.0、儿童 0.694，O-1 起不再随 y 变化），但不同类型之间仍相差
+数倍，裸像素常数换一种 NPC 类型就错；`CELL`（O-1：10→53）与骨架单位是两套不同刻度，
+互相不能顶替。
 
 ```js
 // ✓ 正确范式（Motor.js#_updateDirection）

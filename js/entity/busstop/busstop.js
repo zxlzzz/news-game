@@ -11,7 +11,6 @@ import { PropEntity } from '../../core/PropEntity.js';
 import {
   FAR_Y, NEAR_Y,
   BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
-  depthScale,
 } from '../../core/Layout.js';
 
 export class BusStop {
@@ -104,7 +103,7 @@ export function spawnBusStop(em, stop) {
     _sortY: pillarBottomY,
     tags: [],
   }));
-  roof.scale = depthScale(anchorY);
+  roof.scale = 1; // O-1：世界坐标各向同性，静态 prop 无景深缩放
 
   if (stop.bench) {
     const bx = stop.x + stop.bench.dx;
@@ -118,7 +117,7 @@ export function spawnBusStop(em, stop) {
       facing: stop.bench.facing ?? 'down',
       tags: ['seatable', 'busstop'],
     }));
-    bench.scale = depthScale(by);
+    bench.scale = 1;
   }
 
   if (stop.sign) {
@@ -134,6 +133,6 @@ export function spawnBusStop(em, stop) {
       width: 22, height: 0,
       tags: [],
     }));
-    signE.scale = depthScale(signY);
+    signE.scale = 1;
   }
 }

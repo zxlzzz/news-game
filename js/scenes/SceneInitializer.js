@@ -4,7 +4,7 @@ import { BehaviorManager } from '../behavior/BehaviorManager.js';
 import { ExitRegistry }    from '../npc/ExitRegistry.js';
 import { Director }        from '../behavior/Director.js';
 import { NpcPropManager }  from '../npc/props/NpcPropManager.js';
-import { WORLD_WIDTH, BUILDING_BASE_Y, resolveY, depthScale } from '../core/Layout.js';
+import { WORLD_WIDTH, BUILDING_BASE_Y, resolveY } from '../core/Layout.js';
 import { initCrosswalks } from '../behavior/WalkMode.js';
 import { NavGrid, setNavGrid } from '../behavior/nav/NavGrid.js';
 import { getFeatureInit } from '../core/featureRegistry.js';
@@ -55,7 +55,7 @@ export class SceneInitializer {
           width: t.r * 2, height: t.r * 2,
           tags,
         }));
-        prop.scale = depthScale(prop.y);
+        prop.scale = 1; // O-1：世界坐标各向同性，静态 prop 无景深缩放
       }
     }
   }
@@ -86,7 +86,7 @@ export class SceneInitializer {
         if (host) cfg.y = BUILDING_BASE_Y - 8;
       }
       const prop = this.em.add(new PropEntity(cfg));
-      prop.scale = depthScale(prop.y);
+      prop.scale = 1; // O-1：世界坐标各向同性，静态 prop 无景深缩放
     }
   }
 

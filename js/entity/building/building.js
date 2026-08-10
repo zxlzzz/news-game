@@ -22,43 +22,43 @@ const BP_CVS_ROOF    = 0xc0c0c0;
 const BP_BOOK_WALL   = 0xbcbcbc;
 const BP_BOOK_ROOF   = 0xacacac;
 
-/** 建筑默认内禀尺寸（未缩放，世界单位） */
-export const INTRINSIC = { facadeH: 90, bDepth: 70, bWidth: 100 };
+/** 建筑默认内禀尺寸（未缩放，骨架单位；O-1 起 × UNIT_REBASE_FACTOR，原为世界像素 90/70/100） */
+export const INTRINSIC = { facadeH: 476, bDepth: 371, bWidth: 529 };
 
-/** 建筑原型配置（外观 + 行为参数） */
+/** 建筑原型配置（外观 + 行为参数）。floorH / groundMax 是长度量纲（骨架单位），O-1 已 × 5.294118 */
 export const ARCH = {
   resi: {
-    wall: BP_RESI_WALL, roof: BP_RESI_ROOF, floorH: 15, groundFrac: 0.24, groundMax: 26,
+    wall: BP_RESI_WALL, roof: BP_RESI_ROOF, floorH: 79, groundFrac: 0.24, groundMax: 138,
     style: 'windows', balcony: true,  grille: false, glass: false,
     dirty: 0.0,  laundry: 0.4, acFreq: 0.45, ground: 'shop',      shops: ['convenience', 'fork'],
   },
   oldmix: {
-    wall: BP_OLDMIX_WALL, roof: BP_OLDMIX_ROOF, floorH: 16, groundFrac: 0.30, groundMax: 30,
+    wall: BP_OLDMIX_WALL, roof: BP_OLDMIX_ROOF, floorH: 85, groundFrac: 0.30, groundMax: 159,
     style: 'grille', balcony: false, grille: true,  glass: false,
     dirty: 0.55, laundry: 0.5, acFreq: 0.6,  ground: 'roller',    shops: ['fork', 'dots'],
   },
   modern: {
-    wall: BP_MODERN_WALL, roof: BP_MODERN_ROOF, floorH: 16, groundFrac: 0.26, groundMax: 26,
+    wall: BP_MODERN_WALL, roof: BP_MODERN_ROOF, floorH: 85, groundFrac: 0.26, groundMax: 138,
     style: 'glass',  balcony: false, grille: false, glass: true,
     dirty: 0.0,  laundry: 0.0, acFreq: 0.1,  ground: 'glassshop', shops: ['cup', 'book', 'dumbbell'],
   },
   clinic: {
-    wall: BP_CLINIC_WALL, roof: BP_CLINIC_ROOF, floorH: 15, groundFrac: 0.34, groundMax: 24,
+    wall: BP_CLINIC_WALL, roof: BP_CLINIC_ROOF, floorH: 79, groundFrac: 0.34, groundMax: 127,
     style: 'windows', balcony: false, grille: false, glass: false,
     dirty: 0.0,  laundry: 0.0, acFreq: 0.15, ground: 'clinic',    shops: ['cross'],
   },
   convenience: {
-    wall: BP_CVS_WALL, roof: BP_CVS_ROOF, floorH: 14, groundFrac: 0.58, groundMax: 28,
+    wall: BP_CVS_WALL, roof: BP_CVS_ROOF, floorH: 74, groundFrac: 0.58, groundMax: 148,
     style: 'windows', balcony: false, grille: false, glass: false,
     dirty: 0.1,  laundry: 0.0, acFreq: 0.3,  ground: 'cvs',       shops: ['dots'],
   },
   bookstore: {
-    wall: BP_BOOK_WALL, roof: BP_BOOK_ROOF, floorH: 15, groundFrac: 0.40, groundMax: 26,
+    wall: BP_BOOK_WALL, roof: BP_BOOK_ROOF, floorH: 79, groundFrac: 0.40, groundMax: 138,
     style: 'windows', balcony: false, grille: false, glass: false,
     dirty: 0.25, laundry: 0.0, acFreq: 0.2,  ground: 'bookshop',  shops: ['book'],
   },
   default: {
-    wall: BP_RESI_WALL, roof: BP_RESI_ROOF, floorH: 15, groundFrac: 0.26, groundMax: 26,
+    wall: BP_RESI_WALL, roof: BP_RESI_ROOF, floorH: 79, groundFrac: 0.26, groundMax: 138,
     style: 'windows', balcony: true,  grille: false, glass: false,
     dirty: 0.1,  laundry: 0.3, acFreq: 0.4,  ground: 'shop',      shops: ['dots'],
   },

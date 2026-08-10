@@ -14,14 +14,13 @@
 // Circular import with Motor.js — Motor imports standUp; we need setXY for NPC position writes.
 // ES module live bindings resolve at runtime; both values are only used after all modules load.
 import { setXY as _motorSetXY } from '../../behavior/Motor.js';
-import { depthScale } from '../../core/Layout.js';
 
 /** 长椅内禀尺寸（未缩放，世界单位） */
 export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 17, backH: 40 };
 
-/** 落地接触面半宽/半深（世界像素，已乘深度缩放）。facing left/right 时长轴沿 Y 方向。 */
+/** 落地接触面半宽/半深（世界像素，已乘 scale；O-1 起恒为 1）。facing left/right 时长轴沿 Y 方向。 */
 export function footprint(e) {
-  const ds = depthScale(e.y);
+  const ds = e.scale ?? 1;
   return (e.facing === 'left' || e.facing === 'right')
     ? { shape: 'rect', rx: Math.max(3, 8 * ds), ry: 150 * ds, blocks: true, sortDY: 0 }
     : { shape: 'rect', rx: 150 * ds, ry: Math.max(3, 8 * ds), blocks: true, sortDY: 0 };
@@ -66,7 +65,7 @@ export function isNear(entities, npc, dxT = 60, dyT = 80) {
 export function sitDown(npc, bench) {
   bench._occupiedBy = npc.id;
   npc.mem('social').bench = bench;
-  const sc = npc.scale || depthScale(bench.y);
+  const sc = npc.scale || 1;
   const sitBodyY = -42;  // sit_bench frame0 body.y (ground-space absolute)
   _setXY(npc, clamp(bench.x, npc.minX, npc.maxX), clamp(seatSurfaceY(bench) - sitBodyY * sc, npc.minY, npc.maxY));
   const far = bench.facing === 'up' || bench.facing === 'left';

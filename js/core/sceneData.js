@@ -28,13 +28,13 @@ const NEAR_STOP = {
 export function expandSceneData(raw) {
   return {
     // 布局参数：原样透传，本模块不解释其语义
-    //   world / depth / yBands → Layout.initLayout
+    //   world / yBands         → Layout.initLayout（depth 字段 O-1 起已删除，
+    //                            随景深缩放坡本身一并移除）
     //   zones                  → NavGrid.bake
     //   ground                 → SceneRenderer
     //   exits / spawnPoints    → SceneInitializer（出口 + 生成点几何）
     //   features               → SceneInitializer → featureRegistry
     world:       raw.world,
-    depth:       raw.depth,
     yBands:      raw.yBands,
     zones:       raw.zones,
     ground:      raw.ground,

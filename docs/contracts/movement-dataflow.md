@@ -2,6 +2,14 @@
 
 > Normative. Updated through N-3c; routing chain deleted; Npc.js inline movement deleted; CYCLIST profile added; W-7a adds step 1.5 (event → witness claim consumption); tasks.md P-6 adds step 1.6 (memory mutation).
 >
+> **O-1 速度单位段（世界单位重标）**：本文件 §2 变量表里标 `px` / `px/s` 的字段
+> （`x`/`y`、`speed`、`mot.vel`、`mot.faceAcc`、`minX/maxX/minY/maxY`）从 O-1 起
+> 语义未变——一直是"世界坐标 / 世界坐标每秒"，只是 O-1 之前世界坐标恰好与屏幕
+> 像素 1:1（无独立屏幕缩放层），`px` 是准确的口语说法。O-1 起世界坐标改为骨架
+> 单位、各向同性，屏幕像素只在渲染最后一步经 `Layout.js#PX_PER_UNIT` 换算——
+> 这些字段的**数值和消费路径全部不变**，只是不能再叫"px"，下表 Unit 列统一改
+> 标"world units"/"world units/s"。裸世界像素常数迁移见 `docs/roadmap.md` O-1 条目。
+>
 > **M-1「信任路径」重构**：删除三层反应式避障 + 位置分离 + 卡死重规划——
 > step 8 的 `applyLookahead`（Lookahead.js，含 35° 旋转 + 近墙减速）、step 12 `_separate`、
 > step 13 的 `_lookaheadDeflect`（90° 偏转）与 progress-monitor（含 RECOVERY_RULES）。
@@ -49,20 +57,20 @@
 
 | Variable | Namespace | Writer | Reader | Cleared / overwritten | Unit | Active at step |
 |----------|-----------|--------|--------|-----------------------|------|----------------|
-| `x`, `y` | `npc` (protected `_mw`) | `setXY`, `nudgeXY` → `_slideMove` | `steerRoam`, `integratePhysics`, `_separate` | next write | px | 8, 12, 13 |
-| `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`) | BaseStateMachine ride 状态（`mot.vel` 构造）；BehaviorManager 出生時 `walkSpeed` 初始化 | `setState` | px/s | set 6, read WalkMode |
+| `x`, `y` | `npc` (protected `_mw`) | `setXY`, `nudgeXY` → `_slideMove` | `steerRoam`, `integratePhysics`, `_separate` | next write | world units | 8, 12, 13 |
+| `speed` | `npc` (protected) | `setState` (speed lookup in `STATE_DEFS`) | BaseStateMachine ride 状态（`mot.vel` 构造）；BehaviorManager 出生時 `walkSpeed` 初始化 | `setState` | world units/s | set 6, read WalkMode |
 | `direction` | `npc` | `Motor.js#_updateDirection(npc, realDx)` (L-1) — **sole writer while `state ∈ {walk,run,jog,ride}`**: space dead-zone over real x displacement (`mot.faceAcc`, threshold `SAFETY_RULES.facing.deadZone × npc.scale`), no time hysteresis; outside those states: `triggerDeparture`; activity direct writes; `spot.facing`/`exit.facing` snapshots | `_updateDirection` `dir_mismatch` audit check; rendering | next write | ±1 | written 13 |
 | `vy` | `npc` | **deleted V3-a** (was dead post-V-2; `setState`归零行与字段同步删除) | — | — | — | — |
-| `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` after `applyLookahead` | `Motor#integratePhysics`: both `.vx` and `.vy` consumed; Y boundary clamps `vy` before apply | consumed `= null` by `Motor#integratePhysics`, same frame | px/s | written 8, consumed 13 |
+| `mot.vel` | `motor` | `steerRoam` walk branch: `= {vx, vy}` after `applyLookahead` | `Motor#integratePhysics`: both `.vx` and `.vy` consumed; Y boundary clamps `vy` before apply | consumed `= null` by `Motor#integratePhysics`, same frame | world units/s | written 8, consumed 13 |
 | `mot.goal` | `motor` | `PlanService.publishGoal` (sole writer; clears on arrival/timeout/blocked) | `steerRoam` walk branch (arrival + timeout fire), `integratePhysics` (elapsed tick + timeout + progress two-hit), `BehaviorManager._sepScale` | cleared by whichever path fires result first; `onDone` callback called exactly once | — | 5.5, 8, 13 |
 | `mot.path` | `motor` | `PlanService.ensurePath` / `ensureWanderPath` (sole writers) | `steerRoam` walk branch (idx advance + vel computation) | null on replan, blocked, arrival, or wander-roamTarget change | — | 5.5, 8 |
 | `mot.needReplan` | `motor` | **M-1: 不再由任何写者置 `true`**（progress-monitor 已删）；仅 `ensurePath`/`publishGoal`/task 清为 `undefined` | `ensurePath` (step 5.5) | 通道保留待未来重规划触发 | bool | 5.5 |
 | `mot.walkMode` | `motor` | `setWalkMode` | `steerRoam`, `integratePhysics` (vel gate), `tickWalkMode`, `checkZoneTransition` | `setWalkMode(null)` at departure; `_defaultOnExit` clears tags on `setState` | — | 7–12 |
-| `mot.faceAcc` | `motor` | `Motor.js#_updateDirection` (accumulate real dx each frame in `walk`/`run`/`jog`/`ride`; reset to 0 on flip) — replaces the deleted `mot.dirCD` time cooldown (L-1) | `Motor.js#_updateDirection` | reset to 0 on flip; stale-but-inert outside the four facing states | px (world, at current depth scale) | 13 |
+| `mot.faceAcc` | `motor` | `Motor.js#_updateDirection` (accumulate real dx each frame in `walk`/`run`/`jog`/`ride`; reset to 0 on flip) — replaces the deleted `mot.dirCD` time cooldown (L-1) | `Motor.js#_updateDirection` | reset to 0 on flip; stale-but-inert outside the four facing states | world units | 13 |
 | ~~`mot.progressAnchor` / `progressAcc`~~ | ~~`motor`~~ | **M-1 删除**（progress-monitor 整体移除） | — | — | — | — |
 | `mot.savedBounds` | `motor` | `_routeToExit` (edge exits, step 3) | `restoreDepartureBounds` | cleared by `restoreDepartureBounds` | — | 3 |
 | `npc.roamTarget` | `npc` | `pickModeTarget`, `onPathArrival`; `= null` on mode switch / arrival / **M-1: wander 目标不可达时（steerRoam）** | `steerRoam` walk branch | null on goal change or unreachable target | {x,y}\|null | 8 |
-| `npc.minX` / `maxX` / `minY` / `maxY` | `npc` | `_routeToExit` (E1 edge-exit expansion, step 3); `restoreDepartureBounds` | `_slideMove`, `integratePhysics` (bounce clamp / direction flip) | restored after departure or abort | px | 3, 8, 13 |
+| `npc.minX` / `maxX` / `minY` / `maxY` | `npc` | `_routeToExit` (E1 edge-exit expansion, step 3); `restoreDepartureBounds` | `_slideMove`, `integratePhysics` (bounce clamp / direction flip) | restored after departure or abort | world units | 3, 8, 13 |
 | `npc.stateTimer` | `npc` | `setState` (=0); `tickBaseState` (+=dt, step 6) | `_evaluateTransitions` (step 6) | `setState` (=0) | s | 6 |
 
 ---

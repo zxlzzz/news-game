@@ -8,14 +8,12 @@
  * 棋桌通过 propType === 'chess-table' 和 smartDef.activityType === 'chess' 来识别。
  */
 
-import { depthScale } from '../../core/Layout.js';
-
 /** 棋桌内禀尺寸（未缩放，世界单位） */
 export const INTRINSIC = { tw: 58, topH: 25, th: 20 };
 
-/** 落地接触面半宽/半深（世界像素，已乘深度缩放） */
+/** 落地接触面半宽/半深（世界像素，已乘 scale；O-1 起恒为 1） */
 export function footprint(e) {
-  const ds = depthScale(e.y);
+  const ds = e.scale ?? 1;
   return { shape: 'rect', rx: 29 * ds, ry: Math.max(3, 10 * ds), blocks: true, sortDY: 0 };
 }
 

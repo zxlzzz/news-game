@@ -9,15 +9,16 @@ export class Viewfinder {
   constructor({ app, getWorldCoords }, config = {}) {
     this.app = app;
     this._toWorld = getWorldCoords;
-    this.x      = config.x      || 300;
-    this.y      = config.y      || 200;
-    this.width  = config.width  || 200;
-    this.height = config.height || 160;
+    // O-1：世界单位，× UNIT_REBASE_FACTOR(5.294118)（原世界像素 300/200/200/160、90/70/520/380）
+    this.x      = config.x      || 1588;
+    this.y      = config.y      || 1059;
+    this.width  = config.width  || 1059;
+    this.height = config.height || 847;
 
-    this.minWidth  = config.minWidth  || 90;
-    this.minHeight = config.minHeight || 70;
-    this.maxWidth  = config.maxWidth  || 520;
-    this.maxHeight = config.maxHeight || 380;
+    this.minWidth  = config.minWidth  || 476;
+    this.minHeight = config.minHeight || 371;
+    this.maxWidth  = config.maxWidth  || 2753;
+    this.maxHeight = config.maxHeight || 2012;
 
     this.dragging    = false;
     this.resizing    = false;

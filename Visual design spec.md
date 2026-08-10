@@ -1,9 +1,12 @@
 # 视觉设计规范
 
 > 适用范围：所有 `draw*.js` + `SceneRenderer.js`
-> 视角：侧视图（2000×520px 横向卷轴）
-> 风格：纯 2D 平面黑白灰线稿。不做伪 3D，不加阴影
-> `s = p.scale ?? 1`，基于深度位置的实体缩放系数
+> 视角：侧视图（O-1 起 10588×3072 骨架单位横向卷轴，屏幕像素经 `PX_PER_UNIT` 换算）
+> 画风/投影现状见 O 系列（`docs/roadmap.md` O-1 起）：O-1 只换坐标系，绘制仍是
+> 平贴画法；O-2 起引入斜投影 + 三面体积盒子模板，"纯 2D 平面、不做伪 3D" 已不再
+> 是本项目的画风承诺——具体规则以 O 系列落地状态为准，不在此重复。
+> `s = p.scale ?? 1`，实体缩放系数（O-1 起是体型比例，成人 1.0/儿童 0.694，
+> 不再随深度位置变化）。
 
 ---
 
@@ -11,7 +14,9 @@
 
 1. **禁止魔法颜色** — 填充只用 `FILL_PAPER / FILL_LIGHT / FILL_MID / FILL_SHADE`。线条只用 `depthLineColor(y, {light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK})`。**例外**：`0x000000` 和 `0xffffff` 低 alpha（纹理叠加/高光/反射），允许手写 lineStyle/beginFill。
 2. **`lineStyle(0)` 入口重置** — 每个 draw 函数第一行。
-3. **`depthT` 唯一深度源** — 线粗、线色、缩放全部从它派生。
+3. **`depthT` 唯一画风深度源** — 线粗、线色（"远处偏灰、线更细"）从它派生；O-1 起
+   `depthT` 不再驱动实体缩放（`depthScale` 已删除，缩放改由体型比例 `skeletonScale`
+   决定），O-2 起的斜投影几何另由 `Projection.js` 负责，也不经 `depthT`。
 
 ---
 

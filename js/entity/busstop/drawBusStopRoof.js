@@ -1,15 +1,8 @@
 import {
   depthLineWidth, depthLineColor,
   FILL_MID,
-  ENV_LINE_LIGHT, ENV_LINE_DARK,
+  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
 } from '../../core/Layout.js';
-
-function lenv(g, baseY, wScale = 1.0) {
-  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
-  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
-  g.lineStyle(lw, lc, 1);
-  return lc;
-}
 
 export function drawBusStopRoof(g, p) {
   g.lineStyle(0);

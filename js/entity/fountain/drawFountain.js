@@ -1,15 +1,8 @@
 import {
   depthLineWidth, depthLineColor,
   FILL_LIGHT, FILL_MID, FILL_SHADE,
-  ENV_LINE_LIGHT, ENV_LINE_DARK,
+  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
 } from '../../core/Layout.js';
-
-function lenv(g, baseY, wScale = 1.0) {
-  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
-  const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
-  g.lineStyle(lw, lc, 1);
-  return lc;
-}
 
 /** 贴地平面部分：池壁、池沿、水面、涟漪、轮廓 — 地面预通道调用 */
 export function drawFountainPool(g, p) {

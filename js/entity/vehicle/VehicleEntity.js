@@ -5,7 +5,6 @@
  */
 
 import { Entity }       from '../../core/Entity.js';
-import { depthScale }   from '../../core/Layout.js';
 import { dims }         from './vehicle.js';
 import { drawVehicle }  from './drawVehicle.js';
 
@@ -27,7 +26,7 @@ export class VehicleEntity extends Entity {
     this._timeAccum      = Math.random() * 10;
     this.minX  = cfg.minX ?? -240;
     this.maxX  = cfg.maxX ?? 2240;
-    this.scale = depthScale(this._laneY);
+    this.scale = 1; // O-1：世界坐标各向同性，无景深缩放
     if (!this.tags || this.tags.length === 0) this.tags = ['vehicle', this.kind];
   }
 
@@ -44,9 +43,9 @@ export class VehicleEntity extends Entity {
   update(delta) {
     if (!this.alive) return;
     const dt = delta / 1000;
-    this.scale = depthScale(this._laneY);
     this._timeAccum += dt;
-    this.y = this._laneY + Math.sin(this._timeAccum * 0.3 + this._phaseOffset) * 3;
+    this.y = this._laneY + Math.sin(this._timeAccum * 0.3 + this._phaseOffset) * 10;
+    // speed 单位是骨架单位/秒（O-1：世界坐标各向同性，无景深缩放坡）。
     this.x += this.direction * this.currentSpeed * dt;
     if (this.direction > 0 && this.x > this.maxX) this.alive = false;
     else if (this.direction < 0 && this.x < this.minX) this.alive = false;
