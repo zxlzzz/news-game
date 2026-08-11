@@ -52,3 +52,22 @@ export const PROP_DEFAULTS = {
   stall:      {              tags: [], smartDef: STALL_DEF },
   bench:      { w: 80, h: 12, tags: ['seatable'], facing: 'down' },
 };
+
+/**
+ * PROP_DEPTH — 道具进深默认值（O-3 起）。
+ *
+ * 进深（depth，前后方向的世界长度）是道具转 drawObliqueBox 时才引入的新维度——
+ * 之前的扁平画法没有这个量，没有历史数据可继承，只能给每个 propType 估一个
+ * 合理值。铁律：值写在这里，不要写死在各自 draw 函数内部（O-4 tasks.md 原文）。
+ * 键 = propType（与 registerProp() 的 type 一致）。骨架单位，未乘 prop.scale——
+ * 消费者自己乘（同全库其余长度常数的换算约定，见 CLAUDE.md「长度量纲」）。
+ *
+ * O-3 目前只有 bench 一条（O-3 的三个样板之一）；其余道具的进深随 O-4 批量
+ * 转换逐个补上。跟上面 PROP_DEFAULTS 分开一张表，因为语义不同——PROP_DEFAULTS
+ * 是 scene.json 展开期的类型默认值权威（w/h/tags/smartDef 等，被
+ * expandSceneData 合并进实例），PROP_DEPTH 是渲染期 draw 函数消费的画风常量，
+ * 两者生命周期和消费者都不一样，不共用一张表。
+ */
+export const PROP_DEPTH = {
+  bench: 60,
+};

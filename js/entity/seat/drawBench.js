@@ -3,12 +3,36 @@ import {
   FILL_PAPER, FILL_LIGHT,
   ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
 } from '../../core/Layout.js';
+import { drawObliqueBox, frontFaceGraphics } from '../../core/Projection.js';
+import { PROP_DEPTH } from '../../core/propDefaults.js';
 
+// O-3 样板之一：小盒子 + 正面保留原有细节。盒子本身（三面）走 drawObliqueBox；
+// 正面的腿/座板/靠背/扶手细节完全是老代码（_frontDetail，一行没改），只是
+// 通过 frontFaceGraphics 代理接到投影后的正面——正面不受 shear 影响，这层
+// 代理数学上只是 scale+translate，详见 Projection.js 文件头。
 export function drawBench(g, p) {
   g.lineStyle(0);
 
   const { x, y } = p;
   const s     = p.scale ?? 1;
+  const L     = 300 * s;
+  const legH  = 23 * s;
+  const seatT = 17 * s;
+  const backH = 40 * s;
+  const h     = legH + seatT + backH;
+  const depth = PROP_DEPTH.bench * s;
+
+  drawObliqueBox(g, x, y, L, depth, h, FILL_PAPER);
+
+  const fg = frontFaceGraphics(g, x, y);
+  _frontDetail(fg, x, y, s);
+}
+
+// 老版本 drawBench 的函数体，未改动任何一行绘制逻辑——只是把 (x,y,s) 从
+// p 上的隐式读取改成显式参数，g 现在是 frontFaceGraphics 代理。
+function _frontDetail(g, x, y, s) {
+  g.lineStyle(0);
+
   const L     = 300 * s;
   const half  = L / 2;
   const legH  = 23 * s;

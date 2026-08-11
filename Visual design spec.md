@@ -104,7 +104,10 @@ StickRenderer 不改，但两处微调：
 
 ## 不做的事
 
-- 不画侧面、顶面、三面体积
+- O-3 起三面体积盒子（`drawObliqueBox`：正面/顶面/侧面）已是标准画法，
+  上面这条"不画侧面、顶面"的旧铁律已作废——新增/转换 draw 函数请走
+  `Projection.js` 的 `drawObliqueBox`/`frontFaceGraphics`/`topFaceGraphics`，
+  不要自己算三面几何（那是 `Projection.js` 的专属职责，见其文件头核心区分）
 - 不画地面投影阴影
 - 不改动画系统 / assets
 - 不改新闻管线

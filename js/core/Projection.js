@@ -20,7 +20,10 @@
  * 前，这里先导出两个形状助手供 SceneRenderer 的地面带（本补丁）和 O-3
  * 用；调用方目前是 O-2 的占位盒子（EntityManager）和 SceneRenderer。
  */
-import { PX_PER_UNIT, BUILDING_BASE_Y, WORLD_WIDTH, WORLD_HEIGHT } from './Layout.js';
+import {
+  PX_PER_UNIT, BUILDING_BASE_Y, WORLD_WIDTH, WORLD_HEIGHT,
+  FILL_MID, FILL_SHADE, lenv,
+} from './Layout.js';
 
 export const TILT_DEG = 20;                      // 倾角（暂定值，O-2 落地后跑实机再调）
 const TILT_RAD  = TILT_DEG * Math.PI / 180;
@@ -90,4 +93,115 @@ export function sceneScreenBounds(maxFacadeH = 0) {
   }
   minY -= toScreenHeight(maxFacadeH);
   return { minX, minY, maxX, maxY };
+}
+
+// ─── O-3：盒子模板 ────────────────────────────────────────────────────────────
+
+/**
+ * 光照方向：全场唯一，光从左上来——所以侧面永远画在右边（世界 +x 那一侧）。
+ * 任何 draw 函数手画阴影/选择哪一侧当阴影面都要遵守这个方向，不要各写各的。
+ */
+export const LIGHT_DIR = 'upper-left';
+
+/**
+ * 三面体积盒子模板：给底面矩形（中心 x、前沿 y、宽 w、进深 depth）和高度 h，
+ * 生成正面/顶面/侧面三个面。灰度固定分配，不给调用方选择顶面/侧面颜色——
+ * 顶面 FILL_MID、侧面 FILL_SHADE 写死；只有正面颜色由调用方传入
+ * （fillFront，各 draw 文件原本就有自己的正面基调色，这里不替调用方决定）。
+ *
+ * 正面沿世界 y=front（常数）展开，不受 shear 影响——是唯一一个跟自身局部
+ * 坐标系无畸变的面。返回值带一个 `front` 锚点，配合 frontFaceGraphics() 用，
+ * 让调用方把原来"以 (x,y) 为锚点画局部细节"的代码几乎不改地迁移过来。
+ *
+ * @returns {{front:{x:number,y:number}}} 正面锚点（世界 (x,y) 投影后的屏幕坐标）
+ */
+export function drawObliqueBox(g, x, y, w, depth, h, fillFront) {
+  g.lineStyle(0);
+  const hw = w / 2;
+  const front  = toScreen(x, y);
+  const frontL = toScreen(x - hw, y),          frontR = toScreen(x + hw, y);
+  const backL  = toScreen(x - hw, y - depth),  backR  = toScreen(x + hw, y - depth);
+  const dh = toScreenHeight(h);
+  const lift = (p) => ({ x: p.x, y: p.y - dh });
+  const ftL = lift(frontL), ftR = lift(frontR), btL = lift(backL), btR = lift(backR);
+
+  // 顶面
+  g.beginFill(FILL_MID, 1);
+  g.drawPolygon([ftL.x, ftL.y, ftR.x, ftR.y, btR.x, btR.y, btL.x, btL.y]);
+  g.endFill();
+  lenv(g, y - depth, 0.7);
+  g.drawPolygon([ftL.x, ftL.y, ftR.x, ftR.y, btR.x, btR.y, btL.x, btL.y]);
+
+  // 侧面（光从左上来，侧面永远画在右边，即世界 +x 一侧）
+  g.beginFill(FILL_SHADE, 1);
+  g.drawPolygon([frontR.x, frontR.y, ftR.x, ftR.y, btR.x, btR.y, backR.x, backR.y]);
+  g.endFill();
+  lenv(g, y, 0.7);
+  g.drawPolygon([frontR.x, frontR.y, ftR.x, ftR.y, btR.x, btR.y, backR.x, backR.y]);
+
+  // 正面
+  g.beginFill(fillFront, 1);
+  g.drawPolygon([frontL.x, frontL.y, frontR.x, frontR.y, ftR.x, ftR.y, ftL.x, ftL.y]);
+  g.endFill();
+  lenv(g, y, 0.85);
+  g.drawPolygon([frontL.x, frontL.y, frontR.x, frontR.y, ftR.x, ftR.y, ftL.x, ftL.y]);
+
+  return { front };
+}
+
+/**
+ * 正面代理 Graphics：把"以 (anchorX, groundY) 为地面锚点、局部沿用世界 x 当水平
+ * 偏移、世界 y 当'离地高度'（越小越高，groundY 处为 0）"的老式扁平画法无缝接
+ * 到投影后的正面。正面沿世界 y=常数展开不受 shear 影响，这层代理数学上只是
+ * scale+translate（详见文件头核心区分），调用方内部逻辑一行都不用改。
+ *
+ * lineStyle 的线宽字面量原样转发，不再缩放——本项目线宽一律是最终屏幕像素值
+ * （见 Layout.js 线宽常量 O-2 撤销 O-1 补偿的说明），跟位置换算无关。
+ */
+export function frontFaceGraphics(g, anchorX, groundY) {
+  const base = toScreen(anchorX, groundY);
+  const offX = base.x - PX_PER_UNIT * anchorX;
+  const offY = base.y - PX_PER_UNIT * groundY;
+  const sx = (v) => PX_PER_UNIT * v + offX;
+  const sy = (v) => PX_PER_UNIT * v + offY;
+  const sl = (v) => PX_PER_UNIT * v;
+  return {
+    lineStyle:   (...a) => g.lineStyle(...a),
+    beginFill:   (...a) => g.beginFill(...a),
+    endFill:     ()     => g.endFill(),
+    drawRect:    (x, y, w, h) => g.drawRect(sx(x), sy(y), sl(w), sl(h)),
+    drawCircle:  (x, y, r)    => g.drawCircle(sx(x), sy(y), sl(r)),
+    drawEllipse: (x, y, rx, ry) => g.drawEllipse(sx(x), sy(y), sl(rx), sl(ry)),
+    moveTo: (x, y) => g.moveTo(sx(x), sy(y)),
+    lineTo: (x, y) => g.lineTo(sx(x), sy(y)),
+  };
+}
+
+/**
+ * 顶面代理 Graphics：老式画法里"以某个远端角为局部原点、(u,v) 落在进深范围内"
+ * 的内容（如屋顶散件）搬到真正的顶面。顶面因 shear 是平行四边形，drawRect 在
+ * 这里不能直接转发（会画成轴对齐矩形，跟实际抬升/斜切的顶面对不上），改画
+ * drawPolygon；moveTo/lineTo 单点映射不受影响，照常转发。
+ *
+ * @param anchorX    局部 u=0 对应的世界 x
+ * @param anchorFarY 局部 v=0 对应的世界 y（顶面远端边，即盒子的 y-depth）
+ * @param liftH      顶面比地面抬升的高度（骨架单位），通常等于盒子的 h
+ */
+export function topFaceGraphics(g, anchorX, anchorFarY, liftH) {
+  const dh = toScreenHeight(liftH);
+  const map = (u, v) => {
+    const p = toScreen(anchorX + u, anchorFarY + v);
+    return { x: p.x, y: p.y - dh };
+  };
+  return {
+    lineStyle: (...a) => g.lineStyle(...a),
+    beginFill: (...a) => g.beginFill(...a),
+    endFill:   ()     => g.endFill(),
+    drawRect: (x, y, w, h) => {
+      const p0 = map(x, y), p1 = map(x + w, y), p2 = map(x + w, y + h), p3 = map(x, y + h);
+      g.drawPolygon([p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y]);
+    },
+    moveTo: (x, y) => { const p = map(x, y); g.moveTo(p.x, p.y); },
+    lineTo: (x, y) => { const p = map(x, y); g.lineTo(p.x, p.y); },
+  };
 }

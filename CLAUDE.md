@@ -59,12 +59,26 @@ import { toScreen, toScreenLength } from '../core/Projection.js';
 是暂定值，`docs/roadmap.md` O-2 条目落地后要跑实机调；调完之前不要假定这两个
 数值已经定型。
 
-O-2 目前只验证投影几何本身，`EntityManager`/`SceneRenderer` 里大部分实体画的
-是 `toScreen` 定位的灰色占位盒子，**不是**真实调用各自的 `draw()`——那些函数
-还是按 O-1 之前"容器整体缩放"的假设写的，尚未跟投影对齐，直接调用会显得错位。
-三面体积模板（`drawObliqueBox`）与逐个 draw 函数转换是 O-3/O-4 的范围；`Visual
-design spec.md` 与 `Visual spec cc.md` 里"不做伪 3D 三面体积/不加阴影"等条目
-届时随 O-3 一并改写，本节暂不动那两份文件。
+`EntityManager`/`SceneRenderer` 里大部分实体仍画的是 `toScreen` 定位的灰色
+占位盒子，**不是**真实调用各自的 `draw()`——那些函数还是按 O-1 之前"容器整体
+缩放"的假设写的，尚未跟投影对齐，直接调用会显得错位。O-3 起转换完成的实体
+（`EntityManager.js` 的 `CONVERTED_PROP_TYPES`/`CONVERTED_GROUND_TYPES` 白名单
++ 楼，用 `typeof e.facadeH === 'number'` 判定）改走真实 `draw()`；其余仍是
+占位盒子，逐批随 O-4 转换。
+
+**三面体积模板**（O-3）：`drawObliqueBox(g,x,y,w,depth,h,fillFront)` 给底面
+矩形（中心 x、前沿 y）+ 高度 h，生成正面/顶面/侧面三个面，灰度固定分配
+（顶面 `FILL_MID`、侧面 `FILL_SHADE` 写死，正面色由调用方传）。`LIGHT_DIR`
+（`'upper-left'`）是全场唯一光源方向，侧面永远画在世界 +x 一侧（屏幕右边）。
+正面沿世界 y=常数展开、不受 shear 影响——`frontFaceGraphics(g,anchorX,groundY)`
+配套导出一个坐标代理，让"以世界 x/y 为局部偏移画细节"的老式扁平画法（如
+`drawBuilding.js` 的窗格/`drawBench.js` 的座板）**函数体一行不改**，只换
+坐标映射即可接到投影后的正面（代理数学上纯粹是 scale+translate）；顶面因
+shear 是平行四边形，配套的 `topFaceGraphics(g,anchorX,anchorFarY,liftH)` 把
+`drawRect` 转发成 `drawPolygon`。新增/转换 draw 函数一律走这三个函数，不要
+自己算三面/斜切几何——`Visual design spec.md`"不做的事"一节已同步改写。
+道具的进深（depth）是这批转换才引入的新维度，没有历史数据可继承，铁律是
+写进 `js/core/propDefaults.js#PROP_DEPTH`，不写死在 draw 函数内部。
 
 ---
 

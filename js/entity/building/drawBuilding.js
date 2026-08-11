@@ -7,9 +7,17 @@
  *
  * O-1：楼是唯一重报尺寸的实体——本文件内窗格/门/屋顶细节的位置与尺寸常量
  * 全部 × UNIT_REBASE_FACTOR(5.294118)，随 building.js INTRINSIC / ARCH 一起
- * 从旧世界像素改为骨架单位。裸的 g.lineStyle() 描边宽度字面量（如 0.5、0.35）
- * 不在此列——那些是装饰细线，容器整体乘 PX_PER_UNIT 后会变细但不消失，
- * 留给 O-3/O-4 盒子模板化时一并处理。
+ * 从旧世界像素改为骨架单位。
+ *
+ * O-3（tasks.md 样板之一）：入口 drawBuilding() 改走 drawObliqueBox（三面盒子）
+ * + frontFaceGraphics/topFaceGraphics 两个坐标代理——正面（_facade 及其调用的
+ * 窗格系/_balcony/_laundry/_ground）、屋顶细节（_roofAC/_roofWaterTower/
+ * _roofBillboard/_roofSolar）这些函数体本身**一行未改**，代理层把它们原有的
+ * "以世界 x/y 为局部偏移"画法无缝接到投影后的正面/顶面（数学原理见
+ * Projection.js 文件头）。裸的 g.lineStyle() 描边宽度字面量（如 0.5、0.35）
+ * 之前留给本次处理的顾虑（"容器整体乘 PX_PER_UNIT 后会变细"）已经不成立——
+ * O-2 起容器不再整体缩放，这些字面量就是最终屏幕像素值，原样保留即可，
+ * 不需要额外换算。
  */
 
 import {
@@ -17,6 +25,7 @@ import {
   depthLineWidth, depthLineColor,
   ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
 } from '../../core/Layout.js';
+import { drawObliqueBox, frontFaceGraphics, topFaceGraphics } from '../../core/Projection.js';
 
 function rand(x, salt = 0) {
   const s = Math.sin(x * 12.9898 + salt * 78.233) * 43758.5453;
@@ -332,22 +341,27 @@ function _facade(g, x, w, building, baseY) {
 
 export function drawBuilding(g, building) {
   g.lineStyle(0);
-  const { x, bWidth: w, bDepth: d } = building;
-  const baseY = building.y + building.facadeH;
-  const top   = building.y - d;
+  const { x, bWidth: w, bDepth: d, facadeH: H } = building;
+  const baseY = building.y + building.facadeH;   // 地面接触线（既有约定，BuildingEntity._sortY 同用）
+  const cx    = x + w / 2;                        // drawObliqueBox 要中心 x；building.x 是左边缘（老约定）
+  const farY  = baseY - d;                         // 屋顶远端边：老代码的 `top=building.y-d` 是扁平画法
+                                                     // 专用的参照点，在真投影里没有几何意义，这里改用
+                                                     // "地面线往回推一个进深"——真正的屋顶落在地面正上方。
 
-  // 屋顶板
-  g.lineStyle(0); g.beginFill(FILL_MID, 1); g.drawRect(x, top, w, d); g.endFill();
-  lenv(g, baseY, 0.65); g.drawRect(x, top, w, d);
+  // 盒子三面（正面色沿用老代码的 grille 判据；顶面/侧面颜色由 drawObliqueBox 写死）
+  const frontFill = building.A.style === 'grille' ? FILL_LIGHT : FILL_PAPER;
+  drawObliqueBox(g, cx, baseY, w, d, H, frontFill);
 
-  // 屋顶细节
+  // 屋顶细节（挪到顶面）：_roofAC 等函数体完全未改，局部坐标系仍是"以 (x,top)
+  // 为原点的偏移"，代理负责把这套坐标接到真正的顶面。
+  const roofG = topFaceGraphics(g, x, farY, H);
   const acN = 1 + Math.floor(rand(x, 9) * 3);
-  _roofAC(g, x, top, w, d, baseY, acN);
-  if (building.waterTower) _roofWaterTower(g, x, top, w, baseY);
-  if (building.solar)      _roofSolar(g, x, top, w, baseY);
-  if (building.billboard)  _roofBillboard(g, x, top, w, baseY);
+  _roofAC(roofG, x, farY, w, d, baseY, acN);
+  if (building.waterTower) _roofWaterTower(roofG, x, farY, w, baseY);
+  if (building.solar)      _roofSolar(roofG, x, farY, w, baseY);
+  if (building.billboard)  _roofBillboard(roofG, x, farY, w, baseY);
 
-  // 立面
-  _facade(g, x, w, building, baseY);
-
+  // 立面：_facade 及其调用的窗格/阳台/晾衣绳/底层店面函数体完全未改。
+  const frontG = frontFaceGraphics(g, x, baseY);
+  _facade(frontG, x, w, building, baseY);
 }

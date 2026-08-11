@@ -895,3 +895,65 @@ O-2 落地后 Hsinlung 实机复测，"镜头自己动"的症状仍在——不�
 边缘时使用。
 
 代码锚点：`js/scenes/StreetScene.js#_centerCameraOn`（新增）、`create()`（调用点）
+
+### O-3（盒子模板）— 已落地
+
+一个模板函数把"报三个尺寸"变成三面体积，压掉 O-4 剩余 25 个 draw 函数的
+工作量。本补丁只转三个样板，覆盖三种情况：`drawBuilding`（大盒子 + 正面贴
+原有窗格 + 屋顶细节挪到顶面）、`drawBench`（小盒子 + 正面保留原有细节）、
+`drawManhole`（纯地面、走椭圆助手）。其余 draw 函数保持 O-2 的占位状态不动。
+
+- **`Projection.js` 新增**：`drawObliqueBox(g,x,y,w,depth,h,fillFront)`——底面
+  矩形（中心 x、前沿 y、宽 w、进深 depth）+ 高度 h，生成正面/顶面/侧面三个
+  面；灰度固定分配（顶面 `FILL_MID`、侧面 `FILL_SHADE` 写死不给选，正面色
+  由调用方传入）；`LIGHT_DIR='upper-left'` 具名常量，侧面永远画在世界 +x
+  一侧（屏幕右边）。另配两个坐标代理，供"正面/顶面细节完全不改内部逻辑，
+  只换坐标映射"复用：`frontFaceGraphics(g,anchorX,groundY)`——正面沿世界
+  y=常数展开不受 shear 影响，代理数学上纯粹是 scale+translate；
+  `topFaceGraphics(g,anchorX,anchorFarY,liftH)`——顶面因 shear 是平行四边形，
+  `drawRect` 在这里转发成 `drawPolygon`。
+- **`drawBuilding.js`**：入口函数改调用上面三者；`_facade`/`_windows*`/
+  `_balcony`/`_laundry`/`_ground`（正面细节）与 `_roofAC`/`_roofWaterTower`/
+  `_roofBillboard`/`_roofSolar`（屋顶细节）**函数体一行未改**，只是通过代理
+  接到投影后的正面/顶面。屋顶细节原来的局部坐标原点用 `top=building.y-d`
+  （老扁平画法的参照点，在真投影里没有几何意义），改用 `farY=baseY-d`
+  （地面线往回推一个进深，真正落在屋顶正下方对应的地面位置）。O-1 文档里
+  "描边宽度字面量留给 O-3/O-4 处理"的顾虑本次一并解决——不需要额外换算，
+  O-2 起容器不再整体缩放，这些字面量已经是最终屏幕像素值。
+- **`drawBench.js`**：同样只有入口变了，正面细节（腿/座板/靠背/扶手）搬进
+  `_frontDetail()`，函数体不变。新增 `js/core/propDefaults.js#PROP_DEPTH`
+  存道具进深默认值（bench: 60，骨架单位）——进深是这批转换才引入的新维度，
+  没有历史数据可继承，铁律是写在这个文件里不写死在 draw 函数内部（O-4 tasks.md
+  原文要求，提前落地）。**险情记录**：`propDefaults.js` 早在 Scene-1 就已存在
+  （`PROP_DEFAULTS`，scene.json 展开期的类型默认值权威，`sceneData.js`/
+  stick-puppet 编辑器都在用），第一版误当"新文件"直接整份 Write 覆盖，
+  把 `PROP_DEFAULTS` 连同 `USE_TRASH`/`USE_VENDING`/`STALL_DEF` 全部冲掉，
+  只剩新加的 `PROP_DEPTH`——五个静态门全部照样绿（没有任何一个门会实际执行
+  `expandSceneData()` 走到这张表），这类"改了个早就存在但没被静态门覆盖的
+  文件"的破坏本应该在跑游戏时才会暴露。用 `git show HEAD:<path>` 找回原内容
+  合并回去才发现问题，属于侥幸没有真的丢东西。教训：写文件前只要不确定
+  "这是不是新文件"，先 `Glob`/`git log --oneline -- <path>` 查一遍，不能
+  凭"没读过就当没有"。
+- **`drawManhole.js`**：老版本自己拍了 `ry=rx*0.45` 的扁平化近似，现在改用
+  `Projection.circleToEllipseRy(rx)` 换算真实倾角下的椭圆。
+- **`EntityManager.js`**：新增 `CONVERTED_PROP_TYPES`（`bench`）/
+  `CONVERTED_GROUND_TYPES`（`manhole`）两个白名单，已转换的实体（含楼，用
+  `typeof e.facadeH === 'number'` 判定）改调用真实 `draw()`/`drawGround()`，
+  其余仍走 O-2 的占位盒子。顺手修了占位盒子的楼分支：`building.x` 是左边缘
+  （老约定），O-2 占位代码误当中心处理多减了半个楼宽，位置一直偏——这次已
+  转换的楼不再走占位分支，但占位分支本身也顺手修正，以防万一。
+
+—— 验收（tasks.md 给的，均已过）——
+`grep -rn "drawObliqueBox" js/entity` → `drawBuilding.js`/`drawBench.js` 各一处
+真实调用；三个被转的文件里不再自己算顶面/侧面几何；五个静态门全绿。
+
+落地后按任务书要求停下，等 Hsinlung 在 `sth/preview.html` 里看这三样东西画
+出来像不像、盒子的灰度分配顺不顺眼，可能会调侧面/顶面灰度或 `SHEAR`。
+
+不要动（本补丁未动）：其余 25 个 draw 函数、NPC 绘制、车辆绘制。
+
+代码锚点：`js/core/Projection.js`（`drawObliqueBox`/`frontFaceGraphics`/
+`topFaceGraphics`/`LIGHT_DIR`）；`js/core/propDefaults.js`（新增 `PROP_DEPTH`
+导出，`PROP_DEFAULTS` 是 Scene-1 就有的既有内容）；
+`js/entity/building/drawBuilding.js`；`js/entity/seat/drawBench.js`；
+`js/entity/manhole/drawManhole.js`；`js/core/EntityManager.js`

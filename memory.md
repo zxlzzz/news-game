@@ -28,6 +28,13 @@ cadence keeps entries fresh and matches the "prune regularly" goal above;
 batching to the end risks losing the specifics of early patches by the
 time the last one lands.
 
+**Clarified 2026-08-11**: "each patch gets its own commit" means an actual
+`git commit` on the working branch right when that patch is done — local
+only, no `git push`. Don't wait and bundle multiple patches (or bug fixes
+found along the way) into one commit "to be safe" — that's exactly the
+mess Hsinlung asked to avoid. Hsinlung reviews and pushes when he's ready;
+that's a separate, later, explicit step, not a reason to defer commits.
+
 ---
 
 ## Collaboration workflow with Hsinlung
