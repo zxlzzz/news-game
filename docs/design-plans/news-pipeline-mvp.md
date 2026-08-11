@@ -3,6 +3,14 @@
 > W-6（`docs/roadmap.md` 批次 W）已实装审问接线，`testimony` 现由
 > `NewsUI.openComposer` 的 `witnesses` 参数经 `Belief.claimsToTestimony()` 产出，
 > 不再恒空。本文档保留原样作为 MVP 阶段的历史决策记录，不回填。
+> **过期提示 2**：§1.1/§2.2 描述的"取景框是世界坐标系、挂在 `worldContainer`
+> 的 `vfGraphics`、截图前先 `_clampViewfinderToViewport()` 收进视口再乘 zoom
+> 换算屏幕坐标"这套实现，随「相机跟随取景框」系列 bug 最终修复
+> （`docs/roadmap.md` "取景框改屏幕空间 UI" 条目）已整体替换：取景框现在是
+> 屏幕坐标系、浮在顶层 `uiContainer` 的 UI 矩形，与相机 pan/zoom 无关，
+> `_clampViewfinderToViewport()` 已删除（取景框天然不会跑出视口），截图矩形
+> 也不再需要 world→screen 换算。现状以 `js/camera/Viewfinder.js` 头注 + 该
+> roadmap 条目为准，本文档同样保留原样不回填。
 
 # 新闻管线 MVP — 设计文档
 

@@ -1,25 +1,39 @@
 /**
  * Viewfinder
  * 可拖动取景框：检测框内所有实体（NPC、建筑、道具）并收集标签。
+ *
+ * 取景框位置补丁（tasks.md 外的直接修复，2026-08-11）：坐标系从"世界坐标"
+ * 改成"屏幕像素坐标，浮在顶层（uiContainer），完全独立于相机 pan/zoom"——
+ * 取景框不再代表世界上的一块地皮，而是玩家在屏幕上摆的一个取景窗口，随相机
+ * 怎么动都不受影响，也不需要相机反过来"跟着它挪"。删掉的是 StreetScene 里
+ * 那段跟随逻辑（两轮真实修复后 Hsinlung 仍不满意开局自动平移的观感，见
+ * docs/roadmap.md "相机跟随取景框" 系列条目）；这里同步把取景框本身也搬到
+ * 屏幕空间，否则跟随逻辑一删，拖到屏幕边缘就再也够不着世界剩下的部分。
+ *
+ * 拖拽/缩放直接用画布本地像素坐标（`getScreenCoords`，不再经世界坐标换算）；
+ * 命中检测的实体世界包围盒每帧经 `toRenderScreen`（世界坐标 + 当前相机
+ * pan/zoom → 当前屏幕像素）投影后再跟取景框比较——取景框固定不动，但相机一
+ * 移动，同一批实体投影出来的屏幕位置会变，命中集合因此仍然正确随相机内容
+ * 更新。用四角 AABB 近似（世界矩形因 shear 投影后是平行四边形），跟本项目
+ * 其它"近似够用，不必算精确多边形相交"的取舍一致。
  */
 
-import { WORLD_WIDTH, WORLD_HEIGHT } from '../core/Layout.js';
-import { toScreen, projectGroundRect } from '../core/Projection.js';
-
 export class Viewfinder {
-  constructor({ app, getWorldCoords }, config = {}) {
+  constructor({ app, getScreenCoords, toRenderScreen }, config = {}) {
     this.app = app;
-    this._toWorld = getWorldCoords;
-    // O-1：世界单位，× UNIT_REBASE_FACTOR(5.294118)（原世界像素 300/200/200/160、90/70/520/380）
-    this.x      = config.x      || 1588;
-    this.y      = config.y      || 1059;
-    this.width  = config.width  || 1059;
-    this.height = config.height || 847;
+    this._toScreenCoords = getScreenCoords; // client(x,y) → 画布本地像素 {x,y}
+    this._toRenderScreen = toRenderScreen;  // 世界(x,y) → 当前屏幕像素 {x,y}（含相机 pan/zoom）
 
-    this.minWidth  = config.minWidth  || 476;
-    this.minHeight = config.minHeight || 371;
-    this.maxWidth  = config.maxWidth  || 2753;
-    this.maxHeight = config.maxHeight || 2012;
+    // 屏幕像素坐标（viewport 相对，不随相机 pan/zoom 变化）
+    this.x      = config.x      ?? 130;
+    this.y      = config.y      ?? 130;
+    this.width  = config.width  ?? 640;
+    this.height = config.height ?? 460;
+
+    this.minWidth  = config.minWidth  ?? 200;
+    this.minHeight = config.minHeight ?? 150;
+    this.maxWidth  = config.maxWidth  ?? 860;
+    this.maxHeight = config.maxHeight ?? 680;
 
     this.dragging    = false;
     this.resizing    = false;
@@ -37,46 +51,47 @@ export class Viewfinder {
     this._setupInput();
   }
 
-  _isInHandle(wx, wy) {
+  _isInHandle(sx, sy) {
     const hx = this.x + this.width;
     const hy = this.y + this.height;
     const s  = this.handleSize;
-    return wx >= hx - s && wx <= hx + 2 && wy >= hy - s && wy <= hy + 2;
+    return sx >= hx - s && sx <= hx + 2 && sy >= hy - s && sy <= hy + 2;
   }
 
   _setupInput() {
     const view = this.app.view;
 
     view.addEventListener('pointerdown', (e) => {
-      const { x: wx, y: wy } = this._toWorld(e.clientX, e.clientY);
-      if (this._isInHandle(wx, wy)) {
+      const { x: sx, y: sy } = this._toScreenCoords(e.clientX, e.clientY);
+      if (this._isInHandle(sx, sy)) {
         this.resizing = true;
         this.resizeAnchorX = this.x;
         this.resizeAnchorY = this.y;
-        this.resizeGrabDx  = (this.x + this.width)  - wx;
-        this.resizeGrabDy  = (this.y + this.height) - wy;
+        this.resizeGrabDx  = (this.x + this.width)  - sx;
+        this.resizeGrabDy  = (this.y + this.height) - sy;
         return;
       }
-      if (wx >= this.x && wx <= this.x + this.width &&
-          wy >= this.y && wy <= this.y + this.height) {
+      if (sx >= this.x && sx <= this.x + this.width &&
+          sy >= this.y && sy <= this.y + this.height) {
         this.dragging    = true;
-        this.dragOffsetX = wx - this.x;
-        this.dragOffsetY = wy - this.y;
+        this.dragOffsetX = sx - this.x;
+        this.dragOffsetY = sy - this.y;
       }
     });
 
     view.addEventListener('pointermove', (e) => {
       if (!this.resizing && !this.dragging) return;
-      const { x: wx, y: wy } = this._toWorld(e.clientX, e.clientY);
+      const { x: sx, y: sy } = this._toScreenCoords(e.clientX, e.clientY);
       if (this.resizing) {
-        const newW = (wx + this.resizeGrabDx) - this.resizeAnchorX;
-        const newH = (wy + this.resizeGrabDy) - this.resizeAnchorY;
+        const newW = (sx + this.resizeGrabDx) - this.resizeAnchorX;
+        const newH = (sy + this.resizeGrabDy) - this.resizeAnchorY;
         this.width  = Math.max(this.minWidth,  Math.min(this.maxWidth,  newW));
         this.height = Math.max(this.minHeight, Math.min(this.maxHeight, newH));
         return;
       }
-      this.x = Math.max(0, Math.min(WORLD_WIDTH  - this.width,  wx - this.dragOffsetX));
-      this.y = Math.max(0, Math.min(WORLD_HEIGHT - this.height, wy - this.dragOffsetY));
+      const viewW = this.app.screen.width, viewH = this.app.screen.height;
+      this.x = Math.max(0, Math.min(viewW  - this.width,  sx - this.dragOffsetX));
+      this.y = Math.max(0, Math.min(viewH - this.height, sy - this.dragOffsetY));
     });
 
     window.addEventListener('pointerup', () => {
@@ -85,71 +100,88 @@ export class Viewfinder {
     });
   }
 
+  /** 实体世界包围盒四角投影到当前屏幕像素空间后的 AABB。 */
+  _projectBoundsAABB(b) {
+    const corners = [
+      this._toRenderScreen(b.x,           b.y),
+      this._toRenderScreen(b.x + b.width, b.y),
+      this._toRenderScreen(b.x,           b.y + b.height),
+      this._toRenderScreen(b.x + b.width, b.y + b.height),
+    ];
+    const xs = corners.map(c => c.x), ys = corners.map(c => c.y);
+    return {
+      minX: Math.min(...xs), maxX: Math.max(...xs),
+      minY: Math.min(...ys), maxY: Math.max(...ys),
+    };
+  }
+
   updateCapture(entities) {
     this.capturedEntities = [];
     const vf = { x: this.x, y: this.y, w: this.width, h: this.height };
 
     for (const e of entities) {
-      const b = e.getBounds();
+      const aabb = this._projectBoundsAABB(e.getBounds());
       const overlap = !(
-        b.x + b.width  < vf.x ||
-        b.x            > vf.x + vf.w ||
-        b.y + b.height < vf.y ||
-        b.y            > vf.y + vf.h
+        aabb.maxX < vf.x ||
+        aabb.minX > vf.x + vf.w ||
+        aabb.maxY < vf.y ||
+        aabb.minY > vf.y + vf.h
       );
       if (overlap) this.capturedEntities.push(e);
     }
   }
 
-  // O-2：取景框是世界坐标下的矩形，投影后是平行四边形（shear）——外框/高亮
-  // 描边直接画投影后的四边形；十字准星/拍摄指示灯/缩放手柄这几个纯 UI 装饰
-  // 不代表贴地几何，仍按屏幕空间轴对齐画，只是定位点换成投影后的角点。
+  /**
+   * 取景框本身是屏幕空间轴对齐矩形（浮在顶层，不再随相机 shear/pan/zoom）；
+   * 命中实体的高亮描边仍需要把它们的世界包围盒投影到当前屏幕空间才能画对
+   * 位置，用 `toRenderScreen` 四角投影出的四边形（可能因 shear 是平行四边形）。
+   */
   draw(g) {
-    const cx = this.x, cy = this.y, cw = this.width, ch = this.height;
+    const x = this.x, y = this.y, w = this.width, h = this.height;
     const cornerLen = 12;
-
-    // quad = [p0(左上/远), p1(右上/远), p2(右下/近), p3(左下/近)]（世界意义上的四角）
-    const quad = projectGroundRect(cx, cy, cx + cw, cy + ch);
-    const [p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y] = quad;
 
     // outer frame
     g.lineStyle(2, 0xffffff, 0.88);
-    g.drawPolygon(quad);
+    g.drawRect(x, y, w, h);
 
-    // corner marks：沿平行四边形的边取一小段，替代原来轴对齐矩形的 L 形
+    // corner marks（四角各画两条短线，替代原来投影平行四边形边上取一段的做法）
     g.lineStyle(3, 0xff4444, 1);
-    const corners = [[p0x, p0y, p1x, p1y], [p0x, p0y, p3x, p3y],
-                      [p1x, p1y, p0x, p0y], [p1x, p1y, p2x, p2y],
-                      [p3x, p3y, p0x, p0y], [p3x, p3y, p2x, p2y],
-                      [p2x, p2y, p1x, p1y], [p2x, p2y, p3x, p3y]];
-    for (const [ax, ay, bx, by] of corners) {
-      const d = Math.hypot(bx - ax, by - ay);
-      const t = d > 0 ? cornerLen / d : 0;
-      g.moveTo(ax, ay);
-      g.lineTo(ax + (bx - ax) * t, ay + (by - ay) * t);
+    const corners = [
+      [x,     y,     1,  0], [x,     y,      0,  1],
+      [x + w, y,    -1,  0], [x + w, y,      0,  1],
+      [x,     y + h, 1,  0], [x,     y + h,  0, -1],
+      [x + w, y + h,-1,  0], [x + w, y + h,  0, -1],
+    ];
+    for (const [cx, cy, dx, dy] of corners) {
+      g.moveTo(cx, cy);
+      g.lineTo(cx + dx * cornerLen, cy + dy * cornerLen);
     }
 
-    // center cross（UI 装饰，屏幕空间轴对齐）
-    const center = toScreen(cx + cw / 2, cy + ch / 2);
+    // center cross
+    const ccx = x + w / 2, ccy = y + h / 2;
     g.lineStyle(1, 0xffffff, 0.3);
-    g.moveTo(center.x - 10, center.y); g.lineTo(center.x + 10, center.y);
-    g.moveTo(center.x, center.y - 10); g.lineTo(center.x, center.y + 10);
+    g.moveTo(ccx - 10, ccy); g.lineTo(ccx + 10, ccy);
+    g.moveTo(ccx, ccy - 10); g.lineTo(ccx, ccy + 10);
 
-    // capture indicator（贴着 p1＝右上角）
+    // capture indicator（贴着右上角）
     if (this.capturedEntities.length > 0) {
       g.beginFill(0xff4444, 0.85);
-      g.drawCircle(p1x - 8, p1y + 8, 5);
+      g.drawCircle(x + w - 8, y + 8, 5);
       g.endFill();
     }
 
-    this._drawResizeHandle(g, p2x, p2y); // p2＝右下角（世界意义：cx+cw, cy+ch）
+    this._drawResizeHandle(g, x + w, y + h);
 
-    // Highlight outlines for captured entities
+    // 命中实体高亮描边：世界包围盒四角投影到当前屏幕空间
     if (this.capturedEntities.length > 0) {
       g.lineStyle(2, 0xffcc00, 0.7);
       for (const e of this.capturedEntities) {
-        const b = e.getBounds();
-        g.drawPolygon(projectGroundRect(b.x, b.y, b.x + b.width, b.y + b.height));
+        const b  = e.getBounds();
+        const p0 = this._toRenderScreen(b.x,           b.y);
+        const p1 = this._toRenderScreen(b.x + b.width, b.y);
+        const p2 = this._toRenderScreen(b.x + b.width, b.y + b.height);
+        const p3 = this._toRenderScreen(b.x,           b.y + b.height);
+        g.drawPolygon([p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y]);
       }
     }
   }
@@ -166,10 +198,6 @@ export class Viewfinder {
       const off = 3 + i * 4;
       g.moveTo(hx - off, hy + 1); g.lineTo(hx + 1, hy - off);
     }
-  }
-
-  getCenter() {
-    return { x: this.x + this.width / 2, y: this.y + this.height / 2 };
   }
 
   getCapturedTags() {

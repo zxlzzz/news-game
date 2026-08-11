@@ -9,9 +9,10 @@
  *     entityGraphics     所有 Entity（建筑、道具、NPC），每帧按Y排序重绘
  *                        （_sortY 覆盖排序基准：sign +9 排得更靠前；tree 负偏移排得
  *                         更靠后让 NPC 走树前；stall 用默认 y。见各 footprint 的 sortDY）
- *     vfGraphics         取景框 UI（世界坐标）
  *     （DebugOverlay 的世界浮标也挂这里）
  *   uiContainer        — 屏幕固定 HUD（文本/按钮/闪光/调试面板）
+ *     vfGraphics         取景框 UI（屏幕坐标，浮在顶层，不随相机 pan/zoom 变化——
+ *                        见 js/camera/Viewfinder.js 文件头注释）
  *
  * 渲染底层为 PixiJS；所有绘图文件直接调用 PIXI.Graphics 原生 API。
  */
@@ -101,7 +102,10 @@ export class StreetScene {
     this.skyGraphics        = mkLayer(this.skyContainer, 0);
     this.bgGraphics         = mkLayer(this.worldContainer, 1);
     this.entityGraphics     = mkLayer(this.worldContainer, 2);
-    this.vfGraphics         = mkLayer(this.worldContainer, 4);
+    // 取景框浮在顶层：uiContainer 不受 worldContainer 的 zoom/pan 影响，见
+    // Viewfinder.js 文件头注释。zIndex 50——低于 flashOverlay(190)/按钮(200)，
+    // 高于（不存在的）世界内容，HUD 文本(100) 压得住它，互不遮挡太多。
+    this.vfGraphics         = mkLayer(this.uiContainer, 50);
 
     const sceneData = expandSceneData(this.cache.json.get('scene_data'));
     // 布局参数注入：必须在 SceneRenderer / SceneInitializer / 任何 entity 创建之前
@@ -129,11 +133,12 @@ export class StreetScene {
 
     this.viewfinder = new Viewfinder({
       app: this.app,
-      getWorldCoords: (cx, cy) => this._getWorldCoords(cx, cy),
-    }, { x: 1641, y: 1562, width: 1112, height: 768 }); // O-1：世界单位，× 5.294118（原 310/295/210/145）
-    // 相机开局就摆到默认取景框附近，不留在世界原点——见 _centerCameraOn 注释。
-    const vfc0 = this.viewfinder.getCenter();
-    this._centerCameraOn(vfc0.x, vfc0.y);
+      getScreenCoords: (cx, cy) => this._getScreenCoords(cx, cy),
+      toRenderScreen:  (wx, wy) => this._worldToRenderScreen(wx, wy),
+    }); // 屏幕像素坐标，默认居中；取景框不再绑定世界坐标，见 Viewfinder.js 头注
+    // 相机开局摆到场景默认视野中心（原默认取景框的世界中心点，取景框改屏幕
+    // 空间后不再依赖它，但这个锚点本身仍是合理的开局取景——见 _centerCameraOn 注释）。
+    this._centerCameraOn(2197, 1946);
     this._createUI();
     this.debugOverlay = new DebugOverlay(this, this.behaviorManager, this.entityManager);
 
@@ -176,15 +181,16 @@ export class StreetScene {
 
   /**
    * 把 (wx,wy) 这个世界点摆到视口正中央——只在 create() 里调一次，把初始相机
-   * 摆到默认取景框附近，而不是留在世界原点 (0,0)。
+   * 摆到场景里一处合理的默认视野，而不是留在世界原点 (0,0)（原点附近多是
+   * 天空/建筑背面，没什么可看）。
    *
-   * 不这么做的后果（找到的第二个"镜头自己动"根因）：默认取景框中心在世界
-   * x≈2197（远离原点），初始 scrollX=0 时 update() 里的取景框跟随逻辑判定
-   * "取景框太靠右边缘"，从 0 开始每帧 +2.5 世界单位地把 scrollX 追上去，
-   * 收敛点在 scrollX≈478——单看代码这是收敛的（不是死循环/跑出边界的那种
-   * bug），但对着玩家就是"贴地打开页面时镜头自己滑了三秒多"，跟没修一样
-   * 难受。开局就把相机摆到取景框附近，跟随逻辑第一帧就已经满足条件，不用
-   * 再动。
+   * 历史：这个方法最初是为了解决"镜头自己动"的第二个根因（相机开局在世界
+   * 原点，取景框跟随逻辑要花几秒把它追到取景框附近，观感是镜头自己滑了一
+   * 段）——当时传入的是默认取景框的世界中心。取景框跟随逻辑连同取景框本身
+   * 的世界坐标语义已整体删除（取景框现在是浮在顶层的屏幕空间 UI，见
+   * Viewfinder.js 头注），传入值改成固定写死的同一个锚点（原默认取景框中心
+   * 数值 (1641+1112/2, 1562+768/2)），纯粹是"开局往哪看"的选择，不再跟取景框
+   * 有任何耦合。
    */
   _centerCameraOn(wx, wy) {
     const t   = toScreen(wx, wy);
@@ -219,6 +225,29 @@ export class StreetScene {
     const sx = (clientX - rect.left) * (this.app.screen.width  / rect.width);
     const sy = (clientY - rect.top)  * (this.app.screen.height / rect.height);
     return this._screenToWorld(sx, sy);
+  }
+
+  /** 浏览器 client 坐标 → 画布本地像素坐标（不做世界坐标换算）。供取景框（屏幕空间 UI）拖拽用。 */
+  _getScreenCoords(clientX, clientY) {
+    const rect = this.app.view.getBoundingClientRect();
+    return {
+      x: (clientX - rect.left) * (this.app.screen.width  / rect.width),
+      y: (clientY - rect.top)  * (this.app.screen.height / rect.height),
+    };
+  }
+
+  /**
+   * 世界坐标 → 当前相机 pan/zoom 下的屏幕像素坐标（即 worldContainer 子节点
+   * 实际渲染到的位置）。供取景框命中检测/高亮描边把实体世界包围盒投影到
+   * 屏幕空间用——取景框本身固定不动，但相机一移动，同一批实体投影出来的
+   * 位置会变，命中集合因此仍正确跟着相机内容更新。公式与 `_applyCamera` 里
+   * worldContainer 的 position/scale 设置保持一致（PIXI 容器变换：先 scale
+   * 后加 position，等价于 (toScreen(w) - pan) * zoom）。
+   */
+  _worldToRenderScreen(wx, wy) {
+    const pan = toScreen(this.scrollX, this.scrollY);
+    const t   = toScreen(wx, wy);
+    return { x: (t.x - pan.x) * this.zoom, y: (t.y - pan.y) * this.zoom };
   }
 
   // ─── 输入 ──────────────────────────────────────────────────────────────────
@@ -355,46 +384,32 @@ export class StreetScene {
       return;
     }
 
-    // 1. clamp viewfinder into current viewport
-    this._clampViewfinderToViewport();
-
     const vf = this.viewfinder;
-    const z  = this.zoom;
 
-    // 2. world coords → screen pixels：取景框的世界矩形投影后是平行四边形
-    // （O-2 shear），但 extract.canvas 只能截一个轴对齐矩形——用四角投影后的
-    // 屏幕空间包围盒，会比理论平行四边形略宽，可接受（截图本来就是"大致取景"）。
-    const pan = toScreen(this.scrollX, this.scrollY);
-    const corners = [
-      toScreen(vf.x,           vf.y),
-      toScreen(vf.x + vf.width, vf.y),
-      toScreen(vf.x,           vf.y + vf.height),
-      toScreen(vf.x + vf.width, vf.y + vf.height),
-    ];
-    const cxs = corners.map(c => c.x), cys = corners.map(c => c.y);
-    const minX = Math.min(...cxs), maxX = Math.max(...cxs);
-    const minY = Math.min(...cys), maxY = Math.max(...cys);
-    const sx = Math.round((minX - pan.x) * z);
-    const sy = Math.round((minY - pan.y) * z);
-    const sw = Math.max(1, Math.round((maxX - minX) * z));
-    const sh = Math.max(1, Math.round((maxY - minY) * z));
+    // 1. 截图矩形：取景框现在本来就是屏幕像素坐标（浮在顶层，见 Viewfinder.js
+    // 头注），永远在视口内，不需要再 clamp、也不需要经 toScreen 投影——直接
+    // 就是 extract.canvas 要的那个轴对齐矩形。
+    const sx = Math.round(vf.x);
+    const sy = Math.round(vf.y);
+    const sw = Math.max(1, Math.round(vf.width));
+    const sh = Math.max(1, Math.round(vf.height));
 
-    // 3. hide viewfinder graphics so they don't appear in screenshot
+    // 2. hide viewfinder graphics so they don't appear in screenshot
     this.vfGraphics.visible = false;
 
-    // 4. extract screenshot
+    // 3. extract screenshot
     const frame  = new PIXI.Rectangle(sx, sy, sw, sh);
     const canvas = this.app.renderer.extract.canvas(this.app.stage, frame);
     const photoRef = canvas.toDataURL('image/png');
 
-    // 5. restore
+    // 4. restore
     this.vfGraphics.visible = true;
 
-    // 6. flash feedback
+    // 5. flash feedback
     this._flashAlpha = 0.80;
     this.flashOverlay.alpha = this._flashAlpha;
 
-    // 7. build snapshot + kick off vision in parallel
+    // 6. build snapshot + kick off vision in parallel
     const entitySnapshot = this._buildEntitySnapshot(vf);
     setLastSnapshot(entitySnapshot);
     const visionPromise = vision.describe(photoRef);
@@ -417,22 +432,6 @@ export class StreetScene {
     this._newsUI.openComposer({ photoRef, entitySnapshot, visionPromise, witnesses, hasUnwitnessingNpc });
   }
 
-  _clampViewfinderToViewport() {
-    // O-2：可见区域在世界坐标下不再是矩形（shear 之后是平行四边形），这里用
-    // 视口四角反投影回世界坐标后的 AABB 近似——取景框只是不越出屏幕太多，
-    // 精确到平行四边形没有必要，近似够用。
-    const vf = this.viewfinder;
-    const corners = [
-      this._screenToWorld(0, 0), this._screenToWorld(this.viewW, 0),
-      this._screenToWorld(0, this.viewH), this._screenToWorld(this.viewW, this.viewH),
-    ];
-    const xs = corners.map(c => c.x), ys = corners.map(c => c.y);
-    const minX = Math.min(...xs), maxX = Math.max(...xs);
-    const minY = Math.min(...ys), maxY = Math.max(...ys);
-    vf.x = Math.max(minX, Math.min(vf.x, maxX - vf.width));
-    vf.y = Math.max(minY, Math.min(vf.y, maxY - vf.height));
-  }
-
   _buildEntitySnapshot(vf) {
     const entities = this.viewfinder.capturedEntities.map(e => ({
       id:   e.id ?? e.propType ?? 'unknown',
@@ -440,7 +439,7 @@ export class StreetScene {
     }));
     return {
       entities,
-      rect:      { x: vf.x, y: vf.y, w: vf.width, h: vf.height },
+      rect:      { x: vf.x, y: vf.y, w: vf.width, h: vf.height }, // 屏幕像素坐标，非世界坐标——见 Viewfinder.js 头注
       timestamp: Date.now(),
     };
   }
@@ -454,19 +453,11 @@ export class StreetScene {
     if (this.keys.up)         this.scrollY -= spd;
     else if (this.keys.down)  this.scrollY += spd;
 
-    // 取景框跟随：把取景框中心投影到当前屏幕像素空间再跟 viewW/margin 比较——
-    // 这两者现在天然同处一个空间（屏幕像素），比换算 margin 到世界单位更准：
-    // O-2 引入 shear 后，世界 x 和屏幕 x 已经不是纯比例关系（see Projection.js），
-    // 世界单位空间里的简单换算会有 shear 带来的系统误差，直接在投影后的屏幕
-    // 空间比较就不需要管这个（历史：O-1 刚落地时这里犯过反过来的 bug——拿世界
-    // 单位直接跟屏幕像素比，开局/静止时相机会自己往右漂）。
-    const vfc   = this.viewfinder.getCenter();
-    const pan   = toScreen(this.scrollX, this.scrollY);
-    const vfcSx = (toScreen(vfc.x, vfc.y).x - pan.x) * this.zoom;
-    const margin = 80;
-    if (vfcSx < margin)                     this.scrollX -= spd * 0.5;
-    else if (this.viewW - vfcSx < margin)   this.scrollX += spd * 0.5;
-
+    // 相机不再跟随取景框——取景框已改为浮在顶层的屏幕空间 UI（见
+    // Viewfinder.js 头注），永远在视口内，不需要相机追它；相机现在只由
+    // 方向键 / 滚轮缩放改变（历史：曾有一段"取景框靠近屏幕边缘就跟着滚"的
+    // 逻辑，两轮真实修复后仍有可感知的自动平移，2026-08-11 直接删除，见
+    // docs/roadmap.md 对应条目）。
     this._clampScroll();
     this._applyCamera();
 

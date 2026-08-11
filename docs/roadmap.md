@@ -957,3 +957,50 @@ O-2 落地后 Hsinlung 实机复测，"镜头自己动"的症状仍在——不�
 导出，`PROP_DEFAULTS` 是 Scene-1 就有的既有内容）；
 `js/entity/building/drawBuilding.js`；`js/entity/seat/drawBench.js`；
 `js/entity/manhole/drawManhole.js`；`js/core/EntityManager.js`
+
+### 取景框改屏幕空间 UI（相机跟随取景框系列的最终解决）— 已落地
+
+`相机跟随取景框` problem 的第三轮：前两轮（"O-1 遗留 bug 修复"/"相机跟随
+取景框二次修复"两条）都是真实修复各自的根因，Hsinlung 仍不满意开局/拖拽时
+镜头自己动的观感，一度直接删掉 `update()` 里的跟随逻辑（本仓库 commit
+`d5e2d7e`），旋即又要求 revert（`1f3b3b0`）——因为跟随逻辑一删，取景框的
+世界坐标语义没变，拖到屏幕边缘就再也够不着世界剩下的部分，功能直接坏掉，
+删除本身不是可行方案，只是先退回到"能用但镜头会动"的状态。
+
+这次的解法不是再调一次跟随逻辑的参数/时机，而是换掉取景框的坐标系：
+取景框从"世界坐标下的一块地皮（相机需要跟着它挪，可见范围才能覆盖它）"
+改成"浮在顶层（`uiContainer`）的屏幕空间 UI 矩形，完全独立于相机
+pan/zoom"。相机因此不再需要跟随取景框——`update()` 里那段跟随逻辑整段
+删除，相机现在只由方向键/滚轮缩放改变；取景框永远在视口内（拖拽/缩放本身
+就 clamp 在 `app.screen.width/height` 内），也不会因为删跟随逻辑而够不着
+世界的其它部分。
+
+- **`js/camera/Viewfinder.js`**：`x/y/width/height` 语义从世界单位改屏幕
+  像素；构造参数从 `getWorldCoords`（client→世界坐标）换成 `getScreenCoords`
+  （client→画布本地像素，拖拽/缩放手柄直接用）+ `toRenderScreen`（世界坐标
+  →当前相机 pan/zoom 下的屏幕像素，命中检测/高亮描边用）。`updateCapture()`
+  改成把每个实体的世界包围盒四角经 `toRenderScreen` 投影后取 AABB，再跟
+  （屏幕空间、不动的）取景框矩形比较——相机一移动，同一批实体投影出来的
+  屏幕位置会变，命中集合仍正确跟着相机内容更新，只是取景框本身不用再挪。
+  `draw()` 从"世界矩形投影后画平行四边形（`projectGroundRect`，O-2 shear）"
+  简化成"直接画轴对齐矩形"——取景框不再代表地面上的一块区域，没有 shear
+  可言；命中实体的高亮描边仍需要投影（每帧位置可能因相机移动而变），保留
+  `toRenderScreen` 四角投影画法。删掉不再使用的 `getCenter()`。
+- **`js/scenes/StreetScene.js`**：`vfGraphics` 从 `worldContainer`（zIndex 4）
+  搬到 `uiContainer`（zIndex 50）；新增 `_getScreenCoords()`（client→画布本地
+  像素，不做世界坐标换算）与 `_worldToRenderScreen()`（世界坐标→当前相机
+  pan/zoom 下的屏幕像素，公式与 `_applyCamera` 的容器变换保持一致）两个方法
+  供 Viewfinder 的两个回调用；`update()` 删除"取景框离屏幕边缘太近就跟着滚"
+  整段逻辑；`create()` 里 `_centerCameraOn` 的入参从"取景框当前中心"改成
+  写死的同一个世界坐标锚点（数值不变，只是不再跟取景框耦合，纯粹是"开局
+  往哪看"的选择）；`_takePhoto()` 的截图矩形计算大幅简化——取景框坐标现在
+  本来就是 `extract.canvas` 要的屏幕像素矩形，不再需要 world→screen 投影和
+  四角 AABB 近似；`_clampViewfinderToViewport()`（原本用于把取景框收进当前
+  可见范围）整个删除，取景框现在天然不会跑出视口。
+
+五个静态门全绿（`sth/tools/validate.mjs` 的 35 条 warning 是既有 clip 数据
+质量问题，跟本次改动无关，0 errors）。
+
+代码锚点：`js/camera/Viewfinder.js`（整体重写）；`js/scenes/StreetScene.js`
+（`create()`/`update()`/`_takePhoto()`/`_getScreenCoords`/`_worldToRenderScreen`/
+`_centerCameraOn`，`_clampViewfinderToViewport` 已删除）
