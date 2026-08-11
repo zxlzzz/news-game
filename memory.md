@@ -78,3 +78,35 @@ commit. This is *why* the per-patch-commit rule matters, not just tidiness.
   fixes (real root causes each time) and Hsinlung was still unhappy with
   the feel; he asked to delete it outright rather than a third attempt.
   Comply directly — don't argue for one more fix first.
+  **How that one actually ended (2026-08-11)**: deleting it broke the
+  feature (with the viewfinder still in world coordinates, killing the
+  follow logic meant you could drag it to the screen edge and never
+  reach the rest of the world), so Hsinlung reverted the deletion. What
+  finally worked was neither another parameter tweak nor deletion, but
+  **reframing what the thing is**: the viewfinder stopped being a patch
+  of world ground and became a screen-space UI rectangle floating on
+  the top layer, independent of camera pan/zoom — at which point the
+  camera had no reason to follow anything and the logic was deleted for
+  free. Lesson: after two failed fixes, the productive move is usually
+  to question the object's coordinate system / ownership, not to tune
+  the algorithm a third time. Hsinlung specified this reframing himself.
+
+## Running the game (important standing exception)
+
+- CLAUDE.md forbids running the game/harness by default. **2026-08-11
+  Hsinlung granted a broad standing exception**: "随便进行任何测试，我以
+  效果为准" — he cannot judge whether a render matches intent, and can
+  only hand back screenshots. So when a change is visual, drive the real
+  app and look at it yourself rather than asking him to describe it.
+- Working setup (no project skill for this yet): `python -m http.server
+  8080` in the repo root, then Playwright from the npx cache —
+  `import { chromium } from
+  'file:///C:/Users/Hsinlung/AppData/Local/npm-cache/_npx/<hash>/node_modules/playwright/index.mjs'`.
+  Bare `import 'playwright'` fails (not a repo dep, and ESM ignores
+  NODE_PATH); the absolute `file://` import is the way in. Chromium is
+  already downloaded under `%LOCALAPPDATA%/ms-playwright`.
+- **Comparing against the old look**: Hsinlung suggested checking out a
+  pre-change commit locally, screenshotting, then returning. This worked
+  well and is worth reusing — a detached-HEAD `git checkout <old>` →
+  screenshot → `git checkout <branch>` costs almost nothing and settles
+  "is this regression or intended?" far faster than reasoning about it.

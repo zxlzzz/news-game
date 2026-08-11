@@ -8,7 +8,21 @@
  *   JSON 顶层可有 globalBend 字段，key = "from__to"，值为法向偏移 px。
  *   每帧对象里 "_bend_from__to" 键作为 per-frame 覆盖。
  *   优先级：per-frame > globalBend > 0（默认直线）。
+ *
+ * O-2 投影接线：人是**竖直广告牌**——脚下那个点是地面上的位置（纵深量，
+ * 经 `toScreen` 换算），而关节相对脚下的偏移是"平长度"（身高/臂展，只经
+ * `toScreenLength` 换算 `PX_PER_UNIT`，不参与 shear/tilt）。这正是
+ * `Projection.js` 文件头「核心区分」那一条，跟 `frontFaceGraphics` 处理正面
+ * 细节是同一个道理：地面位置要投影，立面上的高度不能跟着被压扁。
+ * CLAUDE.md「坐标约定」的铁律（关节 y=0 = 地面接触线）不变，只是那条公式里
+ * 的 `npc.y` 现在先过一次投影、关节偏移再乘 `PX_PER_UNIT`：
+ *   base = toScreen(npc.x, npc.y)
+ *   screen_x = base.x + toScreenLength(joint[0] * scale * dir)
+ *   screen_y = base.y + toScreenLength(joint[1] * scale)
+ * 四方向 clip 因此可以原样站在斜地面上，不需要为倾角重画——这就是 tasks.md
+ * O-4「人不转」那句话的兑现方式。
  */
+import { toScreen, toScreenLength } from './Projection.js';
 
 // 人形骨骼连线定义 [from, to, lineWidth]
 const BONES = [
@@ -131,33 +145,44 @@ export class StickRenderer {
 
   _drawHuman(g, anim, frame, x, y, s, d, color, alpha, ov, headKey) {
     const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
-    const jx = (j) => x + coord(j)[0] * s * d;
-    const jy = (j) => y + coord(j)[1] * s;
+    // 地面锚点过投影，关节偏移按平长度换算——见文件头「O-2 投影接线」
+    const base = toScreen(x, y);
+    const jx = (j) => base.x + toScreenLength(coord(j)[0] * s * d);
+    const jy = (j) => base.y + toScreenLength(coord(j)[1] * s);
 
     for (const [from, to, w] of BONES) {
-      const bend = getBend(from, to, frame, anim.globalBend) * s * d;
-      g.lineStyle(w * s * 2, color, alpha);
+      const bend = toScreenLength(getBend(from, to, frame, anim.globalBend) * s * d);
+      // 骨线宽度过去随 npc.scale（曾是 0.19 量级的景深缩放）一起缩，本质也是
+      // 骨架单位长度；O-1 后 scale 恒为 1.0，不换算就会粗到 8px（56px 高的人
+      // 身上占 14%，糊成一团）。同样过 toScreenLength → 约 3px，比例与旧版一致。
+      g.lineStyle(toScreenLength(w * s * 2), color, alpha);
       drawBone(g, jx(from), jy(from), jx(to), jy(to), bend);
     }
 
     g.beginFill(color, alpha);
-    g.drawCircle(jx('head'), jy('head'), (this._headRadius[headKey] ?? _HEAD_R_FALLBACK.human) * s);
+    g.drawCircle(jx('head'), jy('head'),
+      toScreenLength((this._headRadius[headKey] ?? _HEAD_R_FALLBACK.human) * s));
     g.endFill();
   }
 
   _drawDog(g, anim, frame, x, y, s, d, color, alpha, ov, headKey) {
     const coord = (j) => (ov && ov[j]) ? ov[j] : frame[j];
-    const jx = (j) => x + coord(j)[0] * s * d;
-    const jy = (j) => y + coord(j)[1] * s;
+    const base = toScreen(x, y);
+    const jx = (j) => base.x + toScreenLength(coord(j)[0] * s * d);
+    const jy = (j) => base.y + toScreenLength(coord(j)[1] * s);
 
     for (const [from, to, w] of DOG_BONES) {
-      const bend = getBend(from, to, frame, anim.globalBend) * s * d;
-      g.lineStyle(w * s * 2, color, alpha);
+      const bend = toScreenLength(getBend(from, to, frame, anim.globalBend) * s * d);
+      // 骨线宽度过去随 npc.scale（曾是 0.19 量级的景深缩放）一起缩，本质也是
+      // 骨架单位长度；O-1 后 scale 恒为 1.0，不换算就会粗到 8px（56px 高的人
+      // 身上占 14%，糊成一团）。同样过 toScreenLength → 约 3px，比例与旧版一致。
+      g.lineStyle(toScreenLength(w * s * 2), color, alpha);
       drawBone(g, jx(from), jy(from), jx(to), jy(to), bend);
     }
 
     g.beginFill(color, alpha);
-    g.drawCircle(jx('head'), jy('head'), (this._headRadius[headKey] ?? _HEAD_R_FALLBACK.dog) * s);
+    g.drawCircle(jx('head'), jy('head'),
+      toScreenLength((this._headRadius[headKey] ?? _HEAD_R_FALLBACK.dog) * s));
     g.endFill();
   }
 }

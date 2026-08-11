@@ -38,6 +38,21 @@ const CONVERTED_PROP_TYPES = new Set(['bench']);
 const CONVERTED_GROUND_TYPES = new Set(['manhole']);
 
 /**
+ * 火柴人（NPC / 狗）判定：有 `renderer`（StickRenderer 实例）+ `animation` 就是。
+ * 这类实体不走盒子模板——人是竖直广告牌，四方向 clip 直接站在斜地面上
+ * （tasks.md O-4「人不转」），只需要 StickRenderer 内部把地面锚点过 `toScreen`、
+ * 关节偏移过 `toScreenLength`，那一步已经做了，所以这里可以放行真实 draw()。
+ *
+ * 为什么不能继续留在占位盒子里：占位盒子把全场的人和狗都画成灰色小方块，
+ * 场景里一个人影都看不见，等于把"这个场景在演什么"整个抹掉了——O-2 把实体
+ * 一律降级成占位盒子时没有把人排除在外，是那一步遗漏的一环，不是有意为之
+ * （O-4 明确写着 NPC 绘制不需要转换）。
+ */
+function _isStickFigure(e) {
+  return e.renderer != null && typeof e.animation === 'string';
+}
+
+/**
  * EntityManager
  * 统一管理所有场景实体（NPC、建筑、道具）：
  * - 更新动态实体并同步深度缩放
@@ -101,6 +116,7 @@ export class EntityManager {
     visible.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
     for (const e of visible) {
       const converted = typeof e.facadeH === 'number'
+        || _isStickFigure(e)                        // NPC/狗：StickRenderer 已接投影，见下
         || CONVERTED_PROP_TYPES.has(e.propType)
         || CONVERTED_GROUND_TYPES.has(e.propType); // manhole：draw() 在这条路径上安全空转，
                                                      // 真内容已经在上面的 ground pre-pass 画完

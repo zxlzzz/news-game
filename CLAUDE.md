@@ -9,12 +9,22 @@
 
 **铁律**：`npc.y` / `entity.y` = 地面接触线（世界坐标）；关节空间 `y=0` = 地面，负值向上。
 
-原因：StickRenderer 渲染公式 `screen_y = npc.y + joint[1] * scale`，接触点 y=0 才能精准落地。
+原因：StickRenderer 把关节挂在 `npc.y` 这条地面线上，接触点 y=0 才能精准落地。
 
 ```js
-// screen_x = npc.x + joint[0] * scale * dir
-// screen_y = npc.y + joint[1] * scale   ← joint y 为负=上方，0=地面线
+// O-2 起（投影接线，见下方「投影（O-2）」）：人是竖直广告牌——
+// 脚下那个点是地面位置（纵深量，过 toScreen）；关节相对脚下的偏移是
+// "平长度"（身高/臂展，只过 toScreenLength 乘 PX_PER_UNIT，不参与 shear/tilt）。
+const base   = toScreen(npc.x, npc.y);
+// screen_x = base.x + toScreenLength(joint[0] * scale * dir)
+// screen_y = base.y + toScreenLength(joint[1] * scale)  ← joint y 为负=上方，0=地面线
+// 骨线宽度同样过 toScreenLength（它本质也是骨架单位长度，O-1 后 scale 恒为 1，
+// 不换算会粗到 8px 糊成一团）。
+// 历史：O-2 之前是 screen_y = npc.y + joint[1] * scale（世界 y 直接当屏幕 y）。
 ```
+
+四方向 clip 因此原样站在斜地面上，不需要为倾角重画——这就是 tasks.md O-4
+「人不转」的兑现方式；人**不走** `drawObliqueBox` 盒子模板。
 
 cycle clip 的全帧全关节最大 abs_y 须 ≤ 0（即地面接触关节 ≈ 0）；
 骑乘白名单 `MOUNTED_CLIPS = ['bike','mobike','mobile']` 例外（接触点经由车辆）。
@@ -59,12 +69,17 @@ import { toScreen, toScreenLength } from '../core/Projection.js';
 是暂定值，`docs/roadmap.md` O-2 条目落地后要跑实机调；调完之前不要假定这两个
 数值已经定型。
 
-`EntityManager`/`SceneRenderer` 里大部分实体仍画的是 `toScreen` 定位的灰色
+`EntityManager`/`SceneRenderer` 里大部分**道具**仍画的是 `toScreen` 定位的灰色
 占位盒子，**不是**真实调用各自的 `draw()`——那些函数还是按 O-1 之前"容器整体
-缩放"的假设写的，尚未跟投影对齐，直接调用会显得错位。O-3 起转换完成的实体
-（`EntityManager.js` 的 `CONVERTED_PROP_TYPES`/`CONVERTED_GROUND_TYPES` 白名单
-+ 楼，用 `typeof e.facadeH === 'number'` 判定）改走真实 `draw()`；其余仍是
-占位盒子，逐批随 O-4 转换。
+缩放"的假设写的，尚未跟投影对齐，直接调用会显得错位。转换完成、改走真实
+`draw()` 的有三类：楼（`typeof e.facadeH === 'number'`）、O-3 起的
+`CONVERTED_PROP_TYPES`/`CONVERTED_GROUND_TYPES` 白名单、以及**火柴人**
+（`_isStickFigure(e)`：有 `renderer` + `animation` 字符串，即 NPC 与狗）。
+其余道具仍是占位盒子，逐批随 O-4 转换。
+
+火柴人不属于"待转换"——人不走盒子模板，`StickRenderer` 内部已按上方「坐标
+约定」接好投影。曾因 O-2 漏了这一环而被一并降级成灰盒子（全场没有人影，
+画面完全读不懂），已修复，见 `docs/roadmap.md`「O-2 遗留」条目。
 
 **三面体积模板**（O-3）：`drawObliqueBox(g,x,y,w,depth,h,fillFront)` 给底面
 矩形（中心 x、前沿 y）+ 高度 h，生成正面/顶面/侧面三个面，灰度固定分配

@@ -23,11 +23,10 @@ import { Viewfinder }      from '../camera/Viewfinder.js';
 import { DebugOverlay }    from '../ui/DebugOverlay.js';
 import { SceneRenderer }   from './SceneRenderer.js';
 import { SceneInitializer } from './SceneInitializer.js';
-import {
-  WORLD_WIDTH, WORLD_HEIGHT,
-  GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
-  initLayout,
-} from '../core/Layout.js';
+// WORLD_WIDTH/WORLD_HEIGHT 曾供 _exportImage 开纹理用，O-2 后导出改按
+// sceneScreenBounds（投影后的屏幕包围盒）算尺寸，这里不再需要；
+// SIDEWALK_FAR_Y/SIDEWALK_NEAR_Y 是更早就没有消费者的死 import，一并清掉。
+import { GRAY_SKY, initLayout } from '../core/Layout.js';
 import { toScreen, toWorld, sceneScreenBounds } from '../core/Projection.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 import { expandSceneData }  from '../core/sceneData.js';
@@ -344,23 +343,53 @@ export class StreetScene {
   }
 
   // ─── 导出长图 ───────────────────────────────────────────────────────────────
+  /**
+   * 全景导出（P 键）。O-2 之后这个函数有两处必须改，否则导出的是一张空白图：
+   *
+   * 1. **尺寸/坐标空间**：O-2 起各 draw 函数直接输出屏幕像素（经 `toScreen`），
+   *    图层内容不再位于"世界坐标 × PX_PER_UNIT"的空间里。老代码按
+   *    `WORLD_WIDTH × WORLD_HEIGHT`（10588×3072 世界单位）开纹理并且不做平移，
+   *    投影后的场景实际只占 `sceneScreenBounds()` 那一块（≈4356×409 + 屋顶余量，
+   *    且 minX/minY 是负数），画进去只剩左上角一丁点。改为按 `sceneScreenBounds`
+   *    开纹理，并用一个 Container 把图层整体平移 `-minX/-minY` 收进纹理内。
+   * 2. **GPU 纹理上限**：老代码 `resolution: 2` 把 10588×3072 放大成
+   *    21176×6144 的后备纹理，远超常见 `MAX_TEXTURE_SIZE`（实测本机 8192），
+   *    WebGL 直接报 `texImage2D: width or height out of range` +
+   *    `Framebuffer is incomplete: Attachment has zero size`，extract 出来是
+   *    全空白。现在按 `MAX_EXPORT_PX` 卡住上限，必要时自动降 resolution
+   *    （宁可降采样也不要导出一张空图）。
+   */
   _exportImage() {
     const renderer = this.app.renderer;
-    const RES = 2; // 或 window.devicePixelRatio，喂视觉模型可以用 2~3
-    const rt = PIXI.RenderTexture.create({
-      width: WORLD_WIDTH,
-      height: WORLD_HEIGHT,
-      resolution: RES,
-    });
+    const MAX_EXPORT_PX = 8192; // 保守取常见 GPU 的 MAX_TEXTURE_SIZE 下限
+
+    const b = sceneScreenBounds(this._maxFacadeH ?? 0);
+    const w = Math.max(1, Math.ceil(b.maxX - b.minX));
+    const h = Math.max(1, Math.ceil(b.maxY - b.minY));
+
+    // resolution 取 2（喂视觉模型更清晰），但不得让任一边超过 GPU 纹理上限
+    const RES = Math.max(1, Math.min(2, MAX_EXPORT_PX / Math.max(w, h)));
+
+    const rt = PIXI.RenderTexture.create({ width: w, height: h, resolution: RES });
 
     const fill = new PIXI.Graphics();
-    fill.beginFill(GRAY_SKY, 1).drawRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT).endFill();
+    fill.beginFill(GRAY_SKY, 1).drawRect(0, 0, w, h).endFill();
     renderer.render(fill, { renderTexture: rt, clear: true });
     fill.destroy();
 
+    // 图层本身画在"绝对屏幕像素"坐标系里（含负坐标），套一层平移容器收进纹理。
+    // 借用容器渲染而不是改图层自身的 position——图层是常驻显示对象，改了要还原，
+    // 中途抛异常就会把主画面也弄歪。
+    const shift = new PIXI.Container();
+    shift.position.set(-b.minX, -b.minY);
     for (const layer of [this.skyGraphics, this.bgGraphics, this.entityGraphics]) {
-      renderer.render(layer, { renderTexture: rt, clear: false });
+      const parent = layer.parent;
+      const idx = parent.getChildIndex(layer);
+      shift.addChild(layer);
+      renderer.render(shift, { renderTexture: rt, clear: false });
+      parent.addChildAt(layer, idx); // 立刻还原，保证主画面层级/顺序不变
     }
+    shift.destroy();
 
     const canvas = renderer.extract.canvas(rt);
     canvas.toBlob((blob) => {

@@ -1004,3 +1004,60 @@ pan/zoom"。相机因此不再需要跟随取景框——`update()` 里那段跟
 代码锚点：`js/camera/Viewfinder.js`（整体重写）；`js/scenes/StreetScene.js`
 （`create()`/`update()`/`_takePhoto()`/`_getScreenCoords`/`_worldToRenderScreen`/
 `_centerCameraOn`，`_clampViewfinderToViewport` 已删除）
+
+### O-2 遗留：NPC 变灰盒子 + 全景导出空白图 — 已修复
+
+Hsinlung 实机反馈"画面完全看不懂、导出的只是一张黑色图片"，经 Hsinlung 明确
+授权后用 Playwright 跑实机排查（本项目默认禁止运行游戏，这次是显式例外）。
+两个都是 O-2 转投影时留下的洞，不是观感问题：
+
+**一、NPC/狗被 O-2 一并降级成占位灰盒子（画面看不懂的主因）。**
+O-2 把"还没跟 Projection 对齐的实体一律画成灰色占位盒子"时，没有把火柴人
+排除在外——结果全场的人和狗都是灰色小方块，场景里一个人影都没有，等于把
+"这个场景在演什么"整个抹掉了。这不是有意为之：tasks.md O-4 明确写着「NPC
+绘制不转，四方向 clip 直接站在斜地面上，这是当初保四方向的红利」，说明人本来
+就不该进占位盒子那条路径，只是 O-2 漏了这一环。对照 pre-O-1（`e9523f0`）的
+实机截图可见原版是有清晰火柴人的。
+
+修法是给 `StickRenderer` 接上投影，而不是把人塞进盒子模板——人是**竖直广告牌**：
+脚下那个点是地面位置（纵深量，经 `toScreen`），关节相对脚下的偏移是"平长度"
+（身高/臂展，只经 `toScreenLength` 乘 `PX_PER_UNIT`，不参与 shear/tilt）。
+这正是 `Projection.js` 文件头「核心区分」那一条，跟 `frontFaceGraphics` 处理
+正面细节同理。`CLAUDE.md`「坐标约定」的铁律（关节 y=0 = 地面接触线）不变，
+只是公式里的 `npc.y` 先过一次投影、关节偏移再乘 `PX_PER_UNIT`。
+骨线宽度 `w*s*2` 同样要过 `toScreenLength`：它过去随 `npc.scale`（曾是 0.19
+量级的景深缩放）一起缩，本质也是骨架单位长度；O-1 后 `scale` 恒为 1.0，不换算
+会粗到 8px（56px 高的人身上占 14%，糊成一团），换算后约 3px，比例与旧版一致。
+`EntityManager` 新增 `_isStickFigure(e)` 判定（有 `renderer` + `animation`
+字符串），命中就走真实 `draw()`。
+
+**二、P 键全景导出是空白图。** 两个独立根因叠加：
+1. **超 GPU 纹理上限**：`RenderTexture.create({width: WORLD_WIDTH(10588),
+   height: WORLD_HEIGHT(3072), resolution: 2})` 的后备纹理是 21176×6144，
+   实测本机 `MAX_TEXTURE_SIZE` 只有 **8192**。WebGL 直接报
+   `texImage2D: width or height out of range` +
+   `Framebuffer is incomplete: Attachment has zero size`，extract 出来全空白。
+2. **坐标空间过期**：O-2 起各 draw 函数直接输出屏幕像素，图层内容不再位于
+   "世界坐标 × PX_PER_UNIT"的空间里。投影后的场景实际只占
+   `sceneScreenBounds()` 那一块（≈4356×409 + 屋顶余量，且 `minX`/`minY` 是
+   负数），按世界尺寸开纹理又不做平移，画进去只剩左上角一丁点。
+
+修法：按 `sceneScreenBounds(maxFacadeH)` 开纹理；套一层 `position` 为
+`-minX/-minY` 的临时 Container 把图层平移进纹理（借容器渲染而不是改图层自身
+`position`——图层是常驻显示对象，改了要还原，中途抛异常会把主画面也弄歪，
+每渲染完一层立刻 `addChildAt` 放回原位原索引）；`resolution` 按
+`MAX_EXPORT_PX=8192` 自动降档（宁可降采样也不要导出空图）。
+实测导出从"空白 21176×6144"变成"有内容的 8192×1248 全景长图"。
+
+顺带清掉 `StreetScene.js` 里 `WORLD_WIDTH`/`WORLD_HEIGHT`（导出改用
+`sceneScreenBounds` 后不再需要）和 `SIDEWALK_FAR_Y`/`SIDEWALK_NEAR_Y`
+（更早就没有消费者）四个死 import。
+
+C 键拍照本身在上一条（取景框改屏幕空间）里已经顺带修好——旧版按世界坐标算
+截图矩形，O-2 后必然错位；实测现在截出的是正常街景。
+
+五个静态门全绿。
+
+代码锚点：`js/core/StickRenderer.js`（文件头「O-2 投影接线」注释 +
+`_drawHuman`/`_drawDog`）；`js/core/EntityManager.js#_isStickFigure`；
+`js/scenes/StreetScene.js#_exportImage`
