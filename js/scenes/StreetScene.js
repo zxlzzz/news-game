@@ -454,13 +454,18 @@ export class StreetScene {
     if (this.keys.up)         this.scrollY -= spd;
     else if (this.keys.down)  this.scrollY += spd;
 
-    // 相机跟随取景框的自动平移功能已删除（Hsinlung：反复出现"镜头自己动"的
-    // 观感问题，两轮修复后还是不满意，索性整个功能拿掉）。相机现在只由
-    // 方向键 / 滚轮缩放 / 拖动取景框（不再连带相机）改变，没有任何自发移动。
-    // 历史：这里原本有一段"取景框离屏幕边缘太近就跟着滚"的逻辑，两次 bug
-    // 都出在这——先是世界/屏幕单位混用（O-1 遗留），修完后又发现"数学正确
-    // 但仍可感知"的开局自动平移（收敛但要 3 秒多）。详见 docs/roadmap.md
-    // 对应词条；不要重新加回类似的自动跟随逻辑。
+    // 取景框跟随：把取景框中心投影到当前屏幕像素空间再跟 viewW/margin 比较——
+    // 这两者现在天然同处一个空间（屏幕像素），比换算 margin 到世界单位更准：
+    // O-2 引入 shear 后，世界 x 和屏幕 x 已经不是纯比例关系（see Projection.js），
+    // 世界单位空间里的简单换算会有 shear 带来的系统误差，直接在投影后的屏幕
+    // 空间比较就不需要管这个（历史：O-1 刚落地时这里犯过反过来的 bug——拿世界
+    // 单位直接跟屏幕像素比，开局/静止时相机会自己往右漂）。
+    const vfc   = this.viewfinder.getCenter();
+    const pan   = toScreen(this.scrollX, this.scrollY);
+    const vfcSx = (toScreen(vfc.x, vfc.y).x - pan.x) * this.zoom;
+    const margin = 80;
+    if (vfcSx < margin)                     this.scrollX -= spd * 0.5;
+    else if (this.viewW - vfcSx < margin)   this.scrollX += spd * 0.5;
 
     this._clampScroll();
     this._applyCamera();
