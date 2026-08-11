@@ -27,14 +27,9 @@ ClipLibrary.resolve() 启动时断言，偏移 > ±5 发 `console.warn`，不阻
 
 **铁律**：世界坐标是骨架单位、各向同性——不存在随 y 变化的景深缩放坡。
 `Layout.js` 三个换算常量：`UNITS_PER_METER`(84.70588，骨架 144 单位=1.7 米)、
-`PX_PER_UNIT`(0.388889，唯一的屏幕缩放常量，容器整体乘它渲染)、
-`UNIT_REBASE_FACTOR`(5.294118，一次性迁移脚本用)。
-
-```js
-import { PX_PER_UNIT } from '../core/Layout.js';
-// worldContainer.scale.set(zoom * PX_PER_UNIT);  ← StreetScene._applyCamera，
-// 全项目唯一把世界坐标换算成屏幕像素的地方
-```
+`PX_PER_UNIT`(0.388889，唯一的屏幕缩放常量)、`UNIT_REBASE_FACTOR`(5.294118，
+一次性迁移脚本用)。O-1 时 `PX_PER_UNIT` 曾是"容器整体乘它渲染"；O-2 起改成
+"每个 draw 调用经 `Projection.toScreen` 消费它"，见下方「投影（O-2）」。
 
 `npc.scale` / `entity.scale` 现在纯是**体型比例**（成人 1.0、儿童 0.694，道具/车
 恒为 1），不再随 y 变化；全库长度常数乘 `npc.scale` 换算成世界单位仍照旧（见下方
@@ -42,8 +37,34 @@ import { PX_PER_UNIT } from '../core/Layout.js';
 （`building.js`/`drawBuilding.js`）；道具几何在无量纲空间声明、绘制时乘
 `prop.scale`（恒为 1），不需要改尺寸。历史：本节铁律替代了此前"随 y 变化的
 景深缩放坡 `depthScale`"（近大远小的伪透视），删除原因、换算细节见
-`docs/roadmap.md` O-1 条目；后续 O-2 起的斜投影（`Projection.js`）是另一套独立
-机制，不是 `depthScale` 的复活。
+`docs/roadmap.md` O-1 条目。
+
+---
+
+## 投影（O-2）
+
+**铁律**：`Projection.js` 是全项目唯一投影住址；任何 draw 函数不许自带
+sin/cos/shear 算式。
+
+```js
+import { toScreen, toScreenLength } from '../core/Projection.js';
+// worldContainer 不再整体乘 PX_PER_UNIT（O-1 那套仿射变换已被取代）；
+// 容器自己只剩 zoom + 相机 pan，见 StreetScene.js#_applyCamera
+```
+
+核心区分（整个 O 系列建立在这条上）：纵深（世界 y，前后方向）经 `toScreen()`
+换算（shear + `sin(TILT_DEG)`）；高度/宽度这类"平长度"只经 `toScreenLength()`
+换算 `PX_PER_UNIT`，不参与 shear/tilt。原因：容器级仿射变换没法同时正确处理
+这两种量纲——高度不该跟着纵深一起被斜切/被压扁。`TILT_DEG`(20) / `SHEAR`(0.2)
+是暂定值，`docs/roadmap.md` O-2 条目落地后要跑实机调；调完之前不要假定这两个
+数值已经定型。
+
+O-2 目前只验证投影几何本身，`EntityManager`/`SceneRenderer` 里大部分实体画的
+是 `toScreen` 定位的灰色占位盒子，**不是**真实调用各自的 `draw()`——那些函数
+还是按 O-1 之前"容器整体缩放"的假设写的，尚未跟投影对齐，直接调用会显得错位。
+三面体积模板（`drawObliqueBox`）与逐个 draw 函数转换是 O-3/O-4 的范围；`Visual
+design spec.md` 与 `Visual spec cc.md` 里"不做伪 3D 三面体积/不加阴影"等条目
+届时随 O-3 一并改写，本节暂不动那两份文件。
 
 ---
 
@@ -496,6 +517,11 @@ Z-2b 追加：NavGrid 亦不得出现 Y 分带数字——烘焙几何一律来�
   验证 `Belief.js#evolveMemory` 的记忆演化层：保真率随时间下降且趋缓、
   strength 越高越抗变异、转移变异不跨 NPC 串号；P-7 追加第四场景：报道回流
   增加 `sources='suggested'` 槽数，且回流槽不享受变异豁免）
+- **协作流程与 memo**：需求先共同分析（不可跳过直接出方案）→ 初版设计 → 反复
+  推敲 → 写入 `tasks.md` → 按 `tasks.md` 顺序执行。仓库根目录 `memory.md`
+  （git 追踪，纯英文）记录这套流程与其他跨会话约定；完成一个 `tasks.md` patch
+  后同步更新（增+删，删是重点），用户显式说"更新memo"时也照此执行，具体规则
+  见该文件自身的 Meta 小节。
 
 ---
 

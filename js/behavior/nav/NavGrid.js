@@ -38,6 +38,7 @@
  */
 
 import { WORLD_WIDTH, WORLD_HEIGHT, NEAR_Y, resolveY } from '../../core/Layout.js';
+import { projectGroundRect } from '../../core/Projection.js';
 
 export const CELL = 53; // O-1：世界单位重标，10 → 53（骨架单位，随 UNIT_REBASE_FACTOR）
 
@@ -102,13 +103,14 @@ export function drawNavDebug(g) {
   for (let gy = 0; gy < ROWS; gy++) {
     for (let gx = 0; gx < COLS; gx++) {
       const z = _instance._zone[gy * COLS + gx];
+      // O-2：格子投影后是平行四边形，不再是 drawRect
       if (z === ZONE.BLOCKED) {
         g.beginFill(0x000000, 0.15);
-        g.drawRect(gx * CELL, gy * CELL, CELL, CELL);
+        g.drawPolygon(projectGroundRect(gx * CELL, gy * CELL, (gx + 1) * CELL, (gy + 1) * CELL));
         g.endFill();
       } else if (z === ZONE.ROAD) {
         g.beginFill(0x000000, 0.05);
-        g.drawRect(gx * CELL, gy * CELL, CELL, CELL);
+        g.drawPolygon(projectGroundRect(gx * CELL, gy * CELL, (gx + 1) * CELL, (gy + 1) * CELL));
         g.endFill();
       }
     }

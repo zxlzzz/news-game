@@ -25,9 +25,9 @@ import { SceneInitializer } from './SceneInitializer.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT,
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
-  PX_PER_UNIT,
   initLayout,
 } from '../core/Layout.js';
+import { toScreen, toWorld, sceneScreenBounds } from '../core/Projection.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 import { expandSceneData }  from '../core/sceneData.js';
 import { PixiText }         from '../core/PixiText.js';
@@ -124,15 +124,21 @@ export class StreetScene {
 
     const initializer = new SceneInitializer(this, this.entityManager, this.stickRenderer, poseCache);
     initializer.spawnAll(sceneData, layout);
+    // O-2：楼是静态实体，生成后 facadeH 不会再变，_clampScroll 只需算一次屋顶余量。
+    this._maxFacadeH = this._computeMaxFacadeH();
 
     this.viewfinder = new Viewfinder({
       app: this.app,
       getWorldCoords: (cx, cy) => this._getWorldCoords(cx, cy),
     }, { x: 1641, y: 1562, width: 1112, height: 768 }); // O-1：世界单位，× 5.294118（原 310/295/210/145）
+    // 相机开局就摆到默认取景框附近，不留在世界原点——见 _centerCameraOn 注释。
+    const vfc0 = this.viewfinder.getCenter();
+    this._centerCameraOn(vfc0.x, vfc0.y);
     this._createUI();
     this.debugOverlay = new DebugOverlay(this, this.behaviorManager, this.entityManager);
 
     this._setupInput();
+    this._clampScroll();
     this._applyCamera();
 
     // 调试用：暴露时钟控制到 window
@@ -142,35 +148,77 @@ export class StreetScene {
   }
 
   // ─── 相机 ──────────────────────────────────────────────────────────────────
-  // O-1：worldContainer 额外乘 PX_PER_UNIT（世界坐标是骨架单位，PX_PER_UNIT 是唯一的
-  // 屏幕缩放常量）。skyContainer 的整体 scale 不受 PX_PER_UNIT 影响（天空/云/天际线
-  // 仍是与骨架单位无关的屏幕像素画风几何，O-6 天际线平贴层前不重绘），但 scrollX/
-  // scrollY 本身现在是骨架单位，视差位移公式仍需同乘 PX_PER_UNIT 才能保持“比世界慢
-  // 0.45 倍”的视觉比例，否则天空在滚动时会跑得比世界快、迅速出屏——这是唯一在字面
-  // “不受 PX_PER_UNIT 影响”之外做的补偿，理由是 PX_PER_UNIT 在这里是无可选择的单位
-  // 换算，不是画风选择。
+  // O-2：worldContainer 不再整体乘 PX_PER_UNIT（那套仿射变换被 Projection.toScreen
+  // 取代——draw 调用直接算出绝对屏幕像素，见 Projection.js 文件头的核心区分）。
+  // 容器自己只剩两件事：zoom（缩放）+ 相机 pan（把 (scrollX,scrollY) 这个世界点
+  // 挪到视口左上角）。pan 本身也要经 toScreen 换算——scrollX/scrollY 是世界坐标，
+  // 而 position 挪的是已经投影过的屏幕像素，两者不能直接相减/相乘。
+  // skyContainer 不受此影响（天空/云/天际线仍是不经投影的屏幕像素画风几何，
+  // O-6 天际线平贴层前不重绘），视差位移沿用 pan 的屏幕像素值乘 0.45。
   _applyCamera() {
-    const z = this.zoom * PX_PER_UNIT;
-    this.worldContainer.scale.set(z);
-    this.worldContainer.position.set(-this.scrollX * z, -this.scrollY * z);
+    const pan = toScreen(this.scrollX, this.scrollY);
+    this.worldContainer.scale.set(this.zoom);
+    this.worldContainer.position.set(-pan.x * this.zoom, -pan.y * this.zoom);
     this.skyContainer.scale.set(this.zoom);
-    this.skyContainer.position.set(-this.scrollX * PX_PER_UNIT * 0.45 * this.zoom, -this.scrollY * PX_PER_UNIT * 0.45 * this.zoom);
+    this.skyContainer.position.set(-pan.x * 0.45 * this.zoom, -pan.y * 0.45 * this.zoom);
+  }
+
+  // 世界地面的屏幕包围盒（含最高楼屋顶余量），只在 create() 里楼生成完后
+  // 算一次——楼是静态实体，facadeH 不会中途变化。找不到任何楼就是 0（见
+  // Projection.sceneScreenBounds 的 maxFacadeH 语义）。
+  _computeMaxFacadeH() {
+    let max = 0;
+    for (const e of this.entityManager.entities) {
+      if (typeof e.facadeH === 'number' && e.facadeH > max) max = e.facadeH;
+    }
+    return max;
+  }
+
+  /**
+   * 把 (wx,wy) 这个世界点摆到视口正中央——只在 create() 里调一次，把初始相机
+   * 摆到默认取景框附近，而不是留在世界原点 (0,0)。
+   *
+   * 不这么做的后果（找到的第二个"镜头自己动"根因）：默认取景框中心在世界
+   * x≈2197（远离原点），初始 scrollX=0 时 update() 里的取景框跟随逻辑判定
+   * "取景框太靠右边缘"，从 0 开始每帧 +2.5 世界单位地把 scrollX 追上去，
+   * 收敛点在 scrollX≈478——单看代码这是收敛的（不是死循环/跑出边界的那种
+   * bug），但对着玩家就是"贴地打开页面时镜头自己滑了三秒多"，跟没修一样
+   * 难受。开局就把相机摆到取景框附近，跟随逻辑第一帧就已经满足条件，不用
+   * 再动。
+   */
+  _centerCameraOn(wx, wy) {
+    const t   = toScreen(wx, wy);
+    const pan = { x: t.x - this.viewW / (2 * this.zoom), y: t.y - this.viewH / (2 * this.zoom) };
+    const w   = toWorld(pan.x, pan.y);
+    this.scrollX = w.x;
+    this.scrollY = w.y;
   }
 
   _clampScroll() {
-    const z = this.zoom * PX_PER_UNIT;
-    const maxX = Math.max(0, WORLD_WIDTH  - this.viewW / z);
-    const maxY = Math.max(0, WORLD_HEIGHT - this.viewH / z);
-    this.scrollX = Math.min(Math.max(0, this.scrollX), maxX);
-    this.scrollY = Math.min(Math.max(0, this.scrollY), maxY);
+    const bounds = sceneScreenBounds(this._maxFacadeH ?? 0);
+    const viewSpanX = this.viewW / this.zoom;
+    const viewSpanY = this.viewH / this.zoom;
+    const maxPanX = Math.max(bounds.minX, bounds.maxX - viewSpanX);
+    const maxPanY = Math.max(bounds.minY, bounds.maxY - viewSpanY);
+    const pan = toScreen(this.scrollX, this.scrollY);
+    const clampedX = Math.min(Math.max(bounds.minX, pan.x), maxPanX);
+    const clampedY = Math.min(Math.max(bounds.minY, pan.y), maxPanY);
+    const w = toWorld(clampedX, clampedY);
+    this.scrollX = w.x;
+    this.scrollY = w.y;
+  }
+
+  /** 视口内屏幕像素坐标（0,0 = 视口左上角）→ 世界坐标。鼠标拾取/取景框/相机换算共用。 */
+  _screenToWorld(sx, sy) {
+    const pan = toScreen(this.scrollX, this.scrollY);
+    return toWorld(sx / this.zoom + pan.x, sy / this.zoom + pan.y);
   }
 
   _getWorldCoords(clientX, clientY) {
     const rect = this.app.view.getBoundingClientRect();
     const sx = (clientX - rect.left) * (this.app.screen.width  / rect.width);
     const sy = (clientY - rect.top)  * (this.app.screen.height / rect.height);
-    const z  = this.zoom * PX_PER_UNIT;
-    return { x: sx / z + this.scrollX, y: sy / z + this.scrollY };
+    return this._screenToWorld(sx, sy);
   }
 
   // ─── 输入 ──────────────────────────────────────────────────────────────────
@@ -313,11 +361,23 @@ export class StreetScene {
     const vf = this.viewfinder;
     const z  = this.zoom;
 
-    // 2. world coords → screen pixels
-    const sx = Math.round((vf.x - this.scrollX) * z);
-    const sy = Math.round((vf.y - this.scrollY) * z);
-    const sw = Math.max(1, Math.round(vf.width  * z));
-    const sh = Math.max(1, Math.round(vf.height * z));
+    // 2. world coords → screen pixels：取景框的世界矩形投影后是平行四边形
+    // （O-2 shear），但 extract.canvas 只能截一个轴对齐矩形——用四角投影后的
+    // 屏幕空间包围盒，会比理论平行四边形略宽，可接受（截图本来就是"大致取景"）。
+    const pan = toScreen(this.scrollX, this.scrollY);
+    const corners = [
+      toScreen(vf.x,           vf.y),
+      toScreen(vf.x + vf.width, vf.y),
+      toScreen(vf.x,           vf.y + vf.height),
+      toScreen(vf.x + vf.width, vf.y + vf.height),
+    ];
+    const cxs = corners.map(c => c.x), cys = corners.map(c => c.y);
+    const minX = Math.min(...cxs), maxX = Math.max(...cxs);
+    const minY = Math.min(...cys), maxY = Math.max(...cys);
+    const sx = Math.round((minX - pan.x) * z);
+    const sy = Math.round((minY - pan.y) * z);
+    const sw = Math.max(1, Math.round((maxX - minX) * z));
+    const sh = Math.max(1, Math.round((maxY - minY) * z));
 
     // 3. hide viewfinder graphics so they don't appear in screenshot
     this.vfGraphics.visible = false;
@@ -358,12 +418,19 @@ export class StreetScene {
   }
 
   _clampViewfinderToViewport() {
-    const vf   = this.viewfinder;
-    const z    = this.zoom;
-    const maxX = this.scrollX + this.viewW / z;
-    const maxY = this.scrollY + this.viewH / z;
-    vf.x = Math.max(this.scrollX, Math.min(vf.x, maxX - vf.width));
-    vf.y = Math.max(this.scrollY, Math.min(vf.y, maxY - vf.height));
+    // O-2：可见区域在世界坐标下不再是矩形（shear 之后是平行四边形），这里用
+    // 视口四角反投影回世界坐标后的 AABB 近似——取景框只是不越出屏幕太多，
+    // 精确到平行四边形没有必要，近似够用。
+    const vf = this.viewfinder;
+    const corners = [
+      this._screenToWorld(0, 0), this._screenToWorld(this.viewW, 0),
+      this._screenToWorld(0, this.viewH), this._screenToWorld(this.viewW, this.viewH),
+    ];
+    const xs = corners.map(c => c.x), ys = corners.map(c => c.y);
+    const minX = Math.min(...xs), maxX = Math.max(...xs);
+    const minY = Math.min(...ys), maxY = Math.max(...ys);
+    vf.x = Math.max(minX, Math.min(vf.x, maxX - vf.width));
+    vf.y = Math.max(minY, Math.min(vf.y, maxY - vf.height));
   }
 
   _buildEntitySnapshot(vf) {
@@ -387,10 +454,18 @@ export class StreetScene {
     if (this.keys.up)         this.scrollY -= spd;
     else if (this.keys.down)  this.scrollY += spd;
 
-    const vfc    = this.viewfinder.getCenter();
+    // 取景框跟随：把取景框中心投影到当前屏幕像素空间再跟 viewW/margin 比较——
+    // 这两者现在天然同处一个空间（屏幕像素），比换算 margin 到世界单位更准：
+    // O-2 引入 shear 后，世界 x 和屏幕 x 已经不是纯比例关系（see Projection.js），
+    // 世界单位空间里的简单换算会有 shear 带来的系统误差，直接在投影后的屏幕
+    // 空间比较就不需要管这个（历史：O-1 刚落地时这里犯过反过来的 bug——拿世界
+    // 单位直接跟屏幕像素比，开局/静止时相机会自己往右漂）。
+    const vfc   = this.viewfinder.getCenter();
+    const pan   = toScreen(this.scrollX, this.scrollY);
+    const vfcSx = (toScreen(vfc.x, vfc.y).x - pan.x) * this.zoom;
     const margin = 80;
-    if (vfc.x - this.scrollX < margin)                       this.scrollX -= spd * 0.5;
-    else if (this.scrollX + this.viewW - vfc.x < margin)     this.scrollX += spd * 0.5;
+    if (vfcSx < margin)                     this.scrollX -= spd * 0.5;
+    else if (this.viewW - vfcSx < margin)   this.scrollX += spd * 0.5;
 
     this._clampScroll();
     this._applyCamera();

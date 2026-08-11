@@ -18,7 +18,7 @@
  * `layout.clouds`），不在本刀范围。
  */
 import {
-  WORLD_WIDTH, WORLD_HEIGHT, SKY_Y, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
+  WORLD_WIDTH, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
   GRAY_SKY, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
   SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR, FOG_ALPHA,
@@ -27,16 +27,19 @@ import {
   depthLineColor, depthLineWidth, ENV_LINE_LIGHT, ENV_LINE_DARK,
   resolveY, resolveColor, lenv,
 } from '../core/Layout.js';
+import { toScreen, toScreenLength, circleToEllipseRy, projectGroundRect } from '../core/Projection.js';
 
 function _need(v, what) {
   if (v == null) throw new Error(`SceneRenderer: scene config 缺 ${what}`);
   return v;
 }
 
-import { drawBusStopBays }  from '../entity/busstop/drawBusStopBay.js';
-import { drawChessPlaza }   from '../entity/chess-table/drawChessPlaza.js';
-import { drawMiniPark }     from '../entity/mini-park/drawMiniPark.js';
-import { drawParkPaths, drawParkPlaza } from '../entity/park-path/drawParkPath.js';
+// O-2 占位：drawBusStopBays / drawChessPlaza / drawMiniPark / drawParkPaths /
+// drawParkPlaza 全部在 O-4 的批量转换清单里（第一批 busstop 系、第三批
+// "地面 + 公园"系），本补丁不调用它们真正的绘制内容（还是按老的容器整体缩放
+// 假设写的，没跟 Projection 对齐），chessPlaza/miniPark 改画一个投影后的占位
+// 椭圆验证位置，其余三个（多段折线/散布装饰，占位价值不大）直接跳过，
+// 详见 _drawGround() 尾部。
 
 export class SceneRenderer {
   /**
@@ -55,20 +58,20 @@ export class SceneRenderer {
   drawAll() {
     this._drawSky();
     this._drawGround();
-    drawBusStopBays(this.bg, this.layout.busStops);
+    // O-2 占位：busStopBays 跳过，见文件头 import 处的说明。
   }
 
   _drawGround() {
     const g  = this.bg;
     const cf = this.ground;
 
-    // 1. 填充色带（按配置数组顺序绘制，后者盖前者）
+    // 1. 填充色带（按配置数组顺序绘制，后者盖前者）——地面矩形投影后是平行四边形
     g.lineStyle(0);
     for (const b of _need(cf.bands, 'ground.bands')) {
       const y0 = resolveY(_need(b.from, `ground.bands[${b.name}].from`));
       const y1 = resolveY(_need(b.to,   `ground.bands[${b.name}].to`));
       g.beginFill(resolveColor(_need(b.color, `ground.bands[${b.name}].color`)), 1);
-      g.drawRect(0, y0, WORLD_WIDTH, y1 - y0);
+      g.drawPolygon(projectGroundRect(0, y0, WORLD_WIDTH, y1));
       g.endFill();
     }
 
@@ -77,16 +80,37 @@ export class SceneRenderer {
       const y  = resolveY(_need(e.at, 'ground.edgeLines[].at'));
       const lc = depthLineColor(y, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
       g.lineStyle(e.width ?? 1.5, lc, 1);
-      g.moveTo(0, y); g.lineTo(WORLD_WIDTH, y);
+      this._projLine(g, 0, y, WORLD_WIDTH, y);
     }
 
     this._drawRoadMarkings(g);
     if (cf.tiling) this._drawSidewalkTiles(g, cf.tiling);
     if (cf.grass)  this._drawParkGrass(g, cf.grass);
-    drawParkPlaza(g, this.layout.parkTrees || []);
-    drawMiniPark(g, this.layout.miniPark);
-    drawChessPlaza(g, this.layout.chessPlaza);
-    drawParkPaths(g, this.layout.chessPlaza, this.layout.miniPark);
+
+    // O-2 占位：chessPlaza/miniPark 画一个投影后的灰色占位椭圆验证位置；
+    // parkTrees/parkPaths 跳过，见文件头说明。
+    this._drawGroundFeaturePlaceholder(g, this.layout.chessPlaza);
+    this._drawGroundFeaturePlaceholder(g, this.layout.miniPark);
+  }
+
+  /** 两点连线经 Projection 投影后再画——地面上一条直线，画出来不一定还是直线上
+   *  下同一斜率（shear 只吃 Δy），但两端点各自投影后再连线足够本补丁用。 */
+  _projLine(g, x0, y0, x1, y1) {
+    const a = toScreen(x0, y0), b = toScreen(x1, y1);
+    g.moveTo(a.x, a.y);
+    g.lineTo(b.x, b.y);
+  }
+
+  /** O-2 占位：地面圆形装饰（棋盘广场/迷你公园）画成投影后的灰色占位椭圆，
+   *  验证位置/深度排序；真正的细节图案留给 O-4。cfg 缺失就跳过。 */
+  _drawGroundFeaturePlaceholder(g, cfg) {
+    if (!cfg) return;
+    const { cx, cy, rx } = cfg;
+    const base = toScreen(cx, cy);
+    g.lineStyle(0);
+    g.beginFill(0xaaaaaa, 0.6);
+    g.drawEllipse(base.x, base.y, toScreenLength(rx), circleToEllipseRy(rx));
+    g.endFill();
   }
 
   _drawSky() {
@@ -165,25 +189,25 @@ export class SceneRenderer {
 
     g.lineStyle(0);
     g.beginFill(GRAY_CURB, 1);
-    g.drawRect(0, FAR_Y - curbF.thickness, WORLD_WIDTH, curbF.thickness);
+    g.drawPolygon(projectGroundRect(0, FAR_Y - curbF.thickness, WORLD_WIDTH, FAR_Y));
     g.endFill();
     g.lineStyle(LINE_FAR_WIDTH, CURB_EDGE_LINE, curbF.edgeLineAlpha);
-    g.moveTo(0, FAR_Y - curbF.thickness); g.lineTo(WORLD_WIDTH, FAR_Y - curbF.thickness);
-    g.moveTo(0, FAR_Y);                   g.lineTo(WORLD_WIDTH, FAR_Y);
+    this._projLine(g, 0, FAR_Y - curbF.thickness, WORLD_WIDTH, FAR_Y - curbF.thickness);
+    this._projLine(g, 0, FAR_Y,                   WORLD_WIDTH, FAR_Y);
     g.beginFill(GRAY_ROAD, edge.alpha);
-    g.drawRect(0, FAR_Y, WORLD_WIDTH, edge.height);
+    g.drawPolygon(projectGroundRect(0, FAR_Y, WORLD_WIDTH, FAR_Y + edge.height));
     g.endFill();
 
     g.beginFill(GRAY_CURB, 1);
-    g.drawRect(0, NEAR_Y, WORLD_WIDTH, curbN.thickness);
+    g.drawPolygon(projectGroundRect(0, NEAR_Y, WORLD_WIDTH, NEAR_Y + curbN.thickness));
     g.endFill();
     g.lineStyle(LINE_NEAR_WIDTH * curbN.lineWidthFactor, LINE_NEAR_COLOR, curbN.lineAlpha);
-    g.moveTo(0, NEAR_Y + curbN.thickness); g.lineTo(WORLD_WIDTH, NEAR_Y + curbN.thickness);
+    this._projLine(g, 0, NEAR_Y + curbN.thickness, WORLD_WIDTH, NEAR_Y + curbN.thickness);
 
     const midY = Math.round((FAR_Y + NEAR_Y) / 2);
     g.lineStyle(stripe.width, resolveColor(stripe.color), stripe.alpha);
     for (let x = 0; x < WORLD_WIDTH; x += stripe.spacing) {
-      g.moveTo(x, midY); g.lineTo(x + stripe.length, midY);
+      this._projLine(g, x, midY, x + stripe.length, midY);
     }
 
     for (const cw of (this.layout.crosswalks || [])) {
@@ -204,7 +228,7 @@ export class SceneRenderer {
     for (let i = 0; i < count; i++) {
       const y  = roadTop + i * step * 2;
       const sh = step - 1 + i;
-      g.drawRect(x0, y, cf.stripeLength, sh);
+      g.drawPolygon(projectGroundRect(x0, y, x0 + cf.stripeLength, y + sh));
     }
     g.endFill();
   }
@@ -215,7 +239,7 @@ export class SceneRenderer {
     const botY = resolveY(_need(cf.to,   'ground.tiling.to'))   - (cf.inset ?? 0);
     g.lineStyle(cf.width ?? 0.8, resolveColor(_need(cf.color, 'ground.tiling.color')), cf.alpha ?? 0.06);
     for (let y = topY; y <= botY; y += _need(cf.spacing, 'ground.tiling.spacing')) {
-      g.moveTo(0, y); g.lineTo(WORLD_WIDTH, y);
+      this._projLine(g, 0, y, WORLD_WIDTH, y);
     }
   }
 
@@ -230,8 +254,14 @@ export class SceneRenderer {
       const len = 4 + seed(i * 3 + 3) * 2;
       const ang = (seed(i * 5 + 7) - 0.3) * 0.8;
       lenv(g, gy, 0.15);
-      g.moveTo(gx, gy);
-      g.lineTo(gx + Math.sin(ang) * len, gy - Math.cos(ang) * len);
+      // 草叶是贴地的一小笔"竖起"，用高度换算（不经 shear/tilt，见 Projection.js
+      // 文件头核心区分）——当成纵深点投影会被所在 y 的 shear 拉歪成跟周围色带
+      // 一样的斜线，不像叶片了。
+      const base = toScreen(gx, gy);
+      const dx = toScreenLength(Math.sin(ang) * len);
+      const dy = toScreenLength(Math.cos(ang) * len);
+      g.moveTo(base.x, base.y);
+      g.lineTo(base.x + dx, base.y - dy);
     }
   }
 }

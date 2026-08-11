@@ -133,11 +133,13 @@ export const SKYLINE_FRONT = 0xe6e6e6;
 export const SKYLINE_LINE  = 0xd6d6d6;
 export const CLOUD_LINE    = 0xd2d2d2;
 
-// O-1：容器整体乘 PX_PER_UNIT 渲染，线宽须先除以 PX_PER_UNIT 补偿，
-// 否则会细到 <1px 而消失。数值 = 旧世界像素值 / PX_PER_UNIT。
-export const LINE_FAR_WIDTH  = 2.06;
+// O-2 撤销了 O-1 的补偿：worldContainer 不再整体乘 PX_PER_UNIT 渲染（改成
+// 各 draw 调用经 Projection.toScreen 直接算出最终屏幕像素，见 Projection.js
+// 文件头），所以这里的线宽就是字面意义上的屏幕像素值，不用再除/乘 PX_PER_UNIT
+// 补偿——数值改回 O-1 之前的原始值。
+export const LINE_FAR_WIDTH  = 0.8;
 export const LINE_NEAR_COLOR = 0x1f1f1f;
-export const LINE_NEAR_WIDTH = 5.66;
+export const LINE_NEAR_WIDTH = 2.2;
 
 // ─── 调色板符号解析（数据驱动配置用）─────────────────────────────────────────
 // scene.json 的 ground 用颜色**名字**（`"color": "GRAY_ROAD"`）而非 hex：
@@ -182,10 +184,10 @@ export function depthGray(y, opts = {}) {
   return (g << 16) | (g << 8) | g;
 }
 
-/** wMin/wMax 默认值已按 O-1 除以 PX_PER_UNIT 补偿容器缩放（见 LINE_FAR/NEAR_WIDTH 注释） */
+/** wMin/wMax 默认值是字面屏幕像素（O-2 撤销了 O-1 的 PX_PER_UNIT 补偿，见 LINE_FAR/NEAR_WIDTH 注释） */
 export function depthLineWidth(y, opts = {}) {
-  const wMin = opts.wMin ?? 2.06;
-  const wMax = opts.wMax ?? 5.66;
+  const wMin = opts.wMin ?? 0.8;
+  const wMax = opts.wMax ?? 2.2;
   return wMin + (wMax - wMin) * depthT(y);
 }
 
@@ -201,8 +203,8 @@ export function depthLineColor(y, opts = {}) {
  * 实现，现在唯一住址在此）。设置 g.lineStyle 并返回线色供调用方复用 stroke。
  */
 export function lenv(g, baseY, wScale = 1.0) {
-  // wMin/wMax 是旧世界像素覆盖值 0.5/1.3 按 O-1 除以 PX_PER_UNIT 补偿容器缩放。
-  const lw = depthLineWidth(baseY, { wMin: 1.29, wMax: 3.34 }) * wScale;
+  // wMin/wMax 是字面屏幕像素值 0.5/1.3（O-2 撤销了 O-1 的 PX_PER_UNIT 补偿）。
+  const lw = depthLineWidth(baseY, { wMin: 0.5, wMax: 1.3 }) * wScale;
   const lc = depthLineColor(baseY, { light: ENV_LINE_LIGHT, dark: ENV_LINE_DARK });
   g.lineStyle(lw, lc, 1);
   return lc;

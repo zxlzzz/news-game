@@ -791,3 +791,107 @@ js/scenes/StreetScene.js` → 6 处；`assets/scene.json` 无 `depth` 顶层键�
 VehicleStateMachine}.js`；`js/scenes/StreetScene.js#_applyCamera`；
 `js/camera/Viewfinder.js`；`scripts/rebase-scene-units.mjs`；
 `js/behavior/nav/NavGrid.js`（`CELL`/`NPC_HALF_W`）
+
+### O-1 遗留 bug 修复（相机跟随取景框，世界/屏幕单位混用）— 已修复
+
+O-1 落地后实机验证发现：开局、取景框静止不动时相机仍会持续向右漂移。根因在
+`StreetScene.js#update()` 的"取景框离屏幕边缘太近就跟着滚"逻辑——直接拿
+`vfc.x`/`this.scrollX`（世界骨架单位）跟 `this.viewW`/`margin=80`（屏幕像素）
+比大小。O-1 之前 `worldContainer` 只乘 `zoom`，两个空间数值上约等价，混着比较
+凑巧是对的；O-1 之后 `worldContainer` 额外乘 `PX_PER_UNIT≈0.389`，两者不再
+1:1，右侧"要跟着滚"的条件因此常年成立，表现为相机不停被判定为"取景框要跑出
+右边界了"而持续右移，直到撞 `_clampScroll` 的上限。已改成把取景框中心投影后
+在统一的屏幕像素空间比较（O-2 落地后该处又随相机整体重写一次，见下）。
+代码锚点：`js/scenes/StreetScene.js#update`
+
+### O-2（斜投影函数 + 相机）— 已落地
+
+斜投影线（O 系列）第二刀：绘制从"世界 y 直接当屏幕 y"改成真正的斜投影
+（倾角 + shear）。本补丁只验几何——所有实体先用纯灰色占位盒子/矩形，不画
+三面体积，重点是倾角、深度排序、相机高度对不对；丑是预期状态，落地后停下等
+实机验收，可能会调 `TILT_DEG`/`SHEAR`。
+
+- **新建 `js/core/Projection.js`**：全项目唯一投影住址。`TILT_DEG=20`、
+  `SHEAR=0.2`（暂定值）具名常量；`toScreen(x,y)` 世界→屏幕（
+  `screenX=(x+(y-BUILDING_BASE_Y)*SHEAR)*PX_PER_UNIT`，
+  `screenY=(y-BUILDING_BASE_Y)*PX_PER_UNIT*sin(TILT_DEG)`）；`toWorld()` 是其
+  逆变换；`toScreenLength`/`toScreenHeight`（同一函数的语义别名）只乘
+  `PX_PER_UNIT`，不参与 shear/tilt——高度/宽度这类"平长度"和纵深是两种量纲，
+  这条区分是整个 O 系列的核心，写在文件头注释里。另导出两个形状助手供本补丁
+  和 O-3 用：`circleToEllipseRy`（圆→椭圆竖半轴）、`projectGroundRect`（地面
+  矩形→屏幕平行四边形顶点，直接喂 `drawPolygon`）；`sceneScreenBounds` 算全
+  场景投影后的屏幕包围盒（含最高楼屋顶余量），供 `_clampScroll` 用。
+- **相机重写（`StreetScene.js`）**：`worldContainer` 不再整体乘
+  `PX_PER_UNIT`——那套仿射变换被 `Projection.toScreen` 取代，容器自己只剩
+  `zoom` + 相机 pan（`toScreen(scrollX,scrollY)` 的屏幕像素值）。
+  `_clampScroll` 改用 `sceneScreenBounds`（含屋顶余量，`_maxFacadeH` 在
+  `create()` 内楼生成完后算一次）；`_getWorldCoords`/`_screenToWorld` 改走
+  `toWorld` 逆变换；取景框跟随逻辑、`_takePhoto`（截图矩形改用取景框四角投影
+  后的屏幕空间包围盒——平行四边形没法直接喂 `extract.canvas`）、
+  `_clampViewfinderToViewport`（视口四角反投影后的世界空间 AABB 近似）一并
+  跟着改。`VIEW_H` 500→720（main.js）：倾角压缩后世界竖直方向变短，之前
+  O-1 拉长后 500 只能看到一小截。
+- **`SceneRenderer.js` 地面带**：`ground.bands`/`edgeLines`/道路标线（路缘/
+  车道虚线/斑马线）/人行道砖缝一律经 `projectGroundRect`/`toScreen` 画成
+  平行四边形/投影线段；草丛的"叶片竖起"改用 `toScreenLength`（高度，不经
+  shear/tilt）而非当成纵深点投影，否则会被所在 y 的 shear 拉歪成斜线。
+  `drawChessPlaza`/`drawMiniPark`/`drawParkPaths`/`drawParkPlaza`/
+  `drawBusStopBays` 这五个函数本补丁不调用真正内容（还没跟投影对齐，都在
+  O-4 转换清单里）——棋盘广场/迷你公园改画一个投影后的灰色占位椭圆验证位置，
+  其余三个（多段折线/散布装饰）直接跳过。
+- **`EntityManager.js` 占位盒子**：`draw()` 不再调用 `e.draw(g)`，改画一个
+  `toScreen(e.x,e.y)` 起、`toScreenLength(footprint宽高)` 大小的灰色矩形——
+  实体真实 draw 函数还是按老的容器整体缩放假设写的，没跟投影对齐，硬调用会
+  在投影后的场景里显得完全错位，留给 O-3/O-4 逐个转 `drawObliqueBox`。楼是
+  唯一特殊分支：接地线在 `e.y+e.facadeH`（`BuildingEntity.y` 是立面顶部，
+  不是地面接触点，历史既有约定），从那往上起 `facadeH` 高。ground pre-pass
+  （`drawGround`，喷泉水面/井盖）与 `extras`（NPC 手持道具）同理跳过。
+- **`Viewfinder.js` 取景框渲染**：`draw()` 改画 `projectGroundRect` 出的平行
+  四边形（外框、角标、命中实体高亮描边）；十字准星/拍摄指示灯/缩放手柄是纯
+  UI 装饰不代表贴地几何，仍轴对齐，只是定位点换成投影后的角点。
+- **`Layout.js` 线宽撤销 O-1 补偿**：O-1 曾把线宽默认值除以 `PX_PER_UNIT`
+  补偿 `worldContainer` 的整体缩放（`LINE_FAR/NEAR_WIDTH` 0.8/2.2→2.06/5.66，
+  `depthLineWidth`/`lenv` 同理）；O-2 撤销了那套容器缩放，这些线宽调用点若不
+  跟着改回原始屏幕像素值会画粗 ~2.57 倍——已全部改回 O-1 之前的原始值。
+  各 `draw*.js` 文件内部自己的线宽覆盖值（如 `drawBuilding.js` 的 0.5/1.3）
+  暂不改——这些函数本补丁没在调用，留给 O-3/O-4 转换时一并处理。
+- **NavGrid 调试叠层**（`window.__navDebug`）：`drawNavDebug` 的格子矩形同样
+  改用 `projectGroundRect`，顺手修，不属于四个静态门覆盖范围但避免留一个
+  已知会错位的调试工具。
+
+—— 已知近似/未处理项（不是 bug，供 O-3 起参考）——
+`_clampViewfinderToViewport`/`_takePhoto` 用投影后四角的屏幕空间包围盒近似
+平行四边形（`extract.canvas` 只能截轴对齐矩形，理论上没有更精确的解）；
+`sceneScreenBounds` 的屋顶余量只取全场景最高楼一个值，不是逐楼精确包围盒；
+NPC 占位盒子沿用 `Npc.js` 硬编码的 `width:40,height:80`（O-1 之前遗留的世界
+像素常量，从未随 U-2/O-1 迁移脚本换算），相对 144 单位的真实骨架显得偏小，
+不在本补丁范围内。
+
+—— 验收 ——
+`grep -rn "Math.sin\|Math.cos" js/entity js/scenes` → 0；`grep -rn
+"TILT_DEG\|SHEAR" js` → 只有 `js/core/Projection.js` 里有定义；五个静态门
+全绿（不含实机验收——TILT_DEG/SHEAR/占位盒子外观需要用户跑起来看）。
+
+代码锚点：`js/core/Projection.js`；`js/scenes/StreetScene.js`（`_applyCamera`/
+`_clampScroll`/`_getWorldCoords`/`_screenToWorld`/`update`/`_takePhoto`/
+`_clampViewfinderToViewport`）；`js/scenes/SceneRenderer.js`；
+`js/core/EntityManager.js`；`js/camera/Viewfinder.js`；`js/core/Layout.js`
+（线宽常量）；`js/behavior/nav/NavGrid.js#drawNavDebug`；`js/main.js`（`VIEW_H`）
+
+### 相机跟随取景框二次修复（收敛但仍可感知的开局自动平移）— 已修复
+
+O-2 落地后 Hsinlung 实机复测，"镜头自己动"的症状仍在——不是同一个 bug 的
+复发，是同一段跟随逻辑的第二个根因：默认取景框中心在世界 x≈2197，而相机
+初始 `scrollX=0`（世界原点），二者相距较远。`update()` 的跟随逻辑本身这次
+数学上是收敛的（不是死循环/跑出边界那种），但从 0 追到收敛点 scrollX≈478
+按当前跟随速度要跑 190 帧左右（≈3.2 秒）——玩家看到的就是"打开页面镜头自己
+滑了几秒"，跟修复前的观感没有本质区别，即便代码层面已经是"正确的有界收敛"
+而不是"错误的无界发散"。
+
+修法：开局别把相机留在世界原点等跟随逻辑去追，直接摆到默认取景框那——新增
+`StreetScene._centerCameraOn(wx,wy)`，在 `create()` 里取景框创建后立即调用一次
+（把取景框中心投影后摆到视口正中央，再 `_clampScroll` 收口），第一帧跟随逻辑
+的条件就已经满足，不需要再动。跟随逻辑本身保留，供以后玩家拖动取景框到屏幕
+边缘时使用。
+
+代码锚点：`js/scenes/StreetScene.js#_centerCameraOn`（新增）、`create()`（调用点）

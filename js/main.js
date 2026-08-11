@@ -5,7 +5,7 @@
 import { StreetScene } from './scenes/StreetScene.js';
 
 const VIEW_W = 900;
-const VIEW_H = 500;
+const VIEW_H = 720; // O-2：倾角投影后世界竖直方向变长，500 只能看到一小截，见 tasks.md O-1 预期副作用
 
 const app = new PIXI.Application({
   width: VIEW_W,

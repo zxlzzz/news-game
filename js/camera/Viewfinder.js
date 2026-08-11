@@ -4,6 +4,7 @@
  */
 
 import { WORLD_WIDTH, WORLD_HEIGHT } from '../core/Layout.js';
+import { toScreen, projectGroundRect } from '../core/Projection.js';
 
 export class Viewfinder {
   constructor({ app, getWorldCoords }, config = {}) {
@@ -100,46 +101,55 @@ export class Viewfinder {
     }
   }
 
+  // O-2：取景框是世界坐标下的矩形，投影后是平行四边形（shear）——外框/高亮
+  // 描边直接画投影后的四边形；十字准星/拍摄指示灯/缩放手柄这几个纯 UI 装饰
+  // 不代表贴地几何，仍按屏幕空间轴对齐画，只是定位点换成投影后的角点。
   draw(g) {
     const cx = this.x, cy = this.y, cw = this.width, ch = this.height;
     const cornerLen = 12;
 
+    // quad = [p0(左上/远), p1(右上/远), p2(右下/近), p3(左下/近)]（世界意义上的四角）
+    const quad = projectGroundRect(cx, cy, cx + cw, cy + ch);
+    const [p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y] = quad;
+
     // outer frame
     g.lineStyle(2, 0xffffff, 0.88);
-    g.drawRect(cx, cy, cw, ch);
+    g.drawPolygon(quad);
 
-    // corner marks
+    // corner marks：沿平行四边形的边取一小段，替代原来轴对齐矩形的 L 形
     g.lineStyle(3, 0xff4444, 1);
-    g.moveTo(cx,      cy);      g.lineTo(cx + cornerLen, cy);
-    g.moveTo(cx,      cy);      g.lineTo(cx,      cy + cornerLen);
-    g.moveTo(cx + cw, cy);      g.lineTo(cx + cw - cornerLen, cy);
-    g.moveTo(cx + cw, cy);      g.lineTo(cx + cw, cy + cornerLen);
-    g.moveTo(cx,      cy + ch); g.lineTo(cx + cornerLen,      cy + ch);
-    g.moveTo(cx,      cy + ch); g.lineTo(cx,      cy + ch - cornerLen);
-    g.moveTo(cx + cw, cy + ch); g.lineTo(cx + cw - cornerLen, cy + ch);
-    g.moveTo(cx + cw, cy + ch); g.lineTo(cx + cw, cy + ch - cornerLen);
+    const corners = [[p0x, p0y, p1x, p1y], [p0x, p0y, p3x, p3y],
+                      [p1x, p1y, p0x, p0y], [p1x, p1y, p2x, p2y],
+                      [p3x, p3y, p0x, p0y], [p3x, p3y, p2x, p2y],
+                      [p2x, p2y, p1x, p1y], [p2x, p2y, p3x, p3y]];
+    for (const [ax, ay, bx, by] of corners) {
+      const d = Math.hypot(bx - ax, by - ay);
+      const t = d > 0 ? cornerLen / d : 0;
+      g.moveTo(ax, ay);
+      g.lineTo(ax + (bx - ax) * t, ay + (by - ay) * t);
+    }
 
-    // center cross
-    const mx = cx + cw / 2, my = cy + ch / 2;
+    // center cross（UI 装饰，屏幕空间轴对齐）
+    const center = toScreen(cx + cw / 2, cy + ch / 2);
     g.lineStyle(1, 0xffffff, 0.3);
-    g.moveTo(mx - 10, my); g.lineTo(mx + 10, my);
-    g.moveTo(mx, my - 10); g.lineTo(mx, my + 10);
+    g.moveTo(center.x - 10, center.y); g.lineTo(center.x + 10, center.y);
+    g.moveTo(center.x, center.y - 10); g.lineTo(center.x, center.y + 10);
 
-    // capture indicator
+    // capture indicator（贴着 p1＝右上角）
     if (this.capturedEntities.length > 0) {
       g.beginFill(0xff4444, 0.85);
-      g.drawCircle(cx + cw - 8, cy + 8, 5);
+      g.drawCircle(p1x - 8, p1y + 8, 5);
       g.endFill();
     }
 
-    this._drawResizeHandle(g, cx + cw, cy + ch);
+    this._drawResizeHandle(g, p2x, p2y); // p2＝右下角（世界意义：cx+cw, cy+ch）
 
     // Highlight outlines for captured entities
     if (this.capturedEntities.length > 0) {
       g.lineStyle(2, 0xffcc00, 0.7);
       for (const e of this.capturedEntities) {
         const b = e.getBounds();
-        g.drawRect(b.x, b.y, b.width, b.height);
+        g.drawPolygon(projectGroundRect(b.x, b.y, b.x + b.width, b.y + b.height));
       }
     }
   }
