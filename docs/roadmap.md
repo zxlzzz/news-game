@@ -957,3 +957,17 @@ O-2 落地后 Hsinlung 实机复测，"镜头自己动"的症状仍在——不�
 导出，`PROP_DEFAULTS` 是 Scene-1 就有的既有内容）；
 `js/entity/building/drawBuilding.js`；`js/entity/seat/drawBench.js`；
 `js/entity/manhole/drawManhole.js`；`js/core/EntityManager.js`
+
+### 相机跟随取景框功能删除 — 已完成
+
+两轮修复（O-1 单位混用 bug、O-2 二次修复的"数学收敛但仍可感知"）之后
+Hsinlung 仍不满意"镜头自己动"的观感，决定不修了，直接删掉这个功能。
+`StreetScene.js#update()` 里"取景框离屏幕边缘太近就自动平移相机"那段逻辑
+整段删除，相机现在只由方向键 / 滚轮缩放改变，没有任何自发移动。取景框本身
+的拖动/缩放不受影响（`Viewfinder.js` 的输入处理跟相机无关，一直是独立的）。
+`_centerCameraOn`（O-2 加的开局初始定位，`create()` 里只调一次）保留——那不
+是"跟随"，是初始位置选择，发生在首帧渲染之前，没有可感知的移动过程。
+
+五个静态门全绿。
+
+代码锚点：`js/scenes/StreetScene.js#update`
