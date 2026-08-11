@@ -34,6 +34,11 @@ only, no `git push`. Don't wait and bundle multiple patches (or bug fixes
 found along the way) into one commit "to be safe" — that's exactly the
 mess Hsinlung asked to avoid. Hsinlung reviews and pushes when he's ready;
 that's a separate, later, explicit step, not a reason to defer commits.
+Validated same day: a camera-follow feature got fixed twice, still wasn't
+good enough, Hsinlung asked to delete it outright (own commit), then asked
+to revert that deletion (`git revert`, another own commit) — all three
+steps were cheap and clean specifically because each was its own isolated
+commit. This is *why* the per-patch-commit rule matters, not just tidiness.
 
 ---
 
@@ -66,3 +71,10 @@ that's a separate, later, explicit step, not a reason to defer commits.
   in the report back — don't stall progress asking about every one.
   Confirmed 2026-08-11 during O-2 (Hsinlung: "没实际问题就一直工作就行
   ... 发现问题再修改即可").
+- If a reported bug survives two genuine fix attempts, offering to just
+  remove the feature is a legitimate next move, not a cop-out — don't
+  keep re-diagnosing the same spot for a third narrower patch on your own
+  initiative. Case: a camera-follow-viewfinder feature got two rounds of
+  fixes (real root causes each time) and Hsinlung was still unhappy with
+  the feel; he asked to delete it outright rather than a third attempt.
+  Comply directly — don't argue for one more fix first.
