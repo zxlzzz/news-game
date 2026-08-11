@@ -27,6 +27,20 @@ const NEAR_STOP = {
 // ── 主入口 ──────────────────────────────────────────────────────────────────────
 export function expandSceneData(raw) {
   return {
+    // 布局参数：原样透传，本模块不解释其语义
+    //   world / depth / yBands → Layout.initLayout
+    //   zones                  → NavGrid.bake
+    //   ground                 → SceneRenderer
+    //   exits / spawnPoints    → SceneInitializer（出口 + 生成点几何）
+    //   features               → SceneInitializer → featureRegistry
+    world:       raw.world,
+    depth:       raw.depth,
+    yBands:      raw.yBands,
+    zones:       raw.zones,
+    ground:      raw.ground,
+    exits:       raw.exits,
+    spawnPoints: raw.spawnPoints,
+    features:    raw.features,
     buildings: _expandBuildings(raw.buildings ?? []),
     props:     _expandProps(raw.props ?? {}),
     layout:    _expandLayout(raw.layout ?? {}),

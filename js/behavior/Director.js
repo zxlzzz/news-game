@@ -31,8 +31,8 @@ const rand = (a, b) => a + Math.random() * (b - a);
 const PERIODS = [
   { startH:  6, endH:  8, target: 10, mix: { businessman: 0.30, pedestrian: 0.55, tourist: 0.15 } },
   { startH:  8, endH: 10, target: 22, mix: { businessman: 0.50, pedestrian: 0.35, tourist: 0.15 } },
-  { startH: 10, endH: 16, target: 18, mix: { businessman: 0.15, pedestrian: 0.45, tourist: 0.40 } },
-  { startH: 16, endH: 19, target: 25, mix: { businessman: 0.40, pedestrian: 0.38, tourist: 0.22 } },
+  { startH: 10, endH: 16, target: 18, mix: { businessman: 0.15, pedestrian: 0.37, tourist: 0.40, child: 0.08 } },
+  { startH: 16, endH: 19, target: 25, mix: { businessman: 0.40, pedestrian: 0.32, tourist: 0.22, child: 0.06 } },
   { startH: 19, endH: 22, target: 14, mix: { businessman: 0.15, pedestrian: 0.65, tourist: 0.20 } },
   { startH: 22, endH: 24, target:  7, mix: { businessman: 0.10, pedestrian: 0.75, tourist: 0.15 } },
   { startH:  0, endH:  6, target:  4, mix: { businessman: 0.05, pedestrian: 0.85, tourist: 0.10 } },

@@ -9,7 +9,10 @@ import { VehicleEntity }        from '../entity/vehicle/VehicleEntity.js';
 import { VehicleStateMachine }  from '../entity/vehicle/VehicleStateMachine.js';
 import { roadY, WORLD_WIDTH }   from '../core/Layout.js';
 
-const LANES = [
+// 车道几何含 roadY()/WORLD_WIDTH 派生的冻结数值，必须在 initLayout 之后现算，
+// 否则会冻结在 fallback 世界尺寸上（世界可频繁重新生成，尺寸各异）。故写成 builder，
+// 由构造函数（晚于 initLayout）调用，不放模块顶层。
+const buildLanes = () => [
   { id: 'upbound',   direction: +1, yRange: [roadY(0.10), roadY(0.38)], target: 3, entryX: -200 },
   { id: 'downbound', direction: -1, yRange: [roadY(0.62), roadY(0.90)], target: 3, entryX: WORLD_WIDTH + 200 },
 ];
@@ -32,11 +35,12 @@ export class VehicleSpawner {
     this._tm    = trafficManager;
     this._sr    = sr ?? null;
     this._timer = 0;
+    this._lanes = buildLanes();  // 按注入后的世界尺寸现算车道几何
   }
 
   /** 场景初始化时调用：将车辆分散铺满世界 */
   spawnInitial() {
-    for (const lane of LANES) {
+    for (const lane of this._lanes) {
       const n = lane.target;
       for (let i = 0; i < n; i++) {
         const x = ((i + 0.5) / n) * WORLD_WIDTH;
@@ -51,7 +55,7 @@ export class VehicleSpawner {
     if (this._timer > 0) return;
     this._timer = 2000 + Math.random() * 2000;  // 2~4 秒检查一次
 
-    for (const lane of LANES) {
+    for (const lane of this._lanes) {
       const count = vehicles.filter(v =>
         v.alive &&
         v.direction === lane.direction &&

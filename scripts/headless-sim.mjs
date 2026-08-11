@@ -60,7 +60,6 @@ globalThis.window = { __stuck: [], __motorViolations: 0, __motorDebug: false };
 
 // ─── all game module imports (dynamic so window shim is already set) ─────────
 const { NavGrid, setNavGrid }         = await import('../js/behavior/nav/NavGrid.js');
-const { PLANNING_RULES }              = await import('../js/behavior/nav/PathPlanner.js');
 const { EntityManager }               = await import('../js/core/EntityManager.js');
 const { BehaviorManager }             = await import('../js/behavior/BehaviorManager.js');
 const { ExitRegistry }                = await import('../js/npc/ExitRegistry.js');
@@ -80,12 +79,12 @@ const stubRenderer = {
 
 // ─── scene data ──────────────────────────────────────────────────────────────
 const rawScene = JSON.parse(readFileSync(join(ROOT, 'assets/scene.json'), 'utf8'));
-const { layout } = expandSceneData(rawScene);
+const { layout, zones } = expandSceneData(rawScene);
 
 // ─── NavGrid ─────────────────────────────────────────────────────────────────
 // Pass empty entities array — Y-band defaults + walkPaths are enough for pedestrian testing.
 const navGrid = new NavGrid();
-navGrid.bake([], layout, PLANNING_RULES);
+navGrid.bake([], layout, zones);
 setNavGrid(navGrid);
 
 // ─── WalkMode paths + crosswalks ─────────────────────────────────────────────

@@ -3,19 +3,20 @@
  *
  * agendaTemplate 路由：
  *   park_idler  → _pickParkIdlerGoal  (stroll→visit 循环，消耗 parkCredits)
- *   passerby /  → _pickPasserbyGoal   (60% 直通离场；40% 途中 1-2 次停留)
+ *   passerby /  → _pickPasserbyGoal   (60% 直通离场；40% 途中 desires→ChainTask 或 affordance 停留)
  *   (undefined)
- *   else        → _pickGoal            (desires 池 weighted ChainTask)
+ *   else        → _pickGoal            (desires 池 weighted ChainTask，无 affordance fallback)
  */
 
-import { StrollTask }       from './tasks/StrollTask.js';
-import { UseBenchTask }     from './tasks/UseBenchTask.js';
-import { UseSmartPropTask } from './tasks/UseSmartPropTask.js';
-import { ExitSceneTask }    from './tasks/ExitSceneTask.js';
-import { VisitTask }        from './tasks/VisitTask.js';
-import { StrollLoopTask }   from './tasks/StrollLoopTask.js';
-import { ChainTask }        from './tasks/ChainTask.js';
-import { BEHAVIOR_SCRIPTS } from './data/BehaviorScripts.js';
+import { StrollTask }        from './tasks/StrollTask.js';
+import { UseBenchTask }      from './tasks/UseBenchTask.js';
+import { UseSmartPropTask }  from './tasks/UseSmartPropTask.js';
+import { ChessOnlookerTask } from './tasks/ChessOnlookerTask.js';
+import { ExitSceneTask }     from './tasks/ExitSceneTask.js';
+import { VisitTask }         from './tasks/VisitTask.js';
+import { StrollLoopTask }    from './tasks/StrollLoopTask.js';
+import { ChainTask }         from './tasks/ChainTask.js';
+import { BEHAVIOR_SCRIPTS }  from './data/BehaviorScripts.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 const MAX_ABORTS = 3;
@@ -88,6 +89,9 @@ export class Agenda {
 
     runner.setPrimary(new StrollTask({ duration: rand(8, 22) }), npc, (result) => {
       if (result === 'done') {
+        // 1. 先尝试 desires → ChainTask
+        if (this._tryDesire(npc, runner, () => { this._stopCredits--; })) return;
+        // 2. fallback: affordance draw → routePoi
         const poi = this._envQuery.drawAffordance(npc, 250);
         if (poi) {
           const task = this._routePoi(poi);
@@ -104,6 +108,38 @@ export class Agenda {
     });
   }
 
+  // ── desires 加权抽取（passerby + 其他模板共用） ──────────────────────────────
+
+  /**
+   * 从 desires 池加权随机抽一个 ChainTask 并提交给 runner。
+   * 30% 概率随机跳过（概率性留白，防 desire 被连续消耗）。
+   * @param {object}   npc
+   * @param {TaskRunner} runner
+   * @param {function|null} onDone  任务完成后的额外回调（可为 null）
+   * @returns {boolean} true = 成功提交 ChainTask；false = 无候选或随机跳过
+   */
+  _tryDesire(npc, runner, onDone) {
+    const candidates = [];
+    for (const id of this._desires) {
+      const s = BEHAVIOR_SCRIPTS[id];
+      if (s) candidates.push({ id, weight: s.weight ?? 0.3 });
+    }
+    if (candidates.length === 0 || Math.random() < 0.3) return false;
+
+    let total = 0;
+    for (const c of candidates) total += c.weight;
+    let r = Math.random() * total;
+    let picked = candidates[0].id;
+    for (const c of candidates) { r -= c.weight; if (r <= 0) { picked = c.id; break; } }
+
+    const task = new ChainTask(BEHAVIOR_SCRIPTS[picked], this._envQuery);
+    runner.setPrimary(task, npc, (result) => {
+      this._onTaskDone(picked, result);
+      onDone?.(result);
+    });
+    return true;
+  }
+
   // ── desires-池模板（非 passerby 模板的其他 agendaTemplate） ─────────────────
 
   _pickGoal(npc, runner) {
@@ -114,25 +150,9 @@ export class Agenda {
       return;
     }
 
-    const candidates = [];
-    for (const id of this._desires) {
-      const s = BEHAVIOR_SCRIPTS[id];
-      if (s) candidates.push({ id, weight: s.weight ?? 0.3 });
-    }
-
-    if (candidates.length === 0 || Math.random() < 0.3) {
+    if (!this._tryDesire(npc, runner, null)) {
       runner.setPrimary(new StrollTask({ duration: rand(8, 22) }), npc);
-      return;
     }
-
-    let total = 0;
-    for (const c of candidates) total += c.weight;
-    let r = Math.random() * total;
-    let picked = candidates[0].id;
-    for (const c of candidates) { r -= c.weight; if (r <= 0) { picked = c.id; break; } }
-
-    const task = new ChainTask(BEHAVIOR_SCRIPTS[picked], this._envQuery);
-    runner.setPrimary(task, npc, (result) => this._onTaskDone(picked, result));
   }
 
   _onTaskDone(id, result) {
@@ -204,13 +224,15 @@ export class Agenda {
     });
   }
 
-  /** POI → task 路由：use:'visit'→VisitTask; 'bench'→UseBenchTask; 'smart_prop'→UseSmartPropTask */
+  /** POI → task 路由：use:'visit'→VisitTask; 'bench'→UseBenchTask; 'smart_prop'→UseSmartPropTask;
+   *  'chess_onlooker'→ChessOnlookerTask */
   _routePoi(poi) {
     switch (poi.aff.use) {
-      case 'bench':      return new UseBenchTask(this._envQuery);
-      case 'smart_prop': return new UseSmartPropTask(poi.aff.kind, this._envQuery);
+      case 'bench':          return new UseBenchTask(this._envQuery);
+      case 'smart_prop':     return new UseSmartPropTask(poi.aff.kind, this._envQuery);
+      case 'chess_onlooker': return new ChessOnlookerTask(this._envQuery);
       case 'visit':
-      default:           return new VisitTask(poi, this._envQuery);
+      default:               return new VisitTask(poi, this._envQuery);
     }
   }
 }

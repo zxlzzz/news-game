@@ -2,12 +2,14 @@
  * SocialLayer — 社交 / Activity 统一模型
  *
  * Activity 是多个 NPC（+道具）共同参与的高层行为单元（对话/下棋/遛狗…）。
- * 加入 Activity 的 NPC 被"锁定"（npc._activity 置位），BehaviorManager 跳过其
- * 基础状态机，由 Activity 全权驱动；释放后归还给 BaseStateMachine。
+ * 加入 Activity 的 NPC 被"锁定"（npc.mem('social').activity 置位），
+ * BehaviorManager 跳过其基础状态机，由 Activity 全权驱动；释放后归还给 BaseStateMachine。
  *
  * Activity 类型通过 registerActivity（ActivityRegistry.js）注册工厂。
  * 各 Activity 文件 import registerActivity 并自注册；SocialLayer 负责 side-effect import。
- * createActivity 查 REGISTRY['*'] 为通配符兜底（UsePropActivity）。
+ *
+ * Patch A：单人道具使用（trash/vending）已收口进 UseSmartPropTask，不再走 Activity；
+ * REGISTRY 不再有 '*' 通配符兜底，createActivity 查不到 type 时返回 null。
  */
 
 import { setState }       from './Motor.js';
@@ -20,12 +22,13 @@ export { registerActivity } from './ActivityRegistry.js';
 import './activities/TalkActivity.js';
 import './activities/ChessActivity.js';
 import './activities/StallActivity.js';
-import './activities/UsePropActivity.js';
+import './activities/ContactActivity.js';
 
 // poseCache 初始化入口（由 SocialLayer 构造函数转发到各 Activity 模块）
-import { initSubEventPoses } from './activities/TalkActivity.js';
-import { initGestureClips }  from './activities/UsePropActivity.js';
-import { initStallGestures } from './activities/StallActivity.js';
+import { initTalkGestures }  from './activities/TalkActivity.js';
+import { initStallGestures } from './data/StallPoseStore.js';
+import { initChessMove }     from './activities/ChessActivity.js';
+import { initSubEventPoses } from './activities/ContactActivity.js';
 
 const chance = (p) => Math.random() < p;
 
@@ -41,13 +44,14 @@ export class SocialLayer {
 
     if (poseCache) {
       initSubEventPoses(poseCache.sub_event      || {});
-      initGestureClips(poseCache.gesture         || {});
       initStallGestures(poseCache.stall_gestures || {});
+      initTalkGestures(poseCache.talk_gestures   || {});
+      initChessMove(poseCache.chess_move ?? null);
     }
   }
 
   update(npcs, dt) {
-    // 1) tick 所有活跃 Activity；结束的 destroy
+    // 1) tick 所有活跃 Activity；结束的 destroy；声明了 handoff() 的紧接着创建后继
     for (let i = this.activities.length - 1; i >= 0; i--) {
       const act = this.activities[i];
       const alive = act.alive && act.update(dt);
@@ -55,6 +59,14 @@ export class SocialLayer {
         dlog(`[Activity ${act.label}] destroyed(reason=${act._endReason})`);
         act.destroy();
         this.activities.splice(i, 1);
+        if (act._followUp) {
+          const { type, participants, meta } = act._followUp;
+          const next = this.createActivity(type, participants, [], meta);
+          // 这个循环从数组尾部往前走，本帧新 push 的 next 排在更靠后的下标，
+          // 不会被这一轮 for 再扫到——立刻补一次 tick，避免它平白等到下一帧
+          // 才开始播（旧版子事件是同一帧内联执行，这里补齐同等时效）。
+          next?.update(dt);
+        }
       }
     }
 
@@ -64,38 +76,15 @@ export class SocialLayer {
       this.talkScanTimer = 0;
       this._tryPairTalk(npcs);
     }
-
-    // 3) 槽位等待超时（20s 内无第二个人到位） → 放弃，重新 walk
-    //    死亡 NPC 的槽位也必须回收（不跳过 !alive）
-    for (const npc of npcs) {
-      if (!npc.mem('social').slotWaitProp) continue;
-      if (!npc.alive) {
-        for (const s of npc.mem('social').slotWaitProp._slots) {
-          if (s.npc === npc) { s.ready = false; s.npc = null; }
-        }
-        this.envQuery.releaseSlotReservation(npc);
-        npc.mem('social').slotWaitProp = null;
-        continue;
-      }
-      if (npc.mem('social').activity) continue;
-      npc.mem('social').slotWaitTimer = (npc.mem('social').slotWaitTimer || 0) + dt;
-      if (npc.mem('social').slotWaitTimer > 20) {
-        for (const s of npc.mem('social').slotWaitProp._slots) {
-          if (s.npc === npc) { s.ready = false; s.npc = null; }
-        }
-        this.envQuery.releaseSlotReservation(npc);
-        npc.mem('social').slotWaitProp = null;
-        setState(npc, 'walk', 'slot_wait_timeout');
-      }
-    }
   }
 
-  // 外部触发：创建指定类型的 Activity
-  createActivity(type, participants, props = []) {
+  // 外部触发：创建指定类型的 Activity。meta 原样透传给工厂第 5 参
+  // （ActivityRegistry.js 头部注释），供 'contact' 这类"一个 type 对应多条
+  // clip"的场景区分具体播哪条——如 ContactActivity 用 meta.clip。
+  createActivity(type, participants, props = [], meta) {
     const id = ++this._idSeq;
-    const REGISTRY = getRegistry();
-    const entry = REGISTRY[type] ?? REGISTRY['*'];
-    const act = entry ? entry.factory(id, participants, props, type) : null;
+    const entry = getRegistry()[type];
+    const act = entry ? entry.factory(id, participants, props, type, meta) : null;
     if (act) {
       this.activities.push(act);
       dlog(`[Activity ${act.label}] created`);
@@ -109,7 +98,13 @@ export class SocialLayer {
     if (act) act.interrupt(reason);
   }
 
-  /** Smart Object 槽位到达：优先用注册项的 onSlotArrival 钩子，否则走默认多槽凑齐逻辑 */
+  /**
+   * Smart Object 槽位到达：分派给注册项的 onSlotArrival 钩子（prop-as-host，
+   * Patch H）——凑人待机不再是 SocialLayer 兜底的通用机制，改由各 activity
+   * 自己声明的钩子负责（如 StallActivity 把独占卖家路由进 StallSellerTask，
+   * 买家到位才凑满 roster 去 Create）。没声明钩子的 activityType 视为不支持
+   * 槽位待人，直接放弃。
+   */
   onSlotArrival(npc, prop, slot) {
     slot.ready = true;
     slot.npc   = npc;
@@ -118,20 +113,8 @@ export class SocialLayer {
 
     if (entry?.onSlotArrival) {
       entry.onSlotArrival(npc, prop, slot, this);
-      return;
-    }
-
-    // 默认（单/多槽）：凑齐所有槽位即创建 Activity，否则原地站等
-    const allReady = prop._slots.every(s => s.ready);
-    if (allReady) {
-      const participants = prop._slots.map(s => ({ npc: s.npc, role: s.role }));
-      this.createActivity(type, participants, [prop]);
-      for (const s of prop._slots) { s.reserved = null; s.ready = false; s.npc = null; }
     } else {
-      setState(npc, 'stand', 'slot_wait');
-      npc.stateDur       = Infinity;
-      npc.mem('social').slotWaitTimer = 0;
-      npc.mem('social').slotWaitProp  = prop;
+      this._abandonSlot(npc, slot, 'no_onSlotArrival_hook');
     }
   }
 
@@ -143,14 +126,21 @@ export class SocialLayer {
   }
 
   _tryPairTalk(npcs) {
+    // !waitingBusStop（Patch C）：候车不再是 Activity 锁（WaitBusTask 是单人
+    // ChainTask，不置位 sc.activity），普通行人 profile 又都含 'talk'，不额外
+    // 排除的话候车中的人会被这里捞去聊天——同一个信号已经是 BehaviorManager.js
+    // 寿命门用来保护候车者的那个字段，这里复用，不新开一条判据。
     const standers = npcs.filter(n =>
-      n.alive && !n.mem('social').activity && !n.mem('agenda').departing && n.state === 'stand' &&
+      n.alive && !n.mem('social').activity && !n.mem('agenda').departing &&
+      !n.mem('social').waitingBusStop && n.state === 'stand' &&
       n.mem('agenda').profile && n.mem('agenda').profile.activities.includes('talk'));
     let paired = 0;
     for (let i = 0; i < standers.length; i++) {
       for (let j = i + 1; j < standers.length; j++) {
         const a = standers[i], b = standers[j];
-        if (a._activity || b._activity) continue;
+        // P-1 缺陷 3：这里原有一条读取 npc 上不存在的裸 `_activity` 字段的判据，
+        // 恒假（真字段是 mem('social').activity，且上面 standers 的过滤已经
+        // 排除过一次），是重复且失效的死判据，直接删除。
         const dx = Math.abs(a.x - b.x);
         const dy = Math.abs(a.y - b.y);
         if (dx < 70 && dx > 14 && dy < 24 && chance(0.5)) {

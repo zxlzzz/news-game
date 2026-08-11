@@ -5,3 +5,7 @@ export function footprint(e) {
   const ds = depthScale(e.y);
   return { shape: 'rect', rx: 35 * ds, ry: Math.max(3, 10 * ds), blocks: true, sortDY: 0 };
 }
+// ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
+import { registerProp } from '../../core/propRegistry.js';
+import { drawNewsRack } from './drawNewsRack.js';
+registerProp('newsrack', { draw: drawNewsRack, footprint, obstacle: true });

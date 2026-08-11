@@ -17,12 +17,14 @@
 import { setState } from '../Motor.js';
 import { GotoTask }    from './GotoTask.js';
 import { UseBenchTask } from './UseBenchTask.js';
+import { StallBuyerTask } from './StallBuyerTask.js';
 import { ATTACHMENT_DEFS } from '../data/AttachmentDefs.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
 
 const USE_WHITELIST = {
-  bench: (envQuery) => new UseBenchTask(envQuery),
+  bench:       (envQuery) => new UseBenchTask(envQuery),
+  stall_buyer: (envQuery) => new StallBuyerTask(envQuery),
 };
 
 export class ChainTask {

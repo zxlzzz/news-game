@@ -1,48 +1,87 @@
 /**
- * Layout.js — 场景骨架常量（纵向分带 / 世界尺寸 / 颜色 / 深度辅助）
+ * Layout.js — 场景骨架参数（纵向分带 / 世界尺寸 / 颜色 / 深度辅助）
  *
  * 装饰性几何数据（树、云、广场、公交站）已迁移至 assets/scene.json 的 layout key。
- * 本文件只保留行为系统和渲染引擎共用的结构性常量。
+ * 本文件只保留行为系统和渲染引擎共用的结构性参数。
+ *
+ * ─── 参数化（Z-2a）─────────────────────────────────────────────────────────
+ * 世界尺寸、Y 分带、深度锚点是 `export let`，由 `initLayout(sceneData)` 从
+ * scene.json 的 `world` / `yBands` / `depth` 字段注入；此处字面量是 fallback 默认值。
+ * 借 ES module live binding，`import { NEAR_Y }` 的站点无需改动即可看到注入后的值。
+ *
+ * 颜色仍是 `export const`：颜色是画风，不是场景结构，不参数化。
+ *
+ * ⚠️ live binding 的边界：注入发生在 `StreetScene.create()`，而所有模块的顶层代码
+ * 早于它求值。因此**在模块顶层从这些值派生出的量会冻结在 fallback 默认值上**，
+ * 不随注入更新。新增派生量请写成函数或在 init 之后计算，勿放模块顶层。
+ * 原有三处冻结均已收口（世界可频繁重新生成、尺寸各异，冻结会导致导航/车道错位）：
+ *   - `NavGrid.js` `COLS/ROWS`：改 fallback let + 构造函数按注入尺寸现算覆写。
+ *   - `VehicleSpawner.js` `LANES`：改 `buildLanes()`，构造函数内现算。
+ *   - `WaitForBusLayer.js` 原 `WAIT_ZONES`：随公交站坐标收口，构造函数内按 busStops 现算。
  */
 
 // ─── 世界尺寸 ─────────────────────────────────────────────────────────────────
-export const WORLD_WIDTH  = 2000;
-export const WORLD_HEIGHT = 520;
+export let WORLD_WIDTH  = 2000;
+export let WORLD_HEIGHT = 520;
 
 // ─── 纵向分带边界 ─────────────────────────────────────────────────────────────
-export const SKY_Y           = 100;
-export const BUILDING_BASE_Y = 210;
-export const FAR_Y           = 268;
-export const NEAR_Y          = 333;
-export const PARK_TOP        = 353;
-export const PARK_BOTTOM     = WORLD_HEIGHT;
+export let SKY_Y           = 100;
+export let BUILDING_BASE_Y = 210;
+export let FAR_Y           = 268;
+export let NEAR_Y          = 333;
+export let PARK_TOP        = 353;
+export let PARK_BOTTOM     = WORLD_HEIGHT;
 
 // 非机动车道边界
-export const BIKE_LANE_FAR_TOP     = 248;
-export const BIKE_LANE_FAR_BOTTOM  = 268;
-export const BIKE_LANE_NEAR_TOP    = 333;
-export const BIKE_LANE_NEAR_BOTTOM = 353;
+export let BIKE_LANE_FAR_TOP     = 248;
+export let BIKE_LANE_FAR_BOTTOM  = 268;
+export let BIKE_LANE_NEAR_TOP    = 333;
+export let BIKE_LANE_NEAR_BOTTOM = 353;
 
 // 步行带（NPC 典型 Y）
-export const SIDEWALK_FAR_Y  = 240;
-export const SIDEWALK_NEAR_Y = 508;
+export let SIDEWALK_FAR_Y  = 240;
+export let SIDEWALK_NEAR_Y = 508;
+
+// ─── Y 分带符号解析（数据驱动配置用）─────────────────────────────────────────
+// scene.json 的 zones / ground 用分带**名字**表达边界（`"to": "FAR_Y"`），
+// 数值仍只有 yBands 一处；此处 getter 每次调用读模块变量，故注入后自动生效。
+
+const _Y_BAND_GETTERS = {
+  SKY_Y:                 () => SKY_Y,
+  BUILDING_BASE_Y:       () => BUILDING_BASE_Y,
+  SIDEWALK_FAR_Y:        () => SIDEWALK_FAR_Y,
+  BIKE_LANE_FAR_TOP:     () => BIKE_LANE_FAR_TOP,
+  BIKE_LANE_FAR_BOTTOM:  () => BIKE_LANE_FAR_BOTTOM,
+  FAR_Y:                 () => FAR_Y,
+  NEAR_Y:                () => NEAR_Y,
+  BIKE_LANE_NEAR_TOP:    () => BIKE_LANE_NEAR_TOP,
+  BIKE_LANE_NEAR_BOTTOM: () => BIKE_LANE_NEAR_BOTTOM,
+  PARK_TOP:              () => PARK_TOP,
+  SIDEWALK_NEAR_Y:       () => SIDEWALK_NEAR_Y,
+  PARK_BOTTOM:           () => PARK_BOTTOM,
+};
+
+/** 合法 yBands 键名（initLayout 校验 + 静态检查用） */
+export const Y_BAND_NAMES = Object.keys(_Y_BAND_GETTERS);
+
+/**
+ * 解析 Y 坐标：数字原样返回，字符串按 yBands 名查当前值。
+ * 未知名字直接抛错——配置拼写错误应在场景加载时炸掉，不该静默变 undefined。
+ */
+export function resolveY(v) {
+  if (typeof v === 'number') return v;
+  const get = _Y_BAND_GETTERS[v];
+  if (!get) throw new Error(`Layout.resolveY: unknown Y band name '${v}'`);
+  return get();
+}
 
 // ─── 区域内插值辅助函数 ───────────────────────────────────────────────────────
+// 函数体每次调用时读模块变量，故注入后自动生效。
 
 export const roadY = (f) => Math.round(FAR_Y + (NEAR_Y - FAR_Y) * f);
-export const sidewalkFarY = (f) => Math.round(BUILDING_BASE_Y + (FAR_Y - BUILDING_BASE_Y) * f);
-export const parkY = (f) => Math.round(PARK_TOP + (PARK_BOTTOM - PARK_TOP) * f);
 export const worldX = (f) => Math.round(WORLD_WIDTH * f);
 export const bikeLaneFarY  = (f) => Math.round(BIKE_LANE_FAR_TOP  + (BIKE_LANE_FAR_BOTTOM  - BIKE_LANE_FAR_TOP)  * f);
 export const bikeLaneNearY = (f) => Math.round(BIKE_LANE_NEAR_TOP + (BIKE_LANE_NEAR_BOTTOM - BIKE_LANE_NEAR_TOP) * f);
-
-// ─── 建筑出口 X（行为系统 ExitRegistry 用） ──────────────────────────────────
-export const BUILDING_EXIT_XS = [
-  worldX(0.10),   // building_a ≈ 200
-  worldX(0.30),   // building_b ≈ 600
-  worldX(0.55),   // building_c ≈ 1100
-  worldX(0.85),   // building_d ≈ 1700
-];
 
 // ─── 统一填充色阶（4 档，全场景 draw 文件共用，禁止额外随手灰） ──────────────────
 // 目标：从亮到暗四档，眯眼可分辨四个层次
@@ -75,6 +114,7 @@ export const GRAY_NEAR_PAVE   = 0xb0b0b0;   // 近端人行道（was 0xbc）
 export const GRAY_CURB        = 0xd8d8d8;   // 路缘石（was 0xe8，略亮于 FAR_PAVE）
 export const GRAY_PARK        = 0xaaaaaa;   // 公园地面（≈ FILL_MID）
 export const CURB_EDGE_LINE   = 0x7a7a7a;   // 路缘上边缘线（介于 FAR/MID 线色之间）
+export const MARKING_PAINT    = 0xffffff;   // 车道虚线 / 斑马线条纹漆色（E-1）
 
 // ─── 天际线 / 云（SceneRenderer 用） ──────────────────────────────────────────
 export const SKYLINE_BACK  = 0xf1f1f1;
@@ -82,28 +122,38 @@ export const SKYLINE_FRONT = 0xe6e6e6;
 export const SKYLINE_LINE  = 0xd6d6d6;
 export const CLOUD_LINE    = 0xd2d2d2;
 
-export const LINE_FAR_COLOR  = 0x9a9a9a;
 export const LINE_FAR_WIDTH  = 0.8;
-export const LINE_MID_COLOR  = 0x5a5a5a;
-export const LINE_MID_WIDTH  = 1.4;
 export const LINE_NEAR_COLOR = 0x1f1f1f;
 export const LINE_NEAR_WIDTH = 2.2;
 
-// 兼容旧名
-export const SHADE_BG            = GRAY_SKY;
-export const SHADE_FAR           = GRAY_FAR_PAVE;
-export const SHADE_FAR_ALT       = GRAY_BUILDING_MID;
-export const SHADE_ROAD          = GRAY_ROAD;
-export const SHADE_NEAR          = GRAY_NEAR_PAVE;
-export const SHADE_CURB          = GRAY_CURB;
-export const BUILDING_FILL_LIGHT = GRAY_BUILDING_HI;
-export const BUILDING_FILL_MID   = GRAY_BUILDING_MID;
-export const BUILDING_FILL_DARK  = GRAY_BUILDING_LO;
+// ─── 调色板符号解析（数据驱动配置用）─────────────────────────────────────────
+// scene.json 的 ground 用颜色**名字**（`"color": "GRAY_ROAD"`）而非 hex：
+// 场景配置说「这条带用路面色」，具体是哪个灰仍由本文件说了算——画风不外流。
+
+const _PALETTE = {
+  FILL_PAPER, FILL_LIGHT, FILL_MID, FILL_SHADE,
+  ENV_LINE_LIGHT, ENV_LINE_DARK,
+  SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR,
+  GRAY_SKY, GRAY_FAR_PAVE, GRAY_BUILDING_HI, GRAY_BUILDING_MID, GRAY_BUILDING_LO,
+  GRAY_ROAD, GRAY_NEAR_PAVE, GRAY_CURB, GRAY_PARK, CURB_EDGE_LINE, MARKING_PAINT,
+  SKYLINE_BACK, SKYLINE_FRONT, SKYLINE_LINE, CLOUD_LINE, LINE_NEAR_COLOR,
+};
+
+/** 合法调色板名（静态检查用） */
+export const PALETTE_NAMES = Object.keys(_PALETTE);
+
+/** 解析颜色：数字原样返回，字符串按调色板名查；未知名抛错 */
+export function resolveColor(v) {
+  if (typeof v === 'number') return v;
+  const c = _PALETTE[v];
+  if (c == null) throw new Error(`Layout.resolveColor: unknown palette name '${v}'`);
+  return c;
+}
 
 // ─── 深度辅助函数 ─────────────────────────────────────────────────────────────
 
-// 分段锚点：[y, t]。y 范围外夹取到 [0,1]。
-const _SEG = [
+// 分段锚点：[y, t]。y 范围外夹取到 [0,1]。由 initLayout 从 config.depth.anchors 覆盖。
+let _SEG = [
   [BUILDING_BASE_Y, 0.00],
   [FAR_Y,           0.30],
   [NEAR_Y,          0.50],
@@ -143,10 +193,55 @@ export function depthLineColor(y, opts = {}) {
   return (v << 16) | (v << 8) | v;
 }
 
-const _FAR_SCALE  = 0.182;
-const _NEAR_SCALE = 0.434;
+let _FAR_SCALE  = 0.182;
+let _NEAR_SCALE = 0.434;
 
 /** Y → screen scale */
 export function depthScale(y) {
   return _FAR_SCALE + depthT(y) * (_NEAR_SCALE - _FAR_SCALE);
+}
+
+// ─── 场景注入 ─────────────────────────────────────────────────────────────────
+
+/**
+ * 从 scene config 注入布局参数。必须在任何 entity 创建 / 场景绘制之前调用一次
+ * （`StreetScene.create()` 内，SceneRenderer / SceneInitializer 之前）。
+ *
+ * 缺字段即保留上方的 fallback 默认值——config 是覆盖，不是全量替换。
+ *
+ * @param {{world?:{width,height}, yBands?:Object<string,number>,
+ *          depth?:{anchors:Array<[number,number]>, scaleFar?:number, scaleNear?:number}}} config
+ */
+export function initLayout(config) {
+  if (!config) return;
+
+  if (config.world) {
+    WORLD_WIDTH  = config.world.width  ?? WORLD_WIDTH;
+    WORLD_HEIGHT = config.world.height ?? WORLD_HEIGHT;
+  }
+
+  if (config.yBands) {
+    const b = config.yBands;
+    for (const k of Object.keys(b)) {
+      if (!_Y_BAND_GETTERS[k]) throw new Error(`initLayout: unknown yBands key '${k}'`);
+    }
+    SKY_Y                 = b.SKY_Y                 ?? SKY_Y;
+    BUILDING_BASE_Y       = b.BUILDING_BASE_Y       ?? BUILDING_BASE_Y;
+    SIDEWALK_FAR_Y        = b.SIDEWALK_FAR_Y        ?? SIDEWALK_FAR_Y;
+    BIKE_LANE_FAR_TOP     = b.BIKE_LANE_FAR_TOP     ?? BIKE_LANE_FAR_TOP;
+    BIKE_LANE_FAR_BOTTOM  = b.BIKE_LANE_FAR_BOTTOM  ?? BIKE_LANE_FAR_BOTTOM;
+    FAR_Y                 = b.FAR_Y                 ?? FAR_Y;
+    NEAR_Y                = b.NEAR_Y                ?? NEAR_Y;
+    BIKE_LANE_NEAR_TOP    = b.BIKE_LANE_NEAR_TOP    ?? BIKE_LANE_NEAR_TOP;
+    BIKE_LANE_NEAR_BOTTOM = b.BIKE_LANE_NEAR_BOTTOM ?? BIKE_LANE_NEAR_BOTTOM;
+    PARK_TOP              = b.PARK_TOP              ?? PARK_TOP;
+    SIDEWALK_NEAR_Y       = b.SIDEWALK_NEAR_Y       ?? SIDEWALK_NEAR_Y;
+    PARK_BOTTOM           = b.PARK_BOTTOM           ?? PARK_BOTTOM;
+  }
+
+  if (config.depth) {
+    if (config.depth.anchors) _SEG = config.depth.anchors.map(([y, t]) => [y, t]);
+    _FAR_SCALE  = config.depth.scaleFar  ?? _FAR_SCALE;
+    _NEAR_SCALE = config.depth.scaleNear ?? _NEAR_SCALE;
+  }
 }

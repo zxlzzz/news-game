@@ -9,6 +9,12 @@
  *
  * heldPoses 中每条定义 pose 数据由 ModifierLayer 从 HeldPoses.js 查取，
  * profile 只声明触发条件（on / chance / dur / traitRequired）。
+ *
+ * 可选字段 zoneCosts（Z-1 zone-profile split）：{ [ZONE.*]: cost } 局部覆盖，
+ * PlanService 以 `{...DEFAULT_ZONE_COSTS, ...profile.zoneCosts}` 装配本次规划的代价表；
+ * 值 0 = 该 zone 对本人格不可通行。不写则整表取 NavGrid.DEFAULT_ZONE_COSTS。
+ * 例：`zoneCosts: { [ZONE.GRASS]: 1 }` = 该人格视草地与人行道等价，抄近路无所谓。
+ * 注意 jaywalk 覆盖（goal.meta.jaywalk → ROAD=3）在 profile 覆盖之后生效，优先级更高。
  */
 
 // 路人共用的状态转换表
@@ -51,15 +57,13 @@ const HANDS_IN_POCKET = {
 // 路人共用的 gesture 触发表
 //   chance 为每帧触发概率；dur 由 clip 关键帧累计决定，无需在此声明
 const PED_GESTURES = {
-  check_watch:    { on: ['stand', 'loiter'],         chance: 0.0003,  traitExcludes: ['hold_bag', 'walk_dog'] },
-  stretch:        { on: ['stand', 'loiter'],         chance: 0.00008, traitExcludes: ['hold_bag', 'walk_dog'] },
-  yawn:           { on: ['stand', 'loiter'],         chance: 0.0001 },
-  look_around:    { on: ['stand', 'loiter'],         chance: 0.0002 },
-  adjust_clothes: { on: ['stand', 'loiter'],         chance: 0.0001,  traitExcludes: ['hold_bag', 'walk_dog'] },
-  wave:           { on: ['stand', 'loiter'],         chance: 0.0002 },
-  // moving gesture：行走/奔跑中触发
-  moving_check_watch: { on: ['walk', 'run'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
-  moving_wipe_sweat:  { on: ['walk', 'run'], chance: 0.0003, traitExcludes: ['hold_bag', 'walk_dog'] },
+  check_watch:    { on: ['stand', 'loiter', 'walk', 'run'], chance: 0.0003,  traitExcludes: ['hold_bag', 'walk_dog'] },
+  stretch:        { on: ['stand', 'loiter'],                chance: 0.00008, traitExcludes: ['hold_bag', 'walk_dog'] },
+  yawn:           { on: ['stand', 'loiter'],                chance: 0.0001 },
+  look_around:    { on: ['stand', 'loiter'],                chance: 0.0002 },
+  adjust_clothes: { on: ['stand', 'loiter'],                chance: 0.0001,  traitExcludes: ['hold_bag', 'walk_dog'] },
+  wave:           { on: ['stand', 'loiter'],                chance: 0.0002 },
+  wipe_sweat:     { on: ['walk', 'run'],                    chance: 0.0003,  traitExcludes: ['hold_bag', 'walk_dog'] },
 };
 
 const PEDESTRIAN = {
@@ -77,21 +81,38 @@ const PEDESTRIAN = {
   gesturePoses: PED_GESTURES,
   spawnTraits: ['hold_bag', 'umbrella'],
   activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
-  desires: ['rest_bench', 'use_vending', 'use_trash', 'eat_snack'],
+  // stall_buyer 加入 P-4：desires 池实际驱动 _tryDesire → ChainTask，
+  // 只在 activities 里声明而不进这里，路由永远不会被抽中（P-4 修复的正是这个）。
+  desires: ['rest_bench', 'use_vending', 'use_trash', 'eat_snack', 'play_guitar', 'stall_buyer'],
   traits: {},
   cameraReaction: 'neutral',
-  socialWeights: { push: 0.04, give_item: 0.05, handshake: 0.06, point_at: 0.05 },
+  // P-2 重标定：这批数值是 TalkActivity 每次掷骰（周期见
+  // TalkActivity.js#SUB_EVENT_ROLL_INTERVAL，约 3 秒一轮）命中某个接触类型
+  // 的概率，不是"整场对话"的概率——P-1 修复权重读取路径之前它们从未生效，
+  // 旧数值（0.02~0.08）是按"整场对话只掷一次"的口径写的，现在改周期性掷之后
+  // 沿用旧数值会让每场对话的总命中率暴涨。新数值按同一缩放比例（×0.6）从旧值
+  // 换算，保留各 profile 内部/之间原有的相对高低关系，目标是一场对话（约
+  // 2~6 轮）大致有三成到一半概率产出至少一次接触。
+  socialWeights: { push: 0.02, give_item: 0.03, handshake: 0.04, point_at: 0.03 },
   loiterChance: 0.10,
   loiterDurationRange: [15, 45],
   jaywalkChance: 0.10,
   departure: { lifespanRange: [90, 210], preferExitType: null },
-  speedRange: [20, 34],
+  // U-2d（补漏）：speedRange 骨架单位/秒（消费时乘 npc.scale）。原世界像素值
+  // [20,34] 是 U-2 迁移时漏改的字段——Pedestrians.js#spawnOnePedestrian 用它
+  // 播种 npc.speed，而 BehaviorManager.register() 的 `npc.speed>0 ? npc.speed
+  // : rand(106,181)` 分支会直接把这个"世界像素值"当骨架单位塞进 walkSpeed，
+  // 导致全库主力行人（pedestrians/park_idlers/Director 动态补充，三处消费点
+  // 均走 spawnOnePedestrian）实际速度只有 3–14px/s，远低于设计值，是"看着很慢
+  // /贴墙卡死"的真正主因（换算基准同 U-2b：SIDEWALK_FAR_Y scale 0.188）。
+  // 20/0.188≈106、34/0.188≈181。
+  speedRange: [106, 181],
 };
 
 const BUSINESSMAN = {
   ...PEDESTRIAN,
   name: 'businessman',
-  desires: ['use_vending'],
+  desires: ['use_vending', 'stall_buyer'],
   activities: ['talk', 'use_vending', 'stall_buyer'],
   heldPoses: {
     phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0006, dur: [8, 30] },
@@ -100,18 +121,20 @@ const BUSINESSMAN = {
     cross_arm:  CROSS_ARM,
     hands_in_pocket: HANDS_IN_POCKET,
   },
-  socialWeights: { push: 0.02, give_item: 0.05, handshake: 0.08, point_at: 0.05 },
+  // P-2 重标定：同 PEDESTRIAN 注记（每次掷骰概率，×0.6 换算自旧值）。
+  socialWeights: { push: 0.01, give_item: 0.03, handshake: 0.05, point_at: 0.03 },
   loiterChance: 0.06,
   loiterDurationRange: [15, 40],
   jaywalkChance: 0.20,
   departure: { lifespanRange: [90, 210], preferExitType: 'building' },
-  speedRange: [28, 40],
+  // U-2d（补漏）：骨架单位/秒，同 PEDESTRIAN 注记。28/0.188≈149、40/0.188≈213。
+  speedRange: [149, 213],
 };
 
 const TOURIST = {
   ...PEDESTRIAN,
   name: 'tourist',
-  desires: ['rest_bench', 'use_vending'],
+  desires: ['rest_bench', 'use_vending', 'stall_buyer'],
   transitions: {
     ...PED_TRANSITIONS,
     walk:  { stand: 0.55, run: 0.06, squat: 0.02, sit_ground: 0.05, lean_wall: 0.01 },
@@ -125,12 +148,25 @@ const TOURIST = {
     hands_in_pocket: HANDS_IN_POCKET,
   },
   activities: ['talk', 'chess', 'chess_onlooker', 'use_vending', 'use_trash', 'stall_buyer'],
-  socialWeights: { push: 0.03, give_item: 0.06, handshake: 0.05, point_at: 0.06 },
+  // P-2 重标定：同 PEDESTRIAN 注记（每次掷骰概率，×0.6 换算自旧值）。
+  socialWeights: { push: 0.02, give_item: 0.04, handshake: 0.03, point_at: 0.04 },
   loiterChance: 0.18,
   loiterDurationRange: [20, 60],
   jaywalkChance: 0.15,
   departure: { lifespanRange: [90, 210], preferExitType: null },
-  speedRange: [16, 26],
+  // U-2d（补漏）：骨架单位/秒，同 PEDESTRIAN 注记。16/0.188≈85、26/0.188≈138。
+  speedRange: [85, 138],
+};
+
+// A-2：小孩预设，复用 pedestrian 全套行为（转换表/held/activities/desires 不变），
+// 只加一个 skeleton 声明。R-1 起该字段有消费者：Npc 构造时读 profile.skeleton，
+// 从 skeleton.json 查 scale 覆盖 npc.skeletonScale（EntityManager 每帧乘进
+// npc.scale），并把 skeleton 名传给 StickRenderer 作 headRadius 查表键——
+// child NPC 现在视觉上矮小，clip 数据仍复用 human 骨架（无需 child 专属 clip）。
+const CHILD = {
+  ...PEDESTRIAN,
+  name:     'child',
+  skeleton: 'child',
 };
 
 const CHESS_PLAYER = {
@@ -157,10 +193,15 @@ const CHESS_ONLOOKER = {
     phone_look: { on: ['stand', 'loiter', 'sit_bench', 'lean_wall'], chance: 0.0004, dur: [8, 25] },
     cross_arm:  CROSS_ARM,
   },
-  activities: ['talk', 'chess_watch'],
+  // 'chess_watch' 曾在此声明但全库无任何实现（BEHAVIOR_SCRIPTS/registerActivity/
+  // 直连 Task 均无对应），是命名历史遗留的死声明——真正的路由是同名的
+  // 'chess_onlooker'（下面已声明），check-behavior-data.mjs 新规则（tasks.md P-4）
+  // 抓到后核实删除，非本轮改动引入。
+  activities: ['talk', 'chess_onlooker'],
   traits: {},
   cameraReaction: 'neutral',
-  socialWeights: { push: 0.02, give_item: 0.04, handshake: 0.05, point_at: 0.04 },
+  // P-2 重标定：同 PEDESTRIAN 注记（每次掷骰概率，×0.6 换算自旧值）。
+  socialWeights: { push: 0.01, give_item: 0.02, handshake: 0.03, point_at: 0.02 },
 };
 
 // 摊主：从地图边缘入场 → 路由到 stall 的 seller 槽 → 常驻经营，无正常状态机转换
@@ -216,6 +257,7 @@ export const PROFILES = {
   pedestrian:     PEDESTRIAN,
   businessman:    BUSINESSMAN,
   tourist:        TOURIST,
+  child:          CHILD,
   chess_player:   CHESS_PLAYER,
   chess_onlooker: CHESS_ONLOOKER,
   stall_seller:   STALL_SELLER,

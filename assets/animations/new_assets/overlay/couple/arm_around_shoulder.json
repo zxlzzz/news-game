@@ -1,0 +1,179 @@
+{
+  "kind": "overlay",
+  "participants": [
+    {
+      "role": "holder"
+    },
+    {
+      "role": "receiver",
+      "dx": 41.33333206176758
+    }
+  ],
+  "keyframes": [
+    {
+      "holder": {},
+      "receiver": {
+        "body": [
+          8,
+          2
+        ],
+        "neck": [
+          8,
+          2
+        ],
+        "head": [
+          8,
+          2
+        ],
+        "l_elbow": [
+          8,
+          2
+        ],
+        "l_hand": [
+          8,
+          2
+        ],
+        "r_elbow": [
+          8,
+          2
+        ],
+        "r_hand": [
+          8,
+          2
+        ],
+        "l_knee": [
+          8,
+          2
+        ],
+        "l_foot": [
+          8,
+          2
+        ],
+        "r_knee": [
+          8,
+          2
+        ],
+        "r_foot": [
+          8,
+          2
+        ]
+      }
+    },
+    {
+      "holder": {
+        "r_elbow": [
+          8,
+          -10
+        ],
+        "r_hand": [
+          17,
+          -15
+        ]
+      },
+      "receiver": {
+        "body": [
+          8,
+          2
+        ],
+        "neck": [
+          8,
+          2
+        ],
+        "head": [
+          8,
+          2
+        ],
+        "l_elbow": [
+          8,
+          2
+        ],
+        "l_hand": [
+          8,
+          2
+        ],
+        "r_elbow": [
+          8,
+          2
+        ],
+        "r_hand": [
+          8,
+          2
+        ],
+        "l_knee": [
+          8,
+          2
+        ],
+        "l_foot": [
+          8,
+          2
+        ],
+        "r_knee": [
+          8,
+          2
+        ],
+        "r_foot": [
+          8,
+          2
+        ]
+      }
+    },
+    {
+      "holder": {
+        "r_elbow": [
+          10,
+          -28
+        ],
+        "r_hand": [
+          28,
+          -47
+        ]
+      },
+      "receiver": {
+        "body": [
+          8,
+          2
+        ],
+        "neck": [
+          8,
+          2
+        ],
+        "head": [
+          8,
+          2
+        ],
+        "l_elbow": [
+          8,
+          2
+        ],
+        "l_hand": [
+          8,
+          2
+        ],
+        "r_elbow": [
+          8,
+          2
+        ],
+        "r_hand": [
+          8,
+          2
+        ],
+        "l_knee": [
+          8,
+          2
+        ],
+        "l_foot": [
+          8,
+          2
+        ],
+        "r_knee": [
+          8,
+          2
+        ],
+        "r_foot": [
+          8,
+          2
+        ]
+      }
+    }
+  ]
+}

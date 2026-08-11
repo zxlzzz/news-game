@@ -1,5 +1,11 @@
 # 目标管线立法 v1 (r2.6)
 
+> **⚠️ M-1 后记（信任路径重构，晚于本文）**：本文描述的恢复层已大幅缩减——
+> `RECOVERY_RULES`（progress-monitor 两击制）、`SAFETY_RULES.{lookahead,separation,
+> wall_avoid}` 及 `BehaviorManager#_separate` 均已删除。现存卡死/超时机制仅剩
+> `goal.timeout`（goal 驱动）+ 规划期 `_fireBlocked`/wander 重选 + `StuckProbe`（纯观测）。
+> 下文涉及这些表/机制的行为历史记录，权威现状见 `docs/contracts/movement-dataflow.md`。
+
 **类型**：normative（失效代码变更须同 commit 更新本文件）
 **状态**：finalized（2026-07-17；r2.6 修订 2026-07-19）；N-1 已落地（3cd1f99）；N-2a 已落地（97c1e44）；N-2b 已落地（0dcf420）；N-3 已落地（3607cbc / f7899b7 / 603307f / 1c0f789 / 74d277a）；@deprecated compat 迁移：D2-d；onDone 完备化 + 安全网：G-1
 **取代**：`docs/audits/behavior-redundancy-2026-07.md` 附录 C（作废）；本文件 r1（2026-07-16，被否决——三刀降级为常量改名、Goal 接口伪造为现状、冻结 bug 缺失）
@@ -39,7 +45,7 @@ Intent ──► Planning ──► Steering ──► Physics
 
 ### 1.2 Planning 层（规划层）
 
-**职责**：dest → 路点序列。道路穿越是**代价**（ROAD cost=250 的格子）而非**流程**——不存在"过街子程序"。
+**职责**：dest → 路点序列。道路穿越是**代价**（`ZONE.ROAD` 格，默认表代价 250）而非**流程**——不存在"过街子程序"。
 
 **现状文件**：`nav/NavGrid.js`、`nav/AStar.js`、`nav/PathPlanner.js`。差距：`WalkMode.js#planCrossing` 把穿越做成了流程组合，属违章建筑，N-2 拆除。
 
@@ -108,7 +114,7 @@ publishGoal(npc, dest, timeout, (result) => {
 | **到达裁决表** `ARRIVAL_RULES` | Steering | `js/behavior/SteeringDecision.js` | 责任 1 A–H：routing 终点 20/8、路点推进 8、navPath 推进 8、walk 终点 6、nextTarget 角切 2、长椅半径 80×2 |
 | **恢复裁决表** `RECOVERY_RULES` | Physics | `js/behavior/Motor.js` | 责任 2 A–F：progress monitor 1.5s/15px、GotoTask watchdog 2s/8px、modeDirect 超时 ??60、routing 超时 ??30、（StuckProbe 除外）、stateDur 转换 |
 | **安全网裁决表** `SAFETY_RULES` | Physics | `js/behavior/Motor.js` | 责任 3 A–G：bounds clamp、escape、wall-slide、Lookahead 参数、zone 修正、Npc 夹取、nearestWalkable fallback |
-| **规划裁决表** `PLANNING_RULES` | Planning | `js/behavior/nav/PathPlanner.js` | 责任 4/8：ROAD 代价政策（default 250/jaywalk 3）、斑马线管代价 2/半宽 20 |
+| **规划裁决表** `DEFAULT_ZONE_COSTS` | Planning | `js/behavior/nav/NavGrid.js` | 责任 4/8：zone→代价表（BLOCKED 0 / SIDEWALK 1 / GRASS 8 / ROAD 250 / CROSSWALK 2）。Z-1 起取代 `PLANNING_RULES`：jaywalk 覆盖（ROAD→3）住 `PlanService.JAYWALK_ROAD_COST`，斑马线管半宽 20 是几何常量住 `NavGrid.CROSSWALK_HALF_W`（不再是代价政策） |
 
 StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单注 keep）。
 
@@ -139,6 +145,14 @@ StuckProbe 永久保持纯观测，不入表、不受铁律③约束（白名单
 - 跨侧能力装膛不击发：现存调用方均有同侧检查，无人请求跨侧路径
 
 **验收（静态）**：`check-invariants.mjs` 全绿含 Rule 8；`=== ROAD` 计数 4（end snap / A* eff×3）；`grep -n "import" NavGrid.js` 无 PathPlanner。
+
+> **已被 Z-1 取代**（zone-profile split）：`PLANNING_RULES`、`opts.roadCost`、`bake()` 的
+> `planningRules` 参数、`_bakeCrosswalks` 均已删除；NavGrid 改烘焙 `ZONE.*` 语义 ID，
+> 代价改由 `DEFAULT_ZONE_COSTS` + `profile.zoneCosts` 查表，`plan()` 第 6 参收 `zoneCosts`。
+> 上述交付项作为历史保留，当前住址见 §3 表与 `docs/contracts/movement.md`。
+> check-invariants Rule 8 因三个字段名全部消失而变为空守卫（恒绿），保留待 Z-2 系列改写。
+> **M-1 已改写**（见 docs/roadmap.md）：Rule 8 现守 `DEFAULT_ZONE_COSTS`
+> （`NavGrid.js`）+ `_zoneCostsFor`（`PlanService.js`）这一真实住址，不再是空规则。
 
 ### N-2b：Goal 通道（任务退化为发 Goal 收 result）✅ 0dcf420
 

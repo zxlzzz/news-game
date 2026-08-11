@@ -7,7 +7,8 @@
  *   worldContainer     — 受相机（scroll/zoom）控制：
  *     bgGraphics         静态地面（道路/人行道/树木），只绘制一次
  *     entityGraphics     所有 Entity（建筑、道具、NPC），每帧按Y排序重绘
- *                        （stall/tree 用 _sortY 上移排序基准以遮挡后方 NPC）
+ *                        （_sortY 覆盖排序基准：sign +9 排得更靠前；tree 负偏移排得
+ *                         更靠后让 NPC 走树前；stall 用默认 y。见各 footprint 的 sortDY）
  *     vfGraphics         取景框 UI（世界坐标）
  *     （DebugOverlay 的世界浮标也挂这里）
  *   uiContainer        — 屏幕固定 HUD（文本/按钮/闪光/调试面板）
@@ -24,6 +25,7 @@ import { SceneInitializer } from './SceneInitializer.js';
 import {
   WORLD_WIDTH, WORLD_HEIGHT,
   GRAY_SKY, SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y,
+  initLayout,
 } from '../core/Layout.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 import { expandSceneData }  from '../core/sceneData.js';
@@ -33,9 +35,10 @@ import { clipLibrary } from '../core/ClipLibrary.js';
 import { clockUpdate, gameTimeStr, setClockSpeed, setGameTime } from '../core/GameClock.js';
 import { drawNavDebug } from '../behavior/nav/NavGrid.js';
 import { audit } from '../debug/MovementAudit.js';
-import { vision, text, setLastSnapshot } from '../news/providers.js';
+import { vision, text, interrogate, setLastSnapshot } from '../news/providers.js';
 import { NewsArchive } from '../news/NewsArchive.js';
 import { NewsUI } from '../news/NewsUI.js';
+import { WitnessDebugPanel } from '../debug/WitnessDebugPanel.js'; // 一次性调试工具，tasks.md P-8，可整体删除
 
 
 export class StreetScene {
@@ -100,9 +103,11 @@ export class StreetScene {
     this.vfGraphics         = mkLayer(this.worldContainer, 4);
 
     const sceneData = expandSceneData(this.cache.json.get('scene_data'));
+    // 布局参数注入：必须在 SceneRenderer / SceneInitializer / 任何 entity 创建之前
+    initLayout(sceneData);
     const layout = sceneData.layout;
 
-    const sceneRenderer = new SceneRenderer(this.bgGraphics, this.skyGraphics, layout);
+    const sceneRenderer = new SceneRenderer(this.bgGraphics, this.skyGraphics, layout, sceneData.ground);
     sceneRenderer.drawAll();
 
     this.stickRenderer = new StickRenderer(this);
@@ -174,6 +179,12 @@ export class StreetScene {
       else if (k === 'c') this._takePhoto();
       else if (k === 's') this._newsUI?.openSettings();
       else if (k === 'a') { if (this._newsUI?.isOpen()) this._newsUI.close(); else this._newsUI?.openArchive(); }
+      else if (k === 'w') {
+        // 一次性调试工具（tasks.md P-8）：跟 NewsUI 面板互斥，避免两个居中
+        // overlay 叠在一起
+        this._newsUI?.close();
+        if (this._witnessPanel?.isOpen()) this._witnessPanel.close(); else this._witnessPanel?.open();
+      }
     });
     window.addEventListener('keyup', (e) => { if (keyMap[e.key]) this.keys[keyMap[e.key]] = false; });
 
@@ -196,7 +207,7 @@ export class StreetScene {
     const W = this.viewW;
     const H = this.viewH;
 
-    this.uiText = this.add.text(10, 10, '← → 滚动  |  滚轮缩放  Z 重置  |  拖动取景框 · 拖右下角缩放  |  C 拍照  A 存档  S 设置  |  P 导出  D 调试', {
+    this.uiText = this.add.text(10, 10, '← → 滚动  |  滚轮缩放  Z 重置  |  拖动取景框 · 拖右下角缩放  |  C 拍照  A 存档  S 设置  |  P 导出  D 调试  W 目击调试面板', {
       fontFamily: '"JetBrains Mono", monospace', fontSize: '13px', color: '#555555',
       backgroundColor: 'rgba(240,236,228,0.85)', padding: { x: 6, y: 4 },
     }).setScrollFactor(0).setDepth(100);
@@ -220,7 +231,13 @@ export class StreetScene {
     this._newsUI = new NewsUI(
       document.getElementById('news-ui-root'),
       this._newsArchive,
-      { vision, text },
+      { vision, text, interrogate },
+    );
+
+    // 一次性调试工具（tasks.md P-8），可整体删除——见 WitnessDebugPanel.js 头注释
+    this._witnessPanel = new WitnessDebugPanel(
+      document.getElementById('news-ui-root'),
+      this.behaviorManager,
     );
   }
 
@@ -313,8 +330,22 @@ export class StreetScene {
     setLastSnapshot(entitySnapshot);
     const visionPromise = vision.describe(photoRef);
 
+    // 可审问目击者 = 本次拍摄捕捉到的、真正"目击过点什么"的 NPC。
+    // 入镜 ≠ 目击——视觉/听觉双通道感知裁决只在事件发生的那一刻跑
+    // （W-7a：BehaviorManager 帧序 1.5，drain 事件时对候选 NPC 逐个裁决），
+    // 不在拍照这一刻跑；拍照只负责从已经产生的 claims 里筛，不得为了这次
+    // 取景重新触发一轮裁决判定，本文件因此不接触该裁决层的任何符号。
+    // 有 mem('belief').claims 非空才算真正目击过，只是入镜但什么都没看见的
+    // NPC（背对事件/隔太远/在玩手机）不出现在可审问列表里。
+    const witnesses = vf.capturedEntities.filter(
+      e => typeof e.mem === 'function' && (e.mem('belief').claims?.length > 0)
+    );
+    const hasUnwitnessingNpc = vf.capturedEntities.some(
+      e => typeof e.mem === 'function' && !(e.mem('belief').claims?.length > 0)
+    );
+
     this.captureText.setText(`已拍摄 ${vf.capturedEntities.length} 个目标`).setColor('#226600');
-    this._newsUI.openComposer({ photoRef, entitySnapshot, visionPromise });
+    this._newsUI.openComposer({ photoRef, entitySnapshot, visionPromise, witnesses, hasUnwitnessingNpc });
   }
 
   _clampViewfinderToViewport() {
@@ -368,7 +399,6 @@ export class StreetScene {
 
     this.entityGraphics.clear();
     const _extras = this.propManager ? this.propManager.getDrawables() : [];
-    this.entityManager.drawShadows(this.entityGraphics, _extras);
     this.entityManager.draw(this.entityGraphics, _extras);
     if (window.__navDebug) drawNavDebug(this.entityGraphics);
 

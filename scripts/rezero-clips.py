@@ -32,6 +32,13 @@ import json
 import os
 import sys
 
+# Windows console default codepage (gbk/cp936 etc.) can't encode the ✓/✗
+# glyphs used below and crashes with UnicodeEncodeError *after* the fix has
+# already been written — reconfigure stdout to UTF-8 so verification output
+# doesn't mask a successful write behind a spurious traceback.
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MANIFEST_PATH = os.path.join(BASE, 'assets', 'manifest.json')
 SKELETON_PATH = os.path.join(BASE, 'assets', 'skeleton.json')

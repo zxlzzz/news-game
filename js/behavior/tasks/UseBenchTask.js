@@ -32,7 +32,7 @@ export class UseBenchTask {
     this._runner = runner;
 
     // Already adjacent to a bench? Sit immediately.
-    const near = this._envQuery.nearestFreeBench(npc, ARRIVAL_RULES.bench_radius.threshold);
+    const near = this._envQuery.nearestFreeBench(npc, ARRIVAL_RULES.bench_radius.threshold * npc.scale);
     if (near) {
       this._bench = near;
       sitDown(npc, near);
@@ -72,7 +72,7 @@ export class UseBenchTask {
         const r = this._goto.tick(npc, dt);
         if (r === 'abort') return 'abort';
         if (r === 'done') {
-          const bench = this._envQuery.nearestFreeBench(npc, ARRIVAL_RULES.bench_radius.threshold);
+          const bench = this._envQuery.nearestFreeBench(npc, ARRIVAL_RULES.bench_radius.threshold * npc.scale);
           if (!bench) return 'abort';
           this._bench = bench;
           sitDown(npc, bench);

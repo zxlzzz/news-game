@@ -1,5 +1,6 @@
 {
   "skeleton": "dog",
+  "groundTravel": 55,
   "keyframes": [
     {
       "body_back": [

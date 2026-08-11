@@ -50,6 +50,29 @@ export const BEHAVIOR_SCRIPTS = {
     steps: [ { op: 'goto', aff: 'use_trash' } ],
   },
 
+  // stall_buyer — tasks.md P-4：补上一直悬空的买家路由。'use' 委托给
+  // StallBuyerTask（走到摊位 buyer 槽 → SocialLayer.onSlotArrival 凑局），
+  // 找不到"有卖家守着"的摊位就直接 abort，同其余 desires 一样走标准失败计数。
+  stall_buyer: {
+    tier: 0,
+    weight: 0.35,
+    interruptible: true,
+    steps: [ { op: 'use', task: 'stall_buyer' } ],
+  },
+
+  // play_guitar — tier 1，A-1 首个非 null heldPose 的接线样板
+  play_guitar: {
+    tier: 1,
+    weight: 0.15,
+    interruptible: true,
+    steps: [
+      { op: 'attach', item: 'guitar' },
+      { op: 'goto',   aff:  'tree_shade' },
+      { op: 'pose',   clip: 'lift', dur: [10, 20] },
+      { op: 'detach', item: 'guitar' },
+    ],
+  },
+
   /*
   // sweep — tier 1，需要 sweep clip 入库后启用
   sweep: {

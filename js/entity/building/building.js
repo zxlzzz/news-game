@@ -4,8 +4,8 @@
  * 独占写入权：_leanLeft、_leanRight 由 EnvironmentQuery 的
  *   nearestFreeWallSpot / releaseWallSpot 负责写入；BuildingEntity 本身不持有这些状态。
  *
- * 出口注册：SceneInitializer 通过 BUILDING_EXIT_XS 注册各楼栋出口（type:'building'），
- *   key 格式为 'building_a/b/c/d'；BuildingEntity 不直接参与出口逻辑。
+ * 出口注册：SceneInitializer 按 scene.json#buildings[].door 逐栋注册出口
+ *   （type:'building'，id 为 `building_${x}`）；BuildingEntity 不直接参与出口逻辑。
  */
 
 /** 建筑调色板 — 允许四档之外的灰度以区分楼体，但必须集中定义于此，禁止散落 */

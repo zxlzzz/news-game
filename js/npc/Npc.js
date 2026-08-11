@@ -6,11 +6,14 @@
  * CONTRACT
  *   Npc.update() 帧内执行顺序（代码顺序，非 Motor 托管 NPC 与托管 NPC 均遵守）：
  *     1. leash 同步：if leashTarget && !_motorInstalled → 直接覆写 x/y/direction
- *     2. 动画帧推进：frameTimer += delta；playOnce animDone 检测；frameIndex 步进
+ *     2. 动画帧推进：cycle 且 groundTravel 有效的 clip → 距离驱动（L-2，见下）；
+ *                 其余 clip → frameTimer += delta；playOnce animDone 检测；frameIndex 步进
  *     3. 物理积分：_motorInstalled → integratePhysics(this, delta)；
  *                 否则（无 leash）→ 内联 direction×speed / vy 积分
  *     4. customUpdate 回调（最后执行，可读取已更新的 x/y/direction）
- *   WRITES:   x, y, direction（leash 路径）；frameIndex, animDone（动画路径）
+ *   WRITES:   x, y, direction（leash 路径）；frameIndex, animDone（动画路径）；
+ *             phase, phaseAnchorX/Y（距离驱动相位，L-2，Npc 自记，不向 Motor/
+ *             BehaviorManager 取，避免与帧内执行顺序耦合）
  *   MUST NOT: 在 customUpdate 中再次积分位置（步骤 3 已完成）
  */
 
@@ -18,7 +21,8 @@ import { Entity } from '../core/Entity.js';
 import { depthGray, BUILDING_BASE_Y } from '../core/Layout.js';
 import { integratePhysics } from '../behavior/Motor.js';
 import { clipLibrary } from '../core/ClipLibrary.js';
-import { getNavGrid, ROAD } from '../behavior/nav/NavGrid.js';
+import { getNavGrid, ZONE } from '../behavior/nav/NavGrid.js';
+import { getProfile } from './NpcProfile.js';
 
 // 行为状态 → 标签
 const STATE_TAGS = {
@@ -28,6 +32,9 @@ const STATE_TAGS = {
   lean_wall: 'leaning', squat: 'squatting', sit_ground: 'sitting',
   lie_bench: 'lying', get_up: 'getting_up',
   loiter: 'loitering',
+  // Patch F：STATE_DEFS.chess.anim 改 'stand' 后不能再指望 ANIM_TAGS['chess'] 兜底
+  // （那条现在读不到，因为 npc.animation 已经是 'stand'），标签改走这里。
+  chess: 'sitting',
 };
 // overlay → 额外语义标签（overlay 名本身也会作为标签加入）
 const OVERLAY_EXTRA_TAGS = {
@@ -40,6 +47,18 @@ const ANIM_TAGS = {
   sit_bench: 'sitting', lie_ground: 'lying', fall: 'falling',
 };
 
+
+// ─── L-2: 距离驱动相位 → frameIndex 查表 ────────────────────────────────────
+// anim.frameCumFrac[i] = 该帧开始前占循环的累积占比（ClipLibrary#_buildFrameCumFrac，
+// 均匀 dur 时退化为 i/frameCount）。取满足 cumFrac[i] <= phase 的最后一个 i。
+function _frameFromPhase(anim, phase) {
+  const table = anim.frameCumFrac;
+  let idx = 0;
+  for (let i = 0; i < table.length; i++) {
+    if (table[i] <= phase) idx = i; else break;
+  }
+  return idx;
+}
 
 export class NPC extends Entity {
   static _nextId = 1;
@@ -78,6 +97,13 @@ export class NPC extends Entity {
     this.frameIndex = 0;
     this.frameTimer = 0;
 
+    // 距离驱动相位（L-2）：cycle 且 groundTravel 有效的 clip 用，其余 clip 不消费。
+    // phase 是 [0,1) 循环内位置；phaseAnchorX/Y 是上次推进时的位置，用来算本帧
+    // 实际位移模长——Npc 自己维护，不向 Motor/BehaviorManager 取。
+    this.phase        = 0;
+    this.phaseAnchorX = this.x;
+    this.phaseAnchorY = this.y;
+
     this.minX = config.minX ?? -100;
     this.maxX = config.maxX ?? 2100;
     this.minY = config.minY ?? BUILDING_BASE_Y;
@@ -99,6 +125,15 @@ export class NPC extends Entity {
     this.npcType   = config.npcType ?? null;   // 自身属性（businessman/tourist...）
     this.state     = config.state   ?? null;   // 当前行为状态（walk/run/stand...）
     this.bond      = null;                      // 活跃社交关系（SocialBond）
+
+    // 骨架体型（R-1）：默认取当前动画 clip 自带的 skeleton 名（human/dog），
+    // profile.skeleton 声明时优先覆盖（如 child 复用 human clip 但按小体型渲染）。
+    // skeletonScale 是 skeleton.json 对应条目的 scale，EntityManager 每帧乘进 npc.scale；
+    // skeletonName 传给 StickRenderer 作 headRadius 查表键。
+    const profile = this.npcType ? getProfile(this.npcType) : null;
+    const initialAnim = this.renderer?.getAnimation(this.animation);
+    this.skeletonName  = profile?.skeleton ?? initialAnim?.skeleton ?? 'human';
+    this.skeletonScale = clipLibrary.skeletons?.[this.skeletonName]?.scale ?? 1;
 
     // Modifier 系统（替代旧的 overlay / overlayPose / persistentOverlay）
     this.traits    = config.traits ?? [];       // string[]，生成时赋值，之后不变
@@ -228,12 +263,12 @@ export class NPC extends Entity {
     // 5) 社交状态
     if (this.bond) out.add('talking');
 
-    // 6) 空间道路标签（crossing / jaywalking — N-2b: 从 NavGrid 格代价空间派生，取代 planCrossing 标签生命周期）
+    // 6) 空间道路标签（crossing / jaywalking — N-2b: 从 NavGrid zone 空间派生，取代 planCrossing 标签生命周期）
     if (this._motorInstalled) {
       const grid = getNavGrid();
       if (grid) {
         const { gx, gy } = grid.worldToCell(this.x, this.y);
-        if (grid.cost(gx, gy) === ROAD) {
+        if (grid.zone(gx, gy) === ZONE.ROAD) {
           out.add('crossing');
           if (this.mem('motor').goal?.meta?.jaywalk) out.add('jaywalking');
         }
@@ -277,17 +312,35 @@ export class NPC extends Entity {
     // 动画帧推进
     const anim = this.renderer.getAnimation(this.animation);
     if (anim && !this.animDone) {
-      this.frameTimer += delta;
-      const interval = 1000 / anim.fps;
-      if (this.frameTimer >= interval) {
-        this.frameTimer -= interval;
-        if (this.playOnce && this.frameIndex >= anim.frameCount - 1) {
-          this.animDone = true;
-        } else {
-          this.frameIndex = (this.frameIndex + 1) % anim.frameCount;
+      if (anim.kind === 'cycle' && anim.groundTravel) {
+        // L-2：距离驱动相位——cycle 且 groundTravel 有效的 clip，相位由「自上次推进
+        // 以来的实际位移模长 / (groundTravel × npc.scale)」推进，与 fps/delta 无关。
+        // Npc 自己记 phaseAnchorX/Y，不向 Motor/BehaviorManager 取（避免和帧内执行
+        // 顺序耦合，见 movement-dataflow.md）。phase 是 [0,1) 循环内位置，跨 clip 切换
+        // 不清零（连续的步频概念）；映射到 frameIndex 用 anim.frameCumFrac 累积时间表
+        // （非均匀 dur 时按各帧占循环的真实比例取帧，均匀 dur 退化为等分）。
+        const dist       = Math.hypot(this.x - this.phaseAnchorX, this.y - this.phaseAnchorY);
+        const travelUnit = anim.groundTravel * this.scale;
+        if (dist > 0 && travelUnit > 0) {
+          this.phase = (this.phase + dist / travelUnit) % 1;
+          this.frameIndex = _frameFromPhase(anim, this.phase);
+        }
+      } else {
+        // 时间驱动路径（非 cycle，或 cycle 但 groundTravel 无效）——不变
+        this.frameTimer += delta;
+        const interval = 1000 / anim.fps;
+        if (this.frameTimer >= interval) {
+          this.frameTimer -= interval;
+          if (this.playOnce && this.frameIndex >= anim.frameCount - 1) {
+            this.animDone = true;
+          } else {
+            this.frameIndex = (this.frameIndex + 1) % anim.frameCount;
+          }
         }
       }
     }
+    this.phaseAnchorX = this.x;
+    this.phaseAnchorY = this.y;
 
     // 物理积分：全部 NPC 经 Motor.integratePhysics；未注册 NPC（仅 leash 狗）原地保持
     if (this._motorInstalled) {
@@ -311,7 +364,7 @@ export class NPC extends Entity {
     this.renderer.draw(
       g, this.animation, this.frameIndex,
       this.x, this._renderY(), this.scale, this.direction,
-      color, 1, overrides
+      color, 1, overrides, this.skeletonName
     );
   }
 }

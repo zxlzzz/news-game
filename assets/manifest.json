@@ -106,8 +106,8 @@
       "path": "animations/overlay/check_watch.json",
       "kind": "overlay"
     },
-    "check_watch_static": {
-      "path": "animations/overlay/check_watch_static.json",
+    "check_watch_side": {
+      "path": "animations/overlay/check_watch_side.json",
       "kind": "overlay"
     },
     "cross_arm": {
@@ -141,6 +141,10 @@
     },
     "hunched": {
       "path": "animations/overlay/hunched.json",
+      "kind": "overlay"
+    },
+    "lift": {
+      "path": "animations/overlay/lift.json",
       "kind": "overlay"
     },
     "look_around": {
@@ -239,6 +243,14 @@
     },
     "get_up": {
       "path": "animations/transition/get_up.json",
+      "kind": "transition"
+    },
+    "hand_stand_down": {
+      "path": "animations/transition/hand_stand_down.json",
+      "kind": "transition"
+    },
+    "hand_stand_up": {
+      "path": "animations/transition/hand_stand_up.json",
       "kind": "transition"
     },
     "open_door": {

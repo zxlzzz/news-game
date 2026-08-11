@@ -8,17 +8,31 @@
  * 迁移来源：behavior-redundancy-2026-07.md 责任1（到达判定）A~H 条目。
  */
 
-// 到达裁决表
-// 每行：threshold | 语义 | 理由 | 迁移来源（审计责任1 行号）
+// 到达裁决表（U-2：threshold 改骨架单位，消费时乘 npc.scale——原世界像素值与
+// y 无关，同一条规则在远/近侧的实际宽松度相差可达 1.75 倍，见 U-2 commit）。
+// 每行：threshold（骨架单位） | 语义 | 理由 | 迁移来源（审计责任1 行号）
+//
+// M-1b（走路卡死修复，2026-08-07）：nav_waypoint / walk_goal 的世界像素宽容度
+// （threshold × npc.scale）不得超过 NavGrid.js 的 NPC_HALF_W=7（Minkowski 障碍物
+// 外扩安全边），否则"判到达"允许 NPC 停在比规划假设更靠近障碍物的位置——路点
+// 本身是安全格心（外扩边保证的），但松弛容差可能让 NPC 实际落点比格心更贴边，
+// 贴到刚好卡进障碍物凸出边缘的程度，导致下一腿"整向被挡+单轴也被挡"卡死
+// （只剩垂直让行分支能动，原地小步来回抖，直到 goal 超时才解脱）。human 骨架
+// 最大 npc.scale ≈ 0.369（depthScale 峰值 0.434 × skeletonScale 0.85，
+// PARK_BOTTOM 深度），故两条 threshold 按 7 / 0.369 ≈ 19 封顶，留出余量定为
+// 16 / 14（原 30 / 23，实测偏大——最大 scale 下分别越界到 11.1px / 8.5px，
+// 均超过 7px 安全边）。
 export const ARRIVAL_RULES = {
-  nav_waypoint:           { threshold: 8,  reason: 'navPath 中间路点推进',                                src: '责任1-C' },
-  walk_goal:              { threshold: 6,  reason: 'walk 分支终点，比路点紧 2px 防过早 onArrive',         src: '责任1-D' },
-  bench_radius:           { threshold: 80, reason: '长椅"已在附近"半径，语义非到达点',                    src: '责任1-G/H' },
-  exit_building:          { threshold: 20, reason: '楼门离场判宽，与 routing_final_building 对齐',        src: 'N3-a' },
-  exit_offworld:          { threshold: 8,  reason: '边缘离场距离兜底；主要到达判据为 npc.x < 0 || > WORLD_WIDTH', src: 'N3-a' },
+  nav_waypoint:           { threshold: 16,  reason: 'navPath 中间路点推进（骨架单位，消费时乘 scale；封顶见上方 M-1b 注记，7/scale_max≈19）',   src: '责任1-C' },
+  walk_goal:              { threshold: 14,  reason: 'walk 分支终点，比路点紧防过早 onArrive（骨架单位，消费时乘 scale；封顶见上方 M-1b 注记）', src: '责任1-D' },
+  bench_radius:           { threshold: 305, reason: '长椅"已在附近"半径，语义非到达点（骨架单位，消费时乘 scale）',                    src: '责任1-G/H' },
+  exit_building:          { threshold: 76,  reason: '楼门离场判宽，与 routing_final_building 对齐（骨架单位，消费时乘 scale）',        src: 'N3-a' },
+  exit_offworld:          { threshold: 30,  reason: '边缘离场距离兜底；主要到达判据为 npc.x < 0 || > WORLD_WIDTH（骨架单位，消费时乘 scale）', src: 'N3-a' },
 };
 
-/** 距离判定唯一出口：调用方只传 ruleId 和测量值，收布尔值。 */
-export function arrived(ruleId, dist) {
-  return dist < ARRIVAL_RULES[ruleId].threshold;
+/** 距离判定唯一出口：调用方只传 ruleId、测量值（世界像素）、scale，收布尔值。
+ *  threshold 是骨架单位，本函数内部乘 scale 换算成世界像素再比较——调用方不得
+ *  自行预乘，也不得省略 scale（U-2：缺失就是配置错误，不给默认值）。 */
+export function arrived(ruleId, dist, scale) {
+  return dist < ARRIVAL_RULES[ruleId].threshold * scale;
 }

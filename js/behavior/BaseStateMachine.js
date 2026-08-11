@@ -4,13 +4,15 @@
  *              mot.path idx advance (arrival detection).
  *   WRITES:    mot.vel (walk branch); mot.path.idx (waypoint advance);
  *              mot.goal = null + onDone callback (arrival);
- *              npc.direction (steer + departure);
+ *              npc.direction (non-walk-state only: lean_wall spot facing, departure exit facing);
  *              npc.mem('motor').wallSpot (lean_wall assignment).
  *   READS:     npc.state, npc.roamTarget, npc.mem('motor').{walkMode,goal,path},
  *              NavGrid singleton.
  *   MUST NOT:  write npc.speed/state — use Motor.setState;
  *              write npc.x/y — use Motor.setXY/nudgeXY;
- *              write mot.path (use PlanService); call pickModeTarget outside steerRoam.
+ *              write mot.path (use PlanService); call pickModeTarget outside steerRoam;
+ *              write npc.direction while npc.state ∈ {walk,run,jog,ride} — that address is
+ *              Motor.js#integratePhysics (L-1: real-displacement-derived, see movement.md).
  *
  * BaseStateMachine — 集中式转换表状态机（Unity 风格）
  *
@@ -53,9 +55,8 @@ import {
   isRoadZone, modeWander,
 } from './WalkMode.js';
 
-import { setState, STATE_DEFS, setXY, nudgeXY, setAnimation, RECOVERY_RULES, SAFETY_RULES, setWalkMode } from './Motor.js';
-import { getNavGrid, ROAD } from './nav/NavGrid.js';
-import { applyLookahead } from './nav/Lookahead.js';
+import { setState, STATE_DEFS, setXY, setAnimation, SAFETY_RULES, setWalkMode } from './Motor.js';
+import { getNavGrid, ZONE } from './nav/NavGrid.js';
 import { arrived } from './SteeringDecision.js';
 import { ensureWanderPath, publishGoal } from './nav/PlanService.js';
 import { despawnNpc } from '../npc/despawn.js';
@@ -216,17 +217,6 @@ function _tickState(npc, envQuery, profile, dt) {
   if (npc.state === 'loiter') tickLoiter(npc, profile, dt);
 }
 
-// ─── 朝向更新（单一写入点，带 dirCD 迟滞）───────────────────────────────────────
-function updateFacing(npc, vx, spd, dt) {
-  const mot = npc.mem('motor');
-  mot.dirCD = (mot.dirCD || 0) - dt;
-  const desired = vx >= 0 ? 1 : -1;
-  if (Math.abs(vx) > spd * 0.35 && desired !== npc.direction && mot.dirCD <= 0) {
-    npc.direction = desired;
-    mot.dirCD = 0.45;
-  }
-}
-
 // ─── 二维漫游转向 ─────────────────────────────────────────────────────────────
 function steerRoam(npc, envQuery, profile, dt) {
   const mot = npc.mem('motor');
@@ -241,6 +231,9 @@ function steerRoam(npc, envQuery, profile, dt) {
     if (!npc.roamTarget) pickModeTarget(npc, envQuery);
     if (!npc.roamTarget) return;
     ensureWanderPath(npc, npc.roamTarget);
+    // M-1: 目标不可达（规划失败）→ 当帧丢弃 roamTarget，下帧 pickModeTarget 重选。
+    // 取代已删除的 progress-monitor wander 分支（1.5s 定时清目标）；即时、无 churn。
+    if (!mot.path) { npc.roamTarget = null; return; }
   }
   if (!mot.path) return;
 
@@ -251,17 +244,27 @@ function steerRoam(npc, envQuery, profile, dt) {
   const dist = Math.hypot(dx, dy);
 
   // ── Intermediate waypoint arrival ──────────────────────────────────────
-  if (path.idx < path.pts.length - 1 && arrived('nav_waypoint', dist)) {
+  if (path.idx < path.pts.length - 1 && arrived('nav_waypoint', dist, npc.scale)) {
     path.idx++;
     return;
   }
 
   // ── Final destination arrival ──────────────────────────────────────────
-  const finalDest   = mot.goal ? mot.goal.dest : npc.roamTarget;
+  // M-1b（走路卡死修复）：判到达用路径的真实终点（path.pts 最后一个点），不用
+  // 原始 goal.dest / roamTarget。原因：目的地落在 ZONE.BLOCKED/ROAD 格（比如自行车
+  // 道、障碍物内部）时，PathPlanner.plan() 会把路径终点吸附到最近可走格中心，
+  // 这个吸附点和原始请求点可能差出好几个骨架单位——超过 arrived() 的判定半径。
+  // NPC 走到（且只能走到）这个吸附终点后 dist→0，但如果还拿原始点算 distToFinal，
+  // 这个距离会卡在吸附差值上永远大于阈值：到不了、也不判定到达，NPC 就贴着终点
+  // 原地小步来回抖（每帧超调、方向来回翻转），直到 goal 超时才解脱（M-1 删除了
+  // 卡死重规划兜底，没人会提前打断它）。path.pts 的最后一个点就是 wp 在
+  // path.idx 走到底时的值，天然可达——离场（offWorld）目标是例外，ensurePath 已经
+  // 把真实的场外坐标手动 push 成路径最后一点，此处取值与原逻辑一致。
+  const finalDest   = path.pts[path.pts.length - 1];
   const distToFinal = Math.hypot(finalDest.x - npc.x, finalDest.y - npc.y);
   const _offWorld   = mot.goal?.meta?.offWorld;
   if ((_offWorld && (npc.x < 0 || npc.x > WORLD_WIDTH)) ||
-      arrived(mot.goal?.meta?.arrivalRule ?? 'walk_goal', distToFinal)) {
+      arrived(mot.goal?.meta?.arrivalRule ?? 'walk_goal', distToFinal, npc.scale)) {
     mot.path = null;
     if (mot.goal) {
       const cb = mot.goal.onDone;
@@ -284,17 +287,19 @@ function steerRoam(npc, envQuery, profile, dt) {
   }
 
   // ── Steer toward current waypoint ─────────────────────────────────────
-  const total = (npc.walkSpeed || 26) * (npc.state === 'run' ? 2.4 : 1);
+  // U-2: walkSpeed 是骨架单位/秒，落到世界像素的 vx/vy 必须乘 npc.scale
+  // （scale 随 y 变，不能预先假设一个深度）。
+  const total = npc.walkSpeed * npc.scale * (npc.state === 'run' ? 2.4 : 1);
   if (dist === 0) return;
-  const { vx, vy } = applyLookahead(npc, dx / dist * total, dy / dist * total, SAFETY_RULES.lookahead);
-  if (vx !== 0 && Math.sign(vx) !== npc.direction) audit.count(npc, 'dir_mismatch');
+  // M-1: 直接朝当前 waypoint 出速度——A* 路径已无碰撞，无需前瞻旋转/近墙减速。
+  const vx = dx / dist * total, vy = dy / dist * total;
 
-  // Jaywalk sprint: road-cell → multiply velocity (NavGrid cell cost spatial derivation)
+  // Jaywalk sprint: road-cell → multiply velocity (NavGrid zone spatial derivation)
   const _grid  = getNavGrid();
   const _inLane = npc.y >= BIKE_LANE_FAR_TOP && npc.y < BIKE_LANE_NEAR_BOTTOM;
   if (_inLane && _grid) {
     const { gx: _gx, gy: _gy } = _grid.worldToCell(npc.x, npc.y);
-    if (_grid.cost(_gx, _gy) === ROAD) {
+    if (_grid.zone(_gx, _gy) === ZONE.ROAD) {
       mot.vel = { vx: vx * SAFETY_RULES.jaywalk_sprint.speedK, vy: vy * SAFETY_RULES.jaywalk_sprint.speedK };
       setAnimation(npc, SAFETY_RULES.jaywalk_sprint.anim);
     } else {
@@ -305,7 +310,6 @@ function steerRoam(npc, envQuery, profile, dt) {
     mot.vel = { vx, vy };
     if (npc.animation === SAFETY_RULES.jaywalk_sprint.anim && npc.state === 'walk') setAnimation(npc, 'walk');
   }
-  updateFacing(npc, vx, total, dt);
 }
 
 // ─── 离场系统 ─────────────────────────────────────────────────────────────────
@@ -324,9 +328,12 @@ function _routeToExit(npc, exit, ctx = {}) {
     if (exit.x < (npc.minX ?? 0))          npc.minX = exit.x - 10;
     if (exit.x > (npc.maxX ?? WORLD_WIDTH)) npc.maxX = exit.x + 10;
   }
-  // 超时按距离派生：步速兜底 26，×2 容忍绕路与让行；60s 为下限
+  // 超时按距离派生（U-2：dist 是世界像素，walkSpeed 是骨架单位/秒，
+  // 分母须换算成世界像素/秒才能相除）：步速兜底 99 骨架单位/秒（原 26 世界像素/秒
+  // ÷ 近侧人行道有效 scale 0.262 换算，防除零，正常不会触发——register() 保证
+  // 已注册 NPC 的 walkSpeed 恒非空），×2 容忍绕路与让行；60s 为下限
   const dist    = Math.hypot(tx - npc.x, ty - npc.y);
-  const timeout = Math.max(60, (dist / (npc.walkSpeed || 26)) * 2);
+  const timeout = Math.max(60, (dist / ((npc.walkSpeed || 99) * npc.scale)) * 2);
   const meta    = exit.type === 'edge' ? { offWorld: true } : { arrivalRule: 'exit_building' };
   const onDone  = (result) => {
     if (result === 'arrived') { despawnNpc(npc, 'exit-arrive', ctx); return; }

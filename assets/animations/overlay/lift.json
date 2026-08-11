@@ -1,4 +1,5 @@
 {
+  "context": { "held": "guitar" },
   "activeJoints": [
     "r_elbow",
     "r_hand"

@@ -29,8 +29,9 @@ export function initPoseCache(pc) {
   GESTURE_CLIPS = pc.gesture || {};
 }
 
-export function getHeldPoses()  { return HELD_POSES; }
-export function getTraitProps() { return TRAIT_PROPS; }
+export function getHeldPoses()    { return HELD_POSES; }
+export function getTraitProps()   { return TRAIT_PROPS; }
+export function getGestureClips() { return GESTURE_CLIPS; }
 
 /** 返回 NPC 当前用户级 held modifier（非内部、非 trait），无则 null */
 export function getHeldModifier(npc) {
@@ -38,7 +39,7 @@ export function getHeldModifier(npc) {
 }
 
 // trait 在 walk/run 时使用侧面（side）变体，其余状态用正面（front）。
-export function isSideState(state) { return state === 'walk' || state === 'run'; }
+function isSideState(state) { return state === 'walk' || state === 'run'; }
 
 // 解析 trait 变体姿态对象（含 .joints）。
 // 兼容新结构 { front, side } 与旧的扁平结构（直接含 .joints）：

@@ -34,3 +34,8 @@ export function drawDrain(g, p) {
     g.lineTo(lx, py + h - 3 * s);
   }
 }
+
+// ─── 自注册（Z-2d propRegistry）──────────────────────────────────────────────
+// 全部绘制在地面预通道，主通道无内容；visual = drawDrain 的 58×27 以 y 居中
+import { registerProp } from '../../core/propRegistry.js';
+registerProp('drain', { drawGround: drawDrain, visual: { hw: 29, up: 13.5, down: 13.5 } });

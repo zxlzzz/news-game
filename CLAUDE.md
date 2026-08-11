@@ -1,6 +1,6 @@
 # News Game — 项目指南
 
-2.5D 街道场景模拟器：PixiJS 5 原生（无打包器）+ ES modules，NPC 自主行为驱动。
+2.5D 街道场景模拟器：PixiJS 7 原生（无打包器）+ ES modules，NPC 自主行为驱动。
 运行：`start.bat`（Windows）或本地 HTTP 打开 `index.html`；无 TS，无测试框架。
 
 ---
@@ -45,6 +45,87 @@ Y 分带（`js/core/Layout.js`）：
 
 NPC 漫游：远人行道（y≈240）和公园（y≈370–490）。机动车道禁止驻留（`isRoadZone` 守卫）。
 
+**参数化**（Z-2a）：上表数值、世界尺寸、深度锚点不再是硬编码常量，而是 `export let`，
+由 `initLayout(sceneData)` 从 `scene.json` 的 `world` / `yBands` / `depth` 注入
+（`StreetScene.create()` 内，`SceneRenderer` 之前）；Layout.js 里的字面量只是 fallback。
+`yBands` 的键名必须与 Layout export 名一致。消费侧照常 `import { NEAR_Y }`——live binding。
+
+**scene.json 布局配置**（数值唯一真相在 `yBands`，其余段落只写**名字**引用它）：
+
+| 段 | 消费者 | 内容 |
+|----|--------|------|
+| `world` / `depth` / `yBands` | `Layout.initLayout` | 世界尺寸、深度锚点、12 个 Y 分带数值 |
+| `zones`（Z-2b） | `NavGrid.bake` | bands / overlays / paving / crossings → zone 烘焙 |
+| `ground`（Z-2c） | `SceneRenderer` | bands / edgeLines / tiling / grass → 地面色带 |
+| `exits` / `spawnPoints`（Z-2e） | `SceneInitializer._spawnNPCs` | 出口/生成点几何：`side`(left/right)+`margin` 解出 X，`yBand`+`yOffset` 解出 Y |
+| `features`（Z-2e） | `SceneInitializer` → `featureRegistry` | 可选场景内容数组，见下方「Feature registry」 |
+| `layout`（散列，非单一 schema） | 多消费者：`SceneRenderer`（`roadMarkings`（E-1）/ `clouds` / `chessPlaza` / `miniPark`）、`Athletes.js`（`walkPaths`）、`vehicleSpawner.js`/`WaitForBusLayer.js`（`busStops`） | 场景装饰几何/站点数据的分散配置，没有统一子 schema，每个字段各自被对应消费者读取，新增字段时各消费者自行 `_need()` 校验 |
+
+符号解析：Y 边界写分带名经 `resolveY()`，颜色写调色板名经 `resolveColor()`（`Layout.js`），
+拼错立刻抛错。**配置缺失一律抛错，不退回硬编码 fallback。**
+`zones` 与 `ground` 是**两套不同划分**：远人行道铺装色画到 `FAR_Y`（含远自行车道），
+而那段导航上是 `ZONE.ROAD`——视觉按材质切，zone 按通行性切，不可互相套用。
+
+**⚠️ 禁止在模块顶层从 Layout 值派生量**（写成函数，或延后到 init 之后计算）：注入晚于
+所有模块顶层求值，顶层派生会冻结在 fallback 默认值上。原有三处冻结均已收口（世界可
+频繁重新生成、尺寸各异，冻结会导致导航/车道/候车区错位）：`NavGrid.js` `COLS/ROWS`
+（改 fallback `let` + 构造函数按注入尺寸现算覆写）、`VehicleSpawner.js` `LANES`
+（改 `buildLanes()`，构造函数内现算）、`WaitForBusLayer.js` 原 `WAIT_ZONES`
+（随公交站坐标收口，构造函数内按 `busStops` 现算）。新增派生量务必照此办理。
+
+---
+
+## 长度量纲（U-2/U-3）
+
+**铁律**：凡有长度量纲的常数，只允许两种住址——**骨架单位**（消费时乘 `npc.scale`）
+或 **NavGrid 格**（消费时乘 `CELL`）。世界像素不是长度常数的合法单位：同一个像素值
+在近侧（`scale≈0.262`）与远侧的实际尺寸相差数倍，只在一个深度成立，换了深度就错。
+
+```js
+// ✓ 正确范式（Motor.js#_updateDirection）
+const dz = SAFETY_RULES.facing.deadZone * npc.scale;
+// ✗ 禁止：const THRESHOLD_PX = 30;（裸世界像素常数，缺单位换算）
+```
+
+- `npc.walkSpeed`（骨架单位/秒）、`ARRIVAL_RULES.*.threshold`（骨架单位）、
+  `SAFETY_RULES.facing.deadZone`（骨架单位）都遵循此律；
+  `arrived(ruleId, dist, scale)` 的第三参数不可省略。
+  （**M-1**「信任路径」重构已删除 `lookahead`/`wall_avoid`/`separation` 三组常数与整个
+  `RECOVERY_RULES`——原属此律的 `separation.baseRadius`、`{probeCells,rotProbeCells,
+  nearCells}`、`progress_monitor.movedLT` 随反应式避障/分离/卡死重规划一并移除；
+  见 movement-dataflow.md 与 Motor.js `SAFETY_RULES` 上方注记。）
+- `check-invariants.mjs` Rule 17 静态门 `ARRIVAL_RULES` / `SAFETY_RULES` /
+  `RECOVERY_RULES` / `PoseCacheBuilder` 输出：长度字段所在行（或 `PoseCacheBuilder.js`
+  声明行上方注释块）必须命中「骨架单位」或「NavGrid 格」字样，缺失即失败。新增长度
+  字段名需同步加入该规则的字段名白名单，否则静默不受保护。
+- **U-2b 重校准（2026-08-05）**：`npc.walkSpeed` 等骨架单位常数的换算基准点从
+  `NEAR_Y`（机动车道边界，scale 0.262，NPC 不驻留）改为主漫游区 `SIDEWALK_FAR_Y`
+  （y=240，scale 0.188）——原基准点不在实际漫游区内，导致远人行道步速比重构前
+  慢约 30%。**U-2c 补债（同批）**：`RECOVERY_RULES.progress_monitor.movedLT` 曾
+  遗留为裸世界像素常数（15px），U-2 把速度改骨架单位后，低 scale 区实际位移随之
+  下降，叠加 `SAFETY_RULES.lookahead.slowFactor` 近墙减速后必然跌破阈值，NPC
+  贴近障碍物即被误判卡死、反复重规划（观感：贴墙抖动/卡死）；已改骨架单位并在
+  消费处乘 `npc.scale`。`EnvironmentQuery.js` 的各类半径常数仍是世界像素，是已知
+  但暂未处理的历史债务，不在本次范围内。
+  **M-1 后记（信任路径重构）**：U-2c 描述的 `progress_monitor.movedLT` 与
+  `lookahead.slowFactor` 这套"近墙减速→误判卡死→重规划churn"机制已整体删除——
+  根因是反应式避障在无碰撞 A* 路径上添乱，而非阈值没调好。上述 U-2c 校准现已moot，
+  保留仅作历史记录。
+- **U-2d 补漏（真正主因，2026-08-05）**：U-2 只改了 `BehaviorManager.js#register`
+  里 `npc.speed>0 ? npc.speed : rand(...)` 的**兜底分支**，但全库真正大量走的是
+  **`npc.speed>0` 这条分支**——`Pedestrians.js`（`NpcProfile.js` 的 `PEDESTRIAN/
+  BUSINESSMAN/TOURIST.speedRange`，覆盖 pedestrians/park_idlers/Director 动态
+  补充三处调用点）、`DogWalker.js`、`sceneFeatures.js`（stall_sellers）里播种
+  `npc.speed` 的字面量全是 U-2 之前的世界像素值（如 `[20,34]`），从未跟着 U-2
+  换算。`register()` 把这些"世界像素值"原样当骨架单位塞进 `walkSpeed`，实际
+  速度只有设计值的 1/5～1/7（3–14px/s）——这是全库绝大多数 NPC（不是只有远
+  人行道）"看着几乎不动/贴墙卡死"的**真正主因**，U-2b/U-2c 只是修了从未被
+  实际触发的兜底路径和卡死判定的次要放大因素。已按同一基准（0.188）换算全部
+  五处：`speedRange` 三档 `[106,181]/[149,213]/[85,138]`，`DogWalker.js`
+  owner `26→138`，`sceneFeatures.js` stall_seller `28→149`。**教训**：往后任何
+  "改单位常数默认值"的迁移，必须先 grep 实际消费路径确认默认值分支是否真的
+  会被触发，不能只看字面量出现的位置。
+
 ---
 
 ## 动画命名
@@ -68,6 +149,11 @@ for (const id of Object.keys(clipLibrary.manifest.clips)) {
   历史：human defaultPose 坐标曾因透视感调整整体放大约 1.26×（约 2026-06 批次），clip keyframe 静默补偿；该补偿已不存在，clip 与 skeleton 现已对齐。
   铁律：JS 不得硬编码关节坐标；任何工具不得直接产出关节坐标，唯一路径是角度空间 → fk_bake → ClipLibrary 断言 + preview 目检。
 - **`MOUNTED_CLIPS` 白名单**：`['bike','mobike','mobile']` 是唯一允许地面接触关节 abs_y > 0 的 clip 组（骑乘时接触点经由车辆对象），ClipLibrary 断言对此白名单豁免；新增骑乘 clip 须手动加入此列表
+- `context` 字段：作画期元数据，声明 clip 依赖的参照物（`held`: 手持道具 id，`prop`: 环境物件 propType）；只写引用名，不抄几何。运行时不消费 context。
+- overlay `participants` 数组：每个参与者对象包含 `role`（角色名）和可选 `dx`（与 role 0 的水平站位偏移，默认 70px）；`skeleton` 仅在非 human 时出现。
+- **`groundTravel`（L-2）**：cycle clip 可选顶层字段，骨架单位/循环，驱动 `Npc.js` 的距离相位推进（取代该 clip 的 fps 时间推进）。JSON 显式声明优先；未声明则 `ClipLibrary.resolve()` 自动推导——逐帧转场取贴地关节（y 与地面线 `y=0` 之差 ≤1 骨架单位）中 Δx 最小值（最负者=真正支撑脚）沿循环累加；推导值绝对值 <8 判定非位移循环（stand/sit/chess 等），保持时间驱动；按贡献关节名分左右（`l_/fl_/bl_` 左，`r_/fr_/br_` 右）分别累加，相对偏差 >20% 视为 clip 缺陷并抛出（同判据见 `check-invariants.mjs` Rule 16）。`bike`（脚在踏板不接触地面）、`walk_front`（脚原地抬落、水平位移为零）、`dog_walk`（临时值 55，所有脚 y 从不到 0，见下条）三个 clip 因无法/不宜自动推导而显式声明。
+- **`dog_walk` 已知缺陷（待重画）**：所有腿关节 y 全程在 -2~-9，从不触及地面线 `y=0`，自动推导会因此完全失效（贴地判据零候选）；`fl_lower`/`br_lower` 若强行推导会给出互相矛盾的位移量。已显式声明 `groundTravel:55`（按狗身长约 50 骨架单位、步幅约等于身长估算）绕过推导，非最终数值，等 clip 重画后应改回自动推导。
+- `skeleton.json` 的 `unit_height`（human 144、child 100、dog 50.2）目前无渲染代码读取，纯声明性数据（同 A-2 批次注记）；dog 的值取自 `joints.body_front.len`（root 到肩部的身长骨长），语义是"身长"不是"身高"（四足动物躺卧姿态，无直立高度概念）。
 
 ---
 
@@ -121,6 +207,65 @@ export function drawBench(g, p) { g.lineStyle(0); ... } // 纯绘制
 
 新增道具：坐标写进 `assets/scene.json` 的 `props` 数组，禁止硬编码坐标到 JS。
 
+**自注册**（Z-2d propRegistry）：`PropEntity.draw/drawGround/_computeFootprint/getBounds`
+不再是 `switch(this.propType)`，而是每个 prop 模块顶层调
+`registerProp(type, { draw, drawGround, footprint, obstacle, visual, bounds, config })`。
+`PropEntity.js` 不逐个 import draw 文件，只 import `propRegistry.js` +
+`entity/props.all.js`（副作用 barrel，触发所有注册）。
+
+```js
+// entity/trash/trash.js（尾部）
+import { registerProp } from '../../core/propRegistry.js';
+import { drawTrash } from './drawTrash.js';
+registerProp('trash', { draw: drawTrash, footprint, obstacle: true });
+```
+
+新增 prop 类型：在自己模块顶层 `registerProp()`，并把该模块加进 `props.all.js` 的
+import 列表——漏加则该类型静默不绘制（`check-invariants.mjs` Rule 13 静态挡这个）。
+`obstacle: true` 但缺 `footprint` 会在注册时立即抛错（Rule 5 另外核对 shape/blocks 字段）。
+
+`busstop.js` 本身不进 barrel：它 import `PropEntity`，若被 barrel import 会成环。
+但 `busstop-roof` / `busstop-sign` 的注册在各自 `draw*.js` 里（`drawBusStopRoof.js` /
+`drawBusStopSign.js` 不 import PropEntity，安全进 barrel）；`busstop-bench` 注册在
+`seat.js`（随 seat.js 进 barrel）。即：这三个 prop 类型都在 barrel 内被拉取，只有
+`busstop.js` 本体在外。
+
+**Feature registry**（Z-2e）：目标是「一个 JSON 文件即可独立构建一个场景」（学校/街区/
+商业街）。`SceneInitializer` 分两层：**infra**（NavGrid bake / BehaviorManager /
+ExitRegistry / Director）是每个场景都必须有的引导代码，留在类方法里不进 registry；
+**feature**（pedestrians / park_idlers / chess / stall_sellers / dog_walker /
+athletes / vehicles / bus_stops / ambient_affordance）是可选场景内容，改为
+`scene.json#features` 数组驱动，每条 `{type, ...cfg}` 经 `featureRegistry.getFeatureInit(type)`
+查到初始化函数执行。
+
+```json
+{ "type": "pedestrians", "count": 18 }
+```
+
+注册写在 `js/scenes/sceneFeatures.js`（单一包装层，非 propRegistry 那种各模块自注册——
+这 9 个 spawn 函数签名各异、散落在 npc/ 和 entity/vehicle/，塞进各自模块会强改 5+ 文件
+且徒增循环依赖风险）：
+
+```js
+registerFeature('pedestrians', (ctx, cfg) => {
+  spawnPedestrians(ctx.em, ctx.sr, ctx.bm, ctx.spawnPoints, cfg.count ?? 18);
+});
+```
+
+`ctx`（SceneInitializer 构建，只读）：`{em, sr, bm, scene, layout, sceneData, propManager,
+navGrid, spawnPoints, worldWidth}`。**features 数组顺序 = 初始化顺序 = `Math.random()`
+消费顺序**——调换顺序会改变具体生成结果（位置/数量），即使各 feature 逻辑上互不依赖；
+无跨 feature 依赖机制，`vehicles` 与其绑定的 `WaitForBusLayer` 因此捆成一个 feature。
+未声明某 feature（如学校场景不要 `vehicles`）时下游必须防御——`Director` 的
+`busStops: scene.trafficManager?.busStops ?? []` 是样例。
+
+`vehicles` feature 内的 `initVehicleSystem(em, sr, bm, busStopsCfg)` 现直接读
+`layout.busStops`（scene.json `layout.busStops`，即 `bus_stops` feature 渲染顶棚/长椅
+用的同一份数据）构建 `BusStop`，`WaitForBusLayer` 的等候区（原 `WAIT_ZONES`）也在构造
+函数内按同一批 `busStops.x` ± 半宽现算——公交站坐标不再有多份互相冲突的硬编码副本。
+（历史注记：曾有 `vehicleSpawner.js` 硬编码 x=500/1500 与 `layout.busStops` 的
+x=650/1500 不一致的已知 bug，已随此次收口一并修复。）
+
 ---
 
 ## 数据纪律
@@ -161,20 +306,131 @@ if (exit) { npc.x = exit.x; npc.alive = false; }
 BehaviorManager
   ├── BaseStateMachine  — 状态机（setState / tickBaseState）
   ├── WalkMode          — wander / path_follow
-  ├── SocialLayer       — Talk / Chess / Stall 配对
+  ├── SocialLayer       — Talk / Chess / Stall / Contact 配对
   ├── ModifierLayer     — 叠加动作（phone / smoke / gesture）
   └── EnvironmentQuery  — 空间查询（只读）
 
 nav/PlanService — Planning 层横切服务，不隶属上述任一子层。
 消费者：BaseStateMachine、BehaviorManager、GotoTask / StrollTask / ExitSceneTask、
 SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.path` 唯一写入方。
+
+Perception.js — 感知裁决横切服务（视觉/听觉双通道，纯函数，不写 npc.mem）。
+`perceive(witness, eventX, eventY) → {channel, q} | null`；视距/听距上限唯一住址
+在本文件内（`SIGHT_MAX_DIST` / `SOUND_MAX_DIST`），硬截断，不得在别处复制。
+消费者：`Belief.js`（W-5）。
+
+WorldEventLog.js — 世界事件流水账（W-1）。`emitEvent({kind, actors, x, y})`
+是唯一写入点，`kind` 须在 `js/behavior/data/EventDefs.js#EVENT_DEFS` 声明过，
+未声明直接抛错；结构 `{id, kind, actors[], x, y, t}`（`t` 取自 `GameClock.
+gameClock()`）。`emitEvent()` 调用点只允许出现在 `js/behavior/activities/`
+下（check-invariants Rule 14）。调用方之一是 `ContactActivity.js`
+（Patch G 从 `TalkActivity.js` 抽出：push / push_land / give_item /
+handshake / point_at 五种 kind，取代旧版直接挂在 NPC 上的私有标签字段）；
+`ChessActivity.js`（P-3）是第二个调用方，回合切换（落子完成）时低概率
+（`CHESS_EVENT_PROB`）发 `chess_move`；`StallActivity.js`（P-4）是第三个
+调用方，买家/卖家两个 ClipPlayer 都播完 'give' 阶段那一刻发 `stall_trade`
+（一场交易只发一次，不降频），打破"唯一事件生产者是 TalkActivity 系"的局面。
+`drainNewEvents()` 是唯一读取点（游标推进，无旁路只读
+查询）；`EVENT_LOG_CAP=500` 是长度上限唯一住址，超限
+从头裁剪且游标同步平移，保证已读事件不会被重读。消费者：`BehaviorManager.js`
+（W-7a，唯一消费点，`SocialLayer.update()` 之后）。
+
+ContactActivity.js / DuetStager.js — 双人接触互动（Patch G，从 TalkActivity
+抽出，`docs/design-plans/duet-interaction-design-v1.md` D1/D3/D5）。
+`DuetStager`（`js/behavior/DuetStager.js`）是纯编排引擎：reach（插值走到
+`designGap`×scale 对应站位 + 从当前姿势过渡到第 0 帧）→ play（逐帧步进）→
+release（插值放开 + 走回原位）三段式，只碰位置/modifier，不碰 roster；
+`ContactActivity` 持一个 `DuetStager` 实例驱动，自己管 join/dismiss/emit。
+`ejectRole`（clip 顶层可选字段，如 `push.json`）声明"play 阶段开始时把某个
+role 提前弹出"的后效（`{role, toState, emitKind}`），`DuetStager` 命中时回调
+`onEject(npc, otherNpc, effect)` 交给 `ContactActivity` 做 release/setState/
+emitEvent——取代旧版硬编码在 `TalkActivity` 里的 `push` 专属分支，新增同类
+clip 不需要再改代码。触发方：`TalkActivity` 子事件掷骰命中后
+`this.handoff('contact', participants, {clip:type})`（`Activity` 基类新增的
+`handoff()`，`SocialLayer.update()` 在 `destroy()` 之后统一消费创建后继，
+见 `activities/Activity.js` 头部注释）——起始间距超过 `designGap`×scale 的
+`REACH_SLACK`（写死 2.5）倍则放弃这轮，避免 reach 阶段的位置插值在 0.4s
+内位移过大看起来像瞬移；真正的"先 goto 到声明间距再触发"独立相遇层留待
+以后（见设计文档"M-1 后附记"）。`getSubEventPoses()`（`ContactActivity.js`
+导出）是 `poseCache.sub_event` 的唯一读取入口，`TalkActivity` 的掷骰
+（`_selectSubEvent`）反过来 import 它，不再自己持有一份。
+
+Belief.js — npc.mem('belief').claims 唯一 owner（W-5/W-6）。`generateClaims(event,
+actorNpcs, candidateNpcs)` 是"witness"来源 claim 的唯一写入点：对候选池逐个跑
+`Perception.perceive()`，q≥0.20 才计入候选，按 `witness-memory-v1.md` §5 的
+[2,4] 目标取样，再按 `ClaimDecisionTables.js` 的 q→填槽表决定每槽 fine/coarse/
+tag/null。`selectWitnesses()` 单独导出，供
+`scripts/check-witness-distribution.mjs` 静态采样验证数量分布，不依赖
+NavGrid/EntityManager，可脱离游戏运行。消费者：`BehaviorManager.js`（W-7a，
+`generateClaims()` 全库唯一调用点，check-invariants Rule 15 守）。`Belief.js`
+不 import `WorldEventLog.js`——被调用方不主动拉事件，谁触发目击生成由调用方
+（`BehaviorManager`）决定。
+
+`injectSuggestion(npc, claimId, slot, value)` 是"suggested"来源的唯一写入点
+（W-6/W-7c，与 `generateClaims()` 严格分开，provenance 不能混，且**不建新
+claim**）：只能把某条既有 claim 上 `sources[slot]===null` 的槽填上，找不到
+这条 claim 或该槽已有来源就返回 `null` 不写入；同一 (claim,slot,value) 重复
+注入只加 `strength[slot]`，换值或该槽已是 witness 来源一律拒绝。
+`findFillableClaim(npc, slot)` 是配套查找——哪条 claim 这个槽还空着，供
+`NewsUI` 审问面板决定往哪写。provenance 是槽级的（`claim.sources` 对象），
+claim 无顶层 `source` 字段（v1.1，见 `witness-memory-v1.md` 第一节）。
+`NewsUI` 调 `providers.interrogate.ask()` 把玩家提问解析成 `{slot,value}`
+（LLM 只翻译，不直接写 belief）。`_describeSlotValue(kind, raw)` 是槽值
+序列化唯一住址（W-7d）：actor/target 的 fine 值存 `npcType#id` 字符串、
+place 的 fine/coarse 值存 NavGrid zone 名（+坐标后缀），claim 里存的就是
+这个函数的输出，不是待格式化的 npc 对象/坐标——schema 声明这三槽是
+`string`，产出时就必须已经是字符串。`claimsToTestimony(npc)` 把 claims
+转成人类可读字符串数组，按槽标注来源（哪个字是问出来的，不是整条打一个
+标签），喂给 `providers.text.compose({testimony})`——`testimony` 不再
+硬编码 `[]`。
+
+`evolveMemory(npcs, ticks)`（P-6）是 claims 的第三个写入点——按周期对每条
+claim 的每个槽独立掷一次变异：遗忘（值退 null，`sources` 同步退 null，
+重新成为 `injectSuggestion` 的注入口）/ 变形（fine→coarse 一档，复用
+`slotFidelity`/`_actorFidelityValue` 等既有阶梯，不新发明一套）/ 转移
+（换成同一 NPC 别的 claim 里同槽的值，`sources`/`strength` 不变——NPC
+对自己的记忆失真没有自觉）/ 虚构（空槽自发填值，来源标 `'fabricated'`，
+是 `sources[slot]` 除 `'witness'`/`'suggested'`/`null` 外的第三种取值）。
+概率表 `js/behavior/data/MemoryMutationTables.js`（数值照抄
+`witness-memory-v1.md` 第四节 Mutation 转移表）：`strength` 越高，
+"非不变"概率按 `STRENGTH_DECAY` 指数衰减（下限 `STRENGTH_FLOOR`，不完全
+免疫）——这是"复述使信念变强"的机制落点。`MEMORY_EVOLUTION_INTERVAL_MIN`
+是周期常量（游戏分钟，非实秒）；`BehaviorManager.js` 用 `gameClock()`
+帧间差值攒计时器触发；P-8 调试面板"时间快进"直接算好 ticks 数调用
+`evolveMemory`，不触碰 GameClock 本身。`slotFidelity(slot,value)` 是
+"这个槽当前是 fine/coarse/null"的纯字符串形状判定唯一住址，
+`scripts/check-memory-mutation.mjs`（五个静态门之一）复用它统计保真率，
+不在检查脚本里另外实现一遍。claim 另带 `eventId`（P-7，产出时固定为
+`WorldEventLog` 的 `event.id`），不属于槽、不受任何写入点改写，纯粹是
+"同一事件的不同目击者"的稳定关联键。
+
+`js/news/NewsBackflow.js#propagateArticleToWitnesses(witnesses)`（P-7）是
+"框架建构现实"闭环：报道发表后（`NewsUI.js` 发布按钮，唯一调用点，
+`check-invariants.mjs` Rule 18 守）按 `eventId` 把本次报道的目击者分组，
+组内互相拿对方已确立的槽值去补自己还空着的槽（`injectSuggestion`，来源标
+`'suggested'`——报道和审问诱导认识论上是同一件事，不新开一种 source 值）。
+传播范围规则 `MemoryMutationTables.js#NEWS_BACKFLOW`（声明式，含
+`maxFillsPerArticle` 单次上限）：只影响本来就对同一事件有 claim 的 NPC
+（即这批目击者自身），不外溢给未贡献过目击 claim 的旁观者——那需要给
+非目击者新建 claim，与 `injectSuggestion` "不建新 claim" 的硬约束冲突，
+故未采用。回流写入的槽不豁免 `evolveMemory`，照常参与后续演化。
 ```
 
 关键约定：帧率归一 `Math.random() < p * dt * 60`；区域守卫 `isRoadZone(npc.y)`；
 槽位释放 `releaseAllHoldings(npc, envQuery)`；`crossing / jaywalking` 标签由 NavGrid
-格代价空间派生（`Npc.getTags()` 读格 cost，`PathPlanner.PLANNING_RULES` 中
-`crosswalkCost / jaywalkRoadCost`）；不存在过街子程序。
+zone 空间派生（`Npc.getTags()` 判 `grid.zone(gx,gy) === ZONE.ROAD`）；不存在过街子程序。
 骑手 profile：`{agenda:false, separate:false, initial:'ride'}`（N-3 集成）。
+
+**导航两层结构**（Z-1 zone-profile split）：NavGrid 只烘焙 **zone 语义 ID**
+（`ZONE = {BLOCKED:0, SIDEWALK:1, GRASS:2, ROAD:3, CROSSWALK:4}`），不含任何代价数字；
+有效代价经 zone→cost 表查得。`grid.zone(gx,gy)` 是唯一格访问器（无 `grid.cost()`）。
+代价表装配唯一住址 = `PlanService._zoneCostsFor()`：
+`DEFAULT_ZONE_COSTS`（NavGrid.js）→ `profile.zoneCosts` 覆盖 → jaywalk 覆盖（`ROAD → 3`）；
+表值 `0` 即不可通行。`PathPlanner.plan()` 第 6 参收 `zoneCosts`，自身不持有代价政策。
+铁律：NavGrid 不得出现代价数字，PathPlanner 不得自带代价政策——表一律由参数传入。
+Z-2b 追加：NavGrid 亦不得出现 Y 分带数字——烘焙几何一律来自 `scene.json#zones`。
+拉直另有 `ZONE_ROUGHNESS`（`PathPlanner.js`，铺装 1 / 草 2 / ROAD·BLOCKED 999）：
+中间格 roughness 超两端 max 即拒绝拉直，保证铺装点之间不抄草坪；roughness 不参与 A*。
 
 **affordance 池**：`EnvironmentQuery.drawAffordance(npc, radius)` 加权随机抽取目的地；
 声明来源：`AffordanceDefaults.js`（propType 默认）、`entity.affordances`（scene.json 覆盖）、`registerAmbientAffordance`（区域型 POI）。
@@ -186,6 +442,7 @@ SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.
 `AttachmentDefs.js` 声明道具（anchor / heldPose / acquire / dispose），attach 走 ModifierLayer held 通道（不新建道具写入点）。
 `interruptible` 控制社交劫持；处置由 `runner.hold` 统一兜底。
 **passerby 模板**（B-②）：60% 直通（single stroll → exit）/ 40% 途中停留（`_stopCredits` 1-2 次）；desire 池改为 `BEHAVIOR_SCRIPTS` 键；`check-behavior-data.mjs` 静态校验 profile.desires 所有 id 存在于脚本表。
+**B-③ passerby desires 集成**：`_tryDesire` 提取为独立方法（加权随机 + 30% 跳过）；`_pickPasserbyGoal` stroll 回调优先从 desires 池抽 ChainTask，fallback affordance draw；`_pickGoal` 复用 `_tryDesire`。
 设计文档：`docs/design-plans/chain-task-design.md`。
 
 ---
@@ -200,6 +457,13 @@ SceneInitializer、WaitForBusLayer。`publishGoal` 是唯一目标入口；`mot.
 - **验收标准先行**：每个子任务开始前在 CLAUDE.md 或 PR 描述中写清楚验收条件；没有验收标准的任务禁止提交
 - **时序锚点**：涉及帧内执行顺序的描述须附 `StreetScene.js:行号` 锚点；帧序以 `movement-dataflow.md §1` 为权威，不另起炉灶
 - **契约同步**：改 `js/` 逻辑时同步更新 `docs/contracts/`；改合约时须能用 grep 在代码中找到对应实现，找不到视为草案不得升 normative
+- **静态门**（tasks.md P-6 起五个，全部无报错才算完成一批改动）：
+  `node scripts/check-invariants.mjs`、`node scripts/check-behavior-data.mjs`、
+  `node scripts/check-witness-distribution.mjs`、`node sth/tools/validate.mjs`
+  （不在 `scripts/` 下）、`node scripts/check-memory-mutation.mjs`（P-6 新增，
+  验证 `Belief.js#evolveMemory` 的记忆演化层：保真率随时间下降且趋缓、
+  strength 越高越抗变异、转移变异不跨 NPC 串号；P-7 追加第四场景：报道回流
+  增加 `sources='suggested'` 槽数，且回流槽不享受变异豁免）
 
 ---
 
@@ -220,11 +484,12 @@ npc.clearMem('loiter');
 
 | namespace  | owner / 写者            | 典型字段                                              |
 |------------|-------------------------|-------------------------------------------------------|
-| `motor`    | Motor.js / WalkMode.js  | walkMode、goal、path、vel、dirCD、savedBounds、needReplan、progressAcc、progressAnchor、wallSpot、tags（`_obsFlipVx / _obsVxSign` 只读观测，非状态位） |
+| `motor`    | Motor.js / WalkMode.js  | walkMode、goal、path、vel、faceAcc、frontAccDx、frontAccDy、speedK、savedBounds、needReplan、progressAcc、progressAnchor、wallSpot、tags（`_obsFlipVx / _obsVxSign` 只读观测，非状态位） |
 | `loiter`   | LoiterBehavior.js       | dir、dur、elapsed、overlay、microPhase、microPhaseName、microTimer、tags |
-| `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、slotWaitProp、slotWaitTimer、chessSlot、onlookerTimer、onlookerDur、tags |
+| `social`   | Activity / SocialLayer / WaitForBusLayer | activity、bench、boardingBus、waitingBusStop、waitTimer、nextFidget、tags |
 | `agenda`   | BehaviorManager / Director | profile、runner、agenda、lifespan、ageTimer、departing、pendingDeparture、preferExitType、exitRegistry、waitForBusLayer、busStops |
 | `modifier` | ModifierLayer.js        | heldCooldown、gestureCooldown                        |
+| `belief`   | Belief.js                | claims（目击 claim 数组，schema 见 witness-memory-v1.md） |
 
 **规则：**
 - 写者即 owner；跨 namespace 只读
@@ -243,6 +508,7 @@ npc.clearMem('loiter');
 | `docs/contracts/movement.md` | 规范性 | 移动子系统字段所有权、Motor 写保护门、NavGrid、WalkMode 协议 |
 | `docs/contracts/behavior.md` | 规范性 | 行为层栈、STATE_DEFS、NPC Profile、状态转换表、Activity/WalkMode/Modifier/Separation |
 | `docs/contracts/known-violations.md` | 规范性 | check-invariants 已知例外白名单 |
+| `docs/contracts/activity-lifecycle-v1.md` | 规范性 | Activity 五 phase 契约：Create/Admit/Drive/Dismiss/End；落地顺序 1～6 全部完成（Patch E/F/G/H/D/A），含 ContactActivity 抽离（Patch G）与 prop-as-host（Patch H，stall 卖家独自守摊移出 StallSellerTask）；`WaitBusActivity` 已删除（Patch C，等车改走单人 `WaitBusTask`，不再有违背单人边界的 Activity） |
 | `docs/design-plans/news-pipeline-mvp.md` | 设计稿（finalized） | 新闻管线 MVP：截图 T2、Provider T3、成稿流 T4 |
 | `docs/design-plans/photo2entity-plan.md` | 设计稿（draft） | 现实照片 → AI 生成场景物体，占位草案 |
 | `docs/design-plans/semantic-destination-design.md` | 设计稿（finalized） | 语义目的地层 v2，affordance 池设计 |
@@ -259,3 +525,15 @@ npc.clearMem('loiter');
 | `docs/roadmap.md` | 快照 | 功能批次落地状态一览（规范性路线图跟踪） |
 | `docs/design-plans/goal-pipeline-v1.md` | 规范性 | 四层目标管线立法；三铁律；ARRIVAL/RECOVERY/SAFETY/PLANNING 裁决表；N-1/N-2/N-3 刀序；四数验收表 |
 | `docs/design-plans/belief-layer-v0.md` | 设计稿（draft） | 信念层 v0 占位草案：符号化事件声明、LLM 证人污染防护、SIR 传播 |
+| `docs/design-plans/witness-memory-v1.md` | 设计稿（finalized） | 目击记忆 claim 五槽 schema；channel×槽可填表（sound.actor 硬 null）；q→填槽裁决表；mutation 转移表；2–4 目击者设计目标 |
+| `Visual design spec.md` | 规范性 | 全场景视觉规范：纯 2D 平面黑白灰，draw*.js 合规基线 |
+| `Visual spec cc.md` | 规范性 | 视觉规范实施参考（CC 用）：公共函数模板、draw 改造清单 |
+| `docs/audits/behavior-redundancy-2026-07.md` | 快照 | 行为层冗余机制审计（2026-07），Cleanup-1 输入文件 |
+| `docs/audits/velocity-unification-closing-2026-07.md` | 快照 | 速度统一收尾核账报告（2026-07-19） |
+| `docs/baselines/2026-07-12-ddd9eb2f-s42-pre.md` | 快照 | check-invariants 基线快照 s42 前（2026-07-12） |
+| `docs/baselines/2026-07-12-27a45503-s42-post.md` | 快照 | check-invariants 基线快照 s42 后（2026-07-12） |
+| `docs/baselines/2026-07-13-e3c9ec1c-s42-pre.md` | 快照 | check-invariants 基线快照（2026-07-13） |
+| `docs/design-plans/duet-interaction-design-v1.md` | 设计稿（finalized） | 双人互动设计 v1：overlay 参与者 dx 偏移、duet clip 格式、编辑器 newDuetClip() |
+| `docs/design-plans/editor-reference-layer-v1.md` | 设计稿（finalized） | 编辑器参照层设计 v1：context 字段、held/prop/counterpart 三种引用可视化；C-1b 补完写路径（exportJSON 三分支 + 面板 UI） |
+| `sth/stick-puppet/README.md` | 快照 | StickPuppet 工具启动、操作与 clip 导出说明 |
+| `assets/animations/new_assets/docx.md` | 快照 | new_assets/ 校对说明：接地规则、child 骨架说明；原 4 个待处理 clip（lift/child_single/hand_stand_up/hand_stand_down）已在 A-1~A-3 全部处理完，目录里现在只剩这份说明文档 |

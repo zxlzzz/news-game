@@ -75,3 +75,13 @@ S（未知）→ I（持有 claim）→ R（遗忘 / 信念固化）
 - 行为影响权重如何与 Agenda desire system 接合
 - belief 的持久化（场景重载后是否保留）
 - UI 层：是否允许玩家查看 NPC 当前信念（调试视图 / 游戏内交互）
+
+---
+
+## 历史注记：CameraReactionLayer 设计意图（2026-07-27 归档）
+
+`js/camera/CameraReactionLayer.js` 已作为空桩删除（Cleanup-1）。
+原始设计意图：摄像机存在时（viewfinder 进入 NPC 感知半径），NPC 根据 `stability` 和
+`cameraReaction` profile 字段触发三类反应——走开（curious/shy）、聚集（gregarious）、
+摆 pose（performer）。
+若后续需要实现，建议挂在 I-4 行为影响层（belief → desire 权重修改），而非独立 layer。

@@ -24,24 +24,26 @@ const okMsg = ()  => process.stdout.write(green('  ok') + '\n');
 function readText(p)  { return readFileSync(p, 'utf8'); }
 function readJson(p)  { return JSON.parse(readText(p)); }
 
-function walkFiles(dir, filter) {
+function walkFiles(dir, filter, excludeDirs = []) {
   const out = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory() && excludeDirs.includes(entry.name)) continue;
     const full = join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...walkFiles(full, filter));
+    if (entry.isDirectory()) out.push(...walkFiles(full, filter, excludeDirs));
     else if (filter(entry.name)) out.push(full);
   }
   return out;
 }
 
 // ── Rule 1 ─────────────────────────────────────────────────────────────────
-// _extraTags is a legacy direct field; only TalkActivity.js is allowlisted.
-console.log('Rule 1: no _extraTags in js/ (except TalkActivity.js allowlist)');
+// _extraTags is fully retired (W-1: TalkActivity.js migrated to
+// WorldEventLog.emitEvent()); no allowlist remains.
+console.log('Rule 1: no _extraTags anywhere in js/');
 {
   const hits = walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))
-    .filter(p => !p.endsWith('TalkActivity.js') && readText(p).includes('_extraTags'));
+    .filter(p => readText(p).includes('_extraTags'));
   if (hits.length > 0) {
-    fail('_extraTags outside known-violations allowlist:\n  ' + hits.join('\n  '));
+    fail('_extraTags found (field is fully retired):\n  ' + hits.join('\n  '));
   } else {
     okMsg();
   }
@@ -49,9 +51,11 @@ console.log('Rule 1: no _extraTags in js/ (except TalkActivity.js allowlist)');
 
 // ── Rule 2 ─────────────────────────────────────────────────────────────────
 // Animation clip JSON files must not contain a "kind" key.
+// new_assets/ is excluded: it's the playground for clips still being drawn/
+// edited, not yet migrated to the manifest-driven schema this rule enforces.
 console.log('Rule 2: animation clip JSONs must not contain "kind"');
 {
-  const hits = walkFiles(join(ROOT, 'assets', 'animations'), f => f.endsWith('.json'))
+  const hits = walkFiles(join(ROOT, 'assets', 'animations'), f => f.endsWith('.json'), ['new_assets'])
     .filter(p => /"kind"/.test(readText(p)));
   if (hits.length > 0) {
     fail('"kind" in clip JSON files:\n  ' + hits.join('\n  '));
@@ -127,48 +131,50 @@ console.log('Rule 4: walk-state clips (speedK>0 in STATE_DEFS) must have |meanX|
 }
 
 // ── Rule 5 ─────────────────────────────────────────────────────────────────
-// Each type in OBSTACLE_TYPES must have a footprint(e) that declares shape + blocks.
-console.log('Rule 5: each OBSTACLE_TYPE has footprint with shape and blocks fields');
+// Every registerProp(..., { obstacle: true, ... }) call site's host file must
+// also declare a footprint literal with shape + blocks fields.
+// (Z-2d: obstacle types are no longer a PropEntity.js OBSTACLE_TYPES set —
+//  each prop module self-registers via propRegistry.registerProp(); this rule
+//  statically finds those call sites instead of reading a deleted constant.)
+console.log('Rule 5: each registerProp(obstacle:true) call has shape + blocks in its file');
 {
-  // Mapping: propType → entity module path (relative to ROOT)
-  const FP_MODULE = {
-    fountain:     'js/entity/fountain/fountain.js',
-    stall:        'js/entity/stall/stall.js',
-    tree:         'js/entity/tree/tree.js',
-    bench:        'js/entity/seat/seat.js',
-    trash:        'js/entity/trash/trash.js',
-    hydrant:      'js/entity/hydrant/hydrant.js',
-    mailbox:      'js/entity/mailbox/mailbox.js',
-    newsrack:     'js/entity/newsrack/newsrack.js',
-    planter:      'js/entity/planter/planter.js',
-    vending:      'js/entity/vending/vending.js',
-    phonebooth:   'js/entity/phonebooth/phonebooth.js',
-    'chess-table':'js/entity/chess-table/chessTable.js',
-  };
-
-  // Extract OBSTACLE_TYPES from PropEntity.js source
-  const propEntitySrc = readText(join(ROOT, 'js', 'core', 'PropEntity.js'));
-  const setMatch = propEntitySrc.match(/const OBSTACLE_TYPES\s*=\s*new Set\(\[([\s\S]*?)\]\)/);
-  const obstacleTypes = setMatch
-    ? [...setMatch[1].matchAll(/'([^']+)'/g)].map(m => m[1])
-    : [];
-
-  let ruleOk = true;
-  for (const t of obstacleTypes) {
-    const modPath = FP_MODULE[t];
-    if (!modPath) {
-      fail(`OBSTACLE_TYPE '${t}' has no entry in FP_MODULE mapping`);
-      ruleOk = false;
-      continue;
+  // Find every `registerProp('type', ...)` call site across js/entity/ and js/core/,
+  // paren-depth-matched so nested arrow-function bodies (e.g. busstop-roof's
+  // `bounds: (e, s) => { ... }`) don't truncate the scan early.
+  const callSites = []; // { type, file, obstacle }
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    if (p.endsWith('propRegistry.js')) continue;  // defines registerProp; its JSDoc example isn't a call site
+    const src = readText(p);
+    const re = /registerProp\(\s*'([\w-]+)'\s*,/g;
+    let m;
+    while ((m = re.exec(src))) {
+      const openParen = src.indexOf('(', m.index + 'registerProp'.length);
+      let depth = 1, i = openParen + 1;
+      while (i < src.length && depth > 0) {
+        if (src[i] === '(') depth++;
+        else if (src[i] === ')') depth--;
+        i++;
+      }
+      const body = src.slice(openParen + 1, i - 1);
+      callSites.push({ type: m[1], file: p, obstacle: /\bobstacle\s*:\s*true\b/.test(body) });
     }
-    const src = readText(join(ROOT, modPath));
-    const hasShape  = /\bshape\s*:/.test(src);
-    const hasBlocks = /\bblocks\s*:/.test(src);
-    const passed = hasShape && hasBlocks;
-    console.log(`  ${t}: shape=${hasShape} blocks=${hasBlocks} ${passed ? '✓' : '✗'}`);
-    if (!passed) { fail(`${t} footprint missing shape or blocks`); ruleOk = false; }
   }
-  if (ruleOk) okMsg();
+
+  if (callSites.length === 0) {
+    fail('Rule 5: zero registerProp() call sites found — propRegistry wiring missing?');
+  } else {
+    let ruleOk = true;
+    const obstacleSites = callSites.filter(c => c.obstacle);
+    for (const { type, file } of obstacleSites) {
+      const src = readText(file);
+      const hasShape  = /\bshape\s*:/.test(src);
+      const hasBlocks = /\bblocks\s*:/.test(src);
+      const passed = hasShape && hasBlocks;
+      console.log(`  ${type}: shape=${hasShape} blocks=${hasBlocks} ${passed ? '✓' : '✗'}`);
+      if (!passed) { fail(`${type} (${file}) footprint missing shape or blocks`); ruleOk = false; }
+    }
+    if (ruleOk) okMsg();
+  }
 }
 
 // ── Rule 6 ─────────────────────────────────────────────────────────────────
@@ -208,12 +214,15 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** mus
     'BaseStateMachine.js',// stateTimer accum — permanent (core state-machine bookkeeping)
     'SocialLayer.js',     // 非移动政策计时器 — permanent
     'WaitBusActivity.js', // 非移动政策计时器 — permanent
-    'PlayPoseTask.js',    // 非移动政策计时器 — permanent
-    'StrollTask.js',      // 非移动政策计时器 — permanent
+'StrollTask.js',      // 非移动政策计时器 — permanent
     'UseBenchTask.js',    // 非移动政策计时器 — permanent
     'ChessActivity.js',   // 非移动政策计时器 — permanent
+    'ChessOnlookerTask.js', // 非移动政策计时器（旁观计时，Patch D） — permanent
+    'WaitBusTask.js',      // 非移动政策计时器（候车 fidget/超时计时，Patch C） — permanent
     'StallActivity.js',   // 非移动政策计时器 — permanent
+    'StallSellerTask.js', // 非移动政策计时器（叫卖手势切换计时，Patch H） — permanent
     'TalkActivity.js',    // 非移动政策计时器 — permanent
+    'DuetStager.js',      // 非移动政策计时器（reach/play/release 播放计时，Patch G） — permanent
     'VisitTask.js',       // 非移动政策计时器（elapsed + waitTimer） — permanent
     'ChainTask.js',       // 非移动政策计时器（pose elapsed + goto waitTimer） — permanent
   ]);
@@ -247,23 +256,46 @@ console.log('Rule 7: distance comparisons and timer accums in js/behavior/** mus
 }
 
 // ── Rule 8 ─────────────────────────────────────────────────────────────────
-// PLANNING_RULES field names must not appear as literal numeric definitions
-// outside PathPlanner.js — prevents policy values from scattering back out.
-console.log('Rule 8: crosswalkCost|jaywalkRoadCost|roadCostDefault numeric definitions only in PathPlanner.js');
+// M-1: rewritten — the field names this rule used to guard
+// (crosswalkCost/jaywalkRoadCost/roadCostDefault) were PLANNING_RULES-era
+// names that Z-1 (zone-profile split) deleted outright; the regex had zero
+// possible hits left in the codebase and was permanently green regardless
+// of what anyone wrote. The real single address for zone→cost policy today
+// is NavGrid.js#DEFAULT_ZONE_COSTS, overridden by PlanService.js#_zoneCostsFor
+// (profile.zoneCosts merge + jaywalk override) — see PlanService.js's own
+// header comment ("代价表装配...唯一住址"). This rule guards THAT.
+//
+// Detection: a zone-keyed numeric literal — `[ZONE.xxx]: <number>` or
+// `[ZONE.xxx] = <number>` — appearing anywhere outside NavGrid.js /
+// PlanService.js. PathPlanner.js is exempted too, but for a different
+// reason: it hosts ZONE_ROUGHNESS, a *distinct* table (line-of-sight
+// straightening friction, explicitly documented as unrelated to planning
+// cost — "roughness 不参与 A*，与 zoneCosts 两套独立序") that happens to
+// share the same `[ZONE.x]: n` shape. Exempting the file doesn't mean
+// PathPlanner.js is allowed to define cost policy — it isn't (see its own
+// CONTRACT: "自身不持有代价政策").
+//
+// Verify this rule actually bites: add a line like `[ZONE.GRASS]: 5,` to
+// any file other than NavGrid.js/PlanService.js/PathPlanner.js (e.g. drop
+// it into NpcProfile.js) and rerun this script — Rule 8 should fail.
+console.log('Rule 8: zone cost policy (DEFAULT_ZONE_COSTS/_zoneCostsFor) numeric definitions confined to NavGrid.js + PlanService.js');
 {
-  const POLICY_RE = /\b(?:crosswalkCost|jaywalkRoadCost|roadCostDefault)\s*:/;
+  const ZONE_COST_RE = /\[ZONE\.\w+\]\s*[:=]\s*\d/;
+  const EXEMPT = new Set(['NavGrid.js', 'PlanService.js', 'PathPlanner.js']);
   const hits = [];
   for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))
       .concat(walkFiles(join(ROOT, 'scripts'), f => f.endsWith('.js') || f.endsWith('.mjs')))) {
-    if (p.endsWith('PathPlanner.js')) continue;
+    if (EXEMPT.has(p.split(/[\\/]/).pop())) continue;
     const lines = readText(p).split('\n');
     for (let i = 0; i < lines.length; i++) {
-      if (POLICY_RE.test(lines[i]))
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith('*') || trimmed.startsWith('//')) continue; // doc comments/examples
+      if (ZONE_COST_RE.test(lines[i]))
         hits.push(`${p}:${i + 1}: ${lines[i].trim()}`);
     }
   }
   if (hits.length > 0) {
-    fail('PLANNING_RULES policy definition outside PathPlanner.js:\n  ' + hits.join('\n  '));
+    fail('zone cost policy value defined outside NavGrid.js/PlanService.js:\n  ' + hits.join('\n  '));
   } else {
     okMsg();
   }
@@ -314,14 +346,16 @@ console.log('Rule 9: no direct npc.x/npc.y assignment outside Motor.js');
 // ── Rule 10 ────────────────────────────────────────────────────────────────
 // npc.direction references in Motor.js and BaseStateMachine.js must match
 // one of four whitelist categories — prevents direction policy from scattering.
-// Category A: updateFacing — steer layer derives direction from velocity sign
+// Category A: Motor.js#_updateDirection — walk/run/jog/ride facing derived from real x
+//             displacement (space dead-zone, L-1; replaces the old steer-intent-velocity
+//             + time hysteresis previously in BaseStateMachine.js, symbol deleted)
 // Category B: dir_mismatch audit — read-only observation, not a policy write
 // Category C: ride/leash/departure config — lane direction at spawn or exit, not steer-derived
 // Category D: vel-init read — exact form: ride state constructs mot.vel (唯一合法行：ride 状态配置读取)
 console.log('Rule 10: npc.direction in Motor.js / BaseStateMachine.js must match whitelist');
 {
   const WHITELIST_PATTERNS = [
-    /desired/,                                   // A: updateFacing
+    /desired/,                                   // A: _updateDirection
     /dir_mismatch/,                              // B: audit observation
     /lt\.dir|leashTarget|spot\.facing|exit\.facing/, // C: ride/leash/departure config
     /vx: npc\.direction \* npc\.speed/,          // D: vel-init read (ride state only)
@@ -377,6 +411,274 @@ try {
   okMsg();
 } catch {
   fail('vehicle-anchors.js is stale; run: node scripts/derive-vehicle-anchors.mjs --write');
+}
+
+// ── Rule 13 ────────────────────────────────────────────────────────────────
+// Every module that calls registerProp() must be imported by the props.all.js
+// barrel (Z-2d) — otherwise the type "silently doesn't draw" (registration
+// never fires, PropEntity's draw()/drawGround() no-op for that propType).
+console.log('Rule 13: every registerProp() module is imported by props.all.js barrel');
+{
+  const barrelPath = join(ROOT, 'js', 'entity', 'props.all.js');
+  const barrelSrc  = readText(barrelPath);
+  const barrelDir  = dirname(barrelPath);
+  const imported = new Set(
+    [...barrelSrc.matchAll(/^import\s+'(\.[^']+)'/gm)]
+      .map(m => join(barrelDir, m[1]).replace(/\\/g, '/'))
+  );
+
+  const registerModules = new Set();
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    if (p.endsWith('propRegistry.js') || p.endsWith('props.all.js')) continue;
+    if (/registerProp\(\s*'[\w-]+'\s*,/.test(readText(p))) registerModules.add(p.replace(/\\/g, '/'));
+  }
+
+  const missing = [...registerModules].filter(p => !imported.has(p));
+  if (missing.length > 0) {
+    fail('registerProp() module(s) missing from props.all.js barrel:\n  ' + missing.join('\n  '));
+  } else {
+    console.log(`  ${registerModules.size} registerProp() module(s), all present in barrel`);
+    okMsg();
+  }
+}
+
+// ── Rule 14 ────────────────────────────────────────────────────────────────
+// emitEvent() call sites must live in js/behavior/activities/ (W-1: single
+// entry point WorldEventLog.js is exempt — that's the definition, not a call).
+console.log('Rule 14: emitEvent() call sites confined to js/behavior/activities/');
+{
+  const activitiesDir = join(ROOT, 'js', 'behavior', 'activities');
+  const hits = [];
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    if (p.endsWith('WorldEventLog.js')) continue;
+    if (p.startsWith(activitiesDir)) continue;
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith('*') || trimmed.startsWith('//')) continue; // doc comments
+      if (/\bemitEvent\(/.test(lines[i])) hits.push(`${p}:${i + 1}`);
+    }
+  }
+  if (hits.length > 0) {
+    fail('emitEvent() called outside js/behavior/activities/:\n  ' + hits.join('\n  '));
+  } else {
+    okMsg();
+  }
+}
+
+// ── Rule 15 ────────────────────────────────────────────────────────────────
+// generateClaims() call sites: exactly one, and it must live in
+// BehaviorManager.js (W-7a — the single consumption point for WorldEventLog
+// events). Belief.js itself defines the function (contains "function
+// generateClaims(") — that's not a call site, skip it explicitly.
+console.log('Rule 15: generateClaims() called exactly once, from BehaviorManager.js');
+{
+  const hits = [];
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith('*') || trimmed.startsWith('//')) continue;
+      if (/\bfunction\s+generateClaims\s*\(/.test(lines[i])) continue; // definition, not a call
+      if (/\bgenerateClaims\(/.test(lines[i])) hits.push(`${p}:${i + 1}`);
+    }
+  }
+  const outsideBM = hits.filter(h => !h.replace(/\\/g, '/').includes('BehaviorManager.js'));
+  if (hits.length !== 1 || outsideBM.length > 0) {
+    fail(`generateClaims() must be called exactly once, from BehaviorManager.js; found ${hits.length} call site(s):\n  ` + hits.join('\n  '));
+  } else {
+    okMsg();
+  }
+}
+
+// ── Rule 16 ────────────────────────────────────────────────────────────────
+// L-2: cycle clip groundTravel 左右支撑脚一致性静态门。ClipLibrary.js#_deriveGroundTravel
+// 是浏览器 ES module（用 fetch 载入资产），这里独立重新实现同一套算法的纯 node 版本
+// （与 Rule 4 对 manifest/skeleton 的直接读取同一套模式）：报告每个 cycle clip 的推导
+// groundTravel（或显式声明值，跳过推导）；推导值 < 8 骨架单位判定非位移循环（时间驱动，
+// 不检查左右一致性）；否则按贡献关节名分左右累计，偏差 > 20% 判定 clip 缺陷，fail。
+// 正确性咬合验证（验完已还原）：把 walk.json frame 0 的 l_foot x 改动 15 单位后，本规则
+// 从 walk: groundTravel=96.0 left=48.0 right=48.0 diff=0% 变为 FAIL（偏差 >20%）。
+console.log('Rule 16: cycle clip groundTravel + 左右支撑脚一致性');
+{
+  const manifest  = readJson(join(ROOT, 'assets', 'manifest.json'));
+  const skeletons = readJson(join(ROOT, 'assets', 'skeleton.json')).skeletons;
+  const GROUND_TOL = 1, DISPLACEMENT_MIN = 8, CONSISTENCY_MAX_DIFF = 0.2;
+
+  const jointSide = (name) => {
+    if (/^l_|^fl_|^bl_/.test(name)) return 'left';
+    if (/^r_|^fr_|^br_/.test(name)) return 'right';
+    return null;
+  };
+
+  function expandFrames(raw) {
+    let kfs = raw.keyframes;
+    let amp = 1;
+    if (raw.variant_of) {
+      const baseEntry = manifest.clips[raw.variant_of];
+      if (!baseEntry) return null;
+      kfs = readJson(join(ROOT, 'assets', baseEntry.path)).keyframes;
+      amp = raw.amp ?? 1;
+    }
+    const dp = skeletons[raw.skeleton ?? 'human']?.defaultPose ?? {};
+    return (kfs ?? []).map(kf => {
+      const frame = {};
+      for (const [k, v] of Object.entries(kf)) {
+        if (k === 'dur' || !Array.isArray(v) || v.length !== 2) continue;
+        const base = dp[k] ?? [0, 0];
+        frame[k] = [base[0] + v[0] * amp, base[1] + v[1] * amp];
+      }
+      for (const [k, v] of Object.entries(dp)) if (!(k in frame)) frame[k] = [...v];
+      return frame;
+    });
+  }
+
+  function deriveGroundTravel(frames) {
+    const n = frames.length;
+    let sumMin = 0;
+    const perJoint = {};
+    for (let i = 0; i < n; i++) {
+      const f0 = frames[i], f1 = frames[(i + 1) % n];
+      let best = null, bestJ = null;
+      for (const [j, coords] of Object.entries(f0)) {
+        if (Math.abs(coords[1]) > GROUND_TOL) continue;
+        const dx = f1[j][0] - coords[0];
+        if (best === null || dx < best) { best = dx; bestJ = j; }
+      }
+      if (best !== null) { sumMin += best; perJoint[bestJ] = (perJoint[bestJ] ?? 0) + best; }
+    }
+    return { travel: Math.abs(sumMin), perJoint };
+  }
+
+  let ruleOk = true;
+  for (const [id, entry] of Object.entries(manifest.clips)) {
+    if (entry.kind !== 'cycle') continue;
+    const raw = readJson(join(ROOT, 'assets', entry.path));
+    if (typeof raw.groundTravel === 'number') {
+      console.log(`  ${id}: groundTravel=${raw.groundTravel}（显式声明，跳过左右一致性推导）`);
+      continue;
+    }
+    const frames = expandFrames(raw);
+    if (!frames || frames.length === 0) continue;
+    const { travel, perJoint } = deriveGroundTravel(frames);
+    if (travel < DISPLACEMENT_MIN) {
+      console.log(`  ${id}: travel=${travel.toFixed(1)}（<${DISPLACEMENT_MIN}，非位移循环，时间驱动）`);
+      continue;
+    }
+    let left = 0, right = 0;
+    for (const [j, v] of Object.entries(perJoint)) {
+      const side = jointSide(j);
+      if (side === 'left') left += v; else if (side === 'right') right += v;
+    }
+    let diffPct = null;
+    if (left !== 0 && right !== 0) {
+      const mags = [Math.abs(left), Math.abs(right)];
+      diffPct = Math.abs(mags[0] - mags[1]) / Math.max(...mags);
+    }
+    const diffStr = diffPct === null ? 'n/a' : (diffPct * 100).toFixed(0) + '%';
+    console.log(`  ${id}: groundTravel=${travel.toFixed(1)} left=${left.toFixed(1)} right=${right.toFixed(1)} diff=${diffStr}`);
+    if (diffPct !== null && diffPct > CONSISTENCY_MAX_DIFF) {
+      fail(`${id}: 左右支撑脚位移不一致（偏差 ${(diffPct * 100).toFixed(0)}% > 20%）`);
+      ruleOk = false;
+    }
+  }
+  if (ruleOk) okMsg();
+}
+
+// ── Rule 17 ────────────────────────────────────────────────────────────────
+// U-3: 长度量纲的常数只允许两种住址——骨架单位（消费时乘 npc.scale）或 NavGrid
+// 格（消费时乘 CELL）；世界像素不是常数的合法单位。正确范式参照
+// BehaviorManager.js#_separate 的 `baseRadius * (scale / atScale)`——baseRadius
+// 骨架单位，atScale 是缩放基准点本身不是长度，注释里应说明。
+//
+// 检查范围（tasks.md U-3 原文 + U-2c 补债）：ARRIVAL_RULES（SteeringDecision.js）、
+// SAFETY_RULES + RECOVERY_RULES（Motor.js，同文件同一次扫描）、PoseCacheBuilder
+// 输出（designGap）。不扫描 EnvironmentQuery.js 等其它长度常数——那些不在本次
+// 任务范围。
+//
+// 判定方式：ARRIVAL_RULES 每条都有 `threshold`（全是长度），逐行要求命中单位
+// 关键字。Motor.js 用已知长度字段名白名单（新增字段需同步加入这里，否则
+// 静默不受本规则保护——同 Rule 4 的 RULE4_EXEMPT 维护方式）：baseRadius、
+// deadZone、probeCells、rotProbeCells、nearCells（SAFETY_RULES）、movedLT
+// （RECOVERY_RULES，U-2c 补债）命中即要求该行带单位关键字；rotateDeg/
+// slowFactor/speedK/atScale/window 等非长度字段不要求。PoseCacheBuilder.js
+// 检查 `designGap` 声明行前 5 行内是否出现单位关键字（该行本身是纯赋值语句，
+// 单位写在上方注释块里）。
+console.log('Rule 17: ARRIVAL_RULES/SAFETY_RULES/RECOVERY_RULES/PoseCacheBuilder 长度常数须带单位标注');
+{
+  const UNIT_MARKERS = ['骨架单位', 'NavGrid 格'];
+  const hasUnit = (s) => UNIT_MARKERS.some(m => s.includes(m));
+  let ok = true;
+
+  // ARRIVAL_RULES：每条都是 threshold（长度），逐行检查。
+  {
+    const src   = readText(join(ROOT, 'js', 'behavior', 'SteeringDecision.js'));
+    const lines = src.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (/\bthreshold\s*:/.test(lines[i]) && !hasUnit(lines[i])) {
+        fail(`SteeringDecision.js:${i + 1}: ARRIVAL_RULES 条目含 threshold 但无单位标注:\n    ${lines[i].trim()}`);
+        ok = false;
+      }
+    }
+  }
+
+  // SAFETY_RULES/RECOVERY_RULES：已知长度字段名命中才要求标注（新增字段需同步
+  // 加入 LENGTH_FIELDS）。同一次扫描覆盖 Motor.js 全文，两张表都在此文件内。
+  {
+    const LENGTH_FIELDS = ['baseRadius', 'deadZone', 'probeCells', 'rotProbeCells', 'nearCells', 'movedLT'];
+    const src   = readText(join(ROOT, 'js', 'behavior', 'Motor.js'));
+    const lines = src.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const hasLengthField = LENGTH_FIELDS.some(f => new RegExp(`\\b${f}\\s*:`).test(lines[i]));
+      if (hasLengthField && !hasUnit(lines[i])) {
+        fail(`Motor.js:${i + 1}: SAFETY_RULES/RECOVERY_RULES 条目含长度字段但无单位标注:\n    ${lines[i].trim()}`);
+        ok = false;
+      }
+    }
+  }
+
+  // PoseCacheBuilder.js：designGap 是唯一声明的长度常数，单位写在声明行上方注释块。
+  {
+    const src   = readText(join(ROOT, 'js', 'behavior', 'PoseCacheBuilder.js'));
+    const lines = src.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (/\bconst\s+designGap\s*=/.test(lines[i])) {
+        const windowStart = Math.max(0, i - 5);
+        const windowText  = lines.slice(windowStart, i + 1).join('\n');
+        if (!hasUnit(windowText)) {
+          fail(`PoseCacheBuilder.js:${i + 1}: designGap 声明附近无单位标注:\n    ${lines[i].trim()}`);
+          ok = false;
+        }
+      }
+    }
+  }
+
+  if (ok) okMsg();
+}
+
+// ── Rule 18 ────────────────────────────────────────────────────────────────
+// propagateArticleToWitnesses() call sites: exactly one, and it must live in
+// NewsUI.js (tasks.md P-7 — the single 发布 → 回流写入 call point, same
+// single-address discipline as Rule 15's generateClaims()). NewsBackflow.js
+// itself defines the function — that's not a call site, skip it explicitly.
+console.log('Rule 18: propagateArticleToWitnesses() called exactly once, from NewsUI.js');
+{
+  const hits = [];
+  for (const p of walkFiles(join(ROOT, 'js'), f => f.endsWith('.js'))) {
+    const lines = readText(p).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith('*') || trimmed.startsWith('//')) continue;
+      if (/\bexport function propagateArticleToWitnesses\s*\(/.test(lines[i])) continue; // definition, not a call
+      if (/\bpropagateArticleToWitnesses\(/.test(lines[i])) hits.push(`${p}:${i + 1}`);
+    }
+  }
+  const outsideUI = hits.filter(h => !h.replace(/\\/g, '/').includes('NewsUI.js'));
+  if (hits.length !== 1 || outsideUI.length > 0) {
+    fail(`propagateArticleToWitnesses() must be called exactly once, from NewsUI.js; found ${hits.length} call site(s):\n  ` + hits.join('\n  '));
+  } else {
+    okMsg();
+  }
 }
 
 // ── Summary ─────────────────────────────────────────────────────────────────

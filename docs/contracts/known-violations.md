@@ -6,19 +6,7 @@ it breaks, and the migration path.
 
 ---
 
-## Rule: no `_extraTags` direct field access in `js/`
-
-### `js/behavior/activities/TalkActivity.js:136-137,163`
-
-```js
-136:    this.a._extraTags = aTags.length > 0 ? aTags : null;
-137:    this.b._extraTags = bTags.length > 0 ? bTags : null;
-...
-163:          this.b._extraTags = ['conflict', 'victim'];
-```
-
-**Rule broken**: `_extraTags` is a legacy direct field bypassing the `npc.mem(ns).tags` slot system.
-
-**Migration**: Replace with `npc.mem('social').tags` (or a new `'talk'` namespace). The NpcState migration pass (Batch-M3 second half) should migrate these three writes. Until then, the check-invariants gate cannot enforce the `_extraTags` rule without false-positiving on TalkActivity.js.
-
-**Current status**: Rule is documented in movement.md but NOT enforced in check-invariants.mjs.
+_(none currently — the `_extraTags` entry that lived here was resolved by
+W-1: `TalkActivity.js` migrated its three `_extraTags` writes to
+`WorldEventLog.emitEvent()`, and check-invariants.mjs Rule 1 now enforces a
+zero-allowlist ban. See `docs/roadmap.md` for the batch record.)_

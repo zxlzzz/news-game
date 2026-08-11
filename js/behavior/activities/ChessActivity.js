@@ -1,89 +1,62 @@
 import { setState }         from '../Motor.js';
 import { Activity }         from './Activity.js';
+import { ClipPlayer }       from '../ClipPlayer.js';
 import { registerActivity } from '../ActivityRegistry.js';
-
-const rand = (a, b) => a + Math.random() * (b - a);
+import { emitEvent }        from '../WorldEventLog.js';
 
 const CHESS_WAIT_MS = 3500;
 
-function startPlay(npc) {
-  npc.playOnce   = true;
-  npc.animDone   = false;
-  npc.frameIndex = 0;
-  npc.frameTimer = 0;
-}
-function freezeAt0(npc) {
-  npc.animDone   = true;
-  npc.frameIndex = 0;
+// 每次回合切换（一次落子完成）时以此概率发一条 chess_move 事件。刻意调低：
+// 一局棋回合切换数十次，每回合都发会把 EVENT_LOG_CAP=500 的流水账刷爆、
+// 也会让证词管线被下棋淹没——目标是平均约十回合出一条，让"这盘棋在下"
+// 偶尔被目击到即可，不需要逐手记录。
+const CHESS_EVENT_PROB = 0.1;
+
+// 落子手势（poseCache.chess_move，见 PoseCacheBuilder 的 chess 特例）——单条 clip，
+// 覆盖全身 11 个关节，落到 ClipPlayer 的 '_chess_move' modifier 上会完全盖住
+// STATE_DEFS.chess 自身的基座动画，因此 setState(npc,'chess',...) 仍然保留
+// （StuckProbe / getTags 等系统认 npc.state，不认这条 modifier）。
+let CHESS_MOVE = null;
+
+export function initChessMove(clip) {
+  CHESS_MOVE = clip;
 }
 
 export class ChessActivity extends Activity {
-  constructor(id, players, onlookers, props) {
+  constructor(id, players, props) {
     super(id, 'chess');
+    this.requiredRoster = 2;
     this.a = players[0];
     this.b = players[1];
-    this.onlookers = onlookers || [];
     this.table = props[0] || null;
-    this.join(this.a, 'player_a');
-    this.join(this.b, 'player_b');
-    for (const o of this.onlookers) this.join(o, 'onlooker');
+    this.admit(this.a, 'player_a');
+    this.admit(this.b, 'player_b');
     for (const p of props) this.occupy(p);
-    if (this.table) this.table._chessActivity = this;
 
     this.subState = 'playing';
     this.active   = 'A';
     this.waiting  = false;
     this.waitMs   = 0;
 
-    this._setupPlayer(this.a);
-    this._setupPlayer(this.b);
-    for (const o of this.onlookers) this._setupOnlooker(o);
-
-    startPlay(this.a);
-    freezeAt0(this.b);
+    // 双方各持一个 ClipPlayer：当前落子的一方每帧 update() 播完即冻结在末帧；
+    // 等待的一方 play() 后不再 update()，天然停在首帧（原 freezeAt0 语义）。
+    this._aPlayer = new ClipPlayer(this.a, '_chess_move');
+    this._bPlayer = new ClipPlayer(this.b, '_chess_move');
+    this._aPlayer.play(CHESS_MOVE);
+    this._bPlayer.play(CHESS_MOVE);
   }
 
-  _setupPlayer(npc) {
+  admit(npc, role) {
+    super.admit(npc, role);
     setState(npc, 'chess', 'chess-setup');
-  }
-
-  _setupOnlooker(npc) {
-    setState(npc, 'chess_onlooker', 'chess-onlooker-setup');
-  }
-
-  _tickOnlooker(npc, dt) {
-    // animDone=true + playOnce=true → StickRenderer 自动冻结最后一帧，无需处理
-  }
-
-  addOnlooker(npc, slot) {
-    this.onlookers.push(npc);
-    this.join(npc, 'onlooker');
-    this._setupOnlooker(npc);
-    npc.mem('social').chessSlot     = slot || null;
-    npc.mem('social').onlookerTimer = 0;
-    npc.mem('social').onlookerDur   = rand(15, 40);
-    if (this.table) npc.direction = (this.table.x >= npc.x) ? 1 : -1;
-  }
-
-  releaseOnlooker(npc) {
-    const i = this.onlookers.indexOf(npc);
-    if (i >= 0) this.onlookers.splice(i, 1);
-    this.participants = this.participants.filter(p => p.npc !== npc);
-    this.release(npc);
-    if (npc.mem('social').chessSlot) {
-      npc.mem('social').chessSlot.reserved = null;
-      npc.mem('social').chessSlot.ready    = false;
-      npc.mem('social').chessSlot.npc      = null;
-      npc.mem('social').chessSlot = null;
-    }
-    if (npc.alive) setState(npc, 'walk', 'onlooker-done');
   }
 
   update(dt) {
     if (!this.a.alive || !this.b.alive) return false;
-    const cur = this.active === 'A' ? this.a : this.b;
-    if (!this.waiting && cur.animDone) {
-      cur.frameIndex = 0;
+    const curPlayer = this.active === 'A' ? this._aPlayer : this._bPlayer;
+    curPlayer.update(dt);
+
+    if (!this.waiting && curPlayer.done) {
       this.waiting = true;
       this.waitMs  = 0;
     }
@@ -91,24 +64,17 @@ export class ChessActivity extends Activity {
       this.waitMs += dt * 1000;
       if (this.waitMs >= CHESS_WAIT_MS) {
         this.waiting = false;
+        // 刚落子的一方是切换前的 this.active；actors 第一位是落子方，第二位对手。
+        if (Math.random() < CHESS_EVENT_PROB) {
+          const mover    = this.active === 'A' ? this.a : this.b;
+          const opponent = this.active === 'A' ? this.b : this.a;
+          emitEvent({ kind: 'chess_move', actors: [mover.id, opponent.id], x: mover.x, y: mover.y });
+        }
         this.active  = this.active === 'A' ? 'B' : 'A';
-        const next = this.active === 'A' ? this.a : this.b;
-        const prev = this.active === 'A' ? this.b : this.a;
-        startPlay(next);
-        freezeAt0(prev);
-      }
-    }
-    for (let i = this.onlookers.length - 1; i >= 0; i--) {
-      const o = this.onlookers[i];
-      if (!o.alive) {
-        this.onlookers.splice(i, 1);
-        this.participants = this.participants.filter(p => p.npc !== o);
-        continue;
-      }
-      this._tickOnlooker(o, dt);
-      o._onlookerTimer = (o._onlookerTimer || 0) + dt;
-      if (o._onlookerDur != null && o._onlookerTimer >= o._onlookerDur) {
-        this.releaseOnlooker(o);
+        // 双方都从头播：新落子方接下来会被 update() 逐帧推进；新等待方
+        // 就此停在首帧，直到轮到它。
+        this._aPlayer.play(CHESS_MOVE);
+        this._bPlayer.play(CHESS_MOVE);
       }
     }
     return true;
@@ -117,13 +83,8 @@ export class ChessActivity extends Activity {
   interrupt(reason) { super.interrupt(reason); }
 
   destroy() {
-    for (const o of this.onlookers) {
-      if (o._chessSlot) {
-        o._chessSlot.reserved = null; o._chessSlot.ready = false; o._chessSlot.npc = null;
-        o._chessSlot = null;
-      }
-    }
-    if (this.table) this.table._chessActivity = null;
+    this._aPlayer.clear();
+    this._bPlayer.clear();
     for (const { npc } of this.participants) {
       if (npc.alive) setState(npc, 'walk', 'activity-end');
     }
@@ -132,13 +93,6 @@ export class ChessActivity extends Activity {
 }
 
 registerActivity('chess', (id, participants, props) => {
-  const players   = participants.filter(p => p.role.startsWith('player')).map(p => p.npc);
-  const onlookers = participants.filter(p => p.role === 'onlooker').map(p => p.npc);
-  return new ChessActivity(id, players, onlookers, props);
-}, {
-  onSlotArrival(npc, prop, slot, socialLayer) {
-    const act = prop._chessActivity;
-    if (act && act.alive && act.addOnlooker) act.addOnlooker(npc, slot);
-    else socialLayer._abandonSlot(npc, slot, 'chess_no_game');
-  },
+  const players = participants.filter(p => p.role.startsWith('player')).map(p => p.npc);
+  return new ChessActivity(id, players, props);
 });

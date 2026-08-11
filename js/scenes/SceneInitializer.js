@@ -4,25 +4,23 @@ import { BehaviorManager } from '../behavior/BehaviorManager.js';
 import { ExitRegistry }    from '../npc/ExitRegistry.js';
 import { Director }        from '../behavior/Director.js';
 import { NpcPropManager }  from '../npc/props/NpcPropManager.js';
-import { WaitForBusLayer } from '../entity/busstop/WaitForBusLayer.js';
-import { spawnBusStop }    from '../entity/busstop/busstop.js';
-import { setState, setXY } from '../behavior/Motor.js';
-import { publishGoal }     from '../behavior/nav/PlanService.js';
-import { spawnPedestrians, spawnOnePedestrian } from '../npc/Pedestrians.js';
-import { Agenda } from '../behavior/Agenda.js';
-import { makeNPC }          from '../npc/npcUtil.js';
-import { spawnChess }       from '../npc/Chess.js';
-import { spawnDogWalker }   from '../npc/DogWalker.js';
-import { spawnAthletes }    from '../npc/Athletes.js';
-import { initVehicleSystem } from '../entity/vehicle/vehicleSpawner.js';
-import {
-  WORLD_WIDTH, BUILDING_BASE_Y, FAR_Y,
-  SIDEWALK_FAR_Y, PARK_TOP, PARK_BOTTOM,
-  depthScale,
-} from '../core/Layout.js';
+import { WORLD_WIDTH, BUILDING_BASE_Y, resolveY, depthScale } from '../core/Layout.js';
 import { initCrosswalks } from '../behavior/WalkMode.js';
 import { NavGrid, setNavGrid } from '../behavior/nav/NavGrid.js';
-import { PLANNING_RULES }     from '../behavior/nav/PathPlanner.js';
+import { getFeatureInit } from '../core/featureRegistry.js';
+import './sceneFeatures.js';  // 副作用 import：触发所有 feature type 的 registerFeature()
+
+function _need(v, what) {
+  if (v == null) throw new Error(`SceneInitializer: scene config 缺 ${what}`);
+  return v;
+}
+
+/** side + margin → 世界 X（"left" 贴左边缘外 margin px，"right" 贴右边缘外 margin px） */
+function _resolveSideX(side, margin) {
+  if (side === 'left')  return -margin;
+  if (side === 'right') return WORLD_WIDTH + margin;
+  throw new Error(`SceneInitializer: unknown side '${side}' (合法值 left/right)`);
+}
 
 export class SceneInitializer {
   constructor(scene, em, sr, poseCache) {
@@ -39,8 +37,10 @@ export class SceneInitializer {
     this._spawnNPCs(layout, sceneData);
   }
 
-  // 行道树 / 公园树：从 bg 移到 entity 层。y = 树根落地点（layout 树坐标），
-  // 不设 _sortY（用默认 y 参与 Y 排序）。渲染交给 PropDrawer.drawTree，半径 r → width = 2r。
+  // 行道树 / 公园树：从 bg 移到 entity 层。y = 树根落地点（layout 树坐标）。
+  // 排序基准由 tree.js footprint 的负 sortDY(-height*0.35) 决定（PropEntity 构造时
+  // 据此推出 _sortY，比树根更靠后），让近处路过的 NPC 走在树前。
+  // 渲染交给 drawTree，半径 r → width = 2r。
   _spawnTrees(layout) {
     const { em } = this;
     const groups = [
@@ -95,7 +95,7 @@ export class SceneInitializer {
 
     // NavGrid — 在所有静态道具（props/trees）入场后烘焙
     const navGrid = new NavGrid();
-    navGrid.bake(em.entities, layout, PLANNING_RULES);
+    navGrid.bake(em.entities, layout, sceneData.zones);
     setNavGrid(navGrid);
 
     const bm = new BehaviorManager(em, poseCache);
@@ -103,128 +103,71 @@ export class SceneInitializer {
 
     initCrosswalks(layout.crosswalks);
 
-    // ── ExitRegistry：边缘 + 建筑门（从 scene.json 读取）───────────────────────
+    // ── ExitRegistry：边缘 + 建筑门（几何来自 scene.json#exits，键名 = yBand 名字）──
+    const exitsCfg = _need(sceneData.exits, 'exits');
     const exitRegistry = new ExitRegistry();
-    exitRegistry.register({ id: 'edge_left',  type: 'edge', x: -40,              y: null, yZone: null, facing: -1 });
-    exitRegistry.register({ id: 'edge_right', type: 'edge', x: WORLD_WIDTH + 40, y: null, yZone: null, facing:  1 });
+    for (const e of _need(exitsCfg.edges, 'exits.edges')) {
+      exitRegistry.register({
+        id: e.id, type: 'edge',
+        x: _resolveSideX(e.side, e.margin), y: null, yZone: null,
+        facing: e.facing,
+      });
+    }
 
+    const doorCfg = _need(exitsCfg.buildingDoor, 'exits.buildingDoor');
+    const doorY   = resolveY(_need(doorCfg.yBand, 'exits.buildingDoor.yBand')) + (doorCfg.yOffset ?? 0);
+    const doorZone = _need(doorCfg.yZone, 'exits.buildingDoor.yZone').map(resolveY);
     const buildingDoors = [];
     for (const b of (sceneData?.buildings ?? [])) {
       if (b.door == null) continue;
       const id = `building_${b.x}`;
-      exitRegistry.register({
-        id, type: 'building',
-        x: b.door, y: SIDEWALK_FAR_Y - 8,
-        yZone: [BUILDING_BASE_Y, FAR_Y],
-        facing: 0,
-      });
+      exitRegistry.register({ id, type: 'building', x: b.door, y: doorY, yZone: doorZone, facing: 0 });
       buildingDoors.push({ id, x: b.door });
     }
     bm.exitRegistry = exitRegistry;
 
+    // ── spawnPoints：建筑门衍生点（代码算）+ scene.json#spawnPoints 固定点（配置） ──
     const spawnPoints = [
-      ...buildingDoors.map(d => ({ x: d.x, y: SIDEWALK_FAR_Y, facing: 0 })),
-      { x: -30,              y: SIDEWALK_FAR_Y, facing:  1 },
-      { x: WORLD_WIDTH + 30, y: SIDEWALK_FAR_Y, facing: -1 },
-      { x: -30,              y: PARK_TOP + 30,  facing:  1 },
-      { x: WORLD_WIDTH + 30, y: PARK_TOP + 30,  facing: -1 },
+      ...buildingDoors.map(d => ({ x: d.x, y: resolveY(doorCfg.yBand), facing: 0 })),
+      ...(sceneData.spawnPoints ?? []).map(p => ({
+        x: _resolveSideX(p.side, p.margin),
+        y: resolveY(_need(p.yBand, 'spawnPoints[].yBand')) + (p.yOffset ?? 0),
+        facing: p.facing,
+      })),
     ];
 
-    // ── Ambient affordance: 公园草地休息点（无实体，区域采样）─────────────────────
-    bm.envQuery.registerAmbientAffordance({
-      kind:         'grass_rest',
-      arrivalState: 'sit_ground',
-      dur:          [10, 25],
-      weight:       0.10,
-      slots:        null,
-      facing:       null,
-      use:          'visit',
-      tags:         ['grass_rest'],
-      anchor:       (npc) => npc.y >= PARK_TOP ? navGrid.sampleWalkableNear(npc, 200) : null,
-      weightMul:    (npc, env) => env.nearestFreeBench(npc, 200) ? 0.3 : 1,
-    });
+    // ── propManager：常驻基础设施（StreetScene.update 每帧读取，与是否有 dog_walker
+    //    feature 无关——始终创建，供任何需要 leash/道具挂载的 feature 使用）────────
+    this.scene.propManager = new NpcPropManager(em);
 
-    spawnPedestrians(em, sr, bm, spawnPoints);
-
-    // ── Park idlers：3-5 个公园常驻闲逛 NPC ─────────────────────────────────
-    {
-      const PARK_MID_Y = PARK_TOP + (PARK_BOTTOM - PARK_TOP) * 0.35;
-      const count = 3 + Math.floor(Math.random() * 3); // 3, 4, or 5
-      for (let i = 0; i < count; i++) {
-        const px = 80 + Math.random() * (WORLD_WIDTH - 160);
-        const npc = spawnOnePedestrian('pedestrian', em, sr, bm,
-          { x: px, y: PARK_MID_Y },
-          { minY: PARK_TOP, maxY: PARK_BOTTOM });
-        const ag = npc.mem('agenda');
-        ag.agenda = new Agenda(
-          { ...ag.profile, agendaTemplate: 'park_idler' },
-          bm.envQuery,
-        );
-        ag.lifespan = 120 + Math.random() * 180; // 2-5 min park lifespan
-        ag.ageTimer = Math.random() * 30;         // stagger initial departure
-      }
+    // ── features：scene.json#features 声明的可选场景内容，按数组顺序初始化 ────────
+    // 顺序即 Math.random() 消费顺序：调换会改变具体生成结果（位置/数量），
+    // 即使各 feature 逻辑上互不依赖。
+    const ctx = {
+      em, sr, bm, scene: this.scene, layout, sceneData,
+      propManager: this.scene.propManager, navGrid, spawnPoints,
+      worldWidth: WORLD_WIDTH,
+    };
+    for (const entry of (sceneData.features ?? [])) {
+      const { type, ...cfg } = entry;
+      const init = getFeatureInit(type);
+      if (!init) throw new Error(`SceneInitializer: unknown feature type '${type}'`);
+      init(ctx, cfg);
     }
 
-    spawnChess(em, sr, bm, layout.chessPlaza);
-    this._spawnStallSellers(bm);
-    this.scene.propManager = new NpcPropManager(em);
-    spawnDogWalker(em, sr, bm, this.scene.propManager);
-    spawnAthletes(em, sr, bm);
-    this.scene.trafficManager = initVehicleSystem(em, sr, bm);
-    for (const stop of (layout.busStops || [])) spawnBusStop(this.em, stop);
-
-    if (this.scene.trafficManager.busStops.length > 0)
-      bm.waitForBusLayer = new WaitForBusLayer(this.scene.trafficManager.busStops, em.entities, bm.socialLayer);
-
     // ── Director（替换 SpawnManager）──────────────────────────────────────────
+    // busStops 经可选链：vehicles feature 未声明时 trafficManager 不存在
+    // （例：无车流的场景，如学校操场）。
     const director = new Director({
       bm, em, sr,
       exitRegistry,
       buildingDoors,
       spawnPoints,
-      busStops: this.scene.trafficManager.busStops,
+      busStops: this.scene.trafficManager?.busStops ?? [],
     });
     // 初始批次 NPC 补齐 exitBias
     director.assignDefaults(bm.npcs);
 
     this.scene.director = director;
-  }
-
-  // 为每个带 smartDef 的摊位生成一名常驻摊主：从地图边缘入场，路由到 seller 槽。
-  _spawnStallSellers(bm) {
-    const { em, sr } = this;
-    const stalls = em.entities.filter(e => e.alive && e.smartDef?.activityType === 'stall' && e._slots);
-    for (const stall of stalls) {
-      const slot = stall._slots.find(s => s.role === 'seller');
-      if (!slot || slot.reserved != null) continue;
-
-      const fromLeft = stall.x < WORLD_WIDTH / 2;
-      const seller = makeNPC(em, sr, {
-        x: fromLeft ? 10 : WORLD_WIDTH - 10, y: stall.y,
-        animation: 'walk', direction: fromLeft ? 1 : -1, speed: 28, vy: 0,
-        minX: 0, maxX: WORLD_WIDTH, minY: BUILDING_BASE_Y, maxY: PARK_BOTTOM,
-        tags: ['vendor'], npcType: 'stall_seller',
-      });
-      seller.scale = depthScale(stall.y);
-      bm.register(seller, 'stall_seller');
-
-      slot.reserved = seller.id;   // 预约 seller 槽，防止他人占用（永不释放）
-      const _destX = stall.x + slot.dx, _destY = stall.y + slot.dy;
-      let _slotRetries = 0;
-      const _onSlotDone = (result) => {
-        if (result === 'arrived') {
-          bm.socialLayer.onSlotArrival(seller, stall, slot);
-        } else if (_slotRetries < 2) {
-          _slotRetries++;
-          publishGoal(seller, { x: _destX, y: _destY }, 60, _onSlotDone, {});
-        } else {
-          // 摊主是场景基础设施，有限重发后强制就位（setXY 是合法写入 API）
-          setXY(seller, _destX, _destY);
-          bm.socialLayer.onSlotArrival(seller, stall, slot);
-        }
-      };
-      publishGoal(seller, { x: _destX, y: _destY }, 60, _onSlotDone, {});
-      setState(seller, 'walk', 'stall_seller_entry');
-    }
   }
 }

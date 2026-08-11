@@ -12,15 +12,24 @@
  * CONTRACT
  *   OWNS:      npc.{x,y,speed,state,animation} write gate (_mw);
  *              npc.mem('motor').walkMode lifecycle (N-2b: stack deleted);
- *              npc.mem('motor').{goal,path,needReplan} lifecycle (N-2b);
- *              npc.mem('motor').{progressAnchor,progressAcc} (integratePhysics);
+ *              npc.mem('motor').{goal,path,needReplan} lifecycle (N-2b;
+ *              M-1: needReplan 不再由 Motor 置 true——progress-monitor 已删);
  *              npc.mem('motor').tags (cleared in _defaultOnExit);
+ *              npc.mem('motor').faceAcc (facing dead-zone accumulator, L-1);
+ *              npc.mem('motor').{frontAccDx,frontAccDy} (front/side variant dead-zone
+ *              accumulators, L-3 — independent of faceAcc, see _updateFrontVariant);
  *              npc.roamTarget null on mode change.
  *   WRITES:    x, y via setXY/nudgeXY/_slideMove;
  *              speed via setState; state/animation via setState/setAnimation;
+ *              npc.direction in walk/run/jog/ride states, derived from real x
+ *              displacement written this frame by _slideMove (L-1; sole address —
+ *              see movement.md, BaseStateMachine MUST NOT write it in these states);
+ *              npc.animation swap to/from '<id>_front' variants when vertical
+ *              displacement dominates in walk/run/jog/ride states (L-3,
+ *              _updateFrontVariant; resets npc.phase/frameIndex on switch);
  *              walkMode via setWalkMode; roamTarget=null on every mode switch;
- *              goal/path/needReplan lifecycle (fire result, progress two-hit).
- *   READS:     npc.mem('motor').{walkMode,goal,path} (integratePhysics, progress monitor);
+ *              goal/path lifecycle (fire result on timeout).
+ *   READS:     npc.mem('motor').{walkMode,goal,path} (integratePhysics);
  *              NavGrid singleton (getNavGrid) for collision in _slideMove.
  *   MUST NOT:  call setState from outside Motor; read npc._walkMode (legacy, deleted);
  *              write npc.mem('social') or npc.mem('agenda').
@@ -28,30 +37,28 @@
 
 import { standUp }  from '../entity/seat/seat.js';
 import { dlog }     from './DebugLog.js';
-import { getNavGrid, CELL } from './nav/NavGrid.js';
+import { getNavGrid, CELL, ZONE } from './nav/NavGrid.js';
 import { audit } from '../debug/MovementAudit.js';
+import { clipLibrary } from '../core/ClipLibrary.js';
 
-// ── 恢复裁决表 — Physics 层卡死/超时政策唯一住址（goal-pipeline-v1.md §3）────────
-// 责任2-E StuckProbe：纯观测，永不入表。责任2-F stateDur：per-state 数据非政策常量，不入表。
-// N-2b 删除：goto_watchdog（责任2-B，GotoTask watchdog 整体删除）；
-//            direct_timeout（责任2-C，modeDirect 整体删除）。
-export const RECOVERY_RULES = {
-  progress_monitor: { window: 1.5, movedLT: 15, reason: '主恢复层，goal 两击制 + wander 清目标',  src: '责任2-A' },
-  // N-3b 删除：routing_timeout（责任2-D，routing 链整体删除）
-};
-
-// ── 安全网裁决表 — Physics 层越界防护策略参数唯一住址（goal-pipeline-v1.md §3）────
-// 责任3-A/B/C/F/G（clamp/escape/wall-slide/Npc夹取/nearestWalkable fallback）：
-// 算法固有行为，无可调策略参数，不入表；机制住址见 movement-dataflow.md。
+// ── 安全网裁决表 — Physics 层策略参数唯一住址（goal-pipeline-v1.md §3）────────────
+// U-3: 每条 reason 里的长度常数须标注单位——骨架单位（消费时乘 npc.scale）或
+// NavGrid 格（消费时乘 CELL）；非长度量（比例 speedK、字符串 anim）不标注。
+// check-invariants.mjs Rule 17 静态门此表。
+//
+// M-1「信任路径」重构：删除三层反应式避障 + 卡死恢复——
+//   • lookahead（前瞻 35° 旋转 + 近墙减速 slowFactor=0.4，原 Lookahead.js，已删）
+//   • wall_avoid（末帧 90° 偏转 _lookaheadDeflect，已删）
+//   • separation（NPC 位置分离 _separate，已删）
+//   • RECOVERY_RULES.progress_monitor（1.5s 位移不足重规划/弃目标，已删）
+// 理由：A* 路径本已无碰撞（NavGrid Minkowski 外扩），跟随即可；这些反应层反而把
+// NPC 从干净路径上推离/甩离、顶进墙角，才是"卡死+移动乱"的根因。churn 源既除，
+// 卡死恢复无必要：不可达目标在规划期即判——goal 由 PlanService `_fireBlocked`，
+// wander 由 steerRoam 丢弃 roamTarget 下帧重选。_slideMove 仍是"绝不踏入 BLOCKED
+// 格"的硬兜底。未来的预测式避让 / 接触碰撞解算作为独立层叠在 steerRoam→积分之间。
 export const SAFETY_RULES = {
-  lookahead:     { probeCells: 4, rotProbeCells: 2, rotateDeg: 35, nearCells: 1, slowFactor: 0.4, reason: '前瞻回避参数',                                    src: '责任3-D' },
-  separation:    { baseRadius: 24, atScale: 0.18,                                                  reason: 'NPC 分离冲量半径',                                src: '责任8-分离半径' },
-  jaywalk_sprint:{ speedK: 2.4, anim: 'run',                                                       reason: '马路格速度倍增（NavGrid cell cost 空间派生）', src: 'N-2b' },
-  // separation（step 12）可将 NPC 推至墙边，令 step-8 的 applyLookahead 速度在接触前已过期。
-  // wall_avoid 在 step-13 消费 vel 时补做一次 Motor 级前瞻：若正前方 probeCells 格被阻，
-  // 且当前格可走，则把速度旋转 90° 到可通行的垂直侧，保持速度模长，不做降速。
-  // 骑手在道路格（cost=250≠0）行驶，前方道路格同样非阻挡，天然不触发；无需特判。
-  wall_avoid:    { probeCells: 2, rotProbeCells: 1,                                                 reason: 'step-13 撞墙预判：separation 后末帧前瞻垂直偏转', src: '责任3-E' },
+  jaywalk_sprint:{ speedK: 2.4, anim: 'run', reason: '马路格速度倍增（NavGrid cell cost 空间派生；speedK 为比例，非长度）', src: 'N-2b' },
+  facing:        { deadZone: 10,             reason: '朝向翻转空间死区（骨架单位，消费时乘 npc.scale）；替代旧版转向意图速度 + 时间冷却迟滞', src: 'L-1' },
 };
 
 // ── 写入授权门 ─────────────────────────────────────────────────────────────────
@@ -145,10 +152,22 @@ export const STATE_DEFS = {
       _defaultOnExit(npc, toState);
     },
   },
-  chess:          { anim: 'chess',           speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
+  // Patch F 修正：anim 从 'chess' 改 'stand'（零 delta 基座）。ChessActivity 的落子
+  // 手势用 ClipPlayer 驱动 modifier 覆盖全身 11 个关节（含 neck/body/legs），若基座仍是
+  // 'chess' 自身（不再被主动推进、冻结在任意一帧），Npc.js#_buildJointOverrides 的
+  // 链根重锚（neck/legs 相对 frame.body/frame.neck 平移）会把这个冻结帧的 body/neck
+  // 位移当成常量偏移叠加进每一帧手势里，整个姿势跟着错位。'stand' 全零 delta，
+  // 重锚退化成 no-op——Stall/Talk/UsePropTask 全部用 'stand' 做 ClipPlayer 基座正是
+  // 同一个原因。npc.state 仍是 'chess'（tag/StuckProbe 等按 state 走，不受影响，
+  // Npc.js#STATE_TAGS 已补 chess:'sitting' 保住原有语义标签）。
+  chess:          { anim: 'stand',           speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
   chess_onlooker: { anim: 'chess_onlookers', speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
   // N3-c: 骑手单态；anim 仅用于 setState fallback，CyclistSpawner 用 setAnimation 覆写实际 clip
   ride:           { anim: 'bike',            speedK: 1.0, once: false, dur: null, onExit: _defaultOnExit },
+  // A-1: play_guitar 脚本的 pose 步骤用；anim='lift' 是 manifest kind:overlay
+  // 的 clip（只声明 r_elbow/r_hand 两个关节 delta），其余关节零 delta=停在
+  // defaultPose——静止站立、右臂抬起，不是行走态，故 speedK=0。
+  lift:           { anim: 'lift',            speedK: 0,   once: true,  dur: null, onExit: _defaultOnExit },
 };
 
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -161,9 +180,14 @@ export function setState(npc, state, trigger = '?') {
 
   if (prev && STATE_DEFS[prev]) STATE_DEFS[prev].onExit?.(npc, state);
 
+  const mot = npc.mem('motor');
+  // U-2: npc.speed 世界像素/秒 = speedK × walkSpeed(骨架单位/秒) × npc.scale。
+  // scale 随 y 变，这里只是状态切换瞬间的初始值；speedK 存入 mot 供
+  // integratePhysics 每帧用当帧最新 scale 重算，Motor 仍是唯一写入点。
+  mot.speedK = def.speedK;
   _mw(npc, 'state',     state);
   _mw(npc, 'animation', def.anim);
-  _mw(npc, 'speed',     def.speedK * (npc.walkSpeed || 26));
+  _mw(npc, 'speed',     def.speedK * npc.walkSpeed * npc.scale);
   npc.stateTimer = 0;
   npc.stateDur   = def.dur ? rand(def.dur[0], def.dur[1]) : Infinity;
   npc.playOnce   = def.once;
@@ -171,11 +195,11 @@ export function setState(npc, state, trigger = '?') {
   npc.frameIndex = 0;
   npc.frameTimer = 0;
 
-  if (npc.mem('motor').walkMode?.kind === 'wander' && (state === 'walk' || state === 'run'))
+  if (mot.walkMode?.kind === 'wander' && (state === 'walk' || state === 'run'))
     npc.roamTarget = null;
 
   if (state === 'lie_bench')
-    npc.mem('motor').tags = (Math.random() < 0.2) ? ['resting', 'homeless'] : ['resting'];
+    mot.tags = (Math.random() < 0.2) ? ['resting', 'homeless'] : ['resting'];
 
   if (state === 'loiter') {
     const lt     = npc.mem('loiter');
@@ -197,45 +221,7 @@ export function setState(npc, state, trigger = '?') {
 // ── 碰撞辅助 ────────────────────────────────────────────────────────────────
 function _navBlocked(grid, wx, wy) {
   const { gx, gy } = grid.worldToCell(wx, wy);
-  return grid.cost(gx, gy) === 0;
-}
-
-/**
- * Motor 级末帧前瞻偏转（责任3-E）。
- * separation（step 12）可将 NPC 推至墙边；此函数在 integratePhysics（step 13）消费
- * mot.vel 后、_slideMove 前运行，预判正前方阻挡并垂直偏转，保持速度模长不减速。
- *   • 当前格已阻挡（逃逸模式）→ 直通 _slideMove
- *   • 前方 probeCells 格无阻挡 → 不修改速度
- *   • 两侧垂直均阻挡 → 不修改（交 _slideMove 处理）
- *   • 一侧或双侧可通 → 取可通侧旋转 90°，双侧可通取左侧（确定性，无振荡）
- */
-function _lookaheadDeflect(npc, vx, vy) {
-  const grid = getNavGrid();
-  if (!grid) return { vx, vy };
-
-  const mag = Math.hypot(vx, vy);
-  if (mag < 0.001) return { vx, vy };
-
-  // Escape mode: already in blocked cell → pass through
-  if (_navBlocked(grid, npc.x, npc.y)) return { vx, vy };
-
-  const wa = SAFETY_RULES.wall_avoid;
-  const nx = vx / mag, ny = vy / mag;
-
-  // Probe ahead
-  if (!_navBlocked(grid, npc.x + nx * wa.probeCells * CELL, npc.y + ny * wa.probeCells * CELL))
-    return { vx, vy };
-
-  // Ahead blocked — check perpendicular sides (left: rotate +90°, right: rotate -90°)
-  const leftOk  = !_navBlocked(grid, npc.x + (-ny) * wa.rotProbeCells * CELL, npc.y + nx * wa.rotProbeCells * CELL);
-  const rightOk = !_navBlocked(grid, npc.x +   ny  * wa.rotProbeCells * CELL, npc.y - nx * wa.rotProbeCells * CELL);
-
-  if (!leftOk && !rightOk) return { vx, vy };
-
-  audit.count(npc, 'avoid_steer');
-  // Both clear → prefer left (deterministic, avoids oscillation)
-  if (leftOk) return { vx: -ny * mag, vy:  nx * mag };
-  return          { vx:  ny * mag, vy: -nx * mag };
+  return grid.zone(gx, gy) === ZONE.BLOCKED;
 }
 
 /**
@@ -289,7 +275,78 @@ function _slideMove(npc, dx, dy) {
   audit.count(npc, 'blocked_contact');
 }
 
-// ── 位置写入（供 steerRoam / _separate）──────────────────────────────────────
+// ── 朝向（唯一住址，L-1）─────────────────────────────────────────────────────
+// walk/run/jog/ride 状态下，npc.direction 由本帧真实 x 位移（_slideMove 写入后的
+// 实际增量，非转向意图速度）派生。迟滞用空间死区取代旧版时间冷却迟滞：
+// mot.faceAcc 累加带符号真实 dx，越过 SAFETY_RULES.facing.deadZone × npc.scale
+// 才翻转，翻转后清零。其余状态（落座/离场朝向、Director 出生朝向、
+// LoiterBehavior 等）的直接写入不受影响——本函数对它们是空操作（状态白名单守卫）。
+const FACING_STATES = new Set(['walk', 'run', 'jog', 'ride']);
+
+function _updateDirection(npc, dx) {
+  if (!FACING_STATES.has(npc.state) || dx === 0) return;
+  const mot = npc.mem('motor');
+  // dir_mismatch：可回归指标，比较本帧真实 dx 符号与当前朝向（翻转判据之外的观测）
+  if (Math.sign(dx) !== npc.direction) audit.count(npc, 'dir_mismatch');
+  const acc = (mot.faceAcc || 0) + dx;
+  const dz  = SAFETY_RULES.facing.deadZone * npc.scale;
+  const desired = acc >= dz ? 1 : acc <= -dz ? -1 : null;
+  if (desired !== null) {
+    npc.direction = desired;
+    mot.faceAcc   = 0;
+  } else {
+    mot.faceAcc = acc;
+  }
+}
+
+// ── 竖视变体切换（唯一住址，L-3）─────────────────────────────────────────────
+// walk_front / stand_front / idle_front / squat_front 已在 manifest 注册但此前
+// 全库零消费点（PoseCacheBuilder 的 front/side 配对只服务 kind==='overlay' 的
+// trait，这几个是 kind==='cycle'，落不进去）。以竖直位移为主时切到 _front 变体。
+//
+// FRONT_VARIANTS 只声明"配对关系"（新增变体在此登记）；是否真的切换看下方对
+// manifest 的存在性查表（查表，不是兜底）——manifest 里删掉某个 clip 时这里
+// 自动降级为保持当前 clip，不会引用到不存在的资产。
+const FRONT_VARIANTS = {
+  walk:  'walk_front',
+  stand: 'stand_front',
+  idle:  'idle_front',
+  squat: 'squat_front',
+};
+const SIDE_OF_FRONT = Object.fromEntries(
+  Object.entries(FRONT_VARIANTS).map(([side, front]) => [front, side])
+);
+
+// 迟滞复用 L-1 的空间死区阈值（SAFETY_RULES.facing.deadZone），不新增阈值；
+// 但用独立的 dx/dy 累加器，不直接复用 mot.faceAcc——faceAcc 的清零时机绑定朝向
+// 翻转判定，与本判据的清零时机混用会产生不受控的隐式耦合。
+// 切换时相位归零（npc.phase/frameIndex=0）——walk 20 帧、walk_front 13 帧，
+// 帧数不同，两个变体的帧未必逐帧姿势对应，归零避免瞬间跳到不对应的姿势。
+function _updateFrontVariant(npc, dx, dy) {
+  if (!FACING_STATES.has(npc.state) || (dx === 0 && dy === 0)) return;
+  const mot = npc.mem('motor');
+  const accDx = (mot.frontAccDx || 0) + dx;
+  const accDy = (mot.frontAccDy || 0) + dy;
+  const dz = SAFETY_RULES.facing.deadZone * npc.scale;
+  if (Math.abs(accDx) < dz && Math.abs(accDy) < dz) {
+    mot.frontAccDx = accDx;
+    mot.frontAccDy = accDy;
+    return;
+  }
+  const wantFront = Math.abs(accDy) > Math.abs(accDx);
+  mot.frontAccDx = 0;
+  mot.frontAccDy = 0;
+
+  const targetId = wantFront ? FRONT_VARIANTS[npc.animation] : SIDE_OF_FRONT[npc.animation];
+  if (targetId && clipLibrary.manifest?.clips[targetId]) {
+    setAnimation(npc, targetId);
+    npc.phase = 0;
+    npc.frameIndex = 0;
+  }
+}
+
+// ── 位置写入（setXY 供落座/对齐——裸写，绕过 _slideMove 的 BLOCKED 兜底；
+//    nudgeXY 是 _slideMove 的对外壳，唯一调用方是 DuetStager._setX，P-5）────────
 export function setXY(npc, x, y) {
   _mw(npc, 'x', x);
   _mw(npc, 'y', y);
@@ -314,7 +371,9 @@ export function integratePhysics(npc, delta) {
     return;
   }
   const mot = npc.mem('motor');
-  const wm  = mot.walkMode;
+  // U-2: npc.speed 每帧从 speedK × walkSpeed × scale 重算——scale 随 y 变，
+  // setState 的初值只是切换瞬间的快照，此处才是持续正确的唯一来源。
+  _mw(npc, 'speed', mot.speedK * npc.walkSpeed * npc.scale);
 
   if (mot.vel) {
     let vx = mot.vel.vx, vy = mot.vel.vy;
@@ -329,8 +388,11 @@ export function integratePhysics(npc, delta) {
     }
     mot._obsVxSign = vxSign;
     mot.vel = null;
-    const defl = _lookaheadDeflect(npc, vx, vy);
-    _slideMove(npc, defl.vx * dt, defl.vy * dt);
+    const _prevX = npc.x, _prevY = npc.y;
+    _slideMove(npc, vx * dt, vy * dt);
+    const _dx = npc.x - _prevX, _dy = npc.y - _prevY;
+    _updateDirection(npc, _dx);
+    _updateFrontVariant(npc, _dx, _dy);
   }
   // else: mot.vel absent → stationary this frame
 
@@ -347,37 +409,6 @@ export function integratePhysics(npc, delta) {
     }
   }
 
-  // Progress monitor: every 1.5 s 测净位移；< 15 px 且有活跃目标 → 恢复
-  if (!mot.progressAnchor) mot.progressAnchor = { x: npc.x, y: npc.y };
-
-  mot.progressAcc = (mot.progressAcc ?? 0) + dt;
-  if (mot.progressAcc >= RECOVERY_RULES.progress_monitor.window) {
-    mot.progressAcc = 0;
-    const moved = Math.hypot(npc.x - mot.progressAnchor.x, npc.y - mot.progressAnchor.y);
-    mot.progressAnchor = { x: npc.x, y: npc.y };
-
-    const _walkState = npc.state === 'walk' || npc.state === 'run' || npc.state === 'jog';
-    const hasGoal = _walkState && (wm || mot.goal);
-    if (hasGoal && moved < RECOVERY_RULES.progress_monitor.movedLT) {
-      if (mot.goal) {
-        // 两击制：first stuck → 触发重规划；second stuck → 'blocked'
-        if (!mot.goal._stuck) {
-          mot.goal._stuck = true;
-          mot.needReplan  = true;
-        } else {
-          const cb       = mot.goal.onDone;
-          mot.goal       = null;
-          mot.path       = null;
-          mot.needReplan = undefined;
-          if (cb) cb('blocked');
-        }
-      } else {
-        // Wander mode: 换目标
-        npc.roamTarget = null;
-        mot.path       = null;
-      }
-    } else {
-      if (mot.goal?._stuck) mot.goal._stuck = false;
-    }
-  }
+  // M-1: progress-monitor 卡死重规划已删除（见 SAFETY_RULES 上方注记）。不可达目标
+  // 在规划期即处理：goal 由 PlanService._fireBlocked，wander 由 steerRoam 丢弃 roamTarget。
 }

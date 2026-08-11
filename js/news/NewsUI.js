@@ -4,6 +4,9 @@
  * 挂载到 #news-ui-root（pointer-events:none），面板显示时内部元素 pointer-events:auto。
  */
 
+import { injectSuggestion, findFillableClaim, claimsToTestimony } from '../behavior/Belief.js';
+import { propagateArticleToWitnesses } from './NewsBackflow.js';
+
 const PANEL_STYLE = `
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
   background:rgba(14,14,26,0.96); color:#e0ddd8; border:1px solid #444;
@@ -42,7 +45,7 @@ export class NewsUI {
   }
 
   // ── 成稿面板 ──────────────────────────────────────────────────────────────────
-  openComposer({ photoRef, entitySnapshot, visionPromise }) {
+  openComposer({ photoRef, entitySnapshot, visionPromise, witnesses = [], hasUnwitnessingNpc = false }) {
     this.close();
     const panel = el('div', PANEL_STYLE);
 
@@ -65,6 +68,94 @@ export class NewsUI {
     const visionBox = el('div', 'flex:1;background:#1a1a2e;padding:8px;border-radius:4px;font-size:13px;line-height:1.6;min-height:60px;white-space:pre-wrap;color:#bbb;', '⏳ 分析中…');
     midRow.appendChild(img); midRow.appendChild(visionBox);
     panel.appendChild(midRow);
+
+    // ── 目击者审问（W-6）：LLM 只把提问解析成 (槽位,候选值)，写入信念的是
+    //    injectSuggestion() 这个显式游戏内机制，不是 LLM 直接写 belief ──────────
+    const witnessRow = el('div', 'padding:0 16px 8px;border-top:1px solid #222;padding-top:8px;');
+    if (witnesses.length === 0) {
+      // 两种成因不是一回事：框里根本没人 vs 框里有人但谁都没看见——后者是
+      // Perception.js 裁决的真实结果（背对/太远/分心），是玩法反馈不是错误提示。
+      const msg = hasUnwitnessingNpc
+        ? '（取景框里的人这时候什么都没看见——离得太远、背对着，或者在玩手机）'
+        : '（本次取景框里没有 NPC，没有目击者可审问）';
+      const style = hasUnwitnessingNpc
+        ? 'color:#8899aa;font-size:12px;font-style:italic;'
+        : 'color:#666;font-size:12px;';
+      witnessRow.appendChild(el('div', style, msg));
+    } else {
+      witnessRow.appendChild(el('div', 'color:#888;font-size:12px;margin-bottom:6px;', '审问目击者：'));
+
+      const pickerRow = el('div', 'display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;');
+      const qaBox = el('div', 'background:#1a1a2e;padding:8px;border-radius:4px;font-size:12px;line-height:1.6;color:#bbb;white-space:pre-wrap;display:none;');
+      const qRow  = el('div', 'display:none;gap:6px;margin-top:6px;');
+      const qInput = document.createElement('input');
+      qInput.type = 'text';
+      qInput.placeholder = '问点什么…（比如"是谁干的" / "在哪儿"）';
+      qInput.style.cssText = 'flex:1;background:#111;color:#ddd;border:1px solid #444;padding:5px 8px;border-radius:3px;font-family:inherit;font-size:12px;box-sizing:border-box;';
+      const askBtn = el('button', `${BTN} background:#3a3a6e;font-size:12px;padding:4px 12px;`, '提问');
+      qRow.style.display = 'none';
+      qRow.appendChild(qInput); qRow.appendChild(askBtn);
+      const feedback = el('div', 'font-size:11px;color:#997;font-style:italic;margin-top:4px;min-height:14px;');
+
+      let activeWitness = null;
+      const renderQA = () => {
+        if (!activeWitness) return;
+        const lines = claimsToTestimony(activeWitness);
+        qaBox.textContent = lines.length > 0 ? lines.join('\n') : '（还没问出什么）';
+      };
+
+      for (const w of witnesses) {
+        const label = w.npcType ? `${w.npcType}#${w.id}` : `NPC${w.id}`;
+        const btn = el('button', `${BTN} background:#333;font-size:12px;padding:4px 10px;`, label);
+        btn.addEventListener('click', () => {
+          activeWitness = w;
+          qaBox.style.display = '';
+          qRow.style.display = 'flex';
+          feedback.textContent = '';
+          renderQA();
+        });
+        pickerRow.appendChild(btn);
+      }
+
+      askBtn.addEventListener('click', async () => {
+        const question = qInput.value.trim();
+        if (!question || !activeWitness) return;
+        askBtn.textContent = '…';
+        askBtn.style.pointerEvents = 'none';
+        try {
+          const knownClaims = activeWitness.mem('belief').claims ?? [];
+          const result = await this._providers.interrogate.ask({ question, knownClaims });
+          // W-7e：value:null 是合法结果（问句没暗示具体答案），不是错误——
+          // LLM 只抽取问句措辞里出现过的候选值，抽不到不会替玩家编一个。
+          if (result.value == null) {
+            feedback.textContent = '这个问题没有暗示任何具体答案';
+          } else {
+            // W-7c：injectSuggestion 只填某条既有 claim 上还空着的槽，不建新
+            // claim——先找一条这个槽还是 null 的 claim，没有就没处安放这个答案。
+            const fillable = findFillableClaim(activeWitness, result.slot);
+            if (fillable) {
+              injectSuggestion(activeWitness, fillable.id, result.slot, result.value);
+              feedback.textContent = '';
+            } else {
+              feedback.textContent = '问出了答案，但这个目击者没有对应的空白可以记上';
+            }
+          }
+          qInput.value = '';
+          renderQA();
+        } catch (err) {
+          console.error('[NewsUI] interrogate error', err);
+        } finally {
+          askBtn.textContent = '提问';
+          askBtn.style.pointerEvents = 'auto';
+        }
+      });
+
+      witnessRow.appendChild(pickerRow);
+      witnessRow.appendChild(qaBox);
+      witnessRow.appendChild(qRow);
+      witnessRow.appendChild(feedback);
+    }
+    panel.appendChild(witnessRow);
 
     // ── stance + draft ──
     const stanceRow = el('div', 'padding:8px 16px;display:flex;align-items:center;gap:12px;border-top:1px solid #222;');
@@ -124,9 +215,10 @@ export class NewsUI {
       genBtn.style.pointerEvents = 'none';
       const stance = Object.values(stanceInput).find(r => r.checked)?.value ?? 'neutral';
       const draft  = textarea.value.trim();
+      const testimony = witnesses.flatMap(w => claimsToTestimony(w));
       try {
         const result = await this._providers.text.compose({
-          visionReport, playerStance: stance, playerDraft: draft, testimony: [],
+          visionReport, playerStance: stance, playerDraft: draft, testimony,
         });
         if (result.mock) mockBadge.style.display = '';
         artText.textContent = result.text;
@@ -155,6 +247,10 @@ export class NewsUI {
         timestamp:      Date.now(),
       };
       this._archive.publishArticle(article);
+      // 报道回流（tasks.md P-7）：发表这一刻把报道贡献者（本次 openComposer
+      // 的 witnesses）互相之间还没填上的槽用同一事件里别人已确立的值补上，
+      // 见 NewsBackflow.js 头注释。唯一调用点，check-invariants.mjs Rule 18 守。
+      propagateArticleToWitnesses(witnesses);
       this.close();
     });
 

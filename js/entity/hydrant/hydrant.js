@@ -5,3 +5,7 @@ export function footprint(e) {
   const ds = depthScale(e.y);
   return { shape: 'rect', rx: 15 * ds, ry: Math.max(3, 8 * ds), blocks: true, sortDY: 0 };
 }
+// ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
+import { registerProp } from '../../core/propRegistry.js';
+import { drawHydrant } from './drawHydrant.js';
+registerProp('hydrant', { draw: drawHydrant, footprint, obstacle: true });

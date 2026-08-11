@@ -1,5 +1,6 @@
 {
   "facing": "front",
+  "groundTravel": 96,
   "keyframes": [
     {
       "body": [

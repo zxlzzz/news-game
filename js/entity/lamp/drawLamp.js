@@ -58,3 +58,7 @@ export function drawLamp(g, p) {
   lenv(g, armTipY, 0.85);
   g.drawRect(bx0, by0, boxW, boxH);
 }
+
+// ─── 自注册（Z-2d propRegistry）──────────────────────────────────────────────
+import { registerProp } from '../../core/propRegistry.js';
+registerProp('lamp', { draw: drawLamp });

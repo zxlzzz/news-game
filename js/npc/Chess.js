@@ -14,11 +14,16 @@ import { NPC }            from './Npc.js';
 import { PropEntity }     from '../core/PropEntity.js';
 import { gapAt, makeSlots } from '../entity/chess-table/chessTable.js';
 import { depthScale }     from '../core/Layout.js';
+import { clipLibrary }    from '../core/ClipLibrary.js';
 
 export function spawnChess(em, sr, bm, chessPlaza) {
   const Y = chessPlaza.cy;
 
-  const scale = depthScale(Y);
+  // 桌椅几何由棋手锚点反推，因此这里必须用棋手的**真实渲染尺寸**——
+  // 即 depthScale × skeleton.scale（R-1 起 EntityManager 每帧就是这么写回
+  // npc.scale 的）。漏乘会让本函数按大一号的身形烘焙桌椅，下一帧棋手缩回
+  // 真实尺寸后手离棋盘、臀离椅面。chess clip 是 human 骨架。
+  const scale = depthScale(Y) * (clipLibrary.skeletons?.human?.scale ?? 1);
   const gap   = gapAt(scale);
   const cx    = chessPlaza.cx;
   const chessA = new NPC({

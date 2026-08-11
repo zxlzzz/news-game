@@ -1,32 +1,43 @@
 /**
  * Athletes — 健身人群
- * 远端慢跑者（小）在远侧人行道往返；
- * 近端慢跑者（大）沿 park_loop_jog 路线绕公园跑圈。
+ * 每个 runner 沿 layout.walkPaths 里的一条路线往返/绕圈；
+ * 巡逻边界（minX/maxX/minY/maxY）不再手抄路线包围盒，改为按 route waypoints 现算。
  */
 
-import { SIDEWALK_FAR_Y, SIDEWALK_NEAR_Y } from '../core/Layout.js';
+import { resolveY } from '../core/Layout.js';
 import { makeNPC } from './npcUtil.js';
 import { setWalkMode } from '../behavior/Motor.js';
 import { modePathFollow } from '../behavior/WalkMode.js';
 
-export function spawnAthletes(em, sr, bm) {
-  // 远端慢跑者（小）—— 沿 sidewalk_far_jog 路线往返
-  // bounds: sidewalk_far_jog waypoints bbox (x=[850,1320] y=[230,230]) ± 40px
-  const farJogger = makeNPC(em, sr, {
-    x: 980, y: SIDEWALK_FAR_Y, animation: 'jog', direction: 1, speed: 60, vy: 0,
-    minX: 810, maxX: 1360, minY: 190, maxY: 270,
-    color: 0x1a0818, tags: ['jogger', 'athlete'],
-  });
-  bm.register(farJogger, 'athlete');
-  setWalkMode(farJogger, modePathFollow('sidewalk_far_jog'));
+function _parseColor(c) {
+  return typeof c === 'string' ? parseInt(c.replace('#', ''), 16) : c;
+}
 
-  // 近端慢跑者（大）—— 沿公园环线 park_loop_jog 绕圈（透视对比）
-  // bounds: park_loop_jog waypoints bbox (x=[350,1850] y=[368,502]) ± 40px
-  const nearJogger = makeNPC(em, sr, {
-    x: 1220, y: SIDEWALK_NEAR_Y, animation: 'jog', direction: -1, speed: 66, vy: 0,
-    minX: 310, maxX: 1890, minY: 328, maxY: 542,
-    color: 0x0a1808, tags: ['jogger', 'athlete'],
-  });
-  bm.register(nearJogger, 'athlete');
-  setWalkMode(nearJogger, modePathFollow('park_loop_jog'));
+/** route waypoints 包围盒 ± margin —— 路线数据只有 layout.walkPaths 一份来源，不再手抄 */
+function _routeBounds(layout, routeKey, margin) {
+  const route = layout.walkPaths?.[routeKey];
+  if (!route) throw new Error(`Athletes: layout.walkPaths 缺少 route '${routeKey}'`);
+  const xs = route.waypoints.map(p => p.x);
+  const ys = route.waypoints.map(p => p.y);
+  return {
+    minX: Math.min(...xs) - margin, maxX: Math.max(...xs) + margin,
+    minY: Math.min(...ys) - margin, maxY: Math.max(...ys) + margin,
+  };
+}
+
+export function spawnAthletes(em, sr, bm, layout, cfg) {
+  // U-2: r.speed 是骨架单位/秒（scene.json#features[athletes]._speedUnit 标注），
+  // 走 makeNPC → bm.register 的 npc.speed>0 分支直接播种 walkSpeed，语义须与
+  // BehaviorManager.register 的默认 rand(106,181) 一致，不能再是世界像素。
+  for (const r of (cfg?.runners ?? [])) {
+    const bounds = _routeBounds(layout, r.route, r.margin ?? 40);
+    const jogger = makeNPC(em, sr, {
+      x: r.spawnX, y: resolveY(r.spawnYBand), animation: 'jog',
+      direction: r.direction, speed: r.speed, vy: 0,
+      ...bounds,
+      color: _parseColor(r.color), tags: ['jogger', 'athlete'],
+    });
+    bm.register(jogger, 'athlete');
+    setWalkMode(jogger, modePathFollow(r.route));
+  }
 }

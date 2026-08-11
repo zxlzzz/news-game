@@ -12,14 +12,24 @@ import { getProfile } from './NpcProfile.js';
 import { getHeldPoses, getTraitProps, resolveTraitVariant } from '../behavior/ModifierLayer.js';
 
 const rand = (a, b) => a + Math.random() * (b - a);
-const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+// weight 缺省 = 1；child 定低权重，避免初始人流里小孩占比失真（R-1）
 const TYPES = [
-  { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
-  { npcType: 'businessman', tags: ['pedestrian', 'business'], bagChance: 0.5, smokerChance: 0.10 },
-  { npcType: 'tourist',     tags: ['tourist'],                bagChance: 0.4, smokerChance: 0.05 },
-  { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15 },
+  { npcType: 'pedestrian',  tags: ['pedestrian'],             bagChance: 0.3, smokerChance: 0.15, weight: 2 },
+  { npcType: 'businessman', tags: ['pedestrian', 'business'], bagChance: 0.5, smokerChance: 0.10, weight: 1 },
+  { npcType: 'tourist',     tags: ['tourist'],                bagChance: 0.4, smokerChance: 0.05, weight: 1 },
+  { npcType: 'child',       tags: ['child'],                  bagChance: 0,   smokerChance: 0,    weight: 0.4 },
 ];
+
+function pickWeighted(arr) {
+  const total = arr.reduce((s, t) => s + (t.weight ?? 1), 0);
+  let r = Math.random() * total;
+  for (const t of arr) {
+    r -= (t.weight ?? 1);
+    if (r <= 0) return t;
+  }
+  return arr[arr.length - 1];
+}
 
 const SPAWN_TRAIT_CHANCES = { hold_bag: 0.25, umbrella: 0.08 };
 
@@ -62,7 +72,11 @@ function applyTraits(n, t, profile) {
 export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
   const typeData = TYPES.find(t => t.npcType === npcType) ?? TYPES[0];
   const profile  = getProfile(typeData.npcType);
-  const speedRange = profile?.speedRange ?? [20, 34];
+  // U-2d（补漏）：speedRange 骨架单位/秒（NpcProfile.js 注记），下方 speed:
+  // 直接播种 npc.speed，走 BehaviorManager.register() 的 npc.speed>0 分支
+  // 当 walkSpeed 用，语义须与 U-2 全库一致，兜底值同基准换算（20/0.188≈106、
+  // 34/0.188≈181）。
+  const speedRange = profile?.speedRange ?? [106, 181];
 
   const grid    = getNavGrid();
   const snap    = opts.snap !== false;
@@ -104,7 +118,7 @@ export function spawnOnePedestrian(npcType, em, sr, bm, pos, opts = {}) {
  */
 export function spawnPedestrians(em, sr, bm, spawnPoints, count = 18) {
   for (let k = 0; k < count; k++) {
-    const t   = pick(TYPES);
+    const t   = pickWeighted(TYPES);
     const pt  = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
     const npc = spawnOnePedestrian(t.npcType, em, sr, bm, { x: pt.x, y: pt.y });
     npc.direction = pt.facing !== 0 ? pt.facing : (Math.random() < 0.5 ? 1 : -1);

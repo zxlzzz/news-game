@@ -11,8 +11,11 @@ import { modeWander } from '../behavior/WalkMode.js';
 export function spawnDogWalker(em, sr, bm, propManager) {
   const ownerY = SIDEWALK_NEAR_Y;
 
+  // U-2d（补漏）：speed 骨架单位/秒（走 bm.register 的 npc.speed>0 分支直接播种
+  // walkSpeed，语义须与 U-2 全库一致）。原世界像素值 26 ÷ 主漫游区 scale 0.188
+  // 换算：26/0.188≈138。
   const owner = makeNPC(em, sr, {
-    x: 700, y: ownerY, animation: 'walk', direction: 1, speed: 26, vy: 0,
+    x: 700, y: ownerY, animation: 'walk', direction: 1, speed: 138, vy: 0,
     minX: 600, maxX: 755,
     minY: ownerY - 8, maxY: ownerY + 8,
     color: 0x1a1a10, tags: ['pedestrian', 'dog-owner'],

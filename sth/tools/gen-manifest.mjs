@@ -4,6 +4,13 @@
  *
  * 格式: { "clips": { "<id>": { path, kind, facing, skeleton, variant_of } } }
  *
+ * id   = 文件 basename（去 .json）
+ * kind = 一级目录名（cycle / overlay / transition）；
+ *        variant/ 目录下的 clip 从 base clip 继承 kind（两遍扫描）。
+ * facing / skeleton / variant_of 读自 clip JSON；facing 省略时默认 'side'。
+ *
+ * 跳过 new_assets/ 子目录（校对中的原始素材，尚未注册）。
+ *
  * 执行: node sth/tools/gen-manifest.mjs
  */
 
@@ -39,23 +46,62 @@ const clips = {};
 const dupes = [];
 const MANIFEST_DIR = path.dirname(MANIFEST);
 
+// First pass: cycle / overlay / transition directories
 for (const abs of walkDir(ANIM_DIR)) {
+  const relFromAnimDir = path.relative(ANIM_DIR, abs).replace(/\\/g, '/');
+
+  // Skip new_assets/ — unreviewed raw assets not yet registered
+  if (relFromAnimDir.startsWith('new_assets/')) continue;
+
+  const topDir = relFromAnimDir.split('/')[0];
+
+  // variant/ is resolved in second pass
+  if (topDir === 'variant') continue;
+
+  // Only process known kind directories
+  if (topDir !== 'cycle' && topDir !== 'overlay' && topDir !== 'transition') continue;
+
   let clip;
   try { clip = JSON.parse(fs.readFileSync(abs, 'utf8')); }
   catch { continue; }
 
-  const { id, kind, facing, skeleton, variant_of } = clip;
-  if (!id) { console.warn(`  WARN: no id in ${path.relative(ANIM_DIR, abs)}`); continue; }
-
+  const id      = path.basename(abs, '.json');
+  const kind    = topDir;
   const relPath = path.relative(MANIFEST_DIR, abs).replace(/\\/g, '/');
+  const { facing, skeleton, variant_of } = clip;
 
   if (clips[id]) {
     dupes.push(`duplicate id "${id}": ${relPath} vs ${clips[id].path}`);
     continue;
   }
 
-  // Minimal derived entry — only non-default values
-  const entry = { path: relPath, kind: kind ?? 'cycle' };
+  const entry = { path: relPath, kind };
+  if (facing   && facing   !== 'side')  entry.facing     = facing;
+  if (skeleton && skeleton !== 'human') entry.skeleton   = skeleton;
+  if (variant_of)                        entry.variant_of = variant_of;
+  clips[id] = entry;
+}
+
+// Second pass: variant/ directory — inherit kind from base clip
+for (const abs of walkDir(ANIM_DIR)) {
+  const relFromAnimDir = path.relative(ANIM_DIR, abs).replace(/\\/g, '/');
+  if (!relFromAnimDir.startsWith('variant/')) continue;
+
+  let clip;
+  try { clip = JSON.parse(fs.readFileSync(abs, 'utf8')); }
+  catch { continue; }
+
+  const id      = path.basename(abs, '.json');
+  const relPath = path.relative(MANIFEST_DIR, abs).replace(/\\/g, '/');
+  const { facing, skeleton, variant_of } = clip;
+
+  if (clips[id]) {
+    dupes.push(`duplicate id "${id}": ${relPath} vs ${clips[id].path}`);
+    continue;
+  }
+
+  const baseKind = (variant_of && clips[variant_of]?.kind) ?? 'cycle';
+  const entry = { path: relPath, kind: baseKind };
   if (facing   && facing   !== 'side')  entry.facing     = facing;
   if (skeleton && skeleton !== 'human') entry.skeleton   = skeleton;
   if (variant_of)                        entry.variant_of = variant_of;

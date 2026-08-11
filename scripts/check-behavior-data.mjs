@@ -8,11 +8,15 @@
  *   4. pose.clip 存在于 manifest.json
  *   5. use.task 在 USE_WHITELIST
  *   6. tier >= 1 脚本的 pose.clip 必须在 manifest（tier 0 宽松）
+ *   7. profile.activities 里每个条目都能在代码里找到对应实现（tasks.md P-4）：
+ *      BEHAVIOR_SCRIPTS 条目 / 静态扫描到的 registerActivity() 类型 /
+ *      DIRECT_TASK_WHITELIST 里显式登记的直连 Task 例外——防止"声明了但没接线"
+ *      的悬空条目（stall_buyer 曾经就是这样，见 tasks.md P-4）再次出现且不被发现。
  *
  * 运行：node scripts/check-behavior-data.mjs
  */
 
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { join, dirname }  from 'path';
 
@@ -30,7 +34,7 @@ const CLIP_IDS = new Set(Object.keys(manifest.clips ?? {}));
 
 // ── 已知常量 ─────────────────────────────────────────────────────────────────
 
-const USE_WHITELIST = new Set(['bench']);
+const USE_WHITELIST = new Set(['bench', 'stall_buyer']);
 
 // AffordanceDefaults 中所有已声明 kind 的集合
 const KNOWN_KINDS = new Set(Object.values(AffordanceDefaults).map(a => a.kind));
@@ -138,6 +142,57 @@ for (const [profileName, profile] of Object.entries(PROFILES)) {
       fail(`profile '${profileName}' desires contains unknown script id '${id}'`);
     } else {
       ok(`desires '${id}' found in BEHAVIOR_SCRIPTS`);
+    }
+  }
+  console.log('');
+}
+
+// ── Profile activities 校验（tasks.md P-4）───────────────────────────────────
+//
+// profile.activities 只是"声明可参与"，本身不驱动任何路由（唯一读取点是
+// SocialLayer.js#_tryPairTalk 的 'talk' 门），所以此前从没有东西替它兜底校验
+// 过内容——stall_buyer 声明了三个 profile 里、BehaviorScripts.js 却没有对应
+// 条目、也没有任何代码把 NPC 送去 buyer 槽位，死了很久都没人发现。这条规则
+// 就是补这个兜底。
+
+console.log('Profile activities（tasks.md P-4：校验每个条目都有对应实现）\n');
+
+// 静态扫描 js/behavior/activities/*.js 里的 registerActivity('x', ...) 调用，
+// 取代运行时 import ActivityRegistry.js——后者会连带拉入 Motor.js/ClipPlayer.js
+// 这类假设浏览器环境的模块，不适合放进 node 静态校验脚本。
+const ACTIVITIES_DIR = join(ROOT, 'js', 'behavior', 'activities');
+const REGISTERED_ACTIVITY_TYPES = new Set();
+for (const file of readdirSync(ACTIVITIES_DIR)) {
+  if (!file.endsWith('.js')) continue;
+  const src = readFileSync(join(ACTIVITIES_DIR, file), 'utf8');
+  for (const m of src.matchAll(/registerActivity\(\s*'([\w-]+)'/g)) {
+    REGISTERED_ACTIVITY_TYPES.add(m[1]);
+  }
+}
+
+// 既不是 BEHAVIOR_SCRIPTS 条目、也不经 ActivityRegistry 的实现——直接由代码
+// 构造 Task（Agenda.js#_routePoi 的 affordance 路由、或 spawn 时直接
+// new XxxTask(...)）。每条都必须写清楚实现锚点；新增条目前先确认代码里
+// 真的有对应实现，不得为了让检查通过顺手把名字塞进来。
+const DIRECT_TASK_WHITELIST = new Map([
+  ['chess_onlooker', "Agenda.js#_routePoi 'chess_onlooker' 分支 → ChessOnlookerTask（经 AffordanceDefaults['chess-table']）"],
+  ['stall_seller',   'sceneFeatures.js#stall_sellers → 直接 new StallSellerTask(...)（prop-as-host，不经 Agenda/Activity）'],
+]);
+
+for (const [profileName, profile] of Object.entries(PROFILES)) {
+  const activities = profile.activities;
+  if (!activities || activities.length === 0) continue;
+  console.log(`Profile: ${profileName}`);
+  for (const id of activities) {
+    if (SCRIPT_IDS.has(id)) {
+      ok(`activities '${id}' found in BEHAVIOR_SCRIPTS`);
+    } else if (REGISTERED_ACTIVITY_TYPES.has(id)) {
+      ok(`activities '${id}' found as a registered Activity type`);
+    } else if (DIRECT_TASK_WHITELIST.has(id)) {
+      ok(`activities '${id}' whitelisted: ${DIRECT_TASK_WHITELIST.get(id)}`);
+    } else {
+      fail(`profile '${profileName}' activities contains unimplemented id '${id}' ` +
+        `(not in BEHAVIOR_SCRIPTS, not a registered Activity type, not in DIRECT_TASK_WHITELIST)`);
     }
   }
   console.log('');

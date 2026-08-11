@@ -1,4 +1,133 @@
 {
+  "world": { "width": 2000, "height": 520 },
+
+  "depth": {
+    "anchors": [
+      [210, 0.00],
+      [268, 0.30],
+      [333, 0.50],
+      [353, 0.55],
+      [520, 1.00]
+    ],
+    "scaleFar": 0.182,
+    "scaleNear": 0.434
+  },
+
+  "yBands": {
+    "SKY_Y": 100,
+    "BUILDING_BASE_Y": 210,
+    "SIDEWALK_FAR_Y": 240,
+    "BIKE_LANE_FAR_TOP": 248,
+    "BIKE_LANE_FAR_BOTTOM": 268,
+    "FAR_Y": 268,
+    "NEAR_Y": 333,
+    "BIKE_LANE_NEAR_TOP": 333,
+    "BIKE_LANE_NEAR_BOTTOM": 353,
+    "PARK_TOP": 353,
+    "SIDEWALK_NEAR_Y": 508,
+    "PARK_BOTTOM": 520
+  },
+
+  "ground": {
+    "bands": [
+      { "name": "sidewalk_far",  "color": "GRAY_FAR_PAVE",  "from": "BUILDING_BASE_Y", "to": "FAR_Y" },
+      { "name": "roadway",       "color": "GRAY_ROAD",      "from": "FAR_Y",           "to": "NEAR_Y" },
+      { "name": "sidewalk_near", "color": "GRAY_NEAR_PAVE", "from": "NEAR_Y",          "to": "BIKE_LANE_NEAR_BOTTOM" },
+      { "name": "park",          "color": "GRAY_PARK",      "from": "PARK_TOP",        "to": "PARK_BOTTOM" }
+    ],
+    "edgeLines": [
+      { "at": "BIKE_LANE_FAR_TOP",     "width": 1.5 },
+      { "at": "BIKE_LANE_NEAR_BOTTOM", "width": 1.5 }
+    ],
+    "tiling": {
+      "from": "BUILDING_BASE_Y", "to": "BIKE_LANE_FAR_TOP",
+      "inset": 3, "spacing": 20,
+      "color": "FILL_MID", "alpha": 0.06, "width": 0.8
+    },
+    "grass": {
+      "from": "PARK_TOP", "to": "PARK_BOTTOM",
+      "inset": 5, "tufts": 80
+    }
+  },
+
+  "exits": {
+    "edges": [
+      { "id": "edge_left",  "side": "left",  "margin": 40, "facing": -1 },
+      { "id": "edge_right", "side": "right", "margin": 40, "facing": 1 }
+    ],
+    "buildingDoor": {
+      "yBand": "SIDEWALK_FAR_Y", "yOffset": -8,
+      "yZone": ["BUILDING_BASE_Y", "FAR_Y"]
+    }
+  },
+
+  "spawnPoints": [
+    { "side": "left",  "margin": 30, "yBand": "SIDEWALK_FAR_Y", "facing": 1 },
+    { "side": "right", "margin": 30, "yBand": "SIDEWALK_FAR_Y", "facing": -1 },
+    { "side": "left",  "margin": 30, "yBand": "PARK_TOP", "yOffset": 30, "facing": 1 },
+    { "side": "right", "margin": 30, "yBand": "PARK_TOP", "yOffset": 30, "facing": -1 }
+  ],
+
+  "features": [
+    {
+      "type": "ambient_affordance", "kind": "grass_rest", "arrivalState": "sit_ground",
+      "dur": [10, 25], "weight": 0.10, "tags": ["grass_rest"], "use": "visit",
+      "minYBand": "PARK_TOP", "radius": 200, "benchAvoidRadius": 200, "benchAvoidFactor": 0.3
+    },
+    { "type": "pedestrians", "count": 18 },
+    {
+      "type": "park_idlers", "countRange": [3, 5], "midYFrac": 0.35, "xMargin": 80,
+      "lifespanRange": [120, 300], "ageTimerMax": 30, "agendaTemplate": "park_idler",
+      "minYBand": "PARK_TOP", "maxYBand": "PARK_BOTTOM"
+    },
+    { "type": "chess", "plaza": "chessPlaza" },
+    { "type": "stall_sellers" },
+    { "type": "dog_walker" },
+    {
+      "type": "athletes",
+      "_speedUnit": "骨架单位/秒（U-2；消费时乘 npc.scale，换算基准见 docs/roadmap.md U-2 条目；U-2b 重校准至远人行道 scale 0.188）",
+      "runners": [
+        { "route": "sidewalk_far_jog", "spawnX": 980,  "spawnYBand": "SIDEWALK_FAR_Y",
+          "direction": 1,  "speed": 319, "color": "#1a0818", "margin": 40 },
+        { "route": "park_loop_jog",    "spawnX": 1220, "spawnYBand": "SIDEWALK_NEAR_Y",
+          "direction": -1, "speed": 351, "color": "#0a1808", "margin": 40 }
+      ]
+    },
+    { "type": "vehicles" },
+    { "type": "bus_stops" }
+  ],
+
+  "zones": {
+    "bands": [
+      { "name": "building",  "zone": "BLOCKED",  "to": "BUILDING_BASE_Y" },
+      { "name": "sidewalk_far", "zone": "SIDEWALK", "to": "BIKE_LANE_FAR_TOP" },
+      { "name": "bike_far",  "zone": "ROAD",     "to": "BIKE_LANE_FAR_BOTTOM" },
+      { "name": "roadway",   "zone": "ROAD",     "to": "NEAR_Y" },
+      { "name": "bike_near", "zone": "ROAD",     "to": "BIKE_LANE_NEAR_BOTTOM" },
+      { "name": "park",      "zone": "GRASS",    "to": "PARK_BOTTOM" }
+    ],
+    "overlays": [
+      { "name": "park_entry", "zone": "SIDEWALK", "from": "PARK_TOP", "height": 28 }
+    ],
+    "paving": {
+      "zone": "SIDEWALK",
+      "from": "PARK_TOP",
+      "pathTubeRadius": 20,
+      "plazas": [
+        { "ref": "chessPlaza", "shrink": [1.0, 1.0] },
+        { "ref": "miniPark",   "shrink": [0.85, 0.7] }
+      ]
+    },
+    "crossings": {
+      "zone": "CROSSWALK",
+      "over": "ROAD",
+      "ref": "crosswalks",
+      "halfWidth": 20,
+      "from": "BIKE_LANE_FAR_TOP",
+      "to": "BIKE_LANE_NEAR_BOTTOM"
+    }
+  },
+
   "buildings": [
     {"x":0,    "bWidth":120,"bDepth":24,"facadeH":116,"waterTower":true,                  "kind":"resi",        "door":60  },
     {"x":120,  "bWidth": 72,"bDepth":20,"facadeH": 84,                                    "kind":"oldmix",      "door":156 },
@@ -128,8 +257,13 @@
       {"x":1840,"y":40,"scale":1.0}
     ],
     "crosswalks": [{"x":100},{"x":1900}],
-    "roadStripeSpacing": 56,
-    "roadStripeLength": 28,
+    "roadMarkings": {
+      "curbFar":    {"thickness": 3, "edgeLineAlpha": 0.65},
+      "roadEdge":   {"height": 4, "alpha": 0.85},
+      "curbNear":   {"thickness": 4, "lineWidthFactor": 0.7, "lineAlpha": 0.55},
+      "laneStripe": {"spacing": 56, "length": 28, "width": 2, "color": "MARKING_PAINT", "alpha": 0.6},
+      "crosswalk":  {"roadMargin": 5, "stripeCount": 5, "stripeLength": 200, "xOffset": -18, "color": "MARKING_PAINT", "alpha": 0.68}
+    },
     "chessPlaza": {"cx":620,"cy":443,"rx":130,"ry":56},
     "miniPark":   {"cx":1150,"cy":453,"rx":210,"ry":78},
     "walkPaths": {
