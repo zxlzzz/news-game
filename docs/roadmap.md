@@ -1306,3 +1306,47 @@ footprint 声明检查通过）。
 
 代码锚点：`js/scenes/drawSkyline.js`（新增）；`js/scenes/SceneRenderer.js`
 （`_drawFarSkyline` 删除，改调 `drawSkyline`）；`assets/scene.json#layout.skyline`
+
+### O-5b（车身体块改真实尺寸建模 + preview 支持车辆）— 已落地
+
+Hsinlung 实机反馈"车看起来确实较厚"，并提出一条原则：**内禀尺寸表里应该只放
+现实长宽高，投影该怎么压交给投影函数**，"考虑到后面根据实际物体建模时，直接用
+现有的长宽高然后计算更为合理"。O-5 第一版违反了这条——`VEHICLE_BOX_H_FRAC =
+0.55` 是拍脑袋的经验系数。
+
+**先核对了投影本身**（Hsinlung 问 `TILT_DEG` 是不是"上表面与前表面的比值"）：
+他的理解正确，而且**代码本来就是这么做的**，不需要改：
+`toScreen()` 对纵深乘 `PX_PER_UNIT × SIN_TILT`，`toScreenLength()` 对高/宽只乘
+`PX_PER_UNIT`。即"原始尺寸 × 统一像素比"和"纵深方向再乘 sin(倾角)"两步是分开
+的，正是他描述的设计。举例（W=100/H=50/D=50 骨架单位）：前表面 38.9×19.4px，
+上表面 38.9px 宽、纵向 6.65px（= 19.44 × 0.342）。所以本条只改车的建模方式，
+不动投影。
+
+**改动**：`VEHICLE_DEPTH` / `VEHICLE_BOX_H_FRAC` 两张表删除，全部并入
+`INTRINSIC`，且只放现实尺寸：`W`（车宽=进深）、`beltH`（腰线高）、
+`cabinL`/`cabinDX`/`cabinH`（座舱长/前后偏移/高）。数值不是拍的，是**从
+`CAR_SHAPE` 剪影实测**出来的：逐高度插值算剪影跨度，得到 h=46u 以下仍是满车长
+（369/380u）、车顶那一段（yf≈0.97）跨度 99u、中心后移 4~15u——`beltH: 46` /
+`cabinL: 110` / `cabinDX: -8` / `cabinH: 77` 由此而来。
+
+第一版"厚"的根因也因此清楚了：`0.55 × H = 70u` 的腰线定得太高，而剪影在 h=58u
+处已经收到 247u（远窄于满车长 380u），盒子在腰线以上戳出剪影，那块露在外面的
+板子就是"厚"的来源；同时它的上表面一路顶到车顶，把车窗糊住了。现在车体盒子只
+到 46u（车还是满长），座舱盒子按车顶实际尺寸单独放，车窗露出来了。
+
+**顺带修 `sth/preview.html` 两处**（Hsinlung 要看效果，而实机等车开进画面太碰运气，
+预览器才是评审这类几何的正确工具）：
+- 原本硬编码 `⚠️ vehicle 需要 VehicleEntity 实例，暂不支持独立预览`。其实
+  `drawVehicle` 只用到 `kind / scale / x / y / direction / _dims()`，拿
+  `INTRINSIC` 拼个替身即可，不必真造 `VehicleEntity`（那会拖进行为层依赖）。
+  新增车型下拉（car/taxi/bus/moto）。
+- Y 位置滑块仍是 pre-O-1 的 `min=210 max=520`——O-1 世界重标后就没跟着改，
+  拖到底也只能停在天空里。改成 `700..3072`。
+
+**过程记录（教训）**：本条改 `drawVehicle.js` 时用脚本按行区间替换，把区间里的
+`CAR_SHAPE` / `BUS_SHAPE` 两个常量一并删掉了。五个静态门**全绿**（没有一个门会
+执行渲染），是实机跑起来报 `CAR_SHAPE is not defined` 才发现。再次印证：这个
+仓库的渲染类改动，静态门给不了任何保障，必须真跑一次。
+
+代码锚点：`js/entity/vehicle/vehicle.js#INTRINSIC`；
+`js/entity/vehicle/drawVehicle.js#_bodyBox`；`sth/preview.html`

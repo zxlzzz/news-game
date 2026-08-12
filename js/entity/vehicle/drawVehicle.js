@@ -5,27 +5,6 @@ import {
 } from '../../core/Layout.js';
 import { vehicleAnchors } from '../../../assets/vehicle-anchors.js';
 import { drawObliqueBox, frontFaceGraphics } from '../../core/Projection.js';
-import { VEHICLE_DEPTH, VEHICLE_BOX_H_FRAC } from './vehicle.js';
-
-/**
- * 车身体块（O-5）。车不能整台套进 drawObliqueBox——车的辨识度全在侧面剪影
- * （引擎盖/车顶弧线/轮拱），套成方盒子就没了。做法是：
- *   1. 先用 drawObliqueBox 画一个**只到腰线**的体块（`VEHICLE_BOX_H_FRAC`），
- *      它贡献顶面/侧面这两个进深线索；
- *   2. 再把原有的侧面剪影经 frontFaceGraphics 画在体块正面上，把正面盖掉。
- * 高度只取到腰线是关键：车顶是弧的，体块要是取满车高，车头车尾上方就会露出
- * 方角，比不画还难看。公交车（BUS_SHAPE 本来就近似矩形）取满高。
- *
- * 摩托太窄（0.7m），给体块反而是一坨，跳过——它本来就是侧面剪影。
- */
-function _bodyBox(g, vehicle) {
-  const kind = vehicle.kind ?? 'car';
-  const frac = VEHICLE_BOX_H_FRAC[kind];
-  if (!frac) return;                     // moto 等不给体块的车型
-  const s = vehicle.scale;
-  const { L, H } = vehicle._dims();
-  drawObliqueBox(g, vehicle.x, vehicle.y, L * s, VEHICLE_DEPTH[kind] * s, H * s * frac, FILL_PAPER);
-}
 
 const CAR_SHAPE = [
   [-1.00, 0.00], [-1.00, 0.36], [-0.94, 0.42], [-0.78, 0.46],
@@ -38,6 +17,42 @@ const BUS_SHAPE = [
   [-1.00, 0.00], [-1.00, 0.96], [-0.98, 1.00],
   [ 0.98, 1.00], [ 1.00, 0.96], [ 1.00, 0.00],
 ];
+
+/**
+ * 车身体块（O-5，O-5b 重做）。车不能整台套进一个 drawObliqueBox——车的辨识度
+ * 全在侧面剪影（引擎盖/车顶弧线/轮拱），套成一个方盒子就没了。
+ *
+ * O-5 第一版拿 `VEHICLE_BOX_H_FRAC = 0.55` 拍了个"只到腰线"的经验系数，Hsinlung
+ * 实机反馈车看着偏厚。根因不是系数调得不对，是**建模方式**不对：一个满车长的
+ * 盒子，它的上表面会一路顶到车顶高度，还被 shear 推到车头车尾外面去，那块露在
+ * 剪影之外的板子就是"厚"的来源。
+ *
+ * 现在按车的真实结构分两段建模，全部用真实尺寸（`INTRINSIC` 的 W/beltH/cabinL），
+ * 不再有经验系数：
+ *   下半截车体 — 满车长 L × 车宽 W × 腰线高 beltH，贴地
+ *   上半截座舱 — 座舱长 cabinL × 略窄 × (H - beltH)，架在腰线上
+ * 这样上表面分成两块：车体那块落在腰线（就是引擎盖/后备箱盖那个平面，本来就
+ * 该看得见），座舱那块落在车顶且只有座舱那么长，不会伸出车头车尾。
+ *
+ * `cabinL = 0` 即不画座舱（摩托：太窄，给体块反而是一坨，只保留侧面剪影）。
+ */
+function _bodyBox(g, vehicle) {
+  const s = vehicle.scale;
+  const { L, W, beltH, cabinL, cabinDX, cabinH } = vehicle._dims();
+  if (!cabinL) return;                      // moto：不给体块
+  const d = vehicle.direction;
+
+  // 下半截车体：满车长，高到腰线（机盖/行李箱盖平面）。公交车 beltH=0 时跳过，
+  // 直接由下面那个满高的"座舱"盒子代表整个车厢。
+  if (beltH > 0) {
+    drawObliqueBox(g, vehicle.x, vehicle.y, L * s, W * s, beltH * s, FILL_PAPER);
+  }
+  // 上半截座舱：架在腰线上，长度/前后偏移取自剪影上车顶那一段（cabinDX 随
+  // 行驶方向翻转，否则车头车尾会反）。略收窄，让车体上表面在两侧各露一条，
+  // 读起来才像"车顶比车身窄"。
+  drawObliqueBox(g, vehicle.x + d * cabinDX * s, vehicle.y,
+                 cabinL * s, W * 0.88 * s, cabinH * s, FILL_PAPER, beltH * s);
+}
 
 function _wheel(g, wx, wy, r, baseY) {
   g.lineStyle(0);

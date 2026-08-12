@@ -38,11 +38,19 @@
   <button id="btnReload">重新加载 (R)</button>
 
   <h3>参数</h3>
-  <label>Y 位置 <span class="val" id="valY">350</span></label>
-  <input type="range" id="sliderY" min="210" max="520" value="350" step="1">
+  <label>Y 位置 <span class="val" id="valY">1600</span></label>
+  <input type="range" id="sliderY" min="700" max="3072" value="1600" step="1">
 
   <label>Scale <span class="val" id="valScale">1.00</span></label>
   <input type="range" id="sliderScale" min="0.3" max="2.0" value="1.0" step="0.05">
+
+  <h3>车型（仅 vehicle）</h3>
+  <select id="vehKind">
+    <option value="car">car</option>
+    <option value="taxi">taxi</option>
+    <option value="bus">bus</option>
+    <option value="moto">moto</option>
+  </select>
 
   <h3>背景</h3>
   <label><input type="radio" name="bg" value="white" checked> 白底 (看线条)</label>
@@ -95,6 +103,7 @@ const DRAW_FILES = [
 
 const BASE = '../';  // preview.html 在 sth/ 下，项目根在上一层
 const Layout = await import(BASE + 'js/core/Layout.js');
+const { INTRINSIC: VEHICLE_INTRINSIC } = await import(BASE + 'js/entity/vehicle/vehicle.js');
 
 // ── PIXI 初始化 ──────────────────────────────────────────────────────────────
 
@@ -234,8 +243,13 @@ async function render(bustCache = false) {
         waterTower: true, solar: false, billboard: false, alleyLeft: false,
       });
     } else if (entry.label === 'vehicle') {
-      // vehicle 需要不同的调用方式，暂时跳过
-      status.textContent = '⚠️ vehicle 需要 VehicleEntity 实例，暂不支持独立预览';
+      // drawVehicle 只用到 kind / scale / x / y / direction / _dims()，
+      // 拿 INTRINSIC 拼一个替身即可，不必真造 VehicleEntity（那会拖进行为层依赖）。
+      const kind = document.getElementById('vehKind').value;
+      fn(drawLayer, {
+        kind, x: cx, y, scale, direction: 1,
+        _dims: () => VEHICLE_INTRINSIC[kind] ?? VEHICLE_INTRINSIC.car,
+      });
     } else {
       fn(drawLayer, p);
     }
@@ -273,6 +287,7 @@ async function render(bustCache = false) {
 // ── 事件绑定 ─────────────────────────────────────────────────────────────────
 
 selA.addEventListener('change', () => render());
+document.getElementById('vehKind').addEventListener('change', () => render());
 selB.addEventListener('change', () => render());
 document.getElementById('sliderY').addEventListener('input', () => render());
 document.getElementById('sliderScale').addEventListener('input', () => render());
