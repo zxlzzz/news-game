@@ -1165,3 +1165,34 @@ Hsinlung 实机发现："所有物体都有一个黄色的框，这个框表示�
 （`PROP_DEPTH` 六条）；`js/entity/{tree,stall,phonebooth,vending}/draw*.js`；
 `js/entity/busstop/{drawBusStopRoof,drawBusStopSign,busstop}.js`；
 `js/core/EntityManager.js#CONVERTED_PROP_TYPES`
+
+### O-4 第二批（街道小件）— 已落地
+
+`drawTrash` / `drawLamp` / `drawMailbox` / `drawHydrant` / `drawNewsRack` /
+`drawSign` / `drawPlanter` / `drawBusStopBench` / `drawChairL` / `drawChairR`
+十个转成真实绘制，`CONVERTED_PROP_TYPES` 同步加入，`PROP_DEPTH` 补十条进深。
+
+反复出现的两个取舍（第一批已定，本批沿用，不再逐个解释）：
+- **梯形/收腰截面一律改等宽**：垃圾桶桶身（上宽下窄）、消防栓圆顶（上窄下宽）
+  都被盒子模板拉直成矩形截面。梯形要绕开模板自己算三面几何，与 O-3
+  「新增/转换 draw 函数一律走这三个函数，不要自己算三面/斜切几何」的铁律冲突。
+  收腰观感由正面细节里保留的斜凹槽线兜住。
+- **有机形状走广告牌**：花箱的枝叶（一簇圆）同 `drawTree` 的树冠，走
+  `frontFaceGraphics`，原算法一行未改。
+
+- **`drawLamp`** 是本批结构最碎的：底座/灯杆/灯箱三个盒子 + 一条悬臂斜线。
+  灯箱悬在杆顶左侧，靠 `baseH = (y - armTipY) - boxH/2` 定位；悬臂不是体块，
+  留在正面细节。
+- **`drawChairL` / `drawChairR` 合并成 `drawChairSide(g, p, d)`**：两者原本是
+  逐字重复、只有 `d` 与 `backX` 取值不同的两份代码。转换时把同一件事做两遍
+  既浪费也容易改出不一致，合并成带 `d` 参数的单一实现，两个原文件各剩一行
+  转发。椅子原是纯线稿，现在座板/靠背各给一块薄板出体积，腿仍是线——折叠椅
+  的腿本来就是细管，做成盒子反而笨重。
+
+实测：路灯、消防栓、垃圾桶、候车亭长椅、折叠椅在实机画面里都正常出现。
+五个静态门全绿。
+
+代码锚点：`js/entity/{trash,lamp,mailbox,hydrant,newsrack,sign,planter}/draw*.js`；
+`js/entity/seat/{drawBusStopBench,drawChairSide,drawChairL,drawChairR}.js`（
+`drawChairSide.js` 为新增）；`js/core/propDefaults.js#PROP_DEPTH`；
+`js/core/EntityManager.js#CONVERTED_PROP_TYPES`

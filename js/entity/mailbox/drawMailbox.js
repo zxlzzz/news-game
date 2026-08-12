@@ -1,50 +1,35 @@
-import {
-  depthLineWidth, depthLineColor,
-  FILL_LIGHT, FILL_MID, FILL_SHADE,
-  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
-} from '../../core/Layout.js';
+import { FILL_LIGHT, FILL_MID, FILL_SHADE, lenv } from '../../core/Layout.js';
+import { drawObliqueBox, frontFaceGraphics } from '../../core/Projection.js';
+import { PROP_DEPTH } from '../../core/propDefaults.js';
 
+// O-4 第二批。邮筒 = 立柱 + 悬空箱体 + 顶盖，箱体和顶盖都走 baseH 抬升。
 export function drawMailbox(g, p) {
   g.lineStyle(0);
 
   const { x, y } = p;
   const s           = p.scale ?? 1;
   const extraHeight = 20 * s;
+  const depth       = PROP_DEPTH.mailbox * s;
 
-  // Post (structural line)
-  lenv(g, y, 1.1);
-  g.moveTo(x, y); g.lineTo(x, y - 29 * s - extraHeight);
+  const bw = 40 * s, bh = 35 * s;                  // 箱体
+  const cw = 46 * s, ch = 9 * s;                   // 顶盖
+  const boxBaseH = (64 - 35) * s + extraHeight;    // 箱体底离地（原 by = y-64s-extra，箱高 35s）
+  const capBaseH = 72 * s + extraHeight - ch;      // 顶盖底离地（原 cy = y-72s-extra）
+  const postW = Math.max(2 * s, depth * 0.3);
 
-  // === Box body block ===
-  const bw = 40 * s, bh = 35 * s;
-  const bx = x - bw / 2, by = y - 64 * s - extraHeight;
+  drawObliqueBox(g, x, y, postW, postW, boxBaseH, FILL_MID);            // 立柱
+  drawObliqueBox(g, x, y, bw, depth, bh, FILL_MID, boxBaseH);           // 箱体
+  drawObliqueBox(g, x, y, cw, depth + 6 * s, ch, FILL_LIGHT, capBaseH); // 顶盖
 
-  // Front
-  g.lineStyle(0);
-  g.beginFill(FILL_MID, 1);
-  g.drawRect(bx, by, bw, bh);
-  g.endFill();
+  _frontDetail(frontFaceGraphics(g, x, y), x, y, s, extraHeight);
+}
+
+function _frontDetail(g, x, y, s, extraHeight) {
   // Mail slot
   g.lineStyle(0);
   g.beginFill(FILL_SHADE, 1);
   g.drawRect(x - 14 * s, y - 52 * s - extraHeight, 29 * s, 6 * s);
   g.endFill();
-  // Outline
-  lenv(g, y, 0.85);
-  g.drawRect(bx, by, bw, bh);
-
-  // === Cap block ===
-  const cw = 46 * s, ch = 9 * s;
-  const cx = x - cw / 2, cy = y - 72 * s - extraHeight;
-
-  // Front
-  g.lineStyle(0);
-  g.beginFill(FILL_LIGHT, 1);
-  g.drawRect(cx, cy, cw, ch);
-  g.endFill();
-  // Outline
-  lenv(g, cy, 0.85);
-  g.drawRect(cx, cy, cw, ch);
 
   // Flag detail
   lenv(g, y, 0.6);

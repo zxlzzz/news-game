@@ -1,25 +1,29 @@
-import {
-  depthLineWidth, depthLineColor,
-  FILL_LIGHT, FILL_MID,
-  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
-} from '../../core/Layout.js';
+import { FILL_LIGHT, FILL_MID, lenv } from '../../core/Layout.js';
+import { drawObliqueBox, frontFaceGraphics } from '../../core/Projection.js';
+import { PROP_DEPTH } from '../../core/propDefaults.js';
 
+// O-4 第二批。花箱本体走盒子；枝叶是有机形状（一簇圆），同 drawTree 的树冠——
+// 走 frontFaceGraphics 广告牌，原算法一行未改。
 export function drawPlanter(g, p) {
   g.lineStyle(0);
 
   const { x, y } = p;
-  const s   = p.scale ?? 1;
+  const s = p.scale ?? 1;
+  const w = 80 * s, h = 20 * s;
+  const bh = h - 9 * s;                  // 箱体高（原 bh = 11*s）
+  const depth = PROP_DEPTH.planter * s;
+
+  drawObliqueBox(g, x, y, w, depth, bh, FILL_LIGHT);
+
+  _frontDetail(frontFaceGraphics(g, x, y), x, y, s);
+}
+
+function _frontDetail(g, x, y, s) {
   const w   = 80 * s, h = 20 * s;
   const px  = x - w / 2;
   const py  = y - h;
-  const bpy = py + 9 * s;   // box top
-  const bh  = h - 9 * s;    // box height = 11*s
-
-  // 1. Box front — FILL_LIGHT
-  g.lineStyle(0);
-  g.beginFill(FILL_LIGHT, 1);
-  g.drawRect(px, bpy, w, bh);
-  g.endFill();
+  const bpy = py + 9 * s;
+  const bh  = h - 9 * s;
 
   // 2. Seam lines (detail)
   lenv(g, y, 0.6);
@@ -53,8 +57,4 @@ export function drawPlanter(g, p) {
     g.drawCircle(cx + 9 * s,  cy - 17 * s, 3 * s);
     g.endFill();
   }
-
-  // 4. Outline (last)
-  lenv(g, y, 0.85);
-  g.drawRect(px, bpy, w, bh);
 }

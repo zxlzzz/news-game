@@ -1,30 +1,27 @@
-import {
-  depthLineWidth, depthLineColor,
-  FILL_SHADE, ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
-} from '../../core/Layout.js';
+import { FILL_SHADE, lenv } from '../../core/Layout.js';
+import { drawObliqueBox, frontFaceGraphics } from '../../core/Projection.js';
+import { PROP_DEPTH } from '../../core/propDefaults.js';
 
+// O-4 第二批。候车亭长椅：座板是块悬空薄板（baseH = 座面离地高），腿是两条线。
 export function drawBusStopBench(g, p) {
   g.lineStyle(0);
 
-  const s     = p.scale ?? 1;
-  const halfW = 66;
+  const s      = p.scale ?? 1;
+  const halfW  = 66;
   const benchW = 132;
   const { x, y } = p;
 
-  // y = 腿底部（地面）
-  const seatTopY = y - 34 * s;   // top of seat face
-  const seatBotY = y - 30 * s;   // bottom of seat face / top of legs
+  // y = 腿底部（地面）；原版座面上沿 y-34s、下沿 y-30s，即 4s 厚的板
+  const seatH  = 30 * s;      // 座板底面离地
+  const slabH  = 4 * s;       // 座板厚
+  const depth  = PROP_DEPTH['busstop-bench'] * s;
 
-  g.beginFill(FILL_SHADE, 1);
-  g.drawRect(x - halfW, seatTopY, benchW, 4 * s);
-  g.endFill();
+  drawObliqueBox(g, x, y, benchW, depth, slabH, FILL_SHADE, seatH);
 
-  lenv(g, y, 0.85);
-  g.drawRect(x - halfW, seatTopY, benchW, 4 * s);
-
-  lenv(g, y, 0.9);
-  g.moveTo(x - halfW + 10 * s, seatBotY);
-  g.lineTo(x - halfW + 10 * s, y);
-  g.moveTo(x + halfW - 10 * s, seatBotY);
-  g.lineTo(x + halfW - 10 * s, y);
+  const fg = frontFaceGraphics(g, x, y);
+  lenv(fg, y, 0.9);
+  fg.moveTo(x - halfW + 10 * s, y - seatH);
+  fg.lineTo(x - halfW + 10 * s, y);
+  fg.moveTo(x + halfW - 10 * s, y - seatH);
+  fg.lineTo(x + halfW - 10 * s, y);
 }

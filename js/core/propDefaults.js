@@ -79,4 +79,15 @@ export const PROP_DEPTH = {
   stall:      85,   // 1.0m，摊位台面进深
   'busstop-roof': 170, // 2.0m，候车亭顶棚进深（够罩住下方长椅）
   'busstop-sign':  8,  // 0.1m，站牌杆/面板厚度
+  // O-4 第二批（街道小件）
+  trash:    34,  // 0.40m，垃圾桶
+  lamp:     19,  // 0.22m，灯杆底座/杆径
+  mailbox:  34,  // 0.40m，邮筒箱体
+  hydrant:  25,  // 0.30m，消防栓
+  newsrack: 42,  // 0.50m，报刊架
+  sign:      5,  // 0.06m，挂墙招牌（薄板）
+  planter:  42,  // 0.50m，花箱
+  'busstop-bench': 42, // 0.50m，候车亭长椅（比公园长椅浅）
+  'chair-l': 34, // 0.40m，棋桌折叠椅
+  'chair-r': 34,
 };

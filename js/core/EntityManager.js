@@ -30,6 +30,8 @@ const CONVERTED_PROP_TYPES = new Set([
   'bench',                                                    // O-3 样板
   'tree', 'stall', 'busstop-roof', 'busstop-sign',            // O-4 第一批
   'phonebooth', 'vending',
+  'trash', 'lamp', 'mailbox', 'hydrant', 'newsrack',          // O-4 第二批
+  'sign', 'planter', 'busstop-bench', 'chair-l', 'chair-r',
 ]);
 const CONVERTED_GROUND_TYPES = new Set(['manhole']);
 
