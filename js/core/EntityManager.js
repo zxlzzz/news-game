@@ -106,10 +106,11 @@ export class EntityManager {
    * @param {Array<{_sortY:number, draw:(g)=>void}>} [extras] - 外部可绘制对象（如 NPC 道具），
    *        与实体混合参与同一次 Y 排序，统一画到 g。
    *
-   * O-2/O-3：占位阶段只画本管理器自己的实体（有 getBounds() 世界坐标信息可
-   * 投影）。extras（NPC 手持道具等 {_sortY,draw} 包装对象，见
-   * NpcPropManager.getDrawables）内部几何还没跟 Projection 对齐，硬画出来会
-   * 叠在投影后的场景上显得错位，先跳过，等 O-4 转完真实 draw 函数再接回来。
+   * extras（NPC 手持道具等 `{_sortY, draw}` 包装对象，见
+   * `NpcPropManager.getDrawables`）与实体混在同一次 Y 排序里画。O-2~O-7 期间
+   * 它们被整体跳过（内部几何还没跟 Projection 对齐，硬画会错位），O-8 起
+   * `getDrawables()` 已把每个道具包进正面代理，可以正常参与绘制了——在那之前
+   * 吉他/背包/牵绳这些手持物是**完全看不见**的。
    * ground pre-pass（drawGround）只对 CONVERTED_GROUND_TYPES 里已转换的类型
    * 开放（O-3：manhole），其余仍跳过。
    */
@@ -120,8 +121,12 @@ export class EntityManager {
       if (CONVERTED_GROUND_TYPES.has(e.propType)) e.drawGround(g);
     }
 
-    visible.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
-    for (const e of visible) {
+    // 实体与 extras 混排：extras 只有 {_sortY, draw}，没有 alive/visible/getBounds，
+    // 用 `_extra` 标记区分，排序键统一取 `_sortY ?? y`
+    const drawList = visible.concat(extras.map(x => ({ ...x, _extra: true })));
+    drawList.sort((a, b) => (a._sortY ?? a.y) - (b._sortY ?? b.y));
+    for (const e of drawList) {
+      if (e._extra) { e.draw(g); continue; }
       const converted = typeof e.facadeH === 'number'
         || _isStickFigure(e)                        // NPC/狗：StickRenderer 已接投影，见下
         || _isVehicle(e)                            // 车：O-5 体块 + 侧面剪影

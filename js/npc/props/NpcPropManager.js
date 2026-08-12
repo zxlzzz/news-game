@@ -23,6 +23,8 @@ const MODIFIER_TO_PROP = {
   hold_bag:   'bag',
 };
 
+import { frontFaceGraphics } from '../../core/Projection.js';
+
 export class NpcPropManager {
   constructor(entityManager) {
     this.em = entityManager;
@@ -100,7 +102,15 @@ export class NpcPropManager {
     for (const prop of this._props.values()) {
       if (!prop.active) continue;
       if (!prop.npc.alive || !prop.npc.visible) continue;
-      out.push({ _sortY: prop.npc._sortY ?? prop.npc.y, draw: (g) => prop.draw(g) });
+      const npc = prop.npc;
+      out.push({
+        _sortY: npc._sortY ?? npc.y,
+        // O-8：道具挂在 NPC 这块竖直广告牌上，几何全部由 getAnchor() 派生的
+        // **世界**坐标 + 骨架单位偏移组成，跟 StickRenderer 画人是同一套。
+        // 所以经正面代理换算（接地点过 toScreen、偏移与线宽过 toScreenLength），
+        // 各 Prop 的 draw() 函数体一行不用改。
+        draw: (g) => prop.draw(frontFaceGraphics(g, npc.x, npc.y, { scaleLineWidth: true })),
+      });
     }
     return out;
   }

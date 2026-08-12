@@ -196,10 +196,19 @@ export function drawObliqueBox(g, x, y, w, depth, h, fillFront, baseH = 0) {
  * 到投影后的正面。正面沿世界 y=常数展开不受 shear 影响，这层代理数学上只是
  * scale+translate（详见文件头核心区分），调用方内部逻辑一行都不用改。
  *
- * lineStyle 的线宽字面量原样转发，不再缩放——本项目线宽一律是最终屏幕像素值
- * （见 Layout.js 线宽常量 O-2 撤销 O-1 补偿的说明），跟位置换算无关。
+ * lineStyle 的线宽默认**原样转发**——本项目线宽一律是最终屏幕像素值（见
+ * Layout.js 线宽常量 O-2 撤销 O-1 补偿的说明），跟位置换算无关。
+ *
+ * `opts.scaleLineWidth = true` 是给**挂在 NPC 身上的绘制**用的例外（O-8）：
+ * NPC 手持道具 / 自行车 / 牵绳这些老代码里的线宽是**骨架单位**（当年跟着
+ * `npc.scale` 一起缩，而 O-1 前 `npc.scale` 是 0.19 量级的景深缩放），
+ * O-1 后 `scale` 恒为 1，不换算会粗好几倍——跟 StickRenderer 骨线宽度是同一个
+ * 坑（见该文件头注）。这类调用方传 true，线宽同样过 `toScreenLength`。
  */
-export function frontFaceGraphics(g, anchorX, groundY) {
+export function frontFaceGraphics(g, anchorX, groundY, opts = {}) {
+  const lw = opts.scaleLineWidth
+    ? (w, ...rest) => g.lineStyle(PX_PER_UNIT * (w ?? 0), ...rest)
+    : (...a) => g.lineStyle(...a);
   const base = toScreen(anchorX, groundY);
   const offX = base.x - PX_PER_UNIT * anchorX;
   const offY = base.y - PX_PER_UNIT * groundY;
@@ -207,7 +216,7 @@ export function frontFaceGraphics(g, anchorX, groundY) {
   const sy = (v) => PX_PER_UNIT * v + offY;
   const sl = (v) => PX_PER_UNIT * v;
   return {
-    lineStyle:   (...a) => g.lineStyle(...a),
+    lineStyle:   lw,
     beginFill:   (...a) => g.beginFill(...a),
     endFill:     ()     => g.endFill(),
     closePath:   ()     => g.closePath(),
@@ -220,8 +229,10 @@ export function frontFaceGraphics(g, anchorX, groundY) {
       for (let i = 0; i < pts.length; i += 2) { out[i] = sx(pts[i]); out[i + 1] = sy(pts[i + 1]); }
       g.drawPolygon(out);
     },
+    drawRoundedRect: (x, y, w, h, r) => g.drawRoundedRect(sx(x), sy(y), sl(w), sl(h), sl(r)),
     moveTo: (x, y) => g.moveTo(sx(x), sy(y)),
     lineTo: (x, y) => g.lineTo(sx(x), sy(y)),
+    quadraticCurveTo: (cx, cy, x, y) => g.quadraticCurveTo(sx(cx), sy(cy), sx(x), sy(y)),
   };
 }
 

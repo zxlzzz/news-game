@@ -2,7 +2,10 @@
  * DebugOverlay — 行为系统可视调试层（按 D 键切换）
  *
  * 两部分：
- *   1) NPC 头顶浮标（世界坐标，scrollFactor 1，随镜头平移）：
+ *   1) NPC 头顶浮标（挂在 worldContainer 上，scrollFactor 1，随镜头平移）：
+ *      位置经 `billboardScreenBox` 换算成**投影后的屏幕坐标**——O-8 之前直接
+ *      拿世界坐标当位置用，O-2 接投影后浮标就飘到别处去了（调试层，默认关闭，
+ *      所以一直没人注意）。
  *      `[profile] state | overlay | activity`
  *      自由 NPC 白字，被 Activity 锁定的 NPC 黄字。
  *   2) 左上角全局面板（scrollFactor 0，固定屏幕）：
@@ -21,6 +24,7 @@ const FLOAT_STYLE = {
 };
 
 import { gameTimeStr } from '../core/GameClock.js';
+import { billboardScreenBox } from '../core/Projection.js';
 
 const PANEL_STYLE = {
   fontFamily: '"JetBrains Mono", monospace',
@@ -95,9 +99,10 @@ export class DebugOverlay {
     for (let i = 0; i < npcs.length; i++) {
       const npc = npcs[i];
       const t = this._getFloat(i);
-      const b = npc.getBounds();
+      // 浮标贴在 NPC 包围盒顶端上方 3px（屏幕像素）
+      const r = billboardScreenBox(npc.getBounds());
       t.setText(this._floatText(npc));
-      t.setPosition(npc.x, b.y - 3);
+      t.setPosition(r.x + r.w / 2, r.y - 3);
       t.setColor(npc.mem('social').activity ? '#ffe14d' : '#ffffff');
       t.setVisible(true);
     }

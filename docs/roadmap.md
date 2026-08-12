@@ -1410,3 +1410,35 @@ NPC 全部 clip），实测全部无报错。
 （`_drawSky`/`_drawClouds`）；`js/scenes/drawSkyline.js`；`assets/scene.json`
 （`layout.skyline` 按屏幕像素重报）；19 个 `registerProp` 的 `visual`；
 `js/core/ClipLibrary.js`；`sth/preview.html`（重写）
+
+### O-8（NPC 附属绘制接回投影）— 已落地，投影架构转移收官
+
+O-2 起被整体跳过的最后一批绘制接了回来。这批的共同点：**几何都挂在 NPC 这块
+竖直广告牌上**——坐标由 `npc.getAnchor()` 返回的世界坐标 + 骨架单位偏移组成，
+跟 `StickRenderer` 画人是同一套假设。所以处理方式也一样：经正面代理换算，
+各自的 draw 函数体一行不用改。
+
+- **NPC 手持道具**（`NpcPropManager.getDrawables`）：`EntityManager.draw()` 一直
+  收着 `extras` 参数却**从来没画过**——O-2 注释写的是"先跳过，等 O-4 转完再接
+  回来"，然后就忘了。也就是说吉他 / 背包 / 香烟 / 手机 / 牵绳这些手持物从 O-2
+  到 O-7 **完全看不见**。现在 extras 与实体混在同一次 Y 排序里绘制。
+- **`drawExtra`**（自行车 / 电动车 / 遛狗牵绳）：`Npc.draw()` 里同样包上代理。
+  `drawBicycle` 是 O-4 审计时唯一剩下没转的 draw 函数（当时归给 O-5 的车辆，
+  但它其实不是 VehicleEntity，是挂在骑手身上的附加绘制），这次一并收掉。
+- **`frontFaceGraphics` 新增 `opts.scaleLineWidth`**：这批老代码的线宽是**骨架
+  单位**（当年跟着 `npc.scale` 缩，而 O-1 前 `scale` 是 0.19 量级），O-1 后
+  `scale` 恒为 1，不换算会粗好几倍——与 StickRenderer 骨线宽度是同一个坑。
+  代理默认仍原样转发线宽（楼/长椅那批的字面量已经是最终屏幕像素值），只有这批
+  传 `true`。同时补上代理缺的 `drawRoundedRect` / `quadraticCurveTo`（背包和
+  牵绳要用；漏了会在运行时报 `g.drawRoundedRect is not a function`，是实机跑出来的）。
+- **`DebugOverlay` 浮标**：原本直接拿世界坐标当屏幕位置用，接投影后飘到别处。
+  改经 `billboardScreenBox` 定位到包围盒顶端上方 3px。调试层默认关闭，所以这个
+  错位一直没被注意到。
+
+至此 `EntityManager.draw()` 里**不再有任何"跳过"分支**，投影架构转移完成：
+所有实体、NPC、车辆、手持道具、地面要素、天空层全部走真实绘制且坐标系统一。
+
+代码锚点：`js/core/EntityManager.js#draw`（extras 混排）；
+`js/npc/props/NpcPropManager.js#getDrawables`；`js/npc/Npc.js#draw`（drawExtra）；
+`js/core/Projection.js#frontFaceGraphics`（`scaleLineWidth` + 两个补齐的方法）；
+`js/ui/DebugOverlay.js`

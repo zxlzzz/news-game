@@ -18,6 +18,7 @@
  */
 
 import { Entity } from '../core/Entity.js';
+import { frontFaceGraphics } from '../core/Projection.js';
 import { depthGray, BUILDING_BASE_Y } from '../core/Layout.js';
 import { integratePhysics } from '../behavior/Motor.js';
 import { clipLibrary } from '../core/ClipLibrary.js';
@@ -355,7 +356,11 @@ export class NPC extends Entity {
 
     // 附加绘制（自行车、摩托、绳索）在骨架前。drawExtra 内可调用 this.getAnchor(...)
     // 围绕骑手/主人的真实锚点作画，从而实现精确对齐。
-    if (this.drawExtra) this.drawExtra(g, this);
+    // O-8：这些函数拿的是 getAnchor() 的世界坐标 + 骨架单位偏移（与 StickRenderer
+    // 同一套广告牌假设），所以经正面代理换算后函数体一行不用改。
+    if (this.drawExtra) {
+      this.drawExtra(frontFaceGraphics(g, this.x, this.y, { scaleLineWidth: true }), this);
+    }
 
     const color = depthGray(this.y, { light: 0x78, dark: 0x32 });
     const frame = this.renderer.getFrame(this.animation, this.frameIndex);
