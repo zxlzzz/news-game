@@ -20,9 +20,19 @@ export class PropEntity extends Entity {
     // y = 柱子落地点；由 spawnBusStop 传入，drawBusStopRoof / bounds() 读取）
     for (const k of (this._def?.config ?? [])) this[k] = config[k];
 
-    // 从 footprint.sortDY 推导 Y 排序偏移（stall/tree/sign 等有非零 sortDY）
-    if (this.footprint.sortDY) this._sortY = this.y + this.footprint.sortDY;
-    // 动态排序基准覆盖（busstop-roof 的柱子落地点由 spawnBusStop 传入）
+    // ─── Y 排序基准（_sortY）─────────────────────────────────────────────
+    // O-5：物体有了进深之后，排序基准应取盒子的**前沿**（靠观众那一侧），
+    // 不是中心。`entity.y` 是地面接触线的中心（CLAUDE.md 铁律），底面沿纵深
+    // 方向从 `y - ry` 铺到 `y + ry`（`footprint.ry` = 半进深，O-5 起由
+    // `propDefaults.halfDepth()` 从 `PROP_DEPTH` 统一推导），所以前沿是
+    // `y + ry`。不这么取会出现：两个进深不同的物体中心 y 相同时，明明前沿更
+    // 靠近观众的那个反而被判定为"更远"而先画，被后面的东西盖住。
+    this._sortY = this.y + (this.footprint.ry ?? 0);
+    // sortDY 是各 prop 声明的额外排序微调（sign +9 排更前、tree 负偏移让 NPC
+    // 走到树前），叠加在前沿基准上
+    if (this.footprint.sortDY) this._sortY += this.footprint.sortDY;
+    // 动态排序基准覆盖（busstop-roof 的柱脚落地点由 spawnBusStop 传入，
+    // 顶棚不该按自己的几何中心排序）——最高优先级，直接顶掉上面两条
     if (config._sortY != null) this._sortY = config._sortY;
 
     if (config.smartDef) {

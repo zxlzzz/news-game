@@ -6,6 +6,7 @@
  *
  * 贩卖机通过 tags 数组包含 'vending' 来声明，propType === 'vending'。
  */
+import { halfDepth } from '../../core/propDefaults.js';
 
 /** 贩卖机内禀尺寸（未缩放，世界单位） */
 export const INTRINSIC = { width: 80, height: 158 };
@@ -13,7 +14,7 @@ export const INTRINSIC = { width: 80, height: 158 };
 /** 落地接触面半宽/半深（世界像素，已乘 scale；O-1 起恒为 1） */
 export function footprint(e) {
   const ds = e.scale ?? 1;
-  return { shape: 'rect', rx: 40 * ds, ry: Math.max(3, 12 * ds), blocks: true, sortDY: 0 };
+  return { shape: 'rect', rx: 40 * ds, ry: halfDepth('vending', ds), blocks: true, sortDY: 0 };
 }
 
 /** 找最近的空闲贩卖机（_occupiedBy == null 且有空闲 user 槽）；无则 null */

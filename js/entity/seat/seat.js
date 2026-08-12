@@ -10,6 +10,7 @@
  * 注：与 Motor.js 存在循环依赖（Motor 导入 standUp；seat 导入 setXY）。
  * ES module live bindings 在运行时（非初始化期）正确解析，无需特殊处理。
  */
+import { halfDepth } from '../../core/propDefaults.js';
 
 // Circular import with Motor.js — Motor imports standUp; we need setXY for NPC position writes.
 // ES module live bindings resolve at runtime; both values are only used after all modules load.
@@ -22,8 +23,8 @@ export const INTRINSIC = { width: 300, height: 80, seatH: 40, legH: 23, seatT: 1
 export function footprint(e) {
   const ds = e.scale ?? 1;
   return (e.facing === 'left' || e.facing === 'right')
-    ? { shape: 'rect', rx: Math.max(3, 8 * ds), ry: 150 * ds, blocks: true, sortDY: 0 }
-    : { shape: 'rect', rx: 150 * ds, ry: Math.max(3, 8 * ds), blocks: true, sortDY: 0 };
+    ? { shape: 'rect', rx: halfDepth('bench', ds), ry: 150 * ds, blocks: true, sortDY: 0 }
+    : { shape: 'rect', rx: 150 * ds, ry: halfDepth('bench', ds), blocks: true, sortDY: 0 };
 }
 
 /** 座面距 prop.y 的默认偏移（像素），与 drawBench 座板锚点一致 */

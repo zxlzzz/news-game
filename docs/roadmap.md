@@ -1238,3 +1238,47 @@ Hsinlung 实机发现："所有物体都有一个黄色的框，这个框表示�
 代码锚点：`js/core/Projection.js#groundFaceGraphics`；
 `js/entity/{drain,park-path,chess-table,fountain,mini-park}/draw*.js`；
 `js/entity/busstop/drawBusStopBay.js`；`js/scenes/SceneRenderer.js#_drawGround`
+
+### O-5（车 + 排序 + 足迹）— 已落地
+
+三件"因为物体有了进深而变得不对"的事，一并收掉。
+
+**一、车走盒子模板。** 但车不能整台套进 `drawObliqueBox`——车的辨识度全在侧面
+剪影（引擎盖/车顶弧线/轮拱），套成方盒子就没了。做法是两层：
+先用 `drawObliqueBox` 画一个**只到腰线**的体块贡献顶面/侧面两个进深线索，
+再把原有侧面剪影经 `frontFaceGraphics` 画在体块正面上盖掉正面。
+高度只取到腰线是关键（`VEHICLE_BOX_H_FRAC`，轿车 0.55）：车顶是弧的，体块取满
+车高会在车头车尾上方露出方角，比不画还难看。公交车侧面本来就近似矩形
+（`BUS_SHAPE`），取满高 1.0。摩托太窄（0.7m），给体块反而是一坨——表里没有条目
+即不画体块，只保留侧面剪影。
+`VEHICLE_DEPTH`（bus 2.5m / car·taxi 1.8m / moto 0.7m）单列在 `vehicle.js`，
+不进 `PROP_DEPTH`——那张表按 `propType` 索引，车不是 prop。
+`EntityManager` 新增 `_isVehicle(e)` 判定（有 `kind` + `_dims()`），同理不进
+`CONVERTED_PROP_TYPES`。
+
+**二、`_sortY` 改取盒子前沿。** 原来只有 `sortDY` 非零的 prop 才设 `_sortY`，
+其余回退到 `e.y`（几何中心那条地面线）。物体有进深之后，排序基准应该取**前沿**
+（靠观众那一侧）= `y + ry`。不这么取会出现：两个进深不同的物体中心 y 相同时，
+明明前沿更靠近观众的那个反而被判定为"更远"而先画、被后面的东西盖住。
+`sortDY`（sign +9 排更前、tree 负偏移让 NPC 走到树前）改为**叠加**在前沿基准上，
+语义不变；`config._sortY` 显式覆盖（busstop-roof 用柱脚落地点）仍是最高优先级。
+
+**三、`footprint().ry` 从 `PROP_DEPTH` 统一推导。** O-5 之前每个 `footprint()`
+里的 `ry` 都是 `Math.max(3, N * ds)` 形式的手调小值——扁平时代所有东西都是一张
+贴片，没有进深，足迹只能给一条象征性的细线。现在足迹必须覆盖盒子整个底面，
+否则 NPC 会从垃圾桶身上穿过去或者站在盒子里（tasks.md O-5 原文）。
+新增 `propDefaults.js#halfDepth(propType, scale)` 作为唯一推导点
+（`ry = PROP_DEPTH[type] / 2 * scale`，缺条目抛错），十一处 `footprint()` 改调它
+（trash / tree / planter / newsrack / hydrant / mailbox / phonebooth / vending /
+stall / chess-table / bench）。这是本条的重点：与其在十几个文件里各留一个和
+`PROP_DEPTH` 对不上的手调数字，不如让进深只有一个权威。
+`fountain` 不动——它的 `{shape:'ellipse', ry: rx*0.5}` 本来就是真实的椭圆水池
+足迹，不是象征性细线。
+
+实测：车在路上带体块正常渲染；五个静态门全绿（check-invariants 的 Rule 5/6
+footprint 声明检查通过）。
+
+代码锚点：`js/entity/vehicle/drawVehicle.js#_bodyBox`；
+`js/entity/vehicle/vehicle.js`（`VEHICLE_DEPTH` / `VEHICLE_BOX_H_FRAC`）；
+`js/core/EntityManager.js#_isVehicle`；`js/core/PropEntity.js`（`_sortY` 推导）；
+`js/core/propDefaults.js#halfDepth`

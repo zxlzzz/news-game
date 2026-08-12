@@ -1,3 +1,4 @@
+import { halfDepth } from '../../core/propDefaults.js';
 /**
  * chess-table — 棋桌行为模块
  *
@@ -14,7 +15,7 @@ export const INTRINSIC = { tw: 58, topH: 25, th: 20 };
 /** 落地接触面半宽/半深（世界像素，已乘 scale；O-1 起恒为 1） */
 export function footprint(e) {
   const ds = e.scale ?? 1;
-  return { shape: 'rect', rx: 29 * ds, ry: Math.max(3, 10 * ds), blocks: true, sortDY: 0 };
+  return { shape: 'rect', rx: 29 * ds, ry: halfDepth('chess-table', ds), blocks: true, sortDY: 0 };
 }
 
 /**

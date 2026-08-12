@@ -51,6 +51,15 @@ function _isStickFigure(e) {
 }
 
 /**
+ * 车辆判定（O-5）：`kind` + `_dims()` 就是 VehicleEntity 的签名。
+ * 车已转成"体块 + 侧面剪影"（drawVehicle.js `_bodyBox`），走真实 draw()。
+ * 不放进 `CONVERTED_PROP_TYPES` 是因为那张表按 `propType` 索引，车不是 prop。
+ */
+function _isVehicle(e) {
+  return typeof e.kind === 'string' && typeof e._dims === 'function';
+}
+
+/**
  * EntityManager
  * 统一管理所有场景实体（NPC、建筑、道具）：
  * - 更新动态实体并同步深度缩放
@@ -115,6 +124,7 @@ export class EntityManager {
     for (const e of visible) {
       const converted = typeof e.facadeH === 'number'
         || _isStickFigure(e)                        // NPC/狗：StickRenderer 已接投影，见下
+        || _isVehicle(e)                            // 车：O-5 体块 + 侧面剪影
         || CONVERTED_PROP_TYPES.has(e.propType)
         || CONVERTED_GROUND_TYPES.has(e.propType); // manhole：draw() 在这条路径上安全空转，
                                                      // 真内容已经在上面的 ground pre-pass 画完

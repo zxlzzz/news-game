@@ -92,3 +92,24 @@ export const PROP_DEPTH = {
   'chair-l': 34, // 0.40m，棋桌折叠椅
   'chair-r': 34,
 };
+
+/**
+ * `footprint().ry`（地面足迹的半进深）唯一推导点（O-5）。
+ *
+ * O-5 之前每个 `footprint()` 里的 `ry` 都是 `Math.max(3, N * ds)` 形式的手调
+ * 小值——那是扁平时代的产物：所有东西都是一张贴片，没有进深，足迹只能给一条
+ * 象征性的细线。O-3/O-4 给道具引入真实进深（`PROP_DEPTH`）之后，足迹必须覆盖
+ * 盒子的整个底面，否则 NPC 会从垃圾桶身上穿过去、或者站在盒子里（tasks.md O-5
+ * 原文）。既然进深的权威已经在 `PROP_DEPTH`，`ry` 就该从它推导，而不是十几个
+ * 文件各留一个对不上的手调数字。
+ *
+ * 半进深 = 进深 / 2（`ry` 是半轴，同 `rx`）。
+ * 缺 `PROP_DEPTH` 条目直接抛错——本项目约定配置缺失不退回 fallback。
+ */
+export function halfDepth(propType, scale = 1) {
+  const d = PROP_DEPTH[propType];
+  if (d == null) {
+    throw new Error(`propDefaults: PROP_DEPTH 缺 '${propType}'（footprint().ry 需要它推导半进深）`);
+  }
+  return (d / 2) * scale;
+}

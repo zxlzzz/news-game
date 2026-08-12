@@ -4,6 +4,28 @@ import {
   ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
 } from '../../core/Layout.js';
 import { vehicleAnchors } from '../../../assets/vehicle-anchors.js';
+import { drawObliqueBox, frontFaceGraphics } from '../../core/Projection.js';
+import { VEHICLE_DEPTH, VEHICLE_BOX_H_FRAC } from './vehicle.js';
+
+/**
+ * 车身体块（O-5）。车不能整台套进 drawObliqueBox——车的辨识度全在侧面剪影
+ * （引擎盖/车顶弧线/轮拱），套成方盒子就没了。做法是：
+ *   1. 先用 drawObliqueBox 画一个**只到腰线**的体块（`VEHICLE_BOX_H_FRAC`），
+ *      它贡献顶面/侧面这两个进深线索；
+ *   2. 再把原有的侧面剪影经 frontFaceGraphics 画在体块正面上，把正面盖掉。
+ * 高度只取到腰线是关键：车顶是弧的，体块要是取满车高，车头车尾上方就会露出
+ * 方角，比不画还难看。公交车（BUS_SHAPE 本来就近似矩形）取满高。
+ *
+ * 摩托太窄（0.7m），给体块反而是一坨，跳过——它本来就是侧面剪影。
+ */
+function _bodyBox(g, vehicle) {
+  const kind = vehicle.kind ?? 'car';
+  const frac = VEHICLE_BOX_H_FRAC[kind];
+  if (!frac) return;                     // moto 等不给体块的车型
+  const s = vehicle.scale;
+  const { L, H } = vehicle._dims();
+  drawObliqueBox(g, vehicle.x, vehicle.y, L * s, VEHICLE_DEPTH[kind] * s, H * s * frac, FILL_PAPER);
+}
 
 const CAR_SHAPE = [
   [-1.00, 0.00], [-1.00, 0.36], [-0.94, 0.42], [-0.78, 0.46],
@@ -416,10 +438,17 @@ function _moto(g, vehicle, highlight) {
 export function drawVehicle(g, vehicle) {
   g.lineStyle(0);
   const hl = null;
+
+  // 1. 体块（进深线索）——见 _bodyBox 注释
+  _bodyBox(g, vehicle);
+
+  // 2. 侧面剪影：整段老代码一行未改，只是 g 换成正面代理（车是竖直广告牌，
+  //    接地点过 toScreen、车身尺寸过 toScreenLength，同 StickRenderer 画人）
+  const fg = frontFaceGraphics(g, vehicle.x, vehicle.y);
   switch (vehicle.kind) {
-    case 'bus':  _bus(g, vehicle, hl);  break;
-    case 'taxi': _taxi(g, vehicle, hl); break;
-    case 'moto': _moto(g, vehicle, hl); break;
-    default:     _car(g, vehicle, hl);  break;
+    case 'bus':  _bus(fg, vehicle, hl);  break;
+    case 'taxi': _taxi(fg, vehicle, hl); break;
+    case 'moto': _moto(fg, vehicle, hl); break;
+    default:     _car(fg, vehicle, hl);  break;
   }
 }
