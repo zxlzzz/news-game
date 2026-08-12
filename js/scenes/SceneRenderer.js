@@ -22,7 +22,7 @@ import {
   GRAY_SKY, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
   SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR, FOG_ALPHA,
-  SKYLINE_BACK, SKYLINE_FRONT, SKYLINE_LINE, CLOUD_LINE,
+  CLOUD_LINE,
   CURB_EDGE_LINE,
   depthLineColor, depthLineWidth, ENV_LINE_LIGHT, ENV_LINE_DARK,
   resolveY, resolveColor, lenv,
@@ -31,6 +31,7 @@ import { toScreen, toScreenLength, projectGroundRect } from '../core/Projection.
 import { drawChessPlaza } from '../entity/chess-table/drawChessPlaza.js';
 import { drawMiniPark } from '../entity/mini-park/drawMiniPark.js';
 import { drawParkPaths, drawParkPlaza } from '../entity/park-path/drawParkPath.js';
+import { drawSkyline } from './drawSkyline.js';
 
 function _need(v, what) {
   if (v == null) throw new Error(`SceneRenderer: scene config 缺 ${what}`);
@@ -131,33 +132,8 @@ export class SceneRenderer {
     g.drawRect(-300, BUILDING_BASE_Y - 20, WORLD_WIDTH + 600, 32);
     g.endFill();
 
-    this._drawFarSkyline(g);
+    drawSkyline(g, this.layout.skyline);   // O-6：平贴层，不经投影，见 drawSkyline.js
     this._drawClouds(g);
-  }
-
-  _drawFarSkyline(g) {
-    const seed = (i) => { const s = Math.sin(i * 73.13) * 43758.5; return s - Math.floor(s); };
-    const base = BUILDING_BASE_Y;
-    g.beginFill(SKYLINE_BACK, 1);
-    for (let i = 0; i < 48; i++) {
-      const bx = i * 46 - 30 + seed(i) * 12;
-      const bw = 38 + seed(i + 9) * 26;
-      const bh = 78 + seed(i + 3) * 60;
-      g.drawRect(bx, base - bh, bw, bh);
-    }
-    g.endFill();
-    for (let i = 0; i < 32; i++) {
-      const bx = i * 70 - 20 + seed(i + 50) * 28;
-      const bw = 44 + seed(i + 60) * 36;
-      const bh = 110 + seed(i + 70) * 70;
-      g.beginFill(SKYLINE_FRONT, 1);
-      g.drawRect(bx, base - bh, bw, bh);
-      g.endFill();
-      g.lineStyle(0.5, SKYLINE_LINE, 0.5);
-      g.drawRect(bx, base - bh, bw, bh);
-      g.lineStyle(0.4, SKYLINE_LINE, 0.4);
-      for (let k = 1; k < 3; k++) { const lx = bx + bw * k / 3; g.moveTo(lx, base - bh + 6); g.lineTo(lx, base - 4); }
-    }
   }
 
   _drawClouds(g) {

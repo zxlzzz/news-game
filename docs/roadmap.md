@@ -1282,3 +1282,27 @@ footprint 声明检查通过）。
 `js/entity/vehicle/vehicle.js`（`VEHICLE_DEPTH` / `VEHICLE_BOX_H_FRAC`）；
 `js/core/EntityManager.js#_isVehicle`；`js/core/PropEntity.js`（`_sortY` 推导）；
 `js/core/propDefaults.js#halfDepth`
+
+### O-6（天际线平贴层）— 已落地，O 系列收官
+
+远景楼从 `SceneRenderer._drawFarSkyline` 抽成独立文件 `js/scenes/drawSkyline.js`，
+序列改由 `scene.json#layout.skyline` 驱动。
+
+- **不参与投影**：天际线画在 `skyContainer` 里（该容器只吃 zoom + 比
+  `worldContainer` 慢的横向视差 0.45），坐标是未投影的屏幕像素，`y` 固定贴在
+  `BUILDING_BASE_Y` 上。纯正面立面图，无顶面/侧面——远到那个距离已经看不出体积，
+  画三面反而穿帮。**本文件不 import Projection.js**（O-6 验收条件，已核对：
+  唯一的 import 是 `Layout.js`；文件头注释里出现的 "Projection.js" 字样是说明
+  文字，不是 import 语句）。
+- **序列固化进 scene.json**（`layout.skyline.back` / `.front`，各 `{x,w,h}`）：
+  tasks.md 要求"不要在代码里随机生成——随机生成会导致每次刷新天际线都不一样"。
+  原实现用 `Math.sin` 伪随机现算，公式本身是确定性的（刷新其实不变），但**长度
+  写死成 48/32 段，只覆盖到屏幕 x≈2240**——O-1 把世界拉长（`WORLD_WIDTH`
+  2000→10588）之后天际线没跟着加长，相机往右滚到一定程度天际线就断了。
+  现在的数据用同一个 seed 公式加长到覆盖整个视差范围（59/39 段，到 x≈2720）
+  后固化，所以观感与旧版一致，只是不再断。
+
+**O 系列（O-1～O-6）至此全部落地。** 五个静态门全绿。
+
+代码锚点：`js/scenes/drawSkyline.js`（新增）；`js/scenes/SceneRenderer.js`
+（`_drawFarSkyline` 删除，改调 `drawSkyline`）；`assets/scene.json#layout.skyline`

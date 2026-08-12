@@ -1,1160 +1,1656 @@
 {
-  "world": {
-    "width": 10588,
-    "height": 3072
-  },
-  "yBands": {
-    "SKY_Y": 333,
-    "BUILDING_BASE_Y": 700,
-    "SIDEWALK_FAR_Y": 934,
-    "BIKE_LANE_FAR_TOP": 996,
-    "BIKE_LANE_FAR_BOTTOM": 1166,
-    "FAR_Y": 1166,
-    "NEAR_Y": 1928,
-    "BIKE_LANE_NEAR_TOP": 1928,
-    "BIKE_LANE_NEAR_BOTTOM": 2098,
-    "PARK_TOP": 2098,
-    "SIDEWALK_NEAR_Y": 3014,
-    "PARK_BOTTOM": 3072
-  },
-  "ground": {
-    "bands": [
-      {
-        "name": "sidewalk_far",
-        "color": "GRAY_FAR_PAVE",
-        "from": "BUILDING_BASE_Y",
-        "to": "FAR_Y"
-      },
-      {
-        "name": "roadway",
-        "color": "GRAY_ROAD",
-        "from": "FAR_Y",
-        "to": "NEAR_Y"
-      },
-      {
-        "name": "sidewalk_near",
-        "color": "GRAY_NEAR_PAVE",
-        "from": "NEAR_Y",
-        "to": "BIKE_LANE_NEAR_BOTTOM"
-      },
-      {
-        "name": "park",
-        "color": "GRAY_PARK",
-        "from": "PARK_TOP",
-        "to": "PARK_BOTTOM"
-      }
-    ],
-    "edgeLines": [
-      {
-        "at": "BIKE_LANE_FAR_TOP",
-        "width": 8
-      },
-      {
-        "at": "BIKE_LANE_NEAR_BOTTOM",
-        "width": 8
-      }
-    ],
-    "tiling": {
-      "from": "BUILDING_BASE_Y",
-      "to": "BIKE_LANE_FAR_TOP",
-      "inset": 16,
-      "spacing": 106,
-      "color": "FILL_MID",
-      "alpha": 0.06,
-      "width": 4
-    },
-    "grass": {
-      "from": "PARK_TOP",
-      "to": "PARK_BOTTOM",
-      "inset": 26,
-      "tufts": 80
-    }
-  },
-  "exits": {
-    "edges": [
-      {
-        "id": "edge_left",
-        "side": "left",
-        "margin": 212,
-        "facing": -1
-      },
-      {
-        "id": "edge_right",
-        "side": "right",
-        "margin": 212,
-        "facing": 1
-      }
-    ],
-    "buildingDoor": {
-      "yBand": "SIDEWALK_FAR_Y",
-      "yOffset": -62,
-      "yZone": [
-        "BUILDING_BASE_Y",
-        "FAR_Y"
-      ]
-    }
-  },
-  "spawnPoints": [
-    {
-      "side": "left",
-      "margin": 159,
-      "yBand": "SIDEWALK_FAR_Y",
-      "facing": 1
-    },
-    {
-      "side": "right",
-      "margin": 159,
-      "yBand": "SIDEWALK_FAR_Y",
-      "facing": -1
-    },
-    {
-      "side": "left",
-      "margin": 159,
-      "yBand": "PARK_TOP",
-      "yOffset": 317,
-      "facing": 1
-    },
-    {
-      "side": "right",
-      "margin": 159,
-      "yBand": "PARK_TOP",
-      "yOffset": 317,
-      "facing": -1
-    }
+ "world": {
+  "width": 10588,
+  "height": 3072
+ },
+ "yBands": {
+  "SKY_Y": 333,
+  "BUILDING_BASE_Y": 700,
+  "SIDEWALK_FAR_Y": 934,
+  "BIKE_LANE_FAR_TOP": 996,
+  "BIKE_LANE_FAR_BOTTOM": 1166,
+  "FAR_Y": 1166,
+  "NEAR_Y": 1928,
+  "BIKE_LANE_NEAR_TOP": 1928,
+  "BIKE_LANE_NEAR_BOTTOM": 2098,
+  "PARK_TOP": 2098,
+  "SIDEWALK_NEAR_Y": 3014,
+  "PARK_BOTTOM": 3072
+ },
+ "ground": {
+  "bands": [
+   {
+    "name": "sidewalk_far",
+    "color": "GRAY_FAR_PAVE",
+    "from": "BUILDING_BASE_Y",
+    "to": "FAR_Y"
+   },
+   {
+    "name": "roadway",
+    "color": "GRAY_ROAD",
+    "from": "FAR_Y",
+    "to": "NEAR_Y"
+   },
+   {
+    "name": "sidewalk_near",
+    "color": "GRAY_NEAR_PAVE",
+    "from": "NEAR_Y",
+    "to": "BIKE_LANE_NEAR_BOTTOM"
+   },
+   {
+    "name": "park",
+    "color": "GRAY_PARK",
+    "from": "PARK_TOP",
+    "to": "PARK_BOTTOM"
+   }
   ],
-  "features": [
-    {
-      "type": "ambient_affordance",
-      "kind": "grass_rest",
-      "arrivalState": "sit_ground",
-      "dur": [
-        10,
-        25
-      ],
-      "weight": 0.1,
-      "tags": [
-        "grass_rest"
-      ],
-      "use": "visit",
-      "minYBand": "PARK_TOP",
-      "radius": 1059,
-      "benchAvoidRadius": 1059,
-      "benchAvoidFactor": 0.3
-    },
-    {
-      "type": "pedestrians",
-      "count": 18
-    },
-    {
-      "type": "park_idlers",
-      "countRange": [
-        3,
-        5
-      ],
-      "midYFrac": 0.35,
-      "xMargin": 424,
-      "lifespanRange": [
-        120,
-        300
-      ],
-      "ageTimerMax": 30,
-      "agendaTemplate": "park_idler",
-      "minYBand": "PARK_TOP",
-      "maxYBand": "PARK_BOTTOM"
-    },
-    {
-      "type": "chess",
-      "plaza": "chessPlaza"
-    },
-    {
-      "type": "stall_sellers"
-    },
-    {
-      "type": "dog_walker"
-    },
-    {
-      "type": "athletes",
-      "_speedUnit": "骨架单位/秒（U-2；消费时乘 npc.scale，换算基准见 docs/roadmap.md U-2 条目；U-2b 重校准至远人行道 scale 0.188）",
-      "runners": [
-        {
-          "route": "sidewalk_far_jog",
-          "spawnX": 5188,
-          "spawnYBand": "SIDEWALK_FAR_Y",
-          "direction": 1,
-          "speed": 319,
-          "color": "#1a0818",
-          "margin": 212
-        },
-        {
-          "route": "park_loop_jog",
-          "spawnX": 6459,
-          "spawnYBand": "SIDEWALK_NEAR_Y",
-          "direction": -1,
-          "speed": 351,
-          "color": "#0a1808",
-          "margin": 212
-        }
-      ]
-    },
-    {
-      "type": "vehicles"
-    },
-    {
-      "type": "bus_stops"
-    }
+  "edgeLines": [
+   {
+    "at": "BIKE_LANE_FAR_TOP",
+    "width": 8
+   },
+   {
+    "at": "BIKE_LANE_NEAR_BOTTOM",
+    "width": 8
+   }
   ],
-  "zones": {
-    "bands": [
-      {
-        "name": "building",
-        "zone": "BLOCKED",
-        "to": "BUILDING_BASE_Y"
-      },
-      {
-        "name": "sidewalk_far",
-        "zone": "SIDEWALK",
-        "to": "BIKE_LANE_FAR_TOP"
-      },
-      {
-        "name": "bike_far",
-        "zone": "ROAD",
-        "to": "BIKE_LANE_FAR_BOTTOM"
-      },
-      {
-        "name": "roadway",
-        "zone": "ROAD",
-        "to": "NEAR_Y"
-      },
-      {
-        "name": "bike_near",
-        "zone": "ROAD",
-        "to": "BIKE_LANE_NEAR_BOTTOM"
-      },
-      {
-        "name": "park",
-        "zone": "GRASS",
-        "to": "PARK_BOTTOM"
-      }
-    ],
-    "overlays": [
-      {
-        "name": "park_entry",
-        "zone": "SIDEWALK",
-        "from": "PARK_TOP",
-        "height": 296
-      }
-    ],
-    "paving": {
-      "zone": "SIDEWALK",
-      "from": "PARK_TOP",
-      "pathTubeRadius": 106,
-      "plazas": [
-        {
-          "ref": "chessPlaza",
-          "shrink": [
-            1,
-            1
-          ]
-        },
-        {
-          "ref": "miniPark",
-          "shrink": [
-            0.85,
-            0.7
-          ]
-        }
-      ]
-    },
-    "crossings": {
-      "zone": "CROSSWALK",
-      "over": "ROAD",
-      "ref": "crosswalks",
-      "halfWidth": 106,
-      "from": "BIKE_LANE_FAR_TOP",
-      "to": "BIKE_LANE_NEAR_BOTTOM"
-    }
+  "tiling": {
+   "from": "BUILDING_BASE_Y",
+   "to": "BIKE_LANE_FAR_TOP",
+   "inset": 16,
+   "spacing": 106,
+   "color": "FILL_MID",
+   "alpha": 0.06,
+   "width": 4
   },
-  "buildings": [
-    {
-      "x": 0,
-      "bWidth": 635,
-      "bDepth": 127,
-      "facadeH": 614,
-      "waterTower": true,
-      "kind": "resi",
-      "door": 318
-    },
-    {
-      "x": 635,
-      "bWidth": 381,
-      "bDepth": 106,
-      "facadeH": 445,
-      "kind": "oldmix",
-      "door": 826
-    },
-    {
-      "x": 1016,
-      "bWidth": 572,
-      "bDepth": 116,
-      "facadeH": 413,
-      "kind": "modern",
-      "door": 1302
-    },
-    {
-      "x": 1588,
-      "bWidth": 519,
-      "bDepth": 127,
-      "facadeH": 656,
-      "waterTower": true,
-      "solar": true,
-      "kind": "resi",
-      "door": 1848
-    },
-    {
-      "x": 2107,
-      "bWidth": 371,
-      "bDepth": 85,
-      "facadeH": 180,
-      "kind": "convenience",
-      "door": 2292
-    },
-    {
-      "x": 2478,
-      "bWidth": 381,
-      "bDepth": 95,
-      "facadeH": 286,
-      "kind": "bookstore",
-      "door": 2668
-    },
-    {
-      "x": 3441,
-      "bWidth": 371,
-      "bDepth": 106,
-      "facadeH": 487,
-      "kind": "oldmix",
-      "door": 3626
-    },
-    {
-      "x": 3812,
-      "bWidth": 646,
-      "bDepth": 127,
-      "facadeH": 551,
-      "waterTower": true,
-      "kind": "resi",
-      "door": 4135
-    },
-    {
-      "x": 4458,
-      "bWidth": 392,
-      "bDepth": 95,
-      "facadeH": 402,
-      "kind": "oldmix",
-      "door": 4654
-    },
-    {
-      "x": 4849,
-      "bWidth": 614,
-      "bDepth": 116,
-      "facadeH": 466,
-      "billboard": true,
-      "kind": "modern",
-      "door": 5156
-    },
-    {
-      "x": 5464,
-      "bWidth": 593,
-      "bDepth": 138,
-      "facadeH": 593,
-      "solar": true,
-      "kind": "resi",
-      "door": 5760
-    },
-    {
-      "x": 6056,
-      "bWidth": 371,
-      "bDepth": 95,
-      "facadeH": 381,
-      "kind": "oldmix",
-      "door": 6242
-    },
-    {
-      "x": 6427,
-      "bWidth": 508,
-      "bDepth": 127,
-      "facadeH": 635,
-      "waterTower": true,
-      "kind": "resi",
-      "door": 6681
-    },
-    {
-      "x": 6935,
-      "bWidth": 371,
-      "bDepth": 95,
-      "facadeH": 265,
-      "kind": "clinic",
-      "door": 7121
-    },
-    {
-      "x": 7888,
-      "bWidth": 656,
-      "bDepth": 138,
-      "facadeH": 572,
-      "waterTower": true,
-      "solar": true,
-      "kind": "resi",
-      "door": 8216
-    },
-    {
-      "x": 8545,
-      "bWidth": 625,
-      "bDepth": 116,
-      "facadeH": 381,
-      "kind": "modern",
-      "door": 8857
-    },
-    {
-      "x": 9169,
-      "bWidth": 402,
-      "bDepth": 95,
-      "facadeH": 424,
-      "kind": "oldmix",
-      "door": 9371
-    },
-    {
-      "x": 9572,
-      "bWidth": 498,
-      "bDepth": 127,
-      "facadeH": 614,
-      "kind": "resi",
-      "door": 9821
-    },
-    {
-      "x": 10069,
-      "bWidth": 466,
-      "bDepth": 85,
-      "facadeH": 169,
-      "kind": "convenience",
-      "door": 10302
-    }
-  ],
-  "props": {
-    "lamp": {
-      "w": 14,
-      "h": 14,
-      "at": [
-        [
-          503,
-          981
-        ],
-        [
-          1853,
-          981
-        ],
-        [
-          3785,
-          981
-        ],
-        [
-          5426,
-          981
-        ],
-        [
-          7068,
-          981
-        ],
-        [
-          8709,
-          981
-        ],
-        [
-          10350,
-          981
-        ],
-        [
-          1271,
-          2299
-        ],
-        [
-          3388,
-          2299
-        ],
-        [
-          5506,
-          2299
-        ],
-        [
-          6882,
-          2299
-        ],
-        [
-          9741,
-          2299
-        ]
-      ]
-    },
-    "trash": {
-      "w": 14,
-      "h": 14,
-      "at": [
-        [
-          1800,
-          2975
-        ],
-        [
-          8576,
-          2975
-        ],
-        {
-          "x": 1588,
-          "y": 840,
-          "w": 12
-        },
-        {
-          "x": 6353,
-          "y": 840,
-          "w": 12
-        },
-        {
-          "x": 8735,
-          "y": 840,
-          "w": 12
-        },
-        {
-          "x": 7729,
-          "y": 2804,
-          "smartDef": null
-        }
-      ]
-    },
-    "newsrack": {
-      "w": 14,
-      "h": 18,
-      "at": [
-        [
-          3335,
-          856
-        ],
-        [
-          7518,
-          856
-        ],
-        [
-          4818,
-          2926
-        ]
-      ]
-    },
-    "hydrant": {
-      "w": 10,
-      "h": 14,
-      "at": [
-        [
-          2012,
-          856
-        ],
-        [
-          6882,
-          856
-        ],
-        [
-          1059,
-          2965
-        ]
-      ]
-    },
-    "mailbox": {
-      "w": 12,
-      "h": 18,
-      "at": [
-        [
-          4871,
-          856
-        ],
-        [
-          318,
-          2975
-        ],
-        [
-          1906,
-          965
-        ]
-      ]
-    },
-    "planter": {
-      "h": 10,
-      "at": [
-        {
-          "x": 794,
-          "y": 3014,
-          "w": 84
-        },
-        {
-          "x": 4129,
-          "y": 3014,
-          "w": 75
-        },
-        {
-          "x": 7094,
-          "y": 3048,
-          "w": 88
-        }
-      ]
-    },
-    "manhole": {
-      "w": 85,
-      "h": 10,
-      "at": [
-        [
-          1906,
-          1424
-        ],
-        [
-          5929,
-          1424
-        ],
-        [
-          9688,
-          1424
-        ]
-      ]
-    },
-    "drain": {
-      "w": 72,
-      "h": 6,
-      "at": [
-        [
-          1271,
-          2030
-        ],
-        [
-          4765,
-          2030
-        ]
-      ]
-    },
-    "sign": {
-      "h": 14,
-      "at": [
-        {
-          "x": 344,
-          "y": 809,
-          "color": "#1a4488"
-        },
-        {
-          "x": 821,
-          "y": 809,
-          "color": "#cc3322"
-        },
-        {
-          "x": 1218,
-          "y": 809,
-          "color": "#886633"
-        },
-        {
-          "x": 1816,
-          "y": 809,
-          "w": 28,
-          "color": "#886600"
-        },
-        {
-          "x": 2578,
-          "y": 809,
-          "color": "#22aa55"
-        },
-        {
-          "x": 3907,
-          "y": 809,
-          "w": 24,
-          "color": "#336688"
-        },
-        {
-          "x": 4738,
-          "y": 809,
-          "w": 30,
-          "color": "#7a3322"
-        },
-        {
-          "x": 5506,
-          "y": 809,
-          "color": "#aa2288"
-        },
-        {
-          "x": 5982,
-          "y": 809,
-          "color": "#886633"
-        },
-        {
-          "x": 6697,
-          "y": 809,
-          "w": 28,
-          "color": "#886600"
-        },
-        {
-          "x": 7094,
-          "y": 809,
-          "color": "#445588"
-        },
-        {
-          "x": 8058,
-          "y": 809,
-          "w": 24,
-          "color": "#225588"
-        },
-        {
-          "x": 8868,
-          "y": 809,
-          "w": 30,
-          "color": "#7a3322"
-        },
-        {
-          "x": 9582,
-          "y": 809,
-          "color": "#cc6622"
-        },
-        {
-          "x": 10165,
-          "y": 809,
-          "color": "#cc3322"
-        }
-      ]
-    },
-    "vending": {
-      "w": 76,
-      "h": 28,
-      "at": [
-        [
-          3706,
-          965
-        ],
-        [
-          8259,
-          965
-        ]
-      ]
-    },
-    "phonebooth": {
-      "w": 76,
-      "h": 34,
-      "at": [
-        [
-          6088,
-          965
-        ]
-      ]
-    },
-    "fountain": {
-      "w": 479,
-      "h": 80,
-      "at": [
-        [
-          6088,
-          2731
-        ]
-      ]
-    },
-    "stall": {
-      "at": [
-        {
-          "x": 2276,
-          "y": 2594,
-          "w": 199,
-          "h": 60
-        },
-        {
-          "x": 8947,
-          "y": 2604,
-          "w": 203,
-          "h": 62
-        }
-      ]
-    },
-    "bench": {
-      "w": 80,
-      "h": 12,
-      "at": [
-        [
-          7941,
-          2609
-        ],
-        [
-          1297,
-          2599
-        ],
-        [
-          10324,
-          2653
-        ],
-        [
-          4394,
-          2575
-        ]
-      ]
-    }
-  },
-  "layout": {
-    "sidewalkTrees": [
-      [
-        911,
-        918,
-        8
-      ],
-      [
-        1705,
-        926,
-        7
-      ],
-      [
-        2499,
-        918,
-        9
-      ],
-      [
-        3293,
-        918,
-        8
-      ],
-      [
-        4087,
-        926,
-        7
-      ],
-      [
-        4881,
-        918,
-        8
-      ],
-      [
-        5675,
-        934,
-        10
-      ],
-      [
-        6469,
-        950,
-        8
-      ],
-      [
-        7264,
-        934,
-        7
-      ],
-      [
-        8058,
-        918,
-        8
-      ],
-      [
-        8852,
-        926,
-        10
-      ],
-      [
-        9646,
-        926,
-        10
-      ],
-      [
-        10440,
-        926,
-        10
-      ]
-    ],
-    "parkTrees": [
-      [
-        635,
-        2278,
-        12
-      ],
-      [
-        1588,
-        2278,
-        11
-      ],
-      [
-        2541,
-        2278,
-        11
-      ],
-      [
-        3494,
-        2278,
-        11
-      ],
-      [
-        4447,
-        2278,
-        11
-      ],
-      [
-        5400,
-        2278,
-        15
-      ],
-      [
-        6353,
-        2278,
-        11
-      ],
-      [
-        7306,
-        2278,
-        11
-      ],
-      [
-        8259,
-        2278,
-        11
-      ],
-      [
-        9212,
-        2278,
-        11
-      ],
-      [
-        10165,
-        2278,
-        11
-      ]
-    ],
-    "clouds": [
-      {
-        "x": 953,
-        "y": 127,
-        "scale": 1
-      },
-      {
-        "x": 2965,
-        "y": 87,
-        "scale": 0.8
-      },
-      {
-        "x": 5294,
-        "y": 153,
-        "scale": 1.15
-      },
-      {
-        "x": 7941,
-        "y": 100,
-        "scale": 0.9
-      },
-      {
-        "x": 9741,
-        "y": 133,
-        "scale": 1
-      }
-    ],
-    "crosswalks": [
-      {
-        "x": 529
-      },
-      {
-        "x": 10059
-      }
-    ],
-    "roadMarkings": {
-      "curbFar": {
-        "thickness": 16,
-        "edgeLineAlpha": 0.65
-      },
-      "roadEdge": {
-        "height": 4,
-        "alpha": 0.85
-      },
-      "curbNear": {
-        "thickness": 21,
-        "lineWidthFactor": 0.7,
-        "lineAlpha": 0.55
-      },
-      "laneStripe": {
-        "spacing": 296,
-        "length": 148,
-        "width": 11,
-        "color": "MARKING_PAINT",
-        "alpha": 0.6
-      },
-      "crosswalk": {
-        "roadMargin": 26,
-        "stripeCount": 5,
-        "stripeLength": 1059,
-        "xOffset": -95,
-        "color": "MARKING_PAINT",
-        "alpha": 0.68
-      }
-    },
-    "chessPlaza": {
-      "cx": 3282,
-      "cy": 2697,
-      "rx": 688,
-      "ry": 429
-    },
-    "miniPark": {
-      "cx": 6088,
-      "cy": 2745,
-      "rx": 1112,
-      "ry": 597
-    },
-    "walkPaths": {
-      "sidewalk_far_lr": {
-        "waypoints": [
-          {
-            "x": 318,
-            "y": 856
-          },
-          {
-            "x": 2647,
-            "y": 872
-          },
-          {
-            "x": 5294,
-            "y": 840
-          },
-          {
-            "x": 7941,
-            "y": 864
-          },
-          {
-            "x": 10271,
-            "y": 856
-          }
-        ],
-        "loop": false
-      },
-      "sidewalk_far_rl": {
-        "waypoints": [
-          {
-            "x": 10271,
-            "y": 856
-          },
-          {
-            "x": 7941,
-            "y": 864
-          },
-          {
-            "x": 5294,
-            "y": 840
-          },
-          {
-            "x": 2647,
-            "y": 872
-          },
-          {
-            "x": 318,
-            "y": 856
-          }
-        ],
-        "loop": false
-      },
-      "park_loop_cw": {
-        "waypoints": [
-          {
-            "x": 1853,
-            "y": 2438
-          },
-          {
-            "x": 3706,
-            "y": 2257
-          },
-          {
-            "x": 6088,
-            "y": 2320,
-            "pause": 1.5
-          },
-          {
-            "x": 8471,
-            "y": 2457
-          },
-          {
-            "x": 9794,
-            "y": 2721
-          },
-          {
-            "x": 7941,
-            "y": 2936
-          },
-          {
-            "x": 4765,
-            "y": 2985,
-            "pause": 1
-          },
-          {
-            "x": 2118,
-            "y": 2828
-          }
-        ],
-        "loop": true
-      },
-      "park_loop_jog": {
-        "waypoints": [
-          {
-            "x": 1853,
-            "y": 2438
-          },
-          {
-            "x": 3706,
-            "y": 2257
-          },
-          {
-            "x": 6088,
-            "y": 2320
-          },
-          {
-            "x": 8471,
-            "y": 2457
-          },
-          {
-            "x": 9794,
-            "y": 2721
-          },
-          {
-            "x": 7941,
-            "y": 2936
-          },
-          {
-            "x": 4765,
-            "y": 2985
-          },
-          {
-            "x": 2118,
-            "y": 2828
-          }
-        ],
-        "loop": true
-      },
-      "sidewalk_far_jog": {
-        "waypoints": [
-          {
-            "x": 4500,
-            "y": 856
-          },
-          {
-            "x": 6988,
-            "y": 856
-          }
-        ],
-        "loop": true
-      }
-    },
-    "busStops": [
-      {
-        "x": 3441,
-        "direction": 1,
-        "bench": {
-          "dx": 0,
-          "dy": 0,
-          "width": 424,
-          "facing": "down"
-        }
-      },
-      {
-        "x": 7941,
-        "direction": -1,
-        "bench": {
-          "dx": 0,
-          "dy": 0,
-          "width": 424,
-          "facing": "down"
-        }
-      }
-    ]
+  "grass": {
+   "from": "PARK_TOP",
+   "to": "PARK_BOTTOM",
+   "inset": 26,
+   "tufts": 80
   }
+ },
+ "exits": {
+  "edges": [
+   {
+    "id": "edge_left",
+    "side": "left",
+    "margin": 212,
+    "facing": -1
+   },
+   {
+    "id": "edge_right",
+    "side": "right",
+    "margin": 212,
+    "facing": 1
+   }
+  ],
+  "buildingDoor": {
+   "yBand": "SIDEWALK_FAR_Y",
+   "yOffset": -62,
+   "yZone": [
+    "BUILDING_BASE_Y",
+    "FAR_Y"
+   ]
+  }
+ },
+ "spawnPoints": [
+  {
+   "side": "left",
+   "margin": 159,
+   "yBand": "SIDEWALK_FAR_Y",
+   "facing": 1
+  },
+  {
+   "side": "right",
+   "margin": 159,
+   "yBand": "SIDEWALK_FAR_Y",
+   "facing": -1
+  },
+  {
+   "side": "left",
+   "margin": 159,
+   "yBand": "PARK_TOP",
+   "yOffset": 317,
+   "facing": 1
+  },
+  {
+   "side": "right",
+   "margin": 159,
+   "yBand": "PARK_TOP",
+   "yOffset": 317,
+   "facing": -1
+  }
+ ],
+ "features": [
+  {
+   "type": "ambient_affordance",
+   "kind": "grass_rest",
+   "arrivalState": "sit_ground",
+   "dur": [
+    10,
+    25
+   ],
+   "weight": 0.1,
+   "tags": [
+    "grass_rest"
+   ],
+   "use": "visit",
+   "minYBand": "PARK_TOP",
+   "radius": 1059,
+   "benchAvoidRadius": 1059,
+   "benchAvoidFactor": 0.3
+  },
+  {
+   "type": "pedestrians",
+   "count": 18
+  },
+  {
+   "type": "park_idlers",
+   "countRange": [
+    3,
+    5
+   ],
+   "midYFrac": 0.35,
+   "xMargin": 424,
+   "lifespanRange": [
+    120,
+    300
+   ],
+   "ageTimerMax": 30,
+   "agendaTemplate": "park_idler",
+   "minYBand": "PARK_TOP",
+   "maxYBand": "PARK_BOTTOM"
+  },
+  {
+   "type": "chess",
+   "plaza": "chessPlaza"
+  },
+  {
+   "type": "stall_sellers"
+  },
+  {
+   "type": "dog_walker"
+  },
+  {
+   "type": "athletes",
+   "_speedUnit": "骨架单位/秒（U-2；消费时乘 npc.scale，换算基准见 docs/roadmap.md U-2 条目；U-2b 重校准至远人行道 scale 0.188）",
+   "runners": [
+    {
+     "route": "sidewalk_far_jog",
+     "spawnX": 5188,
+     "spawnYBand": "SIDEWALK_FAR_Y",
+     "direction": 1,
+     "speed": 319,
+     "color": "#1a0818",
+     "margin": 212
+    },
+    {
+     "route": "park_loop_jog",
+     "spawnX": 6459,
+     "spawnYBand": "SIDEWALK_NEAR_Y",
+     "direction": -1,
+     "speed": 351,
+     "color": "#0a1808",
+     "margin": 212
+    }
+   ]
+  },
+  {
+   "type": "vehicles"
+  },
+  {
+   "type": "bus_stops"
+  }
+ ],
+ "zones": {
+  "bands": [
+   {
+    "name": "building",
+    "zone": "BLOCKED",
+    "to": "BUILDING_BASE_Y"
+   },
+   {
+    "name": "sidewalk_far",
+    "zone": "SIDEWALK",
+    "to": "BIKE_LANE_FAR_TOP"
+   },
+   {
+    "name": "bike_far",
+    "zone": "ROAD",
+    "to": "BIKE_LANE_FAR_BOTTOM"
+   },
+   {
+    "name": "roadway",
+    "zone": "ROAD",
+    "to": "NEAR_Y"
+   },
+   {
+    "name": "bike_near",
+    "zone": "ROAD",
+    "to": "BIKE_LANE_NEAR_BOTTOM"
+   },
+   {
+    "name": "park",
+    "zone": "GRASS",
+    "to": "PARK_BOTTOM"
+   }
+  ],
+  "overlays": [
+   {
+    "name": "park_entry",
+    "zone": "SIDEWALK",
+    "from": "PARK_TOP",
+    "height": 296
+   }
+  ],
+  "paving": {
+   "zone": "SIDEWALK",
+   "from": "PARK_TOP",
+   "pathTubeRadius": 106,
+   "plazas": [
+    {
+     "ref": "chessPlaza",
+     "shrink": [
+      1,
+      1
+     ]
+    },
+    {
+     "ref": "miniPark",
+     "shrink": [
+      0.85,
+      0.7
+     ]
+    }
+   ]
+  },
+  "crossings": {
+   "zone": "CROSSWALK",
+   "over": "ROAD",
+   "ref": "crosswalks",
+   "halfWidth": 106,
+   "from": "BIKE_LANE_FAR_TOP",
+   "to": "BIKE_LANE_NEAR_BOTTOM"
+  }
+ },
+ "buildings": [
+  {
+   "x": 0,
+   "bWidth": 635,
+   "bDepth": 127,
+   "facadeH": 614,
+   "waterTower": true,
+   "kind": "resi",
+   "door": 318
+  },
+  {
+   "x": 635,
+   "bWidth": 381,
+   "bDepth": 106,
+   "facadeH": 445,
+   "kind": "oldmix",
+   "door": 826
+  },
+  {
+   "x": 1016,
+   "bWidth": 572,
+   "bDepth": 116,
+   "facadeH": 413,
+   "kind": "modern",
+   "door": 1302
+  },
+  {
+   "x": 1588,
+   "bWidth": 519,
+   "bDepth": 127,
+   "facadeH": 656,
+   "waterTower": true,
+   "solar": true,
+   "kind": "resi",
+   "door": 1848
+  },
+  {
+   "x": 2107,
+   "bWidth": 371,
+   "bDepth": 85,
+   "facadeH": 180,
+   "kind": "convenience",
+   "door": 2292
+  },
+  {
+   "x": 2478,
+   "bWidth": 381,
+   "bDepth": 95,
+   "facadeH": 286,
+   "kind": "bookstore",
+   "door": 2668
+  },
+  {
+   "x": 3441,
+   "bWidth": 371,
+   "bDepth": 106,
+   "facadeH": 487,
+   "kind": "oldmix",
+   "door": 3626
+  },
+  {
+   "x": 3812,
+   "bWidth": 646,
+   "bDepth": 127,
+   "facadeH": 551,
+   "waterTower": true,
+   "kind": "resi",
+   "door": 4135
+  },
+  {
+   "x": 4458,
+   "bWidth": 392,
+   "bDepth": 95,
+   "facadeH": 402,
+   "kind": "oldmix",
+   "door": 4654
+  },
+  {
+   "x": 4849,
+   "bWidth": 614,
+   "bDepth": 116,
+   "facadeH": 466,
+   "billboard": true,
+   "kind": "modern",
+   "door": 5156
+  },
+  {
+   "x": 5464,
+   "bWidth": 593,
+   "bDepth": 138,
+   "facadeH": 593,
+   "solar": true,
+   "kind": "resi",
+   "door": 5760
+  },
+  {
+   "x": 6056,
+   "bWidth": 371,
+   "bDepth": 95,
+   "facadeH": 381,
+   "kind": "oldmix",
+   "door": 6242
+  },
+  {
+   "x": 6427,
+   "bWidth": 508,
+   "bDepth": 127,
+   "facadeH": 635,
+   "waterTower": true,
+   "kind": "resi",
+   "door": 6681
+  },
+  {
+   "x": 6935,
+   "bWidth": 371,
+   "bDepth": 95,
+   "facadeH": 265,
+   "kind": "clinic",
+   "door": 7121
+  },
+  {
+   "x": 7888,
+   "bWidth": 656,
+   "bDepth": 138,
+   "facadeH": 572,
+   "waterTower": true,
+   "solar": true,
+   "kind": "resi",
+   "door": 8216
+  },
+  {
+   "x": 8545,
+   "bWidth": 625,
+   "bDepth": 116,
+   "facadeH": 381,
+   "kind": "modern",
+   "door": 8857
+  },
+  {
+   "x": 9169,
+   "bWidth": 402,
+   "bDepth": 95,
+   "facadeH": 424,
+   "kind": "oldmix",
+   "door": 9371
+  },
+  {
+   "x": 9572,
+   "bWidth": 498,
+   "bDepth": 127,
+   "facadeH": 614,
+   "kind": "resi",
+   "door": 9821
+  },
+  {
+   "x": 10069,
+   "bWidth": 466,
+   "bDepth": 85,
+   "facadeH": 169,
+   "kind": "convenience",
+   "door": 10302
+  }
+ ],
+ "props": {
+  "lamp": {
+   "w": 14,
+   "h": 14,
+   "at": [
+    [
+     503,
+     981
+    ],
+    [
+     1853,
+     981
+    ],
+    [
+     3785,
+     981
+    ],
+    [
+     5426,
+     981
+    ],
+    [
+     7068,
+     981
+    ],
+    [
+     8709,
+     981
+    ],
+    [
+     10350,
+     981
+    ],
+    [
+     1271,
+     2299
+    ],
+    [
+     3388,
+     2299
+    ],
+    [
+     5506,
+     2299
+    ],
+    [
+     6882,
+     2299
+    ],
+    [
+     9741,
+     2299
+    ]
+   ]
+  },
+  "trash": {
+   "w": 14,
+   "h": 14,
+   "at": [
+    [
+     1800,
+     2975
+    ],
+    [
+     8576,
+     2975
+    ],
+    {
+     "x": 1588,
+     "y": 840,
+     "w": 12
+    },
+    {
+     "x": 6353,
+     "y": 840,
+     "w": 12
+    },
+    {
+     "x": 8735,
+     "y": 840,
+     "w": 12
+    },
+    {
+     "x": 7729,
+     "y": 2804,
+     "smartDef": null
+    }
+   ]
+  },
+  "newsrack": {
+   "w": 14,
+   "h": 18,
+   "at": [
+    [
+     3335,
+     856
+    ],
+    [
+     7518,
+     856
+    ],
+    [
+     4818,
+     2926
+    ]
+   ]
+  },
+  "hydrant": {
+   "w": 10,
+   "h": 14,
+   "at": [
+    [
+     2012,
+     856
+    ],
+    [
+     6882,
+     856
+    ],
+    [
+     1059,
+     2965
+    ]
+   ]
+  },
+  "mailbox": {
+   "w": 12,
+   "h": 18,
+   "at": [
+    [
+     4871,
+     856
+    ],
+    [
+     318,
+     2975
+    ],
+    [
+     1906,
+     965
+    ]
+   ]
+  },
+  "planter": {
+   "h": 10,
+   "at": [
+    {
+     "x": 794,
+     "y": 3014,
+     "w": 84
+    },
+    {
+     "x": 4129,
+     "y": 3014,
+     "w": 75
+    },
+    {
+     "x": 7094,
+     "y": 3048,
+     "w": 88
+    }
+   ]
+  },
+  "manhole": {
+   "w": 85,
+   "h": 10,
+   "at": [
+    [
+     1906,
+     1424
+    ],
+    [
+     5929,
+     1424
+    ],
+    [
+     9688,
+     1424
+    ]
+   ]
+  },
+  "drain": {
+   "w": 72,
+   "h": 6,
+   "at": [
+    [
+     1271,
+     2030
+    ],
+    [
+     4765,
+     2030
+    ]
+   ]
+  },
+  "sign": {
+   "h": 14,
+   "at": [
+    {
+     "x": 344,
+     "y": 809,
+     "color": "#1a4488"
+    },
+    {
+     "x": 821,
+     "y": 809,
+     "color": "#cc3322"
+    },
+    {
+     "x": 1218,
+     "y": 809,
+     "color": "#886633"
+    },
+    {
+     "x": 1816,
+     "y": 809,
+     "w": 28,
+     "color": "#886600"
+    },
+    {
+     "x": 2578,
+     "y": 809,
+     "color": "#22aa55"
+    },
+    {
+     "x": 3907,
+     "y": 809,
+     "w": 24,
+     "color": "#336688"
+    },
+    {
+     "x": 4738,
+     "y": 809,
+     "w": 30,
+     "color": "#7a3322"
+    },
+    {
+     "x": 5506,
+     "y": 809,
+     "color": "#aa2288"
+    },
+    {
+     "x": 5982,
+     "y": 809,
+     "color": "#886633"
+    },
+    {
+     "x": 6697,
+     "y": 809,
+     "w": 28,
+     "color": "#886600"
+    },
+    {
+     "x": 7094,
+     "y": 809,
+     "color": "#445588"
+    },
+    {
+     "x": 8058,
+     "y": 809,
+     "w": 24,
+     "color": "#225588"
+    },
+    {
+     "x": 8868,
+     "y": 809,
+     "w": 30,
+     "color": "#7a3322"
+    },
+    {
+     "x": 9582,
+     "y": 809,
+     "color": "#cc6622"
+    },
+    {
+     "x": 10165,
+     "y": 809,
+     "color": "#cc3322"
+    }
+   ]
+  },
+  "vending": {
+   "w": 76,
+   "h": 28,
+   "at": [
+    [
+     3706,
+     965
+    ],
+    [
+     8259,
+     965
+    ]
+   ]
+  },
+  "phonebooth": {
+   "w": 76,
+   "h": 34,
+   "at": [
+    [
+     6088,
+     965
+    ]
+   ]
+  },
+  "fountain": {
+   "w": 479,
+   "h": 80,
+   "at": [
+    [
+     6088,
+     2731
+    ]
+   ]
+  },
+  "stall": {
+   "at": [
+    {
+     "x": 2276,
+     "y": 2594,
+     "w": 199,
+     "h": 60
+    },
+    {
+     "x": 8947,
+     "y": 2604,
+     "w": 203,
+     "h": 62
+    }
+   ]
+  },
+  "bench": {
+   "w": 80,
+   "h": 12,
+   "at": [
+    [
+     7941,
+     2609
+    ],
+    [
+     1297,
+     2599
+    ],
+    [
+     10324,
+     2653
+    ],
+    [
+     4394,
+     2575
+    ]
+   ]
+  }
+ },
+ "layout": {
+  "sidewalkTrees": [
+   [
+    911,
+    918,
+    8
+   ],
+   [
+    1705,
+    926,
+    7
+   ],
+   [
+    2499,
+    918,
+    9
+   ],
+   [
+    3293,
+    918,
+    8
+   ],
+   [
+    4087,
+    926,
+    7
+   ],
+   [
+    4881,
+    918,
+    8
+   ],
+   [
+    5675,
+    934,
+    10
+   ],
+   [
+    6469,
+    950,
+    8
+   ],
+   [
+    7264,
+    934,
+    7
+   ],
+   [
+    8058,
+    918,
+    8
+   ],
+   [
+    8852,
+    926,
+    10
+   ],
+   [
+    9646,
+    926,
+    10
+   ],
+   [
+    10440,
+    926,
+    10
+   ]
+  ],
+  "parkTrees": [
+   [
+    635,
+    2278,
+    12
+   ],
+   [
+    1588,
+    2278,
+    11
+   ],
+   [
+    2541,
+    2278,
+    11
+   ],
+   [
+    3494,
+    2278,
+    11
+   ],
+   [
+    4447,
+    2278,
+    11
+   ],
+   [
+    5400,
+    2278,
+    15
+   ],
+   [
+    6353,
+    2278,
+    11
+   ],
+   [
+    7306,
+    2278,
+    11
+   ],
+   [
+    8259,
+    2278,
+    11
+   ],
+   [
+    9212,
+    2278,
+    11
+   ],
+   [
+    10165,
+    2278,
+    11
+   ]
+  ],
+  "clouds": [
+   {
+    "x": 953,
+    "y": 127,
+    "scale": 1
+   },
+   {
+    "x": 2965,
+    "y": 87,
+    "scale": 0.8
+   },
+   {
+    "x": 5294,
+    "y": 153,
+    "scale": 1.15
+   },
+   {
+    "x": 7941,
+    "y": 100,
+    "scale": 0.9
+   },
+   {
+    "x": 9741,
+    "y": 133,
+    "scale": 1
+   }
+  ],
+  "crosswalks": [
+   {
+    "x": 529
+   },
+   {
+    "x": 10059
+   }
+  ],
+  "roadMarkings": {
+   "curbFar": {
+    "thickness": 16,
+    "edgeLineAlpha": 0.65
+   },
+   "roadEdge": {
+    "height": 4,
+    "alpha": 0.85
+   },
+   "curbNear": {
+    "thickness": 21,
+    "lineWidthFactor": 0.7,
+    "lineAlpha": 0.55
+   },
+   "laneStripe": {
+    "spacing": 296,
+    "length": 148,
+    "width": 11,
+    "color": "MARKING_PAINT",
+    "alpha": 0.6
+   },
+   "crosswalk": {
+    "roadMargin": 26,
+    "stripeCount": 5,
+    "stripeLength": 1059,
+    "xOffset": -95,
+    "color": "MARKING_PAINT",
+    "alpha": 0.68
+   }
+  },
+  "chessPlaza": {
+   "cx": 3282,
+   "cy": 2697,
+   "rx": 688,
+   "ry": 429
+  },
+  "miniPark": {
+   "cx": 6088,
+   "cy": 2745,
+   "rx": 1112,
+   "ry": 597
+  },
+  "walkPaths": {
+   "sidewalk_far_lr": {
+    "waypoints": [
+     {
+      "x": 318,
+      "y": 856
+     },
+     {
+      "x": 2647,
+      "y": 872
+     },
+     {
+      "x": 5294,
+      "y": 840
+     },
+     {
+      "x": 7941,
+      "y": 864
+     },
+     {
+      "x": 10271,
+      "y": 856
+     }
+    ],
+    "loop": false
+   },
+   "sidewalk_far_rl": {
+    "waypoints": [
+     {
+      "x": 10271,
+      "y": 856
+     },
+     {
+      "x": 7941,
+      "y": 864
+     },
+     {
+      "x": 5294,
+      "y": 840
+     },
+     {
+      "x": 2647,
+      "y": 872
+     },
+     {
+      "x": 318,
+      "y": 856
+     }
+    ],
+    "loop": false
+   },
+   "park_loop_cw": {
+    "waypoints": [
+     {
+      "x": 1853,
+      "y": 2438
+     },
+     {
+      "x": 3706,
+      "y": 2257
+     },
+     {
+      "x": 6088,
+      "y": 2320,
+      "pause": 1.5
+     },
+     {
+      "x": 8471,
+      "y": 2457
+     },
+     {
+      "x": 9794,
+      "y": 2721
+     },
+     {
+      "x": 7941,
+      "y": 2936
+     },
+     {
+      "x": 4765,
+      "y": 2985,
+      "pause": 1
+     },
+     {
+      "x": 2118,
+      "y": 2828
+     }
+    ],
+    "loop": true
+   },
+   "park_loop_jog": {
+    "waypoints": [
+     {
+      "x": 1853,
+      "y": 2438
+     },
+     {
+      "x": 3706,
+      "y": 2257
+     },
+     {
+      "x": 6088,
+      "y": 2320
+     },
+     {
+      "x": 8471,
+      "y": 2457
+     },
+     {
+      "x": 9794,
+      "y": 2721
+     },
+     {
+      "x": 7941,
+      "y": 2936
+     },
+     {
+      "x": 4765,
+      "y": 2985
+     },
+     {
+      "x": 2118,
+      "y": 2828
+     }
+    ],
+    "loop": true
+   },
+   "sidewalk_far_jog": {
+    "waypoints": [
+     {
+      "x": 4500,
+      "y": 856
+     },
+     {
+      "x": 6988,
+      "y": 856
+     }
+    ],
+    "loop": true
+   }
+  },
+  "busStops": [
+   {
+    "x": 3441,
+    "direction": 1,
+    "bench": {
+     "dx": 0,
+     "dy": 0,
+     "width": 424,
+     "facing": "down"
+    }
+   },
+   {
+    "x": 7941,
+    "direction": -1,
+    "bench": {
+     "dx": 0,
+     "dy": 0,
+     "width": 424,
+     "facing": "down"
+    }
+   }
+  ],
+  "skyline": {
+   "back": [
+    {
+     "x": -30.0,
+     "w": 47.9,
+     "h": 130.4
+    },
+    {
+     "x": 18.9,
+     "w": 54.2,
+     "h": 133.3
+    },
+    {
+     "x": 73.6,
+     "w": 44.0,
+     "h": 137.5
+    },
+    {
+     "x": 118.5,
+     "w": 49.9,
+     "h": 127.7
+    },
+    {
+     "x": 165.1,
+     "w": 58.3,
+     "h": 79.4
+    },
+    {
+     "x": 211.9,
+     "w": 61.5,
+     "h": 129.3
+    },
+    {
+     "x": 255.9,
+     "w": 53.7,
+     "h": 100.8
+    },
+    {
+     "x": 292.3,
+     "w": 53.7,
+     "h": 115.4
+    },
+    {
+     "x": 348.3,
+     "w": 44.0,
+     "h": 91.9
+    },
+    {
+     "x": 388.6,
+     "w": 44.2,
+     "h": 105.5
+    },
+    {
+     "x": 437.5,
+     "w": 47.3,
+     "h": 124.8
+    },
+    {
+     "x": 478.8,
+     "w": 53.7,
+     "h": 132.2
+    },
+    {
+     "x": 527.5,
+     "w": 47.1,
+     "h": 114.2
+    },
+    {
+     "x": 577.4,
+     "w": 54.5,
+     "h": 114.2
+    },
+    {
+     "x": 624.8,
+     "w": 48.8,
+     "h": 91.9
+    },
+    {
+     "x": 667.2,
+     "w": 56.8,
+     "h": 92.3
+    },
+    {
+     "x": 713.2,
+     "w": 47.7,
+     "h": 99.5
+    },
+    {
+     "x": 754.8,
+     "w": 50.1,
+     "h": 114.1
+    },
+    {
+     "x": 800.9,
+     "w": 53.3,
+     "h": 99.1
+    },
+    {
+     "x": 848.3,
+     "w": 40.4,
+     "h": 116.1
+    },
+    {
+     "x": 897.2,
+     "w": 59.7,
+     "h": 102.9
+    },
+    {
+     "x": 940.2,
+     "w": 58.6,
+     "h": 121.5
+    },
+    {
+     "x": 989.6,
+     "w": 38.5,
+     "h": 100.3
+    },
+    {
+     "x": 1033.0,
+     "w": 58.2,
+     "h": 105.8
+    },
+    {
+     "x": 1082.7,
+     "w": 40.3,
+     "h": 113.3
+    },
+    {
+     "x": 1124.5,
+     "w": 56.1,
+     "h": 83.5
+    },
+    {
+     "x": 1171.6,
+     "w": 49.6,
+     "h": 128.1
+    },
+    {
+     "x": 1219.1,
+     "w": 49.3,
+     "h": 125.5
+    },
+    {
+     "x": 1259.1,
+     "w": 50.8,
+     "h": 79.1
+    },
+    {
+     "x": 1314.0,
+     "w": 62.0,
+     "h": 124.5
+    },
+    {
+     "x": 1359.5,
+     "w": 60.1,
+     "h": 83.2
+    },
+    {
+     "x": 1396.2,
+     "w": 46.2,
+     "h": 119.7
+    },
+    {
+     "x": 1451.3,
+     "w": 51.8,
+     "h": 104.7
+    },
+    {
+     "x": 1489.0,
+     "w": 57.6,
+     "h": 104.1
+    },
+    {
+     "x": 1542.3,
+     "w": 41.5,
+     "h": 107.5
+    },
+    {
+     "x": 1585.3,
+     "w": 53.5,
+     "h": 133.4
+    },
+    {
+     "x": 1631.2,
+     "w": 50.4,
+     "h": 129.0
+    },
+    {
+     "x": 1677.9,
+     "w": 58.3,
+     "h": 97.0
+    },
+    {
+     "x": 1729.1,
+     "w": 57.1,
+     "h": 109.9
+    },
+    {
+     "x": 1774.2,
+     "w": 41.2,
+     "h": 123.2
+    },
+    {
+     "x": 1813.8,
+     "w": 54.3,
+     "h": 86.0
+    },
+    {
+     "x": 1862.4,
+     "w": 58.9,
+     "h": 113.9
+    },
+    {
+     "x": 1911.0,
+     "w": 60.9,
+     "h": 106.7
+    },
+    {
+     "x": 1949.6,
+     "w": 39.3,
+     "h": 124.8
+    },
+    {
+     "x": 2001.2,
+     "w": 42.0,
+     "h": 122.2
+    },
+    {
+     "x": 2045.7,
+     "w": 39.9,
+     "h": 85.3
+    },
+    {
+     "x": 2095.4,
+     "w": 42.1,
+     "h": 115.7
+    },
+    {
+     "x": 2140.8,
+     "w": 49.5,
+     "h": 126.1
+    },
+    {
+     "x": 2179.5,
+     "w": 53.6,
+     "h": 130.8
+    },
+    {
+     "x": 2231.5,
+     "w": 41.7,
+     "h": 81.1
+    },
+    {
+     "x": 2279.6,
+     "w": 43.1,
+     "h": 87.2
+    },
+    {
+     "x": 2326.6,
+     "w": 58.4,
+     "h": 82.3
+    },
+    {
+     "x": 2362.6,
+     "w": 47.7,
+     "h": 87.4
+    },
+    {
+     "x": 2409.8,
+     "w": 38.7,
+     "h": 104.5
+    },
+    {
+     "x": 2454.9,
+     "w": 49.1,
+     "h": 114.1
+    },
+    {
+     "x": 2501.9,
+     "w": 56.0,
+     "h": 86.5
+    },
+    {
+     "x": 2551.3,
+     "w": 41.7,
+     "h": 89.9
+    },
+    {
+     "x": 2599.2,
+     "w": 57.7,
+     "h": 125.1
+    },
+    {
+     "x": 2639.7,
+     "w": 44.5,
+     "h": 100.4
+    }
+   ],
+   "front": [
+    {
+     "x": 2.5,
+     "w": 72.3,
+     "h": 121.8
+    },
+    {
+     "x": 74.6,
+     "w": 57.4,
+     "h": 112.3
+    },
+    {
+     "x": 121.4,
+     "w": 45.0,
+     "h": 120.9
+    },
+    {
+     "x": 194.3,
+     "w": 59.4,
+     "h": 162.9
+    },
+    {
+     "x": 262.0,
+     "w": 68.9,
+     "h": 132.4
+    },
+    {
+     "x": 334.4,
+     "w": 49.1,
+     "h": 125.2
+    },
+    {
+     "x": 412.4,
+     "w": 71.3,
+     "h": 115.1
+    },
+    {
+     "x": 486.8,
+     "w": 52.9,
+     "h": 135.8
+    },
+    {
+     "x": 544.0,
+     "w": 60.2,
+     "h": 153.0
+    },
+    {
+     "x": 615.5,
+     "w": 59.1,
+     "h": 123.9
+    },
+    {
+     "x": 702.0,
+     "w": 50.1,
+     "h": 151.8
+    },
+    {
+     "x": 760.4,
+     "w": 45.2,
+     "h": 158.7
+    },
+    {
+     "x": 820.7,
+     "w": 49.6,
+     "h": 149.3
+    },
+    {
+     "x": 901.9,
+     "w": 71.2,
+     "h": 140.9
+    },
+    {
+     "x": 979.4,
+     "w": 55.5,
+     "h": 152.8
+    },
+    {
+     "x": 1034.0,
+     "w": 51.8,
+     "h": 137.1
+    },
+    {
+     "x": 1121.2,
+     "w": 46.6,
+     "h": 137.0
+    },
+    {
+     "x": 1177.0,
+     "w": 57.3,
+     "h": 116.3
+    },
+    {
+     "x": 1252.6,
+     "w": 66.1,
+     "h": 154.3
+    },
+    {
+     "x": 1321.7,
+     "w": 51.2,
+     "h": 175.5
+    },
+    {
+     "x": 1384.7,
+     "w": 65.5,
+     "h": 178.2
+    },
+    {
+     "x": 1450.9,
+     "w": 69.0,
+     "h": 160.3
+    },
+    {
+     "x": 1524.4,
+     "w": 64.2,
+     "h": 164.0
+    },
+    {
+     "x": 1611.2,
+     "w": 59.9,
+     "h": 164.2
+    },
+    {
+     "x": 1669.0,
+     "w": 66.0,
+     "h": 176.9
+    },
+    {
+     "x": 1736.1,
+     "w": 57.9,
+     "h": 165.6
+    },
+    {
+     "x": 1802.1,
+     "w": 57.9,
+     "h": 116.8
+    },
+    {
+     "x": 1880.3,
+     "w": 47.2,
+     "h": 114.5
+    },
+    {
+     "x": 1957.2,
+     "w": 66.8,
+     "h": 151.7
+    },
+    {
+     "x": 2015.6,
+     "w": 77.7,
+     "h": 121.3
+    },
+    {
+     "x": 2096.7,
+     "w": 79.1,
+     "h": 137.1
+    },
+    {
+     "x": 2169.5,
+     "w": 69.9,
+     "h": 151.9
+    },
+    {
+     "x": 2235.7,
+     "w": 71.8,
+     "h": 161.2
+    },
+    {
+     "x": 2302.4,
+     "w": 71.9,
+     "h": 140.1
+    },
+    {
+     "x": 2377.1,
+     "w": 78.4,
+     "h": 164.5
+    },
+    {
+     "x": 2440.8,
+     "w": 72.6,
+     "h": 146.3
+    },
+    {
+     "x": 2510.8,
+     "w": 47.5,
+     "h": 148.8
+    },
+    {
+     "x": 2572.5,
+     "w": 46.3,
+     "h": 110.0
+    },
+    {
+     "x": 2657.7,
+     "w": 65.5,
+     "h": 141.5
+    }
+   ]
+  }
+ }
 }
