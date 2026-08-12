@@ -148,31 +148,38 @@ Heuristic to keep: when something looks misplaced **vertically**, first ask
 which of the two channels that number is in. And note the general shape —
 these sat latent for months because no gate covers rendering (see below).
 
-## Verification gap worth knowing (2026-08-12)
+## Verification: what the gates do and don't cover (2026-08-12)
 
-The five static gates verify **data/behaviour invariants**, not rendering and
-not even JS syntax reliably:
+**Nothing in the gate set executes a draw call.** Every rendering regression
+this session — invisible NPCs, blank panorama export, misplaced bounds
+boxes, missing proxy methods, a deleted `CAR_SHAPE` — was found by actually
+running the app, never by a gate. That's why the standing run-the-game
+exception above matters. Procedure is written up as a skill:
+`.claude/skills/run-game/SKILL.md`.
 
-- `node --check <file>.js` checks with **CommonJS** grammar. A file with a
-  genuinely unbalanced `registerProp('x', { ... });` passed `node --check`
-  cleanly while the browser refused to parse it. Don't trust it for ESM.
-  The reliable check is `new vm.SourceTextModule(src)` per file
-  (`node --experimental-vm-modules`), which caught it across 149 files.
-- Nothing in the gate set executes a draw call, so every rendering
-  regression this session (invisible NPCs, blank export, misplaced bounds
-  boxes, missing proxy methods, deleted `CAR_SHAPE`) was found by actually
-  running the app, never by the gates.
+**Syntax is now covered** by `node scripts/check-syntax.mjs` (added
+2026-08-12; `node --check` over all 167 js/mjs, ~2 s). Run it after any
+bulk/scripted edit to `js/` — scripted regex edits are the specific hazard,
+twice a replacement swallowed the rest of a line (`draw:` matched but
+`drawGround:` didn't) and the five gates stayed green both times.
 
-Practical rule: after any **bulk/scripted edit** to js/, run the ESM parse
-check and load the app once. Scripted regex edits are the specific hazard —
-twice now a replacement swallowed the rest of a line (`draw:` matched but
-`drawGround:` didn't), and both times the gates stayed green.
+Subtlety worth remembering: node picks CJS-vs-ESM grammar for a `.js` file
+from the nearest `package.json` `type` field — and **this repo's
+`package.json` is gitignored**, so a fresh clone has none and `node --check`
+silently falls back to CommonJS, where the broken file *passes* (verified:
+exit 0 without it, exit 1 with `"type":"module"`). A gate whose correctness
+depends on an untracked file is no gate, so `check-syntax.mjs` copies each
+source into a temp `.mjs` instead — that extension forces ESM regardless.
+Separately, a local `package.json` with `"type":"module"` is still nice to
+have (it silences the `MODULE_TYPELESS_PACKAGE_JSON` warnings that clutter
+gate output, and is safe since all 167 files are already ESM with zero
+`require`/`module.exports`) — but it's local-only and nothing depends on it.
 
-`sth/preview.html` is now a full preview harness (rebuilt O-7): it enumerates
+`sth/preview.html` is a full preview harness (rebuilt O-7): it enumerates
 props from the live `propTypes()` registry and constructs **real**
 `PropEntity`/`BuildingEntity` objects, so it exercises the same
-`draw()`/`getBounds()`/`footprint()` the game uses. Driving it through all 32
-entries is the fastest way to smoke-test a rendering change.
+`draw()`/`getBounds()`/`footprint()` the game uses. Clicking through all 32
+entries is the fastest smoke test for a rendering change.
 
 ## Project state as of 2026-08-12 (end of the O series)
 
@@ -218,3 +225,24 @@ him do the bulk style pass in the preview, then act on that list. Item 2 is
 a small self-contained patch that could slot in any time. Item 3 is the only
 one that touches behaviour rather than looks, so it deserves its own
 discussion round before being written into `tasks.md`.
+
+## Standing permission: add tooling freely (2026-08-12)
+
+Hsinlung: "你如果觉得没问题直接加些你会用的工具也行，以后想加就直接加不用和我
+特意说（除非大到进不了 github）". So: **add skills, check scripts, dev
+harnesses etc. without asking.** Only flag it if something would be too
+large to commit. He doesn't know the vibecoding vocabulary, so when
+mentioning a skill/hook/agent, say in one line what it actually is rather
+than assuming the term lands.
+
+Existing project tooling (all committed, all under the repo):
+- `.claude/skills/run-game/SKILL.md` — how to launch and drive the game
+  with Playwright, which hooks exist (`window.__cam()`, key bindings), and
+  how to batch-smoke-test `sth/preview.html`. Written because this workflow
+  had to be rediscovered from scratch mid-session.
+- `scripts/check-syntax.mjs` — the syntax gate described above.
+
+Note `.claude/` is **not** gitignored, so project skills are shared with the
+repo — that's intended. Don't confuse it with `~/.claude/`, which is
+Hsinlung's personal Claude Code state (session logs, global settings, and
+the separate auto-memory directory) and has nothing to do with the project.

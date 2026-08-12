@@ -557,11 +557,24 @@ Z-2b 追加：NavGrid 亦不得出现 Y 分带数字——烘焙几何一律来�
 - CC 分支命名：`claude/<slug>` 前缀
 - Windows MINGW64 环境：交付**完整文件内容**，不走 patch/diff 格式
 - 调试：`js/behavior/DebugLog.js` + DebugOverlay；键 'o' → `envQuery.debugPool(npcs[0])` 打印 affordance 候选池快照（kind/weight/eff_w/reason）
-- **禁止运行**：默认禁止运行游戏 / harness / 模拟验证；静态验证（`check-invariants.mjs`、读代码、grep）不受限；运行验证仅在用户明确要求时执行
+- **运行游戏**：默认禁止运行游戏 / harness / 模拟验证；静态验证（读代码、grep、
+  下面的静态门）不受限。**例外（2026-08-11 用户长期授权）**：视觉/渲染类改动
+  可以也应该自己跑实机确认——静态门不执行任何绘制调用，历次渲染回归无一被门
+  抓到，全是跑起来才发现的。做法见 `.claude/skills/run-game/SKILL.md`（起
+  http.server + Playwright 驱动 + `sth/preview.html` 全量预览器）。
 - **静态验证优先**：有疑问先 grep/读代码，确认后再改；不确定时列出不确定点交用户决策，不猜
 - **验收标准先行**：每个子任务开始前在 CLAUDE.md 或 PR 描述中写清楚验收条件；没有验收标准的任务禁止提交
 - **时序锚点**：涉及帧内执行顺序的描述须附 `StreetScene.js:行号` 锚点；帧序以 `movement-dataflow.md §1` 为权威，不另起炉灶
 - **契约同步**：改 `js/` 逻辑时同步更新 `docs/contracts/`；改合约时须能用 grep 在代码中找到对应实现，找不到视为草案不得升 normative
+- **语法门**（`node scripts/check-syntax.mjs`，2026-08-12 新增）：全仓库 167 个
+  js/mjs 逐个解析，约 1.7 秒。**凡是脚本批量改过 `js/` 后必跑**——曾有正则替换
+  把 13 个文件的行尾吞进注释，五个静态门全绿，直到浏览器报
+  `Unexpected end of input` 才发现。
+  实现上它把源码写进临时 `.mjs` 再 `node --check`，**不是**直接查原文件：node
+  按最近的 `package.json` 的 `type` 决定用 CJS 还是 ESM 语法查 `.js`，而本仓库
+  `package.json` 被 `.gitignore` 忽略（新克隆下来根本没有），届时会回落到
+  CommonJS 语法、上述坏文件反而判为通过。`.mjs` 扩展名强制 ESM，与
+  package.json 在不在无关。
 - **静态门**（tasks.md P-6 起五个，全部无报错才算完成一批改动）：
   `node scripts/check-invariants.mjs`、`node scripts/check-behavior-data.mjs`、
   `node scripts/check-witness-distribution.mjs`、`node sth/tools/validate.mjs`
