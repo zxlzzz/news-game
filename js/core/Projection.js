@@ -226,6 +226,50 @@ export function frontFaceGraphics(g, anchorX, groundY) {
 }
 
 /**
+ * 地面代理 Graphics（O-4 第三批）：把"直接用世界坐标在地面上画"的老式扁平画法
+ * 接到投影后的地面。井盖、排水沟、棋盘广场、公园小径、喷泉水盘这类**贴地**元素
+ * 用它——它们没有高度，整块形状都躺在地面上，所以每个点都走 `toScreen()`，
+ * 跟 `frontFaceGraphics`（立面，走 toScreenLength）正好是另一半。
+ *
+ * 与 `frontFaceGraphics` 的区别是这里**不做局部锚点平移**：这批函数本来就用
+ * 绝对世界坐标作画，直接逐点投影即可。
+ *
+ * 形状换算：
+ *   - `drawRect` → `drawPolygon`（地面矩形经 shear 后是平行四边形）
+ *   - `drawCircle` / `drawEllipse` → 屏幕椭圆，竖半轴乘 `SIN_TILT`
+ *     （地面上的圆俯视后被压扁）。**近似**：shear 还会把椭圆斜过来一点，但
+ *     PIXI 的 `drawEllipse` 画不了斜椭圆，这里只压不斜——圆心位置是精确的，
+ *     形状差一个小剪切量。同本项目其它"近似够用，不必算精确多边形"的取舍。
+ *   - 线宽原样转发（O-2 起线宽一律是最终屏幕像素值）
+ */
+export function groundFaceGraphics(g) {
+  const pt = (x, y) => toScreen(x, y);
+  const ellipse = (cx, cy, rx, ry) => {
+    const c = pt(cx, cy);
+    g.drawEllipse(c.x, c.y, toScreenLength(rx), toScreenLength(ry) * SIN_TILT);
+  };
+  return {
+    lineStyle: (...a) => g.lineStyle(...a),
+    beginFill: (...a) => g.beginFill(...a),
+    endFill:   ()     => g.endFill(),
+    closePath: ()     => g.closePath(),
+    drawRect:    (x, y, w, h) => g.drawPolygon(projectGroundRect(x, y, x + w, y + h)),
+    drawCircle:  (cx, cy, r)  => ellipse(cx, cy, r, r),
+    drawEllipse: ellipse,
+    drawPolygon: (pts) => {
+      const out = new Array(pts.length);
+      for (let i = 0; i < pts.length; i += 2) {
+        const p = pt(pts[i], pts[i + 1]);
+        out[i] = p.x; out[i + 1] = p.y;
+      }
+      g.drawPolygon(out);
+    },
+    moveTo: (x, y) => { const p = pt(x, y); g.moveTo(p.x, p.y); },
+    lineTo: (x, y) => { const p = pt(x, y); g.lineTo(p.x, p.y); },
+  };
+}
+
+/**
  * 顶面代理 Graphics：老式画法里"以某个远端角为局部原点、(u,v) 落在进深范围内"
  * 的内容（如屋顶散件）搬到真正的顶面。顶面因 shear 是平行四边形，drawRect 在
  * 这里不能直接转发（会画成轴对齐矩形，跟实际抬升/斜切的顶面对不上），改画

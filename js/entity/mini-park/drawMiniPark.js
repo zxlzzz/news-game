@@ -1,10 +1,14 @@
-import {
-  FILL_PAPER,
-  depthLineWidth, depthLineColor,
-  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
-} from '../../core/Layout.js';
+import { FILL_PAPER, lenv } from '../../core/Layout.js';
+import { groundFaceGraphics } from '../../core/Projection.js';
 
+// O-4 第三批：贴地绿地，走地面代理。函数体一行未改（同 drawChessPlaza 的
+// ry 语义说明——ry 是世界竖向半轴，压扁交给投影）。
 export function drawMiniPark(g, config) {
+  g.lineStyle(0);
+  _ground(groundFaceGraphics(g), config);
+}
+
+function _ground(g, config) {
   const { cx, cy, rx, ry } = config;
   const seed = (i) => { const s = Math.sin(i * 57.3) * 43758.5; return s - Math.floor(s); };
   g.lineStyle(0);

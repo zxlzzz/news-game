@@ -1,13 +1,23 @@
-import {
-  depthLineWidth, depthLineColor,
-  FILL_LIGHT, FILL_MID, FILL_SHADE,
-  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
-} from '../../core/Layout.js';
+import { FILL_LIGHT, FILL_MID, FILL_SHADE, lenv } from '../../core/Layout.js';
+import { groundFaceGraphics, frontFaceGraphics } from '../../core/Projection.js';
+
+/**
+ * 喷泉（O-4 第三批）。本来就已经拆成"贴地水盘"和"立体喷嘴"两个函数，正好各走
+ * 一个代理：水盘走地面代理（圆/椭圆自动压扁），喷嘴+水柱走正面代理（竖直量）。
+ * 两个函数体都一行未改。
+ *
+ * `ry = rx * 0.5` 这个硬编码的扁平比例保留为**世界**竖向半轴（水盘在进深方向
+ * 比横向短一半，是个椭圆水池），屏幕上的压扁由地面代理再乘 SIN_TILT 完成——
+ * 不是把 0.5 当"俯视压扁系数"用（那是 O-1 时代的近似，见 tasks.md O-1 副作用 3）。
+ */
 
 /** 贴地平面部分：池壁、池沿、水面、涟漪、轮廓 — 地面预通道调用 */
 export function drawFountainPool(g, p) {
   g.lineStyle(0);
+  _pool(groundFaceGraphics(g), p);
+}
 
+function _pool(g, p) {
   const { x, y } = p;
   const s  = p.scale ?? 1;
   const rx = 300 * s;
@@ -42,7 +52,10 @@ export function drawFountainPool(g, p) {
 /** 立体部分：喷嘴 + 水柱 — 主 Y 排序通道调用（遮挡从后方经过的 NPC） */
 export function drawFountainNozzle(g, p) {
   g.lineStyle(0);
+  _nozzle(frontFaceGraphics(g, p.x, p.y), p);
+}
 
+function _nozzle(g, p) {
   const { x, y } = p;
   const s  = p.scale ?? 1;
   const outerRy = 300 * s * 0.5 * 0.775;

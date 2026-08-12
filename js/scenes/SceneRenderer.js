@@ -27,19 +27,21 @@ import {
   depthLineColor, depthLineWidth, ENV_LINE_LIGHT, ENV_LINE_DARK,
   resolveY, resolveColor, lenv,
 } from '../core/Layout.js';
-import { toScreen, toScreenLength, circleToEllipseRy, projectGroundRect } from '../core/Projection.js';
+import { toScreen, toScreenLength, projectGroundRect } from '../core/Projection.js';
+import { drawChessPlaza } from '../entity/chess-table/drawChessPlaza.js';
+import { drawMiniPark } from '../entity/mini-park/drawMiniPark.js';
+import { drawParkPaths, drawParkPlaza } from '../entity/park-path/drawParkPath.js';
 
 function _need(v, what) {
   if (v == null) throw new Error(`SceneRenderer: scene config 缺 ${what}`);
   return v;
 }
 
-// O-2 占位：drawBusStopBays / drawChessPlaza / drawMiniPark / drawParkPaths /
-// drawParkPlaza 全部在 O-4 的批量转换清单里（第一批 busstop 系、第三批
-// "地面 + 公园"系），本补丁不调用它们真正的绘制内容（还是按老的容器整体缩放
-// 假设写的，没跟 Projection 对齐），chessPlaza/miniPark 改画一个投影后的占位
-// 椭圆验证位置，其余三个（多段折线/散布装饰，占位价值不大）直接跳过，
-// 详见 _drawGround() 尾部。
+// O-4 第三批：drawChessPlaza / drawMiniPark / drawParkPaths / drawParkPlaza
+// 已全部转成走 groundFaceGraphics 地面代理，这里改调真实绘制（见 _drawGround
+// 尾部）。仍未接回的只剩 drawBusStopBays（港湾停靠区的地面铺装）——它读的是
+// scene.json 里从未配置过的 busStops 字段（同 O-4 第一批发现的 stop.bayD
+// NaN 那批数据），接回来也画不出东西，留待补齐场景数据时一并处理。
 
 export class SceneRenderer {
   /**
@@ -87,10 +89,14 @@ export class SceneRenderer {
     if (cf.tiling) this._drawSidewalkTiles(g, cf.tiling);
     if (cf.grass)  this._drawParkGrass(g, cf.grass);
 
-    // O-2 占位：chessPlaza/miniPark 画一个投影后的灰色占位椭圆验证位置；
-    // parkTrees/parkPaths 跳过，见文件头说明。
-    this._drawGroundFeaturePlaceholder(g, this.layout.chessPlaza);
-    this._drawGroundFeaturePlaceholder(g, this.layout.miniPark);
+    // O-4 第三批：换成真实绘制（都走 groundFaceGraphics 地面代理）。
+    // 顺序 = 草地/树影 → 广场/绿地 → 小径，后者盖前者。
+    drawParkPlaza(g, this.layout.parkTrees ?? []);
+    if (this.layout.chessPlaza) drawChessPlaza(g, this.layout.chessPlaza);
+    if (this.layout.miniPark)   drawMiniPark(g, this.layout.miniPark);
+    if (this.layout.chessPlaza && this.layout.miniPark) {
+      drawParkPaths(g, this.layout.chessPlaza, this.layout.miniPark);
+    }
   }
 
   /** 两点连线经 Projection 投影后再画——地面上一条直线，画出来不一定还是直线上
@@ -99,18 +105,6 @@ export class SceneRenderer {
     const a = toScreen(x0, y0), b = toScreen(x1, y1);
     g.moveTo(a.x, a.y);
     g.lineTo(b.x, b.y);
-  }
-
-  /** O-2 占位：地面圆形装饰（棋盘广场/迷你公园）画成投影后的灰色占位椭圆，
-   *  验证位置/深度排序；真正的细节图案留给 O-4。cfg 缺失就跳过。 */
-  _drawGroundFeaturePlaceholder(g, cfg) {
-    if (!cfg) return;
-    const { cx, cy, rx } = cfg;
-    const base = toScreen(cx, cy);
-    g.lineStyle(0);
-    g.beginFill(0xaaaaaa, 0.6);
-    g.drawEllipse(base.x, base.y, toScreenLength(rx), circleToEllipseRy(rx));
-    g.endFill();
   }
 
   _drawSky() {

@@ -1,8 +1,14 @@
 import {
   PARK_TOP, WORLD_WIDTH, WORLD_HEIGHT,
-  FILL_PAPER, FILL_LIGHT, FILL_MID,
+  FILL_PAPER, FILL_LIGHT,
   lenv,
 } from '../../core/Layout.js';
+import { groundFaceGraphics } from '../../core/Projection.js';
+
+// O-4 第三批：公园小径与草地全是贴地元素，整体走地面代理（形状助手）。
+// 两个 export 各自在入口把 g 换成代理，其余函数体（Catmull-Rom 取样、
+// fill-via-stroke 路面、草叶笔触、树影椭圆）一行未改——地面矩形/椭圆/折线
+// 由代理自动投影。
 
 function rand(x, salt = 0) {
   const s = Math.sin(x * 12.9898 + salt * 78.233) * 43758.5453;
@@ -47,6 +53,10 @@ function _drawCurvedPath(g, ctrl, width, baseY) {
 
 export function drawParkPaths(g, chessPlaza, miniPark) {
   g.lineStyle(0);
+  _paths(groundFaceGraphics(g), chessPlaza, miniPark);
+}
+
+function _paths(g, chessPlaza, miniPark) {
   const cc    = chessPlaza;
   const mp    = miniPark;
   const walkY = PARK_TOP + 15;
@@ -83,6 +93,11 @@ export function drawParkPaths(g, chessPlaza, miniPark) {
 }
 
 export function drawParkPlaza(g, parkTrees = []) {
+  g.lineStyle(0);
+  _plaza(groundFaceGraphics(g), parkTrees);
+}
+
+function _plaza(g, parkTrees) {
   const top = PARK_TOP, bot = WORLD_HEIGHT;
   const parkMidY = (top + bot) / 2;
   const seed = (i) => { const s = Math.sin(i * 91.7) * 43758.5; return s - Math.floor(s); };

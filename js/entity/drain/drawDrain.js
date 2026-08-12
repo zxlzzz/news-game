@@ -1,11 +1,14 @@
-import {
-  depthLineWidth, depthLineColor,
-  FILL_SHADE, ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
-} from '../../core/Layout.js';
+import { FILL_SHADE, lenv } from '../../core/Layout.js';
+import { groundFaceGraphics } from '../../core/Projection.js';
 
+// O-4 第三批：纯贴地元素，走地面代理（形状助手），函数体一行未改——
+// 只是 g 换成了 groundFaceGraphics 代理，drawRect 自动变成投影后的平行四边形。
 export function drawDrain(g, p) {
   g.lineStyle(0);
+  _ground(groundFaceGraphics(g), p);
+}
 
+function _ground(g, p) {
   const s  = p.scale ?? 1;
   const w  = 58 * s;
   const h  = 27 * s;

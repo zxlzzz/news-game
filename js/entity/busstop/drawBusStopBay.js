@@ -1,7 +1,15 @@
 import {
-  BIKE_LANE_NEAR_BOTTOM,
   FAR_Y, NEAR_Y, GRAY_ROAD, GRAY_CURB, GRAY_NEAR_PAVE,
 } from '../../core/Layout.js';
+import { groundFaceGraphics } from '../../core/Projection.js';
+
+// O-4：港湾停靠区的地面铺装，纯贴地元素，走地面代理（形状助手）——两个内部
+// 函数体一行未改，只是入口把 g 换成代理，drawRect 自动变成投影后的平行四边形。
+//
+// ⚠ 目前**没有调用点**：SceneRenderer 不再调它。原因是 `stop.bayW` / `stop.bayD`
+// 在 scene.json 的 `layout.busStops` 里从来没配置过（只有 x/direction/bench），
+// 全是 undefined，画出来是一堆 NaN 矩形——同 O-4 第一批发现的 `stop.bayD`
+// NaN 那批数据缺口。本函数已经转好，等补齐场景数据时接回来即可。
 
 function _drawFarBusStop(g, stop) {
   g.lineStyle(0);
@@ -49,11 +57,12 @@ function _drawNearBusStop(g, stop) {
 
 export function drawBusStopBays(g, busStops) {
   g.lineStyle(0);
+  const gg = groundFaceGraphics(g);
   for (const stop of (busStops || [])) {
     if (stop.direction > 0) {
-      _drawFarBusStop(g, stop);
+      _drawFarBusStop(gg, stop);
     } else {
-      _drawNearBusStop(g, stop);
+      _drawNearBusStop(gg, stop);
     }
   }
 }

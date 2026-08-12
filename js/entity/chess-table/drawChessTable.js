@@ -1,40 +1,34 @@
-import {
-  depthLineWidth, depthLineColor,
-  FILL_LIGHT,
-  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
-} from '../../core/Layout.js';
+import { FILL_LIGHT, lenv } from '../../core/Layout.js';
+import { drawObliqueBox, frontFaceGraphics } from '../../core/Projection.js';
+import { PROP_DEPTH } from '../../core/propDefaults.js';
 
+// O-4 第三批里唯一不贴地的一个：棋桌是有腿的家具，走盒子模板。
+// 桌面是块悬空薄板（baseH = 桌面底离地高），四条腿仍是线。
 export function drawChessTable(g, p) {
   g.lineStyle(0);
 
   const { x, y } = p;
   const s    = p.scale ?? 1;
-  const tw   = 58 * s, topH = 18 * s, th = 5 * s;   // th=5*s → ~20*s leg visible
+  const tw   = 58 * s, topH = 18 * s, th = 5 * s;
+  const depth = PROP_DEPTH['chess-table'] * s;
+
+  // 腿先画，桌面后画压住腿顶
+  const fg = frontFaceGraphics(g, x, y);
   const topX = x - tw / 2;
-  const topY = y - topH;
+  const legTop = y - (topH - th);        // 桌面底面所在高度
+  lenv(fg, y, 1.0);
+  fg.moveTo(topX + 3 * s,      legTop); fg.lineTo(topX + 3 * s,      y);
+  fg.moveTo(topX + tw - 3 * s, legTop); fg.lineTo(topX + tw - 3 * s, y);
+  lenv(fg, y, 0.65);
+  fg.moveTo(topX + tw * 0.2, legTop); fg.lineTo(topX + tw * 0.2, y - 3 * s);
+  fg.moveTo(topX + tw * 0.8, legTop); fg.lineTo(topX + tw * 0.8, y - 3 * s);
 
-  // 1. Table legs (~20*s visible below table face)
-  lenv(g, y, 1.0);
-  g.moveTo(topX + 3 * s,       topY + th); g.lineTo(topX + 3 * s,       y);
-  g.moveTo(topX + tw - 3 * s,  topY + th); g.lineTo(topX + tw - 3 * s,  y);
-  lenv(g, y, 0.65);
-  g.moveTo(topX + tw * 0.2, topY + th); g.lineTo(topX + tw * 0.2, y - 3 * s);
-  g.moveTo(topX + tw * 0.8, topY + th); g.lineTo(topX + tw * 0.8, y - 3 * s);
+  drawObliqueBox(g, x, y, tw, depth, th, FILL_LIGHT, topH - th);
 
-  // 2. Table top face — FILL_LIGHT
-  g.lineStyle(0);
-  g.beginFill(FILL_LIGHT, 1);
-  g.drawRect(topX, topY, tw, th);
-  g.endFill();
-
-  // 3. Grid lines (detail — 2 vertical dividers across thin face)
-  lenv(g, y, 0.55);
+  // 桌面正面的分格线（细节）
+  lenv(fg, y, 0.55);
   for (let i = 1; i < 3; i++) {
     const lx = topX + tw * i / 3;
-    g.moveTo(lx, topY); g.lineTo(lx, topY + th);
+    fg.moveTo(lx, y - topH);      fg.lineTo(lx, y - topH + th);
   }
-
-  // 4. Outline (last)
-  lenv(g, y, 0.85);
-  g.drawRect(topX, topY, tw, th);
 }

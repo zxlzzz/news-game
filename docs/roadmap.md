@@ -1196,3 +1196,45 @@ Hsinlung 实机发现："所有物体都有一个黄色的框，这个框表示�
 `js/entity/seat/{drawBusStopBench,drawChairSide,drawChairL,drawChairR}.js`（
 `drawChairSide.js` 为新增）；`js/core/propDefaults.js#PROP_DEPTH`；
 `js/core/EntityManager.js#CONVERTED_PROP_TYPES`
+
+### O-4 第三批（地面 + 公园）— 已落地，O-4 收官
+
+`drawDrain` / `drawParkPath`（`drawParkPaths` + `drawParkPlaza`）/
+`drawChessPlaza` / `drawChessTable` / `drawFountain`（`drawFountainPool` +
+`drawFountainNozzle`）/ `drawMiniPark` 转完，另外顺带把不在任何批次清单里的
+`drawBusStopBay` 也转了（见下）。O-4 三批至此全部完成。
+
+- **`Projection.js` 新增 `groundFaceGraphics(g)`**——本批的主力。它是
+  `frontFaceGraphics` 的另一半：正面代理处理**立面**（走 `toScreenLength`），
+  地面代理处理**贴地**（每个点走 `toScreen`）。有了它，这批"直接用世界坐标在
+  地面上作画"的老函数**函数体一行都不用改**，只在入口把 `g` 换成代理：
+  `drawRect` → 平行四边形 `drawPolygon`、`drawCircle`/`drawEllipse` → 竖半轴乘
+  `SIN_TILT` 的屏幕椭圆、折线逐点投影。
+  与 `frontFaceGraphics` 的区别是**不做局部锚点平移**（这批本来就用绝对世界坐标）。
+  已知近似：shear 还会把地面椭圆斜过来一点，但 PIXI 的 `drawEllipse` 画不了
+  斜椭圆，这里只压不斜——圆心精确，形状差一个小剪切量。
+- **`ry` 语义澄清**（tasks.md O-1「预期副作用」第 3 条说的"O-2 看到真几何之后
+  再手调"，本批兑现）：`chessPlaza.ry` / `miniPark.ry` / 喷泉的 `rx*0.5` 现在
+  一律当作**世界**竖向半轴（形状本身在进深方向就比横向短），俯视压扁交给地面
+  代理乘 `SIN_TILT` 完成，不再是"手算好的扁平近似值"。所以 scene.json 里的
+  `ry` 不需要改数值，只是含义从"屏幕上的半轴"变成了"世界里的半轴"。
+- **`drawChessTable` 是本批唯一不贴地的**：有腿的家具，走盒子模板，桌面是块
+  悬空薄板（`baseH`），四条腿仍是线。
+- **`drawFountain` 本来就已经拆成"贴地水盘 + 立体喷嘴"两个函数**，正好各走一个
+  代理（地面 / 正面），两个函数体都一行未改。
+- **`SceneRenderer` 接回真实绘制**：`_drawGroundFeaturePlaceholder`（O-2 那个
+  灰色占位椭圆）删除，改调 `drawParkPlaza` → `drawChessPlaza` / `drawMiniPark`
+  → `drawParkPaths`（后者盖前者）。
+- **`drawBusStopBay` 已转但仍无调用点**：它读的 `stop.bayW` / `stop.bayD` 在
+  `layout.busStops` 里从来没配置过（只有 x/direction/bench），接回来画出的是
+  一堆 NaN 矩形——同 O-4 第一批发现的 `stop.bayD` NaN 是同一批数据缺口。
+  函数已经转好，等补齐场景数据时接回即可，`SceneRenderer` 文件头注明了原因。
+
+**O-4 验收**（tasks.md 原文：31 个 draw 函数每个要么调 `drawObliqueBox`、
+要么调形状助手，没有第三种）：除车辆两个（`drawVehicle` / `drawBicycle`，
+按 tasks.md 属于 O-5）外全部满足。`drawChairL` / `drawChairR` 各只剩一行转发到
+`drawChairSide`，实现在后者里。五个静态门全绿。
+
+代码锚点：`js/core/Projection.js#groundFaceGraphics`；
+`js/entity/{drain,park-path,chess-table,fountain,mini-park}/draw*.js`；
+`js/entity/busstop/drawBusStopBay.js`；`js/scenes/SceneRenderer.js#_drawGround`

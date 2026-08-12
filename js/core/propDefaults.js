@@ -88,6 +88,7 @@ export const PROP_DEPTH = {
   sign:      5,  // 0.06m，挂墙招牌（薄板）
   planter:  42,  // 0.50m，花箱
   'busstop-bench': 42, // 0.50m，候车亭长椅（比公园长椅浅）
+  'chess-table': 58, // 0.68m，棋桌（方桌，进深≈桌宽）
   'chair-l': 34, // 0.40m，棋桌折叠椅
   'chair-r': 34,
 };
