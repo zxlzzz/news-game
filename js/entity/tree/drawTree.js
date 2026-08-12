@@ -3,13 +3,19 @@
  *
  * 3 种树冠变体（按 x seed 选），尺寸 ±15% 抖动。
  * 树冠 FILL_LIGHT 填充 + 环境线轮廓；树干 FILL_SHADE。
+ *
+ * O-4 第一批的特例：树不是一个盒子。拆两半处理——
+ *   树干  → drawObliqueBox（细长方柱，有真实体积，和其它立着的东西一致）
+ *   树冠  → frontFaceGraphics 广告牌（原有 blob 轮廓算法一行未改）
+ * 理由：树冠是一团有机形状，硬套三面体积会变成一个方盒子，跟本项目的线稿
+ * 画风冲突；而"竖直广告牌站在斜地面上"正是 NPC 那条路子（见 StickRenderer
+ * 文件头），树用同一套逻辑最自然。O-4 验收要求每个 draw 函数要么调
+ * drawObliqueBox、要么调形状助手——本函数两者都调，满足要求。
  */
 
-import {
-  FILL_LIGHT, FILL_SHADE,
-  depthLineWidth, depthLineColor,
-  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
-} from '../../core/Layout.js';
+import { FILL_LIGHT, FILL_SHADE, depthLineWidth, lenv } from '../../core/Layout.js';
+import { drawObliqueBox, frontFaceGraphics } from '../../core/Projection.js';
+import { PROP_DEPTH } from '../../core/propDefaults.js';
 
 function rand(x, salt = 0) {
   const s = Math.sin(x * 12.9898 + salt * 78.233) * 43758.5453;
@@ -57,21 +63,23 @@ export function drawTree(g, p) {
   const jitter = 0.85 + rand(x, 0) * 0.30;
   const r = 150 * s * jitter;
 
+  const trunkW = Math.max(2.5 * s, r * 0.13);
+  const trunkH = r * 0.65;
+
+  // 树干：细长方柱走盒子模板（进深取树干直径量级，见 PROP_DEPTH.tree）
+  drawObliqueBox(g, x, y, trunkW, PROP_DEPTH.tree * s, trunkH, FILL_SHADE);
+
+  // 树冠：广告牌，原算法整段未改，只换坐标映射
+  _crown(frontFaceGraphics(g, x, y), x, y, r, trunkH);
+}
+
+// 老版本树冠部分的函数体，绘制逻辑一行未改（blob 填充 + 外轮廓采样连线）。
+function _crown(g, x, y, r, trunkH) {
+  const crownBottom = y - trunkH;
+  const crownCY     = crownBottom - r * 0.35;
+
   // 线宽用于外轮廓点检测
   const lw = depthLineWidth(y, { wMin: 0.6, wMax: 1.4 });
-
-  const trunkW     = Math.max(2.5 * s, r * 0.13);
-  const trunkH     = r * 0.65;
-  const crownBottom = y - trunkH;
-  const crownCY    = crownBottom - r * 0.35;
-
-  // 树干
-  g.lineStyle(0);
-  g.beginFill(FILL_SHADE, 1);
-  g.drawRect(x - trunkW / 2, crownBottom, trunkW, trunkH);
-  g.endFill();
-  lenv(g, y, 0.65);
-  g.drawRect(x - trunkW / 2, crownBottom, trunkW, trunkH);
 
   // 树冠形态选取
   const variant = Math.floor(rand(x, 1) * 3);

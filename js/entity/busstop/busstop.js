@@ -10,7 +10,7 @@
 import { PropEntity } from '../../core/PropEntity.js';
 import {
   FAR_Y, NEAR_Y,
-  BIKE_LANE_FAR_TOP, BIKE_LANE_NEAR_BOTTOM,
+  BIKE_LANE_NEAR_BOTTOM,
 } from '../../core/Layout.js';
 
 export class BusStop {
@@ -86,20 +86,48 @@ export class BusStop {
   }
 }
 
+/**
+ * 候车亭几何常量（骨架单位；括号内为按 UNITS_PER_METER=84.7 折算的现实尺寸）。
+ *
+ * O-4 改动说明：这些值原来散在 spawnBusStop 里，且**竖直方向是用绝对世界 y
+ * 相减**表达的（`roofTopY` / `pillarBottomY` 两个绝对坐标）——O-2 之前世界 y
+ * 就是屏幕 y，这么写看着没问题；接上真投影后高度与纵深必须分开（见
+ * Projection.js 文件头「核心区分」），所以改成"柱脚落地点 + 高度"。
+ *
+ * 同时修掉两个既有 bug：
+ *   1. `stop.bayD` 在 scene.json 里从来没配过（`layout.busStops` 只有
+ *      x/direction/bench 三个键），远端站的 `pillarBottomY = FAR_Y - undefined - 2`
+ *      算出 **NaN**，整个远端顶棚画不出来，且 `_sortY` 也是 NaN。现在 bay 深度
+ *      是本文件的具名常量，不再依赖未配置的场景字段。
+ *   2. 近端站的棚顶竖直跨度只有 60 骨架单位 ≈ 0.71 m。那是"扁平视图里看着对"
+ *      的数字，当成真实高度就是个要爬进去的亭子。现按现实候车亭改成 2.4 m。
+ */
+const BUS_BAY_D      = 170; // 2.0m，港湾式停靠区进深（远端站柱脚从路缘往回缩这么多）
+const ROOF_CLEAR_H   = 203; // 2.4m，棚底离地净高
+const ROOF_SLAB_H    = 21;  // 0.25m，棚板厚度
+const ROOF_W         = 800; // 9.4m，顶棚跨度
+const PILLAR_OFFSET  = 325; // 3.8m，柱子距中心
+
 /** 一次性创建整个公交站：顶棚 PropEntity + 长椅 PropEntity */
 export function spawnBusStop(em, stop) {
-  const far           = stop.direction > 0;
-  const anchorY       = far ? FAR_Y : NEAR_Y;
-  const roofTopY      = far ? BIKE_LANE_FAR_TOP - 30 : BIKE_LANE_NEAR_BOTTOM - 65;
-  const pillarBottomY = far ? FAR_Y - stop.bayD - 2  : BIKE_LANE_NEAR_BOTTOM - 5;
+  const far     = stop.direction > 0;
+  const anchorY = far ? FAR_Y : NEAR_Y;
+  // 柱脚落地点：远端站退到港湾后方的人行道上，近端站贴着近侧自行车道外沿
+  const pillarBottomY = far
+    ? FAR_Y - BUS_BAY_D - 2
+    : BIKE_LANE_NEAR_BOTTOM - 5;
+
+  const roofW      = stop.roofW ?? ROOF_W;
+  const roofH      = stop.roofH ?? ROOF_SLAB_H;
+  const roofClearH = stop.roofClearH ?? ROOF_CLEAR_H;
 
   const roof = em.add(new PropEntity({
     propType: 'busstop-roof',
-    x: stop.x, y: anchorY,
-    roofW: stop.roofW, roofH: stop.roofH,
-    roofTopY, pillarOffset: stop.pillarOffset, pillarBottomY,
+    x: stop.x, y: pillarBottomY,          // y = 柱脚落地点（CLAUDE.md 铁律：entity.y = 地面接触线）
+    roofW, roofH, roofClearH,
+    pillarOffset: stop.pillarOffset ?? PILLAR_OFFSET,
     dir: stop.direction,
-    width: stop.roofW, height: far ? anchorY - roofTopY : pillarBottomY - anchorY,
+    width: roofW, height: roofClearH + roofH,
     _sortY: pillarBottomY,
     tags: [],
   }));
@@ -122,15 +150,12 @@ export function spawnBusStop(em, stop) {
 
   if (stop.sign) {
     const signX = stop.x + stop.sign.dx;
-    // y = pole bottom (ground contact); matches drawing code in drawBusStopSign
-    const signY = far
-      ? FAR_Y + 4 - stop.bayD - 2   // = (FAR_Y + 4) - bayD - 2
-      : BIKE_LANE_NEAR_BOTTOM + 50;
+    // y = 杆脚落地点（同顶棚柱脚那条地面线；drawBusStopSign 按此往上量杆高）
+    const signY = pillarBottomY;
     const signE = em.add(new PropEntity({
       propType: 'busstop-sign',
       x: signX, y: signY,
       dir: stop.direction,
-      width: 22, height: 0,
       tags: [],
     }));
     signE.scale = 1;

@@ -26,7 +26,11 @@ function _drawPlaceholder(g, e) {
 // O-3：已经转成 drawObliqueBox 的 propType 样板（tasks.md O-3 三选一之二，
 // 第三个是 manhole——manhole 走 drawGround 通道，见 draw() 里的特判，不进这个
 // 集合）。O-4 逐批转换剩余 draw 函数时往这里加，加了就会用真实 draw()。
-const CONVERTED_PROP_TYPES = new Set(['bench']);
+const CONVERTED_PROP_TYPES = new Set([
+  'bench',                                                    // O-3 样板
+  'tree', 'stall', 'busstop-roof', 'busstop-sign',            // O-4 第一批
+  'phonebooth', 'vending',
+]);
 const CONVERTED_GROUND_TYPES = new Set(['manhole']);
 
 /**

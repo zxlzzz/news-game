@@ -142,17 +142,29 @@ export const LIGHT_DIR = 'upper-left';
  * 坐标系无畸变的面。返回值带一个 `front` 锚点，配合 frontFaceGraphics() 用，
  * 让调用方把原来"以 (x,y) 为锚点画局部细节"的代码几乎不改地迁移过来。
  *
- * @returns {{front:{x:number,y:number}}} 正面锚点（世界 (x,y) 投影后的屏幕坐标）
+ * `baseH`（O-4 新增，默认 0 = 贴地）把整个盒子抬离地面——雨棚、公交顶棚、
+ * 站牌面板、招牌这类"悬在半空"的体块要用它，否则只能拿贴地盒子硬凑。抬升是
+ * **高度**方向，所以走 `toScreenHeight`，不参与 shear/tilt；投影/描边仍以地面
+ * 线 `y` 为参照（`lenv` 的深度画风取决于物体站在哪，不取决于它被举多高）。
+ * 盒子底面在 `baseH` 处、顶面在 `baseH + h` 处；`baseH > 0` 时底面会露出来，
+ * 但本项目视角永远俯视（TILT_DEG 为正、相机在上方），底面看不见，不画。
+ *
+ * @returns {{front:{x:number,y:number}}} 正面锚点（世界 (x,y) 投影后的屏幕坐标，
+ *          注意是**地面**锚点，不含 baseH 抬升——frontFaceGraphics 也以地面为原点）
  */
-export function drawObliqueBox(g, x, y, w, depth, h, fillFront) {
+export function drawObliqueBox(g, x, y, w, depth, h, fillFront, baseH = 0) {
   g.lineStyle(0);
   const hw = w / 2;
   const front  = toScreen(x, y);
   const frontL = toScreen(x - hw, y),          frontR = toScreen(x + hw, y);
   const backL  = toScreen(x - hw, y - depth),  backR  = toScreen(x + hw, y - depth);
-  const dh = toScreenHeight(h);
-  const lift = (p) => ({ x: p.x, y: p.y - dh });
-  const ftL = lift(frontL), ftR = lift(frontR), btL = lift(backL), btR = lift(backR);
+  const dBase = toScreenHeight(baseH);
+  const dTop  = toScreenHeight(baseH + h);
+  const at = (p, d) => ({ x: p.x, y: p.y - d });
+  const fbL = at(frontL, dBase), fbR = at(frontR, dBase);
+  const bbL = at(backL,  dBase), bbR = at(backR,  dBase);
+  const ftL = at(frontL, dTop),  ftR = at(frontR, dTop);
+  const btL = at(backL,  dTop),  btR = at(backR,  dTop);
 
   // 顶面
   g.beginFill(FILL_MID, 1);
@@ -163,17 +175,17 @@ export function drawObliqueBox(g, x, y, w, depth, h, fillFront) {
 
   // 侧面（光从左上来，侧面永远画在右边，即世界 +x 一侧）
   g.beginFill(FILL_SHADE, 1);
-  g.drawPolygon([frontR.x, frontR.y, ftR.x, ftR.y, btR.x, btR.y, backR.x, backR.y]);
+  g.drawPolygon([fbR.x, fbR.y, ftR.x, ftR.y, btR.x, btR.y, bbR.x, bbR.y]);
   g.endFill();
   lenv(g, y, 0.7);
-  g.drawPolygon([frontR.x, frontR.y, ftR.x, ftR.y, btR.x, btR.y, backR.x, backR.y]);
+  g.drawPolygon([fbR.x, fbR.y, ftR.x, ftR.y, btR.x, btR.y, bbR.x, bbR.y]);
 
   // 正面
   g.beginFill(fillFront, 1);
-  g.drawPolygon([frontL.x, frontL.y, frontR.x, frontR.y, ftR.x, ftR.y, ftL.x, ftL.y]);
+  g.drawPolygon([fbL.x, fbL.y, fbR.x, fbR.y, ftR.x, ftR.y, ftL.x, ftL.y]);
   g.endFill();
   lenv(g, y, 0.85);
-  g.drawPolygon([frontL.x, frontL.y, frontR.x, frontR.y, ftR.x, ftR.y, ftL.x, ftL.y]);
+  g.drawPolygon([fbL.x, fbL.y, fbR.x, fbR.y, ftR.x, ftR.y, ftL.x, ftL.y]);
 
   return { front };
 }
@@ -198,9 +210,16 @@ export function frontFaceGraphics(g, anchorX, groundY) {
     lineStyle:   (...a) => g.lineStyle(...a),
     beginFill:   (...a) => g.beginFill(...a),
     endFill:     ()     => g.endFill(),
+    closePath:   ()     => g.closePath(),
     drawRect:    (x, y, w, h) => g.drawRect(sx(x), sy(y), sl(w), sl(h)),
     drawCircle:  (x, y, r)    => g.drawCircle(sx(x), sy(y), sl(r)),
     drawEllipse: (x, y, rx, ry) => g.drawEllipse(sx(x), sy(y), sl(rx), sl(ry)),
+    // 入参同 PIXI：扁平数组 [x,y, x,y, …]，逐点映射
+    drawPolygon: (pts) => {
+      const out = new Array(pts.length);
+      for (let i = 0; i < pts.length; i += 2) { out[i] = sx(pts[i]); out[i + 1] = sy(pts[i + 1]); }
+      g.drawPolygon(out);
+    },
     moveTo: (x, y) => g.moveTo(sx(x), sy(y)),
     lineTo: (x, y) => g.lineTo(sx(x), sy(y)),
   };

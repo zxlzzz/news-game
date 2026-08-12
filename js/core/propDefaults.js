@@ -70,4 +70,13 @@ export const PROP_DEFAULTS = {
  */
 export const PROP_DEPTH = {
   bench: 60,
+  // O-4 第一批（骨架单位；括号里是按 UNITS_PER_METER=84.7 折算的现实尺寸，
+  // 取"这东西实际有多厚"的常识值，不是从旧扁平画法的数字推出来的——旧画法
+  // 没有进深这一维）
+  vending:    68,   // 0.8m，自动售货机机身
+  phonebooth: 76,   // 0.9m，电话亭
+  tree:       46,   // 0.54m，树干直径量级（树冠是广告牌，不吃这个值）
+  stall:      85,   // 1.0m，摊位台面进深
+  'busstop-roof': 170, // 2.0m，候车亭顶棚进深（够罩住下方长椅）
+  'busstop-sign':  8,  // 0.1m，站牌杆/面板厚度
 };

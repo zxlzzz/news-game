@@ -1111,3 +1111,57 @@ Hsinlung 实机发现："所有物体都有一个黄色的框，这个框表示�
 （`getBounds()` 语义注释）；`js/entity/building/BuildingEntity.js#getBounds`；
 `js/camera/Viewfinder.js`；`js/scenes/StreetScene.js#_entityScreenRect`；
 `js/core/EntityManager.js#_drawPlaceholder`
+
+### O-4 第一批（最显眼的六个 draw 函数）— 已落地
+
+`drawTree` / `drawStall` / `drawBusStopRoof` / `drawBusStopSign` /
+`drawPhoneBooth` / `drawVending` 六个从 O-2 占位盒子转成真实绘制。
+`EntityManager.CONVERTED_PROP_TYPES` 同步加入这六个 propType。
+
+- **`Projection.js` 两处扩展**（转换过程中发现模板不够用，就地补齐）：
+  - `drawObliqueBox` 新增第 8 参 `baseH`（默认 0 = 贴地），把整个盒子抬离地面。
+    雨棚、候车亭顶棚、站牌面板这类"悬在半空的体块"必须有它，否则只能拿贴地
+    盒子硬凑。抬升是**高度**方向，走 `toScreenHeight`，不参与 shear/tilt；
+    描边的深度画风仍以地面线为参照（`lenv` 取决于物体站在哪，不取决于被举多高）。
+    底面在俯视角下看不见，不画。
+  - `frontFaceGraphics` 代理补上 `closePath()` 与 `drawPolygon()`——树冠轮廓和
+    摊位雨棚梯形都要用，原代理只有 rect/circle/ellipse/moveTo/lineTo。
+- **`PROP_DEPTH` 补六条进深**，按 `UNITS_PER_METER=84.7` 折算的常识尺寸取值
+  （vending 0.8m / phonebooth 0.9m / tree 0.54m / stall 1.0m /
+  busstop-roof 2.0m / busstop-sign 0.1m）。进深是转换才引入的新维度，旧扁平
+  画法里没有这个量，**不是**从旧数字推出来的。
+- **`drawTree` 是本批唯一的特例**：树不是盒子。拆两半——树干走
+  `drawObliqueBox`（细长方柱），树冠走 `frontFaceGraphics` 广告牌（原 blob
+  轮廓采样算法一行未改）。理由：树冠是有机形状，硬套三面体积会变成方盒子，
+  跟线稿画风冲突；"竖直广告牌站在斜地面上"正是 NPC 那条路子。O-4 验收要求
+  每个 draw 函数要么调 `drawObliqueBox`、要么调形状助手——本函数两者都调。
+- **`drawStall`**：柜台贴地盒子 + 雨棚悬空盒子（`baseH`）。原版雨棚是两侧各
+  外挑 9*s 的梯形，盒子模板只画矩形截面；那点外挑要绕开模板自己算三面几何，
+  与 O-3「不要自己算三面/斜切几何」的铁律冲突，改成等宽棚顶，外挑观感由棚沿
+  描边保留。
+- **`drawPhoneBooth`**：机身走盒子；顶部檐口比机身两侧各宽 3*s（0.035m），
+  做成第二个盒子不值当（还要处理两盒顶/侧面穿插），留在正面细节里画成扁矩形。
+
+**顺带修掉公交站的两个既有 bug**（转换时必须碰几何，就一并收了）：
+1. **远端候车亭画不出来**：`spawnBusStop` 的
+   `pillarBottomY = FAR_Y - stop.bayD - 2`，而 `stop.bayD` 在 scene.json 里
+   **从来没配过**（`layout.busStops` 只有 x/direction/bench 三个键），算出
+   **NaN**——顶棚几何和 `_sortY` 全是 NaN，远端站整个不渲染。现在 bay 深度是
+   `busstop.js` 里的具名常量 `BUS_BAY_D`，不再依赖未配置的场景字段。
+2. **竖直方向用绝对世界 y 相减表达**（`roofTopY` / `pillarBottomY` 两个绝对
+   坐标）——O-2 之前世界 y 就是屏幕 y，这么写没问题；接上真投影后高度与纵深
+   必须分开。改成"柱脚落地点 `p.y` + `roofClearH` 棚底净高 + `roofH` 棚板厚"。
+   顺带发现近端站原本的竖直跨度只有 60 骨架单位 ≈ **0.71 m**——那是"扁平视图
+   里看着对"的数字，当成真实高度就是个要爬进去的亭子，按现实候车亭改成 2.4 m。
+   `drawBusStopSign` 同样的病（拿 Y 分带常量当杆顶），且牌面尺寸 22×15 是
+   O-1 单位重标时漏掉的一处裸旧世界像素（该 prop 当前场景没有实例，
+   `stop.sign` 未配置，所以一直没被发现），一并按现实尺寸重报。
+
+实测：两个公交站的几何都不再是 NaN；树/候车亭/摊位在实机画面里正常出现。
+五个静态门全绿。
+
+代码锚点：`js/core/Projection.js`（`drawObliqueBox` 的 `baseH`、
+`frontFaceGraphics` 的 `closePath`/`drawPolygon`）；`js/core/propDefaults.js`
+（`PROP_DEPTH` 六条）；`js/entity/{tree,stall,phonebooth,vending}/draw*.js`；
+`js/entity/busstop/{drawBusStopRoof,drawBusStopSign,busstop}.js`；
+`js/core/EntityManager.js#CONVERTED_PROP_TYPES`

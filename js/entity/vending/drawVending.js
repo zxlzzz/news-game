@@ -1,22 +1,28 @@
-import {
-  depthLineWidth, depthLineColor,
-  FILL_LIGHT, FILL_MID, FILL_SHADE,
-  ENV_LINE_LIGHT, ENV_LINE_DARK, lenv,
-} from '../../core/Layout.js';
+import { FILL_LIGHT, FILL_MID, FILL_SHADE, lenv } from '../../core/Layout.js';
+import { drawObliqueBox, frontFaceGraphics } from '../../core/Projection.js';
+import { PROP_DEPTH } from '../../core/propDefaults.js';
 
+// O-4 第一批：立着的东西 → drawObliqueBox 报 (w, depth, h)，正面细节原样贴回。
+// _frontDetail 是老函数体，一行绘制逻辑没改，只是 g 换成 frontFaceGraphics 代理、
+// (x,y,s) 从 p 上的隐式读取改成显式参数（同 O-3 的 drawBench 样板）。
 export function drawVending(g, p) {
   g.lineStyle(0);
 
   const { x, y } = p;
-  const s  = p.scale ?? 1;
+  const s = p.scale ?? 1;
+  const w = 80 * s, h = 158 * s;
+  const depth = PROP_DEPTH.vending * s;
+
+  drawObliqueBox(g, x, y, w, depth, h, FILL_LIGHT);
+
+  _frontDetail(frontFaceGraphics(g, x, y), x, y, s);
+}
+
+function _frontDetail(g, x, y, s) {
+  g.lineStyle(0);
+
   const w  = 80 * s, h = 158 * s;
   const px = x - w / 2, py = y - h;
-
-  // 1. Front body — FILL_LIGHT
-  g.lineStyle(0);
-  g.beginFill(FILL_LIGHT, 1);
-  g.drawRect(px, py, w, h);
-  g.endFill();
 
   // 2. Glass front — FILL_SHADE at low alpha
   const gx = px + 6 * s, gy = py + 6 * s;
@@ -44,9 +50,7 @@ export function drawVending(g, p) {
   g.drawRect(px + 6 * s, py + h - 17 * s, w - 11 * s, 9 * s);
   g.endFill();
 
-  // 6. Outlines (last)
-  lenv(g, y, 0.85);
-  g.drawRect(px, py, w, h);
+  // 6. Glass outline（机身外框已由 drawObliqueBox 的正面描边负责，这里不重复画）
   lenv(g, gy, 0.7);
   g.drawRect(gx, gy, gw, gh);
 }
