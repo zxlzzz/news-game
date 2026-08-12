@@ -40,4 +40,6 @@ export function drawLamp(g, p) {
 
 // ─── 自注册（Z-2d propRegistry）──────────────────────────────────────────────
 import { registerProp } from '../../core/propRegistry.js';
-registerProp('lamp', { draw: drawLamp });
+registerProp('lamp', {
+  visual: { hw: 88, up: 300, down: 0 },  // drawLamp 灯箱悬在左侧 armLen60+boxW28=88；poleH 300
+  draw: drawLamp });

@@ -1350,3 +1350,63 @@ Hsinlung 实机反馈"车看起来确实较厚"，并提出一条原则：**内�
 
 代码锚点：`js/entity/vehicle/vehicle.js#INTRINSIC`；
 `js/entity/vehicle/drawVehicle.js#_bodyBox`；`sth/preview.html`
+
+### O-7（相机漂移 / 天空对齐 / getBounds 尺寸 / 全量预览器）— 已落地
+
+Hsinlung 实机报了三条，逐条查下来都是真 bug，且都是同一类"扁平时代遗留"：
+
+**一、按住上/下键镜头横向漂移**（他的判断"某处又加了一个映射"完全正确）。
+相机把位置存成**世界坐标** `(scrollX, scrollY)`，每帧再 `toScreen()` 投影一次。
+而 `toScreen` 的 x 依赖 y（shear：`x_s = (x + (y-BASE)*SHEAR) * PX`），于是纯竖直
+的输入漏进横向：`spd × SHEAR × PX_PER_UNIT ≈ 23px/秒`，上→左、下→右，与他的
+描述一字不差。修法是把相机 pan 改存**投影后的屏幕像素** `(panX, panY)`——相机
+要动的本来就是"画面往哪挪"这件屏幕空间的事，投影一次都不该有。
+`_clampScroll` / `_screenToWorld` / `_entityScreenRect` / 滚轮缩放全部跟着改成
+纯屏幕空间运算，`scrollX/scrollY` 从代码里消失。
+新增 `window.__cam()` 调试钩子（同 `__clock`/`__navDebug` 惯例）。
+实测：上/下 `dx` 恒为 0，左/右 `dy` 恒为 0；zoom=1 时竖直不动是**正确**的——
+场景屏幕高度 594px < 视口 720px，本来就没有可滚动余量，zoom≥1.5 才有。
+
+**二、远景天际线位置对不齐。** 天空层在"未投影的世界单位"里作画、把楼基线放在
+`y = BUILDING_BASE_Y (700)`，而世界里的楼基线投影后是 `y = 0`——差了整整 700px；
+天空层还吃了 **0.45 的纵向视差**，所以怎么滚都对不上。天际线楼高也是没换算的
+世界单位（78~138），比该有的大 2.57 倍。修法：天空层改用"屏幕像素、y=0 即地平线"
+的坐标系（与 worldContainer 共用竖直原点），`_applyCamera` 里天空**只吃横向视差、
+纵向完全跟随**（地平线不该有纵向视差，一分离就飘）；云的 x/y/半径按
+`PX_PER_UNIT` 换算；天际线数据按屏幕像素重报（45~110px 高，对比近景楼 185px）。
+
+**三、很多物体的黄色框对不上。** 22 个 prop 里只有 3 个（drain/fountain/stall）
+声明了 `visual`，其余 19 个退回 `Entity.getBounds()` 的默认值——用的是
+`PROP_DEFAULTS` 的 `w`/`h`，而那是 **O-1 单位重标时漏掉的一批 pre-O-1 世界像素**
+（如 trash 14×14，实际画出来 46×53；tree 更是 14×14 对 340×340）。这批数字只被
+`getBounds()` 消费（取景框命中 + 黄色高亮），所以一直没人发现。现给全部 19 个
+补上 `visual`，每条都对着各自 draw 函数的实际尺寸推导并在注释里写明依据。
+
+**四、`sth/preview.html` 重写成全量预览器**（Hsinlung 要批量检查外观）。
+核心原则：**不复制游戏的绘制逻辑，直接用游戏的类**——道具真造 `PropEntity`
+（走 propRegistry），楼真造 `BuildingEntity`，所以预览里的
+`draw()`/`getBounds()`/`footprint()` 与游戏跑的是同一份代码，不会"预览对了游戏错"。
+对象清单来自 `propTypes()` 实时枚举，新增 prop 自动出现（旧版手写清单已漏
+busStopSign/chessPlaza/miniPark/parkPath，还挂着一个根本不存在的 `drawFountain`）。
+叠加层：黄=`getBounds()`、青=`footprint()`、蓝=地面线+纵深栅格、紫=1.7m 参照人；
+另有 Y/scale/zoom 滑块与背景切换。覆盖 32 个对象（含车辆四型、地面要素、天际线、
+NPC 全部 clip），实测全部无报错。
+
+**顺带修 `ClipLibrary` 的资源路径**：原来是 `fetch('assets/...')` 这种**文档相对**
+路径，只有从仓库根的 index.html 打开才对，`sth/preview.html` 会去要
+`/sth/assets/...` 拿到 404。改成基于 `import.meta.url` 的**模块相对**解析，
+任何页面引用都拿得对。
+
+**过程教训（第二次栽在同一处）**：批量插入 `visual` 的脚本把单行
+`registerProp('x', { draw: ..., });` 的尾部吞进了注释，13 个文件被改坏。
+更糟的是 **`node --check` 对这些 `.js` 全部报通过**——它按 CJS 语法检查，漏掉了
+这类错误；五个静态门也全绿。最后是浏览器报 `Unexpected end of input` 才暴露，
+且首轮修复的正则只匹配 `draw:`，漏掉了 `drawGround:`（manhole）。
+已补一个真正的 ESM 解析检查（`new vm.SourceTextModule` 逐文件解析，149 个文件）
+作为这类批量改动的自检手段。
+
+代码锚点：`js/scenes/StreetScene.js`（`panX/panY`、`_applyCamera`、`_clampScroll`、
+`_entityScreenRect`、滚轮、`window.__cam`）；`js/scenes/SceneRenderer.js`
+（`_drawSky`/`_drawClouds`）；`js/scenes/drawSkyline.js`；`assets/scene.json`
+（`layout.skyline` 按屏幕像素重报）；19 个 `registerProp` 的 `visual`；
+`js/core/ClipLibrary.js`；`sth/preview.html`（重写）

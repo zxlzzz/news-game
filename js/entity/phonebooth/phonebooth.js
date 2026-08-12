@@ -7,4 +7,6 @@ export function footprint(e) {
 // ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
 import { registerProp } from '../../core/propRegistry.js';
 import { drawPhoneBooth } from './drawPhoneBooth.js';
-registerProp('phonebooth', { draw: drawPhoneBooth, footprint, obstacle: true });
+registerProp('phonebooth', {
+  visual: { hw: 43, up: 173, down: 0 },  // drawPhoneBooth 檐口 w+6=86 宽；h=173
+  draw: drawPhoneBooth, footprint, obstacle: true });

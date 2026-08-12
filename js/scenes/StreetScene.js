@@ -49,9 +49,11 @@ export class StreetScene {
     this.viewW = app.screen.width;
     this.viewH = app.screen.height;
 
-    this.scrollX = 0;
-    this.scrollY = 0;
-    this.zoom    = 1;
+    // 相机 pan：**投影后的屏幕像素**（未乘 zoom），不是世界坐标。
+    // 见 _applyCamera 上方注释——存世界坐标会让 shear 把竖直输入漏成横向漂移。
+    this.panX = 0;
+    this.panY = 0;
+    this.zoom = 1;
 
     this._json = {};
     this.cache = { json: { get: (k) => this._json[k] } };
@@ -147,6 +149,9 @@ export class StreetScene {
 
     // 调试用：暴露时钟控制到 window
     window.__clock = { setSpeed: setClockSpeed, setTime: setGameTime, now: () => gameTimeStr() };
+    // 相机探针（同 __clock / __navDebug 的调试钩子惯例）：pan 是屏幕像素，
+    // 按住上/下键时 panX 必须纹丝不动——O-7 的横向漂移 bug 就是靠它验的。
+    window.__cam = () => ({ panX: this.panX, panY: this.panY, zoom: this.zoom });
 
     this.app.ticker.add(() => this.update(this.app.ticker.deltaMS));
   }
@@ -154,17 +159,22 @@ export class StreetScene {
   // ─── 相机 ──────────────────────────────────────────────────────────────────
   // O-2：worldContainer 不再整体乘 PX_PER_UNIT（那套仿射变换被 Projection.toScreen
   // 取代——draw 调用直接算出绝对屏幕像素，见 Projection.js 文件头的核心区分）。
-  // 容器自己只剩两件事：zoom（缩放）+ 相机 pan（把 (scrollX,scrollY) 这个世界点
-  // 挪到视口左上角）。pan 本身也要经 toScreen 换算——scrollX/scrollY 是世界坐标，
-  // 而 position 挪的是已经投影过的屏幕像素，两者不能直接相减/相乘。
-  // skyContainer 不受此影响（天空/云/天际线仍是不经投影的屏幕像素画风几何，
-  // O-6 天际线平贴层前不重绘），视差位移沿用 pan 的屏幕像素值乘 0.45。
+  // 容器自己只剩两件事：zoom（缩放）+ 相机 pan（把 (panX,panY) 这个**屏幕**点
+  // 挪到视口左上角）。
+  //
+  // ⚠️ pan 必须存**投影后的屏幕像素**，不能存世界坐标（O-7 修的 bug）：
+  // `toScreen` 的 x 依赖 y（shear：`x_s = (x + (y-BASE)*SHEAR) * PX`），所以
+  // 每帧拿世界 (scrollX,scrollY) 重新投影的话，纯竖直的输入会漏进横向——按住
+  // 上/下键时镜头以 `spd × SHEAR × PX_PER_UNIT ≈ 23px/秒` 横向漂移（上→左、
+  // 下→右）。相机要动的本来就是"画面往哪挪"这件屏幕空间的事，投影一次都不该有。
+  //
+  // skyContainer：**横向**吃 0.45 视差（远景移动慢），**纵向不吃视差**——
+  // 天际线要一直贴在楼基线上，竖直方向一分离地平线就会飘（O-7 修的第二个 bug）。
   _applyCamera() {
-    const pan = toScreen(this.scrollX, this.scrollY);
     this.worldContainer.scale.set(this.zoom);
-    this.worldContainer.position.set(-pan.x * this.zoom, -pan.y * this.zoom);
+    this.worldContainer.position.set(-this.panX * this.zoom, -this.panY * this.zoom);
     this.skyContainer.scale.set(this.zoom);
-    this.skyContainer.position.set(-pan.x * 0.45 * this.zoom, -pan.y * 0.45 * this.zoom);
+    this.skyContainer.position.set(-this.panX * 0.45 * this.zoom, -this.panY * this.zoom);
   }
 
   // 世界地面的屏幕包围盒（含最高楼屋顶余量），只在 create() 里楼生成完后
@@ -192,31 +202,23 @@ export class StreetScene {
    * 有任何耦合。
    */
   _centerCameraOn(wx, wy) {
-    const t   = toScreen(wx, wy);
-    const pan = { x: t.x - this.viewW / (2 * this.zoom), y: t.y - this.viewH / (2 * this.zoom) };
-    const w   = toWorld(pan.x, pan.y);
-    this.scrollX = w.x;
-    this.scrollY = w.y;
+    const t = toScreen(wx, wy);
+    this.panX = t.x - this.viewW / (2 * this.zoom);
+    this.panY = t.y - this.viewH / (2 * this.zoom);
   }
 
+  /** pan 已经是屏幕像素，直接跟场景屏幕包围盒比，不再来回投影。 */
   _clampScroll() {
-    const bounds = sceneScreenBounds(this._maxFacadeH ?? 0);
-    const viewSpanX = this.viewW / this.zoom;
-    const viewSpanY = this.viewH / this.zoom;
-    const maxPanX = Math.max(bounds.minX, bounds.maxX - viewSpanX);
-    const maxPanY = Math.max(bounds.minY, bounds.maxY - viewSpanY);
-    const pan = toScreen(this.scrollX, this.scrollY);
-    const clampedX = Math.min(Math.max(bounds.minX, pan.x), maxPanX);
-    const clampedY = Math.min(Math.max(bounds.minY, pan.y), maxPanY);
-    const w = toWorld(clampedX, clampedY);
-    this.scrollX = w.x;
-    this.scrollY = w.y;
+    const b = sceneScreenBounds(this._maxFacadeH ?? 0);
+    const maxPanX = Math.max(b.minX, b.maxX - this.viewW / this.zoom);
+    const maxPanY = Math.max(b.minY, b.maxY - this.viewH / this.zoom);
+    this.panX = Math.min(Math.max(b.minX, this.panX), maxPanX);
+    this.panY = Math.min(Math.max(b.minY, this.panY), maxPanY);
   }
 
   /** 视口内屏幕像素坐标（0,0 = 视口左上角）→ 世界坐标。鼠标拾取/取景框/相机换算共用。 */
   _screenToWorld(sx, sy) {
-    const pan = toScreen(this.scrollX, this.scrollY);
-    return toWorld(sx / this.zoom + pan.x, sy / this.zoom + pan.y);
+    return toWorld(sx / this.zoom + this.panX, sy / this.zoom + this.panY);
   }
 
   _getWorldCoords(clientX, clientY) {
@@ -247,11 +249,10 @@ export class StreetScene {
    * 先 scale 后加 position，等价于 (绝对屏幕坐标 - pan) * zoom）。
    */
   _entityScreenRect(bounds) {
-    const pan = toScreen(this.scrollX, this.scrollY);
-    const b   = billboardScreenBox(bounds);
+    const b = billboardScreenBox(bounds);
     return {
-      x: (b.x - pan.x) * this.zoom,
-      y: (b.y - pan.y) * this.zoom,
+      x: (b.x - this.panX) * this.zoom,
+      y: (b.y - this.panY) * this.zoom,
       w: b.w * this.zoom,
       h: b.h * this.zoom,
     };
@@ -265,7 +266,7 @@ export class StreetScene {
       const k = e.key.toLowerCase();
       if (k === 'p') this._exportImage();
       else if (k === 'd') this.debugOverlay.toggle();
-      else if (k === 'z') { this.zoom = 1; this.scrollY = 0; this._clampScroll(); this._applyCamera(); }
+      else if (k === 'z') { this.zoom = 1; this._centerCameraOn(2197, 1946); this._clampScroll(); this._applyCamera(); }
       else if (k === 'n') { window.__navDebug = !window.__navDebug; console.log('[NavDebug]', window.__navDebug ? 'ON' : 'OFF'); }
       else if (k === 'm') audit.dump(this.behaviorManager?.npcs ?? []);
       else if (k === 'o') this.behaviorManager?.envQuery?.debugPool(this.behaviorManager?.npcs?.[0]);
@@ -285,11 +286,14 @@ export class StreetScene {
       e.preventDefault();
       const factor  = e.deltaY > 0 ? 0.9 : 1.1;
       const newZoom = Math.max(0.5, Math.min(2.0, this.zoom * factor));
-      const before  = this._getWorldCoords(e.clientX, e.clientY);
+      // 保持光标下的那个点不动：光标屏幕位置 = (绝对屏幕坐标 - pan) * zoom，
+      // 缩放前后解出新的 pan（全程屏幕空间，不经世界坐标往返）
+      const cur = this._getScreenCoords(e.clientX, e.clientY);
+      const absX = cur.x / this.zoom + this.panX;
+      const absY = cur.y / this.zoom + this.panY;
       this.zoom = newZoom;
-      const after   = this._getWorldCoords(e.clientX, e.clientY);
-      this.scrollX += before.x - after.x;
-      this.scrollY += before.y - after.y;
+      this.panX = absX - cur.x / this.zoom;
+      this.panY = absY - cur.y / this.zoom;
       this._clampScroll();
       this._applyCamera();
     }, { passive: false });
@@ -485,10 +489,10 @@ export class StreetScene {
   update(delta) {
     const spd = 300 * (delta / 1000);
 
-    if (this.keys.left)       this.scrollX -= spd;
-    else if (this.keys.right) this.scrollX += spd;
-    if (this.keys.up)         this.scrollY -= spd;
-    else if (this.keys.down)  this.scrollY += spd;
+    if (this.keys.left)       this.panX -= spd;
+    else if (this.keys.right) this.panX += spd;
+    if (this.keys.up)         this.panY -= spd;
+    else if (this.keys.down)  this.panY += spd;
 
     // 相机不再跟随取景框——取景框已改为浮在顶层的屏幕空间 UI（见
     // Viewfinder.js 头注），永远在视口内，不需要相机追它；相机现在只由

@@ -7,4 +7,6 @@ export function footprint(e) {
 // ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
 import { registerProp } from '../../core/propRegistry.js';
 import { drawPlanter } from './drawPlanter.js';
-registerProp('planter', { draw: drawPlanter, footprint, obstacle: true });
+registerProp('planter', {
+  visual: { hw: 40, up: 34, down: 0 },  // drawPlanter w=80；枝叶顶端约 y-34
+  draw: drawPlanter, footprint, obstacle: true });

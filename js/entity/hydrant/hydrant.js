@@ -7,4 +7,6 @@ export function footprint(e) {
 // ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
 import { registerProp } from '../../core/propRegistry.js';
 import { drawHydrant } from './drawHydrant.js';
-registerProp('hydrant', { draw: drawHydrant, footprint, obstacle: true });
+registerProp('hydrant', {
+  visual: { hw: 15, up: 57, down: 0 },  // drawHydrant baseW=30；底座8+主体30+圆顶12+顶栓7
+  draw: drawHydrant, footprint, obstacle: true });

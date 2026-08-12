@@ -7,4 +7,6 @@ export function footprint(e) {
 // ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
 import { registerProp } from '../../core/propRegistry.js';
 import { drawTree } from './drawTree.js';
-registerProp('tree', { draw: drawTree, footprint, obstacle: true });
+registerProp('tree', {
+  visual: { hw: 170, up: 340, down: 0 },  // drawTree r=150×jitter(≤1.15)；树冠横向≈0.98r、总高≈1.97r
+  draw: drawTree, footprint, obstacle: true });

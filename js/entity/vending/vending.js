@@ -41,4 +41,6 @@ export function isNear(entities, npc, dxT = 60, dyT = 80) {
 // ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
 import { registerProp } from '../../core/propRegistry.js';
 import { drawVending } from './drawVending.js';
-registerProp('vending', { draw: drawVending, footprint, obstacle: true });
+registerProp('vending', {
+  visual: { hw: 40, up: 158, down: 0 },  // drawVending w=80、h=158
+  draw: drawVending, footprint, obstacle: true });

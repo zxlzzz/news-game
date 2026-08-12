@@ -41,4 +41,6 @@ export function drawManhole(g, p) {
 // ─── 自注册（Z-2d propRegistry）──────────────────────────────────────────────
 // 全部绘制在地面预通道，主通道无内容
 import { registerProp } from '../../core/propRegistry.js';
-registerProp('manhole', { drawGround: drawManhole });
+registerProp('manhole', {
+  visual: { hw: 30, up: 0, down: 30 },  // drawManhole rx=30 的贴地圆（无高度，以 y 为圆心）
+  drawGround: drawManhole });

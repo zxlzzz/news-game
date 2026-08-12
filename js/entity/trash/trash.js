@@ -7,4 +7,6 @@ export function footprint(e) {
 // ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
 import { registerProp } from '../../core/propRegistry.js';
 import { drawTrash } from './drawTrash.js';
-registerProp('trash', { draw: drawTrash, footprint, obstacle: true });
+registerProp('trash', {
+  visual: { hw: 23, up: 53, down: 0 },  // drawTrash 桶盖 topW+6=46 宽、桶身 50 高 + 盖 3
+  draw: drawTrash, footprint, obstacle: true });

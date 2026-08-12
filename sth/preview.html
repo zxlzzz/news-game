@@ -1,313 +1,347 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>Draw Preview</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Draw Preview — 全量预览</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #1a1a1a; color: #ccc; font: 13px/1.4 monospace; display: flex; height: 100vh; }
+  body { background: #1a1a1a; color: #ccc; font: 13px/1.5 monospace; display: flex; height: 100vh; }
   #panel {
-    width: 260px; padding: 12px; overflow-y: auto; flex-shrink: 0;
+    width: 250px; padding: 12px; overflow-y: auto; flex-shrink: 0;
     background: #222; border-right: 1px solid #444;
   }
-  #panel h3 { color: #fff; margin: 12px 0 6px; font-size: 13px; }
+  #panel h3 { color: #fff; margin: 14px 0 6px; font-size: 12px; letter-spacing: .5px; }
   #panel h3:first-child { margin-top: 0; }
-  #panel label { display: block; margin: 4px 0; }
-  #panel select, #panel input[type=range], #panel input[type=number] {
-    width: 100%; margin: 2px 0 8px;
-  }
+  #panel label { display: block; margin: 3px 0; cursor: pointer; }
+  #panel select, #panel input[type=range] { width: 100%; margin: 2px 0 8px; }
   #panel select { padding: 4px; background: #333; color: #ccc; border: 1px solid #555; }
-  #panel input[type=range] { accent-color: #888; }
   #panel .val { float: right; color: #999; }
-  #panel button {
-    width: 100%; padding: 6px; margin: 4px 0; cursor: pointer;
-    background: #444; color: #ccc; border: 1px solid #666;
+  #list { display: flex; flex-direction: column; gap: 1px; }
+  #list button {
+    text-align: left; padding: 4px 7px; cursor: pointer; font: inherit;
+    background: #2c2c2c; color: #bbb; border: 1px solid #3a3a3a;
   }
-  #panel button:hover { background: #555; }
+  #list button:hover { background: #383838; }
+  #list button.on { background: #4a5a6a; color: #fff; border-color: #6a8ba8; }
+  #list .cat { color: #777; margin: 8px 0 2px; font-size: 11px; }
+  #wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
   #canvas-wrap { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  #status { position: fixed; bottom: 8px; left: 270px; color: #666; font-size: 11px; }
-  .row { display: flex; gap: 8px; align-items: center; }
-  .row label { flex: 1; }
+  #status { padding: 6px 12px; color: #888; font-size: 11px; border-top: 1px solid #333; background: #202020; white-space: pre; }
+  #status.err { color: #ff8a7a; }
 </style>
 </head>
 <body>
 
 <div id="panel">
-  <h3>Draw 文件</h3>
-  <select id="drawSelect"></select>
-  <button id="btnReload">重新加载 (R)</button>
+  <h3>对象</h3>
+  <div id="list"></div>
 
   <h3>参数</h3>
-  <label>Y 位置 <span class="val" id="valY">1600</span></label>
-  <input type="range" id="sliderY" min="700" max="3072" value="1600" step="1">
+  <label>Y（世界纵深） <span class="val" id="valY">1600</span></label>
+  <input type="range" id="sliderY" title="Y（世界纵深）" min="700" max="3072" value="1600" step="1">
 
   <label>Scale <span class="val" id="valScale">1.00</span></label>
-  <input type="range" id="sliderScale" min="0.3" max="2.0" value="1.0" step="0.05">
+  <input type="range" id="sliderScale" title="Scale" min="0.3" max="2.0" value="1.0" step="0.05">
 
-  <h3>车型（仅 vehicle）</h3>
-  <select id="vehKind">
-    <option value="car">car</option>
-    <option value="taxi">taxi</option>
-    <option value="bus">bus</option>
-    <option value="moto">moto</option>
-  </select>
+  <label>Zoom <span class="val" id="valZoom">2.00</span></label>
+  <input type="range" id="sliderZoom" title="Zoom" min="0.5" max="6.0" value="2.0" step="0.1">
+
+  <h3>叠加层</h3>
+  <label><input type="checkbox" id="chkBounds" checked> 黄色包围框 getBounds()</label>
+  <label><input type="checkbox" id="chkFootprint" checked> 足迹 footprint()（青）</label>
+  <label><input type="checkbox" id="chkGround" checked> 地面线 + 纵深栅格</label>
+  <label><input type="checkbox" id="chkHuman" checked> 参照人（1.7m）</label>
 
   <h3>背景</h3>
-  <label><input type="radio" name="bg" value="white" checked> 白底 (看线条)</label>
-  <label><input type="radio" name="bg" value="gray"> 灰底 (看填充)</label>
-  <label><input type="radio" name="bg" value="bands"> 模拟场景分带</label>
-
-  <h3>辅助</h3>
-  <label><input type="checkbox" id="chkGrid"> 网格</label>
-  <label><input type="checkbox" id="chkOrigin" checked> 原点标记</label>
-  <label><input type="checkbox" id="chkCompare"> 左右对比 (旧 vs 新)</label>
-
-  <h3>对比文件 (可选)</h3>
-  <select id="drawSelectB" disabled><option value="">-- 无 --</option></select>
+  <label><input type="radio" name="bg" value="paper" checked> 场景灰</label>
+  <label><input type="radio" name="bg" value="white"> 白底（看线条）</label>
+  <label><input type="radio" name="bg" value="dark"> 深底（看浅色填充）</label>
 </div>
 
-<div id="canvas-wrap"></div>
-<div id="status">就绪</div>
+<div id="wrap">
+  <div id="canvas-wrap"></div>
+  <div id="status">加载中…</div>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.12/pixi.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
 <script type="module">
+/**
+ * 全量绘制预览（O-7 重写）
+ *
+ * 设计原则：**不复制游戏的绘制逻辑，直接用游戏的类**。道具一律真造
+ * `PropEntity`（走 propRegistry 注册表），楼真造 `BuildingEntity`，所以这里
+ * 看到的 `draw()` / `getBounds()` / `footprint()` 跟游戏里跑的是同一份代码，
+ * 不会出现"预览对了游戏错了"。对象清单也来自 `propTypes()`（注册表实时枚举），
+ * 新增 prop 会自动出现在左栏，不需要手工维护列表——旧版那份手写清单已经漏了
+ * busStopSign/chessPlaza/miniPark/parkPath，还挂着一个根本不存在的
+ * `drawFountain`（真名是 drawFountainPool / drawFountainNozzle）。
+ *
+ * 相机与游戏一致：draw 函数输出的是**绝对投影屏幕像素**，容器只做 zoom + pan。
+ */
+const BASE = '../';
 
-// ── 扫描可用的 draw 文件 ──────────────────────────────────────────────────────
+const Layout      = await import(BASE + 'js/core/Layout.js');
+const Projection  = await import(BASE + 'js/core/Projection.js');
+const { PropEntity }     = await import(BASE + 'js/core/PropEntity.js');
+const { propTypes, getPropDef } = await import(BASE + 'js/core/propRegistry.js');
+const { PROP_DEFAULTS }  = await import(BASE + 'js/core/propDefaults.js');
+const { BuildingEntity } = await import(BASE + 'js/entity/building/BuildingEntity.js');
+const { INTRINSIC: VEH } = await import(BASE + 'js/entity/vehicle/vehicle.js');
+const { drawVehicle }    = await import(BASE + 'js/entity/vehicle/drawVehicle.js');
+const { drawChessPlaza } = await import(BASE + 'js/entity/chess-table/drawChessPlaza.js');
+const { drawMiniPark }   = await import(BASE + 'js/entity/mini-park/drawMiniPark.js');
+const { drawParkPaths, drawParkPlaza } = await import(BASE + 'js/entity/park-path/drawParkPath.js');
+const { drawSkyline }    = await import(BASE + 'js/scenes/drawSkyline.js');
+const { StickRenderer }  = await import(BASE + 'js/core/StickRenderer.js');
+const { clipLibrary }    = await import(BASE + 'js/core/ClipLibrary.js');
 
-const DRAW_FILES = [
-  { label: 'hydrant',       path: '../js/entity/hydrant/drawHydrant.js',         fn: 'drawHydrant' },
-  { label: 'fountain',      path: '../js/entity/fountain/drawFountain.js',       fn: 'drawFountain' },
-  { label: 'mailbox',       path: '../js/entity/mailbox/drawMailbox.js',         fn: 'drawMailbox' },
-  { label: 'trash',         path: '../js/entity/trash/drawTrash.js',             fn: 'drawTrash' },
-  { label: 'lamp',          path: '../js/entity/lamp/drawLamp.js',               fn: 'drawLamp' },
-  { label: 'bench',         path: '../js/entity/seat/drawBench.js',              fn: 'drawBench' },
-  { label: 'busStopBench',  path: '../js/entity/seat/drawBusStopBench.js',       fn: 'drawBusStopBench' },
-  { label: 'chairL',        path: '../js/entity/seat/drawChairL.js',             fn: 'drawChairL' },
-  { label: 'chairR',        path: '../js/entity/seat/drawChairR.js',             fn: 'drawChairR' },
-  { label: 'sign',          path: '../js/entity/sign/drawSign.js',               fn: 'drawSign' },
-  { label: 'newsRack',      path: '../js/entity/newsrack/drawNewsRack.js',       fn: 'drawNewsRack' },
-  { label: 'phoneBooth',    path: '../js/entity/phonebooth/drawPhoneBooth.js',   fn: 'drawPhoneBooth' },
-  { label: 'planter',       path: '../js/entity/planter/drawPlanter.js',         fn: 'drawPlanter' },
-  { label: 'vending',       path: '../js/entity/vending/drawVending.js',         fn: 'drawVending' },
-  { label: 'stall',         path: '../js/entity/stall/drawStall.js',             fn: 'drawStall' },
-  { label: 'tree',          path: '../js/entity/tree/drawTree.js',               fn: 'drawTree' },
-  { label: 'drain',         path: '../js/entity/drain/drawDrain.js',             fn: 'drawDrain' },
-  { label: 'manhole',       path: '../js/entity/manhole/drawManhole.js',         fn: 'drawManhole' },
-  { label: 'busStopRoof',   path: '../js/entity/busstop/drawBusStopRoof.js',     fn: 'drawBusStopRoof' },
-  { label: 'chessTable',    path: '../js/entity/chess-table/drawChessTable.js',  fn: 'drawChessTable' },
-  { label: 'vehicle',       path: '../js/entity/vehicle/drawVehicle.js',         fn: 'drawVehicle' },
-  { label: 'building',      path: '../js/entity/building/drawBuilding.js',       fn: 'drawBuilding' },
-];
+const { toScreen, toScreenLength, billboardScreenBox, projectGroundRect, circleToEllipseRy } = Projection;
 
-// ── Layout 常量导入 ───────────────────────────────────────────────────────────
-
-const BASE = '../';  // preview.html 在 sth/ 下，项目根在上一层
-const Layout = await import(BASE + 'js/core/Layout.js');
-const { INTRINSIC: VEHICLE_INTRINSIC } = await import(BASE + 'js/entity/vehicle/vehicle.js');
-
-// ── PIXI 初始化 ──────────────────────────────────────────────────────────────
-
-const app = new PIXI.Application({
-  width: 800, height: 600,
-  backgroundColor: 0xffffff,
-  antialias: true,
-});
+const VIEW_W = 940, VIEW_H = 620;
+const app = new PIXI.Application({ width: VIEW_W, height: VIEW_H, backgroundColor: 0xb4b4b4, antialias: true });
 document.getElementById('canvas-wrap').appendChild(app.view);
 
-const bgLayer    = new PIXI.Graphics();
-const drawLayer  = new PIXI.Graphics();
-const drawLayerB = new PIXI.Graphics();
-const guideLayer = new PIXI.Graphics();
-app.stage.addChild(bgLayer, drawLayer, drawLayerB, guideLayer);
+const bg      = new PIXI.Graphics();          // 屏幕空间背景，不跟随相机
+const world   = new PIXI.Container();          // 相机容器
+const gGround = new PIXI.Graphics();           // 地面预通道
+const gMain   = new PIXI.Graphics();           // 主体
+const gOver   = new PIXI.Graphics();           // 叠加层（包围框/足迹/参照）
+world.addChild(gGround, gMain, gOver);
+app.stage.addChild(bg, world);
 
-// ── UI 绑定 ──────────────────────────────────────────────────────────────────
-
-const selA   = document.getElementById('drawSelect');
-const selB   = document.getElementById('drawSelectB');
-const status = document.getElementById('status');
-
-for (const f of DRAW_FILES) {
-  selA.appendChild(new Option(f.label, f.label));
-  selB.appendChild(new Option(f.label, f.label));
-}
-
+const statusEl = document.getElementById('status');
 const ui = {
-  get selected()  { return DRAW_FILES.find(f => f.label === selA.value); },
-  get selectedB() { return DRAW_FILES.find(f => f.label === selB.value); },
-  get y()         { return +document.getElementById('sliderY').value; },
-  get scale()     { return +document.getElementById('sliderScale').value; },
-  get bg()        { return document.querySelector('input[name=bg]:checked').value; },
-  get grid()      { return document.getElementById('chkGrid').checked; },
-  get origin()    { return document.getElementById('chkOrigin').checked; },
-  get compare()   { return document.getElementById('chkCompare').checked; },
+  y:      () => +document.getElementById('sliderY').value,
+  scale:  () => +document.getElementById('sliderScale').value,
+  zoom:   () => +document.getElementById('sliderZoom').value,
+  bounds: () => document.getElementById('chkBounds').checked,
+  foot:   () => document.getElementById('chkFootprint').checked,
+  ground: () => document.getElementById('chkGround').checked,
+  human:  () => document.getElementById('chkHuman').checked,
+  bg:     () => document.querySelector('input[name=bg]:checked').value,
 };
 
-// ── 模块缓存 + 加载（加时间戳强制刷新） ──────────────────────────────────────
+// ── 对象清单：道具来自注册表实时枚举，其余手工登记 ──────────────────────────
+let stick = null;   // StickRenderer（懒加载，只有选到 npc 才需要 clip 数据）
 
-const moduleCache = {};
+const GROUND_FEATURES = {
+  chessPlaza: (g, x, y, s) => drawChessPlaza(g, { cx: x, cy: y, rx: 688 * s, ry: 429 * s }),
+  miniPark:   (g, x, y, s) => drawMiniPark(g,   { cx: x, cy: y, rx: 1112 * s, ry: 597 * s }),
+  parkPlaza:  (g, x, y, s) => drawParkPlaza(g, [{ x, y, scale: s }]),
+  parkPaths:  (g, x, y, s) => drawParkPaths(g,
+                  { cx: x - 900, cy: y, rx: 400 * s, ry: 250 * s },
+                  { cx: x + 900, cy: y, rx: 500 * s, ry: 300 * s }),
+};
 
-async function loadDraw(entry, bustCache = false) {
-  const url = bustCache ? `${entry.path}?t=${Date.now()}` : entry.path;
-  try {
-    const mod = await import(url);
-    moduleCache[entry.label] = mod[entry.fn];
-    return mod[entry.fn];
-  } catch (e) {
-    console.error(`加载失败: ${entry.path}`, e);
-    status.textContent = `❌ 加载失败: ${entry.label} — ${e.message}`;
-    return null;
+const items = [];
+for (const t of propTypes().sort()) items.push({ cat: 'prop', id: t, label: t });
+for (const k of ['car', 'taxi', 'bus', 'moto']) items.push({ cat: 'vehicle', id: k, label: 'vehicle: ' + k });
+items.push({ cat: 'building', id: 'building', label: 'building' });
+for (const k of Object.keys(GROUND_FEATURES)) items.push({ cat: 'ground', id: k, label: 'ground: ' + k });
+items.push({ cat: 'sky', id: 'skyline', label: 'sky: skyline' });
+items.push({ cat: 'npc', id: 'npc', label: 'npc: 火柴人（选中后列出 clip）' });
+
+let selected = items[0];
+
+const listEl = document.getElementById('list');
+let lastCat = null;
+for (const it of items) {
+  if (it.cat !== lastCat) {
+    const h = document.createElement('div');
+    h.className = 'cat';
+    h.textContent = '— ' + it.cat + ' —';
+    listEl.appendChild(h);
+    lastCat = it.cat;
   }
+  const b = document.createElement('button');
+  b.textContent = it.label;
+  b.onclick = () => { selected = it; syncSel(); render(); };
+  it._btn = b;
+  listEl.appendChild(b);
+}
+function syncSel() { for (const it of items) it._btn.classList.toggle('on', it === selected); }
+syncSel();
+
+// clip 选择器（只有 npc 用）
+const clipSel = document.createElement('select');
+clipSel.title = 'NPC clip';
+clipSel.style.display = 'none';
+clipSel.onchange = () => render();
+document.getElementById('panel').insertBefore(clipSel, document.getElementById('list').nextSibling);
+
+// ── 造实体：全部走游戏里的真实类 ───────────────────────────────────────────
+function makeProp(type, x, y, s) {
+  const def = PROP_DEFAULTS[type] ?? {};
+  // 跟 sceneData.js#_expandProps 一样把 w/h 映射成 width/height——PROP_DEFAULTS
+  // 用的是 w/h 短键，直接展开会漏进 Entity 的 40×40 默认值，预览就会说谎。
+  const cfg = { ...def, propType: type, x, y, tags: def.tags ?? [],
+                width: def.w, height: def.h };
+  // busstop-roof 的几何由 spawnBusStop 传入，这里给一份等价的默认值
+  if (type === 'busstop-roof') Object.assign(cfg, { roofW: 800, roofH: 21, roofClearH: 203, pillarOffset: 325 });
+  if (type === 'busstop-bench') Object.assign(cfg, { width: 424, height: 12, seatH: 34 });
+  const e = new PropEntity(cfg);
+  e.scale = s;
+  return e;
+}
+function makeBuilding(x, y, s) {
+  // building.x = 左边缘、building.y = 立面顶部（老约定，见 BuildingEntity）
+  const facadeH = 476 * s, bWidth = 529 * s;
+  return new BuildingEntity({ x: x - bWidth / 2, y: y - facadeH, bWidth, bDepth: 371 * s, facadeH, tags: ['residential'] });
 }
 
-// ── 背景渲染 ─────────────────────────────────────────────────────────────────
-
-function renderBg() {
-  bgLayer.clear();
-  const W = 800, H = 600;
-  if (ui.bg === 'white') {
-    bgLayer.beginFill(0xffffff); bgLayer.drawRect(0, 0, W, H); bgLayer.endFill();
-  } else if (ui.bg === 'gray') {
-    bgLayer.beginFill(0xb0b0b0); bgLayer.drawRect(0, 0, W, H); bgLayer.endFill();
+// ── 叠加层 ─────────────────────────────────────────────────────────────────
+function drawGroundRef(g, x, y) {
+  // 地面线（世界 y = 当前 y 的那条横线）+ 每 100 单位一道纵深刻度
+  g.lineStyle(1, 0x3aa0ff, 0.55);
+  const a = toScreen(x - 1200, y), b = toScreen(x + 1200, y);
+  g.moveTo(a.x, a.y); g.lineTo(b.x, b.y);
+  g.lineStyle(1, 0x3aa0ff, 0.18);
+  for (let d = -400; d <= 400; d += 100) {
+    if (d === 0) continue;
+    const p = toScreen(x - 1200, y + d), q = toScreen(x + 1200, y + d);
+    g.moveTo(p.x, p.y); g.lineTo(q.x, q.y);
+  }
+  // 原点十字
+  const o = toScreen(x, y);
+  g.lineStyle(1, 0xff4444, 0.8);
+  g.moveTo(o.x - 10, o.y); g.lineTo(o.x + 10, o.y);
+  g.moveTo(o.x, o.y - 10); g.lineTo(o.x, o.y + 10);
+}
+function drawBoundsBox(g, e) {
+  if (typeof e.getBounds !== 'function') return null;
+  const b = e.getBounds();
+  const r = billboardScreenBox(b);
+  g.lineStyle(2, 0xffcc00, 0.85);
+  g.drawRect(r.x, r.y, r.w, r.h);
+  return b;
+}
+function drawFootprint(g, e, x, y) {
+  const f = e.footprint;
+  if (!f || (!f.rx && !f.ry)) return;
+  g.lineStyle(1.5, 0x22dddd, 0.9);
+  if (f.shape === 'ellipse') {
+    const c = toScreen(x, y);
+    g.drawEllipse(c.x, c.y, toScreenLength(f.rx), circleToEllipseRy(f.ry));
   } else {
-    // 模拟场景分带
-    const bands = [
-      [0,                     Layout.BUILDING_BASE_Y, 0xf4f4f4],
-      [Layout.BUILDING_BASE_Y, Layout.FAR_Y,          0xcccccc],
-      [Layout.FAR_Y,           Layout.NEAR_Y,         0x888888],
-      [Layout.NEAR_Y,          Layout.PARK_TOP,        0xb0b0b0],
-      [Layout.PARK_TOP,        Layout.WORLD_HEIGHT,    0xaaaaaa],
-    ];
-    for (const [y0, y1, c] of bands) {
-      bgLayer.beginFill(c); bgLayer.drawRect(0, y0, W, y1 - y0); bgLayer.endFill();
-    }
+    g.drawPolygon(projectGroundRect(x - f.rx, y - f.ry, x + f.rx, y + f.ry));
   }
 }
-
-// ── 辅助线渲染 ───────────────────────────────────────────────────────────────
-
-function renderGuides(cx, cy) {
-  guideLayer.clear();
-
-  if (ui.grid) {
-    guideLayer.lineStyle(0.5, 0x000000, 0.08);
-    for (let x = 0; x < 800; x += 20) { guideLayer.moveTo(x, 0); guideLayer.lineTo(x, 600); }
-    for (let y = 0; y < 600; y += 20) { guideLayer.moveTo(0, y); guideLayer.lineTo(800, y); }
-  }
-
-  if (ui.origin) {
-    // 十字标记
-    guideLayer.lineStyle(1, 0xff0000, 0.5);
-    guideLayer.moveTo(cx - 12, cy); guideLayer.lineTo(cx + 12, cy);
-    guideLayer.moveTo(cx, cy - 12); guideLayer.lineTo(cx, cy + 12);
-    // Y 值标签
-    guideLayer.lineStyle(0);
-  }
+function drawHumanRef(g, x, y) {
+  // 1.7m = 144 骨架单位，站在地面线上，作为所有尺寸的肉眼标尺
+  const base = toScreen(x, y);
+  const h = toScreenLength(144), w = toScreenLength(38);
+  g.lineStyle(1.5, 0xcc44ff, 0.75);
+  g.drawRect(base.x - w / 2, base.y - h, w, h);
+  g.lineStyle(1, 0xcc44ff, 0.35);
+  g.moveTo(base.x - w, base.y - h); g.lineTo(base.x + w, base.y - h);
 }
 
-// ── 主渲染 ───────────────────────────────────────────────────────────────────
-
-async function render(bustCache = false) {
-  const entry = ui.selected;
-  if (!entry) return;
-
-  const fn = await loadDraw(entry, bustCache);
-  if (!fn) return;
-
-  const compare = ui.compare && ui.selectedB;
-  let fnB = null;
-  if (compare) {
-    fnB = await loadDraw(ui.selectedB, bustCache);
-  }
-
-  const y     = ui.y;
-  const scale = ui.scale;
-  const cx    = compare ? 280 : 400;
-  const cxB   = 520;
-
-  renderBg();
-  renderGuides(cx, y);
-  if (compare) renderGuides(cxB, y);
-
-  // 绘制 A
-  drawLayer.clear();
-  try {
-    // 构造 draw 参数对象（兼容不同 draw 函数的参数需求）
-    const p = { x: cx, y: y, scale: scale };
-
-    // building 需要特殊参数
-    if (entry.label === 'building') {
-      fn(drawLayer, {
-        x: cx - 60, y: y - 80, bWidth: 120, bDepth: 12,
-        facadeH: 80,
-        A: { style: 'normal', groundMax: 24, groundFrac: 0.3, floorH: 20 },
-        waterTower: true, solar: false, billboard: false, alleyLeft: false,
-      });
-    } else if (entry.label === 'vehicle') {
-      // drawVehicle 只用到 kind / scale / x / y / direction / _dims()，
-      // 拿 INTRINSIC 拼一个替身即可，不必真造 VehicleEntity（那会拖进行为层依赖）。
-      const kind = document.getElementById('vehKind').value;
-      fn(drawLayer, {
-        kind, x: cx, y, scale, direction: 1,
-        _dims: () => VEHICLE_INTRINSIC[kind] ?? VEHICLE_INTRINSIC.car,
-      });
-    } else {
-      fn(drawLayer, p);
-    }
-    status.textContent = `✅ ${entry.label} — y=${y}, scale=${scale.toFixed(2)}`;
-  } catch (e) {
-    console.error(e);
-    status.textContent = `❌ 渲染出错: ${e.message}`;
-  }
-
-  // 绘制 B（对比）
-  drawLayerB.clear();
-  if (compare && fnB) {
-    try {
-      const pB = { x: cxB, y: y, scale: scale };
-      if (ui.selectedB.label === 'building') {
-        fnB(drawLayerB, {
-          x: cxB - 60, y: y - 80, bWidth: 120, bDepth: 12,
-          facadeH: 80,
-          A: { style: 'normal', groundMax: 24, groundFrac: 0.3, floorH: 20 },
-          waterTower: true, solar: false, billboard: false, alleyLeft: false,
-        });
-      } else {
-        fnB(drawLayerB, pB);
-      }
-    } catch (e) {
-      console.error('对比渲染出错:', e);
-    }
-  }
-
-  // 更新显示值
+// ── 渲染 ───────────────────────────────────────────────────────────────────
+async function render() {
+  const y = ui.y(), s = ui.scale(), zoom = ui.zoom();
   document.getElementById('valY').textContent = y;
-  document.getElementById('valScale').textContent = scale.toFixed(2);
+  document.getElementById('valScale').textContent = s.toFixed(2);
+  document.getElementById('valZoom').textContent = zoom.toFixed(2);
+
+  const x = 0;   // 世界 x 固定 0，相机居中到它
+  gGround.clear(); gMain.clear(); gOver.clear();
+
+  // 背景（屏幕空间）
+  bg.clear();
+  const bgc = ui.bg() === 'white' ? 0xffffff : ui.bg() === 'dark' ? 0x2a2a2a : 0xb4b4b4;
+  bg.beginFill(bgc).drawRect(0, 0, VIEW_W, VIEW_H).endFill();
+
+  // 相机：把 (x,y) 摆到视口中央偏下，跟游戏一样只做 zoom + pan
+  const t = toScreen(x, y);
+  world.scale.set(zoom);
+  world.position.set(VIEW_W / 2 - t.x * zoom, VIEW_H * 0.62 - t.y * zoom);
+
+  if (ui.ground()) drawGroundRef(gOver, x, y);
+
+  let info = '';
+  try {
+    if (selected.cat === 'prop') {
+      const e = makeProp(selected.id, x, y, s);
+      e.drawGround?.(gGround);
+      e.draw(gMain);
+      const b = ui.bounds() ? drawBoundsBox(gOver, e) : e.getBounds();
+      if (ui.foot()) drawFootprint(gOver, e, x, y);
+      const f = e.footprint;
+      info = `prop "${selected.id}"  bounds{w:${b.width.toFixed(0)} h:${b.height.toFixed(0)}}  `
+           + `footprint{rx:${(f.rx??0).toFixed(0)} ry:${(f.ry??0).toFixed(0)} blocks:${!!f.blocks}}  _sortY:${e._sortY.toFixed(0)}`;
+    } else if (selected.cat === 'vehicle') {
+      const d = VEH[selected.id];
+      const v = { kind: selected.id, x, y, scale: s, direction: 1, _dims: () => d };
+      drawVehicle(gMain, v);
+      if (ui.bounds()) {
+        const totalH = (d.H + d.r * 2) * s;
+        const b = { x: x - d.L * s / 2, y: y - totalH, width: d.L * s, height: totalH };
+        const r = billboardScreenBox(b);
+        gOver.lineStyle(2, 0xffcc00, 0.85);
+        gOver.drawRect(r.x, r.y, r.w, r.h);
+      }
+      info = `vehicle "${selected.id}"  L:${d.L} H:${d.H} W:${d.W} beltH:${d.beltH} cabinL:${d.cabinL} cabinH:${d.cabinH}`;
+    } else if (selected.cat === 'building') {
+      const e = makeBuilding(x, y, s);
+      e.draw(gMain);
+      const b = ui.bounds() ? drawBoundsBox(gOver, e) : e.getBounds();
+      info = `building  bWidth:${e.bWidth.toFixed(0)} bDepth:${e.bDepth.toFixed(0)} facadeH:${e.facadeH.toFixed(0)}  `
+           + `bounds{w:${b.width.toFixed(0)} h:${b.height.toFixed(0)}}  _sortY:${e._sortY.toFixed(0)}`;
+    } else if (selected.cat === 'ground') {
+      GROUND_FEATURES[selected.id](gGround, x, y, s);
+      info = `ground "${selected.id}"（贴地元素，走 groundFaceGraphics）`;
+    } else if (selected.cat === 'sky') {
+      const sc = await (await fetch(BASE + 'assets/scene.json')).json();
+      drawSkyline(gMain, sc.layout.skyline);
+      world.position.set(60, VIEW_H * 0.62);   // 天空层是屏幕空间，单独摆
+      info = `sky "skyline"  未投影平贴层，y=0 即楼基线；back ${sc.layout.skyline.back.length} 栋 / front ${sc.layout.skyline.front.length} 栋`;
+    } else if (selected.cat === 'npc') {
+      if (!stick) {
+        statusEl.textContent = '正在加载 clip 数据…';
+        await clipLibrary.init();
+        const ids = Object.keys(clipLibrary.manifest.clips);
+        await Promise.all(ids.map(id => clipLibrary.getClip(id)));
+        stick = new StickRenderer({});
+        stick.setSkeletons(clipLibrary.skeletons);
+        for (const id of ids) stick.loadAnimation(id, clipLibrary.resolve(id));
+        clipSel.innerHTML = '';
+        for (const id of ids.sort()) clipSel.appendChild(new Option(id, id));
+        clipSel.value = 'stand';
+      }
+      clipSel.style.display = '';
+      const clip = clipSel.value;
+      stick.draw(gMain, clip, 0, x, y, s, 1, 0x323232, 1, null, null);
+      if (ui.bounds()) {
+        const h = 160 * s, w = 80 * s;
+        const r = billboardScreenBox({ x: x - w / 2, y: y - h, width: w, height: h });
+        gOver.lineStyle(2, 0xffcc00, 0.85);
+        gOver.drawRect(r.x, r.y, r.w, r.h);
+      }
+      info = `npc clip "${clip}"  scale:${s.toFixed(2)}（骨架 144 单位 = 1.7m）`;
+    }
+    if (selected.cat !== 'npc') clipSel.style.display = 'none';
+
+    if (ui.human()) drawHumanRef(gOver, x + 260, y);
+    statusEl.className = '';
+    statusEl.textContent = `✅ ${info}\n   y=${y}（世界纵深）  scale=${s.toFixed(2)}  zoom=${zoom.toFixed(2)}`
+      + `   |  黄=getBounds() 青=footprint() 蓝=地面线 紫=1.7m 参照人`;
+  } catch (err) {
+    statusEl.className = 'err';
+    statusEl.textContent = `❌ ${selected.label} — ${err.message}\n${err.stack?.split('\n')[1] ?? ''}`;
+    console.error(err);
+  }
 }
 
-// ── 事件绑定 ─────────────────────────────────────────────────────────────────
-
-selA.addEventListener('change', () => render());
-document.getElementById('vehKind').addEventListener('change', () => render());
-selB.addEventListener('change', () => render());
-document.getElementById('sliderY').addEventListener('input', () => render());
-document.getElementById('sliderScale').addEventListener('input', () => render());
+for (const id of ['sliderY', 'sliderScale', 'sliderZoom']) {
+  document.getElementById(id).addEventListener('input', () => render());
+}
+for (const id of ['chkBounds', 'chkFootprint', 'chkGround', 'chkHuman']) {
+  document.getElementById(id).addEventListener('change', () => render());
+}
 document.querySelectorAll('input[name=bg]').forEach(r => r.addEventListener('change', () => render()));
-document.getElementById('chkGrid').addEventListener('change', () => render());
-document.getElementById('chkOrigin').addEventListener('change', () => render());
-document.getElementById('chkCompare').addEventListener('change', () => {
-  selB.disabled = !ui.compare;
-  render();
-});
-
-document.getElementById('btnReload').addEventListener('click', () => render(true));
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'r' || e.key === 'R') render(true);
-});
-
-// ── 首次渲染 ─────────────────────────────────────────────────────────────────
 
 render();
-
 </script>
 </body>
 </html>

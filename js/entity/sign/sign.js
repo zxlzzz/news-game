@@ -7,4 +7,6 @@ export function footprint(_e) {
 import { registerProp } from '../../core/propRegistry.js';
 import { drawSign } from './drawSign.js';
 // 有 footprint（sortDY +9）但 **不阻挡**：不在 Z-2d 前的 OBSTACLE_TYPES 集合里
-registerProp('sign', { draw: drawSign, footprint, obstacle: false });
+registerProp('sign', {
+  visual: { hw: 22, up: 44, down: 0 },  // drawSign sw=43；牌面 35 + 吊挂支架 9（p.y 是牌下沿）
+  draw: drawSign, footprint, obstacle: false });

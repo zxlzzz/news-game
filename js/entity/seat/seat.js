@@ -116,7 +116,15 @@ import { drawBench }         from './drawBench.js';
 import { drawChairL }        from './drawChairL.js';
 import { drawChairR }        from './drawChairR.js';
 import { drawBusStopBench }  from './drawBusStopBench.js';
-registerProp('bench',         { draw: drawBench, footprint, obstacle: true });
-registerProp('chair-l',       { draw: drawChairL });
-registerProp('chair-r',       { draw: drawChairR });
-registerProp('busstop-bench', { draw: drawBusStopBench });
+registerProp('bench',         {
+  visual: { hw: 150, up: 80, down: 0 },  // INTRINSIC.width=300；legH23+seatT17+backH40=80
+  draw: drawBench, footprint, obstacle: true });
+registerProp('chair-l',       { draw: drawChairL,
+  visual: { hw: 13, up: 34, down: 0 },  // drawChairSide seatW=25；座高10+板2+靠背20
+});
+registerProp('chair-r',       { draw: drawChairR,
+  visual: { hw: 13, up: 34, down: 0 },  // 同 chair-l
+});
+registerProp('busstop-bench', {
+  visual: { hw: 66, up: 34, down: 0 },  // drawBusStopBench benchW=132；座面 30 + 板厚 4
+  draw: drawBusStopBench });

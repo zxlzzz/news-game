@@ -7,4 +7,6 @@ export function footprint(e) {
 // ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
 import { registerProp } from '../../core/propRegistry.js';
 import { drawMailbox } from './drawMailbox.js';
-registerProp('mailbox', { draw: drawMailbox, footprint, obstacle: true });
+registerProp('mailbox', {
+  visual: { hw: 23, up: 92, down: 0 },  // drawMailbox 顶盖 cw=46 宽；顶端 72+extraHeight20
+  draw: drawMailbox, footprint, obstacle: true });

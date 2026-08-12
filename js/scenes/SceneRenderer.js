@@ -18,7 +18,7 @@
  * `layout.clouds`），不在本刀范围。
  */
 import {
-  WORLD_WIDTH, FAR_Y, NEAR_Y, BUILDING_BASE_Y,
+  WORLD_WIDTH, FAR_Y, NEAR_Y, BUILDING_BASE_Y, PX_PER_UNIT,
   GRAY_SKY, GRAY_ROAD, GRAY_CURB,
   LINE_FAR_WIDTH, LINE_NEAR_COLOR, LINE_NEAR_WIDTH,
   SKY_COLOR_TOP, SKY_COLOR_HOR, FOG_COLOR, FOG_ALPHA,
@@ -108,12 +108,22 @@ export class SceneRenderer {
     g.lineTo(b.x, b.y);
   }
 
+  /**
+   * 天空层。**坐标系：屏幕像素，y=0 = 楼基线（投影后的地平线），向上为负。**
+   * O-7 之前这里在"未投影的世界单位"里作画、把地平线放在 y=BUILDING_BASE_Y(700)，
+   * 与 worldContainer 里投影后的楼基线（y=0）差了 700px，天际线永远对不齐
+   * （详见 drawSkyline.js 头注）。天空层不参与投影，但必须跟世界共用同一个
+   * 竖直原点和同一个像素刻度，否则两层就是各画各的。
+   */
   _drawSky() {
     const g = this.sky;
     g.clear();
 
-    // 5-band vertical gradient: SKY_COLOR_TOP → SKY_COLOR_HOR over full sky height
-    const skyH  = BUILDING_BASE_Y;
+    // 横向要盖住整个视差范围（天空只吃 0.45 横向视差，世界 pan 跨度约 3400px）
+    const X0 = -600, XW = 4200;
+    const SKY_H = 1000;   // 地平线以上画这么高，足够任何 pan/zoom 下铺满视口
+
+    // 5-band vertical gradient: SKY_COLOR_TOP → SKY_COLOR_HOR，顶端在 -SKY_H
     const bands = 5;
     const rT = (SKY_COLOR_TOP >> 16) & 0xff, gT = (SKY_COLOR_TOP >> 8) & 0xff, bT = SKY_COLOR_TOP & 0xff;
     const rH = (SKY_COLOR_HOR >> 16) & 0xff, gH = (SKY_COLOR_HOR >> 8) & 0xff, bH = SKY_COLOR_HOR & 0xff;
@@ -123,22 +133,30 @@ export class SceneRenderer {
       const gc = Math.round(gT + (gH - gT) * t);
       const b  = Math.round(bT + (bH - bT) * t);
       g.beginFill((r << 16) | (gc << 8) | b, 1);
-      g.drawRect(-300, Math.round(i / bands * skyH), WORLD_WIDTH + 600, Math.ceil(skyH / bands) + 1);
+      g.drawRect(X0, -SKY_H + Math.round(i / bands * SKY_H), XW, Math.ceil(SKY_H / bands) + 1);
       g.endFill();
     }
 
-    // Horizon fog band: atmospheric haze over the skyline baseline
+    // Horizon fog band: 骑在地平线上的一条雾霭
     g.beginFill(FOG_COLOR, FOG_ALPHA);
-    g.drawRect(-300, BUILDING_BASE_Y - 20, WORLD_WIDTH + 600, 32);
+    g.drawRect(X0, -20, XW, 32);
     g.endFill();
 
     drawSkyline(g, this.layout.skyline);   // O-6：平贴层，不经投影，见 drawSkyline.js
     this._drawClouds(g);
   }
 
+  /**
+   * 云。`layout.clouds` 的 x/y 是**世界**坐标（scene.json 里跟其余场景几何一致），
+   * 这里换算到天空层的屏幕空间：x 乘 PX_PER_UNIT，y 换算成"相对地平线的高度"
+   * （`(y - BUILDING_BASE_Y) * PX_PER_UNIT`，在地平线之上所以是负值）。
+   * 半径同样乘 PX_PER_UNIT——云是天上的平贴装饰，不吃 shear/tilt。
+   */
   _drawClouds(g) {
     for (const c of (this.layout.clouds || [])) {
-      const { x: cx, y: cy, scale: s } = c;
+      const cx = c.x * PX_PER_UNIT;
+      const cy = (c.y - BUILDING_BASE_Y) * PX_PER_UNIT;
+      const s  = (c.scale ?? 1) * PX_PER_UNIT;
       g.beginFill(0xffffff, 0.92);
       g.drawEllipse(cx,          cy,         35 * s, 13 * s);
       g.drawEllipse(cx - 28 * s, cy + 6 * s, 22 * s, 10 * s);

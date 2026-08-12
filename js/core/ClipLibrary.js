@@ -109,6 +109,15 @@ function _buildFrameCumFrac(kfs, fps, frameCount) {
   return cum;
 }
 
+/**
+ * 资源路径按**模块自身位置**解析，不是按文档位置（O-7）。
+ * 原来写的是相对路径 `fetch('assets/...')`——那是相对**当前页面**解析的，
+ * 只有从仓库根的 index.html 打开才对；`sth/preview.html` 之类不在根目录的页面
+ * 会去要 `/sth/assets/...` 拿到 404。`import.meta.url` 指向本文件
+ * （js/core/ClipLibrary.js），往上两级就是仓库根，任何页面引用都能拿对。
+ */
+const ASSETS = new URL('../../assets/', import.meta.url);
+
 class ClipLibrary {
   constructor() {
     this._manifest  = null;
@@ -119,8 +128,8 @@ class ClipLibrary {
 
   async init() {
     const [mRes, sRes] = await Promise.all([
-      fetch('assets/manifest.json'),
-      fetch('assets/skeleton.json'),
+      fetch(new URL('manifest.json', ASSETS)),
+      fetch(new URL('skeleton.json', ASSETS)),
     ]);
     this._manifest  = await mRes.json();
     this._skeletons = (await sRes.json()).skeletons;
@@ -132,7 +141,7 @@ class ClipLibrary {
     const entry = this._manifest?.clips[id];
     if (!entry) return null;
     try {
-      const r = await fetch('assets/' + entry.path);
+      const r = await fetch(new URL(entry.path, ASSETS));
       if (!r.ok) { console.warn(`ClipLibrary: 404 ${entry.path}`); return null; }
       this._cache[id] = await r.json();
     } catch (e) {

@@ -7,4 +7,6 @@ export function footprint(e) {
 // ─── 自注册（Z-2d propRegistry）────────────────────────────────────────────────
 import { registerProp } from '../../core/propRegistry.js';
 import { drawNewsRack } from './drawNewsRack.js';
-registerProp('newsrack', { draw: drawNewsRack, footprint, obstacle: true });
+registerProp('newsrack', {
+  visual: { hw: 38, up: 86, down: 0 },  // drawNewsRack 檐口 w+6=76 宽；h=86
+  draw: drawNewsRack, footprint, obstacle: true });
