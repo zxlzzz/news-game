@@ -69,19 +69,22 @@ import { toScreen, toScreenLength } from '../core/Projection.js';
 是暂定值，`docs/roadmap.md` O-2 条目落地后要跑实机调；调完之前不要假定这两个
 数值已经定型。
 
-`EntityManager`/`SceneRenderer` 里大部分**道具**仍画的是 `toScreen` 定位的灰色
-占位盒子，**不是**真实调用各自的 `draw()`——那些函数还是按 O-1 之前"容器整体
-缩放"的假设写的，尚未跟投影对齐，直接调用会显得错位。转换完成、改走真实
-`draw()` 的有三类：楼（`typeof e.facadeH === 'number'`）、O-3 起的
-`CONVERTED_PROP_TYPES`/`CONVERTED_GROUND_TYPES` 白名单、以及**火柴人**
-（`_isStickFigure(e)`：有 `renderer` + `animation` 字符串，即 NPC 与狗）。
-其余道具仍是占位盒子，逐批随 O-4 转换。
+**O-4 起占位盒子已全部退场**：`EntityManager.draw()` 里所有实体都走真实
+`draw()`，判定分四类——楼（`typeof e.facadeH === 'number'`）、火柴人
+（`_isStickFigure(e)`：有 `renderer` + `animation` 字符串，即 NPC 与狗）、
+车（`_isVehicle(e)`：有 `kind` + `_dims()`）、道具白名单
+（`CONVERTED_PROP_TYPES` / `CONVERTED_GROUND_TYPES`）。`_drawPlaceholder` 仍
+留在文件里，但只有新增了未登记的 propType 才会落到它——**新增 prop 记得加进
+白名单**，否则只会看到一个灰盒子。
 
-火柴人不属于"待转换"——人不走盒子模板，`StickRenderer` 内部已按上方「坐标
-约定」接好投影。曾因 O-2 漏了这一环而被一并降级成灰盒子（全场没有人影，
-画面完全读不懂），已修复，见 `docs/roadmap.md`「O-2 遗留」条目。
+火柴人和车都**不走盒子模板**：人是竖直广告牌（`StickRenderer` 内部已按上方
+「坐标约定」接好投影）；车是"只到腰线的体块 + 正面贴侧面剪影"（见
+`drawVehicle.js#_bodyBox`，车顶是弧的，体块取满高会露方角）。
+历史：O-2 把未对齐投影的实体一律降级成灰盒子时漏了把人排除在外，全场没有
+人影、画面完全读不懂，已修复，见 `docs/roadmap.md`「O-2 遗留」条目。
 
-**三面体积模板**（O-3）：`drawObliqueBox(g,x,y,w,depth,h,fillFront)` 给底面
+**三面体积模板**（O-3，O-4 补了第 8 参）：
+`drawObliqueBox(g,x,y,w,depth,h,fillFront,baseH=0)` 给底面
 矩形（中心 x、前沿 y）+ 高度 h，生成正面/顶面/侧面三个面，灰度固定分配
 （顶面 `FILL_MID`、侧面 `FILL_SHADE` 写死，正面色由调用方传）。`LIGHT_DIR`
 （`'upper-left'`）是全场唯一光源方向，侧面永远画在世界 +x 一侧（屏幕右边）。
@@ -93,7 +96,27 @@ shear 是平行四边形，配套的 `topFaceGraphics(g,anchorX,anchorFarY,liftH
 `drawRect` 转发成 `drawPolygon`。新增/转换 draw 函数一律走这三个函数，不要
 自己算三面/斜切几何——`Visual design spec.md`"不做的事"一节已同步改写。
 道具的进深（depth）是这批转换才引入的新维度，没有历史数据可继承，铁律是
-写进 `js/core/propDefaults.js#PROP_DEPTH`，不写死在 draw 函数内部。
+写进 `js/core/propDefaults.js#PROP_DEPTH`，不写死在 draw 函数内部（车例外，
+走 `vehicle.js#VEHICLE_DEPTH`——`PROP_DEPTH` 按 propType 索引，车不是 prop）。
+`PROP_DEPTH` 同时是 `footprint().ry`（半进深）的唯一推导来源，经
+`propDefaults.js#halfDepth(propType, scale)`（O-5）——不要在 footprint 里手写
+进深数字，那会和 `PROP_DEPTH` 对不上。
+
+**四个坐标代理**（配套 `drawObliqueBox` 用，覆盖"老式扁平画法"的四种落点，
+函数体一行不用改，只换坐标映射）：
+
+| 代理 | 用于 | drawRect 变成 |
+|------|------|---------------|
+| `frontFaceGraphics(g,anchorX,groundY)` | 立面正面细节（窗格/座板/车身剪影） | 矩形（纯 scale+translate，不受 shear） |
+| `topFaceGraphics(g,anchorX,anchorFarY,liftH)` | 顶面散件（屋顶设备） | 平行四边形 |
+| `groundFaceGraphics(g)`（O-4） | **贴地**元素（井盖/排水沟/广场/小径/水盘） | 平行四边形；圆→竖半轴乘 `SIN_TILT` 的椭圆 |
+| `billboardScreenBox(b)`（非代理，是换算函数） | `getBounds()` → 屏幕矩形 | — |
+
+`baseH > 0` 用于悬空体块（雨棚/顶棚/站牌面板/邮筒箱体/灯箱）。
+盒子模板只画**矩形截面**：梯形/收腰（垃圾桶、消防栓圆顶、摊位雨棚外挑）一律
+拉直成等宽，收腰观感靠正面细节里的斜线兜——梯形要绕开模板自己算三面几何，
+违反上面那条铁律。有机形状（树冠、花箱枝叶）走 `frontFaceGraphics` 广告牌，
+不套盒子。
 
 ---
 
@@ -139,7 +162,7 @@ NPC 漫游：远人行道（y≈934）和公园（y≈2280–2900，按旧 y≈3
 | `ground`（Z-2c） | `SceneRenderer` | bands / edgeLines / tiling / grass → 地面色带 |
 | `exits` / `spawnPoints`（Z-2e） | `SceneInitializer._spawnNPCs` | 出口/生成点几何：`side`(left/right)+`margin` 解出 X，`yBand`+`yOffset` 解出 Y |
 | `features`（Z-2e） | `SceneInitializer` → `featureRegistry` | 可选场景内容数组，见下方「Feature registry」 |
-| `layout`（散列，非单一 schema） | 多消费者：`SceneRenderer`（`roadMarkings`（E-1）/ `clouds` / `chessPlaza` / `miniPark`）、`Athletes.js`（`walkPaths`）、`vehicleSpawner.js`/`WaitForBusLayer.js`（`busStops`） | 场景装饰几何/站点数据的分散配置，没有统一子 schema，每个字段各自被对应消费者读取，新增字段时各消费者自行 `_need()` 校验 |
+| `layout`（散列，非单一 schema） | 多消费者：`SceneRenderer`（`roadMarkings`（E-1）/ `clouds` / `chessPlaza` / `miniPark` / `skyline`（O-6，经 `drawSkyline.js`））、`Athletes.js`（`walkPaths`）、`vehicleSpawner.js`/`WaitForBusLayer.js`（`busStops`） | 场景装饰几何/站点数据的分散配置，没有统一子 schema，每个字段各自被对应消费者读取，新增字段时各消费者自行 `_need()` 校验 |
 
 符号解析：Y 边界写分带名经 `resolveY()`，颜色写调色板名经 `resolveColor()`（`Layout.js`），
 拼错立刻抛错。**配置缺失一律抛错，不退回硬编码 fallback。**

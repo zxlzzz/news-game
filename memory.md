@@ -110,3 +110,42 @@ commit. This is *why* the per-patch-commit rule matters, not just tidiness.
   well and is worth reusing — a detached-HEAD `git checkout <old>` →
   screenshot → `git checkout <branch>` costs almost nothing and settles
   "is this regression or intended?" far faster than reasoning about it.
+
+## Working style Hsinlung asked for during the O series (2026-08-12)
+
+- "你改完继续改 o4 然后继续按顺序完成并提交即可，只有需要我确定的地方停下来即可"
+  — once a batch is spec'd in `tasks.md`, run straight through it,
+  commit per patch, and only stop for things that genuinely need his
+  decision. Don't check in after every sub-step.
+- He reviews by looking at the picture, not the code: "我毕竟看不到实物"
+  / "我发现问题再修改即可". So the useful report back is *what changed
+  visually* and *what he should look at*, not a code walkthrough.
+- He spots real bugs from the rendering. Two examples worth remembering
+  because both were correct: the camera drift, and "后排 building 标定的
+  位置不对（似乎偏高了）" — which turned out to be `BuildingEntity.
+  getBounds()` returning depth-as-height anchored at the roofline. When
+  he says something looks off, take it literally and go measure.
+
+## The recurring bug class in this codebase (O series)
+
+Pre-O-2 the world was flat: world y *was* screen y, so a single number
+could silently mean either "how far back" (depth) or "how tall"
+(height). Real projection split those into two channels that must never
+mix (`toScreen` vs `toScreenLength`). **Every leftover that conflated
+them surfaced as a rendering bug**, and they kept coming:
+
+- `BuildingEntity.getBounds()` returned `bDepth` as its height.
+- Bus stop geometry expressed vertical extent as two absolute world-y
+  values subtracted — which also produced a 0.71 m tall shelter and a
+  `NaN` (undefined `stop.bayD`) that made the far stop undrawable.
+- `drawBusStopSign` used Y-band constants as the pole top.
+- `footprint().ry` was `Math.max(3, N)` everywhere — a token sliver,
+  because flat sheets have no depth.
+- `_exportImage` sized its texture in world units after draw calls had
+  already switched to screen px.
+
+Heuristic for next time: when something in this repo looks misplaced
+*vertically*, first ask which of the two channels the number is in.
+Also — several of these were latent for months because no static gate
+covers rendering; the five gates all passed the whole time. Visual bugs
+here need a real run, which is why the standing exception above matters.
