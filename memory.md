@@ -34,11 +34,10 @@ only, no `git push`. Don't wait and bundle multiple patches (or bug fixes
 found along the way) into one commit "to be safe" — that's exactly the
 mess Hsinlung asked to avoid. Hsinlung reviews and pushes when he's ready;
 that's a separate, later, explicit step, not a reason to defer commits.
-Validated same day: a camera-follow feature got fixed twice, still wasn't
-good enough, Hsinlung asked to delete it outright (own commit), then asked
-to revert that deletion (`git revert`, another own commit) — all three
-steps were cheap and clean specifically because each was its own isolated
-commit. This is *why* the per-patch-commit rule matters, not just tidiness.
+Validated by the camera-follow episode (full account below under
+Collaboration): fix → fix → delete → revert → re-do differently, five
+separate steps, each cheap to undo precisely because each was its own
+isolated commit. That's *why* the rule matters, not just tidiness.
 
 ---
 
@@ -126,29 +125,28 @@ commit. This is *why* the per-patch-commit rule matters, not just tidiness.
   getBounds()` returning depth-as-height anchored at the roofline. When
   he says something looks off, take it literally and go measure.
 
-## The recurring bug class in this codebase (O series)
+## The flat-world legacy bug class (O series — now closed)
 
-Pre-O-2 the world was flat: world y *was* screen y, so a single number
-could silently mean either "how far back" (depth) or "how tall"
-(height). Real projection split those into two channels that must never
-mix (`toScreen` vs `toScreenLength`). **Every leftover that conflated
-them surfaced as a rendering bug**, and they kept coming:
+Pre-O-2 the world was flat: world y *was* screen y, so one number could
+silently mean either "how far back" (depth) or "how tall" (height). Real
+projection split those into two channels that must never mix (`toScreen`
+vs `toScreenLength`). **Every leftover that conflated them surfaced as a
+rendering bug** — eight of them across O-2…O-8, including: building bounds
+returning depth-as-height; bus-stop geometry as two subtracted world-y
+values (which also gave a 0.71 m shelter and a `NaN` that made the far stop
+undrawable); `footprint().ry` as a token sliver; the panorama export sizing
+its texture in world units; the sky layer drawing its horizon 700 px off
+with vertical parallax on top; and the camera storing a world point so
+shear leaked vertical input into horizontal drift.
 
-- `BuildingEntity.getBounds()` returned `bDepth` as its height.
-- Bus stop geometry expressed vertical extent as two absolute world-y
-  values subtracted — which also produced a 0.71 m tall shelter and a
-  `NaN` (undefined `stop.bayD`) that made the far stop undrawable.
-- `drawBusStopSign` used Y-band constants as the pole top.
-- `footprint().ry` was `Math.max(3, N)` everywhere — a token sliver,
-  because flat sheets have no depth.
-- `_exportImage` sized its texture in world units after draw calls had
-  already switched to screen px.
+**As of O-8 this class should be exhausted** — `EntityManager.draw()` has no
+"skip" branches left and every draw path (entities, NPCs, vehicles, held
+props, ground features, sky) goes through `Projection.js`. If a *new*
+instance shows up, it's new code, not legacy.
 
-Heuristic for next time: when something in this repo looks misplaced
-*vertically*, first ask which of the two channels the number is in.
-Also — several of these were latent for months because no static gate
-covers rendering; the five gates all passed the whole time. Visual bugs
-here need a real run, which is why the standing exception above matters.
+Heuristic to keep: when something looks misplaced **vertically**, first ask
+which of the two channels that number is in. And note the general shape —
+these sat latent for months because no gate covers rendering (see below).
 
 ## Verification gap worth knowing (2026-08-12)
 
@@ -175,3 +173,48 @@ props from the live `propTypes()` registry and constructs **real**
 `PropEntity`/`BuildingEntity` objects, so it exercises the same
 `draw()`/`getBounds()`/`footprint()` the game uses. Driving it through all 32
 entries is the fastest way to smoke-test a rendering change.
+
+## Project state as of 2026-08-12 (end of the O series)
+
+**`tasks.md` is fully executed.** O-1…O-6 all landed, plus four unplanned
+follow-ups that came out of Hsinlung's real-run review: O-5b (vehicle
+massing from real dimensions), O-7 (camera drift / sky alignment /
+`getBounds` sizes / preview rebuild), O-8 (NPC-attached drawing). Branch
+`claude/velocity-unification-v1-946h9l`, all local commits, **nothing
+pushed** — Hsinlung pushes when he's ready.
+
+`tasks.md` says its own contents can be deleted once every patch is done.
+That point has been reached; ask before deleting, since it doubles as his
+scratch space.
+
+### Known-open items (none of them blocking, roughly by value)
+
+1. **`TILT_DEG = 20` / `SHEAR = 0.2` are still the provisional O-2 values.**
+   Everything is now drawn with real volume, so this is the moment they can
+   actually be judged. Changing them costs nothing in code but means
+   re-eyeballing every prop, so it's worth doing *before* any art polish.
+   Hsinlung has the rebuilt `sth/preview.html` to review with and said he'd
+   give style feedback in bulk afterwards.
+2. **`drawBusStopBay` is converted but has no call site** — it reads
+   `stop.bayW` / `stop.bayD`, which have never existed in
+   `scene.json#layout.busStops` (only x/direction/bench). Wiring it back
+   means adding that scene data. Same data gap that produced the `NaN`
+   far-stop bug.
+3. **`EnvironmentQuery.js` radius constants are still raw world pixels** —
+   flagged in CLAUDE.md as known debt, never in scope. This is the last
+   unconverted unit-system holdout.
+4. **Tree bounds are deliberately loose** (`visual.hw/up` sized for the
+   maximum jitter, so the yellow box reads bigger than most trees). Correct
+   for capture, slightly ugly in the preview; tighten only if it bothers him.
+5. **Content gaps Hsinlung draws himself** (from `tasks.md`'s last section,
+   not code tasks): `run_front` clip, and the
+   `overlay/couple/arm_around_shoulder.json` duet clip.
+
+### Suggested next moves, if he asks
+
+The natural sequence is *tune → review → polish*: settle TILT/SHEAR first
+(cheapest to change, invalidates the most downstream judgement), then let
+him do the bulk style pass in the preview, then act on that list. Item 2 is
+a small self-contained patch that could slot in any time. Item 3 is the only
+one that touches behaviour rather than looks, so it deserves its own
+discussion round before being written into `tasks.md`.
