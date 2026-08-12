@@ -11,18 +11,24 @@
  * 屏幕空间，否则跟随逻辑一删，拖到屏幕边缘就再也够不着世界剩下的部分。
  *
  * 拖拽/缩放直接用画布本地像素坐标（`getScreenCoords`，不再经世界坐标换算）；
- * 命中检测的实体世界包围盒每帧经 `toRenderScreen`（世界坐标 + 当前相机
- * pan/zoom → 当前屏幕像素）投影后再跟取景框比较——取景框固定不动，但相机一
- * 移动，同一批实体投影出来的屏幕位置会变，命中集合因此仍然正确随相机内容
- * 更新。用四角 AABB 近似（世界矩形因 shear 投影后是平行四边形），跟本项目
- * 其它"近似够用，不必算精确多边形相交"的取舍一致。
+ * 命中检测与高亮描边则把每个实体的世界包围盒经 `entityScreenRect` 换算成当前
+ * 屏幕矩形再跟取景框比较——取景框固定不动，但相机一移动，同一批实体换算出来
+ * 的屏幕位置会变，命中集合因此仍然正确随相机内容更新。
+ *
+ * 本文件**不做任何投影数学**（CLAUDE.md 铁律：Projection.js 是唯一投影住址）：
+ * `entityScreenRect` 由 StreetScene 注入，内部走
+ * `Projection.billboardScreenBox()` + 相机 pan/zoom。包围盒是"贴地竖直广告牌
+ * 盒"而不是地面足迹（语义见 `Entity.getBounds()`），所以换算出来是屏幕轴对齐
+ * 矩形，不是平行四边形——物体是立着的广告牌，它的屏幕轮廓本来就轴对齐。
+ * 历史：第一版误用地面四角投影（把高度当纵深），楼的高亮框整体浮在楼上方，
+ * 见 docs/roadmap.md「取景框高亮框错位」条目。
  */
 
 export class Viewfinder {
-  constructor({ app, getScreenCoords, toRenderScreen }, config = {}) {
+  constructor({ app, getScreenCoords, entityScreenRect }, config = {}) {
     this.app = app;
-    this._toScreenCoords = getScreenCoords; // client(x,y) → 画布本地像素 {x,y}
-    this._toRenderScreen = toRenderScreen;  // 世界(x,y) → 当前屏幕像素 {x,y}（含相机 pan/zoom）
+    this._toScreenCoords   = getScreenCoords;   // client(x,y) → 画布本地像素 {x,y}
+    this._entityScreenRect = entityScreenRect;  // getBounds() → 当前屏幕矩形 {x,y,w,h}（含相机 pan/zoom）
 
     // 屏幕像素坐标（viewport 相对，不随相机 pan/zoom 变化）
     this.x      = config.x      ?? 130;
@@ -100,32 +106,17 @@ export class Viewfinder {
     });
   }
 
-  /** 实体世界包围盒四角投影到当前屏幕像素空间后的 AABB。 */
-  _projectBoundsAABB(b) {
-    const corners = [
-      this._toRenderScreen(b.x,           b.y),
-      this._toRenderScreen(b.x + b.width, b.y),
-      this._toRenderScreen(b.x,           b.y + b.height),
-      this._toRenderScreen(b.x + b.width, b.y + b.height),
-    ];
-    const xs = corners.map(c => c.x), ys = corners.map(c => c.y);
-    return {
-      minX: Math.min(...xs), maxX: Math.max(...xs),
-      minY: Math.min(...ys), maxY: Math.max(...ys),
-    };
-  }
-
   updateCapture(entities) {
     this.capturedEntities = [];
     const vf = { x: this.x, y: this.y, w: this.width, h: this.height };
 
     for (const e of entities) {
-      const aabb = this._projectBoundsAABB(e.getBounds());
+      const r = this._entityScreenRect(e.getBounds());
       const overlap = !(
-        aabb.maxX < vf.x ||
-        aabb.minX > vf.x + vf.w ||
-        aabb.maxY < vf.y ||
-        aabb.minY > vf.y + vf.h
+        r.x + r.w < vf.x ||
+        r.x       > vf.x + vf.w ||
+        r.y + r.h < vf.y ||
+        r.y       > vf.y + vf.h
       );
       if (overlap) this.capturedEntities.push(e);
     }
@@ -133,8 +124,8 @@ export class Viewfinder {
 
   /**
    * 取景框本身是屏幕空间轴对齐矩形（浮在顶层，不再随相机 shear/pan/zoom）；
-   * 命中实体的高亮描边仍需要把它们的世界包围盒投影到当前屏幕空间才能画对
-   * 位置，用 `toRenderScreen` 四角投影出的四边形（可能因 shear 是平行四边形）。
+   * 命中实体的高亮描边经 `entityScreenRect` 换算到当前屏幕空间——广告牌盒
+   * 换算出来同样是轴对齐矩形，见文件头。
    */
   draw(g) {
     const x = this.x, y = this.y, w = this.width, h = this.height;
@@ -172,16 +163,12 @@ export class Viewfinder {
 
     this._drawResizeHandle(g, x + w, y + h);
 
-    // 命中实体高亮描边：世界包围盒四角投影到当前屏幕空间
+    // 命中实体高亮描边：世界包围盒 → 当前屏幕矩形
     if (this.capturedEntities.length > 0) {
       g.lineStyle(2, 0xffcc00, 0.7);
       for (const e of this.capturedEntities) {
-        const b  = e.getBounds();
-        const p0 = this._toRenderScreen(b.x,           b.y);
-        const p1 = this._toRenderScreen(b.x + b.width, b.y);
-        const p2 = this._toRenderScreen(b.x + b.width, b.y + b.height);
-        const p3 = this._toRenderScreen(b.x,           b.y + b.height);
-        g.drawPolygon([p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y]);
+        const r = this._entityScreenRect(e.getBounds());
+        g.drawRect(r.x, r.y, r.w, r.h);
       }
     }
   }

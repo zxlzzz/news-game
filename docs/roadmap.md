@@ -1061,3 +1061,53 @@ C 键拍照本身在上一条（取景框改屏幕空间）里已经顺带修好
 代码锚点：`js/core/StickRenderer.js`（文件头「O-2 投影接线」注释 +
 `_drawHuman`/`_drawDog`）；`js/core/EntityManager.js#_isStickFigure`；
 `js/scenes/StreetScene.js#_exportImage`
+
+### 取景框高亮框错位 + `getBounds()` 语义归一 — 已修复
+
+Hsinlung 实机发现："所有物体都有一个黄色的框，这个框表示它们底面的范围吗，
+如果是的话可能后排 building 标定的位置不对（似乎偏高了）"。问对了地方——
+黄色框不是地面足迹，而且确实错位，根因是 `getBounds()` 的语义在 O-2 之后
+从来没有被重新定义过，两处消费者各按各的理解投影。
+
+**`getBounds()` 到底是什么**：它是**贴地竖直广告牌盒**（pre-O-2 时代的扁平
+屏幕空间 AABB）——`x`/`width` 是水平范围，`y`/`height` 是**离地高度**范围，
+盒子下沿 `y + height` 落在地面接触线上。`height` 是"物体有多高"，**不是**
+"物体在纵深方向有多厚"。进深另有住址（`PROP_DEPTH` / `footprint()`），不在
+包围盒里。O-2 之前世界 y 就是屏幕 y，这个语义无需言明也不会出错；接上真投影
+之后，"高度"和"纵深"必须走两条不同通道（`Projection.js` 文件头「核心区分」），
+再不写清楚就一定会被投错。
+
+两个 bug 因此浮出水面：
+
+1. **取景框高亮框把高度当纵深投影**（上一批「取景框改屏幕空间 UI」引入的）：
+   `Viewfinder` 拿包围盒四角走 `projectGroundRect` 式的地面投影，等于让物体
+   斜切着往场景深处趴——越高的物体错得越离谱，楼最明显。
+2. **`BuildingEntity.getBounds()` 本身就是错的**（历史遗留，非本轮引入）：
+   返回 `{y: this.y - bDepth, height: bDepth}`——拿**进深**当高度，又把盒子
+   下沿放在 roofline 而不是接地线上，整体往场景深处错了一个 `facadeH`。
+   这正是 Hsinlung 看到的"后排 building 偏高"。
+
+修法：
+- `Projection.js` 新增 `billboardScreenBox(b)`——包围盒 → 屏幕轴对齐矩形，
+  接地点过 `toScreen`（纵深）、宽高过 `toScreenLength`（平长度）。物体是立着的
+  广告牌，屏幕轮廓本来就轴对齐，不该是平行四边形。函数注释里写明"⚠ 不要把
+  `getBounds()` 丢给 `projectGroundRect()`"，把这个坑钉在调用点旁边。
+- `Entity.getBounds()` 补上完整语义约定（含"子类覆盖时必须遵守"与消费者清单），
+  这是本批真正的产出——bug 只是症状，语义没定义才是病根。
+- `BuildingEntity.getBounds()` 改成 `{x: this.x, y: this.y, width: bWidth,
+  height: facadeH}`：盒子上沿 = roofline，下沿 = 接地线，语义与其余实体一致。
+- `Viewfinder` 不再自己做任何投影数学（CLAUDE.md 铁律：Projection.js 是唯一
+  投影住址），改由 StreetScene 注入 `entityScreenRect` 回调（内部
+  `billboardScreenBox` + 相机 pan/zoom），命中检测与高亮描边共用；
+  原 `toRenderScreen`/`_projectBoundsAABB` 删除。
+- `EntityManager._drawPlaceholder` 顺带收口：原本按 `typeof e.facadeH` 分楼/
+  非楼两支各自拼锚点，现在锚点约定差异已由各子类的 `getBounds()` 消化，直接
+  走同一个 `billboardScreenBox`，分支删除。
+
+实测：黄色框现在紧贴楼的立面（屋顶线到接地线）与每个火柴人，不再浮在物体上方。
+五个静态门全绿。
+
+代码锚点：`js/core/Projection.js#billboardScreenBox`；`js/core/Entity.js`
+（`getBounds()` 语义注释）；`js/entity/building/BuildingEntity.js#getBounds`；
+`js/camera/Viewfinder.js`；`js/scenes/StreetScene.js#_entityScreenRect`；
+`js/core/EntityManager.js#_drawPlaceholder`

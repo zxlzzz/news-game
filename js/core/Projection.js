@@ -63,9 +63,38 @@ export function circleToEllipseRy(r) {
 }
 
 /**
+ * 实体包围盒（`Entity.getBounds()` 的返回值）→ 屏幕矩形。
+ *
+ * `getBounds()` 的语义是**贴地竖直广告牌盒**，不是地面足迹（见 Entity.js 上
+ * 该方法的注释）：`x`/`width` 是水平范围，`y`/`height` 是**离地高度**范围，
+ * 盒子下沿 `y + height` 落在地面接触线上。所以换算时两个方向走的通道不同——
+ * 地面接触线那个点是纵深量、过 `toScreen()`；宽和高是"平长度"、过
+ * `toScreenLength()`，不参与 shear/tilt。这跟 StickRenderer 画人、
+ * `frontFaceGraphics` 画正面细节是同一条「核心区分」（见文件头）。
+ *
+ * ⚠ 不要把 `getBounds()` 丢给 `projectGroundRect()`——那个函数假定两个角点
+ * 都是地面上的位置，会把"高度"当成"纵深"投影：物体会被斜切着往后趴，越高
+ * 的物体错得越离谱（楼最明显）。这是 O-2 之后很容易踩的坑。
+ *
+ * @returns {{x:number,y:number,w:number,h:number}} 屏幕像素轴对齐矩形
+ *          （绝对投影坐标，未叠加相机 pan/zoom）
+ */
+export function billboardScreenBox(b) {
+  const base = toScreen(b.x, b.y + b.height); // 下沿 = 地面接触线
+  return {
+    x: base.x,
+    y: base.y - toScreenLength(b.height),
+    w: toScreenLength(b.width),
+    h: toScreenLength(b.height),
+  };
+}
+
+/**
  * 地面矩形（世界坐标，对角两点 x0,y0 – x1,y1）→ 屏幕平行四边形顶点，
  * flat array [x,y, x,y, x,y, x,y]（PIXI Graphics#drawPolygon 的入参形状），
  * 顶点顺序 = (x0,y0)→(x1,y0)→(x1,y1)→(x0,y1)。
+ * **两个角点都必须是地面上的位置**——竖直方向的范围请用
+ * `billboardScreenBox()`，别把高度当纵深传进来。
  */
 export function projectGroundRect(x0, y0, x1, y1) {
   const p0 = toScreen(x0, y0), p1 = toScreen(x1, y0);

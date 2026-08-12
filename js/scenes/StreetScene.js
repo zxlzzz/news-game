@@ -27,7 +27,7 @@ import { SceneInitializer } from './SceneInitializer.js';
 // sceneScreenBounds（投影后的屏幕包围盒）算尺寸，这里不再需要；
 // SIDEWALK_FAR_Y/SIDEWALK_NEAR_Y 是更早就没有消费者的死 import，一并清掉。
 import { GRAY_SKY, initLayout } from '../core/Layout.js';
-import { toScreen, toWorld, sceneScreenBounds } from '../core/Projection.js';
+import { toScreen, toWorld, sceneScreenBounds, billboardScreenBox } from '../core/Projection.js';
 import { initWalkPaths }    from '../behavior/WalkMode.js';
 import { expandSceneData }  from '../core/sceneData.js';
 import { PixiText }         from '../core/PixiText.js';
@@ -132,8 +132,8 @@ export class StreetScene {
 
     this.viewfinder = new Viewfinder({
       app: this.app,
-      getScreenCoords: (cx, cy) => this._getScreenCoords(cx, cy),
-      toRenderScreen:  (wx, wy) => this._worldToRenderScreen(wx, wy),
+      getScreenCoords:  (cx, cy) => this._getScreenCoords(cx, cy),
+      entityScreenRect: (b)      => this._entityScreenRect(b),
     }); // 屏幕像素坐标，默认居中；取景框不再绑定世界坐标，见 Viewfinder.js 头注
     // 相机开局摆到场景默认视野中心（原默认取景框的世界中心点，取景框改屏幕
     // 空间后不再依赖它，但这个锚点本身仍是合理的开局取景——见 _centerCameraOn 注释）。
@@ -236,17 +236,25 @@ export class StreetScene {
   }
 
   /**
-   * 世界坐标 → 当前相机 pan/zoom 下的屏幕像素坐标（即 worldContainer 子节点
-   * 实际渲染到的位置）。供取景框命中检测/高亮描边把实体世界包围盒投影到
-   * 屏幕空间用——取景框本身固定不动，但相机一移动，同一批实体投影出来的
-   * 位置会变，命中集合因此仍正确跟着相机内容更新。公式与 `_applyCamera` 里
-   * worldContainer 的 position/scale 设置保持一致（PIXI 容器变换：先 scale
-   * 后加 position，等价于 (toScreen(w) - pan) * zoom）。
+   * 实体世界包围盒（`Entity.getBounds()`）→ 当前相机 pan/zoom 下的屏幕矩形
+   * （即 worldContainer 子节点实际渲染到的位置）。供取景框命中检测/高亮描边用：
+   * 取景框本身固定不动，但相机一移动，同一批实体落到的屏幕位置会变，命中集合
+   * 因此仍正确跟着相机内容更新。
+   *
+   * 投影本身交给 `Projection.billboardScreenBox()`（包围盒是贴地竖直广告牌盒，
+   * 宽高走平长度通道、接地点走纵深通道），这里只负责再叠加相机变换——公式与
+   * `_applyCamera` 里 worldContainer 的 position/scale 一致（PIXI 容器变换：
+   * 先 scale 后加 position，等价于 (绝对屏幕坐标 - pan) * zoom）。
    */
-  _worldToRenderScreen(wx, wy) {
+  _entityScreenRect(bounds) {
     const pan = toScreen(this.scrollX, this.scrollY);
-    const t   = toScreen(wx, wy);
-    return { x: (t.x - pan.x) * this.zoom, y: (t.y - pan.y) * this.zoom };
+    const b   = billboardScreenBox(bounds);
+    return {
+      x: (b.x - pan.x) * this.zoom,
+      y: (b.y - pan.y) * this.zoom,
+      w: b.w * this.zoom,
+      h: b.h * this.zoom,
+    };
   }
 
   // ─── 输入 ──────────────────────────────────────────────────────────────────

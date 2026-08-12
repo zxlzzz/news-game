@@ -1,4 +1,4 @@
-import { toScreen, toScreenLength } from './Projection.js';
+import { billboardScreenBox } from './Projection.js';
 
 /**
  * O-2 占位盒子：真正的三面体积渲染是 O-3（drawObliqueBox）+ O-4（剩余 draw
@@ -6,28 +6,20 @@ import { toScreen, toScreenLength } from './Projection.js';
  * 按老的"容器整体缩放"假设写的，没跟 Projection 对齐，直接调用会在投影后的
  * 场景里显得完全错位；已转的实体（见下方 CONVERTED_PROP_TYPES）改走 draw()。
  *
- * 楼是唯一特殊分支：BuildingEntity.y 是立面顶部（roofline），不是地面接触点
- * （接地线在 y+facadeH，见 BuildingEntity._sortY 与 drawBuilding.js 的
- * baseY 算法），其余实体一律遵循 CLAUDE.md 的铁律——entity.y = 地面接触点。
- * building.x 同理是左边缘（老约定，见 getBounds()/drawBuilding.js），跟通用
- * Entity 的"x=中心"约定不一样，占位盒子要按各自约定取锚点，不能都当中心处理。
+ * 各实体的锚点约定并不统一（楼的 `y` 是立面顶部 roofline、接地线在
+ * `y+facadeH`，`x` 是左边缘；其余实体 `y` 是地面接触点、`x` 是中心），但这些
+ * 差异各子类已经在自己的 `getBounds()` 里消化掉了——包围盒统一是"贴地竖直
+ * 广告牌盒"，所以占位盒子只认 `getBounds()`，不需要按类型分支。
  */
 function _drawPlaceholder(g, e) {
-  const b = e.getBounds();
+  // getBounds() 已经是"贴地竖直广告牌盒"（x/width 水平范围、y/height 离地高度，
+  // 下沿贴地面接触线），各子类自己处理了 x=中心还是左边缘、y=接地还是屋顶线
+  // 这些约定差异，所以这里不需要再按类型分支——直接交给 billboardScreenBox
+  // 换算即可（宽高走平长度、接地点走纵深，见 Projection.js）。
   g.lineStyle(0);
   g.beginFill(0xaaaaaa, 1);
-  if (typeof e.facadeH === 'number') {
-    const groundY = e.y + e.facadeH;
-    const base = toScreen(e.x, groundY);        // e.x 是左边缘，不用再减半宽居中
-    const w = toScreenLength(e.bWidth ?? b.width);
-    const h = toScreenLength(e.facadeH);
-    g.drawRect(base.x, base.y - h, w, h);
-  } else {
-    const base = toScreen(e.x, e.y);             // 通用 Entity 约定：e.x=中心
-    const w = toScreenLength(b.width);
-    const h = toScreenLength(b.height);
-    g.drawRect(base.x - w / 2, base.y - h, w, h);
-  }
+  const r = billboardScreenBox(e.getBounds());
+  g.drawRect(r.x, r.y, r.w, r.h);
   g.endFill();
 }
 
