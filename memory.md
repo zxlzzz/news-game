@@ -149,3 +149,29 @@ Heuristic for next time: when something in this repo looks misplaced
 Also — several of these were latent for months because no static gate
 covers rendering; the five gates all passed the whole time. Visual bugs
 here need a real run, which is why the standing exception above matters.
+
+## Verification gap worth knowing (2026-08-12)
+
+The five static gates verify **data/behaviour invariants**, not rendering and
+not even JS syntax reliably:
+
+- `node --check <file>.js` checks with **CommonJS** grammar. A file with a
+  genuinely unbalanced `registerProp('x', { ... });` passed `node --check`
+  cleanly while the browser refused to parse it. Don't trust it for ESM.
+  The reliable check is `new vm.SourceTextModule(src)` per file
+  (`node --experimental-vm-modules`), which caught it across 149 files.
+- Nothing in the gate set executes a draw call, so every rendering
+  regression this session (invisible NPCs, blank export, misplaced bounds
+  boxes, missing proxy methods, deleted `CAR_SHAPE`) was found by actually
+  running the app, never by the gates.
+
+Practical rule: after any **bulk/scripted edit** to js/, run the ESM parse
+check and load the app once. Scripted regex edits are the specific hazard —
+twice now a replacement swallowed the rest of a line (`draw:` matched but
+`drawGround:` didn't), and both times the gates stayed green.
+
+`sth/preview.html` is now a full preview harness (rebuilt O-7): it enumerates
+props from the live `propTypes()` registry and constructs **real**
+`PropEntity`/`BuildingEntity` objects, so it exercises the same
+`draw()`/`getBounds()`/`footprint()` the game uses. Driving it through all 32
+entries is the fastest way to smoke-test a rendering change.
