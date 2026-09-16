@@ -3,4 +3,31 @@ package-lock.json
 package.json
 *.patch
 
+/.agents/
+/.claude/
+
+# Local/editor state and generated caches
+.idea/
+.vscode/
+.cache/
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+Thumbs.db
+
+# Godot generated import state
+.godot/
+*.import
+
+# Large local inputs and generated captures for the Godot studies
+/assets/fromgodot/
+/sth/asset-import-spike/godot-style-spike/assets/
+/sth/asset-import-spike/godot-style-spike/original_model/
+/sth/asset-import-spike/godot-style-spike/output/
+
 /tasks.md
+
+# Local project instructions and memory
+/memory.md
+/AGENTS.md

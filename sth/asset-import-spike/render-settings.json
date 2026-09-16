@@ -1,0 +1,9 @@
+{
+  "facetContrast": 45,
+  "outlineVisible": false,
+  "light": {
+    "direction": "left-front",
+    "label": "左前侧（左侧最亮）",
+    "position": [-3, 6, 5]
+  }
+}
