@@ -1,4 +1,5 @@
 import {createRig, DEFAULTS, add, sub, mul, norm, unit, mix} from './retarget.mjs';
+import {limbStroke, taper} from './strokes.mjs';
 const $ = id => document.getElementById(id);
 try {
   const response = await fetch('./motions.json');
@@ -17,7 +18,7 @@ try {
     input.oninput = () => {params[key] = +input.value; output.value = params[key].toFixed(2); draw();};
     row.append(input, output); $('params').append(row);
   }
-  const canvases = ['legacy','structure','styled'].map($);
+  const canvases = ['legacy','styled'].map($);
   const number = id => +$(id).value;
   const clip = () => data.clips[current];
   function pause(value) {playing=value; $('play').textContent=playing?'暂停':'播放';}
@@ -27,8 +28,9 @@ try {
   $('frame').oninput=()=>{pause(false);elapsed=number('frame')/clip().fps;draw();};
   for(const id of ['yaw','pitch','small','joints','contact']) $(id).oninput=draw;
   $('stroke').oninput=()=>{$('strokeValue').value=number('stroke').toFixed(1)+'×';draw();};
+  $('softness').oninput=()=>{$('softnessValue').value=number('softness').toFixed(1);draw();};
   for(const [id,yaw,pitch] of [['front',0,0],['side',90,0],['oblique',-35,15]]) $(id).onclick=()=>{$('yaw').value=yaw;$('pitch').value=pitch;draw();};
-  $('reset').onclick=()=>{for(const [k,v] of Object.entries(DEFAULTS)){params[k]=v;if($(k)){$(k).value=v;$(k).dispatchEvent(new Event('input'));}}draw();};
+  $('reset').onclick=()=>{for(const [k,v] of Object.entries(DEFAULTS)){params[k]=v;if($(k)){$(k).value=v;$(k).dispatchEvent(new Event('input'));}}$('softness').value=.7;$('softnessValue').value='0.7';draw();};
   function sample() {
     const f=Math.min(elapsed*clip().fps,clip().frames.length-1), a=Math.floor(f), b=Math.min(a+1,clip().frames.length-1);
     return clip().frames[a].map((p,i)=>mix(p,clip().frames[b][i],f-a));
@@ -47,17 +49,34 @@ try {
     for(let n=-2;n<=2;n++)for(const pair of [[[n*.4,0,-.8],[n*.4,0,.8]],[[-.8,0,n*.4],[.8,0,n*.4]]]){
       const [a,b]=pair.map(p=>project(add(p,[root[0],0,root[2]])));g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();
     }
-    const radius=mode===2?params.head:.13, center=rig.headCenter(points,radius,mode===0);
+    const radius=mode===3?params.head:DEFAULTS.head, center=rig.headCenter(points,radius);
     const head=project(center), items=[];
     // All columns retain the same 11-point silhouette; other joints only drive it.
     for(const [an,bn] of rig.direct){
+      if(mode===3&&/ForeArm$|Hand$|Shin$|Foot$/.test(bn))continue;
       let a=points[rig.ix[an]],b=points[rig.ix[bn]];
       if(bn==='HeadEnd'||bn==='Head')b=sub(center,mul(unit(sub(center,a)),radius));
       const pa=project(a),pb=project(b);
       const body=an==='Hips'&&bn==='Neck2';
       const lower=/Hand$|Foot$/.test(bn);
-      const width=mode===0?3.5:body?4.2:lower?2.8:3.5;
+      const width=body?4.2:lower?2.8:3.5;
       items.push({z:(pa[2]+pb[2])/2,pa,pb,width});
+    }
+    if(mode===3){
+      for(const side of ['Left','Right'])for(const [anchor,hinge,end,isLeg] of [
+        ['Neck2',side+'ForeArm',side+'Hand',false],['Hips',side+'Shin',side+'Foot',true]]){
+        const samples=limbStroke(points[rig.ix[anchor]],points[rig.ix[hinge]],points[rig.ix[end]],number('softness'));
+        // Subdivide long sections too: stroke width changes continuously from
+        // proximal limb to tip, rather than stepping abruptly at elbow/knee.
+        for(let i=1;i<samples.length;i++){
+          const a=samples[i-1],b=samples[i],steps=Math.max(1,Math.ceil(norm(sub(b.point,a.point))/.012));
+          for(let k=0;k<steps;k++){
+            const pa=project(mix(a.point,b.point,k/steps)),pb=project(mix(a.point,b.point,(k+1)/steps));
+            const t=a.t+(b.t-a.t)*(k+.5)/steps;
+            items.push({z:(pa[2]+pb[2])/2,pa,pb,width:taper(t,isLeg?3.8:3.5,isLeg?3.0:2.65)});
+          }
+        }
+      }
     }
     items.push({z:head[2],head});items.sort((a,b)=>a.z-b.z);
     for(const item of items){
@@ -70,8 +89,8 @@ try {
     g.fillStyle='#778175';g.font='12px system-ui';g.textAlign='center';g.fillText($('small').checked?'约 75 px 人高':'同一米制比例',width/2,height-10);
   }
   function draw(){
-    const source=sample(), target=rig.retarget(source,params,$('contact').checked);
-    paint(canvases[0],source,0,source[0]);paint(canvases[1],source,1,source[0]);paint(canvases[2],target.joints,2,source[0]);
+    const source=sample(), baseline=rig.retarget(source,DEFAULTS,true),target=rig.retarget(source,params,$('contact').checked);
+    paint(canvases[0],baseline.joints,2,source[0]);paint(canvases[1],target.joints,3,source[0]);
     $('time').textContent=elapsed.toFixed(2)+' s';$('frame').value=Math.round(elapsed*clip().fps);
     const error=Math.max(target.maxFootError,target.maxHandError);
     $('status').textContent=`${clip().label} · ${Math.round(elapsed*clip().fps)+1} / ${clip().frames.length} 帧`+(error>.001?` · 当前比例有 ${(error*100).toFixed(1)} cm 落点无法够到`:'');

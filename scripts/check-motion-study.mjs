@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createRig, DEFAULTS, norm, sub} from '../sth/motion-study/retarget.mjs';
+import {limbStroke} from '../sth/motion-study/strokes.mjs';
 const data=JSON.parse(fs.readFileSync(new URL('../sth/motion-study/motions.json',import.meta.url),'utf8'));
 const rig=createRig(data);
 let frames=0, boneError=0, floorError=0, footError=0, headError=0;
@@ -17,6 +18,15 @@ for(const clip of Object.values(data.clips))for(const source of clip.frames){
   for(const side of ['Left','Right']){
     const i=rig.ix[side+'Foot'];
     assert(Math.hypot(q[i][0]-source[i][0],q[i][2]-source[i][2])<1e-5,'Ankle trajectory changed');
+    for(const [a,b,c] of [['Neck2',side+'ForeArm',side+'Hand'],['Hips',side+'Shin',side+'Foot']]){
+      const start=q[rig.ix[a]],hinge=q[rig.ix[b]],end=q[rig.ix[c]];
+      for(const softness of [0,.7,1]){
+        const path=limbStroke(start,hinge,end,softness);
+        assert(path.every(s=>s.point.every(Number.isFinite)));
+        assert.deepEqual(path[0].point,start,'Drawing moved limb root');
+        assert.deepEqual(path.at(-1).point,end,'Drawing moved hand/foot endpoint');
+      }
+    }
   }
   frames++;
 }

@@ -3,8 +3,9 @@
 <title>NPC 骨架试作</title><link rel="icon" href="data:,">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#eeeae2;color:#242823;font:15px/1.5 system-ui,sans-serif}main{max-width:1380px;margin:auto;padding:28px}header{display:flex;justify-content:space-between;align-items:baseline;gap:20px}h1{font-size:23px;font-weight:600;margin:0}p{margin:5px 0;color:#667067}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:20px 0}button,select{font:inherit;background:#faf9f5;border:1px solid #c4c8bc;border-radius:5px;padding:7px 13px;color:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #547e67;outline-offset:3px}label{display:flex;align-items:center;gap:7px}input[type=range]{width:116px;accent-color:#4b715a}.panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.panel{background:#f7f5ef;border:1px solid #d3d6ca;border-radius:8px;overflow:hidden}.caption{padding:16px 18px 0}.caption strong{font-weight:600}.caption p{font-size:13px}canvas{display:block;width:100%;height:420px}.timeline{display:flex;gap:14px;align-items:center;margin:18px 0}.timeline input{flex:1}.params{display:flex;flex-wrap:wrap;gap:15px 22px;border-top:1px solid #cbd0c2;padding-top:18px}.params label{font-size:13px}.params output{width:36px;font-variant-numeric:tabular-nums}.footer{font-size:13px;color:#667067;margin-top:17px}#status{font-variant-numeric:tabular-nums;font-size:13px}details{margin-top:18px;font-size:13px}summary{cursor:pointer}#error{color:#973b32}@media(max-width:850px){.panels{grid-template-columns:1fr}canvas{height:320px}main{padding:16px}header{display:block}}
+.panels{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:850px){.panels{grid-template-columns:1fr}}
 </style></head><body><main>
-<header><div><h1>保留 11 点轮廓，微调人物表现</h1><p>从左到右：原版、头部与线条调整、再加比例调整。</p></div><span id="status">加载动作…</span></header>
+<header><div><h1>在已选版本上，细调线条</h1><p>初始比例、动作一致。左侧保留已选版本，下方身体参数只影响右侧。</p></div><span id="status">加载动作…</span></header>
 <div class="controls">
 <select id="clip" aria-label="动作"></select><button id="play">暂停</button>
 <label>速度 <select id="speed"><option value=".5">0.5×</option><option value="1" selected>1×</option></select></label>
@@ -12,16 +13,15 @@
 <label>俯视 <input id="pitch" type="range" min="0" max="50" value="15"></label>
 <button id="front">正面</button><button id="side">侧面</button><button id="oblique">斜面</button>
 <label><input type="checkbox" id="small">街景尺寸</label>
-<label>线条粗细 <input id="stroke" type="range" min="0.5" max="3" step="0.1" value="1.5"><output id="strokeValue" for="stroke">1.5×</output></label>
+<label>线条粗细 <input id="stroke" type="range" min="0.5" max="4" step="0.1" value="3"><output id="strokeValue" for="stroke">3.0×</output></label>
 </div>
 <div class="panels">
-<section class="panel"><div class="caption"><strong>原试作 · 11 点直接连线</strong><p>保留原始比例与旧连接方式</p></div><canvas id="legacy" aria-label="原试作动画"></canvas></section>
-<section class="panel"><div class="caption"><strong>11 点 · 调整头部与线条</strong><p>原比例，头随姿态挂接，四肢末端略细</p></div><canvas id="structure" aria-label="11点头部与线条调整动画"></canvas></section>
-<section class="panel"><div class="caption"><strong>11 点 · 再调整身体比例</strong><p>略短躯干，保留足部轨迹与动作节奏</p></div><canvas id="styled" aria-label="11点比例调整动画"></canvas></section>
+<section class="panel"><div class="caption"><strong>已选版本</strong><p>11 点轮廓 · 已选身体比例 · 3× 默认线宽</p></div><canvas id="legacy" aria-label="已选版本动画"></canvas></section>
+<section class="panel"><div class="caption"><strong>线条优化试作</strong><p>肘膝转折略柔和，四肢粗细连续过渡</p></div><canvas id="styled" aria-label="线条优化试作动画"></canvas></section>
 </div>
 <div class="timeline"><span id="time">0.00 s</span><input id="frame" type="range" min="0" max="1" value="0" step="1" aria-label="逐帧查看"><span id="duration"></span></div>
 <div class="params" id="params" aria-label="右栏身体比例"></div>
-<div class="controls"><label><input id="contact" type="checkbox" checked>右栏：手靠近头时修正落点</label><label><input id="joints" type="checkbox">显示 11 个绘制点</label><button id="reset">恢复试作比例</button></div>
+<div class="controls"><label>右栏转折柔和度 <input id="softness" type="range" min="0" max="1" step="0.1" value="0.7"><output id="softnessValue" for="softness">0.7</output></label><label><input id="contact" type="checkbox" checked>右栏：手靠近头时修正落点</label><label><input id="joints" type="checkbox">显示 11 个绘制点</label><button id="reset">恢复试作设置</button></div>
 <p class="footer">所有画面使用同一时刻、同一镜头；相机跟随人物水平位移。片段播完暂停，不把循环跳回混入动作判断。</p>
 <details><summary>试作边界</summary><p>这是骨架外观与动作迁移实验，尚未接入游戏。足部沿用源素材的水平轨迹与离地高度，不修复源素材自身的打滑或穿地；尚未做物件接触和手指适配。手头修正依据手腕接近程度，不代表手掌已精确贴合。不同骨架使用相同米制比例，不会逐帧自动缩放。</p></details>
 <p id="error" role="alert"></p>

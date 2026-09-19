@@ -3,18 +3,21 @@
 Independent preview: `http://localhost:<port>/sth/motion-study/` from the repository's HTTP server.
 No game runtime imports or source NPZ edits. This is a visual experiment, not a finalized NPC rig.
 
-Three synchronized views isolate the changes:
+Two synchronized views compare the accepted version against a further line refinement:
 
-1. `style_test`'s 11 selected points and old connections (head attachment included).
-2. The same 11-point connections and source proportions, anatomical head axis and lighter distal strokes.
-3. The same 11-point connections and stroke treatment, adjustable internal bone lengths, two-bone leg IK preserving
-   source ankle X/Z trajectories and foot clearance, optional wrist-to-head proximity correction.
+1. Accepted 11-point silhouette, anatomical head attachment and `DEFAULTS` body proportions.
+2. The same initial pose/proportions with continuous limb-width taper and a small quadratic
+   rounding of elbow/knee corners. Hands and feet stay at the exact retargeted endpoints.
+   At softness 0.7 each corner trims at most 5.25 cm along its incident source segments;
+   the visible curve displacement is smaller. This only changes drawing, not joint data.
 
-Hsinlung preferred the original 11-point silhouette. Shoulder/hip/spine helper joints remain
-internal; their anatomical connections are no longer drawn, including in the joint overlay.
-Proportion controls affect only the right column. The left column remains the original baseline.
-The shared stroke multiplier affects all three figures (including street scale), defaults to
-1.5×, and ranges from 0.5× to 3×. It leaves head radius and ground guides unchanged.
+Hsinlung selected the adjusted proportions and 3× stroke width. Shoulder/hip/spine helpers
+remain internal; their anatomical connections are not drawn, including in the joint overlay.
+Proportion/contact controls affect only the right column; the left uses the accepted defaults.
+The shared stroke multiplier affects both figures (including street scale), defaults to
+3×, and ranges from 0.5× to 4×. It leaves head radius and ground guides unchanged.
+Softness 0 disables corner rounding but retains continuous taper. The refinement is a
+candidate, not a replacement accepted by Hsinlung.
 
 The browser uses a simple orthographic canvas renderer. It reproduces the skeleton geometry,
 not Godot's complete scene shader. It follows horizontal root motion, shares camera/scale/time
