@@ -5,7 +5,7 @@
 ## 2026-09 路线状态
 
 - PixiJS 线收官于 O-8，冻结；表中所有未完成的批次视为 frozen。
-- 新路线文档：design route 9.6.md、design_route_npc_behavior.md、design_route_npc_motion_supply.md、kimodo_trial.md。
+- 新路线文档：design route 9.6.md、design_route_npc_behavior.md、design_route_npc_motion_supply.md、kimodo_trial.md、assets/动作素材清单.md。
 - 未决：引擎选择；体积火柴人和影子（要看实物才能定）；Kimodo 输出降到最终骨架后是否读得出来（没测过）；动作 json 的首尾规范（没定）。
 - 暂缓：双人接触动作；手的末端约束；NPC 记忆驱动的行为；画面外 NPC 的生活。
 
