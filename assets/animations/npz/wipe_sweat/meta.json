@@ -1,0 +1,17 @@
+{
+  "name": "wipe_sweat",
+  "text": "A person raises their right forearm and wipes it across their sweaty forehead, then lowers their arm.",
+  "duration": 3,
+  "seed": 43,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1
+}

@@ -1,0 +1,17 @@
+{
+  "name": "pick_up",
+  "text": "A person bends down, picks up a small object from the floor with their right hand, and stands back up.",
+  "duration": 4,
+  "seed": 42,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1
+}
