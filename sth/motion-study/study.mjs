@@ -1,5 +1,5 @@
 import {createRig, DEFAULTS, add, sub, mul, norm, unit, mix} from './retarget.mjs';
-import {limbStroke, taper} from './strokes.mjs';
+import {displayJoints, limbStroke, taper} from './strokes.mjs';
 const $ = id => document.getElementById(id);
 try {
   const response = await fetch('./motions.json');
@@ -90,7 +90,7 @@ try {
   }
   function draw(){
     const source=sample(), baseline=rig.retarget(source,DEFAULTS,true),target=rig.retarget(source,params,$('contact').checked);
-    paint(canvases[0],baseline.joints,2,source[0]);paint(canvases[1],target.joints,3,source[0]);
+    paint(canvases[0],baseline.joints,2,source[0]);paint(canvases[1],displayJoints(target.joints,rig.ix),3,source[0]);
     $('time').textContent=elapsed.toFixed(2)+' s';$('frame').value=Math.round(elapsed*clip().fps);
     const error=Math.max(target.maxFootError,target.maxHandError);
     $('status').textContent=`${clip().label} · ${Math.round(elapsed*clip().fps)+1} / ${clip().frames.length} 帧`+(error>.001?` · 当前比例有 ${(error*100).toFixed(1)} cm 落点无法够到`:'');

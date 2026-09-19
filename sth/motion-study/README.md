@@ -10,6 +10,10 @@ Two synchronized views compare the accepted version against a further line refin
    rounding of elbow/knee corners. Hands and feet stay at the exact retargeted endpoints.
    At softness 0.7 each corner trims at most 5.25 cm along its incident source segments;
    the visible curve displacement is smaller. This only changes drawing, not joint data.
+   The common drawn arm/torso junction sits 20% from Neck1 toward Chest instead of
+   at Neck2, leaving a short visible neck. Chest itself was too low; the moving
+   shoulder midpoint rises too far during arm lifts. The display still has 11 points: it replaces the junction rather
+   than exposing extra shoulder joints. Head, elbows, hands, knees and feet are unchanged.
 
 Hsinlung selected the adjusted proportions and 3× stroke width. Shoulder/hip/spine helpers
 remain internal; their anatomical connections are not drawn, including in the joint overlay.

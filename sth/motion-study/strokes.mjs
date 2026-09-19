@@ -2,6 +2,16 @@
 // around a hinge instead of displaying additional anatomical joints.
 import {add, sub, mul, mix, norm} from './retarget.mjs';
 
+// The drawn arm junction must sit below the head, not at the anatomical upper
+// neck hidden inside its disc. Place the fork just below Neck1, not at Chest
+// (too low) or the moving shoulder midpoint (rises inside the head on arm lifts).
+// Leave the motion/IK skeleton untouched and retain one central junction.
+export function displayJoints(joints, ix) {
+  const display=joints.map(p=>[...p]);
+  display[ix.Neck2]=mix(joints[ix.Neck1],joints[ix.Chest],.2);
+  return display;
+}
+
 export function limbStroke(a, hinge, end, softness) {
   const l1 = norm(sub(hinge,a)), l2 = norm(sub(end,hinge));
   const trim = Math.min(l1*.22,l2*.22,.075) * Math.max(0,Math.min(1,softness));
