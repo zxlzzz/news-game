@@ -26,6 +26,7 @@ try {
   $('play').onclick=()=>{if(elapsed>=(clip().frames.length-1)/clip().fps)elapsed=0;pause(!playing);};
   $('frame').oninput=()=>{pause(false);elapsed=number('frame')/clip().fps;draw();};
   for(const id of ['yaw','pitch','small','joints','contact']) $(id).oninput=draw;
+  $('stroke').oninput=()=>{$('strokeValue').value=number('stroke').toFixed(1)+'×';draw();};
   for(const [id,yaw,pitch] of [['front',0,0],['side',90,0],['oblique',-35,15]]) $(id).onclick=()=>{$('yaw').value=yaw;$('pitch').value=pitch;draw();};
   $('reset').onclick=()=>{for(const [k,v] of Object.entries(DEFAULTS)){params[k]=v;if($(k)){$(k).value=v;$(k).dispatchEvent(new Event('input'));}}draw();};
   function sample() {
@@ -62,7 +63,7 @@ try {
     for(const item of items){
       if(item.head){g.fillStyle='#252d29';g.beginPath();g.arc(head[0],head[1],radius*scale,0,2*Math.PI);g.fill();continue;}
       const {pa,pb,width}=item;
-      g.strokeStyle='#252d29';g.lineWidth=$('small').checked?width*(1.8/3.5):width;g.lineCap='round';g.lineJoin='round';
+      g.strokeStyle='#252d29';g.lineWidth=($('small').checked?width*(1.8/3.5):width)*number('stroke');g.lineCap='round';g.lineJoin='round';
       g.beginPath();g.moveTo(pa[0],pa[1]);g.lineTo(pb[0],pb[1]);g.stroke();
     }
     if($('joints').checked){g.fillStyle='#b66a43';for(const n of new Set(rig.direct.flat())){const [x,y]=project(points[rig.ix[n]]);g.beginPath();g.arc(x,y,2.5,0,2*Math.PI);g.fill();}}

@@ -13,6 +13,8 @@ Three synchronized views isolate the changes:
 Hsinlung preferred the original 11-point silhouette. Shoulder/hip/spine helper joints remain
 internal; their anatomical connections are no longer drawn, including in the joint overlay.
 Proportion controls affect only the right column. The left column remains the original baseline.
+The shared stroke multiplier affects all three figures (including street scale), defaults to
+1.5×, and ranges from 0.5× to 3×. It leaves head radius and ground guides unchanged.
 
 The browser uses a simple orthographic canvas renderer. It reproduces the skeleton geometry,
 not Godot's complete scene shader. It follows horizontal root motion, shares camera/scale/time
