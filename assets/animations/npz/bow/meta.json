@@ -1,0 +1,104 @@
+{
+  "name": "bow",
+  "text": "A person bows politely from the waist with their arms at their sides, pauses, then stands upright.",
+  "duration": 3.5,
+  "seed": 123,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    104
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "notes_zh": "从站立深弯腰，短暂停留后起身；双脚稳定，手沿身体侧后方。首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head"
+    ],
+    "metrics": {
+      "frames": 105,
+      "finite": true,
+      "bone_length_range_mm": 0.91,
+      "max_joint_step_m": 0.067,
+      "root_horizontal_range_m": [
+        0.02199999988079071,
+        0.0729999989271164
+      ],
+      "LeftHand_head_distance_m": [
+        0.7799999713897705,
+        0.7879999876022339,
+        0.7760000228881836,
+        0.6919999718666077,
+        0.6240000128746033,
+        0.7099999785423279,
+        0.7960000038146973,
+        0.7850000262260437,
+        0.7799999713897705
+      ],
+      "RightHand_head_distance_m": [
+        0.7609999775886536,
+        0.7680000066757202,
+        0.7609999775886536,
+        0.6859999895095825,
+        0.6320000290870667,
+        0.7020000219345093,
+        0.7580000162124634,
+        0.7630000114440918,
+        0.7609999775886536
+      ],
+      "hand_separation_m": [
+        0.5379999876022339,
+        0.5220000147819519,
+        0.43799999356269836,
+        0.3970000147819519,
+        0.37599998712539673,
+        0.4690000116825104,
+        0.5270000100135803,
+        0.5289999842643738,
+        0.5379999876022339
+      ],
+      "head_yaw_range_deg": 11.27,
+      "head_pitch_range_deg": 126.83,
+      "head_yaw_samples_deg": [
+        0.0,
+        -1.600000023841858,
+        2.0999999046325684,
+        -1.899999976158142,
+        -8.100000381469727,
+        -1.100000023841858,
+        -3.0999999046325684,
+        -2.799999952316284,
+        0.0
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        -2.299999952316284,
+        14.800000190734863,
+        88.5999984741211,
+        117.9000015258789,
+        54.900001525878906,
+        0.5,
+        0.800000011920929,
+        0.0
+      ]
+    }
+  }
+}

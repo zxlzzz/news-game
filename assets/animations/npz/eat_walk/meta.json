@@ -1,0 +1,96 @@
+{
+  "name": "eat_walk",
+  "text": "A person walks forward while eating a snack from their right hand, bringing it to their mouth as they walk.",
+  "duration": 4,
+  "seed": 42,
+  "endpoints": false,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "review": {
+    "status": "selected",
+    "notes_zh": "跟随视图确认持续迈步，约1秒后右手送到嘴前并维持，左臂随步摆动；4秒前进约6.19米。不含多口进食或食物实体。无首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head",
+      "full_hands_and_follow_camera"
+    ],
+    "metrics": {
+      "frames": 120,
+      "finite": true,
+      "bone_length_range_mm": 0.938,
+      "max_joint_step_m": 0.194,
+      "root_horizontal_range_m": [
+        0.30799999833106995,
+        6.184999942779541
+      ],
+      "LeftHand_head_distance_m": [
+        0.7940000295639038,
+        0.7390000224113464,
+        0.7870000004768372,
+        0.7509999871253967,
+        0.7929999828338623,
+        0.7459999918937683,
+        0.7870000004768372,
+        0.7490000128746033,
+        0.8019999861717224
+      ],
+      "RightHand_head_distance_m": [
+        0.7829999923706055,
+        0.7730000019073486,
+        0.41100001335144043,
+        0.2070000022649765,
+        0.17900000512599945,
+        0.14800000190734863,
+        0.17100000381469727,
+        0.16500000655651093,
+        0.22300000488758087
+      ],
+      "hand_separation_m": [
+        0.593999981880188,
+        0.6859999895095825,
+        0.7170000076293945,
+        0.6370000243186951,
+        0.75,
+        0.6359999775886536,
+        0.7310000061988831,
+        0.628000020980835,
+        0.7429999709129333
+      ],
+      "head_yaw_range_deg": 32.76,
+      "head_pitch_range_deg": 17.45,
+      "head_yaw_samples_deg": [
+        0.0,
+        5.800000190734863,
+        5.0,
+        19.700000762939453,
+        13.199999809265137,
+        21.799999237060547,
+        17.0,
+        32.5,
+        24.200000762939453
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        3.299999952316284,
+        -3.5999999046325684,
+        -2.299999952316284,
+        -13.699999809265137,
+        -5.199999809265137,
+        -7.199999809265137,
+        -3.0999999046325684,
+        -5.800000190734863
+      ]
+    }
+  }
+}

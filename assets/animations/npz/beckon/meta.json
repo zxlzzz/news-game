@@ -1,0 +1,104 @@
+{
+  "name": "beckon",
+  "text": "A person beckons someone to come closer with their right hand, curling their hand towards themselves.",
+  "duration": 3.5,
+  "seed": 123,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    104
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "notes_zh": "右臂向前抬起，再向自身收回后放下；一次前臂招引，非手指连续勾动。首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head"
+    ],
+    "metrics": {
+      "frames": 105,
+      "finite": true,
+      "bone_length_range_mm": 0.92,
+      "max_joint_step_m": 0.127,
+      "root_horizontal_range_m": [
+        0.03099999949336052,
+        0.04600000008940697
+      ],
+      "LeftHand_head_distance_m": [
+        0.7799999713897705,
+        0.7820000052452087,
+        0.7419999837875366,
+        0.7409999966621399,
+        0.746999979019165,
+        0.7630000114440918,
+        0.7910000085830688,
+        0.777999997138977,
+        0.7799999713897705
+      ],
+      "RightHand_head_distance_m": [
+        0.7609999775886536,
+        0.7710000276565552,
+        0.7680000066757202,
+        0.40400001406669617,
+        0.47699999809265137,
+        0.6489999890327454,
+        0.75,
+        0.7620000243186951,
+        0.7609999775886536
+      ],
+      "hand_separation_m": [
+        0.5379999876022339,
+        0.5479999780654907,
+        0.6539999842643738,
+        0.9240000247955322,
+        0.6330000162124634,
+        0.5770000219345093,
+        0.5709999799728394,
+        0.5419999957084656,
+        0.5379999876022339
+      ],
+      "head_yaw_range_deg": 45.79,
+      "head_pitch_range_deg": 13.4,
+      "head_yaw_samples_deg": [
+        0.0,
+        -1.2999999523162842,
+        -22.600000381469727,
+        -44.900001525878906,
+        -39.099998474121094,
+        -16.200000762939453,
+        -6.5,
+        -3.0999999046325684,
+        -0.0
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        1.399999976158142,
+        -3.0999999046325684,
+        -9.399999618530273,
+        -0.6000000238418579,
+        3.0999999046325684,
+        1.600000023841858,
+        2.200000047683716,
+        0.0
+      ]
+    }
+  }
+}

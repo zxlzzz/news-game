@@ -1,0 +1,104 @@
+{
+  "name": "talk_gesture",
+  "text": "A person explains something, gesturing with one hand as they speak.",
+  "duration": 4,
+  "seed": 42,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    119
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "notes_zh": "首版前段空置过久；第二版以左前臂在身前小幅比划，后段右手略参与，最后回到垂手。首尾约束。",
+    "attempts": 2,
+    "views": [
+      "front",
+      "side",
+      "head"
+    ],
+    "metrics": {
+      "frames": 120,
+      "finite": true,
+      "bone_length_range_mm": 0.957,
+      "max_joint_step_m": 0.079,
+      "root_horizontal_range_m": [
+        0.023000000044703484,
+        0.0860000029206276
+      ],
+      "LeftHand_head_distance_m": [
+        0.7799999713897705,
+        0.5070000290870667,
+        0.4519999921321869,
+        0.4350000023841858,
+        0.40299999713897705,
+        0.367000013589859,
+        0.375,
+        0.36000001430511475,
+        0.7799999713897705
+      ],
+      "RightHand_head_distance_m": [
+        0.7609999775886536,
+        0.734000027179718,
+        0.7279999852180481,
+        0.7379999756813049,
+        0.7350000143051147,
+        0.7329999804496765,
+        0.6610000133514404,
+        0.6880000233650208,
+        0.7609999775886536
+      ],
+      "hand_separation_m": [
+        0.5379999876022339,
+        0.5839999914169312,
+        0.5460000038146973,
+        0.5720000267028809,
+        0.5820000171661377,
+        0.597000002861023,
+        0.4880000054836273,
+        0.5260000228881836,
+        0.5379999876022339
+      ],
+      "head_yaw_range_deg": 13.06,
+      "head_pitch_range_deg": 32.34,
+      "head_yaw_samples_deg": [
+        0.0,
+        -3.5999999046325684,
+        -3.700000047683716,
+        -3.5,
+        -6.300000190734863,
+        -3.299999952316284,
+        -4.900000095367432,
+        3.5999999046325684,
+        0.0
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        23.200000762939453,
+        17.700000762939453,
+        11.5,
+        9.0,
+        17.799999237060547,
+        17.200000762939453,
+        17.700000762939453,
+        0.0
+      ]
+    }
+  }
+}

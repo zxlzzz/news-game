@@ -1,0 +1,104 @@
+{
+  "name": "laugh",
+  "text": "A person laughs heartily, leaning back slightly and then bending forward, holding their stomach as their shoulders bounce.",
+  "duration": 4,
+  "seed": 123,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    119
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "notes_zh": "左手靠腹，上身先后仰再前俯，头肩随躯干起伏后恢复。无表情／声音，以扶腹和躯干表达。首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head"
+    ],
+    "metrics": {
+      "frames": 120,
+      "finite": true,
+      "bone_length_range_mm": 0.835,
+      "max_joint_step_m": 0.099,
+      "root_horizontal_range_m": [
+        0.026000000536441803,
+        0.12999999523162842
+      ],
+      "LeftHand_head_distance_m": [
+        0.7799999713897705,
+        0.6320000290870667,
+        0.4740000069141388,
+        0.3799999952316284,
+        0.3449999988079071,
+        0.8009999990463257,
+        0.640999972820282,
+        0.7369999885559082,
+        0.7799999713897705
+      ],
+      "RightHand_head_distance_m": [
+        0.7609999775886536,
+        0.7440000176429749,
+        0.7540000081062317,
+        0.6809999942779541,
+        0.6169999837875366,
+        0.7630000114440918,
+        0.7440000176429749,
+        0.7509999871253967,
+        0.7609999775886536
+      ],
+      "hand_separation_m": [
+        0.5379999876022339,
+        0.5210000276565552,
+        0.3630000054836273,
+        0.39500001072883606,
+        0.4480000138282776,
+        0.6549999713897705,
+        0.5320000052452087,
+        0.5220000147819519,
+        0.5379999876022339
+      ],
+      "head_yaw_range_deg": 10.09,
+      "head_pitch_range_deg": 153.7,
+      "head_yaw_samples_deg": [
+        0.0,
+        -1.7999999523162842,
+        -2.0999999046325684,
+        -2.0,
+        -0.5,
+        -2.5,
+        -2.4000000953674316,
+        1.100000023841858,
+        -0.0
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        -26.0,
+        -88.30000305175781,
+        22.899999618530273,
+        58.599998474121094,
+        -27.399999618530273,
+        -10.199999809265137,
+        10.699999809265137,
+        0.0
+      ]
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "name": "whisper",
+  "text": "A person leans forward and cups their right hand beside their mouth to whisper to someone.",
+  "duration": 3.5,
+  "seed": 123,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    104
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "notes_zh": "右手到嘴侧，身体明显前倾停留后恢复；仅说话者自身，没有另一人的接触定位。首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head"
+    ],
+    "metrics": {
+      "frames": 105,
+      "finite": true,
+      "bone_length_range_mm": 0.767,
+      "max_joint_step_m": 0.105,
+      "root_horizontal_range_m": [
+        0.03799999877810478,
+        0.10199999809265137
+      ],
+      "LeftHand_head_distance_m": [
+        0.7799999713897705,
+        0.7789999842643738,
+        0.753000020980835,
+        0.7179999947547913,
+        0.7149999737739563,
+        0.7229999899864197,
+        0.7580000162124634,
+        0.7639999985694885,
+        0.7799999713897705
+      ],
+      "RightHand_head_distance_m": [
+        0.7609999775886536,
+        0.39500001072883606,
+        0.2540000081062317,
+        0.24199999868869781,
+        0.23899999260902405,
+        0.2639999985694885,
+        0.3880000114440918,
+        0.5720000267028809,
+        0.7609999775886536
+      ],
+      "hand_separation_m": [
+        0.5379999876022339,
+        0.640999972820282,
+        0.7329999804496765,
+        0.7300000190734863,
+        0.7179999947547913,
+        0.7120000123977661,
+        0.703000009059906,
+        0.5139999985694885,
+        0.5379999876022339
+      ],
+      "head_yaw_range_deg": 6.84,
+      "head_pitch_range_deg": 25.79,
+      "head_yaw_samples_deg": [
+        0.0,
+        0.0,
+        -0.30000001192092896,
+        1.5,
+        -2.299999952316284,
+        -0.800000011920929,
+        -1.5,
+        -4.0,
+        0.0
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        4.199999809265137,
+        -5.199999809265137,
+        6.099999904632568,
+        19.100000381469727,
+        13.300000190734863,
+        4.300000190734863,
+        2.299999952316284,
+        0.0
+      ]
+    }
+  }
+}

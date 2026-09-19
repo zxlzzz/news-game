@@ -78,16 +78,20 @@ def inspect_motion(folder, names, parents):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=pathlib.Path, required=True)
+    parser.add_argument('--endpoint-pose', type=pathlib.Path, help='Optional source NPZ frame 0 for endpoint requests')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     from kimodo import load_model
     from kimodo.tools import seed_everything
     from kimodo.exports.motion_io import save_kimodo_npz
     from kimodo.skeleton.definitions import SOMASkeleton77
+    from kimodo.constraints import FullBodyConstraintSet
+    import torch
     # RP internally uses a reduced skeleton but exported posed_joints has 77 joints.
     parents = SOMASkeleton77.bone_order_names_with_parents
     names = [n for n, _ in parents]
     model = load_model('Kimodo-SOMA-RP-v1.1', device='cuda:0')
+    endpoint_pose = dict(np.load(args.endpoint_pose)) if args.endpoint_pose else None
     print('READY', flush=True)
     while True:
         try:
@@ -104,8 +108,18 @@ def main():
                 if not 2 <= duration <= 10:
                     raise ValueError('Duration must be between 2 and 10 seconds')
                 seed_everything(cfg['seed'])
-                output = model([cfg['text']], [round(duration * model.fps)],
+                frames = round(duration * model.fps)
+                constraints = []
+                if cfg.get('endpoints'):
+                    if endpoint_pose is None:
+                        raise ValueError('Endpoint request requires --endpoint-pose')
+                    subset = model.skeleton.get_skel_slice(model.skeleton.somaskel77)
+                    constraints = [FullBodyConstraintSet(model.skeleton, torch.tensor([0, frames-1]),
+                        torch.tensor(endpoint_pose['posed_joints'][[0,0]], device=model.device)[:,subset],
+                        torch.tensor(endpoint_pose['global_rot_mats'][[0,0]], device=model.device)[:,subset])]
+                output = model([cfg['text']], [frames],
                                num_denoising_steps=100, num_samples=1, multi_prompt=True,
+                               constraint_lst=constraints,
                                num_transition_frames=5, post_processing=True, return_numpy=True,
                                cfg_type='separated', cfg_weight=[2., 2.], progress_bar=lambda values: values)
                 output = {k: v[0] if hasattr(v, 'shape') and v.ndim > 0 and v.shape[0] == 1 else v for k, v in output.items()}
@@ -114,6 +128,10 @@ def main():
                 cfg.update(model='Kimodo-SOMA-RP-v1.1', text_encoder='matbee/kimodo-llm2vec-nf4',
                            fps=float(model.fps), diffusion_steps=100, post_processing=True,
                            cfg={'enabled': True, 'text_weight': 2., 'constraint_weight': 2.}, num_samples=1)
+                if constraints:
+                    error = np.linalg.norm(output['posed_joints'][[0,-1]] - endpoint_pose['posed_joints'][0], axis=-1)
+                    cfg.update(endpoint_target='stand_idle/motion.npz frame 0', constraint_frames=[0,frames-1],
+                               endpoint_mean_error_m=error.mean(axis=1).tolist())
                 (folder / 'meta.json').write_text(json.dumps(cfg, indent=2))
             metrics = inspect_motion(folder, names, parents)
             print('DONE ' + name + ' ' + json.dumps(metrics), flush=True)

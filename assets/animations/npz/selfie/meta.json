@@ -1,0 +1,95 @@
+{
+  "name": "selfie",
+  "text": "A person extends their right arm forward and slightly upward holding a smartphone, tilts their head toward the phone and poses for a selfie.",
+  "duration": 3,
+  "seed": 42,
+  "endpoints": false,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "review": {
+    "status": "selected",
+    "notes_zh": "右手从胸前伸向前上方，头向持机方向；后段左手也抬到胸肩附近配合摆姿。末尾保持，无道具实体，无首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head"
+    ],
+    "metrics": {
+      "frames": 90,
+      "finite": true,
+      "bone_length_range_mm": 0.747,
+      "max_joint_step_m": 0.095,
+      "root_horizontal_range_m": [
+        0.009999999776482582,
+        0.05700000002980232
+      ],
+      "LeftHand_head_distance_m": [
+        0.7639999985694885,
+        0.7630000114440918,
+        0.7639999985694885,
+        0.7699999809265137,
+        0.7770000100135803,
+        0.7559999823570251,
+        0.3919999897480011,
+        0.24500000476837158,
+        0.24199999868869781
+      ],
+      "RightHand_head_distance_m": [
+        0.36800000071525574,
+        0.36500000953674316,
+        0.36800000071525574,
+        0.375,
+        0.515999972820282,
+        0.6110000014305115,
+        0.628000020980835,
+        0.6269999742507935,
+        0.6299999952316284
+      ],
+      "hand_separation_m": [
+        0.5830000042915344,
+        0.5860000252723694,
+        0.5870000123977661,
+        0.6370000243186951,
+        0.984000027179718,
+        1.097000002861023,
+        0.7580000162124634,
+        0.6610000133514404,
+        0.6629999876022339
+      ],
+      "head_yaw_range_deg": 6.49,
+      "head_pitch_range_deg": 56.21,
+      "head_yaw_samples_deg": [
+        0.0,
+        -0.0,
+        0.10000000149011612,
+        3.0999999046325684,
+        5.400000095367432,
+        1.2000000476837158,
+        1.600000023841858,
+        4.099999904632568,
+        4.199999809265137
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        -0.30000001192092896,
+        -2.0999999046325684,
+        -13.100000381469727,
+        -34.0,
+        -52.599998474121094,
+        -55.599998474121094,
+        -56.099998474121094,
+        -55.900001525878906
+      ]
+    }
+  }
+}
