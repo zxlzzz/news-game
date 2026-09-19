@@ -28,23 +28,24 @@ export function limbStroke(a, hinge, end, softness) {
   return samples;
 }
 
-// Keep the real shoulder-to-elbow segment. Join the centre of the torso to the
-// shoulder with a smooth outward-first curve, rather than a neck-to-elbow shortcut.
-// The construction follows the torso axis in 3D, so leaning/turning are preserved.
+// Retain the shoulder as a guide, rounding INSIDE the two incident segments.
+// Unlike a cubic forced through the shoulder, this cannot overshoot upward and
+// create a hooked shoulder cap. Hands stay at the retargeted wrist endpoint.
 export function armStroke(joints, ix, side, softness) {
-  const root=joints[ix.Neck2],shoulder=joints[ix[side+'Arm']];
+  const root=joints[ix.Neck2], shoulder=joints[ix[side+'Arm']];
+  const elbow=joints[ix[side+'ForeArm']], hand=joints[ix[side+'Hand']];
+  const incoming=norm(sub(shoulder,root)), outgoing=norm(sub(elbow,shoulder));
+  const trim=Math.min(incoming*.3,outgoing*.18,.055)*Math.max(0,Math.min(1,softness));
   const axis=unit(sub(joints[ix.Neck1],joints[ix.Chest]));
   const control=sub(shoulder,mul(axis,dot(sub(shoulder,root),axis)));
-  const upperArm=sub(joints[ix[side+'ForeArm']],shoulder);
-  const approach=sub(shoulder,mul(unit(upperArm),Math.min(norm(upperArm)*.15,.04)));
-  const bridge=[];
-  for(let i=0;i<=12;i++){
+  const exit=mix(shoulder,elbow,trim/Math.max(outgoing,1e-8));
+  const bridge=[{point:root,t:0}];
+  for(let i=1;i<=12;i++){
     const u=i/12;
-    const point=add(add(mul(root,(1-u)**3),mul(control,3*u*(1-u)**2)),
-      add(mul(approach,3*u*u*(1-u)),mul(shoulder,u**3)));
-    bridge.push({point,t:u*.15});
+    bridge.push({point:add(add(mul(root,(1-u)**3),mul(control,3*u*(1-u)**2)),
+      add(mul(shoulder,3*u*u*(1-u)),mul(exit,u**3))),t:.15*u});
   }
-  const arm=limbStroke(shoulder,joints[ix[side+'ForeArm']],joints[ix[side+'Hand']],softness);
+  const arm=limbStroke(exit,elbow,hand,softness);
   return [...bridge,...arm.slice(1).map(s=>({point:s.point,t:.15+.85*s.t}))];
 }
 

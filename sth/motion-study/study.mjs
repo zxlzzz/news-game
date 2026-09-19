@@ -5,11 +5,12 @@ try {
   const response = await fetch('./motions.json');
   if (!response.ok) throw new Error(`动作数据加载失败：${response.status}`);
   const data = await response.json(), rig = createRig(data);
-  const params = {...DEFAULTS};
+  const candidateDefaults = {...DEFAULTS, shoulder: .85};
+  const params = {...candidateDefaults};
   let current = 'stand_idle', elapsed = 0, playing = true, previous;
   for (const [id, clip] of Object.entries(data.clips)) $('clip').add(new Option(clip.label, id));
   for (const [key, label, min, max, step] of [
-    ['torso','躯干',.7,1.2,.01],
+    ['torso','躯干',.7,1.2,.01],['shoulder','肩宽',.5,1.3,.01],
     ['arm','臂长',.75,1.2,.01],['leg','腿长',.85,1.2,.01],['head','头半径',.09,.17,.005]]) {
     const row = document.createElement('label');
     row.append(label);
@@ -30,7 +31,7 @@ try {
   $('stroke').oninput=()=>{$('strokeValue').value=number('stroke').toFixed(1)+'×';draw();};
   $('softness').oninput=()=>{$('softnessValue').value=number('softness').toFixed(1);draw();};
   for(const [id,yaw,pitch] of [['front',0,0],['side',90,0],['oblique',-35,15]]) $(id).onclick=()=>{$('yaw').value=yaw;$('pitch').value=pitch;draw();};
-  $('reset').onclick=()=>{for(const [k,v] of Object.entries(DEFAULTS)){params[k]=v;if($(k)){$(k).value=v;$(k).dispatchEvent(new Event('input'));}}$('softness').value=.7;$('softnessValue').value='0.7';draw();};
+  $('reset').onclick=()=>{for(const [k,v] of Object.entries(candidateDefaults)){params[k]=v;if($(k)){$(k).value=v;$(k).dispatchEvent(new Event('input'));}}$('softness').value=.7;$('softnessValue').value='0.7';draw();};
   function sample() {
     const f=Math.min(elapsed*clip().fps,clip().frames.length-1), a=Math.floor(f), b=Math.min(a+1,clip().frames.length-1);
     return clip().frames[a].map((p,i)=>mix(p,clip().frames[b][i],f-a));
