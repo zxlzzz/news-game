@@ -1,0 +1,21 @@
+{
+  "name": "hands_on_hips",
+  "text": "A person places both hands on their hips, holds this pose for a moment, then lowers both arms to their sides.",
+  "duration": 5,
+  "seed": 123,
+  "fps": 30,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "post_processing": true,
+  "constraint_frames": [
+    0,
+    149
+  ],
+  "target": "stand_idle/motion.npz frame 0",
+  "constraint_type": "FullBodyConstraintSet",
+  "diffusion_steps": 100,
+  "cfg_weight": [
+    2,
+    2
+  ],
+  "text_encoder": "matbee/kimodo-llm2vec-nf4"
+}
