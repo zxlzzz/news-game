@@ -1,0 +1,15 @@
+{
+  "text": "A person standing still briefly scratches the side of their head with their right hand, then lowers the hand back to their side.",
+  "duration": 3.0,
+  "num_samples": 1,
+  "seed": 42,
+  "diffusion_steps": 100,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30
+}
