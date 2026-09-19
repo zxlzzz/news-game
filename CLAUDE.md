@@ -1,3 +1,7 @@
+> js/ 这条线已冻结，不开新批次。
+> 新路线文档在根目录 design_route_*.md。
+> docs/ 里 status 为 frozen 的文档不能当作当前依据。
+
 # News Game — 项目指南
 
 2.5D 街道场景模拟器：PixiJS 7 原生（无打包器）+ ES modules，NPC 自主行为驱动。

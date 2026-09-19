@@ -1,3 +1,5 @@
+> **status: frozen** — 旧架构线暂停；NPC 行为新路线见 design_route_npc_behavior.md
+
 > **status: 部分实施（①② 已落地，③ 未动）** — v2 设计已定稿；批次 A-①② 已合入主干。
 
 # 语义目的地层 — 设计稿 v2（affordance 池）

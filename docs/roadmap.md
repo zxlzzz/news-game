@@ -1,15 +1,22 @@
-> **status: snapshot** — 盘点截止 2026-07-22；新增功能批次请同步更新本表。
+> **status: snapshot** — 盘点截止 2026-08-12；新增功能批次请同步更新本表。
 
 # 功能路线图 — 落地状态一览
+
+## 2026-09 路线状态
+
+- PixiJS 线收官于 O-8，冻结；表中所有未完成的批次视为 frozen。
+- 新路线文档：design route 9.6.md、design_route_npc_behavior.md、design_route_npc_motion_supply.md、kimodo_trial.md。
+- 未决：引擎选择；体积火柴人和影子（要看实物才能定）；Kimodo 输出降到 11 关节后是否读得出来（没测过）；动作 json 的首尾规范（没定）。
+- 暂缓：双人接触动作；手的末端约束；NPC 记忆驱动的行为；画面外 NPC 的生活。
 
 | 批次名 | 核心内容 | 状态 | 文档/代码锚点 |
 |--------|----------|------|--------------|
 | Batch-E（出口系统） | ExitRegistry、E1–E6 出口语义、headless-sim 僵尸检测 | ✅ 已落地 | `js/npc/ExitRegistry.js`；`scripts/headless-sim.mjs` |
 | Batch-R（公交站） | busstop 实体、WaitForBusLayer、公交候车行为 | ✅ 已落地 | `js/entity/busstop/`（5个文件）；`js/entity/busstop/WaitForBusLayer.js` |
-| Batch-M1（坐标常量重命名） | `SIDEWALK_NEAR_Y` 语义澄清（实为公园深处 y=508） | ⚠️ 部分落地 | `js/npc/Athletes.js:8` 注释说明；常量名未改，近端跑者已改走 `park_loop_jog` 路线 |
+| Batch-M1（坐标常量重命名） | `SIDEWALK_NEAR_Y` 语义澄清（实为公园深处 y=508） | frozen；⚠️ 部分落地 | `js/npc/Athletes.js:8` 注释说明；常量名未改，近端跑者已改走 `park_loop_jog` 路线 |
 | Batch-M2（Lookahead 导航） | `Lookahead.js` goal-directed 速度计算、NavPath 规划 | ✅ 已落地 | `js/behavior/nav/Lookahead.js` |
-| Batch-H（usedVel 字段） | `mot.usedVel` 标记机制（设计用途未知） | ❌ 无痕迹 | `grep "usedVel"` 无结果；可能停留在设计阶段未实施 |
-| Batch-I（usedVel 消费） | 消费 `mot.usedVel` 的后续逻辑 | ❌ 无痕迹 | 同 Batch-H；上游未落地，本批次亦无痕迹 |
+| Batch-H（usedVel 字段） | `mot.usedVel` 标记机制（设计用途未知） | frozen；❌ 无痕迹 | `grep "usedVel"` 无结果；可能停留在设计阶段未实施 |
+| Batch-I（usedVel 消费） | 消费 `mot.usedVel` 的后续逻辑 | frozen；❌ 无痕迹 | 同 Batch-H；上游未落地，本批次亦无痕迹 |
 | 新闻管线 MVP | Viewfinder 截图、vision/text Provider、成稿面板 NewsUI | ✅ 已落地 | `js/scenes/StreetScene.js#_takePhoto`；`js/news/NewsUI.js#openComposer`（`providers.text.compose`）；`docs/design-plans/news-pipeline-mvp.md`（finalized） |
 | 速度统一·前置普查 | 全库消费者普查（34处）、movement-dataflow 契约 | ✅ 已落地 | `docs/design-plans/velocity-representation-survey.md`；`docs/contracts/movement-dataflow.md` |
 | 速度统一 V-1 | integratePhysics 重写（D1）：删标量回退分支，steer 只写 `mot.vel`，Y 钳制迁移 | ✅ 已落地 | `docs/design-plans/velocity-unification-design-v1.md §2`；`js/behavior/Motor.js#integratePhysics` |

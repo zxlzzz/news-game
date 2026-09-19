@@ -1,3 +1,5 @@
+> **status: frozen** — 旧架构线暂停；NPC 行为新路线见 design_route_npc_behavior.md
+
 > **status: draft** — 占位草案；正式设计在 AI 场景生成阶段展开。
 
 # photo2entity — 现实照片 → AI 生成场景物体（设计草案 v0）

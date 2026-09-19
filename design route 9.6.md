@@ -1,3 +1,6 @@
+> **status: snapshot**
+> **过期提示**：§5 与 §7 所说的“Kimodo 未在本机运行过”已过时，2026-09-19 本机试用单人动作可用，动作供给方案以 design_route_npc_motion_supply.md 为准；§8 的“下一步未定”见 docs/roadmap.md。
+
 # 路线结论 2026-09-06
 
 状态：**讨论结论记录，不是执行方案。** `tasks.md` 未改动，无任何开工许可。

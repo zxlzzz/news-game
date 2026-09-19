@@ -1,3 +1,5 @@
+> **status: frozen** — 旧架构线暂停；NPC 行为新路线见 design_route_npc_behavior.md
+
 > **status: finalized** — 2026-07-22 定稿；B-①a / B-①b / B-② 批次待实施。
 
 # 链条行为系统 — ChainTask / AttachmentDefs / BehaviorScripts

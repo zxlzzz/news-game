@@ -18,7 +18,8 @@
   实现后文首加一行 `implemented in <commit>`；
   被取代加 `superseded by <doc>`，正文不动
 - 审计/基线：文首带日期，过时以新文件替代
-- status 头枚举：`draft` / `finalized` / `implemented` / `superseded` / `snapshot`
+- status 头枚举：`draft` / `finalized` / `implemented` / `superseded` / `snapshot` / `frozen`
+- `frozen`：暂停，不否决也不继续，文件不删；恢复时重新评估，在此之前不能当作当前依据。
 
 ## 写前判据
 

@@ -1,3 +1,5 @@
+> **status: frozen** — 旧架构线暂停；NPC 行为新路线见 design_route_npc_behavior.md
+
 # 双人互动设计 v1.0
 
 > 冻结决策记录。日期：2026-07-25。

@@ -1,3 +1,5 @@
+> **status: frozen** — 旧架构线暂停；NPC 行为新路线见 design_route_npc_behavior.md
+
 > **status: draft** — 占位草案；正式设计在新闻管线 MVP 稳定后展开。
 
 # 信念层 v0 — 设计草案

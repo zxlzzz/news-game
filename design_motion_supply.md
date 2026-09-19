@@ -1,3 +1,5 @@
+> superseded by design route 9.6.md 与 design_route_npc_motion_supply.md
+
 # 动作供给方案 v2
 
 状态：草案，待拷打
