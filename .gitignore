@@ -1,9 +1,6 @@
-node_modules
-package-lock.json
-package.json
+node_modules/
 *.patch
 
-/.agents/
 /.claude/
 
 # Local/editor state and generated caches
@@ -20,8 +17,12 @@ Thumbs.db
 .godot/
 *.import
 
-# Large local inputs and generated captures for the Godot studies
-/assets/fromgodot/
+# Large source libraries and copied inputs; keep selected assets and study code in Git
+/assets/fromgodot/quaternius-downtown/
+/assets/fromgodot/quaternius-stylized-nature/
+/assets/fromgodot/game-godot/assets/
+/assets/fromgodot/game-godot/output/
+# Earlier Godot study inputs and generated captures
 /sth/asset-import-spike/godot-style-spike/assets/
 /sth/asset-import-spike/godot-style-spike/original_model/
 /sth/asset-import-spike/godot-style-spike/output/
