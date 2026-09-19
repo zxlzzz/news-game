@@ -10,18 +10,26 @@ Two synchronized views compare the accepted version against a further line refin
    rounding of elbow/knee corners. Hands and feet stay at the exact retargeted endpoints.
    At softness 0.7 each corner trims at most 5.25 cm along its incident source segments;
    the visible curve displacement is smaller. This only changes drawing, not joint data.
-   The common drawn arm/torso junction sits 20% from Neck1 toward Chest instead of
-   at Neck2, leaving a short visible neck. Chest itself was too low; the moving
-   shoulder midpoint rises too far during arm lifts. The display still has 11 points: it replaces the junction rather
-   than exposing extra shoulder joints. Head, elbows, hands, knees and feet are unchanged.
+   The central neck/torso junction sits 20% from Neck1 toward Chest. Each upper arm
+   retains its own LeftArm/RightArm shoulder start: collapsing these to the central
+   junction caused the drawn arms to cross the head despite the internal rig being clear.
+   A cubic curve joins the centre outward to each shoulder and enters the upper arm
+   tangentially. No separate shoulder bars or joint circles are drawn by default.
+   Head, elbows, hands, knees and feet are unchanged. The candidate now uses shoulder
+   guides in addition to the 11-point baseline; debug markers show these explicitly.
 
-Hsinlung selected the adjusted proportions and 3× stroke width. Shoulder/hip/spine helpers
-remain internal; their anatomical connections are not drawn, including in the joint overlay.
+Hsinlung selected the adjusted proportions and 3× stroke width. Hip/spine helpers remain
+internal; shoulder guides route the visible arms without drawing the full anatomical skeleton.
 Proportion/contact controls affect only the right column; the left uses the accepted defaults.
 The shared stroke multiplier affects both figures (including street scale), defaults to
 3×, and ranges from 0.5× to 4×. It leaves head radius and ground guides unchanged.
 Softness 0 disables corner rounding but retains continuous taper. The refinement is a
 candidate, not a replacement accepted by Hsinlung.
+
+Validation includes the actual arm drawing path at the reported raised-arm frame 55:
+with defaults its 3D centreline clears the head proxy by approximately 4.0 / 7.6 cm.
+This is not a universal collision guarantee: projection, stroke thickness, parameter
+changes and other source poses can still create overlap; palm/finger contact is not solved.
 
 The browser uses a simple orthographic canvas renderer. It reproduces the skeleton geometry,
 not Godot's complete scene shader. It follows horizontal root motion, shares camera/scale/time

@@ -1,5 +1,5 @@
 import {createRig, DEFAULTS, add, sub, mul, norm, unit, mix} from './retarget.mjs';
-import {displayJoints, limbStroke, taper} from './strokes.mjs';
+import {displayJoints, limbStroke, armStroke, taper} from './strokes.mjs';
 const $ = id => document.getElementById(id);
 try {
   const response = await fetch('./motions.json');
@@ -51,7 +51,7 @@ try {
     }
     const radius=mode===3?params.head:DEFAULTS.head, center=rig.headCenter(points,radius);
     const head=project(center), items=[];
-    // All columns retain the same 11-point silhouette; other joints only drive it.
+    // The candidate keeps shoulder width internally, without anatomical bars.
     for(const [an,bn] of rig.direct){
       if(mode===3&&/ForeArm$|Hand$|Shin$|Foot$/.test(bn))continue;
       let a=points[rig.ix[an]],b=points[rig.ix[bn]];
@@ -65,7 +65,8 @@ try {
     if(mode===3){
       for(const side of ['Left','Right'])for(const [anchor,hinge,end,isLeg] of [
         ['Neck2',side+'ForeArm',side+'Hand',false],['Hips',side+'Shin',side+'Foot',true]]){
-        const samples=limbStroke(points[rig.ix[anchor]],points[rig.ix[hinge]],points[rig.ix[end]],number('softness'));
+        const samples=isLeg?limbStroke(points[rig.ix[anchor]],points[rig.ix[hinge]],points[rig.ix[end]],number('softness')):
+          armStroke(points,rig.ix,side,number('softness'));
         // Subdivide long sections too: stroke width changes continuously from
         // proximal limb to tip, rather than stepping abruptly at elbow/knee.
         for(let i=1;i<samples.length;i++){
@@ -85,7 +86,7 @@ try {
       g.strokeStyle='#252d29';g.lineWidth=($('small').checked?width*(1.8/3.5):width)*number('stroke');g.lineCap='round';g.lineJoin='round';
       g.beginPath();g.moveTo(pa[0],pa[1]);g.lineTo(pb[0],pb[1]);g.stroke();
     }
-    if($('joints').checked){g.fillStyle='#b66a43';for(const n of new Set(rig.direct.flat())){const [x,y]=project(points[rig.ix[n]]);g.beginPath();g.arc(x,y,2.5,0,2*Math.PI);g.fill();}}
+    if($('joints').checked){g.fillStyle='#b66a43';const names=new Set([...rig.direct.flat(),...(mode===3?['LeftArm','RightArm']:[])]);for(const n of names){const [x,y]=project(points[rig.ix[n]]);g.beginPath();g.arc(x,y,2.5,0,2*Math.PI);g.fill();}}
     g.fillStyle='#778175';g.font='12px system-ui';g.textAlign='center';g.fillText($('small').checked?'约 75 px 人高':'同一米制比例',width/2,height-10);
   }
   function draw(){

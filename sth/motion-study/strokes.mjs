@@ -1,6 +1,6 @@
 // Visual paths only: preserve hands/feet and motion data; soften a small area
 // around a hinge instead of displaying additional anatomical joints.
-import {add, sub, mul, mix, norm} from './retarget.mjs';
+import {add, sub, mul, mix, norm, unit, dot} from './retarget.mjs';
 
 // The drawn arm junction must sit below the head, not at the anatomical upper
 // neck hidden inside its disc. Place the fork just below Neck1, not at Chest
@@ -26,6 +26,26 @@ export function limbStroke(a, hinge, end, softness) {
   }
   samples.push({point:end,t:1});
   return samples;
+}
+
+// Keep the real shoulder-to-elbow segment. Join the centre of the torso to the
+// shoulder with a smooth outward-first curve, rather than a neck-to-elbow shortcut.
+// The construction follows the torso axis in 3D, so leaning/turning are preserved.
+export function armStroke(joints, ix, side, softness) {
+  const root=joints[ix.Neck2],shoulder=joints[ix[side+'Arm']];
+  const axis=unit(sub(joints[ix.Neck1],joints[ix.Chest]));
+  const control=sub(shoulder,mul(axis,dot(sub(shoulder,root),axis)));
+  const upperArm=sub(joints[ix[side+'ForeArm']],shoulder);
+  const approach=sub(shoulder,mul(unit(upperArm),Math.min(norm(upperArm)*.15,.04)));
+  const bridge=[];
+  for(let i=0;i<=12;i++){
+    const u=i/12;
+    const point=add(add(mul(root,(1-u)**3),mul(control,3*u*(1-u)**2)),
+      add(mul(approach,3*u*u*(1-u)),mul(shoulder,u**3)));
+    bridge.push({point,t:u*.15});
+  }
+  const arm=limbStroke(shoulder,joints[ix[side+'ForeArm']],joints[ix[side+'Hand']],softness);
+  return [...bridge,...arm.slice(1).map(s=>({point:s.point,t:.15+.85*s.t}))];
 }
 
 export function taper(t, proximal, distal) {

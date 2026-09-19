@@ -17,11 +17,11 @@
 </div>
 <div class="panels">
 <section class="panel"><div class="caption"><strong>已选版本</strong><p>11 点轮廓 · 已选身体比例 · 3× 默认线宽</p></div><canvas id="legacy" aria-label="已选版本动画"></canvas></section>
-<section class="panel"><div class="caption"><strong>颈肩与线条优化</strong><p>手臂从颈根下方分出，留短颈，转折略柔和</p></div><canvas id="styled" aria-label="颈肩与线条优化动画"></canvas></section>
+<section class="panel"><div class="caption"><strong>保留肩宽的线条试作</strong><p>上臂经过各自肩部，肩部与躯干连续连接</p></div><canvas id="styled" aria-label="保留肩宽的线条试作动画"></canvas></section>
 </div>
 <div class="timeline"><span id="time">0.00 s</span><input id="frame" type="range" min="0" max="1" value="0" step="1" aria-label="逐帧查看"><span id="duration"></span></div>
 <div class="params" id="params" aria-label="右栏身体比例"></div>
-<div class="controls"><label>右栏转折柔和度 <input id="softness" type="range" min="0" max="1" step="0.1" value="0.7"><output id="softnessValue" for="softness">0.7</output></label><label><input id="contact" type="checkbox" checked>右栏：手靠近头时修正落点</label><label><input id="joints" type="checkbox">显示 11 个绘制点</label><button id="reset">恢复试作设置</button></div>
+<div class="controls"><label>右栏转折柔和度 <input id="softness" type="range" min="0" max="1" step="0.1" value="0.7"><output id="softnessValue" for="softness">0.7</output></label><label><input id="contact" type="checkbox" checked>右栏：手靠近头时修正落点</label><label><input id="joints" type="checkbox">显示绘制参考点</label><button id="reset">恢复试作设置</button></div>
 <p class="footer">所有画面使用同一时刻、同一镜头；相机跟随人物水平位移。片段播完暂停，不把循环跳回混入动作判断。</p>
 <details><summary>试作边界</summary><p>这是骨架外观与动作迁移实验，尚未接入游戏。足部沿用源素材的水平轨迹与离地高度，不修复源素材自身的打滑或穿地；尚未做物件接触和手指适配。手头修正依据手腕接近程度，不代表手掌已精确贴合。不同骨架使用相同米制比例，不会逐帧自动缩放。</p></details>
 <p id="error" role="alert"></p>
