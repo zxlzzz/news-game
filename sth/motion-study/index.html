@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NPC 骨架试作</title><link rel="icon" href="data:,">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eeeae2;color:#242823;font:15px/1.5 system-ui,sans-serif}main{max-width:1380px;margin:auto;padding:28px}header{display:flex;justify-content:space-between;align-items:baseline;gap:20px}h1{font-size:23px;font-weight:600;margin:0}p{margin:5px 0;color:#667067}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:20px 0}button,select{font:inherit;background:#faf9f5;border:1px solid #c4c8bc;border-radius:5px;padding:7px 13px;color:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #547e67;outline-offset:3px}label{display:flex;align-items:center;gap:7px}input[type=range]{width:116px;accent-color:#4b715a}.panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.panel{background:#f7f5ef;border:1px solid #d3d6ca;border-radius:8px;overflow:hidden}.caption{padding:16px 18px 0}.caption strong{font-weight:600}.caption p{font-size:13px}canvas{display:block;width:100%;height:420px}.timeline{display:flex;gap:14px;align-items:center;margin:18px 0}.timeline input{flex:1}.params{display:flex;flex-wrap:wrap;gap:15px 22px;border-top:1px solid #cbd0c2;padding-top:18px}.params label{font-size:13px}.params output{width:36px;font-variant-numeric:tabular-nums}.footer{font-size:13px;color:#667067;margin-top:17px}#status{font-variant-numeric:tabular-nums;font-size:13px}details{margin-top:18px;font-size:13px}summary{cursor:pointer}#error{color:#973b32}@media(max-width:850px){.panels{grid-template-columns:1fr}canvas{height:320px}main{padding:16px}header{display:block}}
+</style></head><body><main>
+<header><div><h1>同一份动作，三种骨架处理</h1><p>先看身体怎么画，再看动作如何迁移。</p></div><span id="status">加载动作…</span></header>
+<div class="controls">
+<select id="clip" aria-label="动作"></select><button id="play">暂停</button>
+<label>速度 <select id="speed"><option value=".5">0.5×</option><option value="1" selected>1×</option></select></label>
+<label>朝向 <input id="yaw" type="range" min="-180" max="180" value="-35"></label>
+<label>俯视 <input id="pitch" type="range" min="0" max="50" value="15"></label>
+<button id="front">正面</button><button id="side">侧面</button><button id="oblique">斜面</button>
+<label><input type="checkbox" id="small">街景尺寸</label>
+</div>
+<div class="panels">
+<section class="panel"><div class="caption"><strong>原试作 · 11 点直接连线</strong><p>保留原始比例与旧连接方式</p></div><canvas id="legacy" aria-label="原试作动画"></canvas></section>
+<section class="panel"><div class="caption"><strong>保留肩、髋和脊柱</strong><p>原始比例，只改变连接结构与头部挂接</p></div><canvas id="structure" aria-label="完整结构动画"></canvas></section>
+<section class="panel"><div class="caption"><strong>调整比例后的试作</strong><p>固定骨长，沿用源动作方向和节奏</p></div><canvas id="styled" aria-label="调整比例动画"></canvas></section>
+</div>
+<div class="timeline"><span id="time">0.00 s</span><input id="frame" type="range" min="0" max="1" value="0" step="1" aria-label="逐帧查看"><span id="duration"></span></div>
+<div class="params" id="params"></div>
+<div class="controls"><label><input id="contact" type="checkbox" checked>手靠近头时修正落点</label><label><input id="joints" type="checkbox">显示关节</label><button id="reset">恢复试作比例</button></div>
+<p class="footer">所有画面使用同一时刻、同一镜头；相机跟随人物水平位移。片段播完暂停，不把循环跳回混入动作判断。</p>
+<details><summary>试作边界</summary><p>这是骨架外观与动作迁移实验，尚未接入游戏。足部沿用源素材的水平轨迹与离地高度，不修复源素材自身的打滑或穿地；尚未做物件接触和手指适配。手头修正依据手腕接近程度，不代表手掌已精确贴合。不同骨架使用相同米制比例，不会逐帧自动缩放。</p></details>
+<p id="error" role="alert"></p>
+</main><script type="module" src="study.mjs"></script></body></html>
