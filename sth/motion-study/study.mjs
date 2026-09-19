@@ -8,7 +8,7 @@ try {
   let current = 'stand_idle', elapsed = 0, playing = true, previous;
   for (const [id, clip] of Object.entries(data.clips)) $('clip').add(new Option(clip.label, id));
   for (const [key, label, min, max, step] of [
-    ['torso','躯干',.7,1.2,.01],['shoulder','肩宽',.6,1.5,.01],['hip','胯宽',.5,1.3,.01],
+    ['torso','躯干',.7,1.2,.01],
     ['arm','臂长',.75,1.2,.01],['leg','腿长',.85,1.2,.01],['head','头半径',.09,.17,.005]]) {
     const row = document.createElement('label');
     row.append(label);
@@ -27,7 +27,7 @@ try {
   $('frame').oninput=()=>{pause(false);elapsed=number('frame')/clip().fps;draw();};
   for(const id of ['yaw','pitch','small','joints','contact']) $(id).oninput=draw;
   for(const [id,yaw,pitch] of [['front',0,0],['side',90,0],['oblique',-35,15]]) $(id).onclick=()=>{$('yaw').value=yaw;$('pitch').value=pitch;draw();};
-  $('reset').onclick=()=>{for(const [k,v] of Object.entries(DEFAULTS)){$(k).value=v;$(k).dispatchEvent(new Event('input'));}};
+  $('reset').onclick=()=>{for(const [k,v] of Object.entries(DEFAULTS)){params[k]=v;if($(k)){$(k).value=v;$(k).dispatchEvent(new Event('input'));}}draw();};
   function sample() {
     const f=Math.min(elapsed*clip().fps,clip().frames.length-1), a=Math.floor(f), b=Math.min(a+1,clip().frames.length-1);
     return clip().frames[a].map((p,i)=>mix(p,clip().frames[b][i],f-a));
@@ -48,21 +48,24 @@ try {
     }
     const radius=mode===2?params.head:.13, center=rig.headCenter(points,radius,mode===0);
     const head=project(center), items=[];
-    for(const [an,bn] of mode===0?rig.direct:rig.structured){
+    // All columns retain the same 11-point silhouette; other joints only drive it.
+    for(const [an,bn] of rig.direct){
       let a=points[rig.ix[an]],b=points[rig.ix[bn]];
       if(bn==='HeadEnd'||bn==='Head')b=sub(center,mul(unit(sub(center,a)),radius));
       const pa=project(a),pb=project(b);
-      const body=/Hips|Spine|Chest/.test(an)&&/Spine|Chest/.test(bn);
-      items.push({z:(pa[2]+pb[2])/2,pa,pb,body});
+      const body=an==='Hips'&&bn==='Neck2';
+      const lower=/Hand$|Foot$/.test(bn);
+      const width=mode===0?3.5:body?4.2:lower?2.8:3.5;
+      items.push({z:(pa[2]+pb[2])/2,pa,pb,width});
     }
     items.push({z:head[2],head});items.sort((a,b)=>a.z-b.z);
     for(const item of items){
       if(item.head){g.fillStyle='#252d29';g.beginPath();g.arc(head[0],head[1],radius*scale,0,2*Math.PI);g.fill();continue;}
-      const {pa,pb,body}=item;
-      g.strokeStyle='#252d29';g.lineWidth=$('small').checked?(body?2.5:1.8):(body?5:3.5);g.lineCap='round';g.lineJoin='round';
+      const {pa,pb,width}=item;
+      g.strokeStyle='#252d29';g.lineWidth=$('small').checked?width*(1.8/3.5):width;g.lineCap='round';g.lineJoin='round';
       g.beginPath();g.moveTo(pa[0],pa[1]);g.lineTo(pb[0],pb[1]);g.stroke();
     }
-    if($('joints').checked){g.fillStyle='#b66a43';for(const p of points){const [x,y]=project(p);g.beginPath();g.arc(x,y,2.5,0,2*Math.PI);g.fill();}}
+    if($('joints').checked){g.fillStyle='#b66a43';for(const n of new Set(rig.direct.flat())){const [x,y]=project(points[rig.ix[n]]);g.beginPath();g.arc(x,y,2.5,0,2*Math.PI);g.fill();}}
     g.fillStyle='#778175';g.font='12px system-ui';g.textAlign='center';g.fillText($('small').checked?'约 75 px 人高':'同一米制比例',width/2,height-10);
   }
   function draw(){

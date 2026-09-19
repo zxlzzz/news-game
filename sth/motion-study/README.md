@@ -6,9 +6,13 @@ No game runtime imports or source NPZ edits. This is a visual experiment, not a 
 Three synchronized views isolate the changes:
 
 1. `style_test`'s 11 selected points and old connections (head attachment included).
-2. Source proportions with real shoulder/hip/spine connections and anatomical head axis.
-3. Adjustable fixed bone lengths, source segment directions, two-bone leg IK preserving
+2. The same 11-point connections and source proportions, anatomical head axis and lighter distal strokes.
+3. The same 11-point connections and stroke treatment, adjustable internal bone lengths, two-bone leg IK preserving
    source ankle X/Z trajectories and foot clearance, optional wrist-to-head proximity correction.
+
+Hsinlung preferred the original 11-point silhouette. Shoulder/hip/spine helper joints remain
+internal; their anatomical connections are no longer drawn, including in the joint overlay.
+Proportion controls affect only the right column. The left column remains the original baseline.
 
 The browser uses a simple orthographic canvas renderer. It reproduces the skeleton geometry,
 not Godot's complete scene shader. It follows horizontal root motion, shares camera/scale/time
