@@ -1,3 +1,5 @@
+> **NPC 映射状态更新（2026-09-20）**：本文保留早期分析。Hsinlung 后续已确定造型与映射，现行规格见 [NPC 映射规格](docs/design-plans/npc-skeleton-mapping.md)，供给流程见 [动作供给路线](design_route_npc_motion_supply.md)。本文中的直接 77→11 抽点、旧比例/肩部方案、线条或体积待选等表述不再作为当前实现依据；游戏集成仍未完成。
+
 > **status: snapshot**
 > **过期提示**：§5 与 §7 所说的“Kimodo 未在本机运行过”已过时，2026-09-19 本机试用单人动作可用，动作供给方案以 design_route_npc_motion_supply.md 为准；§8 的“下一步未定”见 docs/roadmap.md。
 

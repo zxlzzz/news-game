@@ -1,57 +1,14 @@
-# NPC motion study
+# NPC 映射预览
 
-Independent preview: `http://localhost:<port>/sth/motion-study/` from the repository's HTTP server.
-No game runtime imports or source NPZ edits. This is a visual experiment, not a finalized NPC rig.
+入口：`http://127.0.0.1:8096/sth/motion-study/`（仓库根目录启动 HTTP 服务）。
 
-Two synchronized views compare the accepted version against a further line refinement:
+已接入 Hsinlung 定下的 [映射规格](../../docs/design-plans/npc-skeleton-mapping.md)，默认双手挥动；提供正面与自由视角、播放/暂停、逐帧、调参和恢复默认。
 
-1. Accepted 11-point silhouette, anatomical head attachment and `DEFAULTS` body proportions.
-2. The same motion with a narrower default shoulder and continuous limb-width taper and a small quadratic
-   rounding of elbow/knee corners. Hands and feet stay at the exact retargeted endpoints.
-   At softness 0.7 each corner trims at most 5.25 cm along its incident source segments;
-   the visible curve displacement is smaller. This only changes drawing, not joint data.
-   The central neck/torso junction sits 20% from Neck1 toward Chest. Each upper arm
-   retains its own LeftArm/RightArm shoulder start: collapsing these to the central
-   junction caused the drawn arms to cross the head despite the internal rig being clear.
-   A cubic curve leaves the torso outward, uses the shoulder as a control point,
-   then joins the upper arm a short distance below/along it. This removes the old
-   overshooting shoulder hook while retaining the shoulder as an anatomical guide.
-   Wrist endpoints stay fixed after retargeting; debug markers show shoulder guides.
+- `skeleton-mapping.mjs`：共用映射算法，不依赖浏览器。`createSkeletonMapper(names, standIdleFrame0)` 返回纯函数 `mapFrame(sourceFrame, params, clipOrigin)`；输入位置单位米、Y 向上，`clipOrigin` 是片段第一帧 Hips。返回 H、N、neckEnd、head 和线段列表 `segs`，每段为 `[起点, 终点, 线宽倍数]`。不修改输入，投影由绘制端负责。
+- `skeleton-params.json`：已定的 12 项比例/画法参数；相机参数留在预览端。
+- `study.mjs` / `index.html`：加载数据和参数，消费同一映射函数；沿用参考调参器的画法，不烘焙或写回映射坐标。
+- `motions.json`：既有六条源动作（站立、走路看手机、挠头、蹲看、鞠躬、双手挥动），660 帧、26 个源关节；映射按名字只读取需要的 16 个。源 NPZ 保持不变。
 
+原 `retarget.mjs` / `strokes.mjs` 与 `scripts/check-motion-study.mjs` 属于旧试作，当前页面不再调用；旧检查不能作为新映射的验收。
 
-Hsinlung selected the adjusted proportions and 3× stroke width. Hip/spine helpers remain
-internal; shoulder guides route the visible arms without drawing the full anatomical skeleton.
-Shoulder width is adjustable from 0.50 to 1.30, with a candidate default of 0.85
-(previously 1.08). Narrowing it can increase head/arm overlap at some viewing angles.
-Proportion/contact controls affect only the right column; the left uses the accepted defaults.
-The shared stroke multiplier affects both figures (including street scale), defaults to
-3×, and ranges from 0.5× to 4×. It leaves head radius and ground guides unchanged.
-Softness 0 disables corner rounding but retains continuous taper. The refinement is a
-candidate, not a replacement accepted by Hsinlung.
-
-Validation includes the actual arm drawing path at the reported raised-arm frame 55:
-with defaults its 3D centreline clears the head proxy by approximately 4.0 / 7.6 cm at the original 1.08 shoulder setting.
-This is not a universal collision guarantee: projection, stroke thickness, parameter
-changes and other source poses can still create overlap; palm/finger contact is not solved.
-
-The browser uses a simple orthographic canvas renderer. It reproduces the skeleton geometry,
-not Godot's complete scene shader. It follows horizontal root motion, shares camera/scale/time
-across panels, and pauses at clip end. The source is Y-up metres; nothing is flattened to 2D
-before the camera projection. Original head/finger articulation is not fully represented.
-
-`motions.json` is a reproducible subset of six existing NPZs: stand_idle, phone_walk,
-scratch_head, squat_watch, bow, wave_both_overhead. All frames are retained. `squat_watch`
-is a holding pose, not a squat-down transition. Ankle = Foot, wrist = Hand, head top = HeadEnd.
-The 26 retained joints follow the official SOMASkeleton77 names/parents.
-
-Rebuild data (numpy, no model/GPU needed):
-
-```powershell
-python scripts/export-motion-study.py --skeleton-definition C:/kimodo-trial/kimodo/kimodo/skeleton/definitions.py
-node scripts/check-motion-study.mjs
-```
-
-Source foot slip/penetration are retained, not silently fixed. Wrist proximity is a heuristic;
-there is no precise palm, finger or object-contact solver. Extreme slider combinations may
-make goals unreachable; bone lengths remain fixed and the UI reports clamped targets.
-Default parameters are experimental. No classification, exit phases or runtime migration is implied.
+已检查参考数据全部 660 帧，新函数与参考 HTML 原函数输出坐标完全一致；现有六条源数据计算无无效坐标。游戏和其余动作尚未接入，不承诺通用防穿模或精确手掌接触。
