@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>狗 3D 步态对比</title>
+<style>
+  body { margin: 0; background: #e9e7e2; color: #222; font: 14px/1.5 system-ui, "Microsoft YaHei", sans-serif; }
+  header { padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; }
+  header h1 { font-size: 16px; margin: 0 10px 0 0; }
+  label { display: inline-flex; gap: 6px; align-items: center; }
+  #panels { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 0 6px 6px; }
+  @media (max-width: 900px) { #panels { grid-template-columns: 1fr; } }
+  .panel { position: relative; background: #f4f2ed; }
+  .panel canvas { display: block; width: 100%; height: 520px; cursor: grab; }
+  .tag { position: absolute; left: 12px; top: 8px; font-weight: 600; pointer-events: none; }
+  .tag small { display: block; font-weight: 400; color: #555; }
+  .hint { color: #666; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>狗 3D 步态对比（纯黑剪影）</h1>
+  <label>俯角 <input id="tilt" type="range" min="0" max="85" step="1" value="32"></label>
+  <label>转角 <input id="yaw" type="range" min="-180" max="180" step="1" value="-20"></label>
+  <label>缩放 <input id="zoom" type="range" min="120" max="500" step="10" value="240"></label>
+  <label>巡航速度 <input id="speed" type="range" min="0.3" max="2.0" step="0.05" value="0.7"><span id="speedv"></span></label>
+  <label>程序步态 <select id="gait"><option value="auto">自动</option><option value="walk">走</option><option value="trot">小跑</option></select></label>
+  <label>动捕放法 <select id="mmode"><option value="path">沿路线（游戏里的用法）</option><option value="raw">原样播放（直线）</option></select></label>
+  <label><input id="slow" type="checkbox">慢放 ×0.3</label>
+  <label><input id="trail" type="checkbox" checked>脚印</label>
+  <label><input id="bones" type="checkbox">骨架线</label>
+  <label><input id="grey" type="checkbox">远侧腿灰色</label>
+  <span class="hint">在画面上拖动也能转镜头</span>
+</header>
+<div id="panels">
+  <div class="panel"><canvas id="cvA"></canvas><div class="tag">视频动捕<small id="infoA"></small></div></div>
+  <div class="panel"><canvas id="cvB"></canvas><div class="tag">程序生成<small id="infoB"></small></div></div>
+</div>
+<script>
+const DATA = /*MOCAP*/null;  // build_preview.py 把这里换成动捕 JSON；直接开模板时为 null，左栏留空
+const INK = '#111', FAR = '#555', GRID = '#dcd8cf', PATHC = '#c9c3b6';
+const $ = id => document.getElementById(id);
+
+// ---------------------------------------------------------------- vector helpers (x east, y up, z toward default viewer)
+const add = (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const mul = (a, s) => [a[0] * s, a[1] * s, a[2] * s];
+const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const len = a => Math.hypot(a[0], a[1], a[2]);
+const norm = a => { const l = len(a) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
+const lerp = (a, b, t) => add(a, mul(sub(b, a), t));
+const UP = [0, 1, 0];
+const fwdOf = yaw => [Math.cos(yaw), 0, Math.sin(yaw)];
+const leftOf = f => cross(UP, f);
+const frac = x => x - Math.floor(x);
+const smooth = s => s * s * (3 - 2 * s);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+const wrapA = a => Math.atan2(Math.sin(a), Math.cos(a));
+
+// ---------------------------------------------------------------- camera
+function camera(canvas, target) {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  const yaw = +$('yaw').value * Math.PI / 180, tilt = +$('tilt').value * Math.PI / 180, PX = +$('zoom').value;
+  const cyw = Math.cos(yaw), syw = Math.sin(yaw), ct = Math.cos(tilt), st = Math.sin(tilt);
+  const cx = w / 2, cy = h * 0.58;
+  const proj = p => {
+    const qx = p[0] - target[0], qy = p[1] - target[1], qz = p[2] - target[2];
+    const x = qx * cyw - qz * syw, z = qx * syw + qz * cyw;           // z: toward viewer
+    return [cx + x * PX, cy - (qy * ct - z * st) * PX, z * ct + qy * st];
+  };
+  return { proj, PX, w, h };
+}
+
+// ---------------------------------------------------------------- silhouette (shared by both dogs)
+const W = { body: 0.16, chest: 0.09, hip: 0.075, neck: 0.085, head: 0.062, muzzle: 0.045,
+            tail: [0.045, 0.035, 0.025, 0.02], legF: [0.058, 0.04, 0.03], legH: [0.075, 0.045, 0.032] };
+
+function dogPrims(P) {
+  const out = [], legs = ['RH', 'LH', 'RF', 'LF'];
+  const seg = (a, b, w, tag) => out.push({ k: 's', a, b, w, tag });
+  const disc = (p, r) => out.push({ k: 'd', p, r });
+  for (const L of legs) { const ws = L[1] === 'H' ? W.legH : W.legF; for (let i = 0; i < 3; i++) seg(P[L][i], P[L][i + 1], ws[i], L); }
+  for (let i = 0; i < P.tail.length - 1; i++) seg(P.tail[i], P.tail[i + 1], W.tail[Math.min(i, 3)]);
+  for (let i = 0; i < P.spine.length - 1; i++) seg(P.spine[i], P.spine[i + 1], W.body);
+  disc(P.spine[0], W.hip);
+  disc(add(P.spine[P.spine.length - 2], [0, -0.03, 0]), W.chest);
+  for (let i = 0; i < P.neck.length - 1; i++) seg(P.neck[i], P.neck[i + 1], W.neck);
+  const h = P.muzzle[0], m = P.muzzle[1];
+  disc(h, W.head); seg(h, m, W.muzzle);
+  const u = norm(sub(m, h)); const v = norm(sub(UP, mul(u, dot(UP, u)))); const sd = norm(cross(u, v));
+  for (const s of [-1, 1]) {
+    const o = mul(sd, 0.028 * s);
+    out.push({ k: 't', pts: [add(add(h, o), add(mul(v, 0.035), mul(u, -0.035))), add(add(h, mul(o, 1.3)), add(mul(v, 0.105), mul(u, -0.03))), add(add(h, o), add(mul(v, 0.035), mul(u, 0.01)))] });
+  }
+  return out;
+}
+
+function render(ctx, cam, prims, o) {
+  const pr = prims.map(q => {
+    if (q.k === 's') { const a = cam.proj(q.a), b = cam.proj(q.b); return { ...q, A: a, B: b, z: (a[2] + b[2]) / 2 }; }
+    if (q.k === 'd') { const p = cam.proj(q.p); return { ...q, Pp: p, z: p[2] }; }
+    const pts = q.pts.map(cam.proj); return { ...q, Pts: pts, z: pts.reduce((s, p) => s + p[2], 0) / 3 };
+  });
+  const bodyZ = pr.filter(q => !q.tag).reduce((s, q) => s + q.z, 0) / Math.max(1, pr.filter(q => !q.tag).length);
+  const legZ = {}; pr.filter(q => q.tag).forEach(q => { (legZ[q.tag] ||= []).push(q.z); });
+  const farLeg = t => o.grey && legZ[t].reduce((a, b) => a + b, 0) / legZ[t].length < bodyZ;
+  pr.sort((a, b) => a.z - b.z);
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (const q of pr) {
+    const col = q.tag && farLeg(q.tag) ? FAR : INK;
+    if (q.k === 's') { ctx.strokeStyle = col; ctx.lineWidth = q.w * cam.PX; ctx.beginPath(); ctx.moveTo(q.A[0], q.A[1]); ctx.lineTo(q.B[0], q.B[1]); ctx.stroke(); }
+    else if (q.k === 'd') { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(q.Pp[0], q.Pp[1], q.r * cam.PX, 0, 7); ctx.fill(); }
+    else { ctx.fillStyle = col; ctx.beginPath(); q.Pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.fill(); }
+  }
+}
+
+function renderBones(ctx, cam, P) {
+  const draw = (pts, c) => { ctx.strokeStyle = c; ctx.lineWidth = 1.5; ctx.beginPath(); pts.map(cam.proj).forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke(); };
+  ['spine', 'neck', 'muzzle', 'tail'].forEach(k => draw(P[k], '#e8a33d'));
+  ['RH', 'LH', 'RF', 'LF'].forEach(k => draw(P[k], k[0] === 'R' ? '#2a9fd6' : '#e0524f'));
+}
+
+function renderGround(ctx, cam, target, path, prints) {
+  ctx.lineWidth = 1; ctx.strokeStyle = GRID;
+  const g0x = Math.floor(target[0]) - 5, g0z = Math.floor(target[2]) - 5;
+  for (let i = 0; i <= 10; i += 0.5) {
+    let a = cam.proj([g0x + i, 0, g0z]), b = cam.proj([g0x + i, 0, g0z + 10]);
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+    a = cam.proj([g0x, 0, g0z + i]); b = cam.proj([g0x + 10, 0, g0z + i]);
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+  }
+  if (path) {
+    ctx.strokeStyle = PATHC; ctx.lineWidth = 3; ctx.beginPath();
+    path.pts.forEach((p, i) => { const s = cam.proj(p); i ? ctx.lineTo(s[0], s[1]) : ctx.moveTo(s[0], s[1]); });
+    ctx.closePath(); ctx.stroke();
+    for (const st of path.stops) { const s = cam.proj(path.at(st.s)); ctx.fillStyle = '#b9a98a'; ctx.beginPath(); ctx.arc(s[0], s[1], 5, 0, 7); ctx.fill(); }
+  }
+  if (prints) for (const [k, list] of Object.entries(prints)) {
+    ctx.fillStyle = k[1] === 'F' ? 'rgba(40,40,40,0.45)' : 'rgba(170,70,40,0.45)';
+    for (const p of list) { const s = cam.proj(p); ctx.fillRect(s[0] - 1.5, s[1] - 1.5, 3, 3); }
+  }
+}
+
+// ---------------------------------------------------------------- path: closed Catmull-Rom loop with two stops
+function makePath() {
+  const wp = [[0, 0], [2.6, -0.2], [4.2, 0.6], [4.6, 2.0], [3.6, 3.0], [2.3, 2.3], [1.3, 3.1], [0.2, 3.3], [-0.9, 2.4], [-1.0, 1.0]];
+  const pts = [], n = wp.length;
+  for (let i = 0; i < n; i++) {
+    const p0 = wp[(i - 1 + n) % n], p1 = wp[i], p2 = wp[(i + 1) % n], p3 = wp[(i + 2) % n];
+    for (let t = 0; t < 1; t += 1 / 24) {
+      const t2 = t * t, t3 = t2 * t;
+      const f = (a, b, c, d) => 0.5 * (2 * b + (-a + c) * t + (2 * a - 5 * b + 4 * c - d) * t2 + (-a + 3 * b - 3 * c + d) * t3);
+      pts.push([f(p0[0], p1[0], p2[0], p3[0]), 0, f(p0[1], p1[1], p2[1], p3[1])]);
+    }
+  }
+  const cum = [0]; for (let i = 1; i <= pts.length; i++) cum.push(cum[i - 1] + len(sub(pts[i % pts.length], pts[i - 1])));
+  const L = cum[cum.length - 1];
+  const locate = s => { s = ((s % L) + L) % L; let lo = 0, hi = cum.length - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; cum[m] <= s ? lo = m : hi = m; } return [lo, (s - cum[lo]) / (cum[lo + 1] - cum[lo])]; };
+  const at = s => { const [i, t] = locate(s); return lerp(pts[i], pts[(i + 1) % pts.length], t); };
+  const tangent = s => norm(sub(at(s + 0.05), at(s - 0.05)));
+  const nearest = (p, sGuess) => { let best = sGuess, bd = 1e9; for (let d = -0.6; d <= 1.2; d += 0.02) { const q = at(sGuess + d), dd = (q[0] - p[0]) ** 2 + (q[2] - p[2]) ** 2; if (dd < bd) { bd = dd; best = sGuess + d; } } return best; };
+  return { pts, L, at, tangent, nearest, stops: [{ s: L * 0.18 }, { s: L * 0.62 }] };
+}
+const PATH = makePath();
+
+// ---------------------------------------------------------------- mocap dog: clip played in place, root placed by the game
+const M = { t: 0, s: 0, prints: {}, lastF: -1 };
+function mocapReset() { M.t = 0; M.s = 0; M.lastF = -1; M.prints = { RH: [], LH: [], RF: [], LF: [] }; }
+mocapReset(); $('mmode').onchange = mocapReset;
+function mocapUpdate(dt) {
+  if (!DATA) { $('infoA').textContent = '没有动捕数据：这是模板，跑 build_preview.py 生成 D:/mocap-trial/preview/dog3d.html 再看'; return null; }
+  const c = DATA.out_act2, mode = $('mmode').value;
+  M.t += dt;
+  let f = Math.floor(M.t * c.fps);
+  if (f >= c.frames.length) { M.t -= c.frames.length / c.fps; f = 0; if (mode === 'raw') mocapReset(); }
+  const fr = c.frames[f];
+  let root, fw;
+  if (mode === 'path') { M.s += c.speed * dt; root = PATH.at(M.s); fw = PATH.tangent(M.s); }
+  else { root = [c.travel[f] - 2, 0, 0]; fw = [1, 0, 0]; }
+  const lf = leftOf(fw);
+  const P = {};
+  for (const k in fr) P[k] = fr[k].map(l => add(add(add(root, mul(fw, l[0] - (mode === 'path' ? 0 : 0))), mul(UP, l[1])), mul(lf, l[2])));
+  if (f !== M.lastF) {
+    for (const k of ['RH', 'LH', 'RF', 'LF']) { const p = P[k][3]; if (p[1] < 0.03) { M.prints[k].push([p[0], 0, p[2]]); if (M.prints[k].length > 400) M.prints[k].shift(); } }
+    M.lastF = f;
+  }
+  $('infoA').textContent = `帧 ${f + 1}/${c.frames.length} · 固定 ${c.speed} m/s · 不会停、不会减速，只能沿路线硬转`;
+  return { P, focus: add(root, [0, 0.3, 0]) };
+}
+
+// ---------------------------------------------------------------- procedural dog
+const GAIT = {
+  walk: { off: { LH: 0, LF: 0.25, RH: 0.5, RF: 0.75 }, duty: 0.64, lift: { F: 0.06, H: 0.05 }, bob: 0.008, stride: v => 0.28 + 0.32 * v },
+  trot: { off: { LH: 0, RF: 0.02, RH: 0.5, LF: 0.52 }, duty: 0.42, lift: { F: 0.085, H: 0.07 }, bob: 0.014, stride: v => 0.36 + 0.30 * v },
+};
+const DIM = {
+  hipY: 0.37, shY: 0.39, len: 0.50, halfW: 0.065, footW: 0.075,
+  H: { a: 0.15, b: 0.15, c: 0.11, dir: [-0.30, 0.95], neutral: -0.03, drop: 0.02, bend: 1, tuck: -0.35 },
+  F: { a: 0.15, b: 0.15, c: 0.065, dir: [-0.20, 0.98], neutral: 0.03, drop: 0.06, bend: -1, tuck: -1.2 },
+};
+const LEGS = ['RH', 'LH', 'RF', 'LF'];
+const B = {};
+function procReset() {
+  const s0 = 0.3, p0 = PATH.at(s0), f0 = PATH.tangent(s0);
+  Object.assign(B, { S: p0, H: sub(p0, mul(f0, DIM.len)), yaw: Math.atan2(f0[2], f0[0]), v: 0, s: s0, phase: 0, time: 0,
+    gait: 'walk', off: { ...GAIT.walk.off }, duty: GAIT.walk.duty, wait: 0, stopDone: [false, false],
+    velS: [0, 0, 0], velH: [0, 0, 0], yawRate: 0, look: 0, feet: {}, prints: { RH: [], LH: [], RF: [], LF: [] }, state: '走' });
+  for (const k of LEGS) B.feet[k] = { p: neutral(k), y: 0, swing: false, lift: null, s: 0 };
+}
+function girdle(k) {
+  if (k[1] === 'F') { const f = fwdOf(B.yaw); return { g: B.S, f, l: leftOf(f), vel: B.velS }; }
+  const f = norm(sub(B.S, B.H)); return { g: B.H, f, l: leftOf(f), vel: B.velH };
+}
+function neutral(k) {
+  const G = girdle(k), L = DIM[k[1]], side = k[0] === 'L' ? 1 : -1;
+  return add(add(G.g, mul(G.f, L.neutral)), mul(G.l, DIM.footW * side));
+}
+
+function procUpdate(dt) {
+  B.time += dt;
+  // ---- steering: follow a look-ahead point on the path
+  B.s = PATH.nearest(B.S, B.s);
+  const tgt = PATH.at(B.s + 0.7);
+  const want = Math.atan2(tgt[2] - B.S[2], tgt[0] - B.S[0]);
+  const dy = wrapA(want - B.yaw);
+  const turn = clamp(dy, -2.4 * dt, 2.4 * dt);
+  B.yaw += turn; B.yawRate = turn / Math.max(dt, 1e-4);
+  // ---- speed: slow in bends, stop at stop points
+  const cruise = +$('speed').value;
+  let vdes = cruise * (1 - Math.min(0.65, Math.abs(dy) * 0.9));
+  PATH.stops.forEach((st, i) => {
+    let d = st.s - B.s; d = ((d % PATH.L) + PATH.L) % PATH.L;
+    if (d > PATH.L * 0.5) { B.stopDone[i] = false; return; }
+    if (B.stopDone[i]) return;
+    if (d < 0.06 && B.wait <= 0 && B.v < 0.12) B.wait = 3.0;
+    vdes = Math.min(vdes, Math.sqrt(2 * 0.9 * Math.max(0, d - 0.02)));
+  });
+  if (B.wait > 0) { vdes = 0; B.wait -= dt; if (B.wait <= 0) PATH.stops.forEach((st, i) => { let d = ((st.s - B.s) % PATH.L + PATH.L) % PATH.L; if (d < 0.2 || d > PATH.L - 0.2) B.stopDone[i] = true; }); }
+  B.v += clamp(vdes - B.v, -1.6 * dt, 1.1 * dt);
+  const f = fwdOf(B.yaw);
+  const S0 = B.S, H0 = B.H;
+  B.S = add(B.S, mul(f, B.v * dt));
+  const hd = norm(sub(B.S, B.H)); B.H = sub(B.S, mul(hd, DIM.len));
+  const k = 1 - Math.exp(-dt * 12);
+  B.velS = lerp(B.velS, mul(sub(B.S, S0), 1 / Math.max(dt, 1e-4)), k);
+  B.velH = lerp(B.velH, mul(sub(B.H, H0), 1 / Math.max(dt, 1e-4)), k);
+  // ---- gait selection with eased offsets
+  const gw = $('gait').value;
+  B.gait = gw === 'auto' ? (B.v > 1.0 ? 'trot' : 'walk') : gw;
+  const g = GAIT[B.gait], ke = 1 - Math.exp(-dt * 3);
+  for (const q in B.off) { let d = g.off[q] - B.off[q]; d -= Math.round(d); B.off[q] = frac(B.off[q] + d * ke); }
+  B.duty += (g.duty - B.duty) * ke;
+  // ---- phase: driven by speed; when (nearly) stopped, keep stepping only until feet are back under the body
+  const stride = g.stride(Math.max(B.v, 0.2));
+  let freq = B.v > 0.05 ? B.v / stride : 0;
+  const off = Math.max(...LEGS.map(q => { const n = neutral(q), p = B.feet[q].p; return Math.hypot(n[0] - p[0], n[2] - p[2]); }));
+  if (LEGS.some(q => B.feet[q].swing) || off > 0.05) freq = Math.max(freq, 1.3);
+  B.phase = frac(B.phase + freq * dt);
+  const T = freq > 0 ? 1 / freq : 1;
+  for (const q of LEGS) {
+    const ft = B.feet[q], G = girdle(q), L = DIM[q[1]];
+    const p = frac(B.phase + B.off[q]);
+    const swing = freq > 0 && p >= B.duty;
+    if (swing && !ft.swing) ft.lift = ft.p.slice();
+    ft.swing = swing;
+    if (swing) {
+      const s = (p - B.duty) / (1 - B.duty);
+      const tLeft = (1 - s) * (1 - B.duty) * T;
+      const target = add(neutral(q), mul([G.vel[0], 0, G.vel[2]], tLeft + B.duty * T / 2));
+      ft.p = lerp(ft.lift, target, smooth(s)); ft.p[1] = 0;
+      ft.y = g.lift[q[1]] * Math.sin(Math.PI * s); ft.s = s;
+    } else {
+      if (ft.y > 0) { B.prints[q].push(ft.p.slice()); if (B.prints[q].length > 400) B.prints[q].shift(); }
+      ft.y = 0; ft.s = 0;
+    }
+  }
+  // ---- head: leads into turns while moving, looks around while standing
+  const idle = B.v < 0.05 ? 1 : 0;
+  const lookTarget = idle ? 0.7 * Math.sin(B.time * 0.8) : clamp(B.yawRate * 0.35, -0.6, 0.6);
+  B.look += (lookTarget - B.look) * (1 - Math.exp(-dt * 3));
+  B.state = B.wait > 0 ? '停下' : (B.gait === 'walk' ? '走' : '小跑');
+  $('infoB').textContent = `${B.state} · ${B.v.toFixed(2)} m/s · 弯道自动减速，停靠点停 3 秒`;
+}
+
+function rot2(v, a) { return [v[0] * Math.cos(a) - v[1] * Math.sin(a), v[0] * Math.sin(a) + v[1] * Math.cos(a)]; }
+function ik3(A, Bp, a, b, pole) {
+  let d = sub(Bp, A), dl = len(d); const dh = mul(d, 1 / dl); dl = Math.min(dl, a + b - 1e-4);
+  const p = norm(sub(pole, mul(dh, dot(pole, dh))));
+  const cosA = clamp((a * a + dl * dl - b * b) / (2 * a * dl), -1, 1), sinA = Math.sqrt(1 - cosA * cosA);
+  return add(A, add(mul(dh, a * cosA), mul(p, a * sinA)));
+}
+
+function procPose() {
+  const g = GAIT[B.gait], ph = B.phase, moving = Math.min(1, B.v / 0.4);
+  const fS = fwdOf(B.yaw), lS = leftOf(fS), fH = norm(sub(B.S, B.H)), lH = leftOf(fH);
+  const Stop = add(B.S, mul(UP, DIM.shY + g.bob * moving * Math.cos(4 * Math.PI * (ph + 0.25))));
+  const Htop = add(B.H, mul(UP, DIM.hipY + g.bob * moving * Math.cos(4 * Math.PI * ph)));
+  const C = add(mul(add(sub(Stop, mul(fS, DIM.len / 2)), add(Htop, mul(fH, DIM.len / 2))), 0.5), [0, 0.015, 0]);
+  const bez = t => add(add(mul(Htop, (1 - t) ** 2), mul(C, 2 * t * (1 - t))), mul(Stop, t * t));
+  const cl = Math.cos(B.look), sl = Math.sin(B.look);
+  const fHead = norm(add(mul(fS, cl), mul(lS, sl)));
+  const nod = 0.012 * moving * Math.cos(4 * Math.PI * (ph + 0.1));
+  const neckBase = add(add(Stop, mul(fS, 0.05)), mul(UP, 0.05));
+  const head = add(add(neckBase, mul(fHead, 0.12)), mul(UP, 0.10 + nod));
+  const P = {
+    spine: [Htop, bez(1 / 3), bez(2 / 3), Stop, neckBase],
+    neck: [neckBase, add(add(neckBase, mul(fHead, 0.06)), mul(UP, 0.06 + nod / 2)), head],
+    muzzle: [head, add(add(head, mul(fHead, 0.12)), mul(UP, -0.045))],
+    tail: [],
+  };
+  const wag = (B.v < 0.05 ? 0.45 : 0.18) * Math.sin(B.time * (B.v < 0.05 ? 9 : 5));
+  let tp = add(add(Htop, mul(fH, -0.03)), mul(UP, 0.02)), el = 0.7;
+  for (let i = 0; i < 4; i++) {
+    P.tail.push(tp);
+    const lat = wag * (0.6 + 0.4 * i);
+    const d = norm(add(add(mul(fH, -Math.cos(el) * Math.cos(lat)), mul(UP, Math.sin(el))), mul(lH, Math.cos(el) * Math.sin(lat))));
+    tp = add(tp, mul(d, 0.085)); el -= 0.18;
+  }
+  P.tail.push(tp);
+  for (const q of LEGS) {
+    const L = DIM[q[1]], ft = B.feet[q], side = q[0] === 'L' ? 1 : -1;
+    const hind = q[1] === 'H', f = hind ? fH : fS, l = hind ? lH : lS, top = hind ? Htop : Stop;
+    const root = add(add(top, mul(UP, -L.drop)), mul(l, DIM.halfW * side));
+    const paw = [ft.p[0], ft.y, ft.p[2]];
+    const d2 = rot2(L.dir, L.tuck * Math.sin(Math.PI * ft.s));
+    const wrist = add(paw, add(mul(f, d2[0] * L.c), mul(UP, d2[1] * L.c)));
+    const knee = ik3(root, wrist, L.a, L.b, mul(f, L.bend));
+    P[q] = [root, knee, wrist, paw];
+  }
+  return { P, focus: add(B.S, [0, 0.3, 0]) };
+}
+
+// ---------------------------------------------------------------- loop
+const panels = [{ cv: $('cvA') }, { cv: $('cvB') }];
+function fit() { for (const p of panels) { const dpr = devicePixelRatio || 1; p.cv.width = p.cv.clientWidth * dpr; p.cv.height = p.cv.clientHeight * dpr; p.ctx = p.cv.getContext('2d'); p.ctx.setTransform(dpr, 0, 0, dpr, 0, 0); } }
+addEventListener('resize', fit); fit();
+for (const p of panels) {
+  let drag = null;
+  p.cv.onpointerdown = e => { drag = [e.clientX, e.clientY, +$('yaw').value, +$('tilt').value]; p.cv.setPointerCapture(e.pointerId); };
+  p.cv.onpointermove = e => { if (!drag) return; $('yaw').value = clamp(drag[2] + (e.clientX - drag[0]) * 0.4, -180, 180); $('tilt').value = clamp(drag[3] + (e.clientY - drag[1]) * 0.3, 0, 85); };
+  p.cv.onpointerup = () => drag = null;
+}
+const showSpeed = () => $('speedv').textContent = (+$('speed').value).toFixed(2) + ' m/s';
+$('speed').oninput = showSpeed; showSpeed();
+procReset();
+const focus = [null, null];
+let last = performance.now();
+function frame(now) {
+  let dt = Math.max(0, Math.min(0.05, (now - last) / 1000)); last = now;
+  if ($('slow').checked) dt *= 0.3;
+  const o = { grey: $('grey').checked };
+  const A = mocapUpdate(dt);
+  procUpdate(dt); const Bp = procPose();
+  [[A, M.prints, $('mmode').value === 'path'], [Bp, B.prints, true]].forEach(([d, prints, showPath], i) => {
+    const p = panels[i];
+    if (!d) return;
+    focus[i] = focus[i] ? lerp(focus[i], d.focus, 1 - Math.exp(-dt * 4)) : d.focus;
+    const cam = camera(p.cv, focus[i]);
+    p.ctx.clearRect(0, 0, cam.w, cam.h);
+    renderGround(p.ctx, cam, focus[i], showPath ? PATH : null, $('trail').checked ? prints : null);
+    render(p.ctx, cam, dogPrims(d.P), o);
+    if ($('bones').checked) renderBones(p.ctx, cam, d.P);
+  });
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
