@@ -26,6 +26,9 @@ Thumbs.db
 /sth/asset-import-spike/godot-style-spike/assets/
 /sth/asset-import-spike/godot-style-spike/original_model/
 /sth/asset-import-spike/godot-style-spike/output/
+# Godot NPC prototype: editor cache is covered by .godot/ and *.import above;
+# single-frame renders (main.gd --out output/<name>.png) stay local
+/sth/godot-npc/output/
 
 /tasks.md
 

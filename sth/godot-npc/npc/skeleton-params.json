@@ -1,0 +1,14 @@
+{
+  "headR": 0.06,
+  "neck": 0.015,
+  "torso": 0.18,
+  "clavSplit": 0.8,
+  "minSpread": 70,
+  "upperArm": 0.096,
+  "foreArm": 0.124,
+  "thigh": 0.12,
+  "shin": 0.13,
+  "foot": 0.05,
+  "line": 0.035,
+  "torsoLine": 1.15
+}

@@ -1,0 +1,113 @@
+{
+ "resolution": [
+  1920,
+  1080
+ ],
+ "background": [
+  1.0,
+  0.9,
+  0.3
+ ],
+ "crease_deg": 35,
+ "camera": {
+  "target": [
+   1.0,
+   0.6,
+   -1.4
+  ],
+  "yaw": 14,
+  "pitch": 36,
+  "size": 10.5,
+  "ortho": true,
+  "distance": 35
+ },
+ "light": {
+  "pitch": -35,
+  "yaw": -55,
+  "shadows": true,
+  "shadow_mode": 0,
+  "shadow_bias": 0.1,
+  "shadow_normal_bias": 1.0,
+  "shadow_distance": 50,
+  "shadow_blur": 1.0
+ },
+ "fill": {
+  "band_ndl": 0.5,
+  "hatch_period_px": 5.0,
+  "cover_grazing": 0.15,
+  "cover_shade": 0.4,
+  "cover_dark": 0.4,
+  "mid_mul": [
+   0.84,
+   0.73,
+   0.77
+  ],
+  "dark_mul": [
+   0.63,
+   0.25,
+   0.48
+  ],
+  "stroke_mid_mul": [
+   0.7,
+   0.42,
+   0.58
+  ],
+  "stroke_dark_mul": [
+   0.54,
+   0.12,
+   0.49
+  ],
+  "light_scale": 1.0
+ },
+ "line": {
+  "line_color": [
+   0.74,
+   0.145,
+   0.29
+  ],
+  "width_px": 1.5,
+  "depth_bias": 0.03
+ },
+ "grade": {
+  "tint_color": [
+   0.92,
+   0.28,
+   0.45
+  ],
+  "tint_center": [
+   0,
+   1
+  ],
+  "tint_radius": 0.75,
+  "tint_mix": 0.55,
+  "tint_multiply": 0.0
+ },
+ "models": [
+  {
+   "file": "res://models/terrace.glb"
+  }
+ ],
+ "palette": {
+  "stone": {
+   "color": [
+    254,
+    235,
+    71
+   ]
+  },
+  "relief": {
+   "color": [
+    254,
+    235,
+    71
+   ]
+  },
+  "door": {
+   "color": [
+    140,
+    120,
+    150
+   ]
+  }
+ }
+}

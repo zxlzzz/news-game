@@ -1,0 +1,375 @@
+{
+ "names": [
+  "Hips",
+  "Neck1",
+  "Head",
+  "HeadEnd",
+  "LeftArm",
+  "LeftForeArm",
+  "LeftHand",
+  "LeftShin",
+  "LeftFoot",
+  "LeftToeEnd",
+  "RightArm",
+  "RightForeArm",
+  "RightHand",
+  "RightShin",
+  "RightFoot",
+  "RightToeEnd"
+ ],
+ "soma77_index": [
+  0,
+  4,
+  6,
+  7,
+  12,
+  13,
+  14,
+  68,
+  69,
+  71,
+  40,
+  41,
+  42,
+  73,
+  74,
+  76
+ ],
+ "soma77_parent_index": [
+  -1,
+  3,
+  5,
+  6,
+  11,
+  12,
+  13,
+  67,
+  68,
+  70,
+  39,
+  40,
+  41,
+  72,
+  73,
+  75
+ ],
+ "units": "metres; Y up; original SOMA coordinates; rounded to 5 decimals",
+ "root": "Hips column (identical to motion.npz root_positions)",
+ "clips": [
+  {
+   "id": "adjust_clothes",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "back_away",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "beckon",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "block_way",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "bow",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "brush_clothes",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "check_watch",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "cheer",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "cough",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "cover_face",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "crane_neck",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "cross_arms",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "drink",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "eat_snack",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "eat_walk",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "hands_behind_back",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "hands_in_pockets",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "hands_on_hips",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "interrupt",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "laugh",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "lecture",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "look_away",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "look_down",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "look_up",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "pat_dust",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "peek_side",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "phone_call",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "phone_walk",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "photo_overhead",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "pick_up",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "point",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "present",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "reach_after",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "rub_eye",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "rub_hands",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "scratch_back",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "scratch_head",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "selfie",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "shake_foot",
+   "fps": 30.0,
+   "frames": 75
+  },
+  {
+   "id": "shout",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "shrug",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "sigh",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "sneeze",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "squat_watch",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "stand_hunched",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "stand_idle",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "stand_up_support_back",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "stand_watch",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "startle",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "stretch",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "take_photo",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "talk_accuse",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "talk_excited",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "talk_gesture",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "talk_shy",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "tiptoe",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "turn_walk",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "wave",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "wave_both_overhead",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "wave_overhead",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "whisper",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "wipe_sweat",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "yawn",
+   "fps": 30.0,
+   "frames": 105
+  }
+ ]
+}

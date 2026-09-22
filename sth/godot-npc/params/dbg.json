@@ -1,0 +1,72 @@
+{
+ "resolution": [
+  960,
+  540
+ ],
+ "background": [
+  1.0,
+  0.9,
+  0.3
+ ],
+ "crease_deg": 35,
+ "camera": {
+  "target": [
+   2,
+   0,
+   0
+  ],
+  "yaw": -25,
+  "pitch": 42,
+  "size": 20,
+  "ortho": true
+ },
+ "light": {
+  "pitch": -45,
+  "yaw": -40,
+  "shadow_bias": 0.15,
+  "shadow_normal_bias": 2.0,
+  "shadow_distance": 60
+ },
+ "fill": {
+  "band_ndl": 0.35,
+  "hatch_period_px": 5.0,
+  "hatch_cover_mid": 0,
+  "hatch_cover_dark": 0,
+  "mid_mul": [
+   1,
+   0.3,
+   0.3
+  ],
+  "dark_mul": [
+   0.3,
+   0.3,
+   1
+  ],
+  "hatch_mid_mul": [
+   0.73,
+   0.45,
+   0.55
+  ],
+  "hatch_dark_mul": [
+   0.48,
+   0.12,
+   0.5
+  ],
+  "light_scale": 1.0
+ },
+ "line": {
+  "line_color": [
+   0.67,
+   0.04,
+   0.3
+  ],
+  "width_px": 1.5,
+  "depth_bias": 0.03
+ },
+ "models": [
+  {
+   "file": "res://models/terrace.glb"
+  }
+ ],
+ "sticks": []
+}
