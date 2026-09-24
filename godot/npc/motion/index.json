@@ -97,6 +97,21 @@
    "frames": 105
   },
   {
+   "id": "chess_move",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "chess_watch",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "choose_item",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
    "id": "cough",
    "fps": 30.0,
    "frames": 105
@@ -132,6 +147,11 @@
    "frames": 120
   },
   {
+   "id": "give_item",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
    "id": "hands_behind_back",
    "fps": 30.0,
    "frames": 90
@@ -150,6 +170,11 @@
    "id": "interrupt",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "jog",
+   "fps": 30.0,
+   "frames": 79
   },
   {
    "id": "laugh",
@@ -180,6 +205,11 @@
    "id": "pat_dust",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "pay",
+   "fps": 30.0,
+   "frames": 135
   },
   {
    "id": "peek_side",
@@ -220,6 +250,11 @@
    "id": "reach_after",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "receive_item",
+   "fps": 30.0,
+   "frames": 105
   },
   {
    "id": "rub_eye",
@@ -265,6 +300,16 @@
    "id": "sigh",
    "fps": 30.0,
    "frames": 105
+  },
+  {
+   "id": "sit_bench",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "slouch_bench",
+   "fps": 30.0,
+   "frames": 90
   },
   {
    "id": "sneeze",
@@ -340,6 +385,31 @@
    "id": "turn_walk",
    "fps": 30.0,
    "frames": 120
+  },
+  {
+   "id": "vendor_call",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "vendor_tidy",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "walk",
+   "fps": 30.0,
+   "frames": 67
+  },
+  {
+   "id": "walk_dog",
+   "fps": 30.0,
+   "frames": 71
+  },
+  {
+   "id": "walk_slow",
+   "fps": 30.0,
+   "frames": 73
   },
   {
    "id": "wave",

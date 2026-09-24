@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3]
-
-[ext_resource type="PackedScene" path="res://models/Chess_Table.glb" id="1"]
-
-[node name="ChessTable" type="Node3D" groups=["chess"]]
-
-[node name="model" parent="." instance=ExtResource("1")]

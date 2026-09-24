@@ -22,7 +22,7 @@ def hierarchy():
     return ast.literal_eval(entry.value)
 
 
-def review(folder,prop='none',hands=False,frame_indices=None):
+def review(folder,prop='none',hands=False,frame_indices=None,animate=False):
     tree=hierarchy(); names=[n for n,_ in tree]; idx={n:i for i,n in enumerate(names)}
     p=np.load(folder/'motion.npz',allow_pickle=False)['posed_joints']
     meta=json.loads((folder/'meta.json').read_text(encoding='utf-8-sig'))
@@ -50,6 +50,12 @@ console.log(JSON.stringify(d.frames.map(f=>m(f,d.params,origin))));"""%json.dump
         mapped_right_hand_y_minmax=[float(rhand[:,1].min()),float(rhand[:,1].max())],
         endpoint_root_aligned_max_joint_m=float(np.linalg.norm(delta,axis=-1).max()),
         endpoint_root_aligned_mean_joint_m=float(np.linalg.norm(delta,axis=-1).mean()))
+    velocity=np.diff(p,axis=0)*meta['fps']
+    metrics['root_velocity_start_mps']=velocity[0,0].tolist()
+    metrics['root_velocity_end_mps']=velocity[-1,0].tolist()
+    metrics['seam_velocity_max_joint_delta_mps']=float(np.linalg.norm(velocity[0]-velocity[-1],axis=-1).max())
+    metrics['root_forward_step_min_m']=float(np.diff(p[:,0,2]).min())
+    metrics['max_joint_step_m']=float(np.linalg.norm(np.diff(p,axis=0),axis=-1).max())
     width,height=1680,1140 if hands else 820
     im=Image.new('RGB',(width,height),'#f1f1ed'); draw=ImageDraw.Draw(im)
     draw.text((12,8),folder.name+' / accepted mapping x3 / props in metres / source full skeleton below',fill='black')
@@ -91,12 +97,34 @@ console.log(JSON.stringify(d.frames.map(f=>m(f,d.params,origin))));"""%json.dump
             mid=(p[fi,idx['LeftHand']]+p[fi,idx['RightHand']])/2
             q=p[fi]-mid
             draw.text((col*240+8,835),'hands / top view',fill='black')
+            hand_ids=[idx[n] for n,_ in tree if 'Hand' in n]
+            extent=np.abs(q[hand_ids]).max(axis=0)
+            hand_scale=min(380,108/max(extent[0],.001),125/max(extent[2],.001))
             for name,parent in tree:
                 if not parent or 'Hand' not in name: continue
                 a,b=q[idx[name]],q[idx[parent]]
-                draw.line([(cx+a[0]*380,990-a[2]*380),(cx+b[0]*380,990-b[2]*380)],fill='#a73535' if name.startswith('Right') else '#235da1',width=2)
+                draw.line([(cx+a[0]*hand_scale,990-a[2]*hand_scale),(cx+b[0]*hand_scale,990-b[2]*hand_scale)],fill='#a73535' if name.startswith('Right') else '#235da1',width=2)
     suffix='_focus' if frame_indices is not None else ''
     im.save(folder.parent/(folder.name+'_mapped'+suffix+'.png'))
+    if animate:
+        # Read-only data preview: follow the hips; omit the duplicate endpoint.
+        animation=[]
+        for fi,f in enumerate(mapped[:-1]):
+            canvas=Image.new('RGB',(640,420),'#f1f1ed'); pen=ImageDraw.Draw(canvas)
+            pen.text((12,10),folder.name+' / mapping preview / front + side',fill='black')
+            for axis,cx in [(0,160),(2,480)]:
+                follow=hips[fi]*[1,0,1]
+                def px(v):
+                    q=point(v)-follow
+                    return cx+q[axis]*170,370-q[1]*170
+                pen.line((cx-155,370,cx+155,370),fill='#bbbbbb')
+                for si,(a,b,_) in enumerate(f['segs']):
+                    pen.line([px(a),px(b)],fill='#235da1' if 2<=si<7 else '#a73535' if si>=7 else '#171717',width=5)
+                x,y=px(f['head']); radius=30.6
+                pen.ellipse((x-radius,y-radius,x+radius,y+radius),fill='#171717')
+            animation.append(canvas)
+        durations=[round((i+1)*100/meta['fps'])*10-round(i*100/meta['fps'])*10 for i in range(len(animation))]
+        animation[0].save(folder.parent/(folder.name+'_mapped.gif'),save_all=True,append_images=animation[1:],duration=durations,loop=0)
     (folder.parent/(folder.name+'_mapped'+suffix+'_metrics.json')).write_text(json.dumps(metrics,indent=2))
     print(json.dumps(metrics))
 
@@ -104,4 +132,5 @@ console.log(JSON.stringify(d.frames.map(f=>m(f,d.params,origin))));"""%json.dump
 if __name__=='__main__':
     ap=argparse.ArgumentParser(); ap.add_argument('folder',type=Path); ap.add_argument('--prop',default='none',choices=['none','bench','chess','counter']); ap.add_argument('--hands',action='store_true')
     ap.add_argument('--frames',nargs=7,type=int)
-    args=ap.parse_args(); review(args.folder,args.prop,args.hands,args.frames)
+    ap.add_argument('--animate',action='store_true')
+    args=ap.parse_args(); review(args.folder,args.prop,args.hands,args.frames,args.animate)

@@ -107,7 +107,7 @@ func _show(i: int) -> void:
 	var segs := []
 	for sg in f["segs"]:
 		segs.append([_local(sg[0]), _local(sg[1]), P["line"] * sg[2]])
-	line_mi.mesh = _segments_mesh(segs)
+	line_mi.mesh = segments_mesh(segs)
 	head_mi.position = _local(f["head"])
 
 ## Mapped point (metres, clip space) -> node-local: horizontal relative to the clip's first-frame Hips,
@@ -141,10 +141,10 @@ func _head_disc(cam: Camera3D, head_r: float, ink: Color) -> MeshInstance3D:
 	di.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	return di
 
-## main.gd _segments_mesh re-packed for stick_line.gdshader: same 4 vertices / 2 triangles per segment and
+## main.gd _segments_mesh re-packed (static: ink_figure.gd uses it too) for stick_line.gdshader: same 4 vertices / 2 triangles per segment and
 ## the same CUSTOM0 (other endpoint + side); CUSTOM1 = (width in figure metres, 0 at the start / 1 at the
 ## end of the segment, 0, 0) replaces the face normals, which stick segments never used.
-func _segments_mesh(segs: Array) -> ArrayMesh:
+static func segments_mesh(segs: Array) -> ArrayMesh:
 	var V := PackedVector3Array(); var C0 := PackedFloat32Array(); var C1 := PackedFloat32Array()
 	var I := PackedInt32Array()
 	for sgm in segs:

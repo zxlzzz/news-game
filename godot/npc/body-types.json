@@ -1,0 +1,4 @@
+{
+  "_note": "Stick figure sizes. scale multiplies the mapped figure (skeleton-params.json, ~0.58 m tall) to world metres; 3 = adult, set 2026-09-22 (docs/npc_path_report.md).",
+  "adult": { "scale": 3.0 }
+}

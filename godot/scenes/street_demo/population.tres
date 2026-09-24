@@ -4,6 +4,8 @@
 
 [resource]
 script = ExtResource("1")
-pedestrians = 12
-joggers = 0
-dog_walkers = 0
+pedestrians = 26
+joggers = 3
+dog_walkers = 2
+cyclists = 3
+scooter_riders = 2

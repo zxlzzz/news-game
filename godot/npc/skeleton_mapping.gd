@@ -11,7 +11,9 @@
 ##
 ## Accepted NPC mapping: metres, Y up; no nodes, playback state or file access.
 ## names: source joint names; restFrame: stand_idle frame 0.
-## mapFrame(sourceFrame, params, clipOrigin) -> {H,N,neckEnd,head,segs}.
+## mapFrame(sourceFrame, params, clipOrigin) -> {H,N,neckEnd,head,segs,handLeft,handRight}.
+## handLeft/handRight are the only addition to the .mjs output: named hand points for things held
+## (a leash), so callers never index segs by position.
 ## segs: [start, end, lineWidthMultiplier]. Projection is the renderer's job.
 extends RefCounted
 
@@ -144,6 +146,7 @@ func mapFrame(s, P, origin): # s: source frame indexed by names -> drawn figure
 				ud = nu
 		var el = add(N, mul(ud, P["upperArm"]))
 		var hand = add(el, mul(fd, P["foreArm"]))
+		f["hand"+sd] = hand
 		var ankle = S.call(g.call(sd+"Foot"))
 		var leg = ik(H, P["thigh"], P["shin"], ankle, sub(g.call(sd+"Shin"), hs))
 		var knee = leg["knee"]

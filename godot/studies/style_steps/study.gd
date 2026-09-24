@@ -25,9 +25,9 @@ const A := preload("res://models/building_a.glb")
 const A_STUDY := preload("res://studies/style_steps/building_a_study.glb")
 const B := preload("res://models/building_b.glb")
 const CROSSWALK := preload("res://models/crosswalk.glb")
-const LAMP := preload("res://types/lamp.tscn")
+const LAMP := preload("res://types/street_lamp.tscn")
 const BENCH := preload("res://types/bench.tscn")
-const BIN := preload("res://types/bin.tscn")
+const BIN := preload("res://types/trash_bin.tscn")
 ## Toward the light for step 2+: from the front-left and above, so fronts (+Z) are lit,
 ## right-hand sides (+X) fall in shade and small parts cast shadows onto the facades.
 const FRONT_LIGHT := Vector3(-0.55, 0.55, 0.63)
@@ -52,7 +52,7 @@ func _ready() -> void:
 	if step >= 1 and step < 3:
 		palette.tint_mix = 0.0
 	view = preload("res://scenes/street_demo/view.tscn")
-	population = preload("res://scenes/street_demo/population.tres")
+	population = Population.new()  # its few stick figures are placed below, not by the crowd
 	_place(A_STUDY if step >= 4 else A, Vector3(-4, 0, 0))
 	_place(B, Vector3(10, 0, 0))
 	_place(CROSSWALK, Vector3(3.5, 0, 7))

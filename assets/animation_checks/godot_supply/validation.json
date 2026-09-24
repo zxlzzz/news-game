@@ -5,7 +5,9 @@
     "bone_length_range_mm": 0.8457005023956299,
     "max_joint_step_m": 0.0670856311917305,
     "peak_frame": 104,
-    "sha256": "3e7f1ba371d80428ee3f17ec83b1453ceb2c7b23d9d1eaa6f16df7aee66f09b2"
+    "sha256": "3e7f1ba371d80428ee3f17ec83b1453ceb2c7b23d9d1eaa6f16df7aee66f09b2",
+    "loop": false,
+    "endpoint_root_aligned_max_joint_m": 0.0
   },
   {
     "name": "vendor_tidy",
@@ -13,7 +15,9 @@
     "bone_length_range_mm": 0.8809864521026611,
     "max_joint_step_m": 0.05512578785419464,
     "peak_frame": 105,
-    "sha256": "f5ff8dcddf735a4dd16a529659c24610555a3608fd6ce30b4db478d4cb204641"
+    "sha256": "f5ff8dcddf735a4dd16a529659c24610555a3608fd6ce30b4db478d4cb204641",
+    "loop": false,
+    "endpoint_root_aligned_max_joint_m": 0.0
   },
   {
     "name": "give_item",
@@ -21,7 +25,9 @@
     "bone_length_range_mm": 0.773400068283081,
     "max_joint_step_m": 0.05101814493536949,
     "peak_frame": 98,
-    "sha256": "b05c90bd96b3b9b1a7e557d3a7c518ac6ed93cb9c0c24fefc30d9116f6d7e24f"
+    "sha256": "b05c90bd96b3b9b1a7e557d3a7c518ac6ed93cb9c0c24fefc30d9116f6d7e24f",
+    "loop": false,
+    "endpoint_root_aligned_max_joint_m": 0.0
   },
   {
     "name": "receive_item",
@@ -29,7 +35,9 @@
     "bone_length_range_mm": 0.9353756904602051,
     "max_joint_step_m": 0.07610578089952469,
     "peak_frame": 5,
-    "sha256": "4bbab99d53581db3e16057a82146d3a0380db2407151b21fa55bff0df642d348"
+    "sha256": "4bbab99d53581db3e16057a82146d3a0380db2407151b21fa55bff0df642d348",
+    "loop": false,
+    "endpoint_root_aligned_max_joint_m": 0.0
   },
   {
     "name": "choose_item",
@@ -37,7 +45,9 @@
     "bone_length_range_mm": 0.7678866386413574,
     "max_joint_step_m": 0.05758523568511009,
     "peak_frame": 101,
-    "sha256": "f256ced2059df2d72023e463c66543de482eee17060cd0ec60c71eaa681824c4"
+    "sha256": "f256ced2059df2d72023e463c66543de482eee17060cd0ec60c71eaa681824c4",
+    "loop": false,
+    "endpoint_root_aligned_max_joint_m": 0.0
   },
   {
     "name": "pay",
@@ -45,7 +55,9 @@
     "bone_length_range_mm": 0.8782446384429932,
     "max_joint_step_m": 0.05028057470917702,
     "peak_frame": 5,
-    "sha256": "1e84d083465e33080391af18d213b911cf1b6f059ee5174ecef208e874762216"
+    "sha256": "1e84d083465e33080391af18d213b911cf1b6f059ee5174ecef208e874762216",
+    "loop": false,
+    "endpoint_root_aligned_max_joint_m": 0.0
   },
   {
     "name": "chess_watch",
@@ -53,7 +65,9 @@
     "bone_length_range_mm": 0.8472204208374023,
     "max_joint_step_m": 0.03867916762828827,
     "peak_frame": 28,
-    "sha256": "27cc87b4451de37c3ed2df5f7e9c871d0ff54cf78430d094154c319b7e729b99"
+    "sha256": "27cc87b4451de37c3ed2df5f7e9c871d0ff54cf78430d094154c319b7e729b99",
+    "loop": false,
+    "endpoint_root_aligned_max_joint_m": 0.0
   },
   {
     "name": "chess_move",
@@ -61,6 +75,84 @@
     "bone_length_range_mm": 0.9515881538391113,
     "max_joint_step_m": 0.04763926565647125,
     "peak_frame": 100,
-    "sha256": "82ddca1b1507baa306abfa7f90b6930233685465d51f3b7e95aa4c7fc54edfb8"
+    "sha256": "82ddca1b1507baa306abfa7f90b6930233685465d51f3b7e95aa4c7fc54edfb8",
+    "loop": false,
+    "endpoint_root_aligned_max_joint_m": 0.0
+  },
+  {
+    "name": "walk",
+    "frames": 67,
+    "bone_length_range_mm": 0.8207559585571289,
+    "max_joint_step_m": 0.2309746891260147,
+    "peak_frame": 61,
+    "sha256": "0afdf3b99f70dca4943467d4e3782a97ea6e9e5f0d2a3a7c60170f8c4fdc12d0",
+    "loop": true,
+    "endpoint_root_aligned_max_joint_m": 2.384185791015625e-07,
+    "seam_root_velocity_delta_mps": 0.091757632791996,
+    "seam_max_joint_velocity_delta_mps": 1.461156964302063,
+    "min_forward_step_m": 0.03433239459991455
+  },
+  {
+    "name": "walk_slow",
+    "frames": 73,
+    "bone_length_range_mm": 0.7833540439605713,
+    "max_joint_step_m": 0.15908855199813843,
+    "peak_frame": 67,
+    "sha256": "b62b40756ca9978c9193f8baaab9e30b77b8d13f62c347c1bfdb6c49a4344adb",
+    "loop": true,
+    "endpoint_root_aligned_max_joint_m": 2.385349660155493e-07,
+    "seam_root_velocity_delta_mps": 0.07981611788272858,
+    "seam_max_joint_velocity_delta_mps": 0.842422366142273,
+    "min_forward_step_m": 0.028209885582327843
+  },
+  {
+    "name": "sit_bench",
+    "frames": 90,
+    "bone_length_range_mm": 0.7992982864379883,
+    "max_joint_step_m": 0.0038275124970823526,
+    "peak_frame": 0,
+    "sha256": "8cf52b7c6814f9821ed9e6efe411e4eedbe90dc1fc640c985e1b6da4dc893c24",
+    "loop": true,
+    "endpoint_root_aligned_max_joint_m": 1.0186340659856796e-10,
+    "seam_root_velocity_delta_mps": 0.021259045228362083,
+    "seam_max_joint_velocity_delta_mps": 0.14882107079029083
+  },
+  {
+    "name": "slouch_bench",
+    "frames": 90,
+    "bone_length_range_mm": 0.8094906806945801,
+    "max_joint_step_m": 0.009280533529818058,
+    "peak_frame": 0,
+    "sha256": "7d9cb03d2bb29711be2533a372a3db6cf74cf4d8a1d36df805f106d3e8cb61a0",
+    "loop": true,
+    "endpoint_root_aligned_max_joint_m": 0.0,
+    "seam_root_velocity_delta_mps": 0.06026025861501694,
+    "seam_max_joint_velocity_delta_mps": 0.49297040700912476
+  },
+  {
+    "name": "jog",
+    "frames": 79,
+    "bone_length_range_mm": 0.8733272552490234,
+    "max_joint_step_m": 0.24818359315395355,
+    "peak_frame": 28,
+    "sha256": "2341592194092e108c35958804bc73ae7beb4dfc3f24fb705371024d098d6f0d",
+    "loop": true,
+    "endpoint_root_aligned_max_joint_m": 4.777675730550706e-07,
+    "seam_root_velocity_delta_mps": 0.2391606867313385,
+    "seam_max_joint_velocity_delta_mps": 0.8174206018447876,
+    "min_forward_step_m": 0.05001060292124748
+  },
+  {
+    "name": "walk_dog",
+    "frames": 71,
+    "bone_length_range_mm": 0.9065866470336914,
+    "max_joint_step_m": 0.20256675779819489,
+    "peak_frame": 65,
+    "sha256": "a501c8637321d0890ac9f4c61099c49f85b0c482c89e05b14a48ababa005d195",
+    "loop": true,
+    "endpoint_root_aligned_max_joint_m": 3.5956288909952803e-07,
+    "seam_root_velocity_delta_mps": 0.11669106781482697,
+    "seam_max_joint_velocity_delta_mps": 1.27734375,
+    "min_forward_step_m": 0.03615710511803627
   }
 ]

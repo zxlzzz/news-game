@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://models/shrub.glb" id="1"]
+
+[node name="Shrub" type="Node3D" groups=["size_jitter"]]
+
+[node name="model" parent="." instance=ExtResource("1")]

@@ -1,0 +1,16 @@
+{
+  "_units": "lengths marked (fig) are figure units, multiplied by the body scale; others metres or radians",
+  "body": "adult",
+  "hipAboveSeat": 0.018,
+  "hipBehindSeat": 0.0,
+  "lean": { "min": 0.05, "max": 0.9, "armReach": 0.88 },
+  "limits": { "legExtension": 0.97, "armExtension": 0.98, "limbFold": 0.3 },
+  "gripFromBarEnd": 0.06,
+  "elbowPole": { "out": 0.6, "up": -1.0, "forward": -0.3 },
+  "kneePole": { "forward": 1.0, "out": 0.12 },
+  "foot": { "pitch": 0.25, "ballAt": 0.7 },
+  "head": { "upBlend": 0.55 },
+  "sway": { "roll": 0.035, "bob": 0.004 },
+  "coast": { "settleRate": 2.5 },
+  "turnLean": { "max": 0.35, "rate": 4.0, "gravity": 9.81 }
+}

@@ -136,6 +136,120 @@
         0.0
       ],
       "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "walk": {
+      "loop": true,
+      "entry": {
+        "clip": "walk",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk",
+        "frame": 66
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        3.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.384185791015625e-07,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.2
+    },
+    "walk_slow": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_slow",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_slow",
+        "frame": 72
+      },
+      "source_root_delta_m": [
+        -0.2008500099182129,
+        0.0,
+        2.682729959487915
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.385349660155493e-07,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.4
+    },
+    "sit_bench": {
+      "loop": true,
+      "entry": {
+        "clip": "sit_bench",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "sit_bench",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        -1.4551915228366852e-11,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.0186340659856796e-10,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.966666666666667
+    },
+    "slouch_bench": {
+      "loop": true,
+      "entry": {
+        "clip": "slouch_bench",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "slouch_bench",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.966666666666667
+    },
+    "jog": {
+      "loop": true,
+      "entry": {
+        "clip": "jog",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "jog",
+        "frame": 78
+      },
+      "source_root_delta_m": [
+        -0.6046199798583984,
+        0.0,
+        6.163517951965332
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.777675730550706e-07,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.6
+    },
+    "walk_dog": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_dog",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_dog",
+        "frame": 70
+      },
+      "source_root_delta_m": [
+        -0.38943400979042053,
+        0.0,
+        3.4508962631225586
+      ],
+      "endpoint_root_aligned_max_joint_m": 3.5956288909952803e-07,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.3333333333333335
     }
   }
 }

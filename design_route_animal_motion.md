@@ -1,5 +1,7 @@
-> **状态：草案 v3（2026-09-22）。** 两条路都做了 3D 原型，还没拍板用哪条当主力。
-> 原型在 `sth/animal-study/`（说明见其 README），预览页 `D:\mocap-trial\preview\dog3d.html`。
+> **状态：§2 主路线暂定采纳（2026-09-24，Hsinlung："暂定认可，后续有问题再说"）。** §3 其余两项仍待定。
+> 程序步态已移植到 Godot：`godot/npc/procedural_dog.gd` + `dog-params.json`（牵狗 `dog_walker.gd`），
+> 实机动图见 `assets/animation_checks/godot_supply/README.md`。`sth/animal-study/` 只留作动捕对比的研究记录
+> （对比页 `D:\mocap-trial\preview\dog3d.html`），其中的程序步态是早期版本，不再维护。
 > 本文取代 `anim.md` 里"只走视频动捕"的结论；`anim.md` 的 rig 实测部分仍有效。
 
 # 动物动作 — 路线（草案）
@@ -46,12 +48,12 @@
 3. 避免机械感：步长、节奏、头尾动作加随机微差。
 4. 地面高度（台阶、路沿）。
 5. 比例参数化：像人的 `skeleton_tuner.html` 那样做调参页，Hsinlung 调出狗 / 猫各一份。
-6. 移植进 Godot：步态写成纯函数（输入：上一帧状态 + 目标速度/航向 + 参数；输出：3D 点 + 新状态），`.mjs` 与 `.gd` 各一份，对拍。
+6. ~~移植进 Godot~~ 2026-09-24 完成：纯函数（上一帧状态 + 目标速度/航向 + 参数 → 3D 点 + 新状态），只保留 `.gd` 一份，由 `godot/tools/check_locomotion.gd` 检查骨长、着地脚、步序和速度。
 7. 鸽子：两足 + 翼，另写一套；飞行单独立题。
 
 ## 3. 需要 Hsinlung 决定
 
-1. 按 §2 定下主路线吗？
+1. ~~按 §2 定下主路线吗？~~ 2026-09-24 暂定采纳。
 2. 动捕还要不要继续多跑？免费额度一天一段。要多跑有三个办法：
    本机装环境（约 10GB，放 D 盘，8GB 显存够不够未知）、实验室 3060 12GB（要挂 VPN）、
    或 HF PRO（每月约 9 美元，40 分钟/天）。

@@ -6,3 +6,5 @@ extends Resource
 @export var pedestrians := 0
 @export var joggers := 0
 @export var dog_walkers := 0
+@export var cyclists := 0
+@export var scooter_riders := 0

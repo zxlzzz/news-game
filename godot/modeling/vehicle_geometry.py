@@ -60,7 +60,18 @@ def build_car(p):
 
 
 def build_two_wheeler(p):
+    def group(name, center, objects):
+        node=bpy.data.objects.new(name,None)
+        bpy.context.collection.objects.link(node)
+        node.location=xyz(center)
+        bpy.context.view_layer.update()
+        for obj in sorted(objects, key=lambda item: item.name):
+            world=obj.matrix_world.copy()
+            obj.parent=node
+            obj.matrix_world=world
+        return node
     for z in (-p['wheelbase']/2,p['wheelbase']/2):
+        before=set(bpy.context.scene.objects)
         ring('tire',p['wheel_r'],p['wheel_r']-p['tire_wall'],p['tire_t'],(0,p['wheel_r'],z),'metal_dark',axis=(1,0,0))
         cylinder('hub',p['hub_r'],p['tire_t'],(0,p['wheel_r'],z),'metal',axis=(1,0,0))
         from math import sin,cos,pi
@@ -68,6 +79,7 @@ def build_two_wheeler(p):
             a=(0,p['wheel_r']+cos(angle)*(p['wheel_r']-p['tire_wall']),z+sin(angle)*(p['wheel_r']-p['tire_wall']))
             b=(0,p['wheel_r']-cos(angle)*(p['wheel_r']-p['tire_wall']),z-sin(angle)*(p['wheel_r']-p['tire_wall']))
             bar('wheel_spoke',a,b,p['spoke_r'],'metal')
+        group('wheel_front' if z>0 else 'wheel_rear',(0,p['wheel_r'],z),set(bpy.context.scene.objects)-before)
     for a,b in p['frame_segments']:
         bar('frame',a,b,p['frame_r'],'metal')
     box('saddle',p['seat_size'],p['seat_center'],'metal_dark')
@@ -77,7 +89,17 @@ def build_two_wheeler(p):
         box('battery_body',p['body_size'],p['body_center'],'metal')
         box('front_fairing',p['fairing_size'],p['fairing_center'],'metal')
         cylinder('headlamp',p['headlamp_r'],p['headlamp_t'],p['headlamp_center'],'accent',axis=(0,0,1))
-    else:
-        bar('crank',(-p['crank_w']/2,p['crank_y'],0),(p['crank_w']/2,p['crank_y'],0),p['frame_r'],'metal_dark')
+        # Steering stem reaches the revised grip position; feet have real supports.
+        bar('handle_stem',(0,p['frame_segments'][-2][1][1],p['frame_segments'][-2][1][2]),
+            (0,p['handle_y'],p['handle_z']),p['frame_r'],'metal')
         for sign in (-1,1):
-            box('pedal',p['pedal_size'],(sign*p['crank_w']/2,p['crank_y'],0),'metal_dark')
+            box('footrest_left' if sign>0 else 'footrest_right',p['footrest_size'],
+                (sign*p['footrest_x'],p['footrest_y'],p['footrest_z']),'metal_dark')
+    else:
+        parts=[bar('crank_axle',(-p['crank_w']/2,p['crank_y'],0),(p['crank_w']/2,p['crank_y'],0),p['frame_r'],'metal_dark')]
+        for sign in (-1,1):
+            center=(sign*p['crank_w']/2,p['crank_y']+sign*p['crank_radius'],0)
+            parts.append(bar('crank_arm',(center[0],p['crank_y'],0),center,p['frame_r'],'metal_dark'))
+            pedal=box('pedal',p['pedal_size'],center,'metal_dark')
+            parts.append(group('pedal_left' if sign>0 else 'pedal_right',center,[pedal]))
+        group('crank_set',(0,p['crank_y'],0),parts)

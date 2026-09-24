@@ -1,8 +1,8 @@
 == C:\Users\Hsinlung\Desktop\news-game\godot\models\bicycle.glb
-   size  x 0.570  y 1.065  z 1.800 m
-   box   min (-0.285, -0.000, -0.900)  max (0.285, 1.065, 0.900)
-   triangles 2780: metal 1984, metal_dark 796
+   size  x 0.540  y 1.125  z 1.800 m
+   box   min (-0.270, -0.000, -0.900)  max (0.270, 1.125, 0.900)
+   triangles 3028: metal 1984, metal_dark 1044
    PASS
    EXTRA: outward volume and normal/winding consistency PASS
-   SHA256 fd792de50d41adf2e6dce20daae10744e690027ac77ec5d8726cc5858e581936
+   SHA256 d1bd0697f51ef72c6644daefa280bfbc1cec3c61f0571bd7b283efaf87f31d8e
    REBUILD IDENTICAL

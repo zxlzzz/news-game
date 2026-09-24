@@ -10,30 +10,34 @@
 | 做什么 | 命令 |
 |---|---|
 | 编辑器打开 | `godot --path . -e`（第一次打开会导入模型） |
-| 看街道 demo | `godot --path .` |
-| 截一帧图后退出 | `godot --path . -- --shot <png 绝对路径>` |
+| 看街道 demo | `godot --path .`；方向键 / A、D / 按住左键拖动，左右平移镜头 |
+| 截一帧图后退出 | `godot --path . -- --shot <png 绝对路径>`；可加 `--shot-after <秒>`（先跑一会儿）、`--pan <米>`（镜头平移）、`--top <画面高度米> [--top-z <z>]`（正上方俯视，查布局） |
 | 只导入模型 | `godot --headless --path . --import` |
 | 打印各物件类型尺寸 | `godot --headless --path . -s res://tools/print_bounds.gd` |
 | 检查一个模型是否合规 | `python modeling/check_model.py <glb>` → `PASS` / `FAIL` |
 | 火柴人映射对拍 | `godot --headless --path . -s res://tools/check_mapping.gd` → `MAPPING_OK` / `MAPPING_FAIL` |
+| 狗、骑车、牵狗检查 | `godot --headless --path . -s res://tools/check_locomotion.gd` → `LOCOMOTION_OK` / `LOCOMOTION_FAIL` |
+| 看狗、骑车、牵狗 | `godot --path . --resolution 960x640 res://tools/locomotion_review.tscn -- --mode dog\|leash\|bicycle\|scooter`（参数见脚本开头） |
+| 录成动图 | `python tools/record_review.py <输出目录> [mode ...]` |
 
 ## 目录
 
 | 位置 | 内容 | 规格对应 |
 |---|---|---|
 | `scenes/<场景>/level.tscn` | 地面带 + 物件实例；指向配色、视角、人口 | §1 |
-| `scenes/<场景>/view.tscn` | 相机 + 方向光 | §1 |
-| `scenes/<场景>/population.tres` | 各类路人数量 | §1 |
+| `scenes/<场景>/view.tscn` | 相机（`core/pan_camera.gd`，可左右平移）+ 方向光 | §1 |
+| `scenes/<场景>/population.tres` | 各类自由走动的人的数量：路人、慢跑、遛狗、骑自行车、骑电动车 | §1 |
 | `palettes/*.tres` | 配色（可被多个场景共用）；现在只有 `gray.tres` 黑白灰 | §1 |
 | `types/*.tscn` | 物件类型库：外层节点（标签 = 节点分组）+ 子节点 `model`（glb，缩放在这里设） | §2 |
 | `core/slots.tres` | 全局色槽及其标记 | §2 |
 | `core/material_maps/*.tres` | 第三方材质名 → 色槽，一个素材包一份 | §2 |
 | `core/style.tres` | 全局画风参数 | §2 |
-| `core/level.gd` | 关卡根节点：运行时检查规矩、算推导量、上画风、放相机和光 | §3、§4 |
+| `core/level.gd` | 关卡根节点：运行时检查规矩、算推导量、放人（`npc/crowd.gd`）、上画风、放相机和光 | §3、§4 |
 | `core/ground_strip.gd` / `ground_band.gd` | 地面带节点（编辑器里改了立刻重建） | §1 |
 | `core/bounds.gd` | 物件尺寸 = 模型包围盒 | §3 |
+| `core/two_wheeler.gd` | 可骑的车（`types/bicycle.tscn`、`scooter.tscn`）：按节点名从模型读车座/车把/脚踏，转轮子和曲柄 | §2、§3 |
 | `style/` | 画风 shader 和抽线代码（从 sth/godot-npc 原样搬来，只改了颜色输入格式） | |
-| `npc/` | 火柴人：映射移植、播放、63 条动作数据、对拍参考值 | |
+| `npc/` | 火柴人：映射移植、播放、77 条动作数据、对拍参考值；程序生成的狗、骑车的人、牵狗的人（见下） | |
 | `models/` | 场景用到的 glb | |
 | `modeling/` | 给建模方（ChatGPT）的说明、自检脚本 `check_model.py`、建模脚本范例；交来的 `build_<名字>.py` 也放这里，glb 放 `models/` | |
 | `tools/` | 检查脚本；`dequantize_glb.mjs` 把 Godot 不认的压缩网格格式解开 | |
@@ -48,6 +52,31 @@
 - 分组 `size_jitter` 的物件（树、灌木、石头）按所在位置算一个固定的 ±12% 缩放。
 - 编辑器里看到的是模型原色；画风只在运行时套上。
 
+## 狗、骑车、牵狗（程序生成）
+
+姿势每帧由代码算，不播动作文件；所有数值在 JSON 里，代码里不写。
+
+| 文件 | 做什么 |
+|---|---|
+| `npc/procedural_dog.gd` + `dog-params.json` | 狗：步态（走 / 小跑按速度切换）、姿势、黑色剪影。脚着地不滑、腿长不变；腿够不着时身体先慢下来并提早换脚 |
+| `npc/rider.gd` + `rider-params.json` | 骑车的人：按车给的接触点现算——胯在车座上、手在车把上、脚在脚踏/踏板上，身体前倾由车把位置推出；蹬车时曲柄跟轮子转，不蹬时滑行、脚踏回到水平；转弯时连人带车倾斜。车的类型可以覆盖其中的参数（`rider_style`） |
+| `npc/dog_walker.gd` + `leash-params.json` | 牵狗的人：人按走过的距离播 `walk_dog`、停下时渐变到 `stand_idle`；狗跟在牵绳手那一侧；绳子快绷紧时人放慢，绳子只负责画（松了下垂，紧了拉直），不拖动任何一方 |
+| `npc/clip_pose.gd` | 任一动作按"走过的距离"原地播放（去掉动作自带的前进量），供导航驱动的人用 |
+| `npc/ink_figure.gd` | 画上面这些：等宽圆头线、朝向镜头的实心圆、实心三角，和火柴人同一个线条 shader |
+| `npc/body-types.json` | 体型缩放（成人 3 倍） |
+
+效果图和动图在 `../assets/animation_checks/godot_supply/README.md` 的"狗、牵狗、骑车"一节。
+
+## 街道 demo（`scenes/street_demo/`，2026-09-24）
+
+一条 125 米的街和对面的公园，布局照旧项目 `assets/scene.json` 换算成米：11 栋临街楼、人行道设施、两个公交站、斑马线和路面标线、路边停着的车；公园里有环形小径、棋桌广场、喷泉小园、摊位、长椅、树和灌木。地面比楼长（150 米），镜头平移到头也不露空。
+
+人由 `npc/crowd.gd` 放，关卡文件里不写人：
+- **自由走动的人**（数量在 `population.tres`）沿关卡里的路线走：`Routes` 下的 Path3D，元数据写谁走（`people`）、是不是环路（`loop`）、能不能反着走（`reversible`）。人行道两条（各一个方向）、公园环路、公园外侧步道、两条自行车道。走到开放路线的尽头就离开，再从某条路线的起点进来。路人随机用 `walk` / `walk_slow` / `phone_walk` / `eat_walk`，按走过的距离播放。
+- **固定岗位的人**跟着物件：类型库里的 `post_<种类>` 标记（长椅和公交站的座位、摊位后面和前面、棋凳、棋桌旁），有没有人、播什么动作在 `npc/crowd-params.json`。
+
+简化了的地方（够 demo 用，以后要再改）：路线是手摆的 Path3D，不是按 `scene_spec.md` §3 在可走区域上现算；人和人之间不避让；没人走斑马线过马路；车停着不开；公交站有人坐、没人上车。
+
 ## 现在还没做
 
-寻路和走动代价、斑马线切区域、出口和生成点、路人、固定岗位的人、跑步和遛狗路线。等 `素材清单.md` 里第一批素材到了再做。
+按可走区域寻路和走动代价、斑马线切区域、出口和门口生成、人与人避让、过马路、车辆行驶。

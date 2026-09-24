@@ -1241,21 +1241,21 @@
     "name": "bicycle",
     "label": "自行车",
     "group": "vehicles",
-    "notes": "双三角车架、空心轮胎、三根粗辐条、车座与车把；少量承重细杆低于 5 cm 是辨识轮廓所需。",
-    "interaction": "座面约 (0,0.9775,-0.24)，把手 y=1.04；骑乘匹配以后做。",
+    "notes": "双三角车架、空心轮胎、三根粗辐条、车座与车把；少量承重细杆低于 5 cm 是辨识轮廓所需。轮子、曲柄、左右脚踏是独立节点，可转动。",
+    "interaction": "骑乘接触点按节点名从模型读取（saddle / handlebar / crank_set / pedal_left / pedal_right / wheel_front / wheel_rear），见 模型制作说明.md“可骑的车”；类型 types/bicycle.tscn。",
     "dimensions_xyz": [
-      0.57,
-      1.065,
+      0.54,
+      1.125,
       1.8
     ],
     "slots": [
       "metal",
       "metal_dark"
     ],
-    "triangles": 2780,
-    "mesh_count": 23,
+    "triangles": 3028,
+    "mesh_count": 25,
     "errors": [],
-    "sha256": "fd792de50d41adf2e6dce20daae10744e690027ac77ec5d8726cc5858e581936",
+    "sha256": "d1bd0697f51ef72c6644daefa280bfbc1cec3c61f0571bd7b283efaf87f31d8e",
     "warnings": [],
     "rebuild_identical": true
   },
@@ -1263,11 +1263,11 @@
     "name": "scooter",
     "label": "电动车",
     "group": "vehicles",
-    "notes": "清单“摩托 / 电动车”选择电动车一款；带电池车体、前挡板和前灯，暂不含骑手。",
-    "interaction": "座面约 (0,0.855,-0.27)，车头 +Z。",
+    "notes": "清单“摩托 / 电动车”选择电动车一款：踏板式，电池车体只在座下，座前是低踏板（左右两块 footrest）；前挡板和前灯。轮子是独立节点，可转动。",
+    "interaction": "骑乘接触点按节点名从模型读取（saddle / handlebar / footrest_left / footrest_right / wheel_front / wheel_rear）；长座上坐的位置由类型 types/scooter.tscn 的 seat 标记给出。",
     "dimensions_xyz": [
-      0.68,
-      1.155,
+      0.58,
+      1.195,
       1.85
     ],
     "slots": [
@@ -1275,10 +1275,10 @@
       "metal",
       "metal_dark"
     ],
-    "triangles": 2284,
-    "mesh_count": 19,
+    "triangles": 2432,
+    "mesh_count": 22,
     "errors": [],
-    "sha256": "51f71c059903b5d27df1e1b0a376e6758ed9d00e832eecd9bccd70c2dbd6e4cf",
+    "sha256": "ee9590bf7203cb9c46fdbf3e5c7daf28d16677b376cd4b7648edd9aab66e2064",
     "warnings": [],
     "rebuild_identical": true
   },

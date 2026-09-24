@@ -374,15 +374,15 @@
     "name": "bicycle",
     "label": "自行车",
     "group": "vehicles",
-    "notes": "双三角车架、空心轮胎、三根粗辐条、车座与车把；少量承重细杆低于 5 cm 是辨识轮廓所需。",
-    "interaction": "座面约 (0,0.9775,-0.24)，把手 y=1.04；骑乘匹配以后做。"
+    "notes": "双三角车架、空心轮胎、三根粗辐条、车座与车把；少量承重细杆低于 5 cm 是辨识轮廓所需。轮子、曲柄、左右脚踏是独立节点，可转动。",
+    "interaction": "骑乘接触点按节点名从模型读取（saddle / handlebar / crank_set / pedal_left / pedal_right / wheel_front / wheel_rear），见 模型制作说明.md“可骑的车”；类型 types/bicycle.tscn。"
   },
   {
     "name": "scooter",
     "label": "电动车",
     "group": "vehicles",
-    "notes": "清单“摩托 / 电动车”选择电动车一款；带电池车体、前挡板和前灯，暂不含骑手。",
-    "interaction": "座面约 (0,0.855,-0.27)，车头 +Z。"
+    "notes": "清单“摩托 / 电动车”选择电动车一款：踏板式，电池车体只在座下，座前是低踏板（左右两块 footrest）；前挡板和前灯。轮子是独立节点，可转动。",
+    "interaction": "骑乘接触点按节点名从模型读取（saddle / handlebar / footrest_left / footrest_right / wheel_front / wheel_rear）；长座上坐的位置由类型 types/scooter.tscn 的 seat 标记给出。"
   },
   {
     "name": "lane_line_solid",

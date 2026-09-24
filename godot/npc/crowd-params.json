@@ -1,0 +1,23 @@
+{
+  "_note": "Who the Crowd node (npc/crowd.gd) puts in a level and how. Counts of free-roaming people are in each scene's population.tres; people at posts follow the post markers of the object types. Clip weights are relative.",
+  "body": "adult",
+  "ink": [0.06, 0.06, 0.06],
+  "depthBias": 0.03,
+  "turnRate": 4.0,
+  "walkers": {
+    "pedestrian": { "clips": { "walk": 5, "walk_slow": 2, "phone_walk": 1, "eat_walk": 1 }, "speedJitter": 0.1, "laneJitter": 0.2 },
+    "jogger":     { "clips": { "jog": 1 }, "speedJitter": 0.08, "laneJitter": 0.2 }
+  },
+  "riders": {
+    "cyclist":       { "vehicle": "res://types/bicycle.tscn", "speed": [3.0, 4.5], "pedalSeconds": [4, 9], "coastSeconds": [1, 3] },
+    "scooter_rider": { "vehicle": "res://types/scooter.tscn", "speed": [4.5, 6.0] }
+  },
+  "posts": {
+    "sit":      { "chance": 0.4, "clips": { "sit_bench": 3, "slouch_bench": 1 } },
+    "vendor":   { "chance": 1.0, "clips": { "vendor_call": 1, "vendor_tidy": 1 } },
+    "customer": { "chance": 0.6, "clips": { "choose_item": 1, "pay": 1 } },
+    "chess":    { "chance": 1.0, "clips": { "chess_move": 1 } },
+    "watch":    { "chance": 0.5, "clips": { "chess_watch": 1 } },
+    "wait":     { "chance": 0.5, "clips": { "stand_idle": 1 } }
+  }
+}

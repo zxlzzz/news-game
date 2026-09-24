@@ -1,8 +1,8 @@
 == C:\Users\Hsinlung\Desktop\news-game\godot\models\scooter.glb
-   size  x 0.680  y 1.155  z 1.850 m
-   box   min (-0.340, 0.000, -0.925)  max (0.340, 1.155, 0.925)
-   triangles 2284: accent 124, metal 1512, metal_dark 648
+   size  x 0.580  y 1.195  z 1.850 m
+   box   min (-0.290, 0.000, -0.925)  max (0.290, 1.195, 0.925)
+   triangles 2432: accent 124, metal 1636, metal_dark 672
    PASS
    EXTRA: outward volume and normal/winding consistency PASS
-   SHA256 51f71c059903b5d27df1e1b0a376e6758ed9d00e832eecd9bccd70c2dbd6e4cf
+   SHA256 ee9590bf7203cb9c46fdbf3e5c7daf28d16677b376cd4b7648edd9aab66e2064
    REBUILD IDENTICAL

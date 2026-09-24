@@ -1,0 +1,13 @@
+{
+  "_units": "metres, seconds",
+  "hand": "Right",
+  "walker": { "walkSpeed": 0.8, "walkClip": "walk_dog", "standClip": "stand_idle", "turnRate": 1.5, "blendRate": 4.0 },
+  "ropeLength": 1.35,
+  "dogOffset": { "side": 0.7, "forward": 0.4 },
+  "slack": 0.06,
+  "slowBand": 0.24,
+  "followGain": 2.0,
+  "stillSpeed": 0.04,
+  "curve": { "points": 17, "maxSag": 0.35, "sagFactor": 0.45, "groundClearance": 0.06 },
+  "width": 0.012
+}

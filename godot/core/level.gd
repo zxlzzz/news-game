@@ -1,12 +1,14 @@
 ## Root node of every scenes/<name>/level.tscn (scene_spec.md §1). The level file holds the
 ## ground bands and object instances and points at a palette, a view and a population.
 ## When the game runs this script checks the scene rules, derives what the files do not say
-## (size jitter for now), applies the ink look, then adds the view, environment and corner tint.
+## (size jitter, the people: npc/crowd.gd), applies the ink look, then adds the view, environment
+## and corner tint.
 ## Nothing here runs in the editor: there the models show with their own materials.
 class_name Level
 extends Node3D
 
 const InkBuilder := preload("res://style/ink_builder.gd")
+const Crowd := preload("res://npc/crowd.gd")
 const GRADE_SHADER := preload("res://style/grade.gdshader")
 const SLOTS: SlotDefs = preload("res://core/slots.tres")
 const STYLE: StyleParams = preload("res://core/style.tres")
@@ -32,6 +34,9 @@ func _ready() -> void:
 		get_tree().quit(1)
 		return
 	_apply_size_jitter()
+	# People before the look: riders bring vehicle models that need the ink look too.
+	# (Their stick figures have no mesh until their first frame, so the look pass skips them.)
+	add_child(Crowd.new(self))
 	_apply_look(slot_map)
 	add_child(view.instantiate())
 	_add_environment()
