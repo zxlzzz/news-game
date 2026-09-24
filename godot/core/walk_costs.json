@@ -1,0 +1,5 @@
+{
+  "_note": "Walking cost per ground surface (scene_spec.md §3: one name sets both the colour and the cost). Keys are colour slot names (ground bands, paving objects' materials) plus 'crosswalk' (the road cells a crosswalk object cuts across). A surface missing from a mode cannot be used in that mode. core/walk_grid.gd reads this.",
+  "walk": { "sidewalk": 1.0, "concrete": 1.0, "crosswalk": 1.2, "grass": 4.0 },
+  "ride": { "bike_lane": 1.0 }
+}

@@ -16,6 +16,7 @@ colors = Dictionary[StringName, Color]({
 &"metal_dark": Color(0.404, 0.404, 0.404, 1),
 &"paint": Color(0.972, 0.972, 0.972, 1),
 &"road": Color(0.771, 0.771, 0.771, 1),
+&"bike_lane": Color(0.771, 0.771, 0.771, 1),
 &"sidewalk": Color(0.91, 0.91, 0.91, 1),
 &"trim": Color(0.937, 0.937, 0.937, 1),
 &"trim_dark": Color(0.552, 0.552, 0.552, 1),

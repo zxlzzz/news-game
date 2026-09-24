@@ -7,6 +7,7 @@ script = ExtResource("1")
 slots = Dictionary[StringName, PackedStringArray]({
 &"accent": PackedStringArray(),
 &"bark": PackedStringArray(),
+&"bike_lane": PackedStringArray(),
 &"concrete": PackedStringArray(),
 &"door": PackedStringArray(),
 &"fabric": PackedStringArray(),

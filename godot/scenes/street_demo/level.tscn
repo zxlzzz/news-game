@@ -73,7 +73,7 @@ slot = &"sidewalk"
 [sub_resource type="Resource" id="band_1"]
 script = ExtResource("6")
 width = 2.0
-slot = &"road"
+slot = &"bike_lane"
 
 [sub_resource type="Resource" id="band_2"]
 script = ExtResource("6")
@@ -83,7 +83,7 @@ slot = &"road"
 [sub_resource type="Resource" id="band_3"]
 script = ExtResource("6")
 width = 2.0
-slot = &"road"
+slot = &"bike_lane"
 
 [sub_resource type="Resource" id="band_4"]
 script = ExtResource("6")
@@ -99,48 +99,6 @@ slot = &"sidewalk"
 script = ExtResource("6")
 width = 10.0
 slot = &"grass"
-
-[sub_resource type="Curve3D" id="curve_sidewalk_east"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -63.5, 0.05, 1.3, 0, 0, 0, 0, 0, 0, -26.7, 0.05, 1.3, 0, 0, 0, 0, 0, 0, -25.2, 0.05, 0.75, 0, 0, 0, 0, 0, 0, -18.6, 0.05, 0.75, 0, 0, 0, 0, 0, 0, -17.1, 0.05, 1.3, 0, 0, 0, 0, 0, 0, 26.45, 0.05, 1.3, 0, 0, 0, 0, 0, 0, 27.95, 0.05, 0.75, 0, 0, 0, 0, 0, 0, 34.55, 0.05, 0.75, 0, 0, 0, 0, 0, 0, 36.05, 0.05, 1.3, 0, 0, 0, 0, 0, 0, 63.5, 0.05, 1.3),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-}
-point_count = 10
-
-[sub_resource type="Curve3D" id="curve_sidewalk_west"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 63.5, 0.05, 1.85, 0, 0, 0, 0, 0, 0, 36.05, 0.05, 1.85, 0, 0, 0, 0, 0, 0, 34.55, 0.05, 0.95, 0, 0, 0, 0, 0, 0, 27.95, 0.05, 0.95, 0, 0, 0, 0, 0, 0, 26.45, 0.05, 1.85, 0, 0, 0, 0, 0, 0, -17.1, 0.05, 1.85, 0, 0, 0, 0, 0, 0, -18.6, 0.05, 0.95, 0, 0, 0, 0, 0, 0, -25.2, 0.05, 0.95, 0, 0, 0, 0, 0, 0, -26.7, 0.05, 1.85, 0, 0, 0, 0, 0, 0, -63.5, 0.05, 1.85),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-}
-point_count = 10
-
-[sub_resource type="Curve3D" id="curve_park_loop"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 57, 0.05, 19.75, 0, 0, 0, 0, 0, 0, 57.7765, 0.05, 19.8522, 0, 0, 0, 0, 0, 0, 58.5, 0.05, 20.1519, 0, 0, 0, 0, 0, 0, 59.1213, 0.05, 20.6287, 0, 0, 0, 0, 0, 0, 59.5981, 0.05, 21.25, 0, 0, 0, 0, 0, 0, 59.8978, 0.05, 21.9735, 0, 0, 0, 0, 0, 0, 60, 0.05, 22.75, 0, 0, 0, 0, 0, 0, 59.8978, 0.05, 23.5265, 0, 0, 0, 0, 0, 0, 59.5981, 0.05, 24.25, 0, 0, 0, 0, 0, 0, 59.1213, 0.05, 24.8713, 0, 0, 0, 0, 0, 0, 58.5, 0.05, 25.3481, 0, 0, 0, 0, 0, 0, 57.7765, 0.05, 25.6478, 0, 0, 0, 0, 0, 0, 57, 0.05, 25.75, 0, 0, 0, 0, 0, 0, 56, 0.05, 25.75, 0, 0, 0, 0, 0, 0, 14.4, 0.05, 25.75, 0, 0, 0, 0, 0, 0, 12.9, 0.05, 27.05, 0, 0, 0, 0, 0, 0, 9.4, 0.05, 27.05, 0, 0, 0, 0, 0, 0, 5.9, 0.05, 27.05, 0, 0, 0, 0, 0, 0, 4.4, 0.05, 25.75, 0, 0, 0, 0, 0, 0, -56, 0.05, 25.75, 0, 0, 0, 0, 0, 0, -57, 0.05, 25.75, 0, 0, 0, 0, 0, 0, -57.7765, 0.05, 25.6478, 0, 0, 0, 0, 0, 0, -58.5, 0.05, 25.3481, 0, 0, 0, 0, 0, 0, -59.1213, 0.05, 24.8713, 0, 0, 0, 0, 0, 0, -59.5981, 0.05, 24.25, 0, 0, 0, 0, 0, 0, -59.8978, 0.05, 23.5265, 0, 0, 0, 0, 0, 0, -60, 0.05, 22.75, 0, 0, 0, 0, 0, 0, -59.8978, 0.05, 21.9735, 0, 0, 0, 0, 0, 0, -59.5981, 0.05, 21.25, 0, 0, 0, 0, 0, 0, -59.1213, 0.05, 20.6287, 0, 0, 0, 0, 0, 0, -58.5, 0.05, 20.1519, 0, 0, 0, 0, 0, 0, -57.7765, 0.05, 19.8522, 0, 0, 0, 0, 0, 0, -57, 0.05, 19.75, 0, 0, 0, 0, 0, 0, -56, 0.05, 19.75, 0, 0, 0, 0, 0, 0, 4.4, 0.05, 19.75, 0, 0, 0, 0, 0, 0, 5.9, 0.05, 18.45, 0, 0, 0, 0, 0, 0, 9.4, 0.05, 18.45, 0, 0, 0, 0, 0, 0, 12.9, 0.05, 18.45, 0, 0, 0, 0, 0, 0, 14.4, 0.05, 19.75, 0, 0, 0, 0, 0, 0, 56, 0.05, 19.75),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-}
-point_count = 40
-
-[sub_resource type="Curve3D" id="curve_near_walk"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -63.5, 0.05, 30, 0, 0, 0, 0, 0, 0, 63.5, 0.05, 30),
-"tilts": PackedFloat32Array(0, 0)
-}
-point_count = 2
-
-[sub_resource type="Curve3D" id="curve_bike_far"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 64.5, 0.05, 4.5, 0, 0, 0, 0, 0, 0, -64.5, 0.05, 4.5),
-"tilts": PackedFloat32Array(0, 0)
-}
-point_count = 2
-
-[sub_resource type="Curve3D" id="curve_bike_near"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -64.5, 0.05, 15.5, 0, 0, 0, 0, 0, 0, 64.5, 0.05, 15.5),
-"tilts": PackedFloat32Array(0, 0)
-}
-point_count = 2
 
 [node name="StreetDemo" type="Node3D"]
 script = ExtResource("1")
@@ -983,41 +941,3 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, -58.7, 0, 27.1)
 
 [node name="FireHydrant3" parent="." instance=ExtResource("34")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -50, 0, 27.2)
-
-[node name="Routes" type="Node3D" parent="."]
-
-[node name="sidewalk_east" type="Path3D" parent="Routes"]
-curve = SubResource("curve_sidewalk_east")
-metadata/people = ["pedestrian"]
-metadata/loop = false
-metadata/reversible = false
-
-[node name="sidewalk_west" type="Path3D" parent="Routes"]
-curve = SubResource("curve_sidewalk_west")
-metadata/people = ["pedestrian", "jogger"]
-metadata/loop = false
-metadata/reversible = false
-
-[node name="park_loop" type="Path3D" parent="Routes"]
-curve = SubResource("curve_park_loop")
-metadata/people = ["pedestrian", "jogger", "dog_walker"]
-metadata/loop = true
-metadata/reversible = true
-
-[node name="near_walk" type="Path3D" parent="Routes"]
-curve = SubResource("curve_near_walk")
-metadata/people = ["pedestrian"]
-metadata/loop = false
-metadata/reversible = true
-
-[node name="bike_far" type="Path3D" parent="Routes"]
-curve = SubResource("curve_bike_far")
-metadata/people = ["cyclist", "scooter_rider"]
-metadata/loop = false
-metadata/reversible = false
-
-[node name="bike_near" type="Path3D" parent="Routes"]
-curve = SubResource("curve_bike_near")
-metadata/people = ["cyclist", "scooter_rider"]
-metadata/loop = false
-metadata/reversible = false

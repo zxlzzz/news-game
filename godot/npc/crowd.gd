@@ -1,74 +1,139 @@
 ## The people of a level, added by core/level.gd (scene_spec.md §3: people follow from the objects
-## and the population, the level file lists none).
-##  - Free-roaming people, counted in the level's population.tres, follow the level's routes: Path3D
-##    children of a node named "Routes". Each route says who uses it in metadata "people" (kinds from
-##    crowd-params.json), "loop" (a closed round) and "reversible" (walked either way). People on an
-##    open route leave at its end and come back in at the start of another route of their kind.
+## and the population; the level file lists none).
+##  - Free-roaming people, counted in the level's population.tres, come in where the walkable (or
+##    rideable) area meets an end of the ground, visit a few random spots on pavement or paving,
+##    and leave by another end. Paths come from core/walk_grid.gd, which derives where one can walk
+##    from the ground bands and the objects; nothing about routes is written in the level.
+##    Riders keep to the right-hand bike lane when crowd-params says keepRight.
 ##  - People at posts come from Marker3D nodes named post_<kind>[_n] inside object types (a bench
 ##    seat, behind a stall counter, a chess stool): whether a post is taken and what is played there
 ##    is in crowd-params.json "posts".
 ## Walking and jogging play their clip by distance (npc/clip_pose.gd); dog walkers are
 ## npc/dog_walker.gd; riders are a vehicle type plus npc/rider.gd. No avoidance between people.
+## Any error in the data stops the game (like core/level.gd), nothing is skipped quietly.
 extends Node3D
 
 const ClipPose := preload("res://npc/clip_pose.gd")
 const InkFigure := preload("res://npc/ink_figure.gd")
 const DogWalker := preload("res://npc/dog_walker.gd")
 const Rider := preload("res://npc/rider.gd")
+const WalkGrid := preload("res://core/walk_grid.gd")
 const PARAMS := "res://npc/crowd-params.json"
-## population.tres field -> crowd-params kind
+## population.tres field -> kind
 const POPULATION := {"pedestrians": "pedestrian", "joggers": "jogger", "dog_walkers": "dog_walker",
 	"cyclists": "cyclist", "scooter_riders": "scooter_rider"}
+## Simulation step (seconds): long frames are split into steps no longer than this; drawn once.
+const STEP := 1.0 / 60
+## Frames longer than this (a stall, the first frame) are shortened to it.
+const MAX_FRAME := 0.1
 
 var level: Node3D
 var p: Dictionary
 var body_scale: float
 var ink: Color
-var routes := {}   # kind -> Array[Path3D]
+var grid: WalkGrid
+var exits := {}   # mode -> exits from walk_grid
 var people: Array = []
 var rng := RandomNumberGenerator.new()
+var errors: Array[String] = []
 var _skeleton: Dictionary
 var _rider_params: Dictionary
+var _draw := false
 
 func _init(level_: Node3D) -> void:
 	level = level_
 	name = "Crowd"
 
+func _fail(msg: String) -> void:
+	errors.append(msg)
+
+func _read(path: String):
+	var v = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not (v is Dictionary):
+		_fail(path + ": missing or not a JSON object")
+		return {}
+	return v
+
 func _ready() -> void:
-	p = JSON.parse_string(FileAccess.get_file_as_string(PARAMS))
-	var bodies = JSON.parse_string(FileAccess.get_file_as_string("res://npc/body-types.json"))
+	_setup()
+	if not errors.is_empty():
+		for e in errors:
+			push_error("Crowd: " + e)
+			printerr("Crowd: " + e)
+		set_process(false)
+		get_tree().quit(1)
+
+func _setup() -> void:
+	p = _read(PARAMS)
+	var bodies: Dictionary = _read("res://npc/body-types.json")
+	_skeleton = _read("res://npc/skeleton-params.json")
+	if not errors.is_empty():
+		return
 	body_scale = bodies[p.body].scale
 	ink = Color(p.ink[0], p.ink[1], p.ink[2])
-	_skeleton = JSON.parse_string(FileAccess.get_file_as_string("res://npc/skeleton-params.json"))
 	_rider_params = Rider.load_params()
 	rng.seed = hash(level.name)
-	var holder := level.get_node_or_null("Routes")
-	if holder:
-		for r in holder.get_children():
-			if r is Path3D:
-				for kind in r.get_meta("people", []):
-					if not routes.has(kind):
-						routes[kind] = []
-					routes[kind].append(r)
+	_check_clips()
+	var wanted := {}
 	for field in POPULATION:
-		var kind: String = POPULATION[field]
-		var n: int = level.population.get(field) if level.population else 0
-		if n > 0 and not routes.has(kind):
-			push_error("Crowd: population has %d %s but no route lists %s" % [n, field, kind])
-			continue
-		for i in n:
-			_spawn_roaming(kind)
+		var n: int = level.population.get(field)
+		if n > 0:
+			wanted[POPULATION[field]] = n
+	if not wanted.is_empty():
+		grid = WalkGrid.new(level, p.grid)
+		if grid.error != "":
+			_fail(grid.error)
+			return
+		for mode in WalkGrid.MODES:
+			exits[mode] = grid.exits(mode)
+		_check_exits(wanted)
+	if not errors.is_empty():
+		return
+	for kind in wanted:
+		for i in wanted[kind]:
+			_spawn(kind, true)
 	for m in level.find_children("post_*", "Marker3D", true, false):
 		var kind: String = String(m.name).split("_")[1]
-		var post: Dictionary = p.posts.get(kind, {})
-		if post.is_empty():
-			push_error("Crowd: no post kind %s in %s (marker %s)" % [kind, PARAMS, m.get_path()])
-		elif rng.randf() < post.chance:
-			people.append(_post_person(m, post))
+		if not p.posts.has(kind):
+			_fail("no post kind %s in %s (marker %s)" % [kind, PARAMS, m.get_path()])
+		elif rng.randf() < p.posts[kind].chance:
+			people.append(_post_person(m, p.posts[kind]))
 
-func _figure(scale_: float) -> Node3D:
+## Every clip named in crowd-params must load.
+func _check_clips() -> void:
+	var lists := []
+	for k in p.walkers:
+		lists.append(p.walkers[k].clips)
+	for k in p.posts:
+		lists.append(p.posts[k].clips)
+	for clips in lists:
+		for id in clips:
+			var c = ClipPose.of(id)
+			if c.error != "":
+				_fail("clip %s: %s" % [id, c.error])
+
+## Each mode in use needs a way in at both ends, and every way in must reach the other end.
+func _check_exits(wanted: Dictionary) -> void:
+	for kind in wanted:
+		if not (p.walkers.has(kind) or kind == "dog_walker" or p.riders.has(kind)):
+			_fail("unknown kind %s (population field) — not in %s" % [kind, PARAMS])
+	for mode in WalkGrid.MODES:
+		var users := wanted.keys().filter(func(k): return (k in p.riders) == (mode == "ride"))
+		if users.is_empty():
+			continue
+		var ends: Array = exits[mode]
+		var left := ends.filter(func(e): return e.side < 0)
+		var right := ends.filter(func(e): return e.side > 0)
+		if left.is_empty() or right.is_empty():
+			_fail("%s: no way in at %s end of the ground (for %s)" % [mode, "the left" if left.is_empty() else "the right", users])
+			continue
+		for e in left:
+			if right.all(func(r): return grid.plan(mode, e.point, r.point).is_empty()):
+				_fail("%s: the way in at z %.1f reaches no way out at the other end" % [mode, e.point.z])
+
+func _figure(scale_: float, parent: Node = self) -> Node3D:
 	var f := InkFigure.new()
-	add_child(f)
+	parent.add_child(f)
 	f.setup(ink, p.depthBias)
 	f.scale = Vector3.ONE * scale_
 	return f
@@ -84,120 +149,166 @@ func _pick(weights: Dictionary) -> String:
 			return k
 	return weights.keys()[-1]
 
-# ---------------------------------------------------------------- route following
+# ---------------------------------------------------------------- paths
 
-## Where on a route: {route, d (metres along), dir (+1/-1), side (lateral metres)}.
-func _place_on_route(kind: String, anywhere: bool) -> Dictionary:
-	var choices: Array = routes[kind]
-	if not anywhere:
-		choices = choices.filter(func(r): return not r.get_meta("loop", false))
-		if choices.is_empty():
-			choices = routes[kind]
-	var r: Path3D = choices[rng.randi() % choices.size()]
-	var length := r.curve.get_baked_length()
-	var dir := -1 if r.get_meta("reversible", false) and rng.randf() < 0.5 else 1
-	var d := rng.randf() * length if anywhere else (0.0 if dir > 0 else length)
-	return {"route": r, "d": d, "dir": dir, "length": length}
+## A walked path: points, cumulative lengths.
+func _path(pts: PackedVector3Array) -> Dictionary:
+	var cum := PackedFloat32Array([0.0])
+	for i in range(1, pts.size()):
+		cum.append(cum[i - 1] + pts[i - 1].distance_to(pts[i]))
+	return {"pts": pts, "cum": cum, "length": cum[-1]}
 
-## World position and heading at distance d along a route, shifted sideways by `side` metres.
-func _route_at(at: Dictionary, side: float) -> Array:
-	var r: Path3D = at.route
-	var c := r.curve
-	var d: float = at.d
-	var loop: bool = r.get_meta("loop", false)
-	var ahead: float = d + 0.4 * at.dir
-	if loop:
-		d = fposmod(d, at.length)
-		ahead = fposmod(ahead, at.length)
-	var a := r.global_transform * c.sample_baked(clampf(d, 0, at.length))
-	var b := r.global_transform * c.sample_baked(clampf(ahead, 0, at.length))
-	var t := b - a
-	if t.length() < 1e-4:
-		t = Vector3(at.dir, 0, 0)
-	var yaw := atan2(t.x, t.z)
-	var right := Vector3(-cos(yaw), 0, sin(yaw))
-	return [a + right * side, yaw]
+## [position, heading] at distance d along a path.
+func _at(path: Dictionary, d: float) -> Array:
+	var pts: PackedVector3Array = path.pts
+	var cum: PackedFloat32Array = path.cum
+	d = clampf(d, 0.0, path.length)
+	var i := 0
+	while i < pts.size() - 2 and cum[i + 1] < d:
+		i += 1
+	var seg: Vector3 = pts[i + 1] - pts[i]
+	var t := (d - cum[i]) / maxf(seg.length(), 1e-6)
+	return [pts[i].lerp(pts[i + 1], clampf(t, 0.0, 1.0)), atan2(seg.x, seg.z)]
 
-## Advances along the route; returns false when an open route has ended.
-func _advance(at: Dictionary, metres: float) -> bool:
-	at.d += metres * at.dir
-	if at.route.get_meta("loop", false):
-		at.d = fposmod(at.d, at.length)
-		return true
-	return at.d >= 0 and at.d <= at.length
+## Distance along a path of the point nearest to q.
+func _along(path: Dictionary, q: Vector3) -> float:
+	var pts: PackedVector3Array = path.pts
+	var best := 0.0
+	var best_d := INF
+	for i in pts.size() - 1:
+		var c := Geometry3D.get_closest_point_to_segment(q, pts[i], pts[i + 1])
+		var dd := c.distance_squared_to(q)
+		if dd < best_d:
+			best_d = dd
+			best = path.cum[i] + pts[i].distance_to(c)
+	return best
 
-func _spawn_roaming(kind: String) -> void:
-	var at := _place_on_route(kind, true)
+func _exit_point(e: Dictionary) -> Vector3:
+	return Vector3(e.point.x, 0.0, rng.randf_range(e.span.x, e.span.y))
+
+## Targets for one visit: some random spots on pavement, then an exit away from where one is.
+func _trip(from: Vector3, visits: Array) -> Array:
+	var legs := []
+	for i in rng.randi_range(visits[0], visits[1]):
+		var q = grid.random_point("walk", rng, p.visitMaxCost)
+		if q != null:
+			legs.append(q)
+	var ends: Array = exits.walk
+	var far := ends.filter(func(e): return absf(e.point.x - from.x) > 10.0)
+	var pool := far if not far.is_empty() else ends
+	legs.append(_exit_point(pool[rng.randi() % pool.size()]))
+	return legs
+
+## Plans the next leg of a walker's trip; false when the trip is over.
+func _next_leg(person: Dictionary, from: Vector3) -> bool:
+	while not person.legs.is_empty():
+		var pts := grid.plan("walk", from, person.legs.pop_front())
+		if pts.size() >= 2:
+			person.path = _path(pts)
+			person.d = 0.0
+			return true
+	return false
+
+## Somewhere to start: anywhere on pavement at the beginning, else at an end of the ground.
+func _start_point(anywhere: bool) -> Vector3:
+	if anywhere:
+		var q = grid.random_point("walk", rng, p.visitMaxCost)
+		if q != null:
+			return q
+	var ends: Array = exits.walk
+	return _exit_point(ends[rng.randi() % ends.size()])
+
+# ---------------------------------------------------------------- spawning
+
+func _spawn(kind: String, anywhere: bool) -> void:
 	if p.walkers.has(kind):
-		var w: Dictionary = p.walkers[kind]
-		var person := {"type": "walker", "kind": kind, "at": at, "figure": _figure(body_scale)}
-		_new_walk(person, w)
+		var person := {"type": "walker", "kind": kind, "figure": _figure(body_scale)}
+		_new_walker_trip(person, _start_point(anywhere))
 		people.append(person)
 	elif kind == "dog_walker":
-		var pos: Array = _route_at(at, 0.0)
-		var dw := DogWalker.new(pos[0], pos[1], body_scale)
-		people.append({"type": "dog", "kind": kind, "at": at, "dw": dw,
-			"walker": _figure(body_scale), "dog": _figure(1.0), "rope": _figure(1.0)})
-	elif p.riders.has(kind):
+		var person := {"type": "dog", "kind": kind, "walker": _figure(body_scale), "dog": _figure(1.0), "rope": _figure(1.0)}
+		_new_dog_trip(person, _start_point(anywhere))
+		people.append(person)
+	else:
 		var rp: Dictionary = p.riders[kind]
 		var vehicle: Node3D = load(rp.vehicle).instantiate()
 		add_child(vehicle)
-		var fig := InkFigure.new()
-		vehicle.add_child(fig)
-		fig.setup(ink, p.depthBias)
-		people.append({"type": "rider", "kind": kind, "at": at, "vehicle": vehicle, "figure": fig,
+		var person := {"type": "rider", "kind": kind, "vehicle": vehicle, "figure": _figure(1.0, vehicle),
 			"R": Rider.style(_rider_params, vehicle.rider_style), "state": Rider.start(),
-			"speed": rng.randf_range(rp.speed[0], rp.speed[1]), "pedalling": true, "switch": 0.0, "yaw": INF})
-	else:
-		push_error("Crowd: unknown kind " + kind)
+			"speed": rng.randf_range(rp.speed[0], rp.speed[1]), "pedalling": true, "switch": 0.0}
+		_new_ride(person, anywhere)
+		people.append(person)
 
-## A new clip, speed and lane for a walker (also on re-entering).
-func _new_walk(person: Dictionary, w: Dictionary) -> void:
+func _new_walker_trip(person: Dictionary, from: Vector3) -> void:
+	var w: Dictionary = p.walkers[person.kind]
 	var clip = ClipPose.of(_pick(w.clips))
 	person.clip = clip
 	person.phase = rng.randf()
 	person.speed = clip.stride() * body_scale / clip.duration() * (1.0 + rng.randf_range(-w.speedJitter, w.speedJitter))
-	person.side = rng.randf_range(-w.laneJitter, w.laneJitter)
 	person.yaw = INF
+	person.legs = _trip(from, w.visits)
+	if not _next_leg(person, from):
+		person.path = _path(PackedVector3Array([from, from + Vector3(0.01, 0, 0)]))
+		person.d = 0.0
+
+func _new_dog_trip(person: Dictionary, from: Vector3) -> void:
+	var dw := DogWalker.new(from, rng.randf() * TAU, body_scale)
+	if dw.error != "":
+		_fail("dog walker: " + dw.error)
+		return
+	person.dw = dw
+	person.legs = _trip(from, p.dogWalker.visits)
+	if not _next_leg(person, from):
+		person.path = _path(PackedVector3Array([from, from + Vector3(0.01, 0, 0)]))
+
+## A ride from one end of the ground to the other, in the right-hand lane if keepRight.
+func _new_ride(person: Dictionary, anywhere: bool) -> void:
+	var ends: Array = exits.ride
+	var dir := -1 if rng.randf() < 0.5 else 1
+	var starts := ends.filter(func(e): return e.side == -dir)
+	var goals := ends.filter(func(e): return e.side == dir)
+	var s: Dictionary = starts[rng.randi() % starts.size()]
+	if p.riders.keepRight:
+		# travelling +X the right hand is +Z
+		starts.sort_custom(func(a, b): return a.point.z * dir > b.point.z * dir)
+		s = starts[0]
+	goals.sort_custom(func(a, b): return absf(a.point.z - s.point.z) < absf(b.point.z - s.point.z))
+	var pts := grid.plan("ride", s.point, goals[0].point)
+	if pts.size() < 2:  # _check_exits makes this impossible unless the level changed under us
+		push_error("Crowd: no ride from z %.1f" % s.point.z)
+		pts = PackedVector3Array([s.point, s.point + Vector3(dir * 0.01, 0, 0)])
+	person.path = _path(pts)
+	person.d = rng.randf() * person.path.length if anywhere else 0.0
+	person.yaw = INF
+
+func _post_person(m: Marker3D, post: Dictionary) -> Dictionary:
+	var person := {"type": "post", "marker": m, "clips": post.clips, "figure": _figure(body_scale)}
+	person.clip = ClipPose.of(_pick(post.clips))
+	person.time = rng.randf() * person.clip.duration()
+	return person
 
 func _turn(from: float, to: float, dt: float) -> float:
 	if from == INF:
 		return to
 	return from + clampf(angle_difference(from, to), -p.turnRate * dt, p.turnRate * dt)
 
-# ---------------------------------------------------------------- posts
-
-func _post_person(m: Marker3D, post: Dictionary) -> Dictionary:
-	var person := {"type": "post", "marker": m, "clips": post.clips, "figure": _figure(body_scale), "time": 0.0}
-	person.clip = ClipPose.of(_pick(post.clips))
-	person.time = rng.randf() * person.clip.duration()
-	return person
-
 # ---------------------------------------------------------------- each frame
 
-## Simulation step (seconds): long frames are split into steps no longer than this; drawn once.
-const STEP := 1.0 / 60
-## Frames longer than this (a stall, the first frame) are shortened to it.
-const MAX_FRAME := 0.1
-var _draw := false
-
 func _process(frame_dt: float) -> void:
-	var n := ceili(minf(frame_dt, MAX_FRAME) / STEP)
+	var dt := minf(frame_dt, MAX_FRAME)
+	var n := ceili(dt / STEP)
 	for k in n:
 		_draw = k == n - 1
-		_step(minf(frame_dt, MAX_FRAME) / n)
-
-func _step(dt: float) -> void:
-	for person in people:
-		match person.type:
-			"walker":
-				_update_walker(person, dt)
-			"dog":
-				_update_dog(person, dt)
-			"rider":
-				_update_rider(person, dt)
-			"post":
-				_update_post(person, dt)
+		for person in people:
+			match person.type:
+				"walker":
+					_update_walker(person, dt / n)
+				"dog":
+					_update_dog(person, dt / n)
+				"rider":
+					_update_rider(person, dt / n)
+				"post":
+					_update_post(person, dt / n)
 
 func _draw_figure(fig: Node3D, d: Dictionary) -> void:
 	fig.draw(d.segments, d.discs, d.triangles)
@@ -205,11 +316,14 @@ func _draw_figure(fig: Node3D, d: Dictionary) -> void:
 func _update_walker(person: Dictionary, dt: float) -> void:
 	var clip = person.clip
 	var metres: float = person.speed * dt
-	if not _advance(person.at, metres):
-		person.at = _place_on_route(person.kind, false)
-		_new_walk(person, p.walkers[person.kind])
+	person.d += metres
+	if person.d >= person.path.length:
+		var end: Vector3 = person.path.pts[-1]
+		if not _next_leg(person, end):
+			_new_walker_trip(person, _start_point(false))
+			clip = person.clip
 	person.phase = fposmod(person.phase + metres / (clip.stride() * body_scale), 1.0)
-	var here := _route_at(person.at, person.side)
+	var here := _at(person.path, person.d)
 	person.yaw = _turn(person.yaw, here[1], dt)
 	if not _draw:
 		return
@@ -219,10 +333,15 @@ func _update_walker(person: Dictionary, dt: float) -> void:
 
 func _update_dog(person: Dictionary, dt: float) -> void:
 	var dw: DogWalker = person.dw
-	var at: Dictionary = person.at
-	at.d = at.route.curve.get_closest_offset(at.route.global_transform.affine_inverse() * dw.walker.position)
-	var target: Array = _route_at({"route": at.route, "d": at.d + 1.5 * at.dir, "dir": at.dir, "length": at.length}, 0.0)
-	var to: Vector3 = target[0] - dw.walker.position
+	var pos: Vector3 = dw.walker.position
+	var path: Dictionary = person.path
+	if pos.distance_to(path.pts[-1]) < p.dogWalker.arrive:
+		if not _next_leg(person, pos):
+			_new_dog_trip(person, _start_point(false))
+			return
+		path = person.path
+	var target: Vector3 = _at(path, _along(path, pos) + p.dogWalker.lookAhead)[0]
+	var to := target - pos
 	dw.step(dw.walk_speed(), atan2(to.x, to.z), dt)
 	if not _draw:
 		return
@@ -234,16 +353,16 @@ func _update_dog(person: Dictionary, dt: float) -> void:
 
 func _update_rider(person: Dictionary, dt: float) -> void:
 	var rp: Dictionary = p.riders[person.kind]
-	if not _advance(person.at, person.speed * dt):
-		person.at = _place_on_route(person.kind, false)
-		person.yaw = INF
+	person.d += person.speed * dt
+	if person.d >= person.path.length:
+		_new_ride(person, false)
 	if rp.has("pedalSeconds"):
 		person.switch -= dt
 		if person.switch <= 0:
 			person.pedalling = not person.pedalling
 			var span: Array = rp.pedalSeconds if person.pedalling else rp.coastSeconds
 			person.switch = rng.randf_range(span[0], span[1])
-	var here := _route_at(person.at, 0.0)
+	var here := _at(person.path, person.d)
 	var old: float = person.yaw
 	person.yaw = _turn(person.yaw, here[1], dt)
 	var yaw_rate: float = 0.0 if old == INF else angle_difference(old, person.yaw) / dt
