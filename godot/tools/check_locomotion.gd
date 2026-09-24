@@ -5,7 +5,8 @@
 ##    commanded speed on a straight line;
 ##  - every rideable type in types/ (group "rideable") for every body type: the model has all contact
 ##    nodes, and the rider reaches seat, grips and pedals/footrests all round the crank;
-##  - dog walker: two minutes of walking, turning and stopping; the rope is never stretched.
+##  - dog walker: two minutes of walking, turning and stopping; the rope is never stretched; walking
+##    away from the camera side, the walker changes hands so the dog is on the camera side.
 extends SceneTree
 
 const Dog := preload("res://npc/procedural_dog.gd")
@@ -131,6 +132,15 @@ func _check_dog_walker() -> void:
 		var t: float = i * dt
 		dw.step(dw.walk_speed() if fposmod(t, 16.0) < 12 else 0.0, sin(t * 0.12) * 1.5, dt)
 		worst = maxf(worst, dw.separation)
+	# walking toward -X with the camera on the +Z side: the dog must end up on the camera side
+	var side_test := DogWalker.new(Vector3.ZERO, -PI / 2, bodies.adult.scale)
+	side_test.view = Vector3(0, 0, 1)
+	for i in 20 * 60:
+		side_test.step(side_test.walk_speed(), -PI / 2, dt)
+	var ahead: float = side_test.dog.position.z - side_test.walker.position.z
+	if ahead <= 0.2:
+		_fail("dog walker heading -X keeps the dog %.2f m toward the camera (should be on the camera side)" % ahead)
+	print("dog walker: dog %.2f m on the camera side after changing hands (holding %s)" % [ahead, side_test.side])
 	if worst > dw.leash_p.ropeLength:
 		_fail("leash stretched to %.2f m (rope %.2f m)" % [worst, dw.leash_p.ropeLength])
 	print("dog walker: longest hand-collar distance %.2f of %.2f m" % [worst, dw.leash_p.ropeLength])

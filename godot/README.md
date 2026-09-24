@@ -75,8 +75,9 @@
 - **哪里能走、能骑**由 `core/walk_grid.gd` 从关卡推出来（规格 §3）：地面带的色槽定每条带的地面，铺装物件（分组 `paving`：小径、广场）按模型实际的地面形状盖在上面，斑马线（分组 `crosswalk`）把它压着的、人不能走的带在它的宽度上切成可走，其余物件按贴近地面的部分挖成障碍再留出人身宽度；贴花（分组 `marking`）不挡路。每种地面在"走 / 骑"两种方式下的代价在 `core/walk_costs.json`，表里没有的就不能用（自行车道有自己的色槽 `bike_lane`，只给骑车用）。路径用 AStarGrid2D 算；规格里提的 NavigationRegion3D 不用，原因写在 `walk_grid.gd` 开头。
 - **自由走动的人**（数量在 `population.tres`）从能走区域碰到地面两端的地方进来，去几处随机的人行道或铺装，再从另一端离开；骑车的人靠右走自己那条车道。路人随机用 `walk` / `walk_slow` / `phone_walk` / `eat_walk`，按走过的距离播放。
 - **固定岗位的人**跟着物件：类型库里的 `post_<种类>` 标记（长椅和公交站的座位、摊位后面和前面、棋凳、棋桌旁），有没有人、播什么动作在 `npc/crowd-params.json`。
-- 数据有错（动作名写错、某一端没有入口、入口走不到另一端）就报错退出，和 `core/level.gd` 一样，不跳过。
-- 看推出来的可走区域：`godot --headless --path . -s res://tools/walk_grid_image.gd -- res://scenes/street_demo/level.tscn <png 绝对路径>`。
+- 数据有错就报错退出，和 `core/level.gd` 一样，不跳过：动作名写错；某一端没有入口，或入口走不到另一端；有一块人行道或铺装被物件围死、从入口走不到（小于 `crowd-params.json` 里 `grid.pocketArea` 平方米的小角落不算）；铺装物件的材质经材质映射后不是色槽，或者这种地面在代价表里不能走。随机目的地只从入口走得到的地方挑。
+- 遛狗的人牵绳的手不固定：狗在背对镜头那一侧超过 `leash-params.json` 的 `switchSideAfter` 秒，就换手（姿势左右镜像），狗到靠镜头的一侧，不被人挡住。
+- 推出来的可走区域见 [docs/street_demo_walk_grid.png](docs/street_demo_walk_grid.png)（上半是走，下半是骑；白 = 代价 1，灰 = 更贵，黑 = 不能用）。改了布局重画一张：`godot --headless --path . -s res://tools/walk_grid_image.gd -- res://scenes/street_demo/level.tscn <png 绝对路径>`。
 
 简化了的地方（够 demo 用，以后要再改）：人和人之间不避让；进出只在地面两端，还没有门；车停着不开；公交站有人坐、没人上车。
 

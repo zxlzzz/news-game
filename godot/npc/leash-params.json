@@ -1,7 +1,7 @@
 {
   "_units": "metres, seconds",
   "hand": "Right",
-  "walker": { "walkSpeed": 0.8, "walkClip": "walk_dog", "standClip": "stand_idle", "turnRate": 1.5, "blendRate": 4.0 },
+  "walker": { "walkSpeed": 0.8, "walkClip": "walk_dog", "standClip": "stand_idle", "turnRate": 1.5, "blendRate": 4.0, "switchSideAfter": 2.0 },
   "ropeLength": 1.35,
   "dogOffset": { "side": 0.7, "forward": 0.4 },
   "slack": 0.06,

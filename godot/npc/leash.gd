@@ -10,12 +10,13 @@ static func load_params(path := "res://npc/leash-params.json") -> Dictionary:
 	assert(p is Dictionary, "%s: not a JSON object" % path)
 	return p
 
-## owner: {position, yaw, speed (wanted), hand (world)}; dog: {position, yaw, collar (world)}.
+## owner: {position, yaw, speed (wanted), hand (world), side ("Left"/"Right": the leash hand)};
+## dog: {position, yaw, collar (world)}.
 ## Returns {ownerSpeed, dogSpeed, dogYaw, separation}; feed dogSpeed/dogYaw to Dog.step().
 static func plan(owner: Dictionary, dog: Dictionary, p: Dictionary) -> Dictionary:
 	var f := Vector3(sin(owner.yaw), 0, cos(owner.yaw))
 	var left := Vector3(cos(owner.yaw), 0, -sin(owner.yaw))
-	var side := 1.0 if p.hand == "Left" else -1.0
+	var side := 1.0 if owner.side == "Left" else -1.0
 	var spot: Vector3 = owner.position + left * side * p.dogOffset.side + f * p.dogOffset.forward
 	var separation: float = owner.hand.distance_to(dog.collar)
 	var owner_speed: float = owner.speed * clampf((p.ropeLength - p.slack - separation) / p.slowBand, 0, 1)

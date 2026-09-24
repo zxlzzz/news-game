@@ -2,7 +2,8 @@
 ## paths across it. Nothing about it is written in the level file:
 ##  - the ground bands (GroundStrip) give each strip its surface: the band's colour slot;
 ##  - paving objects (group "paving": plazas, paths) lay their own surface over the bands, taken
-##    from their actual ground-level triangles and their material slot;
+##    from their actual ground-level triangles and their material's slot (through the same material
+##    maps as the look); paving that maps to no slot, or to one walkers cannot use, is an error;
 ##  - a crosswalk object (group "crosswalk") makes the bands it lies on that walkers cannot use
 ##    walkable across their full width, at the "crosswalk" cost;
 ##  - every other object blocks what it occupies below clearanceHeight (each mesh's box), grown by
@@ -10,12 +11,15 @@
 ## Costs per surface and mode ("walk", "ride") are in core/walk_costs.json: a surface missing from a
 ## mode cannot be used in it. Paths are found with an AStarGrid2D per mode (weight = cost) and
 ## straightened where a straight line crosses nothing dearer than its ends.
+## Walkable cells are also flood-filled from the ways in: random destinations are only picked where
+## one can get to, and unreachable_areas() lists pavement nobody can reach (enclosed by objects).
 ## Why not NavigationRegion3D (scene_spec §3's first idea): one region per cost means baking each
 ## surface separately, and every bake shrinks its region by the walker's radius, so neighbouring
 ## regions of different cost no longer touch and never connect.
 extends RefCounted
 
 const COSTS := "res://core/walk_costs.json"
+const InkBuilder := preload("res://style/ink_builder.gd")
 const MODES := ["walk", "ride"]
 
 var error := ""
@@ -27,9 +31,14 @@ var rows: int
 var costs: Dictionary   # mode -> PackedFloat32Array (0 = unusable)
 var grids: Dictionary   # mode -> AStarGrid2D
 var exit_max_cost: float
+var reachable: PackedByteArray   # walk mode: 1 = can be got to from a way in
+var _slot_map: Dictionary
+var _walk_table: Dictionary
 
-## level: a core/level.gd node; p: {cell, clearance, clearanceHeight, exitMaxCost}.
-func _init(level: Node3D, p: Dictionary) -> void:
+## level: a core/level.gd node; p: {cell, clearance, clearanceHeight, exitMaxCost};
+## slot_map: material name -> slot (Level.slot_map). Check `error` after construction.
+func _init(level: Node3D, p: Dictionary, slot_map: Dictionary) -> void:
+	_slot_map = slot_map
 	var table = JSON.parse_string(FileAccess.get_file_as_string(COSTS))
 	if not (table is Dictionary):
 		error = COSTS + ": not a JSON object"
@@ -38,6 +47,7 @@ func _init(level: Node3D, p: Dictionary) -> void:
 		if not table.has(mode):
 			error = "%s: no %s table" % [COSTS, mode]
 			return
+	_walk_table = table.walk
 	cell = p.cell
 	exit_max_cost = p.exitMaxCost
 	var strip: GroundStrip = null
@@ -80,6 +90,8 @@ func _init(level: Node3D, p: Dictionary) -> void:
 			continue
 		if inst.is_in_group(&"paving"):
 			_lay_paving(inst, surface)
+			if error != "":
+				return
 		elif inst.is_in_group(&"crosswalk"):
 			_cut_crossing(inst, band_of_row, table.walk, crossing)
 		elif not inst.is_in_group(&"marking"):
@@ -109,6 +121,7 @@ func _init(level: Node3D, p: Dictionary) -> void:
 				g.set_point_weight_scale(id, k)
 		costs[mode] = cost
 		grids[mode] = g
+	_flood_walk()
 
 # ---------------------------------------------------------------- building the grid
 
@@ -136,7 +149,14 @@ func _lay_paving(inst: Node3D, surface: Array) -> void:
 		var xf: Transform3D = mi.global_transform
 		for s in mesh.get_surface_count():
 			var mat: Material = mi.get_active_material(s)
-			var slot := StringName(mat.resource_name) if mat else &""
+			var mname := String(mat.resource_name) if mat else ""
+			var slot := StringName(InkBuilder.resolve_slot(mname, _slot_map))
+			if not Level.SLOTS.slots.has(slot):
+				error = "paving %s: material '%s' maps to no colour slot (core/material_maps)" % [inst.name, mname]
+				return
+			if not _walk_table.has(String(slot)):
+				error = "paving %s: surface %s cannot be walked (no walk cost in %s)" % [inst.name, slot, COSTS]
+				return
 			var arr: Array = mesh.surface_get_arrays(s)
 			var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 			var idx: PackedInt32Array = arr[Mesh.ARRAY_INDEX] if arr[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
@@ -271,11 +291,69 @@ func exits(mode: String) -> Array:
 				start = -1
 	return out
 
-## A random usable point no dearer than max_cost, or null after many misses.
+## A random point no dearer than max_cost that can be got to from a way in (walk mode), or null.
 func random_point(mode: String, rng: RandomNumberGenerator, max_cost: float):
 	var cost: PackedFloat32Array = costs[mode]
 	for attempt in 2000:
 		var i := rng.randi() % cost.size()
-		if cost[i] > 0.0 and cost[i] <= max_cost:
+		if cost[i] > 0.0 and cost[i] <= max_cost and (mode != "walk" or reachable[i]):
 			return _centre(i % cols, i / cols)
 	return null
+
+func _neighbours(i: int) -> Array[int]:
+	var c := i % cols
+	var r := i / cols
+	var out: Array[int] = []
+	if c > 0: out.append(i - 1)
+	if c < cols - 1: out.append(i + 1)
+	if r > 0: out.append(i - cols)
+	if r < rows - 1: out.append(i + cols)
+	return out
+
+## Walk mode: mark every usable cell connected to a way in.
+func _flood_walk() -> void:
+	var cost: PackedFloat32Array = costs.walk
+	reachable = PackedByteArray()
+	reachable.resize(cost.size())
+	var todo: Array[int] = []
+	for e in exits("walk"):
+		for r in range(_row(e.span.x), _row(e.span.y) + 1):
+			var i := r * cols + _col(e.point.x)
+			if cost[i] > 0.0 and not reachable[i]:
+				reachable[i] = 1
+				todo.append(i)
+	while not todo.is_empty():
+		for j in _neighbours(todo.pop_back()):
+			if cost[j] > 0.0 and not reachable[j]:
+				reachable[j] = 1
+				todo.append(j)
+
+## Pavement (walk cost up to max_cost) that cannot be got to from any way in, in pieces of at least
+## min_area square metres (smaller pockets between objects are ignored): [{centre, size}] in metres.
+func unreachable_areas(max_cost: float, min_area: float) -> Array:
+	var cost: PackedFloat32Array = costs.walk
+	var seen := PackedByteArray()
+	seen.resize(cost.size())
+	var out := []
+	for i in cost.size():
+		if seen[i] or reachable[i] or cost[i] <= 0.0 or cost[i] > max_cost:
+			continue
+		var lo := Vector2i(cols, rows)
+		var hi := Vector2i(-1, -1)
+		var count := 0
+		var todo: Array[int] = [i]
+		seen[i] = 1
+		while not todo.is_empty():
+			var k: int = todo.pop_back()
+			count += 1
+			lo = Vector2i(mini(lo.x, k % cols), mini(lo.y, k / cols))
+			hi = Vector2i(maxi(hi.x, k % cols), maxi(hi.y, k / cols))
+			for j in _neighbours(k):
+				if not seen[j] and not reachable[j] and cost[j] > 0.0 and cost[j] <= max_cost:
+					seen[j] = 1
+					todo.append(j)
+		if count * cell * cell >= min_area:
+			var a := _centre(lo.x, lo.y)
+			var b := _centre(hi.x, hi.y)
+			out.append({"centre": (a + b) / 2, "size": Vector2(b.x - a.x + cell, b.z - a.z + cell)})
+	return out

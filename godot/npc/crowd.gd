@@ -80,10 +80,12 @@ func _setup() -> void:
 		if n > 0:
 			wanted[POPULATION[field]] = n
 	if not wanted.is_empty():
-		grid = WalkGrid.new(level, p.grid)
+		grid = WalkGrid.new(level, p.grid, level.slot_map)
 		if grid.error != "":
 			_fail(grid.error)
 			return
+		for a in grid.unreachable_areas(p.visitMaxCost, p.grid.pocketArea):
+			_fail("pavement at x %.1f, z %.1f (%.1f x %.1f m) cannot be reached from any way in" % [a.centre.x, a.centre.z, a.size.x, a.size.y])
 		for mode in WalkGrid.MODES:
 			exits[mode] = grid.exits(mode)
 		_check_exits(wanted)
@@ -202,11 +204,15 @@ func _trip(from: Vector3, visits: Array) -> Array:
 ## Plans the next leg of a walker's trip; false when the trip is over.
 func _next_leg(person: Dictionary, from: Vector3) -> bool:
 	while not person.legs.is_empty():
-		var pts := grid.plan("walk", from, person.legs.pop_front())
+		var goal: Vector3 = person.legs.pop_front()
+		var pts := grid.plan("walk", from, goal)
 		if pts.size() >= 2:
 			person.path = _path(pts)
 			person.d = 0.0
 			return true
+		if from.distance_to(goal) > grid.cell * 2:
+			# destinations are only picked where one can get to, so this is a bug, not a layout issue
+			push_error("Crowd: no path from %s to %s" % [from, goal])
 	return false
 
 ## Somewhere to start: anywhere on pavement at the beginning, else at an end of the ground.
@@ -287,6 +293,14 @@ func _post_person(m: Marker3D, post: Dictionary) -> Dictionary:
 	person.time = rng.randf() * person.clip.duration()
 	return person
 
+## Horizontal direction from the scene toward the camera (zero before the view exists).
+func _toward_camera() -> Vector3:
+	var cam := get_viewport().get_camera_3d()
+	if cam == null:
+		return Vector3.ZERO
+	var back := cam.global_basis.z
+	return Vector3(back.x, 0, back.z).normalized()
+
 func _turn(from: float, to: float, dt: float) -> float:
 	if from == INF:
 		return to
@@ -342,6 +356,7 @@ func _update_dog(person: Dictionary, dt: float) -> void:
 		path = person.path
 	var target: Vector3 = _at(path, _along(path, pos) + p.dogWalker.lookAhead)[0]
 	var to := target - pos
+	dw.view = _toward_camera()
 	dw.step(dw.walk_speed(), atan2(to.x, to.z), dt)
 	if not _draw:
 		return

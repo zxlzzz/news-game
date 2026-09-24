@@ -19,7 +19,7 @@ func _process(_d: float) -> bool:
 	if level == null or not level.is_inside_tree():
 		return false
 	var p = JSON.parse_string(FileAccess.get_file_as_string("res://npc/crowd-params.json"))
-	var g := WalkGrid.new(level, p.grid)
+	var g := WalkGrid.new(level, p.grid, Level._load_material_maps([]))
 	if g.error != "":
 		printerr("WALK_GRID_FAIL ", g.error)
 		quit(1)

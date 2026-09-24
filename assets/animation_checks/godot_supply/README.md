@@ -48,7 +48,7 @@
 | 自行车 | [bicycle_side.gif](bicycle_side.gif) | [bicycle_high.gif](bicycle_high.gif) | 3 米/秒 S 形路线，蹬 7 秒、滑行 3 秒 |
 | 电动车 | [scooter_side.gif](scooter_side.gif) | [scooter_high.gif](scooter_high.gif) | 4.5 米/秒 S 形路线 |
 
-每个动图同名的 `.png` 是其中三分之一处的一帧。
+每个动图同名的 `.png` 是其中三分之一处的一帧。牵狗的俯角从狗那一侧拍；游戏里镜头固定，人会换手牵绳，让狗保持在靠镜头的一侧（`godot/npc/dog_walker.gd`）。
 
 **检查**（`godot/tools/check_locomotion.gd`，结果 `LOCOMOTION_OK`）：
 - 狗：30/60/120 帧每秒各跑 5 种情况、每种 60 秒——骨长误差 0.000007 米（浮点精度），着地脚移动 0；走路按左后→左前→右后→右前抬脚；直线上实际速度等于给定速度。

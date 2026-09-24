@@ -4,7 +4,7 @@
   "ink": [0.06, 0.06, 0.06],
   "depthBias": 0.03,
   "turnRate": 4.0,
-  "grid": { "cell": 0.25, "clearance": 0.3, "clearanceHeight": 1.8, "exitMaxCost": 1.0 },
+  "grid": { "cell": 0.25, "clearance": 0.3, "clearanceHeight": 1.8, "exitMaxCost": 1.0, "pocketArea": 2.0 },
   "visitMaxCost": 1.0,
   "walkers": {
     "pedestrian": { "clips": { "walk": 5, "walk_slow": 2, "phone_walk": 1, "eat_walk": 1 }, "speedJitter": 0.1, "visits": [0, 2] },

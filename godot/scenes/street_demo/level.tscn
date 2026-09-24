@@ -664,163 +664,157 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 51.25, 0, 17)
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 61.25, 0, 17)
 
 [node name="PathStraight1" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -55, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -54, 0, 19.75)
 
 [node name="PathStraight2" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -51, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -50, 0, 19.75)
 
 [node name="PathStraight3" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -47, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -46, 0, 19.75)
 
 [node name="PathStraight4" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -43, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -42, 0, 19.75)
 
 [node name="PathStraight5" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -39, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -38, 0, 19.75)
 
 [node name="PathStraight6" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -35, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -34, 0, 19.75)
 
 [node name="PathStraight7" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -31, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -14, 0, 19.75)
 
 [node name="PathStraight8" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -15, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -10, 0, 19.75)
 
 [node name="PathStraight9" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -11, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6, 0, 19.75)
 
 [node name="PathStraight10" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2, 0, 19.75)
 
 [node name="PathStraight11" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -3, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2, 0, 19.75)
 
 [node name="PathStraight12" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 18, 0, 19.75)
 
 [node name="PathStraight13" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 17, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 22, 0, 19.75)
 
 [node name="PathStraight14" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 21, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 26, 0, 19.75)
 
 [node name="PathStraight15" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 25, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 30, 0, 19.75)
 
 [node name="PathStraight16" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 29, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 34, 0, 19.75)
 
 [node name="PathStraight17" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 33, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 38, 0, 19.75)
 
 [node name="PathStraight18" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 37, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 42, 0, 19.75)
 
 [node name="PathStraight19" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 41, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 46, 0, 19.75)
 
 [node name="PathStraight20" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 45, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 50, 0, 19.75)
 
 [node name="PathStraight21" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 49, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 54, 0, 19.75)
 
 [node name="PathStraight22" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 53, 0, 19.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -54, 0, 25.75)
 
 [node name="PathStraight23" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -55, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -50, 0, 25.75)
 
 [node name="PathStraight24" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -51, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -46, 0, 25.75)
 
 [node name="PathStraight25" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -47, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -42, 0, 25.75)
 
 [node name="PathStraight26" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -43, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -38, 0, 25.75)
 
 [node name="PathStraight27" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -39, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -34, 0, 25.75)
 
 [node name="PathStraight28" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -35, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -14, 0, 25.75)
 
 [node name="PathStraight29" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -31, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -10, 0, 25.75)
 
 [node name="PathStraight30" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -15, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6, 0, 25.75)
 
 [node name="PathStraight31" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -11, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2, 0, 25.75)
 
 [node name="PathStraight32" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2, 0, 25.75)
 
 [node name="PathStraight33" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -3, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 18, 0, 25.75)
 
 [node name="PathStraight34" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 22, 0, 25.75)
 
 [node name="PathStraight35" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 17, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 26, 0, 25.75)
 
 [node name="PathStraight36" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 21, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 30, 0, 25.75)
 
 [node name="PathStraight37" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 25, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 34, 0, 25.75)
 
 [node name="PathStraight38" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 29, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 38, 0, 25.75)
 
 [node name="PathStraight39" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 33, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 42, 0, 25.75)
 
 [node name="PathStraight40" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 37, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 46, 0, 25.75)
 
 [node name="PathStraight41" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 41, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 50, 0, 25.75)
 
 [node name="PathStraight42" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 45, 0, 25.75)
-
-[node name="PathStraight43" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 49, 0, 25.75)
-
-[node name="PathStraight44" parent="." instance=ExtResource("51")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 53, 0, 25.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 54, 0, 25.75)
 
 [node name="PathCurve1" parent="." instance=ExtResource("50")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 59.1213, 0, 20.6287)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 58.1213, 0, 20.6287)
 
 [node name="PathCurve2" parent="." instance=ExtResource("50")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 59.1213, 0, 24.8713)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 58.1213, 0, 24.8713)
 
 [node name="PathCurve3" parent="." instance=ExtResource("50")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, -59.1213, 0, 20.6287)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, -58.1213, 0, 20.6287)
 
 [node name="PathCurve4" parent="." instance=ExtResource("50")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -59.1213, 0, 24.8713)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -58.1213, 0, 24.8713)
 
 [node name="PlazaOval1" parent="." instance=ExtResource("53")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -23.8, 0.006, 22.75)
 
 [node name="PlazaRound1" parent="." instance=ExtResource("54")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 9.4, 0.006, 22.75)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 10, 0.006, 22.75)
 
 [node name="Fountain1" parent="." instance=ExtResource("36")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 9.4, 0.006, 22.75)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 10, 0.006, 22.75)
 
 [node name="Flowerbed1" parent="." instance=ExtResource("35")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.6, 0, 22.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5.2, 0, 22.75)
 
 [node name="Flowerbed2" parent="." instance=ExtResource("35")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 14.2, 0, 22.75)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 14.8, 0, 22.75)
 
 [node name="Flowerbed3" parent="." instance=ExtResource("35")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -46, 0, 22.75)

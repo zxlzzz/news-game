@@ -22,10 +22,12 @@ const SIZE_JITTER := 0.12
 @export var palette: ScenePalette
 @export var view: PackedScene
 @export var population: Population
+## Third-party material name -> slot, from core/material_maps (read by the look and by core/walk_grid.gd).
+var slot_map: Dictionary
 
 func _ready() -> void:
 	var errors: Array[String] = []
-	var slot_map := _load_material_maps(errors)
+	slot_map = _load_material_maps(errors)
 	_check(errors)
 	if not errors.is_empty():
 		for e in errors:
@@ -64,7 +66,7 @@ func _check(errors: Array[String]) -> void:
 			if not c.basis.get_scale().is_equal_approx(Vector3.ONE):
 				errors.append("%s changes the scale of its type; set scale in %s instead" % [c.name, c.scene_file_path])
 
-func _load_material_maps(errors: Array[String]) -> Dictionary:
+static func _load_material_maps(errors: Array[String]) -> Dictionary:
 	var merged := {}
 	for f in DirAccess.get_files_at(MATERIAL_MAP_DIR):
 		if not f.ends_with(".tres"):
@@ -88,7 +90,7 @@ func _apply_size_jitter() -> void:
 		var u := float(h & 0xffff) / 65535.0
 		model.scale *= 1.0 + (u * 2.0 - 1.0) * SIZE_JITTER
 
-func _apply_look(slot_map: Dictionary) -> void:
+func _apply_look(map: Dictionary) -> void:
 	var entries := {}
 	for slot in SLOTS.slots:
 		var e := {}
@@ -110,7 +112,7 @@ func _apply_look(slot_map: Dictionary) -> void:
 	line_mat.set_shader_parameter("width_px", STYLE.line_width_px)
 	line_mat.set_shader_parameter("depth_bias", STYLE.line_depth_bias)
 	var unmapped := {}
-	InkBuilder.apply(self, fill, line_mat, STYLE.crease_deg, entries, slot_map, unmapped)
+	InkBuilder.apply(self, fill, line_mat, STYLE.crease_deg, entries, map, unmapped)
 	if not unmapped.is_empty():
 		push_error("Level %s: materials with no slot (add them to a map in %s): %s" % [name, MATERIAL_MAP_DIR, unmapped.keys()])
 
