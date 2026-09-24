@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bus_shelter.glb
+   size  x 5.100  y 2.700  z 2.200 m
+   box   min (-2.550, 0.000, -1.100)  max (2.550, 2.700, 1.100)
+   triangles 120: metal 48, metal_dark 36, window 12, wood 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 11b18cf7309b04c2b35bd10e86c84e56b420ceecdd289eb7fb6881e1a4b839b0
+   REBUILD IDENTICAL

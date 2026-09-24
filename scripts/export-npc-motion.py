@@ -1,7 +1,7 @@
-"""Export every Kimodo npz clip for the Godot NPC prototype (sth/godot-npc); never edit NPZs.
+"""Export every Kimodo npz clip for the Godot game project (godot/); never edit NPZs.
 
 python scripts/export-npc-motion.py --skeleton-definition C:/kimodo-trial/kimodo/kimodo/skeleton/definitions.py \
-    --out sth/godot-npc/npc/motion
+    --out godot/npc/motion
 Requires numpy; the Kimodo model is not loaded.
 
 Writes <out>/index.json (joint names, SOMA77 indices and parents, clip list) and <out>/<clip>.json

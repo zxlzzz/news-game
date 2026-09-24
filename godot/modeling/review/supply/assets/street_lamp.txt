@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\street_lamp.glb
+   size  x 0.500  y 6.500  z 1.880 m
+   box   min (-0.250, 0.000, -0.180)  max (0.250, 6.500, 1.700)
+   triangles 396: accent 12, metal 248, metal_dark 136
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 7dae9ae431f00028f7761bd98bf6f2f377253c5e1a2d01f68763085357946143
+   REBUILD IDENTICAL

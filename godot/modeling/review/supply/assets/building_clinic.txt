@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_clinic.glb
+   size  x 12.060  y 11.470  z 10.130 m
+   box   min (-6.030, 0.000, -9.030)  max (6.030, 11.470, 1.100)
+   triangles 696: concrete 180, door 12, metal 12, metal_dark 108, trim_dark 12, wall_plaster 252, window 120
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 f73532d2e21f8818024c7cd59fa94efe71660e3c7c51dc9173759e5ef85db076
+   REBUILD IDENTICAL

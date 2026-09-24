@@ -85,7 +85,7 @@ def main():
     from kimodo.tools import seed_everything
     from kimodo.exports.motion_io import save_kimodo_npz
     from kimodo.skeleton.definitions import SOMASkeleton77
-    from kimodo.constraints import FullBodyConstraintSet
+    from kimodo.constraints import FullBodyConstraintSet, EndEffectorConstraintSet
     import torch
     # RP internally uses a reduced skeleton but exported posed_joints has 77 joints.
     parents = SOMASkeleton77.bone_order_names_with_parents
@@ -95,7 +95,7 @@ def main():
     print('READY', flush=True)
     while True:
         try:
-            line = input()
+            line = input().strip()
             if line == 'quit':
                 break
             cfg = json.loads(line)
@@ -110,13 +110,57 @@ def main():
                 seed_everything(cfg['seed'])
                 frames = round(duration * model.fps)
                 constraints = []
+                constraint_targets = []
+                if cfg.get('keyframes'):
+                    subset = model.skeleton.get_skel_slice(model.skeleton.somaskel77)
+                    target_positions, target_rotations, target_frames = [], [], []
+                    for keyframe in cfg['keyframes']:
+                        with np.load(keyframe['source'], allow_pickle=False) as reference:
+                            source_frame = keyframe.get('source_frame', 0)
+                            positions = reference['posed_joints'][source_frame, subset].copy()
+                            rotations = reference['global_rot_mats'][source_frame, subset].copy()
+                        positions += np.asarray(keyframe.get('translation', [0, 0, 0]), dtype=positions.dtype)
+                        frame = keyframe['frame']
+                        frame = frames + frame if frame < 0 else frame
+                        if not 0 <= frame < frames:
+                            raise ValueError('Constraint frame outside output clip')
+                        target_frames.append(frame)
+                        target_positions.append(positions)
+                        target_rotations.append(rotations)
+                    if len(set(target_frames)) != len(target_frames):
+                        raise ValueError('Duplicate full-body keyframes')
+                    constraints.append(FullBodyConstraintSet(model.skeleton,
+                        torch.tensor(target_frames),
+                        torch.tensor(np.stack(target_positions), device=model.device),
+                        torch.tensor(np.stack(target_rotations), device=model.device)))
+                    constraint_targets.append(dict(type='fullbody', frames=target_frames,
+                        skeleton='SOMA30', positions=np.stack(target_positions).tolist(),
+                        rotations=np.stack(target_rotations).tolist()))
                 if cfg.get('endpoints'):
+                    if constraints:
+                        raise ValueError('Use either keyframes or legacy endpoints, not both')
                     if endpoint_pose is None:
                         raise ValueError('Endpoint request requires --endpoint-pose')
                     subset = model.skeleton.get_skel_slice(model.skeleton.somaskel77)
                     constraints = [FullBodyConstraintSet(model.skeleton, torch.tensor([0, frames-1]),
                         torch.tensor(endpoint_pose['posed_joints'][[0,0]], device=model.device)[:,subset],
                         torch.tensor(endpoint_pose['global_rot_mats'][[0,0]], device=model.device)[:,subset])]
+                for effector in cfg.get('effectors', []):
+                    subset = model.skeleton.get_skel_slice(model.skeleton.somaskel77)
+                    positions, rotations, indices = [], [], []
+                    for key in effector['keyframes']:
+                        with np.load(key['source'], allow_pickle=False) as reference:
+                            sf = key.get('source_frame', 0)
+                            pos = reference['posed_joints'][sf, subset].copy()
+                            rot = reference['global_rot_mats'][sf, subset].copy()
+                        for joint in effector['joints']:
+                            pos[model.skeleton.bone_index[joint]] += np.asarray(key.get('offset', [0,0,0]), dtype=pos.dtype)
+                        positions.append(pos); rotations.append(rot); indices.append(key['frame'])
+                    constraints.append(EndEffectorConstraintSet(model.skeleton,
+                        torch.tensor(indices), torch.tensor(np.stack(positions), device=model.device),
+                        torch.tensor(np.stack(rotations), device=model.device), None, joint_names=effector['joints']))
+                    constraint_targets.append(dict(type='end-effector', frames=indices, joints=effector['joints'],
+                        skeleton='SOMA30', positions=np.stack(positions).tolist(), rotations=np.stack(rotations).tolist()))
                 output = model([cfg['text']], [frames],
                                num_denoising_steps=100, num_samples=1, multi_prompt=True,
                                constraint_lst=constraints,
@@ -128,10 +172,19 @@ def main():
                 cfg.update(model='Kimodo-SOMA-RP-v1.1', text_encoder='matbee/kimodo-llm2vec-nf4',
                            fps=float(model.fps), diffusion_steps=100, post_processing=True,
                            cfg={'enabled': True, 'text_weight': 2., 'constraint_weight': 2.}, num_samples=1)
-                if constraints:
+                if cfg.get('endpoints'):
                     error = np.linalg.norm(output['posed_joints'][[0,-1]] - endpoint_pose['posed_joints'][0], axis=-1)
                     cfg.update(endpoint_target='stand_idle/motion.npz frame 0', constraint_frames=[0,frames-1],
                                endpoint_mean_error_m=error.mean(axis=1).tolist())
+                if constraint_targets:
+                    cfg['constraint_targets'] = constraint_targets
+                    errors = []
+                    for target in constraint_targets:
+                        selected = [model.skeleton.bone_index[n] for n in target['joints']] if target['type']=='end-effector' else list(range(len(subset)))
+                        error = np.linalg.norm(output['posed_joints'][target['frames']][:,subset][:,selected]
+                                               - np.asarray(target['positions'])[:,selected], axis=-1)
+                        errors.append(dict(type=target['type'], frames=target['frames'], mean_error_m=error.mean(axis=1).tolist()))
+                    cfg['keyframe_errors'] = errors
                 (folder / 'meta.json').write_text(json.dumps(cfg, indent=2))
             metrics = inspect_motion(folder, names, parents)
             print('DONE ' + name + ' ' + json.dumps(metrics), flush=True)

@@ -1,0 +1,27 @@
+{
+  "frames": 120,
+  "fps": 30.0,
+  "source_root_delta_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "mapped_hip_y_minmax": [
+    0.7923567896761727,
+    0.7948837821791976
+  ],
+  "mapped_toe_y_minmax": [
+    0.006038594687014932,
+    0.010716101212872226
+  ],
+  "mapped_left_hand_y_minmax": [
+    0.753323779252527,
+    0.7782668073261817
+  ],
+  "mapped_right_hand_y_minmax": [
+    0.7495396265144522,
+    0.9653350267058542
+  ],
+  "endpoint_root_aligned_max_joint_m": 0.0,
+  "endpoint_root_aligned_mean_joint_m": 0.0
+}

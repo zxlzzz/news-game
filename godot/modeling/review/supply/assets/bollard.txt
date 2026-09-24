@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bollard.glb
+   size  x 0.300  y 0.850  z 0.300 m
+   box   min (-0.150, 0.000, -0.150)  max (0.150, 0.850, 0.150)
+   triangles 372: metal 124, metal_dark 248
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 0f5371d8316a82eeab768d235356c18241ce3f0ea7f4cd2caa10e819ae0ff534
+   REBUILD IDENTICAL

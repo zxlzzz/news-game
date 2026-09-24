@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\car.glb
+   size  x 1.960  y 1.460  z 4.555 m
+   box   min (-0.980, -0.000, -2.277)  max (0.980, 1.460, 2.277)
+   triangles 1240: accent 24, metal 600, metal_dark 520, trim_dark 24, window 72
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 5c9983053fc7899399f9116bece5adb1bd5e8ecf8e8817a512c2d964131ca73a
+   REBUILD IDENTICAL

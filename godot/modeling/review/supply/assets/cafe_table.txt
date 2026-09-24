@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\cafe_table.glb
+   size  x 0.760  y 0.750  z 0.760 m
+   box   min (-0.380, 0.000, -0.380)  max (0.380, 0.750, 0.380)
+   triangles 372: metal_dark 248, wood 124
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 65dbd9f9ef01058f4bd841f84adf45660525e58824a73238b06e79cf03426bd1
+   REBUILD IDENTICAL

@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\hedge.glb
+   size  x 2.500  y 1.100  z 0.700 m
+   box   min (-1.250, 0.000, -0.350)  max (1.250, 1.100, 0.350)
+   triangles 24: concrete 12, foliage 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 088e804a354b5c5f6388f9f37c1c86f72195a7a9f84b73cc186fcfefa47caba2
+   REBUILD IDENTICAL

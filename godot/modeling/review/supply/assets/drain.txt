@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\drain.glb
+   size  x 0.750  y 0.040  z 0.350 m
+   box   min (-0.375, 0.000, -0.175)  max (0.375, 0.040, 0.175)
+   triangles 96: metal 84, metal_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 f9b41c6fc69b0228074fa71c0d10760e1eb45a99ac0244e8bfc80ae75d67921b
+   REBUILD IDENTICAL

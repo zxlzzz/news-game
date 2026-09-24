@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\fountain.glb
+   size  x 5.700  y 2.350  z 5.700 m
+   box   min (-2.850, 0.000, -2.850)  max (2.850, 2.350, 2.850)
+   triangles 1380: concrete 1008, metal 124, water 248
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 9af4d0ef66b94345aabe90873102ba7218075d165c85563142e8a29d946e751b
+   REBUILD IDENTICAL

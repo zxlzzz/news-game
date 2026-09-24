@@ -1,4 +1,4 @@
-> **当前状态（2026-09-22）**：Kimodo 已在本机生成单人 NPZ；Hsinlung 已确定火柴人映射与比例，规格见 [NPC 映射规格](docs/design-plans/npc-skeleton-mapping.md)。共用映射模块和独立参数 JSON 已在 `sth/motion-study/` 落实，六条样例已接入预览。Godot 最小通路已在 `sth/godot-npc/` 接入（phone_walk 按映射规格播放，`--check-mapping` 通过），细节见 `sth/godot-npc/NPC_PATH_REPORT.md`。素材首尾规则 2026-09-22 已改，见 §5。
+> **当前状态（2026-09-22）**：Kimodo 已在本机生成单人 NPZ；Hsinlung 已确定火柴人映射与比例，规格见 [NPC 映射规格](docs/design-plans/npc-skeleton-mapping.md)。共用映射模块和独立参数 JSON 已在 `sth/motion-study/` 落实，六条样例已接入预览。Godot 最小通路已接入（phone_walk 按映射规格播放，映射对拍通过），代码现在在 `godot/npc/`，细节见 `godot/docs/npc_path_report.md`。素材首尾规则 2026-09-22 已改，见 §5。
 
 # NPC 动作素材供给 — 设计路线
 
@@ -112,7 +112,7 @@
 1. 新造型已有 63 条动作总览及多视角样张；后续评估具体动作的微调与实际场景可读性，不重新否定已定比例。
 2. 末端约束在我们的场景尺度下实际准不准。
 3. 双人"生成两次"拼出来像不像。
-4. 已有共用映射和六条预览样例。Godot 最小通路已在 `sth/godot-npc/` 接入（phone_walk 按映射规格播放，`--check-mapping` 通过），细节见 `sth/godot-npc/NPC_PATH_REPORT.md`。
+4. 已有共用映射和六条预览样例。Godot 最小通路已接入（phone_walk 按映射规格播放，映射对拍通过），代码现在在 `godot/npc/`，细节见 `godot/docs/npc_path_report.md`。
 
 ---
 

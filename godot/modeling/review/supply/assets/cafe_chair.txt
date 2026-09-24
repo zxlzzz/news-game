@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\cafe_chair.glb
+   size  x 0.440  y 0.830  z 0.458 m
+   box   min (-0.220, 0.000, -0.243)  max (0.220, 0.830, 0.215)
+   triangles 520: metal_dark 496, wood 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 1a120066b66230577473032b13d299a4d0099173cec358e7629d833bad93c85b
+   REBUILD IDENTICAL

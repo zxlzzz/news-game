@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_bakery.glb
+   size  x 11.060  y 12.400  z 8.780 m
+   box   min (-5.530, 0.000, -8.030)  max (5.530, 12.400, 0.750)
+   triangles 866: concrete 72, door 12, fabric 12, metal 172, metal_dark 72, trim 96, trim_dark 12, wall_plaster 274, window 144
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 c8d50b035f5e5414df1a16708c69f83424cd9f6d2db7ba821dad6e1d430d61b7
+   REBUILD IDENTICAL

@@ -1,0 +1,67 @@
+{
+  "name": "vendor_call",
+  "text": "A standing market vendor calls out to customers. The right forearm rises beside the mouth as if calling, then the right arm opens forward in a welcoming gesture toward the goods. The left hand remains relaxed near the waist. The feet stay planted and the body stays behind the counter.",
+  "duration": 4,
+  "seed": 42,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    119
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "date": "2026-09-24",
+    "notes_zh": "先用右手朝前招呼，随后左手抬至嘴前呼喊，再恢复站姿。与提示词指定侧别和先后顺序不同，但吆喝动作可读；双脚稳定。完整源手部与映射后正侧面已看，无道具接触要求。首尾全身约束为 stand_idle 首帧，源关节首尾一致。",
+    "attempts": 1,
+    "views": [
+      "source side",
+      "source full hands",
+      "accepted mapping x3 front/side",
+      "prop reference where applicable"
+    ],
+    "metrics": {
+      "frames": 120,
+      "fps": 30.0,
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mapped_hip_y_minmax": [
+        0.7925599531420398,
+        0.795896134750679
+      ],
+      "mapped_toe_y_minmax": [
+        0.005407062549503367,
+        0.010634077171958375
+      ],
+      "mapped_left_hand_y_minmax": [
+        0.7612743830126627,
+        1.496199671257131
+      ],
+      "mapped_right_hand_y_minmax": [
+        0.7458051135086106,
+        0.9228234865253979
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "endpoint_root_aligned_mean_joint_m": 0.0
+    },
+    "sha256": "3e7f1ba371d80428ee3f17ec83b1453ceb2c7b23d9d1eaa6f16df7aee66f09b2"
+  }
+}

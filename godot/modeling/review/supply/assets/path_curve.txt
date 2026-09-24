@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\path_curve.glb
+   size  x 4.000  y 0.070  z 4.000 m
+   box   min (-2.121, 0.000, -2.121)  max (1.879, 0.070, 1.879)
+   triangles 588: concrete 588
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 4a411602ad0f5024cc092d382fff1b9a77783c585029de959127c86eec99012e
+   REBUILD IDENTICAL

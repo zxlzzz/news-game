@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\fire_hydrant.glb
+   size  x 0.480  y 0.820  z 0.460 m
+   box   min (-0.240, 0.000, -0.230)  max (0.240, 0.820, 0.230)
+   triangles 812: metal 688, metal_dark 124
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 86d43f4c9673675e321844fdc289bd779c2ce5f239055226c5a8d9085c2a6acc
+   REBUILD IDENTICAL

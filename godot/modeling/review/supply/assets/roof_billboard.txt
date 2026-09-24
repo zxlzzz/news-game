@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\roof_billboard.glb
+   size  x 4.000  y 3.000  z 1.846 m
+   box   min (-2.000, 0.000, -0.946)  max (2.000, 3.000, 0.900)
+   triangles 308: metal 296, trim_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 b25b2e71e769f5fa336147b84cdd39a78e95c3533a34b0710add47b3a18d4e4a
+   REBUILD IDENTICAL

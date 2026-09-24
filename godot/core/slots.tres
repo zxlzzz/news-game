@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="SlotDefs" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/slot_defs.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+slots = Dictionary[StringName, PackedStringArray]({
+&"accent": PackedStringArray(),
+&"bark": PackedStringArray(),
+&"concrete": PackedStringArray(),
+&"door": PackedStringArray(),
+&"fabric": PackedStringArray(),
+&"foliage": PackedStringArray("no_lines"),
+&"grass": PackedStringArray(),
+&"hidden": PackedStringArray("hide"),
+&"metal": PackedStringArray(),
+&"metal_dark": PackedStringArray(),
+&"paint": PackedStringArray("no_lines", "no_shadow"),
+&"road": PackedStringArray(),
+&"sidewalk": PackedStringArray(),
+&"trim": PackedStringArray(),
+&"trim_dark": PackedStringArray(),
+&"wall": PackedStringArray(),
+&"wall_plaster": PackedStringArray(),
+&"wall_brick": PackedStringArray(),
+&"wall_stone": PackedStringArray(),
+&"water": PackedStringArray(),
+&"window": PackedStringArray("flat", "no_lines"),
+&"wood": PackedStringArray()
+})

@@ -1,0 +1,67 @@
+{
+  "name": "vendor_tidy",
+  "text": "A standing shopkeeper arranges objects on a counter at waist height in front of them. They lean slightly forward, reach both hands down to the counter, move the objects a short distance to the left and right, then bring their hands back. Their feet stay planted throughout.",
+  "duration": 4,
+  "seed": 42,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    119
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "date": "2026-09-24",
+    "notes_zh": "站立、双手前伸到约0.9至1.0米高，先后向左右整理并收回，头随手小幅转动，双脚稳定。已对0.9米柜台做映射后正侧面参照检查；适合低矮货品，不保证匹配现有货箱顶部或精细手指抓取。首尾源姿势一致。",
+    "attempts": 1,
+    "views": [
+      "source side",
+      "source full hands",
+      "accepted mapping x3 front/side",
+      "prop reference where applicable"
+    ],
+    "metrics": {
+      "frames": 120,
+      "fps": 30.0,
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mapped_hip_y_minmax": [
+        0.7923630885897374,
+        0.795336983757671
+      ],
+      "mapped_toe_y_minmax": [
+        0.0036121117471748475,
+        0.010634077171958375
+      ],
+      "mapped_left_hand_y_minmax": [
+        0.7769331806084572,
+        1.008200220123152
+      ],
+      "mapped_right_hand_y_minmax": [
+        0.7493686174305152,
+        0.9660167141031355
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "endpoint_root_aligned_mean_joint_m": 0.0
+    },
+    "sha256": "f5ff8dcddf735a4dd16a529659c24610555a3608fd6ce30b4db478d4cb204641"
+  }
+}

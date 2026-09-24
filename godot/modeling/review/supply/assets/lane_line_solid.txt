@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\lane_line_solid.glb
+   size  x 0.120  y 0.000  z 6.000 m
+   box   min (-0.060, 0.003, -3.000)  max (0.060, 0.003, 3.000)
+   triangles 2: paint 2
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 1a9c479d6498a84c54a8d7c120a8a696c60683ca56da56ea15fd21cee9715184
+   REBUILD IDENTICAL

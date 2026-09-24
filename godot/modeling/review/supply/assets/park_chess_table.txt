@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\park_chess_table.glb
+   size  x 0.850  y 0.752  z 2.110 m
+   box   min (-0.425, 0.000, -1.055)  max (0.425, 0.752, 1.055)
+   triangles 468: concrete 60, paint 384, wood 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 c9b3b27f2ec0234095271689fdceb7191a68f298a072a16a14da815834dc1280
+   REBUILD IDENTICAL

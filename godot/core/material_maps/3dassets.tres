@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MaterialMap" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/material_map.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+pack = "3DAssets.dev street props (assets/fromgodot/street-selected); names there are colours, not surfaces"
+map = Dictionary[String, StringName]({
+"azure": &"accent",
+"canary": &"accent",
+"charcoal": &"metal_dark",
+"dark": &"metal_dark",
+"scarlet": &"fabric",
+"steel": &"metal",
+"timber": &"wood"
+})

@@ -1,0 +1,51 @@
+{
+  "building_residential": {
+    "front_glass_ratio": 0.2531,
+    "wall_slot": "wall_plaster",
+    "window_shape": "rect"
+  },
+  "building_old_shop": {
+    "front_glass_ratio": 0.2359,
+    "wall_slot": "wall_brick",
+    "window_shape": "arch"
+  },
+  "building_modern": {
+    "front_glass_ratio": 0.2658,
+    "wall_slot": "wall_stone",
+    "window_shape": "rect"
+  },
+  "building_convenience": {
+    "front_glass_ratio": 0.2027,
+    "wall_slot": "wall",
+    "window_shape": "rect"
+  },
+  "building_bookstore": {
+    "front_glass_ratio": 0.2689,
+    "wall_slot": "wall_brick",
+    "window_shape": "paired"
+  },
+  "building_clinic": {
+    "front_glass_ratio": 0.1997,
+    "wall_slot": "wall_plaster",
+    "window_shape": "rect"
+  },
+  "building_cafe": {
+    "front_glass_ratio": 0.218,
+    "wall_slot": "wall_stone",
+    "window_shape": "arch"
+  },
+  "building_bakery": {
+    "front_glass_ratio": 0.2518,
+    "wall_slot": "wall_plaster",
+    "window_shape": "clipped"
+  },
+  "building_corner": {
+    "front_glass_ratio": 0.2439,
+    "wall_slot": "wall",
+    "window_shape": "rect",
+    "side_glass_ratio": 0.244
+  },
+  "original_chess_table_sha256": "91fac48b865e7013a3f3a0e93d670b2c334d5180f61fdcdff0d17e7f28bbc5f6",
+  "bus_front_door_wheel_gap_m": 0.6000000000000005,
+  "case_collision_guard": "Blender export(chess_table) rejected with FileExistsError; original Chess_Table.glb byte-identical afterward"
+}

@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\roof_water_tank.glb
+   size  x 1.800  y 2.120  z 1.800 m
+   box   min (-0.900, 0.000, -0.900)  max (0.900, 2.120, 0.900)
+   triangles 744: concrete 124, metal 124, metal_dark 496
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 104258da43474fcce32180b506f98e54565a420644c41d4146a8255f6d4ada64
+   REBUILD IDENTICAL

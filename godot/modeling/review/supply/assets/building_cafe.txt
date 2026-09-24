@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_cafe.glb
+   size  x 6.060  y 8.950  z 7.780 m
+   box   min (-3.030, 0.000, -6.830)  max (3.030, 8.950, 0.950)
+   triangles 684: concrete 68, door 12, fabric 12, metal_dark 12, trim 36, trim_dark 12, wall_stone 316, window 216
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 14d8829b1cdeac6ab8651c0727d268e47c1049ca3eca0bb463a0c81daca115b3
+   REBUILD IDENTICAL

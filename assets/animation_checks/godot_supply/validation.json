@@ -1,0 +1,66 @@
+[
+  {
+    "name": "vendor_call",
+    "frames": 120,
+    "bone_length_range_mm": 0.8457005023956299,
+    "max_joint_step_m": 0.0670856311917305,
+    "peak_frame": 104,
+    "sha256": "3e7f1ba371d80428ee3f17ec83b1453ceb2c7b23d9d1eaa6f16df7aee66f09b2"
+  },
+  {
+    "name": "vendor_tidy",
+    "frames": 120,
+    "bone_length_range_mm": 0.8809864521026611,
+    "max_joint_step_m": 0.05512578785419464,
+    "peak_frame": 105,
+    "sha256": "f5ff8dcddf735a4dd16a529659c24610555a3608fd6ce30b4db478d4cb204641"
+  },
+  {
+    "name": "give_item",
+    "frames": 105,
+    "bone_length_range_mm": 0.773400068283081,
+    "max_joint_step_m": 0.05101814493536949,
+    "peak_frame": 98,
+    "sha256": "b05c90bd96b3b9b1a7e557d3a7c518ac6ed93cb9c0c24fefc30d9116f6d7e24f"
+  },
+  {
+    "name": "receive_item",
+    "frames": 105,
+    "bone_length_range_mm": 0.9353756904602051,
+    "max_joint_step_m": 0.07610578089952469,
+    "peak_frame": 5,
+    "sha256": "4bbab99d53581db3e16057a82146d3a0380db2407151b21fa55bff0df642d348"
+  },
+  {
+    "name": "choose_item",
+    "frames": 120,
+    "bone_length_range_mm": 0.7678866386413574,
+    "max_joint_step_m": 0.05758523568511009,
+    "peak_frame": 101,
+    "sha256": "f256ced2059df2d72023e463c66543de482eee17060cd0ec60c71eaa681824c4"
+  },
+  {
+    "name": "pay",
+    "frames": 135,
+    "bone_length_range_mm": 0.8782446384429932,
+    "max_joint_step_m": 0.05028057470917702,
+    "peak_frame": 5,
+    "sha256": "1e84d083465e33080391af18d213b911cf1b6f059ee5174ecef208e874762216"
+  },
+  {
+    "name": "chess_watch",
+    "frames": 120,
+    "bone_length_range_mm": 0.8472204208374023,
+    "max_joint_step_m": 0.03867916762828827,
+    "peak_frame": 28,
+    "sha256": "27cc87b4451de37c3ed2df5f7e9c871d0ff54cf78430d094154c319b7e729b99"
+  },
+  {
+    "name": "chess_move",
+    "frames": 120,
+    "bone_length_range_mm": 0.9515881538391113,
+    "max_joint_step_m": 0.04763926565647125,
+    "peak_frame": 100,
+    "sha256": "82ddca1b1507baa306abfa7f90b6930233685465d51f3b7e95aa4c7fc54edfb8"
+  }
+]

@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\vending_machine.glb
+   size  x 1.050  y 1.900  z 0.830 m
+   box   min (-0.525, 0.000, -0.400)  max (0.525, 1.900, 0.430)
+   triangles 48: metal 12, metal_dark 12, trim_dark 12, window 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 3c827301bb4f25ed0cb5fff1e871f318199260f1afff7268ba17cb20a2ecc0e3
+   REBUILD IDENTICAL

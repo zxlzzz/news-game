@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\market_stall.glb
+   size  x 2.775  y 2.585  z 2.275 m
+   box   min (-1.388, 0.000, -1.138)  max (1.388, 2.585, 1.138)
+   triangles 120: fabric 12, metal_dark 48, wood 60
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 caab7af444531553af000ab502fd475dd15892c277d4a2300f7288e1137062ee
+   REBUILD IDENTICAL

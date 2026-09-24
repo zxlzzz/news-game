@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_modern.glb
+   size  x 18.060  y 18.670  z 10.160 m
+   box   min (-9.030, 0.000, -10.030)  max (9.030, 18.670, 0.130)
+   triangles 1378: concrete 288, door 12, metal 24, metal_dark 420, trim_dark 12, wall_stone 394, window 228
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 76963e26057daab64aeb6b0bb651c222ff68c5dec528343bc4b200ee6675ffbd
+   REBUILD IDENTICAL

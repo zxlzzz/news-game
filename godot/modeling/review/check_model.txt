@@ -1,0 +1,16 @@
+== godot/models/building_a.glb
+   size  x 12.440  y 11.070  z 8.870 m
+   box   min (-6.220, 0.000, -8.020)  max (6.220, 11.070, 0.850)
+   triangles 1166: concrete 12, door 12, metal_dark 12, trim 552, trim_dark 108, wall 302, window 168
+   PASS
+== godot/models/building_b.glb
+   size  x 14.460  y 13.560  z 10.120 m
+   box   min (-7.220, 0.000, -9.220)  max (7.240, 13.560, 0.900)
+   triangles 1150: concrete 72, door 12, metal_dark 384, trim 216, wall 286, window 180
+   PASS
+== godot/models/crosswalk.glb
+   size  x 4.500  y 0.000  z 6.000 m
+   box   min (-2.250, 0.003, -3.000)  max (2.250, 0.003, 3.000)
+   triangles 2: paint 2
+   textures present (alpha cut-out only)
+   PASS

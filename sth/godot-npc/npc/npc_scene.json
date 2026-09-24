@@ -1,8 +1,0 @@
-{
- "clip": "phone_walk",
- "pos": [-3.0, 0.0, -2.0],
- "yaw": 87.0,
- "scale": 3.0,
- "line_color": [0.1, 0.1, 0.1],
- "depth_bias": 0.03
-}

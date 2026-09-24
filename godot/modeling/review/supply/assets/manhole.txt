@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\manhole.glb
+   size  x 0.720  y 0.032  z 0.720 m
+   box   min (-0.360, 0.000, -0.360)  max (0.360, 0.032, 0.360)
+   triangles 272: metal 124, metal_dark 148
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 f788ef4b2b5a7957beae6a6a70e418f0cc5019bc59ed53d7d872b36b899a85ac
+   REBUILD IDENTICAL

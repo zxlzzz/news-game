@@ -1,0 +1,1392 @@
+[
+  {
+    "name": "building_residential",
+    "label": "窄高住宅",
+    "group": "buildings",
+    "notes": "6 层、三列窄窗、交错阳台、屋顶水箱；住宅门厅，无大橱窗。本次修订：高窄窗配高位横档，浅抹灰墙。",
+    "interaction": "门槛 (0,0,0)，门外站位 (0,0,1.1)。",
+    "dimensions_xyz": [
+      7.06,
+      22.2,
+      8.98
+    ],
+    "slots": [
+      "concrete",
+      "door",
+      "metal",
+      "metal_dark",
+      "trim_dark",
+      "wall_plaster",
+      "window"
+    ],
+    "triangles": 1408,
+    "mesh_count": 83,
+    "errors": [],
+    "sha256": "9fd9c672a2ac7bb28cae0d04bed5a3d1d2b6fe9fdf49db88b0c27f276e52612b",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "building_old_shop",
+    "label": "老式底商",
+    "group": "buildings",
+    "notes": "3 层、左入口、三列分隔窗、坡顶楼梯间、宽店招与金属挑棚。本次修订：圆拱窗与拱下横档，深砖墙。",
+    "interaction": "门槛 (-3.4,0,0)，门外站位 (-3.4,0,1.1)。",
+    "dimensions_xyz": [
+      10.06,
+      12.45,
+      8.18
+    ],
+    "slots": [
+      "concrete",
+      "door",
+      "metal",
+      "metal_dark",
+      "trim",
+      "trim_dark",
+      "wall_brick",
+      "window"
+    ],
+    "triangles": 1352,
+    "mesh_count": 40,
+    "errors": [],
+    "sha256": "32f7acbd5a8ff558d5356303c1f43e4cac869dd908472c8ec56dc5a2025f5d45",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "building_modern",
+    "label": "现代办公楼",
+    "group": "buildings",
+    "notes": "5 层、四列宽分隔窗、右侧门厅、低女儿墙、斜顶机房；玻璃占立面约三成以内。本次修订：宽横窗三分格，石墙。",
+    "interaction": "门槛 (6.4,0,0)，门外站位 (6.4,0,1.1)。",
+    "dimensions_xyz": [
+      18.06,
+      18.67,
+      10.16
+    ],
+    "slots": [
+      "concrete",
+      "door",
+      "metal",
+      "metal_dark",
+      "trim_dark",
+      "wall_stone",
+      "window"
+    ],
+    "triangles": 1378,
+    "mesh_count": 88,
+    "errors": [],
+    "sha256": "76963e26057daab64aeb6b0bb651c222ff68c5dec528343bc4b200ee6675ffbd",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "building_convenience",
+    "label": "便利店",
+    "group": "buildings",
+    "notes": "2 层宽铺面、右侧入口、连续暗色门头、三个错位上窗、低机房。本次修订：方窗无分格，中灰墙。",
+    "interaction": "门槛 (4.8,0,0)，门外站位 (4.8,0,1.1)。",
+    "dimensions_xyz": [
+      14.06,
+      8.12,
+      9.13
+    ],
+    "slots": [
+      "concrete",
+      "door",
+      "metal",
+      "metal_dark",
+      "trim_dark",
+      "wall",
+      "window"
+    ],
+    "triangles": 400,
+    "mesh_count": 25,
+    "errors": [],
+    "sha256": "b8a277ae4cbf4458a4520761c7f96af42ec781aed8a1f3c1f1fbd2dfc4a43fd9",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "building_bookstore",
+    "label": "书店",
+    "group": "buildings",
+    "notes": "4 层、左侧入口、不等宽陈列窗、高女儿墙与斜顶楼梯间。本次修订：成对窄窗，深砖墙。",
+    "interaction": "门槛 (-2.6,0,0)，门外站位 (-2.6,0,1.1)。",
+    "dimensions_xyz": [
+      8.06,
+      15.77,
+      8.03
+    ],
+    "slots": [
+      "concrete",
+      "door",
+      "metal",
+      "metal_dark",
+      "trim",
+      "trim_dark",
+      "wall_brick",
+      "window"
+    ],
+    "triangles": 1024,
+    "mesh_count": 57,
+    "errors": [],
+    "sha256": "b1f2e02bfb358629258e351e9f1869b8173b549fcb16af3d6e384fee88e92aa9",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "building_clinic",
+    "label": "诊所",
+    "group": "buildings",
+    "notes": "3 层、对称入口和独立门廊、四列矮窗、宽机房；空白诊所招牌。本次修订：低矮横窗与水平分格，浅抹灰墙。",
+    "interaction": "门槛 (0,0,0)，门外站位 (0,0,1.1)。",
+    "dimensions_xyz": [
+      12.06,
+      11.47,
+      10.13
+    ],
+    "slots": [
+      "concrete",
+      "door",
+      "metal",
+      "metal_dark",
+      "trim_dark",
+      "wall_plaster",
+      "window"
+    ],
+    "triangles": 696,
+    "mesh_count": 43,
+    "errors": [],
+    "sha256": "f73532d2e21f8818024c7cd59fa94efe71660e3c7c51dc9173759e5ef85db076",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "building_cafe",
+    "label": "咖啡馆",
+    "group": "buildings",
+    "notes": "2 层窄铺、右门左窗、双上窗、小布篷与山墙屋顶房。本次修订：上下层拱窗，石墙。",
+    "interaction": "门槛 (1.8,0,0)，门外站位 (1.8,0,1.1)。",
+    "dimensions_xyz": [
+      6.06,
+      8.95,
+      7.78
+    ],
+    "slots": [
+      "concrete",
+      "door",
+      "fabric",
+      "metal_dark",
+      "trim",
+      "trim_dark",
+      "wall_stone",
+      "window"
+    ],
+    "triangles": 684,
+    "mesh_count": 22,
+    "errors": [],
+    "sha256": "14d8829b1cdeac6ab8651c0727d268e47c1049ca3eca0bb463a0c81daca115b3",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "building_bakery",
+    "label": "面包店",
+    "group": "buildings",
+    "notes": "3 层、不对称双橱窗、偏左入口、顶层单阳台、低水箱。本次修订：切角窗与高横档，浅抹灰墙。",
+    "interaction": "门槛 (-0.9,0,0)，门外站位 (-0.9,0,1.1)。",
+    "dimensions_xyz": [
+      11.06,
+      12.4,
+      8.78
+    ],
+    "slots": [
+      "concrete",
+      "door",
+      "fabric",
+      "metal",
+      "metal_dark",
+      "trim",
+      "trim_dark",
+      "wall_plaster",
+      "window"
+    ],
+    "triangles": 866,
+    "mesh_count": 42,
+    "errors": [],
+    "sha256": "c8d50b035f5e5414df1a16708c69f83424cd9f6d2db7ba821dad6e1d430d61b7",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "building_corner",
+    "label": "双立面转角楼",
+    "group": "buildings",
+    "notes": "4 层；+Z 与 +X 两个完整凹窗立面；角端入口、高山墙楼梯间。本次修订：双立面十字分格窗，中灰墙。",
+    "interaction": "门槛 (3.5,0,0)，门外站位 (3.5,0,1.1)。",
+    "dimensions_xyz": [
+      10.66,
+      16.6,
+      10.73
+    ],
+    "slots": [
+      "concrete",
+      "door",
+      "metal",
+      "metal_dark",
+      "trim",
+      "trim_dark",
+      "wall",
+      "window"
+    ],
+    "triangles": 1616,
+    "mesh_count": 102,
+    "errors": [],
+    "sha256": "8ed215b6eae0b1a75d5627bcad40776fcf62d9afca718f278253614e37926b8c",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "roof_water_tank",
+    "label": "屋顶水箱",
+    "group": "accessories",
+    "notes": "封闭立式水箱与四支脚；原点为支脚接触平面中心。",
+    "interaction": "",
+    "dimensions_xyz": [
+      1.8,
+      2.12,
+      1.8
+    ],
+    "slots": [
+      "concrete",
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 744,
+    "mesh_count": 6,
+    "errors": [],
+    "sha256": "104258da43474fcce32180b506f98e54565a420644c41d4146a8255f6d4ada64",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "roof_solar_panel",
+    "label": "屋顶太阳能板",
+    "group": "accessories",
+    "notes": "单块暗色斜板，几何边框；没有纹理电池格。",
+    "interaction": "",
+    "dimensions_xyz": [
+      2.88,
+      1.06,
+      1.78
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 308,
+    "mesh_count": 7,
+    "errors": [],
+    "sha256": "adc4c4dd82246f9901c5bc598c8c32eac0bc766dd6691859656f9f0a0ad882c8",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "roof_billboard",
+    "label": "屋顶广告牌架",
+    "group": "accessories",
+    "notes": "招牌空白，背部斜撑；接触面是支架底。",
+    "interaction": "",
+    "dimensions_xyz": [
+      4.0,
+      3.0,
+      1.846
+    ],
+    "slots": [
+      "metal",
+      "trim_dark"
+    ],
+    "triangles": 308,
+    "mesh_count": 7,
+    "errors": [],
+    "sha256": "b25b2e71e769f5fa336147b84cdd39a78e95c3533a34b0710add47b3a18d4e4a",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "shop_sign_panel",
+    "label": "长条招牌",
+    "group": "accessories",
+    "notes": "空白独立招牌；以底边中心为安装锚点，场景提供安装高度。",
+    "interaction": "",
+    "dimensions_xyz": [
+      3.4,
+      0.65,
+      0.18
+    ],
+    "slots": [
+      "metal",
+      "trim_dark"
+    ],
+    "triangles": 24,
+    "mesh_count": 2,
+    "errors": [],
+    "sha256": "06f1ab85b941da241a26cad3675246253c8011da504fa023e0fa5c291f7b8170",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "shop_sign_box",
+    "label": "厚灯箱招牌",
+    "group": "accessories",
+    "notes": "空白独立招牌；以底边中心为安装锚点，场景提供安装高度。",
+    "interaction": "",
+    "dimensions_xyz": [
+      2.6,
+      0.8,
+      0.32
+    ],
+    "slots": [
+      "metal",
+      "trim_dark"
+    ],
+    "triangles": 24,
+    "mesh_count": 2,
+    "errors": [],
+    "sha256": "71301bde4c261d890d5b3ac1b5501b8c7bedbab0ed917bbc26986cfa9fb7ced3",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "shop_sign_arch",
+    "label": "拱顶招牌",
+    "group": "accessories",
+    "notes": "空白独立招牌；以底边中心为安装锚点，场景提供安装高度。",
+    "interaction": "",
+    "dimensions_xyz": [
+      2.4,
+      0.85,
+      0.16
+    ],
+    "slots": [
+      "trim_dark"
+    ],
+    "triangles": 20,
+    "mesh_count": 1,
+    "errors": [],
+    "sha256": "6a149bbed80a6f657f4e22157f5afcf5d27e289e68e8d08504032d7e3b07ab0c",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "shop_sign_blade",
+    "label": "吊挂招牌",
+    "group": "accessories",
+    "notes": "空白独立招牌；以底边中心为安装锚点，场景提供安装高度。",
+    "interaction": "",
+    "dimensions_xyz": [
+      2.0,
+      0.75,
+      0.16
+    ],
+    "slots": [
+      "metal_dark",
+      "wood"
+    ],
+    "triangles": 64,
+    "mesh_count": 4,
+    "errors": [],
+    "sha256": "d13054ba5c7065df0b928ef7954f8b4c28dd1ba3e83ff1d6409ed89f9c9659d6",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "air_conditioner",
+    "label": "空调外机",
+    "group": "accessories",
+    "notes": "封闭箱体与简化风扇面，不建密集网格；底面安装锚点。",
+    "interaction": "",
+    "dimensions_xyz": [
+      1.0,
+      0.65,
+      0.48
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 160,
+    "mesh_count": 4,
+    "errors": [],
+    "sha256": "17f95ad179f9938f5693b05e5d267d3d6c2d08a90d8abd1cf24e562e9628ee35",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "awning",
+    "label": "立面雨棚",
+    "group": "accessories",
+    "notes": "有厚度的布篷与两根斜撑；以支撑最低点为安装高度基准。",
+    "interaction": "",
+    "dimensions_xyz": [
+      3.0,
+      0.589,
+      1.168
+    ],
+    "slots": [
+      "fabric",
+      "metal_dark"
+    ],
+    "triangles": 260,
+    "mesh_count": 3,
+    "errors": [],
+    "sha256": "3afb9b69ad0cfe9043b766516d85e3fb74cf34785b299269fcc6bad6437ad381",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "street_tree",
+    "label": "行道树与树池",
+    "group": "street",
+    "notes": "实心椭球树冠，树池四边封闭实体；树干底中心原点。",
+    "interaction": "",
+    "dimensions_xyz": [
+      3.3,
+      5.6,
+      3.0
+    ],
+    "slots": [
+      "bark",
+      "concrete",
+      "foliage"
+    ],
+    "triangles": 860,
+    "mesh_count": 8,
+    "errors": [],
+    "sha256": "1402cf552c74a66e877b4eb1c8b5da1822b0498276ea1657ff13205eb8a279aa",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "street_lamp",
+    "label": "街道路灯",
+    "group": "street",
+    "notes": "6.5 米，灯臂朝 +Z；杆底原点。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.5,
+      6.5,
+      1.88
+    ],
+    "slots": [
+      "accent",
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 396,
+    "mesh_count": 5,
+    "errors": [],
+    "sha256": "7dae9ae431f00028f7761bd98bf6f2f377253c5e1a2d01f68763085357946143",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "trash_bin",
+    "label": "垃圾桶",
+    "group": "street",
+    "notes": "投口为不透明深色封板，不留通视洞。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.58,
+      0.92,
+      0.535
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 36,
+    "mesh_count": 3,
+    "errors": [],
+    "sha256": "65f8f8ee6f3ebbe2cd15d236cdccadc242559828be273602eed013213e701c53",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "fire_hydrant",
+    "label": "消防栓",
+    "group": "street",
+    "notes": "",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.48,
+      0.82,
+      0.46
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 812,
+    "mesh_count": 4,
+    "errors": [],
+    "sha256": "86d43f4c9673675e321844fdc289bd779c2ce5f239055226c5a8d9085c2a6acc",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "mailbox",
+    "label": "邮筒",
+    "group": "street",
+    "notes": "",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.52,
+      1.25,
+      0.432
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 36,
+    "mesh_count": 3,
+    "errors": [],
+    "sha256": "af2eaf2de3106cf309c2b8cfa5e9216ea4ceffdefbbf5cb65bb88138fbd99f4e",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "news_box",
+    "label": "报纸箱",
+    "group": "street",
+    "notes": "显眼的箱形轮廓、头牌与展示窗；不写字、不烘焙假报纸纹理。",
+    "interaction": "取报正面站位 (0,0,0.8)。",
+    "dimensions_xyz": [
+      0.72,
+      1.18,
+      0.63
+    ],
+    "slots": [
+      "accent",
+      "metal",
+      "metal_dark",
+      "trim_dark",
+      "window"
+    ],
+    "triangles": 60,
+    "mesh_count": 5,
+    "errors": [],
+    "sha256": "aeee550a2d2f525ff11215a12d2d2248c6575d71aeab8dc82aee18f76c37dd6a",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "news_rack",
+    "label": "开放报刊架",
+    "group": "street",
+    "notes": "三层托盘配整块报纸示意，无密集纸张边线。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.905,
+      1.4,
+      0.532
+    ],
+    "slots": [
+      "concrete",
+      "metal",
+      "metal_dark",
+      "trim_dark"
+    ],
+    "triangles": 168,
+    "mesh_count": 14,
+    "errors": [],
+    "sha256": "43e5b87e7e4861a3dd129831280e6324972f035d0b86a8b1f81f8662acd8dd03",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "vending_machine",
+    "label": "自动售货机",
+    "group": "street",
+    "notes": "正面暗色陈列窗、控制面板和取货口；全不透明。",
+    "interaction": "取货站位 (0,0,1)。",
+    "dimensions_xyz": [
+      1.05,
+      1.9,
+      0.83
+    ],
+    "slots": [
+      "metal",
+      "metal_dark",
+      "trim_dark",
+      "window"
+    ],
+    "triangles": 48,
+    "mesh_count": 4,
+    "errors": [],
+    "sha256": "3c827301bb4f25ed0cb5fff1e871f318199260f1afff7268ba17cb20a2ecc0e3",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "phone_booth",
+    "label": "电话亭",
+    "group": "street",
+    "notes": "开放正面、两侧与背面为不透明窗板；可站入，不做半透明玻璃。",
+    "interaction": "站位 (0,0,0.15)，电话朝亭内 +Z。",
+    "dimensions_xyz": [
+      1.24,
+      2.35,
+      1.14
+    ],
+    "slots": [
+      "metal",
+      "metal_dark",
+      "window"
+    ],
+    "triangles": 108,
+    "mesh_count": 9,
+    "errors": [],
+    "sha256": "2e809f335ba997b4a26e138a881b6e0c616ed47b5a9c3af98af43b59ac6d6868",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "bus_shelter",
+    "label": "公交候车棚与长凳",
+    "group": "street",
+    "notes": "5×2.1 米棚，长凳靠后，前部留候车空地；深色金属顶避免亮盖板。",
+    "interaction": "座面 y=0.45、z=-0.5；站位 x≈-1.8,-0.6,0.6,1.8，z≈0.45。",
+    "dimensions_xyz": [
+      5.1,
+      2.7,
+      2.2
+    ],
+    "slots": [
+      "metal",
+      "metal_dark",
+      "window",
+      "wood"
+    ],
+    "triangles": 120,
+    "mesh_count": 10,
+    "errors": [],
+    "sha256": "11b18cf7309b04c2b35bd10e86c84e56b420ceecdd289eb7fb6881e1a4b839b0",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "bus_stop_sign",
+    "label": "公交站牌",
+    "group": "street",
+    "notes": "独立站牌，空白面板；后续可由 UI 提供路线信息。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.55,
+      2.7,
+      0.3
+    ],
+    "slots": [
+      "concrete",
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 272,
+    "mesh_count": 4,
+    "errors": [],
+    "sha256": "872d35caedbf489844378cfad59941cc726313d89da1bd825299305940f34a18",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "bollard",
+    "label": "护柱",
+    "group": "street",
+    "notes": "",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.3,
+      0.85,
+      0.3
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 372,
+    "mesh_count": 3,
+    "errors": [],
+    "sha256": "0f5371d8316a82eeab768d235356c18241ce3f0ea7f4cd2caa10e819ae0ff534",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "bike_rack",
+    "label": "自行车停车架",
+    "group": "street",
+    "notes": "四组斜架，分格停放；无需车轮动画。",
+    "interaction": "",
+    "dimensions_xyz": [
+      2.4,
+      0.729,
+      0.67
+    ],
+    "slots": [
+      "metal"
+    ],
+    "triangles": 1240,
+    "mesh_count": 10,
+    "errors": [],
+    "sha256": "8e24893001c546e7c220c710b3625becf82157e098c30d42fae0e57a9ead0866",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "sandwich_board",
+    "label": "店门口立牌",
+    "group": "street",
+    "notes": "双面空白 A 字立牌。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.71,
+      0.988,
+      0.67
+    ],
+    "slots": [
+      "trim_dark",
+      "wood"
+    ],
+    "triangles": 568,
+    "mesh_count": 10,
+    "errors": [],
+    "sha256": "aed4a22252b355db4eac42d086a9479fb5f8d04c79620064e033373122cb31d7",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "cafe_table",
+    "label": "咖啡馆圆桌",
+    "group": "street",
+    "notes": "单独圆桌。",
+    "interaction": "桌面 y=0.75。",
+    "dimensions_xyz": [
+      0.76,
+      0.75,
+      0.76
+    ],
+    "slots": [
+      "metal_dark",
+      "wood"
+    ],
+    "triangles": 372,
+    "mesh_count": 3,
+    "errors": [],
+    "sha256": "65dbd9f9ef01058f4bd841f84adf45660525e58824a73238b06e79cf03426bd1",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "cafe_chair",
+    "label": "咖啡馆椅子",
+    "group": "street",
+    "notes": "椅子坐向 +Z。",
+    "interaction": "座面中心 (0,0.45,0)。",
+    "dimensions_xyz": [
+      0.44,
+      0.83,
+      0.458
+    ],
+    "slots": [
+      "metal_dark",
+      "wood"
+    ],
+    "triangles": 520,
+    "mesh_count": 6,
+    "errors": [],
+    "sha256": "1a120066b66230577473032b13d299a4d0099173cec358e7629d833bad93c85b",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "cafe_umbrella",
+    "label": "咖啡馆遮阳伞",
+    "group": "street",
+    "notes": "薄而封闭的伞面，非填满的实心锥；独立重底座。伞面升高0.85米，坡度约32°；伞缘高2.05米。八根可见伞骨与起伏伞缘，改善俯视轮廓。",
+    "interaction": "",
+    "dimensions_xyz": [
+      2.727,
+      2.921,
+      2.727
+    ],
+    "slots": [
+      "concrete",
+      "fabric",
+      "metal"
+    ],
+    "triangles": 1368,
+    "mesh_count": 11,
+    "errors": [],
+    "sha256": "9a8f55e26bea0a910f01cb50822d0b1d214c98f1cb2d126450af4c86740e3c22",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "park_tree_broad",
+    "label": "宽冠公园树",
+    "group": "park",
+    "notes": "树冠为封闭团块；无叶片、贴图或随机几何。",
+    "interaction": "",
+    "dimensions_xyz": [
+      6.65,
+      7.3,
+      4.35
+    ],
+    "slots": [
+      "bark",
+      "foliage"
+    ],
+    "triangles": 1816,
+    "mesh_count": 7,
+    "errors": [],
+    "sha256": "cfd47d308fe050651caf86194412599b37ed90dd99104adef0aa4fa408e6c53f",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "park_tree_cypress",
+    "label": "细高柏树",
+    "group": "park",
+    "notes": "树冠为封闭团块；无叶片、贴图或随机几何。",
+    "interaction": "",
+    "dimensions_xyz": [
+      2.0,
+      8.0,
+      2.0
+    ],
+    "slots": [
+      "bark",
+      "foliage"
+    ],
+    "triangles": 1252,
+    "mesh_count": 5,
+    "errors": [],
+    "sha256": "85cfcedfbb4832f6f092c6c7d8d63b9c3d77d1a0d96d193555a9b5c7e1fc58fe",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "park_tree_umbrella",
+    "label": "伞冠公园树",
+    "group": "park",
+    "notes": "树冠为封闭团块；无叶片、贴图或随机几何。",
+    "interaction": "",
+    "dimensions_xyz": [
+      6.4,
+      6.9,
+      5.5
+    ],
+    "slots": [
+      "bark",
+      "foliage"
+    ],
+    "triangles": 1252,
+    "mesh_count": 5,
+    "errors": [],
+    "sha256": "aed8ebdd0461e552b57770c339ce229c7f74d7364deb556b1edbe22709c68e16",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "shrub",
+    "label": "灌木",
+    "group": "park",
+    "notes": "两团实心灌木，底面落地。",
+    "interaction": "",
+    "dimensions_xyz": [
+      1.65,
+      1.04,
+      1.15
+    ],
+    "slots": [
+      "foliage"
+    ],
+    "triangles": 880,
+    "mesh_count": 2,
+    "errors": [],
+    "sha256": "3c7ff53020377d463f154838a4d0b2d41a23478a3834ad6157cb4c2f8ecb49d2",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "hedge",
+    "label": "绿篱直段",
+    "group": "park",
+    "notes": "2.5 米直段，可沿边界平移拼接，入口由场景留空。",
+    "interaction": "",
+    "dimensions_xyz": [
+      2.5,
+      1.1,
+      0.7
+    ],
+    "slots": [
+      "concrete",
+      "foliage"
+    ],
+    "triangles": 24,
+    "mesh_count": 2,
+    "errors": [],
+    "sha256": "088e804a354b5c5f6388f9f37c1c86f72195a7a9f84b73cc186fcfefa47caba2",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "park_lamp",
+    "label": "公园柱灯",
+    "group": "park",
+    "notes": "4 米无横臂柱灯，与街灯轮廓不同。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.528,
+      4.0,
+      0.528
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 496,
+    "mesh_count": 4,
+    "errors": [],
+    "sha256": "c530bb20736dbcba183475c083322b3ddb976c6465a141a903157d63e7006c8e",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "bench",
+    "label": "公园长椅",
+    "group": "park",
+    "notes": "整块简洁座板与靠背，两端扶手；坐向 +Z。",
+    "interaction": "座面 y=0.45，建议坐点 x=±0.45、z=0。",
+    "dimensions_xyz": [
+      1.8,
+      0.95,
+      0.478
+    ],
+    "slots": [
+      "metal_dark",
+      "wood"
+    ],
+    "triangles": 344,
+    "mesh_count": 10,
+    "errors": [],
+    "sha256": "f5522501be7305303e4e500c85c8e7271af15d33568ca8c4773091258591795f",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "park_chess_table",
+    "label": "棋桌与双凳",
+    "group": "park",
+    "notes": "两凳沿 Z 相对；棋盘格为浅薄实体，无棋子。",
+    "interaction": "桌面 y=0.75；凳面中心 (0,0.45,±0.84)，面向桌心。",
+    "dimensions_xyz": [
+      0.85,
+      0.752,
+      2.11
+    ],
+    "slots": [
+      "concrete",
+      "paint",
+      "wood"
+    ],
+    "triangles": 468,
+    "mesh_count": 39,
+    "errors": [],
+    "sha256": "c9b3b27f2ec0234095271689fdceb7191a68f298a072a16a14da815834dc1280",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "fountain",
+    "label": "公园喷泉",
+    "group": "park",
+    "notes": "直径 5.7 米；低圆池、中央喷水台、两处 water 实心水面；水流动画留给后续功能。",
+    "interaction": "",
+    "dimensions_xyz": [
+      5.7,
+      2.35,
+      5.7
+    ],
+    "slots": [
+      "concrete",
+      "metal",
+      "water"
+    ],
+    "triangles": 1380,
+    "mesh_count": 9,
+    "errors": [],
+    "sha256": "9af4d0ef66b94345aabe90873102ba7218075d165c85563142e8a29d946e751b",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "market_stall",
+    "label": "摊位",
+    "group": "park",
+    "notes": "柜台前置，后方净深约 1.4 米；开放后侧，货品以三块货箱示意。",
+    "interaction": "柜台顶 y=0.9；摊主 (0,0,-0.35)，顾客 (0,0,1.6)。",
+    "dimensions_xyz": [
+      2.775,
+      2.585,
+      2.275
+    ],
+    "slots": [
+      "fabric",
+      "metal_dark",
+      "wood"
+    ],
+    "triangles": 120,
+    "mesh_count": 10,
+    "errors": [],
+    "sha256": "caab7af444531553af000ab502fd475dd15892c277d4a2300f7288e1137062ee",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "flowerbed",
+    "label": "长条花坛",
+    "group": "park",
+    "notes": "花坛边高 0.4 米，内部三团实心植物。",
+    "interaction": "",
+    "dimensions_xyz": [
+      2.4,
+      0.91,
+      0.85
+    ],
+    "slots": [
+      "concrete",
+      "foliage"
+    ],
+    "triangles": 1380,
+    "mesh_count": 8,
+    "errors": [],
+    "sha256": "9401a526fa971559513d10cea56ea9e654475f4dfe33f19e19b73a138099cfef",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "plaza_oval",
+    "label": "椭圆棋桌广场",
+    "group": "ground",
+    "notes": "铺装厚 2.5 厘米，外缘完整路缘石高 7 厘米；独立贴地块。",
+    "interaction": "",
+    "dimensions_xyz": [
+      16.0,
+      0.07,
+      10.0
+    ],
+    "slots": [
+      "concrete"
+    ],
+    "triangles": 764,
+    "mesh_count": 2,
+    "errors": [],
+    "sha256": "705fc22378c3601c30a25fb98b1bf40c71d15a25aab87cb58818a20371a6feb5",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "plaza_round",
+    "label": "圆形喷泉广场",
+    "group": "ground",
+    "notes": "铺装厚 2.5 厘米，外缘完整路缘石高 7 厘米；独立贴地块。",
+    "interaction": "",
+    "dimensions_xyz": [
+      12.0,
+      0.07,
+      12.0
+    ],
+    "slots": [
+      "concrete"
+    ],
+    "triangles": 764,
+    "mesh_count": 2,
+    "errors": [],
+    "sha256": "fac992448202d464ec0303c6f92c3bc1e108073da60d6fb1135d724c73990f02",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "path_straight",
+    "label": "小径直段",
+    "group": "ground",
+    "notes": "宽 2 米，长 4 米；两侧路缘石，端部留通行口。",
+    "interaction": "拼接端 (0,0,±2)。",
+    "dimensions_xyz": [
+      2.0,
+      0.07,
+      4.0
+    ],
+    "slots": [
+      "concrete"
+    ],
+    "triangles": 36,
+    "mesh_count": 3,
+    "errors": [],
+    "sha256": "565e76c64985390663780cecab6945dbf5d39483b6b522bc9f7c92a635083d1a",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "path_curve",
+    "label": "小径四分之一弯段",
+    "group": "ground",
+    "notes": "宽 2 米，中心线半径 3 米，90°弯段；原点在弧段中点的地面投影。",
+    "interaction": "圆心 (-2.1213,0,-2.1213)，端点 (0.8787,0,-2.1213)、(-2.1213,0,0.8787)；可旋转拼接。",
+    "dimensions_xyz": [
+      4.0,
+      0.07,
+      4.0
+    ],
+    "slots": [
+      "concrete"
+    ],
+    "triangles": 588,
+    "mesh_count": 3,
+    "errors": [],
+    "sha256": "4a411602ad0f5024cc092d382fff1b9a77783c585029de959127c86eec99012e",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "car",
+    "label": "小汽车",
+    "group": "vehicles",
+    "notes": "轿车轮廓、斜风挡、分开的侧窗、三段圆肩车顶；底面中心原点，车头 +Z。",
+    "interaction": "",
+    "dimensions_xyz": [
+      1.96,
+      1.46,
+      4.555
+    ],
+    "slots": [
+      "accent",
+      "metal",
+      "metal_dark",
+      "trim_dark",
+      "window"
+    ],
+    "triangles": 1240,
+    "mesh_count": 22,
+    "errors": [],
+    "sha256": "5c9983053fc7899399f9116bece5adb1bd5e8ecf8e8817a512c2d964131ca73a",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "taxi",
+    "label": "出租车",
+    "group": "vehicles",
+    "notes": "与轿车共用车体，独立车顶灯牌，无文字；车头 +Z。",
+    "interaction": "",
+    "dimensions_xyz": [
+      1.96,
+      1.64,
+      4.555
+    ],
+    "slots": [
+      "accent",
+      "metal",
+      "metal_dark",
+      "trim_dark",
+      "window"
+    ],
+    "triangles": 1252,
+    "mesh_count": 23,
+    "errors": [],
+    "sha256": "fe485387ac2602e62df2f58a8cea0410ff044154821f1dfb9e3991abba6b0be6",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "bus",
+    "label": "公交车",
+    "group": "vehicles",
+    "notes": "约 12×2.5×3 米；车头 +Z，司机右侧为 -X，两道门位于该侧；金属圆肩顶。前门中心 z=4.65，前轴 z=3.0；门缘与轮缘纵向净距 0.60 米。",
+    "interaction": "门外点约 (-1.7,0,4.2)、(-1.7,0,-1.25)，车门暂不动画。",
+    "dimensions_xyz": [
+      2.687,
+      3.12,
+      11.98
+    ],
+    "slots": [
+      "accent",
+      "door",
+      "metal",
+      "metal_dark",
+      "trim_dark",
+      "window"
+    ],
+    "triangles": 1340,
+    "mesh_count": 35,
+    "errors": [],
+    "sha256": "3fc695f8567976d04724063f903c7bf883f39d7aa46d6d80d8b498290b305171",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "bicycle",
+    "label": "自行车",
+    "group": "vehicles",
+    "notes": "双三角车架、空心轮胎、三根粗辐条、车座与车把；少量承重细杆低于 5 cm 是辨识轮廓所需。",
+    "interaction": "座面约 (0,0.9775,-0.24)，把手 y=1.04；骑乘匹配以后做。",
+    "dimensions_xyz": [
+      0.57,
+      1.065,
+      1.8
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 2780,
+    "mesh_count": 23,
+    "errors": [],
+    "sha256": "fd792de50d41adf2e6dce20daae10744e690027ac77ec5d8726cc5858e581936",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "scooter",
+    "label": "电动车",
+    "group": "vehicles",
+    "notes": "清单“摩托 / 电动车”选择电动车一款；带电池车体、前挡板和前灯，暂不含骑手。",
+    "interaction": "座面约 (0,0.855,-0.27)，车头 +Z。",
+    "dimensions_xyz": [
+      0.68,
+      1.155,
+      1.85
+    ],
+    "slots": [
+      "accent",
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 2284,
+    "mesh_count": 19,
+    "errors": [],
+    "sha256": "51f71c059903b5d27df1e1b0a376e6758ed9d00e832eecd9bccd70c2dbd6e4cf",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "lane_line_solid",
+    "label": "实线段",
+    "group": "ground",
+    "notes": "贴地单面 paint 几何，离地 3 mm；规范允许的无投影开放薄片。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.12,
+      0.0,
+      6.0
+    ],
+    "slots": [
+      "paint"
+    ],
+    "triangles": 2,
+    "mesh_count": 1,
+    "errors": [],
+    "sha256": "1a9c479d6498a84c54a8d7c120a8a696c60683ca56da56ea15fd21cee9715184",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "lane_line_dashed",
+    "label": "虚线段",
+    "group": "ground",
+    "notes": "贴地单面 paint 几何，离地 3 mm；规范允许的无投影开放薄片。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.12,
+      0.0,
+      6.0
+    ],
+    "slots": [
+      "paint"
+    ],
+    "triangles": 6,
+    "mesh_count": 3,
+    "errors": [],
+    "sha256": "06a785d522b37168dc3b92f234f768ac1347aa37ae6fe2f4e3e9849007405150",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "bicycle_marking",
+    "label": "自行车道标志",
+    "group": "ground",
+    "notes": "几何剪影贴花，沿 Z 方向行车；未使用颜色贴图。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.69,
+      0.0,
+      1.63
+    ],
+    "slots": [
+      "paint"
+    ],
+    "triangles": 144,
+    "mesh_count": 10,
+    "errors": [],
+    "sha256": "c61b749e58ad155028803c8ec246f28559648c3cb679e2150f57e76a8650d3b4",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "manhole",
+    "label": "井盖",
+    "group": "ground",
+    "notes": "圆井盖、两条宽握槽示意；封闭低实体。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.72,
+      0.032,
+      0.72
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 272,
+    "mesh_count": 4,
+    "errors": [],
+    "sha256": "f788ef4b2b5a7957beae6a6a70e418f0cc5019bc59ed53d7d872b36b899a85ac",
+    "warnings": [],
+    "rebuild_identical": true
+  },
+  {
+    "name": "drain",
+    "label": "排水口",
+    "group": "ground",
+    "notes": "深底板封住，五条格栅；避免密集细缝。",
+    "interaction": "",
+    "dimensions_xyz": [
+      0.75,
+      0.04,
+      0.35
+    ],
+    "slots": [
+      "metal",
+      "metal_dark"
+    ],
+    "triangles": 96,
+    "mesh_count": 8,
+    "errors": [],
+    "sha256": "f9b41c6fc69b0228074fa71c0d10760e1eb45a99ac0244e8bfc80ae75d67921b",
+    "warnings": [],
+    "rebuild_identical": true
+  }
+]

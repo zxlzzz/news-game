@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\news_rack.glb
+   size  x 0.905  y 1.400  z 0.532 m
+   box   min (-0.453, 0.000, -0.267)  max (0.453, 1.400, 0.265)
+   triangles 168: concrete 36, metal 72, metal_dark 48, trim_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 43e5b87e7e4861a3dd129831280e6324972f035d0b86a8b1f81f8662acd8dd03
+   REBUILD IDENTICAL

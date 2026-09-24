@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_bookstore.glb
+   size  x 8.060  y 15.770  z 8.030 m
+   box   min (-4.030, 0.000, -7.830)  max (4.030, 15.770, 0.200)
+   triangles 1024: concrete 72, door 12, metal 12, metal_dark 24, trim 240, trim_dark 12, wall_brick 412, window 240
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 b1f2e02bfb358629258e351e9f1869b8173b549fcb16af3d6e384fee88e92aa9
+   REBUILD IDENTICAL

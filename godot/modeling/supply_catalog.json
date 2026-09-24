@@ -1,0 +1,422 @@
+[
+  {
+    "name": "building_residential",
+    "label": "窄高住宅",
+    "group": "buildings",
+    "notes": "6 层、三列窄窗、交错阳台、屋顶水箱；住宅门厅，无大橱窗。本次修订：高窄窗配高位横档，浅抹灰墙。",
+    "interaction": "门槛 (0,0,0)，门外站位 (0,0,1.1)。"
+  },
+  {
+    "name": "building_old_shop",
+    "label": "老式底商",
+    "group": "buildings",
+    "notes": "3 层、左入口、三列分隔窗、坡顶楼梯间、宽店招与金属挑棚。本次修订：圆拱窗与拱下横档，深砖墙。",
+    "interaction": "门槛 (-3.4,0,0)，门外站位 (-3.4,0,1.1)。"
+  },
+  {
+    "name": "building_modern",
+    "label": "现代办公楼",
+    "group": "buildings",
+    "notes": "5 层、四列宽分隔窗、右侧门厅、低女儿墙、斜顶机房；玻璃占立面约三成以内。本次修订：宽横窗三分格，石墙。",
+    "interaction": "门槛 (6.4,0,0)，门外站位 (6.4,0,1.1)。"
+  },
+  {
+    "name": "building_convenience",
+    "label": "便利店",
+    "group": "buildings",
+    "notes": "2 层宽铺面、右侧入口、连续暗色门头、三个错位上窗、低机房。本次修订：方窗无分格，中灰墙。",
+    "interaction": "门槛 (4.8,0,0)，门外站位 (4.8,0,1.1)。"
+  },
+  {
+    "name": "building_bookstore",
+    "label": "书店",
+    "group": "buildings",
+    "notes": "4 层、左侧入口、不等宽陈列窗、高女儿墙与斜顶楼梯间。本次修订：成对窄窗，深砖墙。",
+    "interaction": "门槛 (-2.6,0,0)，门外站位 (-2.6,0,1.1)。"
+  },
+  {
+    "name": "building_clinic",
+    "label": "诊所",
+    "group": "buildings",
+    "notes": "3 层、对称入口和独立门廊、四列矮窗、宽机房；空白诊所招牌。本次修订：低矮横窗与水平分格，浅抹灰墙。",
+    "interaction": "门槛 (0,0,0)，门外站位 (0,0,1.1)。"
+  },
+  {
+    "name": "building_cafe",
+    "label": "咖啡馆",
+    "group": "buildings",
+    "notes": "2 层窄铺、右门左窗、双上窗、小布篷与山墙屋顶房。本次修订：上下层拱窗，石墙。",
+    "interaction": "门槛 (1.8,0,0)，门外站位 (1.8,0,1.1)。"
+  },
+  {
+    "name": "building_bakery",
+    "label": "面包店",
+    "group": "buildings",
+    "notes": "3 层、不对称双橱窗、偏左入口、顶层单阳台、低水箱。本次修订：切角窗与高横档，浅抹灰墙。",
+    "interaction": "门槛 (-0.9,0,0)，门外站位 (-0.9,0,1.1)。"
+  },
+  {
+    "name": "building_corner",
+    "label": "双立面转角楼",
+    "group": "buildings",
+    "notes": "4 层；+Z 与 +X 两个完整凹窗立面；角端入口、高山墙楼梯间。本次修订：双立面十字分格窗，中灰墙。",
+    "interaction": "门槛 (3.5,0,0)，门外站位 (3.5,0,1.1)。"
+  },
+  {
+    "name": "roof_water_tank",
+    "label": "屋顶水箱",
+    "group": "accessories",
+    "notes": "封闭立式水箱与四支脚；原点为支脚接触平面中心。",
+    "interaction": ""
+  },
+  {
+    "name": "roof_solar_panel",
+    "label": "屋顶太阳能板",
+    "group": "accessories",
+    "notes": "单块暗色斜板，几何边框；没有纹理电池格。",
+    "interaction": ""
+  },
+  {
+    "name": "roof_billboard",
+    "label": "屋顶广告牌架",
+    "group": "accessories",
+    "notes": "招牌空白，背部斜撑；接触面是支架底。",
+    "interaction": ""
+  },
+  {
+    "name": "shop_sign_panel",
+    "label": "长条招牌",
+    "group": "accessories",
+    "notes": "空白独立招牌；以底边中心为安装锚点，场景提供安装高度。",
+    "interaction": ""
+  },
+  {
+    "name": "shop_sign_box",
+    "label": "厚灯箱招牌",
+    "group": "accessories",
+    "notes": "空白独立招牌；以底边中心为安装锚点，场景提供安装高度。",
+    "interaction": ""
+  },
+  {
+    "name": "shop_sign_arch",
+    "label": "拱顶招牌",
+    "group": "accessories",
+    "notes": "空白独立招牌；以底边中心为安装锚点，场景提供安装高度。",
+    "interaction": ""
+  },
+  {
+    "name": "shop_sign_blade",
+    "label": "吊挂招牌",
+    "group": "accessories",
+    "notes": "空白独立招牌；以底边中心为安装锚点，场景提供安装高度。",
+    "interaction": ""
+  },
+  {
+    "name": "air_conditioner",
+    "label": "空调外机",
+    "group": "accessories",
+    "notes": "封闭箱体与简化风扇面，不建密集网格；底面安装锚点。",
+    "interaction": ""
+  },
+  {
+    "name": "awning",
+    "label": "立面雨棚",
+    "group": "accessories",
+    "notes": "有厚度的布篷与两根斜撑；以支撑最低点为安装高度基准。",
+    "interaction": ""
+  },
+  {
+    "name": "street_tree",
+    "label": "行道树与树池",
+    "group": "street",
+    "notes": "实心椭球树冠，树池四边封闭实体；树干底中心原点。",
+    "interaction": ""
+  },
+  {
+    "name": "street_lamp",
+    "label": "街道路灯",
+    "group": "street",
+    "notes": "6.5 米，灯臂朝 +Z；杆底原点。",
+    "interaction": ""
+  },
+  {
+    "name": "trash_bin",
+    "label": "垃圾桶",
+    "group": "street",
+    "notes": "投口为不透明深色封板，不留通视洞。",
+    "interaction": ""
+  },
+  {
+    "name": "fire_hydrant",
+    "label": "消防栓",
+    "group": "street",
+    "notes": "",
+    "interaction": ""
+  },
+  {
+    "name": "mailbox",
+    "label": "邮筒",
+    "group": "street",
+    "notes": "",
+    "interaction": ""
+  },
+  {
+    "name": "news_box",
+    "label": "报纸箱",
+    "group": "street",
+    "notes": "显眼的箱形轮廓、头牌与展示窗；不写字、不烘焙假报纸纹理。",
+    "interaction": "取报正面站位 (0,0,0.8)。"
+  },
+  {
+    "name": "news_rack",
+    "label": "开放报刊架",
+    "group": "street",
+    "notes": "三层托盘配整块报纸示意，无密集纸张边线。",
+    "interaction": ""
+  },
+  {
+    "name": "vending_machine",
+    "label": "自动售货机",
+    "group": "street",
+    "notes": "正面暗色陈列窗、控制面板和取货口；全不透明。",
+    "interaction": "取货站位 (0,0,1)。"
+  },
+  {
+    "name": "phone_booth",
+    "label": "电话亭",
+    "group": "street",
+    "notes": "开放正面、两侧与背面为不透明窗板；可站入，不做半透明玻璃。",
+    "interaction": "站位 (0,0,0.15)，电话朝亭内 +Z。"
+  },
+  {
+    "name": "bus_shelter",
+    "label": "公交候车棚与长凳",
+    "group": "street",
+    "notes": "5×2.1 米棚，长凳靠后，前部留候车空地；深色金属顶避免亮盖板。",
+    "interaction": "座面 y=0.45、z=-0.5；站位 x≈-1.8,-0.6,0.6,1.8，z≈0.45。"
+  },
+  {
+    "name": "bus_stop_sign",
+    "label": "公交站牌",
+    "group": "street",
+    "notes": "独立站牌，空白面板；后续可由 UI 提供路线信息。",
+    "interaction": ""
+  },
+  {
+    "name": "bollard",
+    "label": "护柱",
+    "group": "street",
+    "notes": "",
+    "interaction": ""
+  },
+  {
+    "name": "bike_rack",
+    "label": "自行车停车架",
+    "group": "street",
+    "notes": "四组斜架，分格停放；无需车轮动画。",
+    "interaction": ""
+  },
+  {
+    "name": "sandwich_board",
+    "label": "店门口立牌",
+    "group": "street",
+    "notes": "双面空白 A 字立牌。",
+    "interaction": ""
+  },
+  {
+    "name": "cafe_table",
+    "label": "咖啡馆圆桌",
+    "group": "street",
+    "notes": "单独圆桌。",
+    "interaction": "桌面 y=0.75。"
+  },
+  {
+    "name": "cafe_chair",
+    "label": "咖啡馆椅子",
+    "group": "street",
+    "notes": "椅子坐向 +Z。",
+    "interaction": "座面中心 (0,0.45,0)。"
+  },
+  {
+    "name": "cafe_umbrella",
+    "label": "咖啡馆遮阳伞",
+    "group": "street",
+    "notes": "薄而封闭的伞面，非填满的实心锥；独立重底座。伞面升高0.85米，坡度约32°；伞缘高2.05米。八根可见伞骨与起伏伞缘，改善俯视轮廓。",
+    "interaction": ""
+  },
+  {
+    "name": "park_tree_broad",
+    "label": "宽冠公园树",
+    "group": "park",
+    "notes": "树冠为封闭团块；无叶片、贴图或随机几何。",
+    "interaction": ""
+  },
+  {
+    "name": "park_tree_cypress",
+    "label": "细高柏树",
+    "group": "park",
+    "notes": "树冠为封闭团块；无叶片、贴图或随机几何。",
+    "interaction": ""
+  },
+  {
+    "name": "park_tree_umbrella",
+    "label": "伞冠公园树",
+    "group": "park",
+    "notes": "树冠为封闭团块；无叶片、贴图或随机几何。",
+    "interaction": ""
+  },
+  {
+    "name": "shrub",
+    "label": "灌木",
+    "group": "park",
+    "notes": "两团实心灌木，底面落地。",
+    "interaction": ""
+  },
+  {
+    "name": "hedge",
+    "label": "绿篱直段",
+    "group": "park",
+    "notes": "2.5 米直段，可沿边界平移拼接，入口由场景留空。",
+    "interaction": ""
+  },
+  {
+    "name": "park_lamp",
+    "label": "公园柱灯",
+    "group": "park",
+    "notes": "4 米无横臂柱灯，与街灯轮廓不同。",
+    "interaction": ""
+  },
+  {
+    "name": "bench",
+    "label": "公园长椅",
+    "group": "park",
+    "notes": "整块简洁座板与靠背，两端扶手；坐向 +Z。",
+    "interaction": "座面 y=0.45，建议坐点 x=±0.45、z=0。"
+  },
+  {
+    "name": "park_chess_table",
+    "label": "棋桌与双凳",
+    "group": "park",
+    "notes": "两凳沿 Z 相对；棋盘格为浅薄实体，无棋子。",
+    "interaction": "桌面 y=0.75；凳面中心 (0,0.45,±0.84)，面向桌心。"
+  },
+  {
+    "name": "fountain",
+    "label": "公园喷泉",
+    "group": "park",
+    "notes": "直径 5.7 米；低圆池、中央喷水台、两处 water 实心水面；水流动画留给后续功能。",
+    "interaction": ""
+  },
+  {
+    "name": "market_stall",
+    "label": "摊位",
+    "group": "park",
+    "notes": "柜台前置，后方净深约 1.4 米；开放后侧，货品以三块货箱示意。",
+    "interaction": "柜台顶 y=0.9；摊主 (0,0,-0.35)，顾客 (0,0,1.6)。"
+  },
+  {
+    "name": "flowerbed",
+    "label": "长条花坛",
+    "group": "park",
+    "notes": "花坛边高 0.4 米，内部三团实心植物。",
+    "interaction": ""
+  },
+  {
+    "name": "plaza_oval",
+    "label": "椭圆棋桌广场",
+    "group": "ground",
+    "notes": "铺装厚 2.5 厘米，外缘完整路缘石高 7 厘米；独立贴地块。",
+    "interaction": ""
+  },
+  {
+    "name": "plaza_round",
+    "label": "圆形喷泉广场",
+    "group": "ground",
+    "notes": "铺装厚 2.5 厘米，外缘完整路缘石高 7 厘米；独立贴地块。",
+    "interaction": ""
+  },
+  {
+    "name": "path_straight",
+    "label": "小径直段",
+    "group": "ground",
+    "notes": "宽 2 米，长 4 米；两侧路缘石，端部留通行口。",
+    "interaction": "拼接端 (0,0,±2)。"
+  },
+  {
+    "name": "path_curve",
+    "label": "小径四分之一弯段",
+    "group": "ground",
+    "notes": "宽 2 米，中心线半径 3 米，90°弯段；原点在弧段中点的地面投影。",
+    "interaction": "圆心 (-2.1213,0,-2.1213)，端点 (0.8787,0,-2.1213)、(-2.1213,0,0.8787)；可旋转拼接。"
+  },
+  {
+    "name": "car",
+    "label": "小汽车",
+    "group": "vehicles",
+    "notes": "轿车轮廓、斜风挡、分开的侧窗、三段圆肩车顶；底面中心原点，车头 +Z。",
+    "interaction": ""
+  },
+  {
+    "name": "taxi",
+    "label": "出租车",
+    "group": "vehicles",
+    "notes": "与轿车共用车体，独立车顶灯牌，无文字；车头 +Z。",
+    "interaction": ""
+  },
+  {
+    "name": "bus",
+    "label": "公交车",
+    "group": "vehicles",
+    "notes": "约 12×2.5×3 米；车头 +Z，司机右侧为 -X，两道门位于该侧；金属圆肩顶。前门中心 z=4.65，前轴 z=3.0；门缘与轮缘纵向净距 0.60 米。",
+    "interaction": "门外点约 (-1.7,0,4.2)、(-1.7,0,-1.25)，车门暂不动画。"
+  },
+  {
+    "name": "bicycle",
+    "label": "自行车",
+    "group": "vehicles",
+    "notes": "双三角车架、空心轮胎、三根粗辐条、车座与车把；少量承重细杆低于 5 cm 是辨识轮廓所需。",
+    "interaction": "座面约 (0,0.9775,-0.24)，把手 y=1.04；骑乘匹配以后做。"
+  },
+  {
+    "name": "scooter",
+    "label": "电动车",
+    "group": "vehicles",
+    "notes": "清单“摩托 / 电动车”选择电动车一款；带电池车体、前挡板和前灯，暂不含骑手。",
+    "interaction": "座面约 (0,0.855,-0.27)，车头 +Z。"
+  },
+  {
+    "name": "lane_line_solid",
+    "label": "实线段",
+    "group": "ground",
+    "notes": "贴地单面 paint 几何，离地 3 mm；规范允许的无投影开放薄片。",
+    "interaction": ""
+  },
+  {
+    "name": "lane_line_dashed",
+    "label": "虚线段",
+    "group": "ground",
+    "notes": "贴地单面 paint 几何，离地 3 mm；规范允许的无投影开放薄片。",
+    "interaction": ""
+  },
+  {
+    "name": "bicycle_marking",
+    "label": "自行车道标志",
+    "group": "ground",
+    "notes": "几何剪影贴花，沿 Z 方向行车；未使用颜色贴图。",
+    "interaction": ""
+  },
+  {
+    "name": "manhole",
+    "label": "井盖",
+    "group": "ground",
+    "notes": "圆井盖、两条宽握槽示意；封闭低实体。",
+    "interaction": ""
+  },
+  {
+    "name": "drain",
+    "label": "排水口",
+    "group": "ground",
+    "notes": "深底板封住，五条格栅；避免密集细缝。",
+    "interaction": ""
+  }
+]

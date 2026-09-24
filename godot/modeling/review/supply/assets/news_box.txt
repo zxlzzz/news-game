@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\news_box.glb
+   size  x 0.720  y 1.180  z 0.630 m
+   box   min (-0.360, 0.000, -0.270)  max (0.360, 1.180, 0.360)
+   triangles 60: accent 12, metal 12, metal_dark 12, trim_dark 12, window 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 aeee550a2d2f525ff11215a12d2d2248c6575d71aeab8dc82aee18f76c37dd6a
+   REBUILD IDENTICAL

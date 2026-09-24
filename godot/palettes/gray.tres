@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="ScenePalette" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/scene_palette.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+colors = Dictionary[StringName, Color]({
+&"accent": Color(0.9, 0.9, 0.9, 1),
+&"bark": Color(0.4, 0.4, 0.4, 1),
+&"concrete": Color(0.72, 0.72, 0.72, 1),
+&"door": Color(0.5, 0.5, 0.5, 1),
+&"fabric": Color(0.82, 0.82, 0.82, 1),
+&"foliage": Color(0.56, 0.56, 0.56, 1),
+&"grass": Color(0.64, 0.64, 0.64, 1),
+&"metal": Color(0.6, 0.6, 0.6, 1),
+&"metal_dark": Color(0.3, 0.3, 0.3, 1),
+&"paint": Color(0.95, 0.95, 0.95, 1),
+&"road": Color(0.45, 0.45, 0.45, 1),
+&"sidewalk": Color(0.8, 0.8, 0.8, 1),
+&"trim": Color(0.86, 0.86, 0.86, 1),
+&"trim_dark": Color(0.36, 0.36, 0.36, 1),
+&"wall": Color(0.68, 0.68, 0.68, 1),
+&"wall_plaster": Color(0.78, 0.78, 0.78, 1),
+&"wall_brick": Color(0.58, 0.58, 0.58, 1),
+&"wall_stone": Color(0.62, 0.62, 0.62, 1),
+&"water": Color(0.6, 0.6, 0.6, 1),
+&"window": Color(0.26, 0.26, 0.26, 1),
+&"wood": Color(0.56, 0.56, 0.56, 1)
+})
+mid_mul = Vector3(0.82, 0.82, 0.82)
+dark_mul = Vector3(0.58, 0.58, 0.58)
+stroke_mid_mul = Vector3(0.68, 0.68, 0.68)
+stroke_dark_mul = Vector3(0.42, 0.42, 0.42)
+line_color = Color(0.12, 0.12, 0.12, 1)
+background = Color(0.93, 0.93, 0.93, 1)
+tint_color = Color(0.5, 0.5, 0.5, 1)
+tint_center = Vector2(0, 1)
+tint_radius = 0.75
+tint_mix = 0.0
+tint_multiply = 0.0

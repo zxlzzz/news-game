@@ -1,0 +1,67 @@
+{
+  "name": "receive_item",
+  "text": "A person standing still reaches their right hand forward at waist height to accept a small object from someone in front. They pause with the hand extended, then bend the elbow and draw the right hand back toward their abdomen, holding the received object close. The left arm stays relaxed and the feet stay planted.",
+  "duration": 3.5,
+  "seed": 42,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    104
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "date": "2026-09-24",
+    "notes_zh": "右手朝前伸出、短暂停留后收回下放；左臂放松、脚步稳定。接物手势可读，但收回后没有持续抱持物品，手指为模型固定放松形态，需播放端另挂物件。柜台参照及完整手部已检查。首尾站姿一致。",
+    "attempts": 1,
+    "views": [
+      "source side",
+      "source full hands",
+      "accepted mapping x3 front/side",
+      "prop reference where applicable"
+    ],
+    "metrics": {
+      "frames": 105,
+      "fps": 30.0,
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mapped_hip_y_minmax": [
+        0.7928956758336689,
+        0.7951963775165448
+      ],
+      "mapped_toe_y_minmax": [
+        0.005282132830173373,
+        0.010634077171958375
+      ],
+      "mapped_left_hand_y_minmax": [
+        0.7576047710985443,
+        0.7782314269583992
+      ],
+      "mapped_right_hand_y_minmax": [
+        0.7505693885548872,
+        1.0754208789517175
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "endpoint_root_aligned_mean_joint_m": 0.0
+    },
+    "sha256": "4bbab99d53581db3e16057a82146d3a0380db2407151b21fa55bff0df642d348"
+  }
+}

@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\phone_booth.glb
+   size  x 1.240  y 2.350  z 1.140 m
+   box   min (-0.620, 0.000, -0.570)  max (0.620, 2.350, 0.570)
+   triangles 108: metal 60, metal_dark 12, window 36
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 2e809f335ba997b4a26e138a881b6e0c616ed47b5a9c3af98af43b59ac6d6868
+   REBUILD IDENTICAL

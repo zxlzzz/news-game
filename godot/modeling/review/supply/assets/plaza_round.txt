@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\plaza_round.glb
+   size  x 12.000  y 0.070  z 12.000 m
+   box   min (-6.000, 0.000, -6.000)  max (6.000, 0.070, 6.000)
+   triangles 764: concrete 764
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 fac992448202d464ec0303c6f92c3bc1e108073da60d6fb1135d724c73990f02
+   REBUILD IDENTICAL

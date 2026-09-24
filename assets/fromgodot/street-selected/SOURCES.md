@@ -25,7 +25,7 @@
 | `Chess_Table.glb` | 棋桌和两边座位，棋子另配 | [Voxel City Districts](https://3dassets.dev/assets/voxel-city-districts-chess-table-36bc9f7d) `24855` |
 | `Bench_Park.glb` | 公园座椅，与街边座椅不同 | [City Park and Playground](https://3dassets.dev/packs/city-park-and-playground) `33673` |
 
-每个 3DAssets.dev 文件可按 `https://cdn.3dassets.dev/assets/<ID>/v1/model.glb` 找回原版。对源文件做过必要修正：`Bicycle_Quaternius.glb` 从 FBX 统一缩放 0.35、旋转到 +Z 前方、将轮胎最低点置于地面；`Car_City.glb` 的整车根节点抬高 0.059 米，使轮胎最低点落在地面，原车门／车轮动作仍在；`Phonebooth.glb` 和 `News_Box.glb` 把原先半透明的 `glass` 材质改成不透明，以符合当前画风约束，开门／翻盖动作仍在。
+每个 3DAssets.dev 文件可按 `https://cdn.3dassets.dev/assets/<ID>/v1/model.glb` 找回原版。对源文件做过必要修正：`Bicycle_Quaternius.glb` 从 FBX 统一缩放 0.35、旋转到 +Z 前方、将轮胎最低点置于地面；`Car_City.glb` 的整车根节点抬高 0.059 米，使轮胎最低点落在地面，原车门／车轮动作仍在；`Phonebooth.glb` 和 `News_Box.glb` 把原先半透明的 `glass` 材质改成不透明，以符合当前画风约束，开门／翻盖动作仍在。2026-09-23：除自行车外的 17 个文件原本用了 `KHR_mesh_quantization`（顶点存成整数），Godot 4.7 不能导入；已用 `godot/tools/dequantize_glb.mjs` 就地改成浮点顶点，几何、材质、动作不变。
 
 **互动摆位尚需实测**：长椅坐面、棋桌两侧、摊位柜台、售货机按钮／取货口、电话亭门口、公交门口和自行车骑乘位，必须与实际 NPC 动画一起定接触点。GLB 自带的车门、车轮或翻盖动作只能驱动物件，不会自动让 NPC 对位。电话亭改为不透明玻璃后，从外面看不到内部电话，接听镜头若需要看到话机，应再选内景方案。
 

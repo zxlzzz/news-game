@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_residential.glb
+   size  x 7.060  y 22.200  z 8.980 m
+   box   min (-3.530, 0.000, -8.230)  max (3.530, 22.200, 0.750)
+   triangles 1408: concrete 312, door 12, metal 316, metal_dark 180, trim_dark 12, wall_plaster 372, window 204
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 9fd9c672a2ac7bb28cae0d04bed5a3d1d2b6fe9fdf49db88b0c27f276e52612b
+   REBUILD IDENTICAL

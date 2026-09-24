@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\air_conditioner.glb
+   size  x 1.000  y 0.650  z 0.480 m
+   box   min (-0.500, 0.000, -0.225)  max (0.500, 0.650, 0.255)
+   triangles 160: metal 12, metal_dark 148
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 17f95ad179f9938f5693b05e5d267d3d6c2d08a90d8abd1cf24e562e9628ee35
+   REBUILD IDENTICAL

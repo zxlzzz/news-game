@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\park_tree_broad.glb
+   size  x 6.650  y 7.300  z 4.350 m
+   box   min (-3.250, 0.000, -2.350)  max (3.400, 7.300, 2.000)
+   triangles 1816: bark 496, foliage 1320
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 cfd47d308fe050651caf86194412599b37ed90dd99104adef0aa4fa408e6c53f
+   REBUILD IDENTICAL

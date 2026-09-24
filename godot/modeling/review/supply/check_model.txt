@@ -1,0 +1,539 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_residential.glb
+   size  x 7.060  y 22.200  z 8.980 m
+   box   min (-3.530, 0.000, -8.230)  max (3.530, 22.200, 0.750)
+   triangles 1408: concrete 312, door 12, metal 316, metal_dark 180, trim_dark 12, wall_plaster 372, window 204
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 9fd9c672a2ac7bb28cae0d04bed5a3d1d2b6fe9fdf49db88b0c27f276e52612b
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_old_shop.glb
+   size  x 10.060  y 12.450  z 8.180 m
+   box   min (-5.030, 0.000, -7.530)  max (5.030, 12.450, 0.650)
+   triangles 1352: concrete 68, door 12, metal 12, metal_dark 108, trim 96, trim_dark 12, wall_brick 588, window 456
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 32f7acbd5a8ff558d5356303c1f43e4cac869dd908472c8ec56dc5a2025f5d45
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_modern.glb
+   size  x 18.060  y 18.670  z 10.160 m
+   box   min (-9.030, 0.000, -10.030)  max (9.030, 18.670, 0.130)
+   triangles 1378: concrete 288, door 12, metal 24, metal_dark 420, trim_dark 12, wall_stone 394, window 228
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 76963e26057daab64aeb6b0bb651c222ff68c5dec528343bc4b200ee6675ffbd
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_convenience.glb
+   size  x 14.060  y 8.120  z 9.130 m
+   box   min (-7.030, 0.000, -8.530)  max (7.030, 8.120, 0.600)
+   triangles 400: concrete 120, door 12, metal 12, metal_dark 12, trim_dark 12, wall 172, window 60
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 b8a277ae4cbf4458a4520761c7f96af42ec781aed8a1f3c1f1fbd2dfc4a43fd9
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_bookstore.glb
+   size  x 8.060  y 15.770  z 8.030 m
+   box   min (-4.030, 0.000, -7.830)  max (4.030, 15.770, 0.200)
+   triangles 1024: concrete 72, door 12, metal 12, metal_dark 24, trim 240, trim_dark 12, wall_brick 412, window 240
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 b1f2e02bfb358629258e351e9f1869b8173b549fcb16af3d6e384fee88e92aa9
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_clinic.glb
+   size  x 12.060  y 11.470  z 10.130 m
+   box   min (-6.030, 0.000, -9.030)  max (6.030, 11.470, 1.100)
+   triangles 696: concrete 180, door 12, metal 12, metal_dark 108, trim_dark 12, wall_plaster 252, window 120
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 f73532d2e21f8818024c7cd59fa94efe71660e3c7c51dc9173759e5ef85db076
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_cafe.glb
+   size  x 6.060  y 8.950  z 7.780 m
+   box   min (-3.030, 0.000, -6.830)  max (3.030, 8.950, 0.950)
+   triangles 684: concrete 68, door 12, fabric 12, metal_dark 12, trim 36, trim_dark 12, wall_stone 316, window 216
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 14d8829b1cdeac6ab8651c0727d268e47c1049ca3eca0bb463a0c81daca115b3
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_bakery.glb
+   size  x 11.060  y 12.400  z 8.780 m
+   box   min (-5.530, 0.000, -8.030)  max (5.530, 12.400, 0.750)
+   triangles 866: concrete 72, door 12, fabric 12, metal 172, metal_dark 72, trim 96, trim_dark 12, wall_plaster 274, window 144
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 c8d50b035f5e5414df1a16708c69f83424cd9f6d2db7ba821dad6e1d430d61b7
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_corner.glb
+   size  x 10.660  y 16.600  z 10.730 m
+   box   min (-5.280, 0.000, -10.530)  max (5.380, 16.600, 0.200)
+   triangles 1616: concrete 68, door 12, metal 12, metal_dark 492, trim 276, trim_dark 12, wall 468, window 276
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 8ed215b6eae0b1a75d5627bcad40776fcf62d9afca718f278253614e37926b8c
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\roof_water_tank.glb
+   size  x 1.800  y 2.120  z 1.800 m
+   box   min (-0.900, 0.000, -0.900)  max (0.900, 2.120, 0.900)
+   triangles 744: concrete 124, metal 124, metal_dark 496
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 104258da43474fcce32180b506f98e54565a420644c41d4146a8255f6d4ada64
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\roof_solar_panel.glb
+   size  x 2.880  y 1.060  z 1.780 m
+   box   min (-1.440, 0.000, -0.890)  max (1.440, 1.060, 0.890)
+   triangles 308: metal 296, metal_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 adc4c4dd82246f9901c5bc598c8c32eac0bc766dd6691859656f9f0a0ad882c8
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\roof_billboard.glb
+   size  x 4.000  y 3.000  z 1.846 m
+   box   min (-2.000, 0.000, -0.946)  max (2.000, 3.000, 0.900)
+   triangles 308: metal 296, trim_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 b25b2e71e769f5fa336147b84cdd39a78e95c3533a34b0710add47b3a18d4e4a
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\shop_sign_panel.glb
+   size  x 3.400  y 0.650  z 0.180 m
+   box   min (-1.700, 0.000, -0.080)  max (1.700, 0.650, 0.100)
+   triangles 24: metal 12, trim_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 06f1ab85b941da241a26cad3675246253c8011da504fa023e0fa5c291f7b8170
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\shop_sign_box.glb
+   size  x 2.600  y 0.800  z 0.320 m
+   box   min (-1.300, 0.000, -0.150)  max (1.300, 0.800, 0.170)
+   triangles 24: metal 12, trim_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 71301bde4c261d890d5b3ac1b5501b8c7bedbab0ed917bbc26986cfa9fb7ced3
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\shop_sign_arch.glb
+   size  x 2.400  y 0.850  z 0.160 m
+   box   min (-1.200, 0.000, -0.080)  max (1.200, 0.850, 0.080)
+   triangles 20: trim_dark 20
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 6a149bbed80a6f657f4e22157f5afcf5d27e289e68e8d08504032d7e3b07ab0c
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\shop_sign_blade.glb
+   size  x 2.000  y 0.750  z 0.160 m
+   box   min (-1.000, 0.000, -0.080)  max (1.000, 0.750, 0.080)
+   triangles 64: metal_dark 36, wood 28
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 d13054ba5c7065df0b928ef7954f8b4c28dd1ba3e83ff1d6409ed89f9c9659d6
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\air_conditioner.glb
+   size  x 1.000  y 0.650  z 0.480 m
+   box   min (-0.500, 0.000, -0.225)  max (0.500, 0.650, 0.255)
+   triangles 160: metal 12, metal_dark 148
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 17f95ad179f9938f5693b05e5d267d3d6c2d08a90d8abd1cf24e562e9628ee35
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\awning.glb
+   size  x 3.000  y 0.589  z 1.168 m
+   box   min (-1.500, 0.001, -0.584)  max (1.500, 0.590, 0.584)
+   triangles 260: fabric 12, metal_dark 248
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 3afb9b69ad0cfe9043b766516d85e3fb74cf34785b299269fcc6bad6437ad381
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\street_tree.glb
+   size  x 3.300  y 5.600  z 3.000 m
+   box   min (-1.650, 0.000, -1.500)  max (1.650, 5.600, 1.500)
+   triangles 860: bark 372, concrete 48, foliage 440
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 1402cf552c74a66e877b4eb1c8b5da1822b0498276ea1657ff13205eb8a279aa
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\street_lamp.glb
+   size  x 0.500  y 6.500  z 1.880 m
+   box   min (-0.250, 0.000, -0.180)  max (0.250, 6.500, 1.700)
+   triangles 396: accent 12, metal 248, metal_dark 136
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 7dae9ae431f00028f7761bd98bf6f2f377253c5e1a2d01f68763085357946143
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\trash_bin.glb
+   size  x 0.580  y 0.920  z 0.535 m
+   box   min (-0.290, 0.000, -0.260)  max (0.290, 0.920, 0.275)
+   triangles 36: metal 12, metal_dark 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 65f8f8ee6f3ebbe2cd15d236cdccadc242559828be273602eed013213e701c53
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\fire_hydrant.glb
+   size  x 0.480  y 0.820  z 0.460 m
+   box   min (-0.240, 0.000, -0.230)  max (0.240, 0.820, 0.230)
+   triangles 812: metal 688, metal_dark 124
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 86d43f4c9673675e321844fdc289bd779c2ce5f239055226c5a8d9085c2a6acc
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\mailbox.glb
+   size  x 0.520  y 1.250  z 0.432 m
+   box   min (-0.260, 0.000, -0.210)  max (0.260, 1.250, 0.222)
+   triangles 36: metal 12, metal_dark 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 af2eaf2de3106cf309c2b8cfa5e9216ea4ceffdefbbf5cb65bb88138fbd99f4e
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\news_box.glb
+   size  x 0.720  y 1.180  z 0.630 m
+   box   min (-0.360, 0.000, -0.270)  max (0.360, 1.180, 0.360)
+   triangles 60: accent 12, metal 12, metal_dark 12, trim_dark 12, window 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 aeee550a2d2f525ff11215a12d2d2248c6575d71aeab8dc82aee18f76c37dd6a
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\news_rack.glb
+   size  x 0.905  y 1.400  z 0.532 m
+   box   min (-0.453, 0.000, -0.267)  max (0.453, 1.400, 0.265)
+   triangles 168: concrete 36, metal 72, metal_dark 48, trim_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 43e5b87e7e4861a3dd129831280e6324972f035d0b86a8b1f81f8662acd8dd03
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\vending_machine.glb
+   size  x 1.050  y 1.900  z 0.830 m
+   box   min (-0.525, 0.000, -0.400)  max (0.525, 1.900, 0.430)
+   triangles 48: metal 12, metal_dark 12, trim_dark 12, window 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 3c827301bb4f25ed0cb5fff1e871f318199260f1afff7268ba17cb20a2ecc0e3
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\phone_booth.glb
+   size  x 1.240  y 2.350  z 1.140 m
+   box   min (-0.620, 0.000, -0.570)  max (0.620, 2.350, 0.570)
+   triangles 108: metal 60, metal_dark 12, window 36
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 2e809f335ba997b4a26e138a881b6e0c616ed47b5a9c3af98af43b59ac6d6868
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bus_shelter.glb
+   size  x 5.100  y 2.700  z 2.200 m
+   box   min (-2.550, 0.000, -1.100)  max (2.550, 2.700, 1.100)
+   triangles 120: metal 48, metal_dark 36, window 12, wood 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 11b18cf7309b04c2b35bd10e86c84e56b420ceecdd289eb7fb6881e1a4b839b0
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bus_stop_sign.glb
+   size  x 0.550  y 2.700  z 0.300 m
+   box   min (-0.275, 0.000, -0.150)  max (0.275, 2.700, 0.150)
+   triangles 272: concrete 12, metal 136, metal_dark 124
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 872d35caedbf489844378cfad59941cc726313d89da1bd825299305940f34a18
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bollard.glb
+   size  x 0.300  y 0.850  z 0.300 m
+   box   min (-0.150, 0.000, -0.150)  max (0.150, 0.850, 0.150)
+   triangles 372: metal 124, metal_dark 248
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 0f5371d8316a82eeab768d235356c18241ce3f0ea7f4cd2caa10e819ae0ff534
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bike_rack.glb
+   size  x 2.400  y 0.729  z 0.670 m
+   box   min (-1.200, -0.000, -0.335)  max (1.200, 0.729, 0.335)
+   triangles 1240: metal 1240
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 8e24893001c546e7c220c710b3625becf82157e098c30d42fae0e57a9ead0866
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\sandwich_board.glb
+   size  x 0.710  y 0.988  z 0.670 m
+   box   min (-0.355, 0.000, -0.335)  max (0.355, 0.988, 0.335)
+   triangles 568: trim_dark 24, wood 544
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 aed4a22252b355db4eac42d086a9479fb5f8d04c79620064e033373122cb31d7
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\cafe_table.glb
+   size  x 0.760  y 0.750  z 0.760 m
+   box   min (-0.380, 0.000, -0.380)  max (0.380, 0.750, 0.380)
+   triangles 372: metal_dark 248, wood 124
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 65dbd9f9ef01058f4bd841f84adf45660525e58824a73238b06e79cf03426bd1
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\cafe_chair.glb
+   size  x 0.440  y 0.830  z 0.458 m
+   box   min (-0.220, 0.000, -0.243)  max (0.220, 0.830, 0.215)
+   triangles 520: metal_dark 496, wood 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 1a120066b66230577473032b13d299a4d0099173cec358e7629d833bad93c85b
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\cafe_umbrella.glb
+   size  x 2.727  y 2.921  z 2.727 m
+   box   min (-1.363, 0.000, -1.363)  max (1.363, 2.921, 1.363)
+   triangles 1368: concrete 124, fabric 128, metal 1116
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 9a8f55e26bea0a910f01cb50822d0b1d214c98f1cb2d126450af4c86740e3c22
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\park_tree_broad.glb
+   size  x 6.650  y 7.300  z 4.350 m
+   box   min (-3.250, 0.000, -2.350)  max (3.400, 7.300, 2.000)
+   triangles 1816: bark 496, foliage 1320
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 cfd47d308fe050651caf86194412599b37ed90dd99104adef0aa4fa408e6c53f
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\park_tree_cypress.glb
+   size  x 2.000  y 8.000  z 2.000 m
+   box   min (-1.000, 0.000, -1.000)  max (1.000, 8.000, 1.000)
+   triangles 1252: bark 372, foliage 880
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 85cfcedfbb4832f6f092c6c7d8d63b9c3d77d1a0d96d193555a9b5c7e1fc58fe
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\park_tree_umbrella.glb
+   size  x 6.400  y 6.900  z 5.500 m
+   box   min (-3.200, 0.000, -2.750)  max (3.200, 6.900, 2.750)
+   triangles 1252: bark 372, foliage 880
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 aed8ebdd0461e552b57770c339ce229c7f74d7364deb556b1edbe22709c68e16
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\shrub.glb
+   size  x 1.650  y 1.040  z 1.150 m
+   box   min (-0.850, 0.000, -0.500)  max (0.800, 1.040, 0.650)
+   triangles 880: foliage 880
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 3c7ff53020377d463f154838a4d0b2d41a23478a3834ad6157cb4c2f8ecb49d2
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\hedge.glb
+   size  x 2.500  y 1.100  z 0.700 m
+   box   min (-1.250, 0.000, -0.350)  max (1.250, 1.100, 0.350)
+   triangles 24: concrete 12, foliage 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 088e804a354b5c5f6388f9f37c1c86f72195a7a9f84b73cc186fcfefa47caba2
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\park_lamp.glb
+   size  x 0.528  y 4.000  z 0.528 m
+   box   min (-0.264, 0.000, -0.264)  max (0.264, 4.000, 0.264)
+   triangles 496: metal 248, metal_dark 248
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 c530bb20736dbcba183475c083322b3ddb976c6465a141a903157d63e7006c8e
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bench.glb
+   size  x 1.800  y 0.950  z 0.478 m
+   box   min (-0.900, 0.000, -0.258)  max (0.900, 0.950, 0.220)
+   triangles 344: metal_dark 320, wood 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 f5522501be7305303e4e500c85c8e7271af15d33568ca8c4773091258591795f
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\park_chess_table.glb
+   size  x 0.850  y 0.752  z 2.110 m
+   box   min (-0.425, 0.000, -1.055)  max (0.425, 0.752, 1.055)
+   triangles 468: concrete 60, paint 384, wood 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 c9b3b27f2ec0234095271689fdceb7191a68f298a072a16a14da815834dc1280
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\fountain.glb
+   size  x 5.700  y 2.350  z 5.700 m
+   box   min (-2.850, 0.000, -2.850)  max (2.850, 2.350, 2.850)
+   triangles 1380: concrete 1008, metal 124, water 248
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 9af4d0ef66b94345aabe90873102ba7218075d165c85563142e8a29d946e751b
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\market_stall.glb
+   size  x 2.775  y 2.585  z 2.275 m
+   box   min (-1.388, 0.000, -1.138)  max (1.388, 2.585, 1.138)
+   triangles 120: fabric 12, metal_dark 48, wood 60
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 caab7af444531553af000ab502fd475dd15892c277d4a2300f7288e1137062ee
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\flowerbed.glb
+   size  x 2.400  y 0.910  z 0.850 m
+   box   min (-1.200, 0.000, -0.425)  max (1.200, 0.910, 0.425)
+   triangles 1380: concrete 60, foliage 1320
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 9401a526fa971559513d10cea56ea9e654475f4dfe33f19e19b73a138099cfef
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\plaza_oval.glb
+   size  x 16.000  y 0.070  z 10.000 m
+   box   min (-8.000, 0.000, -5.000)  max (8.000, 0.070, 5.000)
+   triangles 764: concrete 764
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 705fc22378c3601c30a25fb98b1bf40c71d15a25aab87cb58818a20371a6feb5
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\plaza_round.glb
+   size  x 12.000  y 0.070  z 12.000 m
+   box   min (-6.000, 0.000, -6.000)  max (6.000, 0.070, 6.000)
+   triangles 764: concrete 764
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 fac992448202d464ec0303c6f92c3bc1e108073da60d6fb1135d724c73990f02
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\path_straight.glb
+   size  x 2.000  y 0.070  z 4.000 m
+   box   min (-1.000, 0.000, -2.000)  max (1.000, 0.070, 2.000)
+   triangles 36: concrete 36
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 565e76c64985390663780cecab6945dbf5d39483b6b522bc9f7c92a635083d1a
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\path_curve.glb
+   size  x 4.000  y 0.070  z 4.000 m
+   box   min (-2.121, 0.000, -2.121)  max (1.879, 0.070, 1.879)
+   triangles 588: concrete 588
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 4a411602ad0f5024cc092d382fff1b9a77783c585029de959127c86eec99012e
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\car.glb
+   size  x 1.960  y 1.460  z 4.555 m
+   box   min (-0.980, -0.000, -2.277)  max (0.980, 1.460, 2.277)
+   triangles 1240: accent 24, metal 600, metal_dark 520, trim_dark 24, window 72
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 5c9983053fc7899399f9116bece5adb1bd5e8ecf8e8817a512c2d964131ca73a
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\taxi.glb
+   size  x 1.960  y 1.640  z 4.555 m
+   box   min (-0.980, -0.000, -2.277)  max (0.980, 1.640, 2.277)
+   triangles 1252: accent 36, metal 600, metal_dark 520, trim_dark 24, window 72
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 fe485387ac2602e62df2f58a8cea0410ff044154821f1dfb9e3991abba6b0be6
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bus.glb
+   size  x 2.687  y 3.120  z 11.980 m
+   box   min (-1.343, -0.000, -5.990)  max (1.343, 3.120, 5.990)
+   triangles 1340: accent 24, door 24, metal 544, metal_dark 544, trim_dark 24, window 180
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 3fc695f8567976d04724063f903c7bf883f39d7aa46d6d80d8b498290b305171
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bicycle.glb
+   size  x 0.570  y 1.065  z 1.800 m
+   box   min (-0.285, -0.000, -0.900)  max (0.285, 1.065, 0.900)
+   triangles 2780: metal 1984, metal_dark 796
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 fd792de50d41adf2e6dce20daae10744e690027ac77ec5d8726cc5858e581936
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\scooter.glb
+   size  x 0.680  y 1.155  z 1.850 m
+   box   min (-0.340, 0.000, -0.925)  max (0.340, 1.155, 0.925)
+   triangles 2284: accent 124, metal 1512, metal_dark 648
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 51f71c059903b5d27df1e1b0a376e6758ed9d00e832eecd9bccd70c2dbd6e4cf
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\lane_line_solid.glb
+   size  x 0.120  y 0.000  z 6.000 m
+   box   min (-0.060, 0.003, -3.000)  max (0.060, 0.003, 3.000)
+   triangles 2: paint 2
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 1a9c479d6498a84c54a8d7c120a8a696c60683ca56da56ea15fd21cee9715184
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\lane_line_dashed.glb
+   size  x 0.120  y 0.000  z 6.000 m
+   box   min (-0.060, 0.003, -3.000)  max (0.060, 0.003, 3.000)
+   triangles 6: paint 6
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 06a785d522b37168dc3b92f234f768ac1347aa37ae6fe2f4e3e9849007405150
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bicycle_marking.glb
+   size  x 0.690  y 0.000  z 1.630 m
+   box   min (-0.375, 0.003, -0.815)  max (0.315, 0.003, 0.815)
+   triangles 144: paint 144
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 c61b749e58ad155028803c8ec246f28559648c3cb679e2150f57e76a8650d3b4
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\manhole.glb
+   size  x 0.720  y 0.032  z 0.720 m
+   box   min (-0.360, 0.000, -0.360)  max (0.360, 0.032, 0.360)
+   triangles 272: metal 124, metal_dark 148
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 f788ef4b2b5a7957beae6a6a70e418f0cc5019bc59ed53d7d872b36b899a85ac
+   REBUILD IDENTICAL
+
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\drain.glb
+   size  x 0.750  y 0.040  z 0.350 m
+   box   min (-0.375, 0.000, -0.175)  max (0.375, 0.040, 0.175)
+   triangles 96: metal 84, metal_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 f9b41c6fc69b0228074fa71c0d10760e1eb45a99ac0244e8bfc80ae75d67921b
+   REBUILD IDENTICAL

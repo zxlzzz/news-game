@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\shrub.glb
+   size  x 1.650  y 1.040  z 1.150 m
+   box   min (-0.850, 0.000, -0.500)  max (0.800, 1.040, 0.650)
+   triangles 880: foliage 880
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 3c7ff53020377d463f154838a4d0b2d41a23478a3834ad6157cb4c2f8ecb49d2
+   REBUILD IDENTICAL

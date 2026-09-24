@@ -1,0 +1,141 @@
+{
+  "description": "New assets only; original NPZ frame indices. Root displacement is retained; no runtime integration implied.",
+  "clips": {
+    "vendor_call": {
+      "loop": false,
+      "entry": {
+        "clip": "vendor_call",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "vendor_call",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "vendor_tidy": {
+      "loop": false,
+      "entry": {
+        "clip": "vendor_tidy",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "vendor_tidy",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "give_item": {
+      "loop": false,
+      "entry": {
+        "clip": "give_item",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "give_item",
+        "frame": 104
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "receive_item": {
+      "loop": false,
+      "entry": {
+        "clip": "receive_item",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "receive_item",
+        "frame": 104
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "choose_item": {
+      "loop": false,
+      "entry": {
+        "clip": "choose_item",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "choose_item",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "pay": {
+      "loop": false,
+      "entry": {
+        "clip": "pay",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "pay",
+        "frame": 134
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "chess_watch": {
+      "loop": false,
+      "entry": {
+        "clip": "chess_watch",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "chess_watch",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "chess_move": {
+      "loop": false,
+      "entry": {
+        "clip": "chess_move",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "chess_move",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    }
+  }
+}
