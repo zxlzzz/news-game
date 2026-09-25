@@ -39,7 +39,7 @@
 
 ## 狗、牵狗、骑车（程序生成，2026-09-24）
 
-姿势由 Godot 代码每帧现算，不播动作文件；路线见 [design_route_animal_motion.md](../../../design_route_animal_motion.md) §2（暂定采纳）。代码和参数说明在 [godot/README.md](../../../godot/README.md)"狗、骑车、牵狗"一节。以下动图都是 Godot 实机录制（审阅场景 `godot/tools/locomotion_review.tscn`，游戏同款画风），每种一个侧面、一个游戏俯角。
+姿势由 Godot 代码每帧现算，不播动作文件；路线见 [design_route_animal_motion.md](../../../docs/design_route_animal_motion.md) §2（暂定采纳）。代码和参数说明在 [godot/README.md](../../../godot/README.md)"狗、骑车、牵狗"一节。以下动图都是 Godot 实机录制（审阅场景 `godot/tools/locomotion_review.tscn`，游戏同款画风），每种一个侧面、一个游戏俯角。
 
 | 内容 | 侧面 | 俯角 | 录的是什么 |
 |---|---|---|---|

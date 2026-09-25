@@ -1,7 +1,7 @@
 # animal-study — 狗步态原型（2026-09-22）
 
 比较两条动物动作来源：视频动捕（MoCapAnything V2）与程序生成步态。路线见根目录
-`design_route_animal_motion.md`。
+`docs/design_route_animal_motion.md`。
 
 | 文件 | 作用 |
 |---|---|

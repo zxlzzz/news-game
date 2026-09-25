@@ -7,7 +7,7 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ## Cache — next session (2026-09-24)
 
-- The game now lives in `godot/` (Godot 4.7.2, created 2026-09-23 from `scene_spec.md`);
+- The game now lives in `godot/` (Godot 4.7.2, created 2026-09-23 from `docs/scene_spec.md`);
   `sth/godot-npc/` and `assets/fromgodot/game-godot/` were deleted (history in git).
   `godot/README.md` is the entry point. Nothing from this work has been committed yet.
 - Built so far is only the foundation: scene = folder of `level.tscn` / `palette.tres` /
@@ -20,7 +20,7 @@ Detailed asset results belong in the linked inventories, not duplicated here.
   then models are being supplied (see below). Do not modify `street_demo` on your own —
   he said so explicitly when I offered to swap in the new buildings.
 - Model supply: ChatGPT builds models from `godot/modeling/模型制作说明.md` (+ `素材清单.md`,
-  `建模规范与参数.md`, `check_model.py`, the terrace example script); I only review —
+  `docs/建模规范与参数.md`, `check_model.py`, the terrace example script); I only review —
   run `check_model.py`, rerun the delivered build scripts (they must reproduce the GLB
   byte-for-byte), then look in Godot (`modeling/review_models.tscn`). Every model comes with
   a rerunnable `build_<name>.py` whose sizes are named constants: that is how global model
@@ -31,8 +31,8 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ## Visual direction — open, as of 2026-09-24
 
-- Chants of Sennaar is still the preferred direction (10 reference shots in repo root
-  `巴别塔圣歌-游戏实拍/`), but **the palette must stay black/white/gray**; a coloured
+- Chants of Sennaar is still the preferred direction (10 reference shots in
+  `docs/巴别塔圣歌-游戏实拍/`), but **the palette must stay black/white/gray**; a coloured
   result that pleases does not count. Either make palettes work for any hue under stated
   relations, or optimise gray only.
 - Hsinlung's palette rule: the "paper" (background and the dominant large surfaces) is
@@ -63,11 +63,10 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ## Motion playback contract — accepted 2026-09-19
 
-- `design_route_npc_behavior.md` / `design_route_npc_motion_supply.md` §5：防止的是
+- `docs/design_route_npc_behavior.md` / `docs/design_route_npc_motion_supply.md` §5：防止的是
   NPC 位置瞬移，不要求统一首尾姿势。行为可在任意帧切换，不保证播完。
 - 位置接续归未来播放端：下一片段接在 NPC 当前位置，消费相对根位移，不直接
   套用素材绝对坐标；与导航协调速度、方向和避障，不能重复累加位移。
-  NPZ 尚未接入游戏，现有 `ClipPlayer` 属于旧二维动作；当前只做独立预览。
 - 一次性/持续/移动由行为侧使用方式决定，不强制素材分类字段或文件夹。
   首尾约束、循环加工、进入/保持/退出分段均可选；需要分段可标在同一素材上。
   相同端点不保证自然循环，同脚两次落地也不保证全身/朝向接缝连续。
@@ -132,19 +131,18 @@ Detailed asset results belong in the linked inventories, not duplicated here.
   `--endpoint-pose <stand_idle motion.npz>` plus request `"endpoints":true`.
   Choose constraints per motion; do not force a common start/end onto walking/turning.
 
-## Source model library (untracked)
+## Third-party model libraries (removed from the repo 2026-09-25)
 
-- `assets/fromgodot/quaternius-*` (221 GLBs, ~2.29 GB, git-ignored) and
-  `assets/fromgodot/street-selected/` (19 tracked props, CC0; see its `SOURCES.md`).
-  Downloads: `D:\Godot\assets\Downtown City MegaKit[Standard]` and
-  `...\Stylized Nature MegaKit[Standard]`; Blender `D:\steam\steamapps\common\Blender`,
-  Godot `D:\Godot`.
-- Fix a model when it is first used, in the source library, not in a project copy. Done so
-  far: three Quaternius buildings have their `MI_FakeInterior_*` materials blackened
-  (`sth/asset-import-spike/tools/blacken_fake_interiors.py`); 17 street-selected GLBs had
-  `KHR_mesh_quantization` removed (Godot cannot import it) with
-  `godot/tools/dequantize_glb.mjs`.
-- These third-party models are placeholders now; new models come from ChatGPT.
+- The game uses none of them now; new models come from ChatGPT. The repo copies were deleted:
+  `assets/fromgodot/quaternius-*` (Downtown City / Stylized Nature MegaKit, ~2.2 GB, never
+  tracked) and `assets/fromgodot/street-selected/` (19 CC0 props, history in git, with its
+  `SOURCES.md`; the chess table survives as `godot/models/Chess_Table.glb`).
+- If needed again: original downloads in `D:\Godot\assets\Downtown City MegaKit[Standard]` and
+  `...\Stylized Nature MegaKit[Standard]` (or quaternius.com). The deleted repo copy had three
+  buildings' `MI_FakeInterior_*` materials blackened (script
+  `sth/asset-import-spike/tools/blacken_fake_interiors.py`, in git history); the D: originals
+  do not. `godot/core/material_maps/quaternius.tres` still maps their material names.
+- Blender `D:\steam\steamapps\common\Blender`, Godot `D:\Godot`.
 
 ---
 
@@ -168,7 +166,6 @@ explicitly asks. Finishing a patch does not by itself authorize a memo edit.
 ## Git 与临时交接文件（2026-09-20）
 
 - 不自动提交；等 Hsinlung 明确要求再 commit。旧的“每个 patch 自动提交”约定已被此次指示替代。
-- `sth.md` 是随时可能覆盖的临时交接文件，不作为长期文档入口。收到内容后整理进适当正式文档，memo 只保留导航与当前结论。
 
 ---
 
@@ -225,17 +222,9 @@ explicitly asks. Finishing a patch does not by itself authorize a memo edit.
   2026-08-11 permission to run tests freely applied only to that work context;
   it must not be treated as permanent authorization. Unless Hsinlung explicitly
   authorizes it in the current conversation, do not start the game, run any
-  simulation, open `headless-sim.mjs` / `sth/preview.html`, or use any other
+  simulation, or use any other
   harness. A visual task by itself is not permission: ask first. Permission for
   one inspection expires after that inspection and cannot be reused later.
-- The project skill `.agents/skills/run-game/SKILL.md` is the current procedure.
-  Its working setup is `python -m http.server
-  8080` in the repo root, then Playwright from the npx cache —
-  `import { chromium } from
-  'file:///C:/Users/Hsinlung/AppData/Local/npm-cache/_npx/<hash>/node_modules/playwright/index.mjs'`.
-  Bare `import 'playwright'` fails (not a repo dep, and ESM ignores
-  NODE_PATH); the absolute `file://` import is the way in. Chromium is
-  already downloaded under `%LOCALAPPDATA%/ms-playwright`.
 - **Godot (2026-09-23):** Hsinlung allowed running Godot (headless import, windowed
   one-frame screenshots via `-- --shot`) for building the `godot/` foundation and the
   style study, and Blender for re-running delivered build scripts. Treat it as scoped to
@@ -246,106 +235,24 @@ explicitly asks. Finishing a patch does not by itself authorize a memo edit.
   screenshot → `git checkout <branch>` costs almost nothing and settles
   "is this regression or intended?" far faster than reasoning about it.
 
-## Working style Hsinlung asked for during the O series (2026-08-12)
+## Working style (from the 2026-08 O series, still valid)
 
-- 历史批次授权（不代表当前可自动提交）："你改完继续改 o4 然后继续按顺序完成并提交即可，只有需要我确定的地方停下来即可"
-  — once a batch is spec'd in `tasks.md`, run straight through it,
-  commit per patch, and only stop for things that genuinely need his
-  decision. Don't check in after every sub-step.
+- Once a batch is spec'd, run straight through it and only stop for things that
+  genuinely need his decision. Don't check in after every sub-step. (Committing
+  still waits for his explicit request, see above.)
 - He reviews by looking at the picture, not the code: "我毕竟看不到实物"
   / "我发现问题再修改即可". So the useful report back is *what changed
   visually* and *what he should look at*, not a code walkthrough.
-- He spots real bugs from the rendering. Two examples worth remembering
-  because both were correct: the camera drift, and "后排 building 标定的
-  位置不对（似乎偏高了）" — which turned out to be `BuildingEntity.
-  getBounds()` returning depth-as-height anchored at the roofline. When
-  he says something looks off, take it literally and go measure.
-
-## The flat-world legacy bug class (O series — now closed)
-
-Pre-O-2 the world was flat: world y *was* screen y, so one number could
-silently mean either "how far back" (depth) or "how tall" (height). Real
-projection split those into two channels that must never mix (`toScreen`
-vs `toScreenLength`). **Every leftover that conflated them surfaced as a
-rendering bug** — eight of them across O-2…O-8, including: building bounds
-returning depth-as-height; bus-stop geometry as two subtracted world-y
-values (which also gave a 0.71 m shelter and a `NaN` that made the far stop
-undrawable); `footprint().ry` as a token sliver; the panorama export sizing
-its texture in world units; the sky layer drawing its horizon 700 px off
-with vertical parallax on top; and the camera storing a world point so
-shear leaked vertical input into horizontal drift.
-
-**As of O-8 this class should be exhausted** — `EntityManager.draw()` has no
-"skip" branches left and every draw path (entities, NPCs, vehicles, held
-props, ground features, sky) goes through `Projection.js`. If a *new*
-instance shows up, it's new code, not legacy.
-
-Heuristic to keep: when something looks misplaced **vertically**, first ask
-which of the two channels that number is in. And note the general shape —
-these sat latent for months because no gate covers rendering (see below).
-
-## Verification: what the gates do and don't cover (2026-08-12)
-
-**Nothing in the gate set executes a draw call.** Every rendering regression
-this session — invisible NPCs, blank panorama export, misplaced bounds
-boxes, missing proxy methods, a deleted `CAR_SHAPE` — was found by actually
-running the app, never by a gate. When visual verification is authorized, use
-the project `run-game` skill rather than reconstructing the procedure.
-
-**Syntax is now covered** by `node scripts/check-syntax.mjs` (added
-2026-08-12; `node --check` over all 167 js/mjs, ~2 s). Run it after any
-bulk/scripted edit to `js/` — scripted regex edits are the specific hazard,
-twice a replacement swallowed the rest of a line (`draw:` matched but
-`drawGround:` didn't) and the five gates stayed green both times.
-
-Subtlety worth remembering: node picks CJS-vs-ESM grammar for a `.js` file
-from the nearest `package.json` `type` field — and **this repo's
-`package.json` is gitignored**, so a fresh clone has none and `node --check`
-silently falls back to CommonJS, where the broken file *passes* (verified:
-exit 0 without it, exit 1 with `"type":"module"`). A gate whose correctness
-depends on an untracked file is no gate, so `check-syntax.mjs` copies each
-source into a temp `.mjs` instead — that extension forces ESM regardless.
-Separately, a local `package.json` with `"type":"module"` is still nice to
-have (it silences the `MODULE_TYPELESS_PACKAGE_JSON` warnings that clutter
-gate output, and is safe since all 167 files are already ESM with zero
-`require`/`module.exports`) — but it's local-only and nothing depends on it.
-
-`sth/preview.html` is a full preview harness (rebuilt O-7): it enumerates
-props from the live `propTypes()` registry and constructs **real**
-`PropEntity`/`BuildingEntity` objects, so it exercises the same
-`draw()`/`getBounds()`/`footprint()` the game uses. Clicking through all 32
-entries is the fastest smoke test for a rendering change.
-
-## Current implementation baseline and open facts (2026-08-29)
-
-- Branch `claude/velocity-unification-v1-946h9l`, HEAD `07aa9f0`. O-1…O-8
-  are landed. `docs/roadmap.md` is the implementation history; do not revive
-  the old O-series execution order from historical summaries.
-- Display-density correction is already implemented in `js/main.js` with
-  `autoDensity: true` and `resolution: window.devicePixelRatio || 1`.
-- W-11 connected `stall_buyer` routing and emits `stall_trade`; the recovered
-  summary's claim that this path is missing is obsolete.
-- W-14 added article-to-witness belief backflow. Publishing still does not
-  modify broad society/scene knobs, so the larger "article changes the visible
-  world" loop remains open even though feedback is no longer entirely absent.
-- Still-open confirmed facts: `TILT_DEG=20` and `SHEAR=0.2` are provisional;
-  `drawObliqueBox` has no rotation or arbitrary footprint; `Motor.js`
-  distinguishes vertical from horizontal travel but not front from back;
-  NPC gray value is still only a function of world y; clip loading silently
-  ignores joint deltas whose array length is not 2; validator facings are only
-  `side/front`; and `assets/animations/new_assets/stumble.json` is empty.
-- `drawBusStopBays` still has no live call site because the required bay geometry
-  is absent from scene data. `EnvironmentQuery.js` radii remain the known raw-world-
-  unit debt. These are real but secondary to the current visual-coherence work.
-- The old "tune TILT/SHEAR first" recommendation is superseded. Projection must
-  be judged after physical dimensions and scene massing are credible; otherwise
-  tuning only optimizes around false inputs.
+- He spots real bugs from the rendering. When he says something looks off,
+  take it literally and go measure.
 
 ## Product purpose and visual identity
 
 - Long-term structure: build a reusable simulated society first, then close the
   game loop in which the player photographs street events, writes/publishes news,
   and the report visibly changes beliefs and eventually society parameters.
+  (The old js design docs for this — witness memory, belief layer, news pipeline — were
+  deleted 2026-09-25; they are in git history if ever wanted.)
 - The thematic anchor is the Loftus misinformation effect: witnesses are altered
   by post-event information and leading questions; framing does not merely describe
   the simulated world, it participates in constructing it.
@@ -363,15 +270,10 @@ entries is the fastest smoke test for a rendering change.
 - Models keep their source colours / semantic material names; grayscale, palettes and
   outlines are scene-level Looks, never baked into a model (a baked-gray batch lost hue
   and detail and was deleted). Removing a model's confirmed harmful content is allowed.
-- The raw Quaternius library came from `convert_gltf_to_glb.py` (colour-preserving
-  repack); `verify_colour_glb.py` compares repacks with the source glTF. Do not
-  preflight or normalise the whole library.
 - Buildings are complete assembled models, not modular pieces placed in the scene.
 - Real directional shadows are kept; they must come from geometry and light for
   environment, vehicles and NPCs alike, never fake foot circles. (NPC sticks currently
   cast no shadow, per the 2026-09-19 decision.)
-- The old plan of rendering models offline into 2D images for Pixi is obsolete: `js/` is
-  frozen and the game runs in Godot.
 
 ## Motion framework background — separate from current NPZ production
 
@@ -379,11 +281,6 @@ entries is the fastest smoke test for a rendering change.
   individuality is secondary and cannot create new meanings. The assistant does
   the generation/review work; Hsinlung reacts and spot-checks. Avoid demanding a
   large classification exercise from him before producing useful assets.
-- The old analysis `design_motion_supply.md` remains reference material. Its
-  posture × social-overlay reuse and endpoint-target IK proposals concern the old
-  2D skeleton/runtime, not the independent full-body Kimodo delivery contract.
-  `use_trash`'s 11-frame IK reconstruction proof is in §5.5; it does not establish
-  SOMA77 retargeting, arbitrary prop grasping or automatic seated/standing reuse.
 - “动作系统重构” also includes the runtime NPC behavior framework. Producing NPZs
   does not mature that framework, prove skeleton sufficiency or authorize runtime
   migration. Registering, composing and scheduling new actions remain separate work.
@@ -416,13 +313,6 @@ entries is the fastest smoke test for a rendering change.
   inspected zoom does **not** prove that the camera system lacks an action-readable
   scale, because its zoom range was not evaluated; do not generalize that symptom
   into a fixed-camera requirement.
-- **Yellow entity bounds are obsolete and should eventually be removed.** They were
-  added by an earlier Claude attempt to infer which objects the camera captured,
-  but Hsinlung considers that inference unusable. The boxes add visual clutter and
-  lose some of the productive ambiguity of passing the actual captured picture.
-  They are neither a final gameplay element nor a valid source of capture truth.
-  This is a recorded product decision only; the memo conversation does not
-  authorize deleting their implementation.
 - **Corrected visual root-cause hypothesis (2026-08-25):** do not demand one fixed
   “canonical frame,” an exact street range, or one ideal on-screen person size. The
   player already has zoom, pan, and adjustable capture framing, so there is no single
@@ -433,56 +323,11 @@ entries is the fastest smoke test for a rendering change.
   assessment from a representative action at an action-readable zoom, then check that
   the same street still holds together when widened. Camera framing, street-band
   proportions, building mass, and projection should support this range. Prop-by-prop
-  polish and blind TILT/SHEAR tuning should come after this functional readability is
-  established.
+  polish should come after this functional readability is established.
 - **Further correction from Hsinlung:** action-readable zoom is an engineering acceptance
-  condition, not the starting point of the visual rebuild. Display-density correction is
-  now present in `main.js`; any remaining readability issue must be measured rather than
-  attributed to resolution by assumption. The main design problem remains the assembled
+  condition, not the starting point of the visual rebuild. The main design problem remains the assembled
   world's spatial coherence: ground plane, building mass, vertical objects, proportions,
   depth cues, and scene hierarchy must read as one street across views.
-- **Physical-size pipeline audit (read-only, no harness, 2026-08-25):** Hsinlung's
-  intended model is sound: an object has a real size (for example a 1.7 m adult or a
-  2–2.5 m storey), then a render/camera scale determines its on-screen size. The code
-  already has the latter half: flat lengths use `PX_PER_UNIT=0.388889`, the whole world
-  then uses camera `zoom` (0.5–2.0), and ground-depth vectors additionally receive the
-  oblique projection's `sin(20°)` and shear. There is no distance-based near/far size
-  slope. The problem is the first half: runtime data is not authored in meters and
-  `UNITS_PER_METER=84.70588` has no runtime consumers; it is documentation/calibration
-  only. Most building numbers were migrated from old screen-pixel values by multiplying
-  `UNIT_REBASE_FACTOR=5.294118`, preserving the old picture rather than deriving real
-  dimensions. For example building `floorH=74–85` world units represents only about
-  0.87–1.00 m under the declared meter scale, not a 2–2.5 m storey. There is also a
-  concrete human-scale inconsistency: the skeleton is 144 units and the unit definition
-  says that equals 1.7 m, but `assets/skeleton.json` applies `human.scale=0.85`, so the
-  rendered adult is 122.4 units, about 1.445 m, while code comments elsewhere claim an
-  adult scale of 1.0. Thus the transform architecture is mostly reasonable; the physical
-  calibration/schema feeding it is not yet trustworthy or internally consistent.
-- **Second explicitly authorized live visual inspection (2026-08-25; authorization
-  consumed, not reusable):** the actual captured photo was extracted without the yellow
-  viewfinder/bounds overlay, so the judgement below is about the picture passed to the
-  vision model rather than debug clutter. It confirms the August 12 diagnosis: buildings
-  and many props read as thin paper slabs; roof/side depth is only a few screen pixels;
-  rectangular objects repeat the same similar-parallelogram top; the large park/road bands
-  dominate while street occupation and variation remain sparse; and the repeated facade/
-  tree grammar makes the scene diagrammatic. This is not primarily missing detail.
-- **2D/3D history and present status:** July first rejected three-face pseudo-3D and
-  shadows, returning to pure 2D because every object exposed the same side and the effect
-  looked fake. On August 9 the user instead chose a Project-Zomboid-like ground/volume
-  direction over a pure side-view world, while preserving four-direction characters. The
-  implemented compromise is not true Project Zomboid isometric or a 3D renderer: ground is
-  an oblique projected plane; buildings/rectilinear props are manually generated three-face
-  volumes; NPCs, trees/crowns, and many details are upright 2D billboards; the horizontal
-  scrolling street is preserved. In a fixed parallel projection, every box exposing the
-  same side is geometrically valid (the earlier claim that left/right screen position must
-  flip the visible side only applies to perspective cameras), but the visual repetition is
-  real because `drawObliqueBox` supports neither rotation nor arbitrary/polygonal footprint.
-  The August 12 proposed follow-ups were never completed: real scale calibration;
-  experiential tuning of provisional `TILT_DEG=20` / `SHEAR=0.2`; and rotation/polygon
-  support for object footprints.
-- The last authorized runtime inspection produced no fatal browser errors, but did
-  show clip-contact warnings for `lie_bench` (offset 11) and `walk_front` (offset 9).
-
 ## Standing permission: add tooling freely (2026-08-12)
 
 Hsinlung: "你如果觉得没问题直接加些你会用的工具也行，以后想加就直接加不用和我
@@ -494,19 +339,6 @@ This permission is permission to add tooling, not to execute the game,
 simulations, previews, or other harnesses. Execution is governed by the
 2026-08-25 rule above and requires explicit current authorization.
 
-Reusable project tooling currently present under the repo (commit state varies):
-- `.agents/skills/run-game/SKILL.md` (mirrored under `.claude/`) — how to launch and drive the game
-  with Playwright, which hooks exist (`window.__cam()`, key bindings), and
-  how to batch-smoke-test `sth/preview.html`. Written because this workflow
-  had to be rediscovered from scratch mid-session.
-- `scripts/check-syntax.mjs` — the syntax gate described above.
-- `sth/asset-import-spike/tools/blacken_fake_interiors.py` — in-place GLB JSON edit for
-  explicitly named `MI_FakeInterior_*` materials; removes their texture/emission inputs,
-  sets them pure black, preserves non-JSON chunks byte-for-byte, and fails closed when
-  the expected material family is absent. Use only after selecting/inspecting a model,
-  never as a full-library batch.
-
-Note `.claude/` is **not** gitignored, so project skills are shared with the
-repo — that's intended. Don't confuse it with `~/.claude/`, which is
+`/.claude/` in the repo is gitignored (local only). Don't confuse it with `~/.claude/`, which is
 Hsinlung's personal Claude Code state (session logs, global settings, and
 the separate auto-memory directory) and has nothing to do with the project.

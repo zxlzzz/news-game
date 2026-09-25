@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1")
-pack = "3DAssets.dev street props (assets/fromgodot/street-selected); names there are colours, not surfaces"
+pack = "3DAssets.dev street props (was assets/fromgodot/street-selected, deleted 2026-09-25, in git history); names there are colours, not surfaces"
 map = Dictionary[String, StringName]({
 "azure": &"accent",
 "canary": &"accent",

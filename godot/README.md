@@ -1,6 +1,6 @@
 # godot/ — 游戏工程（Godot 4.7.2，Forward+）
 
-场景规格见仓库根目录 `scene_spec.md`，模型要求见 `modeling/模型制作说明.md`（依据 `建模规范与参数.md`），要做的素材见 `素材清单.md`。
+场景规格见仓库 `docs/scene_spec.md`，模型要求见 `modeling/模型制作说明.md`（依据 `docs/建模规范与参数.md`），要做的素材见 `素材清单.md`。
 2026-09-23 起取代 `sth/godot-npc/`（已删除，历史在 git 里）。
 
 ## 运行
