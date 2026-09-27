@@ -1,0 +1,52 @@
+{
+  "name": "point_shout",
+  "text": "An angry person leans forward and thrusts their RIGHT ARM straight out horizontally in front of them, pointing at someone in the distance while shouting. The right elbow is fully straight, wrist at shoulder height. Repeatedly jab the entire extended arm forwards emphatically. The left hand rests on the hip. Then relax the right arm down.",
+  "duration": 4.5,
+  "seed": 43,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "generation_duration": 4.5,
+  "loop": false,
+  "trim": {
+    "take_frames": [
+      0,
+      134
+    ],
+    "reason": "Full generated clip."
+  },
+  "review": {
+    "status": "selected",
+    "attempts": 2,
+    "views": [
+      "front",
+      "side",
+      "hands if prop-related"
+    ],
+    "notes_zh": "右臂快速伸直指向前方、上身前压并持续示意；首版屈肘举手已弃。动作提供指向喊话的全身姿态，无声音和表情，也不宣称独立食指造型。",
+    "metrics": {
+      "frames": 135,
+      "seam_root_aligned_max_joint_m": 1.093303304743529,
+      "root_speed_min_mps": 0.0031963663641363382,
+      "root_speed_max_mps": 0.5034533143043518,
+      "root_delta_m": [
+        -0.04784355312585831,
+        -0.0,
+        -0.04378924146294594
+      ],
+      "seam_global_rotation_matrix_max_abs": 1.5404678583145142,
+      "floor_min_joint_y_m": 0.001615762710571289,
+      "finite": true
+    },
+    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
+    "batch_category": "event"
+  }
+}

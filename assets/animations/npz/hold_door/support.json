@@ -1,0 +1,118 @@
+{
+  "model": "door fixture: .9m leaf fully open parallel to actor forward axis; stationary .04m thick",
+  "evidence": "Measured build geometry, fixture ranges specified in source SOMA world coordinates.",
+  "object_transform": {
+    "position": [
+      0,
+      0,
+      0
+    ],
+    "yaw_degrees": 0
+  },
+  "surfaces": [
+    {
+      "name": "open door plane",
+      "min": [
+        -0.65,
+        0,
+        -0.1
+      ],
+      "max": [
+        -0.65,
+        2.1,
+        0.8
+      ]
+    }
+  ],
+  "targets": [
+    {
+      "joint": "RightHand",
+      "position": [
+        -0.63,
+        1.2,
+        0.15
+      ],
+      "rotation_source": "delivery/.work/motions/stop_hand/motion.npz",
+      "rotation_frame": 69,
+      "rotation_euler_deg": [
+        0,
+        90,
+        0
+      ],
+      "check_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ]
+    }
+  ],
+  "tolerance_m": 0.05,
+  "contact_note": "Source skeleton only; runtime mapped body and held-object transform require separate validation. Hand contact raised to y=1.20m to fit measured arm reach; palm vertical toward the already-open door, fingers up. No door opening sequence or second actor.",
+  "measurement": {
+    "RightHand": {
+      "max_error_m": 0.03852783695667286,
+      "median_error_m": 0.028192982396855693,
+      "worst_frame": 7
+    }
+  },
+  "frame_convention": "零基帧号，全部指向本目录最终motion.npz。",
+  "rework_date": "2026-09-26"
+}

@@ -1,0 +1,9 @@
+{
+  "model": "delivery/models/held_phone/held_phone.glb",
+  "tolerance_m": 0.05,
+  "attachment_joint": "RightHand",
+  "contact_note": "小物随生成的右手移动和转动；本轮只验收单手查看动作。旧预设手腕路径已移除；接入时按实际手掌位置标定物体挂点，未宣称独立手指抓握。",
+  "targets": [],
+  "frame_convention": "零基帧号，全部指向本目录最终motion.npz。",
+  "rework_date": "2026-09-26"
+}

@@ -1,5 +1,5 @@
 {
-  "description": "New assets only; original NPZ frame indices. Root displacement is retained; no runtime integration implied.",
+  "description": "Entry/exit poses per clip; original NPZ frame indices. Root displacement is retained. Clips with loop true are played as loops; scripts/export-npc-motion.py closes their seam by spreading the last-minus-first difference over the clip (max 15 cm, same feet on the ground at both ends).",
   "clips": {
     "vendor_call": {
       "loop": false,
@@ -250,6 +250,61 @@
       "endpoint_root_aligned_max_joint_m": 3.5956288909952803e-07,
       "duplicate_endpoint": true,
       "cycle_duration_seconds": 2.3333333333333335
+    },
+    "stand_idle": {
+      "loop": true,
+      "entry": {
+        "clip": "stand_idle",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "stand_idle",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        -0.005631837993860245,
+        0.0,
+        -0.003138924017548561
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.12670408189296722
+    },
+    "eat_walk": {
+      "loop": true,
+      "entry": {
+        "clip": "eat_walk",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "eat_walk",
+        "frame": 58
+      },
+      "source_root_delta_m": [
+        -0.18512097001075745,
+        0.0,
+        3.031193256378174
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.7706993200336e-07,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 1.9333333333333333
+    },
+    "phone_walk": {
+      "loop": true,
+      "entry": {
+        "clip": "phone_walk",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "phone_walk",
+        "frame": 65
+      },
+      "source_root_delta_m": [
+        0.030091002583503723,
+        0.0,
+        0.9633559584617615
+      ],
+      "endpoint_root_aligned_max_joint_m": 6.664001972467304e-08,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.1666666666666665
     }
   }
 }

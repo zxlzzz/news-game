@@ -1,0 +1,42 @@
+{
+  "model": "delivery/models/notice_board/notice_board.glb",
+  "evidence": "Delivery model bounds and front face; board rotated 180 degrees to face actor",
+  "object_transform": {
+    "position": [
+      0,
+      0,
+      1
+    ],
+    "yaw_degrees": 180
+  },
+  "surfaces": [
+    {
+      "name": "reading face",
+      "min": [
+        -0.7,
+        0.85,
+        0.91
+      ],
+      "max": [
+        0.7,
+        2.05,
+        0.91
+      ]
+    }
+  ],
+  "source": "assets/animations/npz/stand_idle/motion.npz",
+  "source_frame": 0,
+  "targets": [],
+  "tolerance_m": 0.05,
+  "contact_note": "Reading target face in front, between y=.85 and 2.05m; no physical contact required for reading. Source-skeleton fixture only; runtime retargeting must be rechecked.",
+  "duration": 5,
+  "text": "A person stands reading a public notice board one metre in front. Lean forward a little and move the gaze slowly across the information at chest and eye height. Keep both arms down.",
+  "selected_source_frames": [
+    0,
+    149
+  ],
+  "frame_convention": "targets.check_frames and measurement.worst_frame index final motion.npz from zero. Design paths / source references retain original generation frame indices; selected_source_frames gives the trim.",
+  "measurement": {
+    "floor_min_joint_y_m": -0.00607752799987793
+  }
+}

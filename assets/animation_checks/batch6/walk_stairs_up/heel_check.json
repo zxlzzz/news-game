@@ -1,0 +1,28 @@
+{
+ "heel_definition": "ankle moved down by the standing ankle-above-toe height (0.046 m, stand_idle adult mapping); measurement only",
+ "stance": "support masks in support.json (whole support phase, push-off included)",
+ "left": {
+  "same_tread_all": true,
+  "heel_toe_height_diff_max_m": 0.011297766915147056,
+  "toe_above_tread_range_m": [
+   -0.008821811131604962,
+   0.01874193061282381
+  ],
+  "heel_above_tread_range_m": [
+   -0.010853465590902944,
+   0.00881813548495236
+  ]
+ },
+ "right": {
+  "same_tread_all": true,
+  "heel_toe_height_diff_max_m": 0.01115106045318659,
+  "toe_above_tread_range_m": [
+   -0.014891840185354055,
+   0.01798397580714972
+  ],
+  "heel_above_tread_range_m": [
+   -0.019541006301063257,
+   0.0156703420069344
+  ]
+ }
+}

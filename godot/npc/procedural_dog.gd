@@ -3,7 +3,10 @@
 ## renderer access. Metres, +Y up; yaw 0 faces +Z.
 ##
 ##   var s = Dog.create(position, yaw, p)
-##   s = Dog.step(s, {"speed": m/s, "yaw": rad, "gait": "auto"|"walk"|"trot"}, dt, p)   # each frame
+##   s = Dog.step(s, {"speed": m/s, "yaw": rad, "gait": "auto"|"walk"|"trot", "ground": g}, dt, p)   # each frame
+##       g: Callable(Vector3) -> float, the height of the surface under a point (core/walk_grid.gd
+##       height_at in a level; a constant for flat ground). Paws land on it; the body rides at the
+##       mean height of its paws, lower where a paw a step down would be out of reach.
 ##   var pts = Dog.pose(s, p)            # 3D points; pts.collar is where a leash attaches
 ##   var draw = Dog.silhouette(pts, p)   # {segments, discs, triangles} for ink_figure.gd
 ##
@@ -69,10 +72,14 @@ static func _reachable_paw(s: Dictionary, key: String, p: Dictionary, paw: Vecto
 	var k := allowed / maxf(h, 1e-9)
 	return Vector3(paw.x + d.x * (k - 1), paw.y, paw.z + d.z * (k - 1))
 
+## A leg may come up to OVERREACH short of its paw, only while the body rises back after a step
+## (a curb): the leg is then straight and the paw that far off. More is a bug and stops the game.
+const OVERREACH := 0.015
+
 static func _knee(a: Vector3, b: Vector3, l1: float, l2: float, pole: Vector3) -> Vector3:
 	var d := b - a
 	var r := d.length()
-	assert(r <= l1 + l2 + 1e-5 and r >= absf(l1 - l2) - 1e-5, "dog leg out of reach")
+	assert(r <= l1 + l2 + OVERREACH and r >= absf(l1 - l2) - 1e-5, "dog leg out of reach")
 	var u := d.normalized()
 	var h := (l1 * l1 + r * r - l2 * l2) / (2 * maxf(r, 1e-9))
 	var v := pole - u * pole.dot(u)
@@ -96,7 +103,7 @@ static func _swing_time(gait: Dictionary, frequency: float) -> float:
 	var w: Dictionary = gait.swing
 	return clampf(w.k / maxf(frequency, w.minFrequency), w.min, w.max)
 
-static func _lift(s: Dictionary, key: String, p: Dictionary, frequency: float, swing_time: float) -> void:
+static func _lift(s: Dictionary, key: String, p: Dictionary, frequency: float, swing_time: float, ground: Callable) -> void:
 	var foot: Dictionary = s.feet[key]
 	var period := 1.0 / frequency if frequency > 0 else 0.0
 	# Land ahead of the rest spot by the travel during the swing plus half the stance, so the paw
@@ -107,6 +114,7 @@ static func _lift(s: Dictionary, key: String, p: Dictionary, frequency: float, s
 	foot.duration = swing_time
 	foot.start = foot.point
 	foot.target = _girdle(s, key, p).neutral + travel
+	foot.target.y = ground.call(foot.target)
 	s.events.append({"type": "lift", "leg": key})
 
 static func _place(s: Dictionary, p: Dictionary, from: Dictionary, turn: float, dt: float, t: float) -> void:
@@ -122,6 +130,8 @@ static func _planted_fit(s: Dictionary, p: Dictionary) -> bool:
 
 static func step(previous: Dictionary, input: Dictionary, dt: float, p: Dictionary) -> Dictionary:
 	assert(dt > 0 and dt <= 0.05, "dog step: dt must be in (0, 0.05]")
+	assert(input.get("ground") is Callable, "dog step: input needs ground, a Callable(Vector3) -> height")
+	var ground: Callable = input.ground
 	var m: Dictionary = p.motion
 	var s := previous.duplicate(true)
 	s.time += dt
@@ -148,7 +158,7 @@ static func step(previous: Dictionary, input: Dictionary, dt: float, p: Dictiona
 	for key in LEGS:
 		var until := fposmod(gait.liftAt[key] - old_phase, 1.0)
 		if not s.feet[key].swing and frequency > 0 and (until < advance or until < 1e-9):
-			_lift(s, key, p, frequency, swing_time)
+			_lift(s, key, p, frequency, swing_time, ground)
 	# Standing: step the paw farthest from its rest spot until all four are back under the body.
 	var airborne := false
 	for key in LEGS:
@@ -162,7 +172,7 @@ static func step(previous: Dictionary, input: Dictionary, dt: float, p: Dictiona
 				worst = key
 				worst_d = d
 		if worst_d > p.settleDistance:
-			_lift(s, worst, p, frequency, swing_time)
+			_lift(s, worst, p, frequency, swing_time, ground)
 	# Move the body; if a planted paw would be out of reach, move only as far as it allows.
 	var from := {"position": s.position, "yaw": s.yaw, "hipYaw": s.hipYaw}
 	_place(s, p, from, turn, dt, 1.0)
@@ -187,7 +197,7 @@ static func step(previous: Dictionary, input: Dictionary, dt: float, p: Dictiona
 				if _wrist(s, key, p, s.feet[key].point).distance_to(_girdle(s, key, p).root) \
 						> _wrist(s, q, p, s.feet[q].point).distance_to(_girdle(s, q, p).root):
 					q = key
-			_lift(s, q, p, frequency, swing_time)
+			_lift(s, q, p, frequency, swing_time, ground)
 	s.actualSpeed = s.position.distance_to(from.position) / dt
 	for key in LEGS:
 		var foot: Dictionary = s.feet[key]
@@ -196,12 +206,33 @@ static func step(previous: Dictionary, input: Dictionary, dt: float, p: Dictiona
 		foot.elapsed += dt
 		var t := minf(1, foot.elapsed / foot.duration)
 		var point: Vector3 = foot.start.lerp(foot.target, t * t * (3 - 2 * t))
-		point.y = _leg(key, p).lift * sin(PI * t)
+		point.y += _leg(key, p).lift * sin(PI * t)
 		foot.point = _reachable_paw(s, key, p, point)
 		if t >= 1:
-			foot.point.y = 0
+			foot.point.y = ground.call(foot.point)
 			foot.swing = false
 			s.events.append({"type": "land", "leg": key})
+	var was_y: float = s.position.y
+	var paws := 0.0
+	for key in LEGS:
+		paws += s.feet[key].target.y if s.feet[key].swing else s.feet[key].point.y
+	s.position.y = paws / LEGS.size()
+	# On a step (a curb) the mean can leave a paw out of reach: one on the lower side, or a planted
+	# one while the body rises after a paw left the lower side. The body stays low enough for every
+	# planted paw and every paw below the others (level ground keeps the mean: planted paws were
+	# fitted at this height above).
+	var mean: float = s.position.y
+	for key in LEGS:
+		var paw: Vector3 = s.feet[key].point  # where it is now: a paw swinging up a step starts low
+		if s.feet[key].swing and paw.y > mean - 0.01:
+			continue
+		var d: Vector3 = _wrist(s, key, p, paw) - _girdle(s, key, p).root
+		var r := _reach(key, p)
+		var h := Vector2(d.x, d.z).length()
+		if h < r and -d.y > sqrt(r * r - h * h):
+			s.position.y -= -d.y - sqrt(r * r - h * h)
+	# It sinks at once but rises no faster than riseSpeed (up a step, or back up after one).
+	s.position.y = minf(s.position.y, was_y + p.motion.riseSpeed * dt)
 	var look: Dictionary = p.head.look
 	s.look += (clampf(turn / dt * look.turnGain, -look.max, look.max) - s.look) * (1 - exp(-dt * look.rate))
 	return s

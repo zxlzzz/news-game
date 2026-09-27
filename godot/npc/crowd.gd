@@ -8,6 +8,9 @@
 ##  - People at posts come from Marker3D nodes named post_<kind>[_n] inside object types (a bench
 ##    seat, behind a stall counter, a chess stool): whether a post is taken and what is played there
 ##    is in crowd-params.json "posts".
+##  - With population.behaviour, pedestrians are agents instead: npc/behaviour.gd chooses what each
+##    does next (stroll, leave, a gesture where they stand, or taking a post) and the posts are
+##    theirs to take; nobody sits at a post by chance.
 ## Walking and jogging play their clip by distance (npc/clip_pose.gd); dog walkers are
 ## npc/dog_walker.gd; riders are a vehicle type plus npc/rider.gd. No avoidance between people.
 ## Any error in the data stops the game (like core/level.gd), nothing is skipped quietly.
@@ -18,6 +21,7 @@ const InkFigure := preload("res://npc/ink_figure.gd")
 const DogWalker := preload("res://npc/dog_walker.gd")
 const Rider := preload("res://npc/rider.gd")
 const WalkGrid := preload("res://core/walk_grid.gd")
+const Behaviour := preload("res://npc/behaviour.gd")
 const PARAMS := "res://npc/crowd-params.json"
 ## population.tres field -> kind
 const POPULATION := {"pedestrians": "pedestrian", "joggers": "jogger", "dog_walkers": "dog_walker",
@@ -39,6 +43,15 @@ var errors: Array[String] = []
 var _skeleton: Dictionary
 var _rider_params: Dictionary
 var _draw := false
+## The camera's frustum planes this frame (outward normals); empty before there is a camera.
+var _view: Array[Plane] = []
+## Seen from far off (a tall view), each walking figure's pose is rebuilt only every _every frames,
+## in turn; its position still moves every frame.
+var _every := 1
+var _frame := 0
+var beh: Behaviour = null   # with population.behaviour
+## Posts for agents: {marker, kind, object, agent (person or null), arrived}.
+var posts: Array = []
 
 func _init(level_: Node3D) -> void:
 	level = level_
@@ -46,6 +59,13 @@ func _init(level_: Node3D) -> void:
 
 func _fail(msg: String) -> void:
 	errors.append(msg)
+
+## An error found while running (a path that should exist does not): stop the game.
+func _die(msg: String) -> void:
+	push_error("Crowd: " + msg)
+	printerr("Crowd: " + msg)
+	set_process(false)
+	get_tree().quit(1)
 
 func _read(path: String):
 	var v = JSON.parse_string(FileAccess.get_file_as_string(path))
@@ -74,32 +94,44 @@ func _setup() -> void:
 	_rider_params = Rider.load_params()
 	rng.seed = hash(level.name)
 	_check_clips()
+	if level.population.behaviour:
+		beh = Behaviour.new()
+		if beh.error != "":
+			_fail(beh.error)
+			return
 	var wanted := {}
 	for field in POPULATION:
 		var n: int = level.population.get(field)
 		if n > 0:
 			wanted[POPULATION[field]] = n
 	if not wanted.is_empty():
-		grid = WalkGrid.new(level, p.grid, level.slot_map)
+		grid = WalkGrid.new(level, p.grid, level.slot_map, "user://walk_grid/%s.bin" % level.scene_file_path.get_base_dir().get_file())
 		if grid.error != "":
 			_fail(grid.error)
 			return
-		for a in grid.unreachable_areas(p.visitMaxCost, p.grid.pocketArea):
-			_fail("pavement at x %.1f, z %.1f (%.1f x %.1f m) cannot be reached from any way in" % [a.centre.x, a.centre.z, a.size.x, a.size.y])
+		# a grid read from the cache passed these checks when it was built and saved
+		if not grid.from_cache:
+			for a in grid.unreachable_areas(p.visitMaxCost, p.grid.pocketArea):
+				_fail("pavement at x %.1f, z %.1f (%.1f x %.1f m) cannot be reached from any way in" % [a.centre.x, a.centre.z, a.size.x, a.size.y])
 		for mode in WalkGrid.MODES:
 			exits[mode] = grid.exits(mode)
-		_check_exits(wanted)
+		if not grid.from_cache:
+			_check_exits(wanted)
+		if errors.is_empty():
+			grid.save()
 	if not errors.is_empty():
 		return
-	for kind in wanted:
-		for i in wanted[kind]:
-			_spawn(kind, true)
 	for m in level.find_children("post_*", "Marker3D", true, false):
 		var kind: String = String(m.name).split("_")[1]
-		if not p.posts.has(kind):
+		if beh != null:
+			posts.append({"marker": m, "kind": kind, "object": m.get_parent(), "agent": null, "arrived": false})
+		elif not p.posts.has(kind):
 			_fail("no post kind %s in %s (marker %s)" % [kind, PARAMS, m.get_path()])
 		elif rng.randf() < p.posts[kind].chance:
 			people.append(_post_person(m, p.posts[kind]))
+	for kind in wanted:
+		for i in wanted[kind]:
+			_spawn(kind, true)
 
 ## Every clip named in crowd-params must load.
 func _check_clips() -> void:
@@ -186,7 +218,7 @@ func _along(path: Dictionary, q: Vector3) -> float:
 	return best
 
 func _exit_point(e: Dictionary) -> Vector3:
-	return Vector3(e.point.x, 0.0, rng.randf_range(e.span.x, e.span.y))
+	return grid.snap_point("walk", Vector3(e.point.x, e.point.y, rng.randf_range(e.span.x, e.span.y)))
 
 ## Targets for one visit: some random spots on pavement, then an exit away from where one is.
 func _trip(from: Vector3, visits: Array) -> Array:
@@ -196,9 +228,11 @@ func _trip(from: Vector3, visits: Array) -> Array:
 		if q != null:
 			legs.append(q)
 	var ends: Array = exits.walk
-	var far := ends.filter(func(e): return absf(e.point.x - from.x) > 10.0)
-	var pool := far if not far.is_empty() else ends
-	legs.append(_exit_point(pool[rng.randi() % pool.size()]))
+	var far := ends.filter(func(e): return absf(e.point.x - from.x) > p.exitMinDistance)
+	if far.is_empty():
+		_die("no way out farther than exitMinDistance (%.1f m) from x %.1f" % [p.exitMinDistance, from.x])
+		return legs
+	legs.append(_exit_point(far[rng.randi() % far.size()]))
 	return legs
 
 ## Plans the next leg of a walker's trip; false when the trip is over.
@@ -212,7 +246,8 @@ func _next_leg(person: Dictionary, from: Vector3) -> bool:
 			return true
 		if from.distance_to(goal) > grid.cell * 2:
 			# destinations are only picked where one can get to, so this is a bug, not a layout issue
-			push_error("Crowd: no path from %s to %s" % [from, goal])
+			_die("no path from %s to %s" % [from, goal])
+			return false
 	return false
 
 ## Somewhere to start: anywhere on pavement at the beginning, else at an end of the ground.
@@ -227,7 +262,12 @@ func _start_point(anywhere: bool) -> Vector3:
 # ---------------------------------------------------------------- spawning
 
 func _spawn(kind: String, anywhere: bool) -> void:
-	if p.walkers.has(kind):
+	if kind == "pedestrian" and beh != null:
+		var who: String = beh.kinds()[0]
+		var person := {"type": "agent", "kind": who, "figure": _figure(body_scale), "pos": _start_point(anywhere),
+			"yaw": rng.randf() * TAU, "action": null, "think": rng.randf() * beh.t.rethink, "clock": 0.0, "done": {}}
+		people.append(person)
+	elif p.walkers.has(kind):
 		var person := {"type": "walker", "kind": kind, "figure": _figure(body_scale)}
 		_new_walker_trip(person, _start_point(anywhere))
 		people.append(person)
@@ -254,18 +294,17 @@ func _new_walker_trip(person: Dictionary, from: Vector3) -> void:
 	person.yaw = INF
 	person.legs = _trip(from, w.visits)
 	if not _next_leg(person, from):
-		person.path = _path(PackedVector3Array([from, from + Vector3(0.01, 0, 0)]))
-		person.d = 0.0
+		_die("walker trip from %s has nowhere to go" % from)
 
 func _new_dog_trip(person: Dictionary, from: Vector3) -> void:
-	var dw := DogWalker.new(from, rng.randf() * TAU, body_scale)
+	var dw := DogWalker.new(from, rng.randf() * TAU, body_scale, grid.height_at)
 	if dw.error != "":
 		_fail("dog walker: " + dw.error)
 		return
 	person.dw = dw
 	person.legs = _trip(from, p.dogWalker.visits)
 	if not _next_leg(person, from):
-		person.path = _path(PackedVector3Array([from, from + Vector3(0.01, 0, 0)]))
+		_die("dog walker trip from %s has nowhere to go" % from)
 
 ## A ride from one end of the ground to the other, in the right-hand lane if keepRight.
 func _new_ride(person: Dictionary, anywhere: bool) -> void:
@@ -281,8 +320,8 @@ func _new_ride(person: Dictionary, anywhere: bool) -> void:
 	goals.sort_custom(func(a, b): return absf(a.point.z - s.point.z) < absf(b.point.z - s.point.z))
 	var pts := grid.plan("ride", s.point, goals[0].point)
 	if pts.size() < 2:  # _check_exits makes this impossible unless the level changed under us
-		push_error("Crowd: no ride from z %.1f" % s.point.z)
-		pts = PackedVector3Array([s.point, s.point + Vector3(dir * 0.01, 0, 0)])
+		_die("no ride from z %.1f" % s.point.z)
+		return
 	person.path = _path(pts)
 	person.d = rng.randf() * person.path.length if anywhere else 0.0
 	person.yaw = INF
@@ -311,6 +350,10 @@ func _turn(from: float, to: float, dt: float) -> float:
 func _process(frame_dt: float) -> void:
 	var dt := minf(frame_dt, MAX_FRAME)
 	var n := ceili(dt / STEP)
+	var cam := get_viewport().get_camera_3d()
+	_view = cam.get_frustum() if cam != null else []
+	_frame += 1
+	_every = maxi(1, floori(cam.size / p.redrawMetres)) if cam != null and cam.projection == Camera3D.PROJECTION_ORTHOGONAL else 1
 	for k in n:
 		_draw = k == n - 1
 		for person in people:
@@ -323,6 +366,11 @@ func _process(frame_dt: float) -> void:
 					_update_rider(person, dt / n)
 				"post":
 					_update_post(person, dt / n)
+	# agents only follow paths and play clips: one step a frame is enough (the dogs and riders above
+	# balance and step, and need short steps)
+	for person in people:
+		if person.type == "agent":
+			_update_agent(person, dt)
 
 func _draw_figure(fig: Node3D, d: Dictionary) -> void:
 	fig.draw(d.segments, d.discs, d.triangles)
@@ -339,11 +387,12 @@ func _update_walker(person: Dictionary, dt: float) -> void:
 	person.phase = fposmod(person.phase + metres / (clip.stride() * body_scale), 1.0)
 	var here := _at(person.path, person.d)
 	person.yaw = _turn(person.yaw, here[1], dt)
-	if not _draw:
+	if not _draw or _off_screen([person.figure], here[0]):
 		return
 	var fig: Node3D = person.figure
 	fig.transform = Transform3D(Basis(Vector3.UP, person.yaw).scaled(Vector3.ONE * body_scale), here[0])
-	_draw_figure(fig, clip.drawing(clip.pose(person.phase)))
+	if not _stale(fig):
+		_draw_figure(fig, clip.drawing(clip.pose(person.phase)))
 
 func _update_dog(person: Dictionary, dt: float) -> void:
 	var dw: DogWalker = person.dw
@@ -358,7 +407,7 @@ func _update_dog(person: Dictionary, dt: float) -> void:
 	var to := target - pos
 	dw.view = _toward_camera()
 	dw.step(dw.walk_speed(), atan2(to.x, to.z), dt)
-	if not _draw:
+	if not _draw or _off_screen([person.walker, person.dog, person.rope], dw.walker.position):
 		return
 	var w: Node3D = person.walker
 	w.transform = dw.walker_transform().scaled_local(Vector3.ONE * dw.body_scale)
@@ -387,7 +436,7 @@ func _update_rider(person: Dictionary, dt: float) -> void:
 	vehicle.position = here[0]
 	vehicle.rotation = Vector3(0, person.yaw, 0)
 	vehicle.rotate_object_local(Vector3.BACK, -person.state.roll)
-	if not _draw:
+	if not _draw or _off_screen([person.figure], here[0]):
 		return
 	vehicle.set_motion(person.state.wheelAngle, person.state.crankPhase)
 	var R: Dictionary = person.R
@@ -401,9 +450,153 @@ func _update_post(person: Dictionary, dt: float) -> void:
 		person.time -= clip.duration()
 		person.clip = ClipPose.of(_pick(person.clips))
 		clip = person.clip
-	if not _draw:
+	if not _draw or _off_screen([person.figure], person.marker.global_position):
 		return
 	var m: Marker3D = person.marker
 	var fig: Node3D = person.figure
 	fig.global_transform = Transform3D(m.global_basis.orthonormalized().scaled(Vector3.ONE * body_scale), m.global_position)
 	_draw_figure(fig, clip.drawing(clip.pose(person.time / clip.duration())))
+
+# ---------------------------------------------------------------- agents (population.behaviour)
+
+func _update_agent(person: Dictionary, dt: float) -> void:
+	person.clock += dt
+	person.think -= dt
+	if person.think <= 0.0:
+		person.think = beh.t.rethink
+		var next = beh.choose(person, posts, rng)
+		if next != null:
+			_start_action(person, next)
+	var a = person.action
+	if a == null:
+		_draw_agent(person, null, 0.0)
+		return
+	if a.has("path"):
+		_agent_walk(person, a, dt)
+	else:
+		a.time += dt
+		var clip = ClipPose.of(a.clip)
+		if a.time >= a.plays * clip.duration():
+			_end_action(person)
+			_draw_agent(person, clip, 0.0)
+			return
+		if a.has("face"):
+			person.yaw = _turn(person.yaw, a.face, dt)  # turns round on the spot to face the post's way
+		_draw_agent(person, clip, fposmod(a.time / clip.duration(), 1.0))
+
+## Starts an action: releases the old post, takes the new one, plans the walk if there is one.
+func _start_action(person: Dictionary, a: Dictionary) -> void:
+	_end_action(person, false)
+	person.action = a
+	var goal = null
+	match a.do:
+		"go":
+			goal = grid.random_point("walk", rng, p.visitMaxCost)
+		"leave":
+			var far := (exits.walk as Array).filter(func(e): return absf(e.point.x - person.pos.x) > p.exitMinDistance)
+			if far.is_empty():
+				_die("no way out farther than exitMinDistance from x %.1f" % person.pos.x)
+				return
+			goal = _exit_point(far[rng.randi() % far.size()])
+			a.clip = beh.walk_clip(person.kind, rng)
+		"use":
+			a.post.agent = person
+			goal = a.post.marker.global_position
+			a.play = a.clip
+			a.clip = beh.walk_clip(person.kind, rng)
+	if goal == null:
+		return
+	var pts := grid.plan("walk", person.pos, goal)
+	if pts.size() == 1 or (pts.is_empty() and person.pos.distance_to(goal) < 1.0):
+		# already there (both ends on one face, or standing on the post after using it)
+		if a.do != "use":
+			_end_action(person)
+			return
+		if person.pos.distance_to(goal) < 0.05:
+			_arrive(person, a)
+			return
+		pts = PackedVector3Array([person.pos])  # a step or two straight onto the post
+	if pts.is_empty():
+		_die("no walk from %s to %s (%s)" % [person.pos, goal, a.post.marker.get_path() if a.post else a.do])
+		return
+	if a.do == "use" and pts[-1].distance_to(goal) < p.postStep:
+		pts.append(goal)  # the last step onto the post itself (a seat, behind a counter): no jump
+	var clip = ClipPose.of(a.clip)
+	a.path = _path(pts)
+	a.d = 0.0
+	a.phase = rng.randf()
+	a.speed = clip.stride() * body_scale / clip.duration() * (1.0 + rng.randf_range(-0.1, 0.1))
+
+## Ends the current action: its post is free again. done: it was finished, not replaced (the row
+## then sits out the person's choices for a while, behaviour.gd `again`).
+func _end_action(person: Dictionary, done := true) -> void:
+	var a = person.action
+	if a == null:
+		return
+	if a.post != null and a.post.agent == person:
+		a.post.agent = null
+		a.post.arrived = false
+	if done:
+		person.done[a.row] = person.clock
+	person.action = null
+	person.think = 0.0
+
+func _agent_walk(person: Dictionary, a: Dictionary, dt: float) -> void:
+	var clip = ClipPose.of(a.clip)
+	var metres: float = a.speed * dt
+	a.d += metres
+	a.phase = fposmod(a.phase + metres / (clip.stride() * body_scale), 1.0)
+	var here := _at(a.path, a.d)
+	person.pos = here[0]
+	person.yaw = _turn(person.yaw, here[1], dt)
+	if a.d >= a.path.length:
+		match a.do:
+			"go":
+				_end_action(person)
+			"leave":  # gone; someone else comes in at an end of the ground
+				_end_action(person)
+				person.pos = _start_point(false)
+				person.done = {}
+			"use":
+				_arrive(person, a)
+				return
+	_draw_agent(person, clip, a.phase)
+
+## At the post: stand on its marker, face its way, play the post's clip.
+func _arrive(person: Dictionary, a: Dictionary) -> void:
+	a.erase("path")
+	a.clip = a.play
+	a.time = 0.0
+	a.post.arrived = true
+	person.pos = a.post.marker.global_position
+	var f: Vector3 = a.post.marker.global_basis.z
+	a.face = atan2(f.x, f.z)
+
+func _draw_agent(person: Dictionary, clip, phase: float) -> void:
+	if not _draw or _off_screen([person.figure], person.pos):
+		return
+	var fig: Node3D = person.figure
+	fig.transform = Transform3D(Basis(Vector3.UP, person.yaw).scaled(Vector3.ONE * body_scale), person.pos)
+	if _stale(fig):
+		return
+	if clip == null:
+		clip = ClipPose.of(beh.walk_clip(person.kind, rng)) if not person.has("idle") else person.idle
+		person.idle = clip
+		phase = 0.0
+	_draw_figure(fig, clip.drawing(clip.pose(phase)))
+
+## Off the screen (by more than a body's height): the figure is hidden and not posed or rebuilt this
+## frame (rebuilding every stick figure's mesh is most of the crowd's cost). The people still move.
+func _off_screen(figures: Array, at: Vector3) -> bool:
+	var off := false
+	for pl in _view:
+		if pl.distance_to(at) > p.offScreenMargin:
+			off = true
+			break
+	for f in figures:
+		f.visible = not off
+	return off
+
+## True when this figure keeps last frame's pose (see _every).
+func _stale(fig: Node3D) -> bool:
+	return (fig.get_instance_id() + _frame) % _every != 0

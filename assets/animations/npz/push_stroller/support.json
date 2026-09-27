@@ -1,0 +1,83 @@
+{
+  "type": "cart",
+  "model": "godot/models/baby_stroller.glb",
+  "cart_y_m": 0,
+  "cart_rotation_xyzw": [
+    0,
+    0,
+    0,
+    1
+  ],
+  "cart_origin_offset_from_mapped_hips_xz_m": [
+    0.0036716381704355616,
+    -0.0,
+    0.8530178029701911
+  ],
+  "grips_local_m": [
+    [
+      0.2199999988079071,
+      1.0,
+      -0.550000011920929
+    ],
+    [
+      -0.2199999988079071,
+      1.0,
+      -0.550000011920929
+    ]
+  ],
+  "contact_report": {
+    "model": "baby_stroller",
+    "model_sha256": "bd8d5d210d487b10119e9cb415d6839f1491428e430f52a6d8058cbec5d02d47",
+    "mapping": {
+      "params": {
+        "headR": 0.06,
+        "neck": 0.015,
+        "torso": 0.18,
+        "clavSplit": 0.8,
+        "minSpread": 70,
+        "upperArm": 0.096,
+        "foreArm": 0.124,
+        "thigh": 0.12,
+        "shin": 0.13,
+        "foot": 0.05,
+        "line": 0.035,
+        "torsoLine": 1.15
+      },
+      "body_scale": 3.0,
+      "mapper_sha256": "7eb83e620eb291ced603627f681c5fac0854d5bd9c6b4a0a7ad08659079bbbfc"
+    },
+    "grips_local_m": [
+      [
+        0.2199999988079071,
+        1.0,
+        -0.550000011920929
+      ],
+      [
+        -0.2199999988079071,
+        1.0,
+        -0.550000011920929
+      ]
+    ],
+    "cart_offset_from_hips_xz_m": [
+      0.0036716381704355616,
+      -0.0,
+      0.8530178029701911
+    ],
+    "placement": "One constant X/Z offset fitted across the whole clip; Y=0 and orientation fixed.",
+    "frames": 67,
+    "tolerance_m": 0.05,
+    "hand_error_max_m": [
+      0.03516373242036763,
+      0.039289386453950324
+    ],
+    "hand_error_mean_m": [
+      0.016521630941644744,
+      0.016480348423115455
+    ],
+    "violating_frames": 0,
+    "contact_pass": true,
+    "worst_frame": 18,
+    "mean_mapped_horizontal_speed_mps": 1.0906306001241164
+  },
+  "playback": "Skip repeated endpoint; accumulate horizontal root displacement. Cart follows hips X/Z plus constant offset, keeps Y=0 and fixed orientation."
+}

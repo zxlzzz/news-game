@@ -12,10 +12,11 @@
 | `docs/建模规范与参数.md`、`godot/modeling/模型制作说明.md`、`godot/素材清单.md` | 模型要求和要做的模型（模型由 ChatGPT 做，这边只审） |
 | `docs/design_route_npc_behavior.md`、`docs/design_route_npc_motion_supply.md`、`docs/design_route_animal_motion.md`、`docs/anim.md` | NPC 行为、人和动物动作的设计路线 |
 | `docs/design-plans/npc-skeleton-mapping.md` | 火柴人映射规则和参数（唯一来源） |
+| `docs/design-plans/two-streets.md` | 两条街大场景的要求：镜头操作、布局、先做的技术项（场景在 `godot/scenes/two_streets/`） |
 | `assets/动作生成任务清单.md`、`assets/动作素材清单.md` | Kimodo 动作素材的任务队列和已交付情况 |
 | `memory.md` | 跨会话备忘（英文），只在 Hsinlung 说"更新memo"时改 |
 
-其他：`docs/巴别塔圣歌-游戏实拍/` 是画风参考截图（图不进 git，按 `来源.txt` 重新下载）；`assets/`、`scripts/`、`sth/` 是做动作素材和研究用的，游戏运行时不读。
+其他：`docs/巴别塔圣歌-游戏实拍/` 是画风参考截图（图不进 git，按 `来源.txt` 重新下载）；`assets/`、`scripts/`、`sth/` 是做动作素材和研究用的，游戏运行时不读。`delivery/` 是 ChatGPT 交货的暂存处（放法见 `delivery/README.md`）：检查通过的搬到正式位置并从这里删掉。
 
 ## 规矩
 
@@ -29,6 +30,10 @@
 
 - `godot --headless --path . -s res://tools/check_mapping.gd` → `MAPPING_OK`
 - `godot --headless --path . -s res://tools/check_locomotion.gd` → `LOCOMOTION_OK`
+- `godot --headless --path . -s res://tools/check_animals.gd` → `ANIMALS_OK`（猫、狗的原地动作和行为）
+- `godot --headless --path . -s res://tools/check_walk_grid.gd` → `WALK_GRID_OK`（测试场景 `scenes/walk_grid_test/`：桥、台阶、路沿、栏杆等；另查 street_demo、two_streets 能建网格）
+- `godot --headless --path . -s res://tools/check_camera.gd` → `CAMERA_OK`（能转的镜头）
+- `godot --headless --path . -s res://tools/check_behaviour.gd` → `BEHAVIOUR_OK`（两条街的行为表：各种行为都有人做）
 - `python modeling/check_model.py <glb>` → `PASS`
 - `godot` = `D:/Godot/Godot_v4.7.2-stable_win64_console.exe`；跑 Godot 要在 Hsinlung 给的授权范围内（见 `memory.md`「Running the game」）。
 

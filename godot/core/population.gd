@@ -8,3 +8,6 @@ extends Resource
 @export var dog_walkers := 0
 @export var cyclists := 0
 @export var scooter_riders := 0
+## Pedestrians choose what to do from npc/behaviour-table.json (npc/behaviour.gd) and take the
+## objects' posts themselves, instead of visiting random spots while posts fill by chance.
+@export var behaviour := false

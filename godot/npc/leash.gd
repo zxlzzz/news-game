@@ -30,8 +30,10 @@ static func plan(owner: Dictionary, dog: Dictionary, p: Dictionary) -> Dictionar
 	var align := maxf(0, cos(dog_yaw - dog.yaw))
 	return {"ownerSpeed": owner_speed, "dogSpeed": speed * align * align, "dogYaw": dog_yaw, "separation": separation}
 
-## Rope points from hand a to collar b: a parabola whose sag grows as the ends come closer.
-static func curve(a: Vector3, b: Vector3, p: Dictionary) -> Array:
+## Rope points from hand a to collar b: a parabola whose sag grows as the ends come closer, never
+## lower than groundClearance above the ground, which runs straight from ground_a (under the owner)
+## to ground_b (under the dog).
+static func curve(a: Vector3, b: Vector3, p: Dictionary, ground_a: float, ground_b: float) -> Array:
 	var c: Dictionary = p.curve
 	var d := a.distance_to(b)
 	var sag := minf(c.maxSag, sqrt(maxf(0, p.ropeLength * p.ropeLength - d * d)) * c.sagFactor)
@@ -40,7 +42,7 @@ static func curve(a: Vector3, b: Vector3, p: Dictionary) -> Array:
 	for i in n + 1:
 		var t := float(i) / n
 		var q := a.lerp(b, t)
-		q.y = maxf(c.groundClearance, q.y - 4 * t * (1 - t) * sag)
+		q.y = maxf(lerpf(ground_a, ground_b, t) + c.groundClearance, q.y - 4 * t * (1 - t) * sag)
 		pts.append(q)
 	return pts
 

@@ -119,6 +119,8 @@ Idle_2_HeadLow, Idle_HitReact_Left/Right, Jump_ToIdle, Walk。通道只有 rotat
 `Flapping`、`Gliding`、`Standing Idle`、`Takeoff`、`Landing`。与文档描述一致。
 注意：**没有地面行走 clip**，地面只有 Standing Idle。
 
+**已用**（2026-09-26）：`scripts/export_pigeon_wings.py` 用 Blender 的 Python 模块（`pip install bpy`，只有 Python 3.11 的包）求值这套 rig，从 Standing Idle / Gliding / Flapping 取翅膀形状写进 `godot/npc/pigeon-wings.json`（放大 1.25 倍到真鸽子大小）。Flapping 末帧和首帧的翅骨一致，第三组羽毛差约 1.7 cm，循环时直接跳过。
+
 ---
 
 ## 未取得

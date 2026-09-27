@@ -1,0 +1,52 @@
+{
+  "name": "fan_self",
+  "text": "A person stands in hot weather and fans their face with a handheld folding fan in their right hand. Right elbow is bent at the side, right wrist and forearm make repeated short brisk back-and-forth strokes beside the cheek to blow air toward the face. Left arm hangs relaxed. Repeat the fanning movement several times while standing.",
+  "duration": 5.0,
+  "seed": 42,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "generation_duration": 5,
+  "loop": false,
+  "trim": {
+    "take_frames": [
+      0,
+      149
+    ],
+    "reason": "Full generated clip."
+  },
+  "review": {
+    "status": "selected",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "hands if prop-related"
+    ],
+    "notes_zh": "右手举在脸旁，前臂与腕部反复短促往返扇风；位置数据可辨5次往返峰值，左手放松下垂。扇面实体由held_fan挂接。",
+    "metrics": {
+      "frames": 150,
+      "seam_root_aligned_max_joint_m": 0.15936864892168415,
+      "root_speed_min_mps": 0.00027931432123295963,
+      "root_speed_max_mps": 0.04872119426727295,
+      "root_delta_m": [
+        0.012479953467845917,
+        -0.0,
+        0.025059815496206284
+      ],
+      "seam_global_rotation_matrix_max_abs": 0.9547544121742249,
+      "floor_min_joint_y_m": 0.002023756504058838,
+      "finite": true
+    },
+    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
+    "batch_category": "daily"
+  }
+}

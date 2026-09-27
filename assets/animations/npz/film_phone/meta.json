@@ -1,0 +1,52 @@
+{
+  "name": "film_phone",
+  "text": "A person holds a smartphone up in both hands at eye level to film something in front of them. Keep both arms raised with elbows bent and the phone aimed steadily forward while taking several small sideways steps to the right, tracking the scene. Keep looking at the phone screen and keep filming throughout.",
+  "duration": 6.0,
+  "seed": 42,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "generation_duration": 6,
+  "loop": false,
+  "trim": {
+    "take_frames": [
+      0,
+      179
+    ],
+    "reason": "Full generated clip."
+  },
+  "review": {
+    "status": "selected",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "hands if prop-related"
+    ],
+    "notes_zh": "双手持续举在眼前朝前录像，并侧向交叉小步移动约2.2米；与静止拍照不同。双腕间距约18至30厘米，横持手机的支撑手贴合需接入时校准。",
+    "metrics": {
+      "frames": 180,
+      "seam_root_aligned_max_joint_m": 0.5126000498901755,
+      "root_speed_min_mps": 0.01825396530330181,
+      "root_speed_max_mps": 0.8268640637397766,
+      "root_delta_m": [
+        -2.1960456371307373,
+        -0.0,
+        -0.7613160610198975
+      ],
+      "seam_global_rotation_matrix_max_abs": 1.1219828128814697,
+      "floor_min_joint_y_m": -0.02940225601196289,
+      "finite": true
+    },
+    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
+    "batch_category": "event"
+  }
+}

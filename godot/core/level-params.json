@@ -1,0 +1,5 @@
+{
+  "_note": "Level-wide rules read by core/level.gd. sizeJitter: objects in group size_jitter get a fixed scale change of up to this fraction (plus or minus), from where they stand. mergeTile: metres; the meshes of objects that never move are joined per tile this size and per material (level.gd _merge_static: fewer draw calls); 0 = off.",
+  "sizeJitter": 0.12,
+  "mergeTile": 40.0
+}

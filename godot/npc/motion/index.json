@@ -144,7 +144,9 @@
   {
    "id": "eat_walk",
    "fps": 30.0,
-   "frames": 120
+   "frames": 59,
+   "loop": true,
+   "seam_closed_m": 0.0
   },
   {
    "id": "give_item",
@@ -174,7 +176,9 @@
   {
    "id": "jog",
    "fps": 30.0,
-   "frames": 79
+   "frames": 79,
+   "loop": true,
+   "seam_closed_m": 0.0
   },
   {
    "id": "laugh",
@@ -224,7 +228,9 @@
   {
    "id": "phone_walk",
    "fps": 30.0,
-   "frames": 120
+   "frames": 66,
+   "loop": true,
+   "seam_closed_m": 0.0
   },
   {
    "id": "photo_overhead",
@@ -304,12 +310,16 @@
   {
    "id": "sit_bench",
    "fps": 30.0,
-   "frames": 90
+   "frames": 90,
+   "loop": true,
+   "seam_closed_m": 0.0
   },
   {
    "id": "slouch_bench",
    "fps": 30.0,
-   "frames": 90
+   "frames": 90,
+   "loop": true,
+   "seam_closed_m": 0.0
   },
   {
    "id": "sneeze",
@@ -329,7 +339,9 @@
   {
    "id": "stand_idle",
    "fps": 30.0,
-   "frames": 120
+   "frames": 120,
+   "loop": true,
+   "seam_closed_m": 0.10756
   },
   {
    "id": "stand_up_support_back",
@@ -399,17 +411,23 @@
   {
    "id": "walk",
    "fps": 30.0,
-   "frames": 67
+   "frames": 67,
+   "loop": true,
+   "seam_closed_m": 0.0
   },
   {
    "id": "walk_dog",
    "fps": 30.0,
-   "frames": 71
+   "frames": 71,
+   "loop": true,
+   "seam_closed_m": 0.0
   },
   {
    "id": "walk_slow",
    "fps": 30.0,
-   "frames": 73
+   "frames": 73,
+   "loop": true,
+   "seam_closed_m": 0.0
   },
   {
    "id": "wave",

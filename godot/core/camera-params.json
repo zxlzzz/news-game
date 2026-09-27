@@ -1,0 +1,13 @@
+{
+  "_note": "core/orbit_camera.gd (docs/design-plans/two-streets.md §1). projection: orthogonal (no perspective) or perspective (fov in degrees, used only then). distance: metres from the look-at point to the camera when orthogonal (only has to clear the tallest building). pitch: tilt limits in degrees above the ground. height: zoom limits, metres of ground the screen is tall. keySpeed: screen heights per second with the keys. dragStart: pixels the left button must move before it pans (less = a click, left for gameplay). turnPerPixel / tiltPerPixel: degrees per pixel of middle-button drag. zoomStep: zoom factor per wheel notch.",
+  "projection": "orthogonal",
+  "fov": 35.0,
+  "distance": 120.0,
+  "pitch": [20.0, 85.0],
+  "height": [8.0, 120.0],
+  "keySpeed": 0.6,
+  "dragStart": 5.0,
+  "turnPerPixel": 0.3,
+  "tiltPerPixel": 0.2,
+  "zoomStep": 1.15
+}

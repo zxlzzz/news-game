@@ -1,0 +1,211 @@
+{
+  "model": "godot/models/bench.glb",
+  "evidence": "godot/modeling/build_bench.py: seat_h=0.45, seat_d=0.44, width=1.8, back_y=0.76, back_h=0.38",
+  "object_transform": {
+    "position": [
+      0,
+      0,
+      0
+    ],
+    "yaw_degrees": 0
+  },
+  "surfaces": [
+    {
+      "name": "seat",
+      "min": [
+        -0.9,
+        0.45,
+        -0.22
+      ],
+      "max": [
+        0.9,
+        0.45,
+        0.22
+      ]
+    },
+    {
+      "name": "back",
+      "min": [
+        -0.9,
+        0.57,
+        -0.255
+      ],
+      "max": [
+        0.9,
+        0.95,
+        -0.185
+      ]
+    }
+  ],
+  "source": "assets/animations/npz/sit_bench/motion.npz",
+  "source_frame": 0,
+  "targets": [
+    {
+      "joint": "Hips",
+      "position": [
+        0,
+        0.55,
+        0
+      ],
+      "yaw_degrees": 60,
+      "check_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "position": [
+        0.35,
+        0.99,
+        -0.2
+      ],
+      "rotation_source": "delivery/.work/motions/sit_ground/motion.npz",
+      "rotation_frame": 149,
+      "check_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ]
+    }
+  ],
+  "tolerance_m": 0.05,
+  "contact_note": "SOMA hip center 10cm above 45cm seat; left wrist 4cm above backrest top. Source-skeleton fixture only; runtime retargeting requires separate validation. Wrist target moved 5cm inward along the same backrest after checking arm reach.",
+  "duration": 4,
+  "text": "A person sits sideways on a park bench, turning the hips and legs to the left while the torso turns gently back toward the front. The left arm rests along the top of the bench backrest behind the body, right hand on the thigh. Remain comfortably seated on a 45cm-high seat, feet on the ground.",
+  "measurement": {
+    "Hips": {
+      "max_error_m": 0.009925775913257603,
+      "median_error_m": 0.002584709893495054,
+      "worst_frame": 9
+    },
+    "LeftHand": {
+      "max_error_m": 0.018943315143317787,
+      "median_error_m": 0.005322365995259944,
+      "worst_frame": 5
+    },
+    "floor_min_joint_y_m": -0.0032825469970703125
+  },
+  "selected_source_frames": [
+    60,
+    120
+  ],
+  "frame_convention": "targets.check_frames and measurement.worst_frame index final motion.npz from zero. Design paths / source references retain original generation frame indices; selected_source_frames gives the trim."
+}

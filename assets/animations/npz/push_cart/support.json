@@ -1,0 +1,83 @@
+{
+  "type": "cart",
+  "model": "godot/models/shopping_cart.glb",
+  "cart_y_m": 0,
+  "cart_rotation_xyzw": [
+    0,
+    0,
+    0,
+    1
+  ],
+  "cart_origin_offset_from_mapped_hips_xz_m": [
+    0.004015913857373762,
+    -0.0,
+    0.8025930015973163
+  ],
+  "grips_local_m": [
+    [
+      0.23999999463558197,
+      1.0199999809265137,
+      -0.5
+    ],
+    [
+      -0.23999999463558197,
+      1.0199999809265137,
+      -0.5
+    ]
+  ],
+  "contact_report": {
+    "model": "shopping_cart",
+    "model_sha256": "7164030f717ca5925e805e03bcf3cbad7c1966814e0c308606ce7467ddd18e18",
+    "mapping": {
+      "params": {
+        "headR": 0.06,
+        "neck": 0.015,
+        "torso": 0.18,
+        "clavSplit": 0.8,
+        "minSpread": 70,
+        "upperArm": 0.096,
+        "foreArm": 0.124,
+        "thigh": 0.12,
+        "shin": 0.13,
+        "foot": 0.05,
+        "line": 0.035,
+        "torsoLine": 1.15
+      },
+      "body_scale": 3.0,
+      "mapper_sha256": "7eb83e620eb291ced603627f681c5fac0854d5bd9c6b4a0a7ad08659079bbbfc"
+    },
+    "grips_local_m": [
+      [
+        0.23999999463558197,
+        1.0199999809265137,
+        -0.5
+      ],
+      [
+        -0.23999999463558197,
+        1.0199999809265137,
+        -0.5
+      ]
+    ],
+    "cart_offset_from_hips_xz_m": [
+      0.004015913857373762,
+      -0.0,
+      0.8025930015973163
+    ],
+    "placement": "One constant X/Z offset fitted across the whole clip; Y=0 and orientation fixed.",
+    "frames": 67,
+    "tolerance_m": 0.05,
+    "hand_error_max_m": [
+      0.036525633027846185,
+      0.0435589229095896
+    ],
+    "hand_error_mean_m": [
+      0.016615628812889763,
+      0.01750604617144187
+    ],
+    "violating_frames": 0,
+    "contact_pass": true,
+    "worst_frame": 17,
+    "mean_mapped_horizontal_speed_mps": 1.090732173013647
+  },
+  "playback": "Skip repeated endpoint; accumulate horizontal root displacement. Cart follows hips X/Z plus constant offset, keeps Y=0 and fixed orientation."
+}

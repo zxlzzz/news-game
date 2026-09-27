@@ -1,0 +1,52 @@
+{
+  "name": "smoke",
+  "text": "A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place.",
+  "duration": 5.0,
+  "seed": 42,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "generation_duration": 5,
+  "loop": false,
+  "trim": {
+    "take_frames": [
+      0,
+      149
+    ],
+    "reason": "Full generated clip."
+  },
+  "review": {
+    "status": "selected",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "hands if prop-related"
+    ],
+    "notes_zh": "站姿右手在嘴边停留后移开至胸前，左手自然下垂；无吸烟特效，手指仍为生成器放松姿态，未宣称两指夹烟。",
+    "metrics": {
+      "frames": 150,
+      "seam_root_aligned_max_joint_m": 0.17986398221452382,
+      "root_speed_min_mps": 0.0020413172896951437,
+      "root_speed_max_mps": 0.19590401649475098,
+      "root_delta_m": [
+        0.03909409046173096,
+        -0.0,
+        -0.012802481651306152
+      ],
+      "seam_global_rotation_matrix_max_abs": 0.604932427406311,
+      "floor_min_joint_y_m": 0.002864241600036621,
+      "finite": true
+    },
+    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
+    "batch_category": "daily"
+  }
+}

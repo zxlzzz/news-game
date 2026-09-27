@@ -1,0 +1,32 @@
+{
+  "motions": [
+    {
+      "name": "pull_door",
+      "delivered": true,
+      "fps": 30.0,
+      "frames": 300,
+      "generation_frames": 300,
+      "fullbody_constraint_frames": 6,
+      "fullbody_constraint_ratio": 0.02,
+      "fullbody_min_spacing_frames": 30,
+      "frozen_frames": 0,
+      "fullbody_max_in_one_second": 2,
+      "root_mean_horizontal_speed_mps": 0.9842497706413269,
+      "root_speed_min_mps": 0.025946037843823433,
+      "root_speed_max_mps": 1.737441062927246,
+      "root_delta_m": [
+        0.0,
+        -0.05270278453826904,
+        4.328106880187988
+      ],
+      "loop_translation_axes": "xz",
+      "floor_min_joint_y_m": -0.03206831216812134,
+      "seam_root_aligned_max_joint_m": 0.6426979273551982,
+      "seam_global_rotation_matrix_max_abs": 0.8645756244659424,
+      "finite": true,
+      "loop": false,
+      "npz_sha256": "a3572072a270e4c8af289b3674371097f0e6593aee248eab8481d09ce0bb6b14",
+      "rework_required": false
+    }
+  ]
+}

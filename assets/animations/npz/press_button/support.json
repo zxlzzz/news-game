@@ -1,0 +1,58 @@
+{
+  "model": "godot/models/vending_machine.glb",
+  "evidence": "controls center local (.378,1.13,.40), face after rotation at world (-.378,1.13,.60)",
+  "object_transform": {
+    "position": [
+      0,
+      0,
+      1
+    ],
+    "yaw_degrees": 180
+  },
+  "surfaces": [
+    {
+      "name": "machine face",
+      "min": [
+        -0.525,
+        0,
+        0.6
+      ],
+      "max": [
+        0.525,
+        1.9,
+        0.6
+      ]
+    }
+  ],
+  "targets": [
+    {
+      "joint": "RightHand",
+      "position": [
+        -0.378,
+        1.13,
+        0.42
+      ],
+      "frames": [
+        45,
+        50,
+        55
+      ],
+      "check_frames": [
+        45,
+        50,
+        55
+      ]
+    }
+  ],
+  "tolerance_m": 0.05,
+  "contact_note": "Right wrist 18cm before control plane, full fingers pointing forward; fingertips must reach z=.60m without passing through. Fixed relaxed fingers, no isolated index flexion. Source skeleton only.",
+  "measurement": {
+    "RightHand": {
+      "max_error_m": 0.014234386068420854,
+      "median_error_m": 0.006071110289346269,
+      "worst_frame": 55
+    }
+  },
+  "frame_convention": "零基帧号，全部指向本目录最终motion.npz。",
+  "rework_date": "2026-09-26"
+}

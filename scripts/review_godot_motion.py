@@ -41,7 +41,10 @@ console.log(JSON.stringify(d.frames.map(f=>m(f,d.params,origin))));"""%json.dump
     lhand=np.array([point(f['segs'][3][1]) for f in mapped])
     rhand=np.array([point(f['segs'][8][1]) for f in mapped])
     feet=np.array([[point(f['segs'][6][1]),point(f['segs'][11][1])] for f in mapped])
-    relative=p-p[:,0:1,:]*[1,0,1]
+    axes=meta.get('loop_translation_axes','xz')
+    if axes not in ('xz','xyz'):
+        raise ValueError(f'Invalid loop translation axes: {axes}')
+    relative=p-p[:,0:1,:]*([1,1,1] if axes=='xyz' else [1,0,1])
     delta=relative[-1]-relative[0]
     metrics=dict(frames=len(p),fps=meta['fps'],source_root_delta_m=(p[-1,0]-p[0,0]).tolist(),
         mapped_hip_y_minmax=[float(hips[:,1].min()),float(hips[:,1].max())],

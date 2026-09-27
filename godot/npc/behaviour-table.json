@@ -1,0 +1,19 @@
+{
+  "_note": "The one global table of npc/behaviour.gd (docs/design_route_npc_behavior.md §2). A row: from (self, or post:<kind> = a free Marker3D post_<kind>_* in an object type), when (gates that must all hold; taken:<kind> = the same object has someone at a post of that kind), do (go = walk to a random spot on pavement; leave = walk out of the scene; play = play here; use = walk to the post and play there), clips (picked at random by weight: only clips a viewer could not tell a reason apart for), plays [min, max] (times the clip plays before the action is done; go and leave are done on arrival), base (the number), tags (multiplied by the person's coefficients in behaviour-people.json; 0 takes the row out). Distance: score x half / (half + metres to the target), nothing beyond sight. jitter: when a person has nothing to do, up to this much is added to each candidate and the highest is picked; the action keeps its jitter. While it runs, the best candidate replaces it only if its score (no jitter) is higher than the action's score with its jitter. rethink: seconds between comparisons (and at once when an action is done). again: seconds a person leaves a row alone after finishing it (not a falling number: finished is finished).",
+  "half": 20.0,
+  "sight": 40.0,
+  "jitter": 1.5,
+  "rethink": 0.5,
+  "again": 90.0,
+  "rows": [
+    { "from": "self", "do": "go", "clips": { "walk": 5, "walk_slow": 2, "phone_walk": 1, "eat_walk": 1 }, "base": 2, "tags": ["stroll"] },
+    { "from": "self", "do": "leave", "clips": { "walk": 1 }, "base": 1.2, "tags": ["leave"] },
+    { "from": "self", "do": "play", "clips": { "scratch_head": 1, "rub_eye": 1, "pat_dust": 1, "stretch": 1, "check_watch": 1, "look_up": 1, "yawn": 1 }, "plays": [1, 1], "base": 1.2, "tags": ["fidget"] },
+    { "from": "post:sit", "do": "use", "clips": { "sit_bench": 3, "slouch_bench": 1 }, "plays": [3, 8], "base": 3, "tags": ["sit"] },
+    { "from": "post:wait", "do": "use", "clips": { "stand_idle": 1 }, "plays": [3, 6], "base": 2.5, "tags": ["wait"] },
+    { "from": "post:vendor", "do": "use", "clips": { "vendor_call": 1, "vendor_tidy": 1 }, "plays": [6, 12], "base": 5, "tags": ["seller"] },
+    { "from": "post:customer", "when": ["taken:vendor"], "do": "use", "clips": { "choose_item": 1, "pay": 1 }, "plays": [1, 3], "base": 4, "tags": ["shopper"] },
+    { "from": "post:chess", "do": "use", "clips": { "chess_move": 1 }, "plays": [4, 10], "base": 5, "tags": ["chess"] },
+    { "from": "post:watch", "when": ["taken:chess"], "do": "use", "clips": { "chess_watch": 1 }, "plays": [2, 5], "base": 4.5, "tags": ["watch"] }
+  ]
+}

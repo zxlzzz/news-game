@@ -1,0 +1,54 @@
+{
+  "mapping": {
+    "params": {
+      "headR": 0.06,
+      "neck": 0.015,
+      "torso": 0.18,
+      "clavSplit": 0.8,
+      "minSpread": 70,
+      "upperArm": 0.096,
+      "foreArm": 0.124,
+      "thigh": 0.12,
+      "shin": 0.13,
+      "foot": 0.05,
+      "line": 0.035,
+      "torsoLine": 1.15
+    },
+    "body_scale": 3.0,
+    "mapper_sha256": "7eb83e620eb291ced603627f681c5fac0854d5bd9c6b4a0a7ad08659079bbbfc"
+  },
+  "tip_length_max_error_m": 1.1102230246251565e-16,
+  "tip_contact_height_max_m": 0.010255443442042766,
+  "tip_all_frames_min_y_m": -0.007147818497934333,
+  "contact_fore_aft_slip_max_m": 0.0066112403338330905,
+  "left_toe_contact_height_max_m": 0.015672004880228824,
+  "contact_frames": 27,
+  "full_frame_count": 47,
+  "audit": {
+    "name": "walk_cane",
+    "fps": 30.0,
+    "frames": 47,
+    "generation_frames": 139,
+    "fullbody_constraint_frames": 22,
+    "fullbody_constraint_ratio": 0.15827338129496402,
+    "fullbody_min_spacing_frames": 6,
+    "frozen_frames": 0,
+    "root_mean_horizontal_speed_mps": 0.743984043598175,
+    "root_speed_min_mps": 0.19390606880187988,
+    "root_speed_max_mps": 1.0941184759140015,
+    "root_delta_m": [
+      0.030186763033270836,
+      0.0,
+      1.1059637069702148
+    ],
+    "loop_translation_axes": "xz",
+    "floor_min_joint_y_m": -0.02267765998840332,
+    "seam_root_aligned_max_joint_m": 2.3929735047006766e-07,
+    "seam_global_rotation_matrix_max_abs": 0.0,
+    "finite": true,
+    "loop": true,
+    "npz_sha256": "9c31ebb31632d815dd2be20e478b0c2abdda27afa0a17a3737a4c5ecb72a3a49",
+    "rework_required": false
+  },
+  "contact_pass": true
+}

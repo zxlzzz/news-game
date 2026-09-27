@@ -1,6 +1,6 @@
 """Record tools/locomotion_review.tscn to GIFs (and a still PNG, a third of the way in) for review pages.
 
-python godot/tools/record_review.py <out dir> [mode ...]      modes: dog leash bicycle scooter (default all)
+python godot/tools/record_review.py <out dir> [mode ...]      modes: dog leash bicycle scooter pigeon pigeon_fly (default all)
 Each mode is recorded from the side and from the game's high angle, 15 frames/s, 480x320.
 Needs Pillow; Godot path from the GODOT environment variable or the default install on D:.
 """
@@ -16,7 +16,7 @@ GODOT = os.environ.get('GODOT', r'D:/Godot/Godot_v4.7.2-stable_win64_console.exe
 PROJECT = Path(__file__).resolve().parents[1]
 # mode: (start time s, seconds recorded, camera yaw for the high view)
 # the leash's high view looks from the dog's side (the leash hand), so the dog is not hidden behind the walker
-TAKES = {'dog': (1.0, 18.0, 50), 'leash': (1.0, 18.0, -60), 'bicycle': (1.0, 10.0, 50), 'scooter': (1.0, 10.0, 50)}
+TAKES = {'dog': (1.0, 18.0, 50), 'pigeon': (0.0, 26.0, 50), 'pigeon_fly': (14.0, 10.0, 50), 'leash': (1.0, 18.0, -60), 'bicycle': (1.0, 10.0, 50), 'scooter': (1.0, 10.0, 50)}
 EVERY = 4  # simulation steps of 1/60 s per recorded frame -> 15 frames/s
 VIEWS = {'side': 90, 'high': None}
 

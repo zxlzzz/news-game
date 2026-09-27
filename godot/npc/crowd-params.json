@@ -1,11 +1,15 @@
 {
-  "_note": "Who the Crowd node (npc/crowd.gd) puts in a level and how. Counts of free-roaming people are in each scene's population.tres; people at posts follow the post markers of the object types. Clip weights are relative. Lengths in metres.",
+  "_note": "Who the Crowd node (npc/crowd.gd) puts in a level and how. Counts of free-roaming people are in each scene's population.tres; people at posts follow the post markers of the object types. Clip weights are relative. Lengths in metres. grid (core/walk_grid.gd): maxStep = the highest step up or down per mode (riders take no curbs); heightTolerance = surfaces closer in height than this are one. postStep: an agent (population.behaviour) whose walk ends this close to a post walks the rest straight onto it. offScreenMargin: a person farther than this outside the camera's view is hidden and not redrawn (still moves). redrawMetres: with an orthogonal view N x this many metres tall, a walking figure's pose is rebuilt every N frames, in turn (its position moves every frame).",
   "body": "adult",
   "ink": [0.06, 0.06, 0.06],
   "depthBias": 0.03,
   "turnRate": 4.0,
-  "grid": { "cell": 0.25, "clearance": 0.3, "clearanceHeight": 1.8, "exitMaxCost": 1.0, "pocketArea": 2.0 },
+  "grid": { "cell": 0.25, "clearance": 0.3, "clearanceHeight": 1.8, "exitMaxCost": 1.0, "pocketArea": 2.0, "maxStep": { "walk": 0.25, "ride": 0.05 }, "heightTolerance": 0.01 },
   "visitMaxCost": 1.0,
+  "postStep": 1.5,
+  "offScreenMargin": 3.0,
+  "redrawMetres": 40.0,
+  "exitMinDistance": 10.0,
   "walkers": {
     "pedestrian": { "clips": { "walk": 5, "walk_slow": 2, "phone_walk": 1, "eat_walk": 1 }, "speedJitter": 0.1, "visits": [0, 2] },
     "jogger":     { "clips": { "jog": 1 }, "speedJitter": 0.08, "visits": [3, 6] }

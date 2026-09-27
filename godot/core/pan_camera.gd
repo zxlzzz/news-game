@@ -1,7 +1,8 @@
 ## Camera of a view.tscn: slides along X over a level longer than one screen.
 ## Arrow keys / A-D, or drag with the left mouse button. The range is the level's ground length
 ## (GroundStrip.length) minus what one screen already shows. `-- --pan <metres>` on the command line
-## starts there, `-- --top <size> [--top-z <z>]` looks straight down (both for screenshots with core/shot.gd).
+## starts there, `-- --size <metres>` sets how many metres the screen is tall (zoom), `-- --top <size> [--top-z <z>]`
+## looks straight down (all for screenshots with core/shot.gd).
 extends Camera3D
 
 ## Metres per second with the keys.
@@ -20,7 +21,10 @@ func _ready() -> void:
 			var half_view := size * get_viewport().get_visible_rect().size.aspect() / 2
 			_limit = maxf(0.0, c.length / 2 - half_view * 0.9)
 	var args := OS.get_cmdline_user_args()
-	var i := args.find("--pan")
+	var i := args.find("--size")
+	if i >= 0 and i + 1 < args.size():
+		size = float(args[i + 1])
+	i = args.find("--pan")
 	if i >= 0 and i + 1 < args.size():
 		_set_pan(float(args[i + 1]))
 	# Layout check: straight down on the same spot, `-- --top <camera size>`.

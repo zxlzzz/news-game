@@ -1,0 +1,52 @@
+{
+  "name": "stumble",
+  "text": "A person suddenly loses balance backward, takes three quick uneven backward recovery steps with the arms flung outward, wobbles, then regains balance standing. The torso rocks backward then forward as the feet scramble. Do not fall to the floor.",
+  "duration": 4.0,
+  "seed": 42,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "generation_duration": 4,
+  "loop": false,
+  "trim": {
+    "take_frames": [
+      0,
+      119
+    ],
+    "reason": "Full generated clip."
+  },
+  "review": {
+    "status": "selected",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "hands if prop-related"
+    ],
+    "notes_zh": "失衡后连续踉跄后退，手臂展开找平衡、躯干明显前后摇晃，最终站稳；根向后约3米，需要对应退让空间。",
+    "metrics": {
+      "frames": 120,
+      "seam_root_aligned_max_joint_m": 0.060584009237989046,
+      "root_speed_min_mps": 0.0019324152963235974,
+      "root_speed_max_mps": 3.02290415763855,
+      "root_delta_m": [
+        -0.25622794032096863,
+        -0.0,
+        -3.0132806301116943
+      ],
+      "seam_global_rotation_matrix_max_abs": 0.22003702819347382,
+      "floor_min_joint_y_m": -0.010671079158782959,
+      "finite": true
+    },
+    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
+    "batch_category": "event"
+  }
+}

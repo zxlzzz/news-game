@@ -85,8 +85,12 @@ def main():
     from kimodo.tools import seed_everything
     from kimodo.exports.motion_io import save_kimodo_npz
     from kimodo.skeleton.definitions import SOMASkeleton77
-    from kimodo.constraints import FullBodyConstraintSet, EndEffectorConstraintSet
+    from kimodo.constraints import (FullBodyConstraintSet, EndEffectorConstraintSet, Root2DConstraintSet,
+                                    LeftHandConstraintSet, RightHandConstraintSet,
+                                    LeftFootConstraintSet, RightFootConstraintSet)
     import torch
+    effector_classes = dict(LeftHand=LeftHandConstraintSet, RightHand=RightHandConstraintSet,
+                            LeftFoot=LeftFootConstraintSet, RightFoot=RightFootConstraintSet)
     # RP internally uses a reduced skeleton but exported posed_joints has 77 joints.
     parents = SOMASkeleton77.bone_order_names_with_parents
     names = [n for n, _ in parents]
@@ -111,6 +115,17 @@ def main():
                 frames = round(duration * model.fps)
                 constraints = []
                 constraint_targets = []
+                if cfg.get('root_path'):
+                    path = cfg['root_path']
+                    path_frames = [key['frame'] for key in path]
+                    positions_xz = [key['position_xz'] for key in path]
+                    if len(set(path_frames)) != len(path_frames) or not all(0 <= f < frames for f in path_frames):
+                        raise ValueError('Root path frames must be unique and inside the clip')
+                    heading = [key['heading'] for key in path] if all('heading' in key for key in path) else None
+                    constraints.append(Root2DConstraintSet(model.skeleton,
+                        torch.tensor(path_frames), torch.tensor(positions_xz, device=model.device),
+                        global_root_heading=None if heading is None else torch.tensor(heading, device=model.device)))
+                    constraint_targets.append(dict(type='root2d', frames=path_frames, positions_xz=positions_xz, heading=heading))
                 if cfg.get('keyframes'):
                     subset = model.skeleton.get_skel_slice(model.skeleton.somaskel77)
                     target_positions, target_rotations, target_frames = [], [], []
@@ -129,6 +144,13 @@ def main():
                         target_rotations.append(rotations)
                     if len(set(target_frames)) != len(target_frames):
                         raise ValueError('Duplicate full-body keyframes')
+                    ordered = sorted(target_frames)
+                    if len(ordered) / frames > 0.2:
+                        raise ValueError('Full-body constraints exceed 20% of generated frames')
+                    if any(b - a < 5 for a, b in zip(ordered, ordered[1:])):
+                        raise ValueError('Full-body constraints must be at least 5 frames apart')
+                    if any(sum(start <= frame <= start + model.fps for frame in ordered) > 3 for start in ordered):
+                        raise ValueError('At most 3 semantic full-body keys are allowed in any continuous second')
                     constraints.append(FullBodyConstraintSet(model.skeleton,
                         torch.tensor(target_frames),
                         torch.tensor(np.stack(target_positions), device=model.device),
@@ -153,13 +175,30 @@ def main():
                             sf = key.get('source_frame', 0)
                             pos = reference['posed_joints'][sf, subset].copy()
                             rot = reference['global_rot_mats'][sf, subset].copy()
-                        for joint in effector['joints']:
+                        # EndEffectorConstraintSet expands Hand to Hand+MiddleEnd and
+                        # Foot to Foot+ToeBase. Translate the complete constrained
+                        # group so its internal geometry remains consistent.
+                        _, position_names = model.skeleton.expand_joint_names(effector['joints'])
+                        for joint in set(position_names):
                             pos[model.skeleton.bone_index[joint]] += np.asarray(key.get('offset', [0,0,0]), dtype=pos.dtype)
                         positions.append(pos); rotations.append(rot); indices.append(key['frame'])
-                    constraints.append(EndEffectorConstraintSet(model.skeleton,
-                        torch.tensor(indices), torch.tensor(np.stack(positions), device=model.device),
-                        torch.tensor(np.stack(rotations), device=model.device), None, joint_names=effector['joints']))
+                    # Kimodo's correction masks dispatch on left-hand/right-foot/etc.
+                    # The generic "end-effector" class conditions diffusion but is
+                    # ignored by correction. Split groups into the named classes.
+                    if effector.get('guide_joints'):
+                        raise ValueError('Elbow guides are not supported by final motion correction')
+                    for joint in effector['joints']:
+                        arguments = (model.skeleton, torch.tensor(indices),
+                            torch.tensor(np.stack(positions), device=model.device),
+                            torch.tensor(np.stack(rotations), device=model.device), None)
+                        if joint in effector_classes:
+                            constraints.append(effector_classes[joint](*arguments))
+                        elif joint == 'Hips':
+                            constraints.append(EndEffectorConstraintSet(*arguments, joint_names=[joint]))
+                        else:
+                            raise ValueError(f'Unsupported end-effector {joint}')
                     constraint_targets.append(dict(type='end-effector', frames=indices, joints=effector['joints'],
+                        correction_masks=[effector_classes[j].name for j in effector['joints'] if j in effector_classes],
                         skeleton='SOMA30', positions=np.stack(positions).tolist(), rotations=np.stack(rotations).tolist()))
                 output = model([cfg['text']], [frames],
                                num_denoising_steps=100, num_samples=1, multi_prompt=True,
@@ -180,6 +219,8 @@ def main():
                     cfg['constraint_targets'] = constraint_targets
                     errors = []
                     for target in constraint_targets:
+                        if target['type'] == 'root2d':
+                            continue
                         selected = [model.skeleton.bone_index[n] for n in target['joints']] if target['type']=='end-effector' else list(range(len(subset)))
                         error = np.linalg.norm(output['posed_joints'][target['frames']][:,subset][:,selected]
                                                - np.asarray(target['positions'])[:,selected], axis=-1)

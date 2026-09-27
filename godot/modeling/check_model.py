@@ -7,13 +7,17 @@ PASS / FAIL; exit code 1 if any file fails. FAIL items break the game's look or 
 WARN items are allowed but should be deliberate.
 
 The same script is used by the modeller before delivery and by the reviewer after.
+
+Hand-held things (模型制作说明.md section 12) are named held_<name>.glb: their origin is where the hand
+holds them, not on the ground, so the ground and footprint checks are replaced by "origin on the
+thing" and the grip nodes are checked.
 """
 import json, math, os, re, struct, sys
 
 # Colour slots a material may be named after. Must equal the keys of godot/core/slots.tres;
 # when this script sits in the repo (godot/modeling/) it checks that and fails if they differ.
 SLOTS = {
-    "accent", "bark", "concrete", "door", "fabric", "foliage", "grass", "hidden", "metal",
+    "accent", "bark", "bike_lane", "concrete", "door", "fabric", "foliage", "grass", "hidden", "metal",
     "metal_dark", "paint", "road", "sidewalk", "trim", "trim_dark", "wall", "wall_plaster", "wall_brick", "wall_stone", "water", "window", "wood",
 }
 # Slots that may carry a texture, used only for its alpha (cut-out decals).
@@ -23,6 +27,10 @@ FLAT_SLOTS = {"paint", "hidden"}
 WELD = 0.0005          # metres; the game welds vertices this close when finding edges
 GROUND_TOL = 0.01      # metres; lowest point must be this close to y = 0
 MAX_TRIS = 50000
+HELD_PREFIX = "held_"  # file name prefix of hand-held things
+HELD_MAX_SIDE = 2.0    # metres; anything bigger is not carried in the hands
+HELD_ORIGIN_TOL = 0.05 # metres; how far outside its box a held thing's grip origin may be
+GRIP_NODES = ("grip_left", "grip_right", "strap_top")
 
 COMP = {5120: "b", 5121: "B", 5122: "h", 5123: "H", 5125: "I", 5126: "f"}
 NCOMP = {"SCALAR": 1, "VEC2": 2, "VEC3": 3, "VEC4": 4, "MAT4": 16}
@@ -127,6 +135,7 @@ def check(path):
     hi = [-math.inf] * 3
     tris_by_mat = {}
     total_tris = 0
+    grips = {}  # grip node name -> world position
     mesh_edges = {}  # mesh index -> (open, nonmanifold) counted in mesh space
 
     def visit(ni, parent):
@@ -135,6 +144,8 @@ def check(path):
         m = mat4_mul(parent, node_matrix(node))
         lens, det = axis_scales(node_matrix(node))
         nm = node.get("name", f"node {ni}")
+        if nm in GRIP_NODES:
+            grips[nm] = (m[12], m[13], m[14])
         if max(lens) - min(lens) > 1e-4 * max(lens):
             fails.append(f"node '{nm}' has non-uniform scale {[round(v, 5) for v in lens]}")
         if det < 0:
@@ -200,10 +211,28 @@ def check(path):
     if gltf.get("animations"):
         info.append("animations: " + ", ".join(a.get("name", "?") for a in gltf["animations"]))
 
-    if abs(lo[1]) > GROUND_TOL:
-        fails.append(f"lowest point is at y = {lo[1]:.3f}; the origin must be on the ground (y = 0)")
-    if not (lo[0] - 0.01 <= 0 <= hi[0] + 0.01 and lo[2] - 0.01 <= 0 <= hi[2] + 0.01):
-        fails.append("origin (0, 0) is outside the model's footprint; put it at the ground contact point")
+    for g in GRIP_NODES:
+        if g in grips:
+            info.append("%-10s at (%.3f, %.3f, %.3f)" % ((g,) + grips[g]))
+    if ("grip_left" in grips) != ("grip_right" in grips):
+        fails.append("grip_left and grip_right come in pairs")
+    held = os.path.basename(path).lower().startswith(HELD_PREFIX)
+    if held:
+        info.append("hand-held (%s*): origin = where the hand holds it" % HELD_PREFIX)
+        out = max(max(lo[k] - 0, 0 - hi[k], 0) for k in range(3))
+        if out > HELD_ORIGIN_TOL:
+            fails.append(f"origin is {out:.3f} m outside the model; a hand-held thing's origin is its grip point, on the thing")
+        if max(size) > HELD_MAX_SIDE:
+            fails.append(f"largest side {max(size):.2f} m: too big to be hand-held (> {HELD_MAX_SIDE} m); push-along things are normal models with grip nodes")
+        if "grip_left" in grips and "grip_right" in grips:
+            mid = [(grips["grip_left"][k] + grips["grip_right"][k]) / 2 for k in range(3)]
+            if math.dist(mid, (0, 0, 0)) > 0.01:
+                fails.append("two-handed: the origin must be midway between grip_left and grip_right")
+    else:
+        if abs(lo[1]) > GROUND_TOL:
+            fails.append(f"lowest point is at y = {lo[1]:.3f}; the origin must be on the ground (y = 0)")
+        if not (lo[0] - 0.01 <= 0 <= hi[0] + 0.01 and lo[2] - 0.01 <= 0 <= hi[2] + 0.01):
+            fails.append("origin (0, 0) is outside the model's footprint; put it at the ground contact point")
     if max(size) > 200:
         fails.append(f"largest side {max(size):.1f} m: units are probably not metres")
     if max(size) < 0.02:

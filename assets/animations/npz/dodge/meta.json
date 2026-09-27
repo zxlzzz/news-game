@@ -1,0 +1,52 @@
+{
+  "name": "dodge",
+  "text": "A person quickly dodges to the left to avoid something coming straight toward the face. Bend the knees, shift the head and upper body sharply left, take one lateral step left, then recover an upright balanced stance. Keep hands raised lightly near the chest. A clear sideways evade, not backward retreat.",
+  "duration": 3.0,
+  "seed": 42,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "generation_duration": 3,
+  "loop": false,
+  "trim": {
+    "take_frames": [
+      0,
+      89
+    ],
+    "reason": "Full generated clip."
+  },
+  "review": {
+    "status": "selected",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "hands if prop-related"
+    ],
+    "notes_zh": "防护姿态下屈膝向左侧闪一步，再站稳；横移约63厘米，同时略后退28厘米，区别于纯后退。",
+    "metrics": {
+      "frames": 90,
+      "seam_root_aligned_max_joint_m": 0.08439310384270086,
+      "root_speed_min_mps": 0.00818401388823986,
+      "root_speed_max_mps": 1.645628809928894,
+      "root_delta_m": [
+        0.6339595913887024,
+        0.0,
+        -0.2851080894470215
+      ],
+      "seam_global_rotation_matrix_max_abs": 0.1554201990365982,
+      "floor_min_joint_y_m": -0.012752175331115723,
+      "finite": true
+    },
+    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
+    "batch_category": "event"
+  }
+}
