@@ -1,0 +1,13 @@
+{
+  "_note": "core/orbit_camera.gd for the empty ground: as core/camera-params.json, but it may come close (one person fills the screen) and tilt almost level.",
+  "projection": "perspective",
+  "fov": 35.0,
+  "distance": 60.0,
+  "pitch": [3.0, 89.0],
+  "height": [0.8, 60.0],
+  "keySpeed": 0.6,
+  "dragStart": 5.0,
+  "turnPerPixel": 0.3,
+  "tiltPerPixel": 0.2,
+  "zoomStep": 1.15
+}

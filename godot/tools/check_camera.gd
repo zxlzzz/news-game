@@ -27,7 +27,8 @@ func _process(_d: float) -> bool:
 	if not cam.is_inside_tree():
 		return false
 	var mid := root.get_visible_rect().size / 2
-	var at := mid + Vector2(120, -60)
+	# Below the middle: near ground (in perspective a point high on the screen can be far off the level).
+	var at := mid + Vector2(120, 60)
 
 	# Wheel: zoom in about the mouse; that ground point stays under the mouse.
 	var h0: float = cam.height

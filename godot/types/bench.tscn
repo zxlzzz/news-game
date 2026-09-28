@@ -14,3 +14,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0, 0)
 
 [node name="post_sit_2" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0.55, 0, 0)
+
+[node name="post_stretch" type="Marker3D" parent="."]
+transform = Transform3D(-0.9972, 0, -0.0748, 0, 1, 0, 0.0748, 0, -0.9972, 0.016, 0, 0.878)
+
+[node name="touch_leg_stretch_LeftFoot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0.53, 0.1)
+
+[node name="touch_leg_stretch_LeftHand" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26, 0.96, 0.51)
+
+[node name="touch_leg_stretch_RightHand" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, 0.96, 0.51)
+
+[node name="touch_sit_sideways_Hips" type="Marker3D" parent="."]
+transform = Transform3D(0.5, 0, 0.866, 0, 1, 0, -0.866, 0, 0.5, 0, 0.55, 0)
+
+[node name="touch_sit_sideways_LeftHand" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.99, -0.2)

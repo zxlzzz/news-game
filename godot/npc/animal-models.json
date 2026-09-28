@@ -1,0 +1,58 @@
+{
+  "_note": "Animals drawn with real models (models/animal_*.glb, Quaternius, CC0), read by npc/animal_model.gd and npc/animal.gd. Walking: the procedural gait (npc/procedural_dog.gd) plants the paws and each leg reaches its paw with two-bone IK; the leg lengths, girdle heights and paw rest spots come from the skeleton, the gait numbers from gait.from scaled by (front shoulder joint height / that of gait.from) for the fields in gait.scaled; the step lengths (gait.scaledByRoom) by how far a paw can swing forward or back from its rest spot, this model against gait.from. While walking the body is lowered until no leg standing at rest is straighter than gait.walkExtension of its length (a straight leg cannot step; a breed may set its own walkExtension); The knees bend the way the legs of gait.from bend. Clip names are as Godot imports them: a trailing _Loop is dropped (NG_Sniff_Ground_Loop -> NG_Sniff_Ground). breeds: species (dog | cat), glb, legs (LF RF LH RH: [upper, lower, then the bones below the lower joint down to the paw; those keep their rest angle; the sole is under the last one]), front (the bone whose subtree turns with the shoulders; the rest turns with the hips), look (the head turns from here), collar (a leash attaches at this bone's head), layered (bones whose subtree plays walkClip / standClip over the gait: neck, head, tail), walkClip (played by gait phase), standClip (by time). actions: name -> in (clips played once), hold (looped while the action is wanted), out (played once when it ends); each starts and ends standing. species: the actions each species offers. blend: seconds to fade the clips in and out, to change from a held clip to its out clip, and to go between the walk and stand layers. settleSpeed: m/s, an action starts once the gait is slower and no paw is in the air. ink: the colour of the model.",
+  "gait": {
+    "from": "res://npc/dog-params.json",
+    "walkExtension": 0.9,
+    "scaledByRoom": ["gaits.walk.stride.base", "gaits.walk.stride.perSpeed", "gaits.trot.stride.base", "gaits.trot.stride.perSpeed"],
+    "scaled": ["legs.hind.lift", "legs.front.lift", "settleDistance", "reachMargin", "slide", "slideRate",
+               "motion.maxSpeed", "motion.acceleration", "motion.braking", "motion.stillSpeed",
+               "gaitSwitch.walkToTrotAbove", "gaitSwitch.trotToWalkBelow", "head.muzzle", "tail.segment", "tail.root"]
+  },
+  "breeds": {
+    "husky": { "species": "dog", "glb": "res://models/animal_husky.glb",
+      "legs": { "LF": ["FrontUpperLeg.L", "FrontLowerLeg.L", "FF.L"], "RF": ["FrontUpperLeg.R", "FrontLowerLeg.R", "FF.R"],
+                "LH": ["BackLeg.L", "BackUpperLeg.L", "BackLowerLeg.L", "FFB.L"], "RH": ["BackLeg.R", "BackUpperLeg.R", "BackLowerLeg.R", "FFB.R"] },
+      "front": "Torso2", "look": "Neck1", "collar": "Neck2", "layered": ["Neck1", "Tail1"],
+      "walkClip": "Walk", "standClip": "NG_Stand_Breathe" },
+    "shibainu": { "species": "dog", "glb": "res://models/animal_shibainu.glb",
+      "legs": { "LF": ["FrontUpperLeg.L", "FrontLowerLeg.L", "FF.L"], "RF": ["FrontUpperLeg.R", "FrontLowerLeg.R", "FF.R"],
+                "LH": ["BackLeg.L", "BackUpperLeg.L", "BackLowerLeg.L", "FFB.L"], "RH": ["BackLeg.R", "BackUpperLeg.R", "BackLowerLeg.R", "FFB.R"] },
+      "front": "Torso2", "look": "Neck1", "collar": "Neck2", "layered": ["Neck1", "Tail1"],
+      "walkClip": "Walk", "standClip": "NG_Stand_Breathe" },
+    "cat": { "species": "cat", "glb": "res://models/animal_cat.glb",
+      "legs": { "LF": ["Bone.017", "Bone.018", "Bone.019"], "RF": ["Bone.014", "Bone.015", "Bone.016"],
+                "LH": ["Bone.008", "Bone.009", "Bone.010"], "RH": ["Bone.011", "Bone.012", "Bone.013"] },
+      "front": "Bone.001", "look": "Bone.002", "collar": "Bone.003", "layered": ["Bone.002", "Bone.004"],
+      "walkClip": "Walking", "standClip": "NG_Stand_Breathe", "walkExtension": 0.85 }
+  },
+  "actions": {
+    "sit":         { "in": ["NG_Sit_Down"], "hold": "NG_Sit_Idle", "out": ["NG_Sit_Get_Up"] },
+    "sit_look":    { "in": ["NG_Sit_Down"], "hold": "NG_Sit_Look_Around", "out": ["NG_Sit_Get_Up"] },
+    "sit_wag":     { "in": ["NG_Sit_Down"], "hold": "NG_Sit_Wag", "out": ["NG_Sit_Get_Up"] },
+    "lie":         { "in": ["NG_Lie_Down"], "hold": "NG_Lie_Idle", "out": ["NG_Lie_Get_Up"] },
+    "sleep":       { "in": ["NG_Lie_Down", "NG_Sleep_Enter"], "hold": "NG_Sleep_Breathe", "out": ["NG_Sleep_Wake", "NG_Lie_Get_Up"] },
+    "side_lie":    { "in": ["NG_Lie_Down", "NG_Side_Lie_Enter"], "hold": "NG_Side_Lie_Breathe", "out": ["NG_Side_Lie_Exit", "NG_Lie_Get_Up"] },
+    "knead":       { "in": ["NG_Lie_Down"], "hold": "NG_Knead", "out": ["NG_Lie_Get_Up"] },
+    "sniff":       { "in": ["NG_Sniff_Ground_Enter"], "hold": "NG_Sniff_Ground", "out": ["NG_Sniff_Ground_Exit"] },
+    "sniff_air":   { "in": ["NG_Sniff_Air"] },
+    "alert":       { "hold": "NG_Stand_Alert" },
+    "wag":         { "hold": "NG_Tail_Wag_Happy" },
+    "look_around": { "in": ["NG_Look_Around"] },
+    "shake":       { "in": ["NG_Shake_Off"] },
+    "shake_head":  { "in": ["NG_Shake_Head"] },
+    "urinate":     { "in": ["NG_Urinate_Left"] },
+    "paw":         { "in": ["NG_Paw_Offer_Right"] },
+    "play_bow":    { "in": ["NG_Play_Bow"] },
+    "stretch":     { "in": ["NG_Stretch_Front"] },
+    "startle":     { "in": ["NG_Startle"] },
+    "tail_tuck":   { "in": ["NG_Tail_Tuck_Cautious"] },
+    "tail_flick":  { "in": ["NG_Tail_Tip_Flick"] }
+  },
+  "species": {
+    "dog": ["sit", "sit_look", "sit_wag", "lie", "sleep", "side_lie", "sniff", "sniff_air", "alert", "wag", "look_around", "shake", "shake_head", "urinate", "paw", "play_bow", "stretch", "startle", "tail_tuck"],
+    "cat": ["sit", "sit_look", "lie", "sleep", "side_lie", "knead", "sniff", "sniff_air", "alert", "look_around", "shake", "shake_head", "paw", "play_bow", "stretch", "startle", "tail_tuck", "tail_flick"]
+  },
+  "blend": { "in": 0.3, "out": 0.35, "change": 0.3, "stillRate": 3.0 },
+  "settleSpeed": 0.015,
+  "ink": [0, 0, 0, 1]
+}

@@ -1,0 +1,96 @@
+{
+  "_note": "Stray dogs' and cats' behaviour (npc/animal_controller.gd) and the empty ground's animal entries (scenes/empty_ground/stage.gd, tools/animal_behaviour_preview.gd). Metres, seconds. brain: how far people and dogs are avoided, walk / flee speeds, how long walks and rests last, the range kept to; rest_actions: what each species does in turn when resting; threat_action: what a cat does when a dog is near but not too near (else it flees). review: an action entry walks until walk_until, does the action until hold_until, walks on, over cycle; walk / trot entries wander (trot at trot_speed_fraction of the top speed); the view is frame x the model's longest side high (behaviour_camera_size for behaviour); behaviour: people walk the routes in people ([x, z, speed along x], repeating every people_period), drawn with the person_* sizes, a dog approaches a cat from approach_start, the animal keeps within range_radius of range_center, for behaviour_duration. frames / capture_every: tools/record_animals.py. checks (tools/check_animals.gd): largest leg bone length change (m), largest distance of a walking paw from where the gait planted it (m), fastest any joint may move (m/s).",
+  "brain": {
+    "avoid_person": 1.35,
+    "avoid_animal": 1.9,
+    "flee_distance": 1.4,
+    "walk_speed": 0.42,
+    "flee_speed": 0.65,
+    "escape_timeout": 2.2,
+    "seed": 926,
+    "walk_time_min": 2.4,
+    "walk_time_max": 5.2,
+    "rest_time_min": 1.5,
+    "rest_time_max": 3.8,
+    "range_turn_margin": 1.8,
+    "range_stop_margin": 0.6,
+    "arrival_distance": 0.35,
+    "clearance": 0.45,
+    "slow_distance": 0.7,
+    "response_time": 1.5,
+    "separation_priority_gap": 0.65,
+    "rest_actions": {
+      "dog": [
+        "sniff",
+        "lie",
+        "sit"
+      ],
+      "cat": [
+        "sit",
+        "lie",
+        "knead"
+      ]
+    },
+    "threat_action": "alert"
+  },
+  "review": {
+    "dt": 0.016666666666666666,
+    "cycle": 16,
+    "walk_until": 2,
+    "hold_until": 10,
+    "speed": 0.35,
+    "trot_speed_fraction": 0.7,
+    "turn_frequency": 0.3,
+    "turn_amplitude": 0.6,
+    "behaviour_camera_size": 4.2,
+    "frames": 84,
+    "capture_every": 10,
+    "people": [
+      [
+        -2.5,
+        0.0,
+        0.38
+      ],
+      [
+        0,
+        2.6,
+        -0.31
+      ],
+      [
+        2.8,
+        -1.5,
+        0.27
+      ]
+    ],
+    "people_period": 24,
+    "person_hip": 0.8,
+    "person_neck": 1.35,
+    "person_head": 1.5,
+    "person_head_radius": 0.1,
+    "person_width": 0.04,
+    "person_stride": 0.25,
+    "person_step_frequency": 4,
+    "person_shoulder": 1.2,
+    "person_arm": 0.45,
+    "person_arm_side": 0.18,
+    "approach_speed": 0.32,
+    "approach_start": [
+      0,
+      0,
+      -1.8
+    ],
+    "range_center": [
+      0,
+      0,
+      0
+    ],
+    "range_radius": 4.0,
+    "behaviour_duration": 60,
+    "frame": 2.0
+  },
+  "checks": {
+    "bone": 0.0001,
+    "paw": 0.001,
+    "jointSpeed": 8.0
+  }
+}

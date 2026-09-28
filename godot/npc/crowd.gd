@@ -19,9 +19,11 @@ extends Node3D
 const ClipPose := preload("res://npc/clip_pose.gd")
 const InkFigure := preload("res://npc/ink_figure.gd")
 const DogWalker := preload("res://npc/dog_walker.gd")
+const AnimalBody := preload("res://npc/animal_body.gd")
 const Rider := preload("res://npc/rider.gd")
 const WalkGrid := preload("res://core/walk_grid.gd")
 const Behaviour := preload("res://npc/behaviour.gd")
+const ClipSetup := preload("res://npc/clip_setup.gd")
 const PARAMS := "res://npc/crowd-params.json"
 ## population.tres field -> kind
 const POPULATION := {"pedestrians": "pedestrian", "joggers": "jogger", "dog_walkers": "dog_walker",
@@ -127,24 +129,40 @@ func _setup() -> void:
 			posts.append({"marker": m, "kind": kind, "object": m.get_parent(), "agent": null, "arrived": false})
 		elif not p.posts.has(kind):
 			_fail("no post kind %s in %s (marker %s)" % [kind, PARAMS, m.get_path()])
-		elif rng.randf() < p.posts[kind].chance:
+		elif p.posts[kind].chance > 0 and not p.posts[kind].clips.is_empty() and rng.randf() < p.posts[kind].chance:
 			people.append(_post_person(m, p.posts[kind]))
 	for kind in wanted:
 		for i in wanted[kind]:
 			_spawn(kind, true)
 
-## Every clip named in crowd-params must load.
+## Every clip named in crowd-params must load and be used where npc/clip-setup.json allows (a clip
+## declared for a post kind only in posts of that kind). Clips whose declaration names something
+## missing are taken out of the lists here, so they are never played; a post kind left with none
+## gets nobody.
 func _check_clips() -> void:
+	var setup = ClipSetup.shared()
+	if setup.error != "":
+		_fail(setup.error)
+		return
 	var lists := []
 	for k in p.walkers:
-		lists.append(p.walkers[k].clips)
+		lists.append([p.walkers[k], "", "%s walkers.%s" % [PARAMS, k]])
 	for k in p.posts:
-		lists.append(p.posts[k].clips)
-	for clips in lists:
-		for id in clips:
+		lists.append([p.posts[k], k, "%s posts.%s" % [PARAMS, k]])
+	for l in lists:
+		var ok := {}
+		for id in l[0].clips:
 			var c = ClipPose.of(id)
 			if c.error != "":
 				_fail("clip %s: %s" % [id, c.error])
+			var e: String = setup.check_use(id, l[1], l[2])
+			if e != "":
+				_fail(e)
+			if setup.missing(id).is_empty():
+				ok[id] = l[0].clips[id]
+		if ok.is_empty() and l[1] == "":
+			_fail("%s: every clip misses something (npc/clip-setup.json); walkers need one" % l[2])
+		l[0].clips = ok
 
 ## Each mode in use needs a way in at both ends, and every way in must reach the other end.
 func _check_exits(wanted: Dictionary) -> void:
@@ -272,7 +290,11 @@ func _spawn(kind: String, anywhere: bool) -> void:
 		_new_walker_trip(person, _start_point(anywhere))
 		people.append(person)
 	elif kind == "dog_walker":
-		var person := {"type": "dog", "kind": kind, "walker": _figure(body_scale), "dog": _figure(1.0), "rope": _figure(1.0)}
+		var breed := _pick(p.dogWalker.breeds)
+		var dog := AnimalBody.new()
+		add_child(dog)
+		dog.setup(breed)
+		var person := {"type": "dog", "kind": kind, "walker": _figure(body_scale), "dog": dog, "breed": breed, "rope": _figure(1.0)}
 		_new_dog_trip(person, _start_point(anywhere))
 		people.append(person)
 	else:
@@ -297,7 +319,7 @@ func _new_walker_trip(person: Dictionary, from: Vector3) -> void:
 		_die("walker trip from %s has nowhere to go" % from)
 
 func _new_dog_trip(person: Dictionary, from: Vector3) -> void:
-	var dw := DogWalker.new(from, rng.randf() * TAU, body_scale, grid.height_at)
+	var dw := DogWalker.new(from, rng.randf() * TAU, body_scale, grid.height_at, person.breed)
 	if dw.error != "":
 		_fail("dog walker: " + dw.error)
 		return
@@ -353,7 +375,7 @@ func _process(frame_dt: float) -> void:
 	var cam := get_viewport().get_camera_3d()
 	_view = cam.get_frustum() if cam != null else []
 	_frame += 1
-	_every = maxi(1, floori(cam.size / p.redrawMetres)) if cam != null and cam.projection == Camera3D.PROJECTION_ORTHOGONAL else 1
+	_every = maxi(1, floori(_view_height(cam) / p.redrawMetres)) if cam != null else 1
 	for k in n:
 		_draw = k == n - 1
 		for person in people:
@@ -412,8 +434,9 @@ func _update_dog(person: Dictionary, dt: float) -> void:
 	var w: Node3D = person.walker
 	w.transform = dw.walker_transform().scaled_local(Vector3.ONE * dw.body_scale)
 	_draw_figure(w, dw.walker_drawing())
-	_draw_figure(person.dog, dw.dog_drawing())
-	_draw_figure(person.rope, dw.rope_drawing())
+	var dog_pose := dw.dog_pose()
+	person.dog.show_pose(dog_pose)
+	_draw_figure(person.rope, dw.rope_drawing(dog_pose.collar))
 
 func _update_rider(person: Dictionary, dt: float) -> void:
 	var rp: Dictionary = p.riders[person.kind]
@@ -596,6 +619,13 @@ func _off_screen(figures: Array, at: Vector3) -> bool:
 	for f in figures:
 		f.visible = not off
 	return off
+
+## Metres of ground the screen is tall where the camera looks: the orbit camera's zoom, else the
+## orthogonal size, else (a perspective camera that is not the orbit camera) 0.
+static func _view_height(cam: Camera3D) -> float:
+	if "height" in cam:
+		return cam.height
+	return cam.size if cam.projection == Camera3D.PROJECTION_ORTHOGONAL else 0.0
 
 ## True when this figure keeps last frame's pose (see _every).
 func _stale(fig: Node3D) -> bool:

@@ -11,10 +11,14 @@
 ## got up from, still the best thing around, would seat them again at once).
 ## person: {kind, pos, action, clock (seconds alive), done (row -> clock when last done)}.
 ## Tables: npc/behaviour-table.json (the rows), npc/behaviour-people.json (kinds of people).
+## npc/clip-setup.json: a clip declared for a post kind may only be in a post:<kind> row of that kind
+## (an error otherwise); a clip whose declaration names something missing is never picked, and a row
+## left with no clip to pick is never a candidate (like a post kind no object offers).
 ## Moving and drawing are npc/crowd.gd's; this file only chooses.
 extends RefCounted
 
 const ClipPose := preload("res://npc/clip_pose.gd")
+const ClipSetup := preload("res://npc/clip_setup.gd")
 const TABLE := "res://npc/behaviour-table.json"
 const PEOPLE := "res://npc/behaviour-people.json"
 const DOS := ["go", "leave", "play", "use"]
@@ -22,6 +26,7 @@ const DOS := ["go", "leave", "play", "use"]
 var error := ""
 var t: Dictionary        # the table
 var people: Dictionary   # kind -> {tags, walk}
+var usable: Array        # per row: the row's clip weights without clips that miss something
 
 ## Reads and checks both tables; check `error`. A post row whose kind no object offers is fine: it
 ## just never has a candidate.
@@ -34,6 +39,10 @@ func _init() -> void:
 		if not t.has(k):
 			error = "%s: no %s" % [TABLE, k]
 			return
+	var setup = ClipSetup.shared()
+	if setup.error != "":
+		error = setup.error
+		return
 	var used_tags := {}
 	for i in t.rows.size():
 		var r: Dictionary = t.rows[i]
@@ -56,11 +65,18 @@ func _init() -> void:
 			if not String(w).begins_with("taken:") or from_self:
 				error = "%s: unknown gate %s (only taken:<kind>, on post rows)" % [where, w]
 				return
+		var ok := {}
 		for c in r.clips:
 			var clip = ClipPose.of(c)
 			if clip.error != "":
 				error = "%s: clip %s: %s" % [where, c, clip.error]
 				return
+			error = setup.check_use(c, "" if from_self else String(r.from).substr(5), where)
+			if error != "":
+				return
+			if setup.missing(c).is_empty():
+				ok[c] = r.clips[c]
+		usable.append(ok)
 		for tag in r.get("tags", []):
 			used_tags[tag] = true
 	for kind in people:
@@ -77,6 +93,9 @@ func _init() -> void:
 		for c in who.walk:
 			if ClipPose.of(c).error != "":
 				error = "%s: %s walk clip %s: %s" % [PEOPLE, kind, c, ClipPose.of(c).error]
+				return
+			error = setup.check_use(c, "", "%s: %s walk" % [PEOPLE, kind])
+			if error != "":
 				return
 
 func _read(path: String) -> Dictionary:
@@ -122,6 +141,8 @@ func choose(person: Dictionary, posts: Array, rng: RandomNumberGenerator):
 			continue  # doing it already: not restarted by its own row
 		if person.get("done", {}).get(r, -INF) > person.clock - t.again:
 			continue  # finished it lately: done means done, not straight back to the same thing
+		if usable[r].is_empty():
+			continue  # every clip of the row misses something (npc/clip-setup.json)
 		var row: Dictionary = t.rows[r]
 		if row.from == "self":
 			var s := score(r, person.kind, person.pos, null)
@@ -142,7 +163,7 @@ func choose(person: Dictionary, posts: Array, rng: RandomNumberGenerator):
 	if best == null or best_pick <= value(person):
 		return null
 	var row: Dictionary = t.rows[best.row]
-	var action := {"row": best.row, "do": row.do, "post": best.post, "clip": _pick(row.clips, rng), "plays": 0, "time": 0.0,
+	var action := {"row": best.row, "do": row.do, "post": best.post, "clip": _pick(usable[best.row], rng), "plays": 0, "time": 0.0,
 		"arrived": false, "jitter": best_pick - best.score}
 	if row.has("plays"):
 		action.plays = rng.randi_range(row.plays[0], row.plays[1])

@@ -1,0 +1,54 @@
+{
+  "name": "animal_shibainu",
+  "source": "D:/Godot/assets/quaternius-ultimate-animals/Blends/ShibaInu.blend",
+  "shoulder_height": 0.39,
+  "source_rotation_z_deg": 0,
+  "front_roots": [
+    "FrontShoulder.L",
+    "FrontShoulder.R"
+  ],
+  "hind_roots": [
+    "BackShoulder.L",
+    "BackShoulder.R"
+  ],
+  "paws": [
+    "FF.L",
+    "FF.R",
+    "FFB.L",
+    "FFB.R"
+  ],
+  "remapping": {
+    "IKFrontLeg.L": "FF.L",
+    "IKFrontLeg.R": "FF.R",
+    "IKBackLeg.L": "FFB.L",
+    "IKBackLeg.R": "FFB.R"
+  },
+  "reparent": {
+    "FF.L": "FrontLowerLeg.L",
+    "FF.R": "FrontLowerLeg.R",
+    "FFB.L": "BackLowerLeg.L",
+    "FFB.R": "BackLowerLeg.R"
+  },
+  "bone_count": 38,
+  "actions": {
+    "Attack": 37,
+    "Death": 33,
+    "Eating": 81,
+    "Gallop": 18,
+    "Gallop_Jump": 29,
+    "Idle": 101,
+    "Idle_2": 101,
+    "Idle_2_HeadLow": 121,
+    "Idle_HitReact_Left": 21,
+    "Idle_HitReact_Right": 21,
+    "Jump_ToIdle": 41,
+    "Walk": 33
+  },
+  "fps": 30,
+  "species": "shibainu",
+  "aliases": {
+    "Tail4": null,
+    "Tail5": null,
+    "Tail6": null
+  }
+}

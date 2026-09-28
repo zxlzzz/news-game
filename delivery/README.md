@@ -36,8 +36,8 @@ delivery/
 
 - **可以新建**：`godot/npc/` 下新的动物文件（如 `procedural_cat.gd`、`cat-params.json`、行为控制器）、`godot/tools/` 下新的预览场景和检查脚本（如 `animal_review.tscn`、`check_animals.gd`）。
 - **可以改**：`godot/npc/procedural_dog.gd`、`dog-params.json`（加原地动作和体型）、`godot/tools/check_locomotion.gd`（加检查）。改完 `check_locomotion.gd` 必须仍然 `LOCOMOTION_OK`，`dog_walker.gd` 用到的接口不能变（牵狗的人要照常能用）。
-- **不要改**：`npc/crowd.gd`、`core/`、`scenes/`、`types/` 以及别的现有文件。接进街道场景是 Claude 之后的事。
-- **验收看独立预览**：做一个预览场景（参照 `godot/tools/locomotion_review.tscn`），能单独看每个原地动作和过渡、每种体型、猫的全套；行为（流浪狗走走停停、有人靠近就走开、猫狗互动）在预览里用几个按固定路线走的假人演示。另录动图（参照 `godot/tools/record_review.py`）。
+- **不要改**：`npc/crowd.gd`、`core/`、`scenes/`（`scenes/empty_ground/movers.json` 可以加条目）、`types/` 以及别的现有文件。接进街道场景是 Claude 之后的事。
+- **验收看独立预览**：在空地场景里能看（`godot/scenes/empty_ground/`：往 `movers.json` 加条目，参照已有的狗、鸽子），能单独看每个原地动作和过渡、每种体型、猫的全套；行为（流浪狗走走停停、有人靠近就走开、猫狗互动）在预览里用几个按固定路线走的假人演示。另录动图（参照 `godot/tools/record_review.py`）。
 - 画法照现有的狗：纯黑剪影、3D 点每帧现算。数值全放 JSON，代码里不写。
 - 说明里列出改了和新建的每个文件。
 

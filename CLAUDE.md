@@ -13,6 +13,7 @@
 | `docs/design_route_npc_behavior.md`、`docs/design_route_npc_motion_supply.md`、`docs/design_route_animal_motion.md`、`docs/anim.md` | NPC 行为、人和动物动作的设计路线 |
 | `docs/design-plans/npc-skeleton-mapping.md` | 火柴人映射规则和参数（唯一来源） |
 | `docs/design-plans/two-streets.md` | 两条街大场景的要求：镜头操作、布局、先做的技术项（场景在 `godot/scenes/two_streets/`） |
+| `godot/npc/clip-setup.json`、`godot/scenes/empty_ground/` | 动作要什么（位置、配件、另一人）；空地：一条条看动作、拖着调相对位置（说明在 `godot/README.md`"空地"） |
 | `assets/动作生成任务清单.md`、`assets/动作素材清单.md` | Kimodo 动作素材的任务队列和已交付情况 |
 | `memory.md` | 跨会话备忘（英文），只在 Hsinlung 说"更新memo"时改 |
 
@@ -22,6 +23,8 @@
 
 - 文件只记推不出来的，其余由代码推导；数值放 JSON / `.tres`，不写死在代码里。
 - 数据有错（材质没映射、动作名写错、走不到的区域……）直接报错退出，不兜底、不静默跳过。
+  - 唯一的例外是"缺东西"：`npc/clip-setup.json` 里一条动作的声明引用的物件类型（没有类型提供那种 `post_<种类>`）、配件类型、另一人的动作文件还不存在时，不退出：空地列表里照样显示、灰掉并写明缺什么，游戏里这条动作不进候选。其余数据错误照旧报错退出。
+- 位置信息只写一处，写在不动的那一方身上：人在物件上的站位 → 物件类型的 `post_<种类>` 标记；配件在手里 → `types/held_<名>.tscn` 的 `model` 偏移；两人之间 → `clip-setup.json` 的 `partner`。动作的声明只写名字，不写几何。
 - 模型：单位米、原点在底面接地点、正面朝 +Z、材质名即色槽名、只等比缩放；类型根节点不带缩放，缩放在子节点 `model` 上。每个模型配一个能重跑出同一 glb 的 `build_<名字>.py`。
 - 画风（灰度、描线）只在运行时套，不烘焙进模型。
 - 不要自己改 `scenes/street_demo`，除非 Hsinlung 要求。
@@ -34,6 +37,7 @@
 - `godot --headless --path . -s res://tools/check_walk_grid.gd` → `WALK_GRID_OK`（测试场景 `scenes/walk_grid_test/`：桥、台阶、路沿、栏杆等；另查 street_demo、two_streets 能建网格）
 - `godot --headless --path . -s res://tools/check_camera.gd` → `CAMERA_OK`（能转的镜头）
 - `godot --headless --path . -s res://tools/check_behaviour.gd` → `BEHAVIOUR_OK`（两条街的行为表：各种行为都有人做）
+- `godot --headless --path . -s res://tools/check_empty_ground.gd` → `EMPTY_GROUND_OK`（空地 `scenes/empty_ground/`：列表里每一项逐条摆一遍、播一遍，缺东西的打印出来）
 - `python modeling/check_model.py <glb>` → `PASS`
 - `godot` = `D:/Godot/Godot_v4.7.2-stable_win64_console.exe`；跑 Godot 要在 Hsinlung 给的授权范围内（见 `memory.md`「Running the game」）。
 

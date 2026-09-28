@@ -1,7 +1,10 @@
 ## Runs scenes/two_streets for five simulated minutes without drawing and counts what the
 ## behaviour-driven pedestrians (npc/behaviour.gd) do: at every simulated 10 s, how many stroll,
 ## leave, play where they stand or are at each kind of post, how many of each were started and what
-## trips to a post were given up for. Fails when a post kind in the scene is never used. Prints the counts and BEHAVIOUR_OK or BEHAVIOUR_FAIL.
+## trips to a post were given up for. Fails when a post kind in the scene that has a post:<kind> row in
+## npc/behaviour-table.json is never used; kinds the scene offers but no row uses (their clips are
+## declared in npc/clip-setup.json, rows not written yet) are only listed. Prints the counts and
+## BEHAVIOUR_OK or BEHAVIOUR_FAIL.
 ##   godot --headless --path . -s res://tools/check_behaviour.gd
 extends SceneTree
 
@@ -62,7 +65,14 @@ func _process(_d: float) -> bool:
 		print(l)
 	print("started in %d s: %s" % [SECONDS, started])
 	print("posts given up on the way: %s" % dropped)
-	var never := kinds.keys().filter(func(k): return not used.has(k))
+	var rows := {}
+	for r in crowd.beh.t.rows:
+		if String(r.from).begins_with("post:"):
+			rows[String(r.from).substr(5)] = true
+	var no_row := kinds.keys().filter(func(k): return not rows.has(k))
+	if not no_row.is_empty():
+		print("post kinds in the scene with no row in the behaviour table (not used): %s" % [no_row])
+	var never := kinds.keys().filter(func(k): return rows.has(k) and not used.has(k))
 	if not never.is_empty():
 		printerr("BEHAVIOUR_FAIL: posts never used in %d s: %s" % [SECONDS, never])
 		quit(1)

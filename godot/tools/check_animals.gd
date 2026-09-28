@@ -1,120 +1,148 @@
-## Full action, transition, roaming-boundary and cat/dog body-clearance checks.
+## Checks the model animals (npc/animal.gd, npc/animal_model.gd) and their behaviour without drawing.
+## Prints ANIMALS_OK or the failures.   godot --headless --path . -s res://tools/check_animals.gd
+##  - every breed of npc/animal-models.json loads: bones, legs and every clip its species' actions use;
+##  - the controller (npc/animal_controller.gd): it does not change its input, a dog moves away from a
+##    near person, a cat does the threat action at a dog not too near and runs from a close one;
+##  - every breed does every action of its species in the review scenario (walk, the action, walk on)
+##    at 30/60/120 frames per second: no bone changes length, no joint moves faster than
+##    checks.jointSpeed, while walking every paw is where the gait plants it, and it walks again after;
+##  - the behaviour preview of each species is reproducible, keeps within its range, the cat never
+##    touches the dog, and the dog both walks and rests, heading several ways.
 extends SceneTree
-const Animal=preload("res://npc/animal_actions.gd")
-const Dog=preload("res://npc/procedural_dog.gd")
-const Cat=preload("res://npc/procedural_cat.gd")
+const Animal = preload("res://npc/animal.gd")
+const AnimalModel = preload("res://npc/animal_model.gd")
 const Preview = preload("res://tools/animal_behaviour_preview.gd")
-const Brain=preload("res://npc/animal_controller.gd")
-func _initialize():
-	var c=Dog.load_params("res://npc/animal-actions.json")
-	var breeds=Dog.load_params("res://npc/animal-breeds.json")
-	breeds.cat=Dog.load_params("res://npc/cat-params.json")
-	var worst=0.0
-	var jump=0.0
-	var worst_where=""
-	var failures=[]
-	var brain=Brain.create()
-	var saved=brain.duplicate(true)
-	var flee=Brain.step(brain,Vector3.ZERO,[{"position":Vector3(0,0,c.brain.avoid_person/2)}],[],c.review.dt,c,"dog",Animal._v(c.review.range_center),c.review.range_radius,Brain.body_radius(breeds.medium))
-	assert(brain==saved,"controller mutated its input")
-	assert(flee.velocity.z<0 and flee.action=="","dog must move away from a nearby person")
-	var alert=Brain.step(brain,Vector3.ZERO,[],[{"position":Vector3(0,0,(c.brain.avoid_animal+c.brain.flee_distance)/2),"species":"dog","radius":Brain.body_radius(breeds.medium)}],c.review.dt,c,"cat",Animal._v(c.review.range_center),c.review.range_radius,Brain.body_radius(breeds.cat))
-	assert(alert.action=="arch","cat must arch at a moderately near dog")
-	var escape=Brain.step(brain,Vector3.ZERO,[],[{"position":Vector3(0,0,c.brain.flee_distance/2),"species":"dog","radius":Brain.body_radius(breeds.medium)}],c.review.dt,c,"cat",Animal._v(c.review.range_center),c.review.range_radius,Brain.body_radius(breeds.cat))
-	assert(escape.velocity.z<0,"cat must flee from a close dog")
-	for fps in [30,60,120]:
-		var cat=Cat.create(Vector3.ZERO,0,breeds.cat)
-		for target in [Vector3(0,c.jump.platform_height,c.jump.distance),Vector3(0,0,c.jump.distance*2)]:
-			var prev_points=Cat.pose(cat,breeds.cat,c)
-			cat=Cat.step(cat,{"jump_to":target},1.0/fps,breeds.cat,c)
-			for frame in ceili((c.jump.prepare+c.jump.duration+c.jump.land)*fps)+1:
-				cat=Cat.step(cat,{"speed":0.0,"yaw":0.0,"action":""},1.0/fps,breeds.cat,c)
-				var pts=Cat.pose(cat,breeds.cat,c)
-				for leg in Dog.LEGS:
-					var limb=Dog._leg(leg,breeds.cat)
-					var lengths=[limb.a,limb.b,limb.c]
-					for j in 3:
-						worst=maxf(worst,absf(pts[leg][j].distance_to(pts[leg][j+1])-lengths[j]))
-					for j in 4:
-						jump=maxf(jump,pts[leg][j].distance_to(prev_points[leg][j]))
-				prev_points=pts
-			if not cat.jump.is_empty() or absf(cat.height-target.y)>c.tolerances.bone:
-				failures.append("cat did not land")
-	print("ANIMAL_BRAIN_AND_JUMP_CHECKED")
-	for breed in breeds:
-		var p=breeds[breed]
-		for action in c.actions:
-			for fps in [30,60,120]:
-				var s=Animal.create(Vector3.ZERO,0,p)
-				var prev={}
-				for frame in int(c.review.cycle*fps):
-					var t=float(frame)/fps
-					var active=t>=c.review.walk_until and t<c.review.hold_until
-					s=Animal.step(s,{"speed":c.review.speed,"yaw":0,"action":action if active else ""},1.0/fps,p,c)
-					var pts=Animal.pose(s,p,c)
-					if pts.is_empty():
-						failures.append("empty pose "+breed+" "+action)
-						break
-					for leg in Dog.LEGS:
-						var limb=Dog._leg(leg,p)
-						var lengths=[limb.a,limb.b,limb.c]
-						for j in 3:
-							worst=maxf(worst,absf(pts[leg][j].distance_to(pts[leg][j+1])-lengths[j]))
-						for j in 4:
-							if not pts[leg][j].is_finite():
-								failures.append("nonfinite "+breed+" "+action)
-							if not prev.is_empty():
-								var distance=pts[leg][j].distance_to(prev[leg][j])
-								if distance>jump:
-									jump=distance
-									worst_where="%s %s %d fps t=%.3f %s %d" % [breed,action,fps,t,leg,j]
-					prev=pts
-				if s.phase!="walk":
-					failures.append("did not resume walking "+breed+" "+action)
-		print("ANIMAL_CHECKED ",breed)
+const Brain = preload("res://npc/animal_controller.gd")
+
+var failures := []
+
+func _fail(msg: String) -> void:
+	failures.append(msg)
+	printerr("  FAIL ", msg)
+
+func _initialize() -> void:
+	var c: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://npc/animal-behaviour.json"))
+	var models := {}
+	for breed in AnimalModel.config().breeds:
+		var m := AnimalModel.info(breed)
+		if m.error != "":
+			_fail(m.error)
+		else:
+			models[breed] = m
+	if not failures.is_empty():
+		_finish()
+		return
+	_check_brain(c, models[AnimalModel.breeds("dog")[0]], models[AnimalModel.breeds("cat")[0]])
+	for breed in models:
+		_check_actions(c, models[breed])
 	for species in ["dog", "cat"]:
-		var parameters: Dictionary = breeds.cat if species == "cat" else breeds.medium
-		for fps in [30, 60, 120]:
-			var state = Preview.create(species, parameters, c)
-			var repeat = Preview.create(species, parameters, c)
-			var minimum_gap = INF
-			var maximum_radius = 0.0
-			var modes = {}
-			var directions = {}
-			for frame in int(c.review.behaviour_duration * fps):
-				state = Preview.step(state, species, parameters, c, 1.0 / fps)
-				repeat = Preview.step(repeat, species, parameters, c, 1.0 / fps)
-				assert(state == repeat, "behaviour must be reproducible")
-				var position: Vector3 = state.animal.base.walk.position if species == "cat" else state.animal.walk.position
-				maximum_radius = maxf(maximum_radius, position.distance_to(Animal._v(c.review.range_center)) + Brain.body_radius(parameters))
-				modes[state.brain.mode] = true
-				directions[roundi(state.brain.yaw)] = true
-				if species == "cat":
-					minimum_gap = minf(minimum_gap, Preview.body_gap(state, parameters))
-			if maximum_radius > c.review.range_radius:
-				failures.append("roaming outside input range: " + species)
-			if species == "cat" and minimum_gap <= 0:
-				failures.append("cat/dog body overlap")
-			if species == "dog" and (not modes.has("rest") or not modes.has("walk") or directions.size() < 3):
-				failures.append("roaming lacks stops or distinct headings")
-			print("BEHAVIOUR %s %d fps: radius %.4f / %.2f, body gap %.5f m, headings %d, modes %s" % [species, fps, maximum_radius, c.review.range_radius, minimum_gap, directions.size(), modes.keys()])
-	for breed in ["small", "medium", "large"]:
-		var parameters: Dictionary = breeds[breed]
-		var state = Animal.create(Vector3.ZERO, 0, parameters)
-		for frame in int(c.review.hold_until / c.review.dt):
-			state = Animal.step(state, {"speed": 0, "yaw": 0, "action": "sit"}, c.review.dt, parameters, c)
-		var points = Animal.pose(state, parameters, c)
-		for leg in ["LF", "RF"]:
-			for joint in 4:
-				if Vector2(points[leg][joint].x - points[leg][3].x, points[leg][joint].z - points[leg][3].z).length() > c.tolerances.bone:
-					failures.append("sit front leg not vertical " + breed)
-		if absf(points.spine[0].y - maxf(parameters.silhouette.hipDisc, parameters.silhouette.spine / 2)) > c.tolerances.bone:
-			failures.append("sit hip not grounded " + breed)
-	if worst>c.tolerances.bone:
-		failures.append("bone error %f" % worst)
-	if jump>c.tolerances.step:
-		failures.append("pose discontinuity %f" % jump)
-	print("animal bone error %.8f m, largest frame displacement %.5f m" % [worst,jump])
-	print("largest displacement at ",worst_where)
-	print("ANIMALS_OK" if failures.is_empty() else failures)
+		_check_behaviour(c, models[AnimalModel.breeds(species)[0]], models[AnimalModel.breeds("dog")[0]])
+	_finish()
+
+func _finish() -> void:
+	print("ANIMALS_OK" if failures.is_empty() else "ANIMALS_FAIL %d" % failures.size())
 	quit(0 if failures.is_empty() else 1)
+
+func _check_brain(c: Dictionary, dog: Dictionary, cat: Dictionary) -> void:
+	var centre := Preview._v(c.review.range_center)
+	var dog_r := Brain.body_radius(dog.p)
+	var cat_r := Brain.body_radius(cat.p)
+	var brain := Brain.create()
+	var saved: Dictionary = brain.duplicate(true)
+	var flee: Dictionary = Brain.step(brain, Vector3.ZERO, [{"position": Vector3(0, 0, c.brain.avoid_person / 2)}], [], c.review.dt, c, "dog", centre, c.review.range_radius, dog_r)
+	if brain != saved:
+		_fail("controller changed its input")
+	if not (flee.velocity.z < 0 and flee.action == ""):
+		_fail("a dog does not move away from a near person")
+	var wary: Dictionary = Brain.step(brain, Vector3.ZERO, [], [{"position": Vector3(0, 0, (c.brain.avoid_animal + c.brain.flee_distance) / 2), "species": "dog", "radius": dog_r}], c.review.dt, c, "cat", centre, c.review.range_radius, cat_r)
+	if wary.action != c.brain.threat_action:
+		_fail("a cat does not %s at a dog not too near (does %s)" % [c.brain.threat_action, wary.action])
+	var escape: Dictionary = Brain.step(brain, Vector3.ZERO, [], [{"position": Vector3(0, 0, c.brain.flee_distance / 2), "species": "dog", "radius": dog_r}], c.review.dt, c, "cat", centre, c.review.range_radius, cat_r)
+	if escape.velocity.z >= 0:
+		_fail("a cat does not run from a close dog")
+	for species in c.brain.rest_actions:
+		for action in c.brain.rest_actions[species]:
+			if not action in AnimalModel.config().species[species]:
+				_fail("brain rest action %s is not an action of %s" % [action, species])
+
+func _check_actions(c: Dictionary, m: Dictionary) -> void:
+	var q: Dictionary = c.review
+	var k: Dictionary = c.checks
+	var flat := func(_p: Vector3) -> float: return 0.0
+	var worst_bone := 0.0
+	var worst_speed := 0.0
+	var worst_speed_at := ""
+	var worst_paw := 0.0
+	for action in AnimalModel.config().species[m.species]:
+		for fps in [30, 60, 120]:
+			var dt: float = 1.0 / fps
+			var s := Animal.create(Vector3.ZERO, 0.0, m)
+			var prev := []
+			var did := false
+			for frame in int(q.cycle * fps):
+				var t: float = float(frame) / fps
+				var active: bool = t >= q.walk_until and t < q.hold_until
+				s = Animal.step(s, {"speed": q.speed, "yaw": 0.0, "action": action if active else "", "ground": flat}, dt, m)
+				did = did or Animal.doing(s) != "walk"
+				var pose := AnimalModel.pose(m, s)
+				var world := []
+				for i in pose.globals.size():
+					var x: Transform3D = pose.locals[i]
+					if not (x.origin.is_finite() and x.basis.is_finite()):
+						_fail("%s %s: bone %s not finite" % [m.breed, action, m.names[i]])
+						return
+					world.append(pose.root * (pose.globals[i].origin as Vector3))
+				for key in AnimalModel.LEGS:
+					var ids: Array = m.legs[key].ids
+					for j in range(1, ids.size()):
+						worst_bone = maxf(worst_bone, absf((pose.locals[ids[j]].origin as Vector3).length() - (m.rest[ids[j]].origin as Vector3).length()))
+					if s.weight == 0:
+						var turn := Basis(Vector3.UP, s.yaw if key[1] == "F" else s.hipYaw)
+						var want: Vector3 = s.feet[key].point + turn * ((m.rest_global[ids[-1]].origin as Vector3) - m.legs[key].sole)
+						worst_paw = maxf(worst_paw, world[ids[-1]].distance_to(want))
+				if not prev.is_empty():
+					for i in world.size():
+						var v: float = world[i].distance_to(prev[i]) / dt
+						if v > worst_speed:
+							worst_speed = v
+							worst_speed_at = "%s %s %d fps t=%.2f %s (%s)" % [m.breed, action, fps, t, m.names[i], Animal.doing(s)]
+				prev = world
+			if not did:
+				_fail("%s never did %s" % [m.breed, action])
+			if Animal.doing(s) != "walk":
+				_fail("%s does not walk again after %s (%s)" % [m.breed, action, Animal.doing(s)])
+	if worst_bone > k.bone:
+		_fail("%s: a leg bone changes length by %.5f m" % [m.breed, worst_bone])
+	if worst_paw > k.paw:
+		_fail("%s: a walking paw is %.4f m from where the gait planted it" % [m.breed, worst_paw])
+	if worst_speed > k.jointSpeed:
+		_fail("%s: a joint moves at %.1f m/s at %s" % [m.breed, worst_speed, worst_speed_at])
+	print("%s: bone error %.6f m, walking paw error %.5f m, fastest joint %.2f m/s at %s" % [m.breed, worst_bone, worst_paw, worst_speed, worst_speed_at])
+
+func _check_behaviour(c: Dictionary, m: Dictionary, dog: Dictionary) -> void:
+	for fps in [30, 60, 120]:
+		var state := Preview.create(m, dog, c)
+		var repeat := Preview.create(m, dog, c)
+		var minimum_gap := INF
+		var maximum_radius := 0.0
+		var modes := {}
+		var directions := {}
+		for frame in int(c.review.behaviour_duration * fps):
+			state = Preview.step(state, m, dog, c, 1.0 / fps)
+			repeat = Preview.step(repeat, m, dog, c, 1.0 / fps)
+			if state != repeat:
+				_fail("%s behaviour is not reproducible" % m.species)
+				return
+			var position: Vector3 = state.animal.position
+			maximum_radius = maxf(maximum_radius, position.distance_to(Preview._v(c.review.range_center)) + Brain.body_radius(m.p))
+			modes[state.brain.mode] = true
+			directions[roundi(state.brain.yaw)] = true
+			if m.species == "cat":
+				minimum_gap = minf(minimum_gap, Preview.body_gap(state, m, dog))
+		if maximum_radius > c.review.range_radius:
+			_fail("%s roams outside its range (%.2f of %.2f m)" % [m.species, maximum_radius, c.review.range_radius])
+		if m.species == "cat" and minimum_gap <= 0:
+			_fail("cat touches the dog")
+		if m.species == "dog" and (not modes.has("rest") or not modes.has("walk") or directions.size() < 3):
+			_fail("dog roaming lacks stops or distinct headings")
+		print("behaviour %s %d fps: radius %.2f / %.2f, body gap %.3f m, headings %d, modes %s" % [m.species, fps, maximum_radius, c.review.range_radius, minimum_gap, directions.size(), modes.keys()])

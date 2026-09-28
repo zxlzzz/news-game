@@ -181,7 +181,12 @@ static func apply(root: Node, fill_params: Dictionary, line_mat: ShaderMaterial,
 			li.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			mi.add_child(li)
 
+## Figures that draw themselves in one ink colour (group SELF_INKED: the model animals) are left alone.
+const SELF_INKED := "self_inked"
+
 static func _collect(n: Node, out: Array[MeshInstance3D]) -> void:
+	if n.is_in_group(SELF_INKED):
+		return
 	if n is MeshInstance3D and n.name != "ink_lines" and n.name != "shadow_proxy":
 		out.append(n)
 	for c in n.get_children():

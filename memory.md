@@ -5,7 +5,43 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ---
 
-## Cache — next session (2026-09-27)
+## Cache — next session (2026-09-28)
+
+- **Not committed yet** (he said to wait): the clip-setup / empty-ground work of 2026-09-27
+  (`npc/clip-setup.json` + `npc/clip_setup.gd`, `scenes/empty_ground/`, `types/held_*.tscn`,
+  post / `touch_*` markers from the deleted `support.json`, `tools/check_empty_ground.gd`,
+  review scenes merged into the empty ground) and the clean-up (deleted:
+  `assets/animation_checks/`, `sth/animal-study/`, `godot/docs/npc_path_report.md`, one-off
+  review scripts). All seven checks passed after the clip-setup work. How to use the empty
+  ground and what came from support.json: `godot/README.md` "空地". Open questions I left him:
+  which other two-person clips to declare (whisper, walk_talk, walk_child_hand_down…);
+  give/receive reach at different frames (80 vs 29).
+- **Animals are going to real models (decided 2026-09-27).** He found the procedural dog
+  ugly (every drawn variant, above all the legs) and ChatGPT's own dog_labrador (Skin
+  modifier build) too. Chosen source: **Quaternius Ultimate Animated Animal Pack (CC0)** —
+  he likes `Husky.blend` as is (black). Street use: Husky, ShibaInu; plus `Cat.blend` from
+  Animal Pack Vol.2 if rigged (his `animals.zip` download is truncated). Pigeon stays
+  procedural. His local copies: `%TEMP%\dog_library\`.
+  - Plan: ChatGPT converts them (brief I wrote, given 2026-09-27): real size (shoulder:
+    husky 0.55, shiba 0.39, cat 0.25 m), +Z forward, origin on the ground under the front
+    shoulder joints, one material `animal_ink`, keep original bone names, delete IK / pole
+    bones (merge their weights into the leg chains, bake actions first), keep the original
+    actions as glTF animations, 6 extreme test poses (sit, sphinx, side-lie, leg lift,
+    sniff-turn, tail up/down) rendered; delivery in `delivery/models/animal_<name>/` with
+    `convert_<name>.py` + `verify_<name>.py`; originals stay outside the repo in
+    `D:\Godot\assets\quaternius-*`. Husky first. `check_model.py` fails only on
+    `animal_ink` (expected; add an animal exception to the checker when accepting).
+  - My part: map my procedural points to its bones (Quaternius rig: hind BackLeg →
+    BackUpperLeg → BackLowerLeg + paw, front FrontUpperLeg → FrontLowerLeg + paw, 5 spine,
+    3 neck, 4-bone ears, 6 tail) and drive a Skeleton3D each frame, keeping foot planting,
+    curbs, leash and the in-place actions; its baked actions (Eating, Idle…) can be played
+    directly. Read leg lengths / heights from the skeleton instead of dog-params.json.
+    Check sit / lie deformation first (the source has no such actions).
+  - `delivery/models/dog_labrador/` (ChatGPT's own build) is superseded: rig was right,
+    shape was not; delete it once the Quaternius Husky is in.
+  - **How he will come back to this**: either "do the animal motion" (I integrate straight
+    away: convert if needed, drive the bones, show the empty ground) or "ChatGPT has
+    delivered, review it" (review per the brief above, then integrate).
 
 - **Committed 2026-09-27** on `claude/velocity-unification-v1-946h9l` (he keeps using this
   branch): batches 5 and 6 as accepted, animals (cat, pigeon, dog in-place actions), the
@@ -165,8 +201,8 @@ Detailed asset results belong in the linked inventories, not duplicated here.
   worker into the mounted folder and run it with
   `MSYS_NO_PATHCONV=1 docker compose -f compose.win.yaml run --rm -T --no-deps -e TEXT_ENCODER_URL=http://text-encoder:9550/ demo python -u /workspace/<tmp>/kimodo_motion_batch.py --output /workspace/<tmp>/out < requests`
   (worked 2026-09-25); afterwards delete the temp folder and `start demo` again.
-- Endpoint and contact evidence: [实验说明](assets/animation_checks/endpoint_constraints/说明.md),
-  retained NPZs/arrays/PNGs in that directory, and `scripts/kimodo_constraint_probe.py`.
+- Endpoint and contact evidence: `assets/animation_checks/endpoint_constraints/` (deleted
+  2026-09-28, in git history e55fd50) and `scripts/kimodo_constraint_probe.py`.
   Six contact columns are LeftFoot, LeftToeBase, LeftToeEnd, RightFoot, RightToeBase,
   RightToeEnd (77-joint indices 69/70/71/74/75/76). ToeEnd duplicates ToeBase in the
   four-to-six-column export; these are thresholded model labels, not zero-height tests.
@@ -181,7 +217,8 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ## Third-party model libraries (removed from the repo 2026-09-25)
 
-- The game uses none of them now; new models come from ChatGPT. The repo copies were deleted:
+- The game uses none of them now; new models come from ChatGPT. Exception from 2026-09-27:
+  the animals (Quaternius Ultimate Animated Animal Pack, CC0), see the cache above. The repo copies were deleted:
   `assets/fromgodot/quaternius-*` (Downtown City / Stylized Nature MegaKit, ~2.2 GB, never
   tracked) and `assets/fromgodot/street-selected/` (19 CC0 props, history in git, with its
   `SOURCES.md`; the chess table survives as `godot/models/Chess_Table.glb`).

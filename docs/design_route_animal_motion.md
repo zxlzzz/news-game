@@ -1,8 +1,11 @@
 > **状态：§2 主路线暂定采纳（2026-09-24，Hsinlung："暂定认可，后续有问题再说"）。** §3 其余两项仍待定。
 > 程序步态已移植到 Godot：`godot/npc/procedural_dog.gd` + `dog-params.json`（牵狗 `dog_walker.gd`），
-> 实机动图见 `assets/animation_checks/godot_supply/README.md`。`sth/animal-study/` 只留作动捕对比的研究记录
+> 实机看空地场景 `godot/scenes/empty_ground/`。原来的动图和 `sth/animal-study/`（动捕对比研究）2026-09-28 已删，在 git 历史 e55fd50
 > （对比页 `D:\mocap-trial\preview\dog3d.html`），其中的程序步态是早期版本，不再维护。
 > 本文取代 `anim.md` 里"只走视频动捕"的结论；`anim.md` 的 rig 实测部分仍有效。
+> **2026-09-28 起狗和猫换成真模型**（Quaternius 哈士奇、柴犬、猫，`godot/models/animal_*.glb`；画的剪影和程序摆的原地动作已删）：
+> 走路仍用本文 §2 的程序步态定爪子落点，模型的腿用两节 IK 够过去（骨长、肩高从骨架读），身体前后段各按脚下高度走、上下台阶时前后倾；
+> 原地动作直接播模型里的片段（ChatGPT 做的 `NG_` 系列）。说明见 `godot/README.md`"狗、猫"。鸽子仍是程序画的。
 
 # 动物动作 — 路线（草案）
 

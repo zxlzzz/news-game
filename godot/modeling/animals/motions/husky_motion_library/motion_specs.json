@@ -1,0 +1,643 @@
+{
+  "fps": 30,
+  "tuning": {
+    "breathe_deg": 0.8,
+    "alert_pitch": 10,
+    "look_deg": 50,
+    "tilt_deg": 18,
+    "look_pitch": 20,
+    "ear_deg": 22,
+    "tuck_per_bone": 8,
+    "sniff_air_pitch": 15,
+    "sniff_sweep": 12,
+    "shake_body_deg": 3,
+    "shake_head_deg": 18,
+    "paw_forward": 0.05,
+    "paw_lift": 0.12,
+    "urinate_side": 0.18,
+    "urinate_height": 0.2,
+    "scratch_side": 0.12,
+    "scratch_forward": 0.23,
+    "scratch_height": 0.25,
+    "scratch_amplitude": 0.012,
+    "sleep_pitch": 65,
+    "step_lift": 0.035,
+    "floor_tolerance": 0.0001,
+    "hind_pole_side": 0.45,
+    "poses": {
+      "stand": {},
+      "sit": {
+        "shift": [
+          0,
+          0,
+          -0.33
+        ],
+        "turns": [
+          [
+            "Back",
+            "X",
+            -50
+          ],
+          [
+            "Neck1",
+            "X",
+            35
+          ]
+        ],
+        "feet": {
+          "LF": [
+            0,
+            0.08,
+            0
+          ],
+          "RF": [
+            0,
+            0.08,
+            0
+          ],
+          "LH": [
+            0.04,
+            -0.08,
+            0
+          ],
+          "RH": [
+            -0.04,
+            -0.08,
+            0
+          ]
+        }
+      },
+      "lie": {
+        "shift": [
+          0,
+          0,
+          -0.245
+        ],
+        "feet": {
+          "LF": [
+            0,
+            -0.15,
+            0
+          ],
+          "RF": [
+            0,
+            -0.15,
+            0
+          ]
+        },
+        "turns": [
+          [
+            "Tail1",
+            "X",
+            -75
+          ],
+          [
+            "Tail2",
+            "X",
+            -5
+          ],
+          [
+            "Tail3",
+            "X",
+            -5
+          ],
+          [
+            "Tail4",
+            "X",
+            -5
+          ],
+          [
+            "Tail5",
+            "X",
+            -5
+          ],
+          [
+            "Tail6",
+            "X",
+            -5
+          ]
+        ]
+      },
+      "sniff": {
+        "turns": [
+          [
+            "Back",
+            "X",
+            23
+          ],
+          [
+            "Neck1",
+            "X",
+            55
+          ],
+          [
+            "Neck2",
+            "X",
+            5
+          ],
+          [
+            "Head",
+            "X",
+            -25
+          ]
+        ]
+      },
+      "bow": {
+        "turns": [
+          [
+            "Back",
+            "X",
+            24
+          ],
+          [
+            "Neck1",
+            "X",
+            -12
+          ]
+        ],
+        "feet": {
+          "LF": [
+            0,
+            -0.12,
+            0
+          ],
+          "RF": [
+            0,
+            -0.12,
+            0
+          ]
+        }
+      },
+      "sleep": {
+        "shift": [
+          0,
+          0,
+          -0.245
+        ],
+        "turns": [
+          [
+            "Neck1",
+            "X",
+            70
+          ],
+          [
+            "Head",
+            "X",
+            -35
+          ],
+          [
+            "Tail1",
+            "X",
+            -75
+          ],
+          [
+            "Tail2",
+            "X",
+            -5
+          ],
+          [
+            "Tail3",
+            "X",
+            -5
+          ],
+          [
+            "Tail4",
+            "X",
+            -5
+          ],
+          [
+            "Tail5",
+            "X",
+            -5
+          ],
+          [
+            "Tail6",
+            "X",
+            -5
+          ]
+        ],
+        "feet": {
+          "LF": [
+            0,
+            -0.15,
+            0
+          ],
+          "RF": [
+            0,
+            -0.15,
+            0
+          ]
+        }
+      }
+    },
+    "tuck_base_deg": 75,
+    "scratch_yaw": 60,
+    "scratch_pitch": 65,
+    "scratch_distal_pitch": 130,
+    "ground_iterations": 20,
+    "ground_convergence": 5e-05,
+    "swing_reach_margin": 0.015,
+    "sit_hock_yaw": 25
+  },
+  "clips": [
+    {
+      "name": "NG_Stand_Breathe",
+      "label": "站立呼吸",
+      "kind": "breathe",
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "NG_Stand_Alert",
+      "label": "警觉站立",
+      "kind": "alert",
+      "seconds": 3,
+      "loop": true
+    },
+    {
+      "name": "NG_Look_Left",
+      "label": "回头看左",
+      "kind": "look",
+      "seconds": 2.8,
+      "loop": false,
+      "side": 1
+    },
+    {
+      "name": "NG_Head_Tilt_Left",
+      "label": "歪头左",
+      "kind": "tilt",
+      "seconds": 2.6,
+      "loop": false,
+      "side": 1
+    },
+    {
+      "name": "NG_Ear_Twitch_Left",
+      "label": "单耳抖动Left",
+      "kind": "ear",
+      "seconds": 1.2,
+      "loop": false,
+      "side": 1
+    },
+    {
+      "name": "NG_Paw_Offer_Left",
+      "label": "站立抬前爪Left",
+      "kind": "paw_offer",
+      "seconds": 3,
+      "loop": false,
+      "side": 1
+    },
+    {
+      "name": "NG_Urinate_Left",
+      "label": "抬后腿标记Left",
+      "kind": "urinate",
+      "seconds": 4,
+      "loop": false,
+      "side": 1
+    },
+    {
+      "name": "NG_Sit_Paw_Offer_Left",
+      "label": "坐姿递爪Left",
+      "kind": "paw_offer",
+      "seconds": 3,
+      "loop": false,
+      "side": 1,
+      "base": "sit"
+    },
+    {
+      "name": "NG_Look_Right",
+      "label": "回头看右",
+      "kind": "look",
+      "seconds": 2.8,
+      "loop": false,
+      "side": -1
+    },
+    {
+      "name": "NG_Head_Tilt_Right",
+      "label": "歪头右",
+      "kind": "tilt",
+      "seconds": 2.6,
+      "loop": false,
+      "side": -1
+    },
+    {
+      "name": "NG_Ear_Twitch_Right",
+      "label": "单耳抖动Right",
+      "kind": "ear",
+      "seconds": 1.2,
+      "loop": false,
+      "side": -1
+    },
+    {
+      "name": "NG_Paw_Offer_Right",
+      "label": "站立抬前爪Right",
+      "kind": "paw_offer",
+      "seconds": 3,
+      "loop": false,
+      "side": -1
+    },
+    {
+      "name": "NG_Urinate_Right",
+      "label": "抬后腿标记Right",
+      "kind": "urinate",
+      "seconds": 4,
+      "loop": false,
+      "side": -1
+    },
+    {
+      "name": "NG_Sit_Paw_Offer_Right",
+      "label": "坐姿递爪Right",
+      "kind": "paw_offer",
+      "seconds": 3,
+      "loop": false,
+      "side": -1,
+      "base": "sit"
+    },
+    {
+      "name": "NG_Look_Around",
+      "label": "左右张望",
+      "kind": "look_around",
+      "seconds": 5,
+      "loop": false
+    },
+    {
+      "name": "NG_Look_Up",
+      "label": "抬头看上方",
+      "kind": "look_vertical",
+      "seconds": 2.8,
+      "loop": false,
+      "side": -1
+    },
+    {
+      "name": "NG_Look_Down",
+      "label": "低头看近处",
+      "kind": "look_vertical",
+      "seconds": 2.8,
+      "loop": false,
+      "side": 1
+    },
+    {
+      "name": "NG_Ear_Twitch_Both",
+      "label": "双耳抖动",
+      "kind": "ear",
+      "seconds": 1.4,
+      "loop": false,
+      "side": 0
+    },
+    {
+      "name": "NG_Tail_Wag_Slow",
+      "label": "慢摇尾",
+      "kind": "wag",
+      "seconds": 3,
+      "loop": true,
+      "amplitude": 20,
+      "cycles": 2
+    },
+    {
+      "name": "NG_Tail_Wag_Happy",
+      "label": "快摇尾",
+      "kind": "wag",
+      "seconds": 2,
+      "loop": true,
+      "amplitude": 40,
+      "cycles": 4
+    },
+    {
+      "name": "NG_Tail_Tuck_Cautious",
+      "label": "谨慎收尾",
+      "kind": "tail_tuck",
+      "seconds": 3,
+      "loop": false
+    },
+    {
+      "name": "NG_Sniff_Air",
+      "label": "抬头嗅空气",
+      "kind": "sniff_air",
+      "seconds": 3,
+      "loop": false
+    },
+    {
+      "name": "NG_Sniff_Ground_Enter",
+      "label": "低头嗅地进入",
+      "kind": "transition",
+      "seconds": 1.8,
+      "loop": false,
+      "to": "sniff"
+    },
+    {
+      "name": "NG_Sniff_Ground_Loop",
+      "label": "左右嗅地",
+      "kind": "sniff_ground",
+      "seconds": 3.2,
+      "loop": true,
+      "base": "sniff"
+    },
+    {
+      "name": "NG_Sniff_Ground_Exit",
+      "label": "嗅地后抬头",
+      "kind": "transition",
+      "seconds": 1.6,
+      "loop": false,
+      "base": "sniff",
+      "to": "stand"
+    },
+    {
+      "name": "NG_Shake_Off",
+      "label": "全身抖毛",
+      "kind": "shake",
+      "seconds": 2.2,
+      "loop": false,
+      "cycles": 7
+    },
+    {
+      "name": "NG_Shake_Head",
+      "label": "短促甩头",
+      "kind": "shake",
+      "seconds": 1.2,
+      "loop": false,
+      "cycles": 3
+    },
+    {
+      "name": "NG_Sit_Down",
+      "label": "站立到坐下",
+      "kind": "transition",
+      "seconds": 2,
+      "loop": false,
+      "to": "sit"
+    },
+    {
+      "name": "NG_Sit_Idle",
+      "label": "坐姿呼吸",
+      "kind": "breathe",
+      "seconds": 4,
+      "loop": true,
+      "base": "sit"
+    },
+    {
+      "name": "NG_Sit_Look_Around",
+      "label": "坐着张望",
+      "kind": "sit_look",
+      "seconds": 5,
+      "loop": true,
+      "base": "sit"
+    },
+    {
+      "name": "NG_Sit_Wag",
+      "label": "坐着摇尾",
+      "kind": "wag",
+      "seconds": 3,
+      "loop": true,
+      "base": "sit",
+      "amplitude": 24,
+      "cycles": 3
+    },
+    {
+      "name": "NG_Sit_Get_Up",
+      "label": "坐姿起身",
+      "kind": "transition",
+      "seconds": 1.8,
+      "loop": false,
+      "base": "sit",
+      "to": "stand"
+    },
+    {
+      "name": "NG_Lie_Down",
+      "label": "站立到趴下",
+      "kind": "transition",
+      "seconds": 2.4,
+      "loop": false,
+      "to": "lie"
+    },
+    {
+      "name": "NG_Lie_Idle",
+      "label": "趴姿呼吸",
+      "kind": "breathe",
+      "seconds": 4,
+      "loop": true,
+      "base": "lie"
+    },
+    {
+      "name": "NG_Lie_Get_Up",
+      "label": "趴姿起身",
+      "kind": "transition",
+      "seconds": 2,
+      "loop": false,
+      "base": "lie",
+      "to": "stand"
+    },
+    {
+      "name": "NG_Sit_To_Lie",
+      "label": "坐下转趴下",
+      "kind": "transition",
+      "seconds": 2.2,
+      "loop": false,
+      "base": "sit",
+      "to": "lie"
+    },
+    {
+      "name": "NG_Lie_To_Sit",
+      "label": "趴下转坐下",
+      "kind": "transition",
+      "seconds": 2.2,
+      "loop": false,
+      "base": "lie",
+      "to": "sit"
+    },
+    {
+      "name": "NG_Sleep_Enter",
+      "label": "趴下枕头入睡",
+      "kind": "transition",
+      "seconds": 2,
+      "loop": false,
+      "base": "lie",
+      "to": "sleep"
+    },
+    {
+      "name": "NG_Sleep_Breathe",
+      "label": "趴着睡觉",
+      "kind": "breathe",
+      "seconds": 5,
+      "loop": true,
+      "base": "sleep"
+    },
+    {
+      "name": "NG_Sleep_Wake",
+      "label": "睡醒抬头",
+      "kind": "transition",
+      "seconds": 1.8,
+      "loop": false,
+      "base": "sleep",
+      "to": "lie"
+    },
+    {
+      "name": "NG_Play_Bow",
+      "label": "邀请玩耍鞠躬",
+      "kind": "bow",
+      "seconds": 3,
+      "loop": false
+    },
+    {
+      "name": "NG_Stretch_Front",
+      "label": "前肢伸懒腰",
+      "kind": "bow",
+      "seconds": 5,
+      "loop": false
+    },
+    {
+      "name": "NG_Startle",
+      "label": "短暂受惊",
+      "kind": "startle",
+      "seconds": 1.2,
+      "loop": false
+    },
+    {
+      "name": "NG_Side_Lie_Enter",
+      "label": "趴姿翻到侧躺",
+      "kind": "side_roll",
+      "seconds": 2.4,
+      "loop": false,
+      "base": "lie",
+      "to_side": true
+    },
+    {
+      "name": "NG_Side_Lie_Breathe",
+      "label": "侧躺呼吸",
+      "kind": "side_breathe",
+      "seconds": 5,
+      "loop": true,
+      "base": "lie"
+    },
+    {
+      "name": "NG_Side_Lie_Exit",
+      "label": "侧躺翻回趴姿",
+      "kind": "side_roll",
+      "seconds": 2.4,
+      "loop": false,
+      "base": "lie",
+      "to_side": false
+    }
+  ],
+  "deferred": [
+    {
+      "name": "NG_Scratch_Left",
+      "label": "坐着挠痒Left",
+      "kind": "scratch",
+      "seconds": 4.4,
+      "loop": false,
+      "side": 1,
+      "base": "sit",
+      "cycles": 7,
+      "reason": "后爪不能自然接触耳根；强行追目标会超出腿链长度，未收入交付。"
+    },
+    {
+      "name": "NG_Scratch_Right",
+      "label": "坐着挠痒Right",
+      "kind": "scratch",
+      "seconds": 4.4,
+      "loop": false,
+      "side": -1,
+      "base": "sit",
+      "cycles": 7,
+      "reason": "后爪不能自然接触耳根；强行追目标会超出腿链长度，未收入交付。"
+    }
+  ]
+}

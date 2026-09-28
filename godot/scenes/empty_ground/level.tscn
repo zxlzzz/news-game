@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/empty_ground/empty_ground.gd" id="1"]
+[ext_resource type="Resource" path="res://palettes/gray.tres" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/empty_ground/view.tscn" id="3"]
+[ext_resource type="Resource" path="res://scenes/empty_ground/population.tres" id="4"]
+[ext_resource type="Script" path="res://core/ground_strip.gd" id="5"]
+[ext_resource type="Script" path="res://core/ground_band.gd" id="6"]
+
+[sub_resource type="Resource" id="band_0"]
+script = ExtResource("6")
+width = 120.0
+slot = &"sidewalk"
+
+[node name="EmptyGround" type="Node3D"]
+script = ExtResource("1")
+palette = ExtResource("2")
+view = ExtResource("3")
+population = ExtResource("4")
+
+[node name="Ground" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -60)
+script = ExtResource("5")
+length = 120.0
+bands = Array[ExtResource("6")]([SubResource("band_0")])

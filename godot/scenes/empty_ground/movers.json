@@ -1,0 +1,26 @@
+{
+  "_note": "Procedural entries of the empty ground list (scenes/empty_ground/stage.gd), the scenarios the two old review scenes showed (merged into the empty ground 2026-09-27). dt: simulation step (s). movers: id -> {kind (dog | leash | rider | pigeon), label (list text), cycle (s, then it starts over), frame (view height, m), follow (the camera follows it), and the scenario}. dog: speeds [[until s, m/s]...], turnAmplitude (rad), turnFrequency (rad/s). leash: walkUntil (s, then stands), turnAmplitude, turnFrequency. rider: vehicle (type), cruise (m/s), pedalUntil (s, then coasts), yawRateAmplitude (rad/s), yawRateFrequency. pigeon: walkUntil + walkSpeed, peck [from, to] + peckSpeed, hops (s), hopDistance (m), fly [from, to] + flySpeed + circleRate (rad/s) + altitude (m), wanderAmplitude + wanderFrequency; grid: ground lines every this many metres; lookAt (s) + lookHeight (m): a fixed view at where it is then (pigeon_fly). grid: the ground lines (colour, half size m, width m). dog and leash draw the model dog chosen in the panel (npc/animal-models.json). animals: species -> {label}; the list shows the scenarios walk, trot, behaviour and every action animal-models.json gives the species (timing in the review block of npc/animal-behaviour.json).",
+  "dt": 0.0166667,
+  "movers": {
+    "dog":        { "kind": "dog", "label": "狗 · 走、小跑、停", "cycle": 20.0, "frame": 3.0, "follow": true,
+                    "speeds": [[7, 0.5], [13, 1.3], [16, 0.0], [20, 0.4]], "turnAmplitude": 1.2, "turnFrequency": 0.25 },
+    "leash":      { "kind": "leash", "label": "牵狗的人", "cycle": 16.0, "frame": 5.0, "follow": true,
+                    "walkUntil": 12.0, "turnAmplitude": 1.0, "turnFrequency": 0.12 },
+    "bicycle":    { "kind": "rider", "label": "骑自行车", "cycle": 10.0, "frame": 5.0, "follow": true,
+                    "vehicle": "res://types/bicycle.tscn", "cruise": 3.0, "pedalUntil": 7.0, "yawRateAmplitude": 0.25, "yawRateFrequency": 0.3 },
+    "scooter":    { "kind": "rider", "label": "骑电动车", "cycle": 10.0, "frame": 5.0, "follow": true,
+                    "vehicle": "res://types/scooter.tscn", "cruise": 4.5, "pedalUntil": 7.0, "yawRateAmplitude": 0.25, "yawRateFrequency": 0.3 },
+    "pigeon":     { "kind": "pigeon", "label": "鸽子 · 走、张望、啄、跳、飞", "cycle": 26.0, "frame": 1.4, "follow": true, "grid": 0.5,
+                    "walkUntil": 5.0, "walkSpeed": 0.3, "peck": [9.0, 12.5], "peckSpeed": 0.06, "hops": [13.0, 14.0], "hopDistance": 0.3,
+                    "fly": [15.0, 20.5], "flySpeed": 1.6, "circleRate": 0.9, "altitude": 1.2, "wanderAmplitude": 1.0, "wanderFrequency": 0.3 },
+    "pigeon_fly": { "kind": "pigeon", "label": "鸽子 · 起飞、飞、落地（不跟随）", "cycle": 26.0, "frame": 3.5, "follow": false, "grid": 0.5,
+                    "lookAt": 14.0, "lookHeight": 0.8,
+                    "walkUntil": 5.0, "walkSpeed": 0.3, "peck": [9.0, 12.5], "peckSpeed": 0.06, "hops": [13.0, 14.0], "hopDistance": 0.3,
+                    "fly": [15.0, 20.5], "flySpeed": 1.6, "circleRate": 0.9, "altitude": 1.2, "wanderAmplitude": 1.0, "wanderFrequency": 0.3 }
+  },
+  "grid": { "color": [0.55, 0.55, 0.55], "half": 12.0, "width": 0.012 },
+  "animals": {
+    "dog": { "label": "狗" },
+    "cat": { "label": "猫" }
+  }
+}

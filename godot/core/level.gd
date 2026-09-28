@@ -244,6 +244,11 @@ static func _mesh_instances(n: Node, out: Array[MeshInstance3D]) -> void:
 		_mesh_instances(c, out)
 
 func _apply_look(map: Dictionary) -> void:
+	apply_look_to(map, self)
+
+## The ink look on every mesh under `root` (the whole level at start; scenes/empty_ground calls it for
+## objects it adds later).
+func apply_look_to(map: Dictionary, root: Node) -> void:
 	var entries := {}
 	for slot in SLOTS.slots:
 		var e := {}
@@ -265,7 +270,7 @@ func _apply_look(map: Dictionary) -> void:
 	line_mat.set_shader_parameter("width_px", STYLE.line_width_px)
 	line_mat.set_shader_parameter("depth_bias", STYLE.line_depth_bias)
 	var unmapped := {}
-	InkBuilder.apply(self, fill, line_mat, STYLE.crease_deg, entries, map, unmapped)
+	InkBuilder.apply(root, fill, line_mat, STYLE.crease_deg, entries, map, unmapped)
 	if not unmapped.is_empty():
 		var msg := "Level %s: materials with no slot (add them to a map in %s): %s" % [name, MATERIAL_MAP_DIR, unmapped.keys()]
 		push_error(msg)

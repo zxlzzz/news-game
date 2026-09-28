@@ -87,6 +87,31 @@
    "frames": 90
   },
   {
+   "id": "carry_bag",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "carry_bags",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "carry_box",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "carry_shoulder",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "carry_shoulder_bag",
+   "fps": 30.0,
+   "frames": 35
+  },
+  {
    "id": "check_watch",
    "fps": 30.0,
    "frames": 90
@@ -132,9 +157,34 @@
    "frames": 90
   },
   {
+   "id": "crouch_check",
+   "fps": 30.0,
+   "frames": 135
+  },
+  {
+   "id": "crouch_check_hold",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "dodge",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
    "id": "drink",
    "fps": 30.0,
    "frames": 105
+  },
+  {
+   "id": "duck_cover",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "duck_cover_hold",
+   "fps": 30.0,
+   "frames": 61
   },
   {
    "id": "eat_snack",
@@ -149,9 +199,39 @@
    "seam_closed_m": 0.0
   },
   {
+   "id": "exercise",
+   "fps": 30.0,
+   "frames": 54
+  },
+  {
+   "id": "fall_back",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "fan_self",
+   "fps": 30.0,
+   "frames": 150
+  },
+  {
+   "id": "film_phone",
+   "fps": 30.0,
+   "frames": 180
+  },
+  {
    "id": "give_item",
    "fps": 30.0,
    "frames": 105
+  },
+  {
+   "id": "grab_snatch",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "guard",
+   "fps": 30.0,
+   "frames": 120
   },
   {
    "id": "hands_behind_back",
@@ -164,9 +244,64 @@
    "frames": 90
   },
   {
+   "id": "hands_on_head",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "hands_on_head_hold",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
    "id": "hands_on_hips",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "hands_up",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "hands_up_hold",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "handstand",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "hesitate_reach",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "hold_door",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "hold_guitar",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "hold_umbrella",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "hop",
+   "fps": 30.0,
+   "frames": 54
+  },
+  {
+   "id": "inspect_item",
+   "fps": 30.0,
+   "frames": 150
   },
   {
    "id": "interrupt",
@@ -181,14 +316,49 @@
    "seam_closed_m": 0.0
   },
   {
+   "id": "kneel_hold",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
    "id": "laugh",
    "fps": 30.0,
    "frames": 120
   },
   {
+   "id": "lean_railing",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "lean_sign",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "lean_wall",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
    "id": "lecture",
    "fps": 30.0,
    "frames": 120
+  },
+  {
+   "id": "leg_stretch",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "lie_ground_hold",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "look_around_nervous",
+   "fps": 30.0,
+   "frames": 150
   },
   {
    "id": "look_away",
@@ -204,6 +374,21 @@
    "id": "look_up",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "magic_gesture",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "march_in_place",
+   "fps": 30.0,
+   "frames": 55
+  },
+  {
+   "id": "pace",
+   "fps": 30.0,
+   "frames": 300
   },
   {
    "id": "pat_dust",
@@ -224,6 +409,11 @@
    "id": "phone_call",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "phone_urgent",
+   "fps": 30.0,
+   "frames": 210
   },
   {
    "id": "phone_walk",
@@ -248,9 +438,44 @@
    "frames": 105
   },
   {
+   "id": "point_shout",
+   "fps": 30.0,
+   "frames": 135
+  },
+  {
    "id": "present",
    "fps": 30.0,
    "frames": 105
+  },
+  {
+   "id": "press_button",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "pull_door",
+   "fps": 30.0,
+   "frames": 300
+  },
+  {
+   "id": "pull_suitcase",
+   "fps": 30.0,
+   "frames": 46
+  },
+  {
+   "id": "push_cart",
+   "fps": 30.0,
+   "frames": 67
+  },
+  {
+   "id": "push_door",
+   "fps": 30.0,
+   "frames": 180
+  },
+  {
+   "id": "push_stroller",
+   "fps": 30.0,
+   "frames": 67
   },
   {
    "id": "reach_after",
@@ -258,9 +483,29 @@
    "frames": 90
   },
   {
+   "id": "read_book",
+   "fps": 30.0,
+   "frames": 150
+  },
+  {
+   "id": "read_newspaper",
+   "fps": 30.0,
+   "frames": 150
+  },
+  {
+   "id": "read_notice",
+   "fps": 30.0,
+   "frames": 150
+  },
+  {
    "id": "receive_item",
    "fps": 30.0,
    "frames": 105
+  },
+  {
+   "id": "recoil",
+   "fps": 30.0,
+   "frames": 90
   },
   {
    "id": "rub_eye",
@@ -271,6 +516,16 @@
    "id": "rub_hands",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "run",
+   "fps": 30.0,
+   "frames": 42
+  },
+  {
+   "id": "run_curve",
+   "fps": 30.0,
+   "frames": 247
   },
   {
    "id": "scratch_back",
@@ -286,6 +541,11 @@
    "id": "selfie",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "shadow_box",
+   "fps": 30.0,
+   "frames": 150
   },
   {
    "id": "shake_foot",
@@ -315,6 +575,46 @@
    "seam_closed_m": 0.0
   },
   {
+   "id": "sit_ground",
+   "fps": 30.0,
+   "frames": 150
+  },
+  {
+   "id": "sit_ground_dazed",
+   "fps": 30.0,
+   "frames": 180
+  },
+  {
+   "id": "sit_ground_dazed_hold",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "sit_knees_up",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "sit_sideways",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "sit_step",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "skip",
+   "fps": 30.0,
+   "frames": 53
+  },
+  {
+   "id": "slap_table",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
    "id": "slouch_bench",
    "fps": 30.0,
    "frames": 90,
@@ -322,9 +622,39 @@
    "seam_closed_m": 0.0
   },
   {
+   "id": "smoke",
+   "fps": 30.0,
+   "frames": 150
+  },
+  {
+   "id": "smoke_walk",
+   "fps": 30.0,
+   "frames": 127
+  },
+  {
    "id": "sneeze",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "spin",
+   "fps": 30.0,
+   "frames": 121
+  },
+  {
+   "id": "square_dance",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "squat",
+   "fps": 30.0,
+   "frames": 61
+  },
+  {
+   "id": "squat_down",
+   "fps": 30.0,
+   "frames": 120
   },
   {
    "id": "squat_watch",
@@ -344,6 +674,11 @@
    "seam_closed_m": 0.10756
   },
   {
+   "id": "stand_up",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
    "id": "stand_up_support_back",
    "fps": 30.0,
    "frames": 120
@@ -359,7 +694,27 @@
    "frames": 90
   },
   {
+   "id": "stop_hand",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
    "id": "stretch",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "stumble",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "tai_chi",
+   "fps": 30.0,
+   "frames": 210
+  },
+  {
+   "id": "take_back_piece",
    "fps": 30.0,
    "frames": 120
   },
@@ -389,9 +744,24 @@
    "frames": 90
   },
   {
+   "id": "throw_trash",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
    "id": "tiptoe",
    "fps": 30.0,
    "frames": 105
+  },
+  {
+   "id": "trip_fall",
+   "fps": 30.0,
+   "frames": 135
+  },
+  {
+   "id": "turn_page",
+   "fps": 30.0,
+   "frames": 120
   },
   {
    "id": "turn_walk",
@@ -416,6 +786,41 @@
    "seam_closed_m": 0.0
   },
   {
+   "id": "walk_backward",
+   "fps": 30.0,
+   "frames": 60
+  },
+  {
+   "id": "walk_brisk",
+   "fps": 30.0,
+   "frames": 31
+  },
+  {
+   "id": "walk_cane",
+   "fps": 30.0,
+   "frames": 47
+  },
+  {
+   "id": "walk_carry_bag",
+   "fps": 30.0,
+   "frames": 42
+  },
+  {
+   "id": "walk_carry_bags",
+   "fps": 30.0,
+   "frames": 46
+  },
+  {
+   "id": "walk_carry_box",
+   "fps": 30.0,
+   "frames": 51
+  },
+  {
+   "id": "walk_child_hand_down",
+   "fps": 30.0,
+   "frames": 44
+  },
+  {
    "id": "walk_dog",
    "fps": 30.0,
    "frames": 71,
@@ -423,11 +828,66 @@
    "seam_closed_m": 0.0
   },
   {
+   "id": "walk_drink",
+   "fps": 30.0,
+   "frames": 133
+  },
+  {
+   "id": "walk_hands_pockets",
+   "fps": 30.0,
+   "frames": 41
+  },
+  {
+   "id": "walk_limp",
+   "fps": 30.0,
+   "frames": 31
+  },
+  {
+   "id": "walk_look_up",
+   "fps": 30.0,
+   "frames": 43
+  },
+  {
+   "id": "walk_newspaper",
+   "fps": 30.0,
+   "frames": 46
+  },
+  {
+   "id": "walk_phone_call",
+   "fps": 30.0,
+   "frames": 35
+  },
+  {
    "id": "walk_slow",
    "fps": 30.0,
    "frames": 73,
    "loop": true,
    "seam_closed_m": 0.0
+  },
+  {
+   "id": "walk_stairs_down",
+   "fps": 30.0,
+   "frames": 41
+  },
+  {
+   "id": "walk_stairs_up",
+   "fps": 30.0,
+   "frames": 41
+  },
+  {
+   "id": "walk_talk",
+   "fps": 30.0,
+   "frames": 123
+  },
+  {
+   "id": "walk_tired",
+   "fps": 30.0,
+   "frames": 42
+  },
+  {
+   "id": "walk_umbrella",
+   "fps": 30.0,
+   "frames": 68
   },
   {
    "id": "wave",

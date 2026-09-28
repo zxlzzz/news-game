@@ -1,5 +1,5 @@
 {
-  "_note": "Who the Crowd node (npc/crowd.gd) puts in a level and how. Counts of free-roaming people are in each scene's population.tres; people at posts follow the post markers of the object types. Clip weights are relative. Lengths in metres. grid (core/walk_grid.gd): maxStep = the highest step up or down per mode (riders take no curbs); heightTolerance = surfaces closer in height than this are one. postStep: an agent (population.behaviour) whose walk ends this close to a post walks the rest straight onto it. offScreenMargin: a person farther than this outside the camera's view is hidden and not redrawn (still moves). redrawMetres: with an orthogonal view N x this many metres tall, a walking figure's pose is rebuilt every N frames, in turn (its position moves every frame).",
+  "_note": "Who the Crowd node (npc/crowd.gd) puts in a level and how. Counts of free-roaming people are in each scene's population.tres; people at posts follow the post markers of the object types. Clip weights are relative. posts: every post kind a type in a non-behaviour scene (street_demo) offers must be here; chance 0 = nobody is put there by chance (the kinds added with npc/clip-setup.json, 2026-09-27). Lengths in metres. grid (core/walk_grid.gd): maxStep = the highest step up or down per mode (riders take no curbs); heightTolerance = surfaces closer in height than this are one. dogWalker.breeds: relative weights of the dog breeds (npc/animal-models.json). postStep: an agent (population.behaviour) whose walk ends this close to a post walks the rest straight onto it. offScreenMargin: a person farther than this outside the camera's view is hidden and not redrawn (still moves). redrawMetres: with a view N x this many metres tall (where the camera looks), a walking figure's pose is rebuilt every N frames, in turn (its position moves every frame).",
   "body": "adult",
   "ink": [0.06, 0.06, 0.06],
   "depthBias": 0.03,
@@ -14,7 +14,7 @@
     "pedestrian": { "clips": { "walk": 5, "walk_slow": 2, "phone_walk": 1, "eat_walk": 1 }, "speedJitter": 0.1, "visits": [0, 2] },
     "jogger":     { "clips": { "jog": 1 }, "speedJitter": 0.08, "visits": [3, 6] }
   },
-  "dogWalker": { "visits": [1, 3], "lookAhead": 1.5, "arrive": 1.0 },
+  "dogWalker": { "visits": [1, 3], "lookAhead": 1.5, "arrive": 1.0, "breeds": { "husky": 1, "shibainu": 1 } },
   "riders": {
     "keepRight": true,
     "cyclist":       { "vehicle": "res://types/bicycle.tscn", "speed": [3.0, 4.5], "pedalSeconds": [4, 9], "coastSeconds": [1, 3] },
@@ -26,6 +26,11 @@
     "customer": { "chance": 0.6, "clips": { "choose_item": 1, "pay": 1 } },
     "chess":    { "chance": 1.0, "clips": { "chess_move": 1 } },
     "watch":    { "chance": 0.5, "clips": { "chess_watch": 1 } },
-    "wait":     { "chance": 0.5, "clips": { "stand_idle": 1 } }
+    "wait":     { "chance": 0.5, "clips": { "stand_idle": 1 } },
+    "stretch":  { "chance": 0.0, "clips": { "leg_stretch": 1 } },
+    "pole":     { "chance": 0.0, "clips": { "lean_sign": 1 } },
+    "table":    { "chance": 0.0, "clips": { "slap_table": 1 } },
+    "trash":    { "chance": 0.0, "clips": { "throw_trash": 1 } },
+    "button":   { "chance": 0.0, "clips": { "press_button": 1 } }
   }
 }

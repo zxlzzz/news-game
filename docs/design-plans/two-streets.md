@@ -4,7 +4,7 @@
 
 ## 1. 镜头
 
-画法保持**正交**（没有近大远小；切透视只是改镜头投影和缩放写法，见末尾）。操作（Hsinlung 定）：
+镜头用**透视**（近大远小，2026-09-28 Hsinlung 定；原来是正交，切换只改 `core/camera-params.json` 的 `projection`，见末尾）。操作（Hsinlung 定）：
 
 | 操作 | 做什么 |
 |---|---|
@@ -49,6 +49,6 @@
 
 拍照、写报道等玩法；NPC 打分行为系统（`docs/design_route_npc_behavior.md`）；进出楼的门；车辆行驶；昼夜。新动作（推门、上下台阶、推车、拄拐）等场景里有门、台阶再接。
 
-## 附：以后想换成透视
+## 附：正交和透视
 
-镜头换成透视投影，缩放改成改镜头离注视点的距离（或视角），描线粗细可能要微调。镜头脚本把两种缩放都写好，换的时候只改一个设置。做法：`core/camera-params.json` 的 `projection` 改成 `perspective`。透视下能出图，但 `tools/check_camera.gd` 只按正交验过拖动和缩放，换之前要补测。
+`core/camera-params.json`（空地是 `scenes/empty_ground/camera-params.json`）的 `projection`：`perspective`（现在用的，视角 `fov`，缩放 = 改镜头离注视点的距离）或 `orthogonal`（缩放 = 改画面高度）。两种下 `tools/check_camera.gd` 都验过拖动、缩放、转动（测试点取在画面中心偏下，透视下画面上方的点可能落在场景外很远）。街上人群"拉远时隔几帧重建姿势"按镜头注视处的画面高度算，两种都适用。

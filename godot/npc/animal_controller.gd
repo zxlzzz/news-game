@@ -9,9 +9,8 @@ static func create(yaw: float = 0) -> Dictionary:
 		"target": Vector3.ZERO, "has_target": false}
 
 static func body_radius(p: Dictionary) -> float:
-	# Conservative horizontal body envelope about the shoulder origin, including head.
-	return maxf(p.body.length + p.silhouette.hipDisc,
-		p.head.neckBase[0] + p.head.head[0] + p.head.muzzle[0] + p.silhouette.headDisc)
+	# Horizontal reach of the model about its origin (npc/animal_model.gd), any way it faces.
+	return p.body.radius
 
 static func _choose(s: Dictionary, p: Dictionary, centre: Vector3, radius: float) -> void:
 	var rng = RandomNumberGenerator.new()
@@ -84,9 +83,10 @@ static func step(previous: Dictionary, own: Vector3, people: Array, animals: Arr
 	elif s.mode == "flee":
 		speed = p.flee_speed
 	elif s.mode == "arch":
-		action = "arch"
+		action = p.threat_action
 	else:
-		action = ["sniff", "lie", "sit"][int(s.rest_index) % 3] if species == "dog" else ["sit", "loaf", "groom"][int(s.rest_index) % 3]
+		var rest: Array = p.rest_actions[species]
+		action = rest[int(s.rest_index) % rest.size()]
 	if species == "cat" and animal_gap < p.separation_priority_gap:
 		# Body separation overrides a passer-by so fleeing cannot run into the dog.
 		s.yaw = atan2(animal_away.x, animal_away.z)

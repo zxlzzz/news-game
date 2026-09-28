@@ -31,6 +31,8 @@ HELD_PREFIX = "held_"  # file name prefix of hand-held things
 HELD_MAX_SIDE = 2.0    # metres; anything bigger is not carried in the hands
 HELD_ORIGIN_TOL = 0.05 # metres; how far outside its box a held thing's grip origin may be
 GRIP_NODES = ("grip_left", "grip_right", "strap_top")
+ANIMAL_PREFIX = "animal_"  # file name prefix of animals (skinned, drawn as a black silhouette)
+ANIMAL_MATERIAL = "animal_ink"  # the one material an animal has, instead of a colour slot
 
 COMP = {5120: "b", 5121: "B", 5122: "h", 5123: "H", 5125: "I", 5126: "f"}
 NCOMP = {"SCALAR": 1, "VEC2": 2, "VEC3": 3, "VEC4": 4, "MAT4": 16}
@@ -111,10 +113,13 @@ def check(path):
 
     mats = gltf.get("materials", [])
     textures_used = False
+    animal = os.path.basename(path).lower().startswith(ANIMAL_PREFIX)
     for i, m in enumerate(mats):
         name = m.get("name", "")
         pbr = m.get("pbrMetallicRoughness", {})
-        if name not in SLOTS:
+        if animal and name != ANIMAL_MATERIAL:
+            fails.append(f"material {i} '{name}': an animal ({ANIMAL_PREFIX}*) has only '{ANIMAL_MATERIAL}'")
+        elif not animal and name not in SLOTS:
             fails.append(f"material {i} '{name}' is not a colour slot name")
         if "baseColorTexture" in pbr:
             textures_used = True

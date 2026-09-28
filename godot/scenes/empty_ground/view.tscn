@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/orbit_camera.gd" id="1"]
+
+[node name="View" type="Node3D"]
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(0.819152, -0.214866, 0.531811, 0, 0.927184, 0.374607, -0.573576, -0.30686, 0.759505, 31.9086, 23.4764, 45.5703)
+projection = 1
+current = true
+size = 4.0
+near = 0.5
+far = 200.0
+script = ExtResource("1")
+params = "res://scenes/empty_ground/camera-params.json"
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8136, 0.3669, -0.451, 0, 0.7757, 0.631, 0.5815, -0.5134, 0.631, -13.5, 18.9, 18.9)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_normal_bias = 1.0
+shadow_blur = 1.0
+directional_shadow_mode = 0
+directional_shadow_max_distance = 80.0

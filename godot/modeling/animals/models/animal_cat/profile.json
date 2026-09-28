@@ -1,0 +1,71 @@
+{
+  "name": "animal_cat",
+  "source": "D:\\Godot\\assets\\quaternius-animal-pack-vol2\\Animal Pack Vol.2 by @Quaternius\\Blends\\Cat.blend",
+  "shoulder_height": 0.25,
+  "source_rotation_z_deg": -90,
+  "front_roots": [
+    "Bone.017",
+    "Bone.014"
+  ],
+  "hind_roots": [
+    "Bone.008",
+    "Bone.011"
+  ],
+  "paws": [
+    "Bone.019",
+    "Bone.016",
+    "Bone.010",
+    "Bone.013"
+  ],
+  "remapping": {},
+  "reparent": {},
+  "bone_count": 20,
+  "actions": {
+    "Idle": 41,
+    "Walking": 41
+  },
+  "fps": 24,
+  "species": "cat",
+  "chains": {
+    "LF": [
+      "Bone.017",
+      "Bone.018"
+    ],
+    "RF": [
+      "Bone.014",
+      "Bone.015"
+    ],
+    "LH": [
+      "Bone.008",
+      "Bone.009"
+    ],
+    "RH": [
+      "Bone.011",
+      "Bone.012"
+    ]
+  },
+  "aliases": {
+    "Body": "Bone",
+    "Back": "Bone",
+    "Torso2": "Bone.001",
+    "Torso3": "Bone.001",
+    "Neck1": "Bone.002",
+    "Neck2": null,
+    "Neck3": null,
+    "Head": "Bone.003",
+    "Tail1": "Bone.004",
+    "Tail2": "Bone.005",
+    "Tail3": "Bone.006",
+    "Tail4": "Bone.007",
+    "Tail5": null,
+    "Tail6": null,
+    "Ear1.L": null,
+    "Ear1.R": null,
+    "Ear2.L": null,
+    "Ear2.R": null,
+    "Ear3.L": null,
+    "Ear3.R": null,
+    "Ear4.L": null,
+    "Ear4.R": null
+  }
+}

@@ -4,12 +4,14 @@
 ##   Drag with the middle button: turn (left-right, all the way round) and tilt (up-down, within limits).
 ##   Wheel: zoom about the ground point under the mouse.
 ## A left or right click that does not drag is left unhandled, for gameplay.
-## The look-at point stays over the level (not its backdrop). Numbers: core/camera-params.json.
+## The look-at point stays over the level (not its backdrop). Numbers: core/camera-params.json, or the
+## file named by `params` in the view (scenes/empty_ground looks closer).
+## frame(point, height) moves the look-at point and zoom from code (scenes/empty_ground follows a mover).
 ## Command line (for core/shot.gd): `-- --look <x> <z>`, `--yaw <deg>`, `--pitch <deg>` (90 = straight
 ## down), `--size <metres of screen height>`.
 extends Camera3D
 
-const PARAMS := "res://core/camera-params.json"
+@export_file("*.json") var params := "res://core/camera-params.json"
 const Bounds := preload("res://core/bounds.gd")
 
 var p: Dictionary
@@ -51,10 +53,10 @@ func _ready() -> void:
 	_apply()
 
 func _load_params() -> Dictionary:
-	var d = JSON.parse_string(FileAccess.get_file_as_string(PARAMS))
+	var d = JSON.parse_string(FileAccess.get_file_as_string(params))
 	var need := ["projection", "fov", "distance", "pitch", "height", "keySpeed", "dragStart", "turnPerPixel", "tiltPerPixel", "zoomStep"]
 	if not d is Dictionary or need.any(func(k): return not d.has(k)) or not d.projection in ["orthogonal", "perspective"]:
-		push_error("%s: not a JSON object with %s (projection orthogonal or perspective)" % [PARAMS, need])
+		push_error("%s: not a JSON object with %s (projection orthogonal or perspective)" % [params, need])
 		return {}
 	return d
 
@@ -91,6 +93,13 @@ func _apply() -> void:
 		fov = p.fov
 		distance = height / 2 / tan(deg_to_rad(fov) / 2)
 	position = look + basis.z * distance
+
+## Looks at `point` (its height is ignored); height > 0 also sets the zoom.
+func frame(point: Vector3, height_: float = -1.0) -> void:
+	look = Vector3(point.x, 0, point.z)
+	if height_ > 0:
+		height = height_
+	_apply()
 
 ## Where the ray under a screen point meets the ground plane (y = 0).
 func _ground_at(screen: Vector2) -> Vector3:

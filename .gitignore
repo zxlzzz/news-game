@@ -29,3 +29,10 @@ Thumbs.db
 
 # Local project instructions
 /AGENTS.md
+
+# animal build outputs rewritten by every rerun (godot/modeling/animals/animal_tools/README.md)
+/godot/modeling/animals/**/verify_report.json
+/godot/modeling/animals/**/silhouette_report.json
+/godot/modeling/animals/**/test_pose_matrices.json
+/godot/modeling/animals/**/source_inventory.json
+/godot/modeling/animals/**/frames/

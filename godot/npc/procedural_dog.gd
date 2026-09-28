@@ -1,16 +1,21 @@
-## Procedural dog (design_route_animal_motion.md §2): gait, pose and silhouette as pure functions.
-## Every number comes from the parameter dictionary (npc/dog-params.json); no scene, route, clock or
-## renderer access. Metres, +Y up; yaw 0 faces +Z.
+## Procedural gait of the four-legged animals (design_route_animal_motion.md §2) as pure functions; the
+## model animals (npc/animal.gd) walk with it. Every number comes from the parameter dictionary (npc/
+## dog-params.json, or a model's, npc/animal_model.gd); no scene, route, clock or renderer access.
+## Metres, +Y up; yaw 0 faces +Z.
 ##
 ##   var s = Dog.create(position, yaw, p)
 ##   s = Dog.step(s, {"speed": m/s, "yaw": rad, "gait": "auto"|"walk"|"trot", "ground": g}, dt, p)   # each frame
 ##       g: Callable(Vector3) -> float, the height of the surface under a point (core/walk_grid.gd
-##       height_at in a level; a constant for flat ground). Paws land on it; the body rides at the
-##       mean height of its paws, lower where a paw a step down would be out of reach.
-##   var pts = Dog.pose(s, p)            # 3D points; pts.collar is where a leash attaches
-##   var draw = Dog.silhouette(pts, p)   # {segments, discs, triangles} for ink_figure.gd
+##       height_at in a level; a constant for flat ground). Paws land on it. The shoulders ride at the
+##       mean height of the front paws, the hips at that of the hind paws (the body pitches about the
+##       shoulder joints, s.pitch), each lower where a paw a step down would be out of reach and higher
+##       where a planted paw a step up would fold its leg tighter than it can.
+##   var pts = Dog.pose(s, p)            # 3D points of a stick dog; pts.collar is where a leash attaches
 ##
-## Contact rules: a planted paw never moves; no bone ever changes length. When a planted paw would be
+## Contact rules: a planted paw never moves; no bone ever changes length; a planted leg is never folded
+## tighter than |a - b| (its two bones in line, folded back). Where the girdle's height cannot suit both
+## legs of a pair (one paw a step above the other), the top of each leg slides up or down by up to
+## p.slide (a shoulder blade, a hip hiked), back to its place while the paw swings. When a planted paw would be
 ## out of reach the body is held back this frame and the worst-stretched paw is lifted early, so the
 ## dog slows for a moment instead of stretching a leg. step() reports lift/land events.
 extends RefCounted
@@ -34,18 +39,51 @@ static func _wrap(a: float) -> float:
 static func _leg(key: String, p: Dictionary) -> Dictionary:
 	return p.legs.hind if key[1] == "H" else p.legs.front
 
-## Girdle frame of one leg: hip or shoulder attachment (root) and the paw's rest spot (neutral).
+## Height of the shoulder joints above s.position, and how much higher the hip joints are at rest.
+static func _front_height(p: Dictionary) -> float:
+	return p.body.shoulderY - p.legs.front.drop
+
+static func _rise(p: Dictionary) -> float:
+	return p.body.hipY - p.legs.hind.drop - _front_height(p)
+
+## Girdle frame of one leg: hip or shoulder attachment (root) and the paw's rest spot (neutral). The
+## hips swing up (s.pitch > 0) or down about the line through the shoulder joints.
 static func _girdle(s: Dictionary, key: String, p: Dictionary) -> Dictionary:
 	var hind := key[1] == "H"
 	var yaw: float = s.hipYaw if hind else s.yaw
 	var f := _forward(yaw)
-	var centre: Vector3 = s.position - f * p.body.length if hind else s.position
+	var l := _left(yaw)
 	var side := 1.0 if key[0] == "L" else -1.0
 	var limb := _leg(key, p)
-	var height: float = p.body.hipY if hind else p.body.shoulderY
+	var root: Vector3 = s.position + Vector3.UP * (_front_height(p) + _slide(s, key))
+	if hind:
+		root += Basis(l, s.pitch) * (Vector3.UP * _rise(p) - f * p.body.length)
+	var base: Vector3 = root - Vector3.UP * ((p.body.hipY if hind else p.body.shoulderY) - limb.drop + _slide(s, key))
 	return {"f": f,
-		"root": centre + Vector3(0, height - limb.drop, 0) + _left(yaw) * p.body.halfWidth * side,
-		"neutral": centre + f * limb.neutral + _left(yaw) * p.body.footWidth * side}
+		"root": root + l * limb.get("halfWidth", p.body.halfWidth) * side,
+		"neutral": base + f * limb.neutral + l * limb.get("footWidth", p.body.footWidth) * side}
+
+## How far the top of a leg has slid up (+) or down from its place on the girdle.
+static func _slide(s: Dictionary, key: String) -> float:
+	return s.feet[key].slide if s.has("feet") else 0.0
+
+## Height of the ground under the hips the body rides at (s.position.y is that under the shoulders).
+static func _hind_base(s: Dictionary, p: Dictionary) -> float:
+	var l: float = p.body.length
+	var r := _rise(p)
+	return s.position.y + l * sin(s.pitch) + r * (cos(s.pitch) - 1)
+
+## Shoulders at front_y, hips at hind_y: the position height and the pitch.
+static func _set_heights(s: Dictionary, front_y: float, hind_y: float, p: Dictionary) -> void:
+	var l: float = p.body.length
+	var r := _rise(p)
+	s.position.y = front_y
+	s.pitch = asin(clampf((hind_y - front_y + r) / Vector2(l, r).length(), -1, 1)) - atan2(r, l)
+
+## A planted leg folded back no tighter than this (root to wrist).
+static func _fold(key: String, p: Dictionary) -> float:
+	var limb := _leg(key, p)
+	return absf(limb.a - limb.b) + p.reachMargin
 
 ## The leg's last segment (hock/pastern) keeps a fixed direction in the girdle's vertical plane.
 static func _wrist(s: Dictionary, key: String, p: Dictionary, paw: Vector3) -> Vector3:
@@ -73,13 +111,15 @@ static func _reachable_paw(s: Dictionary, key: String, p: Dictionary, paw: Vecto
 	return Vector3(paw.x + d.x * (k - 1), paw.y, paw.z + d.z * (k - 1))
 
 ## A leg may come up to OVERREACH short of its paw, only while the body rises back after a step
-## (a curb): the leg is then straight and the paw that far off. More is a bug and stops the game.
+## (a curb): the leg is then straight and the paw that far off. tools/check_locomotion.gd holds the gait
+## to it on curbs; on stairs it can be more (godot/README.md), and the leg then straightens toward the paw.
 const OVERREACH := 0.015
 
+## A paw out of reach (a leg too short, or asked to fold tighter than it can): the leg straightens or
+## folds as far as it goes toward it.
 static func _knee(a: Vector3, b: Vector3, l1: float, l2: float, pole: Vector3) -> Vector3:
 	var d := b - a
-	var r := d.length()
-	assert(r <= l1 + l2 + OVERREACH and r >= absf(l1 - l2) - 1e-5, "dog leg out of reach")
+	var r := clampf(d.length(), absf(l1 - l2), l1 + l2)
 	var u := d.normalized()
 	var h := (l1 * l1 + r * r - l2 * l2) / (2 * maxf(r, 1e-9))
 	var v := pole - u * pole.dot(u)
@@ -88,11 +128,13 @@ static func _knee(a: Vector3, b: Vector3, l1: float, l2: float, pole: Vector3) -
 	return a + u * h + v.normalized() * sqrt(maxf(0, l1 * l1 - h * h))
 
 static func create(position: Vector3, yaw: float, p: Dictionary) -> Dictionary:
-	var s := {"position": position, "yaw": yaw, "hipYaw": yaw, "speed": 0.0, "actualSpeed": 0.0,
+	var s := {"position": position, "yaw": yaw, "hipYaw": yaw, "pitch": 0.0, "speed": 0.0, "actualSpeed": 0.0,
 		"time": 0.0, "phase": 0.0, "gait": "walk", "feet": {}, "look": 0.0, "events": []}
 	for key in LEGS:
-		s.feet[key] = {"point": _girdle(s, key, p).neutral, "swing": false, "elapsed": 0.0,
+		s.feet[key] = {"point": Vector3.ZERO, "swing": false, "elapsed": 0.0, "slide": 0.0,
 			"duration": 0.0, "start": Vector3.ZERO, "target": Vector3.ZERO}
+	for key in LEGS:
+		s.feet[key].point = _girdle(s, key, p).neutral
 	return s
 
 ## Step length grows with speed, so faster means longer steps, not only quicker legs.
@@ -212,27 +254,60 @@ static func step(previous: Dictionary, input: Dictionary, dt: float, p: Dictiona
 			foot.point.y = ground.call(foot.point)
 			foot.swing = false
 			s.events.append({"type": "land", "leg": key})
-	var was_y: float = s.position.y
-	var paws := 0.0
+	var was := {"F": s.position.y, "H": _hind_base(s, p)}
+	var mean := {"F": 0.0, "H": 0.0}
 	for key in LEGS:
-		paws += s.feet[key].target.y if s.feet[key].swing else s.feet[key].point.y
-	s.position.y = paws / LEGS.size()
+		mean[key[1]] += (s.feet[key].target.y if s.feet[key].swing else s.feet[key].point.y) / 2
+	_set_heights(s, mean.F, mean.H, p)
 	# On a step (a curb) the mean can leave a paw out of reach: one on the lower side, or a planted
-	# one while the body rises after a paw left the lower side. The body stays low enough for every
-	# planted paw and every paw below the others (level ground keeps the mean: planted paws were
-	# fitted at this height above).
-	var mean: float = s.position.y
+	# one while the girdle rises after a paw left the lower side. Each girdle stays low enough for its
+	# planted paws and its paws below the others (level ground keeps the mean: planted paws were fitted
+	# at this height above), and high enough that no planted leg folds tighter than it can.
+	var height: Dictionary = mean.duplicate()
+	for girdle in ["F", "H"]:
+		var sink := 0.0
+		var lift := 0.0
+		for key in LEGS:
+			if key[1] != girdle:
+				continue
+			var paw: Vector3 = s.feet[key].point  # where it is now: a paw swinging up a step starts low
+			if s.feet[key].swing and paw.y > mean[girdle] - 0.01:
+				continue
+			var d: Vector3 = _wrist(s, key, p, paw) - _girdle(s, key, p).root
+			var r := _reach(key, p)
+			var q := _fold(key, p)
+			var h := Vector2(d.x, d.z).length()
+			if h < r and -d.y > sqrt(r * r - h * h):
+				sink = maxf(sink, -d.y - sqrt(r * r - h * h))
+			if not s.feet[key].swing and h < q and -d.y < sqrt(q * q - h * h):
+				lift = maxf(lift, sqrt(q * q - h * h) + d.y)
+		# It sinks at once but rises no faster than riseSpeed (up a step, or back up after one), except
+		# as far as a planted leg needs not to fold too tight (a paw just landed on a step up).
+		height[girdle] = minf(height[girdle] - sink, was[girdle] + p.motion.riseSpeed * dt)
+		if lift > 0:
+			# A leg that would stretch too far and one that would fold too tight (paws a step apart on a
+			# leg pair whose reach spans less than the step): the girdle goes between, each off by half.
+			height[girdle] = mean[girdle] + (lift - sink) / 2 if sink > 0 else maxf(height[girdle], mean[girdle] + lift)
+	_set_heights(s, height.F, height.H, p)
+	# What the girdle's height leaves over, the top of each planted leg takes up by sliding.
 	for key in LEGS:
-		var paw: Vector3 = s.feet[key].point  # where it is now: a paw swinging up a step starts low
-		if s.feet[key].swing and paw.y > mean - 0.01:
+		var foot: Dictionary = s.feet[key]
+		if foot.swing:
+			foot.slide = move_toward(foot.slide, 0.0, p.slideRate * dt)
 			continue
-		var d: Vector3 = _wrist(s, key, p, paw) - _girdle(s, key, p).root
+		foot.slide = 0.0
+		var d: Vector3 = _wrist(s, key, p, foot.point) - _girdle(s, key, p).root
 		var r := _reach(key, p)
+		var q := _fold(key, p)
 		var h := Vector2(d.x, d.z).length()
 		if h < r and -d.y > sqrt(r * r - h * h):
-			s.position.y -= -d.y - sqrt(r * r - h * h)
-	# It sinks at once but rises no faster than riseSpeed (up a step, or back up after one).
-	s.position.y = minf(s.position.y, was_y + p.motion.riseSpeed * dt)
+			foot.slide = -minf(-d.y - sqrt(r * r - h * h), p.slide)
+		elif h < q and -d.y < sqrt(q * q - h * h):
+			foot.slide = minf(sqrt(q * q - h * h) + d.y, p.slide)
+	# The girdles moved: a swinging paw stays within reach of where they are now.
+	for key in LEGS:
+		if s.feet[key].swing:
+			s.feet[key].point = _reachable_paw(s, key, p, s.feet[key].point)
 	var look: Dictionary = p.head.look
 	s.look += (clampf(turn / dt * look.turnGain, -look.max, look.max) - s.look) * (1 - exp(-dt * look.rate))
 	return s
@@ -248,7 +323,7 @@ static func pose(s: Dictionary, p: Dictionary) -> Dictionary:
 	var fh := _forward(s.hipYaw)
 	var up := Vector3.UP
 	var shoulder: Vector3 = s.position + up * p.body.shoulderY
-	var hip: Vector3 = s.position - fh * p.body.length + up * p.body.hipY
+	var hip: Vector3 = (_girdle(s, "LH", p).root + _girdle(s, "RH", p).root) / 2 + up * p.legs.hind.drop
 	var neck_base: Vector3 = shoulder + f * hd.neckBase[0] + up * hd.neckBase[1]
 	var still: bool = s.actualSpeed < p.motion.stillSpeed
 	var look: float = hd.look.idleAmplitude * sin(s.time * hd.look.idleFrequency) if still else s.look
@@ -276,34 +351,3 @@ static func pose(s: Dictionary, p: Dictionary) -> Dictionary:
 		var w := _wrist(s, key, p, paw)
 		pts[key] = [g.root, _knee(g.root, w, limb.a, limb.b, g.f * limb.bend), w, paw]
 	return pts
-
-## Black silhouette: thick segments for legs/spine/neck/tail, discs for hip, chest and head, two ears.
-static func silhouette(pts: Dictionary, p: Dictionary) -> Dictionary:
-	var sh: Dictionary = p.silhouette
-	var segs := []
-	for key in LEGS:
-		var widths: Array = sh.hind if key[1] == "H" else sh.front
-		for i in 3:
-			segs.append([pts[key][i], pts[key][i + 1], widths[i]])
-	for i in pts.tail.size() - 1:
-		segs.append([pts.tail[i], pts.tail[i + 1], sh.tail[mini(i, sh.tail.size() - 1)]])
-	for i in pts.spine.size() - 1:
-		segs.append([pts.spine[i], pts.spine[i + 1], sh.spine])
-	for i in pts.neck.size() - 1:
-		segs.append([pts.neck[i], pts.neck[i + 1], sh.neck])
-	segs.append([pts.muzzle[0], pts.muzzle[1], sh.muzzle])
-	var head: Vector3 = pts.muzzle[0]
-	var u: Vector3 = (pts.muzzle[1] - head).normalized()
-	var v := (Vector3.UP - u * u.y).normalized()
-	var side := u.cross(v).normalized()
-	var ear: Dictionary = sh.ear
-	var tris := []
-	for sgn in [-1.0, 1.0]:
-		var tri := []
-		for j in 3:
-			var q: Array = ear.points[j]
-			var spread: float = ear.tipSpread if j == 1 else 1.0
-			tri.append(head + side * ear.side * sgn * spread + v * q[0] + u * q[1])
-		tris.append(tri)
-	var chest: Vector3 = pts.spine[pts.spine.size() - 2] - Vector3(0, sh.chestDrop, 0)
-	return {"segments": segs, "discs": [[pts.spine[0], sh.hipDisc], [chest, sh.chestDisc], [head, sh.headDisc]], "triangles": tris}
