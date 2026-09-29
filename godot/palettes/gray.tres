@@ -12,6 +12,7 @@ colors = Dictionary[StringName, Color]({
 &"fabric": Color(0.82, 0.82, 0.82, 1),
 &"foliage": Color(0.56, 0.56, 0.56, 1),
 &"grass": Color(0.64, 0.64, 0.64, 1),
+&"ground": Color(0.74, 0.74, 0.74, 1),
 &"metal": Color(0.6, 0.6, 0.6, 1),
 &"metal_dark": Color(0.3, 0.3, 0.3, 1),
 &"paint": Color(0.95, 0.95, 0.95, 1),

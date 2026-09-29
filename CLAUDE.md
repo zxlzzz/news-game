@@ -15,6 +15,7 @@
 | `docs/design-plans/two-streets.md` | 两条街大场景的要求：镜头操作、布局、先做的技术项（场景在 `godot/scenes/two_streets/`） |
 | `godot/npc/clip-setup.json`、`godot/scenes/empty_ground/` | 动作要什么（位置、配件、另一人）；空地：一条条看动作、拖着调相对位置（说明在 `godot/README.md`"空地"） |
 | `assets/动作生成任务清单.md`、`assets/动作素材清单.md` | Kimodo 动作素材的任务队列和已交付情况 |
+| `docs/scene_reconstruction_workflow.md`、`research/sdu_weihai/复刻记录.md` | 照真实地点做场景的三步流程；山大威海校区的做法和每步所需信息（场景 `godot/scenes/sdu_weihai/`，脚本 `godot/real_place/`） |
 | `memory.md` | 跨会话备忘（英文），只在 Hsinlung 说"更新memo"时改 |
 
 其他：`docs/巴别塔圣歌-游戏实拍/` 是画风参考截图（图不进 git，按 `来源.txt` 重新下载）；`assets/`、`scripts/`、`sth/` 是做动作素材和研究用的，游戏运行时不读。`delivery/` 是 ChatGPT 交货的暂存处（放法见 `delivery/README.md`）：检查通过的搬到正式位置并从这里删掉。

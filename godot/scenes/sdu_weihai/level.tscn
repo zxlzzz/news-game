@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://core/level.gd" id="1"]
+[ext_resource type="Resource" path="res://scenes/sdu_weihai/palette.tres" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/sdu_weihai/view.tscn" id="3"]
+[ext_resource type="Resource" path="res://scenes/sdu_weihai/population.tres" id="4"]
+[ext_resource type="Script" path="res://core/terrain.gd" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/sdu_weihai/ground.glb" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/sdu_weihai/backdrop.glb" id="7"]
+
+[node name="SduWeihai" type="Node3D"]
+script = ExtResource("1")
+palette = ExtResource("2")
+view = ExtResource("3")
+population = ExtResource("4")
+
+[node name="Terrain" type="Node3D" parent="."]
+script = ExtResource("5")
+data_dir = "res://scenes/sdu_weihai"
+
+[node name="Ground" parent="." groups=["ground"] instance=ExtResource("6")]
+
+[node name="Backdrop" parent="." groups=["backdrop"] instance=ExtResource("7")]

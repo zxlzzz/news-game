@@ -1,0 +1,48 @@
+{
+  "_note": "Stage 1 (地基) for real_place/build_ground.py: the land's shape, the water and the road network; nothing else is drawn. Heights: FABDEM bare-earth estimate (about 30 m samples), then flattened where the ground is levelled: pitches, building pads, platforms, roads (in that order, later wins), a light smoothing (smooth_m), then lakes. Cover: water, road_slot on the road network, ground_slot everywhere else. Slots are colour slots (core/slots.tres) and set walking cost (core/walk_costs.json).",
+  "area": { "osm_tag": ["amenity", "university"], "buffer_m": 45 },
+  "raster_m": 1.0,
+  "mesh_grid_m": 2.5,
+  "road_slot": "road",
+  "ground_slot": "ground",
+  "sea_min_m2": 2500,
+  "roads": {
+    "_note": "The network that cuts the site into blocks: every OSM way of a network kind, plus walkways of a connector kind that join it at both ends (within end_snap_m) and are at least min_length_m long. Everything else (garden paths, plazas, dead-end walkways) is stage 2. Widths by OSM kind unless the way has a width tag; roads at least flat_end_min_width_m wide end square.",
+    "network": ["primary", "primary_link", "secondary", "secondary_link", "tertiary", "tertiary_link", "residential", "service", "unclassified", "pedestrian"],
+    "connector": { "kinds": ["footway", "path", "steps"], "min_length_m": 60, "end_snap_m": 4 },
+    "width_m": { "primary": 40, "primary_link": 8, "secondary": 18, "secondary_link": 7, "tertiary": 12, "tertiary_link": 7,
+                 "residential": 7, "service": 5, "unclassified": 6, "pedestrian": 6, "footway": 3, "path": 3, "steps": 3 },
+    "flat_end_min_width_m": 15,
+    "profile_sigma_m": 12,
+    "blend_m": 6
+  },
+  "buildings": { "_note": "Pads at the DEM median over the footprint; the bank round them is blend_m to blend_max_m wide, as wide as keeps it no steeper than max_bank_slope (the sun in view.tscn hatches ground facing away steeper than about 0.16); a pad with a bigger drop keeps a steep bank, a real terrace.", "blend_m": 10, "blend_max_m": 20, "max_bank_slope": 0.12 },
+  "pitches": { "default": { "blend_m": 8 }, "by_osm_id": {} },
+  "lakes": {
+    "_note": "Water surface level (default: lower quartile of the DEM over the water); bank_m is the stone edge above it.",
+    "bank_m": 0.5,
+    "blend_m": 6,
+    "by_osm_id": {}
+  },
+  "sea_level_m": 0.0,
+  "smooth_m": 2.0,
+  "platforms_note": "Levelled ground traced from the 2025 imagery on 5 m grids (real_place/view_area.py): height_m if given, else the DEM median over it. Shapes: polygon, rect, octagon, circle, with union / minus.",
+  "platforms": [
+    { "name": "axis sculpture plaza", "blend_m": 5, "octagon": { "centre": [22, 346.5], "size": [30, 29], "cut": 7 } },
+    { "name": "axis south octagon", "blend_m": 4, "octagon": { "centre": [23, 428], "size": [24, 24], "cut": 6 } },
+    { "name": "compass plaza", "blend_m": 6, "polygon": [[-12, 236], [58, 236], [52, 250], [50, 290], [56, 301], [-6, 301], [0, 290], [-8, 250]] },
+    { "name": "library plaza", "blend_m": 6, "circle": [20, 186, 57], "union": [{ "rect": [-30, 186, 68, 240] }], "minus": [{ "rect": [-60, 60, 100, 128] }] }
+  ],
+  "backdrop": {
+    "_note": "Scenery beyond the campus to the site edge (group backdrop, not walkable): sea and land only. Sea from the Copernicus water mask, its coast refined by the imagery. Heights smoothed (gaussian smooth_m), fading in over smooth_blend_m from the campus edge so the seam matches; the land comes down to the sea over shore_m.",
+    "raster_m": 4.0,
+    "mesh_grid_m": 8.0,
+    "simplify_m": 1.5,
+    "water_mask": "research/sdu_weihai/data/Copernicus_WBM_N37_E122.tif",
+    "ocean_value": 1,
+    "coast_snap_m": 60,
+    "smooth_m": 20,
+    "smooth_blend_m": 40,
+    "shore_m": 12
+  }
+}

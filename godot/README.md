@@ -26,6 +26,7 @@
 | 空地逐条检查 | `godot --headless --path . -s res://tools/check_empty_ground.gd` → `EMPTY_GROUND_OK`（逐条摆一遍、播一遍；缺东西的打印出来，其余错误都算失败） |
 | 录成动图 | 狗、牵狗、骑车、鸽子：`python tools/record_review.py <输出目录> [条目 ...]`；猫、狗的原地动作和行为：`python tools/record_animals.py <输出目录> [种类:动作 ...]`（都录空地） |
 | 猫、狗检查 | `godot --headless --path . -s res://tools/check_animals.gd` → `ANIMALS_OK`（三只模型能读、每个动作走一遍、行为） |
+| 看山大威海校区 | `godot --path . res://scenes/sdu_weihai/level.tscn`；操作同两条街，能拉远到整个校园（见下面"山大威海校区"） |
 
 ## 目录
 
@@ -52,6 +53,8 @@
 | `modeling/` | 给建模方（ChatGPT）的说明、自检脚本 `check_model.py`、建模脚本范例；交来的 `build_<名字>.py` 也放这里，glb 放 `models/` | |
 | `models/animal_husky.glb`、`animal_shibainu.glb`、`animal_cat.glb` | 狗和猫的真模型（Quaternius，CC0）：带骨骼和蒙皮，一个材质 `animal_ink`，原动作 + `NG_` 开头的原地动作（ChatGPT 做）。怎么用见下面"狗、猫"；制作脚本和重跑方法：`modeling/animals/animal_tools/README.md` | |
 | `tools/` | 检查脚本；`dequantize_glb.mjs` 把 Godot 不认的压缩网格格式解开 | |
+| `real_place/` | 照真实地点做场景的 Python 脚本（取影像、分地表、生成地面），见下面"山大威海校区" | |
+| `core/terrain.gd` | 有起伏地面的场景的高度：`Terrain.find(节点).height_at(x, z)`；镜头的注视点跟着它 | |
 
 ## 几个约定
 
@@ -139,6 +142,18 @@
 - 手要碰的点：物件类型上的 `touch_<动作>_<关节>` 标记（物件坐标），从原 `support.json` 转来，现在只存不用，等以后做 IK。推车的握点在模型里（`grip_left` / `grip_right`），不另存。
 
 **从 support.json 转来的**（2026-09-27，原文件已删，在 git 历史 e55fd50）：位置按源数据换算到火柴人的坐标系（减去第一帧的胯、按躯干朝向转正，和 `npc/clip_pose.gd` 一样），没有按映射后的手重新量，所以要在空地里看、拖。新位置种类：`rail`（`sidewalk_guardrail`）、`pole`（`bus_stop_sign`）、`wall`（`compound_wall_solid`）、`stretch`（`bench`）、`button`（`vending_machine`）、`notice`（`notice_board`）、`step`（`building_bank` 门口台阶）、`table`（`cafe_table`，站着）、`trash`（`trash_bin`）、`push`（`shopping_cart`、`baby_stroller`）、`upstairs` / `downstairs`（`outdoor_steps_8`；这两个标记是人根节点在动作第一帧的位置，动作第一帧本来就站在台阶中间，所以标记挪了整数个循环、带高度：上台阶从第 1 级起、`y = -0.3`，下台阶从第 6 级起、`y = 0.6`，三个循环正好在 8 级台阶上）。`sit_sideways` 用长椅已有的 `sit`，`take_back_piece` 用棋桌已有的 `chess`（原数据按咖啡桌量的，人离桌心 0.6 米，棋桌的位置是 0.84 米）。没带过来的：门的每帧转角、拐杖的每帧角度、下台阶每帧脚的阶段（播放用不上，要时从 git 历史取）。
+
+## 山大威海校区（`scenes/sdu_weihai/`，2026-09-28）
+
+照真实地点做的场景：给一个地点，脚本自己取资料、搭场景。流程分三步：地基、画线（静态布局）、建模，见 `docs/scene_reconstruction_workflow.md`。每一步用了什么信息、从哪来，记在 `../research/sdu_weihai/复刻记录.md`，资料出处和许可在同目录的 `来源.md`。现在只做完第一步（地基）：地形、水、路网。
+
+- **坐标**：`site.json` 定 UTM 分区和原点。X 朝东、Z 朝南、Y 朝上，单位米，高度不夸张。
+- **地面**：`ground.glb` 只有三种材质：`road`（路网）、`ground`（其余地面）、`water`，加上湖边的石岸 `wall_stone`。校外的海和陆地在 `backdrop.glb`（分组 `backdrop`，不可走）。地面节点分组 `ground`，`level.gd` 不把它按块合并（合并后块的接缝会描出线）。
+- **高度**：`terrain.bin/json` 是 1 米一格的高度网格，`core/terrain.gd` 读它。
+- **配色**：用自己的 `palette.tres`（在 `gray` 基础上把水调深）；镜头数值在 `camera-params.json`（能拉远到 2500 米）。
+- **数值**：都在 `ground.json`，包括哪些路算路网、路宽、整平哪些平台、湖岸高度。`layout_draft.json` 存着给第二步用的手描形状，现在没有代码读它。
+- **重新生成**（在仓库根目录）：`python godot/real_place/fetch_imagery.py godot/scenes/sdu_weihai`（下载影像，已有的块跳过）→ `python godot/real_place/classify_cover.py godot/scenes/sdu_weihai`（分地表，海岸线要用）→ `python godot/real_place/build_ground.py godot/scenes/sdu_weihai`（约 20 秒），然后在 `godot/` 下 `godot --headless --path . --import`。高程和 OSM 数据在 `../research/sdu_weihai/data/`，不进 git，重新获取的方法见 `来源.md`。
+- **读图**：`python godot/real_place/view_area.py godot/scenes/sdu_weihai x0 z0 x1 z1 out.png [网格米]`，截卫星图并画上米坐标网格，手描坐标从这里读。
 
 ## 现在还没做
 

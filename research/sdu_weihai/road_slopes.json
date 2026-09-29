@@ -1,0 +1,2399 @@
+[
+ {
+  "id": 1,
+  "osm": "107223511",
+  "kind": "secondary",
+  "from_xz": [
+   470,
+   301
+  ],
+  "to_xz": [
+   486,
+   403
+  ],
+  "h_from": 3.3,
+  "h_to": 3.4,
+  "grade_pct": 0.1,
+  "length_m": 103
+ },
+ {
+  "id": 2,
+  "osm": "107223511",
+  "kind": "secondary",
+  "from_xz": [
+   486,
+   403
+  ],
+  "to_xz": [
+   503,
+   504
+  ],
+  "h_from": 3.4,
+  "h_to": 3.6,
+  "grade_pct": 0.1,
+  "length_m": 103
+ },
+ {
+  "id": 3,
+  "osm": "107236966",
+  "kind": "residential",
+  "from_xz": [
+   -621,
+   653
+  ],
+  "to_xz": [
+   -497,
+   632
+  ],
+  "h_from": 4.2,
+  "h_to": 4.1,
+  "grade_pct": -0.1,
+  "length_m": 126
+ },
+ {
+  "id": 4,
+  "osm": "107236966",
+  "kind": "residential",
+  "from_xz": [
+   -497,
+   632
+  ],
+  "to_xz": [
+   -374,
+   611
+  ],
+  "h_from": 4.1,
+  "h_to": 3.4,
+  "grade_pct": -0.5,
+  "length_m": 126
+ },
+ {
+  "id": 5,
+  "osm": "107236966",
+  "kind": "residential",
+  "from_xz": [
+   -374,
+   611
+  ],
+  "to_xz": [
+   -250,
+   588
+  ],
+  "h_from": 3.4,
+  "h_to": 3.4,
+  "grade_pct": -0.0,
+  "length_m": 126
+ },
+ {
+  "id": 6,
+  "osm": "107236966",
+  "kind": "residential",
+  "from_xz": [
+   -250,
+   588
+  ],
+  "to_xz": [
+   -127,
+   564
+  ],
+  "h_from": 3.4,
+  "h_to": 3.3,
+  "grade_pct": -0.0,
+  "length_m": 126
+ },
+ {
+  "id": 7,
+  "osm": "110497601",
+  "kind": "service",
+  "from_xz": [
+   -180,
+   253
+  ],
+  "to_xz": [
+   -290,
+   263
+  ],
+  "h_from": 8.7,
+  "h_to": 9.1,
+  "grade_pct": 0.4,
+  "length_m": 110
+ },
+ {
+  "id": 8,
+  "osm": "110497601",
+  "kind": "service",
+  "from_xz": [
+   -290,
+   263
+  ],
+  "to_xz": [
+   -332,
+   329
+  ],
+  "h_from": 9.1,
+  "h_to": 9.2,
+  "grade_pct": 0.0,
+  "length_m": 108
+ },
+ {
+  "id": 9,
+  "osm": "110497603",
+  "kind": "service",
+  "from_xz": [
+   -285,
+   263
+  ],
+  "to_xz": [
+   -298,
+   141
+  ],
+  "h_from": 9.1,
+  "h_to": 12.3,
+  "grade_pct": 2.6,
+  "length_m": 122
+ },
+ {
+  "id": 10,
+  "osm": "110497603",
+  "kind": "service",
+  "from_xz": [
+   -298,
+   141
+  ],
+  "to_xz": [
+   -311,
+   20
+  ],
+  "h_from": 12.3,
+  "h_to": 17.9,
+  "grade_pct": 4.6,
+  "length_m": 122
+ },
+ {
+  "id": 11,
+  "osm": "110497603",
+  "kind": "service",
+  "from_xz": [
+   -311,
+   20
+  ],
+  "to_xz": [
+   -345,
+   -88
+  ],
+  "h_from": 17.9,
+  "h_to": 22.3,
+  "grade_pct": 3.7,
+  "length_m": 119
+ },
+ {
+  "id": 12,
+  "osm": "110497603",
+  "kind": "service",
+  "from_xz": [
+   -345,
+   -88
+  ],
+  "to_xz": [
+   -346,
+   -210
+  ],
+  "h_from": 22.3,
+  "h_to": 32.9,
+  "grade_pct": 8.7,
+  "length_m": 122
+ },
+ {
+  "id": 13,
+  "osm": "110497603",
+  "kind": "service",
+  "from_xz": [
+   -346,
+   -210
+  ],
+  "to_xz": [
+   -283,
+   -298
+  ],
+  "h_from": 32.9,
+  "h_to": 57.7,
+  "grade_pct": 20.4,
+  "length_m": 121
+ },
+ {
+  "id": 14,
+  "osm": "110497603",
+  "kind": "service",
+  "from_xz": [
+   -283,
+   -298
+  ],
+  "to_xz": [
+   -293,
+   -355
+  ],
+  "h_from": 57.7,
+  "h_to": 78.1,
+  "grade_pct": 17.2,
+  "length_m": 119
+ },
+ {
+  "id": 15,
+  "osm": "110497603",
+  "kind": "service",
+  "from_xz": [
+   -293,
+   -355
+  ],
+  "to_xz": [
+   -242,
+   -401
+  ],
+  "h_from": 78.1,
+  "h_to": 92.7,
+  "grade_pct": 12.3,
+  "length_m": 118
+ },
+ {
+  "id": 16,
+  "osm": "110497604",
+  "kind": "service",
+  "from_xz": [
+   -193,
+   107
+  ],
+  "to_xz": [
+   -295,
+   165
+  ],
+  "h_from": 12.5,
+  "h_to": 12.1,
+  "grade_pct": -0.3,
+  "length_m": 147
+ },
+ {
+  "id": 17,
+  "osm": "110497605",
+  "kind": "service",
+  "from_xz": [
+   -154,
+   570
+  ],
+  "to_xz": [
+   -161,
+   444
+  ],
+  "h_from": 3.4,
+  "h_to": 3.9,
+  "grade_pct": 0.4,
+  "length_m": 127
+ },
+ {
+  "id": 18,
+  "osm": "110497605",
+  "kind": "service",
+  "from_xz": [
+   -161,
+   444
+  ],
+  "to_xz": [
+   -173,
+   318
+  ],
+  "h_from": 3.9,
+  "h_to": 6.5,
+  "grade_pct": 2.1,
+  "length_m": 127
+ },
+ {
+  "id": 19,
+  "osm": "110497605",
+  "kind": "service",
+  "from_xz": [
+   -173,
+   318
+  ],
+  "to_xz": [
+   -188,
+   192
+  ],
+  "h_from": 6.5,
+  "h_to": 10.5,
+  "grade_pct": 3.1,
+  "length_m": 127
+ },
+ {
+  "id": 20,
+  "osm": "110497605",
+  "kind": "service",
+  "from_xz": [
+   -188,
+   192
+  ],
+  "to_xz": [
+   -118,
+   105
+  ],
+  "h_from": 10.5,
+  "h_to": 13.3,
+  "grade_pct": 2.2,
+  "length_m": 126
+ },
+ {
+  "id": 21,
+  "osm": "110497605",
+  "kind": "service",
+  "from_xz": [
+   -118,
+   105
+  ],
+  "to_xz": [
+   -100,
+   -12
+  ],
+  "h_from": 13.3,
+  "h_to": 16.9,
+  "grade_pct": 2.9,
+  "length_m": 125
+ },
+ {
+  "id": 22,
+  "osm": "110497605",
+  "kind": "service",
+  "from_xz": [
+   -100,
+   -12
+  ],
+  "to_xz": [
+   -108,
+   -138
+  ],
+  "h_from": 16.9,
+  "h_to": 26.0,
+  "grade_pct": 7.2,
+  "length_m": 126
+ },
+ {
+  "id": 23,
+  "osm": "110497605",
+  "kind": "service",
+  "from_xz": [
+   -108,
+   -138
+  ],
+  "to_xz": [
+   -219,
+   -177
+  ],
+  "h_from": 26.0,
+  "h_to": 29.1,
+  "grade_pct": 2.4,
+  "length_m": 126
+ },
+ {
+  "id": 24,
+  "osm": "110497605",
+  "kind": "service",
+  "from_xz": [
+   -219,
+   -177
+  ],
+  "to_xz": [
+   -346,
+   -178
+  ],
+  "h_from": 29.1,
+  "h_to": 28.1,
+  "grade_pct": -0.7,
+  "length_m": 127
+ },
+ {
+  "id": 25,
+  "osm": "110497607",
+  "kind": "service",
+  "from_xz": [
+   -160,
+   -374
+  ],
+  "to_xz": [
+   -254,
+   -404
+  ],
+  "h_from": 98.0,
+  "h_to": 92.6,
+  "grade_pct": -5.5,
+  "length_m": 99
+ },
+ {
+  "id": 26,
+  "osm": "110497607",
+  "kind": "service",
+  "from_xz": [
+   -254,
+   -404
+  ],
+  "to_xz": [
+   -340,
+   -437
+  ],
+  "h_from": 92.6,
+  "h_to": 103.1,
+  "grade_pct": 10.7,
+  "length_m": 98
+ },
+ {
+  "id": 27,
+  "osm": "110497609",
+  "kind": "service",
+  "from_xz": [
+   -15,
+   345
+  ],
+  "to_xz": [
+   -11,
+   474
+  ],
+  "h_from": 4.0,
+  "h_to": 3.3,
+  "grade_pct": -0.5,
+  "length_m": 130
+ },
+ {
+  "id": 28,
+  "osm": "110497609",
+  "kind": "service",
+  "from_xz": [
+   -11,
+   474
+  ],
+  "to_xz": [
+   59,
+   472
+  ],
+  "h_from": 3.3,
+  "h_to": 3.3,
+  "grade_pct": -0.0,
+  "length_m": 116
+ },
+ {
+  "id": 29,
+  "osm": "110497609",
+  "kind": "service",
+  "from_xz": [
+   59,
+   472
+  ],
+  "to_xz": [
+   57,
+   342
+  ],
+  "h_from": 3.3,
+  "h_to": 4.3,
+  "grade_pct": 0.7,
+  "length_m": 130
+ },
+ {
+  "id": 30,
+  "osm": "110497609",
+  "kind": "service",
+  "from_xz": [
+   57,
+   342
+  ],
+  "to_xz": [
+   -15,
+   345
+  ],
+  "h_from": 4.3,
+  "h_to": 4.0,
+  "grade_pct": -0.2,
+  "length_m": 128
+ },
+ {
+  "id": 31,
+  "osm": "110497613",
+  "kind": "service",
+  "from_xz": [
+   -15,
+   345
+  ],
+  "to_xz": [
+   -152,
+   359
+  ],
+  "h_from": 4.0,
+  "h_to": 4.7,
+  "grade_pct": 0.5,
+  "length_m": 138
+ },
+ {
+  "id": 32,
+  "osm": "110497613",
+  "kind": "service",
+  "from_xz": [
+   -152,
+   359
+  ],
+  "to_xz": [
+   -289,
+   371
+  ],
+  "h_from": 4.7,
+  "h_to": 5.8,
+  "grade_pct": 0.8,
+  "length_m": 138
+ },
+ {
+  "id": 33,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   -156,
+   511
+  ],
+  "to_xz": [
+   -38,
+   508
+  ],
+  "h_from": 3.5,
+  "h_to": 3.3,
+  "grade_pct": -0.2,
+  "length_m": 118
+ },
+ {
+  "id": 34,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   -38,
+   508
+  ],
+  "to_xz": [
+   80,
+   503
+  ],
+  "h_from": 3.3,
+  "h_to": 3.3,
+  "grade_pct": -0.0,
+  "length_m": 118
+ },
+ {
+  "id": 35,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   80,
+   503
+  ],
+  "to_xz": [
+   198,
+   499
+  ],
+  "h_from": 3.3,
+  "h_to": 3.3,
+  "grade_pct": 0.0,
+  "length_m": 118
+ },
+ {
+  "id": 36,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   198,
+   499
+  ],
+  "to_xz": [
+   312,
+   485
+  ],
+  "h_from": 3.3,
+  "h_to": 3.3,
+  "grade_pct": 0.0,
+  "length_m": 117
+ },
+ {
+  "id": 37,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   312,
+   485
+  ],
+  "to_xz": [
+   314,
+   368
+  ],
+  "h_from": 3.3,
+  "h_to": 3.4,
+  "grade_pct": 0.1,
+  "length_m": 118
+ },
+ {
+  "id": 38,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   314,
+   368
+  ],
+  "to_xz": [
+   314,
+   250
+  ],
+  "h_from": 3.4,
+  "h_to": 5.1,
+  "grade_pct": 1.4,
+  "length_m": 118
+ },
+ {
+  "id": 39,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   314,
+   250
+  ],
+  "to_xz": [
+   315,
+   131
+  ],
+  "h_from": 5.1,
+  "h_to": 8.7,
+  "grade_pct": 3.0,
+  "length_m": 118
+ },
+ {
+  "id": 40,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   315,
+   131
+  ],
+  "to_xz": [
+   314,
+   13
+  ],
+  "h_from": 8.7,
+  "h_to": 12.8,
+  "grade_pct": 3.5,
+  "length_m": 118
+ },
+ {
+  "id": 41,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   314,
+   13
+  ],
+  "to_xz": [
+   316,
+   -105
+  ],
+  "h_from": 12.8,
+  "h_to": 24.1,
+  "grade_pct": 9.6,
+  "length_m": 118
+ },
+ {
+  "id": 42,
+  "osm": "110497614",
+  "kind": "service",
+  "from_xz": [
+   316,
+   -105
+  ],
+  "to_xz": [
+   331,
+   -222
+  ],
+  "h_from": 24.1,
+  "h_to": 26.9,
+  "grade_pct": 2.3,
+  "length_m": 118
+ },
+ {
+  "id": 43,
+  "osm": "110498176",
+  "kind": "service",
+  "from_xz": [
+   -101,
+   -43
+  ],
+  "to_xz": [
+   10,
+   -43
+  ],
+  "h_from": 18.5,
+  "h_to": 17.7,
+  "grade_pct": -0.7,
+  "length_m": 111
+ },
+ {
+  "id": 44,
+  "osm": "110498176",
+  "kind": "service",
+  "from_xz": [
+   10,
+   -43
+  ],
+  "to_xz": [
+   122,
+   -42
+  ],
+  "h_from": 17.7,
+  "h_to": 21.8,
+  "grade_pct": 3.6,
+  "length_m": 111
+ },
+ {
+  "id": 45,
+  "osm": "110498176",
+  "kind": "service",
+  "from_xz": [
+   122,
+   -42
+  ],
+  "to_xz": [
+   233,
+   -41
+  ],
+  "h_from": 21.8,
+  "h_to": 23.9,
+  "grade_pct": 1.8,
+  "length_m": 111
+ },
+ {
+  "id": 46,
+  "osm": "110498176",
+  "kind": "service",
+  "from_xz": [
+   233,
+   -41
+  ],
+  "to_xz": [
+   344,
+   -36
+  ],
+  "h_from": 23.9,
+  "h_to": 15.2,
+  "grade_pct": -7.8,
+  "length_m": 111
+ },
+ {
+  "id": 47,
+  "osm": "110498176",
+  "kind": "service",
+  "from_xz": [
+   344,
+   -36
+  ],
+  "to_xz": [
+   455,
+   -34
+  ],
+  "h_from": 15.2,
+  "h_to": 8.5,
+  "grade_pct": -6.0,
+  "length_m": 111
+ },
+ {
+  "id": 48,
+  "osm": "110498176",
+  "kind": "service",
+  "from_xz": [
+   455,
+   -34
+  ],
+  "to_xz": [
+   506,
+   36
+  ],
+  "h_from": 8.5,
+  "h_to": 4.3,
+  "grade_pct": -3.8,
+  "length_m": 110
+ },
+ {
+  "id": 49,
+  "osm": "110498177",
+  "kind": "service",
+  "from_xz": [
+   56,
+   338
+  ],
+  "to_xz": [
+   172,
+   327
+  ],
+  "h_from": 4.3,
+  "h_to": 4.4,
+  "grade_pct": 0.1,
+  "length_m": 116
+ },
+ {
+  "id": 50,
+  "osm": "110498177",
+  "kind": "service",
+  "from_xz": [
+   172,
+   327
+  ],
+  "to_xz": [
+   287,
+   315
+  ],
+  "h_from": 4.4,
+  "h_to": 3.7,
+  "grade_pct": -0.6,
+  "length_m": 116
+ },
+ {
+  "id": 51,
+  "osm": "110498177",
+  "kind": "service",
+  "from_xz": [
+   287,
+   315
+  ],
+  "to_xz": [
+   402,
+   306
+  ],
+  "h_from": 3.7,
+  "h_to": 3.4,
+  "grade_pct": -0.3,
+  "length_m": 116
+ },
+ {
+  "id": 52,
+  "osm": "110863245",
+  "kind": "secondary",
+  "from_xz": [
+   477,
+   300
+  ],
+  "to_xz": [
+   483,
+   228
+  ],
+  "h_from": 3.3,
+  "h_to": 3.4,
+  "grade_pct": 0.1,
+  "length_m": 74
+ },
+ {
+  "id": 53,
+  "osm": "135206827",
+  "kind": "service",
+  "from_xz": [
+   446,
+   27
+  ],
+  "to_xz": [
+   429,
+   -103
+  ],
+  "h_from": 6.6,
+  "h_to": 14.4,
+  "grade_pct": 5.8,
+  "length_m": 133
+ },
+ {
+  "id": 54,
+  "osm": "135206827",
+  "kind": "service",
+  "from_xz": [
+   429,
+   -103
+  ],
+  "to_xz": [
+   323,
+   -175
+  ],
+  "h_from": 14.4,
+  "h_to": 24.5,
+  "grade_pct": 7.7,
+  "length_m": 132
+ },
+ {
+  "id": 55,
+  "osm": "135206850",
+  "kind": "service",
+  "from_xz": [
+   390,
+   -34
+  ],
+  "to_xz": [
+   391,
+   80
+  ],
+  "h_from": 12.0,
+  "h_to": 6.0,
+  "grade_pct": -5.2,
+  "length_m": 114
+ },
+ {
+  "id": 56,
+  "osm": "135206850",
+  "kind": "service",
+  "from_xz": [
+   391,
+   80
+  ],
+  "to_xz": [
+   401,
+   192
+  ],
+  "h_from": 6.0,
+  "h_to": 4.0,
+  "grade_pct": -1.8,
+  "length_m": 114
+ },
+ {
+  "id": 57,
+  "osm": "135206850",
+  "kind": "service",
+  "from_xz": [
+   401,
+   192
+  ],
+  "to_xz": [
+   402,
+   306
+  ],
+  "h_from": 4.0,
+  "h_to": 3.4,
+  "grade_pct": -0.5,
+  "length_m": 114
+ },
+ {
+  "id": 58,
+  "osm": "154815992",
+  "kind": "footway",
+  "from_xz": [
+   -98,
+   211
+  ],
+  "to_xz": [
+   -100,
+   92
+  ],
+  "h_from": 10.1,
+  "h_to": 14.0,
+  "grade_pct": 3.2,
+  "length_m": 118
+ },
+ {
+  "id": 59,
+  "osm": "154815996",
+  "kind": "footway",
+  "from_xz": [
+   -182,
+   239
+  ],
+  "to_xz": [
+   -18,
+   210
+  ],
+  "h_from": 9.6,
+  "h_to": 8.0,
+  "grade_pct": -0.9,
+  "length_m": 175
+ },
+ {
+  "id": 60,
+  "osm": "154815997",
+  "kind": "service",
+  "from_xz": [
+   2,
+   499
+  ],
+  "to_xz": [
+   47,
+   497
+  ],
+  "h_from": 3.3,
+  "h_to": 3.3,
+  "grade_pct": -0.0,
+  "length_m": 48
+ },
+ {
+  "id": 61,
+  "osm": "155224502",
+  "kind": "residential",
+  "from_xz": [
+   404,
+   523
+  ],
+  "to_xz": [
+   511,
+   487
+  ],
+  "h_from": 3.5,
+  "h_to": 3.6,
+  "grade_pct": 0.1,
+  "length_m": 127
+ },
+ {
+  "id": 62,
+  "osm": "286742012",
+  "kind": "secondary",
+  "from_xz": [
+   539,
+   107
+  ],
+  "to_xz": [
+   527,
+   9
+  ],
+  "h_from": 3.3,
+  "h_to": 4.0,
+  "grade_pct": 0.7,
+  "length_m": 99
+ },
+ {
+  "id": 63,
+  "osm": "286742012",
+  "kind": "secondary",
+  "from_xz": [
+   527,
+   9
+  ],
+  "to_xz": [
+   489,
+   -82
+  ],
+  "h_from": 4.0,
+  "h_to": 11.4,
+  "grade_pct": 7.5,
+  "length_m": 99
+ },
+ {
+  "id": 64,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   489,
+   -82
+  ],
+  "to_xz": [
+   420,
+   -181
+  ],
+  "h_from": 11.4,
+  "h_to": 20.3,
+  "grade_pct": 7.3,
+  "length_m": 122
+ },
+ {
+  "id": 65,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   420,
+   -181
+  ],
+  "to_xz": [
+   307,
+   -226
+  ],
+  "h_from": 20.3,
+  "h_to": 29.3,
+  "grade_pct": 7.4,
+  "length_m": 122
+ },
+ {
+  "id": 66,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   307,
+   -226
+  ],
+  "to_xz": [
+   187,
+   -244
+  ],
+  "h_from": 29.3,
+  "h_to": 36.0,
+  "grade_pct": 5.5,
+  "length_m": 122
+ },
+ {
+  "id": 67,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   187,
+   -244
+  ],
+  "to_xz": [
+   114,
+   -322
+  ],
+  "h_from": 36.0,
+  "h_to": 33.4,
+  "grade_pct": -2.1,
+  "length_m": 121
+ },
+ {
+  "id": 68,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   114,
+   -322
+  ],
+  "to_xz": [
+   134,
+   -438
+  ],
+  "h_from": 33.4,
+  "h_to": 36.4,
+  "grade_pct": 2.4,
+  "length_m": 122
+ },
+ {
+  "id": 69,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   134,
+   -438
+  ],
+  "to_xz": [
+   63,
+   -536
+  ],
+  "h_from": 36.4,
+  "h_to": 42.9,
+  "grade_pct": 5.4,
+  "length_m": 122
+ },
+ {
+  "id": 70,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   63,
+   -536
+  ],
+  "to_xz": [
+   -44,
+   -565
+  ],
+  "h_from": 42.9,
+  "h_to": 42.3,
+  "grade_pct": -0.6,
+  "length_m": 121
+ },
+ {
+  "id": 71,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -44,
+   -565
+  ],
+  "to_xz": [
+   -134,
+   -591
+  ],
+  "h_from": 42.3,
+  "h_to": 35.3,
+  "grade_pct": -5.8,
+  "length_m": 121
+ },
+ {
+  "id": 72,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -134,
+   -591
+  ],
+  "to_xz": [
+   -198,
+   -621
+  ],
+  "h_from": 35.3,
+  "h_to": 37.2,
+  "grade_pct": 1.6,
+  "length_m": 120
+ },
+ {
+  "id": 73,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -198,
+   -621
+  ],
+  "to_xz": [
+   -257,
+   -708
+  ],
+  "h_from": 37.2,
+  "h_to": 37.1,
+  "grade_pct": -0.1,
+  "length_m": 121
+ },
+ {
+  "id": 74,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -257,
+   -708
+  ],
+  "to_xz": [
+   -356,
+   -765
+  ],
+  "h_from": 37.1,
+  "h_to": 34.7,
+  "grade_pct": -2.0,
+  "length_m": 121
+ },
+ {
+  "id": 75,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -356,
+   -765
+  ],
+  "to_xz": [
+   -450,
+   -819
+  ],
+  "h_from": 34.7,
+  "h_to": 30.1,
+  "grade_pct": -3.7,
+  "length_m": 121
+ },
+ {
+  "id": 76,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -450,
+   -819
+  ],
+  "to_xz": [
+   -487,
+   -710
+  ],
+  "h_from": 30.1,
+  "h_to": 34.9,
+  "grade_pct": 3.9,
+  "length_m": 122
+ },
+ {
+  "id": 77,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -487,
+   -710
+  ],
+  "to_xz": [
+   -510,
+   -616
+  ],
+  "h_from": 34.9,
+  "h_to": 37.2,
+  "grade_pct": 1.9,
+  "length_m": 121
+ },
+ {
+  "id": 78,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -510,
+   -616
+  ],
+  "to_xz": [
+   -622,
+   -652
+  ],
+  "h_from": 37.2,
+  "h_to": 30.5,
+  "grade_pct": -5.5,
+  "length_m": 122
+ },
+ {
+  "id": 79,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -622,
+   -652
+  ],
+  "to_xz": [
+   -701,
+   -584
+  ],
+  "h_from": 30.5,
+  "h_to": 31.3,
+  "grade_pct": 0.7,
+  "length_m": 121
+ },
+ {
+  "id": 80,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -701,
+   -584
+  ],
+  "to_xz": [
+   -677,
+   -465
+  ],
+  "h_from": 31.3,
+  "h_to": 27.1,
+  "grade_pct": -3.5,
+  "length_m": 122
+ },
+ {
+  "id": 81,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -677,
+   -465
+  ],
+  "to_xz": [
+   -636,
+   -350
+  ],
+  "h_from": 27.1,
+  "h_to": 25.3,
+  "grade_pct": -1.5,
+  "length_m": 122
+ },
+ {
+  "id": 82,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -636,
+   -350
+  ],
+  "to_xz": [
+   -598,
+   -234
+  ],
+  "h_from": 25.3,
+  "h_to": 18.6,
+  "grade_pct": -5.4,
+  "length_m": 122
+ },
+ {
+  "id": 83,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -598,
+   -234
+  ],
+  "to_xz": [
+   -574,
+   -115
+  ],
+  "h_from": 18.6,
+  "h_to": 15.3,
+  "grade_pct": -2.7,
+  "length_m": 122
+ },
+ {
+  "id": 84,
+  "osm": "287830548",
+  "kind": "secondary",
+  "from_xz": [
+   -574,
+   -115
+  ],
+  "to_xz": [
+   -604,
+   3
+  ],
+  "h_from": 15.3,
+  "h_to": 12.6,
+  "grade_pct": -2.2,
+  "length_m": 122
+ },
+ {
+  "id": 85,
+  "osm": "287830550",
+  "kind": "tertiary",
+  "from_xz": [
+   -607,
+   662
+  ],
+  "to_xz": [
+   -633,
+   557
+  ],
+  "h_from": 4.1,
+  "h_to": 6.1,
+  "grade_pct": 1.8,
+  "length_m": 109
+ },
+ {
+  "id": 86,
+  "osm": "287830555",
+  "kind": "tertiary",
+  "from_xz": [
+   -636,
+   562
+  ],
+  "to_xz": [
+   -614,
+   660
+  ],
+  "h_from": 5.9,
+  "h_to": 4.1,
+  "grade_pct": -1.7,
+  "length_m": 101
+ },
+ {
+  "id": 87,
+  "osm": "288426701",
+  "kind": "service",
+  "from_xz": [
+   419,
+   305
+  ],
+  "to_xz": [
+   479,
+   300
+  ],
+  "h_from": 3.4,
+  "h_to": 3.3,
+  "grade_pct": -0.1,
+  "length_m": 60
+ },
+ {
+  "id": 88,
+  "osm": "392585449",
+  "kind": "service",
+  "from_xz": [
+   401,
+   132
+  ],
+  "to_xz": [
+   507,
+   132
+  ],
+  "h_from": 4.5,
+  "h_to": 3.5,
+  "grade_pct": -0.9,
+  "length_m": 106
+ },
+ {
+  "id": 89,
+  "osm": "392585450",
+  "kind": "service",
+  "from_xz": [
+   454,
+   27
+  ],
+  "to_xz": [
+   454,
+   132
+  ],
+  "h_from": 6.5,
+  "h_to": 4.1,
+  "grade_pct": -2.3,
+  "length_m": 105
+ },
+ {
+  "id": 90,
+  "osm": "431830975",
+  "kind": "footway",
+  "from_xz": [
+   14,
+   -43
+  ],
+  "to_xz": [
+   21,
+   48
+  ],
+  "h_from": 17.7,
+  "h_to": 16.4,
+  "grade_pct": -1.4,
+  "length_m": 92
+ },
+ {
+  "id": 91,
+  "osm": "431830976",
+  "kind": "footway",
+  "from_xz": [
+   14,
+   428
+  ],
+  "to_xz": [
+   14,
+   428
+  ],
+  "h_from": 3.5,
+  "h_to": 3.5,
+  "grade_pct": 0.0,
+  "length_m": 60
+ },
+ {
+  "id": 92,
+  "osm": "528931777",
+  "kind": "secondary",
+  "from_xz": [
+   25,
+   543
+  ],
+  "to_xz": [
+   25,
+   635
+  ],
+  "h_from": 3.2,
+  "h_to": 3.2,
+  "grade_pct": -0.0,
+  "length_m": 92
+ },
+ {
+  "id": 93,
+  "osm": "528931777",
+  "kind": "secondary",
+  "from_xz": [
+   25,
+   635
+  ],
+  "to_xz": [
+   27,
+   727
+  ],
+  "h_from": 3.2,
+  "h_to": 3.3,
+  "grade_pct": 0.1,
+  "length_m": 92
+ },
+ {
+  "id": 94,
+  "osm": "656128890",
+  "kind": "residential",
+  "from_xz": [
+   200,
+   115
+  ],
+  "to_xz": [
+   315,
+   104
+  ],
+  "h_from": 10.3,
+  "h_to": 9.9,
+  "grade_pct": -0.4,
+  "length_m": 120
+ },
+ {
+  "id": 95,
+  "osm": "656128891",
+  "kind": "service",
+  "from_xz": [
+   246,
+   47
+  ],
+  "to_xz": [
+   131,
+   47
+  ],
+  "h_from": 15.1,
+  "h_to": 14.8,
+  "grade_pct": -0.2,
+  "length_m": 115
+ },
+ {
+  "id": 96,
+  "osm": "656128891",
+  "kind": "service",
+  "from_xz": [
+   131,
+   47
+  ],
+  "to_xz": [
+   16,
+   48
+  ],
+  "h_from": 14.8,
+  "h_to": 16.5,
+  "grade_pct": 1.4,
+  "length_m": 115
+ },
+ {
+  "id": 97,
+  "osm": "656128891",
+  "kind": "service",
+  "from_xz": [
+   16,
+   48
+  ],
+  "to_xz": [
+   -99,
+   47
+  ],
+  "h_from": 16.5,
+  "h_to": 14.8,
+  "grade_pct": -1.5,
+  "length_m": 115
+ },
+ {
+  "id": 98,
+  "osm": "656128892",
+  "kind": "path",
+  "from_xz": [
+   -121,
+   356
+  ],
+  "to_xz": [
+   -37,
+   211
+  ],
+  "h_from": 4.6,
+  "h_to": 8.3,
+  "grade_pct": 2.2,
+  "length_m": 171
+ },
+ {
+  "id": 99,
+  "osm": "656128894",
+  "kind": "service",
+  "from_xz": [
+   -603,
+   1
+  ],
+  "to_xz": [
+   -454,
+   -4
+  ],
+  "h_from": 12.7,
+  "h_to": 18.9,
+  "grade_pct": 4.2,
+  "length_m": 149
+ },
+ {
+  "id": 100,
+  "osm": "656128894",
+  "kind": "service",
+  "from_xz": [
+   -454,
+   -4
+  ],
+  "to_xz": [
+   -348,
+   -60
+  ],
+  "h_from": 18.9,
+  "h_to": 21.3,
+  "grade_pct": 1.7,
+  "length_m": 139
+ },
+ {
+  "id": 101,
+  "osm": "656128895",
+  "kind": "service",
+  "from_xz": [
+   -445,
+   -4
+  ],
+  "to_xz": [
+   -420,
+   -18
+  ],
+  "h_from": 19.0,
+  "h_to": 19.7,
+  "grade_pct": 1.5,
+  "length_m": 48
+ },
+ {
+  "id": 102,
+  "osm": "656128896",
+  "kind": "service",
+  "from_xz": [
+   -127,
+   564
+  ],
+  "to_xz": [
+   -108,
+   686
+  ],
+  "h_from": 3.3,
+  "h_to": 3.3,
+  "grade_pct": -0.0,
+  "length_m": 123
+ },
+ {
+  "id": 103,
+  "osm": "658166200",
+  "kind": "footway",
+  "from_xz": [
+   -338,
+   268
+  ],
+  "to_xz": [
+   -410,
+   242
+  ],
+  "h_from": 10.9,
+  "h_to": 12.2,
+  "grade_pct": 1.4,
+  "length_m": 92
+ },
+ {
+  "id": 104,
+  "osm": "658166207",
+  "kind": "footway",
+  "from_xz": [
+   -296,
+   264
+  ],
+  "to_xz": [
+   -264,
+   307
+  ],
+  "h_from": 9.2,
+  "h_to": 6.9,
+  "grade_pct": -3.8,
+  "length_m": 61
+ },
+ {
+  "id": 105,
+  "osm": "658166208",
+  "kind": "footway",
+  "from_xz": [
+   -289,
+   371
+  ],
+  "to_xz": [
+   -397,
+   383
+  ],
+  "h_from": 5.8,
+  "h_to": 9.3,
+  "grade_pct": 3.2,
+  "length_m": 108
+ },
+ {
+  "id": 106,
+  "osm": "658166208",
+  "kind": "footway",
+  "from_xz": [
+   -397,
+   383
+  ],
+  "to_xz": [
+   -452,
+   330
+  ],
+  "h_from": 9.3,
+  "h_to": 12.2,
+  "grade_pct": 2.8,
+  "length_m": 105
+ },
+ {
+  "id": 107,
+  "osm": "658166208",
+  "kind": "footway",
+  "from_xz": [
+   -452,
+   330
+  ],
+  "to_xz": [
+   -401,
+   264
+  ],
+  "h_from": 12.2,
+  "h_to": 12.2,
+  "grade_pct": 0.0,
+  "length_m": 102
+ },
+ {
+  "id": 108,
+  "osm": "658166210",
+  "kind": "footway",
+  "from_xz": [
+   -255,
+   524
+  ],
+  "to_xz": [
+   -235,
+   492
+  ],
+  "h_from": 3.6,
+  "h_to": 3.7,
+  "grade_pct": 0.2,
+  "length_m": 41
+ },
+ {
+  "id": 109,
+  "osm": "658166216",
+  "kind": "footway",
+  "from_xz": [
+   -283,
+   594
+  ],
+  "to_xz": [
+   -289,
+   532
+  ],
+  "h_from": 3.4,
+  "h_to": 3.5,
+  "grade_pct": 0.2,
+  "length_m": 62
+ },
+ {
+  "id": 110,
+  "osm": "658166217",
+  "kind": "footway",
+  "from_xz": [
+   -156,
+   518
+  ],
+  "to_xz": [
+   -257,
+   529
+  ],
+  "h_from": 3.5,
+  "h_to": 3.5,
+  "grade_pct": 0.0,
+  "length_m": 102
+ },
+ {
+  "id": 111,
+  "osm": "658166217",
+  "kind": "footway",
+  "from_xz": [
+   -257,
+   529
+  ],
+  "to_xz": [
+   -341,
+   555
+  ],
+  "h_from": 3.5,
+  "h_to": 3.4,
+  "grade_pct": -0.1,
+  "length_m": 100
+ },
+ {
+  "id": 112,
+  "osm": "658166218",
+  "kind": "footway",
+  "from_xz": [
+   -287,
+   550
+  ],
+  "to_xz": [
+   -451,
+   563
+  ],
+  "h_from": 3.4,
+  "h_to": 4.0,
+  "grade_pct": 0.3,
+  "length_m": 165
+ },
+ {
+  "id": 113,
+  "osm": "658166219",
+  "kind": "footway",
+  "from_xz": [
+   -427,
+   561
+  ],
+  "to_xz": [
+   -417,
+   481
+  ],
+  "h_from": 3.7,
+  "h_to": 4.4,
+  "grade_pct": 0.8,
+  "length_m": 90
+ },
+ {
+  "id": 114,
+  "osm": "658166219",
+  "kind": "footway",
+  "from_xz": [
+   -417,
+   481
+  ],
+  "to_xz": [
+   -426,
+   386
+  ],
+  "h_from": 4.4,
+  "h_to": 10.5,
+  "grade_pct": 6.4,
+  "length_m": 95
+ },
+ {
+  "id": 115,
+  "osm": "658166220",
+  "kind": "pedestrian",
+  "from_xz": [
+   -309,
+   552
+  ],
+  "to_xz": [
+   -324,
+   375
+  ],
+  "h_from": 3.4,
+  "h_to": 6.9,
+  "grade_pct": 2.0,
+  "length_m": 178
+ },
+ {
+  "id": 116,
+  "osm": "658166222",
+  "kind": "footway",
+  "from_xz": [
+   -315,
+   491
+  ],
+  "to_xz": [
+   -159,
+   475
+  ],
+  "h_from": 3.6,
+  "h_to": 3.7,
+  "grade_pct": 0.0,
+  "length_m": 157
+ },
+ {
+  "id": 117,
+  "osm": "658166224",
+  "kind": "footway",
+  "from_xz": [
+   -226,
+   525
+  ],
+  "to_xz": [
+   -236,
+   437
+  ],
+  "h_from": 3.5,
+  "h_to": 4.0,
+  "grade_pct": 0.6,
+  "length_m": 88
+ },
+ {
+  "id": 118,
+  "osm": "658166226",
+  "kind": "footway",
+  "from_xz": [
+   -225,
+   366
+  ],
+  "to_xz": [
+   -247,
+   439
+  ],
+  "h_from": 5.7,
+  "h_to": 4.1,
+  "grade_pct": -1.6,
+  "length_m": 98
+ },
+ {
+  "id": 119,
+  "osm": "658166226",
+  "kind": "footway",
+  "from_xz": [
+   -247,
+   439
+  ],
+  "to_xz": [
+   -282,
+   371
+  ],
+  "h_from": 4.1,
+  "h_to": 5.7,
+  "grade_pct": 1.7,
+  "length_m": 97
+ },
+ {
+  "id": 120,
+  "osm": "658166233",
+  "kind": "service",
+  "from_xz": [
+   200,
+   498
+  ],
+  "to_xz": [
+   200,
+   369
+  ],
+  "h_from": 3.3,
+  "h_to": 3.9,
+  "grade_pct": 0.5,
+  "length_m": 130
+ },
+ {
+  "id": 121,
+  "osm": "658166233",
+  "kind": "service",
+  "from_xz": [
+   200,
+   369
+  ],
+  "to_xz": [
+   200,
+   239
+  ],
+  "h_from": 3.9,
+  "h_to": 7.1,
+  "grade_pct": 2.5,
+  "length_m": 130
+ },
+ {
+  "id": 122,
+  "osm": "658166233",
+  "kind": "service",
+  "from_xz": [
+   200,
+   239
+  ],
+  "to_xz": [
+   194,
+   115
+  ],
+  "h_from": 7.1,
+  "h_to": 10.5,
+  "grade_pct": 2.7,
+  "length_m": 125
+ },
+ {
+  "id": 123,
+  "osm": "658166233",
+  "kind": "service",
+  "from_xz": [
+   194,
+   115
+  ],
+  "to_xz": [
+   127,
+   47
+  ],
+  "h_from": 10.5,
+  "h_to": 14.8,
+  "grade_pct": 3.4,
+  "length_m": 127
+ },
+ {
+  "id": 124,
+  "osm": "658166237",
+  "kind": "footway",
+  "from_xz": [
+   21,
+   356
+  ],
+  "to_xz": [
+   23,
+   414
+  ],
+  "h_from": 3.9,
+  "h_to": 3.5,
+  "grade_pct": -0.7,
+  "length_m": 58
+ },
+ {
+  "id": 125,
+  "osm": "658166238",
+  "kind": "footway",
+  "from_xz": [
+   23,
+   432
+  ],
+  "to_xz": [
+   23,
+   476
+  ],
+  "h_from": 3.4,
+  "h_to": 3.3,
+  "grade_pct": -0.3,
+  "length_m": 44
+ },
+ {
+  "id": 126,
+  "osm": "658166239",
+  "kind": "footway",
+  "from_xz": [
+   2,
+   488
+  ],
+  "to_xz": [
+   46,
+   488
+  ],
+  "h_from": 3.3,
+  "h_to": 3.3,
+  "grade_pct": -0.0,
+  "length_m": 53
+ },
+ {
+  "id": 127,
+  "osm": "658166244",
+  "kind": "footway",
+  "from_xz": [
+   323,
+   448
+  ],
+  "to_xz": [
+   343,
+   409
+  ],
+  "h_from": 3.3,
+  "h_to": 3.4,
+  "grade_pct": 0.1,
+  "length_m": 51
+ },
+ {
+  "id": 128,
+  "osm": "658166245",
+  "kind": "footway",
+  "from_xz": [
+   343,
+   409
+  ],
+  "to_xz": [
+   343,
+   409
+  ],
+  "h_from": 3.4,
+  "h_to": 3.4,
+  "grade_pct": 0.0,
+  "length_m": 101
+ },
+ {
+  "id": 129,
+  "osm": "658166249",
+  "kind": "footway",
+  "from_xz": [
+   359,
+   359
+  ],
+  "to_xz": [
+   359,
+   359
+  ],
+  "h_from": 3.4,
+  "h_to": 3.4,
+  "grade_pct": 0.0,
+  "length_m": 80
+ },
+ {
+  "id": 130,
+  "osm": "658166253",
+  "kind": "service",
+  "from_xz": [
+   402,
+   306
+  ],
+  "to_xz": [
+   453,
+   216
+  ],
+  "h_from": 3.4,
+  "h_to": 3.5,
+  "grade_pct": 0.1,
+  "length_m": 105
+ },
+ {
+  "id": 131,
+  "osm": "658166253",
+  "kind": "service",
+  "from_xz": [
+   453,
+   216
+  ],
+  "to_xz": [
+   506,
+   127
+  ],
+  "h_from": 3.5,
+  "h_to": 3.5,
+  "grade_pct": -0.0,
+  "length_m": 105
+ },
+ {
+  "id": 132,
+  "osm": "658166253",
+  "kind": "service",
+  "from_xz": [
+   506,
+   127
+  ],
+  "to_xz": [
+   496,
+   27
+  ],
+  "h_from": 3.5,
+  "h_to": 4.8,
+  "grade_pct": 1.3,
+  "length_m": 103
+ },
+ {
+  "id": 133,
+  "osm": "658166253",
+  "kind": "service",
+  "from_xz": [
+   496,
+   27
+  ],
+  "to_xz": [
+   391,
+   26
+  ],
+  "h_from": 4.8,
+  "h_to": 8.0,
+  "grade_pct": 3.0,
+  "length_m": 105
+ },
+ {
+  "id": 134,
+  "osm": "658166255",
+  "kind": "footway",
+  "from_xz": [
+   127,
+   -42
+  ],
+  "to_xz": [
+   127,
+   47
+  ],
+  "h_from": 22.0,
+  "h_to": 14.8,
+  "grade_pct": -8.1,
+  "length_m": 89
+ },
+ {
+  "id": 135,
+  "osm": "680301594",
+  "kind": "path",
+  "from_xz": [
+   200,
+   311
+  ],
+  "to_xz": [
+   76,
+   244
+  ],
+  "h_from": 4.8,
+  "h_to": 10.1,
+  "grade_pct": 3.7,
+  "length_m": 141
+ },
+ {
+  "id": 136,
+  "osm": "911810878",
+  "kind": "service",
+  "from_xz": [
+   200,
+   535
+  ],
+  "to_xz": [
+   246,
+   610
+  ],
+  "h_from": 3.2,
+  "h_to": 3.2,
+  "grade_pct": -0.0,
+  "length_m": 115
+ },
+ {
+  "id": 137,
+  "osm": "911810878",
+  "kind": "service",
+  "from_xz": [
+   246,
+   610
+  ],
+  "to_xz": [
+   181,
+   673
+  ],
+  "h_from": 3.2,
+  "h_to": 3.2,
+  "grade_pct": -0.0,
+  "length_m": 120
+ },
+ {
+  "id": 138,
+  "osm": "911810878",
+  "kind": "service",
+  "from_xz": [
+   181,
+   673
+  ],
+  "to_xz": [
+   144,
+   594
+  ],
+  "h_from": 3.2,
+  "h_to": 3.2,
+  "grade_pct": -0.0,
+  "length_m": 119
+ },
+ {
+  "id": 139,
+  "osm": "911810878",
+  "kind": "service",
+  "from_xz": [
+   144,
+   594
+  ],
+  "to_xz": [
+   200,
+   535
+  ],
+  "h_from": 3.2,
+  "h_to": 3.2,
+  "grade_pct": 0.0,
+  "length_m": 116
+ },
+ {
+  "id": 140,
+  "osm": "970258577",
+  "kind": "pedestrian",
+  "from_xz": [
+   -16,
+   155
+  ],
+  "to_xz": [
+   51,
+   213
+  ],
+  "h_from": 10.8,
+  "h_to": 9.2,
+  "grade_pct": -1.2,
+  "length_m": 132
+ },
+ {
+  "id": 141,
+  "osm": "970258577",
+  "kind": "pedestrian",
+  "from_xz": [
+   51,
+   213
+  ],
+  "to_xz": [
+   -16,
+   155
+  ],
+  "h_from": 9.2,
+  "h_to": 10.8,
+  "grade_pct": 1.2,
+  "length_m": 136
+ }
+]

@@ -1,0 +1,8 @@
+{
+  "_note": "Settings for real_place/classify_cover.py on this site's imagery. Training areas are in cover_samples.json.",
+  "downsample": 2,
+  "feature_windows_px": [3, 7, 15],
+  "max_samples_per_rect": 3000,
+  "smooth_sigma_px": 1.5,
+  "min_water_m2": 2500
+}

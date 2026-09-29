@@ -36,3 +36,13 @@ Thumbs.db
 /godot/modeling/animals/**/test_pose_matrices.json
 /godot/modeling/animals/**/source_inventory.json
 /godot/modeling/animals/**/frames/
+
+# Real-place source data: downloads, re-fetched by the scripts listed in research/<site>/来源.md
+research/*/imagery/
+research/*/data/*.tif
+research/*/data/*.osm
+research/*/photos/*.jpg
+research/*/photos/*.png
+research/*/maps/
+# drawn over the imagery, so it stays out like the imagery
+research/*/road_slopes.png

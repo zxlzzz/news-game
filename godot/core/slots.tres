@@ -13,6 +13,7 @@ slots = Dictionary[StringName, PackedStringArray]({
 &"fabric": PackedStringArray(),
 &"foliage": PackedStringArray("no_lines"),
 &"grass": PackedStringArray(),
+&"ground": PackedStringArray(),
 &"hidden": PackedStringArray("hide"),
 &"metal": PackedStringArray(),
 &"metal_dark": PackedStringArray(),

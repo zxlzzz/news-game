@@ -168,14 +168,15 @@ func _merge_road_modules(parent: Node3D) -> void:
 ## meshes of objects that never move are joined per tile (mergeTile metres square, so the camera
 ## still skips tiles out of view) and per material into one mesh a tile; the objects stay (their
 ## post markers are still used) without meshes. Left alone: ground strips (each band is its own
-## mesh for its edge lines), the merged roads, the people, objects with a script (vehicles people
+## mesh for its edge lines), a real-place ground (group "ground": one mesh per surface, so its
+## edges draw where surfaces meet, not along tile seams), the merged roads, the people, objects with a script (vehicles people
 ## ride) and the backdrop, which is joined on its own.
 func _merge_static(parent: Node3D, tile: float) -> void:
 	var parts := {}  # "tile|material" -> {mat, count, and lists of v, n, uv, i pieces, joined at the end}
 	var to_parent := parent.global_transform.affine_inverse()
 	var sources: Array[MeshInstance3D] = []
 	for c in parent.get_children():
-		if not (c is Node3D) or c is GroundStrip or c.get_script() != null or c.name in [&"Crowd", &"Roads"] 				or c.is_in_group(&"backdrop"):
+		if not (c is Node3D) or c is GroundStrip or c.get_script() != null or c.name in [&"Crowd", &"Roads"] 				or c.is_in_group(&"backdrop") or c.is_in_group(&"ground"):
 			continue
 		_mesh_instances(c, sources)
 	for mi in sources:

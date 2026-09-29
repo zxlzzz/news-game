@@ -1,0 +1,98 @@
+{
+ "units": "metres; X east, Y up, Z south",
+ "sources": {
+  "terrain": "research/sdu_weihai/data/FABDEM_N37E122.tif (bicubic from ~30 m samples)"
+ },
+ "estimates": [
+  {
+   "what": "pitch 110498057",
+   "height_m": 19.21,
+   "basis": "median DEM height over the ground, flattened"
+  },
+  {
+   "what": "pitch 110498175",
+   "height_m": 3.64,
+   "basis": "median DEM height over the ground, flattened"
+  },
+  {
+   "what": "pitch 286743258",
+   "height_m": 3.51,
+   "basis": "median DEM height over the ground, flattened"
+  },
+  {
+   "what": "pitch 970258572",
+   "height_m": 19.21,
+   "basis": "median DEM height over the ground, flattened"
+  },
+  {
+   "what": "pitch 110498059",
+   "height_m": 23.34,
+   "basis": "median DEM height over the ground, flattened"
+  },
+  {
+   "what": "pitch 110498097",
+   "height_m": 13.85,
+   "basis": "median DEM height over the ground, flattened"
+  },
+  {
+   "what": "pitch 970258580",
+   "height_m": 3.51,
+   "basis": "median DEM height over the ground, flattened"
+  },
+  {
+   "what": "pitch 970258579",
+   "height_m": 3.51,
+   "basis": "median DEM height over the ground, flattened"
+  },
+  {
+   "what": "pitch 970258578",
+   "height_m": 3.51,
+   "basis": "median DEM height over the ground, flattened"
+  },
+  {
+   "what": "platform axis sculpture plaza",
+   "height_m": 4.04,
+   "basis": "median DEM height over it, flattened"
+  },
+  {
+   "what": "platform axis south octagon",
+   "height_m": 3.46,
+   "basis": "median DEM height over it, flattened"
+  },
+  {
+   "what": "platform compass plaza",
+   "height_m": 5.65,
+   "basis": "median DEM height over it, flattened"
+  },
+  {
+   "what": "platform library plaza",
+   "height_m": 9.74,
+   "basis": "median DEM height over it, flattened"
+  },
+  {
+   "what": "lake 110497597",
+   "level_m": 3.19,
+   "basis": "lower quartile of DEM over the water; bank 0.5 m"
+  },
+  {
+   "what": "lake 110497599",
+   "level_m": 3.21,
+   "basis": "lower quartile of DEM over the water; bank 0.5 m"
+  }
+ ],
+ "triangles": {
+  "road": 63602,
+  "ground": 420307,
+  "water": 363,
+  "wall_stone": 120
+ },
+ "height_range_m": [
+  0.0,
+  102.94
+ ],
+ "cover_m2": {
+  "water": 23969,
+  "road": 150187,
+  "ground": 1257438
+ }
+}

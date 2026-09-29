@@ -37,7 +37,6 @@ func _ready() -> void:
 	pitch = rad_to_deg(asin(clampf(back.y, -1, 1)))
 	yaw = rad_to_deg(atan2(back.x, back.z))
 	look = global_position - back * (global_position.y / back.y)
-	look.y = 0
 	height = size
 	# the look-at point stays over the level, not over its backdrop (group "backdrop")
 	var box := AABB()
@@ -83,6 +82,8 @@ func _apply() -> void:
 	height = clampf(height, p.height[0], p.height[1])
 	look.x = clampf(look.x, _area.position.x, _area.end.x)
 	look.z = clampf(look.z, _area.position.y, _area.end.y)
+	var terrain := Terrain.find(self)
+	look.y = terrain.height_at(look.x, look.z) if terrain else 0.0
 	basis = Basis(Vector3.UP, deg_to_rad(yaw)) * Basis(Vector3.RIGHT, -deg_to_rad(pitch))
 	var distance: float = p.distance
 	if p.projection == "orthogonal":
@@ -101,11 +102,12 @@ func frame(point: Vector3, height_: float = -1.0) -> void:
 		height = height_
 	_apply()
 
-## Where the ray under a screen point meets the ground plane (y = 0).
+## Where the ray under a screen point meets the level plane through the look-at point (y = 0 on a
+## flat level; the ground height there on a level with a Terrain).
 func _ground_at(screen: Vector2) -> Vector3:
 	var o := project_ray_origin(screen)
 	var n := project_ray_normal(screen)
-	return o - n * (o.y / n.y) if absf(n.y) > 1e-4 else look
+	return o - n * ((o.y - look.y) / n.y) if absf(n.y) > 1e-4 else look
 
 func _process(dt: float) -> void:
 	var d := Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_down", "ui_up"))
