@@ -3,6 +3,8 @@
 场景规格见仓库 `docs/scene_spec.md`，模型要求见 `modeling/模型制作说明.md`（依据 `docs/建模规范与参数.md`），要做的素材见 `素材清单.md`。
 2026-09-23 起取代 `sth/godot-npc/`（已删除，历史在 git 里）。
 
+**验收状态（2026-10-03）：修复与素材扩充已集成，但整批画面未获 Hsinlung 验收。后续复查仍发现手臂折叠、接触修正、楼梯真实落脚、动作完整性和端点姿态可用性等问题；动物的完整连续画面检查也未完成。当前手臂观察见 `../delivery/arm_visual_review_2026-10-03/README.md`，修复与剩余问题见 `../delivery/motion_self_audit_2026-10-03/repair_round2.md`。数值检查通过不等于动作自然合理。**
+
 ## 运行
 
 `godot` 指 `D:/Godot/Godot_v4.7.2-stable_win64_console.exe`（带 `_console` 的才能在终端看到输出）。都在本目录下执行。
@@ -16,7 +18,10 @@
 | 只导入模型 | `godot --headless --path . --import` |
 | 打印各物件类型尺寸 | `godot --headless --path . -s res://tools/print_bounds.gd` |
 | 检查一个模型是否合规 | `python modeling/check_model.py <glb>` → `PASS` / `FAIL` |
+| 交互接触、骨长与拖动回看检查 | `godot --headless --path . -s res://tools/check_interactions.gd` → `INTERACTIONS_OK`（83 条交互，各 61 个相位；画面仍需连续播放检查） |
 | 火柴人映射对拍 | `godot --headless --path . -s res://tools/check_mapping.gd` → `MAPPING_OK` / `MAPPING_FAIL` |
+| 脚底穿地检查（全部人体动作、插值、坡面和人物比例） | `godot --headless --path . -s res://tools/check_foot_ground.gd` → `FOOT_GROUND_OK` |
+| 动作播放检查（单次保持末姿、拖动、一个动作单元） | `godot --headless --path . -s res://tools/check_motion_playback.gd` → `MOTION_PLAYBACK_OK` |
 | 狗、鸽子、骑车、牵狗检查 | `godot --headless --path . -s res://tools/check_locomotion.gd` → `LOCOMOTION_OK` / `LOCOMOTION_FAIL` |
 | 可走区域检查（桥上桥下、台阶、路沿、栏杆） | `godot --headless --path . -s res://tools/check_walk_grid.gd` → `WALK_GRID_OK`；用 `scenes/walk_grid_test/`（方块拼的测试场景），再确认 street_demo 和 two_streets 能建出网格、两条街之间走得通 |
 | 能转的镜头检查 | `godot --headless --path . -s res://tools/check_camera.gd` → `CAMERA_OK`（模拟鼠标：缩放、拖动平移、单击不动、中键转动和俯仰限位） |
@@ -24,7 +29,9 @@
 | 空地：一条条看动作（人、狗、牵狗、鸽子、猫、自行车、电动车） | `godot --path . res://scenes/empty_ground/level.tscn`；见下面"空地"一节 |
 | 空地截图 | `godot --path . res://scenes/empty_ground/level.tscn -- --entry <条目> [--item <held_…>] [--object <类型>] [--breed <品种>] [--time <秒>] --shot <png 绝对路径>`，镜头参数同上（`--look`、`--yaw`、`--pitch`、`--size`） |
 | 空地逐条检查 | `godot --headless --path . -s res://tools/check_empty_ground.gd` → `EMPTY_GROUND_OK`（逐条摆一遍、播一遍；缺东西的打印出来，其余错误都算失败） |
-| 录成动图 | 狗、牵狗、骑车、鸽子：`python tools/record_review.py <输出目录> [条目 ...]`；猫、狗的原地动作和行为：`python tools/record_animals.py <输出目录> [种类:动作 ...]`（都录空地） |
+| 录成动图 | 牵狗、骑车：`python tools/record_review.py <输出目录> [条目 ...]`；猫狗与鸟的独立动作：`python tools/record_animals.py <输出目录> [种类:片段名 ...]`（都录空地） |
+| 独立动物动作播放检查 | `godot --headless --path . -s res://tools/check_individual_motion.gd` → `INDIVIDUAL_MOTION_OK`（170 猫狗片段、37 鸟动作，直接首姿与末姿保持） |
+| 鸟姿势与过渡检查 | `godot --headless --path . -s res://tools/check_pigeon_motion.gd` → `PIGEON_MOTION_OK` |
 | 猫、狗检查 | `godot --headless --path . -s res://tools/check_animals.gd` → `ANIMALS_OK`（三只模型能读、每个动作走一遍、行为） |
 | 看山大威海校区 | `godot --path . res://scenes/sdu_weihai/level.tscn`；操作同两条街，能拉远到整个校园（见下面"山大威海校区"） |
 
@@ -45,7 +52,9 @@
 | `core/bounds.gd` | 物件尺寸 = 模型包围盒 | §3 |
 | `core/two_wheeler.gd` | 可骑的车（`types/bicycle.tscn`、`scooter.tscn`）：按节点名从模型读车座/车把/脚踏，转轮子和曲柄 | §2、§3 |
 | `style/` | 画风 shader 和抽线代码（从 sth/godot-npc 原样搬来，只改了颜色输入格式） | |
-| `npc/` | 火柴人：映射移植、播放、169 条动作数据（`npc/motion/`，由 `../scripts/export-npc-motion.py` 从 `../assets/animations/npz/` 导出）、对拍参考值；狗和猫（真模型）、程序生成的鸽子、骑车的人、牵狗的人（见下） | |
+| `npc/` | 火柴人：映射移植、播放、239 条动作数据（`npc/motion/`，由 `../scripts/export-npc-motion.py` 从 `../assets/animations/npz/` 导出）、对拍参考值；狗和猫（真模型）、程序生成的鸽子、骑车的人、牵狗的人（见下） | |
+| `npc/interactions.json` + `interaction_player.gd` | 映射后的手脚接触、重心、物件交接、门与设备联动。空地和街道人群共用；动作参数在 JSON；不是修改通用火柴人比例。新增双人活动可在空地看，街道何时选择它们仍由行为表决定。原则：手拿的配件跟着原动作的手走，手轨迹只用于真正碰到物件、另一人的那一段（`window`，可给多段取最大）；`body` 不写 `direction` 时保留原动作的躯干倾斜，只挪胯；`item.align` 让双手工具顺两手连线摆，`item.slide` 配合 `ground` 让工具沿自身轴滑到触地；`shift` 把整个人平移（原动作站得离物件远时用）。用 `base` 换成别的动作的只剩原素材里没有器械、用不了的（漫步机、扭腰器、秋千、跷跷板、上下车、三种开门、颠球、投篮，以及完整手工击球轨迹的双人乒乓球）。 |
+| `npc/seat_transition.gd` | 街景到座位前停步、转身、坐下和起身；长椅从前方，棋凳从侧面接近，参数在 `crowd-params.json` 的 `seating`。 |
 | `npc/clip-setup.json` | 动作要什么：哪种位置（`post`）、拿什么配件用哪只手（`item`）、两人动作的另一人（`partner`）；读它的是 `npc/clip_setup.gd`。见下面"空地"一节 | |
 | `types/held_*.tscn` | 配件类型：继承 `models/held_*.glb`，子节点 `model` 的位置 = 配件在手里的偏移 | §2 |
 | `scenes/empty_ground/` | 空地：看动作、调相对位置的场景（见下） | |
@@ -71,20 +80,23 @@
 
 | 文件 | 做什么 |
 |---|---|
-| `npc/procedural_dog.gd` + `dog-params.json` | 四条腿的步态（走 / 小跑按速度切换），狗和猫都用。脚着地不滑、腿长不变；腿够不着时身体先慢下来并提早换脚；前后两段身体各按脚下的高度走，上下路沿、台阶时身体前后倾，踩实的腿不伸过头也不折过头。`dog-params.json` 的身体和腿是调步态时参照的那只狗，模型换成自己的骨长，步幅按腿能前后摆多远缩放 |
+| `npc/procedural_dog.gd` + `dog-params.json` | 四条腿的步态（走 / 小跑按速度切换），狗和猫都用。脚着地不滑、腿长不变；腿够不着时身体先慢下来并提早换脚；前后两段身体各按脚下的高度走，上下路沿、台阶时身体前后倾，踩实的腿不伸过头也不折过头。`dog-params.json` 的身体和腿是调步态时参照的那只狗，模型换成自己的骨长，模型行走的步幅和抬脚节奏取自各自原版 Walk，腿的可达范围限制最大支撑步长；猫的行走站位按猫自身腿形居中 |
 | `npc/procedural_pigeon.gd` + `pigeon-params.json` | 鸽子：走（头停住、身体走过去、再往前一探，每步一次）、站着转头张望、啄地、蹦到指定点（可上下路沿）、起飞 / 飞 / 滑翔 / 落地（落前抬身刹车、放腿）、黑色剪影。脚着地不滑、腿长不变。翅膀形状来自 `pigeon-wings.json`（收起、滑翔、一次扑翅），由 `scripts/export_pigeon_wings.py` 从公有领域鸽子 `assets/rigs/pigeon/bird.blend` 取出，不手改 |
+| `npc/pigeon_motion.gd` + `pigeon-motion.json` | 独立鸟姿势库：按名字采样姿势和过渡，同一对端点可以有不同过程；不包含世界路线或自动切换。调用方移动鸟，传入速度、转弯和减速调姿。空地条目如 `pigeon:launch_power`、`pigeon:launch_open`、`pigeon:flap_to_glide_stroke`、`pigeon:flap_to_glide_soft`，单次停在末姿；实拍和接口见 `../delivery/pigeon_motion_2026-10-02/` |
 | `npc/animal-models.json` | 三只模型（哈士奇、柴犬、猫）：哪几根骨头是腿、肩、脖子、尾巴，每个动作由哪几段片段组成（进入 / 保持 / 起身），每种动物有哪些动作，淡入淡出时间 |
-| `npc/animal_model.gd` | 读模型：从骨架量出腿长、肩高、爪子站位，换算步态参数；采样片段；给出每根骨头的姿势（步态 + 腿部 IK，脖子和尾巴叠原版 Walk / 站立呼吸片段，动作片段淡入淡出） |
-| `npc/animal.gd` | 一只狗或猫的状态：走路（程序步态）和动作（停稳后播进入片段 → 循环保持 → 不要了就播起身片段 → 淡回走路） |
+| `npc/animal_model.gd` | 读模型：从骨架量出腿长、肩高、爪子站位，换算步态参数；采样片段；给出每根骨头的姿势（全身原版 Walk / 站立呼吸 + 腿部 IK；按真实蒙皮爪底落脚，混合和取消后的完整蒙皮再检查地面，腿长保持） |
+| `npc/animal.gd` | 一只狗或猫的状态：走路和动作：停稳后进入 → 循环保持；正常停止播原退出片段；换动作、要走动或紧急逃离从当前姿态连续恢复，挠耳正常结束先收回抬脚再播起身 |
 | `npc/animal_body.gd` | 显示：模型实例、纯黑、不投影，每帧设骨头；套画风时跳过（`style/ink_builder.gd` 的 `SELF_INKED` 分组） |
-| `npc/animal_controller.gd` + `animal-behaviour.json` | 流浪狗和猫的行为：走走停停、有人靠近就走开、猫见狗警觉或跑开；歇脚时轮流做的动作在 `animal-behaviour.json` 的 `rest_actions`。纯函数，输入自身和附近的人和动物，输出想要的速度、朝向和原地动作。还没接进街道 |
+| `npc/animal_controller.gd` + `animal-behaviour.json` | 流浪狗和猫的行为：走走停停、有人靠近就走开、猫见狗弓背或跑开；休息保持时长从实际进入目标 hold 后开始计算，威胁随时取消；歇脚时轮流做的动作在 `animal-behaviour.json` 的 `rest_actions`。纯函数，输入自身和附近的人和动物，输出想要的速度、朝向和原地动作。还没接进街道 |
 | `npc/rider.gd` + `rider-params.json` | 骑车的人：按车给的接触点现算——胯在车座上、手在车把上、脚在脚踏/踏板上，身体前倾由车把位置推出；蹬车时曲柄跟轮子转，不蹬时滑行、脚踏回到水平；转弯时连人带车倾斜。车的类型可以覆盖其中的参数（`rider_style`） |
 | `npc/dog_walker.gd` + `leash-params.json` | 牵狗的人：人按走过的距离播 `walk_dog`、停下时渐变到 `stand_idle`；狗（模型，街上哈士奇、柴犬各半，`crowd-params.json` 的 `dogWalker.breeds`）跟在牵绳手那一侧；绳子拴在模型脖子上；绳子快绷紧时人放慢，绳子只负责画（松了下垂，紧了拉直），不拖动任何一方 |
 | `npc/clip_pose.gd` | 任一动作按"走过的距离"原地播放（去掉动作自带的前进量），供导航驱动的人用 |
 | `npc/ink_figure.gd` | 画上面这些：等宽圆头线、朝向镜头的实心圆、实心三角，和火柴人同一个线条 shader |
 | `npc/body-types.json` | 体型缩放（成人 3 倍） |
 
-在空地里看（下面"空地"一节）；要动图用 `tools/record_review.py`。
+在空地里看（下面"空地"一节）；要动图用 `tools/record_review.py`。2026-10-02 正在重做猫狗动作：步态已保留全身源运动并按物种取步长，正常退出和任意相位取消分开处理，最终蒙皮查地面，鸽子啄地按喙尖与头部几何落地。三种动物的新原地动作库已集成，正在完成实际运行回归；Hsinlung 尚未验收本轮画面。预览目前仍统一套用 16 秒的走路—动作—退出流程，这不是源片段的实际时长，也不应作为后续动作设计依据。路沿和四级 0.15 × 0.30 米楼梯的数值检查保留，其通过不代表动作自然。
+
+物件交接、投篮、上下车、开门等 `playback: once` 的条目，以及首尾不连续的普通动作，播完停在末尾，再按播放从头开始；首尾连续的走路、持续运球、健身设备等仍循环。片段时间按首帧到末帧的原生帧间隔计算，不多加一帧来插值回开头。连续运球的源身体完成后保持末姿，声明 `tracks_playback: loop` 的手、球和物件轨迹使用独立循环时间；身体与脚的数据仍按源播放方式执行，暂停再播不重启身体。`tools/check_motion_playback.gd` 检查末姿保持、拖进度的可重现性与持续循环。
 
 ## 街道 demo（`scenes/street_demo/`，2026-09-24）
 
@@ -121,10 +133,12 @@
 
 ## 空地（`scenes/empty_ground/`，2026-09-27）
 
-一块平地（现有画风、能转的镜头），左边列表列出能动的一切，全从数据读：`npc/motion/` 的每条动作；`movers.json` 里的狗、牵狗、自行车、电动车、鸽子；`movers.json` 的 `animals` 列的猫、狗：走、小跑、行为，加上 `npc/animal-models.json` 给这种动物的每个动作（时间安排在 `npc/animal-behaviour.json` 的 `review`）。这两类原来各有一个审阅场景，2026-09-27 起都并进空地，那两个场景删了。代码：`stage.gd`（摆什么、怎么动、拖了写哪里），`empty_ground.gd`（面板、鼠标、命令行），数值在 `params.json`，镜头数值在 `camera-params.json`（比街上能拉得更近）。
+一块平地（现有画风、能转的镜头），左边按名字列出独立动作：`npc/motion/` 的人体动作、`movers.json` 的牵狗及骑车动作，以及真实猫狗模型里的每个动画片段。选中即从该片段首帧播放，不再附带先走、停下做动作、再走开，也不自动拼接进入、保持、退出。猫狗三库共170片段；39条有明确循环声明并已检查首尾；空地中所有动作都只播一遍，结束保持末姿。猫狗原地动作按 1.5 倍播放，行走步态仍按距离采样。源GLB的 `extras.loop` 优先于Godot导入标志；没有源声明的原始片段使用导入标志，不因首尾碰巧相同就把攻击等单次动作强行循环。代码：`stage.gd`（摆什么、怎么动、拖了写哪里）、`tools/animal_clip_preview.gd`（按源片段采样）、`empty_ground.gd`（面板、鼠标、命令行）。行为与衔接测试保留在独立检查工具中。镜头数值在 `camera-params.json`。
 
 - **打开**：`godot --path . res://scenes/empty_ground/level.tscn`。点列表一条，自动摆好、镜头框住；空格或按钮播放 / 暂停，拖进度条，改倍速。筛选框按名字过滤。
-- **自动摆**（按 `npc/clip-setup.json`）：要位置的，放一个有这种 `post_<种类>` 标记的物件类型，人站到标记上；拿配件的，把 `types/held_<名>.tscn` 挂到手上（左 / 右手、双手中点、背着 = 颈根）；两人动作，另一人站到声明里的偏移上，两人同步播。只是别人的 `partner` 的动作（`receive_item`）选中时也摆出这一对。推着走的物件（类型分组 `pushed`：购物车、婴儿车）跟着人的根位置走。会移动的动作按自己的位移走：首尾能接上的一直走（台阶上一直爬），走出 `params.json` 的 `replayAfter`（6 米）或升降够 `replayRise`（0.9 米，台阶）后回起点；接不上的每遍回起点。
+- **自动摆**（按 `npc/clip-setup.json`）：要位置的，放一个有这种 `post_<种类>` 标记的物件类型，人站到标记上；拿配件的，把 `types/held_<名>.tscn` 挂到手上（左 / 右手、双手中点、背着 = 颈根）；两人动作，另一人站到声明里的偏移上，两人同步播。只是别人的 `partner` 的动作（`receive_item`）选中时也摆出这一对。推着走的物件（类型分组 `pushed`：购物车、婴儿车）跟着人的根位置走。会移动的动作只走这一个动作单元的位移，播放结束保持末姿；再按播放从头开始。牵狗行走和自行车踩踏分别只展示一个步态、踩踏周期。
+
+独立首尾姿态循环在 `npc/pose_loops/`：每条人体动作、每品种的猫狗动作、每条鸽子动作各有 `__start.tres`、`__end.tres`，索引在同目录 `index.json`。这是精确保留端点的保持姿态循环，两帧相同；物件、支撑和品种条件记录在资源的 `context`。用 `tools/export_endpoint_pose_loops.gd` 从实际修正后的姿态重建。资源的 `sample(time)` 可独立采样；空地 `stage.select(id,{"endpoint_loop":资源路径})` 可在原动作的物件布置里核对。这里只有素材接口与端点文件，没有姿态切换路线。
 - **换**：面板上"配件"可换成任意 `held_*`（只对声明了配件的动作）；"物件"可换成任意提供同种位置的类型；狗、牵狗、狗的动作可换品种（哈士奇、柴犬）。
 - **手加的**："加一个人"加一个播当前动作的人，"加物件"加任意类型，都放在镜头中心前面；切到别的动作时保留，右键删掉。自动摆的，切到下一条就删掉。
 - **拖**：左键按住东西拖，在地面上平移；按住 Shift 拖是上下（`params.json` 的 `verticalKey`）。只挪位置不转。松手就写回文件，画面上同类型的实例立刻跟着变，写回的只有相对关系：
@@ -132,8 +146,8 @@
   - 配件 → `types/held_<名>.tscn` 里 `model` 节点的位置（配件在手里的偏移）。
   - 两人动作里的另一人 → `npc/clip-setup.json` 里这条的 `partner.at`。
   - 整体挪（拖物件带着上面的人、拖第一个人带着另一人或推的车、拖手加的东西）不写任何文件。
-- **缺东西**：声明引用的位置没有物件类型提供、配件类型不存在、另一人的动作文件不存在时，列表里这条灰掉，后面写"缺：…"；选中照样能看（缺的那样不摆）。游戏里这条动作不进候选（`npc/behaviour.gd`、`npc/crowd.gd`）。现在缺的：`hold_door` / `push_door` / `pull_door`（没有门的类型，等门模型）、`carry_shoulder`（没有 `held_rolled_carpet`）。
-- **命令行**：`-- --entry <条目>`（动作名、`movers.json` 的 id、或 `dog:sit` 这样的 `种类:动作`）、`--item <held_名>`、`--object <类型名>`、`--breed <品种>`、`--time <秒>`、`--speed <倍>`、`--shot <png>`（停在 `--time` 截一张）、`--capture <目录> --frames <n> --every <k>`（录帧，`record_*.py` 用）。给了 `--look` / `--size` 就不自动框镜头。
+- **缺东西**：声明引用的位置没有物件类型提供、配件类型不存在、另一人的动作文件不存在时，列表里这条灰掉，后面写"缺：…"；选中照样能看（缺的那样不摆）。游戏里这条动作不进候选（`npc/behaviour.gd`、`npc/crowd.gd`）。现在（2026-10-01）没有缺的；`check_empty_ground` 打印的缺件数为 0。
+- **命令行**：`-- --entry <条目>`（动作名、`movers.json` 的 id、或 `dog:NG_Sit_Down` 这样的 `种类:片段名`）、`--item <held_名>`、`--object <类型名>`、`--breed <品种>`、`--time <秒>`、`--speed <倍>`、`--shot <png>`（停在 `--time` 截一张）、`--capture <目录> --frames <n> --every <k>`（录帧，`record_*.py` 用）。给了 `--look` / `--size` 就不自动框镜头。
 
 **加东西的做法**：
 - 加一种位置：在物件类型 `.tscn` 里加 `Marker3D`，名字 `post_<种类>`（种类一个词、不带下划线，同类型有几个就 `post_<种类>_<n>`），位置是人站的地方、+Z 是人面朝的方向；再在 `clip-setup.json` 给用它的动作写 `"post": "<种类>"`。行为表里要用，就加一行 `"from": "post:<种类>"`；声明了位置种类的动作只能出现在同种类的行里（`behaviour.gd`、`crowd.gd` 查，违反就报错退出）。非行为场景（street_demo）里出现的位置种类都要在 `crowd-params.json` 的 `posts` 里有一项。
@@ -157,14 +171,11 @@
 
 ## 现在还没做
 
-- 门（从楼里进出）：等门的模型；有了门的类型再加 `doorhold` / `doorpush` / `doorpull` 位置。
+- 从整栋楼里进出与导航：独立交互门已有开合和手部联动，尚不代表每栋建筑都已有室内通路。
 - 候选来源"周围的人"：双人请求、活动记账、吆喝抬分（`docs/design_route_npc_behavior.md` §3）；结伴走。
 - 看向哪：在任意动作上叠加头朝目标转。
 - 多种人：`npc/behaviour-people.json` 只有 `passerby`，`npc/body-types.json` 只有 `adult`，缺小孩体型。
 - 避让：人、骑车的、狗之间都不避让；狗的位置不查可走网格。
-- 狗上下楼梯：步态选落脚点时不看台阶，走快了两只爪可能落在相差两级的台阶上，超出模型腿能伸缩的范围（尤其哈士奇、柴犬前腿上臂很短），那一下爪子会离台阶面几厘米（下楼梯 0.8 米/秒时最多约 11 厘米）。路沿没有这个问题（检查按 1.5 厘米卡）。`tools/check_locomotion.gd` 只打印楼梯的误差，不算失败。
 - 车辆行驶、红绿灯、公交（停着、有人坐，不上车）。
-- NPC 在街上带配件（配件只在空地里挂）；猫、鸽子进场景（只在空地里）。
-- IK：让手去够物件上的 `touch_…` 点。
+- 猫、鸽子进街道场景（只在空地里）；新双人活动的街道选择与配对。当前街道人物已按动作挂配件并使用同一接触播放器。
 - 动作转换图（哪个动作后面能接哪个，见行为文档 §5.2），表示方式未定。
-- 已知穿模：入座时直线穿过椅子；坐姿原地转身；起身后留在椅子里；`pat_dust`、`look_up` 首尾偏 6 厘米，被当成会走的动作而转向。

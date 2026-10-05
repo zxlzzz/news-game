@@ -1,0 +1,22 @@
+{
+  "trace": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\outlier_actual_trace\\runtime_cat.json",
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\outlier_actual\\cat",
+  "entries": [
+    {
+      "breed": "cat",
+      "label": "side_cancel_cat",
+      "start": 0,
+      "duration": 1.0333333333333334,
+      "samples": 31,
+      "size": 1
+    }
+  ],
+  "views": [
+    35,
+    90,
+    270
+  ],
+  "columns": 12,
+  "cell": 256,
+  "pitch": 12
+}

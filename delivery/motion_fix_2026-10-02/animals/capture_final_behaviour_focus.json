@@ -1,0 +1,65 @@
+{
+  "provenance": [
+    "res://tools/review_motion_batch.gd",
+    "res://scenes/empty_ground/stage.gd",
+    "res://npc/animal.gd",
+    "res://npc/animal_model.gd",
+    "res://npc/animal_body.gd",
+    "res://npc/procedural_dog.gd",
+    "res://npc/dog-params.json",
+    "res://npc/animal-models.json",
+    "res://npc/animal_controller.gd",
+    "res://npc/animal-behaviour.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://models/animal_husky.glb",
+    "res://models/animal_shibainu.glb",
+    "res://models/animal_cat.glb",
+    "res://tools/animal_behaviour_preview.gd"
+  ],
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_cat_behaviour_focus",
+  "samples": 180,
+  "columns": 15,
+  "cell": 256,
+  "views": [
+    35,
+    90,
+    270
+  ],
+  "pitch": 15,
+  "entries": [
+    {
+      "id": "cat:behaviour",
+      "label": "cat_knead_hold",
+      "start": 22.5,
+      "duration": 3,
+      "size": 1.6,
+      "target_height": 0.16,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "cat:behaviour",
+      "label": "cat_arch_enter_hold",
+      "start": 36,
+      "duration": 3,
+      "size": 3.2,
+      "target_height": 0.16,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "cat:behaviour",
+      "label": "cat_arch_flee_return",
+      "start": 39.1,
+      "duration": 3,
+      "size": 3.2,
+      "target_height": 0.16,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    }
+  ]
+}

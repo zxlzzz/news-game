@@ -1,0 +1,96 @@
+{
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/pigeon_motion_2026-10-02/focus_dense",
+  "samples": 48,
+  "columns": 8,
+  "cell": 256,
+  "views": [
+    0,
+    90,
+    30
+  ],
+  "pitch": 10,
+  "entries": [
+    {
+      "id": "pigeon:unfold_direct",
+      "label": "pigeon_unfold_direct",
+      "duration": 0.65,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:unfold_lift",
+      "label": "pigeon_unfold_lift",
+      "duration": 0.8,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:launch_power",
+      "label": "pigeon_launch_power",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:launch_open",
+      "label": "pigeon_launch_open",
+      "duration": 0.85,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:flap_to_glide_stroke",
+      "label": "pigeon_flap_to_glide_stroke",
+      "duration": 0.65,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:flap_to_glide_soft",
+      "label": "pigeon_flap_to_glide_soft",
+      "duration": 0.65,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:land_flare",
+      "label": "pigeon_land_flare",
+      "duration": 0.7,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:land_absorb",
+      "label": "pigeon_land_absorb",
+      "duration": 0.9,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:hop",
+      "label": "pigeon_hop",
+      "duration": 0.65,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    }
+  ],
+  "provenance": [
+    "res://npc/pigeon_motion.gd",
+    "res://npc/pigeon-motion.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://npc/pigeon-wings.json",
+    "res://scenes/empty_ground/stage.gd",
+    "res://tools/review_motion_batch.gd",
+    "res://tools/animal_clip_preview.gd"
+  ]
+}

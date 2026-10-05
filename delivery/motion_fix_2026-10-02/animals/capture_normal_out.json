@@ -1,0 +1,231 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_normal_out",
+  "entries": [
+    {
+      "id": "dog:sit",
+      "label": "husky_sit_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "dog:lie",
+      "label": "husky_lie_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "dog:sleep",
+      "label": "husky_sleep_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "dog:side_lie",
+      "label": "husky_side_lie_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "dog:scratch",
+      "label": "husky_scratch_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "dog:sit",
+      "label": "shibainu_sit_normal_out",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.3,
+      "target_height": 0.19,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "dog:lie",
+      "label": "shibainu_lie_normal_out",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.3,
+      "target_height": 0.19,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "dog:sleep",
+      "label": "shibainu_sleep_normal_out",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.3,
+      "target_height": 0.19,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "dog:side_lie",
+      "label": "shibainu_side_lie_normal_out",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.3,
+      "target_height": 0.19,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "dog:scratch",
+      "label": "shibainu_scratch_normal_out",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.3,
+      "target_height": 0.19,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "cat:sit",
+      "label": "cat_sit_normal_out",
+      "options": {},
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 0.95,
+      "target_height": 0.15,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "cat:lie",
+      "label": "cat_lie_normal_out",
+      "options": {},
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 0.95,
+      "target_height": 0.15,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "cat:sleep",
+      "label": "cat_sleep_normal_out",
+      "options": {},
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 0.95,
+      "target_height": 0.15,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "cat:side_lie",
+      "label": "cat_side_lie_normal_out",
+      "options": {},
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 0.95,
+      "target_height": 0.15,
+      "review": {
+        "speed": 0
+      }
+    },
+    {
+      "id": "cat:knead",
+      "label": "cat_knead_normal_out",
+      "options": {},
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 0.95,
+      "target_height": 0.15,
+      "review": {
+        "speed": 0
+      }
+    }
+  ],
+  "samples": 130,
+  "columns": 13,
+  "cell": 256,
+  "views": [
+    35,
+    90
+  ],
+  "pitch": 12,
+  "provenance": [
+    "res://tools/review_motion_batch.gd",
+    "res://scenes/empty_ground/stage.gd",
+    "res://npc/animal.gd",
+    "res://npc/animal_model.gd",
+    "res://npc/animal_body.gd",
+    "res://npc/procedural_dog.gd",
+    "res://npc/dog-params.json",
+    "res://npc/animal-models.json",
+    "res://npc/animal_controller.gd",
+    "res://npc/animal-behaviour.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://models/animal_husky.glb",
+    "res://models/animal_shibainu.glb",
+    "res://models/animal_cat.glb",
+    "res://tools/animal_behaviour_preview.gd"
+  ]
+}

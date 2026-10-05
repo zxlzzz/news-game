@@ -1,5 +1,11 @@
 # 交付文件夹
 
+## Review archive cleanup — 2026-10-05
+
+Review reports, useful tools, current comparison sheets and metadata-linked evidence are retained. Repeated pose dumps, frame captures, candidate models and superseded temporary scripts were moved to the Git-ignored `.cache/cleanup-recovery-2026-10-05/`, preserving their relative paths. Historical reports may describe captures that are now only in that local recovery directory. Building rollback ZIPs remain local and are Git-ignored. Production assets and generation inputs are unchanged by this cleanup.
+
+Current unresolved visual findings: `arm_visual_review_2026-10-03/README.md` and `motion_self_audit_2026-10-03/repair_round2.md`. Passing numerical checks does not establish visual acceptance.
+
 做好的素材先放这里，不要直接放进游戏目录。Claude 检查通过后，再搬到正式位置（模型 → `godot/models/` + `godot/modeling/`，人的动作 → `assets/animations/npz/`，动物 → `godot/npc/`），并从这里删掉。
 
 要做什么：`godot/素材清单.md` 的"第六批"。
@@ -40,5 +46,4 @@ delivery/
 - **验收看独立预览**：在空地场景里能看（`godot/scenes/empty_ground/`：往 `movers.json` 加条目，参照已有的狗、鸽子），能单独看每个原地动作和过渡、每种体型、猫的全套；行为（流浪狗走走停停、有人靠近就走开、猫狗互动）在预览里用几个按固定路线走的假人演示。另录动图（参照 `godot/tools/record_review.py`）。
 - 画法照现有的狗：纯黑剪影、3D 点每帧现算。数值全放 JSON，代码里不写。
 - 说明里列出改了和新建的每个文件。
-
 

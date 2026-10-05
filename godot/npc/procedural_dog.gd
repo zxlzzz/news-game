@@ -59,9 +59,11 @@ static func _girdle(s: Dictionary, key: String, p: Dictionary) -> Dictionary:
 	if hind:
 		root += Basis(l, s.pitch) * (Vector3.UP * _rise(p) - f * p.body.length)
 	var base: Vector3 = root - Vector3.UP * ((p.body.hipY if hind else p.body.shoulderY) - limb.drop + _slide(s, key))
+	var neutral: float = lerpf(limb.neutral, limb.walkNeutral,
+		clampf(s.get("speed", 0.0) / p.gaitReferenceSpeed, 0, 1))
 	return {"f": f,
 		"root": root + l * limb.get("halfWidth", p.body.halfWidth) * side,
-		"neutral": base + f * limb.neutral + l * limb.get("footWidth", p.body.footWidth) * side}
+		"neutral": base + f * neutral + l * limb.get("footWidth", p.body.footWidth) * side}
 
 ## How far the top of a leg has slid up (+) or down from its place on the girdle.
 static func _slide(s: Dictionary, key: String) -> float:
@@ -78,7 +80,7 @@ static func _set_heights(s: Dictionary, front_y: float, hind_y: float, p: Dictio
 	var l: float = p.body.length
 	var r := _rise(p)
 	s.position.y = front_y
-	s.pitch = asin(clampf((hind_y - front_y + r) / Vector2(l, r).length(), -1, 1)) - atan2(r, l)
+	s.pitch = clampf(asin(clampf((hind_y - front_y + r) / Vector2(l, r).length(), -1, 1)) - atan2(r, l),-p.motion.maxPitch,p.motion.maxPitch)
 
 ## A planted leg folded back no tighter than this (root to wrist).
 static func _fold(key: String, p: Dictionary) -> float:
@@ -97,22 +99,40 @@ static func _reach(key: String, p: Dictionary) -> float:
 	return limb.a + limb.b - p.reachMargin
 
 static func _reachable(s: Dictionary, key: String, p: Dictionary, paw: Vector3) -> bool:
-	return _wrist(s, key, p, paw).distance_to(_girdle(s, key, p).root) <= _reach(key, p)
+	var length := _wrist(s, key, p, paw).distance_to(_girdle(s, key, p).root)
+	return length <= _reach(key, p) and length >= _fold(key,p)
 
 ## A swinging paw is pulled in horizontally until the leg can reach it.
 static func _reachable_paw(s: Dictionary, key: String, p: Dictionary, paw: Vector3) -> Vector3:
 	var d: Vector3 = _wrist(s, key, p, paw) - _girdle(s, key, p).root
 	var r := _reach(key, p)
+	# A free paw waits above a lower tread until the trunk can descend far enough.
+	var vertical := clampf(d.y,-r,r)
+	paw.y+=vertical-d.y
+	d.y=vertical
 	var allowed := sqrt(maxf(0, r * r - d.y * d.y))
 	var h := Vector2(d.x, d.z).length()
 	if h <= allowed:
+		var minimum := _fold(key,p)
+		if d.length()<minimum:
+			var horizontal:=Vector3(d.x,0,d.z)
+			var axis: Vector3=horizontal.normalized() if h>1e-9 else _girdle(s,key,p).f
+			return paw+axis*(sqrt(maxf(0,minimum*minimum-d.y*d.y))-h)
 		return paw
 	var k := allowed / maxf(h, 1e-9)
 	return Vector3(paw.x + d.x * (k - 1), paw.y, paw.z + d.z * (k - 1))
 
+## Alternating reach and ground projection also clears vertical stair risers during a swing.
+static func _swing_paw(s: Dictionary, key: String, p: Dictionary, point: Vector3, ground: Callable) -> Vector3:
+	for i in int(p.foothold.clearancePasses):
+		point.y=maxf(point.y,ground.call(point))
+		point=_reachable_paw(s,key,p,point)
+		if point.y>=ground.call(point)-1e-6: break
+	return point
+
 ## A leg may come up to OVERREACH short of its paw, only while the body rises back after a step
 ## (a curb): the leg is then straight and the paw that far off. tools/check_locomotion.gd holds the gait
-## to it on curbs; on stairs it can be more (godot/README.md), and the leg then straightens toward the paw.
+## to it on curbs and stairs, including the swing over each riser.
 const OVERREACH := 0.015
 
 ## A paw out of reach (a leg too short, or asked to fold tighter than it can): the leg straightens or
@@ -139,24 +159,39 @@ static func create(position: Vector3, yaw: float, p: Dictionary) -> Dictionary:
 
 ## Step length grows with speed, so faster means longer steps, not only quicker legs.
 static func _stride(gait: Dictionary, speed: float) -> float:
-	return gait.stride.base + gait.stride.perSpeed * speed
+	var stride: float = minf(gait.stride.base + gait.stride.perSpeed * speed, gait.stride.maximum)
+	# At a slow pace the swing is capped at its natural duration, so stance occupies
+	# more of the cycle. Bound actual stance travel, not a fixed duty-fraction estimate.
+	for i in 2:
+		var swing: float = _swing_time(gait, speed / stride)
+		stride = minf(stride, gait.stride.maximumStance + speed * swing)
+	return stride
 
 static func _swing_time(gait: Dictionary, frequency: float) -> float:
 	var w: Dictionary = gait.swing
 	return clampf(w.k / maxf(frequency, w.minFrequency), w.min, w.max)
 
-static func _lift(s: Dictionary, key: String, p: Dictionary, frequency: float, swing_time: float, ground: Callable) -> void:
+static func _lift(s: Dictionary, key: String, p: Dictionary, frequency: float, swing_time: float, ground: Callable, event_delay: float = 0.0) -> void:
 	var foot: Dictionary = s.feet[key]
 	var period := 1.0 / frequency if frequency > 0 else 0.0
 	# Land ahead of the rest spot by the travel during the swing plus half the stance, so the paw
 	# passes under its girdle mid-stance.
-	var travel: Vector3 = _forward(s.yaw) * s.speed * (swing_time + 0.5 * maxf(0, period - swing_time))
+	var travel: Vector3 = _forward(s.yaw) * s.speed * (event_delay + swing_time + 0.5 * maxf(0, period - swing_time))
 	foot.swing = true
-	foot.elapsed = 0.0
+	foot.elapsed = -event_delay
 	foot.duration = swing_time
 	foot.start = foot.point
 	foot.target = _girdle(s, key, p).neutral + travel
 	foot.target.y = ground.call(foot.target)
+	# Do not skip a stair tread: the farthest admissible foothold before the next riser.
+	var start_height: float = ground.call(foot.start)
+	var candidate: Vector3 = foot.start
+	for i in range(1,int(p.foothold.samples)+1):
+		var sample: Vector3 = foot.start.lerp(foot.target,float(i)/p.foothold.samples)
+		sample.y=ground.call(sample)
+		if absf(sample.y-start_height)>p.foothold.maxStep: break
+		candidate=sample
+	foot.target=candidate
 	s.events.append({"type": "lift", "leg": key})
 
 static func _place(s: Dictionary, p: Dictionary, from: Dictionary, turn: float, dt: float, t: float) -> void:
@@ -200,7 +235,7 @@ static func step(previous: Dictionary, input: Dictionary, dt: float, p: Dictiona
 	for key in LEGS:
 		var until := fposmod(gait.liftAt[key] - old_phase, 1.0)
 		if not s.feet[key].swing and frequency > 0 and (until < advance or until < 1e-9):
-			_lift(s, key, p, frequency, swing_time, ground)
+			_lift(s, key, p, frequency, swing_time, ground, until / frequency)
 	# Standing: step the paw farthest from its rest spot until all four are back under the body.
 	var airborne := false
 	for key in LEGS:
@@ -249,12 +284,20 @@ static func step(previous: Dictionary, input: Dictionary, dt: float, p: Dictiona
 		var t := minf(1, foot.elapsed / foot.duration)
 		var point: Vector3 = foot.start.lerp(foot.target, t * t * (3 - 2 * t))
 		point.y += _leg(key, p).lift * sin(PI * t)
-		foot.point = _reachable_paw(s, key, p, point)
+		foot.point = _swing_paw(s, key, p, point,ground)
 		if t >= 1:
-			foot.point.y = ground.call(foot.point)
-			foot.swing = false
-			s.events.append({"type": "land", "leg": key})
+			var landing: Vector3=foot.point
+			landing.y=ground.call(landing)
+			if _reachable(s,key,p,landing):
+				foot.point=landing
+				foot.swing = false
+				s.events.append({"type": "land", "leg": key})
+			else:
+				# The other feet moved the trunk while this paw was waiting; choose a current tread.
+				_lift(s,key,p,frequency,swing_time,ground)
 	var was := {"F": s.position.y, "H": _hind_base(s, p)}
+	var old_slides := {}
+	for key in LEGS: old_slides[key]=s.feet[key].slide
 	var mean := {"F": 0.0, "H": 0.0}
 	for key in LEGS:
 		mean[key[1]] += (s.feet[key].target.y if s.feet[key].swing else s.feet[key].point.y) / 2
@@ -304,10 +347,32 @@ static func step(previous: Dictionary, input: Dictionary, dt: float, p: Dictiona
 			foot.slide = -minf(-d.y - sqrt(r * r - h * h), p.slide)
 		elif h < q and -d.y < sqrt(q * q - h * h):
 			foot.slide = minf(sqrt(q * q - h * h) + d.y, p.slide)
+	# Pitch also moves the hips horizontally. Preserve planted reach while the front descends.
+	if not _planted_fit(s,p):
+		var wanted_heights := Vector2(s.position.y,_hind_base(s,p))
+		var wanted_slides := {}
+		for key in LEGS:
+			wanted_slides[key]=s.feet[key].slide
+			s.feet[key].slide=old_slides[key]
+		_set_heights(s,was.F,was.H,p)
+		if _planted_fit(s,p):
+			var lo := 0.0
+			var hi := 1.0
+			for i in 20:
+				var t: float=(lo+hi)/2
+				for key in LEGS: s.feet[key].slide=lerpf(old_slides[key],wanted_slides[key],t)
+				_set_heights(s,lerpf(was.F,wanted_heights.x,t),lerpf(was.H,wanted_heights.y,t),p)
+				if _planted_fit(s,p):lo=t
+				else:hi=t
+			for key in LEGS: s.feet[key].slide=lerpf(old_slides[key],wanted_slides[key],lo)
+			_set_heights(s,lerpf(was.F,wanted_heights.x,lo),lerpf(was.H,wanted_heights.y,lo),p)
+		else:
+			for key in LEGS: s.feet[key].slide=wanted_slides[key]
+			_set_heights(s,wanted_heights.x,wanted_heights.y,p)
 	# The girdles moved: a swinging paw stays within reach of where they are now.
 	for key in LEGS:
 		if s.feet[key].swing:
-			s.feet[key].point = _reachable_paw(s, key, p, s.feet[key].point)
+			s.feet[key].point = _swing_paw(s, key, p, s.feet[key].point,ground)
 	var look: Dictionary = p.head.look
 	s.look += (clampf(turn / dt * look.turnGain, -look.max, look.max) - s.look) * (1 - exp(-dt * look.rate))
 	return s

@@ -1,0 +1,2432 @@
+{
+  "husky": {
+    "gait": {
+      "trot": {
+        "liftAt": {
+          "LF": 0.5,
+          "LH": 0.0,
+          "RF": 0.0,
+          "RH": 0.5
+        },
+        "stride": {
+          "base": 0.481587178739783,
+          "maximum": 0.547710431838337,
+          "maximumStance": 0.230038381372101,
+          "perSpeed": 0.341333351135254
+        },
+        "swing": {
+          "k": 0.58,
+          "max": 0.618666698932648,
+          "min": 0.12,
+          "minFrequency": 0.937499951105567
+        }
+      },
+      "walk": {
+        "liftAt": {
+          "LF": 0.566666666666667,
+          "LH": 0.433333333333333,
+          "RF": 0.0916666666666667,
+          "RH": 0.933333333333333
+        },
+        "stride": {
+          "base": 0.300991986712364,
+          "maximum": 0.37814528444729,
+          "maximumStance": 0.230038381372101,
+          "perSpeed": 0.213333344459534
+        },
+        "swing": {
+          "k": 0.391666666666667,
+          "max": 0.417777799566587,
+          "min": 0.12,
+          "minFrequency": 0.937499951105567
+        }
+      }
+    },
+    "drop": 0.0233310034158147,
+    "scenarios": {
+      "scratch_normal": {
+        "frames": 1920,
+        "fps": 120.0,
+        "mesh_floor_min_m": -9.903491697082047e-07,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 2.1646886172455027e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 0.00010622025608337442,
+            "planted_sole_speed_max_mps": 0.007634834072988874,
+            "free_anchor_max_error_m": 0.00014078923538283374,
+            "free_skin_sole_max_error_m": 3.4140154521987304e-07,
+            "free_skin_lift_max_m": 0.04635265172094903,
+            "planted_frames": 586,
+            "free_frames": 140,
+            "free_anchor_xz_max_error_m": 0.0001407892212627898,
+            "worst_free_anchor": {
+              "frame": 101,
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 0.0,
+                "cycle": 0.69039665749873,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589619614183903,
+                      0.0389704443514347,
+                      0.161395162343979
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.0809355527162552,
+                      0.0335797369480133,
+                      0.0293026864528656
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589619614183903,
+                      0.0,
+                      0.294187128543854
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0809355527162552,
+                      0.0430480949580669,
+                      -0.10719159245491
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.349999666213989,
+                "time": 0.841666666666667,
+                "weight": 0.0
+              },
+              "delta": [
+                8.002517699612355e-07,
+                6.305473952694651e-08,
+                -0.00014078694691230242
+              ],
+              "skin_sole_y": 0.038970526658874016
+            },
+            "paw_sweep_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "worst_skin_contact": {
+              "frame": 1240,
+              "time": 10.333333333333334,
+              "sole": [
+                0.05896714317863985,
+                5.116781955381324e-08,
+                0.6343182480817979
+              ],
+              "target": [
+                0.0589670613408089,
+                0.000106271341792308,
+                0.634318351745605
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.85653705410643,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589670613408089,
+                      0.000106271341792308,
+                      0.634318351745605
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.135102584958076,
+                      0.180249348282814,
+                      0.419300109148026
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589669793844223,
+                      0.0001062090304913,
+                      0.634318351745605
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.120849080383778,
+                      0.000105949009594042,
+                      0.311012208461761
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "LF",
+                  "RF",
+                  "RH"
+                ],
+                "speed": 0.0,
+                "time": 10.3333333333333,
+                "weight": 1.0
+              }
+            }
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 0.00010624706234301602,
+            "planted_sole_speed_max_mps": 0.007634472603869777,
+            "free_anchor_max_error_m": 0.00013317970611146217,
+            "free_skin_sole_max_error_m": 4.7654797530860044e-07,
+            "free_skin_lift_max_m": 0.04634720564565346,
+            "planted_frames": 586,
+            "free_frames": 140,
+            "free_anchor_xz_max_error_m": 0.00013317966740231414,
+            "worst_free_anchor": {
+              "frame": 170,
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 0.0,
+                "cycle": 0.226122365141983,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589619614183903,
+                      0.0,
+                      0.453519940376282
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.0809355527162552,
+                      0.0,
+                      0.135586321353912
+                    ],
+                    "swing": false
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589619614183903,
+                      0.0409944839775562,
+                      0.392428278923035
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0809355527162552,
+                      0.030451450496912,
+                      0.265223354101181
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.349999666213989,
+                "time": 1.41666666666667,
+                "weight": 0.0
+              },
+              "delta": [
+                -1.7543389307234092e-07,
+                -1.0154085097746623e-07,
+                -0.00013317955185515595
+              ],
+              "skin_sole_y": 0.04099440377406982
+            },
+            "paw_sweep_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "worst_skin_contact": {
+              "frame": 1240,
+              "time": 10.333333333333334,
+              "sole": [
+                -0.05896710509891905,
+                -3.788279550988683e-08,
+                0.634318225771754
+              ],
+              "target": [
+                -0.0589669793844223,
+                0.0001062090304913,
+                0.634318351745605
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.85653705410643,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589670613408089,
+                      0.000106271341792308,
+                      0.634318351745605
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.135102584958076,
+                      0.180249348282814,
+                      0.419300109148026
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589669793844223,
+                      0.0001062090304913,
+                      0.634318351745605
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.120849080383778,
+                      0.000105949009594042,
+                      0.311012208461761
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "LF",
+                  "RF",
+                  "RH"
+                ],
+                "speed": 0.0,
+                "time": 10.3333333333333,
+                "weight": 1.0
+              }
+            }
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 0.0001058806661205398,
+            "planted_sole_speed_max_mps": 0.007635124571771526,
+            "free_anchor_max_error_m": 0.04478527307896484,
+            "free_skin_sole_max_error_m": 6.241911316647982e-06,
+            "free_skin_lift_max_m": 0.4453384633636328,
+            "planted_frames": 556,
+            "free_frames": 170,
+            "free_anchor_xz_max_error_m": 0.01485960999396079,
+            "worst_free_anchor": {
+              "frame": 1200,
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.85653705410643,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.059051550924778,
+                      0.000485694967210293,
+                      0.634282231330872
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.158214300870895,
+                      0.445332288742065,
+                      0.595181405544281
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0590525902807713,
+                      0.000453780347015709,
+                      0.634283900260925
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.120729848742485,
+                      0.000257416511885822,
+                      0.31121239066124
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "LF",
+                  "RF",
+                  "RH"
+                ],
+                "speed": 0.0,
+                "time": 10.0,
+                "weight": 1.0
+              },
+              "delta": [
+                -3.143024143315021e-05,
+                0.04224822689279201,
+                0.014859576754152282
+              ],
+              "skin_sole_y": 0.4453384633636328
+            },
+            "paw_sweep_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "worst_skin_contact": {
+              "frame": 1284,
+              "time": 10.7,
+              "sole": [
+                0.1208496528182367,
+                -1.59897114159987e-07,
+                0.31101054204884304
+              ],
+              "target": [
+                0.120849221944809,
+                0.00010571104940027,
+                0.311011910438538
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.85653705410643,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589669197797775,
+                      0.00010563712567091,
+                      0.63431841135025
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.120849221944809,
+                      0.00010571104940027,
+                      0.311011910438538
+                    ],
+                    "swing": false
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589668340981007,
+                      0.000105617567896843,
+                      0.63431841135025
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.120849281549454,
+                      0.000105699000414461,
+                      0.311011880636215
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "LF",
+                  "RF",
+                  "RH"
+                ],
+                "speed": 0.0,
+                "time": 10.7,
+                "weight": 1.0
+              }
+            }
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 0.00010604077696582491,
+            "planted_sole_speed_max_mps": 0.007634490701110212,
+            "free_anchor_max_error_m": 0.00037470346102597867,
+            "free_skin_sole_max_error_m": 2.4598002793569066e-06,
+            "free_skin_lift_max_m": 0.04336566065870079,
+            "planted_frames": 586,
+            "free_frames": 140,
+            "free_anchor_xz_max_error_m": 0.0002481359548940307,
+            "worst_free_anchor": {
+              "frame": 1200,
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.85653705410643,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.059051550924778,
+                      0.000485694967210293,
+                      0.634282231330872
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.158214300870895,
+                      0.445332288742065,
+                      0.595181405544281
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0590525902807713,
+                      0.000453780347015709,
+                      0.634283900260925
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.120729848742485,
+                      0.000257416511885822,
+                      0.31121239066124
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "LF",
+                  "RF",
+                  "RH"
+                ],
+                "speed": 0.0,
+                "time": 10.0,
+                "weight": 1.0
+              },
+              "delta": [
+                0.00015310250043390483,
+                0.0002807690004143526,
+                0.00019527180152817403
+              ],
+              "skin_sole_y": 0.0002573367369303303
+            },
+            "paw_sweep_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "worst_skin_contact": {
+              "frame": 1240,
+              "time": 10.333333333333334,
+              "sole": [
+                -0.12084953972360592,
+                -8.084920859825675e-08,
+                0.31101075779683396
+              ],
+              "target": [
+                -0.120849080383778,
+                0.000105949009594042,
+                0.311012208461761
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.85653705410643,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589670613408089,
+                      0.000106271341792308,
+                      0.634318351745605
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.135102584958076,
+                      0.180249348282814,
+                      0.419300109148026
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589669793844223,
+                      0.0001062090304913,
+                      0.634318351745605
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.120849080383778,
+                      0.000105949009594042,
+                      0.311012208461761
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "LF",
+                  "RF",
+                  "RH"
+                ],
+                "speed": 0.0,
+                "time": 10.3333333333333,
+                "weight": 1.0
+              }
+            }
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "cycle_frequency_hz": 0.0,
+        "actual_speed_mean_mps": 0.0,
+        "fastest_bone": {
+          "bone": "BackLowerLeg.R",
+          "phase": "walk",
+          "speed": 1.97009526193142,
+          "time": 0.833333333333333
+        },
+        "phases": [
+          "walk",
+          "in",
+          "return",
+          "out",
+          "fade"
+        ],
+        "clips": [
+          "NG_Sit_Down",
+          "NG_Scratch_Left",
+          "NG_Sit_Get_Up"
+        ]
+      },
+      "scratch_urgent": {
+        "frames": 1920,
+        "fps": 120.0,
+        "mesh_floor_min_m": -9.469964232997063e-07,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 2.52001291445314e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 3.91973315698545e-07,
+            "planted_sole_speed_max_mps": 4.511160551642262e-05,
+            "free_anchor_max_error_m": 0.00014102091394671505,
+            "free_skin_sole_max_error_m": 3.864972647338467e-07,
+            "free_skin_lift_max_m": 0.04635307993284741,
+            "planted_frames": 610,
+            "free_frames": 374,
+            "free_anchor_xz_max_error_m": 0.0001410209004214125,
+            "worst_free_anchor": {
+              "frame": 1809,
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.69141069125034,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589619614183903,
+                      0.0391745455563068,
+                      1.95844149589539
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.0809355527162552,
+                      0.037801630795002,
+                      1.79858732223511
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589619614183903,
+                      0.0,
+                      2.07157564163208
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0809355527162552,
+                      0.0,
+                      1.70961618423462
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.34998893737793,
+                "time": 15.075,
+                "weight": 0.0
+              },
+              "delta": [
+                7.771978174503369e-07,
+                6.176326471790672e-08,
+                -0.0001410187587493894
+              ],
+              "skin_sole_y": 0.03917462696102204
+            },
+            "paw_sweep_m": [
+              0.023096468830534837,
+              0.04967018431793585,
+              0.23742726534327474
+            ],
+            "worst_skin_contact": {
+              "frame": 1659,
+              "time": 13.825,
+              "sole": [
+                0.05896207505648537,
+                -8.564112586227463e-08,
+                1.481576673532064
+              ],
+              "target": [
+                0.0589619614183903,
+                0.0,
+                1.48157703876495
+              ],
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.526789587678051,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589619614183903,
+                      0.0,
+                      1.48157703876495
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.0809355527162552,
+                      0.0296957660466433,
+                      1.20324051380157
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589619614183903,
+                      0.0,
+                      1.69728803634644
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0809355527162552,
+                      0.0,
+                      1.33532845973969
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.350003242492676,
+                "time": 13.825,
+                "weight": 0.0
+              }
+            }
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 3.8239660329441335e-07,
+            "planted_sole_speed_max_mps": 4.868026817744156e-05,
+            "free_anchor_max_error_m": 0.00013699746027168974,
+            "free_skin_sole_max_error_m": 4.7654797530860044e-07,
+            "free_skin_lift_max_m": 0.04635289940905217,
+            "planted_frames": 538,
+            "free_frames": 446,
+            "free_anchor_xz_max_error_m": 0.00013699745865587657,
+            "worst_free_anchor": {
+              "frame": 1877,
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.219372258203111,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589619614183903,
+                      0.0,
+                      2.25001525878906
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.0809355527162552,
+                      0.0,
+                      1.8974472284317
+                    ],
+                    "swing": false
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589619614183903,
+                      0.0397555753588676,
+                      2.16635084152222
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0809355527162552,
+                      0.0320875644683838,
+                      2.02005314826965
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.34998893737793,
+                "time": 15.6416666666667,
+                "weight": 0.0
+              },
+              "delta": [
+                -3.585683154005981e-07,
+                2.1041021834589113e-08,
+                -0.00013699698940827787
+              ],
+              "skin_sole_y": 0.03975561792660236
+            },
+            "paw_sweep_m": [
+              0.023384713769520366,
+              0.06607664054863782,
+              0.26714581782128954
+            ],
+            "worst_skin_contact": {
+              "frame": 200,
+              "time": 1.6666666666666667,
+              "sole": [
+                -0.058962057834195954,
+                0.008136491247628332,
+                0.6474928142590477
+              ],
+              "target": [
+                -0.0589619614183903,
+                0.00813672225922346,
+                0.647492408752441
+              ],
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 0.0,
+                "cycle": 0.459046585856441,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589619614183903,
+                      0.0,
+                      0.453519940376282
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.0809355527162552,
+                      0.00893539749085903,
+                      0.139854282140732
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589619614183903,
+                      0.00813672225922346,
+                      0.647492408752441
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0809355527162552,
+                      0.0,
+                      0.288781642913818
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.350003242492676,
+                "time": 1.66666666666667,
+                "weight": 0.0
+              }
+            }
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 2.5304461186946803e-06,
+            "planted_sole_speed_max_mps": 4.809343102633991e-05,
+            "free_anchor_max_error_m": 0.0447872819246596,
+            "free_skin_sole_max_error_m": 6.268395954579509e-06,
+            "free_skin_lift_max_m": 0.4454456905385537,
+            "planted_frames": 591,
+            "free_frames": 393,
+            "free_anchor_xz_max_error_m": 0.014860272052864994,
+            "worst_free_anchor": {
+              "frame": 1200,
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.85653705410643,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0590516924858093,
+                      0.000486329197883606,
+                      0.634282171726227
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.158214434981346,
+                      0.445439457893372,
+                      0.595200300216675
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0590527355670929,
+                      0.00045437179505825,
+                      0.634283840656281
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.120729647576809,
+                      0.000257666513789445,
+                      0.311212718486786
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "LF",
+                  "RF"
+                ],
+                "speed": 0.0,
+                "time": 10.0,
+                "weight": 1.0
+              },
+              "delta": [
+                -2.9023400732575144e-05,
+                0.042250123511225146,
+                0.014860243710227983
+              ],
+              "skin_sole_y": 0.4454456905385537
+            },
+            "paw_sweep_m": [
+              0.0006968471173391944,
+              0.05641256335160344,
+              0.4563493725288613
+            ],
+            "worst_skin_contact": {
+              "frame": 1200,
+              "time": 10.0,
+              "sole": [
+                0.15821505328449587,
+                0.4454456905385537,
+                0.5952000460059406
+              ],
+              "target": [
+                0.158214434981346,
+                0.445439457893372,
+                0.595200300216675
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.85653705410643,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0590516924858093,
+                      0.000486329197883606,
+                      0.634282171726227
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.158214434981346,
+                      0.445439457893372,
+                      0.595200300216675
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0590527355670929,
+                      0.00045437179505825,
+                      0.634283840656281
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.120729647576809,
+                      0.000257666513789445,
+                      0.311212718486786
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "LF",
+                  "RF"
+                ],
+                "speed": 0.0,
+                "time": 10.0,
+                "weight": 1.0
+              }
+            }
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 2.6624216274559654e-06,
+            "planted_sole_speed_max_mps": 6.753072170217141e-05,
+            "free_anchor_max_error_m": 0.0003749920719099887,
+            "free_skin_sole_max_error_m": 2.4598002793569066e-06,
+            "free_skin_lift_max_m": 0.04336566065870079,
+            "planted_frames": 584,
+            "free_frames": 400,
+            "free_anchor_xz_max_error_m": 0.00024830600453723263,
+            "worst_free_anchor": {
+              "frame": 1208,
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.78333333333341,
+                "cycle": 0.85653705410643,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0590516924858093,
+                      0.000486329197883606,
+                      0.634282171726227
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.15539576113224,
+                      0.430378437042236,
+                      0.581830680370331
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0590527355670929,
+                      0.00045437179505825,
+                      0.634283840656281
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.121007367968559,
+                      0.000327651185216382,
+                      0.310875922441483
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "LF",
+                  "RF"
+                ],
+                "speed": 0.0,
+                "time": 10.0666666666667,
+                "weight": 1.0
+              },
+              "delta": [
+                0.00015312654713871277,
+                0.0002810149026616431,
+                0.00019545316328672957
+              ],
+              "skin_sole_y": 0.0003276182161861727
+            },
+            "paw_sweep_m": [
+              0.0007497298001322705,
+              0.047698589222302856,
+              0.2845070024882982
+            ],
+            "worst_skin_contact": {
+              "frame": 62,
+              "time": 0.5166666666666667,
+              "sole": [
+                -0.08093581787682753,
+                -3.588668357284288e-08,
+                -0.4133535290875022
+              ],
+              "target": [
+                -0.0809355527162552,
+                0.0,
+                -0.413350880146027
+              ],
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 0.0,
+                "cycle": 0.387595170569935,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0589619614183903,
+                      0.0,
+                      0.0697041898965836
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.0809355527162552,
+                      0.0,
+                      -0.413350880146027
+                    ],
+                    "swing": false
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0589619614183903,
+                      0.0305659510195255,
+                      0.264215737581253
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0809355527162552,
+                      0.0,
+                      -0.413350880146027
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.349999666213989,
+                "time": 0.516666666666667,
+                "weight": 0.0
+              }
+            }
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.020833820104599,
+          0.019909530878067017,
+          0.019913673400878906,
+          0.02021053433418274
+        ],
+        "cycle_frequency_hz": 0.3609182126822518,
+        "actual_speed_mean_mps": 0.12958218959661638,
+        "fastest_bone": {
+          "bone": "BackUpperLeg.L",
+          "phase": "return",
+          "speed": 3.2697743922472,
+          "time": 10.3416666666667
+        },
+        "phases": [
+          "walk",
+          "in",
+          "return"
+        ],
+        "clips": [
+          "NG_Sit_Down",
+          "NG_Scratch_Left"
+        ]
+      }
+    }
+  },
+  "shibainu": {
+    "gait": {
+      "trot": {
+        "liftAt": {
+          "LF": 0.5,
+          "LH": 0.0,
+          "RF": 0.0,
+          "RH": 0.5
+        },
+        "stride": {
+          "base": 0.347253060340881,
+          "maximum": 0.390616224260153,
+          "maximumStance": 0.164058814189264,
+          "perSpeed": 0.341333351135254
+        },
+        "swing": {
+          "k": 0.58,
+          "max": 0.618666698932648,
+          "min": 0.12,
+          "minFrequency": 0.937499951105567
+        }
+      },
+      "walk": {
+        "liftAt": {
+          "LF": 0.558333333333333,
+          "LH": 0.425,
+          "RF": 0.0916666666666667,
+          "RH": 0.933333333333333
+        },
+        "stride": {
+          "base": 0.217033162713051,
+          "maximum": 0.273431356982107,
+          "maximumStance": 0.164058814189264,
+          "perSpeed": 0.213333344459534
+        },
+        "swing": {
+          "k": 0.4,
+          "max": 0.426666688919067,
+          "min": 0.12,
+          "minFrequency": 0.937499951105567
+        }
+      }
+    },
+    "drop": 0.0166730146384907,
+    "scenarios": {
+      "scratch_normal": {
+        "frames": 1920,
+        "fps": 120.0,
+        "mesh_floor_min_m": -8.792683866940161e-07,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 1.305732464373932e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 3.680415145793087e-07,
+            "planted_sole_speed_max_mps": 2.5307350319837636e-05,
+            "free_anchor_max_error_m": 0.00034103224738741016,
+            "free_skin_sole_max_error_m": 1.2030715237370905e-05,
+            "free_skin_lift_max_m": 0.03380679369452727,
+            "planted_frames": 647,
+            "free_frames": 114,
+            "free_anchor_xz_max_error_m": 0.00034103218484043073,
+            "worst_free_anchor": {
+              "frame": 178,
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 0.0,
+                "cycle": 0.696098122428577,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0477050468325615,
+                      0.0298487637192011,
+                      0.326429396867752
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.0637700855731964,
+                      0.0263936314731836,
+                      0.221062332391739
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0451586097478867,
+                      0.0,
+                      0.392965793609619
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0637700855731964,
+                      0.0,
+                      0.0963934659957886
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.349999666213989,
+                "time": 1.48333333333333,
+                "weight": 0.0
+              },
+              "delta": [
+                9.44768195292739e-06,
+                -2.0654556405139135e-07,
+                -0.00034090129422276183
+              ],
+              "skin_sole_y": 0.02984861188554864
+            },
+            "paw_sweep_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "worst_skin_contact": {
+              "frame": 1224,
+              "time": 10.2,
+              "sole": [
+                0.04518337947971875,
+                7.901217808118297e-05,
+                0.5616632108099283
+              ],
+              "target": [
+                0.045183252543211,
+                6.69834553264081e-05,
+                0.561663389205933
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.519330173780486,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.045183252543211,
+                      6.69834553264081e-05,
+                      0.561663389205933
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.105556145310402,
+                      0.14672327041626,
+                      0.421529859304428
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.045183103531599,
+                      6.70007066219114e-05,
+                      0.561663150787354
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0920710265636444,
+                      0.000104534985439386,
+                      0.322232782840729
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 2,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "LF",
+                  "RF"
+                ],
+                "speed": 0.0,
+                "time": 10.2,
+                "weight": 1.0
+              }
+            }
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 4.697246364150255e-07,
+            "planted_sole_speed_max_mps": 3.125856322913004e-05,
+            "free_anchor_max_error_m": 0.00034935880577916607,
+            "free_skin_sole_max_error_m": 1.2029886605053174e-05,
+            "free_skin_lift_max_m": 0.033807571380974386,
+            "planted_frames": 596,
+            "free_frames": 165,
+            "free_anchor_xz_max_error_m": 0.0003493587716650358,
+            "worst_free_anchor": {
+              "frame": 227,
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 0.0,
+                "cycle": 0.218776531532983,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0451586097478867,
+                      0.0,
+                      0.520567059516907
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.0637700855731964,
+                      0.0,
+                      0.261433243751526
+                    ],
+                    "swing": false
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0451586097478867,
+                      0.0284174028784037,
+                      0.458251297473907
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0637700855731964,
+                      0.0243724919855595,
+                      0.339899957180023
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.349999666213989,
+                "time": 1.89166666666667,
+                "weight": 0.0
+              },
+              "delta": [
+                -5.562044228697716e-06,
+                -1.543895801585371e-07,
+                -0.0003493144929763159
+              ],
+              "skin_sole_y": 0.028417302354400438
+            },
+            "paw_sweep_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "worst_skin_contact": {
+              "frame": 1224,
+              "time": 10.2,
+              "sole": [
+                -0.045183245615795044,
+                7.902781119626027e-05,
+                0.5616629345944555
+              ],
+              "target": [
+                -0.045183103531599,
+                6.70007066219114e-05,
+                0.561663150787354
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.519330173780486,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.045183252543211,
+                      6.69834553264081e-05,
+                      0.561663389205933
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.105556145310402,
+                      0.14672327041626,
+                      0.421529859304428
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.045183103531599,
+                      6.70007066219114e-05,
+                      0.561663150787354
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0920710265636444,
+                      0.000104534985439386,
+                      0.322232782840729
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 2,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "LF",
+                  "RF"
+                ],
+                "speed": 0.0,
+                "time": 10.2,
+                "weight": 1.0
+              }
+            }
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 3.134883482663219e-06,
+            "planted_sole_speed_max_mps": 2.8634082961108016e-05,
+            "free_anchor_max_error_m": 0.035115934898328684,
+            "free_skin_sole_max_error_m": 1.4032330012288791e-05,
+            "free_skin_lift_max_m": 0.29303297071978057,
+            "planted_frames": 587,
+            "free_frames": 174,
+            "free_anchor_xz_max_error_m": 0.011099822045320867,
+            "worst_free_anchor": {
+              "frame": 1200,
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.519330173780486,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0452107079327106,
+                      0.000186423378181644,
+                      0.561634242534637
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.12059460580349,
+                      0.29302904009819,
+                      0.531933307647705
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0452104173600674,
+                      0.000186376186320558,
+                      0.561633706092834
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0921319574117661,
+                      0.000290875730570406,
+                      0.322149902582169
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "LF",
+                  "RF"
+                ],
+                "speed": 0.0,
+                "time": 10.0,
+                "weight": 1.0
+              },
+              "delta": [
+                -1.4570132858354734e-05,
+                0.0333155044137991,
+                0.011099812482606164
+              ],
+              "skin_sole_y": 0.29303297071978057
+            },
+            "paw_sweep_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "worst_skin_contact": {
+              "frame": 1224,
+              "time": 10.2,
+              "sole": [
+                0.10555693000717899,
+                0.14673723201749925,
+                0.421528691302982
+              ],
+              "target": [
+                0.105556145310402,
+                0.14672327041626,
+                0.421529859304428
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.519330173780486,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.045183252543211,
+                      6.69834553264081e-05,
+                      0.561663389205933
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.105556145310402,
+                      0.14672327041626,
+                      0.421529859304428
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.045183103531599,
+                      6.70007066219114e-05,
+                      0.561663150787354
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0920710265636444,
+                      0.000104534985439386,
+                      0.322232782840729
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 2,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "LF",
+                  "RF"
+                ],
+                "speed": 0.0,
+                "time": 10.2,
+                "weight": 1.0
+              }
+            }
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 3.2118429176879873e-06,
+            "planted_sole_speed_max_mps": 7.500797829463596e-05,
+            "free_anchor_max_error_m": 0.0005228096079693244,
+            "free_skin_sole_max_error_m": 1.2194222088221588e-05,
+            "free_skin_lift_max_m": 0.031120803826351705,
+            "planted_frames": 647,
+            "free_frames": 114,
+            "free_anchor_xz_max_error_m": 0.0002181412066623959,
+            "worst_free_anchor": {
+              "frame": 1239,
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.519330173780486,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0451681278645992,
+                      1.23547783914546e-06,
+                      0.561679422855377
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.0948779806494713,
+                      0.0239540282636881,
+                      0.337976098060608
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0451680608093739,
+                      1.26456643556594e-06,
+                      0.561679363250732
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0920374542474747,
+                      1.91977642316488e-06,
+                      0.322278410196304
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "LF",
+                  "RF"
+                ],
+                "speed": 0.0,
+                "time": 10.325,
+                "weight": 1.0
+              },
+              "delta": [
+                0.00019661026424167005,
+                0.00047802562177588423,
+                -7.852257704404897e-05
+              ],
+              "skin_sole_y": 1.9286156877442763e-06
+            },
+            "paw_sweep_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "worst_skin_contact": {
+              "frame": 1224,
+              "time": 10.2,
+              "sole": [
+                -0.09207173001212354,
+                0.00011656705710213437,
+                0.3222309298798345
+              ],
+              "target": [
+                -0.0920710265636444,
+                0.000104534985439386,
+                0.322232782840729
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.519330173780486,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.045183252543211,
+                      6.69834553264081e-05,
+                      0.561663389205933
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.105556145310402,
+                      0.14672327041626,
+                      0.421529859304428
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.045183103531599,
+                      6.70007066219114e-05,
+                      0.561663150787354
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0920710265636444,
+                      0.000104534985439386,
+                      0.322232782840729
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 2,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "LF",
+                  "RF"
+                ],
+                "speed": 0.0,
+                "time": 10.2,
+                "weight": 1.0
+              }
+            }
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "cycle_frequency_hz": 0.0,
+        "actual_speed_mean_mps": 0.0,
+        "fastest_bone": {
+          "bone": "BackUpperLeg.L",
+          "phase": "walk",
+          "speed": 1.94941207766533,
+          "time": 0.608333333333333
+        },
+        "phases": [
+          "walk",
+          "in",
+          "return",
+          "out",
+          "fade"
+        ],
+        "clips": [
+          "NG_Sit_Down",
+          "NG_Scratch_Left",
+          "NG_Sit_Get_Up"
+        ]
+      },
+      "scratch_urgent": {
+        "frames": 1920,
+        "fps": 120.0,
+        "mesh_floor_min_m": -8.792683866940161e-07,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 1.9652112998730376e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 4.015383950703429e-07,
+            "planted_sole_speed_max_mps": 3.339698200467788e-05,
+            "free_anchor_max_error_m": 0.0003514475974200208,
+            "free_skin_sole_max_error_m": 6.662800099002642e-07,
+            "free_skin_lift_max_m": 0.03380679369452727,
+            "planted_frames": 581,
+            "free_frames": 438,
+            "free_anchor_xz_max_error_m": 0.00035144756411771767,
+            "worst_free_anchor": {
+              "frame": 1432,
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.692749887104657,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0451586097478867,
+                      0.0294210333377123,
+                      0.820397436618805
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.0637700855731964,
+                      0.0,
+                      0.663791477680206
+                    ],
+                    "swing": false
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0451586097478867,
+                      0.0,
+                      0.898969531059265
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0637700855731964,
+                      0.0,
+                      0.664564311504364
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.350003242492676,
+                "time": 11.9333333333333,
+                "weight": 0.0
+              },
+              "delta": [
+                6.447479330110029e-06,
+                -1.5299682276301296e-07,
+                -0.0003513884180427196
+              ],
+              "skin_sole_y": 0.0294209352925061
+            },
+            "paw_sweep_m": [
+              0.016507677686643706,
+              0.03175668405853174,
+              0.16612040327172473
+            ],
+            "worst_skin_contact": {
+              "frame": 1629,
+              "time": 13.575,
+              "sole": [
+                0.04515869968159138,
+                0.03248012840859879,
+                1.4730370549037026
+              ],
+              "target": [
+                0.0451586097478867,
+                0.0324802622199059,
+                1.47303640842438
+              ],
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.794130429830533,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0451586097478867,
+                      0.0324802622199059,
+                      1.47303640842438
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.0637700855731964,
+                      0.0074715088121593,
+                      1.30967140197754
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0451586097478867,
+                      0.0,
+                      1.44583737850189
+                    ],
+                    "swing": false
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0637700855731964,
+                      0.0,
+                      1.17986726760864
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.350003242492676,
+                "time": 13.575,
+                "weight": 0.0
+              }
+            }
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 4.697246364150255e-07,
+            "planted_sole_speed_max_mps": 3.376295497635729e-05,
+            "free_anchor_max_error_m": 0.0003545320383914737,
+            "free_skin_sole_max_error_m": 7.491329501541643e-07,
+            "free_skin_lift_max_m": 0.033807571380974386,
+            "planted_frames": 596,
+            "free_frames": 423,
+            "free_anchor_xz_max_error_m": 0.0003545319998795253,
+            "worst_free_anchor": {
+              "frame": 1388,
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.223406009541518,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0451586097478867,
+                      0.0,
+                      0.746870160102844
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.0637700855731964,
+                      0.0311139672994614,
+                      0.468733489513397
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0451586097478867,
+                      0.0290643740445375,
+                      0.689659416675568
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0637700855731964,
+                      0.0236529130488634,
+                      0.590749025344849
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.350003242492676,
+                "time": 11.5666666666667,
+                "weight": 0.0
+              },
+              "delta": [
+                -5.30105886953347e-06,
+                -1.652496222359634e-07,
+                -0.0003544923662273103
+              ],
+              "skin_sole_y": 0.029064262496161564
+            },
+            "paw_sweep_m": [
+              0.01649302653169641,
+              0.03784599513016615,
+              0.16923367966489744
+            ],
+            "worst_skin_contact": {
+              "frame": 1865,
+              "time": 15.541666666666666,
+              "sole": [
+                -0.0451586973814566,
+                0.03339746237962818,
+                2.1497121143117064
+              ],
+              "target": [
+                -0.0451586097478867,
+                0.0333974771201611,
+                2.14971137046814
+              ],
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.311520318578282,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0451586097478867,
+                      0.0,
+                      2.1203076839447
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.0637700855731964,
+                      0.0,
+                      1.86117339134216
+                    ],
+                    "swing": false
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0451586097478867,
+                      0.0333974771201611,
+                      2.14971137046814
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0637700855731964,
+                      0.00530554540455341,
+                      1.99781787395477
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.34998893737793,
+                "time": 15.5416666666667,
+                "weight": 0.0
+              }
+            }
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 3.136695944346734e-06,
+            "planted_sole_speed_max_mps": 6.646808981188077e-05,
+            "free_anchor_max_error_m": 0.035119635655545225,
+            "free_skin_sole_max_error_m": 4.076201288593606e-06,
+            "free_skin_lift_max_m": 0.2930950822888156,
+            "planted_frames": 615,
+            "free_frames": 404,
+            "free_anchor_xz_max_error_m": 0.011101068730559913,
+            "worst_free_anchor": {
+              "frame": 1200,
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.519330173780486,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0452107787132263,
+                      0.000186697579920292,
+                      0.561634182929993
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.120571836829185,
+                      0.293091148138046,
+                      0.531923115253448
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.045210488140583,
+                      0.000186649151146412,
+                      0.56163364648819
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0921321138739586,
+                      0.000291348085738719,
+                      0.322149693965912
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "RF",
+                  "LF"
+                ],
+                "speed": 0.0,
+                "time": 10.0,
+                "weight": 1.0
+              },
+              "delta": [
+                -1.0586415405369753e-05,
+                0.03331898980487896,
+                0.01110106368274788
+              ],
+              "skin_sole_y": 0.2930950822888156
+            },
+            "paw_sweep_m": [
+              0.0004976654759276111,
+              0.03309659151182312,
+              0.29767343499620486
+            ],
+            "worst_skin_contact": {
+              "frame": 1201,
+              "time": 10.008333333333333,
+              "sole": [
+                0.12039843933544511,
+                0.292273152268002,
+                0.5311056596982262
+              ],
+              "target": [
+                0.12039752304554,
+                0.292269200086594,
+                0.531106054782867
+              ],
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.519330173780486,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0452107787132263,
+                      0.000186697579920292,
+                      0.561634182929993
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.12039752304554,
+                      0.292269200086594,
+                      0.531106054782867
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.045210488140583,
+                      0.000186649151146412,
+                      0.56163364648819
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0921321138739586,
+                      0.000291348085738719,
+                      0.322149693965912
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "RF",
+                  "LF"
+                ],
+                "speed": 0.0,
+                "time": 10.0083333333333,
+                "weight": 1.0
+              }
+            }
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 3.2118429176879873e-06,
+            "planted_sole_speed_max_mps": 7.500797829463596e-05,
+            "free_anchor_max_error_m": 0.00044524580870585476,
+            "free_skin_sole_max_error_m": 3.1255820660651154e-06,
+            "free_skin_lift_max_m": 0.031120803826351705,
+            "planted_frames": 669,
+            "free_frames": 350,
+            "free_anchor_xz_max_error_m": 0.00021814799621843335,
+            "worst_free_anchor": {
+              "frame": 1206,
+              "state": {
+                "action": "scratch",
+                "clip": "NG_Scratch_Left",
+                "clip_time": 5.49166666666673,
+                "cycle": 0.519330173780486,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0452107787132263,
+                      0.000186697579920292,
+                      0.561634182929993
+                    ],
+                    "swing": true
+                  },
+                  "LH": {
+                    "point": [
+                      0.11795462667942,
+                      0.28074711561203,
+                      0.519656538963318
+                    ],
+                    "swing": true
+                  },
+                  "RF": {
+                    "point": [
+                      -0.045210488140583,
+                      0.000186649151146412,
+                      0.56163364648819
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0921321138739586,
+                      0.000291348085738719,
+                      0.322149693965912
+                    ],
+                    "swing": true
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "return",
+                "projection_evaluations": 1,
+                "return_contacts": [
+                  "LH",
+                  "RH",
+                  "RF",
+                  "LF"
+                ],
+                "speed": 0.0,
+                "time": 10.05,
+                "weight": 1.0
+              },
+              "delta": [
+                0.0001879456246736133,
+                0.0003881650153300538,
+                -0.00011067155555966046
+              ],
+              "skin_sole_y": 0.0002913988641191365
+            },
+            "paw_sweep_m": [
+              0.0005354842844915303,
+              0.03390775733592158,
+              0.32362937875986597
+            ],
+            "worst_skin_contact": {
+              "frame": 55,
+              "time": 0.4583333333333333,
+              "sole": [
+                -0.06377056342415262,
+                -8.669766621561142e-08,
+                -0.30170066751317187
+              ],
+              "target": [
+                -0.0637700855731964,
+                0.0,
+                -0.301697492599487
+              ],
+              "state": {
+                "action": "",
+                "clip": "",
+                "clip_time": 0.0,
+                "cycle": 0.384068646513437,
+                "feet": {
+                  "LF": {
+                    "point": [
+                      0.0451586097478867,
+                      0.0,
+                      0.051009263843298
+                    ],
+                    "swing": false
+                  },
+                  "LH": {
+                    "point": [
+                      0.0637700855731964,
+                      0.0,
+                      -0.301697492599487
+                    ],
+                    "swing": false
+                  },
+                  "RF": {
+                    "point": [
+                      -0.0451586097478867,
+                      0.0315555296838284,
+                      0.160121083259583
+                    ],
+                    "swing": true
+                  },
+                  "RH": {
+                    "point": [
+                      -0.0637700855731964,
+                      0.0,
+                      -0.301697492599487
+                    ],
+                    "swing": false
+                  }
+                },
+                "inertia_weight": 1.0,
+                "phase": "walk",
+                "projection_evaluations": 0,
+                "return_contacts": [],
+                "speed": 0.349999666213989,
+                "time": 0.458333333333333,
+                "weight": 0.0
+              }
+            }
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.012133568525314331,
+          0.010705351829528809,
+          0.015044301748275757,
+          0.01595965027809143
+        ],
+        "cycle_frequency_hz": 0.49017599118230654,
+        "actual_speed_mean_mps": 0.13108384150725153,
+        "fastest_bone": {
+          "bone": "FFB.L",
+          "phase": "return",
+          "speed": 2.45452612638474,
+          "time": 10.2416666666667
+        },
+        "phases": [
+          "walk",
+          "in",
+          "return"
+        ],
+        "clips": [
+          "NG_Sit_Down",
+          "NG_Scratch_Left"
+        ]
+      }
+    }
+  }
+}

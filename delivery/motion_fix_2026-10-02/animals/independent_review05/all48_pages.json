@@ -1,0 +1,170 @@
+[
+  {
+    "page": "all48_01.png",
+    "clips": [
+      "NG_Stand_Breathe",
+      "NG_Stand_Alert"
+    ]
+  },
+  {
+    "page": "all48_02.png",
+    "clips": [
+      "NG_Look_Left",
+      "NG_Head_Tilt_Left"
+    ]
+  },
+  {
+    "page": "all48_03.png",
+    "clips": [
+      "NG_Ear_Twitch_Left",
+      "NG_Paw_Offer_Left"
+    ]
+  },
+  {
+    "page": "all48_04.png",
+    "clips": [
+      "NG_Urinate_Left",
+      "NG_Sit_Paw_Offer_Left"
+    ]
+  },
+  {
+    "page": "all48_05.png",
+    "clips": [
+      "NG_Look_Right",
+      "NG_Head_Tilt_Right"
+    ]
+  },
+  {
+    "page": "all48_06.png",
+    "clips": [
+      "NG_Ear_Twitch_Right",
+      "NG_Paw_Offer_Right"
+    ]
+  },
+  {
+    "page": "all48_07.png",
+    "clips": [
+      "NG_Urinate_Right",
+      "NG_Sit_Paw_Offer_Right"
+    ]
+  },
+  {
+    "page": "all48_08.png",
+    "clips": [
+      "NG_Look_Around",
+      "NG_Look_Up"
+    ]
+  },
+  {
+    "page": "all48_09.png",
+    "clips": [
+      "NG_Look_Down",
+      "NG_Ear_Twitch_Both"
+    ]
+  },
+  {
+    "page": "all48_10.png",
+    "clips": [
+      "NG_Tail_Wag_Slow",
+      "NG_Tail_Wag_Happy"
+    ]
+  },
+  {
+    "page": "all48_11.png",
+    "clips": [
+      "NG_Tail_Tuck_Cautious",
+      "NG_Sniff_Air"
+    ]
+  },
+  {
+    "page": "all48_12.png",
+    "clips": [
+      "NG_Sniff_Ground_Enter",
+      "NG_Sniff_Ground_Loop"
+    ]
+  },
+  {
+    "page": "all48_13.png",
+    "clips": [
+      "NG_Sniff_Ground_Exit",
+      "NG_Shake_Off"
+    ]
+  },
+  {
+    "page": "all48_14.png",
+    "clips": [
+      "NG_Shake_Head",
+      "NG_Sit_Down"
+    ]
+  },
+  {
+    "page": "all48_15.png",
+    "clips": [
+      "NG_Sit_Idle",
+      "NG_Sit_Look_Around"
+    ]
+  },
+  {
+    "page": "all48_16.png",
+    "clips": [
+      "NG_Sit_Wag",
+      "NG_Sit_Get_Up"
+    ]
+  },
+  {
+    "page": "all48_17.png",
+    "clips": [
+      "NG_Lie_Down",
+      "NG_Lie_Idle"
+    ]
+  },
+  {
+    "page": "all48_18.png",
+    "clips": [
+      "NG_Lie_Get_Up",
+      "NG_Sit_To_Lie"
+    ]
+  },
+  {
+    "page": "all48_19.png",
+    "clips": [
+      "NG_Lie_To_Sit",
+      "NG_Sleep_Enter"
+    ]
+  },
+  {
+    "page": "all48_20.png",
+    "clips": [
+      "NG_Sleep_Breathe",
+      "NG_Sleep_Wake"
+    ]
+  },
+  {
+    "page": "all48_21.png",
+    "clips": [
+      "NG_Play_Bow",
+      "NG_Stretch_Front"
+    ]
+  },
+  {
+    "page": "all48_22.png",
+    "clips": [
+      "NG_Startle",
+      "NG_Side_Lie_Enter"
+    ]
+  },
+  {
+    "page": "all48_23.png",
+    "clips": [
+      "NG_Side_Lie_Breathe",
+      "NG_Side_Lie_Exit"
+    ]
+  },
+  {
+    "page": "all48_24.png",
+    "clips": [
+      "NG_Scratch_Left",
+      "NG_Scratch_Right"
+    ]
+  }
+]

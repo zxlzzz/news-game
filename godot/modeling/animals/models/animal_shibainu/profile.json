@@ -50,5 +50,21 @@
     "Tail4": null,
     "Tail5": null,
     "Tail6": null
-  }
+  },
+  "body_support_bones": [
+    "Body",
+    "Back",
+    "Torso",
+    "Torso2",
+    "Torso3",
+    "FrontShoulder.L",
+    "FrontShoulder.R",
+    "FrontUpperLeg.L",
+    "FrontUpperLeg.R",
+    "BackShoulder.L",
+    "BackShoulder.R",
+    "BackLeg.L",
+    "BackLeg.R"
+  ],
+  "body_support_min_height_m": 0.195
 }

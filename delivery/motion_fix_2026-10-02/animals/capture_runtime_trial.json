@@ -1,0 +1,103 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\trial_captures",
+  "entries": [
+    {
+      "id": "dog:walk",
+      "label": "husky_walk",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 10,
+      "size": 2,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:trot",
+      "label": "husky_trot",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 10,
+      "size": 2,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:walk",
+      "label": "shibainu_walk",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 10,
+      "size": 1.5,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:trot",
+      "label": "shibainu_trot",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 10,
+      "size": 1.5,
+      "target_height": 0.25
+    },
+    {
+      "id": "cat:walk",
+      "label": "cat_walk",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 10,
+      "size": 1.15,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:trot",
+      "label": "cat_trot",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 10,
+      "size": 1.15,
+      "target_height": 0.15
+    },
+    {
+      "id": "dog:scratch",
+      "label": "husky_scratch_exit",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 9.75,
+      "duration": 1.5,
+      "size": 1.5,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:scratch",
+      "label": "shibainu_scratch_exit",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 9.75,
+      "duration": 1.5,
+      "size": 1.5,
+      "target_height": 0.25
+    },
+    {
+      "id": "pigeon",
+      "label": "pigeon_peck",
+      "start": 9.2,
+      "duration": 3.1,
+      "size": 0.65,
+      "target_height": 0.1
+    }
+  ],
+  "samples": 60,
+  "columns": 10,
+  "cell": 256,
+  "views": [
+    30,
+    90
+  ],
+  "pitch": 15
+}

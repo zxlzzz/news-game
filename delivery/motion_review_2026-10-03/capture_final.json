@@ -1,0 +1,79 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-03\\final",
+  "samples": 28,
+  "columns": 7,
+  "cell": 384,
+  "views": [
+    0,
+    90
+  ],
+  "pitch": 8,
+  "entries": [
+    {
+      "id": "walk"
+    },
+    {
+      "id": "walk_hold_front"
+    },
+    {
+      "id": "wave_overhead"
+    },
+    {
+      "id": "hang_laundry"
+    },
+    {
+      "id": "cat:NG_Sit_Down",
+      "options": {
+        "breed": "cat"
+      },
+      "size": 1.0,
+      "target_height": 0.18
+    },
+    {
+      "id": "duck_cover"
+    },
+    {
+      "id": "sit_ground_dazed"
+    },
+    {
+      "id": "wipe_sweat"
+    },
+    {
+      "id": "wave_overhead_v2"
+    },
+    {
+      "id": "wave_overhead_v3"
+    },
+    {
+      "id": "dog:NG_Tail_Wag_Happy",
+      "options": {
+        "breed": "husky"
+      },
+      "size": 1.6,
+      "target_height": 0.3
+    },
+    {
+      "id": "stand_up",
+      "label": "stand_up_start_hold",
+      "options": {
+        "endpoint_loop": "res://npc/pose_loops/stand_up__start.tres"
+      }
+    },
+    {
+      "id": "stand_up",
+      "label": "stand_up_end_hold",
+      "options": {
+        "endpoint_loop": "res://npc/pose_loops/stand_up__end.tres"
+      }
+    }
+  ],
+  "provenance": [
+    "res://npc/skeleton_mapping.gd",
+    "res://npc/skeleton-params.json",
+    "res://npc/clip_pose.gd",
+    "res://npc/contact_pose.gd",
+    "res://npc/animal-models.json",
+    "res://tools/animal_clip_preview.gd"
+  ],
+  "include_endpoint": true
+}

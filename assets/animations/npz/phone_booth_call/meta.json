@@ -1,0 +1,24 @@
+{
+  "name": "phone_booth_call",
+  "text": "Standing facing a payphone at chest height, reach the right hand forward to pick up the receiver, bring it to the right ear, listen with elbow pointing down, then replace the receiver forward at chest height.",
+  "duration": 5,
+  "seed": 5301,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "phone_booth_call",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

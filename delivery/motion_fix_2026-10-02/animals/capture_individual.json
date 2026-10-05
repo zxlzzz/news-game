@@ -1,0 +1,1723 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\individual_actual",
+  "entries": [
+    {
+      "id": "dog:Attack",
+      "label": "husky_Attack",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Death",
+      "label": "husky_Death",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.06666672229767,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Eating",
+      "label": "husky_Eating",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.66666674613953,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Gallop",
+      "label": "husky_Gallop",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 0.566666662693024,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Gallop_Jump",
+      "label": "husky_Gallop_Jump",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 0.933333337306976,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Idle",
+      "label": "husky_Idle",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.33333325386047,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Idle_2",
+      "label": "husky_Idle_2",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.33333325386047,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Idle_2_HeadLow",
+      "label": "husky_Idle_2_HeadLow",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 4.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Idle_HitReact_Left",
+      "label": "husky_Idle_HitReact_Left",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 0.666666686534882,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Idle_HitReact_Right",
+      "label": "husky_Idle_HitReact_Right",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 0.666666686534882,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Jump_ToIdle",
+      "label": "husky_Jump_ToIdle",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.33333337306976,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Walk",
+      "label": "husky_Walk",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.06666672229767,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Stand_Breathe",
+      "label": "husky_NG_Stand_Breathe",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 4.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Stand_Alert",
+      "label": "husky_NG_Stand_Alert",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Look_Left",
+      "label": "husky_NG_Look_Left",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Head_Tilt_Left",
+      "label": "husky_NG_Head_Tilt_Left",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.59999990463257,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Ear_Twitch_Left",
+      "label": "husky_NG_Ear_Twitch_Left",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Paw_Offer_Left",
+      "label": "husky_NG_Paw_Offer_Left",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Urinate_Left",
+      "label": "husky_NG_Urinate_Left",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 4.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sit_Paw_Offer_Left",
+      "label": "husky_NG_Sit_Paw_Offer_Left",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Look_Right",
+      "label": "husky_NG_Look_Right",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Head_Tilt_Right",
+      "label": "husky_NG_Head_Tilt_Right",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.59999990463257,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Ear_Twitch_Right",
+      "label": "husky_NG_Ear_Twitch_Right",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Paw_Offer_Right",
+      "label": "husky_NG_Paw_Offer_Right",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Urinate_Right",
+      "label": "husky_NG_Urinate_Right",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 4.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sit_Paw_Offer_Right",
+      "label": "husky_NG_Sit_Paw_Offer_Right",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Look_Around",
+      "label": "husky_NG_Look_Around",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 5.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Look_Up",
+      "label": "husky_NG_Look_Up",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Look_Down",
+      "label": "husky_NG_Look_Down",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Ear_Twitch_Both",
+      "label": "husky_NG_Ear_Twitch_Both",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.39999997615814,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Tail_Wag_Slow",
+      "label": "husky_NG_Tail_Wag_Slow",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Tail_Wag_Happy",
+      "label": "husky_NG_Tail_Wag_Happy",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Tail_Tuck_Cautious",
+      "label": "husky_NG_Tail_Tuck_Cautious",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sniff_Air",
+      "label": "husky_NG_Sniff_Air",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sniff_Ground_Enter",
+      "label": "husky_NG_Sniff_Ground_Enter",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.79999995231628,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sniff_Ground",
+      "label": "husky_NG_Sniff_Ground",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.20000004768372,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sniff_Ground_Exit",
+      "label": "husky_NG_Sniff_Ground_Exit",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.60000002384186,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Shake_Off",
+      "label": "husky_NG_Shake_Off",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.20000004768372,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Shake_Head",
+      "label": "husky_NG_Shake_Head",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sit_Down",
+      "label": "husky_NG_Sit_Down",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sit_Idle",
+      "label": "husky_NG_Sit_Idle",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 4.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sit_Look_Around",
+      "label": "husky_NG_Sit_Look_Around",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 5.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sit_Wag",
+      "label": "husky_NG_Sit_Wag",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sit_Get_Up",
+      "label": "husky_NG_Sit_Get_Up",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.79999995231628,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Lie_Down",
+      "label": "husky_NG_Lie_Down",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Lie_Idle",
+      "label": "husky_NG_Lie_Idle",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 4.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Lie_Get_Up",
+      "label": "husky_NG_Lie_Get_Up",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sit_To_Lie",
+      "label": "husky_NG_Sit_To_Lie",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.20000004768372,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Lie_To_Sit",
+      "label": "husky_NG_Lie_To_Sit",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.20000004768372,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sleep_Enter",
+      "label": "husky_NG_Sleep_Enter",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sleep_Breathe",
+      "label": "husky_NG_Sleep_Breathe",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 5.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Sleep_Wake",
+      "label": "husky_NG_Sleep_Wake",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.79999995231628,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Play_Bow",
+      "label": "husky_NG_Play_Bow",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Stretch_Front",
+      "label": "husky_NG_Stretch_Front",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 5.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Startle",
+      "label": "husky_NG_Startle",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Side_Lie_Enter",
+      "label": "husky_NG_Side_Lie_Enter",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Side_Lie_Breathe",
+      "label": "husky_NG_Side_Lie_Breathe",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 5.0,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Side_Lie_Exit",
+      "label": "husky_NG_Side_Lie_Exit",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Scratch_Left",
+      "label": "husky_NG_Scratch_Left",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 4.40000009536743,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:NG_Scratch_Right",
+      "label": "husky_NG_Scratch_Right",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 4.40000009536743,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:Attack",
+      "label": "shibainu_Attack",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Death",
+      "label": "shibainu_Death",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.06666672229767,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Eating",
+      "label": "shibainu_Eating",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.66666674613953,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Gallop",
+      "label": "shibainu_Gallop",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 0.566666662693024,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Gallop_Jump",
+      "label": "shibainu_Gallop_Jump",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 0.933333337306976,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Idle",
+      "label": "shibainu_Idle",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.33333325386047,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Idle_2",
+      "label": "shibainu_Idle_2",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.33333325386047,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Idle_2_HeadLow",
+      "label": "shibainu_Idle_2_HeadLow",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 4.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Idle_HitReact_Left",
+      "label": "shibainu_Idle_HitReact_Left",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 0.666666686534882,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Idle_HitReact_Right",
+      "label": "shibainu_Idle_HitReact_Right",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 0.666666686534882,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Jump_ToIdle",
+      "label": "shibainu_Jump_ToIdle",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.33333337306976,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:Walk",
+      "label": "shibainu_Walk",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.06666672229767,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Stand_Breathe",
+      "label": "shibainu_NG_Stand_Breathe",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 4.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Stand_Alert",
+      "label": "shibainu_NG_Stand_Alert",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Look_Left",
+      "label": "shibainu_NG_Look_Left",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Head_Tilt_Left",
+      "label": "shibainu_NG_Head_Tilt_Left",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.59999990463257,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Ear_Twitch_Left",
+      "label": "shibainu_NG_Ear_Twitch_Left",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Paw_Offer_Left",
+      "label": "shibainu_NG_Paw_Offer_Left",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Urinate_Left",
+      "label": "shibainu_NG_Urinate_Left",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 4.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sit_Paw_Offer_Left",
+      "label": "shibainu_NG_Sit_Paw_Offer_Left",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Look_Right",
+      "label": "shibainu_NG_Look_Right",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Head_Tilt_Right",
+      "label": "shibainu_NG_Head_Tilt_Right",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.59999990463257,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Ear_Twitch_Right",
+      "label": "shibainu_NG_Ear_Twitch_Right",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Paw_Offer_Right",
+      "label": "shibainu_NG_Paw_Offer_Right",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Urinate_Right",
+      "label": "shibainu_NG_Urinate_Right",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 4.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sit_Paw_Offer_Right",
+      "label": "shibainu_NG_Sit_Paw_Offer_Right",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Look_Around",
+      "label": "shibainu_NG_Look_Around",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 5.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Look_Up",
+      "label": "shibainu_NG_Look_Up",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Look_Down",
+      "label": "shibainu_NG_Look_Down",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Ear_Twitch_Both",
+      "label": "shibainu_NG_Ear_Twitch_Both",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.39999997615814,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Tail_Wag_Slow",
+      "label": "shibainu_NG_Tail_Wag_Slow",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Tail_Wag_Happy",
+      "label": "shibainu_NG_Tail_Wag_Happy",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Tail_Tuck_Cautious",
+      "label": "shibainu_NG_Tail_Tuck_Cautious",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sniff_Air",
+      "label": "shibainu_NG_Sniff_Air",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sniff_Ground_Enter",
+      "label": "shibainu_NG_Sniff_Ground_Enter",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.79999995231628,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sniff_Ground",
+      "label": "shibainu_NG_Sniff_Ground",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.20000004768372,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sniff_Ground_Exit",
+      "label": "shibainu_NG_Sniff_Ground_Exit",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.60000002384186,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Shake_Off",
+      "label": "shibainu_NG_Shake_Off",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.20000004768372,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Shake_Head",
+      "label": "shibainu_NG_Shake_Head",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sit_Down",
+      "label": "shibainu_NG_Sit_Down",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sit_Idle",
+      "label": "shibainu_NG_Sit_Idle",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 4.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sit_Look_Around",
+      "label": "shibainu_NG_Sit_Look_Around",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 5.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sit_Wag",
+      "label": "shibainu_NG_Sit_Wag",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sit_Get_Up",
+      "label": "shibainu_NG_Sit_Get_Up",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.79999995231628,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Lie_Down",
+      "label": "shibainu_NG_Lie_Down",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Lie_Idle",
+      "label": "shibainu_NG_Lie_Idle",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 4.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Lie_Get_Up",
+      "label": "shibainu_NG_Lie_Get_Up",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sit_To_Lie",
+      "label": "shibainu_NG_Sit_To_Lie",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.20000004768372,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Lie_To_Sit",
+      "label": "shibainu_NG_Lie_To_Sit",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.20000004768372,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sleep_Enter",
+      "label": "shibainu_NG_Sleep_Enter",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sleep_Breathe",
+      "label": "shibainu_NG_Sleep_Breathe",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 5.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Sleep_Wake",
+      "label": "shibainu_NG_Sleep_Wake",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.79999995231628,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Play_Bow",
+      "label": "shibainu_NG_Play_Bow",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 3.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Stretch_Front",
+      "label": "shibainu_NG_Stretch_Front",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 5.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Startle",
+      "label": "shibainu_NG_Startle",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Side_Lie_Enter",
+      "label": "shibainu_NG_Side_Lie_Enter",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Side_Lie_Breathe",
+      "label": "shibainu_NG_Side_Lie_Breathe",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 5.0,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Side_Lie_Exit",
+      "label": "shibainu_NG_Side_Lie_Exit",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Scratch_Left",
+      "label": "shibainu_NG_Scratch_Left",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 4.40000009536743,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:NG_Scratch_Right",
+      "label": "shibainu_NG_Scratch_Right",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 4.40000009536743,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "cat:Idle",
+      "label": "cat_Idle",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.66666662693024,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:Walking",
+      "label": "cat_Walking",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.66666662693024,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Stand_Breathe",
+      "label": "cat_NG_Stand_Breathe",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 4.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Stand_Alert",
+      "label": "cat_NG_Stand_Alert",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Look_Left",
+      "label": "cat_NG_Look_Left",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Head_Tilt_Left",
+      "label": "cat_NG_Head_Tilt_Left",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.59999990463257,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Paw_Offer_Left",
+      "label": "cat_NG_Paw_Offer_Left",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Urinate_Left",
+      "label": "cat_NG_Urinate_Left",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 4.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sit_Paw_Offer_Left",
+      "label": "cat_NG_Sit_Paw_Offer_Left",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Look_Right",
+      "label": "cat_NG_Look_Right",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Head_Tilt_Right",
+      "label": "cat_NG_Head_Tilt_Right",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.59999990463257,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Paw_Offer_Right",
+      "label": "cat_NG_Paw_Offer_Right",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Urinate_Right",
+      "label": "cat_NG_Urinate_Right",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 4.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sit_Paw_Offer_Right",
+      "label": "cat_NG_Sit_Paw_Offer_Right",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Look_Around",
+      "label": "cat_NG_Look_Around",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 5.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Look_Up",
+      "label": "cat_NG_Look_Up",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Look_Down",
+      "label": "cat_NG_Look_Down",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.79999995231628,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Tail_Wag_Slow",
+      "label": "cat_NG_Tail_Wag_Slow",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Tail_Wag_Happy",
+      "label": "cat_NG_Tail_Wag_Happy",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Tail_Tuck_Cautious",
+      "label": "cat_NG_Tail_Tuck_Cautious",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sniff_Air",
+      "label": "cat_NG_Sniff_Air",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sniff_Ground_Enter",
+      "label": "cat_NG_Sniff_Ground_Enter",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.79999995231628,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sniff_Ground",
+      "label": "cat_NG_Sniff_Ground",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.20000004768372,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sniff_Ground_Exit",
+      "label": "cat_NG_Sniff_Ground_Exit",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.60000002384186,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Shake_Off",
+      "label": "cat_NG_Shake_Off",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.20000004768372,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Shake_Head",
+      "label": "cat_NG_Shake_Head",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sit_Down",
+      "label": "cat_NG_Sit_Down",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sit_Idle",
+      "label": "cat_NG_Sit_Idle",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 4.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sit_Look_Around",
+      "label": "cat_NG_Sit_Look_Around",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 5.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sit_Wag",
+      "label": "cat_NG_Sit_Wag",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sit_Get_Up",
+      "label": "cat_NG_Sit_Get_Up",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.79999995231628,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Lie_Down",
+      "label": "cat_NG_Lie_Down",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Lie_Idle",
+      "label": "cat_NG_Lie_Idle",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 4.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Lie_Get_Up",
+      "label": "cat_NG_Lie_Get_Up",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sit_To_Lie",
+      "label": "cat_NG_Sit_To_Lie",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.20000004768372,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Lie_To_Sit",
+      "label": "cat_NG_Lie_To_Sit",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.20000004768372,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sleep_Enter",
+      "label": "cat_NG_Sleep_Enter",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sleep_Breathe",
+      "label": "cat_NG_Sleep_Breathe",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 5.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Sleep_Wake",
+      "label": "cat_NG_Sleep_Wake",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.79999995231628,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Play_Bow",
+      "label": "cat_NG_Play_Bow",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Stretch_Front",
+      "label": "cat_NG_Stretch_Front",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 5.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Startle",
+      "label": "cat_NG_Startle",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Side_Lie_Enter",
+      "label": "cat_NG_Side_Lie_Enter",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Side_Lie_Breathe",
+      "label": "cat_NG_Side_Lie_Breathe",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 5.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Side_Lie_Exit",
+      "label": "cat_NG_Side_Lie_Exit",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Knead",
+      "label": "cat_NG_Knead",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 3.59999990463257,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Tail_Tip_Flick",
+      "label": "cat_NG_Tail_Tip_Flick",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.40000009536743,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Threat_Arch_Enter",
+      "label": "cat_NG_Threat_Arch_Enter",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Threat_Arch",
+      "label": "cat_NG_Threat_Arch",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2.0,
+      "size": 1.1,
+      "target_height": 0.16
+    },
+    {
+      "id": "cat:NG_Threat_Arch_Exit",
+      "label": "cat_NG_Threat_Arch_Exit",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.20000004768372,
+      "size": 1.1,
+      "target_height": 0.16
+    }
+  ],
+  "samples": 24,
+  "columns": 6,
+  "cell": 256,
+  "views": [
+    35,
+    90
+  ],
+  "pitch": 12,
+  "provenance": [
+    "res://tools/review_motion_batch.gd",
+    "res://tools/animal_clip_preview.gd",
+    "res://scenes/empty_ground/stage.gd",
+    "res://npc/animal_model.gd",
+    "res://npc/animal_body.gd",
+    "res://models/animal_husky.glb",
+    "res://models/animal_shibainu.glb",
+    "res://models/animal_cat.glb"
+  ]
+}

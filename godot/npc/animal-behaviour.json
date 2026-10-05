@@ -1,5 +1,5 @@
 {
-  "_note": "Stray dogs' and cats' behaviour (npc/animal_controller.gd) and the empty ground's animal entries (scenes/empty_ground/stage.gd, tools/animal_behaviour_preview.gd). Metres, seconds. brain: how far people and dogs are avoided, walk / flee speeds, how long walks and rests last, the range kept to; rest_actions: what each species does in turn when resting; threat_action: what a cat does when a dog is near but not too near (else it flees). review: an action entry walks until walk_until, does the action until hold_until, walks on, over cycle; walk / trot entries wander (trot at trot_speed_fraction of the top speed); the view is frame x the model's longest side high (behaviour_camera_size for behaviour); behaviour: people walk the routes in people ([x, z, speed along x], repeating every people_period), drawn with the person_* sizes, a dog approaches a cat from approach_start, the animal keeps within range_radius of range_center, for behaviour_duration. frames / capture_every: tools/record_animals.py. checks (tools/check_animals.gd): largest leg bone length change (m), largest distance of a walking paw from where the gait planted it (m), fastest any joint may move (m/s).",
+  "_note": "Stray dogs' and cats' behaviour (npc/animal_controller.gd) and the empty ground's animal entries (scenes/empty_ground/stage.gd, tools/animal_behaviour_preview.gd). Metres, seconds. brain: how far people and dogs are avoided, walk / flee speeds, how long walks and stable rest holds last (braking and action entry do not consume rest time), the range kept to; rest_actions: what each species does in turn when resting; threat_action: what a cat does when a dog is near but not too near (else it flees). review: an action entry walks until walk_until, does the action until hold_until, walks on, over cycle; walk / trot entries wander (trot at trot_speed_fraction of the top speed); the view is frame x the model's longest side high (behaviour_camera_size for behaviour); behaviour: people walk the routes in people ([x, z, speed along x], repeating every people_period), drawn with the person_* sizes, a dog approaches a cat from approach_start, the animal keeps within range_radius of range_center, for behaviour_duration. frames / capture_every: tools/record_animals.py. checks (tools/check_animals.gd): largest leg bone length change (m), largest distance of a walking paw from where the gait planted it (m), fastest any joint may move (m/s). The cat review fixture keeps the scripted dog outside until approach_begin, pauses at approach_pause_distance until approach_close, then approaches body clearance and retreats at approach_leave. These deterministic inputs demonstrate roaming, resting and a staged threat; they are not a claim of natural all-mode coverage in every scene.",
   "brain": {
     "avoid_person": 1.35,
     "avoid_animal": 1.9,
@@ -31,7 +31,7 @@
         "knead"
       ]
     },
-    "threat_action": "alert"
+    "threat_action": "arch"
   },
   "review": {
     "dt": 0.016666666666666666,
@@ -47,22 +47,22 @@
     "capture_every": 10,
     "people": [
       [
-        -2.5,
+        -12.0,
         0.0,
         0.38
       ],
       [
-        0,
+        12.0,
         2.6,
         -0.31
       ],
       [
-        2.8,
+        -13.0,
         -1.5,
         0.27
       ]
     ],
-    "people_period": 24,
+    "people_period": 60,
     "person_hip": 0.8,
     "person_neck": 1.35,
     "person_head": 1.5,
@@ -77,7 +77,7 @@
     "approach_start": [
       0,
       0,
-      -1.8
+      -6
     ],
     "range_center": [
       0,
@@ -86,7 +86,11 @@
     ],
     "range_radius": 4.0,
     "behaviour_duration": 60,
-    "frame": 2.0
+    "frame": 2.0,
+    "approach_begin": 24,
+    "approach_close": 38,
+    "approach_leave": 48,
+    "approach_pause_distance": 1.75
   },
   "checks": {
     "bone": 0.0001,

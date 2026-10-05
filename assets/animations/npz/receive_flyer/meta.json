@@ -1,0 +1,35 @@
+{
+  "name": "receive_flyer",
+  "text": "A person standing still reaches their right hand forward at waist height to accept a small object from someone in front. They pause with the hand extended, then bend the elbow and draw the right hand back toward their abdomen, holding the received object close. The left arm stays relaxed and the feet stay planted.",
+  "duration": 3.5,
+  "seed": 42,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    104
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "source_alias": "receive_item",
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "receive_flyer",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

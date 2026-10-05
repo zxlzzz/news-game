@@ -1,0 +1,22 @@
+{
+  "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+  "sources": {
+    "assets/animations/npz/assist_elder_walk/motion.npz": "68b50aef191a42ef52711219975ca2c1abe69f7af7501b8911d8daf0e5bd435f",
+    "assets/animations/npz/assist_elder_walk/meta.json": "5caced2e65482bb43f82091bf5df381c3fe91de53ad4233f31b0628157e87618",
+    "godot/npc/motion/assist_elder_walk.json": "1da9112f0bfb1c38b6f181486f976c4cd20f6c8f5449e8e03d4fbba7b204fedf",
+    "assets/animations/npz/atm_take_cash/motion.npz": "3cba84f27657bf8ead8a686736c3d25745e21fc1b0f3b968371e21eda2c9cc87",
+    "assets/animations/npz/atm_take_cash/meta.json": "6df37c1d4de6d833f941f813fa38c0bdf1ac3cec3d6c4bd9a0939e623d088d7c",
+    "godot/npc/motion/atm_take_cash.json": "29c033b61bff82d20c40f5212522c55f717f2261f921f3e89adde1f92be1ba1f",
+    "assets/animations/npz/basketball_dribble/motion.npz": "b13e9114366f4b49a8f3a1ed6bd60e5337eeb94b42d162c2c9b888eb3405d023",
+    "assets/animations/npz/basketball_dribble/meta.json": "b1ae96b43a5141002a3624c53f618b6c9df4d921514a4bab16246808c4c7e3e2",
+    "godot/npc/motion/basketball_dribble.json": "944e80c7d8f72955290e154d5159feab531f9a20257dfaacc190feb26f818831"
+  },
+  "runtime_sha256": {
+    "godot/npc/interactions.json": "44fe0e38a52d7bf24a5a2a8b210a5a0d8815c6145d4e45fe3bfc18777465429a",
+    "godot/npc/interaction_player.gd": "f6ae8a88fe5b30396d853de390c3290554dbdad8d718f7bbdb0fd17d92ab82e1",
+    "godot/scenes/empty_ground/stage.gd": "3e12f6d90297e9d92bb8cd56de91838896ff9fcd397830a3f0f22c74708fc41c",
+    "godot/npc/crowd.gd": "9e9b534819147181da44ee7951e453b801eb0c530ab7fd4bfd54bbf3a0ba3353"
+  },
+  "final_interactions_log": "check_interactions_final_tracks.log",
+  "notes": "Only current review status metadata changed after runtime freeze; source NPZ and runtime motion JSON unchanged."
+}

@@ -32,12 +32,23 @@ static func step(previous: Dictionary, m: Dictionary, dog: Dictionary, c: Dictio
 	var other_radius = Brain.body_radius(dog.p)
 	if m.species == "cat":
 		var gap = own.distance_to(s.other.position) - own_radius - other_radius
-		var approach_speed = minf(c.review.approach_speed, maxf(0, gap - c.brain.clearance) / c.brain.response_time)
-		s.other = Animal.step(s.other, {"speed": approach_speed, "yaw": atan2(own.x - s.other.position.x, own.z - s.other.position.z),
+		var toward: Vector3 = own - s.other.position
+		var approach_speed := 0.0
+		if s.time >= c.review.approach_begin:
+			if s.time < c.review.approach_leave:
+				var stop_distance: float = own_radius + other_radius + c.brain.clearance
+				if s.time < c.review.approach_close:
+					stop_distance = c.review.approach_pause_distance
+				approach_speed = minf(c.review.approach_speed, maxf(0, toward.length() - stop_distance) / c.brain.response_time)
+			else:
+				toward = _v(c.review.approach_start) - s.other.position
+				approach_speed = minf(c.review.approach_speed, toward.length() / c.brain.response_time)
+		s.other = Animal.step(s.other, {"speed": approach_speed, "yaw": atan2(toward.x, toward.z),
 			"ground": _flat}, dt, dog)
 		neighbours.append({"position": s.other.position, "species": "dog", "radius": other_radius})
 	var command = Brain.step(s.brain, own, people_at(s.time, c), neighbours, dt, c, m.species,
-		_v(c.review.range_center), c.review.range_radius, own_radius)
+		_v(c.review.range_center), c.review.range_radius, own_radius,
+		{"action": s.animal.action, "phase": Animal.doing(s.animal), "weight": s.animal.weight})
 	s.brain = command.state
 	var current_yaw: float = s.animal.yaw
 	# Brake before a large turn; the gait cannot instantly adopt the requested heading.
@@ -49,7 +60,8 @@ static func step(previous: Dictionary, m: Dictionary, dog: Dictionary, c: Dictio
 		if toward_other.dot(forward) > 0:
 			var clearance = toward_other.length() - own_radius - other_radius
 			requested_speed = minf(requested_speed, maxf(0, clearance - c.brain.clearance) / c.brain.response_time)
-	s.animal = Animal.step(s.animal, {"speed": requested_speed, "yaw": command.yaw, "action": command.action, "ground": _flat}, dt, m)
+	s.animal = Animal.step(s.animal, {"speed": requested_speed, "yaw": command.yaw, "action": command.action,
+		"urgent": command.urgent, "ground": _flat}, dt, m)
 	return s
 
 ## Positive: the two bodies cannot overlap, whichever way they face.

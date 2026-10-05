@@ -1,0 +1,319 @@
+{
+  "summary": {
+    "numeric_clips": 239,
+    "native_source_frames": 25340,
+    "actual_godot_runtime_samples": 28680,
+    "standalone_clips_visually_reviewed": 147,
+    "additional_priority_clips_visually_reviewed": 5,
+    "standalone_contact_sheets_reviewed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37
+    ],
+    "exact_godot_records": {
+      "duck_cover": 15,
+      "elder_assisted_walk": 15,
+      "phone_urgent": 15
+    },
+    "status_counts_this_reviewer": {
+      "screened_no_additional_confirmed_issue_at_sampled_views": 133,
+      "delegated_interaction_visual_review": 87,
+      "screened_partial_unconfirmed_due_to_occlusion": 7,
+      "confirmed_problem": 7,
+      "numeric_candidate_unconfirmed_at_exact_native_time": 5
+    },
+    "limit": "24 time samples x2 views are a visual screen, not continuous-video approval. Runtime sample dt varies by stage cycle and may cover multiple source cycles. Shared mapper scan covers native frames; actual Godot exact timings cover only three flagged clips."
+  },
+  "confirmed_findings": [
+    {
+      "id": "H1",
+      "status": "confirmed",
+      "layer": "source_to_figure_mapping",
+      "claim": "The general relation mapping amplifies small source wrist changes into large final hand/arm changes at particular native frames. Different relation rules contribute; this is not one universal IK-pole failure.",
+      "examples": [
+        {
+          "clip": "phone_urgent",
+          "frames": [
+            2,
+            3
+          ],
+          "times_s": [
+            0.06666666666666667,
+            0.1
+          ],
+          "point": "right_hand",
+          "mapped_step_cm": 57.325,
+          "source_leg_scaled_step_cm": 6.813,
+          "evidence": [
+            "phone_urgent_source_pre_final_exact.png",
+            "focus/phone_urgent_early.png"
+          ],
+          "causal_diagnostic": "Current 57.33cm; in-memory minSpread disabled 14.79cm; head-touch disabled 57.33cm. Head-touch/overlap/back weights all zero here. The accepted spread style itself is retained; only this large motion amplification is reported."
+        },
+        {
+          "clip": "elder_assisted_walk",
+          "frames": [
+            12,
+            13
+          ],
+          "times_s": [
+            0.4,
+            0.43333333333333335
+          ],
+          "point": "left_hand",
+          "mapped_step_cm": 29.017,
+          "source_leg_scaled_step_cm": 1.75,
+          "evidence": [
+            "elder_assisted_walk_source_pre_final_exact.png"
+          ],
+          "causal_diagnostic": "Spread diagnostic has little effect on this first jump; source-to-direction/height transformation still needs more isolation."
+        },
+        {
+          "clip": "elder_assisted_walk",
+          "frames": [
+            43,
+            44
+          ],
+          "times_s": [
+            1.4333333333333333,
+            1.4666666666666666
+          ],
+          "point": "left_hand",
+          "mapped_step_cm": 26.319,
+          "source_leg_scaled_step_cm": 0.586,
+          "evidence": [
+            "elder_assisted_walk_source_pre_final_exact.png"
+          ],
+          "causal_diagnostic": "Current 26.32cm; in-memory spread disabled 1.32cm. Head-touch/overlap/back weights zero."
+        },
+        {
+          "clip": "duck_cover",
+          "frames": [
+            47,
+            48
+          ],
+          "times_s": [
+            1.5666666666666667,
+            1.6
+          ],
+          "point": "left_hand",
+          "mapped_step_cm": 20.458,
+          "source_leg_scaled_step_cm": 4.655,
+          "evidence": [
+            "duck_cover_source_pre_final_exact.png",
+            "focus/duck_cover_jump.png"
+          ],
+          "causal_diagnostic": "Head-touch weight changes 0.0349 to 0.9414 in one native frame; current 20.46cm, head-touch diagnostic disabled 9.68cm, spread disabled 20.82cm."
+        }
+      ],
+      "common_evidence": [
+        "human_mapper_trace.json",
+        "human_mapper_intervention.json",
+        "exact_dump.json"
+      ]
+    },
+    {
+      "id": "H2",
+      "status": "confirmed",
+      "layer": "mapping_and_support",
+      "claim": "handstand loses its palm support: mapped wrists are below the floor, ground correction raises only the head. The rendered result reads as head support with hidden arms.",
+      "examples": [
+        {
+          "clip": "handstand",
+          "source_frame": 0,
+          "source_wrist_heights_m": [
+            0.038394,
+            0.071666
+          ],
+          "actual_final_wrist_world_heights_m": [
+            -0.359043,
+            -0.356376
+          ],
+          "evidence": [
+            "handstand_source_pre_final_support.png",
+            "follow_pose/handstand.png"
+          ]
+        }
+      ],
+      "code": "contact_pose.gd ground_feet corrects feet and head, with no hand-support correction. Mapped arms are already below floor before this correction."
+    },
+    {
+      "id": "H3",
+      "status": "confirmed",
+      "layer": "source_motion_plus_mapping",
+      "claim": "Some visible arm instability already exists in raw NPZ joints, so a mapping-only correction cannot remove the entire problem.",
+      "examples": [
+        {
+          "clip": "walk_backpack_straps",
+          "frames": [
+            7,
+            8,
+            9,
+            10
+          ],
+          "source_right_elbow_steps_leg_scaled_cm": [
+            31.73,
+            32.97
+          ],
+          "evidence": [
+            "walk_backpack_straps_source_pre_final.png",
+            "humans/walk_backpack_straps.png"
+          ],
+          "observation": "Right elbow drops and returns abruptly during a strap-holding walk; source and mapped diagrams show the same brief excursion."
+        },
+        {
+          "clip": "fruit_weigh",
+          "frames": [
+            109,
+            110
+          ],
+          "source_right_elbow_steps_leg_scaled_cm": [
+            34.5,
+            36.5
+          ],
+          "evidence": [
+            "fruit_weigh_source_pre_final.png",
+            "humans/fruit_weigh.png"
+          ],
+          "observation": "Right wrist remains almost stationary while source elbow changes direction sharply; mapping adds another amplification around frame107."
+        },
+        {
+          "clip": "vending_collect",
+          "frames": [
+            97,
+            98,
+            99
+          ],
+          "source_right_wrist_steps_leg_scaled_cm": [
+            41.51,
+            39.65
+          ],
+          "evidence": [
+            "vending_collect_source_pre_final_source_event.png",
+            "humans/vending_collect.png"
+          ],
+          "observation": "One native frame drives the wrist down and the next drives it back up during collection; already present in source. Machine obscures frontal render."
+        }
+      ],
+      "numeric_evidence": "human_extra_numbers.json"
+    },
+    {
+      "id": "H4",
+      "status": "confirmed_playback_behavior_not_material_rejection",
+      "layer": "preview_playback",
+      "claim": "Sources without repeated endpoints are looped by the preview default, interpolating the final source pose back to frame0 in one native-frame interval. Many are one-shot gestures; others have no explicit loop metadata. Endpoint differences are not by themselves defective source loops.",
+      "examples": [
+        {
+          "clip": "scratch_head",
+          "source_root_aligned_endpoint_difference_cm": 109.5
+        },
+        {
+          "clip": "stand_up",
+          "source_root_aligned_endpoint_difference_cm": 74.57
+        },
+        {
+          "clip": "trip_fall",
+          "source_root_aligned_endpoint_difference_cm": 119.6
+        }
+      ],
+      "count_nonrepeat_default_loop": 99,
+      "code": "ClipPose.pose chooses frame0 after the last mapped frame when no duplicated endpoint exists; empty-ground defaults to looping unless playback once is configured.",
+      "qualification": "This describes current preview playback. It does not establish how every future behavior transition should play or that these 99 source files all need regeneration."
+    }
+  ],
+  "remaining_numeric_candidates": [
+    {
+      "clip": "scratch_head",
+      "candidate_count": 1,
+      "status": "needs_exact_native_time_visual_and_semantic_check"
+    },
+    {
+      "clip": "shadow_box",
+      "candidate_count": 3,
+      "status": "needs_exact_native_time_visual_and_semantic_check"
+    },
+    {
+      "clip": "wave_overhead",
+      "candidate_count": 1,
+      "status": "needs_exact_native_time_visual_and_semantic_check"
+    },
+    {
+      "clip": "walk_cold",
+      "candidate_count": 1,
+      "status": "needs_exact_native_time_visual_and_semantic_check"
+    },
+    {
+      "clip": "vendor_tidy",
+      "candidate_count": 1,
+      "status": "needs_exact_native_time_visual_and_semantic_check"
+    },
+    {
+      "clip": "atm_take_cash",
+      "candidate_count": 1,
+      "status": "needs_exact_native_time_visual_and_semantic_check"
+    },
+    {
+      "clip": "basketball_shoot",
+      "candidate_count": 2,
+      "status": "needs_exact_native_time_visual_and_semantic_check"
+    },
+    {
+      "clip": "bike_scan_unlock",
+      "candidate_count": 1,
+      "status": "needs_exact_native_time_visual_and_semantic_check"
+    }
+  ],
+  "occluded_visual_relations": {
+    "atm_keypad": "Machine obscures frontal hand/control relation; side body motion visible.",
+    "choose_item": "Stall obscures frontal hands; precise item contact not established.",
+    "read_notice": "Board hides frontal body; side motion visible.",
+    "sit_step": "Building hides side view; frontal seated figure visible.",
+    "vendor_call": "Counter hides frontal hands; side gesture visible.",
+    "vendor_tidy": "Counter hides frontal hand/surface relation; side motion visible.",
+    "walk_stairs_up": "Front hides legs and side railings obscure precise sole/tread contacts.",
+    "walk_stairs_down": "Side railings obscure precise sole/tread contacts.",
+    "vending_collect": "Machine completely hides front; side and source diagrams used. Precise pickup contact delegated."
+  },
+  "accepted_style_preserved": [
+    "cheer overhead separate hands",
+    "cross_arms front cross",
+    "photo_overhead actual front occlusion",
+    "general minSpread/proportion choices"
+  ],
+  "no_production_changes": true,
+  "interpretation": "Only confirmed examples justify the listed defects; no all-library PASS, no defect from a large pose difference alone, and no required fix proposed in this check-only task."
+}

@@ -5,3 +5,9 @@
 [node name="HeldCoffeeCup" type="Node3D" groups=["held"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+
+[node name="grip_sleeve" type="Marker3D" parent="."]
+position = Vector3(-0.049, -0.015, 0)
+
+[node name="lip" type="Marker3D" parent="."]
+position = Vector3(0, 0.0885, -0.057)

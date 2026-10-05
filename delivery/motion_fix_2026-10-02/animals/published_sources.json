@@ -1,0 +1,17 @@
+[
+  {
+    "species": "husky",
+    "source_batch": "husky_candidate_07",
+    "formal_glb_sha256": "bfe8391f30ce39c7c4543b94852d095dba7abdc068f12e02ea833c42110c7410"
+  },
+  {
+    "species": "shibainu",
+    "source_batch": "shibainu_candidate_03",
+    "formal_glb_sha256": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d"
+  },
+  {
+    "species": "cat",
+    "source_batch": "cat_candidate_03",
+    "formal_glb_sha256": "16e90c9ed9ac4675861d0cd7218443e6c792eb9eff34c24ed1995f4d5ae2a2c8"
+  }
+]

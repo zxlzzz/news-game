@@ -1,0 +1,94 @@
+[
+  {
+    "id": "atm_keypad",
+    "text": "A standing person uses an ATM in front, right hand reaches to a keypad at upper abdomen height, presses several keys, then lowers. Feet planted, left arm relaxed."
+  },
+  {
+    "id": "back_away",
+    "text": "A person takes several cautious steps backward with both hands raised in front of their chest, backing away in fear."
+  },
+  {
+    "id": "basketball_dribble",
+    "text": "A basketball player in a low balanced stance with bent knees dribbles a basketball repeatedly at the right side. Right palm pushes downward four times, wrist follows through. Left arm relaxed forward for balance. Feet stay shoulder width apart with small weight shifts."
+  },
+  {
+    "id": "cheer",
+    "text": "A person cheers in celebration, throwing both arms high above their head and pumping them up and down."
+  },
+  {
+    "id": "eat_snack",
+    "text": "A person eats a small snack, repeatedly bringing their right hand to their mouth and lowering it."
+  },
+  {
+    "id": "fan_self",
+    "text": "A person stands in hot weather and fans their face with a handheld folding fan in their right hand. Right elbow is bent at the side, right wrist and forearm make repeated short brisk back-and-forth strokes beside the cheek to blow air toward the face. Left arm hangs relaxed. Repeat the fanning movement several times while standing."
+  },
+  {
+    "id": "football_juggle",
+    "text": "A football player standing balanced repeatedly taps a football upward with the right instep three times, keeping the ball low below knee height. Right knee raises and right foot flicks upward then lowers. Left leg supports body, arms out slightly for balance."
+  },
+  {
+    "id": "hail_taxi",
+    "text": "A standing person near a street lifts the right arm high and waves broadly twice to hail a taxi, leans forward slightly, then lowers the arm. Feet planted."
+  },
+  {
+    "id": "hop",
+    "text": "A person repeatedly hops straight up in place with both feet together. Bend both knees, push off with both feet simultaneously, rise briefly into the air, land softly on both feet together and repeat three small jumps. Arms swing naturally for balance. Do not alternate legs or travel forward."
+  },
+  {
+    "id": "jog",
+    "text": "A person jogs continuously forward with springy alternating running strides, brief flight phases, and elbows bent, arms pumping naturally opposite to their legs. They maintain a steady easy jogging pace without slowing down."
+  },
+  {
+    "id": "march_in_place",
+    "text": "A person marches in place with alternating high knees. Lift the left knee, set the left foot down in its original spot, then lift the right knee and set it down. Repeat several times with opposite arm swing. Remain in the same location facing forward, do not travel."
+  },
+  {
+    "id": "mop_ground",
+    "text": "A cleaner mops the floor with a long upright mop held in both hands, pushes hands forward and draws them back in slow repeated strokes, bends slightly at hips, feet planted."
+  },
+  {
+    "id": "pace",
+    "text": "A person slowly paces back and forth, walking along a short straight path, turning around at each end. Arms relaxed. Return to the initial position and facing direction."
+  },
+  {
+    "id": "parcel_terminal",
+    "text": "A standing person taps a parcel locker touchscreen at chest height with the right hand several times, then lowers the hand, feet planted."
+  },
+  {
+    "id": "phone_urgent",
+    "text": "A person paces back and forth while talking urgently on the phone held at the right ear. Walk a few steps, turn around, walk back, then turn again. The right hand keeps the phone at the ear."
+  },
+  {
+    "id": "point_shout",
+    "text": "An angry person leans forward and thrusts their RIGHT ARM straight out horizontally in front of them, pointing at someone in the distance while shouting. The right elbow is fully straight, wrist at shoulder height. Repeatedly jab the entire extended arm forwards emphatically. The left hand rests on the hip. Then relax the right arm down."
+  },
+  {
+    "id": "run",
+    "text": "A person runs forward at a fast steady pace in a straight line, alternating long strides with a clear airborne phase between footfalls. Elbows bent and arms pumping opposite the legs, torso leaning slightly forward. Continue running for the whole clip without slowing, stopping or turning."
+  },
+  {
+    "id": "seesaw_partner",
+    "text": "Sitting astride a seesaw seat, facing inward, both hands hold a short vertical handle between the thighs. Knees bent and apart, feet near the ground. Gently rise and lower twice with the seesaw, torso upright."
+  },
+  {
+    "id": "seesaw_seated",
+    "text": "Sitting astride a seesaw seat, facing inward, both hands hold a short vertical handle between the thighs. Knees bent and apart, feet near the ground. Gently rise and lower twice with the seesaw, torso upright."
+  },
+  {
+    "id": "swing_seated",
+    "text": "Seated on a playground swing, hands grasp both suspension ropes beside the shoulders. Gently swing forward and back twice, extend lower legs on the forward swing and tuck feet back on the return. Relaxed upright torso."
+  },
+  {
+    "id": "table_tennis_partner",
+    "text": "A table tennis player in a ready crouch, feet shoulder width apart, holds a paddle in the right hand. Rotate the torso slightly right, swing the right forearm forward across the waist for a controlled forehand, then return to ready. Repeat twice. Small practical movement, no exaggerated waving."
+  },
+  {
+    "id": "table_tennis_play",
+    "text": "A table tennis player in a ready crouch, feet shoulder width apart, holds a paddle in the right hand. Rotate the torso slightly right, swing the right forearm forward across the waist for a controlled forehand, then return to ready. Repeat twice. Small practical movement, no exaggerated waving."
+  },
+  {
+    "id": "walk_child_hand_down",
+    "text": "A person walking straight forward. Right arm extends diagonally down and outward to their right side and remains steady, gently holding the hand of an unseen toddler. Left arm is relaxed down at the side and swings naturally back and forth at thigh level with the gait. Neither hand is raised to the chest. Continue walking with normal alternating steps."
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "scenarios": [
+    {
+      "end": 10,
+      "action": "lie",
+      "speed": 0.35,
+      "seconds": 16,
+      "label": "lie_urgent",
+      "begin": 2
+    }
+  ],
+  "fps": 120,
+  "breeds": [
+    "husky",
+    "shibainu",
+    "cat"
+  ]
+}

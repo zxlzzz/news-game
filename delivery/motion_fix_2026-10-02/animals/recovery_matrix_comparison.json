@@ -1,0 +1,38 @@
+[
+  {
+    "label": "husky_scratch_normal_cancel",
+    "current_matrix_sha256": "b8f4505cb4c9268e92ea1f832b67bfdb22696aadfd0194a6c865ecdaba1b865d",
+    "captured_matrix_sha256": "cb2679c314f570b613dc7ab000e617effe89cbc56475b3bbd07ca292f9454559",
+    "identical": false
+  },
+  {
+    "label": "husky_scratch_urgent_cancel",
+    "current_matrix_sha256": "96cdc64b7e46b5a6cd0fa4c8e75bd8e7d32633a0e4f28012569c631b4147d23f",
+    "captured_matrix_sha256": "96cdc64b7e46b5a6cd0fa4c8e75bd8e7d32633a0e4f28012569c631b4147d23f",
+    "identical": true
+  },
+  {
+    "label": "husky_scratch_normal_stand",
+    "current_matrix_sha256": "b8f4505cb4c9268e92ea1f832b67bfdb22696aadfd0194a6c865ecdaba1b865d",
+    "captured_matrix_sha256": "cb2679c314f570b613dc7ab000e617effe89cbc56475b3bbd07ca292f9454559",
+    "identical": false
+  },
+  {
+    "label": "shibainu_scratch_normal_cancel",
+    "current_matrix_sha256": "8661b3e27944b1e1027f6adf19102381bde78fa966e195541cd30867c0a54fd9",
+    "captured_matrix_sha256": "1c6629d224f51f15a285c48a21595d58577f975952f6945bbfd1da04d5cec1af",
+    "identical": false
+  },
+  {
+    "label": "shibainu_scratch_urgent_cancel",
+    "current_matrix_sha256": "998422f7d0e0a39a8a4ef7509ac63b9787c00ccb9594d1ca0ee6fd0ae95235cd",
+    "captured_matrix_sha256": "c9cfb6059f2459f3665a03d5cc45cc39b3b687d018e91f66b1ba61997d314330",
+    "identical": false
+  },
+  {
+    "label": "shibainu_scratch_normal_stand",
+    "current_matrix_sha256": "8661b3e27944b1e1027f6adf19102381bde78fa966e195541cd30867c0a54fd9",
+    "captured_matrix_sha256": "1c6629d224f51f15a285c48a21595d58577f975952f6945bbfd1da04d5cec1af",
+    "identical": false
+  }
+]

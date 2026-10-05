@@ -7,7 +7,7 @@
     "tilt_deg": 18,
     "look_pitch": 20,
     "ear_deg": 22,
-    "tuck_per_bone": 8,
+    "tuck_per_bone": 35,
     "sniff_air_pitch": 15,
     "sniff_sweep": 12,
     "shake_body_deg": 3,
@@ -71,17 +71,27 @@
         "shift": [
           0.0,
           0.0,
-          -0.17372727272727273
+          -0.23045454545454547
         ],
         "feet": {
           "LF": [
             0.0,
-            -0.10636363636363637,
+            -0.14181818181818182,
             0.0
           ],
           "RF": [
             0.0,
-            -0.10636363636363637,
+            -0.14181818181818182,
+            0.0
+          ],
+          "LH": [
+            0.014181818181818183,
+            -0.028363636363636365,
+            0.0
+          ],
+          "RH": [
+            -0.014181818181818183,
+            -0.028363636363636365,
             0.0
           ]
         },
@@ -116,7 +126,23 @@
             "X",
             -5
           ]
-        ]
+        ],
+        "legs": {
+          "LF": {
+            "foot_pitch": 30,
+            "pole_side": 3
+          },
+          "RF": {
+            "foot_pitch": 30,
+            "pole_side": 3
+          },
+          "LH": {
+            "pole_side": 1.25
+          },
+          "RH": {
+            "pole_side": 1.25
+          }
+        }
       },
       "sniff": {
         "turns": [
@@ -172,19 +198,31 @@
         "shift": [
           0.0,
           0.0,
-          -0.17372727272727273
+          -0.23045454545454547
         ],
+        "feet": {
+          "LF": [
+            0.0,
+            -0.14181818181818182,
+            0.0
+          ],
+          "RF": [
+            0.0,
+            -0.14181818181818182,
+            0.0
+          ],
+          "LH": [
+            0.014181818181818183,
+            -0.028363636363636365,
+            0.0
+          ],
+          "RH": [
+            -0.014181818181818183,
+            -0.028363636363636365,
+            0.0
+          ]
+        },
         "turns": [
-          [
-            "Neck1",
-            "X",
-            70
-          ],
-          [
-            "Head",
-            "X",
-            -35
-          ],
           [
             "Tail1",
             "X",
@@ -214,30 +252,486 @@
             "Tail6",
             "X",
             -5
+          ],
+          [
+            "Neck1",
+            "X",
+            67
+          ],
+          [
+            "Head",
+            "X",
+            -28
+          ]
+        ],
+        "legs": {
+          "LF": {
+            "foot_pitch": 30,
+            "pole_side": 3
+          },
+          "RF": {
+            "foot_pitch": 30,
+            "pole_side": 3
+          },
+          "LH": {
+            "pole_side": 1.25
+          },
+          "RH": {
+            "pole_side": 1.25
+          }
+        }
+      },
+      "stretch": {
+        "shift": [
+          0.0,
+          0.0035454545454545456,
+          0.0
+        ],
+        "turns": [
+          [
+            "Back",
+            "X",
+            28
+          ],
+          [
+            "Torso2",
+            "X",
+            -6
+          ],
+          [
+            "Neck1",
+            "X",
+            5
           ]
         ],
         "feet": {
           "LF": [
             0.0,
-            -0.10636363636363637,
+            -0.09927272727272729,
             0.0
           ],
           "RF": [
             0.0,
-            -0.10636363636363637,
+            -0.09927272727272729,
             0.0
           ]
         }
       }
     },
-    "tuck_base_deg": 75,
-    "scratch_yaw": 60,
-    "scratch_pitch": 65,
-    "scratch_distal_pitch": 130,
+    "tuck_base_deg": 140,
+    "scratch_yaw": 105,
+    "scratch_pitch": -30,
+    "scratch_distal_pitch": 90,
     "ground_iterations": 20,
     "ground_convergence": 5e-05,
     "swing_reach_margin": 0.010636363636363637,
-    "sit_hock_yaw": 25
+    "sit_hock_yaw": 25,
+    "side_fold": [
+      [
+        "FrontUpperLeg.L",
+        "X",
+        -20
+      ],
+      [
+        "FrontLowerLeg.L",
+        "X",
+        65
+      ],
+      [
+        "BackLeg.L",
+        "X",
+        15
+      ],
+      [
+        "BackUpperLeg.L",
+        "X",
+        -40
+      ],
+      [
+        "BackLowerLeg.L",
+        "X",
+        20
+      ],
+      [
+        "FrontUpperLeg.R",
+        "X",
+        -20
+      ],
+      [
+        "FrontLowerLeg.R",
+        "X",
+        65
+      ],
+      [
+        "BackLeg.R",
+        "X",
+        15
+      ],
+      [
+        "BackUpperLeg.R",
+        "X",
+        -40
+      ],
+      [
+        "BackLowerLeg.R",
+        "X",
+        20
+      ]
+    ],
+    "scratch_torso": 45,
+    "scratch_arc": 0.06381818181818182,
+    "shake": {
+      "envelope": [
+        [
+          0,
+          0
+        ],
+        [
+          0.12,
+          1
+        ],
+        [
+          0.75,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "spine": [
+        [
+          "Back",
+          8,
+          1.0
+        ],
+        [
+          "Torso2",
+          -4,
+          0.6
+        ],
+        [
+          "Torso3",
+          6,
+          0.35
+        ]
+      ],
+      "head_deg": 24,
+      "head_lag": 0,
+      "ear_deg": 12,
+      "ear_lag": 0.25,
+      "tail_deg": 7,
+      "tail_lag": 1.4,
+      "crouch_m": 0
+    },
+    "bow": {
+      "pose": "bow",
+      "body_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.25,
+          1
+        ],
+        [
+          0.43,
+          0.88
+        ],
+        [
+          0.57,
+          1
+        ],
+        [
+          0.76,
+          0.85
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "paw_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.25,
+          1
+        ],
+        [
+          0.76,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "lift_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.12,
+          1
+        ],
+        [
+          0.25,
+          0
+        ],
+        [
+          0.76,
+          0
+        ],
+        [
+          0.87,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "neck_pitch": -12,
+      "tail_deg": -5,
+      "tail_wave": 7,
+      "tail_cycles": 4
+    },
+    "stretch": {
+      "pose": "stretch",
+      "body_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.32,
+          1
+        ],
+        [
+          0.7,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "paw_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.24,
+          1
+        ],
+        [
+          0.8,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "lift_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.12,
+          0.6
+        ],
+        [
+          0.24,
+          0
+        ],
+        [
+          0.8,
+          0
+        ],
+        [
+          0.9,
+          0.6
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "neck_pitch": 12,
+      "tail_deg": -18,
+      "tail_wave": 0,
+      "tail_cycles": 1
+    },
+    "startle": {
+      "crouch_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.15,
+          1
+        ],
+        [
+          0.4,
+          0.75
+        ],
+        [
+          0.75,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "recoil_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.28,
+          1
+        ],
+        [
+          0.55,
+          0.8
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "lift_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.15,
+          0
+        ],
+        [
+          0.28,
+          1
+        ],
+        [
+          0.48,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "crouch_m": 0.024818181818181823,
+      "recoil_m": 0.017727272727272727,
+      "front_lift_m": 0.014181818181818183,
+      "head_pitch": -15,
+      "head_yaw": 8,
+      "tail_deg": -25
+    },
+    "side_pose": {
+      "roll_deg": 85,
+      "neck_pitch": 25,
+      "neck_roll": -18,
+      "head_yaw": -12,
+      "settle_iterations": 3,
+      "folds": [
+        [
+          "FrontShoulder.L",
+          "Y",
+          80
+        ],
+        [
+          "BackShoulder.L",
+          "Y",
+          70
+        ]
+      ],
+      "feet": {
+        "LF": [
+          -0.035454545454545454,
+          0.028363636363636365,
+          0.035454545454545454
+        ],
+        "RF": [
+          0.028363636363636365,
+          0.049636363636363645,
+          0.049636363636363645
+        ],
+        "LH": [
+          -0.049636363636363645,
+          0.07090909090909091,
+          0.017727272727272727
+        ],
+        "RH": [
+          0.028363636363636365,
+          0.07090909090909091,
+          0.039
+        ]
+      },
+      "hind_pole_side": -1.0,
+      "gather_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.4,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "roll_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          0.35,
+          0
+        ],
+        [
+          0.9,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "legs": {
+        "LF": {
+          "pole_side": -1.0
+        },
+        "RF": {
+          "pole_side": -1.0
+        },
+        "LH": {
+          "pole_side": -1.0,
+          "pole_up": 3
+        },
+        "RH": {
+          "pole_side": -1.0,
+          "pole_up": 3
+        }
+      }
+    },
+    "side_breathe_deg": 0.35,
+    "hind_swing_reach_margin_m": 0.005672727272727273
   },
   "clips": [
     {
@@ -387,19 +881,19 @@
       "name": "NG_Tail_Wag_Slow",
       "label": "慢摇尾",
       "kind": "wag",
-      "seconds": 3,
+      "seconds": 1.5,
       "loop": true,
       "amplitude": 20,
-      "cycles": 2
+      "cycles": 1
     },
     {
       "name": "NG_Tail_Wag_Happy",
       "label": "快摇尾",
       "kind": "wag",
-      "seconds": 2,
+      "seconds": 0.5,
       "loop": true,
       "amplitude": 40,
-      "cycles": 4
+      "cycles": 1
     },
     {
       "name": "NG_Tail_Tuck_Cautious",
@@ -446,15 +940,17 @@
       "kind": "shake",
       "seconds": 2.2,
       "loop": false,
-      "cycles": 7
+      "cycles": 7,
+      "frequency_hz": 5.8
     },
     {
       "name": "NG_Shake_Head",
       "label": "短促甩头",
-      "kind": "shake",
+      "kind": "head_shake",
       "seconds": 1.2,
       "loop": false,
-      "cycles": 3
+      "cycles": 3,
+      "frequency_hz": 6
     },
     {
       "name": "NG_Sit_Down",
@@ -484,11 +980,11 @@
       "name": "NG_Sit_Wag",
       "label": "坐着摇尾",
       "kind": "wag",
-      "seconds": 3,
+      "seconds": 1.0,
       "loop": true,
       "base": "sit",
       "amplitude": 24,
-      "cycles": 3
+      "cycles": 1
     },
     {
       "name": "NG_Sit_Get_Up",
@@ -578,7 +1074,7 @@
     {
       "name": "NG_Stretch_Front",
       "label": "前肢伸懒腰",
-      "kind": "bow",
+      "kind": "stretch",
       "seconds": 5,
       "loop": false
     },
@@ -596,7 +1092,8 @@
       "seconds": 2.4,
       "loop": false,
       "base": "lie",
-      "to_side": true
+      "to_side": true,
+      "fps": 60
     },
     {
       "name": "NG_Side_Lie_Breathe",
@@ -604,7 +1101,8 @@
       "kind": "side_breathe",
       "seconds": 5,
       "loop": true,
-      "base": "lie"
+      "base": "lie",
+      "fps": 60
     },
     {
       "name": "NG_Side_Lie_Exit",
@@ -613,31 +1111,29 @@
       "seconds": 2.4,
       "loop": false,
       "base": "lie",
-      "to_side": false
-    }
-  ],
-  "deferred": [
+      "to_side": false,
+      "fps": 60
+    },
     {
       "name": "NG_Scratch_Left",
-      "label": "坐着挠痒Left",
+      "label": "Seated ear scratch",
       "kind": "scratch",
       "seconds": 4.4,
-      "loop": false,
-      "side": 1,
+      "loop": true,
       "base": "sit",
-      "cycles": 7,
-      "reason": "后爪不能自然接触耳根；强行追目标会超出腿链长度，未收入交付。"
+      "side": 1,
+      "cycles": 7
     },
     {
       "name": "NG_Scratch_Right",
-      "label": "坐着挠痒Right",
+      "label": "Seated ear scratch",
       "kind": "scratch",
       "seconds": 4.4,
-      "loop": false,
-      "side": -1,
+      "loop": true,
       "base": "sit",
-      "cycles": 7,
-      "reason": "后爪不能自然接触耳根；强行追目标会超出腿链长度，未收入交付。"
+      "side": -1,
+      "cycles": 7
     }
-  ]
+  ],
+  "deferred": []
 }

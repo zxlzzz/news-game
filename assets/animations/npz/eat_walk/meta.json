@@ -10209,5 +10209,19 @@
       "frames": 59,
       "seam_root_aligned_max_joint_m": 4.7706993200336e-07
     }
+  },
+  "single_unit": {
+    "clip": "eat_walk",
+    "source_sha256": "c26b525e236883bf3b4d1d82b9748e2c3c74b7fbbd167a050a81f9a3118913a4",
+    "original_frames": 59,
+    "take_frames": [
+      29,
+      58
+    ],
+    "original_units": 2,
+    "frames": 30,
+    "duration": 0.9666666666666667,
+    "source": "assets/animations/generation_inputs/c26b525e236883bf3b4d1d82b9748e2c3c74b7fbbd167a050a81f9a3118913a4.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
   }
 }

@@ -1,0 +1,14 @@
+[
+  {
+    "page": "shake_01.png",
+    "clips": [
+      "NG_Shake_Off"
+    ]
+  },
+  {
+    "page": "shake_02.png",
+    "clips": [
+      "NG_Shake_Head"
+    ]
+  }
+]

@@ -1,0 +1,82 @@
+{
+  "pull_suitcase": {
+    "pre": {
+      "speed": 3.35,
+      "time": [
+        0.166667,
+        0.183333
+      ],
+      "segment": 6,
+      "jump_m": 0.0558
+    },
+    "final": {
+      "speed": 16.55,
+      "time": [
+        0.316667,
+        0.333333
+      ],
+      "segment": 7,
+      "jump_m": 0.2758
+    }
+  },
+  "walk_closed_umbrella": {
+    "pre": {
+      "speed": 3.08,
+      "time": [
+        0.266667,
+        0.283333
+      ],
+      "segment": 7,
+      "jump_m": 0.0514
+    },
+    "final": {
+      "speed": 22.14,
+      "time": [
+        0.0,
+        0.016667
+      ],
+      "segment": 7,
+      "jump_m": 0.369
+    }
+  },
+  "walk_stairs_down": {
+    "pre": {
+      "speed": 2.52,
+      "time": [
+        0.4,
+        0.416667
+      ],
+      "segment": 10,
+      "jump_m": 0.042
+    },
+    "final": {
+      "speed": 18.94,
+      "time": [
+        1.25,
+        1.266667
+      ],
+      "segment": 4,
+      "jump_m": 0.3157
+    }
+  },
+  "wave_overhead_v3": {
+    "pre": {
+      "speed": 10.64,
+      "time": [
+        0.083333,
+        0.1
+      ],
+      "segment": 3,
+      "jump_m": 0.1773
+    },
+    "final": {
+      "speed": 10.64,
+      "time": [
+        0.083333,
+        0.1
+      ],
+      "segment": 3,
+      "jump_m": 0.1773
+    }
+  }
+}

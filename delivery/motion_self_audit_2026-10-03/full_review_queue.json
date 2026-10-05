@@ -1,0 +1,294 @@
+{
+  "air_walker": [
+    "torso overlap candidate"
+  ],
+  "assist_elder_walk": [
+    "torso overlap candidate"
+  ],
+  "atm_take_cash": [
+    "torso overlap candidate"
+  ],
+  "badminton_swing": [
+    "joint discontinuity candidate"
+  ],
+  "basketball_dribble": [
+    "head overlap",
+    "joint discontinuity candidate",
+    "limb shortening",
+    "torso overlap candidate"
+  ],
+  "basketball_shoot": [
+    "torso overlap candidate"
+  ],
+  "breakfast_buy": [
+    "torso overlap candidate"
+  ],
+  "breakfast_sell": [
+    "torso overlap candidate"
+  ],
+  "browse_bookstall": [
+    "head overlap",
+    "joint discontinuity candidate",
+    "shin overlap candidate",
+    "torso overlap candidate"
+  ],
+  "cafe_sit_drink": [
+    "shin overlap candidate"
+  ],
+  "car_enter": [
+    "shin overlap candidate",
+    "torso overlap candidate"
+  ],
+  "car_exit": [
+    "shin overlap candidate",
+    "torso overlap candidate"
+  ],
+  "carry_shoulder": [
+    "torso overlap candidate"
+  ],
+  "cheer": [
+    "joint discontinuity candidate"
+  ],
+  "chess_move": [
+    "shin overlap candidate",
+    "torso overlap candidate"
+  ],
+  "cough": [
+    "torso overlap candidate"
+  ],
+  "cover_face": [
+    "torso overlap candidate"
+  ],
+  "distribute_flyer": [
+    "joint discontinuity candidate",
+    "torso overlap candidate"
+  ],
+  "dodge": [
+    "torso overlap candidate"
+  ],
+  "duck_cover": [
+    "joint discontinuity candidate",
+    "limb shortening"
+  ],
+  "eat_walk": [
+    "torso overlap candidate"
+  ],
+  "elder_assisted_walk": [
+    "torso overlap candidate"
+  ],
+  "exercise": [
+    "joint discontinuity candidate"
+  ],
+  "fall_back": [
+    "torso overlap candidate"
+  ],
+  "football_juggle": [
+    "torso overlap candidate"
+  ],
+  "fruit_choose": [
+    "torso overlap candidate"
+  ],
+  "give_item": [
+    "joint discontinuity candidate",
+    "torso overlap candidate"
+  ],
+  "hands_in_pockets": [
+    "torso overlap candidate"
+  ],
+  "hands_on_head": [
+    "head overlap"
+  ],
+  "hands_on_hips": [
+    "torso overlap candidate"
+  ],
+  "hang_laundry": [
+    "head overlap",
+    "limb shortening",
+    "torso overlap candidate"
+  ],
+  "hold_door": [
+    "torso overlap candidate"
+  ],
+  "hold_guitar": [
+    "torso overlap candidate"
+  ],
+  "hold_umbrella": [
+    "torso overlap candidate"
+  ],
+  "lean_railing": [
+    "torso overlap candidate"
+  ],
+  "lecture": [
+    "torso overlap candidate"
+  ],
+  "mop_ground": [
+    "torso overlap candidate"
+  ],
+  "parcel_terminal": [
+    "torso overlap candidate"
+  ],
+  "pat_dust": [
+    "torso overlap candidate"
+  ],
+  "phone_booth_call": [
+    "head overlap"
+  ],
+  "phone_call": [
+    "torso overlap candidate"
+  ],
+  "phone_urgent": [
+    "limb shortening",
+    "shin overlap candidate",
+    "torso overlap candidate"
+  ],
+  "photo_overhead": [
+    "head overlap"
+  ],
+  "post_letter": [
+    "torso overlap candidate"
+  ],
+  "post_notice": [
+    "torso overlap candidate"
+  ],
+  "pull_door": [
+    "torso overlap candidate"
+  ],
+  "pull_suitcase": [
+    "joint discontinuity candidate"
+  ],
+  "pullup_hold": [
+    "shin overlap candidate"
+  ],
+  "pullup_raise": [
+    "shin overlap candidate"
+  ],
+  "push_bicycle": [
+    "torso overlap candidate"
+  ],
+  "push_door": [
+    "shin overlap candidate"
+  ],
+  "receive_flyer": [
+    "joint discontinuity candidate",
+    "torso overlap candidate"
+  ],
+  "receive_item": [
+    "joint discontinuity candidate",
+    "torso overlap candidate"
+  ],
+  "rummage_bin": [
+    "head overlap",
+    "torso overlap candidate"
+  ],
+  "run_curve": [
+    "shin overlap candidate"
+  ],
+  "scratch_back": [
+    "torso overlap candidate"
+  ],
+  "selfie": [
+    "torso overlap candidate"
+  ],
+  "shadow_box": [
+    "torso overlap candidate"
+  ],
+  "sit_ground_dazed": [
+    "torso overlap candidate"
+  ],
+  "sit_sideways": [
+    "shin overlap candidate"
+  ],
+  "skip": [
+    "joint discontinuity candidate"
+  ],
+  "slap_table": [
+    "torso overlap candidate"
+  ],
+  "slide_seated": [
+    "joint discontinuity candidate",
+    "shin overlap candidate"
+  ],
+  "slouch_bench": [
+    "shin overlap candidate"
+  ],
+  "smoke": [
+    "torso overlap candidate"
+  ],
+  "smoke_walk": [
+    "torso overlap candidate"
+  ],
+  "sneeze": [
+    "torso overlap candidate"
+  ],
+  "spin": [
+    "shin overlap candidate"
+  ],
+  "stand_up_support_back": [
+    "torso overlap candidate"
+  ],
+  "startle": [
+    "joint discontinuity candidate"
+  ],
+  "stumble": [
+    "joint discontinuity candidate",
+    "limb shortening"
+  ],
+  "sweep_ground": [
+    "torso overlap candidate"
+  ],
+  "swing_seated": [
+    "shin overlap candidate",
+    "torso overlap candidate"
+  ],
+  "take_back_piece": [
+    "shin overlap candidate",
+    "torso overlap candidate"
+  ],
+  "talk_accuse": [
+    "joint discontinuity candidate"
+  ],
+  "talk_shy": [
+    "torso overlap candidate"
+  ],
+  "trip_fall": [
+    "torso overlap candidate"
+  ],
+  "vending_collect": [
+    "head overlap",
+    "joint discontinuity candidate"
+  ],
+  "vendor_call": [
+    "limb shortening"
+  ],
+  "vendor_tidy": [
+    "limb shortening"
+  ],
+  "walk_closed_umbrella": [
+    "joint discontinuity candidate",
+    "torso overlap candidate"
+  ],
+  "walk_elderly_short": [
+    "torso overlap candidate"
+  ],
+  "walk_hands_pockets": [
+    "torso overlap candidate"
+  ],
+  "walk_slow": [
+    "torso overlap candidate"
+  ],
+  "walk_stairs_down": [
+    "joint discontinuity candidate",
+    "shin overlap candidate"
+  ],
+  "whisper": [
+    "torso overlap candidate"
+  ],
+  "wave_overhead": [
+    "joint discontinuity candidate"
+  ],
+  "wave_overhead_v3": [
+    "head overlap",
+    "joint discontinuity candidate",
+    "limb shortening"
+  ]
+}

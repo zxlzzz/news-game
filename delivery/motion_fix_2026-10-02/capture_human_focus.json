@@ -1,0 +1,30 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\human_focus",
+  "samples": 12,
+  "columns": 6,
+  "cell": 384,
+  "views": [
+    45,
+    135
+  ],
+  "pitch": 15,
+  "entries": [
+    {
+      "id": "duck_cover",
+      "start": 1.4,
+      "duration": 0.4,
+      "follow_pose": true
+    },
+    {
+      "id": "elder_assisted_walk",
+      "start": 0.3,
+      "duration": 0.4,
+      "follow_pose": true
+    },
+    {
+      "id": "handstand",
+      "duration": 2.1,
+      "follow_pose": true
+    }
+  ]
+}

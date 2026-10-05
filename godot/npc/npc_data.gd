@@ -3,7 +3,7 @@
 ## defaulted, a missing or malformed file or field is an error.
 extends RefCounted
 
-## Copy of news-game sth/motion-study/skeleton-params.json (12 mapping parameters).
+## Copy of news-game sth/motion-study/skeleton-params.json (15 mapping parameters).
 const PARAMS_PATH := "res://npc/skeleton-params.json"
 ## Written by news-game scripts/export-npc-motion.py: index.json + one <clip>.json per npz clip.
 const MOTION_DIR := "res://npc/motion"
@@ -11,7 +11,7 @@ const MOTION_DIR := "res://npc/motion"
 const REST_CLIP := "stand_idle"
 const REST_FRAME := 0
 const PARAM_KEYS := ["headR", "neck", "torso", "clavSplit", "minSpread", "upperArm", "foreArm",
-	"thigh", "shin", "foot", "line", "torsoLine"]
+	"thigh", "shin", "foot", "line", "torsoLine", "palm", "headTouch", "headFar"]
 
 static func read_json(path: String, out: Dictionary) -> String:
 	if not FileAccess.file_exists(path):

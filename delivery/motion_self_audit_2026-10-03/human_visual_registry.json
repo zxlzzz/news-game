@@ -1,0 +1,3924 @@
+{
+  "scope": "All 241 human entries individually screened across their full duration in two-view body-only filmstrips (approximately 6 FPS plus anomaly times). Not continuous video acceptance; no asset accepted.",
+  "entries": [
+    {
+      "id": "adjust_clothes",
+      "body_filmstrip_screened": true,
+      "observation": "Small collar then lower-arm movement; adjusting cue weak.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "adjust_clothes",
+          "base": "adjust_clothes",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "air_walker",
+      "body_filmstrip_screened": true,
+      "observation": "Final body is largely a fixed raised-arm posture with mechanical sagittal foot cycling; source is replaced by stand_idle. This is not independent generated motion.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "air_walker",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "assist_elder_walk",
+      "body_filmstrip_screened": true,
+      "observation": "Both participants remain close while stepping; body-only strip does not show grasp quality. No acceptance from this view.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "assist_elder_walk",
+          "base": "assist_elder_walk",
+          "manual": false
+        },
+        {
+          "id": "elder_assisted_walk",
+          "base": "elder_assisted_walk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "atm_keypad",
+      "body_filmstrip_screened": true,
+      "observation": "One reach is held for most of the episode, with little visible pressing motion. Contact and keypad placement need props-visible review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "atm_keypad",
+          "base": "atm_keypad",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "atm_take_cash",
+      "body_filmstrip_screened": true,
+      "observation": "Single forward reach and withdrawal are visible. Props are hidden, so hand/cash contact remains unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "atm_take_cash",
+          "base": "atm_take_cash",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "back_away",
+      "body_filmstrip_screened": true,
+      "observation": "Reframed strip shows a crouched backward-step episode; no additional gross failure confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "back_away",
+          "base": "back_away",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "badminton_swing",
+      "body_filmstrip_screened": true,
+      "observation": "Raised bent arm returns quickly around 1.5–1.7 seconds, with little clear extended striking motion. Needs source/final and racket contact review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "badminton_swing",
+          "base": "badminton_swing",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "basketball_dribble",
+      "body_filmstrip_screened": true,
+      "observation": "Repeated arm strokes remain in one clip; the bent arm reaches head level and has a confirmed head-overlap flag.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "head overlap",
+        "joint discontinuity candidate",
+        "limb shortening",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "basketball_dribble",
+          "base": "basketball_dribble",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "basketball_shoot",
+      "body_filmstrip_screened": true,
+      "observation": "Long bent-arm hold near head; no clear full shooting arm extension. Body is authored over stand_idle, so raw source is not the displayed action.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "basketball_shoot",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "beckon",
+      "body_filmstrip_screened": true,
+      "observation": "One extend/curl/retract gesture, finger cue unavailable; no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "beckon",
+          "base": "beckon",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "bike_scan_unlock",
+      "body_filmstrip_screened": true,
+      "observation": "Only a forward reach and torso bend are visible; no clear scan-versus-unlock distinction. Prop placement is needed for assessment.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "bike_scan_unlock",
+          "base": "bike_scan_unlock",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "block_way",
+      "body_filmstrip_screened": true,
+      "observation": "Wide T-pose block held; no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "block_way",
+          "base": "block_way",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "bow",
+      "body_filmstrip_screened": true,
+      "observation": "One forward bow and recover; no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "bow",
+          "base": "bow",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "breakfast_buy",
+      "body_filmstrip_screened": true,
+      "observation": "A six-second two-person scripted transaction includes several reaches/exchanges; needs separation of reusable action units from full demonstration logic.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "breakfast_sell",
+          "base": "breakfast_sell",
+          "manual": false
+        },
+        {
+          "id": "breakfast_buy",
+          "base": "breakfast_buy",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "breakfast_sell",
+      "body_filmstrip_screened": true,
+      "observation": "Same complete transaction is staged from the seller entry. Multiple exchange phases are bundled together.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "breakfast_sell",
+          "base": "breakfast_sell",
+          "manual": false
+        },
+        {
+          "id": "breakfast_buy",
+          "base": "breakfast_buy",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "browse_bookstall",
+      "body_filmstrip_screened": true,
+      "observation": "Hand moves from front reach to face/chest, then back; elbow visibly changes branch near 3.55 seconds. Full metrics confirm final correction creates the jump.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "head overlap",
+        "joint discontinuity candidate",
+        "shin overlap candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "browse_bookstall",
+          "base": "browse_bookstall",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "brush_clothes",
+      "body_filmstrip_screened": true,
+      "observation": "Small self-pat; intentional contact needs contextual interpretation.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "brush_clothes",
+          "base": "brush_clothes",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "buy_newspaper",
+      "body_filmstrip_screened": true,
+      "observation": "Arm extends nearly straight and remains extended at the end; item/handoff alignment and supported endpoint remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "buy_newspaper",
+          "base": "buy_newspaper",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "cafe_sit_drink",
+      "body_filmstrip_screened": true,
+      "observation": "Starts seated with hands forward, raises one bent arm toward neck, and lowers it. Props-visible review needed for cup/mouth relationship.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "cafe_sit_drink",
+          "base": "cafe_sit_drink",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "car_enter",
+      "body_filmstrip_screened": true,
+      "observation": "Body is synthesized over stand_idle; leg splay and rigid upright torso do not establish a believable entry through the door. Whole six-second car sequence is scripted.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "car_enter",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "car_exit",
+      "body_filmstrip_screened": true,
+      "observation": "Reverse scripted seat-to-standing sequence over stand_idle; needs interaction unit and doorway/body-clearance review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "car_exit",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "carry_bag",
+      "body_filmstrip_screened": true,
+      "observation": "Arm lowers from forward bent hold to near the side over the episode. Grip/body relationship requires the bag-visible capture; not a stable carrying hold throughout.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "carry_bag",
+          "base": "carry_bag",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "carry_bags",
+      "body_filmstrip_screened": true,
+      "observation": "Standing two-bag hold with very small body motion. Body-only view shows no gross failure, but grips and support remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "carry_bags",
+          "base": "carry_bags",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "carry_box",
+      "body_filmstrip_screened": true,
+      "observation": "Standing two-arm forward hold. No large failure visible in the body-only view; box grips and endpoint need review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "carry_box",
+          "base": "carry_box",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "carry_bucket",
+      "body_filmstrip_screened": true,
+      "observation": "One walking stride with arms close to the body and rearward torso lean. Bucket contact is not visible in this diagnostic.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "carry_bucket",
+          "base": "carry_bucket",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "carry_shoulder",
+      "body_filmstrip_screened": true,
+      "observation": "Standing bent-arm shoulder-carry hold; no acceptance without the load-visible view.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "carry_shoulder",
+          "base": "carry_shoulder",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "carry_shoulder_bag",
+      "body_filmstrip_screened": true,
+      "observation": "One walking stride; hand holds away from the shoulder in the front view. Strap/grip alignment needs props-visible review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "carry_shoulder_bag",
+          "base": "carry_shoulder_bag",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "check_watch",
+      "body_filmstrip_screened": true,
+      "observation": "Wrist at chest but head remains almost upright; weak glance cue.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "check_watch",
+          "base": "check_watch",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "cheer",
+      "body_filmstrip_screened": true,
+      "observation": "Multiple body/arm pumps late in clip; single-unit requirement not established.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "cheer",
+          "base": "cheer",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "chess_move",
+      "body_filmstrip_screened": true,
+      "observation": "Seated reach is visible, then held and withdrawn; finger/piece action and board contact are not visible.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "chess_move",
+          "base": "chess_move",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "chess_watch",
+      "body_filmstrip_screened": true,
+      "observation": "Standing lean-in-and-back episode; body-only silhouette is plausible, but no acceptance of board arrangement.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "chess_watch",
+          "base": "chess_watch",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "choose_item",
+      "body_filmstrip_screened": true,
+      "observation": "Arm remains down with a small forward swing; selecting an object is scarcely visible in the body-only strip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "choose_item",
+          "base": "choose_item",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "cough",
+      "body_filmstrip_screened": true,
+      "observation": "Hand near chin/neck with torso pulse; mouth coverage weak in front view.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "cough",
+          "base": "cough",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "cover_face",
+      "body_filmstrip_screened": true,
+      "observation": "Arms horizontal at neck/under chin through first 1.5 s then lower; face remains visibly uncovered.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "cover_face",
+          "base": "cover_face",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "crane_neck",
+      "body_filmstrip_screened": true,
+      "observation": "Small forward head displacement, weak front-view readability.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "crane_neck",
+          "base": "crane_neck",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "cross_arms",
+      "body_filmstrip_screened": true,
+      "observation": "Arms make horizontal collar-height bar; weak folded-arm readability.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "cross_arms",
+          "base": "cross_arms",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "crouch_check",
+      "body_filmstrip_screened": true,
+      "observation": "Single standing-to-deep-crouch episode ends highly folded, with arms crowded near the knees. Needs support and endpoint review; no acceptance from static endpoint equality.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "crouch_check",
+          "base": "crouch_check",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "crouch_check_hold",
+      "body_filmstrip_screened": true,
+      "observation": "Deep crouch is held with small motion; front silhouette is crowded. Pose readability and limb/contact interpretation remain unresolved.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "crouch_check_hold",
+          "base": "crouch_check_hold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "distribute_flyer",
+      "body_filmstrip_screened": true,
+      "observation": "Two-person exchange contains a recipient elbow branch change during the held contact near 2.55 seconds; contact metrics flag this participant, not only the main actor.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "distribute_flyer",
+          "base": "distribute_flyer",
+          "manual": false
+        },
+        {
+          "id": "receive_flyer",
+          "base": "receive_flyer",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "dodge",
+      "body_filmstrip_screened": true,
+      "observation": "One lean/duck and recovery from a guard pose; no gross body failure visible in this strip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "dodge",
+          "base": "dodge",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "drink",
+      "body_filmstrip_screened": true,
+      "observation": "One raise, hold and partial withdrawal. Palm/prop orientation is essential to judge mouth contact; current body hold is close to neck.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "drink",
+          "base": "drink",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "duck_cover",
+      "body_filmstrip_screened": true,
+      "observation": "Crouches with hands around head; mapped upper arm flips about 36 degrees in one 60 Hz interval while source changes only about 0.4 degrees.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate",
+        "limb shortening"
+      ],
+      "displayed_people": [
+        {
+          "id": "duck_cover",
+          "base": "duck_cover",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "duck_cover_hold",
+      "body_filmstrip_screened": true,
+      "observation": "Crouched arms are held behind/around the head, with a substantial gap in front view. Source versus target coverage remains unclear.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "duck_cover_hold",
+          "base": "duck_cover_hold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "eat_snack",
+      "body_filmstrip_screened": true,
+      "observation": "Hand chest/neck height in profile; food-to-mouth contact not verified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "eat_snack",
+          "base": "eat_snack",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "eat_walk",
+      "body_filmstrip_screened": true,
+      "observation": "One walking stride with a fixed raised hand near the neck. Bite action and mouth/food relationship cannot be accepted without the prop.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "eat_walk",
+          "base": "eat_walk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "elder_assisted_walk",
+      "body_filmstrip_screened": true,
+      "observation": "Same two-person assisted stride; close participant overlap makes grasp and arm contact unclear in the front view.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "assist_elder_walk",
+          "base": "assist_elder_walk",
+          "manual": false
+        },
+        {
+          "id": "elder_assisted_walk",
+          "base": "elder_assisted_walk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "exercise",
+      "body_filmstrip_screened": true,
+      "observation": "Trimmed cyclic jumping-jack period begins/ends with arms raised and body off the ground. Not a grounded independent rest endpoint.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "exercise",
+          "base": "exercise",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "fall_back",
+      "body_filmstrip_screened": true,
+      "observation": "One backward fall into sitting; forward bend/butt settle weak fall acting. Source uses dense authored full-body constraints, contrary to sparse-generation requirements.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "fall_back",
+          "base": "fall_back",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "fan_self",
+      "body_filmstrip_screened": true,
+      "observation": "Tiny oscillations near neck over five seconds; weak fanning cue.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "fan_self",
+          "base": "fan_self",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "film_phone",
+      "body_filmstrip_screened": true,
+      "observation": "Bent arms remain together at chest height for almost the entire five seconds. Phone orientation/recording direction requires props-visible review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "film_phone",
+          "base": "film_phone",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "football_juggle",
+      "body_filmstrip_screened": true,
+      "observation": "Fixed torso and horizontal arms over stand_idle, with a mechanically authored leg lift. The independent NPZ is not the displayed action.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "football_juggle",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "fountain_drink",
+      "body_filmstrip_screened": true,
+      "observation": "Both arms converge at neck while leaning forward; water source/mouth alignment is not verifiable with props hidden.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "fountain_drink",
+          "base": "fountain_drink",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "fruit_choose",
+      "body_filmstrip_screened": true,
+      "observation": "Long straight reach then withdrawal; little visible choosing/inspection distinction. Prop contact remains unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "fruit_choose",
+          "base": "fruit_choose",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "fruit_weigh",
+      "body_filmstrip_screened": true,
+      "observation": "One reach with second arm joining; source gesture alone does not show weighing, requiring item/scale contact review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "fruit_weigh",
+          "base": "fruit_weigh",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "give_item",
+      "body_filmstrip_screened": true,
+      "observation": "Recipient elbow abruptly changes bend during the held exchange and at withdrawal near 3.60 seconds. Metrics distinguish final correction from smoother source.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "give_item",
+          "base": "give_item",
+          "manual": false
+        },
+        {
+          "id": "receive_item",
+          "base": "receive_item",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "grab_snatch",
+      "body_filmstrip_screened": true,
+      "observation": "One forward reach held for about a second and then withdrawal; reads as reaching rather than a sharp snatch. No gross penetration confirmed by this view.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "grab_snatch",
+          "base": "grab_snatch",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "guard",
+      "body_filmstrip_screened": true,
+      "observation": "Single guard gesture, intentional close arms; no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "guard",
+          "base": "guard",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hail_taxi",
+      "body_filmstrip_screened": true,
+      "observation": "Hand remains near neck/chest rather than high taxi wave; source wrist already below head.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "hail_taxi",
+          "base": "hail_taxi",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hands_behind_back",
+      "body_filmstrip_screened": true,
+      "observation": "Back-held hands read reasonably from side/front silhouette; no gross failure visible, not accepted without continuous/detail checks.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "hands_behind_back",
+          "base": "hands_behind_back",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hands_in_pockets",
+      "body_filmstrip_screened": true,
+      "observation": "Standing pocket pose with small torso lean; no gross issue confirmed from this strip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "hands_in_pockets",
+          "base": "hands_in_pockets",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hands_on_head",
+      "body_filmstrip_screened": true,
+      "observation": "Forearms cross into the head during raise/hold; final head overlap is confirmed by complete metrics. Elbow shape changes abruptly during lowering.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "head overlap"
+      ],
+      "displayed_people": [
+        {
+          "id": "hands_on_head",
+          "base": "hands_on_head",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hands_on_head_hold",
+      "body_filmstrip_screened": true,
+      "observation": "Held arms visibly change shape around 1.17–1.23 seconds despite nominal hold; mapping/contact continuity needs correction.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "hands_on_head_hold",
+          "base": "hands_on_head_hold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hands_on_hips",
+      "body_filmstrip_screened": true,
+      "observation": "Hip-held stance with slight lean; no gross failure visible. Crossed leg stance needs intentional-pose interpretation rather than automatic rejection.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "hands_on_hips",
+          "base": "hands_on_hips",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hands_up",
+      "body_filmstrip_screened": true,
+      "observation": "Reasonable surrender pose with bent arms; no gross defect confirmed. Hand height alone is not failure.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "hands_up",
+          "base": "hands_up",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hands_up_hold",
+      "body_filmstrip_screened": true,
+      "observation": "Raised bent arms read as surrender in front view. Previous generic claim that hands-up necessarily fails was too broad.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "hands_up_hold",
+          "base": "hands_up_hold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "handshake_offer",
+      "body_filmstrip_screened": true,
+      "observation": "Both people approach to fixed contact, hold handshake and separate arms. Fixed participant placement/timing is not independently validated reusable interaction.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "handshake_offer",
+          "base": "handshake_offer",
+          "manual": false
+        },
+        {
+          "id": "handshake_reply",
+          "base": "handshake_reply",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "handshake_reply",
+      "body_filmstrip_screened": true,
+      "observation": "Same fixed paired handshake demonstration as offer. No independent contact adaptation is established.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "handshake_offer",
+          "base": "handshake_offer",
+          "manual": false
+        },
+        {
+          "id": "handshake_reply",
+          "base": "handshake_reply",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "handstand",
+      "body_filmstrip_screened": true,
+      "observation": "Plausible held inversion; no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "handstand",
+          "base": "handstand",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hang_laundry",
+      "body_filmstrip_screened": true,
+      "observation": "Arms rise, hold, and lower with visible head crowding and abrupt bend changes. Complete metrics confirm head overlap and shortened limbs.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "head overlap",
+        "limb shortening",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "hang_laundry",
+          "base": "hang_laundry",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hesitate_reach",
+      "body_filmstrip_screened": true,
+      "observation": "Only a small low forward arm lift is visible; hesitation intent is weak in both views.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "hesitate_reach",
+          "base": "hesitate_reach",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hold_door",
+      "body_filmstrip_screened": true,
+      "observation": "Arm reach/hold/withdrawal is authored over stand_idle; standalone source does not contain the shown action.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "hold_door",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hold_guitar",
+      "body_filmstrip_screened": true,
+      "observation": "Nearly static asymmetric arm hold. Guitar grip and possible strumming cannot be evaluated with the object hidden.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "hold_guitar",
+          "base": "hold_guitar",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hold_umbrella",
+      "body_filmstrip_screened": true,
+      "observation": "Bent front hand hold with tiny movement; umbrella shaft/grip and clearance require object-visible review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "hold_umbrella",
+          "base": "hold_umbrella",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "hop",
+      "body_filmstrip_screened": true,
+      "observation": "Current clip is one cyclic hop period but begins/ends airborne; static endpoint loop is not a grounded rest.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "hop",
+          "base": "hop",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "inspect_item",
+      "body_filmstrip_screened": true,
+      "observation": "Low arm hold changes little; no clear turning/close inspection visible. Object alignment and intent remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "inspect_item",
+          "base": "inspect_item",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "interrupt",
+      "body_filmstrip_screened": true,
+      "observation": "Long idle opening followed by a raised bent arm, held to the end. Single gesture is present but very late and weak.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "interrupt",
+          "base": "interrupt",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "interview_answer",
+      "body_filmstrip_screened": true,
+      "observation": "Fixed two-person microphone staging with both arms moving toward the interviewer. Grip/partner contact needs complete props-visible review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "interview_question",
+          "base": "interview_question",
+          "manual": false
+        },
+        {
+          "id": "interview_answer",
+          "base": "interview_answer",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "interview_describe",
+      "body_filmstrip_screened": true,
+      "observation": "Fixed microphone staging with one arm extending across the partner-facing space; gestures overlap the microphone reach.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "interview_listen",
+          "base": "interview_listen",
+          "manual": false
+        },
+        {
+          "id": "interview_describe",
+          "base": "interview_describe",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "interview_followup",
+      "body_filmstrip_screened": true,
+      "observation": "Fixed microphone staging; interviewer arms stretch together and remain held. Different target positions are not validated.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "interview_followup",
+          "base": "interview_followup",
+          "manual": false
+        },
+        {
+          "id": "interview_point",
+          "base": "interview_point",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "interview_listen",
+      "body_filmstrip_screened": true,
+      "observation": "Fixed microphone staging with small listening/arm motions. No gross failure confirmed in body-only strip; no acceptance.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "interview_listen",
+          "base": "interview_listen",
+          "manual": false
+        },
+        {
+          "id": "interview_describe",
+          "base": "interview_describe",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "interview_point",
+      "body_filmstrip_screened": true,
+      "observation": "Paired microphone staging with a long held point extending toward the partner; target choice and object/arm interference remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "interview_followup",
+          "base": "interview_followup",
+          "manual": false
+        },
+        {
+          "id": "interview_point",
+          "base": "interview_point",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "interview_question",
+      "body_filmstrip_screened": true,
+      "observation": "Paired microphone staging; interviewer changes arm reach while the recipient raises both arms. Fixed relative positions are part of the demonstration.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "interview_question",
+          "base": "interview_question",
+          "manual": false
+        },
+        {
+          "id": "interview_answer",
+          "base": "interview_answer",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "jog",
+      "body_filmstrip_screened": true,
+      "observation": "One stride is visible and boundaries match; no gross failure confirmed in the strip, not full acceptance.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "jog",
+          "base": "jog",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "kneel_hold",
+      "body_filmstrip_screened": true,
+      "observation": "Stable upright kneeling silhouette with small motion; support-contact interpretation requires floor detail.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "kneel_hold",
+          "base": "kneel_hold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "laugh",
+      "body_filmstrip_screened": true,
+      "observation": "Torso lean gives a broad laugh cue; face detail absent, no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "laugh",
+          "base": "laugh",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "lean_railing",
+      "body_filmstrip_screened": true,
+      "observation": "Forward bent-arm hold; railing contact and weight support require object-visible review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "lean_railing",
+          "base": "lean_railing",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "lean_sign",
+      "body_filmstrip_screened": true,
+      "observation": "Tiny rearward lean rather than a clear supported lean. Sign/body placement remains unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "lean_sign",
+          "base": "lean_sign",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "lean_wall",
+      "body_filmstrip_screened": true,
+      "observation": "Clearly rearward supported lean in side view; actual wall contact is hidden and remains unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "lean_wall",
+          "base": "lean_wall",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "lecture",
+      "body_filmstrip_screened": true,
+      "observation": "One forward bent-arm gesture held and lowered; body-only silhouette is generic explaining rather than distinct lecture.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "lecture",
+          "base": "lecture",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "leg_stretch",
+      "body_filmstrip_screened": true,
+      "observation": "Fixed raised/forward bent leg hold, nearly no visible torso motion. Intended support/grip must be checked against metadata and props.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "leg_stretch",
+          "base": "leg_stretch",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "lie_ground_hold",
+      "body_filmstrip_screened": true,
+      "observation": "Stable lying pose; no gross body change visible. Physical support and head-floor clearance require floor detail.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "lie_ground_hold",
+          "base": "lie_ground_hold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "look_around_nervous",
+      "body_filmstrip_screened": true,
+      "observation": "Small head changes scarcely visible in featureless rendered head.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "look_around_nervous",
+          "base": "look_around_nervous",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "look_away",
+      "body_filmstrip_screened": true,
+      "observation": "Small turn cue scarcely visible.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "look_away",
+          "base": "look_away",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "look_down",
+      "body_filmstrip_screened": true,
+      "observation": "Downward head/torso cue visible; no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "look_down",
+          "base": "look_down",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "look_up",
+      "body_filmstrip_screened": true,
+      "observation": "Very small upward head change, weak readability.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "look_up",
+          "base": "look_up",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "magic_gesture",
+      "body_filmstrip_screened": true,
+      "observation": "Small bent-arm motions at chest level; intended magic gesture is not clear in the rendered style.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "magic_gesture",
+          "base": "magic_gesture",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "march_in_place",
+      "body_filmstrip_screened": true,
+      "observation": "Three alternating high-knee pairs appear in the 1.8-second current episode. Exact-period trimming did not reduce this to one semantic gait cycle.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "march_in_place",
+          "base": "march_in_place",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "mop_ground",
+      "body_filmstrip_screened": true,
+      "observation": "Hands mostly stay at waist; body-only strip contains little clear push/pull mopping motion. Object trajectory may be doing most of the visible work.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "mop_ground",
+          "base": "mop_ground",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "pace",
+      "body_filmstrip_screened": true,
+      "observation": "Ten-second walking/turning/back-and-forth sequence bundles many gait steps and turns in one file; semantic unit boundaries remain unresolved.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "pace",
+          "base": "pace",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "parcel_terminal",
+      "body_filmstrip_screened": true,
+      "observation": "Bent arm briefly rises then straightens forward and lowers; terminal/object contacts remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "parcel_terminal",
+          "base": "parcel_terminal",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "pat_dust",
+      "body_filmstrip_screened": true,
+      "observation": "Arm chest motions and torso bend form one episode; some apparent arm/body overlap is intentional self-contact, not automatically collision.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "pat_dust",
+          "base": "pat_dust",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "pay",
+      "body_filmstrip_screened": true,
+      "observation": "Arm stays low with minimal extension; paying gesture is poorly readable without the banknote/target.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "pay",
+          "base": "pay",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "peek_side",
+      "body_filmstrip_screened": true,
+      "observation": "Gradual lateral head/torso lean held to the end. No gross failure confirmed; final pose differs from entry.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "peek_side",
+          "base": "peek_side",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "phone_booth_call",
+      "body_filmstrip_screened": true,
+      "observation": "Raised forearm intersects the head; full metrics confirm about 36 mm overlap. Booth-hidden view exposes the problem.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "head overlap"
+      ],
+      "displayed_people": [
+        {
+          "id": "phone_booth_call",
+          "base": "phone_booth_call",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "phone_call",
+      "body_filmstrip_screened": true,
+      "observation": "Side-raised hand stays separated beside the head in front view; telephone/mouth/ear placement requires prop-visible review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "phone_call",
+          "base": "phone_call",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "phone_urgent",
+      "body_filmstrip_screened": true,
+      "observation": "Paces and turns repeatedly over seven seconds; source jump/shortening exists before contact correction.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "limb shortening",
+        "shin overlap candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "phone_urgent",
+          "base": "phone_urgent",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "phone_walk",
+      "body_filmstrip_screened": true,
+      "observation": "Current 2.17-second clip still contains multiple alternating step pairs; holds phone hand near chest throughout. Exact repeat detection missed semantic repeated gait.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "phone_walk",
+          "base": "phone_walk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "photo_overhead",
+      "body_filmstrip_screened": true,
+      "observation": "Arms crowd and overlap the head in front view; complete metrics flag head penetration. Camera direction and grip also need object-visible review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "head overlap"
+      ],
+      "displayed_people": [
+        {
+          "id": "photo_overhead",
+          "base": "photo_overhead",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "pick_up",
+      "body_filmstrip_screened": true,
+      "observation": "One crouch/reach and rise; deep fold crowds arms/knees, with no object visible. No acceptance of pickup contact from this strip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "pick_up",
+          "base": "pick_up",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "point",
+      "body_filmstrip_screened": true,
+      "observation": "One forward point, hold and withdrawal; no gross body failure visible in the full-duration strip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "point",
+          "base": "point",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "point_shout",
+      "body_filmstrip_screened": true,
+      "observation": "One held pointing gesture, no repeated jab confirmed despite original prompt wording.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "point_shout",
+          "base": "point_shout",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "post_letter",
+      "body_filmstrip_screened": true,
+      "observation": "Arm holds at low forward position with only a small wrist/forearm change; insertion intent is weak without mailbox/item.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "post_letter",
+          "base": "post_letter",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "post_notice",
+      "body_filmstrip_screened": true,
+      "observation": "Both bent arms reach forward and stay at chest/neck height; notice/wall contact remains unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "post_notice",
+          "base": "post_notice",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "present",
+      "body_filmstrip_screened": true,
+      "observation": "One wide lateral arm extension and withdrawal; silhouette reads as presenting, no gross failure confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "present",
+          "base": "present",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "press_button",
+      "body_filmstrip_screened": true,
+      "observation": "One slow low forward reach, held then lowered. No distinct press is visible in the body-only strip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "press_button",
+          "base": "press_button",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "pull_door",
+      "body_filmstrip_screened": true,
+      "observation": "Door-pull reach/withdrawal is authored over stand_idle, with no clear weight shift; source clip is replaced.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "pull_door",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "pull_suitcase",
+      "body_filmstrip_screened": true,
+      "observation": "Confirmed contact-induced elbow branch flip at 0.3167–0.3333 seconds (276 mm). Multiple steps remain in the 1.5-second episode.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "pull_suitcase",
+          "base": "pull_suitcase",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "pullup_hold",
+      "body_filmstrip_screened": true,
+      "observation": "Reframed strip shows hanging bent-arm hold with leg motion. Bar grips/support remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "pullup_hold",
+          "base": "pullup_hold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "pullup_raise",
+      "body_filmstrip_screened": true,
+      "observation": "Reframed strip shows one rise and lower, with very rigid torso and asymmetrical arm bends. Bar grips/support remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "pullup_raise",
+          "base": "pullup_raise",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "push_bicycle",
+      "body_filmstrip_screened": true,
+      "observation": "Forward two-hand walking hold; elbow and bicycle handle fit remain unverified with props hidden.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "push_bicycle",
+          "base": "push_bicycle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "push_cart",
+      "body_filmstrip_screened": true,
+      "observation": "Forward two-hand walking hold; cart fit and exact one-cycle semantic boundary need review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "push_cart",
+          "base": "push_cart",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "push_door",
+      "body_filmstrip_screened": true,
+      "observation": "Body and reach synthesized over stand_idle with a slight step/lean. Source is replaced; door/body clearance remains unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "push_door",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "push_stroller",
+      "body_filmstrip_screened": true,
+      "observation": "Forward two-hand walking hold; handle alignment and gait unit need complete contact review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "push_stroller",
+          "base": "push_stroller",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "reach_after",
+      "body_filmstrip_screened": true,
+      "observation": "One leaning reach and recovery; body drifts toward edge of the diagnostic view. No gross failure confirmed, spatial support unresolved.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "reach_after",
+          "base": "reach_after",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "read_book",
+      "body_filmstrip_screened": true,
+      "observation": "Nearly fixed forward arms and upright head. Reading intent is weak without book orientation; hand/book contacts remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "read_book",
+          "base": "read_book",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "read_newspaper",
+      "body_filmstrip_screened": true,
+      "observation": "Fixed two-hand forward hold; no clear head gaze shift. Newspaper plane and grips remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "read_newspaper",
+          "base": "read_newspaper",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "read_notice",
+      "body_filmstrip_screened": true,
+      "observation": "Slow posture/gaze change then slight bend at the end; looking direction is barely expressed by the round head.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "read_notice",
+          "base": "read_notice",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "receive_flyer",
+      "body_filmstrip_screened": true,
+      "observation": "Same fixed two-person exchange; recipient elbow changes branch during held contact near 2.55 seconds.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "distribute_flyer",
+          "base": "distribute_flyer",
+          "manual": false
+        },
+        {
+          "id": "receive_flyer",
+          "base": "receive_flyer",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "receive_item",
+      "body_filmstrip_screened": true,
+      "observation": "Same fixed exchange; contact-induced recipient elbow jump near 3.60 seconds is confirmed in complete metrics.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "give_item",
+          "base": "give_item",
+          "manual": false
+        },
+        {
+          "id": "receive_item",
+          "base": "receive_item",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "recoil",
+      "body_filmstrip_screened": true,
+      "observation": "Small backward step/lean occurs after a long guard hold; one reaction is visible but delayed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "recoil",
+          "base": "recoil",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "rub_eye",
+      "body_filmstrip_screened": true,
+      "observation": "Hand near face in side view; front occlusion at neck, exact eye contact unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "rub_eye",
+          "base": "rub_eye",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "rub_hands",
+      "body_filmstrip_screened": true,
+      "observation": "Hands meet near chest with very small rubbing motion. Hand detail loss makes intent weak; intentional self-contact is not collision by itself.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "rub_hands",
+          "base": "rub_hands",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "rummage_bin",
+      "body_filmstrip_screened": true,
+      "observation": "Deep torso fold brings forearms into the head; complete metrics confirm head overlap. Final bend has highly crowded front silhouette.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "head overlap",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "rummage_bin",
+          "base": "rummage_bin",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "run",
+      "body_filmstrip_screened": true,
+      "observation": "Current 1.37-second episode contains multiple foot-phase pairs; gait phase analysis flags roughly two cycles despite exact-period trim.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "run",
+          "base": "run",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "run_curve",
+      "body_filmstrip_screened": true,
+      "observation": "Reframed full-duration views show many gait cycles and curved heading, with intermittent crowding of forearms/chest. Root path removed by camera follow; no path acceptance.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "run_curve",
+          "base": "run_curve",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "scratch_back",
+      "body_filmstrip_screened": true,
+      "observation": "Arm moves behind torso and returns, but rubbing motion is small. Back contact is intentional; no gross failure confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "scratch_back",
+          "base": "scratch_back",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "scratch_head",
+      "body_filmstrip_screened": true,
+      "observation": "Hand beside head separated in front and hidden behind head in profile; contact unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "scratch_head",
+          "base": "scratch_head",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "seesaw_partner",
+      "body_filmstrip_screened": true,
+      "observation": "Repeated vertical seat oscillation with an almost rigid body over stand_idle; full demonstration is procedural and contains multiple oscillations.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "seesaw_seated",
+          "base": "stand_idle",
+          "manual": false
+        },
+        {
+          "id": "seesaw_partner",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "seesaw_seated",
+      "body_filmstrip_screened": true,
+      "observation": "Same repeated seat oscillation with fixed paired placement; independently generated motion is replaced by stand_idle.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "seesaw_seated",
+          "base": "stand_idle",
+          "manual": false
+        },
+        {
+          "id": "seesaw_partner",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "selfie",
+      "body_filmstrip_screened": true,
+      "observation": "Arm starts at chest and extends upward after about 1.3 seconds, then stays out at the end. Phone facing direction/hand contact are unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "selfie",
+          "base": "selfie",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "shadow_box",
+      "body_filmstrip_screened": true,
+      "observation": "Several alternating punches are bundled in one five-second episode; this violates single-action-unit intent if supplied as one punch.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "shadow_box",
+          "base": "shadow_box",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "shake_foot",
+      "body_filmstrip_screened": true,
+      "observation": "One raised leg is held, then replaced by the other leg near 1.7 seconds; different-side variations are bundled in a single clip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "shake_foot",
+          "base": "shake_foot",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "shout",
+      "body_filmstrip_screened": true,
+      "observation": "Both hands at neck in front view, profile lean; mouth cupping weak.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "shout",
+          "base": "shout",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "shrug",
+      "body_filmstrip_screened": true,
+      "observation": "Arms spread slightly and lower once; shoulder rise is barely readable in the accepted simple figure style.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "shrug",
+          "base": "shrug",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sigh",
+      "body_filmstrip_screened": true,
+      "observation": "Only tiny torso/head changes; sigh is barely distinguishable from idle in the rendered figure.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "sigh",
+          "base": "sigh",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sit_bench",
+      "body_filmstrip_screened": true,
+      "observation": "Stable seated hold with small changes; bench support and feet placement remain unverified with props hidden.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "sit_bench",
+          "base": "sit_bench",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sit_ground",
+      "body_filmstrip_screened": true,
+      "observation": "One stand-to-ground-sit sequence. Deep squat phase is crowded, then body settles seated; physical support needs detail review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "sit_ground",
+          "base": "sit_ground",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sit_ground_dazed",
+      "body_filmstrip_screened": true,
+      "observation": "Seated body progressively folds close to knees, creating a cramped silhouette; source acting/readability needs review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "sit_ground_dazed",
+          "base": "sit_ground_dazed",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sit_ground_dazed_hold",
+      "body_filmstrip_screened": true,
+      "observation": "Highly folded seated hold, barely readable in front view. No automatic acceptance from loop equality.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "sit_ground_dazed_hold",
+          "base": "sit_ground_dazed_hold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sit_knees_up",
+      "body_filmstrip_screened": true,
+      "observation": "Stable bent-knee sitting pose; front silhouette is crowded but not by itself a confirmed collision.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "sit_knees_up",
+          "base": "sit_knees_up",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sit_sideways",
+      "body_filmstrip_screened": true,
+      "observation": "Seated bent torso/head hold; bench support and hand placement are hidden.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "sit_sideways",
+          "base": "sit_sideways",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sit_step",
+      "body_filmstrip_screened": true,
+      "observation": "Stable seated pose; step height, support and foot alignment are hidden.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "sit_step",
+          "base": "sit_step",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "skip",
+      "body_filmstrip_screened": true,
+      "observation": "Several repeated skip steps remain in one episode; different leg phases are bundled beyond one clear single unit.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "skip",
+          "base": "skip",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "slap_table",
+      "body_filmstrip_screened": true,
+      "observation": "Forearm held at chest then lowered with little visible slap acceleration. Table contact and intended strike timing need prop-visible review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "slap_table",
+          "base": "slap_table",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "slide_seated",
+      "body_filmstrip_screened": true,
+      "observation": "Reframed views show rigid seated hold then rise; final-contact elbow branch jump at 2.983 s is confirmed. Slide support/path remains unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate",
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "slide_seated",
+          "base": "slide_seated",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "slouch_bench",
+      "body_filmstrip_screened": true,
+      "observation": "Stable rearward-leaning seated hold; bench support and feet placement remain unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "slouch_bench",
+          "base": "slouch_bench",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "smoke",
+      "body_filmstrip_screened": true,
+      "observation": "Hand starts near lower face/neck, withdraws, then rises partially again. One clip mixes withdrawal and another approach; cigarette/mouth alignment is hidden.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "smoke",
+          "base": "smoke",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "smoke_walk",
+      "body_filmstrip_screened": true,
+      "observation": "Several steps accompany one arm-raise/withdrawal episode. Preserve gesture completeness when deciding its unit; no automatic gait-only trim.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "smoke_walk",
+          "base": "smoke_walk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sneeze",
+      "body_filmstrip_screened": true,
+      "observation": "Hand near chin/neck with body pulse; mouth coverage weak.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "sneeze",
+          "base": "sneeze",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "spin",
+      "body_filmstrip_screened": true,
+      "observation": "One gradual full turn with small steps is visible; no gross failure confirmed in this strip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "spin",
+          "base": "spin",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "square_dance",
+      "body_filmstrip_screened": true,
+      "observation": "Several torso/arm shifts are bundled, but movement reads weakly as dance in the rendered figure. Needs source acting and unit review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "square_dance",
+          "base": "square_dance",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "squat",
+      "body_filmstrip_screened": true,
+      "observation": "Stable deep squat hold; front silhouette is compact but no gross failure confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "squat",
+          "base": "squat",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "squat_down",
+      "body_filmstrip_screened": true,
+      "observation": "Single descent after a long standing lead-in; folded arms/knees crowd at the final posture. Support/limb interpretation still needs review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "squat_down",
+          "base": "squat_down",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "squat_watch",
+      "body_filmstrip_screened": true,
+      "observation": "Deep crouch held throughout; folded torso and knees crowd in front view. No whole episode transition; support detail remains unaccepted.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "squat_watch",
+          "base": "squat_watch",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "stand_hunched",
+      "body_filmstrip_screened": true,
+      "observation": "Mild forward lean held with slight motion; no gross body defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "stand_hunched",
+          "base": "stand_hunched",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "stand_idle",
+      "body_filmstrip_screened": true,
+      "observation": "Standing hold with small shifts; no gross body defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "stand_idle",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "stand_up",
+      "body_filmstrip_screened": true,
+      "observation": "Single rise after long crouched lead-in; no repeated rise confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "stand_up",
+          "base": "stand_up",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "stand_up_support_back",
+      "body_filmstrip_screened": true,
+      "observation": "Single supported rise, hands remain at hips/back; actual support clearance unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "stand_up_support_back",
+          "base": "stand_up_support_back",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "stand_watch",
+      "body_filmstrip_screened": true,
+      "observation": "Mild forward lean/look held; subtle acting, no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "stand_watch",
+          "base": "stand_watch",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "start_walk",
+      "body_filmstrip_screened": true,
+      "observation": "Starts idle then continues several strides; transition contains extended walking segment.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "start_walk",
+          "base": "start_walk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "startle",
+      "body_filmstrip_screened": true,
+      "observation": "Single startle reaction; speed alone does not establish defect.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "startle",
+          "base": "startle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "stop_hand",
+      "body_filmstrip_screened": true,
+      "observation": "One forward arm stop gesture held through end; front occlusion, palm unavailable.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "stop_hand",
+          "base": "stop_hand",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "stop_walk",
+      "body_filmstrip_screened": true,
+      "observation": "Several strides followed by standing stop, no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "stop_walk",
+          "base": "stop_walk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "stretch",
+      "body_filmstrip_screened": true,
+      "observation": "One overhead raise and lower; elbows/head crowd during raise but intentional contact needs geometry.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "stretch",
+          "base": "stretch",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "stumble",
+      "body_filmstrip_screened": true,
+      "observation": "Single flailing recovery; shortening flagged, natural rapid flail is not itself defect.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate",
+        "limb shortening"
+      ],
+      "displayed_people": [
+        {
+          "id": "stumble",
+          "base": "stumble",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "sweep_ground",
+      "body_filmstrip_screened": true,
+      "observation": "Arms almost fixed at waist, little visible sweeping body action; prop action remains unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "sweep_ground",
+          "base": "sweep_ground",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "swing_seated",
+      "body_filmstrip_screened": true,
+      "observation": "Stand-idle substitute with rigid seated posture and repeated swing cycles; body movement largely procedural.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "swing_seated",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "table_tennis_partner",
+      "body_filmstrip_screened": true,
+      "observation": "Stand-idle substitute with tiny repeated forearm changes and rigid body; full fixed rally staging, not independently accepted motion.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "table_tennis_play",
+          "base": "stand_idle",
+          "manual": false
+        },
+        {
+          "id": "table_tennis_partner",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "table_tennis_play",
+      "body_filmstrip_screened": true,
+      "observation": "Stand-idle substitute with repeated small hand trajectories, body lacks strike weight shift; fixed whole rally.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "table_tennis_play",
+          "base": "stand_idle",
+          "manual": false
+        },
+        {
+          "id": "table_tennis_partner",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "tai_chi",
+      "body_filmstrip_screened": true,
+      "observation": "Several small chest-height arm shifts over seven seconds; limited stance/body engagement and weak tai-chi readability.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "tai_chi",
+          "base": "tai_chi",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "take_back_piece",
+      "body_filmstrip_screened": true,
+      "observation": "Seated reach/retract/reach sequence; piece and board timing unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "shin overlap candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "take_back_piece",
+          "base": "take_back_piece",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "take_photo",
+      "body_filmstrip_screened": true,
+      "observation": "Hands beside face held five seconds; no visible raise/shutter/lower action, prop alignment remains unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "take_photo",
+          "base": "take_photo",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "talk_accuse",
+      "body_filmstrip_screened": true,
+      "observation": "Single extended accusatory arm gesture then retract; no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "talk_accuse",
+          "base": "talk_accuse",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "talk_excited",
+      "body_filmstrip_screened": true,
+      "observation": "Several different chest-height gestures bundled; ends arms wide, weak excited body acting.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "talk_excited",
+          "base": "talk_excited",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "talk_gesture",
+      "body_filmstrip_screened": true,
+      "observation": "Small forward forearm gestures over whole clip; no gross body defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "talk_gesture",
+          "base": "talk_gesture",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "talk_shy",
+      "body_filmstrip_screened": true,
+      "observation": "Small chest-height gesture then lower; weak head/body cue for shy.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "talk_shy",
+          "base": "talk_shy",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "throw_trash",
+      "body_filmstrip_screened": true,
+      "observation": "Bent torso throughout, low arm extension near middle and retract; weak visible throw and no upright recovery.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "throw_trash",
+          "base": "throw_trash",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "tiptoe",
+      "body_filmstrip_screened": true,
+      "observation": "Near-static standing with slight knee changes; lacks obvious heel lift/body rise cue in rendered body.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "tiptoe",
+          "base": "tiptoe",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "trip_fall",
+      "body_filmstrip_screened": true,
+      "observation": "Reframed strip shows walking into a single forward fall, then a prone hold. The transition is abrupt and needs source/mapping continuity interpretation, not a claim of multiple falls.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "trip_fall",
+          "base": "trip_fall",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "turn_about",
+      "body_filmstrip_screened": true,
+      "observation": "Single half turn by small steps; no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "turn_about",
+          "base": "turn_about",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "turn_left_quarter",
+      "body_filmstrip_screened": true,
+      "observation": "One quarter turn early then hold, no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "turn_left_quarter",
+          "base": "turn_left_quarter",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "turn_page",
+      "body_filmstrip_screened": true,
+      "observation": "Both hands held chest-height, tiny forearm shift; page turn unreadable without hand/paper details.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "turn_page",
+          "base": "turn_page",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "turn_right_quarter",
+      "body_filmstrip_screened": true,
+      "observation": "One quarter turn after long idle then hold, no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "turn_right_quarter",
+          "base": "turn_right_quarter",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "turn_walk",
+      "body_filmstrip_screened": true,
+      "observation": "Turn early followed by several walking strides, unit scope includes sustained locomotion.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "turn_walk",
+          "base": "turn_walk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "vending_collect",
+      "body_filmstrip_screened": true,
+      "observation": "Final contact elbow flip around 1.817 s, head overlap and deeply folded posture confirmed; prop occlusion formerly hid it.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "head overlap",
+        "joint discontinuity candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "vending_collect",
+          "base": "vending_collect",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "vendor_call",
+      "body_filmstrip_screened": true,
+      "observation": "Small reach/retract gestures, source upper-arm jump about 58 degrees at 2.13 s precedes mapping; mapped shortening also flagged.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "limb shortening"
+      ],
+      "displayed_people": [
+        {
+          "id": "vendor_call",
+          "base": "vendor_call",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "vendor_tidy",
+      "body_filmstrip_screened": true,
+      "observation": "Low forearm shifts over four seconds; source upper-arm jump about 49 degrees near 3.75 s and mapped shortening flagged; no clear tidying reach.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "limb shortening"
+      ],
+      "displayed_people": [
+        {
+          "id": "vendor_tidy",
+          "base": "vendor_tidy",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "waist_twister",
+      "body_filmstrip_screened": true,
+      "observation": "Stand-idle substitute, almost unchanged upright body; twist cue scarcely visible.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "waist_twister",
+          "base": "stand_idle",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period; no additional gross defect confirmed in body-only filmstrip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk",
+          "base": "walk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_backpack_straps",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period with hands in front of chest; strap contact unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_backpack_straps",
+          "base": "walk_backpack_straps",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_backward",
+      "body_filmstrip_screened": true,
+      "observation": "Several alternating backward steps; semantic gait unit count needs review.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_backward",
+          "base": "walk_backward",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_briefcase",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, held arm still swings slightly; briefcase grip unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_briefcase",
+          "base": "walk_briefcase",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_brisk",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, no additional gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_brisk",
+          "base": "walk_brisk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_cane",
+      "body_filmstrip_screened": true,
+      "observation": "Alternating gait with lean, cane hand/floor contact unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_cane",
+          "base": "walk_cane",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_carry_bag",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, arm largely lowered; bag grip unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_carry_bag",
+          "base": "walk_carry_bag",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_carry_bags",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period with arms low; bag grips unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_carry_bags",
+          "base": "walk_carry_bags",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_carry_box",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, hands extended chest/waist height; box support unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_carry_box",
+          "base": "walk_carry_box",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_check_watch",
+      "body_filmstrip_screened": true,
+      "observation": "Small wrist-height gesture during stride, head scarcely tips toward wrist; weak watch glance cue.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_check_watch",
+          "base": "walk_check_watch",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_child_hand_down",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, lowered hand swings; child hand contact not present in body-only capture.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_child_hand_down",
+          "base": "walk_child_hand_down",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_closed_umbrella",
+      "body_filmstrip_screened": true,
+      "observation": "Multiple gait cycles and large final-contact elbow branch jumps including first interval and 2.367 s; fails continuity.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate",
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "walk_closed_umbrella",
+          "base": "walk_closed_umbrella",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_cold",
+      "body_filmstrip_screened": true,
+      "observation": "Hands crowd around head/neck, not chest-hug posture; one gait period.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_cold",
+          "base": "walk_cold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_dog",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period with one arm extended; leash/grip unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_dog",
+          "base": "walk_dog",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_drink",
+      "body_filmstrip_screened": true,
+      "observation": "Multiple gait cycles accompany one slow raise/drink/lower; hand reaches face only late, drink contact unverified. Whole gesture must remain a single unit if used.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_drink",
+          "base": "walk_drink",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_elderly_short",
+      "body_filmstrip_screened": true,
+      "observation": "One very small shuffling gait with pronounced forward lean; no additional gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "walk_elderly_short",
+          "base": "walk_elderly_short",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_hands_pockets",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, hands around hips; no additional gross body defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "walk_hands_pockets",
+          "base": "walk_hands_pockets",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_hold_front",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period with low fixed forearms; held item contact unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_hold_front",
+          "base": "walk_hold_front",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_limp",
+      "body_filmstrip_screened": true,
+      "observation": "Asymmetric small gait cycle; no additional gross body defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_limp",
+          "base": "walk_limp",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_look_up",
+      "body_filmstrip_screened": true,
+      "observation": "Head remains almost upright during gait; look-up cue weak.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_look_up",
+          "base": "walk_look_up",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_newspaper",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period with arms forward but little downward head gaze; newspaper alignment unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_newspaper",
+          "base": "walk_newspaper",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_newspaper_underarm",
+      "body_filmstrip_screened": true,
+      "observation": "Held arm at neck/chest rather than visibly tucked down underarm; newspaper position needed to verify semantics.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_newspaper_underarm",
+          "base": "walk_newspaper_underarm",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_one_arm_still",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, one arm nearly still; no additional gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_one_arm_still",
+          "base": "walk_one_arm_still",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_one_pocket",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, one hand at hip; no additional gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_one_pocket",
+          "base": "walk_one_pocket",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_phone_call",
+      "body_filmstrip_screened": true,
+      "observation": "Several strides with fixed hand at head; phone ear/grip unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_phone_call",
+          "base": "walk_phone_call",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_proud",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period with arm swing and slight body lean, proud cue weak but no gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_proud",
+          "base": "walk_proud",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_rigid",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, deliberately small arm swing; no additional gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_rigid",
+          "base": "walk_rigid",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_slow",
+      "body_filmstrip_screened": true,
+      "observation": "One gait period, hands close to hips and slight bend; no additional gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "walk_slow",
+          "base": "walk_slow",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_stairs_down",
+      "body_filmstrip_screened": true,
+      "observation": "Final knee branch flip 1.25-1.267 s, shins tangle near end; floor correction uses flat floor instead of stair support.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate",
+        "shin overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "walk_stairs_down",
+          "base": "walk_stairs_down",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_stairs_up",
+      "body_filmstrip_screened": true,
+      "observation": "Rising gait, head cropped late in initial capture; support/clearance not accepted; needs reframed view.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_stairs_up",
+          "base": "walk_stairs_up",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_talk",
+      "body_filmstrip_screened": true,
+      "observation": "Multiple gait cycles and two arm extensions across four seconds; one-unit semantics not established.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_talk",
+          "base": "walk_talk",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_tired",
+      "body_filmstrip_screened": true,
+      "observation": "One small forward-leaning gait period, no additional gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_tired",
+          "base": "walk_tired",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "walk_umbrella",
+      "body_filmstrip_screened": true,
+      "observation": "Multiple gait cycles with fixed grip pose; no independently verified umbrella grip/support.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "walk_umbrella",
+          "base": "walk_umbrella",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "wallet_takeout",
+      "body_filmstrip_screened": true,
+      "observation": "Very small waist hand movement, no clear reaching into pocket then extracting object; semantics weak.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "wallet_takeout",
+          "base": "wallet_takeout",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "water_planter_hold",
+      "body_filmstrip_screened": true,
+      "observation": "Body near static standing with lowered hands; watering flow/contact depends on props, no independently verified pouring grip.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "water_planter_hold",
+          "base": "water_planter_hold",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "wave",
+      "body_filmstrip_screened": true,
+      "observation": "One arm raise, small held wave, lower; no additional gross defect confirmed.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "wave",
+          "base": "wave",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "wave_both_overhead",
+      "body_filmstrip_screened": true,
+      "observation": "Raises both arms then several changes between bent/extended overhead poses; ends raised, variation count not established.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "wave_both_overhead",
+          "base": "wave_both_overhead",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "whisper",
+      "body_filmstrip_screened": true,
+      "observation": "Hand near head in profile, contextual partner/ear contact unverified.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "torso overlap candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "whisper",
+          "base": "whisper",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "wipe_sweat",
+      "body_filmstrip_screened": true,
+      "observation": "Hand mostly crosses neck rather than forehead; only brief head-height profile.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "wipe_sweat",
+          "base": "wipe_sweat",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "yawn",
+      "body_filmstrip_screened": true,
+      "observation": "Little lean and hand near face in profile; face cue absent.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "yawn",
+          "base": "yawn",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "wave_overhead",
+      "body_filmstrip_screened": true,
+      "observation": "Only initial lift segment, not a complete independent waving variant.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "joint discontinuity candidate"
+      ],
+      "displayed_people": [
+        {
+          "id": "wave_overhead",
+          "base": "wave_overhead",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "wave_overhead_v2",
+      "body_filmstrip_screened": true,
+      "observation": "Half-second raised-arm continuation, incomplete variant lacking independent full gesture.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [],
+      "displayed_people": [
+        {
+          "id": "wave_overhead_v2",
+          "base": "wave_overhead_v2",
+          "manual": false
+        }
+      ]
+    },
+    {
+      "id": "wave_overhead_v3",
+      "body_filmstrip_screened": true,
+      "observation": "Lowering continuation, initial mapping jump/shortening and head overlap; incomplete independent variant.",
+      "acceptance": "unaccepted",
+      "pending": "Continuous playback, required props/support and interpersonal clearance, semantic completeness, useful endpoints",
+      "geometry_review_flags": [
+        "head overlap",
+        "joint discontinuity candidate",
+        "limb shortening"
+      ],
+      "displayed_people": [
+        {
+          "id": "wave_overhead_v3",
+          "base": "wave_overhead_v3",
+          "manual": false
+        }
+      ]
+    }
+  ]
+}

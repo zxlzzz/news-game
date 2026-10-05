@@ -5,38 +5,51 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ---
 
-## Cache — next session (2026-09-29): real-place scene, SDU Weihai
+## Cache — next session (after 2026-09-29): real-place scene, SDU Weihai
 
 - **What it is**: an experiment toward a reusable pipeline — given a place (or an area he
   marks on a map), scripts fetch data and build a complete scene by themselves. He wants the
-  automated route: do not ask him for site facts he knows personally (he refused to describe
-  road slopes: "口头描述就坏了规矩"). Method (three strict stages): `docs/scene_reconstruction_workflow.md`.
-  Record of what each step needed and where it came from: `research/sdu_weihai/复刻记录.md`;
-  data sources and licences: `research/sdu_weihai/来源.md`. Scene `godot/scenes/sdu_weihai/`,
-  scripts `godot/real_place/` (fetch_imagery, classify_cover, build_ground, view_area, geo,
-  osm, glb), how to rebuild: `godot/README.md` "山大威海校区".
-- **State on 2026-09-28 night**: stage 1 (地基) done, **waiting for his acceptance tomorrow**.
-  It shows only terrain relief (FABDEM), water (lakes, sea) and the road network (OSM
-  vehicle roads + pedestrian streets + walkways ≥60 m joining roads at both ends); everything
-  else is one plain `ground` surface. History: v1 drew imagery-classified woods/grass
-  outlines → "各种线太乱"; v2 one cover per road-cut block → still too much; v3 roads vs
-  non-roads, which he chose himself. Lesson: stage 1 is anchors, not detail; later stages use
-  standard shapes + decoration, never pixel-traced outlines.
-- **Not committed** (he said prepare, not commit): all of the above plus shared-code changes —
-  `core/terrain.gd` (height lookup; the orbit camera's look-at point now follows it),
-  `level.gd` skips group `ground` when merging static meshes, new slot `ground` (slots.tres,
-  gray.tres, walk cost 2.0). ChatGPT's research files and `scenes/sdu_weihai_ground/` were
-  deleted at his request (never committed). Raw downloads are git-ignored (`.gitignore` end).
-  Proposed branch for the commit: `claude/sdu-weihai-ground`. All seven checks passed.
-- **Next after acceptance**: stage 2 (画线) — surfaces (`layout_draft.json` has the traced
-  axis shapes), trees from `imagery/cover.npz`, buildings from OSM footprints (153, partly
-  outdated; imagery is oblique, tall roofs lean north). Existing tree types: pine_tree,
-  park_tree_broad/umbrella/cypress, street_tree, flowering_tree, shrub, hedge.
-- **Tool note**: auto mode's safety classifier failed repeatedly on 2026-09-28; the allow list
-  in `.claude/settings.local.json` (python, the Godot exe, read-only shell) lets commands run
-  without it. Keep commands to those prefixes (no `cd dir && …` chains that start elsewhere;
-  use python for file edits instead of sed). Keep CRLF files CRLF (README.md, slots.tres,
-  gray.tres) — rewrite them in binary.
+  automated route: do not ask him for site facts he knows personally. Method (three strict
+  stages): `docs/scene_reconstruction_workflow.md`. Record of what each step needed:
+  `research/sdu_weihai/复刻记录.md`; sources and licences: `research/sdu_weihai/来源.md`.
+  Scene `godot/scenes/sdu_weihai/`, scripts `godot/real_place/`, rebuild steps:
+  `godot/README.md` "山大威海校区".
+- **Stage 1 (地基) accepted 2026-09-29** and committed as 11bff52 on
+  `claude/velocity-unification-v1-946h9l` (with the earlier shared-code changes:
+  `core/terrain.gd`, ground slot, level.gd). **Not pushed yet** — I asked, no answer.
+- **Heights now by design rules (2026-09-29, uncommitted, waiting for him to look)**: after the
+  round-2 trial he said "直接开始做吧，我看看咋样". `real_place/terrain_rules.py` (called by
+  `build_ground.py`, numbers and code clauses in `ground.json` `rules`) replaced the old
+  flatten + 2 m smoothing: flat pitches/plazas/pads/platforms/lakes, floor +0.15 m, roads <= 8 %
+  (DEM's own grade kept where it is steeper over 100 m — ~2.1 km on the north hill), grass banks
+  20 %..0.67, steps or walls half way across gaps that are too narrow, part of a drop above 3 m as
+  a wall; equal to FABDEM over 60 m (mean 0.08 m, max 2.4 m inside the stadium), open ground kept
+  within the DEM's 60 m min/max, no final smoothing. Writes `drops.bin/json` + `drops_m.bin`
+  (grass bank / steps / wall per cell, for stage 3). Scene terrain.bin is identical to the trial.
+  Headless import run; he has not seen it in the game. Known weak spots: one flat pad per
+  building gives 6–15 m walls on hillsides; ~10 km of low (median 0.25 m) walls where pieces touch
+  (really curbs); the rules put drops only on OSM/hand-traced edges, so against surveyed points it
+  is no closer than the old terrain (RMS 0.96 m both).
+- **Next agreed step: stage 2 (画线), library (主楼) and surroundings only first.** Start with
+  building footprints (OSM, fixed against the imagery). Building heights: OSM has levels on only
+  2 of 540 buildings. He asked "is the shadow the only way?" — I proposed downloading a
+  published per-building height dataset (CMAB / 3D-GloBFP / CNBH-10m) and cross-checking with
+  roof shift and shadows; **waiting for his OK to download**.
+- **Terrain trials (2026-09-29)**, tasks written by the Claude client and pasted by him, in
+  `research/sdu_weihai/terrain_trials/` (not committed; `raw/` dirs git-ignored, ~1.3 GB).
+  Round 1 (`报告.md`): the satellite image can't measure campus terraces (sun due west, they run
+  east-west); 天地图 needs a key and blocks this machine (Singapore egress via his proxy); forward-
+  flying drone clips fail in COLMAP (untried: 全景航拍 110.5–113.7 s, a lateral truck). Round 2
+  (`round2/报告.md`): **ggzyjy.weihai.cn attachments download without login** — the 2019 research-
+  building drawings include a site plan over a surveyed topo map (1985 datum, 威海97 grid; aligned
+  to the scene, ~1–2 m) giving 1881 spot heights in the south half of campus (z 213–760) plus
+  design levels and manhole covers (`round2/points.csv`); FABDEM–survey constant offset ~0. Area A
+  really drops in two tiers (9.7 → 7.9 → 6.0). SDUcraft Minecraft save: no public download. The
+  survey is for checking only, never for tuning rules.
+- **Installed 2026-09-29 with his OK**: COLMAP 4.2.0 CUDA (`D:\colmap`), yt-dlp (`D:\yt-dlp`),
+  LibreDWG portable (`D:\tools\libredwg`, dwg2dxf), ezdxf in `D:\anaconda` (the default python).
+- **Tool note**: the auto-mode safety classifier sometimes gives no verdict; retrying once
+  usually works. Keep CRLF files CRLF (README.md, slots.tres, gray.tres).
 
 ## Earlier cache (2026-09-27/28)
 

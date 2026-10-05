@@ -1,0 +1,20 @@
+{
+  "fps": 120,
+  "breeds": [
+    "husky",
+    "shibainu",
+    "cat"
+  ],
+  "scenarios": [
+    {
+      "label": "walk035",
+      "speed": 0.35,
+      "seconds": 8
+    },
+    {
+      "label": "trot",
+      "speed_fraction": 0.7,
+      "seconds": 8
+    }
+  ]
+}

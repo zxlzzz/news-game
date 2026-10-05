@@ -1,0 +1,43 @@
+{
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/motion_fix_2026-10-02/interactions/u2_after_full",
+  "entries": [
+    {
+      "id": "assist_elder_walk",
+      "duration": 4.1,
+      "follow_pose": true,
+      "size": 2.5
+    },
+    {
+      "id": "atm_take_cash",
+      "duration": 5.1,
+      "follow_pose": false,
+      "size": 2.5
+    },
+    {
+      "id": "fountain_drink",
+      "duration": 5.1,
+      "follow_pose": false,
+      "size": 2.5
+    },
+    {
+      "id": "basketball_dribble",
+      "duration": 3.45,
+      "follow_pose": false,
+      "size": 2.5
+    }
+  ],
+  "samples": 30,
+  "columns": 6,
+  "cell": 300,
+  "views": [
+    135,
+    225
+  ],
+  "pitch": 12,
+  "provenance": [
+    "res://npc/interactions.json",
+    "res://npc/motion/assist_elder_walk.json",
+    "res://npc/motion/atm_take_cash.json",
+    "res://npc/motion/basketball_dribble.json"
+  ]
+}

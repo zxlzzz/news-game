@@ -1,0 +1,653 @@
+[
+  {
+    "file": "page_00.jpg",
+    "clips": [
+      "adjust_clothes",
+      "air_walker",
+      "assist_elder_walk",
+      "atm_keypad",
+      "atm_take_cash",
+      "back_away"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_01.jpg",
+    "clips": [
+      "badminton_swing",
+      "basketball_dribble",
+      "basketball_shoot",
+      "beckon",
+      "bike_scan_unlock",
+      "block_way"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_02.jpg",
+    "clips": [
+      "bow",
+      "breakfast_buy",
+      "breakfast_sell",
+      "browse_bookstall",
+      "brush_clothes",
+      "buy_newspaper"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_03.jpg",
+    "clips": [
+      "cafe_sit_drink",
+      "car_enter",
+      "car_exit",
+      "carry_bag",
+      "carry_bags",
+      "carry_box"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_04.jpg",
+    "clips": [
+      "carry_bucket",
+      "carry_shoulder",
+      "carry_shoulder_bag",
+      "check_watch",
+      "cheer",
+      "chess_move"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_05.jpg",
+    "clips": [
+      "chess_watch",
+      "choose_item",
+      "cough",
+      "cover_face",
+      "crane_neck",
+      "cross_arms"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_06.jpg",
+    "clips": [
+      "crouch_check",
+      "crouch_check_hold",
+      "distribute_flyer",
+      "dodge",
+      "drink",
+      "duck_cover"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_07.jpg",
+    "clips": [
+      "duck_cover_hold",
+      "eat_snack",
+      "eat_walk",
+      "elder_assisted_walk",
+      "exercise",
+      "fall_back"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_08.jpg",
+    "clips": [
+      "fan_self",
+      "film_phone",
+      "football_juggle",
+      "fountain_drink",
+      "fruit_choose",
+      "fruit_weigh"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_09.jpg",
+    "clips": [
+      "give_item",
+      "grab_snatch",
+      "guard",
+      "hail_taxi",
+      "hands_behind_back",
+      "hands_in_pockets"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_10.jpg",
+    "clips": [
+      "hands_on_head",
+      "hands_on_head_hold",
+      "hands_on_hips",
+      "hands_up",
+      "hands_up_hold",
+      "handshake_offer"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_11.jpg",
+    "clips": [
+      "handshake_reply",
+      "handstand",
+      "hang_laundry",
+      "hesitate_reach",
+      "hold_door",
+      "hold_guitar"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_12.jpg",
+    "clips": [
+      "hold_umbrella",
+      "hop",
+      "inspect_item",
+      "interrupt",
+      "interview_answer",
+      "interview_describe"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_13.jpg",
+    "clips": [
+      "interview_followup",
+      "interview_listen",
+      "interview_point",
+      "interview_question",
+      "jog",
+      "kneel_hold"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_14.jpg",
+    "clips": [
+      "laugh",
+      "lean_railing",
+      "lean_sign",
+      "lean_wall",
+      "lecture",
+      "leg_stretch"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_15.jpg",
+    "clips": [
+      "lie_ground_hold",
+      "look_around_nervous",
+      "look_away",
+      "look_down",
+      "look_up",
+      "magic_gesture"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_16.jpg",
+    "clips": [
+      "march_in_place",
+      "mop_ground",
+      "pace",
+      "parcel_terminal",
+      "pat_dust",
+      "pay"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_17.jpg",
+    "clips": [
+      "peek_side",
+      "phone_booth_call",
+      "phone_call",
+      "phone_urgent",
+      "phone_walk",
+      "photo_overhead"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_18.jpg",
+    "clips": [
+      "pick_up",
+      "point",
+      "point_shout",
+      "post_letter",
+      "post_notice",
+      "present"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_19.jpg",
+    "clips": [
+      "press_button",
+      "pull_door",
+      "pull_suitcase",
+      "pullup_hold",
+      "pullup_raise",
+      "push_bicycle"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_20.jpg",
+    "clips": [
+      "push_cart",
+      "push_door",
+      "push_stroller",
+      "reach_after",
+      "read_book",
+      "read_newspaper"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_21.jpg",
+    "clips": [
+      "read_notice",
+      "receive_flyer",
+      "receive_item",
+      "recoil",
+      "rub_eye",
+      "rub_hands"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_22.jpg",
+    "clips": [
+      "rummage_bin",
+      "run",
+      "run_curve",
+      "scratch_back",
+      "scratch_head",
+      "seesaw_partner"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_23.jpg",
+    "clips": [
+      "seesaw_seated",
+      "selfie",
+      "shadow_box",
+      "shake_foot",
+      "shout",
+      "shrug"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_24.jpg",
+    "clips": [
+      "sigh",
+      "sit_bench",
+      "sit_ground",
+      "sit_ground_dazed",
+      "sit_ground_dazed_hold",
+      "sit_knees_up"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_25.jpg",
+    "clips": [
+      "sit_sideways",
+      "sit_step",
+      "skip",
+      "slap_table",
+      "slide_seated",
+      "slouch_bench"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_26.jpg",
+    "clips": [
+      "smoke",
+      "smoke_walk",
+      "sneeze",
+      "spin",
+      "square_dance",
+      "squat"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_27.jpg",
+    "clips": [
+      "squat_down",
+      "squat_watch",
+      "stand_hunched",
+      "stand_idle",
+      "stand_up",
+      "stand_up_support_back"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_28.jpg",
+    "clips": [
+      "stand_watch",
+      "start_walk",
+      "startle",
+      "stop_hand",
+      "stop_walk",
+      "stretch"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_29.jpg",
+    "clips": [
+      "stumble",
+      "sweep_ground",
+      "swing_seated",
+      "table_tennis_partner",
+      "table_tennis_play",
+      "tai_chi"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_30.jpg",
+    "clips": [
+      "take_back_piece",
+      "take_photo",
+      "talk_accuse",
+      "talk_excited",
+      "talk_gesture",
+      "talk_shy"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_31.jpg",
+    "clips": [
+      "throw_trash",
+      "tiptoe",
+      "trip_fall",
+      "turn_about",
+      "turn_left_quarter",
+      "turn_page"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_32.jpg",
+    "clips": [
+      "turn_right_quarter",
+      "turn_walk",
+      "vending_collect",
+      "vendor_call",
+      "vendor_tidy",
+      "waist_twister"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_33.jpg",
+    "clips": [
+      "walk",
+      "walk_backpack_straps",
+      "walk_backward",
+      "walk_briefcase",
+      "walk_brisk",
+      "walk_cane"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_34.jpg",
+    "clips": [
+      "walk_carry_bag",
+      "walk_carry_bags",
+      "walk_carry_box",
+      "walk_check_watch",
+      "walk_child_hand_down",
+      "walk_closed_umbrella"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_35.jpg",
+    "clips": [
+      "walk_cold",
+      "walk_dog",
+      "walk_drink",
+      "walk_elderly_short",
+      "walk_hands_pockets",
+      "walk_hold_front"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_36.jpg",
+    "clips": [
+      "walk_limp",
+      "walk_look_up",
+      "walk_newspaper",
+      "walk_newspaper_underarm",
+      "walk_one_arm_still",
+      "walk_one_pocket"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_37.jpg",
+    "clips": [
+      "walk_phone_call",
+      "walk_proud",
+      "walk_rigid",
+      "walk_slow",
+      "walk_stairs_down",
+      "walk_stairs_up"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_38.jpg",
+    "clips": [
+      "walk_talk",
+      "walk_tired",
+      "walk_umbrella",
+      "wallet_takeout",
+      "water_planter_hold",
+      "wave"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_39.jpg",
+    "clips": [
+      "wave_both_overhead",
+      "whisper",
+      "wipe_sweat",
+      "yawn",
+      "wave_overhead",
+      "wave_overhead_v2"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    "file": "page_40.jpg",
+    "clips": [
+      "wave_overhead_v3"
+    ],
+    "sample_indices": [
+      2,
+      4,
+      6
+    ]
+  }
+]

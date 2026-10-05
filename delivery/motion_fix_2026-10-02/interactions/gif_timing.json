@@ -1,0 +1,581 @@
+{
+  "method": "Actual screenshot cells; cumulative time quantized to 10 ms, verified by decoding GIF frame durations.",
+  "records": [
+    {
+      "file": "gifs/walk_backpack_straps.gif",
+      "capture": "after/manifest.json",
+      "sampled_duration_ms": 2266.6666666666642,
+      "before": {
+        "frames": 24,
+        "duration_ms": 2160,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 2270,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.3333333333357587
+    },
+    {
+      "file": "gifs/elder_assisted_walk.gif",
+      "capture": "after/manifest.json",
+      "sampled_duration_ms": 2000.0000000000036,
+      "before": {
+        "frames": 24,
+        "duration_ms": 1920,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 2000,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": -3.637978807091713e-12
+    },
+    {
+      "file": "gifs/vending_collect.gif",
+      "capture": "after/manifest.json",
+      "sampled_duration_ms": 4966.666666666665,
+      "before": {
+        "frames": 24,
+        "duration_ms": 4800,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 4970,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.333333333334849
+    },
+    {
+      "file": "gifs/hang_laundry.gif",
+      "capture": "after/manifest.json",
+      "sampled_duration_ms": 4966.666666666665,
+      "before": {
+        "frames": 24,
+        "duration_ms": 4800,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 4970,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.333333333334849
+    },
+    {
+      "file": "gifs/distribute_flyer.gif",
+      "capture": "focus/manifest.json",
+      "sampled_duration_ms": 3999.9999999999964,
+      "before": {
+        "frames": 24,
+        "duration_ms": 3840,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 4000,
+        "size": [
+          1024,
+          512
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.637978807091713e-12
+    },
+    {
+      "file": "gifs/fruit_weigh.gif",
+      "capture": "focus/manifest.json",
+      "sampled_duration_ms": 4966.666666666665,
+      "before": {
+        "frames": 24,
+        "duration_ms": 4800,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 4970,
+        "size": [
+          1024,
+          512
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.333333333334849
+    },
+    {
+      "file": "gifs/chess_move.gif",
+      "capture": "focus/manifest.json",
+      "sampled_duration_ms": 3966.666666666668,
+      "before": {
+        "frames": 24,
+        "duration_ms": 3840,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 3970,
+        "size": [
+          1024,
+          512
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.3333333333321207
+    },
+    {
+      "file": "gifs/take_back_piece.gif",
+      "capture": "focus/manifest.json",
+      "sampled_duration_ms": 3966.666666666668,
+      "before": {
+        "frames": 24,
+        "duration_ms": 3840,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 3970,
+        "size": [
+          1024,
+          512
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.3333333333321207
+    },
+    {
+      "file": "gifs/photo_overhead.gif",
+      "capture": "focus/manifest.json",
+      "sampled_duration_ms": 3466.6666666666647,
+      "before": {
+        "frames": 24,
+        "duration_ms": 3360,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 3470,
+        "size": [
+          1024,
+          512
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.333333333335304
+    },
+    {
+      "file": "gifs/phone_urgent_native_early.gif",
+      "capture": "phone_early/manifest.json",
+      "sampled_duration_ms": 400.0000000000003,
+      "before": {
+        "frames": 12,
+        "duration_ms": 360,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 12,
+        "duration_ms": 400,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": -2.8421709430404007e-13
+    },
+    {
+      "file": "gifs/phone_urgent_native_full.gif",
+      "capture": "phone_full/manifest.json",
+      "sampled_duration_ms": 7000.000000000004,
+      "before": {
+        "frames": 210,
+        "duration_ms": 6300,
+        "size": [
+          512,
+          256
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 210,
+        "duration_ms": 7000,
+        "size": [
+          512,
+          256
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": -3.637978807091713e-12
+    },
+    {
+      "file": "gifs/drink.gif",
+      "capture": "cups/manifest.json",
+      "sampled_duration_ms": 3466.6666666666647,
+      "before": {
+        "frames": 24,
+        "duration_ms": 3360,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 3470,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.333333333335304
+    },
+    {
+      "file": "gifs/walk_drink.gif",
+      "capture": "cups/manifest.json",
+      "sampled_duration_ms": 4400.000000000004,
+      "before": {
+        "frames": 24,
+        "duration_ms": 4320,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 4400,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": -3.637978807091713e-12
+    },
+    {
+      "file": "gifs/cafe_sit_drink.gif",
+      "capture": "cups/manifest.json",
+      "sampled_duration_ms": 4966.666666666665,
+      "before": {
+        "frames": 24,
+        "duration_ms": 4800,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 4970,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.333333333334849
+    },
+    {
+      "file": "gifs/drink_end_hold.gif",
+      "capture": "cup_boundaries/manifest.json",
+      "sampled_duration_ms": 800.0000000000031,
+      "before": {
+        "frames": 24,
+        "duration_ms": 720,
+        "size": [
+          640,
+          320
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 800,
+        "size": [
+          640,
+          320
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": -3.069544618483633e-12
+    },
+    {
+      "file": "gifs/walk_drink_loop_seam.gif",
+      "capture": "cup_boundaries/manifest.json",
+      "sampled_duration_ms": 399.9999999999969,
+      "before": {
+        "frames": 24,
+        "duration_ms": 240,
+        "size": [
+          640,
+          320
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 24,
+        "duration_ms": 400,
+        "size": [
+          640,
+          320
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.126388037344441e-12
+    },
+    {
+      "file": "gifs/mop_ground.gif",
+      "capture": "mop_after/manifest.json",
+      "sampled_duration_ms": 1999.9999999999966,
+      "before": {
+        "frames": 48,
+        "duration_ms": 1920,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 48,
+        "duration_ms": 2000,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.410605131648481e-12
+    },
+    {
+      "file": "gifs/mop_two_cycles.gif",
+      "capture": "mop_after/manifest.json",
+      "sampled_duration_ms": 4000.0000000000036,
+      "before": {
+        "frames": 48,
+        "duration_ms": 3840,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 48,
+        "duration_ms": 4000,
+        "size": [
+          768,
+          384
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": -3.637978807091713e-12
+    },
+    {
+      "file": "u2_gifs/assist_elder_walk.gif",
+      "capture": "u2_after_full/manifest.json",
+      "sampled_duration_ms": 4099.999999999996,
+      "before": {
+        "frames": 30,
+        "duration_ms": 3900,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 30,
+        "duration_ms": 4100,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.637978807091713e-12
+    },
+    {
+      "file": "u2_gifs/atm_take_cash.gif",
+      "capture": "u2_after_full/manifest.json",
+      "sampled_duration_ms": 5100.0,
+      "before": {
+        "frames": 30,
+        "duration_ms": 5100,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 30,
+        "duration_ms": 5100,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 0.0
+    },
+    {
+      "file": "u2_gifs/fountain_drink.gif",
+      "capture": "u2_after_full/manifest.json",
+      "sampled_duration_ms": 5100.0,
+      "before": {
+        "frames": 30,
+        "duration_ms": 5100,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 30,
+        "duration_ms": 5100,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 0.0
+    },
+    {
+      "file": "u2_gifs/basketball_two_cycles.gif",
+      "capture": "basketball_continuous/manifest.json",
+      "sampled_duration_ms": 6800.000000000004,
+      "before": {
+        "frames": 60,
+        "duration_ms": 6600,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 60,
+        "duration_ms": 6800,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": -3.637978807091713e-12
+    },
+    {
+      "file": "u2_gifs/basketball_seam.gif",
+      "capture": "basketball_seam/manifest.json",
+      "sampled_duration_ms": 499.99999999999693,
+      "before": {
+        "frames": 30,
+        "duration_ms": 300,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 30,
+        "duration_ms": 500,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": 3.069544618483633e-12
+    },
+    {
+      "file": "u2_gifs/basketball_second_floor.gif",
+      "capture": "basketball_seam/manifest.json",
+      "sampled_duration_ms": 400.0000000000036,
+      "before": {
+        "frames": 30,
+        "duration_ms": 300,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "after": {
+        "frames": 30,
+        "duration_ms": 400,
+        "size": [
+          600,
+          300
+        ],
+        "loop_extension_present": false
+      },
+      "rounding_error_ms": -3.581135388230905e-12
+    }
+  ]
+}

@@ -1,0 +1,418 @@
+{
+  "reviewer": "root",
+  "scope": "All 50 cat source clips, all 24 captured times in both 35 and 90 degree views visually inspected; all 37 once clips also reviewed at their exact final time and final time + 0.1 seconds in both views. Raw clip playback, no runtime gait/controller/IK.",
+  "clips": [
+    {
+      "label": "cat_Idle",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_Walking",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Stand_Breathe",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Stand_Alert",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Look_Left",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Head_Tilt_Left",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Paw_Offer_Left",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Urinate_Left",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sit_Paw_Offer_Left",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Look_Right",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Head_Tilt_Right",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Paw_Offer_Right",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Urinate_Right",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sit_Paw_Offer_Right",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Look_Around",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Look_Up",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Look_Down",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Tail_Wag_Slow",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Tail_Wag_Happy",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Tail_Tuck_Cautious",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sniff_Air",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sniff_Ground_Enter",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sniff_Ground",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sniff_Ground_Exit",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Shake_Off",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Shake_Head",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sit_Down",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sit_Idle",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sit_Look_Around",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sit_Wag",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sit_Get_Up",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Lie_Down",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Lie_Idle",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Lie_Get_Up",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sit_To_Lie",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Lie_To_Sit",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sleep_Enter",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sleep_Breathe",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Sleep_Wake",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Play_Bow",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Stretch_Front",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Startle",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Side_Lie_Enter",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Side_Lie_Breathe",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Side_Lie_Exit",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Knead",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Tail_Tip_Flick",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Threat_Arch_Enter",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Threat_Arch",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    },
+    {
+      "label": "cat_NG_Threat_Arch_Exit",
+      "samples": 24,
+      "views": [
+        35.0,
+        90.0
+      ]
+    }
+  ],
+  "findings": [
+    "All clips begin from their own source pose; no preliminary walking or switch to another named action observed.",
+    "Sit, lie, sleep, side lie and threat arch enter/hold/exit visibly remain distinct clips. Side lie folds legs before rolling; exit reverses into prone stance.",
+    "Tail tuck lowers and curls under abdomen; tail-tip flick is restricted to the tip.",
+    "Shake-off, startle, breath, head tilt and knead are modest at overview scale. Two side views help distinguish paw motion; this is a readability limitation, not visual acceptance by Hsinlung.",
+    "No obvious silhouette flip or abrupt intermediate clip switch in the captured samples. This sampling does not certify every frame or actual runtime interruption recovery."
+  ],
+  "endpoint_review": {
+    "count": 37,
+    "scope": "All 37 once clips: exact native duration and duration+0.1s in both views; 5 actual-pixel pages inspected. End pose remains unchanged, no automatic next clip. Includes original Idle and Walking because neither declares loop.",
+    "manifest": "individual_endpoints/manifest.json"
+  }
+}

@@ -24,6 +24,9 @@ const Rider := preload("res://npc/rider.gd")
 const WalkGrid := preload("res://core/walk_grid.gd")
 const Behaviour := preload("res://npc/behaviour.gd")
 const ClipSetup := preload("res://npc/clip_setup.gd")
+const InteractionPlayer := preload("res://npc/interaction_player.gd")
+const SeatTransition := preload("res://npc/seat_transition.gd")
+const ContactPose := preload("res://npc/contact_pose.gd")
 const PARAMS := "res://npc/crowd-params.json"
 ## population.tres field -> kind
 const POPULATION := {"pedestrians": "pedestrian", "joggers": "jogger", "dog_walkers": "dog_walker",
@@ -58,6 +61,13 @@ var posts: Array = []
 func _init(level_: Node3D) -> void:
 	level = level_
 	name = "Crowd"
+
+func _exit_tree() -> void:
+	# Post reservations link dictionaries in both directions; release them before shutdown.
+	for post in posts: post.agent=null
+	for person in people:
+		if person.has("action"): person.action=null
+		person.erase("seat_next")
 
 func _fail(msg: String) -> void:
 	errors.append(msg)
@@ -414,7 +424,7 @@ func _update_walker(person: Dictionary, dt: float) -> void:
 	var fig: Node3D = person.figure
 	fig.transform = Transform3D(Basis(Vector3.UP, person.yaw).scaled(Vector3.ONE * body_scale), here[0])
 	if not _stale(fig):
-		_draw_figure(fig, clip.drawing(clip.pose(person.phase)))
+		_draw_interaction(person, clip, person.phase)
 
 func _update_dog(person: Dictionary, dt: float) -> void:
 	var dw: DogWalker = person.dw
@@ -478,18 +488,24 @@ func _update_post(person: Dictionary, dt: float) -> void:
 	var m: Marker3D = person.marker
 	var fig: Node3D = person.figure
 	fig.global_transform = Transform3D(m.global_basis.orthonormalized().scaled(Vector3.ONE * body_scale), m.global_position)
-	_draw_figure(fig, clip.drawing(clip.pose(person.time / clip.duration())))
+	_draw_interaction(person, clip, person.time / clip.duration(), m.get_parent())
 
 # ---------------------------------------------------------------- agents (population.behaviour)
 
 func _update_agent(person: Dictionary, dt: float) -> void:
 	person.clock += dt
+	if person.has("seat_transition"):
+		_update_seating(person,dt)
+		return
 	person.think -= dt
 	if person.think <= 0.0:
 		person.think = beh.t.rethink
 		var next = beh.choose(person, posts, rng)
 		if next != null:
 			_start_action(person, next)
+			if person.has("seat_transition"):
+				_update_seating(person,dt)
+				return
 	var a = person.action
 	if a == null:
 		_draw_agent(person, null, 0.0)
@@ -501,14 +517,21 @@ func _update_agent(person: Dictionary, dt: float) -> void:
 		var clip = ClipPose.of(a.clip)
 		if a.time >= a.plays * clip.duration():
 			_end_action(person)
-			_draw_agent(person, clip, 0.0)
+			if person.has("seat_transition"):
+				_update_seating(person,dt)
+				return
+			_draw_agent(person, null, 0.0)
 			return
 		if a.has("face"):
 			person.yaw = _turn(person.yaw, a.face, dt)  # turns round on the spot to face the post's way
-		_draw_agent(person, clip, fposmod(a.time / clip.duration(), 1.0))
+		_draw_agent(person, clip, a.time / clip.duration())
 
 ## Starts an action: releases the old post, takes the new one, plans the walk if there is one.
 func _start_action(person: Dictionary, a: Dictionary) -> void:
+	if person.action != null and person.action.get("seated",false):
+		person["seat_next"]=a
+		_begin_seating(person,false,false)
+		return
 	_end_action(person, false)
 	person.action = a
 	var goal = null
@@ -525,6 +548,9 @@ func _start_action(person: Dictionary, a: Dictionary) -> void:
 		"use":
 			a.post.agent = person
 			goal = a.post.marker.global_position
+			if a.clip in p.seating.clips:
+				a["seat_approach"]=ContactPose.v(p.seating.approach[a.post.kind])
+				goal += a.post.marker.global_basis*a.seat_approach
 			a.play = a.clip
 			a.clip = beh.walk_clip(person.kind, rng)
 	if goal == null:
@@ -555,6 +581,9 @@ func _start_action(person: Dictionary, a: Dictionary) -> void:
 func _end_action(person: Dictionary, done := true) -> void:
 	var a = person.action
 	if a == null:
+		return
+	if a.get("seated",false):
+		_begin_seating(person,false,done)
 		return
 	if a.post != null and a.post.agent == person:
 		a.post.agent = null
@@ -587,6 +616,12 @@ func _agent_walk(person: Dictionary, a: Dictionary, dt: float) -> void:
 
 ## At the post: stand on its marker, face its way, play the post's clip.
 func _arrive(person: Dictionary, a: Dictionary) -> void:
+	if a.has("seat_approach"):
+		a.erase("path")
+		a.clip=a.play
+		a.time=0.0
+		_begin_seating(person,true,false)
+		return
 	a.erase("path")
 	a.clip = a.play
 	a.time = 0.0
@@ -594,6 +629,46 @@ func _arrive(person: Dictionary, a: Dictionary) -> void:
 	person.pos = a.post.marker.global_position
 	var f: Vector3 = a.post.marker.global_basis.z
 	a.face = atan2(f.x, f.z)
+
+func _begin_seating(person: Dictionary, entering: bool, done: bool) -> void:
+	var a: Dictionary=person.action
+	var f: Vector3=a.post.marker.global_basis.z
+	person["seat_transition"]={"time":0.0,"entering":entering,"done":done,"face":atan2(f.x,f.z)}
+
+func _update_seating(person: Dictionary, dt: float) -> void:
+	var tr: Dictionary=person.seat_transition
+	var a: Dictionary=person.action
+	if tr.entering and absf(angle_difference(person.yaw,tr.face))>0.01:
+		person.yaw=_turn(person.yaw,tr.face,dt)
+		_draw_agent(person,ClipPose.of("stand_idle"),0.0)
+		return
+	person.yaw=tr.face
+	tr.time+=dt
+	var u:=clampf(tr.time/p.seating.seconds,0,1)
+	var marker: Marker3D=a.post.marker
+	var clip=ClipPose.of(a.clip)
+	if _draw and not _off_screen([person.figure],person.pos):
+		person.figure.transform=Transform3D(marker.global_basis.orthonormalized().scaled(Vector3.ONE*body_scale),marker.global_position)
+		_draw_interaction(person,clip,0.0,a.post.object)
+		var pose: Dictionary=SeatTransition.pose(person.interaction_person.pose,u if tr.entering else 1-u,a.seat_approach,body_scale,p.seating)
+		_ground_feet(pose,person.figure,clip)
+		_draw_figure(person.figure,clip.drawing(pose))
+	if u<1: return
+	person.erase("seat_transition")
+	if tr.entering:
+		person.pos=marker.global_position
+		a["seated"]=true
+		a.face=tr.face
+		a.post.arrived=true
+	else:
+		person.pos=marker.global_position+marker.global_basis*a.seat_approach
+		a.seated=false
+		_end_action(person,tr.done)
+		if person.has("seat_next"):
+			var next: Dictionary=person.seat_next
+			person.erase("seat_next")
+			# Another agent may have taken the destination while this one stood up.
+			if next.post==null or next.post.agent==null: _start_action(person,next)
 
 func _draw_agent(person: Dictionary, clip, phase: float) -> void:
 	if not _draw or _off_screen([person.figure], person.pos):
@@ -606,7 +681,70 @@ func _draw_agent(person: Dictionary, clip, phase: float) -> void:
 		clip = ClipPose.of(beh.walk_clip(person.kind, rng)) if not person.has("idle") else person.idle
 		person.idle = clip
 		phase = 0.0
-	_draw_figure(fig, clip.drawing(clip.pose(phase)))
+	var object = person.action.post.object if person.action != null and not person.action.has("path") and person.action.post != null else null
+	_draw_interaction(person, clip, phase, object)
+
+## The same object/hand contact pass as the inspection scene; cache props until the clip changes.
+func _draw_interaction(person: Dictionary, clip, phase: float, object = null) -> void:
+	var key: String = clip.id + ":" + str(object.get_instance_id() if object != null else 0)
+	if person.get("interaction_key", "") != key:
+		if person.has("interaction_player"):
+			person.interaction_player.clear()
+			person.interaction_group.queue_free()
+		var group := Node3D.new()
+		person.figure.add_child(group)
+		group.top_level=true
+		group.global_transform=Transform3D.IDENTITY
+		var player := InteractionPlayer.new()
+		if player.error!="": _die(player.error); return
+		var actor := {"clip_id":clip.id,"clip":clip,"fig":person.figure,"root":Transform3D.IDENTITY,"pose":{},"item":null,"effects_parent":group}
+		var setup: Dictionary = ClipSetup.shared().clips.get(clip.id,{})
+		if setup.has("item"):
+			actor.item={"node":_interaction_instance(ClipSetup.shared().type_path(setup.item.type),group),"hand":setup.item.hand}
+		var objects: Array = [{"node":object,"type":object.scene_file_path}] if object != null else []
+		player.prepare([actor],objects,_interaction_instance.bind(group))
+		person.interaction_group=group
+		person.interaction_key=key
+		person.interaction_player=player
+		person.interaction_person=actor
+		person.interaction_objects=objects
+	var player = person.interaction_player
+	var actor: Dictionary = person.interaction_person
+	var objects: Array = person.interaction_objects
+	actor.root=Transform3D(person.figure.transform.basis.orthonormalized(),person.figure.position)
+	var c: Dictionary = actor.interaction
+	var source = ClipPose.of(c.base) if c.has("base") else clip
+	var repeat: bool = source.chains and c.get("playback", "") != "once"
+	var time: float = phase * c.get("duration",clip.duration())
+	phase = player.phase_of(actor,time)
+	var track_phase: float = player.track_phase_of(actor,time)
+	actor.pose=source.pose(phase, repeat).duplicate(true)
+	if actor.item != null:
+		var q: Vector3=actor.pose.handRight if actor.item.hand=="right" else actor.pose.handLeft
+		if actor.item.hand=="both": q=(actor.pose.handRight+actor.pose.handLeft)/2
+		if actor.item.hand=="back": q=actor.pose.neck
+		actor.item.node.transform=Transform3D(actor.root.basis,person.figure.transform*q)
+	player.errors.clear()
+	player.animate_objects(time,[actor])
+	player.body(actor,objects,[actor],phase,body_scale)
+	player.item(actor,objects,[actor],track_phase,body_scale)
+	player.props(actor,objects,[actor],track_phase,body_scale)
+	player.contacts(actor,objects,[actor],phase,body_scale,track_phase)
+	if c.get("item",{}).get("follow_forearm",false) or c.get("item",{}).get("follow_hand",false): player.item(actor,objects,[actor],track_phase,body_scale)
+	player.props(actor,objects,[actor],track_phase,body_scale)
+	_ground_feet(actor.pose,person.figure,clip)
+	_draw_figure(person.figure,clip.drawing(actor.pose))
+
+func _ground_feet(pose: Dictionary, figure: Node3D, clip) -> void:
+	var floor_query := func(q: Vector3) -> float: return grid.height_at(q) if grid != null else figure.global_position.y
+	if ContactPose.ground_feet(pose,figure.global_transform,clip.P.line,floor_query)>0.001:
+		_die(clip.id+": unreachable ground contact")
+
+func _interaction_instance(path: String, parent: Node) -> Node3D:
+	var node: Node3D=load(path).instantiate()
+	parent.add_child(node)
+	level.apply_look_to(level.slot_map,node)
+	return node
 
 ## Off the screen (by more than a body's height): the figure is hidden and not posed or rebuilt this
 ## frame (rebuilding every stick figure's mesh is most of the crowd's cost). The people still move.

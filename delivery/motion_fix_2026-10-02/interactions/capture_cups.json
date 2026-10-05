@@ -1,0 +1,9 @@
+{
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/motion_fix_2026-10-02/interactions/cups",
+  "entries": [{"id":"drink","follow_pose":true,"size":2.3},{"id":"walk_drink","follow_pose":true,"size":2.3},{"id":"cafe_sit_drink","follow_pose":false,"size":2.3}],
+  "samples": 24,
+  "columns": 6,
+  "cell": 384,
+  "views": [0,90],
+  "pitch": 10
+}

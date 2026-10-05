@@ -1,0 +1,24 @@
+{
+  "name": "wallet_takeout",
+  "text": "Standing casually, reach the right hand down to the right hip pocket, take out a wallet, bring it in front of the waist, open it with the left hand, then return it to the right pocket. Elbows relaxed close to the ribs.",
+  "duration": 4,
+  "seed": 5300,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "wallet_takeout",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

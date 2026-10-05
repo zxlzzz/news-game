@@ -37088,5 +37088,19 @@
     "reason": "生成后按成人火柴人和购物车实际握点逐帧验收；取中间完整周期，双手最大误差分别3.65、4.36厘米。正侧面、源手部近景及最快摆脚的连续帧已检查。",
     "known_limitations": "源手指保持模型固定放松形状，不宣称精细抓握。映射脚尖最低约-0.83厘米；接缝姿势闭合，但未承诺速度一阶连续。",
     "constraint_note": "全身仅19/199帧，间隔11帧；另加局部双手约束。目标肘腕按现有映射求解，源骨段长度和全局旋转保持一致。临时参考已清理时仍可从constraint_targets还原约束值。"
+  },
+  "single_unit": {
+    "clip": "push_cart",
+    "source_sha256": "13a0cb84a901d2c017ac6112c4a21fb4c75d0ec864f435e2ff413f09e94a0ae9",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1,
+    "source": "assets/animations/generation_inputs/13a0cb84a901d2c017ac6112c4a21fb4c75d0ec864f435e2ff413f09e94a0ae9.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
   }
 }

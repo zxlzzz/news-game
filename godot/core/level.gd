@@ -239,6 +239,9 @@ func _merge_static(parent: Node3D, tile: float) -> void:
 	parent.add_child(holder)
 
 static func _mesh_instances(n: Node, out: Array[MeshInstance3D]) -> void:
+	# Doors nested inside buildings must retain their moving meshes and hinge tree.
+	if n.is_in_group(&"operable_door"):
+		return
 	if n is MeshInstance3D and (n as MeshInstance3D).mesh != null:
 		out.append(n)
 	for c in n.get_children():

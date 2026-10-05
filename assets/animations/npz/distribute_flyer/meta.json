@@ -1,0 +1,24 @@
+{
+  "name": "distribute_flyer",
+  "text": "Standing holding a stack of leaflets in the left hand at waist height, pick one leaflet with the right hand, extend it politely forward at waist height to another person, let it go, retract the empty right hand to the stack.",
+  "duration": 5,
+  "seed": 5307,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "distribute_flyer",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

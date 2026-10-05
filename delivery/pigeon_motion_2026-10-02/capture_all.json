@@ -1,0 +1,320 @@
+{
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/pigeon_motion_2026-10-02/actual",
+  "samples": 24,
+  "columns": 6,
+  "cell": 320,
+  "views": [
+    0,
+    90,
+    30
+  ],
+  "pitch": 10,
+  "entries": [
+    {
+      "id": "pigeon:folded",
+      "label": "pigeon_folded",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:spread_wings",
+      "label": "pigeon_spread_wings",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:wing_up",
+      "label": "pigeon_wing_up",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:wing_down",
+      "label": "pigeon_wing_down",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:glide",
+      "label": "pigeon_glide",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:climb",
+      "label": "pigeon_climb",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:dive",
+      "label": "pigeon_dive",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:bank_left",
+      "label": "pigeon_bank_left",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:bank_right",
+      "label": "pigeon_bank_right",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:brake_feet",
+      "label": "pigeon_brake_feet",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:flap",
+      "label": "pigeon_flap",
+      "duration": 0.8,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:walk_in_place",
+      "label": "pigeon_walk_in_place",
+      "duration": 0.8,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:peck",
+      "label": "pigeon_peck",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:look_around",
+      "label": "pigeon_look_around",
+      "duration": 2.4,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:unfold_direct",
+      "label": "pigeon_unfold_direct",
+      "duration": 0.65,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:unfold_lift",
+      "label": "pigeon_unfold_lift",
+      "duration": 0.8,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:fold_direct",
+      "label": "pigeon_fold_direct",
+      "duration": 0.65,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:fold_after_lift",
+      "label": "pigeon_fold_after_lift",
+      "duration": 0.8,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:launch_power",
+      "label": "pigeon_launch_power",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:launch_open",
+      "label": "pigeon_launch_open",
+      "duration": 0.85,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:flap_to_glide_stroke",
+      "label": "pigeon_flap_to_glide_stroke",
+      "duration": 0.65,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:flap_to_glide_soft",
+      "label": "pigeon_flap_to_glide_soft",
+      "duration": 0.65,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:glide_to_flap",
+      "label": "pigeon_glide_to_flap",
+      "duration": 0.45,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:climb_enter",
+      "label": "pigeon_climb_enter",
+      "duration": 0.55,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:climb_exit",
+      "label": "pigeon_climb_exit",
+      "duration": 0.55,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:dive_enter",
+      "label": "pigeon_dive_enter",
+      "duration": 0.55,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:dive_exit",
+      "label": "pigeon_dive_exit",
+      "duration": 0.55,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:bank_left_enter",
+      "label": "pigeon_bank_left_enter",
+      "duration": 0.55,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:bank_left_exit",
+      "label": "pigeon_bank_left_exit",
+      "duration": 0.55,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:bank_right_enter",
+      "label": "pigeon_bank_right_enter",
+      "duration": 0.55,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:bank_right_exit",
+      "label": "pigeon_bank_right_exit",
+      "duration": 0.55,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:bank_left_to_right",
+      "label": "pigeon_bank_left_to_right",
+      "duration": 1,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:brake_from_glide",
+      "label": "pigeon_brake_from_glide",
+      "duration": 0.55,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:land_flare",
+      "label": "pigeon_land_flare",
+      "duration": 0.7,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:land_absorb",
+      "label": "pigeon_land_absorb",
+      "duration": 0.9,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:touchdown_fold",
+      "label": "pigeon_touchdown_fold",
+      "duration": 0.45,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    },
+    {
+      "id": "pigeon:hop",
+      "label": "pigeon_hop",
+      "duration": 0.65,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    }
+  ],
+  "provenance": [
+    "res://npc/pigeon_motion.gd",
+    "res://npc/pigeon-motion.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://npc/pigeon-wings.json",
+    "res://scenes/empty_ground/stage.gd",
+    "res://tools/review_motion_batch.gd",
+    "res://tools/animal_clip_preview.gd"
+  ]
+}

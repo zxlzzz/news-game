@@ -1,0 +1,77 @@
+{
+  "fps": 120,
+  "breeds": [
+    "husky",
+    "shibainu"
+  ],
+  "scenarios": [
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "scratch_exit_flee_10_1",
+      "action": "scratch",
+      "begin": 2,
+      "end": 10,
+      "seconds": 14,
+      "commands": [
+        {
+          "time": 10.1,
+          "action": "",
+          "speed": 0,
+          "urgent": true
+        }
+      ]
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "scratch_exit_flee_10_5",
+      "action": "scratch",
+      "begin": 2,
+      "end": 10,
+      "seconds": 14,
+      "commands": [
+        {
+          "time": 10.5,
+          "action": "",
+          "speed": 0,
+          "urgent": true
+        }
+      ]
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "scratch_exit_flee_10_9",
+      "action": "scratch",
+      "begin": 2,
+      "end": 10,
+      "seconds": 14,
+      "commands": [
+        {
+          "time": 10.9,
+          "action": "",
+          "speed": 0,
+          "urgent": true
+        }
+      ]
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "scratch_exit_flee_11_5",
+      "action": "scratch",
+      "begin": 2,
+      "end": 10,
+      "seconds": 14,
+      "commands": [
+        {
+          "time": 11.5,
+          "action": "",
+          "speed": 0,
+          "urgent": true
+        }
+      ]
+    }
+  ]
+}

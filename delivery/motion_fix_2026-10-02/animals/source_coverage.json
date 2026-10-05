@@ -1,0 +1,5473 @@
+{
+  "source_clips": 144,
+  "source_numerical_pass": 144,
+  "scope": "NG source motion only. Root and scene_status own Godot playback, exits, interruptions and behavior checks.",
+  "limitations": [
+    "Source overview has 5 game + 3 side time samples for every Shiba/Cat clip; it is not frame-by-frame visual coverage.",
+    "Full numerical skin/FK covers all native and halfkeys. Sparse screenshots cannot establish high-frequency motion readability.",
+    "Black silhouettes can hide the scratch paw. Husky rear-angle 60Hz review confirmed its ear-side motion; final runtime dense capture remains separate.",
+    "Cat original 20-bone rig has no independent ear/toe articulation. Cat scratch remains the original explicitly deferred action."
+  ],
+  "clips": [
+    {
+      "species": "husky",
+      "clip": "NG_Stand_Breathe",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ],
+        "side": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Stand_Alert",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Look_Left",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.27999999999999997,
+          0.5599999999999999,
+          0.8400000000000001,
+          1.1199999999999999,
+          1.4,
+          1.6800000000000002,
+          1.96,
+          2.2399999999999998,
+          2.52,
+          2.8
+        ],
+        "side": [
+          0.0,
+          0.27999999999999997,
+          0.5599999999999999,
+          0.8400000000000001,
+          1.1199999999999999,
+          1.4,
+          1.6800000000000002,
+          1.96,
+          2.2399999999999998,
+          2.52,
+          2.8
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Head_Tilt_Left",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 79,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 157,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.26,
+          0.52,
+          0.7800000000000001,
+          1.04,
+          1.3,
+          1.5600000000000003,
+          1.8200000000000003,
+          2.08,
+          2.3400000000000003,
+          2.6
+        ],
+        "side": [
+          0.0,
+          0.26,
+          0.52,
+          0.7800000000000001,
+          1.04,
+          1.3,
+          1.5600000000000003,
+          1.8200000000000003,
+          2.08,
+          2.3400000000000003,
+          2.6
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Ear_Twitch_Left",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.12,
+          0.24,
+          0.36000000000000004,
+          0.48,
+          0.6,
+          0.7200000000000001,
+          0.8400000000000001,
+          0.96,
+          1.08,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.12,
+          0.24,
+          0.36000000000000004,
+          0.48,
+          0.6,
+          0.7200000000000001,
+          0.8400000000000001,
+          0.96,
+          1.08,
+          1.2
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Paw_Offer_Left",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Urinate_Left",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ],
+        "side": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sit_Paw_Offer_Left",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.250097074037404e-08,
+      "floor_min_m": -0.00010300438819208467,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Look_Right",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.27999999999999997,
+          0.5599999999999999,
+          0.8400000000000001,
+          1.1199999999999999,
+          1.4,
+          1.6800000000000002,
+          1.96,
+          2.2399999999999998,
+          2.52,
+          2.8
+        ],
+        "side": [
+          0.0,
+          0.27999999999999997,
+          0.5599999999999999,
+          0.8400000000000001,
+          1.1199999999999999,
+          1.4,
+          1.6800000000000002,
+          1.96,
+          2.2399999999999998,
+          2.52,
+          2.8
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Head_Tilt_Right",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 79,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 157,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.26,
+          0.52,
+          0.7800000000000001,
+          1.04,
+          1.3,
+          1.5600000000000003,
+          1.8200000000000003,
+          2.08,
+          2.3400000000000003,
+          2.6
+        ],
+        "side": [
+          0.0,
+          0.26,
+          0.52,
+          0.7800000000000001,
+          1.04,
+          1.3,
+          1.5600000000000003,
+          1.8200000000000003,
+          2.08,
+          2.3400000000000003,
+          2.6
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Ear_Twitch_Right",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.12,
+          0.24,
+          0.36000000000000004,
+          0.48,
+          0.6,
+          0.7200000000000001,
+          0.8400000000000001,
+          0.96,
+          1.08,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.12,
+          0.24,
+          0.36000000000000004,
+          0.48,
+          0.6,
+          0.7200000000000001,
+          0.8400000000000001,
+          0.96,
+          1.08,
+          1.2
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Paw_Offer_Right",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Urinate_Right",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ],
+        "side": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460874930904e-08,
+      "floor_min_m": -1.3295831590370329e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sit_Paw_Offer_Right",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.250097074037404e-08,
+      "floor_min_m": -0.00010300438819208467,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Look_Around",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Look_Up",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.27999999999999997,
+          0.5599999999999999,
+          0.8400000000000001,
+          1.1199999999999999,
+          1.4,
+          1.6800000000000002,
+          1.96,
+          2.2399999999999998,
+          2.52,
+          2.8
+        ],
+        "side": [
+          0.0,
+          0.27999999999999997,
+          0.5599999999999999,
+          0.8400000000000001,
+          1.1199999999999999,
+          1.4,
+          1.6800000000000002,
+          1.96,
+          2.2399999999999998,
+          2.52,
+          2.8
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Look_Down",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.27999999999999997,
+          0.5599999999999999,
+          0.8400000000000001,
+          1.1199999999999999,
+          1.4,
+          1.6800000000000002,
+          1.96,
+          2.2399999999999998,
+          2.52,
+          2.8
+        ],
+        "side": [
+          0.0,
+          0.27999999999999997,
+          0.5599999999999999,
+          0.8400000000000001,
+          1.1199999999999999,
+          1.4,
+          1.6800000000000002,
+          1.96,
+          2.2399999999999998,
+          2.52,
+          2.8
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Ear_Twitch_Both",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 43,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 85,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.13999999999999999,
+          0.27999999999999997,
+          0.42000000000000004,
+          0.5599999999999999,
+          0.7,
+          0.8400000000000001,
+          0.98,
+          1.1199999999999999,
+          1.26,
+          1.4
+        ],
+        "side": [
+          0.0,
+          0.13999999999999999,
+          0.27999999999999997,
+          0.42000000000000004,
+          0.5599999999999999,
+          0.7,
+          0.8400000000000001,
+          0.98,
+          1.1199999999999999,
+          1.26,
+          1.4
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Tail_Wag_Slow",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Tail_Wag_Happy",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.2,
+          0.4,
+          0.6000000000000001,
+          0.8,
+          1.0,
+          1.2000000000000002,
+          1.4000000000000001,
+          1.6,
+          1.8,
+          2.0
+        ],
+        "side": [
+          0.0,
+          0.2,
+          0.4,
+          0.6000000000000001,
+          0.8,
+          1.0,
+          1.2000000000000002,
+          1.4000000000000001,
+          1.6,
+          1.8,
+          2.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Tail_Tuck_Cautious",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": false,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sniff_Air",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sniff_Ground_Enter",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 55,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 109,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.18000000000000002,
+          0.36000000000000004,
+          0.5400000000000001,
+          0.7200000000000001,
+          0.9,
+          1.0800000000000003,
+          1.2600000000000002,
+          1.4400000000000002,
+          1.62,
+          1.8
+        ],
+        "side": [
+          0.0,
+          0.18000000000000002,
+          0.36000000000000004,
+          0.5400000000000001,
+          0.7200000000000001,
+          0.9,
+          1.0800000000000003,
+          1.2600000000000002,
+          1.4400000000000002,
+          1.62,
+          1.8
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 2.4167876582219698e-05,
+      "floor_min_m": -2.4149610264606575e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sniff_Ground_Loop",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 97,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 193,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.32000000000000006,
+          0.6400000000000001,
+          0.9600000000000002,
+          1.2800000000000002,
+          1.6,
+          1.9200000000000004,
+          2.24,
+          2.5600000000000005,
+          2.8800000000000003,
+          3.2
+        ],
+        "side": [
+          0.0,
+          0.32000000000000006,
+          0.6400000000000001,
+          0.9600000000000002,
+          1.2800000000000002,
+          1.6,
+          1.9200000000000004,
+          2.24,
+          2.5600000000000005,
+          2.8800000000000003,
+          3.2
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 8.059116651721475e-08,
+      "floor_min_m": -2.9082436197114574e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sniff_Ground_Exit",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 49,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 97,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.16000000000000003,
+          0.32000000000000006,
+          0.4800000000000001,
+          0.6400000000000001,
+          0.8,
+          0.9600000000000002,
+          1.12,
+          1.2800000000000002,
+          1.4400000000000002,
+          1.6
+        ],
+        "side": [
+          0.0,
+          0.16000000000000003,
+          0.32000000000000006,
+          0.4800000000000001,
+          0.6400000000000001,
+          0.8,
+          0.9600000000000002,
+          1.12,
+          1.2800000000000002,
+          1.4400000000000002,
+          1.6
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 3.0590733248557063e-05,
+      "floor_min_m": -3.0572634771856e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Shake_Off",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 67,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 133,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.22000000000000003,
+          0.44000000000000006,
+          0.6600000000000001,
+          0.8800000000000001,
+          1.1,
+          1.3200000000000003,
+          1.5400000000000003,
+          1.7600000000000002,
+          1.9800000000000002,
+          2.2
+        ],
+        "side": [
+          0.0,
+          0.22000000000000003,
+          0.44000000000000006,
+          0.6600000000000001,
+          0.8800000000000001,
+          1.1,
+          1.3200000000000003,
+          1.5400000000000003,
+          1.7600000000000002,
+          1.9800000000000002,
+          2.2
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.0007947068757455332,
+      "floor_min_m": -0.0005150023996733983,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Shake_Head",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.12,
+          0.24,
+          0.36000000000000004,
+          0.48,
+          0.6,
+          0.7200000000000001,
+          0.8400000000000001,
+          0.96,
+          1.08,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.12,
+          0.24,
+          0.36000000000000004,
+          0.48,
+          0.6,
+          0.7200000000000001,
+          0.8400000000000001,
+          0.96,
+          1.08,
+          1.2
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.504460897108196e-08,
+      "floor_min_m": -1.3295831944033352e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sit_Down",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.2,
+          0.4,
+          0.6000000000000001,
+          0.8,
+          1.0,
+          1.2000000000000002,
+          1.4000000000000001,
+          1.6,
+          1.8,
+          2.0
+        ],
+        "side": [
+          0.0,
+          0.2,
+          0.4,
+          0.6000000000000001,
+          0.8,
+          1.0,
+          1.2000000000000002,
+          1.4000000000000001,
+          1.6,
+          1.8,
+          2.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 3.308265894876269e-05,
+      "floor_min_m": -0.000123960330469991,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sit_Idle",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ],
+        "side": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.250097074037404e-08,
+      "floor_min_m": -0.00010300453770438305,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sit_Look_Around",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.250097074037404e-08,
+      "floor_min_m": -0.0001030045730180517,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sit_Wag",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.250097074037404e-08,
+      "floor_min_m": -0.00010300453600796226,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sit_Get_Up",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 55,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 109,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.18000000000000002,
+          0.36000000000000004,
+          0.5400000000000001,
+          0.7200000000000001,
+          0.9,
+          1.0800000000000003,
+          1.2600000000000002,
+          1.4400000000000002,
+          1.62,
+          1.8
+        ],
+        "side": [
+          0.0,
+          0.18000000000000002,
+          0.36000000000000004,
+          0.5400000000000001,
+          0.7200000000000001,
+          0.9,
+          1.0800000000000003,
+          1.2600000000000002,
+          1.4400000000000002,
+          1.62,
+          1.8
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.326261998047712e-05,
+      "floor_min_m": -0.00013714397893685275,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Lie_Down",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 73,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 145,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ],
+        "side": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.00010714083578175268,
+      "floor_min_m": -0.00012296926333706798,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Lie_Idle",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ],
+        "side": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.569338121535582e-08,
+      "floor_min_m": -0.00012296926333707232,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Lie_Get_Up",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.2,
+          0.4,
+          0.6000000000000001,
+          0.8,
+          1.0,
+          1.2000000000000002,
+          1.4000000000000001,
+          1.6,
+          1.8,
+          2.0
+        ],
+        "side": [
+          0.0,
+          0.2,
+          0.4,
+          0.6000000000000001,
+          0.8,
+          1.0,
+          1.2000000000000002,
+          1.4000000000000001,
+          1.6,
+          1.8,
+          2.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.0002102713161127945,
+      "floor_min_m": -0.00013174654456816603,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sit_To_Lie",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 67,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 133,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.22000000000000003,
+          0.44000000000000006,
+          0.6600000000000001,
+          0.8800000000000001,
+          1.1,
+          1.3200000000000003,
+          1.5400000000000003,
+          1.7600000000000002,
+          1.9800000000000002,
+          2.2
+        ],
+        "side": [
+          0.0,
+          0.22000000000000003,
+          0.44000000000000006,
+          0.6600000000000001,
+          0.8800000000000001,
+          1.1,
+          1.3200000000000003,
+          1.5400000000000003,
+          1.7600000000000002,
+          1.9800000000000002,
+          2.2
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.290279209958346e-05,
+      "floor_min_m": -0.0001485354340351533,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Lie_To_Sit",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 67,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 133,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.22000000000000003,
+          0.44000000000000006,
+          0.6600000000000001,
+          0.8800000000000001,
+          1.1,
+          1.3200000000000003,
+          1.5400000000000003,
+          1.7600000000000002,
+          1.9800000000000002,
+          2.2
+        ],
+        "side": [
+          0.0,
+          0.22000000000000003,
+          0.44000000000000006,
+          0.6600000000000001,
+          0.8800000000000001,
+          1.1,
+          1.3200000000000003,
+          1.5400000000000003,
+          1.7600000000000002,
+          1.9800000000000002,
+          2.2
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.0001180330988910397,
+      "floor_min_m": -0.00014800726629544958,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sleep_Enter",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.2,
+          0.4,
+          0.6000000000000001,
+          0.8,
+          1.0,
+          1.2000000000000002,
+          1.4000000000000001,
+          1.6,
+          1.8,
+          2.0
+        ],
+        "side": [
+          0.0,
+          0.2,
+          0.4,
+          0.6000000000000001,
+          0.8,
+          1.0,
+          1.2000000000000002,
+          1.4000000000000001,
+          1.6,
+          1.8,
+          2.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.569338121535582e-08,
+      "floor_min_m": -0.00012296926333707232,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sleep_Breathe",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.569338121535582e-08,
+      "floor_min_m": -0.00012296926333707232,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Sleep_Wake",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 55,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 109,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.18000000000000002,
+          0.36000000000000004,
+          0.5400000000000001,
+          0.7200000000000001,
+          0.9,
+          1.0800000000000003,
+          1.2600000000000002,
+          1.4400000000000002,
+          1.62,
+          1.8
+        ],
+        "side": [
+          0.0,
+          0.18000000000000002,
+          0.36000000000000004,
+          0.5400000000000001,
+          0.7200000000000001,
+          0.9,
+          1.0800000000000003,
+          1.2600000000000002,
+          1.4400000000000002,
+          1.62,
+          1.8
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.569338121535582e-08,
+      "floor_min_m": -0.00012296926333707232,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Play_Bow",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.507022405552491e-06,
+      "floor_min_m": -7.258303747956439e-06,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Stretch_Front",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 2.347435893851793e-05,
+      "floor_min_m": -1.3257597483048113e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Startle",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.12,
+          0.24,
+          0.36000000000000004,
+          0.48,
+          0.6,
+          0.7200000000000001,
+          0.8400000000000001,
+          0.96,
+          1.08,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.12,
+          0.24,
+          0.36000000000000004,
+          0.48,
+          0.6,
+          0.7200000000000001,
+          0.8400000000000001,
+          0.96,
+          1.08,
+          1.2
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.0003431044093109389,
+      "floor_min_m": -0.0003327395448661906,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Side_Lie_Enter",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 145,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 289,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ],
+        "side": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 8.164315042510798e-06,
+      "floor_min_m": -0.00017937095950621047,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Side_Lie_Breathe",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 301,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 601,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0,
+      "floor_min_m": 9.671182908330134e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Side_Lie_Exit",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 145,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 289,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ],
+        "side": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 8.164315042510798e-06,
+      "floor_min_m": -0.00017937095950621047,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Scratch_Left",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 133,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 265,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.44000000000000006,
+          0.8800000000000001,
+          1.3200000000000003,
+          1.7600000000000002,
+          2.2,
+          2.6400000000000006,
+          3.0800000000000005,
+          3.5200000000000005,
+          3.9600000000000004,
+          4.4
+        ],
+        "side": [
+          0.0,
+          0.44000000000000006,
+          0.8800000000000001,
+          1.3200000000000003,
+          1.7600000000000002,
+          2.2,
+          2.6400000000000006,
+          3.0800000000000005,
+          3.5200000000000005,
+          3.9600000000000004,
+          4.4
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.00014072436555669237,
+      "floor_min_m": -0.00031950705460392914,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "husky",
+      "clip": "NG_Scratch_Right",
+      "source_batch": "husky_candidate_07",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 133,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 265,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.44000000000000006,
+          0.8800000000000001,
+          1.3200000000000003,
+          1.7600000000000002,
+          2.2,
+          2.6400000000000006,
+          3.0800000000000005,
+          3.5200000000000005,
+          3.9600000000000004,
+          4.4
+        ],
+        "side": [
+          0.0,
+          0.44000000000000006,
+          0.8800000000000001,
+          1.3200000000000003,
+          1.7600000000000002,
+          2.2,
+          2.6400000000000006,
+          3.0800000000000005,
+          3.5200000000000005,
+          3.9600000000000004,
+          4.4
+        ]
+      },
+      "visual_provenance": "npc_status inspected all 48 x 11 x 2 in stable Husky05; two transition revisions checked in 06. All 47 non-tail clips are byte-identical exported arrays between 06 and 07; final tail side11 checked by npc_status.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.00014221743126511963,
+      "floor_min_m": -0.0003985590763223622,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Stand_Breathe",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          2.0,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Stand_Alert",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Look_Left",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5599999999999999,
+          1.4,
+          2.2399999999999998,
+          2.8
+        ],
+        "side": [
+          0.0,
+          1.4,
+          2.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Head_Tilt_Left",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 79,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 157,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.52,
+          1.3,
+          2.08,
+          2.6
+        ],
+        "side": [
+          0.0,
+          1.3,
+          2.6
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Ear_Twitch_Left",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.6,
+          0.96,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.6,
+          1.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Paw_Offer_Left",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Urinate_Left",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          2.0,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sit_Paw_Offer_Left",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.060755706249649e-08,
+      "floor_min_m": -1.903305107985899e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Look_Right",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5599999999999999,
+          1.4,
+          2.2399999999999998,
+          2.8
+        ],
+        "side": [
+          0.0,
+          1.4,
+          2.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Head_Tilt_Right",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 79,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 157,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.52,
+          1.3,
+          2.08,
+          2.6
+        ],
+        "side": [
+          0.0,
+          1.3,
+          2.6
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Ear_Twitch_Right",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.6,
+          0.96,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.6,
+          1.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Paw_Offer_Right",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058694816969e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Urinate_Right",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          2.0,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.692096972565884e-08,
+      "floor_min_m": -8.544210872501164e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sit_Paw_Offer_Right",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.0607557059314815e-08,
+      "floor_min_m": -1.903305107985899e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Look_Around",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          1.0,
+          2.5,
+          4.0,
+          5.0
+        ],
+        "side": [
+          0.0,
+          2.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Look_Up",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5599999999999999,
+          1.4,
+          2.2399999999999998,
+          2.8
+        ],
+        "side": [
+          0.0,
+          1.4,
+          2.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Look_Down",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5599999999999999,
+          1.4,
+          2.2399999999999998,
+          2.8
+        ],
+        "side": [
+          0.0,
+          1.4,
+          2.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Ear_Twitch_Both",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 43,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 85,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.27999999999999997,
+          0.7,
+          1.1199999999999999,
+          1.4
+        ],
+        "side": [
+          0.0,
+          0.7,
+          1.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Tail_Wag_Slow",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Tail_Wag_Happy",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          1.0,
+          1.6,
+          2.0
+        ],
+        "side": [
+          0.0,
+          1.0,
+          2.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Tail_Tuck_Cautious",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sniff_Air",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sniff_Ground_Enter",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 55,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 109,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.36000000000000004,
+          0.9,
+          1.4400000000000002,
+          1.8
+        ],
+        "side": [
+          0.0,
+          0.9,
+          1.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.7269895584962087e-05,
+      "floor_min_m": -1.7215849193631677e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sniff_Ground_Loop",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 97,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 193,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6400000000000001,
+          1.6,
+          2.5600000000000005,
+          3.2
+        ],
+        "side": [
+          0.0,
+          1.6,
+          3.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.262675405982026e-08,
+      "floor_min_m": 9.422398607686574e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sniff_Ground_Exit",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 49,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 97,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.32000000000000006,
+          0.8,
+          1.2800000000000002,
+          1.6
+        ],
+        "side": [
+          0.0,
+          0.8,
+          1.6
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 2.1854376200414416e-05,
+      "floor_min_m": -2.180058963116834e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Shake_Off",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 67,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 133,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.44000000000000006,
+          1.1,
+          1.7600000000000002,
+          2.2
+        ],
+        "side": [
+          0.0,
+          1.1,
+          2.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.0006325702057959652,
+      "floor_min_m": -0.00046237128281238505,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Shake_Head",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.6,
+          0.96,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.6,
+          1.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.370058718446447e-08,
+      "floor_min_m": -8.544210974578862e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sit_Down",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          1.0,
+          1.6,
+          2.0
+        ],
+        "side": [
+          0.0,
+          1.0,
+          2.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 2.3634719694314585e-05,
+      "floor_min_m": -2.364451319935429e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sit_Idle",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          2.0,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.060755706249649e-08,
+      "floor_min_m": -1.903305107985899e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sit_Look_Around",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          1.0,
+          2.5,
+          4.0,
+          5.0
+        ],
+        "side": [
+          0.0,
+          2.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.060755706249649e-08,
+      "floor_min_m": -1.903305107985899e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sit_Wag",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.060755706249649e-08,
+      "floor_min_m": -1.903305107985899e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sit_Get_Up",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 55,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 109,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.36000000000000004,
+          0.9,
+          1.4400000000000002,
+          1.8
+        ],
+        "side": [
+          0.0,
+          0.9,
+          1.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.532059998576146e-05,
+      "floor_min_m": -1.0756683170348895e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Lie_Down",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 73,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 145,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.48,
+          1.2,
+          1.92,
+          2.4
+        ],
+        "side": [
+          0.0,
+          1.2,
+          2.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.598132423215882e-05,
+      "floor_min_m": -0.00015000660150659914,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Lie_Idle",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 9.037791897887929e-08,
+      "floor_min_m": -0.00010179404391184605,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Lie_Get_Up",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          1.0,
+          1.6,
+          2.0
+        ],
+        "side": [
+          0.0,
+          1.0,
+          2.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.00014928736816705105,
+      "floor_min_m": -0.0001459936930951842,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sit_To_Lie",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 67,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 133,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.44000000000000006,
+          1.1,
+          1.7600000000000002,
+          2.2
+        ],
+        "side": [
+          0.0,
+          1.1,
+          2.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 5.066514022777742e-05,
+      "floor_min_m": -0.00014957079854348212,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Lie_To_Sit",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 67,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 133,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.44000000000000006,
+          1.1,
+          1.7600000000000002,
+          2.2
+        ],
+        "side": [
+          0.0,
+          1.1,
+          2.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.83556912178446e-05,
+      "floor_min_m": -0.0001495673593261155,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sleep_Enter",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          1.0,
+          1.6,
+          2.0
+        ],
+        "side": [
+          0.0,
+          1.0,
+          2.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 9.037791897887929e-08,
+      "floor_min_m": -0.00010179404391184605,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sleep_Breathe",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          1.0,
+          2.5,
+          4.0,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 9.037791897887929e-08,
+      "floor_min_m": -0.00010179404391184605,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Sleep_Wake",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 55,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 109,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.36000000000000004,
+          0.9,
+          1.4400000000000002,
+          1.8
+        ],
+        "side": [
+          0.0,
+          0.9,
+          1.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 9.037791897887929e-08,
+      "floor_min_m": -0.00010179404391184605,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Play_Bow",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 5.376584381851826e-06,
+      "floor_min_m": -5.199104420736335e-06,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Stretch_Front",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": false,
+      "planted_paw_error_m": 1.68049717917146e-05,
+      "floor_min_m": -9.48102150451169e-06,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Startle",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.6,
+          0.96,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.6,
+          1.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.0002427403796262175,
+      "floor_min_m": -0.00023534446272347327,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Side_Lie_Enter",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 145,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 289,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.48,
+          1.2,
+          1.92,
+          2.4
+        ],
+        "side": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0,
+      "floor_min_m": -0.00012967362665487064,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Side_Lie_Breathe",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 301,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 601,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          1.0,
+          2.5,
+          4.0,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0,
+      "floor_min_m": -3.752187720251765e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Side_Lie_Exit",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 145,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 289,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.48,
+          1.2,
+          1.92,
+          2.4
+        ],
+        "side": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0,
+      "floor_min_m": -0.00012967362665487064,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Scratch_Left",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 133,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 265,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8800000000000001,
+          2.2,
+          3.5200000000000005,
+          4.4
+        ],
+        "side": [
+          0.0,
+          2.2,
+          4.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.00011980899963116248,
+      "floor_min_m": -0.00047111942229485435,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "shibainu",
+      "clip": "NG_Scratch_Right",
+      "source_batch": "shibainu_candidate_03",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 133,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 265,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8800000000000001,
+          2.2,
+          3.5200000000000005,
+          4.4
+        ],
+        "side": [
+          0.0,
+          2.2,
+          4.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.00011693141286969641,
+      "floor_min_m": -0.0005284622985362204,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Stand_Breathe",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          2.0,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 9.565576420546817e-08,
+      "floor_min_m": 1.944048789430196e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Stand_Alert",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Look_Left",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5599999999999999,
+          1.4,
+          2.2399999999999998,
+          2.8
+        ],
+        "side": [
+          0.0,
+          1.4,
+          2.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Head_Tilt_Left",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 79,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 157,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.52,
+          1.3,
+          2.08,
+          2.6
+        ],
+        "side": [
+          0.0,
+          1.3,
+          2.6
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Paw_Offer_Left",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Urinate_Left",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          2.0,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.156665140163526e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sit_Paw_Offer_Left",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.6619528026862178e-07,
+      "floor_min_m": -0.00010000421312774017,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Look_Right",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5599999999999999,
+          1.4,
+          2.2399999999999998,
+          2.8
+        ],
+        "side": [
+          0.0,
+          1.4,
+          2.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Head_Tilt_Right",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 79,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 157,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.52,
+          1.3,
+          2.08,
+          2.6
+        ],
+        "side": [
+          0.0,
+          1.3,
+          2.6
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Paw_Offer_Right",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Urinate_Right",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          2.0,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sit_Paw_Offer_Right",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.6619528026862178e-07,
+      "floor_min_m": -0.00010000421312774017,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Look_Around",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          1.0,
+          2.5,
+          4.0,
+          5.0
+        ],
+        "side": [
+          0.0,
+          2.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Look_Up",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5599999999999999,
+          1.4,
+          2.2399999999999998,
+          2.8
+        ],
+        "side": [
+          0.0,
+          1.4,
+          2.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Look_Down",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 85,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 169,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5599999999999999,
+          1.4,
+          2.2399999999999998,
+          2.8
+        ],
+        "side": [
+          0.0,
+          1.4,
+          2.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Tail_Wag_Slow",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Tail_Wag_Happy",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          1.0,
+          1.6,
+          2.0
+        ],
+        "side": [
+          0.0,
+          1.0,
+          2.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Tail_Tuck_Cautious",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sniff_Air",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sniff_Ground_Enter",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 55,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 109,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.36000000000000004,
+          0.9,
+          1.4400000000000002,
+          1.8
+        ],
+        "side": [
+          0.0,
+          0.9,
+          1.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 5.9031075736465035e-06,
+      "floor_min_m": -5.855030262967742e-06,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sniff_Ground_Loop",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 97,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 193,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6400000000000001,
+          1.6,
+          2.5600000000000005,
+          3.2
+        ],
+        "side": [
+          0.0,
+          1.6,
+          3.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 4.440045657066871e-08,
+      "floor_min_m": -3.096695729492454e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sniff_Ground_Exit",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 49,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 97,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.32000000000000006,
+          0.8,
+          1.2800000000000002,
+          1.6
+        ],
+        "side": [
+          0.0,
+          0.8,
+          1.6
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 7.479355404669654e-06,
+      "floor_min_m": -7.414159543817985e-06,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Shake_Off",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 133,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 265,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.44000000000000006,
+          1.1,
+          1.7600000000000002,
+          2.2
+        ],
+        "side": [
+          0.0,
+          1.1,
+          2.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.0005898985681683267,
+      "floor_min_m": -0.000536538119022085,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Shake_Head",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 73,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 145,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.6,
+          0.96,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.6,
+          1.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sit_Down",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          1.0,
+          1.6,
+          2.0
+        ],
+        "side": [
+          0.0,
+          1.0,
+          2.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 8.60614274189234e-05,
+      "floor_min_m": -0.0002072005509973114,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sit_Idle",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          2.0,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.6619528026862178e-07,
+      "floor_min_m": -0.00010000541002807943,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sit_Look_Around",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          1.0,
+          2.5,
+          4.0,
+          5.0
+        ],
+        "side": [
+          0.0,
+          2.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.6619528026862178e-07,
+      "floor_min_m": -0.00010000471164129353,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sit_Wag",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          1.5,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.6619528026862178e-07,
+      "floor_min_m": -0.00010000487429722739,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sit_Get_Up",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 55,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 109,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.36000000000000004,
+          0.9,
+          1.4400000000000002,
+          1.8
+        ],
+        "side": [
+          0.0,
+          0.9,
+          1.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.00013232206157432104,
+      "floor_min_m": -0.00021968329110416338,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Lie_Down",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 73,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 145,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.48,
+          1.2,
+          1.92,
+          2.4
+        ],
+        "side": [
+          0.0,
+          1.2,
+          2.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.7126716339854108e-05,
+      "floor_min_m": -0.00014073179904411197,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Lie_Idle",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 121,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 241,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.8,
+          2.0,
+          3.2,
+          4.0
+        ],
+        "side": [
+          0.0,
+          0.4,
+          0.8,
+          1.2000000000000002,
+          1.6,
+          2.0,
+          2.4000000000000004,
+          2.8000000000000003,
+          3.2,
+          3.6,
+          4.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.1530245869932521e-07,
+      "floor_min_m": -0.0001398468508185674,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Lie_Get_Up",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          1.0,
+          1.6,
+          2.0
+        ],
+        "side": [
+          0.0,
+          1.0,
+          2.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 2.5641424593789605e-05,
+      "floor_min_m": -0.00014472621948178298,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sit_To_Lie",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 67,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 133,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.44000000000000006,
+          1.1,
+          1.7600000000000002,
+          2.2
+        ],
+        "side": [
+          0.0,
+          1.1,
+          2.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 2.3155955434515244e-05,
+      "floor_min_m": -0.00018899935223115442,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Lie_To_Sit",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 67,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 133,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.44000000000000006,
+          1.1,
+          1.7600000000000002,
+          2.2
+        ],
+        "side": [
+          0.0,
+          1.1,
+          2.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 2.151219723063333e-05,
+      "floor_min_m": -0.00023438085671599607,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sleep_Enter",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          1.0,
+          1.6,
+          2.0
+        ],
+        "side": [
+          0.0,
+          1.0,
+          2.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 9.53153626554416e-08,
+      "floor_min_m": -0.0001397940513075957,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sleep_Breathe",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          1.0,
+          2.5,
+          4.0,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.1167021386973631e-07,
+      "floor_min_m": -0.00014993709093392288,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Sleep_Wake",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 55,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 109,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.36000000000000004,
+          0.9,
+          1.4400000000000002,
+          1.8
+        ],
+        "side": [
+          0.0,
+          0.9,
+          1.8
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 9.624150941481361e-08,
+      "floor_min_m": -0.0001397940513075957,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Play_Bow",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 91,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 181,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.6000000000000001,
+          1.5,
+          2.4000000000000004,
+          3.0
+        ],
+        "side": [
+          0.0,
+          0.30000000000000004,
+          0.6000000000000001,
+          0.9000000000000001,
+          1.2000000000000002,
+          1.5,
+          1.8000000000000003,
+          2.1,
+          2.4000000000000004,
+          2.7,
+          3.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 1.0795025620439271e-05,
+      "floor_min_m": -1.0373665341825434e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Stretch_Front",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 151,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 301,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": false,
+      "planted_paw_error_m": 9.657512371632624e-06,
+      "floor_min_m": -4.304338495043469e-06,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Startle",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.6,
+          0.96,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.6,
+          1.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0.00021756826604114193,
+      "floor_min_m": -0.00021708771186782153,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Side_Lie_Enter",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 145,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 289,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ],
+        "side": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0,
+      "floor_min_m": -2.3698356900834355e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Side_Lie_Breathe",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 301,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 601,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          1.0,
+          2.5,
+          4.0,
+          5.0
+        ],
+        "side": [
+          0.0,
+          0.5,
+          1.0,
+          1.5000000000000002,
+          2.0,
+          2.5,
+          3.0000000000000004,
+          3.5000000000000004,
+          4.0,
+          4.5,
+          5.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0,
+      "floor_min_m": 5.991203408384216e-09,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Side_Lie_Exit",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 145,
+      "native_fps": 60,
+      "evaluated_fps": 120,
+      "native_and_halfkey_samples": 289,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.48,
+          1.2,
+          1.92,
+          2.4
+        ],
+        "side": [
+          0.0,
+          0.24,
+          0.48,
+          0.7200000000000001,
+          0.96,
+          1.2,
+          1.4400000000000002,
+          1.6800000000000002,
+          1.92,
+          2.16,
+          2.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 0,
+      "floor_min_m": -2.3698356900834355e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Knead",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_dense_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 109,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 217,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.36000000000000004,
+          0.7200000000000001,
+          1.0800000000000003,
+          1.4400000000000002,
+          1.8,
+          2.1600000000000006,
+          2.5200000000000005,
+          2.8800000000000003,
+          3.24,
+          3.6
+        ],
+        "side": [
+          0.0,
+          1.8,
+          3.6
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 8.625792807863685e-08,
+      "floor_min_m": -0.0001397940513075957,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Tail_Tip_Flick",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 73,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 145,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.48,
+          1.2,
+          1.92,
+          2.4
+        ],
+        "side": [
+          0.0,
+          1.2,
+          2.4
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 6.318897279062492e-08,
+      "floor_min_m": 2.1566651316877754e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Threat_Arch_Enter",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 31,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 61,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.2,
+          0.5,
+          0.8,
+          1.0
+        ],
+        "side": [
+          0.0,
+          0.1,
+          0.2,
+          0.30000000000000004,
+          0.4,
+          0.5,
+          0.6000000000000001,
+          0.7000000000000001,
+          0.8,
+          0.9,
+          1.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 3.596842266148635e-05,
+      "floor_min_m": -1.931171360554464e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Threat_Arch",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 61,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 121,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.4,
+          1.0,
+          1.6,
+          2.0
+        ],
+        "side": [
+          0.0,
+          0.2,
+          0.4,
+          0.6000000000000001,
+          0.8,
+          1.0,
+          1.2000000000000002,
+          1.4000000000000001,
+          1.6,
+          1.8,
+          2.0
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 8.509629963607788e-08,
+      "floor_min_m": -1.6105053483301824e-08,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    },
+    {
+      "species": "cat",
+      "clip": "NG_Threat_Arch_Exit",
+      "source_batch": "cat_candidate_03",
+      "screening_status": "source_screened_runtime_pending",
+      "numerical_status": "PASS",
+      "native_keys": 37,
+      "native_fps": 30,
+      "evaluated_fps": 60,
+      "native_and_halfkey_samples": 73,
+      "all_skin_vertices_and_fixed_bone_lengths_checked": true,
+      "visual_source_times_s": {
+        "game": [
+          0.0,
+          0.12,
+          0.24,
+          0.36000000000000004,
+          0.48,
+          0.6,
+          0.7200000000000001,
+          0.8400000000000001,
+          0.96,
+          1.08,
+          1.2
+        ],
+        "side": [
+          0.0,
+          0.6,
+          1.2
+        ]
+      },
+      "visual_provenance": "game_history inspected every clip in dual overview pages of stable 02, then larger focused grids. All 47 non-stretch clips have byte-identical exported arrays in 03; new stretch side/game11 inspected in 03.",
+      "unchanged_from_prior_review_batch": true,
+      "planted_paw_error_m": 2.5000296042608757e-05,
+      "floor_min_m": -1.3427611589474841e-05,
+      "authoring_unreachable_max_m": 0,
+      "runtime_visual_acceptance": "pending root final capture; never inferred from source checks"
+    }
+  ]
+}

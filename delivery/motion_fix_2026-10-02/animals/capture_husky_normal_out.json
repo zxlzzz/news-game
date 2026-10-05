@@ -1,0 +1,98 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\normal_out_husky",
+  "entries": [
+    {
+      "id": "dog:sit",
+      "label": "husky_sit_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "review": {
+        "speed": 0.0
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.35,
+      "target_height": 0.21
+    },
+    {
+      "id": "dog:lie",
+      "label": "husky_lie_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "review": {
+        "speed": 0.0
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.35,
+      "target_height": 0.21
+    },
+    {
+      "id": "dog:sleep",
+      "label": "husky_sleep_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "review": {
+        "speed": 0.0
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.35,
+      "target_height": 0.21
+    },
+    {
+      "id": "dog:side_lie",
+      "label": "husky_side_lie_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "review": {
+        "speed": 0.0
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.35,
+      "target_height": 0.21
+    },
+    {
+      "id": "dog:scratch",
+      "label": "husky_scratch_normal_out",
+      "options": {
+        "breed": "husky"
+      },
+      "review": {
+        "speed": 0.0
+      },
+      "start": 9.5,
+      "duration": 6.5,
+      "size": 1.35,
+      "target_height": 0.21
+    }
+  ],
+  "samples": 130,
+  "columns": 13,
+  "cell": 256,
+  "views": [
+    35,
+    90
+  ],
+  "pitch": 12,
+  "provenance": [
+    "res://tools/review_motion_batch.gd",
+    "res://scenes/empty_ground/stage.gd",
+    "res://npc/animal.gd",
+    "res://npc/animal_model.gd",
+    "res://npc/animal_body.gd",
+    "res://npc/procedural_dog.gd",
+    "res://npc/dog-params.json",
+    "res://npc/animal-models.json",
+    "res://npc/animal_controller.gd",
+    "res://npc/animal-behaviour.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://models/animal_husky.glb"
+  ]
+}

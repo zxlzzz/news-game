@@ -1,0 +1,535 @@
+{
+  "assist_elder_walk": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Preserve shipped body/root/feet and reconstruct complete77 hierarchy with a continuous complete task arm chain; no temporal smoothing or frame freezing.",
+    "original_shipped_sha256": "91c79ed88ad7575241e8bd5cd7d5f07c29085cb3615f1711bf2f127dda72acd1",
+    "preserved_unselected_body_fk_max_error_m": 0.0,
+    "unchanged_arrays": [
+      "root_positions",
+      "smooth_root_pos",
+      "foot_contacts",
+      "global_root_heading"
+    ],
+    "task_arm_chain": {
+      "side": "Right",
+      "torso_relative_wrist_keys_m": [
+        [
+          0,
+          -0.42,
+          -0.08,
+          0.327
+        ],
+        [
+          1,
+          -0.42,
+          -0.08,
+          0.327
+        ]
+      ],
+      "max_target_residual_m": 0.0,
+      "pole_torso": [
+        -0.35,
+        -1,
+        -0.15
+      ]
+    },
+    "before": {
+      "frames": 61,
+      "max_bone_length_range_m": 0.0007953345775604248,
+      "fk_position_max_error_m": 7.17773616543127e-07,
+      "fk_rotation_max_error": 3.8310767536131607e-07,
+      "local_rotation_orthogonality_max_error": 0.0015664351640281616,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.02155676670372486,
+          "frames": [
+            8,
+            9
+          ],
+          "max_fk_error_m": 4.7706993200336e-07,
+          "fk_max_step_m": 0.021556831896305084
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.03053257241845131,
+          "frames": [
+            1,
+            2
+          ],
+          "max_fk_error_m": 4.777675712830387e-07,
+          "fk_max_step_m": 0.03053257241845131
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.03047752194106579,
+          "frames": [
+            2,
+            3
+          ],
+          "max_fk_error_m": 4.768953658640385e-07,
+          "fk_max_step_m": 0.030477561056613922
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.019998669624328613,
+          "frames": [
+            9,
+            10
+          ],
+          "max_fk_error_m": 2.6697625798988156e-07,
+          "fk_max_step_m": 0.01999875158071518
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.27178269624710083,
+          "frames": [
+            43,
+            44
+          ],
+          "max_fk_error_m": 2.682209014892578e-07,
+          "fk_max_step_m": 0.27178239822387695
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.3001596927642822,
+          "frames": [
+            43,
+            44
+          ],
+          "max_fk_error_m": 3.7814908182554063e-07,
+          "fk_max_step_m": 0.30015963315963745
+        }
+      }
+    },
+    "after": {
+      "frames": 61,
+      "max_bone_length_range_m": 0.0007953047752380371,
+      "fk_position_max_error_m": 7.152945613597694e-07,
+      "fk_rotation_max_error": 3.551356542175199e-07,
+      "local_rotation_orthogonality_max_error": 0.003711950485946921,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.021556764841079712,
+          "frames": [
+            8,
+            9
+          ],
+          "max_fk_error_m": 4.7706993200336e-07,
+          "fk_max_step_m": 0.021556831896305084
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.03053249418735504,
+          "frames": [
+            1,
+            2
+          ],
+          "max_fk_error_m": 4.76837158203125e-07,
+          "fk_max_step_m": 0.03053257241845131
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.030477559193968773,
+          "frames": [
+            2,
+            3
+          ],
+          "max_fk_error_m": 4.768953658640385e-07,
+          "fk_max_step_m": 0.030477561056613922
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.019998669624328613,
+          "frames": [
+            9,
+            10
+          ],
+          "max_fk_error_m": 2.6697625798988156e-07,
+          "fk_max_step_m": 0.01999875158071518
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.023175211623311043,
+          "frames": [
+            15,
+            16
+          ],
+          "max_fk_error_m": 2.682209014892578e-07,
+          "fk_max_step_m": 0.02317511849105358
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.02765732631087303,
+          "frames": [
+            15,
+            16
+          ],
+          "max_fk_error_m": 3.3848931479951716e-07,
+          "fk_max_step_m": 0.02765723317861557
+        }
+      }
+    },
+    "continuous_arm_orientation_reference": "assets/animations/generation_inputs/120ab724e5537c56355497475424838702e34f3a622db8e64b69f6fcdb9df7ea.npz",
+    "reference_scope": "Only arm orientation; archived body/gait is not substituted.",
+    "runtime_visual_evidence": "delivery/motion_fix_2026-10-02/interactions/u2_findings.md"
+  },
+  "atm_take_cash": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Preserve shipped body/root/feet and reconstruct complete77 hierarchy with a continuous complete task arm chain; no temporal smoothing or frame freezing.",
+    "original_shipped_sha256": "4d5b136f8624164d871b50a72dfab9ac6f8b2dafb41bf58dc223358bce3a91a0",
+    "preserved_unselected_body_fk_max_error_m": 0.0,
+    "unchanged_arrays": [
+      "root_positions",
+      "smooth_root_pos",
+      "foot_contacts",
+      "global_root_heading"
+    ],
+    "task_arm_chain": {
+      "side": "Right",
+      "torso_relative_wrist_keys_m": [
+        [
+          0,
+          -0.28686923008066034,
+          -0.30610193378499295,
+          0.07826057792737115
+        ],
+        [
+          0.18,
+          -0.25,
+          -0.15,
+          0.36
+        ],
+        [
+          0.4,
+          -0.25,
+          -0.15,
+          0.36
+        ],
+        [
+          0.55,
+          -0.15,
+          -0.12,
+          0.22
+        ],
+        [
+          0.82,
+          -0.17,
+          -0.12,
+          0.2
+        ],
+        [
+          1,
+          -0.17,
+          -0.12,
+          0.2
+        ]
+      ],
+      "max_target_residual_m": 0.0,
+      "pole_torso": [
+        -0.35,
+        -1,
+        -0.15
+      ]
+    },
+    "before": {
+      "frames": 150,
+      "max_bone_length_range_m": 0.0008679330348968506,
+      "fk_position_max_error_m": 4.851466428590356e-07,
+      "fk_rotation_max_error": 5.031211003370117e-07,
+      "local_rotation_orthogonality_max_error": 0.001616045927072603,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.006375826895236969,
+          "frames": [
+            136,
+            137
+          ],
+          "max_fk_error_m": 2.413114259525173e-07,
+          "fk_max_step_m": 0.006375826895236969
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.0063211810775101185,
+          "frames": [
+            137,
+            138
+          ],
+          "max_fk_error_m": 2.4038948254201387e-07,
+          "fk_max_step_m": 0.006321227177977562
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.008905681781470776,
+          "frames": [
+            89,
+            90
+          ],
+          "max_fk_error_m": 2.9807560508743336e-07,
+          "fk_max_step_m": 0.008905882015824318
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.01063695177435875,
+          "frames": [
+            37,
+            38
+          ],
+          "max_fk_error_m": 2.4211522031691857e-07,
+          "fk_max_step_m": 0.01063696201890707
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.15245501697063446,
+          "frames": [
+            143,
+            144
+          ],
+          "max_fk_error_m": 3.579381768759049e-07,
+          "fk_max_step_m": 0.1524548977613449
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.22290454804897308,
+          "frames": [
+            143,
+            144
+          ],
+          "max_fk_error_m": 3.6256091107134125e-07,
+          "fk_max_step_m": 0.22290459275245667
+        }
+      }
+    },
+    "after": {
+      "frames": 150,
+      "max_bone_length_range_m": 0.0008678734302520752,
+      "fk_position_max_error_m": 3.595628754737845e-07,
+      "fk_rotation_max_error": 3.9452916666959936e-07,
+      "local_rotation_orthogonality_max_error": 0.004031011823298967,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.006375810131430626,
+          "frames": [
+            136,
+            137
+          ],
+          "max_fk_error_m": 2.3914506641631306e-07,
+          "fk_max_step_m": 0.006375826895236969
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.006321263033896685,
+          "frames": [
+            137,
+            138
+          ],
+          "max_fk_error_m": 2.416849440578517e-07,
+          "fk_max_step_m": 0.006321227177977562
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.008905747905373573,
+          "frames": [
+            89,
+            90
+          ],
+          "max_fk_error_m": 2.428663492537453e-07,
+          "fk_max_step_m": 0.008905882015824318
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.010636905208230019,
+          "frames": [
+            37,
+            38
+          ],
+          "max_fk_error_m": 2.4027400513659813e-07,
+          "fk_max_step_m": 0.01063696201890707
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.016746174544095993,
+          "frames": [
+            18,
+            19
+          ],
+          "max_fk_error_m": 2.413114259525173e-07,
+          "fk_max_step_m": 0.016746198758482933
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.0217126552015543,
+          "frames": [
+            15,
+            16
+          ],
+          "max_fk_error_m": 2.425733214295178e-07,
+          "fk_max_step_m": 0.02171267569065094
+        }
+      }
+    },
+    "runtime_visual_evidence": "delivery/motion_fix_2026-10-02/interactions/u2_findings.md"
+  },
+  "basketball_dribble": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Preserve shipped body/root/feet and reconstruct complete77 hierarchy with a continuous complete task arm chain; no temporal smoothing or frame freezing.",
+    "original_shipped_sha256": "02448904f6f3bb3aa06379c67248e1f4ee7d2f7fa2898cb314f28bc29026763e",
+    "preserved_unselected_body_fk_max_error_m": 0.0,
+    "unchanged_arrays": [
+      "root_positions",
+      "smooth_root_pos",
+      "foot_contacts",
+      "global_root_heading"
+    ],
+    "task_arm_chain": {
+      "side": "Left",
+      "torso_relative_wrist_keys_m": [
+        [
+          0,
+          0.26,
+          -0.24,
+          0.3
+        ],
+        [
+          0.25,
+          0.3,
+          -0.22,
+          0.34
+        ],
+        [
+          0.5,
+          0.27,
+          -0.24,
+          0.3
+        ],
+        [
+          0.75,
+          0.23,
+          -0.23,
+          0.34
+        ],
+        [
+          1,
+          0.26,
+          -0.24,
+          0.3
+        ]
+      ],
+      "max_target_residual_m": 0.0,
+      "pole_torso": [
+        0.35,
+        -1,
+        -0.15
+      ]
+    },
+    "before": {
+      "frames": 120,
+      "max_bone_length_range_m": 0.0008868277072906494,
+      "fk_position_max_error_m": 3.6286698446019727e-07,
+      "fk_rotation_max_error": 4.0267613599098695e-07,
+      "local_rotation_orthogonality_max_error": 0.001412528490463602,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.02317720279097557,
+          "frames": [
+            94,
+            95
+          ],
+          "max_fk_error_m": 1.2644053981603065e-07,
+          "fk_max_step_m": 0.023177044466137886
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.11510452628135681,
+          "frames": [
+            59,
+            60
+          ],
+          "max_fk_error_m": 1.519626238177807e-07,
+          "fk_max_step_m": 0.11510451138019562
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.16818702220916748,
+          "frames": [
+            33,
+            34
+          ],
+          "max_fk_error_m": 2.4620757699267415e-07,
+          "fk_max_step_m": 0.16818726062774658
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.019074559211730957,
+          "frames": [
+            59,
+            60
+          ],
+          "max_fk_error_m": 1.2644053981603065e-07,
+          "fk_max_step_m": 0.019074564799666405
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.07013551145792007,
+          "frames": [
+            47,
+            48
+          ],
+          "max_fk_error_m": 1.794337407545754e-07,
+          "fk_max_step_m": 0.07013548165559769
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.09933992475271225,
+          "frames": [
+            59,
+            60
+          ],
+          "max_fk_error_m": 2.4978896817628993e-07,
+          "fk_max_step_m": 0.09933986514806747
+        }
+      }
+    },
+    "after": {
+      "frames": 120,
+      "max_bone_length_range_m": 0.0008868575096130371,
+      "fk_position_max_error_m": 2.6656007889869215e-07,
+      "fk_rotation_max_error": 3.970712043610547e-07,
+      "local_rotation_orthogonality_max_error": 0.004127335696617494,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.023177150636911392,
+          "frames": [
+            94,
+            95
+          ],
+          "max_fk_error_m": 1.2377833513710357e-07,
+          "fk_max_step_m": 0.023177044466137886
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.03129309043288231,
+          "frames": [
+            32,
+            33
+          ],
+          "max_fk_error_m": 1.8189184913808276e-07,
+          "fk_max_step_m": 0.03129308670759201
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.02722535841166973,
+          "frames": [
+            94,
+            95
+          ],
+          "max_fk_error_m": 1.8371385124282824e-07,
+          "fk_max_step_m": 0.02722531370818615
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.019074566662311554,
+          "frames": [
+            59,
+            60
+          ],
+          "max_fk_error_m": 1.2377833513710357e-07,
+          "fk_max_step_m": 0.019074564799666405
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.0701354369521141,
+          "frames": [
+            47,
+            48
+          ],
+          "max_fk_error_m": 1.365714012990793e-07,
+          "fk_max_step_m": 0.07013548165559769
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.09933992475271225,
+          "frames": [
+            59,
+            60
+          ],
+          "max_fk_error_m": 1.365714012990793e-07,
+          "fk_max_step_m": 0.09933986514806747
+        }
+      }
+    },
+    "runtime_visual_evidence": "delivery/motion_fix_2026-10-02/interactions/u2_findings.md"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "opening_width": 1.0,
+  "opening_height": 2.2,
+  "frame_width": 0.12,
+  "frame_depth": 0.18,
+  "leaf_overlap": 0.025,
+  "leaf_thickness": 0.07,
+  "handle_height": 1.05,
+  "handle_edge_offset": 0.12,
+  "handle_length": 0.16,
+  "handle_bar": 0.035,
+  "handle_projection": 0.08,
+  "panel_inset": 0.15,
+  "panel_relief": 0.015,
+  "open_degrees": -100.0,
+  "travel_seconds": 1.0,
+  "preview": {"wall_width": 4.0, "wall_height": 3.0, "wall_depth": 0.3, "ground_size": 12.0, "camera_size": 4.8, "camera_position": [4.0, 3.2, 7.0], "camera_target": [0.0, 1.25, 0.0]}
+}

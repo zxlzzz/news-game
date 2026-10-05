@@ -1,0 +1,583 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_actual",
+  "entries": [
+    {
+      "id": "dog:sit",
+      "label": "husky_sit",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:sit_look",
+      "label": "husky_sit_look",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:sit_wag",
+      "label": "husky_sit_wag",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:lie",
+      "label": "husky_lie",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:sleep",
+      "label": "husky_sleep",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:side_lie",
+      "label": "husky_side_lie",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:sniff",
+      "label": "husky_sniff",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:sniff_air",
+      "label": "husky_sniff_air",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:alert",
+      "label": "husky_alert",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:wag",
+      "label": "husky_wag",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:look_around",
+      "label": "husky_look_around",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:shake",
+      "label": "husky_shake",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:shake_head",
+      "label": "husky_shake_head",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:urinate",
+      "label": "husky_urinate",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:paw",
+      "label": "husky_paw",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:play_bow",
+      "label": "husky_play_bow",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:stretch",
+      "label": "husky_stretch",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:startle",
+      "label": "husky_startle",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:tail_tuck",
+      "label": "husky_tail_tuck",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:scratch",
+      "label": "husky_scratch",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 14,
+      "size": 1.6,
+      "target_height": 0.25
+    },
+    {
+      "id": "dog:sit",
+      "label": "shibainu_sit",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:sit_look",
+      "label": "shibainu_sit_look",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:sit_wag",
+      "label": "shibainu_sit_wag",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:lie",
+      "label": "shibainu_lie",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:sleep",
+      "label": "shibainu_sleep",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:side_lie",
+      "label": "shibainu_side_lie",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:sniff",
+      "label": "shibainu_sniff",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:sniff_air",
+      "label": "shibainu_sniff_air",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:alert",
+      "label": "shibainu_alert",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:wag",
+      "label": "shibainu_wag",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:look_around",
+      "label": "shibainu_look_around",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:shake",
+      "label": "shibainu_shake",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:shake_head",
+      "label": "shibainu_shake_head",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:urinate",
+      "label": "shibainu_urinate",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:paw",
+      "label": "shibainu_paw",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:play_bow",
+      "label": "shibainu_play_bow",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:stretch",
+      "label": "shibainu_stretch",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:startle",
+      "label": "shibainu_startle",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:tail_tuck",
+      "label": "shibainu_tail_tuck",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "dog:scratch",
+      "label": "shibainu_scratch",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 14,
+      "size": 1.3,
+      "target_height": 0.19
+    },
+    {
+      "id": "cat:sit",
+      "label": "cat_sit",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:sit_look",
+      "label": "cat_sit_look",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:lie",
+      "label": "cat_lie",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:sleep",
+      "label": "cat_sleep",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:side_lie",
+      "label": "cat_side_lie",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:knead",
+      "label": "cat_knead",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:sniff",
+      "label": "cat_sniff",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:sniff_air",
+      "label": "cat_sniff_air",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:alert",
+      "label": "cat_alert",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:look_around",
+      "label": "cat_look_around",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:shake",
+      "label": "cat_shake",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:shake_head",
+      "label": "cat_shake_head",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:paw",
+      "label": "cat_paw",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:play_bow",
+      "label": "cat_play_bow",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:stretch",
+      "label": "cat_stretch",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:startle",
+      "label": "cat_startle",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:tail_tuck",
+      "label": "cat_tail_tuck",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:tail_flick",
+      "label": "cat_tail_flick",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    },
+    {
+      "id": "cat:arch",
+      "label": "cat_arch",
+      "options": {},
+      "duration": 14,
+      "size": 0.95,
+      "target_height": 0.15
+    }
+  ],
+  "samples": 40,
+  "columns": 8,
+  "cell": 256,
+  "views": [
+    35,
+    90
+  ],
+  "pitch": 12,
+  "provenance": [
+    "res://tools/review_motion_batch.gd",
+    "res://scenes/empty_ground/stage.gd",
+    "res://npc/animal.gd",
+    "res://npc/animal_model.gd",
+    "res://npc/animal_body.gd",
+    "res://npc/procedural_dog.gd",
+    "res://npc/dog-params.json",
+    "res://npc/animal-models.json",
+    "res://npc/animal_controller.gd",
+    "res://npc/animal-behaviour.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://models/animal_husky.glb",
+    "res://models/animal_shibainu.glb",
+    "res://models/animal_cat.glb",
+    "res://tools/animal_behaviour_preview.gd"
+  ]
+}

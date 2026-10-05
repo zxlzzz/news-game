@@ -1,0 +1,1211 @@
+{
+	"clips": {
+		"adjust_clothes": {
+			"elbow_max_step": 0.00597041100263596,
+			"foot_gap": null,
+			"head_gap": 0.0136241099238396
+		},
+		"air_walker": {
+			"elbow_max_step": 0.00213809264823794,
+			"foot_gap": null,
+			"head_gap": 0.0613826370239258
+		},
+		"assist_elder_walk": {
+			"elbow_max_step": 0.013014973141253,
+			"foot_gap": 0.00348573938012123,
+			"head_gap": 0.078775287270546
+		},
+		"atm_keypad": {
+			"elbow_max_step": 0.00673946319147944,
+			"foot_gap": null,
+			"head_gap": 0.0663214778900146
+		},
+		"atm_take_cash": {
+			"elbow_max_step": 0.0090108523145318,
+			"foot_gap": null,
+			"head_gap": 0.0595818614959717
+		},
+		"back_away": {
+			"elbow_max_step": 0.0227679442614317,
+			"foot_gap": 0.0513551497459412,
+			"head_gap": 0.0128321206569672
+		},
+		"badminton_swing": {
+			"elbow_max_step": 0.0391175039112568,
+			"foot_gap": null,
+			"head_gap": 0.0127779996395111
+		},
+		"basketball_dribble": {
+			"elbow_max_step": 0.0542860999703407,
+			"foot_gap": null,
+			"head_gap": 0.000000000596046448309018
+		},
+		"basketball_shoot": {
+			"elbow_max_step": 0.0523206181824207,
+			"foot_gap": null,
+			"head_gap": 0.000000000596046448309018
+		},
+		"beckon": {
+			"elbow_max_step": 0.0133357532322407,
+			"foot_gap": null,
+			"head_gap": 0.0218200093507767
+		},
+		"bike_scan_unlock": {
+			"elbow_max_step": 0.0134368315339088,
+			"foot_gap": null,
+			"head_gap": 0.0364563396573067
+		},
+		"block_way": {
+			"elbow_max_step": 0.0055753355845809,
+			"foot_gap": null,
+			"head_gap": 0.0449712431430817
+		},
+		"bow": {
+			"elbow_max_step": 0.00634437194094062,
+			"foot_gap": null,
+			"head_gap": 0.0739301598072052
+		},
+		"breakfast_buy": {
+			"elbow_max_step": 0.024765994399786,
+			"foot_gap": null,
+			"head_gap": 0.0242180159687996
+		},
+		"breakfast_sell": {
+			"elbow_max_step": 0.0188269279897213,
+			"foot_gap": null,
+			"head_gap": 0.0403494319319725
+		},
+		"browse_bookstall": {
+			"elbow_max_step": 0.0226243548095226,
+			"foot_gap": null,
+			"head_gap": 0.0563041722774506
+		},
+		"brush_clothes": {
+			"elbow_max_step": 0.00491260830312967,
+			"foot_gap": null,
+			"head_gap": 0.0273202663660049
+		},
+		"buy_newspaper": {
+			"elbow_max_step": 0.0150336530059576,
+			"foot_gap": null,
+			"head_gap": 0.0598478621244431
+		},
+		"cafe_sit_drink": {
+			"elbow_max_step": 0.0155487935990095,
+			"foot_gap": null,
+			"head_gap": 0.00854774624109268
+		},
+		"car_enter": {
+			"elbow_max_step": 0.0162209551781416,
+			"foot_gap": null,
+			"head_gap": 0.0603302276134491
+		},
+		"car_exit": {
+			"elbow_max_step": 0.0230423584580421,
+			"foot_gap": null,
+			"head_gap": 0.021415696144104
+		},
+		"carry_bag": {
+			"elbow_max_step": 0.00223170011304319,
+			"foot_gap": null,
+			"head_gap": 0.0817020392417908
+		},
+		"carry_bags": {
+			"elbow_max_step": 0.00365443341434002,
+			"foot_gap": null,
+			"head_gap": 0.0821833318471909
+		},
+		"carry_box": {
+			"elbow_max_step": 0.00179540493991226,
+			"foot_gap": null,
+			"head_gap": 0.0551260268688202
+		},
+		"carry_bucket": {
+			"elbow_max_step": 0.00524021685123444,
+			"foot_gap": 0.00569923236966133,
+			"head_gap": 0.0808268642425537
+		},
+		"carry_shoulder": {
+			"elbow_max_step": 0.00363289169035852,
+			"foot_gap": null,
+			"head_gap": 0.0420968240499496
+		},
+		"carry_shoulder_bag": {
+			"elbow_max_step": 0.0281970463693142,
+			"foot_gap": 0.00826261579990387,
+			"head_gap": 0.0375790527462959
+		},
+		"check_watch": {
+			"elbow_max_step": 0.00909325573593378,
+			"foot_gap": null,
+			"head_gap": 0.040916927754879
+		},
+		"cheer": {
+			"elbow_max_step": 0.0461994409561157,
+			"foot_gap": null,
+			"head_gap": 0.0014690688252449
+		},
+		"chess_move": {
+			"elbow_max_step": 0.00553560676053166,
+			"foot_gap": null,
+			"head_gap": 0.0725248461961746
+		},
+		"chess_watch": {
+			"elbow_max_step": 0.00524424342438579,
+			"foot_gap": null,
+			"head_gap": 0.0811007624864578
+		},
+		"choose_item": {
+			"elbow_max_step": 0.0117644369602203,
+			"foot_gap": null,
+			"head_gap": 0.0751653319597244
+		},
+		"cough": {
+			"elbow_max_step": 0.0158903077244759,
+			"foot_gap": null,
+			"head_gap": 0.023402795791626
+		},
+		"cover_face": {
+			"elbow_max_step": 0.0078696720302105,
+			"foot_gap": null,
+			"head_gap": 0.00322782307863236
+		},
+		"crane_neck": {
+			"elbow_max_step": 0.00074701412813738,
+			"foot_gap": null,
+			"head_gap": 0.0834365046024323
+		},
+		"cross_arms": {
+			"elbow_max_step": 0.000432155356975272,
+			"foot_gap": null,
+			"head_gap": 0.0530264830589294
+		},
+		"crouch_check": {
+			"elbow_max_step": 0.0168830584734678,
+			"foot_gap": null,
+			"head_gap": 0.017945491373539
+		},
+		"crouch_check_hold": {
+			"elbow_max_step": 0.00123992084991187,
+			"foot_gap": null,
+			"head_gap": 0.0224727174639702
+		},
+		"distribute_flyer": {
+			"elbow_max_step": 0.0194323267787695,
+			"foot_gap": null,
+			"head_gap": 0.0648650085926056
+		},
+		"dodge": {
+			"elbow_max_step": 0.0217071175575256,
+			"foot_gap": 0.123527359366417,
+			"head_gap": 0.00236247539520264
+		},
+		"drink": {
+			"elbow_max_step": 0.00690252333879471,
+			"foot_gap": null,
+			"head_gap": -0.0000000143051147455386
+		},
+		"duck_cover": {
+			"elbow_max_step": 0.113235518336296,
+			"foot_gap": 0.0413810053467751,
+			"head_gap": -0.0000000292062759393863
+		},
+		"duck_cover_hold": {
+			"elbow_max_step": 0.00635065650567412,
+			"foot_gap": null,
+			"head_gap": -0.0000000143051147455386
+		},
+		"eat_snack": {
+			"elbow_max_step": 0.00447576679289341,
+			"foot_gap": null,
+			"head_gap": 0.0113242796063423
+		},
+		"eat_walk": {
+			"elbow_max_step": 0.0118183894082904,
+			"foot_gap": 0.00644817218184471,
+			"head_gap": 0.0135281762480736
+		},
+		"elder_assisted_walk": {
+			"elbow_max_step": 0.00410825945436955,
+			"foot_gap": 0.033237692117691,
+			"head_gap": 0.0753144329786301
+		},
+		"exercise": {
+			"elbow_max_step": 0.0381771773099899,
+			"foot_gap": null,
+			"head_gap": 0.0145558944344521
+		},
+		"fall_back": {
+			"elbow_max_step": 0.0337869934737682,
+			"foot_gap": 0.0201375485956669,
+			"head_gap": 0.0391337057948112
+		},
+		"fan_self": {
+			"elbow_max_step": 0.00773476157337427,
+			"foot_gap": null,
+			"head_gap": 0.0159983417391777
+		},
+		"film_phone": {
+			"elbow_max_step": 0.00262705911882222,
+			"foot_gap": null,
+			"head_gap": 0.0781432694196701
+		},
+		"football_juggle": {
+			"elbow_max_step": 0.00933717470616102,
+			"foot_gap": null,
+			"head_gap": 0.010151327252388
+		},
+		"fountain_drink": {
+			"elbow_max_step": 0.0241357106715441,
+			"foot_gap": null,
+			"head_gap": 0.0264626002311707
+		},
+		"fruit_choose": {
+			"elbow_max_step": 0.0200678333640099,
+			"foot_gap": null,
+			"head_gap": 0.0390282726287842
+		},
+		"fruit_weigh": {
+			"elbow_max_step": 0.0123410699889064,
+			"foot_gap": null,
+			"head_gap": 0.0666825181245804
+		},
+		"give_item": {
+			"elbow_max_step": 0.0164726655930281,
+			"foot_gap": null,
+			"head_gap": 0.0838079011440277
+		},
+		"grab_snatch": {
+			"elbow_max_step": 0.0280635096132755,
+			"foot_gap": null,
+			"head_gap": 0.0141544198989868
+		},
+		"guard": {
+			"elbow_max_step": 0.0365009345114231,
+			"foot_gap": null,
+			"head_gap": -0.0000000217556953424625
+		},
+		"hail_taxi": {
+			"elbow_max_step": 0.0154056940227747,
+			"foot_gap": null,
+			"head_gap": 0.029376440346241
+		},
+		"hands_behind_back": {
+			"elbow_max_step": 0.000469713937491179,
+			"foot_gap": null,
+			"head_gap": 0.081942201256752
+		},
+		"hands_in_pockets": {
+			"elbow_max_step": 0.00297172134742141,
+			"foot_gap": null,
+			"head_gap": 0.0710033333301544
+		},
+		"hands_on_head": {
+			"elbow_max_step": 0.0547062940895557,
+			"foot_gap": null,
+			"head_gap": 0.000000000596046448309018
+		},
+		"hands_on_head_hold": {
+			"elbow_max_step": 0.0434218123555183,
+			"foot_gap": null,
+			"head_gap": -0.00000000685453414861481
+		},
+		"hands_on_hips": {
+			"elbow_max_step": 0.00152634957339615,
+			"foot_gap": null,
+			"head_gap": 0.0671875333786011
+		},
+		"hands_up": {
+			"elbow_max_step": 0.0241438820958138,
+			"foot_gap": null,
+			"head_gap": 0.000451878309249878
+		},
+		"hands_up_hold": {
+			"elbow_max_step": 0.00308588705956936,
+			"foot_gap": null,
+			"head_gap": -0.00000000685453414861481
+		},
+		"handshake_offer": {
+			"elbow_max_step": 0.00672994460910559,
+			"foot_gap": null,
+			"head_gap": 0.0817307239770889
+		},
+		"handshake_reply": {
+			"elbow_max_step": 0.00933574233204126,
+			"foot_gap": null,
+			"head_gap": 0.0801266437768936
+		},
+		"handstand": {
+			"elbow_max_step": 0.00052437192061916,
+			"foot_gap": null,
+			"head_gap": 0.0238663187623024
+		},
+		"hang_laundry": {
+			"elbow_max_step": 0.062466025352478,
+			"foot_gap": null,
+			"head_gap": -0.0000000143051147455386
+		},
+		"hesitate_reach": {
+			"elbow_max_step": 0.0132456021383405,
+			"foot_gap": null,
+			"head_gap": 0.0775211012363434
+		},
+		"hold_door": {
+			"elbow_max_step": 0.00143678789027035,
+			"foot_gap": null,
+			"head_gap": 0.069987074136734
+		},
+		"hold_guitar": {
+			"elbow_max_step": 0.00582970585674047,
+			"foot_gap": null,
+			"head_gap": 0.069111675620079
+		},
+		"hold_umbrella": {
+			"elbow_max_step": 0.00151418778114021,
+			"foot_gap": null,
+			"head_gap": 0.0469030147790909
+		},
+		"hop": {
+			"elbow_max_step": 0.0425448343157768,
+			"foot_gap": null,
+			"head_gap": 0.00678219705820084
+		},
+		"inspect_item": {
+			"elbow_max_step": 0.00872522126883268,
+			"foot_gap": null,
+			"head_gap": 0.0752331471443176
+		},
+		"interrupt": {
+			"elbow_max_step": 0.0234027970582247,
+			"foot_gap": null,
+			"head_gap": 0.00186902344226837
+		},
+		"interview_answer": {
+			"elbow_max_step": 0.0126452753320336,
+			"foot_gap": null,
+			"head_gap": 0.0713962173461914
+		},
+		"interview_describe": {
+			"elbow_max_step": 0.00484053697437048,
+			"foot_gap": null,
+			"head_gap": 0.067966074347496
+		},
+		"interview_followup": {
+			"elbow_max_step": 0.00755427917465568,
+			"foot_gap": null,
+			"head_gap": 0.0421558922529221
+		},
+		"interview_listen": {
+			"elbow_max_step": 0.00730003183707595,
+			"foot_gap": null,
+			"head_gap": 0.0209111055731773
+		},
+		"interview_point": {
+			"elbow_max_step": 0.0191914606839418,
+			"foot_gap": null,
+			"head_gap": 0.0348094111680985
+		},
+		"interview_question": {
+			"elbow_max_step": 0.0105797806754708,
+			"foot_gap": null,
+			"head_gap": 0.0540977424383163
+		},
+		"jog": {
+			"elbow_max_step": 0.0157707203179598,
+			"foot_gap": 0.0187801012396812,
+			"head_gap": 0.0746943360567093
+		},
+		"kneel_hold": {
+			"elbow_max_step": 0.00104736816138029,
+			"foot_gap": null,
+			"head_gap": 0.0817371910810471
+		},
+		"laugh": {
+			"elbow_max_step": 0.0264776684343815,
+			"foot_gap": null,
+			"head_gap": 0.0616606032848358
+		},
+		"lean_railing": {
+			"elbow_max_step": 0.00108518882188946,
+			"foot_gap": null,
+			"head_gap": 0.0632642215490341
+		},
+		"lean_sign": {
+			"elbow_max_step": 0.000283287750789896,
+			"foot_gap": null,
+			"head_gap": 0.076837540268898
+		},
+		"lean_wall": {
+			"elbow_max_step": 0.000604412925895303,
+			"foot_gap": null,
+			"head_gap": 0.0832539504766464
+		},
+		"lecture": {
+			"elbow_max_step": 0.0353806391358376,
+			"foot_gap": null,
+			"head_gap": 0.0219480103254318
+		},
+		"leg_stretch": {
+			"elbow_max_step": 0.00235905754379928,
+			"foot_gap": null,
+			"head_gap": 0.0736128395795822
+		},
+		"lie_ground_hold": {
+			"elbow_max_step": 0.000655164301861078,
+			"foot_gap": null,
+			"head_gap": 0.0673438316583633
+		},
+		"look_around_nervous": {
+			"elbow_max_step": 0.00574849545955658,
+			"foot_gap": null,
+			"head_gap": 0.0838818109035492
+		},
+		"look_away": {
+			"elbow_max_step": 0.00415972992777824,
+			"foot_gap": null,
+			"head_gap": 0.0774930572509766
+		},
+		"look_down": {
+			"elbow_max_step": 0.00256319949403405,
+			"foot_gap": null,
+			"head_gap": 0.067924872636795
+		},
+		"look_up": {
+			"elbow_max_step": 0.000910009839572012,
+			"foot_gap": null,
+			"head_gap": 0.0772904759645462
+		},
+		"magic_gesture": {
+			"elbow_max_step": 0.0201498325914145,
+			"foot_gap": null,
+			"head_gap": 0.00780423790216446
+		},
+		"march_in_place": {
+			"elbow_max_step": 0.0312523655593395,
+			"foot_gap": null,
+			"head_gap": 0.0172706252336502
+		},
+		"mop_ground": {
+			"elbow_max_step": 0.0039248070679605,
+			"foot_gap": null,
+			"head_gap": 0.083632350564003
+		},
+		"pace": {
+			"elbow_max_step": 0.0141280433163047,
+			"foot_gap": null,
+			"head_gap": 0.0826198315620422
+		},
+		"parcel_terminal": {
+			"elbow_max_step": 0.00721534341573715,
+			"foot_gap": null,
+			"head_gap": 0.0738542383909225
+		},
+		"pat_dust": {
+			"elbow_max_step": 0.0156544540077448,
+			"foot_gap": null,
+			"head_gap": 0.0356648346781731
+		},
+		"pay": {
+			"elbow_max_step": 0.0154039859771729,
+			"foot_gap": null,
+			"head_gap": 0.060684055685997
+		},
+		"peek_side": {
+			"elbow_max_step": 0.00360340694896877,
+			"foot_gap": null,
+			"head_gap": 0.0747686779499054
+		},
+		"phone_booth_call": {
+			"elbow_max_step": 0.0105897402390838,
+			"foot_gap": null,
+			"head_gap": 0.00986680448055267
+		},
+		"phone_call": {
+			"elbow_max_step": 0.00512212328612804,
+			"foot_gap": null,
+			"head_gap": 0.0243355861306191
+		},
+		"phone_urgent": {
+			"elbow_max_step": 0.0386442765593529,
+			"foot_gap": 0.0000307971239089933,
+			"head_gap": 0.00919000118970871
+		},
+		"phone_walk": {
+			"elbow_max_step": 0.0037903212942183,
+			"foot_gap": 0.00135835647583007,
+			"head_gap": 0.0721305912733078
+		},
+		"photo_overhead": {
+			"elbow_max_step": 0.0107668768614531,
+			"foot_gap": null,
+			"head_gap": 0.0082568234205246
+		},
+		"pick_up": {
+			"elbow_max_step": 0.0165295638144016,
+			"foot_gap": null,
+			"head_gap": 0.0613759762048721
+		},
+		"point": {
+			"elbow_max_step": 0.0159720201045275,
+			"foot_gap": null,
+			"head_gap": 0.0404366409778595
+		},
+		"point_shout": {
+			"elbow_max_step": 0.0400542877614498,
+			"foot_gap": null,
+			"head_gap": 0.0113889506459236
+		},
+		"post_letter": {
+			"elbow_max_step": 0.00776757160201669,
+			"foot_gap": null,
+			"head_gap": 0.0627491629123688
+		},
+		"post_notice": {
+			"elbow_max_step": 0.0244792755693197,
+			"foot_gap": null,
+			"head_gap": 0.0368189072608948
+		},
+		"present": {
+			"elbow_max_step": 0.0210088044404984,
+			"foot_gap": null,
+			"head_gap": 0.0393496012687683
+		},
+		"press_button": {
+			"elbow_max_step": 0.0130634633824229,
+			"foot_gap": null,
+			"head_gap": 0.0708678966760635
+		},
+		"pull_door": {
+			"elbow_max_step": 0.0231340080499649,
+			"foot_gap": null,
+			"head_gap": 0.0754556661844254
+		},
+		"pull_suitcase": {
+			"elbow_max_step": 0.0264504663646221,
+			"foot_gap": 0.0161113852262497,
+			"head_gap": 0.0737953042984009
+		},
+		"pullup_hold": {
+			"elbow_max_step": 0.0270927026867867,
+			"foot_gap": null,
+			"head_gap": 0.0378576001524925
+		},
+		"pullup_raise": {
+			"elbow_max_step": 0.0261238124221563,
+			"foot_gap": null,
+			"head_gap": 0.0378576001524925
+		},
+		"push_bicycle": {
+			"elbow_max_step": 0.0102517111226916,
+			"foot_gap": 0.0695255362987518,
+			"head_gap": 0.0726819938421249
+		},
+		"push_cart": {
+			"elbow_max_step": 0.00656522996723652,
+			"foot_gap": 0.0059209094941616,
+			"head_gap": 0.0847844934463501
+		},
+		"push_door": {
+			"elbow_max_step": 0.0233005788177252,
+			"foot_gap": null,
+			"head_gap": 0.0576174563169479
+		},
+		"push_stroller": {
+			"elbow_max_step": 0.00694460887461901,
+			"foot_gap": 0.00619677096605301,
+			"head_gap": 0.0849872982501984
+		},
+		"reach_after": {
+			"elbow_max_step": 0.0292413793504238,
+			"foot_gap": null,
+			"head_gap": 0.0139005488157272
+		},
+		"read_book": {
+			"elbow_max_step": 0.00215616938658059,
+			"foot_gap": null,
+			"head_gap": 0.0674418365955353
+		},
+		"read_newspaper": {
+			"elbow_max_step": 0.000706228136550635,
+			"foot_gap": null,
+			"head_gap": 0.0784542417526245
+		},
+		"read_notice": {
+			"elbow_max_step": 0.022040756419301,
+			"foot_gap": null,
+			"head_gap": 0.0797397649288178
+		},
+		"receive_flyer": {
+			"elbow_max_step": 0.0213577635586262,
+			"foot_gap": null,
+			"head_gap": 0.0754658585786819
+		},
+		"receive_item": {
+			"elbow_max_step": 0.0213577635586262,
+			"foot_gap": null,
+			"head_gap": 0.0754658585786819
+		},
+		"recoil": {
+			"elbow_max_step": 0.0204307492822409,
+			"foot_gap": 0.0429189988970757,
+			"head_gap": 0.00595367014408112
+		},
+		"rub_eye": {
+			"elbow_max_step": 0.017440814524889,
+			"foot_gap": null,
+			"head_gap": -0.00000000685453414861481
+		},
+		"rub_hands": {
+			"elbow_max_step": 0.0121597312390804,
+			"foot_gap": null,
+			"head_gap": 0.0302545285224915
+		},
+		"rummage_bin": {
+			"elbow_max_step": 0.0107819912955165,
+			"foot_gap": null,
+			"head_gap": 0.0511164373159409
+		},
+		"run": {
+			"elbow_max_step": 0.0228168871253729,
+			"foot_gap": 0.00814769059419632,
+			"head_gap": 0.0597238993644714
+		},
+		"run_curve": {
+			"elbow_max_step": 0.0579180903732777,
+			"foot_gap": null,
+			"head_gap": 0.055129469037056
+		},
+		"scratch_back": {
+			"elbow_max_step": 0.00541628105565906,
+			"foot_gap": null,
+			"head_gap": 0.0800942933559418
+		},
+		"scratch_head": {
+			"elbow_max_step": 0.0416008196771145,
+			"foot_gap": null,
+			"head_gap": -0.00000000685453414861481
+		},
+		"seesaw_partner": {
+			"elbow_max_step": 0.00287573458626866,
+			"foot_gap": null,
+			"head_gap": 0.033432856798172
+		},
+		"seesaw_seated": {
+			"elbow_max_step": 0.00287573458626866,
+			"foot_gap": null,
+			"head_gap": 0.033432856798172
+		},
+		"selfie": {
+			"elbow_max_step": 0.0092090368270874,
+			"foot_gap": null,
+			"head_gap": 0.0265361821651459
+		},
+		"shadow_box": {
+			"elbow_max_step": 0.0340341441333294,
+			"foot_gap": null,
+			"head_gap": 0.00515272527933121
+		},
+		"shake_foot": {
+			"elbow_max_step": 0.0107943611219525,
+			"foot_gap": null,
+			"head_gap": 0.0828005677461624
+		},
+		"shout": {
+			"elbow_max_step": 0.0237796250730753,
+			"foot_gap": null,
+			"head_gap": 0.00132863283157349
+		},
+		"shrug": {
+			"elbow_max_step": 0.0270312819629908,
+			"foot_gap": null,
+			"head_gap": 0.0787606543302536
+		},
+		"sigh": {
+			"elbow_max_step": 0.00217396207153797,
+			"foot_gap": null,
+			"head_gap": 0.0756455814838409
+		},
+		"sit_bench": {
+			"elbow_max_step": 0.000702277349773794,
+			"foot_gap": null,
+			"head_gap": 0.0865280485153198
+		},
+		"sit_ground": {
+			"elbow_max_step": 0.0189462807029486,
+			"foot_gap": 0.0577935242652893,
+			"head_gap": 0.081630647778511
+		},
+		"sit_ground_dazed": {
+			"elbow_max_step": 0.0244106482714415,
+			"foot_gap": null,
+			"head_gap": -0.00000000685453414861481
+		},
+		"sit_ground_dazed_hold": {
+			"elbow_max_step": 0.00129375595133752,
+			"foot_gap": null,
+			"head_gap": 0.0250485470890999
+		},
+		"sit_knees_up": {
+			"elbow_max_step": 0.00324785057455301,
+			"foot_gap": null,
+			"head_gap": 0.0704635238647461
+		},
+		"sit_sideways": {
+			"elbow_max_step": 0.00129336211830378,
+			"foot_gap": null,
+			"head_gap": 0.0300699031352997
+		},
+		"sit_step": {
+			"elbow_max_step": 0.000972228299360722,
+			"foot_gap": null,
+			"head_gap": 0.0295803254842758
+		},
+		"skip": {
+			"elbow_max_step": 0.0424315333366394,
+			"foot_gap": 0.0540998095273972,
+			"head_gap": 0.0000438621640205389
+		},
+		"slap_table": {
+			"elbow_max_step": 0.0184390619397163,
+			"foot_gap": null,
+			"head_gap": 0.0299104756116867
+		},
+		"slide_seated": {
+			"elbow_max_step": 0.0235165506601334,
+			"foot_gap": null,
+			"head_gap": 0.0227713367342949
+		},
+		"slouch_bench": {
+			"elbow_max_step": 0.00447286199778318,
+			"foot_gap": null,
+			"head_gap": 0.0846305644512177
+		},
+		"smoke": {
+			"elbow_max_step": 0.00614482164382935,
+			"foot_gap": null,
+			"head_gap": 0.0152411913871765
+		},
+		"smoke_walk": {
+			"elbow_max_step": 0.0222270600497723,
+			"foot_gap": 0.00683174669742584,
+			"head_gap": 0.0084377384185791
+		},
+		"sneeze": {
+			"elbow_max_step": 0.0151183642446995,
+			"foot_gap": null,
+			"head_gap": 0.000701234340667725
+		},
+		"spin": {
+			"elbow_max_step": 0.00626382604241371,
+			"foot_gap": null,
+			"head_gap": 0.0778540676832199
+		},
+		"square_dance": {
+			"elbow_max_step": 0.025775259360671,
+			"foot_gap": null,
+			"head_gap": 0.0579482471942902
+		},
+		"squat": {
+			"elbow_max_step": 0.00619549490511417,
+			"foot_gap": null,
+			"head_gap": 0.0646928703784943
+		},
+		"squat_down": {
+			"elbow_max_step": 0.0136256515979767,
+			"foot_gap": null,
+			"head_gap": 0.0242307117581368
+		},
+		"squat_watch": {
+			"elbow_max_step": 0.00161421077791601,
+			"foot_gap": null,
+			"head_gap": 0.0604930824041367
+		},
+		"stand_hunched": {
+			"elbow_max_step": 0.00403179368004203,
+			"foot_gap": null,
+			"head_gap": 0.0798805809020996
+		},
+		"stand_idle": {
+			"elbow_max_step": 0.00569013832136989,
+			"foot_gap": null,
+			"head_gap": 0.0839063233137131
+		},
+		"stand_up": {
+			"elbow_max_step": 0.01079220790416,
+			"foot_gap": null,
+			"head_gap": 0.0261490947008133
+		},
+		"stand_up_support_back": {
+			"elbow_max_step": 0.0145398546010256,
+			"foot_gap": null,
+			"head_gap": 0.0775512164831162
+		},
+		"stand_watch": {
+			"elbow_max_step": 0.0151756862178445,
+			"foot_gap": null,
+			"head_gap": 0.0809386974573135
+		},
+		"start_walk": {
+			"elbow_max_step": 0.0323382318019867,
+			"foot_gap": 0.00742663830518722,
+			"head_gap": 0.0778708612918854
+		},
+		"startle": {
+			"elbow_max_step": 0.0272961631417274,
+			"foot_gap": null,
+			"head_gap": -0.0000000143051147455386
+		},
+		"stop_hand": {
+			"elbow_max_step": 0.028186472132802,
+			"foot_gap": 0.0239953102171421,
+			"head_gap": 0.022656344473362
+		},
+		"stop_walk": {
+			"elbow_max_step": 0.0213948376476765,
+			"foot_gap": 0.0172034987807274,
+			"head_gap": 0.0798386788368225
+		},
+		"stretch": {
+			"elbow_max_step": 0.0273007079958916,
+			"foot_gap": null,
+			"head_gap": 0.000790827572345734
+		},
+		"stumble": {
+			"elbow_max_step": 0.0560714863240719,
+			"foot_gap": 0.0404576772451401,
+			"head_gap": 0.00921790361404419
+		},
+		"sweep_ground": {
+			"elbow_max_step": 0.00247610430233181,
+			"foot_gap": null,
+			"head_gap": 0.0634192085266113
+		},
+		"swing_seated": {
+			"elbow_max_step": 0.0518188327550888,
+			"foot_gap": null,
+			"head_gap": 0.000000000596046448309018
+		},
+		"table_tennis_partner": {
+			"elbow_max_step": 0.0286803133785725,
+			"foot_gap": null,
+			"head_gap": 0.0499283975362778
+		},
+		"table_tennis_play": {
+			"elbow_max_step": 0.0286803133785725,
+			"foot_gap": null,
+			"head_gap": 0.0499283975362778
+		},
+		"tai_chi": {
+			"elbow_max_step": 0.0275243949145079,
+			"foot_gap": null,
+			"head_gap": 0.0559885060787201
+		},
+		"take_back_piece": {
+			"elbow_max_step": 0.00714590772986412,
+			"foot_gap": null,
+			"head_gap": 0.0033064192533493
+		},
+		"take_photo": {
+			"elbow_max_step": 0.00132272148039192,
+			"foot_gap": null,
+			"head_gap": 0.0689801430702209
+		},
+		"talk_accuse": {
+			"elbow_max_step": 0.0309880878776312,
+			"foot_gap": null,
+			"head_gap": 0.0248311167955399
+		},
+		"talk_excited": {
+			"elbow_max_step": 0.0171525198966265,
+			"foot_gap": null,
+			"head_gap": 0.0594708180427551
+		},
+		"talk_gesture": {
+			"elbow_max_step": 0.0169783942401409,
+			"foot_gap": null,
+			"head_gap": 0.0621353095769882
+		},
+		"talk_shy": {
+			"elbow_max_step": 0.00670989509671927,
+			"foot_gap": null,
+			"head_gap": 0.0190223833918571
+		},
+		"throw_trash": {
+			"elbow_max_step": 0.0116589842364192,
+			"foot_gap": null,
+			"head_gap": 0.0508017843961716
+		},
+		"tiptoe": {
+			"elbow_max_step": 0.0130041129887104,
+			"foot_gap": null,
+			"head_gap": 0.0799200689792633
+		},
+		"trip_fall": {
+			"elbow_max_step": 0.0447247251868248,
+			"foot_gap": 0.0246249476075172,
+			"head_gap": 0.0065485617518425
+		},
+		"turn_about": {
+			"elbow_max_step": 0.010999258607626,
+			"foot_gap": null,
+			"head_gap": 0.0779653942584991
+		},
+		"turn_left_quarter": {
+			"elbow_max_step": 0.00573627930134535,
+			"foot_gap": null,
+			"head_gap": 0.0841820096969605
+		},
+		"turn_page": {
+			"elbow_max_step": 0.00551210809499025,
+			"foot_gap": null,
+			"head_gap": 0.0601852244138718
+		},
+		"turn_right_quarter": {
+			"elbow_max_step": 0.00805090926587582,
+			"foot_gap": null,
+			"head_gap": 0.079839483499527
+		},
+		"turn_walk": {
+			"elbow_max_step": 0.0234759040176868,
+			"foot_gap": 0.0106905514001846,
+			"head_gap": 0.0770162498950958
+		},
+		"vending_collect": {
+			"elbow_max_step": 0.0416128896176815,
+			"foot_gap": null,
+			"head_gap": 0.0140970951318741
+		},
+		"vendor_call": {
+			"elbow_max_step": 0.0608781240880489,
+			"foot_gap": null,
+			"head_gap": 0.0391990846395493
+		},
+		"vendor_tidy": {
+			"elbow_max_step": 0.0617897510528564,
+			"foot_gap": null,
+			"head_gap": 0.0717262631654739
+		},
+		"waist_twister": {
+			"elbow_max_step": 0.00985406339168549,
+			"foot_gap": null,
+			"head_gap": 0.0762979692220688
+		},
+		"walk": {
+			"elbow_max_step": 0.011577432975173,
+			"foot_gap": 0.00731457039713859,
+			"head_gap": 0.0808394855260849
+		},
+		"walk_backpack_straps": {
+			"elbow_max_step": 0.0107870819047093,
+			"foot_gap": 0.0189410822093487,
+			"head_gap": 0.0635147845745087
+		},
+		"walk_backward": {
+			"elbow_max_step": 0.00664718262851238,
+			"foot_gap": 0.00380246356129646,
+			"head_gap": 0.0805830365419388
+		},
+		"walk_briefcase": {
+			"elbow_max_step": 0.0148683451116085,
+			"foot_gap": 0.0583927521109581,
+			"head_gap": 0.0770960456132889
+		},
+		"walk_brisk": {
+			"elbow_max_step": 0.0212412420660257,
+			"foot_gap": 0.0146796444058418,
+			"head_gap": 0.0769747054576874
+		},
+		"walk_cane": {
+			"elbow_max_step": 0.0110997939482331,
+			"foot_gap": 0.0147542023658752,
+			"head_gap": 0.0728289192914963
+		},
+		"walk_carry_bag": {
+			"elbow_max_step": 0.0214632879942656,
+			"foot_gap": 0.0265601949393749,
+			"head_gap": 0.0727644866704941
+		},
+		"walk_carry_bags": {
+			"elbow_max_step": 0.00630522659048438,
+			"foot_gap": 0.0815349334478378,
+			"head_gap": 0.0852559661865234
+		},
+		"walk_carry_box": {
+			"elbow_max_step": 0.00493905786424875,
+			"foot_gap": 0.022215329259634,
+			"head_gap": 0.0473843595385551
+		},
+		"walk_check_watch": {
+			"elbow_max_step": 0.0236318055540323,
+			"foot_gap": 0.00699575632810592,
+			"head_gap": 0.0794304913282394
+		},
+		"walk_child_hand_down": {
+			"elbow_max_step": 0.00812587048858404,
+			"foot_gap": 0.0183438436686993,
+			"head_gap": 0.0781509435176849
+		},
+		"walk_closed_umbrella": {
+			"elbow_max_step": 0.0342373177409172,
+			"foot_gap": 0.000848286002874371,
+			"head_gap": 0.0579362070560455
+		},
+		"walk_cold": {
+			"elbow_max_step": 0.0408684499561787,
+			"foot_gap": 0.0130430126190186,
+			"head_gap": -0.0000000143051147455386
+		},
+		"walk_dog": {
+			"elbow_max_step": 0.0240975990891457,
+			"foot_gap": 0.00536728292703628,
+			"head_gap": 0.0720506316423416
+		},
+		"walk_drink": {
+			"elbow_max_step": 0.0150900557637215,
+			"foot_gap": 0.0262124614417553,
+			"head_gap": 0.0000446593761444097
+		},
+		"walk_elderly_short": {
+			"elbow_max_step": 0.016095869243145,
+			"foot_gap": 0.0332409554719925,
+			"head_gap": 0.0707869386672974
+		},
+		"walk_hands_pockets": {
+			"elbow_max_step": 0.00432439241558313,
+			"foot_gap": 0.00313523054122924,
+			"head_gap": 0.075046226978302
+		},
+		"walk_hold_front": {
+			"elbow_max_step": 0.00580308167263865,
+			"foot_gap": 0.00574038192629814,
+			"head_gap": 0.0783448821306229
+		},
+		"walk_limp": {
+			"elbow_max_step": 0.00903769768774509,
+			"foot_gap": 0.0214625486731529,
+			"head_gap": 0.0782440012693405
+		},
+		"walk_look_up": {
+			"elbow_max_step": 0.0110641857609153,
+			"foot_gap": 0.0372819417715073,
+			"head_gap": 0.0787470048666
+		},
+		"walk_newspaper": {
+			"elbow_max_step": 0.00276189739815891,
+			"foot_gap": 0.00269354149699211,
+			"head_gap": 0.0864330834150314
+		},
+		"walk_newspaper_underarm": {
+			"elbow_max_step": 0.0205036588013172,
+			"foot_gap": 0.00385667026042938,
+			"head_gap": 0.0262073060870171
+		},
+		"walk_one_arm_still": {
+			"elbow_max_step": 0.0191995278000832,
+			"foot_gap": 0.0613844135403633,
+			"head_gap": 0.0748277014493942
+		},
+		"walk_one_pocket": {
+			"elbow_max_step": 0.0267294738441706,
+			"foot_gap": 0.00554630547761917,
+			"head_gap": 0.0678139334917068
+		},
+		"walk_phone_call": {
+			"elbow_max_step": 0.0219235010445118,
+			"foot_gap": 0.00588205471634864,
+			"head_gap": 0.0168331941962242
+		},
+		"walk_proud": {
+			"elbow_max_step": 0.01763029769063,
+			"foot_gap": 0.0189769940078258,
+			"head_gap": 0.0667684084177017
+		},
+		"walk_rigid": {
+			"elbow_max_step": 0.0100645115599036,
+			"foot_gap": 0.0162669496238232,
+			"head_gap": 0.0802051877975464
+		},
+		"walk_slow": {
+			"elbow_max_step": 0.00321248034015298,
+			"foot_gap": 0.00570392996072769,
+			"head_gap": 0.0843587672710419
+		},
+		"walk_stairs_down": {
+			"elbow_max_step": 0.0114226583391428,
+			"foot_gap": 0.0287730583548546,
+			"head_gap": 0.083109632730484
+		},
+		"walk_stairs_up": {
+			"elbow_max_step": 0.0228469129651785,
+			"foot_gap": 0.0184043684601784,
+			"head_gap": 0.0786262309551239
+		},
+		"walk_talk": {
+			"elbow_max_step": 0.0297039225697517,
+			"foot_gap": 0.007976014316082,
+			"head_gap": 0.0754048085212708
+		},
+		"walk_tired": {
+			"elbow_max_step": 0.0166080947965384,
+			"foot_gap": 0.0257962794601917,
+			"head_gap": 0.0722619301080704
+		},
+		"walk_umbrella": {
+			"elbow_max_step": 0.00558672286570072,
+			"foot_gap": 0.00897628083825111,
+			"head_gap": 0.0316393977403641
+		},
+		"wallet_takeout": {
+			"elbow_max_step": 0.00676840590313077,
+			"foot_gap": null,
+			"head_gap": 0.0520003890991211
+		},
+		"water_planter_hold": {
+			"elbow_max_step": 0.0112419817596674,
+			"foot_gap": null,
+			"head_gap": 0.0835779166221619
+		},
+		"wave": {
+			"elbow_max_step": 0.0301734451204538,
+			"foot_gap": null,
+			"head_gap": 0.0203652611374855
+		},
+		"wave_both_overhead": {
+			"elbow_max_step": 0.0265555083751678,
+			"foot_gap": null,
+			"head_gap": 0.014731772840023
+		},
+		"wave_overhead": {
+			"elbow_max_step": 0.0443521440029144,
+			"foot_gap": null,
+			"head_gap": 0.0118711447715759
+		},
+		"wave_overhead_v2": {
+			"elbow_max_step": 0.0182517673820257,
+			"foot_gap": null,
+			"head_gap": 0.00132919907569885
+		},
+		"wave_overhead_v3": {
+			"elbow_max_step": 0.0837330743670464,
+			"foot_gap": null,
+			"head_gap": -0.0000000143051147455386
+		},
+		"whisper": {
+			"elbow_max_step": 0.0103850681334734,
+			"foot_gap": null,
+			"head_gap": -0.0000000292062759393863
+		},
+		"wipe_sweat": {
+			"elbow_max_step": 0.037849310785532,
+			"foot_gap": null,
+			"head_gap": 0.000000000596046448309018
+		},
+		"yawn": {
+			"elbow_max_step": 0.0157732963562012,
+			"foot_gap": null,
+			"head_gap": 0.00337899535894394
+		}
+	},
+	"failures": [],
+	"frames": 24423
+}

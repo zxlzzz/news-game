@@ -1,5 +1,5 @@
 // Writes npc/mapping_reference.json for tools/check_mapping.gd: the accepted mapping, imported from
-// sth/motion-study in this repo (not copied), applied to phone_walk and stand_idle frame 0 and middle frame, using the
+// sth/motion-study in this repo (not copied), applied to phone_walk, stand_idle, scratch_head and hands_on_head (hands at the head) frame 0 and middle frame, using the
 // same exported clips (npc/motion) and parameter copy (npc/skeleton-params.json) the Godot side reads.
 // (in godot/) node tools/make_mapping_reference.mjs --mapping ../sth/motion-study/skeleton-mapping.mjs
 import {readFileSync, writeFileSync} from 'node:fs';
@@ -20,7 +20,7 @@ const REST = {clip: 'stand_idle', frame: 0};  // same as npc_data.gd REST_CLIP /
 const mapFrame = createSkeletonMapper(index.names, clip(REST.clip).frames[REST.frame]);
 const hips = index.names.indexOf('Hips');
 const cases = [];
-for (const id of ['phone_walk', 'stand_idle']) {
+for (const id of ['phone_walk', 'stand_idle', 'scratch_head', 'hands_on_head']) {
   const c = clip(id);
   for (const frame of [0, Math.floor(c.frames.length / 2)]) {
     const origin = c.frames[0][hips];  // clipOrigin: the clip's first-frame Hips

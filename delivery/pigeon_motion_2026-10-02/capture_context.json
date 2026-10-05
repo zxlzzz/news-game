@@ -1,0 +1,46 @@
+{
+  "_note": "Read-only independent context comparison: same named motion/time, fixed caller root and heading. No route or automatic action sequence.",
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/pigeon_motion_2026-10-02/context_actual",
+  "preview": {
+    "viewport": 768,
+    "cell": 320,
+    "columns": 6,
+    "views": [0, 90, 30],
+    "pitch": 15,
+    "frame": 1.0,
+    "root_height": 0.35,
+    "target_height": 0.45,
+    "camera_distance": 30,
+    "background": [0.93, 0.93, 0.93],
+    "grid_color": [0.75, 0.75, 0.75],
+    "grid_step": 0.25,
+    "grid_count": 8,
+    "grid_width": 0.002,
+    "font_size": 19,
+    "caption_margin": 10
+  },
+  "provenance": [
+    "res://tools/review_pigeon_context.gd",
+    "res://npc/pigeon_motion.gd",
+    "res://npc/pigeon-motion.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://npc/pigeon-wings.json",
+    "res://npc/ink_figure.gd",
+    "res://npc/stick_npc.gd",
+    "res://npc/crowd-params.json",
+    "res://style/stick_line.gdshader"
+  ],
+  "entries": [
+    {"id": "flap", "label": "flap_neutral", "duration": 0.8, "samples": 24, "context": {}},
+    {"id": "flap", "label": "flap_climb", "duration": 0.8, "samples": 24, "context": {"velocity": [0, 2, 3]}},
+    {"id": "flap", "label": "flap_turn_left", "duration": 0.8, "samples": 24, "context": {"turn_rate": -1.5}},
+    {"id": "flap", "label": "flap_turn_right", "duration": 0.8, "samples": 24, "context": {"turn_rate": 1.5}},
+    {"id": "flap", "label": "flap_brake", "duration": 0.8, "samples": 24, "context": {"brake": 1}},
+    {"id": "glide", "label": "glide_neutral", "duration": 1.2, "samples": 24, "context": {}},
+    {"id": "glide", "label": "glide_climb", "duration": 1.2, "samples": 24, "context": {"velocity": [0, 2, 3]}},
+    {"id": "glide", "label": "glide_turn_left", "duration": 1.2, "samples": 24, "context": {"turn_rate": -1.5}},
+    {"id": "glide", "label": "glide_turn_right", "duration": 1.2, "samples": 24, "context": {"turn_rate": 1.5}},
+    {"id": "glide", "label": "glide_brake", "duration": 1.2, "samples": 24, "context": {"brake": 1}}
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "output":"C:/Users/Hsinlung/Desktop/news-game/delivery/motion_fix_2026-10-02/interactions/mop_before",
+  "entries":[{"id":"mop_ground","follow_pose":true,"size":2.6},{"id":"sweep_ground","follow_pose":true,"size":2.6}],
+  "samples":24,"columns":6,"cell":384,"views":[0,90],"pitch":12
+}

@@ -2,8 +2,210 @@
   "name": "photo_overhead",
   "text": "A person holds a smartphone in both hands high above their head to take a photograph over a crowd.",
   "duration": 3.5,
-  "seed": 42,
-  "endpoints": false,
+  "seed": 2403,
+  "loop": false,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+      "source_frame": 104,
+      "frame": 104
+    }
+  ],
+  "effectors": [
+    {
+      "joints": [
+        "LeftHand",
+        "RightHand"
+      ],
+      "keyframes": [
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 0,
+          "frame": 0
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 3,
+          "frame": 3
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 6,
+          "frame": 6
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 9,
+          "frame": 9
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 12,
+          "frame": 12
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 15,
+          "frame": 15
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 18,
+          "frame": 18
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 21,
+          "frame": 21
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 24,
+          "frame": 24
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 27,
+          "frame": 27
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 30,
+          "frame": 30
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 33,
+          "frame": 33
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 36,
+          "frame": 36
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 39,
+          "frame": 39
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 42,
+          "frame": 42
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 45,
+          "frame": 45
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 48,
+          "frame": 48
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 51,
+          "frame": 51
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 54,
+          "frame": 54
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 57,
+          "frame": 57
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 60,
+          "frame": 60
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 63,
+          "frame": 63
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 66,
+          "frame": 66
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 69,
+          "frame": 69
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 72,
+          "frame": 72
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 75,
+          "frame": 75
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 78,
+          "frame": 78
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 81,
+          "frame": 81
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 84,
+          "frame": 84
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 87,
+          "frame": 87
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 90,
+          "frame": 90
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 93,
+          "frame": 93
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 96,
+          "frame": 96
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 99,
+          "frame": 99
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 102,
+          "frame": 102
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/581f976dc27b4fb639f9173017489ae51726da67f75e9748abf1294106d38796.npz",
+          "source_frame": 104,
+          "frame": 104
+        }
+      ]
+    }
+  ],
   "model": "Kimodo-SOMA-RP-v1.1",
   "text_encoder": "matbee/kimodo-llm2vec-nf4",
   "fps": 30.0,
@@ -15,82 +217,13 @@
     "constraint_weight": 2.0
   },
   "num_samples": 1,
-  "review": {
-    "status": "selected",
-    "notes_zh": "双手举过头顶、抬头、保持后降回胸前；举高段腕距约27厘米。胸前起止姿态的指骨有交叠，未验证设备握持，不用于精细手部近景。无首尾约束。",
-    "attempts": 1,
-    "views": [
-      "front",
-      "side",
-      "head",
-      "full_hands_and_follow_camera"
-    ],
-    "metrics": {
-      "frames": 105,
-      "finite": true,
-      "bone_length_range_mm": 0.844,
-      "max_joint_step_m": 0.069,
-      "root_horizontal_range_m": [
-        0.05999999865889549,
-        0.12999999523162842
-      ],
-      "LeftHand_head_distance_m": [
-        0.4009999930858612,
-        0.3799999952316284,
-        0.45399999618530273,
-        0.47099998593330383,
-        0.47200000286102295,
-        0.4729999899864197,
-        0.4519999921321869,
-        0.3779999911785126,
-        0.3720000088214874
-      ],
-      "RightHand_head_distance_m": [
-        0.4009999930858612,
-        0.3659999966621399,
-        0.46000000834465027,
-        0.4659999907016754,
-        0.46299999952316284,
-        0.460999995470047,
-        0.4359999895095825,
-        0.36399999260902405,
-        0.3869999945163727
-      ],
-      "hand_separation_m": [
-        0.11800000071525574,
-        0.17100000381469727,
-        0.26100000739097595,
-        0.2669999897480011,
-        0.26899999380111694,
-        0.26899999380111694,
-        0.24699999392032623,
-        0.09300000220537186,
-        0.08699999749660492
-      ],
-      "head_yaw_range_deg": 10.42,
-      "head_pitch_range_deg": 87.82,
-      "head_yaw_samples_deg": [
-        0.0,
-        2.0999999046325684,
-        8.0,
-        10.399999618530273,
-        10.100000381469727,
-        8.899999618530273,
-        9.899999618530273,
-        3.700000047683716,
-        3.799999952316284
-      ],
-      "head_pitch_samples_deg": [
-        0.0,
-        -16.0,
-        -60.5,
-        -77.80000305175781,
-        -77.80000305175781,
-        -80.0,
-        -66.19999694824219,
-        -5.400000095367432,
-        7.300000190734863
-      ]
-    }
+  "root_average_speed_m_s": 0.07909981906414032,
+  "mapped_average_speed_m_s": 0.062381560776135894,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "photo_overhead",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
   }
 }

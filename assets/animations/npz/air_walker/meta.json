@@ -1,0 +1,25 @@
+{
+  "name": "air_walker",
+  "text": "Standing upright on an outdoor air walker exercise machine, both hands hold a horizontal bar at chest height. Legs alternately swing forward and backward like pendulums, knees slightly bent, torso remains steady. Two slow cycles.",
+  "duration": 4,
+  "seed": 5309,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "stand_idle",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
+    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
+  }
+}

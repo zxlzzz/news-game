@@ -1,0 +1,378 @@
+{
+  "fps": 120,
+  "breeds": [
+    "husky"
+  ],
+  "scenarios": [
+    {
+      "label": "sit_normal",
+      "action": "sit",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "sit_urgent",
+      "action": "sit",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "sit_look_normal",
+      "action": "sit_look",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "sit_look_urgent",
+      "action": "sit_look",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "sit_wag_normal",
+      "action": "sit_wag",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "sit_wag_urgent",
+      "action": "sit_wag",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "lie_normal",
+      "action": "lie",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "lie_urgent",
+      "action": "lie",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "sleep_normal",
+      "action": "sleep",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "sleep_urgent",
+      "action": "sleep",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "side_lie_normal",
+      "action": "side_lie",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "side_lie_urgent",
+      "action": "side_lie",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "sniff_normal",
+      "action": "sniff",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "sniff_urgent",
+      "action": "sniff",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "sniff_air_normal",
+      "action": "sniff_air",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "sniff_air_urgent",
+      "action": "sniff_air",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "alert_normal",
+      "action": "alert",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "alert_urgent",
+      "action": "alert",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "wag_normal",
+      "action": "wag",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "wag_urgent",
+      "action": "wag",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "look_around_normal",
+      "action": "look_around",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "look_around_urgent",
+      "action": "look_around",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "shake_normal",
+      "action": "shake",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "shake_urgent",
+      "action": "shake",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "shake_head_normal",
+      "action": "shake_head",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "shake_head_urgent",
+      "action": "shake_head",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "urinate_normal",
+      "action": "urinate",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "urinate_urgent",
+      "action": "urinate",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "paw_normal",
+      "action": "paw",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "paw_urgent",
+      "action": "paw",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "play_bow_normal",
+      "action": "play_bow",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "play_bow_urgent",
+      "action": "play_bow",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "stretch_normal",
+      "action": "stretch",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "stretch_urgent",
+      "action": "stretch",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "startle_normal",
+      "action": "startle",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "startle_urgent",
+      "action": "startle",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "tail_tuck_normal",
+      "action": "tail_tuck",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "tail_tuck_urgent",
+      "action": "tail_tuck",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "scratch_normal",
+      "action": "scratch",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "scratch_urgent",
+      "action": "scratch",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "walk035",
+      "speed": 0.35,
+      "seconds": 8
+    },
+    {
+      "label": "trot",
+      "speed_fraction": 0.7,
+      "seconds": 8
+    }
+  ]
+}

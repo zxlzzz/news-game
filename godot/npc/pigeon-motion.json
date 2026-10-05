@@ -1,0 +1,1124 @@
+{
+  "_units": "Local pose only: metres, seconds, radians. Origin is the caller-owned bird root, +Y up, +Z forward. No world position or route. Scalars interpolate between named whole poses.",
+  "schema": 1,
+  "wing_frame_count": 13,
+  "defaults": {
+    "pitch": 0.5,
+    "roll": 0,
+    "crouch": 0,
+    "body_lift": 0,
+    "wing_open": 0,
+    "wing_frame": 8,
+    "glide": 1,
+    "tail_spread": 0,
+    "foot_air": 0,
+    "tuck": 0,
+    "head_air": 0,
+    "head_offset": 0,
+    "look": 0,
+    "peck": 0,
+    "toe_curl": 0,
+    "gait_weight": 0,
+    "gait_phase": 0,
+    "air_weight": 0
+  },
+  "poses": {
+    "folded": {},
+    "spread_ground": {
+      "wing_open": 1,
+      "tail_spread": 0.6
+    },
+    "raised_ground": {
+      "wing_open": 1,
+      "glide": 0,
+      "wing_frame": 7,
+      "tail_spread": 0.7
+    },
+    "glide": {
+      "pitch": 0.08,
+      "wing_open": 1,
+      "wing_frame": 8,
+      "glide": 1,
+      "tail_spread": 1,
+      "foot_air": 1,
+      "tuck": 1,
+      "head_air": 1,
+      "toe_curl": 1,
+      "air_weight": 1
+    },
+    "upstroke": {
+      "pitch": 0.08,
+      "wing_open": 1,
+      "wing_frame": 8,
+      "glide": 0,
+      "tail_spread": 1,
+      "foot_air": 1,
+      "tuck": 1,
+      "head_air": 1,
+      "toe_curl": 1,
+      "air_weight": 1
+    },
+    "downstroke": {
+      "pitch": 0.08,
+      "wing_open": 1,
+      "wing_frame": 0,
+      "glide": 0,
+      "tail_spread": 1,
+      "foot_air": 1,
+      "tuck": 1,
+      "head_air": 1,
+      "toe_curl": 1,
+      "air_weight": 1
+    },
+    "climb": {
+      "pitch": 0.42,
+      "wing_open": 1,
+      "wing_frame": 8,
+      "glide": 0.2,
+      "tail_spread": 1,
+      "foot_air": 1,
+      "tuck": 1,
+      "head_air": 1,
+      "toe_curl": 1,
+      "air_weight": 1
+    },
+    "dive": {
+      "pitch": -0.5,
+      "wing_open": 1,
+      "wing_frame": 8,
+      "glide": 1,
+      "tail_spread": 0.3,
+      "foot_air": 1,
+      "tuck": 1,
+      "head_air": 1,
+      "toe_curl": 1,
+      "air_weight": 1
+    },
+    "bank_left": {
+      "pitch": 0.08,
+      "wing_open": 1,
+      "wing_frame": 8,
+      "glide": 1,
+      "tail_spread": 1,
+      "foot_air": 1,
+      "tuck": 1,
+      "head_air": 1,
+      "toe_curl": 1,
+      "air_weight": 1,
+      "roll": -0.5
+    },
+    "bank_right": {
+      "pitch": 0.08,
+      "wing_open": 1,
+      "wing_frame": 8,
+      "glide": 1,
+      "tail_spread": 1,
+      "foot_air": 1,
+      "tuck": 1,
+      "head_air": 1,
+      "toe_curl": 1,
+      "air_weight": 1,
+      "roll": 0.5
+    },
+    "brake_feet": {
+      "pitch": 0.85,
+      "wing_open": 1,
+      "wing_frame": 8,
+      "glide": 1,
+      "tail_spread": 1,
+      "foot_air": 1,
+      "tuck": 0,
+      "head_air": 1,
+      "toe_curl": 0,
+      "air_weight": 1
+    },
+    "walk_contact": {
+      "pitch": 0.42,
+      "gait_weight": 1
+    }
+  },
+  "adaptation": {
+    "minimum_horizontal_speed": 0.1,
+    "climb_pitch_gain": 0.35,
+    "maximum_pitch_offset": 0.35,
+    "pitch_limits": [
+      -0.8,
+      1.15
+    ],
+    "turn_roll_gain": 0.28,
+    "maximum_roll": 0.75,
+    "brake_pitch": 0.3,
+    "brake_extend_feet": 0.7,
+    "brake_glide": 0.6
+  },
+  "gait": {
+    "half_stride": 0.022,
+    "foot_lift": 0.014,
+    "swing_fraction": 0.4
+  },
+  "checks": {
+    "sample_hz": 120,
+    "tolerance_m": 2e-06,
+    "seam_delta_s": 0.0001,
+    "variant_minimum_difference_m": 0.015,
+    "maximum_loop_seam_gap_m": 0.002
+  },
+  "motions": {
+    "folded": {
+      "label": "收翼站姿",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "folded",
+      "end_pose": "folded",
+      "variant": "hold",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "folded"
+        },
+        {
+          "phase": 1,
+          "pose": "folded"
+        }
+      ]
+    },
+    "spread_wings": {
+      "label": "展翼站姿",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "spread_ground",
+      "end_pose": "spread_ground",
+      "variant": "hold",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "spread_ground"
+        },
+        {
+          "phase": 1,
+          "pose": "spread_ground"
+        }
+      ]
+    },
+    "wing_up": {
+      "label": "拍翼上端",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "upstroke",
+      "end_pose": "upstroke",
+      "variant": "hold",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "upstroke"
+        },
+        {
+          "phase": 1,
+          "pose": "upstroke"
+        }
+      ]
+    },
+    "wing_down": {
+      "label": "拍翼下端",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "downstroke",
+      "end_pose": "downstroke",
+      "variant": "hold",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "downstroke"
+        },
+        {
+          "phase": 1,
+          "pose": "downstroke"
+        }
+      ]
+    },
+    "glide": {
+      "label": "滑翔姿势",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "glide",
+      "end_pose": "glide",
+      "variant": "hold",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "glide"
+        },
+        {
+          "phase": 1,
+          "pose": "glide"
+        }
+      ]
+    },
+    "climb": {
+      "label": "爬升姿势",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "climb",
+      "end_pose": "climb",
+      "variant": "hold",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "climb"
+        },
+        {
+          "phase": 1,
+          "pose": "climb"
+        }
+      ]
+    },
+    "dive": {
+      "label": "俯冲姿势",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "dive",
+      "end_pose": "dive",
+      "variant": "hold",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "dive"
+        },
+        {
+          "phase": 1,
+          "pose": "dive"
+        }
+      ]
+    },
+    "bank_left": {
+      "label": "左倾姿势",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "bank_left",
+      "end_pose": "bank_left",
+      "variant": "hold",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "bank_left"
+        },
+        {
+          "phase": 1,
+          "pose": "bank_left"
+        }
+      ]
+    },
+    "bank_right": {
+      "label": "右倾姿势",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "bank_right",
+      "end_pose": "bank_right",
+      "variant": "hold",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "bank_right"
+        },
+        {
+          "phase": 1,
+          "pose": "bank_right"
+        }
+      ]
+    },
+    "brake_feet": {
+      "label": "刹停伸脚",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "brake_feet",
+      "end_pose": "brake_feet",
+      "variant": "hold",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "brake_feet"
+        },
+        {
+          "phase": 1,
+          "pose": "brake_feet"
+        }
+      ]
+    },
+    "flap": {
+      "label": "连续拍翼",
+      "duration": 0.4,
+      "loop": true,
+      "start_pose": "upstroke",
+      "end_pose": "upstroke",
+      "variant": "two_strokes",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "upstroke"
+        },
+        {
+          "phase": 1,
+          "pose": "upstroke"
+        }
+      ],
+      "flap_cycles": 1
+    },
+    "walk_in_place": {
+      "label": "原地步态",
+      "duration": 0.8,
+      "loop": true,
+      "start_pose": "walk_contact",
+      "end_pose": "walk_contact",
+      "variant": "alternating_feet",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "walk_contact"
+        },
+        {
+          "phase": 1,
+          "pose": "walk_contact"
+        }
+      ],
+      "gait_cycles": 1
+    },
+    "peck": {
+      "label": "低头啄食",
+      "duration": 1,
+      "loop": true,
+      "start_pose": "folded",
+      "end_pose": "folded",
+      "variant": "head_contact",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "folded"
+        },
+        {
+          "phase": 0.18,
+          "pose": "folded",
+          "values": {
+            "pitch": 0.18,
+            "peck": 0.3
+          }
+        },
+        {
+          "phase": 0.32,
+          "pose": "folded",
+          "values": {
+            "pitch": -0.15,
+            "peck": 1
+          }
+        },
+        {
+          "phase": 0.52,
+          "pose": "folded",
+          "values": {
+            "pitch": 0.18,
+            "peck": 0.2
+          }
+        },
+        {
+          "phase": 1,
+          "pose": "folded"
+        }
+      ]
+    },
+    "look_around": {
+      "label": "左右张望",
+      "duration": 2.4,
+      "loop": true,
+      "start_pose": "folded",
+      "end_pose": "folded",
+      "variant": "head_turns",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "folded"
+        },
+        {
+          "phase": 0.25,
+          "pose": "folded",
+          "values": {
+            "look": 0.8
+          }
+        },
+        {
+          "phase": 0.65,
+          "pose": "folded",
+          "values": {
+            "look": -0.8
+          }
+        },
+        {
+          "phase": 1,
+          "pose": "folded"
+        }
+      ]
+    },
+    "unfold_direct": {
+      "label": "平展翅膀",
+      "duration": 0.65,
+      "loop": false,
+      "start_pose": "folded",
+      "end_pose": "spread_ground",
+      "variant": "direct",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "folded"
+        },
+        {
+          "phase": 1,
+          "pose": "spread_ground"
+        }
+      ]
+    },
+    "unfold_lift": {
+      "label": "抬翼后展开",
+      "duration": 0.8,
+      "loop": false,
+      "start_pose": "folded",
+      "end_pose": "spread_ground",
+      "variant": "raised_arc",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "folded"
+        },
+        {
+          "phase": 0.55,
+          "pose": "raised_ground"
+        },
+        {
+          "phase": 1,
+          "pose": "spread_ground"
+        }
+      ]
+    },
+    "fold_direct": {
+      "label": "直接收翼",
+      "duration": 0.65,
+      "loop": false,
+      "start_pose": "spread_ground",
+      "end_pose": "folded",
+      "variant": "direct",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "spread_ground"
+        },
+        {
+          "phase": 1,
+          "pose": "folded"
+        }
+      ]
+    },
+    "fold_after_lift": {
+      "label": "抬翼后收拢",
+      "duration": 0.8,
+      "loop": false,
+      "start_pose": "spread_ground",
+      "end_pose": "folded",
+      "variant": "raised_arc",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "spread_ground"
+        },
+        {
+          "phase": 0.4,
+          "pose": "raised_ground"
+        },
+        {
+          "phase": 1,
+          "pose": "folded"
+        }
+      ]
+    },
+    "launch_power": {
+      "label": "蹲身强拍起飞",
+      "duration": 1,
+      "loop": false,
+      "start_pose": "folded",
+      "end_pose": "upstroke",
+      "variant": "crouch_downstroke",
+      "support": "transition",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "folded"
+        },
+        {
+          "phase": 0.18,
+          "pose": "folded",
+          "values": {
+            "crouch": 0.022,
+            "pitch": 0.7
+          }
+        },
+        {
+          "phase": 0.42,
+          "pose": "upstroke",
+          "values": {
+            "pitch": 0.7,
+            "foot_air": 0.6,
+            "tuck": 0.2,
+            "head_air": 0.6,
+            "toe_curl": 0.2,
+            "air_weight": 0.6
+          }
+        },
+        {
+          "phase": 0.7,
+          "pose": "downstroke",
+          "values": {
+            "pitch": 0.6
+          }
+        },
+        {
+          "phase": 1,
+          "pose": "upstroke"
+        }
+      ]
+    },
+    "launch_open": {
+      "label": "展翼起飞",
+      "duration": 0.85,
+      "loop": false,
+      "start_pose": "folded",
+      "end_pose": "upstroke",
+      "variant": "open_upstroke",
+      "support": "transition",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "folded"
+        },
+        {
+          "phase": 0.3,
+          "pose": "spread_ground",
+          "values": {
+            "pitch": 0.62,
+            "crouch": 0.01
+          }
+        },
+        {
+          "phase": 0.65,
+          "pose": "upstroke",
+          "values": {
+            "pitch": 0.4,
+            "foot_air": 0.7,
+            "tuck": 0.5,
+            "toe_curl": 0.5,
+            "head_air": 0.7,
+            "air_weight": 0.7
+          }
+        },
+        {
+          "phase": 1,
+          "pose": "upstroke"
+        }
+      ]
+    },
+    "flap_to_glide_stroke": {
+      "label": "完成一拍后滑翔",
+      "duration": 0.65,
+      "loop": false,
+      "start_pose": "upstroke",
+      "end_pose": "glide",
+      "variant": "finish_stroke",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "upstroke"
+        },
+        {
+          "phase": 0.6,
+          "pose": "upstroke",
+          "values": {
+            "glide": 0.1
+          }
+        },
+        {
+          "phase": 1,
+          "pose": "glide"
+        }
+      ],
+      "flap_cycles": 1
+    },
+    "flap_to_glide_soft": {
+      "label": "高位放平滑翔",
+      "duration": 0.65,
+      "loop": false,
+      "start_pose": "upstroke",
+      "end_pose": "glide",
+      "variant": "lower_wings",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "upstroke"
+        },
+        {
+          "phase": 1,
+          "pose": "glide"
+        }
+      ]
+    },
+    "glide_to_flap": {
+      "label": "滑翔转拍翼",
+      "duration": 0.45,
+      "loop": false,
+      "start_pose": "glide",
+      "end_pose": "upstroke",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "glide"
+        },
+        {
+          "phase": 1,
+          "pose": "upstroke"
+        }
+      ]
+    },
+    "climb_enter": {
+      "label": "进入爬升",
+      "duration": 0.55,
+      "loop": false,
+      "start_pose": "glide",
+      "end_pose": "climb",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "glide"
+        },
+        {
+          "phase": 1,
+          "pose": "climb"
+        }
+      ]
+    },
+    "climb_exit": {
+      "label": "恢复滑翔",
+      "duration": 0.55,
+      "loop": false,
+      "start_pose": "climb",
+      "end_pose": "glide",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "climb"
+        },
+        {
+          "phase": 1,
+          "pose": "glide"
+        }
+      ]
+    },
+    "dive_enter": {
+      "label": "进入俯冲",
+      "duration": 0.55,
+      "loop": false,
+      "start_pose": "glide",
+      "end_pose": "dive",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "glide"
+        },
+        {
+          "phase": 1,
+          "pose": "dive"
+        }
+      ]
+    },
+    "dive_exit": {
+      "label": "恢复滑翔",
+      "duration": 0.55,
+      "loop": false,
+      "start_pose": "dive",
+      "end_pose": "glide",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "dive"
+        },
+        {
+          "phase": 1,
+          "pose": "glide"
+        }
+      ]
+    },
+    "bank_left_enter": {
+      "label": "进入左倾",
+      "duration": 0.55,
+      "loop": false,
+      "start_pose": "glide",
+      "end_pose": "bank_left",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "glide"
+        },
+        {
+          "phase": 1,
+          "pose": "bank_left"
+        }
+      ]
+    },
+    "bank_left_exit": {
+      "label": "恢复滑翔",
+      "duration": 0.55,
+      "loop": false,
+      "start_pose": "bank_left",
+      "end_pose": "glide",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "bank_left"
+        },
+        {
+          "phase": 1,
+          "pose": "glide"
+        }
+      ]
+    },
+    "bank_right_enter": {
+      "label": "进入右倾",
+      "duration": 0.55,
+      "loop": false,
+      "start_pose": "glide",
+      "end_pose": "bank_right",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "glide"
+        },
+        {
+          "phase": 1,
+          "pose": "bank_right"
+        }
+      ]
+    },
+    "bank_right_exit": {
+      "label": "恢复滑翔",
+      "duration": 0.55,
+      "loop": false,
+      "start_pose": "bank_right",
+      "end_pose": "glide",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "bank_right"
+        },
+        {
+          "phase": 1,
+          "pose": "glide"
+        }
+      ]
+    },
+    "bank_left_to_right": {
+      "label": "左倾转右倾",
+      "duration": 1,
+      "loop": false,
+      "start_pose": "bank_left",
+      "end_pose": "bank_right",
+      "variant": "through_level",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "bank_left"
+        },
+        {
+          "phase": 0.5,
+          "pose": "glide"
+        },
+        {
+          "phase": 1,
+          "pose": "bank_right"
+        }
+      ]
+    },
+    "brake_from_glide": {
+      "label": "滑翔刹停伸脚",
+      "duration": 0.55,
+      "loop": false,
+      "start_pose": "glide",
+      "end_pose": "brake_feet",
+      "variant": "direct",
+      "support": "air",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "glide"
+        },
+        {
+          "phase": 1,
+          "pose": "brake_feet"
+        }
+      ]
+    },
+    "land_flare": {
+      "label": "展翼伸脚落稳",
+      "duration": 0.7,
+      "loop": false,
+      "start_pose": "brake_feet",
+      "end_pose": "spread_ground",
+      "variant": "steady_placement",
+      "support": "transition",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "brake_feet"
+        },
+        {
+          "phase": 1,
+          "pose": "spread_ground"
+        }
+      ]
+    },
+    "land_absorb": {
+      "label": "落脚蹲身缓冲",
+      "duration": 0.9,
+      "loop": false,
+      "start_pose": "brake_feet",
+      "end_pose": "spread_ground",
+      "variant": "crouch_absorption",
+      "support": "transition",
+      "adaptation": "air",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "brake_feet"
+        },
+        {
+          "phase": 0.5,
+          "pose": "spread_ground",
+          "values": {
+            "crouch": 0.018,
+            "pitch": 0.64,
+            "tail_spread": 1
+          }
+        },
+        {
+          "phase": 0.75,
+          "pose": "spread_ground",
+          "values": {
+            "crouch": 0.008
+          }
+        },
+        {
+          "phase": 1,
+          "pose": "spread_ground"
+        }
+      ]
+    },
+    "touchdown_fold": {
+      "label": "落稳后收翼",
+      "duration": 0.45,
+      "loop": false,
+      "start_pose": "spread_ground",
+      "end_pose": "folded",
+      "variant": "direct",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "spread_ground"
+        },
+        {
+          "phase": 1,
+          "pose": "folded"
+        }
+      ]
+    },
+    "hop": {
+      "label": "原地跳跃姿势",
+      "duration": 0.65,
+      "loop": false,
+      "start_pose": "folded",
+      "end_pose": "folded",
+      "variant": "crouch_lift_absorb",
+      "support": "ground",
+      "adaptation": "none",
+      "keys": [
+        {
+          "phase": 0,
+          "pose": "folded"
+        },
+        {
+          "phase": 0.16,
+          "pose": "folded",
+          "values": {
+            "crouch": 0.014,
+            "pitch": 0.42
+          }
+        },
+        {
+          "phase": 0.23,
+          "pose": "folded",
+          "values": {
+            "crouch": 0.014,
+            "pitch": 0.36,
+            "tuck": 0.5,
+            "wing_open": 0.25,
+            "glide": 0,
+            "wing_frame": 6,
+            "tail_spread": 0.3
+          }
+        },
+        {
+          "phase": 0.3,
+          "pose": "folded",
+          "values": {
+            "pitch": 0.3,
+            "wing_open": 0.5,
+            "glide": 0,
+            "wing_frame": 6,
+            "foot_air": 1,
+            "tuck": 0.2,
+            "tail_spread": 0.5
+          }
+        },
+        {
+          "phase": 0.52,
+          "pose": "folded",
+          "values": {
+            "pitch": 0.3,
+            "body_lift": 0.08,
+            "wing_open": 0.5,
+            "glide": 0,
+            "wing_frame": 6,
+            "foot_air": 1,
+            "tuck": 0.2,
+            "tail_spread": 0.5
+          }
+        },
+        {
+          "phase": 0.7,
+          "pose": "folded",
+          "values": {
+            "pitch": 0.38,
+            "body_lift": 0.02,
+            "wing_open": 0.3,
+            "glide": 0,
+            "wing_frame": 6,
+            "foot_air": 1,
+            "tuck": 0.2,
+            "tail_spread": 0.3
+          }
+        },
+        {
+          "phase": 0.8,
+          "pose": "folded",
+          "values": {
+            "tuck": 0.2
+          }
+        },
+        {
+          "phase": 0.88,
+          "pose": "folded",
+          "values": {
+            "crouch": 0.018
+          }
+        },
+        {
+          "phase": 1,
+          "pose": "folded"
+        }
+      ]
+    }
+  },
+  "preview": {
+    "ground": {
+      "frame": 1.0,
+      "root_height": 0.0,
+      "target_height": 0.12
+    },
+    "air": {
+      "frame": 1.0,
+      "root_height": 0.35,
+      "target_height": 0.45
+    },
+    "transition": {
+      "frame": 1.0,
+      "root_height": 0.35,
+      "target_height": 0.45
+    }
+  }
+}

@@ -1,0 +1,947 @@
+{
+  "name": "vending_collect",
+  "text": "A standing person bends at hips and knees to retrieve a bottle from a low vending machine hatch directly in front, right hand reaches down to knee height then lifts it, returns upright.",
+  "duration": 5.0,
+  "seed": 2805,
+  "loop": false,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+      "source_frame": 45,
+      "frame": 45
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+      "source_frame": 90,
+      "frame": 90
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+      "source_frame": 149,
+      "frame": 149
+    }
+  ],
+  "effectors": [
+    {
+      "joints": [
+        "RightHand"
+      ],
+      "keyframes": [
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 0,
+          "frame": 0
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 1,
+          "frame": 1
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 2,
+          "frame": 2
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 3,
+          "frame": 3
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 4,
+          "frame": 4
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 5,
+          "frame": 5
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 6,
+          "frame": 6
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 7,
+          "frame": 7
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 8,
+          "frame": 8
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 9,
+          "frame": 9
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 10,
+          "frame": 10
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 11,
+          "frame": 11
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 12,
+          "frame": 12
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 13,
+          "frame": 13
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 14,
+          "frame": 14
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 15,
+          "frame": 15
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 16,
+          "frame": 16
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 17,
+          "frame": 17
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 18,
+          "frame": 18
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 19,
+          "frame": 19
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 20,
+          "frame": 20
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 21,
+          "frame": 21
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 22,
+          "frame": 22
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 23,
+          "frame": 23
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 24,
+          "frame": 24
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 25,
+          "frame": 25
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 26,
+          "frame": 26
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 27,
+          "frame": 27
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 28,
+          "frame": 28
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 29,
+          "frame": 29
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 30,
+          "frame": 30
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 31,
+          "frame": 31
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 32,
+          "frame": 32
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 33,
+          "frame": 33
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 34,
+          "frame": 34
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 35,
+          "frame": 35
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 36,
+          "frame": 36
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 37,
+          "frame": 37
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 38,
+          "frame": 38
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 39,
+          "frame": 39
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 40,
+          "frame": 40
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 41,
+          "frame": 41
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 42,
+          "frame": 42
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 43,
+          "frame": 43
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 44,
+          "frame": 44
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 45,
+          "frame": 45
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 46,
+          "frame": 46
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 47,
+          "frame": 47
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 48,
+          "frame": 48
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 49,
+          "frame": 49
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 50,
+          "frame": 50
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 51,
+          "frame": 51
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 52,
+          "frame": 52
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 53,
+          "frame": 53
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 54,
+          "frame": 54
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 55,
+          "frame": 55
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 56,
+          "frame": 56
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 57,
+          "frame": 57
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 58,
+          "frame": 58
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 59,
+          "frame": 59
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 60,
+          "frame": 60
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 61,
+          "frame": 61
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 62,
+          "frame": 62
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 63,
+          "frame": 63
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 64,
+          "frame": 64
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 65,
+          "frame": 65
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 66,
+          "frame": 66
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 67,
+          "frame": 67
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 68,
+          "frame": 68
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 69,
+          "frame": 69
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 70,
+          "frame": 70
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 71,
+          "frame": 71
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 72,
+          "frame": 72
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 73,
+          "frame": 73
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 74,
+          "frame": 74
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 75,
+          "frame": 75
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 76,
+          "frame": 76
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 77,
+          "frame": 77
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 78,
+          "frame": 78
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 79,
+          "frame": 79
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 80,
+          "frame": 80
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 81,
+          "frame": 81
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 82,
+          "frame": 82
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 83,
+          "frame": 83
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 84,
+          "frame": 84
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 85,
+          "frame": 85
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 86,
+          "frame": 86
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 87,
+          "frame": 87
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 88,
+          "frame": 88
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 89,
+          "frame": 89
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 90,
+          "frame": 90
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 91,
+          "frame": 91
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 92,
+          "frame": 92
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 93,
+          "frame": 93
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 94,
+          "frame": 94
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 95,
+          "frame": 95
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 96,
+          "frame": 96
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 97,
+          "frame": 97
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 98,
+          "frame": 98
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 99,
+          "frame": 99
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 100,
+          "frame": 100
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 101,
+          "frame": 101
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 102,
+          "frame": 102
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 103,
+          "frame": 103
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 104,
+          "frame": 104
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 105,
+          "frame": 105
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 106,
+          "frame": 106
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 107,
+          "frame": 107
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 108,
+          "frame": 108
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 109,
+          "frame": 109
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 110,
+          "frame": 110
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 111,
+          "frame": 111
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 112,
+          "frame": 112
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 113,
+          "frame": 113
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 114,
+          "frame": 114
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 115,
+          "frame": 115
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 116,
+          "frame": 116
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 117,
+          "frame": 117
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 118,
+          "frame": 118
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 119,
+          "frame": 119
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 120,
+          "frame": 120
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 121,
+          "frame": 121
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 122,
+          "frame": 122
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 123,
+          "frame": 123
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 124,
+          "frame": 124
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 125,
+          "frame": 125
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 126,
+          "frame": 126
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 127,
+          "frame": 127
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 128,
+          "frame": 128
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 129,
+          "frame": 129
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 130,
+          "frame": 130
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 131,
+          "frame": 131
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 132,
+          "frame": 132
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 133,
+          "frame": 133
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 134,
+          "frame": 134
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 135,
+          "frame": 135
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 136,
+          "frame": 136
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 137,
+          "frame": 137
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 138,
+          "frame": 138
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 139,
+          "frame": 139
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 140,
+          "frame": 140
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 141,
+          "frame": 141
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 142,
+          "frame": 142
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 143,
+          "frame": 143
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 144,
+          "frame": 144
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 145,
+          "frame": 145
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 146,
+          "frame": 146
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 147,
+          "frame": 147
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 148,
+          "frame": 148
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+          "source_frame": 149,
+          "frame": 149
+        }
+      ]
+    }
+  ],
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 0.12481719255447388,
+  "mapped_average_speed_m_s": 0.09843627173065762,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "vending_collect",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
+    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
+  },
+  "repair": {
+    "date": "2026-10-02",
+    "status": "applied_runtime_reviewed_pending_user_acceptance",
+    "method": "Reconstruct all77 joints from archived pre-EE local rotations and complete hierarchy; author complete anatomical arm chains for task grips where needed.",
+    "archived_rotation_source": "assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+    "source_sha256": "187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170",
+    "original_shipped_sha256": "d12dbc077aa43ad7a4c4297142b17cc02d89876faf128e1c6c55b61cbaf452f2",
+    "task_arm_chains": [],
+    "original_body_root_legs": "Preserved from the archived original full motion; no temporal smoothing or selected-frame freezing.",
+    "derivatives": "global/local rotations and posed77 joints reconstructed together; archived root path, foot contacts and heading retained; loop final rotations/contacts/heading repeat first.",
+    "before": {
+      "frames": 150,
+      "max_bone_length_range_m": 0.0008631646633148193,
+      "fk_position_max_error_m": 3.6164107086733566e-07,
+      "fk_rotation_max_error": 3.653064482023183e-07,
+      "local_rotation_orthogonality_max_error": 0.0015600827236559203,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.028610652312636375,
+          "frames": [
+            29,
+            30
+          ],
+          "max_fk_error_m": 2.4038948254201387e-07,
+          "fk_max_step_m": 0.028610561043024063
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.01964198239147663,
+          "frames": [
+            104,
+            105
+          ],
+          "max_fk_error_m": 2.3888378564151935e-07,
+          "fk_max_step_m": 0.019642028957605362
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.02925926446914673,
+          "frames": [
+            24,
+            25
+          ],
+          "max_fk_error_m": 2.4374332951992983e-07,
+          "fk_max_step_m": 0.029259223490953445
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.037775181233882904,
+          "frames": [
+            30,
+            31
+          ],
+          "max_fk_error_m": 2.388838993283571e-07,
+          "fk_max_step_m": 0.03777526319026947
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.43746450543403625,
+          "frames": [
+            106,
+            107
+          ],
+          "max_fk_error_m": 2.4038948254201387e-07,
+          "fk_max_step_m": 0.43746456503868103
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.5253071784973145,
+          "frames": [
+            97,
+            98
+          ],
+          "max_fk_error_m": 2.4439722778879513e-07,
+          "fk_max_step_m": 0.5253071784973145
+        }
+      }
+    },
+    "after": {
+      "frames": 150,
+      "max_bone_length_range_m": 2.086162567138672e-07,
+      "fk_position_max_error_m": 3.1336756478594907e-07,
+      "fk_rotation_max_error": 4.825221822102321e-07,
+      "local_rotation_orthogonality_max_error": 1.7901390633394096e-07,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.026807967573404312,
+          "frames": [
+            110,
+            111
+          ],
+          "max_fk_error_m": 2.389128326285572e-07,
+          "fk_max_step_m": 0.026807740330696106
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.01078043319284916,
+          "frames": [
+            111,
+            112
+          ],
+          "max_fk_error_m": 2.389128326285572e-07,
+          "fk_max_step_m": 0.010780666954815388
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.01534891128540039,
+          "frames": [
+            34,
+            35
+          ],
+          "max_fk_error_m": 2.384185791015625e-07,
+          "fk_max_step_m": 0.015348880551755428
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.0369059294462204,
+          "frames": [
+            110,
+            111
+          ],
+          "max_fk_error_m": 2.4211522031691857e-07,
+          "fk_max_step_m": 0.036905717104673386
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.048709504306316376,
+          "frames": [
+            110,
+            111
+          ],
+          "max_fk_error_m": 2.4755667027420714e-07,
+          "fk_max_step_m": 0.048709385097026825
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.05201335996389389,
+          "frames": [
+            110,
+            111
+          ],
+          "max_fk_error_m": 2.5211161869265197e-07,
+          "fk_max_step_m": 0.052013274282217026
+        }
+      }
+    },
+    "visual_evidence": "delivery/motion_fix_2026-10-02/interactions/after/vending_collect.png"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "cafe_sit_drink",
+  "text": "Sitting on a chair at a cafe table, both feet resting on the floor, pick up a cup with the right hand, gently raise it to the mouth, sip while slightly tilting the wrist, lower it back to the table. Left hand rests on the thigh.",
+  "duration": 5,
+  "seed": 5302,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "sit_bench",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
+    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
+  }
+}

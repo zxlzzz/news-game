@@ -1,0 +1,299 @@
+[
+  {
+    "file": "page_00.jpg",
+    "clips": [
+      "cat_Idle",
+      "cat_NG_Head_Tilt_Left",
+      "cat_NG_Head_Tilt_Right",
+      "cat_NG_Knead",
+      "cat_NG_Lie_Down",
+      "cat_NG_Lie_Get_Up",
+      "cat_NG_Lie_Idle",
+      "cat_NG_Lie_To_Sit",
+      "cat_NG_Look_Around",
+      "cat_NG_Look_Down",
+      "cat_NG_Look_Left",
+      "cat_NG_Look_Right"
+    ]
+  },
+  {
+    "file": "page_01.jpg",
+    "clips": [
+      "cat_NG_Look_Up",
+      "cat_NG_Paw_Offer_Left",
+      "cat_NG_Paw_Offer_Right",
+      "cat_NG_Play_Bow",
+      "cat_NG_Shake_Head",
+      "cat_NG_Shake_Off",
+      "cat_NG_Side_Lie_Breathe",
+      "cat_NG_Side_Lie_Enter",
+      "cat_NG_Side_Lie_Exit",
+      "cat_NG_Sit_Down",
+      "cat_NG_Sit_Get_Up",
+      "cat_NG_Sit_Idle"
+    ]
+  },
+  {
+    "file": "page_02.jpg",
+    "clips": [
+      "cat_NG_Sit_Look_Around",
+      "cat_NG_Sit_Paw_Offer_Left",
+      "cat_NG_Sit_Paw_Offer_Right",
+      "cat_NG_Sit_To_Lie",
+      "cat_NG_Sit_Wag",
+      "cat_NG_Sleep_Breathe",
+      "cat_NG_Sleep_Enter",
+      "cat_NG_Sleep_Wake",
+      "cat_NG_Sniff_Air",
+      "cat_NG_Sniff_Ground",
+      "cat_NG_Sniff_Ground_Enter",
+      "cat_NG_Sniff_Ground_Exit"
+    ]
+  },
+  {
+    "file": "page_03.jpg",
+    "clips": [
+      "cat_NG_Stand_Alert",
+      "cat_NG_Stand_Breathe",
+      "cat_NG_Startle",
+      "cat_NG_Stretch_Front",
+      "cat_NG_Tail_Tip_Flick",
+      "cat_NG_Tail_Tuck_Cautious",
+      "cat_NG_Tail_Wag_Happy",
+      "cat_NG_Tail_Wag_Slow",
+      "cat_NG_Threat_Arch",
+      "cat_NG_Threat_Arch_Enter",
+      "cat_NG_Threat_Arch_Exit",
+      "cat_NG_Urinate_Left"
+    ]
+  },
+  {
+    "file": "page_04.jpg",
+    "clips": [
+      "cat_NG_Urinate_Right",
+      "cat_Walking",
+      "husky_Attack",
+      "husky_Death",
+      "husky_Eating",
+      "husky_Gallop",
+      "husky_Gallop_Jump",
+      "husky_Idle",
+      "husky_Idle_2",
+      "husky_Idle_2_HeadLow",
+      "husky_Idle_HitReact_Left",
+      "husky_Idle_HitReact_Right"
+    ]
+  },
+  {
+    "file": "page_05.jpg",
+    "clips": [
+      "husky_Jump_ToIdle",
+      "husky_NG_Ear_Twitch_Both",
+      "husky_NG_Ear_Twitch_Left",
+      "husky_NG_Ear_Twitch_Right",
+      "husky_NG_Head_Tilt_Left",
+      "husky_NG_Head_Tilt_Right",
+      "husky_NG_Lie_Down",
+      "husky_NG_Lie_Get_Up",
+      "husky_NG_Lie_Idle",
+      "husky_NG_Lie_To_Sit",
+      "husky_NG_Look_Around",
+      "husky_NG_Look_Down"
+    ]
+  },
+  {
+    "file": "page_06.jpg",
+    "clips": [
+      "husky_NG_Look_Left",
+      "husky_NG_Look_Right",
+      "husky_NG_Look_Up",
+      "husky_NG_Paw_Offer_Left",
+      "husky_NG_Paw_Offer_Right",
+      "husky_NG_Play_Bow",
+      "husky_NG_Scratch_Left",
+      "husky_NG_Scratch_Right",
+      "husky_NG_Shake_Head",
+      "husky_NG_Shake_Off",
+      "husky_NG_Side_Lie_Breathe",
+      "husky_NG_Side_Lie_Enter"
+    ]
+  },
+  {
+    "file": "page_07.jpg",
+    "clips": [
+      "husky_NG_Side_Lie_Exit",
+      "husky_NG_Sit_Down",
+      "husky_NG_Sit_Get_Up",
+      "husky_NG_Sit_Idle",
+      "husky_NG_Sit_Look_Around",
+      "husky_NG_Sit_Paw_Offer_Left",
+      "husky_NG_Sit_Paw_Offer_Right",
+      "husky_NG_Sit_To_Lie",
+      "husky_NG_Sit_Wag",
+      "husky_NG_Sleep_Breathe",
+      "husky_NG_Sleep_Enter",
+      "husky_NG_Sleep_Wake"
+    ]
+  },
+  {
+    "file": "page_08.jpg",
+    "clips": [
+      "husky_NG_Sniff_Air",
+      "husky_NG_Sniff_Ground",
+      "husky_NG_Sniff_Ground_Enter",
+      "husky_NG_Sniff_Ground_Exit",
+      "husky_NG_Stand_Alert",
+      "husky_NG_Stand_Breathe",
+      "husky_NG_Startle",
+      "husky_NG_Stretch_Front",
+      "husky_NG_Tail_Tuck_Cautious",
+      "husky_NG_Tail_Wag_Happy",
+      "husky_NG_Tail_Wag_Slow",
+      "husky_NG_Urinate_Left"
+    ]
+  },
+  {
+    "file": "page_09.jpg",
+    "clips": [
+      "husky_NG_Urinate_Right",
+      "husky_Walk",
+      "pigeon_bank_left",
+      "pigeon_bank_left_enter",
+      "pigeon_bank_left_exit",
+      "pigeon_bank_left_to_right",
+      "pigeon_bank_right",
+      "pigeon_bank_right_enter",
+      "pigeon_bank_right_exit",
+      "pigeon_brake_feet",
+      "pigeon_brake_from_glide",
+      "pigeon_climb"
+    ]
+  },
+  {
+    "file": "page_10.jpg",
+    "clips": [
+      "pigeon_climb_enter",
+      "pigeon_climb_exit",
+      "pigeon_dive",
+      "pigeon_dive_enter",
+      "pigeon_dive_exit",
+      "pigeon_flap",
+      "pigeon_flap_to_glide_soft",
+      "pigeon_flap_to_glide_stroke",
+      "pigeon_fold_after_lift",
+      "pigeon_fold_direct",
+      "pigeon_folded",
+      "pigeon_glide"
+    ]
+  },
+  {
+    "file": "page_11.jpg",
+    "clips": [
+      "pigeon_glide_to_flap",
+      "pigeon_hop",
+      "pigeon_land_absorb",
+      "pigeon_land_flare",
+      "pigeon_launch_open",
+      "pigeon_launch_power",
+      "pigeon_look_around",
+      "pigeon_peck",
+      "pigeon_spread_wings",
+      "pigeon_touchdown_fold",
+      "pigeon_unfold_direct",
+      "pigeon_unfold_lift"
+    ]
+  },
+  {
+    "file": "page_12.jpg",
+    "clips": [
+      "pigeon_walk_in_place",
+      "pigeon_wing_down",
+      "pigeon_wing_up",
+      "shibainu_Attack",
+      "shibainu_Death",
+      "shibainu_Eating",
+      "shibainu_Gallop",
+      "shibainu_Gallop_Jump",
+      "shibainu_Idle",
+      "shibainu_Idle_2",
+      "shibainu_Idle_2_HeadLow",
+      "shibainu_Idle_HitReact_Left"
+    ]
+  },
+  {
+    "file": "page_13.jpg",
+    "clips": [
+      "shibainu_Idle_HitReact_Right",
+      "shibainu_Jump_ToIdle",
+      "shibainu_NG_Ear_Twitch_Both",
+      "shibainu_NG_Ear_Twitch_Left",
+      "shibainu_NG_Ear_Twitch_Right",
+      "shibainu_NG_Head_Tilt_Left",
+      "shibainu_NG_Head_Tilt_Right",
+      "shibainu_NG_Lie_Down",
+      "shibainu_NG_Lie_Get_Up",
+      "shibainu_NG_Lie_Idle",
+      "shibainu_NG_Lie_To_Sit",
+      "shibainu_NG_Look_Around"
+    ]
+  },
+  {
+    "file": "page_14.jpg",
+    "clips": [
+      "shibainu_NG_Look_Down",
+      "shibainu_NG_Look_Left",
+      "shibainu_NG_Look_Right",
+      "shibainu_NG_Look_Up",
+      "shibainu_NG_Paw_Offer_Left",
+      "shibainu_NG_Paw_Offer_Right",
+      "shibainu_NG_Play_Bow",
+      "shibainu_NG_Scratch_Left",
+      "shibainu_NG_Scratch_Right",
+      "shibainu_NG_Shake_Head",
+      "shibainu_NG_Shake_Off",
+      "shibainu_NG_Side_Lie_Breathe"
+    ]
+  },
+  {
+    "file": "page_15.jpg",
+    "clips": [
+      "shibainu_NG_Side_Lie_Enter",
+      "shibainu_NG_Side_Lie_Exit",
+      "shibainu_NG_Sit_Down",
+      "shibainu_NG_Sit_Get_Up",
+      "shibainu_NG_Sit_Idle",
+      "shibainu_NG_Sit_Look_Around",
+      "shibainu_NG_Sit_Paw_Offer_Left",
+      "shibainu_NG_Sit_Paw_Offer_Right",
+      "shibainu_NG_Sit_To_Lie",
+      "shibainu_NG_Sit_Wag",
+      "shibainu_NG_Sleep_Breathe",
+      "shibainu_NG_Sleep_Enter"
+    ]
+  },
+  {
+    "file": "page_16.jpg",
+    "clips": [
+      "shibainu_NG_Sleep_Wake",
+      "shibainu_NG_Sniff_Air",
+      "shibainu_NG_Sniff_Ground",
+      "shibainu_NG_Sniff_Ground_Enter",
+      "shibainu_NG_Sniff_Ground_Exit",
+      "shibainu_NG_Stand_Alert",
+      "shibainu_NG_Stand_Breathe",
+      "shibainu_NG_Startle",
+      "shibainu_NG_Stretch_Front",
+      "shibainu_NG_Tail_Tuck_Cautious",
+      "shibainu_NG_Tail_Wag_Happy",
+      "shibainu_NG_Tail_Wag_Slow"
+    ]
+  },
+  {
+    "file": "page_17.jpg",
+    "clips": [
+      "shibainu_NG_Urinate_Left",
+      "shibainu_NG_Urinate_Right",
+      "shibainu_Walk"
+    ]
+  }
+]

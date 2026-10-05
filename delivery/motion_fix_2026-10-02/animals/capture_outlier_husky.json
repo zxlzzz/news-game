@@ -1,0 +1,22 @@
+{
+  "trace": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\outlier_actual_trace\\runtime_husky.json",
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\outlier_actual\\husky",
+  "entries": [
+    {
+      "breed": "husky",
+      "label": "side_cancel_husky",
+      "start": 0,
+      "duration": 1.0083333333333333,
+      "samples": 121,
+      "size": 1.6
+    }
+  ],
+  "views": [
+    35,
+    90,
+    270
+  ],
+  "columns": 12,
+  "cell": 256,
+  "pitch": 12
+}

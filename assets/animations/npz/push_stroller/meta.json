@@ -37088,5 +37088,19 @@
     "reason": "前两次未通过；修正局部约束整组位移，并用骨段长度与旋转一致的稀疏手臂关键姿势重生。取中间完整周期，双手最大误差3.52、3.93厘米；正侧面和源手部近景已检查。",
     "known_limitations": "源手指固定放松形状，不宣称精细抓握；映射脚尖最低约-0.78厘米；接缝姿势闭合，不承诺速度一阶连续。",
     "constraint_note": "全身19/199帧、间隔11帧，另加局部双手约束。只裁剪完整周期，未修改生成的关节。"
+  },
+  "single_unit": {
+    "clip": "push_stroller",
+    "source_sha256": "16c7f69d029e4e54afea9bb68709afffdf37a4d24f020aee6ff02ca92e5315f9",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1,
+    "source": "assets/animations/generation_inputs/16c7f69d029e4e54afea9bb68709afffdf37a4d24f020aee6ff02ca92e5315f9.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
   }
 }

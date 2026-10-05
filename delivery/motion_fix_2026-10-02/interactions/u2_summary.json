@@ -1,0 +1,1348 @@
+{
+  "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+  "sources": {
+    "assist_elder_walk": {
+      "before": {
+        "frames": 61,
+        "max_bone_length_range_m": 0.0007953345775604248,
+        "fk_position_max_error_m": 7.17773616543127e-07,
+        "fk_rotation_max_error": 3.8310767536131607e-07,
+        "local_rotation_orthogonality_max_error": 0.0015664351640281616,
+        "hands": {
+          "LeftArm": {
+            "max_hip_relative_step_m": 0.02155676670372486,
+            "frames": [
+              8,
+              9
+            ],
+            "max_fk_error_m": 4.7706993200336e-07,
+            "fk_max_step_m": 0.021556831896305084
+          },
+          "LeftForeArm": {
+            "max_hip_relative_step_m": 0.03053257241845131,
+            "frames": [
+              1,
+              2
+            ],
+            "max_fk_error_m": 4.777675712830387e-07,
+            "fk_max_step_m": 0.03053257241845131
+          },
+          "LeftHand": {
+            "max_hip_relative_step_m": 0.03047752194106579,
+            "frames": [
+              2,
+              3
+            ],
+            "max_fk_error_m": 4.768953658640385e-07,
+            "fk_max_step_m": 0.030477561056613922
+          },
+          "RightArm": {
+            "max_hip_relative_step_m": 0.019998669624328613,
+            "frames": [
+              9,
+              10
+            ],
+            "max_fk_error_m": 2.6697625798988156e-07,
+            "fk_max_step_m": 0.01999875158071518
+          },
+          "RightForeArm": {
+            "max_hip_relative_step_m": 0.27178269624710083,
+            "frames": [
+              43,
+              44
+            ],
+            "max_fk_error_m": 2.682209014892578e-07,
+            "fk_max_step_m": 0.27178239822387695
+          },
+          "RightHand": {
+            "max_hip_relative_step_m": 0.3001596927642822,
+            "frames": [
+              43,
+              44
+            ],
+            "max_fk_error_m": 3.7814908182554063e-07,
+            "fk_max_step_m": 0.30015963315963745
+          }
+        }
+      },
+      "after": {
+        "frames": 61,
+        "max_bone_length_range_m": 0.0007953047752380371,
+        "fk_position_max_error_m": 7.152945613597694e-07,
+        "fk_rotation_max_error": 3.551356542175199e-07,
+        "local_rotation_orthogonality_max_error": 0.003711950485946921,
+        "hands": {
+          "LeftArm": {
+            "max_hip_relative_step_m": 0.021556764841079712,
+            "frames": [
+              8,
+              9
+            ],
+            "max_fk_error_m": 4.7706993200336e-07,
+            "fk_max_step_m": 0.021556831896305084
+          },
+          "LeftForeArm": {
+            "max_hip_relative_step_m": 0.03053249418735504,
+            "frames": [
+              1,
+              2
+            ],
+            "max_fk_error_m": 4.76837158203125e-07,
+            "fk_max_step_m": 0.03053257241845131
+          },
+          "LeftHand": {
+            "max_hip_relative_step_m": 0.030477559193968773,
+            "frames": [
+              2,
+              3
+            ],
+            "max_fk_error_m": 4.768953658640385e-07,
+            "fk_max_step_m": 0.030477561056613922
+          },
+          "RightArm": {
+            "max_hip_relative_step_m": 0.019998669624328613,
+            "frames": [
+              9,
+              10
+            ],
+            "max_fk_error_m": 2.6697625798988156e-07,
+            "fk_max_step_m": 0.01999875158071518
+          },
+          "RightForeArm": {
+            "max_hip_relative_step_m": 0.023175211623311043,
+            "frames": [
+              15,
+              16
+            ],
+            "max_fk_error_m": 2.682209014892578e-07,
+            "fk_max_step_m": 0.02317511849105358
+          },
+          "RightHand": {
+            "max_hip_relative_step_m": 0.02765732631087303,
+            "frames": [
+              15,
+              16
+            ],
+            "max_fk_error_m": 3.3848931479951716e-07,
+            "fk_max_step_m": 0.02765723317861557
+          }
+        }
+      },
+      "unselected_body_max_gap_m": 0.0,
+      "arrays_preserved_exactly": {
+        "root_positions": true,
+        "smooth_root_pos": true,
+        "foot_contacts": true,
+        "global_root_heading": true
+      },
+      "sha256": "68b50aef191a42ef52711219975ca2c1abe69f7af7501b8911d8daf0e5bd435f"
+    },
+    "atm_take_cash": {
+      "before": {
+        "frames": 150,
+        "max_bone_length_range_m": 0.0008679330348968506,
+        "fk_position_max_error_m": 4.851466428590356e-07,
+        "fk_rotation_max_error": 5.031211003370117e-07,
+        "local_rotation_orthogonality_max_error": 0.001616045927072603,
+        "hands": {
+          "LeftArm": {
+            "max_hip_relative_step_m": 0.006375826895236969,
+            "frames": [
+              136,
+              137
+            ],
+            "max_fk_error_m": 2.413114259525173e-07,
+            "fk_max_step_m": 0.006375826895236969
+          },
+          "LeftForeArm": {
+            "max_hip_relative_step_m": 0.0063211810775101185,
+            "frames": [
+              137,
+              138
+            ],
+            "max_fk_error_m": 2.4038948254201387e-07,
+            "fk_max_step_m": 0.006321227177977562
+          },
+          "LeftHand": {
+            "max_hip_relative_step_m": 0.008905681781470776,
+            "frames": [
+              89,
+              90
+            ],
+            "max_fk_error_m": 2.9807560508743336e-07,
+            "fk_max_step_m": 0.008905882015824318
+          },
+          "RightArm": {
+            "max_hip_relative_step_m": 0.01063695177435875,
+            "frames": [
+              37,
+              38
+            ],
+            "max_fk_error_m": 2.4211522031691857e-07,
+            "fk_max_step_m": 0.01063696201890707
+          },
+          "RightForeArm": {
+            "max_hip_relative_step_m": 0.15245501697063446,
+            "frames": [
+              143,
+              144
+            ],
+            "max_fk_error_m": 3.579381768759049e-07,
+            "fk_max_step_m": 0.1524548977613449
+          },
+          "RightHand": {
+            "max_hip_relative_step_m": 0.22290454804897308,
+            "frames": [
+              143,
+              144
+            ],
+            "max_fk_error_m": 3.6256091107134125e-07,
+            "fk_max_step_m": 0.22290459275245667
+          }
+        }
+      },
+      "after": {
+        "frames": 150,
+        "max_bone_length_range_m": 0.0008678734302520752,
+        "fk_position_max_error_m": 3.595628754737845e-07,
+        "fk_rotation_max_error": 3.9452916666959936e-07,
+        "local_rotation_orthogonality_max_error": 0.004031011823298967,
+        "hands": {
+          "LeftArm": {
+            "max_hip_relative_step_m": 0.006375810131430626,
+            "frames": [
+              136,
+              137
+            ],
+            "max_fk_error_m": 2.3914506641631306e-07,
+            "fk_max_step_m": 0.006375826895236969
+          },
+          "LeftForeArm": {
+            "max_hip_relative_step_m": 0.006321263033896685,
+            "frames": [
+              137,
+              138
+            ],
+            "max_fk_error_m": 2.416849440578517e-07,
+            "fk_max_step_m": 0.006321227177977562
+          },
+          "LeftHand": {
+            "max_hip_relative_step_m": 0.008905747905373573,
+            "frames": [
+              89,
+              90
+            ],
+            "max_fk_error_m": 2.428663492537453e-07,
+            "fk_max_step_m": 0.008905882015824318
+          },
+          "RightArm": {
+            "max_hip_relative_step_m": 0.010636905208230019,
+            "frames": [
+              37,
+              38
+            ],
+            "max_fk_error_m": 2.4027400513659813e-07,
+            "fk_max_step_m": 0.01063696201890707
+          },
+          "RightForeArm": {
+            "max_hip_relative_step_m": 0.016746174544095993,
+            "frames": [
+              18,
+              19
+            ],
+            "max_fk_error_m": 2.413114259525173e-07,
+            "fk_max_step_m": 0.016746198758482933
+          },
+          "RightHand": {
+            "max_hip_relative_step_m": 0.0217126552015543,
+            "frames": [
+              15,
+              16
+            ],
+            "max_fk_error_m": 2.425733214295178e-07,
+            "fk_max_step_m": 0.02171267569065094
+          }
+        }
+      },
+      "unselected_body_max_gap_m": 0.0,
+      "arrays_preserved_exactly": {
+        "root_positions": true,
+        "smooth_root_pos": true,
+        "foot_contacts": true,
+        "global_root_heading": true
+      },
+      "sha256": "3cba84f27657bf8ead8a686736c3d25745e21fc1b0f3b968371e21eda2c9cc87"
+    },
+    "basketball_dribble": {
+      "before": {
+        "frames": 120,
+        "max_bone_length_range_m": 0.0008868277072906494,
+        "fk_position_max_error_m": 3.6286698446019727e-07,
+        "fk_rotation_max_error": 4.0267613599098695e-07,
+        "local_rotation_orthogonality_max_error": 0.001412528490463602,
+        "hands": {
+          "LeftArm": {
+            "max_hip_relative_step_m": 0.02317720279097557,
+            "frames": [
+              94,
+              95
+            ],
+            "max_fk_error_m": 1.2644053981603065e-07,
+            "fk_max_step_m": 0.023177044466137886
+          },
+          "LeftForeArm": {
+            "max_hip_relative_step_m": 0.11510452628135681,
+            "frames": [
+              59,
+              60
+            ],
+            "max_fk_error_m": 1.519626238177807e-07,
+            "fk_max_step_m": 0.11510451138019562
+          },
+          "LeftHand": {
+            "max_hip_relative_step_m": 0.16818702220916748,
+            "frames": [
+              33,
+              34
+            ],
+            "max_fk_error_m": 2.4620757699267415e-07,
+            "fk_max_step_m": 0.16818726062774658
+          },
+          "RightArm": {
+            "max_hip_relative_step_m": 0.019074559211730957,
+            "frames": [
+              59,
+              60
+            ],
+            "max_fk_error_m": 1.2644053981603065e-07,
+            "fk_max_step_m": 0.019074564799666405
+          },
+          "RightForeArm": {
+            "max_hip_relative_step_m": 0.07013551145792007,
+            "frames": [
+              47,
+              48
+            ],
+            "max_fk_error_m": 1.794337407545754e-07,
+            "fk_max_step_m": 0.07013548165559769
+          },
+          "RightHand": {
+            "max_hip_relative_step_m": 0.09933992475271225,
+            "frames": [
+              59,
+              60
+            ],
+            "max_fk_error_m": 2.4978896817628993e-07,
+            "fk_max_step_m": 0.09933986514806747
+          }
+        }
+      },
+      "after": {
+        "frames": 120,
+        "max_bone_length_range_m": 0.0008868575096130371,
+        "fk_position_max_error_m": 2.6656007889869215e-07,
+        "fk_rotation_max_error": 3.970712043610547e-07,
+        "local_rotation_orthogonality_max_error": 0.004127335696617494,
+        "hands": {
+          "LeftArm": {
+            "max_hip_relative_step_m": 0.023177150636911392,
+            "frames": [
+              94,
+              95
+            ],
+            "max_fk_error_m": 1.2377833513710357e-07,
+            "fk_max_step_m": 0.023177044466137886
+          },
+          "LeftForeArm": {
+            "max_hip_relative_step_m": 0.03129309043288231,
+            "frames": [
+              32,
+              33
+            ],
+            "max_fk_error_m": 1.8189184913808276e-07,
+            "fk_max_step_m": 0.03129308670759201
+          },
+          "LeftHand": {
+            "max_hip_relative_step_m": 0.02722535841166973,
+            "frames": [
+              94,
+              95
+            ],
+            "max_fk_error_m": 1.8371385124282824e-07,
+            "fk_max_step_m": 0.02722531370818615
+          },
+          "RightArm": {
+            "max_hip_relative_step_m": 0.019074566662311554,
+            "frames": [
+              59,
+              60
+            ],
+            "max_fk_error_m": 1.2377833513710357e-07,
+            "fk_max_step_m": 0.019074564799666405
+          },
+          "RightForeArm": {
+            "max_hip_relative_step_m": 0.0701354369521141,
+            "frames": [
+              47,
+              48
+            ],
+            "max_fk_error_m": 1.365714012990793e-07,
+            "fk_max_step_m": 0.07013548165559769
+          },
+          "RightHand": {
+            "max_hip_relative_step_m": 0.09933992475271225,
+            "frames": [
+              59,
+              60
+            ],
+            "max_fk_error_m": 1.365714012990793e-07,
+            "fk_max_step_m": 0.09933986514806747
+          }
+        }
+      },
+      "unselected_body_max_gap_m": 0.0,
+      "arrays_preserved_exactly": {
+        "root_positions": true,
+        "smooth_root_pos": true,
+        "foot_contacts": true,
+        "global_root_heading": true
+      },
+      "sha256": "b13e9114366f4b49a8f3a1ed6bd60e5337eeb94b42d162c2c9b888eb3405d023"
+    }
+  },
+  "runtime": {
+    "assist_elder_walk": {
+      "duration": 2.0,
+      "source_duration": 2.0,
+      "errors": [],
+      "hips_relative_steps": {
+        "elbowLeft": {
+          "before": {
+            "max_m": 0.025906075147514182,
+            "times_s": [
+              2.03333333333333,
+              2.06666666666667
+            ]
+          },
+          "after": {
+            "max_m": 0.025906075147514182,
+            "times_s": [
+              2.03333333333333,
+              2.06666666666667
+            ]
+          }
+        },
+        "handLeft": {
+          "before": {
+            "max_m": 0.046143327503969614,
+            "times_s": [
+              1.03333333333333,
+              1.06666666666667
+            ]
+          },
+          "after": {
+            "max_m": 0.046143327503969614,
+            "times_s": [
+              1.03333333333333,
+              1.06666666666667
+            ]
+          }
+        },
+        "elbowRight": {
+          "before": {
+            "max_m": 0.2043910089512436,
+            "times_s": [
+              1.43333333333333,
+              1.46666666666667
+            ]
+          },
+          "after": {
+            "max_m": 0.06648294459210577,
+            "times_s": [
+              2.06666666666667,
+              2.1
+            ]
+          }
+        },
+        "handRight": {
+          "before": {
+            "max_m": 0.09528757651669707,
+            "times_s": [
+              0.0666666666666667,
+              0.1
+            ]
+          },
+          "after": {
+            "max_m": 0.0951607768019371,
+            "times_s": [
+              0.0666666666666667,
+              0.1
+            ]
+          }
+        }
+      },
+      "contacts": {
+        "handRight": {
+          "full_weight_samples": 64,
+          "max_target_gap_m": 6.664001877107591e-08
+        }
+      },
+      "boundaries": [
+        {
+          "phase": 1.0,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 7.670425120899913e-05,
+            "elbowRight": 0.0001345884963925797,
+            "footLeft": 0.00017386427206339856,
+            "footRight": 0.00010631664324592578,
+            "handLeft": 0.00010972036772595094,
+            "handRight": 0.0001563586164726605,
+            "head": 7.25003101284352e-05,
+            "hip": 7.404258297239012e-05,
+            "kneeLeft": 7.594369164002116e-05,
+            "kneeRight": 7.529780279926455e-05,
+            "neck": 7.318095521475866e-05,
+            "shoulderLeft": 7.318095521475866e-05,
+            "shoulderRight": 7.318095521475866e-05
+          },
+          "props": []
+        }
+      ]
+    },
+    "atm_take_cash": {
+      "duration": 4.96666666666667,
+      "source_duration": 4.96666666666667,
+      "errors": [],
+      "hips_relative_steps": {
+        "elbowLeft": {
+          "before": {
+            "max_m": 0.007741607786528571,
+            "times_s": [
+              4.53333333333333,
+              4.56666666666667
+            ]
+          },
+          "after": {
+            "max_m": 0.007741607786528571,
+            "times_s": [
+              4.53333333333333,
+              4.56666666666667
+            ]
+          }
+        },
+        "handLeft": {
+          "before": {
+            "max_m": 0.01074286152305632,
+            "times_s": [
+              4.83333333333333,
+              4.86666666666667
+            ]
+          },
+          "after": {
+            "max_m": 0.01074286152305632,
+            "times_s": [
+              4.83333333333333,
+              4.86666666666667
+            ]
+          }
+        },
+        "elbowRight": {
+          "before": {
+            "max_m": 0.1285504431422807,
+            "times_s": [
+              1.76666666666667,
+              1.8
+            ]
+          },
+          "after": {
+            "max_m": 0.036477575129755135,
+            "times_s": [
+              0.666666666666667,
+              0.7
+            ]
+          }
+        },
+        "handRight": {
+          "before": {
+            "max_m": 0.22238737162094324,
+            "times_s": [
+              4.76666666666667,
+              4.8
+            ]
+          },
+          "after": {
+            "max_m": 0.04718982818481671,
+            "times_s": [
+              0.5,
+              0.533333333333333
+            ]
+          }
+        }
+      },
+      "contacts": {
+        "handRight": {
+          "full_weight_samples": 33,
+          "max_target_gap_m": 4.561290012361503e-09
+        }
+      },
+      "boundaries": [
+        {
+          "phase": 0.4,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 1.0911567120830568e-05,
+            "elbowRight": 8.054120917943718e-06,
+            "footLeft": 5.756206715301969e-06,
+            "footRight": 1.0992076317230798e-05,
+            "handLeft": 5.583005955871025e-06,
+            "handRight": 5.5879354476928976e-09,
+            "head": 2.504524054775085e-05,
+            "hip": 5.065300469067005e-06,
+            "kneeLeft": 9.357341944009014e-06,
+            "kneeRight": 8.141875708238925e-06,
+            "neck": 1.0385292241877965e-05,
+            "shoulderLeft": 1.0385292241877965e-05,
+            "shoulderRight": 1.0385292241877965e-05
+          },
+          "props": [
+            {
+              "type": "held_banknote",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 0.45,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 1.5358536552339303e-05,
+            "elbowRight": 9.1288202202179e-05,
+            "footLeft": 1.5071377729673692e-06,
+            "footRight": 6.2101706630145286e-06,
+            "handLeft": 2.1987172075718883e-05,
+            "handRight": 0.0001944770725223234,
+            "head": 1.1838088691949102e-05,
+            "hip": 7.132056130189597e-06,
+            "kneeLeft": 1.2101078187405516e-05,
+            "kneeRight": 6.63012118812121e-06,
+            "neck": 7.602338198620516e-06,
+            "shoulderLeft": 7.602338198620516e-06,
+            "shoulderRight": 7.602338198620516e-06
+          },
+          "props": [
+            {
+              "type": "held_banknote",
+              "seam_displacement_m": 0.00019453891485188702
+            }
+          ]
+        },
+        {
+          "phase": 0.95,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 1.1596531323230523e-05,
+            "elbowRight": 1.8993441449447637e-05,
+            "footLeft": 1.6425837396159257e-06,
+            "footRight": 5.754686802804097e-06,
+            "handLeft": 3.637468982064663e-05,
+            "handRight": 5.7552135107228696e-05,
+            "head": 1.694083125920737e-05,
+            "hip": 9.99436813236311e-06,
+            "kneeLeft": 4.9500687605752095e-06,
+            "kneeRight": 8.176609329945437e-06,
+            "neck": 6.912918585281648e-06,
+            "shoulderLeft": 6.912918585281648e-06,
+            "shoulderRight": 6.912918585281648e-06
+          },
+          "props": [
+            {
+              "type": "held_banknote",
+              "seam_displacement_m": 5.755309963592191e-05
+            }
+          ]
+        },
+        {
+          "phase": 1.0,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 7.72711869011976e-06,
+            "elbowRight": 1.6660719381412566e-05,
+            "footLeft": 5.957588616261446e-06,
+            "footRight": 3.6803271099000103e-06,
+            "handLeft": 1.75998610926755e-05,
+            "handRight": 1.782020017367776e-05,
+            "head": 7.613257582501337e-06,
+            "hip": 1.0137087786698298e-05,
+            "kneeLeft": 1.212055644909126e-05,
+            "kneeRight": 4.739460174105478e-05,
+            "neck": 5.884367250488872e-06,
+            "shoulderLeft": 5.884367250488872e-06,
+            "shoulderRight": 5.884367250488872e-06
+          },
+          "props": [
+            {
+              "type": "held_banknote",
+              "seam_displacement_m": 1.7820200173386996e-05
+            }
+          ]
+        }
+      ]
+    },
+    "basketball_dribble": {
+      "duration": 3.29,
+      "source_duration": 3.96666666666667,
+      "errors": [],
+      "hips_relative_steps": {
+        "elbowLeft": {
+          "before": {
+            "max_m": 0.15529496931044834,
+            "times_s": [
+              0.833333333333333,
+              0.866666666666667
+            ]
+          },
+          "after": {
+            "max_m": 0.022606012981674348,
+            "times_s": [
+              2.6,
+              2.63333333333333
+            ]
+          }
+        },
+        "handLeft": {
+          "before": {
+            "max_m": 0.23714737618576123,
+            "times_s": [
+              0.7,
+              0.733333333333333
+            ]
+          },
+          "after": {
+            "max_m": 0.03443627886333024,
+            "times_s": [
+              2.6,
+              2.63333333333333
+            ]
+          }
+        },
+        "elbowRight": {
+          "before": {
+            "max_m": 0.07749413481374422,
+            "times_s": [
+              0.633333333333333,
+              0.666666666666667
+            ]
+          },
+          "after": {
+            "max_m": 0.08001992842401713,
+            "times_s": [
+              0.633333333333333,
+              0.666666666666667
+            ]
+          }
+        },
+        "handRight": {
+          "before": {
+            "max_m": 0.07391079147820044,
+            "times_s": [
+              1.83333333333333,
+              1.86666666666667
+            ]
+          },
+          "after": {
+            "max_m": 0.07524937391281195,
+            "times_s": [
+              6.33333333333333,
+              6.36666666666667
+            ]
+          }
+        }
+      },
+      "contacts": {
+        "handRight": {
+          "full_weight_samples": 202,
+          "max_target_gap_m": 2.9802321999117254e-08
+        }
+      },
+      "boundaries": [
+        {
+          "phase": 0.125,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 4.083914356798862e-05,
+            "elbowRight": 3.137904480350605e-05,
+            "footLeft": 2.721410617865495e-06,
+            "footRight": 4.3393923750537894e-06,
+            "handLeft": 7.192575029418805e-05,
+            "handRight": 0.0,
+            "head": 6.666736219941077e-05,
+            "hip": 2.7911678656505875e-05,
+            "kneeLeft": 3.0669040582863466e-05,
+            "kneeRight": 1.5081388611202015e-05,
+            "neck": 4.3406640073231766e-05,
+            "shoulderLeft": 4.3406640073231766e-05,
+            "shoulderRight": 4.3406640073231766e-05
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 0.25,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 8.212201223830116e-05,
+            "elbowRight": 7.236010012926572e-05,
+            "footLeft": 3.6249046320189245e-06,
+            "footRight": 1.4252236247274327e-05,
+            "handLeft": 9.59282549043933e-05,
+            "handRight": 0.0,
+            "head": 6.361540099546801e-05,
+            "hip": 5.22922095712786e-05,
+            "kneeLeft": 1.4382739419982212e-05,
+            "kneeRight": 3.2664432994394596e-05,
+            "neck": 7.441428680515521e-05,
+            "shoulderLeft": 7.441428680515521e-05,
+            "shoulderRight": 7.441428680515521e-05
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 0.375,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 7.236403435838162e-05,
+            "elbowRight": 0.00023873384175096782,
+            "footLeft": 2.3836735080970253e-06,
+            "footRight": 4.748295698304202e-06,
+            "handLeft": 7.579675690334622e-05,
+            "handRight": 0.0,
+            "head": 0.00012505254253469264,
+            "hip": 8.589921883005032e-06,
+            "kneeLeft": 6.943685297376971e-06,
+            "kneeRight": 2.752434865180384e-05,
+            "neck": 0.00010510042859188527,
+            "shoulderLeft": 0.00010510042859188527,
+            "shoulderRight": 0.00010510042859188527
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 0.5,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 7.531536910703832e-05,
+            "elbowRight": 0.00012650787826804516,
+            "footLeft": 9.107636165963074e-06,
+            "footRight": 6.688510529112401e-06,
+            "handLeft": 5.7130391294481676e-05,
+            "handRight": 0.0,
+            "head": 8.908836898925847e-05,
+            "hip": 1.834519396596193e-05,
+            "kneeLeft": 1.7287357239243564e-05,
+            "kneeRight": 6.490976090397726e-05,
+            "neck": 0.00012612135529796613,
+            "shoulderLeft": 0.00012612135529796613,
+            "shoulderRight": 0.00012612135529796613
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 0.625,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 7.786313013666696e-06,
+            "elbowRight": 1.4005347660702756e-05,
+            "footLeft": 3.162988655214734e-06,
+            "footRight": 8.142190181283107e-06,
+            "handLeft": 9.757245759431775e-06,
+            "handRight": 0.0,
+            "head": 1.3136542576826522e-05,
+            "hip": 1.2002414215302276e-05,
+            "kneeLeft": 1.3887122764244623e-05,
+            "kneeRight": 3.1576854462731436e-05,
+            "neck": 1.7851209756571676e-05,
+            "shoulderLeft": 1.7851209756571676e-05,
+            "shoulderRight": 1.7851209756571676e-05
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 0.75,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 6.0181055095203965e-05,
+            "elbowRight": 1.97847975773861e-05,
+            "footLeft": 3.27042299606115e-06,
+            "footRight": 1.9578482812167886e-06,
+            "handLeft": 6.607118414058899e-05,
+            "handRight": 0.0,
+            "head": 4.757184042319189e-05,
+            "hip": 4.3716849459188624e-05,
+            "kneeLeft": 1.8032473847787186e-05,
+            "kneeRight": 1.1007833822182351e-05,
+            "neck": 6.205732086022842e-05,
+            "shoulderLeft": 6.205732086022842e-05,
+            "shoulderRight": 6.205732086022842e-05
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 0.875,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 3.607757788631783e-05,
+            "elbowRight": 3.807795232801583e-05,
+            "footLeft": 2.990050831173565e-06,
+            "footRight": 1.8928727522594455e-06,
+            "handLeft": 4.2256004474550176e-05,
+            "handRight": 0.0,
+            "head": 4.0500364483168414e-05,
+            "hip": 1.616256106286382e-05,
+            "kneeLeft": 1.5062332258085163e-05,
+            "kneeRight": 8.799107296359446e-06,
+            "neck": 3.347816479979464e-05,
+            "shoulderLeft": 3.347816479979464e-05,
+            "shoulderRight": 3.347816479979464e-05
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 1.0,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 2.0138080007408467e-06,
+            "elbowRight": 2.0215115407656974e-06,
+            "footLeft": 1.719664373572043e-06,
+            "footRight": 2.004427746911458e-06,
+            "handLeft": 4.509023419660569e-06,
+            "handRight": 0.0,
+            "head": 6.6259259902547e-06,
+            "hip": 2.887426921291631e-06,
+            "kneeLeft": 3.3205525067230514e-06,
+            "kneeRight": 2.7488098993524668e-06,
+            "neck": 5.07116011409744e-06,
+            "shoulderLeft": 5.07116011409744e-06,
+            "shoulderRight": 5.07116011409744e-06
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 1.125,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 0.0,
+            "elbowRight": 0.0,
+            "footLeft": 0.0,
+            "footRight": 0.0,
+            "handLeft": 0.0,
+            "handRight": 0.0,
+            "head": 0.0,
+            "hip": 0.0,
+            "kneeLeft": 0.0,
+            "kneeRight": 0.0,
+            "neck": 0.0,
+            "shoulderLeft": 0.0,
+            "shoulderRight": 0.0
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 1.25,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 0.0,
+            "elbowRight": 0.0,
+            "footLeft": 0.0,
+            "footRight": 0.0,
+            "handLeft": 0.0,
+            "handRight": 0.0,
+            "head": 0.0,
+            "hip": 0.0,
+            "kneeLeft": 0.0,
+            "kneeRight": 0.0,
+            "neck": 0.0,
+            "shoulderLeft": 0.0,
+            "shoulderRight": 0.0
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 1.375,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 0.0,
+            "elbowRight": 0.0,
+            "footLeft": 0.0,
+            "footRight": 0.0,
+            "handLeft": 0.0,
+            "handRight": 0.0,
+            "head": 0.0,
+            "hip": 0.0,
+            "kneeLeft": 0.0,
+            "kneeRight": 0.0,
+            "neck": 0.0,
+            "shoulderLeft": 0.0,
+            "shoulderRight": 0.0
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 1.5,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 0.0,
+            "elbowRight": 0.0,
+            "footLeft": 0.0,
+            "footRight": 0.0,
+            "handLeft": 0.0,
+            "handRight": 0.0,
+            "head": 0.0,
+            "hip": 0.0,
+            "kneeLeft": 0.0,
+            "kneeRight": 0.0,
+            "neck": 0.0,
+            "shoulderLeft": 0.0,
+            "shoulderRight": 0.0
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 1.625,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 0.0,
+            "elbowRight": 0.0,
+            "footLeft": 0.0,
+            "footRight": 0.0,
+            "handLeft": 0.0,
+            "handRight": 0.0,
+            "head": 0.0,
+            "hip": 0.0,
+            "kneeLeft": 0.0,
+            "kneeRight": 0.0,
+            "neck": 0.0,
+            "shoulderLeft": 0.0,
+            "shoulderRight": 0.0
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 1.75,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 0.0,
+            "elbowRight": 0.0,
+            "footLeft": 0.0,
+            "footRight": 0.0,
+            "handLeft": 0.0,
+            "handRight": 0.0,
+            "head": 0.0,
+            "hip": 0.0,
+            "kneeLeft": 0.0,
+            "kneeRight": 0.0,
+            "neck": 0.0,
+            "shoulderLeft": 0.0,
+            "shoulderRight": 0.0
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 1.875,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 0.0,
+            "elbowRight": 0.0,
+            "footLeft": 0.0,
+            "footRight": 0.0,
+            "handLeft": 0.0,
+            "handRight": 0.0,
+            "head": 0.0,
+            "hip": 0.0,
+            "kneeLeft": 0.0,
+            "kneeRight": 0.0,
+            "neck": 0.0,
+            "shoulderLeft": 0.0,
+            "shoulderRight": 0.0
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        },
+        {
+          "phase": 2.0,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 0.0,
+            "elbowRight": 0.0,
+            "footLeft": 0.0,
+            "footRight": 0.0,
+            "handLeft": 0.0,
+            "handRight": 0.0,
+            "head": 0.0,
+            "hip": 0.0,
+            "kneeLeft": 0.0,
+            "kneeRight": 0.0,
+            "neck": 0.0,
+            "shoulderLeft": 0.0,
+            "shoulderRight": 0.0
+          },
+          "props": [
+            {
+              "type": "held_basketball",
+              "seam_displacement_m": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    "fountain_drink": {
+      "duration": 4.96666666666667,
+      "source_duration": 4.96666666666667,
+      "errors": [],
+      "hips_relative_steps": {
+        "elbowLeft": {
+          "before": {
+            "max_m": 0.18932877961991362,
+            "times_s": [
+              1.1,
+              1.13333333333333
+            ]
+          },
+          "after": {
+            "max_m": 0.023652070173270087,
+            "times_s": [
+              0.666666666666667,
+              0.7
+            ]
+          }
+        },
+        "handLeft": {
+          "before": {
+            "max_m": 0.036473820809162595,
+            "times_s": [
+              0.366666666666667,
+              0.4
+            ]
+          },
+          "after": {
+            "max_m": 0.036473820809162595,
+            "times_s": [
+              0.366666666666667,
+              0.4
+            ]
+          }
+        },
+        "elbowRight": {
+          "before": {
+            "max_m": 0.06308591627234787,
+            "times_s": [
+              2.0,
+              2.03333333333333
+            ]
+          },
+          "after": {
+            "max_m": 0.026016392469045583,
+            "times_s": [
+              0.666666666666667,
+              0.7
+            ]
+          }
+        },
+        "handRight": {
+          "before": {
+            "max_m": 0.03343851066036101,
+            "times_s": [
+              0.433333333333333,
+              0.466666666666667
+            ]
+          },
+          "after": {
+            "max_m": 0.03343851066036101,
+            "times_s": [
+              0.433333333333333,
+              0.466666666666667
+            ]
+          }
+        }
+      },
+      "contacts": {
+        "handLeft": {
+          "full_weight_samples": 90,
+          "max_target_gap_m": 2.9802321999117254e-08
+        },
+        "handRight": {
+          "full_weight_samples": 90,
+          "max_target_gap_m": 2.9802322998317976e-08
+        }
+      },
+      "boundaries": [
+        {
+          "phase": 1.0,
+          "interval_s": 0.0002,
+          "pose_displacements_m": {
+            "elbowLeft": 3.90914149820187e-06,
+            "elbowRight": 9.840874531781821e-06,
+            "footLeft": 0.0,
+            "footRight": 0.0,
+            "handLeft": 9.274892595663036e-06,
+            "handRight": 1.595539529853818e-05,
+            "head": 2.3846528705381936e-07,
+            "hip": 2.37521557977516e-10,
+            "kneeLeft": 1.4102081400350006e-07,
+            "kneeRight": 3.060411574057438e-07,
+            "neck": 2.3497867231554904e-09,
+            "shoulderLeft": 2.3497867231554904e-09,
+            "shoulderRight": 2.3497867231554904e-09
+          },
+          "props": []
+        }
+      ]
+    }
+  },
+  "basketball_continuous": {
+    "floor_contacts": [
+      {
+        "t": 0.41125,
+        "bottom_m": -1.49011611938477e-08
+      },
+      {
+        "t": 1.23375,
+        "bottom_m": -1.49011611938477e-08
+      },
+      {
+        "t": 2.05625,
+        "bottom_m": -1.49011611938477e-08
+      },
+      {
+        "t": 2.87875,
+        "bottom_m": -1.49011611938477e-08
+      },
+      {
+        "t": 3.70125,
+        "bottom_m": -1.49011611938477e-08
+      },
+      {
+        "t": 4.52375,
+        "bottom_m": -1.49011611938477e-08
+      },
+      {
+        "t": 5.34625,
+        "bottom_m": -1.49011611938477e-08
+      },
+      {
+        "t": 6.16875,
+        "bottom_m": -1.49011611938477e-08
+      }
+    ],
+    "peaks": [
+      {
+        "t": 0.8225,
+        "hand_to_actual_ball_top_m": 0.0
+      },
+      {
+        "t": 1.645,
+        "hand_to_actual_ball_top_m": 2.9802321999117254e-08
+      },
+      {
+        "t": 2.4675,
+        "hand_to_actual_ball_top_m": 0.0
+      },
+      {
+        "t": 3.29,
+        "hand_to_actual_ball_top_m": 0.0
+      },
+      {
+        "t": 4.1125,
+        "hand_to_actual_ball_top_m": 0.0
+      },
+      {
+        "t": 4.935,
+        "hand_to_actual_ball_top_m": 0.0
+      },
+      {
+        "t": 5.7575,
+        "hand_to_actual_ball_top_m": 0.0
+      },
+      {
+        "t": 6.58,
+        "hand_to_actual_ball_top_m": 0.0
+      }
+    ],
+    "held_source_body_max_gap_m": 0.0,
+    "second_cycle_ball_y_span_m": 0.8249484747648239,
+    "contract": "tracks_playback loop over duration; source and body/feet continue chains/once rules; noncontinuous source enters once and holds."
+  }
+}

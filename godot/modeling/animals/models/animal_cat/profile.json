@@ -67,5 +67,14 @@
     "Ear3.R": null,
     "Ear4.L": null,
     "Ear4.R": null
-  }
+  },
+  "body_support_bones": [
+    "Bone",
+    "Bone.001",
+    "Bone.014",
+    "Bone.017",
+    "Bone.008",
+    "Bone.011"
+  ],
+  "body_support_min_height_m": 0.12
 }

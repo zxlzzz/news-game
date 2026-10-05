@@ -1,0 +1,23 @@
+[
+  {
+    "clip": "wave_overhead",
+    "frames": [
+      0,
+      51
+    ]
+  },
+  {
+    "clip": "wave_overhead_v2",
+    "frames": [
+      51,
+      66
+    ]
+  },
+  {
+    "clip": "wave_overhead_v3",
+    "frames": [
+      66,
+      119
+    ]
+  }
+]

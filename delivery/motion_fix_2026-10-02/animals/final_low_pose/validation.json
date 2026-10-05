@@ -1,0 +1,44 @@
+{
+  "completed": true,
+  "exit_code": 0,
+  "failures": [],
+  "verifier_inputs": {
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\verify_runtime.py": "4b3e946da87c35bb0af7bc4aa7e44e54fa0dd14699ba5e74b93dd168ac2bed75",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\runtime.json": "65bbdae6085b174e9aa9c204f0e6e7496bc609de4ca76f33e996b86366fee9a9",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\settings.json": "650a096974e17df8c9891d5665955a03460b6f832bacc044e95ba2c605e05c61",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\godot\\npc\\animal-models.json": "ad2cd236c04daf32f0d289bdf3e1b41f529de810d9bb9c436633b98acf2ef4b2",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\godot\\npc\\animal-behaviour.json": "06bdfa4b6face44b2a2fbb7ca36cc546e015f83212863b0547d4dd365da46149",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\cat_sit_urgent.f32": "4de55ba2af7404fcca80920b9943d497d9966e1229cf4e5f794606abffa90ab4",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\cat_lie_urgent.f32": "0045b29cf109b7fd75434c073ea6cdf05ed102e2ec460c7ee1df6a582b3b71ed",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\cat_sleep_urgent.f32": "07474f40769224016052abadd98089d48f314d6e190dcb01a03956a6d45dbc69",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\cat_side_lie_urgent.f32": "162a3510477509127acfbb52431e6fedfd5147d153208a887540b059b238dc5d",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\husky_sit_urgent.f32": "0836703337fc1a913e837f76a44ea25a5fb2292ffc1913800ff1015b92956c02",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\husky_lie_urgent.f32": "99b8781dce50c5123a6f291584591c0aa2490a13806dbdae3b681cb23683d31d",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\husky_sleep_urgent.f32": "f3bfcea49ba2e6f94f39d1e77ab2ab98e5a1e098f41c509537f90383130ef95a",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\husky_side_lie_urgent.f32": "fa9b2f55ab86a5f57ea6e5026c80a74f55dea0941b2a5f8d20ac64fbe684b6c2",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\shibainu_sit_urgent.f32": "5eabfabe344e91eb865e346036a566aafaa6a9a54ea90fb3003e6b7b335906ec",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\shibainu_lie_urgent.f32": "4525964828d3ddb2ee29993d6dce9baf442a5e0ea9dda455d2a76a5a4fbffc4f",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\shibainu_sleep_urgent.f32": "2baa27141cc396615289cc04757946833384c13f2f880478d0f0bf237cf4eff6",
+    "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\shibainu_side_lie_urgent.f32": "a73c5ea78bfe42e77b914dd08c57ae52a4234d0f319d1b59257f8e0a3be6cdff"
+  },
+  "criteria": {
+    "whole_raw_mesh_floor_m": 1e-05,
+    "leg_length_change_m": 3e-05,
+    "skin_sole_plan_m": 0.001,
+    "sole_plan_mask": "walk or return phase with paw in return_contacts; planted and airborne",
+    "rigid_anchor": "diagnostic only"
+  },
+  "inputs": {
+    "res://models/animal_cat.glb": "16e90c9ed9ac4675861d0cd7218443e6c792eb9eff34c24ed1995f4d5ae2a2c8",
+    "res://models/animal_husky.glb": "bfe8391f30ce39c7c4543b94852d095dba7abdc068f12e02ea833c42110c7410",
+    "res://models/animal_shibainu.glb": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d",
+    "res://npc/animal-models.json": "ad2cd236c04daf32f0d289bdf3e1b41f529de810d9bb9c436633b98acf2ef4b2",
+    "res://npc/animal.gd": "7bfb0cc372ab3363eaeb6dce05446adf29531f0b4a001fdf7311446723781ddc",
+    "res://npc/animal_model.gd": "d24184cd5cc36ed36132eaec37069fa60d4ad1f4d471c43d40591343146c8841",
+    "res://npc/dog-params.json": "6b3c7d070d74edcc0b7241b5e0a585b9d3734ca801656634e9f848844a404063",
+    "res://npc/procedural_dog.gd": "6b21264fa5eeb772f9757d53d20f63736e37b1b7d9e54284c2fa7fbb9e7c0801"
+  },
+  "contact_tolerance_m": 0.001,
+  "scenarios": 12,
+  "frames": 23040
+}

@@ -1,0 +1,27 @@
+{
+  "name": "interview_answer",
+  "text": "A standing person answers a reporter in front, speaks with small head nods, arms relaxed near the waist, feet planted. Calm conversational body language.",
+  "duration": 5,
+  "seed": 1203,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "loop": false,
+  "root_average_speed_m_s": 0.04138237237930298,
+  "mapped_average_speed_m_s": 0.03263594036222632,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "interview_answer",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

@@ -64,6 +64,8 @@ static func _at(b: Dictionary, q: Array) -> Vector3:
 ## Where the head rests: above the neck base, upright whatever the body's pitch.
 static func _head_rest(s: Dictionary, b: Dictionary, p: Dictionary) -> Vector3:
 	var r: Array = p.head.air if s.mode in ["air", "takeoff", "landing"] else p.head.rest
+	if s.has("headAir"):
+		r = [lerpf(p.head.rest[0], p.head.air[0], s.headAir), lerpf(p.head.rest[1], p.head.air[1], s.headAir)]
 	return _at(b, p.body.neck) + b.f * r[0] + Vector3.UP * r[1]
 
 static func _foot_rest(s: Dictionary, key: String, p: Dictionary) -> Vector3:
@@ -432,6 +434,18 @@ static func pose(s: Dictionary, p: Dictionary) -> Dictionary:
 	var pulse: float = _peck_pulse(s.peckPhase, hd.peck.down) * s.peck
 	var face: Vector3 = (b.f * cos(s.look) + b.left * sin(s.look)).rotated(b.left, hd.peck.beakDown * pulse).normalized()
 	var beak_up := Vector3.UP.rotated(b.left, hd.peck.beakDown * pulse)
+	# The beak touches the food; the centre of the head must not be pushed through the floor.
+	# Lift the whole head to clear its drawn radius, then aim at the intended peck point.
+	if s.mode == "ground" and pulse > 0:
+		var contact: Vector3 = s.position + b.f * hd.peck.reach
+		contact.y = s.ground + hd.peck.contactClearance
+		head.y = maxf(head.y, s.ground + p.silhouette.head + hd.peck.contactClearance)
+		var toward: Vector3 = contact - head
+		face = face.lerp(toward.normalized(), pulse).normalized()
+		beak_up = face.cross(b.left).normalized()
+		var tip: Vector3 = head + face * hd.beak[0] + beak_up * hd.beak[1]
+		if tip.y < contact.y:
+			head.y += contact.y - tip.y
 	var pts := {
 		"neck": [neck, head],
 		"beak": [head, head + face * hd.beak[0] + beak_up * hd.beak[1]],
@@ -452,7 +466,9 @@ static func pose(s: Dictionary, p: Dictionary) -> Dictionary:
 		var hj := _hip_joint(b, key, p)
 		var side := 1.0 if key == "L" else -1.0
 		var foot: Vector3
-		if s.mode in ["ground", "hop"]:
+		if s.has("footPoints"):
+			foot = s.footPoints[key]
+		elif s.mode in ["ground", "hop"]:
 			foot = s.feet[key].point
 		else:
 			var tucked: Vector3 = _at(b, lg.tuck) + b.left * side * lg.hipHalfWidth
@@ -464,6 +480,8 @@ static func pose(s: Dictionary, p: Dictionary) -> Dictionary:
 		var heel := _knee(hj, foot, lg.a, lg.b, -b.f)
 		var toes := []
 		var curl: float = s.tuck if not s.mode in ["ground", "hop"] else 0.0
+		if s.has("toeCurl"):
+			curl = s.toeCurl
 		for a in [-lg.toeSpread, 0.0, lg.toeSpread]:
 			var dir: Vector3 = b.f.rotated(Vector3.UP, a + side * lg.toeOut)
 			toes.append(foot + dir.rotated(b.left, curl * 1.2) * lg.toe)

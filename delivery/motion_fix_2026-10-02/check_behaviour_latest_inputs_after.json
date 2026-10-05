@@ -1,0 +1,7 @@
+{
+  "godot/npc/animal-models.json": "bdb75cd26a5f2992f8fb2862a0ffd7f3c8597ce3d74de3b22dcd3f667aed1a9f",
+  "godot/npc/animal.gd": "6918ba123c54172bf03593de831b2e9f86f6b7ef07984bc8cf368b8e1f8c47de",
+  "godot/npc/animal_model.gd": "732f5a23bac76c9557a4ebb3d3dcc54b61c78467475ac443fca4aec4d9dc95cd",
+  "godot/npc/procedural_dog.gd": "6b21264fa5eeb772f9757d53d20f63736e37b1b7d9e54284c2fa7fbb9e7c0801",
+  "godot/npc/dog-params.json": "6b3c7d070d74edcc0b7241b5e0a585b9d3734ca801656634e9f848844a404063"
+}

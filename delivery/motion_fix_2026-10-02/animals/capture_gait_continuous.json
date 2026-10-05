@@ -1,0 +1,79 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\gait_continuous",
+  "entries": [
+    {
+      "id": "dog:walk",
+      "label": "husky_walk",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2,
+      "size": 2,
+      "target_height": 0.25,
+      "start": 2
+    },
+    {
+      "id": "dog:trot",
+      "label": "husky_trot",
+      "options": {
+        "breed": "husky"
+      },
+      "duration": 2,
+      "size": 2,
+      "target_height": 0.25,
+      "start": 2
+    },
+    {
+      "id": "dog:walk",
+      "label": "shibainu_walk",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2,
+      "size": 1.5,
+      "target_height": 0.25,
+      "start": 2
+    },
+    {
+      "id": "dog:trot",
+      "label": "shibainu_trot",
+      "options": {
+        "breed": "shibainu"
+      },
+      "duration": 2,
+      "size": 1.5,
+      "target_height": 0.25,
+      "start": 2
+    },
+    {
+      "id": "cat:walk",
+      "label": "cat_walk",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2,
+      "size": 1.15,
+      "target_height": 0.15,
+      "start": 2
+    },
+    {
+      "id": "cat:trot",
+      "label": "cat_trot",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 2,
+      "size": 1.15,
+      "target_height": 0.15,
+      "start": 2
+    }
+  ],
+  "samples": 60,
+  "columns": 10,
+  "cell": 256,
+  "views": [
+    30,
+    90
+  ],
+  "pitch": 15
+}

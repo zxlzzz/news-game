@@ -1,0 +1,5 @@
+{
+  "output":"C:/Users/Hsinlung/Desktop/news-game/delivery/motion_fix_2026-10-02/interactions/mop_after",
+  "entries":[{"id":"mop_ground","follow_pose":true,"size":2.6},{"id":"mop_ground","label":"mop_two_cycles","follow_pose":true,"size":2.6,"duration":4}],
+  "samples":48,"columns":8,"cell":384,"views":[0,90],"pitch":12
+}

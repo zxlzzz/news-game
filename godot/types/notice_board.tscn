@@ -8,3 +8,7 @@
 
 [node name="post_notice" type="Marker3D" parent="."]
 transform = Transform3D(-0.9956, 0, -0.0932, 0, 1, 0, 0.0932, 0, -0.9956, -0.009, 0, 1.057)
+
+[node name="post_postnotice" type="Marker3D" parent="."]
+position = Vector3(0, 0, 0.52)
+rotation = Vector3(0, 3.141592653589793, 0)

@@ -1,0 +1,26 @@
+{
+  "status": "assistant_runtime_reviewed_user_acceptance_pending",
+  "source_npz_unchanged": true,
+  "source_sha256": "65f10a3539df31ec09967361aa254e0a9a5d5672211b18a15c681272b2d4d979",
+  "before_head_xyz_range_m": [
+    0.127492070198059,
+    0.0276212096214299,
+    0.05940338969230599
+  ],
+  "after_head_xyz_range_m": [
+    0.0,
+    0.0,
+    0.31999999284744296
+  ],
+  "grip_max_gap_m": 8.56006536764653e-08,
+  "mop_bottom_floor_y_range_m": [
+    -1.49011611938477e-08,
+    -1.49011611938477e-08
+  ],
+  "head_bottom_flat": true,
+  "feet_before_after_max_m": 2.2660056248812084e-08,
+  "two_cycle_head_phase_agreement_m": 0.0,
+  "sweep_reference_unchanged": true,
+  "layer": "Authored contact-layer head path, real shaft grips, coordinated torso lean. Original mop source NPZ/gait remains; no stand_idle substitution.",
+  "limit": "This is a simple upright-shaft push/pull on flat ground, without cloth deformation or dirt removal. sweep_ground remains unaccepted and is unchanged."
+}

@@ -1,0 +1,27 @@
+{
+  "name": "hail_taxi",
+  "text": "A standing person near a street lifts the right arm high and waves broadly twice to hail a taxi, leans forward slightly, then lowers the arm. Feet planted.",
+  "duration": 5,
+  "seed": 2203,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "loop": false,
+  "root_average_speed_m_s": 0.017042700201272964,
+  "mapped_average_speed_m_s": 0.013440615300688458,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "hail_taxi",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

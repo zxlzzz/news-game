@@ -1,0 +1,28 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\playback\\captures",
+  "entries": [
+    {
+      "id": "stand_up",
+      "duration": 5.46666666666667,
+      "follow_pose": true
+    },
+    {
+      "id": "trip_fall",
+      "duration": 5.96666666666667,
+      "follow_pose": true
+    },
+    {
+      "id": "scratch_head",
+      "duration": 4.46666666666667,
+      "follow_pose": true
+    }
+  ],
+  "samples": 54,
+  "columns": 9,
+  "cell": 256,
+  "views": [
+    0,
+    90
+  ],
+  "pitch": 15
+}

@@ -1,0 +1,188 @@
+{
+  "fps": 120,
+  "breeds": [
+    "shibainu"
+  ],
+  "scenarios": [
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "sit_normal_stop",
+      "action": "sit",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "sit_look_normal_stop",
+      "action": "sit_look",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "sit_wag_normal_stop",
+      "action": "sit_wag",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "lie_normal_stop",
+      "action": "lie",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "sleep_normal_stop",
+      "action": "sleep",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "side_lie_normal_stop",
+      "action": "side_lie",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "sniff_normal_stop",
+      "action": "sniff",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "sniff_air_normal_stop",
+      "action": "sniff_air",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "alert_normal_stop",
+      "action": "alert",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "wag_normal_stop",
+      "action": "wag",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "look_around_normal_stop",
+      "action": "look_around",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "shake_normal_stop",
+      "action": "shake",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "shake_head_normal_stop",
+      "action": "shake_head",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "urinate_normal_stop",
+      "action": "urinate",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "paw_normal_stop",
+      "action": "paw",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "play_bow_normal_stop",
+      "action": "play_bow",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "stretch_normal_stop",
+      "action": "stretch",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "startle_normal_stop",
+      "action": "startle",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "tail_tuck_normal_stop",
+      "action": "tail_tuck",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "speed_after": 0,
+      "label": "scratch_normal_stop",
+      "action": "scratch",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    }
+  ]
+}

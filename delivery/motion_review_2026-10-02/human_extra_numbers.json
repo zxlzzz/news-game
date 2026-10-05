@@ -1,0 +1,222 @@
+{
+  "handstand": {
+    "0": {
+      "source_frame": 0,
+      "source_time_s": 0.0,
+      "LeftHand_height_m": 0.03839397430419922,
+      "RightHand_height_m": 0.07166600227355957,
+      "LeftForeArm_height_m": 0.3061114549636841,
+      "RightForeArm_height_m": 0.33542776107788086
+    }
+  },
+  "walk_backpack_straps": {
+    "7": {
+      "source_frame": 7,
+      "source_time_s": 0.23333333333333334,
+      "LeftHand_height_m": 1.117882490158081,
+      "LeftHand_neck_relative_step_scaled_cm": 2.8091909885406494,
+      "RightHand_height_m": 1.111872911453247,
+      "RightHand_neck_relative_step_scaled_cm": 2.808675527572632,
+      "LeftForeArm_height_m": 1.3224128484725952,
+      "LeftForeArm_neck_relative_step_scaled_cm": 4.571743965148926,
+      "RightForeArm_height_m": 1.3308336734771729,
+      "RightForeArm_neck_relative_step_scaled_cm": 14.881281852722168
+    },
+    "8": {
+      "source_frame": 8,
+      "source_time_s": 0.26666666666666666,
+      "LeftHand_height_m": 1.1184132099151611,
+      "LeftHand_neck_relative_step_scaled_cm": 1.8231849670410156,
+      "RightHand_height_m": 1.11270010471344,
+      "RightHand_neck_relative_step_scaled_cm": 7.42667293548584,
+      "LeftForeArm_height_m": 1.2983348369598389,
+      "LeftForeArm_neck_relative_step_scaled_cm": 6.831476211547852,
+      "RightForeArm_height_m": 1.0276910066604614,
+      "RightForeArm_neck_relative_step_scaled_cm": 31.729984283447266
+    },
+    "9": {
+      "source_frame": 9,
+      "source_time_s": 0.3,
+      "LeftHand_height_m": 1.1129153966903687,
+      "LeftHand_neck_relative_step_scaled_cm": 1.2706726789474487,
+      "RightHand_height_m": 1.0675287246704102,
+      "RightHand_neck_relative_step_scaled_cm": 16.82131004333496,
+      "LeftForeArm_height_m": 1.2313361167907715,
+      "LeftForeArm_neck_relative_step_scaled_cm": 9.40513801574707,
+      "RightForeArm_height_m": 1.000091552734375,
+      "RightForeArm_neck_relative_step_scaled_cm": 2.5132555961608887
+    },
+    "10": {
+      "source_frame": 10,
+      "source_time_s": 0.3333333333333333,
+      "LeftHand_height_m": 1.1019396781921387,
+      "LeftHand_neck_relative_step_scaled_cm": 1.8755944967269897,
+      "RightHand_height_m": 1.0939550399780273,
+      "RightHand_neck_relative_step_scaled_cm": 18.09939956665039,
+      "LeftForeArm_height_m": 1.235022783279419,
+      "LeftForeArm_neck_relative_step_scaled_cm": 3.5344672203063965,
+      "RightForeArm_height_m": 1.2811596393585205,
+      "RightForeArm_neck_relative_step_scaled_cm": 32.974613189697266
+    },
+    "11": {
+      "source_frame": 11,
+      "source_time_s": 0.36666666666666664,
+      "LeftHand_height_m": 1.0997174978256226,
+      "LeftHand_neck_relative_step_scaled_cm": 4.240390777587891,
+      "RightHand_height_m": 1.09328031539917,
+      "RightHand_neck_relative_step_scaled_cm": 5.070587635040283,
+      "LeftForeArm_height_m": 1.2840094566345215,
+      "LeftForeArm_neck_relative_step_scaled_cm": 9.768773078918457,
+      "RightForeArm_height_m": 1.3134534358978271,
+      "RightForeArm_neck_relative_step_scaled_cm": 3.195390462875366
+    }
+  },
+  "fruit_weigh": {
+    "106": {
+      "source_frame": 106,
+      "source_time_s": 3.533333333333333,
+      "LeftHand_height_m": 1.4111639261245728,
+      "LeftHand_neck_relative_step_scaled_cm": 0.918249249458313,
+      "RightHand_height_m": 1.3843470811843872,
+      "RightHand_neck_relative_step_scaled_cm": 4.595853805541992,
+      "LeftForeArm_height_m": 1.1460983753204346,
+      "LeftForeArm_neck_relative_step_scaled_cm": 3.359219789505005,
+      "RightForeArm_height_m": 1.536651372909546,
+      "RightForeArm_neck_relative_step_scaled_cm": 27.579208374023438
+    },
+    "107": {
+      "source_frame": 107,
+      "source_time_s": 3.566666666666667,
+      "LeftHand_height_m": 1.405085802078247,
+      "LeftHand_neck_relative_step_scaled_cm": 0.5558318495750427,
+      "RightHand_height_m": 1.3828039169311523,
+      "RightHand_neck_relative_step_scaled_cm": 0.3724023103713989,
+      "LeftForeArm_height_m": 1.1417033672332764,
+      "LeftForeArm_neck_relative_step_scaled_cm": 2.385899066925049,
+      "RightForeArm_height_m": 1.4961357116699219,
+      "RightForeArm_neck_relative_step_scaled_cm": 4.893769264221191
+    },
+    "108": {
+      "source_frame": 108,
+      "source_time_s": 3.6,
+      "LeftHand_height_m": 1.4008275270462036,
+      "LeftHand_neck_relative_step_scaled_cm": 0.41473573446273804,
+      "RightHand_height_m": 1.3817191123962402,
+      "RightHand_neck_relative_step_scaled_cm": 0.24092039465904236,
+      "LeftForeArm_height_m": 1.1412711143493652,
+      "LeftForeArm_neck_relative_step_scaled_cm": 2.1799817085266113,
+      "RightForeArm_height_m": 1.4205939769744873,
+      "RightForeArm_neck_relative_step_scaled_cm": 9.356415748596191
+    },
+    "109": {
+      "source_frame": 109,
+      "source_time_s": 3.6333333333333333,
+      "LeftHand_height_m": 1.3860499858856201,
+      "LeftHand_neck_relative_step_scaled_cm": 2.2667720317840576,
+      "RightHand_height_m": 1.3809216022491455,
+      "RightHand_neck_relative_step_scaled_cm": 0.28471460938453674,
+      "LeftForeArm_height_m": 1.1441617012023926,
+      "LeftForeArm_neck_relative_step_scaled_cm": 5.922914505004883,
+      "RightForeArm_height_m": 1.4778263568878174,
+      "RightForeArm_neck_relative_step_scaled_cm": 34.54288101196289
+    },
+    "110": {
+      "source_frame": 110,
+      "source_time_s": 3.6666666666666665,
+      "LeftHand_height_m": 1.3882958889007568,
+      "LeftHand_neck_relative_step_scaled_cm": 1.0404995679855347,
+      "RightHand_height_m": 1.3790531158447266,
+      "RightHand_neck_relative_step_scaled_cm": 0.33798372745513916,
+      "LeftForeArm_height_m": 1.151562213897705,
+      "LeftForeArm_neck_relative_step_scaled_cm": 1.9650814533233643,
+      "RightForeArm_height_m": 1.3901870250701904,
+      "RightForeArm_neck_relative_step_scaled_cm": 36.468048095703125
+    },
+    "111": {
+      "source_frame": 111,
+      "source_time_s": 3.7,
+      "LeftHand_height_m": 1.391495943069458,
+      "LeftHand_neck_relative_step_scaled_cm": 0.5544142127037048,
+      "RightHand_height_m": 1.3742640018463135,
+      "RightHand_neck_relative_step_scaled_cm": 0.6953726410865784,
+      "LeftForeArm_height_m": 1.157116174697876,
+      "LeftForeArm_neck_relative_step_scaled_cm": 0.8983004093170166,
+      "RightForeArm_height_m": 1.3632099628448486,
+      "RightForeArm_neck_relative_step_scaled_cm": 8.515037536621094
+    }
+  },
+  "vending_collect": {
+    "97": {
+      "source_frame": 97,
+      "source_time_s": 3.2333333333333334,
+      "LeftHand_height_m": 0.6641355156898499,
+      "LeftHand_neck_relative_step_scaled_cm": 0.41719815135002136,
+      "RightHand_height_m": 0.9650058746337891,
+      "RightHand_neck_relative_step_scaled_cm": 0.5491237640380859,
+      "LeftForeArm_height_m": 0.8776252865791321,
+      "LeftForeArm_neck_relative_step_scaled_cm": 0.3008483648300171,
+      "RightForeArm_height_m": 0.715766429901123,
+      "RightForeArm_neck_relative_step_scaled_cm": 0.7087968587875366
+    },
+    "98": {
+      "source_frame": 98,
+      "source_time_s": 3.2666666666666666,
+      "LeftHand_height_m": 0.6605192422866821,
+      "LeftHand_neck_relative_step_scaled_cm": 0.6500164270401001,
+      "RightHand_height_m": 0.7036408185958862,
+      "RightHand_neck_relative_step_scaled_cm": 41.51316452026367,
+      "LeftForeArm_height_m": 0.8739721775054932,
+      "LeftForeArm_neck_relative_step_scaled_cm": 0.6763250231742859,
+      "RightForeArm_height_m": 0.752277135848999,
+      "RightForeArm_neck_relative_step_scaled_cm": 28.36271858215332
+    },
+    "99": {
+      "source_frame": 99,
+      "source_time_s": 3.3,
+      "LeftHand_height_m": 0.6698140501976013,
+      "LeftHand_neck_relative_step_scaled_cm": 1.5046190023422241,
+      "RightHand_height_m": 1.0028218030929565,
+      "RightHand_neck_relative_step_scaled_cm": 39.65414047241211,
+      "LeftForeArm_height_m": 0.882276713848114,
+      "LeftForeArm_neck_relative_step_scaled_cm": 0.537571370601654,
+      "RightForeArm_height_m": 0.7673132419586182,
+      "RightForeArm_neck_relative_step_scaled_cm": 27.238994598388672
+    },
+    "100": {
+      "source_frame": 100,
+      "source_time_s": 3.3333333333333335,
+      "LeftHand_height_m": 0.6803760528564453,
+      "LeftHand_neck_relative_step_scaled_cm": 0.6358775496482849,
+      "RightHand_height_m": 0.9985998868942261,
+      "RightHand_neck_relative_step_scaled_cm": 18.973758697509766,
+      "LeftForeArm_height_m": 0.8938165307044983,
+      "LeftForeArm_neck_relative_step_scaled_cm": 0.25680479407310486,
+      "RightForeArm_height_m": 0.7481231689453125,
+      "RightForeArm_neck_relative_step_scaled_cm": 13.336995124816895
+    },
+    "101": {
+      "source_frame": 101,
+      "source_time_s": 3.3666666666666667,
+      "LeftHand_height_m": 0.6883499026298523,
+      "LeftHand_neck_relative_step_scaled_cm": 0.3477318286895752,
+      "RightHand_height_m": 1.0105829238891602,
+      "RightHand_neck_relative_step_scaled_cm": 0.05960703268647194,
+      "LeftForeArm_height_m": 0.9004495739936829,
+      "LeftForeArm_neck_relative_step_scaled_cm": 0.4888931214809418,
+      "RightForeArm_height_m": 0.7463805079460144,
+      "RightForeArm_neck_relative_step_scaled_cm": 3.6923182010650635
+    },
+    "102": {
+      "source_frame": 102,
+      "source_time_s": 3.4,
+      "LeftHand_height_m": 0.6993783116340637,
+      "LeftHand_neck_relative_step_scaled_cm": 1.0084642171859741,
+      "RightHand_height_m": 0.8631008267402649,
+      "RightHand_neck_relative_step_scaled_cm": 28.49305534362793,
+      "LeftForeArm_height_m": 0.9104087352752686,
+      "LeftForeArm_neck_relative_step_scaled_cm": 0.47936177253723145,
+      "RightForeArm_height_m": 0.7385951280593872,
+      "RightForeArm_neck_relative_step_scaled_cm": 11.194778442382812
+    }
+  }
+}

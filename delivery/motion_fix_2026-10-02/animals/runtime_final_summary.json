@@ -1,0 +1,470 @@
+{
+  "inputs": {
+    "res://models/animal_cat.glb": "16e90c9ed9ac4675861d0cd7218443e6c792eb9eff34c24ed1995f4d5ae2a2c8",
+    "res://models/animal_husky.glb": "bfe8391f30ce39c7c4543b94852d095dba7abdc068f12e02ea833c42110c7410",
+    "res://models/animal_shibainu.glb": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d",
+    "res://npc/animal-models.json": "ad2cd236c04daf32f0d289bdf3e1b41f529de810d9bb9c436633b98acf2ef4b2",
+    "res://npc/animal.gd": "7bfb0cc372ab3363eaeb6dce05446adf29531f0b4a001fdf7311446723781ddc",
+    "res://npc/animal_model.gd": "d24184cd5cc36ed36132eaec37069fa60d4ad1f4d471c43d40591343146c8841",
+    "res://npc/dog-params.json": "6b3c7d070d74edcc0b7241b5e0a585b9d3734ca801656634e9f848844a404063",
+    "res://npc/procedural_dog.gd": "6b21264fa5eeb772f9757d53d20f63736e37b1b7d9e54284c2fa7fbb9e7c0801"
+  },
+  "interruptions": {
+    "cases": 2142,
+    "failures": [],
+    "mesh_penetration_max_m": 9.98610630631447e-07,
+    "leg_length_error_max_m": 1.49011611938477e-07,
+    "skin_sole_error_max_m": 1.06093170870736e-06,
+    "recovery_seconds_range": [
+      0.85,
+      0.866666666666667
+    ],
+    "top_worst_joint": [
+      {
+        "breed": "husky",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.5,
+        "fps": 120.0,
+        "urgent_zero_speed": false,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 5.8430577814579,
+          "time": 0.391666666666667
+        }
+      },
+      {
+        "breed": "husky",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.5,
+        "fps": 120.0,
+        "urgent_zero_speed": true,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 5.8430577814579,
+          "time": 0.391666666666667
+        }
+      },
+      {
+        "breed": "husky",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Enter",
+        "stage": "in",
+        "fraction": 0.5,
+        "fps": 120.0,
+        "urgent_zero_speed": false,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 5.40369048714638,
+          "time": 0.391666666666667
+        }
+      },
+      {
+        "breed": "husky",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Enter",
+        "stage": "in",
+        "fraction": 0.5,
+        "fps": 120.0,
+        "urgent_zero_speed": true,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 5.40369048714638,
+          "time": 0.391666666666667
+        }
+      },
+      {
+        "breed": "husky",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.5,
+        "fps": 60.0,
+        "urgent_zero_speed": false,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 4.31104347109795,
+          "time": 0.383333333333333
+        }
+      },
+      {
+        "breed": "husky",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.5,
+        "fps": 60.0,
+        "urgent_zero_speed": true,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 4.31104347109795,
+          "time": 0.383333333333333
+        }
+      },
+      {
+        "breed": "husky",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Enter",
+        "stage": "in",
+        "fraction": 0.5,
+        "fps": 60.0,
+        "urgent_zero_speed": false,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 4.19006422162056,
+          "time": 0.383333333333333
+        }
+      },
+      {
+        "breed": "husky",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Enter",
+        "stage": "in",
+        "fraction": 0.5,
+        "fps": 60.0,
+        "urgent_zero_speed": true,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 4.19006422162056,
+          "time": 0.383333333333333
+        }
+      },
+      {
+        "breed": "shibainu",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.5,
+        "fps": 120.0,
+        "urgent_zero_speed": false,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 4.18828368186951,
+          "time": 0.383333333333333
+        }
+      },
+      {
+        "breed": "shibainu",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.5,
+        "fps": 120.0,
+        "urgent_zero_speed": true,
+        "worst_joint": {
+          "bone": "FF.L",
+          "phase": "return",
+          "speed": 4.18828368186951,
+          "time": 0.383333333333333
+        }
+      },
+      {
+        "breed": "husky",
+        "action": "shake",
+        "clip": "NG_Shake_Off",
+        "stage": "in",
+        "fraction": 0.5,
+        "fps": 120.0,
+        "urgent_zero_speed": false,
+        "worst_joint": {
+          "bone": "Ear4.R",
+          "phase": "return",
+          "speed": 3.68047468364239,
+          "time": 0.0
+        }
+      },
+      {
+        "breed": "husky",
+        "action": "shake",
+        "clip": "NG_Shake_Off",
+        "stage": "in",
+        "fraction": 0.5,
+        "fps": 120.0,
+        "urgent_zero_speed": true,
+        "worst_joint": {
+          "bone": "Ear4.R",
+          "phase": "return",
+          "speed": 3.68047468364239,
+          "time": 0.0
+        }
+      }
+    ],
+    "top_worst_rotation": [
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Enter",
+        "stage": "in",
+        "fraction": 0.9,
+        "fps": 30.0,
+        "urgent_zero_speed": false,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.840277850627899,
+          "time": 0.1,
+          "degrees_per_frame": 48.144374459302824
+        }
+      },
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Enter",
+        "stage": "in",
+        "fraction": 0.9,
+        "fps": 30.0,
+        "urgent_zero_speed": true,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.840277850627899,
+          "time": 0.1,
+          "degrees_per_frame": 48.144374459302824
+        }
+      },
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Breathe",
+        "stage": "hold",
+        "fraction": 0.9,
+        "fps": 30.0,
+        "urgent_zero_speed": false,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.840103566646576,
+          "time": 0.1,
+          "degrees_per_frame": 48.13438872273628
+        }
+      },
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Breathe",
+        "stage": "hold",
+        "fraction": 0.9,
+        "fps": 30.0,
+        "urgent_zero_speed": true,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.840103566646576,
+          "time": 0.1,
+          "degrees_per_frame": 48.13438872273628
+        }
+      },
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Breathe",
+        "stage": "hold",
+        "fraction": 0.5,
+        "fps": 30.0,
+        "urgent_zero_speed": false,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.836263656616211,
+          "time": 0.1,
+          "degrees_per_frame": 47.91437808428642
+        }
+      },
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Breathe",
+        "stage": "hold",
+        "fraction": 0.5,
+        "fps": 30.0,
+        "urgent_zero_speed": true,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.836263656616211,
+          "time": 0.1,
+          "degrees_per_frame": 47.91437808428642
+        }
+      },
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.1,
+        "fps": 30.0,
+        "urgent_zero_speed": false,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.834258675575256,
+          "time": 0.1,
+          "degrees_per_frame": 47.799501132635946
+        }
+      },
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.1,
+        "fps": 30.0,
+        "urgent_zero_speed": true,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.834258675575256,
+          "time": 0.1,
+          "degrees_per_frame": 47.799501132635946
+        }
+      },
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Breathe",
+        "stage": "hold",
+        "fraction": 0.1,
+        "fps": 30.0,
+        "urgent_zero_speed": false,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.832986831665039,
+          "time": 0.1,
+          "degrees_per_frame": 47.726629844381094
+        }
+      },
+      {
+        "breed": "cat",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Breathe",
+        "stage": "hold",
+        "fraction": 0.1,
+        "fps": 30.0,
+        "urgent_zero_speed": true,
+        "worst_rotation": {
+          "bone": "Bone.018",
+          "radians_per_frame": 0.832986831665039,
+          "time": 0.1,
+          "degrees_per_frame": 47.726629844381094
+        }
+      },
+      {
+        "breed": "shibainu",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.5,
+        "fps": 30.0,
+        "urgent_zero_speed": false,
+        "worst_rotation": {
+          "bone": "FrontUpperLeg.R",
+          "radians_per_frame": 0.664802014827728,
+          "time": 0.0666666666666667,
+          "degrees_per_frame": 38.090349661422394
+        }
+      },
+      {
+        "breed": "shibainu",
+        "action": "side_lie",
+        "clip": "NG_Side_Lie_Exit",
+        "stage": "out",
+        "fraction": 0.5,
+        "fps": 30.0,
+        "urgent_zero_speed": true,
+        "worst_rotation": {
+          "bone": "FrontUpperLeg.R",
+          "radians_per_frame": 0.664802014827728,
+          "time": 0.0666666666666667,
+          "degrees_per_frame": 38.090349661422394
+        }
+      }
+    ]
+  },
+  "independent_raw_glb": {
+    "final_low_pose": {
+      "inputs": {
+        "res://models/animal_cat.glb": "16e90c9ed9ac4675861d0cd7218443e6c792eb9eff34c24ed1995f4d5ae2a2c8",
+        "res://models/animal_husky.glb": "bfe8391f30ce39c7c4543b94852d095dba7abdc068f12e02ea833c42110c7410",
+        "res://models/animal_shibainu.glb": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d",
+        "res://npc/animal-models.json": "ad2cd236c04daf32f0d289bdf3e1b41f529de810d9bb9c436633b98acf2ef4b2",
+        "res://npc/animal.gd": "7bfb0cc372ab3363eaeb6dce05446adf29531f0b4a001fdf7311446723781ddc",
+        "res://npc/animal_model.gd": "d24184cd5cc36ed36132eaec37069fa60d4ad1f4d471c43d40591343146c8841",
+        "res://npc/dog-params.json": "6b3c7d070d74edcc0b7241b5e0a585b9d3734ca801656634e9f848844a404063",
+        "res://npc/procedural_dog.gd": "6b21264fa5eeb772f9757d53d20f63736e37b1b7d9e54284c2fa7fbb9e7c0801"
+      },
+      "scenarios": 12,
+      "frames": 23040,
+      "failures": [],
+      "mesh_floor_min_m": -1.0952170188122112e-06,
+      "leg_length_change_max_m": 2.52001291445314e-07,
+      "planted_skin_sole_error_max_m": 3.2118429176879873e-06,
+      "free_skin_sole_error_max_m": 3.2485712516940005e-06,
+      "free_rigid_anchor_error_max_m": 0.049648206553946896,
+      "inertia_projection": {
+        "recovery_frames": 1224,
+        "projected_frames": 0,
+        "minimum_inertia_weight": 1.0,
+        "maximum_feasibility_evaluations": 1
+      },
+      "matrix_sha256": {
+        "cat_lie_urgent.f32": "0045b29cf109b7fd75434c073ea6cdf05ed102e2ec460c7ee1df6a582b3b71ed",
+        "cat_side_lie_urgent.f32": "162a3510477509127acfbb52431e6fedfd5147d153208a887540b059b238dc5d",
+        "cat_sit_urgent.f32": "4de55ba2af7404fcca80920b9943d497d9966e1229cf4e5f794606abffa90ab4",
+        "cat_sleep_urgent.f32": "07474f40769224016052abadd98089d48f314d6e190dcb01a03956a6d45dbc69",
+        "husky_lie_urgent.f32": "99b8781dce50c5123a6f291584591c0aa2490a13806dbdae3b681cb23683d31d",
+        "husky_side_lie_urgent.f32": "fa9b2f55ab86a5f57ea6e5026c80a74f55dea0941b2a5f8d20ac64fbe684b6c2",
+        "husky_sit_urgent.f32": "0836703337fc1a913e837f76a44ea25a5fb2292ffc1913800ff1015b92956c02",
+        "husky_sleep_urgent.f32": "f3bfcea49ba2e6f94f39d1e77ab2ab98e5a1e098f41c509537f90383130ef95a",
+        "shibainu_lie_urgent.f32": "4525964828d3ddb2ee29993d6dce9baf442a5e0ea9dda455d2a76a5a4fbffc4f",
+        "shibainu_side_lie_urgent.f32": "a73c5ea78bfe42e77b914dd08c57ae52a4234d0f319d1b59257f8e0a3be6cdff",
+        "shibainu_sit_urgent.f32": "5eabfabe344e91eb865e346036a566aafaa6a9a54ea90fb3003e6b7b335906ec",
+        "shibainu_sleep_urgent.f32": "2baa27141cc396615289cc04757946833384c13f2f880478d0f0bf237cf4eff6"
+      }
+    },
+    "final_scratch": {
+      "inputs": {
+        "res://models/animal_husky.glb": "bfe8391f30ce39c7c4543b94852d095dba7abdc068f12e02ea833c42110c7410",
+        "res://models/animal_shibainu.glb": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d",
+        "res://npc/animal-models.json": "ad2cd236c04daf32f0d289bdf3e1b41f529de810d9bb9c436633b98acf2ef4b2",
+        "res://npc/animal.gd": "7bfb0cc372ab3363eaeb6dce05446adf29531f0b4a001fdf7311446723781ddc",
+        "res://npc/animal_model.gd": "d24184cd5cc36ed36132eaec37069fa60d4ad1f4d471c43d40591343146c8841",
+        "res://npc/dog-params.json": "6b3c7d070d74edcc0b7241b5e0a585b9d3734ca801656634e9f848844a404063",
+        "res://npc/procedural_dog.gd": "6b21264fa5eeb772f9757d53d20f63736e37b1b7d9e54284c2fa7fbb9e7c0801"
+      },
+      "scenarios": 4,
+      "frames": 7680,
+      "failures": [],
+      "mesh_floor_min_m": -9.903491697082047e-07,
+      "leg_length_change_max_m": 2.52001291445314e-07,
+      "planted_skin_sole_error_max_m": 0.00010624706234301602,
+      "free_skin_sole_error_max_m": 1.4032330012288791e-05,
+      "free_rigid_anchor_error_max_m": 0.0447872819246596,
+      "inertia_projection": {
+        "recovery_frames": 504,
+        "projected_frames": 0,
+        "minimum_inertia_weight": 1.0,
+        "maximum_feasibility_evaluations": 2
+      },
+      "matrix_sha256": {
+        "husky_scratch_normal.f32": "7241036d12749f103283d19254e22f129790f4d93e16fb4370717cde0a8f8fde",
+        "husky_scratch_urgent.f32": "38bc1bd0ab9e01a8c879873d17bd39071b14eb412a5273941d90e6ac0db1578f",
+        "shibainu_scratch_normal.f32": "fa68f9fef6cd1f49917635e2b87ad16b0c3cee24032e0bd6e1e75dd55525ed01",
+        "shibainu_scratch_urgent.f32": "0a913fbc66cc13068f12f676f9e629b32c0c99f0f9fddf9faa4117772d48d898"
+      }
+    }
+  },
+  "production_fullmesh_checks": {
+    "check_animals_final.log": {
+      "marker": "ANIMALS_OK",
+      "sha256": "ce9468940c493bf2cf71fa6658ad4ee2645e4fe8c47cba04171deba310eee0c1"
+    },
+    "check_locomotion_final.log": {
+      "marker": "LOCOMOTION_OK",
+      "sha256": "8c7be4ac284686fa838da2fa813a4cf93262d39de0f3a8f55bccf5378c4eed94"
+    }
+  }
+}

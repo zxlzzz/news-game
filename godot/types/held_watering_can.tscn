@@ -5,3 +5,5 @@
 [node name="HeldWateringCan" type="Node3D" groups=["held"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+rotation = Vector3(0, 1.5707963267948966, 0)
+position = Vector3(0, 0, 0.17)

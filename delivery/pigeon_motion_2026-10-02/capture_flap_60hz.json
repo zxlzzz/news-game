@@ -1,0 +1,32 @@
+{
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/pigeon_motion_2026-10-02/flap_60hz",
+  "samples": 96,
+  "columns": 8,
+  "cell": 256,
+  "views": [
+    0,
+    90,
+    30
+  ],
+  "pitch": 10,
+  "entries": [
+    {
+      "id": "pigeon:flap",
+      "label": "pigeon_flap_two_cycles",
+      "duration": 1.6,
+      "follow_pose": false,
+      "target_height": 0,
+      "size": 1.0
+    }
+  ],
+  "provenance": [
+    "res://npc/pigeon_motion.gd",
+    "res://npc/pigeon-motion.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://npc/pigeon-wings.json",
+    "res://scenes/empty_ground/stage.gd",
+    "res://tools/review_motion_batch.gd",
+    "res://tools/animal_clip_preview.gd"
+  ]
+}

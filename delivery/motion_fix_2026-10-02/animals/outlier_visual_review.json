@@ -1,0 +1,41 @@
+{
+  "scope": "Existing maximum rotation/speed windows replayed without resimulation; diagnostic only.",
+  "pages": [
+    {
+      "file": "delivery\\motion_fix_2026-10-02\\animals\\outlier_actual\\cat\\cat_side_cancel_cat.png",
+      "sha256": "b8dc130a406c40ee0d71378fa1c1d003cd3ab8fae29beedc03ede20dceaf7ca2",
+      "reviewed": true
+    },
+    {
+      "file": "delivery\\motion_fix_2026-10-02\\animals\\outlier_pages\\husky_side_cancel_husky_00.png",
+      "sha256": "d2a254478004667859c569bb2a6a1cad5ec8f9ca41cd885640280748164d1d14",
+      "reviewed": true
+    },
+    {
+      "file": "delivery\\motion_fix_2026-10-02\\animals\\outlier_pages\\husky_side_cancel_husky_01.png",
+      "sha256": "2486b0c696d0ce24e4c2b9b84b50ba65916dc149f2196c7d88be675cd568205b",
+      "reviewed": true
+    },
+    {
+      "file": "delivery\\motion_fix_2026-10-02\\animals\\outlier_pages\\husky_side_cancel_husky_02.png",
+      "sha256": "3ff7cb46e30a8154cfb4e6e884cad490be36e44dfcabc5f3d41e5ac4252c79fa",
+      "reviewed": true
+    },
+    {
+      "file": "delivery\\motion_fix_2026-10-02\\animals\\outlier_pages\\husky_side_cancel_husky_03.png",
+      "sha256": "803d731708fc3e8b991a38ec671fb2f99ce795039ea990085b475c08a4d59488",
+      "reviewed": true
+    }
+  ],
+  "manifests": [
+    {
+      "file": "delivery\\motion_fix_2026-10-02\\animals\\outlier_actual\\cat\\manifest.json",
+      "sha256": "e1b5795c82944e107736e7da575acdef7672a323b3af24e285acb74cd018f2fa"
+    },
+    {
+      "file": "delivery\\motion_fix_2026-10-02\\animals\\outlier_actual\\husky\\manifest.json",
+      "sha256": "9a65cc833cb2073cc75af434bfeafbfffa0d8b93c6728df514580e77188f4852"
+    }
+  ],
+  "observations": "Cat rolls upright and its forefeet collect quickly; Husky forepaw settles while body rises. No whole-body pop or gross limb inversion was visible in these three views. Fine bone continuity requires the separate matrix diagnosis."
+}

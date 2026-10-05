@@ -7778,5 +7778,19 @@
       ]
     },
     "sha256": "a501c8637321d0890ac9f4c61099c49f85b0c482c89e05b14a48ababa005d195"
+  },
+  "single_unit": {
+    "clip": "walk_dog",
+    "source_sha256": "a501c8637321d0890ac9f4c61099c49f85b0c482c89e05b14a48ababa005d195",
+    "original_frames": 71,
+    "take_frames": [
+      35,
+      70
+    ],
+    "original_units": 2,
+    "frames": 36,
+    "duration": 1.1666666666666667,
+    "source": "assets/animations/generation_inputs/a501c8637321d0890ac9f4c61099c49f85b0c482c89e05b14a48ababa005d195.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
   }
 }

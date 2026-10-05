@@ -1,0 +1,1209 @@
+{
+	"clips": {
+		"adjust_clothes": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"air_walker": {
+			"max_bone_error_m": 0.000000000000000117961196366423,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"assist_elder_walk": {
+			"max_bone_error_m": 0.000000000000000194289029309402,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"atm_keypad": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"atm_take_cash": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"back_away": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"badminton_swing": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"basketball_dribble": {
+			"max_bone_error_m": 0.0000000000000000693889390390723,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"basketball_shoot": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"beckon": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"bike_scan_unlock": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"block_way": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"bow": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"breakfast_buy": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"breakfast_sell": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"browse_bookstall": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"brush_clothes": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"buy_newspaper": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"cafe_sit_drink": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"car_enter": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 180
+		},
+		"car_exit": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 180
+		},
+		"carry_bag": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"carry_bags": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"carry_box": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 91
+		},
+		"carry_bucket": {
+			"max_bone_error_m": 0.000000000000000208166817117217,
+			"max_paired_support": 0.0,
+			"native_frames": 91
+		},
+		"carry_shoulder": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"carry_shoulder_bag": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 35
+		},
+		"check_watch": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"cheer": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"chess_move": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"chess_watch": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"choose_item": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"cough": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"cover_face": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"crane_neck": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"cross_arms": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"crouch_check": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 135
+		},
+		"crouch_check_hold": {
+			"max_bone_error_m": 0.0000000000000000555111512312578,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"distribute_flyer": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"dodge": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"drink": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"duck_cover": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"duck_cover_hold": {
+			"max_bone_error_m": 0.0000000000000000555111512312578,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"eat_snack": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"eat_walk": {
+			"max_bone_error_m": 0.000000000000000416333634234434,
+			"max_paired_support": 0.0,
+			"native_frames": 59
+		},
+		"elder_assisted_walk": {
+			"max_bone_error_m": 0.00000000000000020122792321331,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"exercise": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 54
+		},
+		"fall_back": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"fan_self": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"film_phone": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 151
+		},
+		"football_juggle": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"fountain_drink": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"fruit_choose": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"fruit_weigh": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"give_item": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"grab_snatch": {
+			"max_bone_error_m": 0.00000000000000012490009027033,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"guard": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"hail_taxi": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"hands_behind_back": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"hands_in_pockets": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"hands_on_head": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"hands_on_head_hold": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"hands_on_hips": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"hands_up": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"hands_up_hold": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"handshake_offer": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"handshake_reply": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"handstand": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.999966656512355,
+			"native_frames": 61
+		},
+		"hang_laundry": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"hesitate_reach": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"hold_door": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"hold_guitar": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"hold_umbrella": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"hop": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 54
+		},
+		"inspect_item": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"interrupt": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"interview_answer": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"interview_describe": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"interview_followup": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"interview_listen": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"interview_point": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"interview_question": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"jog": {
+			"max_bone_error_m": 0.000000000000000228983498828939,
+			"max_paired_support": 0.0,
+			"native_frames": 79
+		},
+		"kneel_hold": {
+			"max_bone_error_m": 0.0000000000000000693889390390723,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"laugh": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"lean_railing": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"lean_sign": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"lean_wall": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"lecture": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"leg_stretch": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"lie_ground_hold": {
+			"max_bone_error_m": 0.0000000000000000555111512312578,
+			"max_paired_support": 0.00071883269267211,
+			"native_frames": 61
+		},
+		"look_around_nervous": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"look_away": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"look_down": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"look_up": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"magic_gesture": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"march_in_place": {
+			"max_bone_error_m": 0.0000000000000000555111512312578,
+			"max_paired_support": 0.0,
+			"native_frames": 55
+		},
+		"mop_ground": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"pace": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 300
+		},
+		"parcel_terminal": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"pat_dust": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"pay": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 135
+		},
+		"peek_side": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"phone_booth_call": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"phone_call": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"phone_urgent": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 210
+		},
+		"phone_walk": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 66
+		},
+		"photo_overhead": {
+			"max_bone_error_m": 0.000000000000000152655665885959,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"pick_up": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"point": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"point_shout": {
+			"max_bone_error_m": 0.00000000000000024980018054066,
+			"max_paired_support": 0.0,
+			"native_frames": 135
+		},
+		"post_letter": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"post_notice": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"present": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"press_button": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"pull_door": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 300
+		},
+		"pull_suitcase": {
+			"max_bone_error_m": 0.000000000000000208166817117217,
+			"max_paired_support": 0.0,
+			"native_frames": 91
+		},
+		"pullup_hold": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 91
+		},
+		"pullup_raise": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 91
+		},
+		"push_bicycle": {
+			"max_bone_error_m": 0.000000000000000235922392732846,
+			"max_paired_support": 0.0,
+			"native_frames": 67
+		},
+		"push_cart": {
+			"max_bone_error_m": 0.000000000000000430211422042248,
+			"max_paired_support": 0.0,
+			"native_frames": 67
+		},
+		"push_door": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 180
+		},
+		"push_stroller": {
+			"max_bone_error_m": 0.000000000000000437150315946155,
+			"max_paired_support": 0.0,
+			"native_frames": 67
+		},
+		"reach_after": {
+			"max_bone_error_m": 0.000000000000000166533453693773,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"read_book": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"read_newspaper": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"read_notice": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"receive_flyer": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"receive_item": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"recoil": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"rub_eye": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"rub_hands": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"rummage_bin": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"run": {
+			"max_bone_error_m": 0.000000000000000430211422042248,
+			"max_paired_support": 0.0,
+			"native_frames": 42
+		},
+		"run_curve": {
+			"max_bone_error_m": 0.000000000000000180411241501588,
+			"max_paired_support": 0.0,
+			"native_frames": 247
+		},
+		"scratch_back": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"scratch_head": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"seesaw_partner": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"seesaw_seated": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"selfie": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"shadow_box": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"shake_foot": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 75
+		},
+		"shout": {
+			"max_bone_error_m": 0.0000000000000000971445146547012,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"shrug": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"sigh": {
+			"max_bone_error_m": 0.0000000000000000971445146547012,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"sit_bench": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"sit_ground": {
+			"max_bone_error_m": 0.0000000000000000971445146547012,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"sit_ground_dazed": {
+			"max_bone_error_m": 0.0000000000000000971445146547012,
+			"max_paired_support": 0.0,
+			"native_frames": 180
+		},
+		"sit_ground_dazed_hold": {
+			"max_bone_error_m": 0.0000000000000000693889390390723,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"sit_knees_up": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"sit_sideways": {
+			"max_bone_error_m": 0.0000000000000000693889390390723,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"sit_step": {
+			"max_bone_error_m": 0.0000000000000000555111512312578,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"skip": {
+			"max_bone_error_m": 0.000000000000000222044604925031,
+			"max_paired_support": 0.0,
+			"native_frames": 53
+		},
+		"slap_table": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"slide_seated": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"slouch_bench": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"smoke": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"smoke_walk": {
+			"max_bone_error_m": 0.000000000000000430211422042248,
+			"max_paired_support": 0.0,
+			"native_frames": 127
+		},
+		"sneeze": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"spin": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 121
+		},
+		"square_dance": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"squat": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"squat_down": {
+			"max_bone_error_m": 0.0000000000000000971445146547012,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"squat_watch": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"stand_hunched": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"stand_idle": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"stand_up": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"stand_up_support_back": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"stand_watch": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"start_walk": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"startle": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"stop_hand": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"stop_walk": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"stretch": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"stumble": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"sweep_ground": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"swing_seated": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"table_tennis_partner": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"table_tennis_play": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"tai_chi": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 210
+		},
+		"take_back_piece": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"take_photo": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 151
+		},
+		"talk_accuse": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"talk_excited": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"talk_gesture": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"talk_shy": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"throw_trash": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"tiptoe": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"trip_fall": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0313275795647179,
+			"native_frames": 135
+		},
+		"turn_about": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"turn_left_quarter": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"turn_page": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"turn_right_quarter": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"turn_walk": {
+			"max_bone_error_m": 0.000000000000000194289029309402,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"vending_collect": {
+			"max_bone_error_m": 0.000000000000000222044604925031,
+			"max_paired_support": 0.0,
+			"native_frames": 150
+		},
+		"vendor_call": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"vendor_tidy": {
+			"max_bone_error_m": 0.00000000000000012490009027033,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"waist_twister": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 91
+		},
+		"walk": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 67
+		},
+		"walk_backpack_straps": {
+			"max_bone_error_m": 0.000000000000000222044604925031,
+			"max_paired_support": 0.0,
+			"native_frames": 69
+		},
+		"walk_backward": {
+			"max_bone_error_m": 0.00000000000000020122792321331,
+			"max_paired_support": 0.0,
+			"native_frames": 60
+		},
+		"walk_briefcase": {
+			"max_bone_error_m": 0.000000000000000208166817117217,
+			"max_paired_support": 0.0,
+			"native_frames": 67
+		},
+		"walk_brisk": {
+			"max_bone_error_m": 0.000000000000000208166817117217,
+			"max_paired_support": 0.0,
+			"native_frames": 31
+		},
+		"walk_cane": {
+			"max_bone_error_m": 0.000000000000000194289029309402,
+			"max_paired_support": 0.0,
+			"native_frames": 47
+		},
+		"walk_carry_bag": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 42
+		},
+		"walk_carry_bags": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 46
+		},
+		"walk_carry_box": {
+			"max_bone_error_m": 0.00000000000000020122792321331,
+			"max_paired_support": 0.0,
+			"native_frames": 91
+		},
+		"walk_check_watch": {
+			"max_bone_error_m": 0.000000000000000312250225675825,
+			"max_paired_support": 0.0,
+			"native_frames": 67
+		},
+		"walk_child_hand_down": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 44
+		},
+		"walk_closed_umbrella": {
+			"max_bone_error_m": 0.000000000000000215105711021124,
+			"max_paired_support": 0.0,
+			"native_frames": 145
+		},
+		"walk_cold": {
+			"max_bone_error_m": 0.00000000000000024980018054066,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"walk_dog": {
+			"max_bone_error_m": 0.00000000000000024980018054066,
+			"max_paired_support": 0.0,
+			"native_frames": 71
+		},
+		"walk_drink": {
+			"max_bone_error_m": 0.000000000000000423272528138341,
+			"max_paired_support": 0.0,
+			"native_frames": 133
+		},
+		"walk_elderly_short": {
+			"max_bone_error_m": 0.000000000000000194289029309402,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"walk_hands_pockets": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 41
+		},
+		"walk_hold_front": {
+			"max_bone_error_m": 0.00000000000000020122792321331,
+			"max_paired_support": 0.0,
+			"native_frames": 91
+		},
+		"walk_limp": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 31
+		},
+		"walk_look_up": {
+			"max_bone_error_m": 0.000000000000000117961196366423,
+			"max_paired_support": 0.0,
+			"native_frames": 43
+		},
+		"walk_newspaper": {
+			"max_bone_error_m": 0.00000000000000012490009027033,
+			"max_paired_support": 0.0,
+			"native_frames": 46
+		},
+		"walk_newspaper_underarm": {
+			"max_bone_error_m": 0.000000000000000346944695195361,
+			"max_paired_support": 0.0,
+			"native_frames": 67
+		},
+		"walk_one_arm_still": {
+			"max_bone_error_m": 0.000000000000000222044604925031,
+			"max_paired_support": 0.0,
+			"native_frames": 67
+		},
+		"walk_one_pocket": {
+			"max_bone_error_m": 0.000000000000000340005801291454,
+			"max_paired_support": 0.0,
+			"native_frames": 67
+		},
+		"walk_phone_call": {
+			"max_bone_error_m": 0.000000000000000194289029309402,
+			"max_paired_support": 0.0,
+			"native_frames": 69
+		},
+		"walk_proud": {
+			"max_bone_error_m": 0.000000000000000215105711021124,
+			"max_paired_support": 0.0,
+			"native_frames": 69
+		},
+		"walk_rigid": {
+			"max_bone_error_m": 0.000000000000000423272528138341,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"walk_slow": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 73
+		},
+		"walk_stairs_down": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 41
+		},
+		"walk_stairs_up": {
+			"max_bone_error_m": 0.000000000000000117961196366423,
+			"max_paired_support": 0.0,
+			"native_frames": 41
+		},
+		"walk_talk": {
+			"max_bone_error_m": 0.000000000000000430211422042248,
+			"max_paired_support": 0.0,
+			"native_frames": 123
+		},
+		"walk_tired": {
+			"max_bone_error_m": 0.000000000000000117961196366423,
+			"max_paired_support": 0.0,
+			"native_frames": 42
+		},
+		"walk_umbrella": {
+			"max_bone_error_m": 0.000000000000000228983498828939,
+			"max_paired_support": 0.0,
+			"native_frames": 68
+		},
+		"wallet_takeout": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"water_planter_hold": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 61
+		},
+		"wave": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"wave_both_overhead": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"wave_overhead": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 120
+		},
+		"whisper": {
+			"max_bone_error_m": 0.000000000000000111022302462516,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		},
+		"wipe_sweat": {
+			"max_bone_error_m": 0.0000000000000000832667268468867,
+			"max_paired_support": 0.0,
+			"native_frames": 90
+		},
+		"yawn": {
+			"max_bone_error_m": 0.000000000000000138777878078145,
+			"max_paired_support": 0.0,
+			"native_frames": 105
+		}
+	},
+	"handstand_min_head_bottom_y": 0.11258358001709,
+	"handstand_min_wrist_y": 0.0174999982118607,
+	"native_frames": 25340,
+	"native_max_bone_error_m": 0.000000000000000437150315946155,
+	"parity_frames": 742,
+	"parity_max_error": 0.000000000000011740608485411,
+	"support_clips": {
+		"handstand": 0.999966656512355,
+		"trip_fall": 0.0313275795647179
+	}
+}

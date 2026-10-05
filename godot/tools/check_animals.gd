@@ -5,7 +5,8 @@
 ##    near person, a cat does the threat action at a dog not too near and runs from a close one;
 ##  - every breed does every action of its species in the review scenario (walk, the action, walk on)
 ##    at 30/60/120 frames per second: no bone changes length, no joint moves faster than
-##    checks.jointSpeed, while walking every paw is where the gait plants it, and it walks again after;
+##    checks.jointSpeed, while walking/recovering every drawn paw follows its actual skin-sole plan,
+##    and it walks again after;
 ##  - the behaviour preview of each species is reproducible, keeps within its range, the cat never
 ##    touches the dog, and the dog both walks and rests, heading several ways.
 extends SceneTree
@@ -64,6 +65,31 @@ func _check_brain(c: Dictionary, dog: Dictionary, cat: Dictionary) -> void:
 		for action in c.brain.rest_actions[species]:
 			if not action in AnimalModel.config().species[species]:
 				_fail("brain rest action %s is not an action of %s" % [action, species])
+		var waiting: Dictionary = Brain.create()
+		waiting.mode = "rest"
+		waiting.has_target = true
+		waiting.target = Vector3.ONE
+		waiting.duration = c.brain.rest_time_min
+		var rest_action: String = c.brain.rest_actions[species][0]
+		var own_radius: float = dog_r if species == "dog" else cat_r
+		for motion in [{"action": "", "phase": "walk", "weight": 0.0},
+				{"action": rest_action, "phase": "in", "weight": 1.0},
+				{"action": rest_action, "phase": "hold", "weight": 0.5}]:
+			var result := Brain.step(waiting, Vector3.ZERO, [], [], c.brain.rest_time_max * 3,
+				c, species, centre, c.review.range_radius, own_radius, motion)
+			if result.state.mode != "rest" or result.state.elapsed != 0.0:
+				_fail("%s consumes rest time before its actual stable hold" % species)
+		var ready := {"action": rest_action, "phase": "hold", "weight": 1.0}
+		var finish := Brain.step(waiting, Vector3.ZERO, [], [], waiting.duration + c.review.dt,
+			c, species, centre, c.review.range_radius, own_radius, ready)
+		if finish.state.mode != "walk":
+			_fail("%s does not finish its stable rest hold" % species)
+		var interrupted := Brain.step(waiting, Vector3.ZERO,
+			[{"position": Vector3(0, 0, c.brain.avoid_person / 2)}], [], c.review.dt,
+			c, species, centre, c.review.range_radius, own_radius,
+			{"action": rest_action, "phase": "in", "weight": 1.0})
+		if interrupted.state.mode != "flee" or not interrupted.urgent:
+			_fail("%s rest entry delays a threat response" % species)
 
 func _check_actions(c: Dictionary, m: Dictionary) -> void:
 	var q: Dictionary = c.review
@@ -73,6 +99,7 @@ func _check_actions(c: Dictionary, m: Dictionary) -> void:
 	var worst_speed := 0.0
 	var worst_speed_at := ""
 	var worst_paw := 0.0
+	var worst_paw_at := ""
 	for action in AnimalModel.config().species[m.species]:
 		for fps in [30, 60, 120]:
 			var dt: float = 1.0 / fps
@@ -96,10 +123,13 @@ func _check_actions(c: Dictionary, m: Dictionary) -> void:
 					var ids: Array = m.legs[key].ids
 					for j in range(1, ids.size()):
 						worst_bone = maxf(worst_bone, absf((pose.locals[ids[j]].origin as Vector3).length() - (m.rest[ids[j]].origin as Vector3).length()))
-					if s.weight == 0:
-						var turn := Basis(Vector3.UP, s.yaw if key[1] == "F" else s.hipYaw)
-						var want: Vector3 = s.feet[key].point + turn * ((m.rest_global[ids[-1]].origin as Vector3) - m.legs[key].sole)
-						worst_paw = maxf(worst_paw, world[ids[-1]].distance_to(want))
+					if s.weight == 0 or s.phase_ == "return":
+						var point: Vector3 = AnimalModel.sole(m, pose.globals, key)
+						var contact: Vector3 = pose.root * point
+						var error: Vector3 = contact - (s.feet[key].point as Vector3)
+						if error.length() > worst_paw:
+							worst_paw = error.length()
+							worst_paw_at = "%s %s %d fps t=%.3f %s phase=%s swing=%s delta=%s" % [m.breed, action, fps, t, key, s.phase_, s.feet[key].swing, error]
 				if not prev.is_empty():
 					for i in world.size():
 						var v: float = world[i].distance_to(prev[i]) / dt
@@ -114,10 +144,10 @@ func _check_actions(c: Dictionary, m: Dictionary) -> void:
 	if worst_bone > k.bone:
 		_fail("%s: a leg bone changes length by %.5f m" % [m.breed, worst_bone])
 	if worst_paw > k.paw:
-		_fail("%s: a walking paw is %.4f m from where the gait planted it" % [m.breed, worst_paw])
+		_fail("%s: a skin paw is %.4f m from its planned point at %s" % [m.breed, worst_paw, worst_paw_at])
 	if worst_speed > k.jointSpeed:
 		_fail("%s: a joint moves at %.1f m/s at %s" % [m.breed, worst_speed, worst_speed_at])
-	print("%s: bone error %.6f m, walking paw error %.5f m, fastest joint %.2f m/s at %s" % [m.breed, worst_bone, worst_paw, worst_speed, worst_speed_at])
+	print("%s: bone error %.6f m, skin paw error %.5f m, fastest joint %.2f m/s at %s" % [m.breed, worst_bone, worst_paw, worst_speed, worst_speed_at])
 
 func _check_behaviour(c: Dictionary, m: Dictionary, dog: Dictionary) -> void:
 	for fps in [30, 60, 120]:

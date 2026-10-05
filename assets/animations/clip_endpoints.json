@@ -145,12 +145,12 @@
       },
       "exit": {
         "clip": "walk",
-        "frame": 66
+        "frame": 33
       },
       "source_root_delta_m": [
         0.0,
         0.0,
-        3.0
+        1.5
       ],
       "endpoint_root_aligned_max_joint_m": 2.384185791015625e-07,
       "duplicate_endpoint": true,
@@ -164,12 +164,12 @@
       },
       "exit": {
         "clip": "walk_slow",
-        "frame": 72
+        "frame": 36
       },
       "source_root_delta_m": [
-        -0.2008500099182129,
+        -0.10042500495910645,
         0.0,
-        2.682729959487915
+        1.341365098953247
       ],
       "endpoint_root_aligned_max_joint_m": 2.385349660155493e-07,
       "duplicate_endpoint": true,
@@ -221,12 +221,12 @@
       },
       "exit": {
         "clip": "jog",
-        "frame": 78
+        "frame": 26
       },
       "source_root_delta_m": [
-        -0.6046199798583984,
+        -0.2015399932861328,
         0.0,
-        6.163517951965332
+        2.0545058250427246
       ],
       "endpoint_root_aligned_max_joint_m": 4.777675730550706e-07,
       "duplicate_endpoint": true,
@@ -240,14 +240,14 @@
       },
       "exit": {
         "clip": "walk_dog",
-        "frame": 70
+        "frame": 35
       },
       "source_root_delta_m": [
-        -0.38943400979042053,
+        -0.19471698999404907,
         0.0,
-        3.4508962631225586
+        1.7254481315612793
       ],
-      "endpoint_root_aligned_max_joint_m": 3.5956288909952803e-07,
+      "endpoint_root_aligned_max_joint_m": 2.4027400458748785e-07,
       "duplicate_endpoint": true,
       "cycle_duration_seconds": 2.3333333333333335
     },
@@ -276,14 +276,14 @@
       },
       "exit": {
         "clip": "eat_walk",
-        "frame": 58
+        "frame": 29
       },
       "source_root_delta_m": [
-        -0.18512097001075745,
+        -0.09255999326705933,
         0.0,
-        3.031193256378174
+        1.5155963897705078
       ],
-      "endpoint_root_aligned_max_joint_m": 4.7706993200336e-07,
+      "endpoint_root_aligned_max_joint_m": 4.76837158203125e-07,
       "duplicate_endpoint": true,
       "cycle_duration_seconds": 1.9333333333333333
     },
@@ -305,6 +305,349 @@
       "endpoint_root_aligned_max_joint_m": 6.664001972467304e-08,
       "duplicate_endpoint": true,
       "cycle_duration_seconds": 2.1666666666666665
+    },
+    "sweep_ground": {
+      "loop": true
+    },
+    "push_cart": {
+      "loop": true,
+      "entry": {
+        "clip": "push_cart",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "push_cart",
+        "frame": 33
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        1.5
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "push_stroller": {
+      "loop": true,
+      "entry": {
+        "clip": "push_stroller",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "push_stroller",
+        "frame": 33
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        1.5
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.00024532525317267804
+    },
+    "pull_suitcase": {
+      "loop": true,
+      "entry": {
+        "clip": "pull_suitcase",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "pull_suitcase",
+        "frame": 45
+      },
+      "source_root_delta_m": [
+        -0.13290974497795105,
+        0.0,
+        1.4590535163879395
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.4027400458748785e-07
+    },
+    "walk_cold": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_cold",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_cold",
+        "frame": 30
+      },
+      "source_root_delta_m": [
+        0.011919736862182617,
+        0.0,
+        1.7210667133331299
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.384476811558792e-07
+    },
+    "walk_elderly_short": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_elderly_short",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_elderly_short",
+        "frame": 30
+      },
+      "source_root_delta_m": [
+        0.10964670032262802,
+        0.0,
+        0.6128387451171875
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.394640249012142e-07
+    },
+    "walk_hold_front": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_hold_front",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_hold_front",
+        "frame": 45
+      },
+      "source_root_delta_m": [
+        0.032319800928235054,
+        0.0,
+        1.2245619297027588
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.768407961680544e-07
+    },
+    "walk_one_arm_still": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_one_arm_still",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_one_arm_still",
+        "frame": 33
+      },
+      "source_root_delta_m": [
+        -0.09186512231826782,
+        0.0,
+        1.2677478790283203
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.457562461863554e-07
+    },
+    "walk_one_pocket": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_one_pocket",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_one_pocket",
+        "frame": 33
+      },
+      "source_root_delta_m": [
+        -0.0227632662281394,
+        0.0,
+        1.587843418121338
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.770999297689224e-07
+    },
+    "walk_proud": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_proud",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_proud",
+        "frame": 34
+      },
+      "source_root_delta_m": [
+        -0.05200211703777313,
+        0.0,
+        1.5936980247497559
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.770699320310986e-07
+    },
+    "walk_rigid": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_rigid",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_rigid",
+        "frame": 30
+      },
+      "source_root_delta_m": [
+        -0.015360519289970398,
+        0.0,
+        1.539686679840088
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.770699320310986e-07
+    },
+    "carry_bucket": {
+      "loop": true,
+      "entry": {
+        "clip": "carry_bucket",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "carry_bucket",
+        "frame": 45
+      },
+      "source_root_delta_m": [
+        0.032319800928235054,
+        0.0,
+        1.2245619297027588
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.175751208010185e-05
+    },
+    "walk_briefcase": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_briefcase",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_briefcase",
+        "frame": 33
+      },
+      "source_root_delta_m": [
+        -0.09186512231826782,
+        0.0,
+        1.2677478790283203
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.457562461863554e-07
+    },
+    "walk_check_watch": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_check_watch",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_check_watch",
+        "frame": 33
+      },
+      "source_root_delta_m": [
+        -0.0227632662281394,
+        0.0,
+        1.587843418121338
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.770999297689224e-07
+    },
+    "push_bicycle": {
+      "loop": true,
+      "entry": {
+        "clip": "push_bicycle",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "push_bicycle",
+        "frame": 33
+      },
+      "source_root_delta_m": [
+        -0.09186512231826782,
+        0.0,
+        1.2677478790283203
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.805480091749757e-07
+    },
+    "walk_closed_umbrella": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_closed_umbrella",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_closed_umbrella",
+        "frame": 72
+      },
+      "source_root_delta_m": [
+        -0.2008500099182129,
+        0.0,
+        2.682729959487915
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.457562461863554e-07
+    },
+    "walk_newspaper_underarm": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_newspaper_underarm",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_newspaper_underarm",
+        "frame": 33
+      },
+      "source_root_delta_m": [
+        -0.022763267159461975,
+        0.0,
+        1.587843418121338
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.00013781185603683509
+    },
+    "walk_carry_box": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_carry_box",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_carry_box",
+        "frame": 45
+      },
+      "source_root_delta_m": [
+        0.032319797202944756,
+        0.0,
+        1.2245619297027588
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.00013660833316658734
+    },
+    "elder_assisted_walk": {
+      "loop": true,
+      "entry": {
+        "clip": "elder_assisted_walk",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "elder_assisted_walk",
+        "frame": 30
+      },
+      "source_root_delta_m": [
+        0.10964670032262802,
+        0.0,
+        0.6128387451171875
+      ],
+      "endpoint_root_aligned_max_joint_m": 3.965641076019783e-07
+    },
+    "walk_backpack_straps": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_backpack_straps",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_backpack_straps",
+        "frame": 34
+      },
+      "source_root_delta_m": [
+        -0.05200211703777313,
+        0.0,
+        1.5936980247497559
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.388837865275353e-07
+    },
+    "assist_elder_walk": {
+      "loop": true,
+      "entry": {
+        "clip": "assist_elder_walk",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "assist_elder_walk",
+        "frame": 30
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.622570276260376
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.1920928955078125e-07
     }
   }
 }

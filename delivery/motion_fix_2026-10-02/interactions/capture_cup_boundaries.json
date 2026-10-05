@@ -1,0 +1,9 @@
+{
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/motion_fix_2026-10-02/interactions/cup_boundaries",
+  "entries": [{"id":"drink","label":"drink_end_hold","follow_pose":true,"size":2.3,"start":3.1,"duration":0.8},{"id":"walk_drink","label":"walk_drink_loop_seam","follow_pose":true,"size":2.3,"start":4.2,"duration":0.4}],
+  "samples": 24,
+  "columns": 6,
+  "cell": 320,
+  "views": [0,90],
+  "pitch": 10
+}

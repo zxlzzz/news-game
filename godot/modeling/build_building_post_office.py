@@ -1,4 +1,4 @@
-"""邮局：宽厚两层、拱窗、中央入口和石质门廊。原创程序模型。Blender --background --factory-startup --python 本文件；GLB 输出到本文件旁。无外部脚本依赖。"""
+"""邮局：宽厚两层、拱窗、中央入口和石质门廊。原创程序模型。Blender --background --factory-startup --python 本文件；GLB 输出到本文件旁。封窗与空心外壳由同目录 building_seal.py 完成。"""
 NAME = 'building_post_office'
 # Design dimensions and placements, in metres; Y up, front +Z.
 P = {'wall_slot': 'wall_stone',
@@ -446,3 +446,12 @@ def build():
 
 if __name__ == '__main__':
     build()
+
+
+# Shared final pass: sealed opaque windows and a hollow masonry shell.
+if __name__ == "__main__":
+    import sys as _sys
+    from pathlib import Path as _Path
+    _sys.path.insert(0, str(_Path(__file__).resolve().parent))
+    from building_seal import seal_building as _seal_building
+    _seal_building(_Path(__file__).resolve().parents[1] / "models" / (_Path(__file__).stem.removeprefix("build_") + ".glb"), __file__)

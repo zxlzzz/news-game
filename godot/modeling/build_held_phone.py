@@ -3,7 +3,7 @@ NAME = 'held_phone'
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['box', 'body', (0.08, 0.16, 0.025), (0, 0.02, 0), 'metal_dark'],
  ['box', 'screen', (0.068, 0.13, 0.006), (0, 0.025, -0.017), 'window']]
-GRIPS = {}
+GRIPS = {'grip_left': (0, -0.06, 0), 'grip_right': (0, 0.06, 0)}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 

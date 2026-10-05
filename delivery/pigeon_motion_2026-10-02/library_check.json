@@ -1,0 +1,1106 @@
+{
+  "connections": [
+    {
+      "from": "unfold_direct",
+      "max_gap_m": 0.0,
+      "to": "spread_wings"
+    },
+    {
+      "from": "unfold_direct",
+      "max_gap_m": 0.0,
+      "to": "fold_direct"
+    },
+    {
+      "from": "unfold_direct",
+      "max_gap_m": 0.0,
+      "to": "fold_after_lift"
+    },
+    {
+      "from": "unfold_direct",
+      "max_gap_m": 0.0,
+      "to": "touchdown_fold"
+    },
+    {
+      "from": "unfold_lift",
+      "max_gap_m": 0.0,
+      "to": "spread_wings"
+    },
+    {
+      "from": "unfold_lift",
+      "max_gap_m": 0.0,
+      "to": "fold_direct"
+    },
+    {
+      "from": "unfold_lift",
+      "max_gap_m": 0.0,
+      "to": "fold_after_lift"
+    },
+    {
+      "from": "unfold_lift",
+      "max_gap_m": 0.0,
+      "to": "touchdown_fold"
+    },
+    {
+      "from": "fold_direct",
+      "max_gap_m": 0.0,
+      "to": "folded"
+    },
+    {
+      "from": "fold_direct",
+      "max_gap_m": 0.0,
+      "to": "peck"
+    },
+    {
+      "from": "fold_direct",
+      "max_gap_m": 0.0,
+      "to": "look_around"
+    },
+    {
+      "from": "fold_direct",
+      "max_gap_m": 0.0,
+      "to": "unfold_direct"
+    },
+    {
+      "from": "fold_direct",
+      "max_gap_m": 0.0,
+      "to": "unfold_lift"
+    },
+    {
+      "from": "fold_direct",
+      "max_gap_m": 0.0,
+      "to": "launch_power"
+    },
+    {
+      "from": "fold_direct",
+      "max_gap_m": 0.0,
+      "to": "launch_open"
+    },
+    {
+      "from": "fold_direct",
+      "max_gap_m": 0.0,
+      "to": "hop"
+    },
+    {
+      "from": "fold_after_lift",
+      "max_gap_m": 0.0,
+      "to": "folded"
+    },
+    {
+      "from": "fold_after_lift",
+      "max_gap_m": 0.0,
+      "to": "peck"
+    },
+    {
+      "from": "fold_after_lift",
+      "max_gap_m": 0.0,
+      "to": "look_around"
+    },
+    {
+      "from": "fold_after_lift",
+      "max_gap_m": 0.0,
+      "to": "unfold_direct"
+    },
+    {
+      "from": "fold_after_lift",
+      "max_gap_m": 0.0,
+      "to": "unfold_lift"
+    },
+    {
+      "from": "fold_after_lift",
+      "max_gap_m": 0.0,
+      "to": "launch_power"
+    },
+    {
+      "from": "fold_after_lift",
+      "max_gap_m": 0.0,
+      "to": "launch_open"
+    },
+    {
+      "from": "fold_after_lift",
+      "max_gap_m": 0.0,
+      "to": "hop"
+    },
+    {
+      "from": "launch_power",
+      "max_gap_m": 0.0,
+      "to": "wing_up"
+    },
+    {
+      "from": "launch_power",
+      "max_gap_m": 0.0,
+      "to": "flap"
+    },
+    {
+      "from": "launch_power",
+      "max_gap_m": 0.0,
+      "to": "flap_to_glide_stroke"
+    },
+    {
+      "from": "launch_power",
+      "max_gap_m": 0.0,
+      "to": "flap_to_glide_soft"
+    },
+    {
+      "from": "launch_open",
+      "max_gap_m": 0.0,
+      "to": "wing_up"
+    },
+    {
+      "from": "launch_open",
+      "max_gap_m": 0.0,
+      "to": "flap"
+    },
+    {
+      "from": "launch_open",
+      "max_gap_m": 0.0,
+      "to": "flap_to_glide_stroke"
+    },
+    {
+      "from": "launch_open",
+      "max_gap_m": 0.0,
+      "to": "flap_to_glide_soft"
+    },
+    {
+      "from": "flap_to_glide_stroke",
+      "max_gap_m": 0.0,
+      "to": "glide"
+    },
+    {
+      "from": "flap_to_glide_stroke",
+      "max_gap_m": 0.0,
+      "to": "glide_to_flap"
+    },
+    {
+      "from": "flap_to_glide_stroke",
+      "max_gap_m": 0.0,
+      "to": "climb_enter"
+    },
+    {
+      "from": "flap_to_glide_stroke",
+      "max_gap_m": 0.0,
+      "to": "dive_enter"
+    },
+    {
+      "from": "flap_to_glide_stroke",
+      "max_gap_m": 0.0,
+      "to": "bank_left_enter"
+    },
+    {
+      "from": "flap_to_glide_stroke",
+      "max_gap_m": 0.0,
+      "to": "bank_right_enter"
+    },
+    {
+      "from": "flap_to_glide_stroke",
+      "max_gap_m": 0.0,
+      "to": "brake_from_glide"
+    },
+    {
+      "from": "flap_to_glide_soft",
+      "max_gap_m": 0.0,
+      "to": "glide"
+    },
+    {
+      "from": "flap_to_glide_soft",
+      "max_gap_m": 0.0,
+      "to": "glide_to_flap"
+    },
+    {
+      "from": "flap_to_glide_soft",
+      "max_gap_m": 0.0,
+      "to": "climb_enter"
+    },
+    {
+      "from": "flap_to_glide_soft",
+      "max_gap_m": 0.0,
+      "to": "dive_enter"
+    },
+    {
+      "from": "flap_to_glide_soft",
+      "max_gap_m": 0.0,
+      "to": "bank_left_enter"
+    },
+    {
+      "from": "flap_to_glide_soft",
+      "max_gap_m": 0.0,
+      "to": "bank_right_enter"
+    },
+    {
+      "from": "flap_to_glide_soft",
+      "max_gap_m": 0.0,
+      "to": "brake_from_glide"
+    },
+    {
+      "from": "glide_to_flap",
+      "max_gap_m": 0.0,
+      "to": "wing_up"
+    },
+    {
+      "from": "glide_to_flap",
+      "max_gap_m": 0.0,
+      "to": "flap"
+    },
+    {
+      "from": "glide_to_flap",
+      "max_gap_m": 0.0,
+      "to": "flap_to_glide_stroke"
+    },
+    {
+      "from": "glide_to_flap",
+      "max_gap_m": 0.0,
+      "to": "flap_to_glide_soft"
+    },
+    {
+      "from": "climb_enter",
+      "max_gap_m": 0.0,
+      "to": "climb"
+    },
+    {
+      "from": "climb_enter",
+      "max_gap_m": 0.0,
+      "to": "climb_exit"
+    },
+    {
+      "from": "climb_exit",
+      "max_gap_m": 0.0,
+      "to": "glide"
+    },
+    {
+      "from": "climb_exit",
+      "max_gap_m": 0.0,
+      "to": "glide_to_flap"
+    },
+    {
+      "from": "climb_exit",
+      "max_gap_m": 0.0,
+      "to": "climb_enter"
+    },
+    {
+      "from": "climb_exit",
+      "max_gap_m": 0.0,
+      "to": "dive_enter"
+    },
+    {
+      "from": "climb_exit",
+      "max_gap_m": 0.0,
+      "to": "bank_left_enter"
+    },
+    {
+      "from": "climb_exit",
+      "max_gap_m": 0.0,
+      "to": "bank_right_enter"
+    },
+    {
+      "from": "climb_exit",
+      "max_gap_m": 0.0,
+      "to": "brake_from_glide"
+    },
+    {
+      "from": "dive_enter",
+      "max_gap_m": 0.0,
+      "to": "dive"
+    },
+    {
+      "from": "dive_enter",
+      "max_gap_m": 0.0,
+      "to": "dive_exit"
+    },
+    {
+      "from": "dive_exit",
+      "max_gap_m": 0.0,
+      "to": "glide"
+    },
+    {
+      "from": "dive_exit",
+      "max_gap_m": 0.0,
+      "to": "glide_to_flap"
+    },
+    {
+      "from": "dive_exit",
+      "max_gap_m": 0.0,
+      "to": "climb_enter"
+    },
+    {
+      "from": "dive_exit",
+      "max_gap_m": 0.0,
+      "to": "dive_enter"
+    },
+    {
+      "from": "dive_exit",
+      "max_gap_m": 0.0,
+      "to": "bank_left_enter"
+    },
+    {
+      "from": "dive_exit",
+      "max_gap_m": 0.0,
+      "to": "bank_right_enter"
+    },
+    {
+      "from": "dive_exit",
+      "max_gap_m": 0.0,
+      "to": "brake_from_glide"
+    },
+    {
+      "from": "bank_left_enter",
+      "max_gap_m": 0.0,
+      "to": "bank_left"
+    },
+    {
+      "from": "bank_left_enter",
+      "max_gap_m": 0.0,
+      "to": "bank_left_exit"
+    },
+    {
+      "from": "bank_left_enter",
+      "max_gap_m": 0.0,
+      "to": "bank_left_to_right"
+    },
+    {
+      "from": "bank_left_exit",
+      "max_gap_m": 0.0,
+      "to": "glide"
+    },
+    {
+      "from": "bank_left_exit",
+      "max_gap_m": 0.0,
+      "to": "glide_to_flap"
+    },
+    {
+      "from": "bank_left_exit",
+      "max_gap_m": 0.0,
+      "to": "climb_enter"
+    },
+    {
+      "from": "bank_left_exit",
+      "max_gap_m": 0.0,
+      "to": "dive_enter"
+    },
+    {
+      "from": "bank_left_exit",
+      "max_gap_m": 0.0,
+      "to": "bank_left_enter"
+    },
+    {
+      "from": "bank_left_exit",
+      "max_gap_m": 0.0,
+      "to": "bank_right_enter"
+    },
+    {
+      "from": "bank_left_exit",
+      "max_gap_m": 0.0,
+      "to": "brake_from_glide"
+    },
+    {
+      "from": "bank_right_enter",
+      "max_gap_m": 0.0,
+      "to": "bank_right"
+    },
+    {
+      "from": "bank_right_enter",
+      "max_gap_m": 0.0,
+      "to": "bank_right_exit"
+    },
+    {
+      "from": "bank_right_exit",
+      "max_gap_m": 0.0,
+      "to": "glide"
+    },
+    {
+      "from": "bank_right_exit",
+      "max_gap_m": 0.0,
+      "to": "glide_to_flap"
+    },
+    {
+      "from": "bank_right_exit",
+      "max_gap_m": 0.0,
+      "to": "climb_enter"
+    },
+    {
+      "from": "bank_right_exit",
+      "max_gap_m": 0.0,
+      "to": "dive_enter"
+    },
+    {
+      "from": "bank_right_exit",
+      "max_gap_m": 0.0,
+      "to": "bank_left_enter"
+    },
+    {
+      "from": "bank_right_exit",
+      "max_gap_m": 0.0,
+      "to": "bank_right_enter"
+    },
+    {
+      "from": "bank_right_exit",
+      "max_gap_m": 0.0,
+      "to": "brake_from_glide"
+    },
+    {
+      "from": "bank_left_to_right",
+      "max_gap_m": 0.0,
+      "to": "bank_right"
+    },
+    {
+      "from": "bank_left_to_right",
+      "max_gap_m": 0.0,
+      "to": "bank_right_exit"
+    },
+    {
+      "from": "brake_from_glide",
+      "max_gap_m": 0.0,
+      "to": "brake_feet"
+    },
+    {
+      "from": "brake_from_glide",
+      "max_gap_m": 0.0,
+      "to": "land_flare"
+    },
+    {
+      "from": "brake_from_glide",
+      "max_gap_m": 0.0,
+      "to": "land_absorb"
+    },
+    {
+      "from": "land_flare",
+      "max_gap_m": 0.0,
+      "to": "spread_wings"
+    },
+    {
+      "from": "land_flare",
+      "max_gap_m": 0.0,
+      "to": "fold_direct"
+    },
+    {
+      "from": "land_flare",
+      "max_gap_m": 0.0,
+      "to": "fold_after_lift"
+    },
+    {
+      "from": "land_flare",
+      "max_gap_m": 0.0,
+      "to": "touchdown_fold"
+    },
+    {
+      "from": "land_absorb",
+      "max_gap_m": 0.0,
+      "to": "spread_wings"
+    },
+    {
+      "from": "land_absorb",
+      "max_gap_m": 0.0,
+      "to": "fold_direct"
+    },
+    {
+      "from": "land_absorb",
+      "max_gap_m": 0.0,
+      "to": "fold_after_lift"
+    },
+    {
+      "from": "land_absorb",
+      "max_gap_m": 0.0,
+      "to": "touchdown_fold"
+    },
+    {
+      "from": "touchdown_fold",
+      "max_gap_m": 0.0,
+      "to": "folded"
+    },
+    {
+      "from": "touchdown_fold",
+      "max_gap_m": 0.0,
+      "to": "peck"
+    },
+    {
+      "from": "touchdown_fold",
+      "max_gap_m": 0.0,
+      "to": "look_around"
+    },
+    {
+      "from": "touchdown_fold",
+      "max_gap_m": 0.0,
+      "to": "unfold_direct"
+    },
+    {
+      "from": "touchdown_fold",
+      "max_gap_m": 0.0,
+      "to": "unfold_lift"
+    },
+    {
+      "from": "touchdown_fold",
+      "max_gap_m": 0.0,
+      "to": "launch_power"
+    },
+    {
+      "from": "touchdown_fold",
+      "max_gap_m": 0.0,
+      "to": "launch_open"
+    },
+    {
+      "from": "touchdown_fold",
+      "max_gap_m": 0.0,
+      "to": "hop"
+    },
+    {
+      "from": "hop",
+      "max_gap_m": 0.0,
+      "to": "folded"
+    },
+    {
+      "from": "hop",
+      "max_gap_m": 0.0,
+      "to": "peck"
+    },
+    {
+      "from": "hop",
+      "max_gap_m": 0.0,
+      "to": "look_around"
+    },
+    {
+      "from": "hop",
+      "max_gap_m": 0.0,
+      "to": "unfold_direct"
+    },
+    {
+      "from": "hop",
+      "max_gap_m": 0.0,
+      "to": "unfold_lift"
+    },
+    {
+      "from": "hop",
+      "max_gap_m": 0.0,
+      "to": "launch_power"
+    },
+    {
+      "from": "hop",
+      "max_gap_m": 0.0,
+      "to": "launch_open"
+    },
+    {
+      "from": "hop",
+      "max_gap_m": 0.0,
+      "to": "hop"
+    }
+  ],
+  "entries": [
+    {
+      "duration": 1.0,
+      "end_pose": "folded",
+      "frame": 1.0,
+      "id": "folded",
+      "label": "收翼站姿",
+      "loop": true,
+      "root_height": 0.0,
+      "start_pose": "folded",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "hold"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "spread_ground",
+      "frame": 1.0,
+      "id": "spread_wings",
+      "label": "展翼站姿",
+      "loop": true,
+      "root_height": 0.0,
+      "start_pose": "spread_ground",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "hold"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "upstroke",
+      "frame": 1.0,
+      "id": "wing_up",
+      "label": "拍翼上端",
+      "loop": true,
+      "root_height": 0.35,
+      "start_pose": "upstroke",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "hold"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "downstroke",
+      "frame": 1.0,
+      "id": "wing_down",
+      "label": "拍翼下端",
+      "loop": true,
+      "root_height": 0.35,
+      "start_pose": "downstroke",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "hold"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "glide",
+      "frame": 1.0,
+      "id": "glide",
+      "label": "滑翔姿势",
+      "loop": true,
+      "root_height": 0.35,
+      "start_pose": "glide",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "hold"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "climb",
+      "frame": 1.0,
+      "id": "climb",
+      "label": "爬升姿势",
+      "loop": true,
+      "root_height": 0.35,
+      "start_pose": "climb",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "hold"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "dive",
+      "frame": 1.0,
+      "id": "dive",
+      "label": "俯冲姿势",
+      "loop": true,
+      "root_height": 0.35,
+      "start_pose": "dive",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "hold"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "bank_left",
+      "frame": 1.0,
+      "id": "bank_left",
+      "label": "左倾姿势",
+      "loop": true,
+      "root_height": 0.35,
+      "start_pose": "bank_left",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "hold"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "bank_right",
+      "frame": 1.0,
+      "id": "bank_right",
+      "label": "右倾姿势",
+      "loop": true,
+      "root_height": 0.35,
+      "start_pose": "bank_right",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "hold"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "brake_feet",
+      "frame": 1.0,
+      "id": "brake_feet",
+      "label": "刹停伸脚",
+      "loop": true,
+      "root_height": 0.35,
+      "start_pose": "brake_feet",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "hold"
+    },
+    {
+      "duration": 0.8,
+      "end_pose": "upstroke",
+      "frame": 1.0,
+      "id": "flap",
+      "label": "连续拍翼",
+      "loop": true,
+      "root_height": 0.35,
+      "start_pose": "upstroke",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "two_strokes"
+    },
+    {
+      "duration": 0.8,
+      "end_pose": "walk_contact",
+      "frame": 1.0,
+      "id": "walk_in_place",
+      "label": "原地步态",
+      "loop": true,
+      "root_height": 0.0,
+      "start_pose": "walk_contact",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "alternating_feet"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "folded",
+      "frame": 1.0,
+      "id": "peck",
+      "label": "低头啄食",
+      "loop": true,
+      "root_height": 0.0,
+      "start_pose": "folded",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "head_contact"
+    },
+    {
+      "duration": 2.4,
+      "end_pose": "folded",
+      "frame": 1.0,
+      "id": "look_around",
+      "label": "左右张望",
+      "loop": true,
+      "root_height": 0.0,
+      "start_pose": "folded",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "head_turns"
+    },
+    {
+      "duration": 0.65,
+      "end_pose": "spread_ground",
+      "frame": 1.0,
+      "id": "unfold_direct",
+      "label": "平展翅膀",
+      "loop": false,
+      "root_height": 0.0,
+      "start_pose": "folded",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.8,
+      "end_pose": "spread_ground",
+      "frame": 1.0,
+      "id": "unfold_lift",
+      "label": "抬翼后展开",
+      "loop": false,
+      "root_height": 0.0,
+      "start_pose": "folded",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "raised_arc"
+    },
+    {
+      "duration": 0.65,
+      "end_pose": "folded",
+      "frame": 1.0,
+      "id": "fold_direct",
+      "label": "直接收翼",
+      "loop": false,
+      "root_height": 0.0,
+      "start_pose": "spread_ground",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.8,
+      "end_pose": "folded",
+      "frame": 1.0,
+      "id": "fold_after_lift",
+      "label": "抬翼后收拢",
+      "loop": false,
+      "root_height": 0.0,
+      "start_pose": "spread_ground",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "raised_arc"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "upstroke",
+      "frame": 1.0,
+      "id": "launch_power",
+      "label": "蹲身强拍起飞",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "folded",
+      "support": "transition",
+      "target_height": 0.45,
+      "variant": "crouch_downstroke"
+    },
+    {
+      "duration": 0.85,
+      "end_pose": "upstroke",
+      "frame": 1.0,
+      "id": "launch_open",
+      "label": "展翼起飞",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "folded",
+      "support": "transition",
+      "target_height": 0.45,
+      "variant": "open_upstroke"
+    },
+    {
+      "duration": 0.65,
+      "end_pose": "glide",
+      "frame": 1.0,
+      "id": "flap_to_glide_stroke",
+      "label": "完成一拍后滑翔",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "upstroke",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "finish_stroke"
+    },
+    {
+      "duration": 0.65,
+      "end_pose": "glide",
+      "frame": 1.0,
+      "id": "flap_to_glide_soft",
+      "label": "高位放平滑翔",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "upstroke",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "lower_wings"
+    },
+    {
+      "duration": 0.45,
+      "end_pose": "upstroke",
+      "frame": 1.0,
+      "id": "glide_to_flap",
+      "label": "滑翔转拍翼",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "glide",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.55,
+      "end_pose": "climb",
+      "frame": 1.0,
+      "id": "climb_enter",
+      "label": "进入爬升",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "glide",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.55,
+      "end_pose": "glide",
+      "frame": 1.0,
+      "id": "climb_exit",
+      "label": "恢复滑翔",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "climb",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.55,
+      "end_pose": "dive",
+      "frame": 1.0,
+      "id": "dive_enter",
+      "label": "进入俯冲",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "glide",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.55,
+      "end_pose": "glide",
+      "frame": 1.0,
+      "id": "dive_exit",
+      "label": "恢复滑翔",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "dive",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.55,
+      "end_pose": "bank_left",
+      "frame": 1.0,
+      "id": "bank_left_enter",
+      "label": "进入左倾",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "glide",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.55,
+      "end_pose": "glide",
+      "frame": 1.0,
+      "id": "bank_left_exit",
+      "label": "恢复滑翔",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "bank_left",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.55,
+      "end_pose": "bank_right",
+      "frame": 1.0,
+      "id": "bank_right_enter",
+      "label": "进入右倾",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "glide",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.55,
+      "end_pose": "glide",
+      "frame": 1.0,
+      "id": "bank_right_exit",
+      "label": "恢复滑翔",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "bank_right",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 1.0,
+      "end_pose": "bank_right",
+      "frame": 1.0,
+      "id": "bank_left_to_right",
+      "label": "左倾转右倾",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "bank_left",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "through_level"
+    },
+    {
+      "duration": 0.55,
+      "end_pose": "brake_feet",
+      "frame": 1.0,
+      "id": "brake_from_glide",
+      "label": "滑翔刹停伸脚",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "glide",
+      "support": "air",
+      "target_height": 0.45,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.7,
+      "end_pose": "spread_ground",
+      "frame": 1.0,
+      "id": "land_flare",
+      "label": "展翼伸脚落稳",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "brake_feet",
+      "support": "transition",
+      "target_height": 0.45,
+      "variant": "steady_placement"
+    },
+    {
+      "duration": 0.9,
+      "end_pose": "spread_ground",
+      "frame": 1.0,
+      "id": "land_absorb",
+      "label": "落脚蹲身缓冲",
+      "loop": false,
+      "root_height": 0.35,
+      "start_pose": "brake_feet",
+      "support": "transition",
+      "target_height": 0.45,
+      "variant": "crouch_absorption"
+    },
+    {
+      "duration": 0.45,
+      "end_pose": "folded",
+      "frame": 1.0,
+      "id": "touchdown_fold",
+      "label": "落稳后收翼",
+      "loop": false,
+      "root_height": 0.0,
+      "start_pose": "spread_ground",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "direct"
+    },
+    {
+      "duration": 0.65,
+      "end_pose": "folded",
+      "frame": 1.0,
+      "id": "hop",
+      "label": "原地跳跃姿势",
+      "loop": false,
+      "root_height": 0.0,
+      "start_pose": "folded",
+      "support": "ground",
+      "target_height": 0.12,
+      "variant": "crouch_lift_absorb"
+    }
+  ],
+  "failures": [],
+  "horizontal_velocity_heading_gap_m": 0.0,
+  "legacy_step": {
+    "events": {
+      "takeoff": 1,
+      "touchdown": 1
+    },
+    "final_mode": "ground"
+  },
+  "limits": "Local pose geometry and deterministic contracts; not route or visual acceptance.",
+  "max_leg_length_error_m": 0.000000560581684114214,
+  "max_loop_seam_gap_m_over_2delta": 0.000372760085156187,
+  "variants": [
+    {
+      "a": "unfold_direct",
+      "b": "unfold_lift",
+      "max_middle_difference_m": 0.308708518743515
+    },
+    {
+      "a": "fold_direct",
+      "b": "fold_after_lift",
+      "max_middle_difference_m": 0.320724099874496
+    },
+    {
+      "a": "launch_power",
+      "b": "launch_open",
+      "max_middle_difference_m": 0.556290030479431
+    },
+    {
+      "a": "flap_to_glide_stroke",
+      "b": "flap_to_glide_soft",
+      "max_middle_difference_m": 0.467798113822937
+    },
+    {
+      "a": "land_flare",
+      "b": "land_absorb",
+      "max_middle_difference_m": 0.0199924297630787
+    }
+  ]
+}

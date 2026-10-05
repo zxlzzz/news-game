@@ -17,17 +17,14 @@ from PIL import Image
 GODOT = os.environ.get('GODOT', r'D:/Godot/Godot_v4.7.2-stable_win64_console.exe')
 PROJECT = Path(__file__).resolve().parents[1]
 MOVERS = json.loads((PROJECT / 'scenes/empty_ground/movers.json').read_text(encoding='utf-8'))['movers']
-# mover: (start time s, seconds recorded, camera yaw for the high view)
-# the leash's high view looks from the dog's side (the leash hand), so the dog is not hidden behind the walker
-TAKES = {'dog': (1.0, 18.0, 50), 'pigeon': (0.0, 26.0, 50), 'pigeon_fly': (14.0, 10.0, 50), 'leash': (1.0, 15.0, -60),
-         'bicycle': (1.0, 9.0, 50), 'scooter': (1.0, 9.0, 50)}
-DEFAULT_TAKE = (0.0, 10.0, 50)
+# Each mover contains only one constant motion. Start at its first frame.
+DEFAULT_HIGH_YAW = 50
 EVERY = 4  # simulation steps of 1/60 s per recorded frame -> 15 frames/s
 VIEWS = {'side': (90, 8), 'high': (None, 38)}  # view: (yaw or None = the take's, pitch)
 
 
 def record(mover, view, out):
-    start, seconds, high_yaw = TAKES.get(mover, DEFAULT_TAKE)
+    start, seconds, high_yaw = 0.0, MOVERS[mover]["cycle"], -60 if MOVERS[mover]["kind"] == "leash" else DEFAULT_HIGH_YAW
     yaw, pitch = VIEWS[view]
     frames = int(seconds * 60 / EVERY)
     with tempfile.TemporaryDirectory() as tmp:
@@ -42,7 +39,9 @@ def record(mover, view, out):
     name = out / f'{mover}_{view}'
     images[len(images) // 3].save(name.with_suffix('.png'))
     palette = [im.quantize(colors=32, method=Image.Quantize.MEDIANCUT) for im in images]
-    palette[0].save(name.with_suffix('.gif'), save_all=True, append_images=palette[1:], duration=1000 * EVERY // 60, loop=0)
+    ticks = [round(100 * EVERY * i / 60) for i in range(len(images) + 1)]
+    durations = [(ticks[i + 1] - ticks[i]) * 10 for i in range(len(images))]
+    palette[0].save(name.with_suffix('.gif'), save_all=True, append_images=palette[1:], duration=durations)
     print(name.with_suffix('.gif'), len(images), 'frames')
 
 

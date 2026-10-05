@@ -7,7 +7,7 @@
 [node name="model" parent="." instance=ExtResource("1")]
 
 [node name="post_pole" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0.0054, 0, 1, 0, -0.0054, 0, 1, -0.241, 0, 0.005)
+transform = Transform3D(1, 0, 0.0054, 0, 1, 0, -0.0054, 0, 1, -0.264, 0, -0.174)
 
 [node name="touch_lean_sign_LeftHand" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, 0.92, 0.22)

@@ -1,0 +1,17 @@
+{
+  "fps": 120,
+  "breeds": [
+    "husky",
+    "cat"
+  ],
+  "scenarios": [
+    {
+      "label": "sit_cancel",
+      "action": "sit",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "seconds": 16
+    }
+  ]
+}

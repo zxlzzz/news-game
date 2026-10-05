@@ -23,6 +23,7 @@ const Animal := preload("res://npc/animal.gd")
 const AnimalModel := preload("res://npc/animal_model.gd")
 const Leash := preload("res://npc/leash.gd")
 const ClipPose := preload("res://npc/clip_pose.gd")
+const ContactPose := preload("res://npc/contact_pose.gd")
 
 var error := ""
 var dog_m: Dictionary
@@ -106,7 +107,7 @@ func walker_pose() -> Dictionary:
 	var segs := []
 	for sg in p.segs:
 		segs.append([m.call(sg[0]), m.call(sg[1]), sg[2]])
-	return {"segs": segs, "head": m.call(p.head), "handLeft": m.call(p.handRight), "handRight": m.call(p.handLeft)}
+	return {"segs": segs, "head": m.call(p.head), "neck": m.call(p.neck), "handLeft": m.call(p.handRight), "handRight": m.call(p.handLeft), "supportHands": [p.supportHands[1], p.supportHands[0]]}
 
 ## Where the walker figure node goes (scale it by body_scale).
 func walker_transform() -> Transform3D:
@@ -117,7 +118,12 @@ func hand() -> Vector3:
 	return walker_transform() * (walker_pose()["hand" + side] * body_scale)
 
 func walker_drawing() -> Dictionary:
-	return walk.drawing(walker_pose())
+	var pose := walker_pose().duplicate(true)
+	var world := walker_transform().scaled_local(Vector3.ONE*body_scale)
+	if ContactPose.ground_feet(pose,world,walk.P.line,ground)>0.001:
+		error = "walker: unreachable ground contact"
+		push_error(error)
+	return walk.drawing(pose)
 
 func dog_pose() -> Dictionary:
 	return AnimalModel.pose(dog_m, dog)

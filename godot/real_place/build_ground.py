@@ -5,6 +5,8 @@ Reads the scene's site.json and ground.json, the imagery cover (classify_cover.p
 Writes in the scene folder:
   ground.glb    one mesh per colour slot (material named by the slot), scene metres, Y up
   terrain.bin   float32 heights, row-major, rows = Z; terrain.json says where (core/terrain.gd reads it)
+  drops.bin     uint8 per cell: grass bank / steps / wall (terrain_rules.CLASS), drops_m.bin their height;
+                drops.json says where. For placing steps and walls in stage 3.
   ground_report.json   what came from where, estimated heights
 """
 import json
@@ -23,6 +25,7 @@ from shapely.ops import linemerge, unary_union
 sys.path.insert(0, str(Path(__file__).parent))
 import glb
 import osm
+import terrain_rules
 from geo import Site
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -58,20 +61,6 @@ class Raster:
     def sample(self, H, x, z, order=1):
         return ndi.map_coordinates(H, [(np.asarray(z) - self.z0) / self.res - .5, (np.asarray(x) - self.x0) / self.res - .5],
                                    order=order, mode='nearest')
-
-
-def flatten(H, R, geom, target, blend):
-    """Blend H towards target inside geom (weight 1) fading to 0 over blend metres outside."""
-    win, X, Z = R.window(geom.bounds, blend + 2 * R.res)
-    inside = shapely.contains_xy(geom, X, Z)
-    if not inside.any():
-        return None
-    d = ndi.distance_transform_edt(~inside) * R.res
-    w = smoothstep(1 - d / blend) if blend > 0 else inside.astype(float)
-    w[inside] = 1
-    T = target(X, Z, inside) if callable(target) else target
-    H[win] = H[win] * (1 - w) + T * w
-    return inside
 
 
 def polygons_from_mask(field, xs, zs, level=0.5):
@@ -364,81 +353,41 @@ def main(scene):
 
     # ---------------------------------------------------------------- heights
     base = load_dem(site, ROOT / site.cfg['dem'], R)
-    H = base.copy()
-    report['sources']['terrain'] = f"{site.cfg['dem']} (bicubic from ~30 m samples)"
+    report['sources']['terrain'] = f"{site.cfg['dem']} (bicubic from ~30 m samples), then the design rules (terrain_rules.py)"
     log('dem', round(float(base.min()), 1), round(float(base.max()), 1))
-
-    def median_of_base(g):
-        win, X, Z = R.window(g.bounds, 0)
-        m = shapely.contains_xy(g, X, Z)
-        return float(np.median(base[win][m])) if m.any() else float(R.sample(base, *g.representative_point().coords[0]))
-
+    # Flat pieces, later ones win where they overlap: pitches (big grounds first), plazas, building
+    # pads, hand-traced platforms, lakes.
     polys = {w['id']: Polygon(w['pts']) for w in ways if w['closed']}
+    pieces = []
     pitches = [(w['id'], polys[w['id']]) for w in ways if w['closed'] and w['tags'].get('leisure') == 'pitch' and polys[w['id']].intersects(area)]
-    for pid, g in sorted(pitches, key=lambda t: -t[1].area):   # big grounds first; pitches inside them keep its level
-        cfg = P['pitches']['by_osm_id'].get(pid, P['pitches']['default'])
-        outer = [h for oid, og in pitches if oid != pid and og.area > g.area and og.contains(g.representative_point()) for h in [oid]]
-        hgt = median_of_base(polys[outer[0]]) if outer else median_of_base(g)
-        flatten(H, R, g, hgt, cfg['blend_m'])
-        report['estimates'].append({'what': f'pitch {pid}', 'height_m': round(hgt, 2), 'basis': 'median DEM height over the ground, flattened'})
-    buildings = [(w['id'], polys[w['id']]) for w in ways if w['closed'] and 'building' in w['tags'] and polys[w['id']].intersects(area)]
-    bc = P['buildings']
-    for bid, g in buildings:
-        # The bank round a pad is invented (the DEM does not see it): keep it no steeper than
-        # max_bank_slope, else every pad on a slope shows as a stray hatched streak; but no wider
-        # than blend_max_m, else a big pad on a hillside reshapes its neighbours (a real terrace).
-        hgt = median_of_base(g)
-        win, X, Z = R.window(g.bounds, 0)
-        m = shapely.contains_xy(g, X, Z)
-        drop = float(np.abs(base[win][m] - hgt).max()) if m.any() else 0.0
-        flatten(H, R, g, hgt, float(np.clip(1.5 * drop / bc['max_bank_slope'], bc['blend_m'], bc['blend_max_m'])))
-    log('pads', len(pitches), 'pitches', len(buildings), 'buildings')
+    for pid, g in sorted(pitches, key=lambda t: -t[1].area):
+        outer = [oid for oid, og in pitches if oid != pid and og.area > g.area and og.contains(g.representative_point())]
+        pieces.append(('pitch', g, {'id': pid, 'outer': outer[0] if outer else None}))
+    for w in ways:
+        t = w['tags']
+        if w['closed'] and t.get('area') == 'yes' and t.get('highway') in P['plaza_kinds'] and polys[w['id']].intersects(area):
+            pieces.append(('plaza', polys[w['id']], {'id': w['id']}))
+    for w in ways:
+        if w['closed'] and 'building' in w['tags'] and polys[w['id']].intersects(area):
+            pieces.append(('building', polys[w['id']], {'id': w['id']}))
     for pl in P['platforms']:
-        g = region_geom(pl)
-        hgt = pl['height_m'] if 'height_m' in pl else median_of_base(g)
-        flatten(H, R, g, hgt, pl.get('blend_m', 4))
-        report['estimates'].append({'what': f"platform {pl['name']}", 'height_m': round(hgt, 2),
-                                    'basis': 'given' if 'height_m' in pl else 'median DEM height over it, flattened'})
-
-    # Roads: each gets a longitudinal profile (DEM smoothed along the road), level across.
-    seed_h = np.zeros((R.h, R.w))
-    seed_w = np.zeros((R.h, R.w))
-    seed = np.zeros((R.h, R.w), bool)
-    road_geoms = []
-    for line, width in sorted(roads, key=lambda t: t[1]):   # wide roads painted last win
-        n = max(2, int(line.length / (res * .5)))
-        pts = np.array([line.interpolate(t, normalized=True).coords[0] for t in np.linspace(0, 1, n)])
-        prof = ndi.gaussian_filter1d(R.sample(base, pts[:, 0], pts[:, 1]), rc['profile_sigma_m'] / (line.length / n), mode='nearest')
-        r = ((pts[:, 1] - R.z0) / res).astype(int)
-        c = ((pts[:, 0] - R.x0) / res).astype(int)
-        ok = (r >= 0) & (r < R.h) & (c >= 0) & (c < R.w)
-        seed[r[ok], c[ok]] = True
-        seed_h[r[ok], c[ok]] = prof[ok]
-        seed_w[r[ok], c[ok]] = width / 2
-        road_geoms.append(line.buffer(width / 2, cap_style='flat' if width >= rc['flat_end_min_width_m'] else 'round'))
-    d, (ir, ic) = ndi.distance_transform_edt(~seed, return_indices=True)
-    d *= res
-    hw = seed_w[ir, ic]
-    T = ndi.gaussian_filter(seed_h[ir, ic], 1.5)
-    wgt = np.where(d <= hw, 1.0, smoothstep(1 - (d - hw) / rc['blend_m']))
-    H = H * (1 - wgt) + T * wgt
-    log('roads', len(roads))
-
-    # Soften the creases where levelled pieces meet the slope (they read as stray lines on plain ground).
-    H = ndi.gaussian_filter(H, P['smooth_m'] / res)
-
-    # Lakes: level water, a stone edge bank_m above it, ground eased down to the bank.
-    lakes = [(w['id'], polys[w['id']]) for w in ways if w['closed'] and w['tags'].get('natural') == 'water' and polys[w['id']].intersects(area)]
+        pieces.append(('platform', region_geom(pl), {'name': pl['name']}))
     lc = P['lakes']
-    water_parts = []
+    lakes = [(w['id'], polys[w['id']]) for w in ways if w['closed'] and w['tags'].get('natural') == 'water' and polys[w['id']].intersects(area)]
     for lid, g in lakes:
-        level = lc['by_osm_id'].get(lid, {}).get('level_m')
-        if level is None:
-            win, X, Z = R.window(g.bounds, 0)
-            level = float(np.percentile(base[win][shapely.contains_xy(g, X, Z)], 25))
-        flatten(H, R, g.buffer(0.5), level + lc['bank_m'], lc['blend_m'])
-        water_parts.append((g, level))
-        report['estimates'].append({'what': f'lake {lid}', 'level_m': round(level, 2), 'basis': 'lower quartile of DEM over the water; bank %.1f m' % lc['bank_m']})
+        pieces.append(('lake', g.buffer(0.5), {'id': lid, 'bank_m': lc['bank_m'], 'level_m': lc['by_osm_id'].get(lid, {}).get('level_m')}))
+    H, drop_cls, drop_m, levels, rules_summary = terrain_rules.build(base, R, area, roads, rc, pieces, P['rules'], log)
+    log('pads', len(pitches), 'pitches', sum(p[0] == 'building' for p in pieces), 'buildings', len(roads), 'roads')
+    water_parts = []
+    for i, (kind, g, ex) in enumerate(pieces):
+        if kind == 'lake' and not np.isnan(levels[i]):
+            water_parts.append((polys[ex['id']], float(levels[i]) - ex['bank_m']))
+            report['estimates'].append({'what': f"lake {ex['id']}", 'level_m': round(float(levels[i]) - ex['bank_m'], 2),
+                                        'basis': 'lower quartile of the ground over the water; bank %.1f m' % ex['bank_m']})
+        elif kind in ('pitch', 'platform') and not np.isnan(levels[i]):
+            report['estimates'].append({'what': f"{kind} {ex.get('id', ex.get('name'))}", 'height_m': round(float(levels[i]), 2),
+                                        'basis': 'median ground height over it, flattened'})
+    report['rules'] = rules_summary
     log('lakes', len(lakes))
 
     # ---------------------------------------------------------------- cover: water, roads, ground
@@ -473,6 +422,7 @@ def main(scene):
     # small pieces after the cuts are no sea: outside water clipped by the edge, the imagery's
     # lake water beyond the OSM lake outline
     sea = take(clean(only_polys(sea_img.difference(lake_union.buffer(20))), P['sea_min_m2'], P['sea_min_m2']), 'water')
+    road_geoms = [line.buffer(width / 2, cap_style='flat' if width >= rc['flat_end_min_width_m'] else 'round') for line, width in roads]
     take(unary_union(road_geoms), P['road_slot'])
     take(area, P['ground_slot'])
     log('partition', {s: round(sum(g.area for g in gs)) for s, gs in slots.items()})
@@ -503,6 +453,10 @@ def main(scene):
         parts.append(('lake_edge', [('wall_stone', V, N, T)]))
     glb.write(scene / 'ground.glb', parts)
     H.astype('<f4').tofile(scene / 'terrain.bin')
+    drop_cls.tofile(scene / 'drops.bin')
+    drop_m.astype('<f4').tofile(scene / 'drops_m.bin')
+    (scene / 'drops.json').write_text(json.dumps({'x0': R.x0, 'z0': R.z0, 'cell': res, 'width': R.w, 'height': R.h, 'classes': terrain_rules.CLASS,
+                                                  'note': 'drops.bin uint8 class per cell, drops_m.bin float32 height of the step or wall there; rows along +Z'}, indent=1), encoding='utf-8')
     (scene / 'terrain.json').write_text(json.dumps({'x0': R.x0, 'z0': R.z0, 'cell': res, 'width': R.w, 'height': R.h,
                                                      'note': 'float32 heights at cell centres, rows along +Z'}, indent=1), encoding='utf-8')
     report['triangles'] = {s[0]: int(len(s[3])) for _, surfs in parts for s in surfs}

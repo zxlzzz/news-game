@@ -1,0 +1,1026 @@
+{
+  "walk_backpack_straps": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Reconstruct all77 joints from archived pre-EE local rotations and complete hierarchy; author complete anatomical arm chains for task grips where needed.",
+    "archived_rotation_source": "assets/animations/generation_inputs/6e403864ed749fdea36ead3087e1beb4b50d728c2fe723b2405390b1df02078e.npz",
+    "source_sha256": "6e403864ed749fdea36ead3087e1beb4b50d728c2fe723b2405390b1df02078e",
+    "original_shipped_sha256": "0b9112b054fff03096f8a97fb815ae85f5ee07dd05411c8bf8a62bc0e1e1b14a",
+    "task_arm_chains": [
+      {
+        "side": "Left",
+        "max_target_residual_m": 0.0,
+        "target_point": "wrist",
+        "palm_extension_m": 0.0
+      },
+      {
+        "side": "Right",
+        "max_target_residual_m": 0.0,
+        "target_point": "wrist",
+        "palm_extension_m": 0.0
+      }
+    ],
+    "original_body_root_legs": "Preserved from the archived original full motion; no temporal smoothing or selected-frame freezing.",
+    "derivatives": "global/local rotations and posed77 joints reconstructed together; archived root path, foot contacts and heading retained; loop final rotations/contacts/heading repeat first.",
+    "before": {
+      "frames": 69,
+      "max_bone_length_range_m": 0.0007118880748748779,
+      "fk_position_max_error_m": 1.452996912121307e-06,
+      "fk_rotation_max_error": 4.026072133456182e-07,
+      "local_rotation_orthogonality_max_error": 0.0014186324353736913,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.02214103750884533,
+          "frames": [
+            7,
+            8
+          ],
+          "max_fk_error_m": 4.926497467749869e-07,
+          "fk_max_step_m": 0.022140763700008392
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.12610593438148499,
+          "frames": [
+            8,
+            9
+          ],
+          "max_fk_error_m": 9.621351182431681e-07,
+          "fk_max_step_m": 0.12610629200935364
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.05239072069525719,
+          "frames": [
+            10,
+            11
+          ],
+          "max_fk_error_m": 9.613559086574242e-07,
+          "fk_max_step_m": 0.052390728145837784
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.022929415106773376,
+          "frames": [
+            30,
+            31
+          ],
+          "max_fk_error_m": 9.5367431640625e-07,
+          "fk_max_step_m": 0.022929184138774872
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.41250497102737427,
+          "frames": [
+            9,
+            10
+          ],
+          "max_fk_error_m": 4.951133405484143e-07,
+          "fk_max_step_m": 0.41250473260879517
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.22686704993247986,
+          "frames": [
+            9,
+            10
+          ],
+          "max_fk_error_m": 9.5413986400672e-07,
+          "fk_max_step_m": 0.22686679661273956
+        }
+      }
+    },
+    "after": {
+      "frames": 69,
+      "max_bone_length_range_m": 7.487833499908447e-07,
+      "fk_position_max_error_m": 1.430821839676355e-06,
+      "fk_rotation_max_error": 3.7851589240744943e-07,
+      "local_rotation_orthogonality_max_error": 1.8738691156892504e-07,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.021814320236444473,
+          "frames": [
+            10,
+            11
+          ],
+          "max_fk_error_m": 4.919393745694833e-07,
+          "fk_max_step_m": 0.02181420847773552
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.03418019413948059,
+          "frames": [
+            62,
+            63
+          ],
+          "max_fk_error_m": 4.935412221129809e-07,
+          "fk_max_step_m": 0.03418020159006119
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.02453230321407318,
+          "frames": [
+            11,
+            12
+          ],
+          "max_fk_error_m": 5.331331749403034e-07,
+          "fk_max_step_m": 0.02453240565955639
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.028830617666244507,
+          "frames": [
+            28,
+            29
+          ],
+          "max_fk_error_m": 9.5413986400672e-07,
+          "fk_max_step_m": 0.028830407187342644
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.042998962104320526,
+          "frames": [
+            11,
+            12
+          ],
+          "max_fk_error_m": 9.5413986400672e-07,
+          "fk_max_step_m": 0.042999159544706345
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.019880758598446846,
+          "frames": [
+            11,
+            12
+          ],
+          "max_fk_error_m": 9.5367431640625e-07,
+          "fk_max_step_m": 0.019880875945091248
+        }
+      }
+    },
+    "visual_evidence": "delivery/motion_fix_2026-10-02/interactions/after/walk_backpack_straps.png"
+  },
+  "fruit_weigh": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Reconstruct all77 joints from archived pre-EE local rotations and complete hierarchy; author complete anatomical arm chains for task grips where needed.",
+    "archived_rotation_source": "assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+    "source_sha256": "4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2",
+    "original_shipped_sha256": "25014156dc2dd1c204b14922297dcfe60462e2b3175f9149e77e1f5ca0447f75",
+    "task_arm_chains": [
+      {
+        "side": "Right",
+        "max_target_residual_m": 0.0,
+        "target_point": "wrist",
+        "palm_extension_m": 0.0,
+        "task_trajectory_torso_coordinates": [
+          [
+            0,
+            -0.1798841819980471,
+            -0.3290853979090717,
+            0.15779193121222243
+          ],
+          [
+            0.18,
+            -0.17,
+            -0.12,
+            0.2
+          ],
+          [
+            0.35,
+            -0.23,
+            0.02,
+            0.28
+          ],
+          [
+            0.55,
+            -0.48,
+            0.12,
+            0.26
+          ],
+          [
+            0.67,
+            -0.48,
+            0.12,
+            0.26
+          ],
+          [
+            0.84,
+            -0.24,
+            -0.05,
+            0.22
+          ],
+          [
+            1,
+            -0.1798841819980471,
+            -0.3290853979090717,
+            0.15779193121222243
+          ]
+        ]
+      }
+    ],
+    "original_body_root_legs": "Preserved from the archived original full motion; no temporal smoothing or selected-frame freezing.",
+    "derivatives": "global/local rotations and posed77 joints reconstructed together; archived root path, foot contacts and heading retained; loop final rotations/contacts/heading repeat first.",
+    "before": {
+      "frames": 150,
+      "max_bone_length_range_m": 0.0008959174156188965,
+      "fk_position_max_error_m": 3.772672698687529e-07,
+      "fk_rotation_max_error": 4.617557181063603e-07,
+      "local_rotation_orthogonality_max_error": 0.0014394078791933368,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.014064835384488106,
+          "frames": [
+            18,
+            19
+          ],
+          "max_fk_error_m": 2.4053377956079203e-07,
+          "fk_max_step_m": 0.014064750634133816
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.18108955025672913,
+          "frames": [
+            100,
+            101
+          ],
+          "max_fk_error_m": 2.417710618374258e-07,
+          "fk_max_step_m": 0.18108953535556793
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.07870014011859894,
+          "frames": [
+            27,
+            28
+          ],
+          "max_fk_error_m": 2.4439722778879513e-07,
+          "fk_max_step_m": 0.07870016247034073
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.02915402129292488,
+          "frames": [
+            33,
+            34
+          ],
+          "max_fk_error_m": 2.389128326285572e-07,
+          "fk_max_step_m": 0.02915392629802227
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.5190884470939636,
+          "frames": [
+            94,
+            95
+          ],
+          "max_fk_error_m": 2.4189299097088224e-07,
+          "fk_max_step_m": 0.5190884470939636
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.12004294991493225,
+          "frames": [
+            98,
+            99
+          ],
+          "max_fk_error_m": 2.4755667027420714e-07,
+          "fk_max_step_m": 0.1200430691242218
+        }
+      }
+    },
+    "after": {
+      "frames": 150,
+      "max_bone_length_range_m": 2.086162567138672e-07,
+      "fk_position_max_error_m": 3.769728778024728e-07,
+      "fk_rotation_max_error": 4.238326027916628e-07,
+      "local_rotation_orthogonality_max_error": 1.9175012560358486e-07,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.005357468035072088,
+          "frames": [
+            50,
+            51
+          ],
+          "max_fk_error_m": 2.389128326285572e-07,
+          "fk_max_step_m": 0.00535747641697526
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.016009073704481125,
+          "frames": [
+            63,
+            64
+          ],
+          "max_fk_error_m": 2.430305983125436e-07,
+          "fk_max_step_m": 0.016009051352739334
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.04599928855895996,
+          "frames": [
+            128,
+            129
+          ],
+          "max_fk_error_m": 2.427323977371998e-07,
+          "fk_max_step_m": 0.04599924013018608
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.011764485388994217,
+          "frames": [
+            14,
+            15
+          ],
+          "max_fk_error_m": 2.3890012812444184e-07,
+          "fk_max_step_m": 0.01176452450454235
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.013575931079685688,
+          "frames": [
+            14,
+            15
+          ],
+          "max_fk_error_m": 2.4575624024691933e-07,
+          "fk_max_step_m": 0.01357599813491106
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.01896868832409382,
+          "frames": [
+            112,
+            113
+          ],
+          "max_fk_error_m": 2.4620757699267415e-07,
+          "fk_max_step_m": 0.018968595191836357
+        }
+      }
+    },
+    "visual_evidence": "delivery/motion_fix_2026-10-02/interactions/after/fruit_weigh.png"
+  },
+  "vending_collect": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Reconstruct all77 joints from archived pre-EE local rotations and complete hierarchy; author complete anatomical arm chains for task grips where needed.",
+    "archived_rotation_source": "assets/animations/generation_inputs/187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170.npz",
+    "source_sha256": "187fb20010ec33c9577eed5ed310e44e56635ea3c58e6f84e4c380b5379db170",
+    "original_shipped_sha256": "d12dbc077aa43ad7a4c4297142b17cc02d89876faf128e1c6c55b61cbaf452f2",
+    "task_arm_chains": [],
+    "original_body_root_legs": "Preserved from the archived original full motion; no temporal smoothing or selected-frame freezing.",
+    "derivatives": "global/local rotations and posed77 joints reconstructed together; archived root path, foot contacts and heading retained; loop final rotations/contacts/heading repeat first.",
+    "before": {
+      "frames": 150,
+      "max_bone_length_range_m": 0.0008631646633148193,
+      "fk_position_max_error_m": 3.6164107086733566e-07,
+      "fk_rotation_max_error": 3.653064482023183e-07,
+      "local_rotation_orthogonality_max_error": 0.0015600827236559203,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.028610652312636375,
+          "frames": [
+            29,
+            30
+          ],
+          "max_fk_error_m": 2.4038948254201387e-07,
+          "fk_max_step_m": 0.028610561043024063
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.01964198239147663,
+          "frames": [
+            104,
+            105
+          ],
+          "max_fk_error_m": 2.3888378564151935e-07,
+          "fk_max_step_m": 0.019642028957605362
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.02925926446914673,
+          "frames": [
+            24,
+            25
+          ],
+          "max_fk_error_m": 2.4374332951992983e-07,
+          "fk_max_step_m": 0.029259223490953445
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.037775181233882904,
+          "frames": [
+            30,
+            31
+          ],
+          "max_fk_error_m": 2.388838993283571e-07,
+          "fk_max_step_m": 0.03777526319026947
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.43746450543403625,
+          "frames": [
+            106,
+            107
+          ],
+          "max_fk_error_m": 2.4038948254201387e-07,
+          "fk_max_step_m": 0.43746456503868103
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.5253071784973145,
+          "frames": [
+            97,
+            98
+          ],
+          "max_fk_error_m": 2.4439722778879513e-07,
+          "fk_max_step_m": 0.5253071784973145
+        }
+      }
+    },
+    "after": {
+      "frames": 150,
+      "max_bone_length_range_m": 2.086162567138672e-07,
+      "fk_position_max_error_m": 3.1336756478594907e-07,
+      "fk_rotation_max_error": 4.825221822102321e-07,
+      "local_rotation_orthogonality_max_error": 1.7901390633394096e-07,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.026807967573404312,
+          "frames": [
+            110,
+            111
+          ],
+          "max_fk_error_m": 2.389128326285572e-07,
+          "fk_max_step_m": 0.026807740330696106
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.01078043319284916,
+          "frames": [
+            111,
+            112
+          ],
+          "max_fk_error_m": 2.389128326285572e-07,
+          "fk_max_step_m": 0.010780666954815388
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.01534891128540039,
+          "frames": [
+            34,
+            35
+          ],
+          "max_fk_error_m": 2.384185791015625e-07,
+          "fk_max_step_m": 0.015348880551755428
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.0369059294462204,
+          "frames": [
+            110,
+            111
+          ],
+          "max_fk_error_m": 2.4211522031691857e-07,
+          "fk_max_step_m": 0.036905717104673386
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.048709504306316376,
+          "frames": [
+            110,
+            111
+          ],
+          "max_fk_error_m": 2.4755667027420714e-07,
+          "fk_max_step_m": 0.048709385097026825
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.05201335996389389,
+          "frames": [
+            110,
+            111
+          ],
+          "max_fk_error_m": 2.5211161869265197e-07,
+          "fk_max_step_m": 0.052013274282217026
+        }
+      }
+    },
+    "visual_evidence": "delivery/motion_fix_2026-10-02/interactions/after/vending_collect.png"
+  },
+  "hang_laundry": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Reconstruct all77 joints from archived pre-EE local rotations and complete hierarchy; author complete anatomical arm chains for task grips where needed.",
+    "archived_rotation_source": "assets/animations/generation_inputs/22d2cd8d9741734350ab9a42b16f2e479f5daf47b804a174ad942a877d494b59.npz",
+    "source_sha256": "22d2cd8d9741734350ab9a42b16f2e479f5daf47b804a174ad942a877d494b59",
+    "original_shipped_sha256": "74d4a1372ebabee2d6d435f4f1c34af79de7cd258986d1f03914e0ae80d62626",
+    "task_arm_chains": [
+      {
+        "side": "Left",
+        "max_target_residual_m": 0.0,
+        "target_point": "wrist",
+        "palm_extension_m": 0.0,
+        "task_trajectory_torso_coordinates": [
+          [
+            0,
+            0.22356157475077915,
+            -0.32365896712567443,
+            0.09885290268131078
+          ],
+          [
+            0.16,
+            0.17,
+            0.1,
+            0.18
+          ],
+          [
+            0.32,
+            0.18,
+            0.38,
+            0.2
+          ],
+          [
+            0.48,
+            0.17,
+            0.7,
+            0.18
+          ],
+          [
+            0.64,
+            0.17,
+            0.7,
+            0.18
+          ],
+          [
+            0.74,
+            0.18,
+            0.54,
+            0.18
+          ],
+          [
+            0.88,
+            0.18,
+            0.1,
+            0.18
+          ],
+          [
+            1,
+            0.22356157475077915,
+            -0.32365896712567443,
+            0.09885290268131078
+          ]
+        ]
+      },
+      {
+        "side": "Right",
+        "max_target_residual_m": 0.0,
+        "target_point": "wrist",
+        "palm_extension_m": 0.0,
+        "task_trajectory_torso_coordinates": [
+          [
+            0,
+            -0.2074162742960279,
+            -0.3287808773898581,
+            0.146395557087877
+          ],
+          [
+            0.16,
+            -0.17,
+            0.1,
+            0.18
+          ],
+          [
+            0.32,
+            -0.18,
+            0.38,
+            0.2
+          ],
+          [
+            0.48,
+            -0.17,
+            0.7,
+            0.18
+          ],
+          [
+            0.64,
+            -0.17,
+            0.7,
+            0.18
+          ],
+          [
+            0.74,
+            -0.18,
+            0.54,
+            0.18
+          ],
+          [
+            0.88,
+            -0.18,
+            0.1,
+            0.18
+          ],
+          [
+            1,
+            -0.2074162742960279,
+            -0.3287808773898581,
+            0.146395557087877
+          ]
+        ]
+      }
+    ],
+    "original_body_root_legs": "Preserved from the archived original full motion; no temporal smoothing or selected-frame freezing.",
+    "derivatives": "global/local rotations and posed77 joints reconstructed together; archived root path, foot contacts and heading retained; loop final rotations/contacts/heading repeat first.",
+    "before": {
+      "frames": 150,
+      "max_bone_length_range_m": 0.0011015236377716064,
+      "fk_position_max_error_m": 4.860611966250872e-07,
+      "fk_rotation_max_error": 3.541965440945205e-07,
+      "local_rotation_orthogonality_max_error": 0.0015188741454921634,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.007160337641835213,
+          "frames": [
+            109,
+            110
+          ],
+          "max_fk_error_m": 2.3889106159913354e-07,
+          "fk_max_step_m": 0.0071603381074965
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.1708376705646515,
+          "frames": [
+            98,
+            99
+          ],
+          "max_fk_error_m": 2.413114259525173e-07,
+          "fk_max_step_m": 0.1708376705646515
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.3041488826274872,
+          "frames": [
+            46,
+            47
+          ],
+          "max_fk_error_m": 2.4578449142609315e-07,
+          "fk_max_step_m": 0.3041488230228424
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.00917472317814827,
+          "frames": [
+            95,
+            96
+          ],
+          "max_fk_error_m": 2.384258550591767e-07,
+          "fk_max_step_m": 0.009174819104373455
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.384981632232666,
+          "frames": [
+            99,
+            100
+          ],
+          "max_fk_error_m": 2.4038948254201387e-07,
+          "fk_max_step_m": 0.384981632232666
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.4541719853878021,
+          "frames": [
+            99,
+            100
+          ],
+          "max_fk_error_m": 2.465706074872287e-07,
+          "fk_max_step_m": 0.4541720747947693
+        }
+      }
+    },
+    "after": {
+      "frames": 150,
+      "max_bone_length_range_m": 2.8870999813079834e-07,
+      "fk_position_max_error_m": 4.779998903359228e-07,
+      "fk_rotation_max_error": 4.894328071713971e-07,
+      "local_rotation_orthogonality_max_error": 2.1331299256397624e-07,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.004881053697317839,
+          "frames": [
+            109,
+            110
+          ],
+          "max_fk_error_m": 2.384954314038623e-07,
+          "fk_max_step_m": 0.004881036467850208
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.056588854640722275,
+          "frames": [
+            123,
+            124
+          ],
+          "max_fk_error_m": 2.4073563054116676e-07,
+          "fk_max_step_m": 0.05658869445323944
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.035562120378017426,
+          "frames": [
+            140,
+            141
+          ],
+          "max_fk_error_m": 2.425733214295178e-07,
+          "fk_max_step_m": 0.03556212782859802
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.002908741356804967,
+          "frames": [
+            23,
+            24
+          ],
+          "max_fk_error_m": 2.3853496600168e-07,
+          "fk_max_step_m": 0.002908757422119379
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.05689312145113945,
+          "frames": [
+            123,
+            124
+          ],
+          "max_fk_error_m": 2.4027400513659813e-07,
+          "fk_max_step_m": 0.056893061846494675
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.0361696220934391,
+          "frames": [
+            139,
+            140
+          ],
+          "max_fk_error_m": 2.430305983125436e-07,
+          "fk_max_step_m": 0.03616949915885925
+        }
+      }
+    },
+    "visual_evidence": "delivery/motion_fix_2026-10-02/interactions/after/hang_laundry.png"
+  },
+  "elder_assisted_walk": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Reconstruct all77 joints from archived pre-EE local rotations and complete hierarchy; author complete anatomical arm chains for task grips where needed.",
+    "archived_rotation_source": "assets/animations/generation_inputs/bd5c60a558e9510a73d315303758c3c3ecf16ebb576bb1c21bf7410f8666d65e.npz",
+    "source_sha256": "bd5c60a558e9510a73d315303758c3c3ecf16ebb576bb1c21bf7410f8666d65e",
+    "original_shipped_sha256": "13036a6943d5a4f14f72d3e21ba7c83cc8e988fafd44c83d024d89490aecf9fe",
+    "task_arm_chains": [
+      {
+        "side": "Left",
+        "max_target_residual_m": 0.0,
+        "target_point": "wrist",
+        "palm_extension_m": 0.0
+      }
+    ],
+    "original_body_root_legs": "Preserved from the archived original full motion; no temporal smoothing or selected-frame freezing.",
+    "derivatives": "global/local rotations and posed77 joints reconstructed together; archived root path, foot contacts and heading retained; loop final rotations/contacts/heading repeat first.",
+    "before": {
+      "frames": 61,
+      "max_bone_length_range_m": 0.0008153319358825684,
+      "fk_position_max_error_m": 7.99680208274367e-07,
+      "fk_rotation_max_error": 3.7689011378461146e-07,
+      "local_rotation_orthogonality_max_error": 0.0014559089718628843,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.019632946699857712,
+          "frames": [
+            1,
+            2
+          ],
+          "max_fk_error_m": 4.773607429342519e-07,
+          "fk_max_step_m": 0.019632944837212563
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.4569518566131592,
+          "frames": [
+            12,
+            13
+          ],
+          "max_fk_error_m": 4.777675712830387e-07,
+          "fk_max_step_m": 0.4569522440433502
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.09325868636369705,
+          "frames": [
+            2,
+            3
+          ],
+          "max_fk_error_m": 3.579381768759049e-07,
+          "fk_max_step_m": 0.09325892478227615
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.01564038172364235,
+          "frames": [
+            9,
+            10
+          ],
+          "max_fk_error_m": 4.76837158203125e-07,
+          "fk_max_step_m": 0.015640590339899063
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.016968674957752228,
+          "frames": [
+            58,
+            59
+          ],
+          "max_fk_error_m": 4.76837158203125e-07,
+          "fk_max_step_m": 0.01696859300136566
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.03092147968709469,
+          "frames": [
+            58,
+            59
+          ],
+          "max_fk_error_m": 5.092622927804769e-07,
+          "fk_max_step_m": 0.03092140704393387
+        }
+      }
+    },
+    "after": {
+      "frames": 61,
+      "max_bone_length_range_m": 3.7997961044311523e-07,
+      "fk_position_max_error_m": 9.559997806718457e-07,
+      "fk_rotation_max_error": 4.091983782927855e-07,
+      "local_rotation_orthogonality_max_error": 1.8096754166254585e-07,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.023762455210089684,
+          "frames": [
+            5,
+            6
+          ],
+          "max_fk_error_m": 2.682209014892578e-07,
+          "fk_max_step_m": 0.023762226104736328
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.024153204634785652,
+          "frames": [
+            5,
+            6
+          ],
+          "max_fk_error_m": 4.7706993200336e-07,
+          "fk_max_step_m": 0.024153323844075203
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.024194680154323578,
+          "frames": [
+            5,
+            6
+          ],
+          "max_fk_error_m": 4.7706993200336e-07,
+          "fk_max_step_m": 0.024194680154323578
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.026385189965367317,
+          "frames": [
+            1,
+            2
+          ],
+          "max_fk_error_m": 4.915124804938387e-07,
+          "fk_max_step_m": 0.02638481743633747
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.024122005328536034,
+          "frames": [
+            1,
+            2
+          ],
+          "max_fk_error_m": 4.915124804938387e-07,
+          "fk_max_step_m": 0.024121684953570366
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.018295427784323692,
+          "frames": [
+            13,
+            14
+          ],
+          "max_fk_error_m": 7.257339689203945e-07,
+          "fk_max_step_m": 0.018295451998710632
+        }
+      }
+    },
+    "visual_evidence": "delivery/motion_fix_2026-10-02/interactions/after/elder_assisted_walk.png"
+  },
+  "phone_urgent": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Reconstruct all77 joints from archived pre-EE local rotations and complete hierarchy; author complete anatomical arm chains for task grips where needed.",
+    "archived_rotation_source": "assets/animations/generation_inputs/12711b24d536cc03c42bb25c81d073c1616e9d10a7b5fb908773d19c19583690.npz",
+    "source_sha256": "12711b24d536cc03c42bb25c81d073c1616e9d10a7b5fb908773d19c19583690",
+    "original_shipped_sha256": "00453c8dee1e88a77fc3014e7f1187a0531ea318f1a63a77b8801371fb672f5e",
+    "task_arm_chains": [
+      {
+        "side": "Right",
+        "max_target_residual_m": 0.0,
+        "target_point": "palm/prop grip",
+        "palm_extension_m": 0.09,
+        "head_local_right_ear_offset_m": [
+          -0.12,
+          0.0,
+          -0.01
+        ]
+      }
+    ],
+    "original_body_root_legs": "Preserved from the archived original full motion; no temporal smoothing or selected-frame freezing.",
+    "derivatives": "global/local rotations and posed77 joints reconstructed together; archived root path, foot contacts and heading retained; loop final rotations/contacts/heading repeat first.",
+    "before": {
+      "frames": 210,
+      "max_bone_length_range_m": 0.0008676052093505859,
+      "fk_position_max_error_m": 4.915124804938387e-07,
+      "fk_rotation_max_error": 3.904452512415446e-07,
+      "local_rotation_orthogonality_max_error": 0.001499417582320056,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.24835829436779022,
+          "frames": [
+            3,
+            4
+          ],
+          "max_fk_error_m": 2.4615297888885834e-07,
+          "fk_max_step_m": 0.2483583241701126
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.3022518754005432,
+          "frames": [
+            4,
+            5
+          ],
+          "max_fk_error_m": 2.6697625798988156e-07,
+          "fk_max_step_m": 0.3022518754005432
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.20292983949184418,
+          "frames": [
+            4,
+            5
+          ],
+          "max_fk_error_m": 2.682209014892578e-07,
+          "fk_max_step_m": 0.20292983949184418
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.08502408117055893,
+          "frames": [
+            3,
+            4
+          ],
+          "max_fk_error_m": 2.6697625798988156e-07,
+          "fk_max_step_m": 0.08502408862113953
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.14997047185897827,
+          "frames": [
+            4,
+            5
+          ],
+          "max_fk_error_m": 2.682209014892578e-07,
+          "fk_max_step_m": 0.14997050166130066
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.17163005471229553,
+          "frames": [
+            4,
+            5
+          ],
+          "max_fk_error_m": 2.682209014892578e-07,
+          "fk_max_step_m": 0.17163006961345673
+        }
+      }
+    },
+    "after": {
+      "frames": 210,
+      "max_bone_length_range_m": 2.384185791015625e-07,
+      "fk_position_max_error_m": 3.776349331019446e-07,
+      "fk_rotation_max_error": 4.4002601384818263e-07,
+      "local_rotation_orthogonality_max_error": 1.9187857368336922e-07,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.10647491365671158,
+          "frames": [
+            4,
+            5
+          ],
+          "max_fk_error_m": 2.6697625798988156e-07,
+          "fk_max_step_m": 0.10647491365671158
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.1295432597398758,
+          "frames": [
+            4,
+            5
+          ],
+          "max_fk_error_m": 2.6697625798988156e-07,
+          "fk_max_step_m": 0.1295432597398758
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.1391093134880066,
+          "frames": [
+            4,
+            5
+          ],
+          "max_fk_error_m": 2.998800709974603e-07,
+          "fk_max_step_m": 0.13910932838916779
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.0935598611831665,
+          "frames": [
+            2,
+            3
+          ],
+          "max_fk_error_m": 2.4027400513659813e-07,
+          "fk_max_step_m": 0.09355983883142471
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.11053905636072159,
+          "frames": [
+            2,
+            3
+          ],
+          "max_fk_error_m": 2.682209014892578e-07,
+          "fk_max_step_m": 0.11053899675607681
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.05124356970191002,
+          "frames": [
+            2,
+            3
+          ],
+          "max_fk_error_m": 2.6697625798988156e-07,
+          "fk_max_step_m": 0.05124351754784584
+        }
+      }
+    },
+    "visual_evidence": "delivery/motion_fix_2026-10-02/interactions/phone_full/phone_urgent_native_full.png"
+  }
+}

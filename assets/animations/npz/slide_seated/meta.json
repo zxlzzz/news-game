@@ -1,0 +1,24 @@
+{
+  "name": "slide_seated",
+  "text": "Sitting at the top of a slide facing forward, legs together extended in front, palms resting beside the hips. Push off with the hands, slide forward while seated with torso upright and feet forward, then place feet on the ground and stand up.",
+  "duration": 4,
+  "seed": 5311,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "slide_seated",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

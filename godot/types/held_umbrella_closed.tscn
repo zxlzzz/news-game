@@ -5,3 +5,4 @@
 [node name="HeldUmbrellaClosed" type="Node3D" groups=["held"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+rotation = Vector3(0, 0, 3.141592653589793)

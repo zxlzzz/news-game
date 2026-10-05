@@ -1,0 +1,255 @@
+[
+  {
+    "id": "badminton_swing",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 4.44,
+        "mapped_peak_degrees_per_export_interval": 4.9,
+        "mapped_interval_seconds": [
+          1.4,
+          1.41666666666667
+        ],
+        "source_degrees_near_same_time": 1.42
+      },
+      {
+        "source_peak_degrees_per_native_frame": 12.42,
+        "mapped_peak_degrees_per_export_interval": 16.18,
+        "mapped_interval_seconds": [
+          1.38333333333333,
+          1.39831932773109
+        ],
+        "source_degrees_near_same_time": 2.79
+      }
+    ]
+  },
+  {
+    "id": "cheer",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 22.91,
+        "mapped_peak_degrees_per_export_interval": 13.97,
+        "mapped_interval_seconds": [
+          3.4,
+          3.41666666666667
+        ],
+        "source_degrees_near_same_time": 11.89
+      },
+      {
+        "source_peak_degrees_per_native_frame": 15.88,
+        "mapped_peak_degrees_per_export_interval": 12.78,
+        "mapped_interval_seconds": [
+          1.71666666666667,
+          1.73333333333333
+        ],
+        "source_degrees_near_same_time": 3.11
+      }
+    ]
+  },
+  {
+    "id": "duck_cover",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 9.33,
+        "mapped_peak_degrees_per_export_interval": 35.86,
+        "mapped_interval_seconds": [
+          2.28333333333333,
+          2.3
+        ],
+        "source_degrees_near_same_time": 0.41
+      },
+      {
+        "source_peak_degrees_per_native_frame": 20.55,
+        "mapped_peak_degrees_per_export_interval": 12.33,
+        "mapped_interval_seconds": [
+          1.53333333333333,
+          1.55
+        ],
+        "source_degrees_near_same_time": 17.16
+      }
+    ]
+  },
+  {
+    "id": "exercise",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 14.43,
+        "mapped_peak_degrees_per_export_interval": 8.78,
+        "mapped_interval_seconds": [
+          0.566666666666667,
+          0.583333333333333
+        ],
+        "source_degrees_near_same_time": 8.25
+      },
+      {
+        "source_peak_degrees_per_native_frame": 12.63,
+        "mapped_peak_degrees_per_export_interval": 11.54,
+        "mapped_interval_seconds": [
+          0.266666666666667,
+          0.283333333333333
+        ],
+        "source_degrees_near_same_time": 9.82
+      }
+    ]
+  },
+  {
+    "id": "startle",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 12.74,
+        "mapped_peak_degrees_per_export_interval": 8.25,
+        "mapped_interval_seconds": [
+          0.133333333333333,
+          0.15
+        ],
+        "source_degrees_near_same_time": 4.51
+      },
+      {
+        "source_peak_degrees_per_native_frame": 12.73,
+        "mapped_peak_degrees_per_export_interval": 9.57,
+        "mapped_interval_seconds": [
+          0.216666666666667,
+          0.233333333333333
+        ],
+        "source_degrees_near_same_time": 12.73
+      }
+    ]
+  },
+  {
+    "id": "stumble",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 24.26,
+        "mapped_peak_degrees_per_export_interval": 12.93,
+        "mapped_interval_seconds": [
+          1.6,
+          1.61666666666667
+        ],
+        "source_degrees_near_same_time": 21.27
+      },
+      {
+        "source_peak_degrees_per_native_frame": 35.26,
+        "mapped_peak_degrees_per_export_interval": 15.72,
+        "mapped_interval_seconds": [
+          1.73333333333333,
+          1.75
+        ],
+        "source_degrees_near_same_time": 35.26
+      }
+    ]
+  },
+  {
+    "id": "talk_accuse",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 5.52,
+        "mapped_peak_degrees_per_export_interval": 3.65,
+        "mapped_interval_seconds": [
+          0.366666666666667,
+          0.383333333333333
+        ],
+        "source_degrees_near_same_time": 4.38
+      },
+      {
+        "source_peak_degrees_per_native_frame": 14.41,
+        "mapped_peak_degrees_per_export_interval": 7.94,
+        "mapped_interval_seconds": [
+          0.366666666666667,
+          0.383333333333333
+        ],
+        "source_degrees_near_same_time": 11.44
+      }
+    ]
+  },
+  {
+    "id": "wave_overhead",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 23.27,
+        "mapped_peak_degrees_per_export_interval": 14.05,
+        "mapped_interval_seconds": [
+          1.08333333333333,
+          1.1
+        ],
+        "source_degrees_near_same_time": 19.8
+      },
+      {
+        "source_peak_degrees_per_native_frame": 4.5,
+        "mapped_peak_degrees_per_export_interval": 3.0,
+        "mapped_interval_seconds": [
+          1.23333333333333,
+          1.25
+        ],
+        "source_degrees_near_same_time": 3.02
+      }
+    ]
+  },
+  {
+    "id": "wave_overhead_v3",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 10.28,
+        "mapped_peak_degrees_per_export_interval": 26.5,
+        "mapped_interval_seconds": [
+          0.0166666666666667,
+          0.0333333333333333
+        ],
+        "source_degrees_near_same_time": 7.34
+      },
+      {
+        "source_peak_degrees_per_native_frame": 1.29,
+        "mapped_peak_degrees_per_export_interval": 0.89,
+        "mapped_interval_seconds": [
+          0.833333333333333,
+          0.85
+        ],
+        "source_degrees_near_same_time": 1.18
+      }
+    ]
+  },
+  {
+    "id": "vendor_call",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 44.65,
+        "mapped_peak_degrees_per_export_interval": 11.9,
+        "mapped_interval_seconds": [
+          1.8,
+          1.81666666666667
+        ],
+        "source_degrees_near_same_time": 26.74
+      },
+      {
+        "source_peak_degrees_per_native_frame": 58.57,
+        "mapped_peak_degrees_per_export_interval": 18.91,
+        "mapped_interval_seconds": [
+          2.13333333333333,
+          2.15
+        ],
+        "source_degrees_near_same_time": 58.57
+      }
+    ]
+  },
+  {
+    "id": "vendor_tidy",
+    "arms": [
+      {
+        "source_peak_degrees_per_native_frame": 46.2,
+        "mapped_peak_degrees_per_export_interval": 13.63,
+        "mapped_interval_seconds": [
+          0.416666666666667,
+          0.433333333333333
+        ],
+        "source_degrees_near_same_time": 3.6
+      },
+      {
+        "source_peak_degrees_per_native_frame": 49.28,
+        "mapped_peak_degrees_per_export_interval": 19.2,
+        "mapped_interval_seconds": [
+          3.75,
+          3.76666666666667
+        ],
+        "source_degrees_near_same_time": 49.28
+      }
+    ]
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "views": [
+    35,
+    90,
+    270
+  ],
+  "columns": 12,
+  "entries": [
+    {
+      "samples": 90,
+      "output_label": "scratch_normal_cancel",
+      "label": "scratch_normal",
+      "duration": 1.5,
+      "size": 1.6,
+      "start": 9.95,
+      "breed": "husky"
+    },
+    {
+      "samples": 90,
+      "output_label": "scratch_urgent_cancel",
+      "label": "scratch_urgent",
+      "duration": 1.5,
+      "size": 1.6,
+      "start": 9.95,
+      "breed": "husky"
+    },
+    {
+      "samples": 87,
+      "output_label": "scratch_normal_stand",
+      "label": "scratch_normal",
+      "duration": 2.9,
+      "size": 1.6,
+      "start": 11.1,
+      "breed": "husky"
+    },
+    {
+      "samples": 90,
+      "output_label": "scratch_normal_cancel",
+      "label": "scratch_normal",
+      "duration": 1.5,
+      "size": 1.6,
+      "start": 9.95,
+      "breed": "shibainu"
+    },
+    {
+      "samples": 90,
+      "output_label": "scratch_urgent_cancel",
+      "label": "scratch_urgent",
+      "duration": 1.5,
+      "size": 1.6,
+      "start": 9.95,
+      "breed": "shibainu"
+    },
+    {
+      "samples": 87,
+      "output_label": "scratch_normal_stand",
+      "label": "scratch_normal",
+      "duration": 2.9,
+      "size": 1.6,
+      "start": 11.1,
+      "breed": "shibainu"
+    }
+  ],
+  "pitch": 12,
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals/recovery_actual",
+  "trace": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_scratch\\runtime.json",
+  "cell": 256
+}

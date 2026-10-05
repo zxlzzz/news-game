@@ -1,66 +1,577 @@
 {
   "_note": "What a clip needs around it (npc/clip_setup.gd; docs/design_route_npc_behavior.md 'clip-setup'). Only clips that need something are listed: a clip for one person that touches nothing and holds nothing is not here. A clip names things, never geometry. post: the kind of place it is played at; where a person stands on an object is only in the object type's Marker3D post_<kind>[_n] (types/*.tscn), and the clip may appear only in post:<kind> rows of the behaviour table (and in crowd-params posts of that kind). item: {type: a types/held_<name>.tscn, hand: left | right | both (the midpoint of the hands) | back (the neck point)}; how it sits in the hand is the offset of that type's model node. Pushed things (carts, strollers) are ordinary objects with a post, in group pushed: they follow the person's root, not a hand. partner: a second person the clip opens a place for: clip (played in step with this one), at [x, z] metres and yaw degrees in this person's frame (+Z = the way this person faces). Missing things (no type offers the post kind, no such held type, no such partner clip) are the one exception to stopping: the clip shows greyed in scenes/empty_ground with what is missing, and the game never picks it.",
   "clips": {
-    "sit_bench": { "post": "sit" },
-    "slouch_bench": { "post": "sit" },
-    "sit_sideways": { "post": "sit" },
-    "leg_stretch": { "post": "stretch" },
-    "chess_move": { "post": "chess" },
-    "take_back_piece": { "post": "chess" },
-    "chess_watch": { "post": "watch" },
-    "vendor_call": { "post": "vendor" },
-    "vendor_tidy": { "post": "vendor" },
-    "choose_item": { "post": "customer" },
-    "pay": { "post": "customer" },
-    "hesitate_reach": { "post": "customer" },
-    "lean_railing": { "post": "rail" },
-    "lean_sign": { "post": "pole" },
-    "lean_wall": { "post": "wall" },
-    "press_button": { "post": "button" },
-    "read_notice": { "post": "notice" },
-    "sit_step": { "post": "step" },
-    "slap_table": { "post": "table" },
-    "throw_trash": { "post": "trash", "item": { "type": "held_coffee_cup", "hand": "right" } },
-    "push_cart": { "post": "push" },
-    "push_stroller": { "post": "push" },
-    "walk_stairs_up": { "post": "upstairs" },
-    "walk_stairs_down": { "post": "downstairs" },
-    "hold_door": { "post": "doorhold" },
-    "push_door": { "post": "doorpush" },
-    "pull_door": { "post": "doorpull" },
-    "carry_bag": { "item": { "type": "held_shopping_bag", "hand": "right" } },
-    "walk_carry_bag": { "item": { "type": "held_shopping_bag", "hand": "right" } },
-    "carry_bags": { "item": { "type": "held_shopping_bags", "hand": "both" } },
-    "walk_carry_bags": { "item": { "type": "held_shopping_bags", "hand": "both" } },
-    "carry_box": { "item": { "type": "held_cardboard_box", "hand": "both" } },
-    "walk_carry_box": { "item": { "type": "held_cardboard_box", "hand": "both" } },
-    "carry_shoulder": { "item": { "type": "held_rolled_carpet", "hand": "right" } },
-    "carry_shoulder_bag": { "item": { "type": "held_shoulder_bag", "hand": "back" } },
-    "drink": { "item": { "type": "held_coffee_cup", "hand": "right" } },
-    "walk_drink": { "item": { "type": "held_coffee_cup", "hand": "right" } },
-    "eat_snack": { "item": { "type": "held_snack_bag", "hand": "right" } },
-    "eat_walk": { "item": { "type": "held_snack_bag", "hand": "right" } },
-    "fan_self": { "item": { "type": "held_fan", "hand": "right" } },
-    "film_phone": { "item": { "type": "held_phone", "hand": "both" } },
-    "photo_overhead": { "item": { "type": "held_phone", "hand": "both" } },
-    "selfie": { "item": { "type": "held_phone", "hand": "right" } },
-    "phone_call": { "item": { "type": "held_phone", "hand": "right" } },
-    "phone_urgent": { "item": { "type": "held_phone", "hand": "right" } },
-    "phone_walk": { "item": { "type": "held_phone", "hand": "right" } },
-    "walk_phone_call": { "item": { "type": "held_phone", "hand": "right" } },
-    "inspect_item": { "item": { "type": "held_phone", "hand": "right" } },
-    "take_photo": { "item": { "type": "held_camera", "hand": "both" } },
-    "hold_guitar": { "item": { "type": "held_guitar", "hand": "both" } },
-    "hold_umbrella": { "item": { "type": "held_umbrella_open", "hand": "right" } },
-    "walk_umbrella": { "item": { "type": "held_umbrella_open", "hand": "right" } },
-    "pull_suitcase": { "item": { "type": "held_suitcase", "hand": "right" } },
-    "read_book": { "item": { "type": "held_book_open", "hand": "both" } },
-    "turn_page": { "item": { "type": "held_book_open", "hand": "left" } },
-    "read_newspaper": { "item": { "type": "held_newspaper_open", "hand": "both" } },
-    "walk_newspaper": { "item": { "type": "held_newspaper_open", "hand": "both" } },
-    "smoke": { "item": { "type": "held_cigarette", "hand": "right" } },
-    "smoke_walk": { "item": { "type": "held_cigarette", "hand": "right" } },
-    "walk_cane": { "item": { "type": "held_cane", "hand": "right" } },
-    "give_item": { "partner": { "clip": "receive_item", "at": [-0.13, 0.93], "yaw": 180 } }
+    "walk_hold_front": {
+      "item": {
+        "type": "held_book",
+        "hand": "both"
+      }
+    },
+    "walk_backpack_straps": {
+      "item": {
+        "type": "held_backpack",
+        "hand": "back"
+      }
+    },
+    "walk_newspaper_underarm": {
+      "item": {
+        "type": "held_newspaper_folded",
+        "hand": "left"
+      }
+    },
+    "walk_closed_umbrella": {
+      "item": {
+        "type": "held_umbrella_closed",
+        "hand": "right"
+      }
+    },
+    "push_bicycle": {
+      "post": "bikepush"
+    },
+    "pullup_hold": {
+      "post": "pullup"
+    },
+    "pullup_raise": {
+      "post": "pullup"
+    },
+    "waist_twister": {
+      "post": "twister"
+    },
+    "handshake_offer": {
+      "partner": {
+        "clip": "handshake_reply",
+        "at": [
+          -0.3,
+          0.72
+        ],
+        "yaw": 180
+      }
+    },
+    "buy_newspaper": {
+      "post": "newsbuy"
+    },
+    "breakfast_sell": {
+      "post": "breakfastsell",
+      "partner": {
+        "clip": "breakfast_buy",
+        "at": [
+          0,
+          1.61
+        ],
+        "yaw": 180
+      }
+    },
+    "fruit_choose": {
+      "post": "fruitpick"
+    },
+    "fruit_weigh": {
+      "post": "fruitweigh"
+    },
+    "post_notice": {
+      "post": "postnotice"
+    },
+    "browse_bookstall": {
+      "post": "browsebook",
+      "item": {
+        "type": "held_book_open",
+        "hand": "both"
+      }
+    },
+    "hang_laundry": {
+      "post": "hanglaundry"
+    },
+    "sweep_ground": {
+      "item": {
+        "type": "held_broom",
+        "hand": "right"
+      }
+    },
+    "mop_ground": {
+      "item": {
+        "type": "held_mop",
+        "hand": "right"
+      }
+    },
+    "interview_question": {
+      "item": {
+        "type": "held_microphone",
+        "hand": "right"
+      },
+      "partner": {
+        "clip": "interview_answer",
+        "at": [
+          -0.18,
+          0.9
+        ],
+        "yaw": 180
+      }
+    },
+    "interview_listen": {
+      "item": {
+        "type": "held_microphone",
+        "hand": "right"
+      },
+      "partner": {
+        "clip": "interview_describe",
+        "at": [
+          -0.18,
+          0.9
+        ],
+        "yaw": 180
+      }
+    },
+    "interview_followup": {
+      "item": {
+        "type": "held_microphone",
+        "hand": "right"
+      },
+      "partner": {
+        "clip": "interview_point",
+        "at": [
+          -0.18,
+          0.9
+        ],
+        "yaw": 180
+      }
+    },
+    "post_letter": {
+      "post": "mail"
+    },
+    "atm_keypad": {
+      "post": "atm"
+    },
+    "parcel_terminal": {
+      "post": "parcel"
+    },
+    "walk_briefcase": {
+      "item": {
+        "type": "held_briefcase",
+        "hand": "right"
+      }
+    },
+    "carry_bucket": {
+      "item": {
+        "type": "held_bucket",
+        "hand": "both"
+      }
+    },
+    "sit_bench": {
+      "post": "sit"
+    },
+    "slouch_bench": {
+      "post": "sit"
+    },
+    "sit_sideways": {
+      "post": "sit"
+    },
+    "leg_stretch": {
+      "post": "stretch"
+    },
+    "chess_move": {
+      "post": "chess"
+    },
+    "take_back_piece": {
+      "post": "chess"
+    },
+    "chess_watch": {
+      "post": "watch"
+    },
+    "vendor_call": {
+      "post": "vendor"
+    },
+    "vendor_tidy": {
+      "post": "vendor"
+    },
+    "choose_item": {
+      "post": "customer"
+    },
+    "pay": {
+      "post": "customer"
+    },
+    "hesitate_reach": {
+      "post": "customer"
+    },
+    "lean_railing": {
+      "post": "rail"
+    },
+    "lean_sign": {
+      "post": "pole"
+    },
+    "lean_wall": {
+      "post": "wall"
+    },
+    "press_button": {
+      "post": "button"
+    },
+    "read_notice": {
+      "post": "notice"
+    },
+    "sit_step": {
+      "post": "step"
+    },
+    "slap_table": {
+      "post": "table"
+    },
+    "throw_trash": {
+      "post": "trash"
+    },
+    "push_cart": {
+      "post": "push"
+    },
+    "push_stroller": {
+      "post": "push"
+    },
+    "walk_stairs_up": {
+      "post": "upstairs"
+    },
+    "walk_stairs_down": {
+      "post": "downstairs"
+    },
+    "hold_door": {
+      "post": "doorhold"
+    },
+    "push_door": {
+      "post": "doorpush"
+    },
+    "pull_door": {
+      "post": "doorpull"
+    },
+    "carry_bag": {
+      "item": {
+        "type": "held_shopping_bag",
+        "hand": "right"
+      }
+    },
+    "walk_carry_bag": {
+      "item": {
+        "type": "held_shopping_bag",
+        "hand": "right"
+      }
+    },
+    "carry_bags": {
+      "item": {
+        "type": "held_shopping_bags",
+        "hand": "both"
+      }
+    },
+    "walk_carry_bags": {
+      "item": {
+        "type": "held_shopping_bags",
+        "hand": "both"
+      }
+    },
+    "carry_box": {
+      "item": {
+        "type": "held_cardboard_box",
+        "hand": "both"
+      }
+    },
+    "walk_carry_box": {
+      "item": {
+        "type": "held_cardboard_box",
+        "hand": "both"
+      }
+    },
+    "carry_shoulder": {
+      "item": {
+        "type": "held_rolled_carpet",
+        "hand": "right"
+      }
+    },
+    "carry_shoulder_bag": {
+      "item": {
+        "type": "held_shoulder_bag",
+        "hand": "back"
+      }
+    },
+    "drink": {
+      "item": {
+        "type": "held_coffee_cup",
+        "hand": "right"
+      }
+    },
+    "walk_drink": {
+      "item": {
+        "type": "held_coffee_cup",
+        "hand": "right"
+      }
+    },
+    "eat_snack": {
+      "item": {
+        "type": "held_snack_bag",
+        "hand": "left"
+      }
+    },
+    "eat_walk": {
+      "item": {
+        "type": "held_snack_bag",
+        "hand": "left"
+      }
+    },
+    "fan_self": {
+      "item": {
+        "type": "held_fan",
+        "hand": "right"
+      }
+    },
+    "film_phone": {
+      "item": {
+        "type": "held_phone",
+        "hand": "both"
+      }
+    },
+    "photo_overhead": {
+      "item": {
+        "type": "held_phone",
+        "hand": "both"
+      }
+    },
+    "selfie": {
+      "item": {
+        "type": "held_phone",
+        "hand": "right"
+      }
+    },
+    "phone_call": {
+      "item": {
+        "type": "held_phone",
+        "hand": "right"
+      }
+    },
+    "phone_urgent": {
+      "item": {
+        "type": "held_phone",
+        "hand": "right"
+      }
+    },
+    "phone_walk": {
+      "item": {
+        "type": "held_phone",
+        "hand": "right"
+      }
+    },
+    "walk_phone_call": {
+      "item": {
+        "type": "held_phone",
+        "hand": "right"
+      }
+    },
+    "inspect_item": {
+      "item": {
+        "type": "held_phone",
+        "hand": "right"
+      }
+    },
+    "take_photo": {
+      "item": {
+        "type": "held_camera",
+        "hand": "both"
+      }
+    },
+    "hold_guitar": {
+      "item": {
+        "type": "held_guitar",
+        "hand": "both"
+      }
+    },
+    "hold_umbrella": {
+      "item": {
+        "type": "held_umbrella_open",
+        "hand": "right"
+      }
+    },
+    "walk_umbrella": {
+      "item": {
+        "type": "held_umbrella_open",
+        "hand": "right"
+      }
+    },
+    "pull_suitcase": {
+      "item": {
+        "type": "held_suitcase",
+        "hand": "right"
+      }
+    },
+    "read_book": {
+      "item": {
+        "type": "held_book_open",
+        "hand": "both"
+      }
+    },
+    "turn_page": {
+      "item": {
+        "type": "held_book_open",
+        "hand": "left"
+      }
+    },
+    "read_newspaper": {
+      "item": {
+        "type": "held_newspaper_open",
+        "hand": "both"
+      }
+    },
+    "walk_newspaper": {
+      "item": {
+        "type": "held_newspaper_open",
+        "hand": "both"
+      }
+    },
+    "smoke": {
+      "item": {
+        "type": "held_cigarette",
+        "hand": "right"
+      }
+    },
+    "smoke_walk": {
+      "item": {
+        "type": "held_cigarette",
+        "hand": "right"
+      }
+    },
+    "walk_cane": {
+      "item": {
+        "type": "held_cane",
+        "hand": "right"
+      }
+    },
+    "give_item": {
+      "partner": {
+        "clip": "receive_item",
+        "at": [
+          -0.28,
+          0.94
+        ],
+        "yaw": 180
+      }
+    },
+    "breakfast_buy": {
+      "post": "breakfastbuy"
+    },
+    "atm_take_cash": {
+      "post": "atm"
+    },
+    "vending_collect": {
+      "post": "vendcollect"
+    },
+    "water_planter_hold": {
+      "post": "water",
+      "item": {
+        "type": "held_watering_can",
+        "hand": "right"
+      }
+    },
+    "assist_elder_walk": {
+      "partner": {
+        "clip": "elder_assisted_walk",
+        "at": [
+          -0.48,
+          0
+        ],
+        "yaw": 0
+      }
+    },
+    "fountain_drink": {
+      "post": "fountain"
+    },
+    "wallet_takeout": {
+      "item": {
+        "type": "held_wallet",
+        "hand": "right"
+      }
+    },
+    "phone_booth_call": {
+      "item": {
+        "type": "held_telephone_receiver",
+        "hand": "right"
+      },
+      "post": "payphone"
+    },
+    "cafe_sit_drink": {
+      "item": {
+        "type": "held_coffee_cup",
+        "hand": "right"
+      },
+      "post": "cafesit"
+    },
+    "bike_scan_unlock": {
+      "item": {
+        "type": "held_phone",
+        "hand": "right"
+      },
+      "post": "bikescan"
+    },
+    "badminton_swing": {
+      "item": {
+        "type": "held_badminton_racket",
+        "hand": "right"
+      }
+    },
+    "table_tennis_play": {
+      "item": {
+        "type": "held_table_tennis_paddle",
+        "hand": "right"
+      },
+      "post": "pingpong",
+      "partner": {
+        "clip": "table_tennis_partner",
+        "at": [
+          0,
+          3.6
+        ],
+        "yaw": 180
+      }
+    },
+    "distribute_flyer": {
+      "item": {
+        "type": "held_flyer_stack",
+        "hand": "right"
+      },
+      "partner": {
+        "clip": "receive_flyer",
+        "at": [
+          -0.28,
+          0.94
+        ],
+        "yaw": 180
+      }
+    },
+    "rummage_bin": {
+      "post": "rummage"
+    },
+    "air_walker": {
+      "post": "airwalk"
+    },
+    "swing_seated": {
+      "post": "swing"
+    },
+    "seesaw_seated": {
+      "post": "seesaw",
+      "partner": {
+        "clip": "seesaw_partner",
+        "at": [
+          0,
+          3.0
+        ],
+        "yaw": 180
+      }
+    },
+    "slide_seated": {
+      "post": "slide"
+    },
+    "car_enter": {
+      "post": "carenter"
+    },
+    "car_exit": {
+      "post": "carexit"
+    },
+    "table_tennis_partner": {
+      "item": {
+        "type": "held_table_tennis_paddle",
+        "hand": "right"
+      }
+    },
+    "basketball_shoot": {
+      "post": "shoot"
+    }
   }
 }

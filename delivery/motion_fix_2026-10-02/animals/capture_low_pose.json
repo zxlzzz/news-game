@@ -1,0 +1,62 @@
+{
+  "trace": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_low_pose\\runtime.json",
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\low_pose_actual",
+  "entries": [
+    {
+      "breed": "cat",
+      "label": "sit_urgent",
+      "start": 9.95,
+      "duration": 1.4,
+      "samples": 84,
+      "size": 1.0
+    },
+    {
+      "breed": "cat",
+      "label": "lie_urgent",
+      "start": 9.95,
+      "duration": 1.4,
+      "samples": 84,
+      "size": 1.0
+    },
+    {
+      "breed": "cat",
+      "label": "sleep_urgent",
+      "start": 9.95,
+      "duration": 1.4,
+      "samples": 84,
+      "size": 1.0
+    },
+    {
+      "breed": "cat",
+      "label": "side_lie_urgent",
+      "start": 9.95,
+      "duration": 1.4,
+      "samples": 84,
+      "size": 1.0
+    },
+    {
+      "breed": "husky",
+      "label": "lie_urgent",
+      "start": 9.95,
+      "duration": 1.4,
+      "samples": 84,
+      "size": 1.6
+    },
+    {
+      "breed": "shibainu",
+      "label": "lie_urgent",
+      "start": 9.95,
+      "duration": 1.4,
+      "samples": 84,
+      "size": 1.6
+    }
+  ],
+  "views": [
+    35,
+    90,
+    270
+  ],
+  "columns": 12,
+  "cell": 256,
+  "pitch": 12
+}

@@ -1,0 +1,14 @@
+{
+  "fruit_stand": {
+    "identical": true,
+    "sha256": "7CD336536519CAAF64788E69EE2C07B5DA2D356E1FDDC246A74616D259A08641"
+  },
+  "held_chess_piece": {
+    "identical": true,
+    "sha256": "1FC948A284B742187DC2516BA084B44976EC62DA1615717B6AFC4022757A1434"
+  },
+  "held_phone": {
+    "identical": true,
+    "sha256": "6F87968E591FB24FADD1372937896BC6FACB1DDB58E544E3E8CBBFE08F58D6AE"
+  }
+}

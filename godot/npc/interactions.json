@@ -1,0 +1,9450 @@
+{
+  "reach_tolerance": 0.015,
+  "clips": {
+    "carry_box": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "walk_carry_box": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "hold_guitar": {
+      "item": {
+        "anchor": {
+          "space": "neck",
+          "at": [
+            0.05,
+            -0.32,
+            0.27
+          ]
+        },
+        "rotation": [
+          0,
+          0,
+          -72
+        ]
+      },
+      "hands": {
+        "handLeft": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_left",
+          "pole": [
+            0.2,
+            -1,
+            -0.1
+          ]
+        },
+        "handRight": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_right",
+          "pole": [
+            -0.2,
+            -1,
+            -0.1
+          ]
+        }
+      }
+    },
+    "carry_shoulder_bag": {
+      "item": {
+        "anchor": {
+          "space": "neck",
+          "at": [
+            -0.22,
+            -0.5,
+            0.02
+          ]
+        },
+        "rotation": [
+          0,
+          90,
+          0
+        ]
+      },
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "strap_top"
+        }
+      }
+    },
+    "pull_suitcase": {
+      "item": {
+        "anchor": {
+          "space": "root",
+          "at": [
+            -0.4,
+            0,
+            -0.18
+          ]
+        },
+        "rotation": [
+          25,
+          0,
+          0
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "walk_cane": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "ground": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.45,
+            0,
+            0,
+            0
+          ],
+          [
+            0.66,
+            0.07,
+            0,
+            0
+          ],
+          [
+            0.9,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ],
+        "anchor": {
+          "space": "root",
+          "at": [
+            -0.3,
+            0,
+            0.25
+          ],
+          "plant": [
+            0.45,
+            0.9
+          ]
+        }
+      },
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "walk_closed_umbrella": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "ground": [
+          0.045,
+          0,
+          0
+        ],
+        "anchor": {
+          "space": "root",
+          "at": [
+            -0.28,
+            0,
+            0.15
+          ]
+        }
+      },
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "pole": [
+            0,
+            -1,
+            0
+          ]
+        }
+      }
+    },
+    "photo_overhead": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          90
+        ]
+      },
+      "playback": "once",
+      "hands": {
+        "handLeft": {
+          "space": "item",
+          "marker": "grip_left"
+        },
+        "handRight": {
+          "space": "item",
+          "marker": "grip_right"
+        }
+      }
+    },
+    "phone_call": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          -10
+        ]
+      }
+    },
+    "phone_urgent": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          -10
+        ]
+      }
+    },
+    "walk_phone_call": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          -10
+        ]
+      }
+    },
+    "drink": {
+      "item": {
+        "anchor": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              0.18,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              0.36,
+              {
+                "space": "head",
+                "at": [
+                  0,
+                  -0.055,
+                  0.171391
+                ]
+              }
+            ],
+            [
+              0.8,
+              {
+                "space": "head",
+                "at": [
+                  0,
+                  -0.055,
+                  0.171391
+                ]
+              }
+            ],
+            [
+              0.98,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              1,
+              {
+                "space": "handRight"
+              }
+            ]
+          ]
+        },
+        "pivot": [
+          [
+            0,
+            -0.049,
+            -0.015,
+            0
+          ],
+          [
+            0.18,
+            -0.049,
+            -0.015,
+            0
+          ],
+          [
+            0.36,
+            0,
+            0.0885,
+            -0.057
+          ],
+          [
+            0.8,
+            0,
+            0.0885,
+            -0.057
+          ],
+          [
+            0.98,
+            -0.049,
+            -0.015,
+            0
+          ],
+          [
+            1,
+            -0.049,
+            -0.015,
+            0
+          ]
+        ],
+        "rotation": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.18,
+            0,
+            0,
+            0
+          ],
+          [
+            0.36,
+            -65,
+            0,
+            0
+          ],
+          [
+            0.8,
+            -65,
+            0,
+            0
+          ],
+          [
+            0.98,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "playback": "once",
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "marker": "grip_sleeve"
+        }
+      }
+    },
+    "walk_drink": {
+      "item": {
+        "anchor": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              0.18,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              0.3,
+              {
+                "space": "head",
+                "at": [
+                  0,
+                  -0.055,
+                  0.171391
+                ]
+              }
+            ],
+            [
+              0.5,
+              {
+                "space": "head",
+                "at": [
+                  0,
+                  -0.055,
+                  0.171391
+                ]
+              }
+            ],
+            [
+              0.65,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              1,
+              {
+                "space": "handRight"
+              }
+            ]
+          ]
+        },
+        "pivot": [
+          [
+            0,
+            -0.049,
+            -0.015,
+            0
+          ],
+          [
+            0.18,
+            -0.049,
+            -0.015,
+            0
+          ],
+          [
+            0.3,
+            0,
+            0.0885,
+            -0.057
+          ],
+          [
+            0.5,
+            0,
+            0.0885,
+            -0.057
+          ],
+          [
+            0.65,
+            -0.049,
+            -0.015,
+            0
+          ],
+          [
+            1,
+            -0.049,
+            -0.015,
+            0
+          ]
+        ],
+        "rotation": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.18,
+            0,
+            0,
+            0
+          ],
+          [
+            0.3,
+            -65,
+            0,
+            0
+          ],
+          [
+            0.5,
+            -65,
+            0,
+            0
+          ],
+          [
+            0.65,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "marker": "grip_sleeve"
+        }
+      }
+    },
+    "slouch_bench": {
+      "body": {
+        "hip": {
+          "space": "root",
+          "at": [
+            0.12,
+            0.505,
+            0.15
+          ]
+        }
+      },
+      "feet": {
+        "footLeft": {
+          "space": "root",
+          "at": [
+            0.27,
+            0.055,
+            0.47
+          ]
+        },
+        "footRight": {
+          "space": "root",
+          "at": [
+            -0.03,
+            0.055,
+            0.42
+          ]
+        }
+      }
+    },
+    "sit_sideways": {
+      "body": {
+        "hip": {
+          "space": "root",
+          "at": [
+            0.12,
+            0.505,
+            0.15
+          ]
+        },
+        "direction": [
+          0.16,
+          1,
+          0
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "root",
+          "at": [
+            0.27,
+            0.055,
+            0.47
+          ]
+        },
+        "footRight": {
+          "space": "root",
+          "at": [
+            -0.03,
+            0.055,
+            0.42
+          ]
+        }
+      }
+    },
+    "push_cart": {
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_left"
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_right"
+        }
+      },
+      "object": "shopping_cart"
+    },
+    "push_stroller": {
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_left"
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_right"
+        }
+      },
+      "object": "baby_stroller"
+    },
+    "walk_carry_bags": {
+      "item": {}
+    },
+    "pullup_hold": {
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            0.33,
+            2.35,
+            0
+          ],
+          "pole": [
+            0.2,
+            -1,
+            0.5
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            -0.33,
+            2.35,
+            0
+          ],
+          "pole": [
+            -0.2,
+            -1,
+            0.5
+          ]
+        }
+      }
+    },
+    "pullup_raise": {
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            0.33,
+            2.35,
+            0
+          ],
+          "pole": [
+            0.2,
+            -1,
+            0.5
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            -0.33,
+            2.35,
+            0
+          ],
+          "pole": [
+            -0.2,
+            -1,
+            0.5
+          ]
+        }
+      }
+    },
+    "sweep_ground": {
+      "item": {
+        "align": [
+          0,
+          1,
+          0
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ],
+        "slide": true
+      },
+      "stationary": true
+    },
+    "mop_ground": {
+      "item": {
+        "anchor": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              -0.2,
+              1,
+              0.18
+            ],
+            [
+              0.5,
+              -0.2,
+              1,
+              0.5
+            ],
+            [
+              1,
+              -0.2,
+              1,
+              0.18
+            ]
+          ]
+        },
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "ground": [
+          0,
+          0,
+          0
+        ]
+      },
+      "stationary": true,
+      "hands": {
+        "handLeft": {
+          "space": "item",
+          "marker": "grip_high",
+          "pole": [
+            0.3,
+            -1,
+            0
+          ]
+        },
+        "handRight": {
+          "space": "item",
+          "marker": "grip_low",
+          "pole": [
+            -0.3,
+            -1,
+            0
+          ]
+        }
+      },
+      "body": {
+        "hip": {
+          "space": "hip"
+        },
+        "direction": [
+          [
+            0,
+            0,
+            1,
+            0.08
+          ],
+          [
+            0.5,
+            0,
+            1,
+            0.3
+          ],
+          [
+            1,
+            0,
+            1,
+            0.08
+          ]
+        ]
+      }
+    },
+    "walk_backpack_straps": {},
+    "lean_railing": {
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            0.2,
+            1.1,
+            0
+          ],
+          "pole": [
+            0.25,
+            -1,
+            0
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            -0.2,
+            1.1,
+            0
+          ],
+          "pole": [
+            -0.25,
+            -1,
+            0
+          ]
+        }
+      }
+    },
+    "chess_move": {
+      "hands": {
+        "handRight": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.65,
+                  0.16
+                ]
+              }
+            ],
+            [
+              0.2,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.92,
+                  0.32
+                ]
+              }
+            ],
+            [
+              0.32,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.27125
+                ]
+              }
+            ],
+            [
+              0.42,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.87,
+                  -0.27125
+                ]
+              }
+            ],
+            [
+              0.56,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.87,
+                  -0.19375
+                ]
+              }
+            ],
+            [
+              0.65,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.19375
+                ]
+              }
+            ],
+            [
+              0.76,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.87,
+                  -0.19375
+                ]
+              }
+            ],
+            [
+              0.9,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.65,
+                  0.16
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.65,
+                  0.16
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            -0.2,
+            -1,
+            -0.2
+          ]
+        }
+      },
+      "playback": "once",
+      "props": [
+        {
+          "type": "held_chess_piece",
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.27125
+                ]
+              }
+            ],
+            [
+              0.32,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.27125
+                ]
+              }
+            ],
+            [
+              0.320001,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              0.65,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              0.650001,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.19375
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.19375
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "stationary": true,
+      "body": {
+        "hip": {
+          "space": "hip"
+        },
+        "direction": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0.2,
+            0,
+            1,
+            0.2
+          ],
+          [
+            0.76,
+            0,
+            1,
+            0.2
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ]
+        ]
+      }
+    },
+    "take_back_piece": {
+      "hands": {
+        "handRight": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.65,
+                  0.16
+                ]
+              }
+            ],
+            [
+              0.2,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.92,
+                  0.32
+                ]
+              }
+            ],
+            [
+              0.32,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.19375
+                ]
+              }
+            ],
+            [
+              0.42,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.87,
+                  -0.19375
+                ]
+              }
+            ],
+            [
+              0.56,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.87,
+                  -0.27125
+                ]
+              }
+            ],
+            [
+              0.65,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.27125
+                ]
+              }
+            ],
+            [
+              0.76,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.87,
+                  -0.27125
+                ]
+              }
+            ],
+            [
+              0.9,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.65,
+                  0.16
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.65,
+                  0.16
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            -0.2,
+            -1,
+            -0.2
+          ]
+        }
+      },
+      "playback": "once",
+      "props": [
+        {
+          "type": "held_chess_piece",
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.19375
+                ]
+              }
+            ],
+            [
+              0.32,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.19375
+                ]
+              }
+            ],
+            [
+              0.320001,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              0.65,
+              {
+                "space": "handRight"
+              }
+            ],
+            [
+              0.650001,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.27125
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "object",
+                "at": [
+                  -0.11625,
+                  0.792,
+                  -0.27125
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "stationary": true,
+      "body": {
+        "hip": {
+          "space": "hip"
+        },
+        "direction": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0.2,
+            0,
+            1,
+            0.2
+          ],
+          [
+            0.76,
+            0,
+            1,
+            0.2
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ]
+        ]
+      }
+    },
+    "leg_stretch": {
+      "body": {
+        "hip": {
+          "space": "root",
+          "at": [
+            0,
+            0.76,
+            0.12
+          ]
+        },
+        "direction": [
+          0,
+          1,
+          0.28
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "root",
+          "at": [
+            0.1,
+            0.51,
+            0.68
+          ]
+        },
+        "footRight": {
+          "space": "root",
+          "at": [
+            -0.12,
+            0.055,
+            0
+          ]
+        }
+      }
+    },
+    "press_button": {
+      "hands": {
+        "handRight": {
+          "space": "object",
+          "at": [
+            0.378,
+            1.13,
+            0.44
+          ],
+          "window": [
+            0.18,
+            0.3,
+            0.62,
+            0.78
+          ]
+        }
+      },
+      "playback": "once"
+    },
+    "slap_table": {
+      "hands": {
+        "handRight": {
+          "space": "object",
+          "at": [
+            -0.15,
+            0.8,
+            -0.17
+          ],
+          "window": [
+            0.34,
+            0.4,
+            0.46,
+            0.52
+          ]
+        }
+      },
+      "playback": "once"
+    },
+    "walk_newspaper_underarm": {
+      "item": {
+        "anchor": {
+          "space": "neck",
+          "at": [
+            0.18,
+            -0.32,
+            0.07
+          ]
+        },
+        "rotation": [
+          0,
+          0,
+          90
+        ]
+      }
+    },
+    "eat_snack": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "props": [
+        {
+          "type": "held_snack_piece",
+          "space": "handRight",
+          "at": [
+            0,
+            0,
+            0.025
+          ],
+          "visible": [
+            0.2,
+            0.58
+          ]
+        }
+      ]
+    },
+    "eat_walk": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "props": [
+        {
+          "type": "held_snack_piece",
+          "space": "handRight",
+          "at": [
+            0,
+            0,
+            0.025
+          ],
+          "visible": [
+            0.2,
+            0.58
+          ]
+        }
+      ]
+    },
+    "give_item": {
+      "stationary": true,
+      "duration": 4,
+      "hands": {
+        "handRight": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              -0.2,
+              1,
+              0.18
+            ],
+            [
+              0.3,
+              -0.14,
+              1.05,
+              0.42
+            ],
+            [
+              0.6,
+              -0.14,
+              1.05,
+              0.42
+            ],
+            [
+              0.85,
+              -0.2,
+              1,
+              0.18
+            ],
+            [
+              1,
+              -0.2,
+              1,
+              0.18
+            ]
+          ]
+        }
+      },
+      "props": [
+        {
+          "type": "held_parcel",
+          "keys": [
+            [
+              0,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.05
+                ]
+              }
+            ],
+            [
+              0.48,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.05
+                ]
+              }
+            ],
+            [
+              0.55,
+              {
+                "space": "partner",
+                "at": [
+                  0,
+                  0,
+                  -0.05
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "partner",
+                "at": [
+                  0,
+                  0,
+                  -0.05
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "playback": "once"
+    },
+    "receive_item": {
+      "stationary": true,
+      "duration": 4,
+      "hands": {
+        "handRight": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              -0.2,
+              0.9,
+              0.18
+            ],
+            [
+              0.3,
+              -0.14,
+              1.05,
+              0.42
+            ],
+            [
+              0.6,
+              -0.14,
+              1.05,
+              0.42
+            ],
+            [
+              0.85,
+              -0.2,
+              0.9,
+              0.18
+            ],
+            [
+              1,
+              -0.2,
+              0.9,
+              0.18
+            ]
+          ]
+        }
+      },
+      "playback": "once"
+    },
+    "assist_elder_walk": {
+      "hands": {
+        "handRight": {
+          "space": "partner",
+          "at": [
+            0,
+            0,
+            0.02
+          ],
+          "segment": 3,
+          "along": 0.15,
+          "pole": [
+            -0.3,
+            -1,
+            -0.1
+          ]
+        }
+      }
+    },
+    "turn_page": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "props": [
+        {
+          "type": "held_turning_page",
+          "space": "item",
+          "at": [
+            0,
+            0,
+            -0.04
+          ],
+          "marker": "model",
+          "rotation": [
+            [
+              0,
+              0,
+              180,
+              0
+            ],
+            [
+              0.25,
+              0,
+              180,
+              0
+            ],
+            [
+              0.65,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ]
+          ],
+          "rotation_space": "item",
+          "visible": [
+            0.25,
+            0.7
+          ]
+        }
+      ],
+      "playback": "once"
+    },
+    "atm_take_cash": {
+      "props": [
+        {
+          "type": "held_banknote",
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  0.98,
+                  0.405
+                ]
+              }
+            ],
+            [
+              0.4,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  0.98,
+                  0.405
+                ]
+              }
+            ],
+            [
+              0.45,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.025
+                ]
+              }
+            ],
+            [
+              0.95,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.025
+                ]
+              }
+            ]
+          ],
+          "visible": [
+            0.2,
+            0.95
+          ]
+        }
+      ],
+      "playback": "once",
+      "stationary": true,
+      "hands": {
+        "handRight": {
+          "space": "object",
+          "at": [
+            0,
+            0.98,
+            0.405
+          ],
+          "window": [
+            0.06,
+            0.18,
+            0.4,
+            0.5
+          ],
+          "pole": [
+            -0.3,
+            -1,
+            -0.1
+          ]
+        }
+      }
+    },
+    "vending_collect": {
+      "stationary": true,
+      "hands": {
+        "handRight": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              -0.2,
+              0.85,
+              0.2
+            ],
+            [
+              0.3,
+              0,
+              0.37,
+              0.76
+            ],
+            [
+              0.48,
+              0,
+              0.37,
+              0.76
+            ],
+            [
+              0.68,
+              -0.2,
+              0.7,
+              0.38
+            ],
+            [
+              0.9,
+              -0.2,
+              0.85,
+              0.2
+            ],
+            [
+              1,
+              -0.2,
+              0.85,
+              0.2
+            ]
+          ],
+          "window": [
+            0.15,
+            0.3,
+            0.48,
+            0.68
+          ]
+        }
+      },
+      "props": [
+        {
+          "type": "held_coffee_cup",
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  0.35,
+                  0.44
+                ]
+              }
+            ],
+            [
+              0.46,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  0.35,
+                  0.44
+                ]
+              }
+            ],
+            [
+              0.5,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.03
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.03
+                ]
+              }
+            ]
+          ],
+          "visible": [
+            0.15,
+            1
+          ]
+        }
+      ],
+      "playback": "once",
+      "shift": [
+        0,
+        -0.03,
+        0.115
+      ]
+    },
+    "fountain_drink": {
+      "stationary": true,
+      "body": {
+        "hip": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              0,
+              0.78,
+              0
+            ],
+            [
+              0.3,
+              0,
+              0.73,
+              0.02
+            ],
+            [
+              0.68,
+              0,
+              0.73,
+              0.02
+            ],
+            [
+              1,
+              0,
+              0.78,
+              0
+            ]
+          ]
+        },
+        "direction": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0.3,
+            0,
+            0.65,
+            0.76
+          ],
+          [
+            0.68,
+            0,
+            0.65,
+            0.76
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ]
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "root",
+          "at": [
+            0.15,
+            0.055,
+            0
+          ]
+        },
+        "footRight": {
+          "space": "root",
+          "at": [
+            -0.15,
+            0.055,
+            0
+          ]
+        }
+      },
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            0.21,
+            0.99,
+            0.2
+          ],
+          "window": [
+            0,
+            0.2,
+            0.8,
+            1
+          ],
+          "pole": [
+            0.3,
+            -0.8,
+            -0.1
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            -0.21,
+            0.99,
+            0.2
+          ],
+          "window": [
+            0,
+            0.2,
+            0.8,
+            1
+          ],
+          "pole": [
+            -0.3,
+            -0.8,
+            -0.1
+          ]
+        }
+      },
+      "head_direction": [
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0.3,
+          0,
+          0.45,
+          0.89
+        ],
+        [
+          0.68,
+          0,
+          0.45,
+          0.89
+        ],
+        [
+          1,
+          0,
+          1,
+          0
+        ]
+      ],
+      "water": {
+        "from": {
+          "space": "object",
+          "at": [
+            0,
+            1.1,
+            -0.02
+          ]
+        },
+        "to": {
+          "space": "object",
+          "at": [
+            0,
+            0.89,
+            0.1
+          ]
+        },
+        "window": [
+          0.25,
+          0.72
+        ]
+      },
+      "playback": "once"
+    },
+    "post_letter": {
+      "props": [
+        {
+          "type": "held_envelope",
+          "keys": [
+            [
+              0,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.025
+                ]
+              }
+            ],
+            [
+              0.38,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.025
+                ]
+              }
+            ],
+            [
+              0.48,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.05,
+                  0.27
+                ]
+              }
+            ],
+            [
+              0.62,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.05,
+                  0.15
+                ]
+              }
+            ]
+          ],
+          "visible": [
+            0,
+            0.62
+          ],
+          "rotation": [
+            90,
+            0,
+            0
+          ]
+        }
+      ],
+      "hands": {
+        "handRight": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  -0.17,
+                  1,
+                  0.22
+                ]
+              }
+            ],
+            [
+              0.3,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.05,
+                  0.4
+                ]
+              }
+            ],
+            [
+              0.5,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.05,
+                  0.29
+                ]
+              }
+            ],
+            [
+              0.62,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.05,
+                  0.28
+                ]
+              }
+            ],
+            [
+              0.85,
+              {
+                "space": "root",
+                "at": [
+                  -0.17,
+                  1,
+                  0.22
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  -0.17,
+                  1,
+                  0.22
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            -0.2,
+            -1,
+            0
+          ]
+        }
+      },
+      "stationary": true,
+      "playback": "once"
+    },
+    "post_notice": {
+      "props": [
+        {
+          "type": "held_flyer",
+          "keys": [
+            [
+              0,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.02
+                ]
+              }
+            ],
+            [
+              0.26,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.02
+                ]
+              }
+            ],
+            [
+              0.4,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.35,
+                  0.105
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.35,
+                  0.105
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "playback": "once",
+      "stationary": true
+    },
+    "buy_newspaper": {
+      "props": [
+        {
+          "type": "held_newspaper_folded",
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  -0.2,
+                  1.06,
+                  0.46
+                ]
+              }
+            ],
+            [
+              0.43,
+              {
+                "space": "root",
+                "at": [
+                  -0.2,
+                  1.06,
+                  0.46
+                ]
+              }
+            ],
+            [
+              0.5,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.04
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.04
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "playback": "once",
+      "stationary": true
+    },
+    "fruit_choose": {
+      "props": [
+        {
+          "type": "held_fruit",
+          "space": "handRight",
+          "at": [
+            0,
+            0,
+            0.035
+          ],
+          "visible": [
+            0.35,
+            0.8
+          ]
+        }
+      ],
+      "playback": "once"
+    },
+    "fruit_weigh": {
+      "props": [
+        {
+          "type": "fruit_scale",
+          "id": "scale",
+          "space": "object",
+          "marker": "scale_pad"
+        },
+        {
+          "type": "held_fruit",
+          "keys": [
+            [
+              0,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.03
+                ]
+              }
+            ],
+            [
+              0.6,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.03
+                ]
+              }
+            ],
+            [
+              0.600001,
+              {
+                "space": "prop",
+                "id": "scale",
+                "marker": "fruit_rest"
+              }
+            ],
+            [
+              1,
+              {
+                "space": "prop",
+                "id": "scale",
+                "marker": "fruit_rest"
+              }
+            ]
+          ]
+        }
+      ],
+      "playback": "once",
+      "stationary": true,
+      "hands": {
+        "handRight": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.85,
+                  0.18
+                ]
+              }
+            ],
+            [
+              0.16,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  1.05,
+                  0.3
+                ]
+              }
+            ],
+            [
+              0.35,
+              {
+                "space": "root",
+                "at": [
+                  -0.25,
+                  1.23,
+                  0.35
+                ]
+              }
+            ],
+            [
+              0.55,
+              {
+                "space": "prop",
+                "id": "scale",
+                "marker": "fruit_rest",
+                "at": [
+                  0,
+                  0,
+                  -0.03
+                ]
+              }
+            ],
+            [
+              0.66,
+              {
+                "space": "prop",
+                "id": "scale",
+                "marker": "fruit_rest",
+                "at": [
+                  0,
+                  0,
+                  -0.03
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.85,
+                  0.18
+                ]
+              }
+            ]
+          ],
+          "window": [
+            0.08,
+            0.16,
+            0.66,
+            0.8
+          ]
+        }
+      }
+    },
+    "breakfast_buy": {
+      "stationary": true,
+      "playback": "once",
+      "duration": 6,
+      "hands": {
+        "handRight": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  -0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ],
+            [
+              0.18,
+              {
+                "space": "object",
+                "at": [
+                  -0.15,
+                  1.12,
+                  0.03
+                ]
+              }
+            ],
+            [
+              0.3,
+              {
+                "space": "object",
+                "at": [
+                  -0.15,
+                  1.12,
+                  0.03
+                ]
+              }
+            ],
+            [
+              0.42,
+              {
+                "space": "root",
+                "at": [
+                  -0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ],
+            [
+              0.56,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.2,
+                  0.06
+                ]
+              }
+            ],
+            [
+              0.66,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.2,
+                  0.06
+                ]
+              }
+            ],
+            [
+              0.86,
+              {
+                "space": "root",
+                "at": [
+                  -0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  -0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            -0.4,
+            -1,
+            0
+          ],
+          "window": [
+            [
+              0.08,
+              0.18,
+              0.3,
+              0.4
+            ],
+            [
+              0.46,
+              0.56,
+              0.66,
+              0.76
+            ]
+          ]
+        }
+      },
+      "shift": [
+        0,
+        0,
+        0.2
+      ]
+    },
+    "breakfast_sell": {
+      "stationary": true,
+      "playback": "once",
+      "duration": 6,
+      "hands": {
+        "handLeft": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ],
+            [
+              0.16,
+              {
+                "space": "object",
+                "at": [
+                  -0.15,
+                  1.12,
+                  -0.08
+                ]
+              }
+            ],
+            [
+              0.3,
+              {
+                "space": "object",
+                "at": [
+                  -0.15,
+                  1.12,
+                  0.02
+                ]
+              }
+            ],
+            [
+              0.43,
+              {
+                "space": "root",
+                "at": [
+                  0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            0.4,
+            -1,
+            0
+          ],
+          "window": [
+            0.06,
+            0.16,
+            0.3,
+            0.42
+          ]
+        },
+        "handRight": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  -0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ],
+            [
+              0.32,
+              {
+                "space": "root",
+                "at": [
+                  -0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ],
+            [
+              0.42,
+              {
+                "space": "object",
+                "at": [
+                  0.2,
+                  1.2,
+                  -0.2
+                ]
+              }
+            ],
+            [
+              0.56,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.2,
+                  0
+                ]
+              }
+            ],
+            [
+              0.66,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.2,
+                  0
+                ]
+              }
+            ],
+            [
+              0.85,
+              {
+                "space": "root",
+                "at": [
+                  -0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  -0.19,
+                  0.95,
+                  0.16
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            -0.4,
+            -1,
+            0
+          ],
+          "window": [
+            0.3,
+            0.42,
+            0.66,
+            0.78
+          ]
+        }
+      },
+      "props": [
+        {
+          "type": "held_banknote",
+          "keys": [
+            [
+              0,
+              {
+                "space": "partner",
+                "at": [
+                  0,
+                  0,
+                  0.025
+                ],
+                "joint": "handRight"
+              }
+            ],
+            [
+              0.24,
+              {
+                "space": "partner",
+                "at": [
+                  0,
+                  0,
+                  0.025
+                ],
+                "joint": "handRight"
+              }
+            ],
+            [
+              0.3,
+              {
+                "space": "handLeft",
+                "at": [
+                  0,
+                  0,
+                  0.025
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "handLeft",
+                "at": [
+                  0,
+                  0,
+                  0.025
+                ]
+              }
+            ]
+          ],
+          "visible": [
+            0,
+            0.44
+          ],
+          "rotation": [
+            90,
+            0,
+            0
+          ]
+        },
+        {
+          "type": "held_meal_bag",
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  0.2,
+                  1.18,
+                  -0.2
+                ]
+              }
+            ],
+            [
+              0.4,
+              {
+                "space": "object",
+                "at": [
+                  0.2,
+                  1.18,
+                  -0.2
+                ]
+              }
+            ],
+            [
+              0.42,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  -0.02,
+                  0
+                ]
+              }
+            ],
+            [
+              0.64,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  -0.02,
+                  0
+                ]
+              }
+            ],
+            [
+              0.68,
+              {
+                "space": "partner",
+                "at": [
+                  0,
+                  -0.02,
+                  0
+                ],
+                "joint": "handRight"
+              }
+            ],
+            [
+              1,
+              {
+                "space": "partner",
+                "at": [
+                  0,
+                  -0.02,
+                  0
+                ],
+                "joint": "handRight"
+              }
+            ]
+          ]
+        }
+      ],
+      "shift": [
+        0,
+        0,
+        0.17
+      ]
+    },
+    "hang_laundry": {
+      "props": [
+        {
+          "type": "held_laundry_shirt",
+          "keys": [
+            [
+              0,
+              {
+                "space": "handRight",
+                "at": [
+                  0.17,
+                  0,
+                  0
+                ]
+              }
+            ],
+            [
+              0.62,
+              {
+                "space": "handRight",
+                "at": [
+                  0.17,
+                  0,
+                  0
+                ]
+              }
+            ],
+            [
+              0.620001,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.8,
+                  0.06
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  1.8,
+                  0.06
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "playback": "once",
+      "stationary": true,
+      "hands": {
+        "handRight": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  -0.17,
+                  0.9,
+                  0.18
+                ]
+              }
+            ],
+            [
+              0.2,
+              {
+                "space": "root",
+                "at": [
+                  -0.17,
+                  1.25,
+                  0.2
+                ]
+              }
+            ],
+            [
+              0.48,
+              {
+                "space": "object",
+                "at": [
+                  0.17,
+                  1.8,
+                  0.06
+                ]
+              }
+            ],
+            [
+              0.64,
+              {
+                "space": "object",
+                "at": [
+                  0.17,
+                  1.8,
+                  0.06
+                ]
+              }
+            ],
+            [
+              0.82,
+              {
+                "space": "root",
+                "at": [
+                  -0.17,
+                  1.25,
+                  0.2
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  -0.17,
+                  0.9,
+                  0.18
+                ]
+              }
+            ]
+          ],
+          "window": [
+            0.08,
+            0.2,
+            0.64,
+            0.82
+          ]
+        },
+        "handLeft": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  0.17,
+                  0.9,
+                  0.18
+                ]
+              }
+            ],
+            [
+              0.2,
+              {
+                "space": "root",
+                "at": [
+                  0.17,
+                  1.25,
+                  0.2
+                ]
+              }
+            ],
+            [
+              0.48,
+              {
+                "space": "object",
+                "at": [
+                  -0.17,
+                  1.8,
+                  0.06
+                ]
+              }
+            ],
+            [
+              0.64,
+              {
+                "space": "object",
+                "at": [
+                  -0.17,
+                  1.8,
+                  0.06
+                ]
+              }
+            ],
+            [
+              0.82,
+              {
+                "space": "root",
+                "at": [
+                  0.17,
+                  1.25,
+                  0.2
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  0.17,
+                  0.9,
+                  0.18
+                ]
+              }
+            ]
+          ],
+          "window": [
+            0.08,
+            0.2,
+            0.64,
+            0.82
+          ]
+        }
+      }
+    },
+    "water_planter_hold": {
+      "item": {
+        "rotation": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.25,
+            0,
+            0,
+            -45
+          ],
+          [
+            0.75,
+            0,
+            0,
+            -45
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "water": {
+        "from": {
+          "space": "item",
+          "at": [
+            -0.5,
+            0.065,
+            0
+          ],
+          "marker": "model"
+        },
+        "to": {
+          "space": "object",
+          "at": [
+            0,
+            0.31,
+            0
+          ]
+        },
+        "window": [
+          0.25,
+          0.75
+        ]
+      }
+    },
+    "push_bicycle": {
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            0.27,
+            1.1,
+            0.28
+          ],
+          "pole": [
+            0.2,
+            -1,
+            0
+          ]
+        }
+      }
+    },
+    "wallet_takeout": {
+      "item": {
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "item_visible": [
+        0.16,
+        0.9
+      ],
+      "playback": "once",
+      "stationary": true
+    },
+    "phone_booth_call": {
+      "stationary": true,
+      "item": {
+        "anchor": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  0.12,
+                  1.3,
+                  -0.38
+                ]
+              }
+            ],
+            [
+              0.18,
+              {
+                "space": "object",
+                "at": [
+                  0.12,
+                  1.3,
+                  -0.38
+                ]
+              }
+            ],
+            [
+              0.35,
+              {
+                "space": "head",
+                "at": [
+                  -0.21,
+                  -0.025,
+                  0.01
+                ]
+              }
+            ],
+            [
+              0.7,
+              {
+                "space": "head",
+                "at": [
+                  -0.21,
+                  -0.025,
+                  0.01
+                ]
+              }
+            ],
+            [
+              0.9,
+              {
+                "space": "object",
+                "at": [
+                  0.12,
+                  1.3,
+                  -0.38
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "object",
+                "at": [
+                  0.12,
+                  1.3,
+                  -0.38
+                ]
+              }
+            ]
+          ]
+        }
+      },
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "window": [
+            0.08,
+            0.18,
+            0.9,
+            1
+          ]
+        }
+      },
+      "playback": "once",
+      "cord": {
+        "from": {
+          "space": "object",
+          "at": [
+            0.1,
+            1.12,
+            -0.37
+          ]
+        },
+        "to": {
+          "space": "item",
+          "at": [
+            0,
+            -0.13,
+            0
+          ]
+        },
+        "segments": 16,
+        "sag": 0.18,
+        "width": 0.005
+      }
+    },
+    "cafe_sit_drink": {
+      "item": {
+        "anchor": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  -0.17,
+                  0.86,
+                  -0.24
+                ]
+              }
+            ],
+            [
+              0.12,
+              {
+                "space": "object",
+                "at": [
+                  -0.17,
+                  0.86,
+                  -0.24
+                ]
+              }
+            ],
+            [
+              0.35,
+              {
+                "space": "head",
+                "at": [
+                  -0.08,
+                  -0.1,
+                  0.26
+                ]
+              }
+            ],
+            [
+              0.62,
+              {
+                "space": "head",
+                "at": [
+                  -0.06,
+                  -0.09,
+                  0.24
+                ]
+              }
+            ],
+            [
+              0.87,
+              {
+                "space": "object",
+                "at": [
+                  -0.17,
+                  0.86,
+                  -0.24
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "object",
+                "at": [
+                  -0.17,
+                  0.86,
+                  -0.24
+                ]
+              }
+            ]
+          ]
+        },
+        "rotation": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.25,
+            -20,
+            0,
+            0
+          ],
+          [
+            0.42,
+            -65,
+            0,
+            0
+          ],
+          [
+            0.67,
+            -65,
+            0,
+            0
+          ],
+          [
+            0.9,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "at": [
+            -0.055,
+            0,
+            0
+          ],
+          "window": [
+            0,
+            0.1,
+            0.88,
+            1
+          ]
+        },
+        "handLeft": {
+          "space": "root",
+          "at": [
+            0.16,
+            0.67,
+            0.27
+          ],
+          "pole": [
+            0.3,
+            -1,
+            0
+          ]
+        }
+      },
+      "stationary": true,
+      "props": [
+        {
+          "type": "cafe_chair",
+          "space": "object",
+          "at": [
+            0,
+            0,
+            -0.7
+          ]
+        }
+      ],
+      "body": {
+        "hip": {
+          "space": "root",
+          "at": [
+            0,
+            0.5,
+            0.035
+          ]
+        }
+      }
+    },
+    "bike_scan_unlock": {
+      "stationary": true,
+      "item": {
+        "rotation": [
+          -45,
+          0,
+          0
+        ]
+      },
+      "playback": "once"
+    },
+    "basketball_dribble": {
+      "stationary": true,
+      "duration": 3.29,
+      "props": [
+        {
+          "type": "held_basketball",
+          "space": "root",
+          "at": [
+            -0.28,
+            0,
+            0.26
+          ],
+          "bounce": {
+            "floor": 0.124,
+            "height": 0.83,
+            "cycles": 4,
+            "phase": 0.5
+          }
+        }
+      ],
+      "hands": {
+        "handRight": {
+          "space": "root",
+          "at": [
+            -0.28,
+            0,
+            0.26
+          ],
+          "bounce": {
+            "floor": 0.248,
+            "height": 0.83,
+            "cycles": 4,
+            "phase": 0.5,
+            "minimum": 0.768
+          },
+          "pole": [
+            -0.3,
+            -1,
+            -0.1
+          ]
+        }
+      },
+      "tracks_playback": "loop"
+    },
+    "basketball_shoot": {
+      "stationary": true,
+      "duration": 5,
+      "props": [
+        {
+          "type": "held_basketball",
+          "arcs": [
+            [
+              0,
+              0.43,
+              {
+                "space": "root",
+                "at": [
+                  [
+                    0,
+                    0,
+                    1.0,
+                    0.35
+                  ],
+                  [
+                    0.2,
+                    0,
+                    1.1,
+                    0.36
+                  ],
+                  [
+                    0.36,
+                    0,
+                    1.6,
+                    0.39
+                  ],
+                  [
+                    0.43,
+                    0,
+                    1.75,
+                    0.37
+                  ]
+                ]
+              },
+              {
+                "space": "root",
+                "at": [
+                  [
+                    0,
+                    0,
+                    1.0,
+                    0.35
+                  ],
+                  [
+                    0.2,
+                    0,
+                    1.1,
+                    0.36
+                  ],
+                  [
+                    0.36,
+                    0,
+                    1.6,
+                    0.39
+                  ],
+                  [
+                    0.43,
+                    0,
+                    1.75,
+                    0.37
+                  ]
+                ]
+              },
+              0
+            ],
+            [
+              0.43,
+              0.7,
+              {
+                "space": "root",
+                "at": [
+                  0,
+                  1.75,
+                  0.37
+                ]
+              },
+              {
+                "space": "root",
+                "at": [
+                  0,
+                  3.05,
+                  3.15
+                ]
+              },
+              1.05
+            ],
+            [
+              0.7,
+              0.9,
+              {
+                "space": "root",
+                "at": [
+                  0,
+                  3.05,
+                  3.15
+                ]
+              },
+              {
+                "space": "root",
+                "at": [
+                  0,
+                  0.12,
+                  3.4
+                ]
+              },
+              0.23
+            ],
+            [
+              0.9,
+              1,
+              {
+                "space": "root",
+                "at": [
+                  0,
+                  0.12,
+                  3.4
+                ]
+              },
+              {
+                "space": "root",
+                "at": [
+                  0,
+                  0.12,
+                  3.4
+                ]
+              },
+              0
+            ]
+          ]
+        }
+      ],
+      "hands": {
+        "handLeft": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              0.12,
+              1.0,
+              0.35
+            ],
+            [
+              0.2,
+              0.12,
+              1.1,
+              0.36
+            ],
+            [
+              0.36,
+              0.12,
+              1.6,
+              0.39
+            ],
+            [
+              0.43,
+              0.1,
+              1.72,
+              0.36
+            ],
+            [
+              0.58,
+              0.08,
+              1.72,
+              0.36
+            ],
+            [
+              0.85,
+              0.2,
+              0.88,
+              0.2
+            ],
+            [
+              1,
+              0.2,
+              0.88,
+              0.2
+            ]
+          ],
+          "pole": [
+            0.35,
+            -1,
+            -0.15
+          ]
+        },
+        "handRight": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              -0.12,
+              1.0,
+              0.35
+            ],
+            [
+              0.2,
+              -0.12,
+              1.1,
+              0.36
+            ],
+            [
+              0.36,
+              -0.12,
+              1.6,
+              0.39
+            ],
+            [
+              0.43,
+              -0.1,
+              1.72,
+              0.36
+            ],
+            [
+              0.58,
+              -0.08,
+              1.72,
+              0.36
+            ],
+            [
+              0.85,
+              -0.2,
+              0.88,
+              0.2
+            ],
+            [
+              1,
+              -0.2,
+              0.88,
+              0.2
+            ]
+          ],
+          "pole": [
+            -0.35,
+            -1,
+            -0.15
+          ]
+        }
+      },
+      "base": "stand_idle",
+      "body": {
+        "hip": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              0,
+              0.76,
+              0
+            ],
+            [
+              0.18,
+              0,
+              0.66,
+              -0.05
+            ],
+            [
+              0.38,
+              0,
+              0.78,
+              0
+            ],
+            [
+              0.6,
+              0,
+              0.78,
+              0
+            ],
+            [
+              0.85,
+              0,
+              0.76,
+              0
+            ],
+            [
+              1,
+              0,
+              0.76,
+              0
+            ]
+          ]
+        },
+        "direction": [
+          0,
+          1,
+          0.04
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "root",
+          "at": [
+            0.16,
+            0.055,
+            0.06
+          ]
+        },
+        "footRight": {
+          "space": "root",
+          "at": [
+            -0.16,
+            0.055,
+            -0.05
+          ]
+        }
+      },
+      "playback": "once",
+      "head_direction": [
+        0,
+        1,
+        0
+      ]
+    },
+    "football_juggle": {
+      "stationary": true,
+      "duration": 1.67,
+      "props": [
+        {
+          "type": "held_football",
+          "space": "root",
+          "at": [
+            -0.17,
+            0,
+            0.42
+          ],
+          "bounce": {
+            "floor": 0.3,
+            "height": 0.38,
+            "cycles": 3
+          }
+        }
+      ],
+      "base": "stand_idle",
+      "body": {
+        "hip": {
+          "space": "root",
+          "at": [
+            0.055,
+            0.73,
+            0
+          ]
+        },
+        "direction": [
+          0,
+          1,
+          -0.055
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "root",
+          "at": [
+            0.15,
+            0.055,
+            0
+          ]
+        },
+        "footRight": {
+          "space": "root",
+          "at": [
+            [
+              0.0,
+              -0.17,
+              0.20500000000000002,
+              0.305
+            ],
+            [
+              0.041666666666666664,
+              -0.17,
+              0.1,
+              0.25625
+            ],
+            [
+              0.08333333333333333,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.125,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.16666666666666666,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.20833333333333334,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.25,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.2916666666666667,
+              -0.17,
+              0.09999999999999998,
+              0.25625
+            ],
+            [
+              0.3333333333333333,
+              -0.17,
+              0.20500000000000002,
+              0.305
+            ],
+            [
+              0.375,
+              -0.17,
+              0.10000000000000003,
+              0.25625
+            ],
+            [
+              0.4166666666666667,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.4583333333333333,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.5,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.5416666666666666,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.5833333333333334,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.625,
+              -0.17,
+              0.09999999999999981,
+              0.2562499999999999
+            ],
+            [
+              0.6666666666666666,
+              -0.17,
+              0.20500000000000002,
+              0.305
+            ],
+            [
+              0.7083333333333334,
+              -0.17,
+              0.09999999999999995,
+              0.25625
+            ],
+            [
+              0.75,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.7916666666666666,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.8333333333333334,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.875,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.9166666666666666,
+              -0.17,
+              0.065,
+              0.24
+            ],
+            [
+              0.9583333333333334,
+              -0.17,
+              0.09999999999999977,
+              0.25624999999999987
+            ],
+            [
+              1.0,
+              -0.17,
+              0.20500000000000002,
+              0.305
+            ]
+          ],
+          "flat": false
+        }
+      },
+      "hands": {
+        "handLeft": {
+          "space": "root",
+          "at": [
+            0.36,
+            1.05,
+            0.1
+          ]
+        },
+        "handRight": {
+          "space": "root",
+          "at": [
+            -0.3,
+            1.05,
+            0.1
+          ]
+        }
+      }
+    },
+    "badminton_swing": {
+      "stationary": true,
+      "item": {
+        "follow_forearm": true
+      },
+      "duration": 2.6,
+      "playback": "once"
+    },
+    "table_tennis_play": {
+      "stationary": true,
+      "duration": 2,
+      "item": {
+        "follow_hand": true
+      },
+      "hands": {
+        "handRight": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              -0.24,
+              1.04,
+              0.4
+            ],
+            [
+              0.07,
+              -0.04,
+              1.1,
+              0.48
+            ],
+            [
+              0.2,
+              -0.27,
+              1.0,
+              0.22
+            ],
+            [
+              0.65,
+              -0.27,
+              1,
+              0.22
+            ],
+            [
+              0.87,
+              -0.44,
+              0.98,
+              0.1
+            ],
+            [
+              1,
+              -0.24,
+              1.04,
+              0.4
+            ]
+          ],
+          "pole": [
+            -0.5,
+            -1,
+            -0.1
+          ]
+        },
+        "handLeft": {
+          "space": "root",
+          "at": [
+            0.24,
+            1.05,
+            0.26
+          ],
+          "pole": [
+            0.5,
+            -1,
+            0
+          ]
+        }
+      },
+      "props": [
+        {
+          "type": "held_table_tennis_ball",
+          "arcs": [
+            [
+              0,
+              0.3,
+              {
+                "space": "object",
+                "at": [
+                  -0.24,
+                  1.18,
+                  -1.376
+                ]
+              },
+              {
+                "space": "object",
+                "at": [
+                  0.16,
+                  0.79,
+                  0.8
+                ]
+              },
+              0.441
+            ],
+            [
+              0.3,
+              0.5,
+              {
+                "space": "object",
+                "at": [
+                  0.16,
+                  0.79,
+                  0.8
+                ]
+              },
+              {
+                "space": "object",
+                "at": [
+                  0.24,
+                  1.18,
+                  1.376
+                ]
+              },
+              0.196
+            ],
+            [
+              0.5,
+              0.8,
+              {
+                "space": "object",
+                "at": [
+                  0.24,
+                  1.18,
+                  1.376
+                ]
+              },
+              {
+                "space": "object",
+                "at": [
+                  -0.16,
+                  0.79,
+                  -0.8
+                ]
+              },
+              0.441
+            ],
+            [
+              0.8,
+              1,
+              {
+                "space": "object",
+                "at": [
+                  -0.16,
+                  0.79,
+                  -0.8
+                ]
+              },
+              {
+                "space": "object",
+                "at": [
+                  -0.24,
+                  1.18,
+                  -1.376
+                ]
+              },
+              0.196
+            ]
+          ]
+        }
+      ],
+      "base": "stand_idle"
+    },
+    "distribute_flyer": {
+      "stationary": true,
+      "duration": 4,
+      "item": {
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "props": [
+        {
+          "type": "held_flyer",
+          "keys": [
+            [
+              0,
+              {
+                "space": "handLeft",
+                "at": [
+                  -0.04,
+                  0,
+                  0
+                ]
+              }
+            ],
+            [
+              0.55,
+              {
+                "space": "handLeft",
+                "at": [
+                  -0.04,
+                  0,
+                  0
+                ]
+              }
+            ],
+            [
+              0.550001,
+              {
+                "space": "partner",
+                "joint": "handRight",
+                "at": [
+                  0.04,
+                  0,
+                  0
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "partner",
+                "joint": "handRight",
+                "at": [
+                  0.04,
+                  0,
+                  0
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "playback": "once",
+      "hands": {
+        "handLeft": {
+          "space": "root",
+          "at": [
+            -0.1,
+            1.02,
+            0.46
+          ],
+          "window": [
+            0.38,
+            0.45,
+            0.58,
+            0.65
+          ]
+        }
+      }
+    },
+    "rummage_bin": {
+      "stationary": true,
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            -0.22,
+            0.84,
+            0.2
+          ],
+          "window": [
+            0,
+            0.2,
+            0.75,
+            1
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              0.12,
+              1.1,
+              0.25
+            ],
+            [
+              0.25,
+              0.1,
+              0.84,
+              0.08
+            ],
+            [
+              0.4,
+              -0.1,
+              0.64,
+              0.06
+            ],
+            [
+              0.55,
+              0.13,
+              0.7,
+              0.05
+            ],
+            [
+              0.7,
+              0.13,
+              0.92,
+              0.15
+            ],
+            [
+              1,
+              0.15,
+              1.1,
+              0.35
+            ]
+          ],
+          "window": [
+            0.1,
+            0.25,
+            0.7,
+            0.9
+          ]
+        }
+      },
+      "playback": "once"
+    },
+    "air_walker": {
+      "stationary": true,
+      "duration": 4,
+      "body": {
+        "hip": {
+          "space": "object",
+          "at": [
+            0,
+            0.94,
+            0.08
+          ]
+        },
+        "direction": [
+          0,
+          1,
+          0
+        ]
+      },
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            -0.3,
+            1.4,
+            0
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            0.3,
+            1.4,
+            0
+          ]
+        }
+      },
+      "feet": {
+        "footLeft": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -0.32,
+              0.2999999999999998,
+              0.08
+            ],
+            [
+              0.0625,
+              -0.32,
+              0.3056810157012602,
+              -0.13735341496801248
+            ],
+            [
+              0.125,
+              -0.32,
+              0.3205611460024891,
+              -0.2263001557236336
+            ],
+            [
+              0.1875,
+              -0.32,
+              0.3056810157012602,
+              -0.13735341496801248
+            ],
+            [
+              0.25,
+              -0.32,
+              0.2999999999999998,
+              0.07999999999999996
+            ],
+            [
+              0.3125,
+              -0.32,
+              0.33706993713614514,
+              0.29424425476165567
+            ],
+            [
+              0.375,
+              -0.32,
+              0.3646631229332089,
+              0.3801020270737646
+            ],
+            [
+              0.4375,
+              -0.32,
+              0.33706993713614514,
+              0.2942442547616557
+            ],
+            [
+              0.5,
+              -0.32,
+              0.2999999999999998,
+              0.08000000000000007
+            ],
+            [
+              0.5625,
+              -0.32,
+              0.3056810157012602,
+              -0.13735341496801243
+            ],
+            [
+              0.625,
+              -0.32,
+              0.3205611460024891,
+              -0.2263001557236336
+            ],
+            [
+              0.6875,
+              -0.32,
+              0.3056810157012604,
+              -0.13735341496801273
+            ],
+            [
+              0.75,
+              -0.32,
+              0.2999999999999998,
+              0.07999999999999989
+            ],
+            [
+              0.8125,
+              -0.32,
+              0.3370699371361452,
+              0.29424425476165583
+            ],
+            [
+              0.875,
+              -0.32,
+              0.3646631229332089,
+              0.3801020270737646
+            ],
+            [
+              0.9375,
+              -0.32,
+              0.3370699371361454,
+              0.29424425476165594
+            ],
+            [
+              1.0,
+              -0.32,
+              0.2999999999999998,
+              0.08000000000000015
+            ]
+          ]
+        },
+        "footRight": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              0.32,
+              0.2999999999999998,
+              0.08
+            ],
+            [
+              0.0625,
+              0.32,
+              0.33706993713614514,
+              0.2942442547616557
+            ],
+            [
+              0.125,
+              0.32,
+              0.3646631229332089,
+              0.3801020270737646
+            ],
+            [
+              0.1875,
+              0.32,
+              0.33706993713614514,
+              0.2942442547616557
+            ],
+            [
+              0.25,
+              0.32,
+              0.2999999999999998,
+              0.08000000000000004
+            ],
+            [
+              0.3125,
+              0.32,
+              0.3056810157012602,
+              -0.13735341496801245
+            ],
+            [
+              0.375,
+              0.32,
+              0.3205611460024891,
+              -0.2263001557236336
+            ],
+            [
+              0.4375,
+              0.32,
+              0.3056810157012602,
+              -0.1373534149680125
+            ],
+            [
+              0.5,
+              0.32,
+              0.2999999999999998,
+              0.07999999999999993
+            ],
+            [
+              0.5625,
+              0.32,
+              0.33706993713614514,
+              0.2942442547616556
+            ],
+            [
+              0.625,
+              0.32,
+              0.3646631229332089,
+              0.3801020270737646
+            ],
+            [
+              0.6875,
+              0.32,
+              0.3370699371361454,
+              0.29424425476165594
+            ],
+            [
+              0.75,
+              0.32,
+              0.2999999999999998,
+              0.08000000000000011
+            ],
+            [
+              0.8125,
+              0.32,
+              0.30568101570126016,
+              -0.1373534149680126
+            ],
+            [
+              0.875,
+              0.32,
+              0.3205611460024891,
+              -0.2263001557236336
+            ],
+            [
+              0.9375,
+              0.32,
+              0.3056810157012604,
+              -0.13735341496801276
+            ],
+            [
+              1.0,
+              0.32,
+              0.2999999999999998,
+              0.07999999999999985
+            ]
+          ]
+        }
+      },
+      "base": "stand_idle",
+      "head_direction": [
+        0,
+        1,
+        0
+      ]
+    },
+    "swing_seated": {
+      "stationary": true,
+      "duration": 4,
+      "body": {
+        "hip": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -0.8,
+              0.5899999999999999,
+              0.0
+            ],
+            [
+              0.0625,
+              -0.8,
+              0.5975720584144231,
+              -0.17430530329668345
+            ],
+            [
+              0.125,
+              -0.8,
+              0.6158134313169765,
+              -0.32109758743704375
+            ],
+            [
+              0.1875,
+              -0.8,
+              0.6339994578043184,
+              -0.41826052656960894
+            ],
+            [
+              0.25,
+              -0.8,
+              0.6415161697816769,
+              -0.4521516192311687
+            ],
+            [
+              0.3125,
+              -0.8,
+              0.6339994578043184,
+              -0.41826052656960894
+            ],
+            [
+              0.375,
+              -0.8,
+              0.6158134313169765,
+              -0.32109758743704375
+            ],
+            [
+              0.4375,
+              -0.8,
+              0.5975720584144231,
+              -0.1743053032966835
+            ],
+            [
+              0.5,
+              -0.8,
+              0.5899999999999999,
+              -5.585057247438932e-17
+            ],
+            [
+              0.5625,
+              -0.8,
+              0.5975720584144226,
+              0.17430530329668342
+            ],
+            [
+              0.625,
+              -0.8,
+              0.6158134313169765,
+              0.3210975874370437
+            ],
+            [
+              0.6875,
+              -0.8,
+              0.6339994578043182,
+              0.4182605265696088
+            ],
+            [
+              0.75,
+              -0.8,
+              0.6415161697816769,
+              0.4521516192311687
+            ],
+            [
+              0.8125,
+              -0.8,
+              0.6339994578043182,
+              0.4182605265696089
+            ],
+            [
+              0.875,
+              -0.8,
+              0.6158134313169765,
+              0.32109758743704375
+            ],
+            [
+              0.9375,
+              -0.8,
+              0.5975720584144231,
+              0.17430530329668373
+            ],
+            [
+              1.0,
+              -0.8,
+              0.5899999999999999,
+              1.1170114494877863e-16
+            ]
+          ]
+        },
+        "direction": [
+          [
+            0.0,
+            0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0625,
+            0,
+            0.9962328067589935,
+            0.08671905636650917
+          ],
+          [
+            0.125,
+            0,
+            0.9871574968572255,
+            0.15975004350101676
+          ],
+          [
+            0.1875,
+            0,
+            0.9781097224854136,
+            0.20808981421373576
+          ],
+          [
+            0.25,
+            0,
+            0.9743700647852352,
+            0.224951054343865
+          ],
+          [
+            0.3125,
+            0,
+            0.9781097224854136,
+            0.20808981421373576
+          ],
+          [
+            0.375,
+            0,
+            0.9871574968572255,
+            0.15975004350101676
+          ],
+          [
+            0.4375,
+            0,
+            0.9962328067589935,
+            0.0867190563665092
+          ],
+          [
+            0.5,
+            0,
+            1.0,
+            2.77863544648703e-17
+          ],
+          [
+            0.5625,
+            0,
+            0.9962328067589936,
+            -0.08671905636650916
+          ],
+          [
+            0.625,
+            0,
+            0.9871574968572255,
+            -0.15975004350101674
+          ],
+          [
+            0.6875,
+            0,
+            0.9781097224854137,
+            -0.2080898142137357
+          ],
+          [
+            0.75,
+            0,
+            0.9743700647852352,
+            -0.224951054343865
+          ],
+          [
+            0.8125,
+            0,
+            0.9781097224854137,
+            -0.20808981421373574
+          ],
+          [
+            0.875,
+            0,
+            0.9871574968572255,
+            -0.15975004350101676
+          ],
+          [
+            0.9375,
+            0,
+            0.9962328067589935,
+            -0.08671905636650931
+          ],
+          [
+            1.0,
+            0,
+            1.0,
+            -5.55727089297406e-17
+          ]
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -0.65,
+              0.20000000000000018,
+              0.56
+            ],
+            [
+              0.0625,
+              -0.65,
+              0.16113870172425032,
+              0.34218126580760566
+            ],
+            [
+              0.125,
+              -0.65,
+              0.1460409536267496,
+              0.14049492016457177
+            ],
+            [
+              0.1875,
+              -0.65,
+              0.1488520990623366,
+              -0.01205444318663712
+            ],
+            [
+              0.25,
+              -0.65,
+              0.1580343595172575,
+              -0.09167230062406778
+            ],
+            [
+              0.3125,
+              -0.65,
+              0.16477860393104185,
+              -0.08691572035271383
+            ],
+            [
+              0.375,
+              -0.65,
+              0.1686330214376326,
+              0.0008897681391953349
+            ],
+            [
+              0.4375,
+              -0.65,
+              0.1771622939753924,
+              0.15810144585142433
+            ],
+            [
+              0.5,
+              -0.65,
+              0.20000000000000018,
+              0.35999999999999993
+            ],
+            [
+              0.5625,
+              -0.65,
+              0.24092023358143877,
+              0.5743529164106684
+            ],
+            [
+              0.625,
+              -0.65,
+              0.293010993647685,
+              0.7676899769440757
+            ],
+            [
+              0.6875,
+              -0.65,
+              0.34029472813897305,
+              0.9119153878732176
+            ],
+            [
+              0.75,
+              -0.65,
+              0.3649893295136133,
+              0.9880927602264842
+            ],
+            [
+              0.8125,
+              -0.65,
+              0.35622123300767833,
+              0.9867766650392944
+            ],
+            [
+              0.875,
+              -0.65,
+              0.315603061458568,
+              0.9072951289694522
+            ],
+            [
+              0.9375,
+              -0.65,
+              0.2569438258325809,
+              0.7584327363668499
+            ],
+            [
+              1.0,
+              -0.65,
+              0.2000000000000002,
+              0.5600000000000002
+            ]
+          ],
+          "flat": false
+        },
+        "footRight": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -0.95,
+              0.20000000000000018,
+              0.56
+            ],
+            [
+              0.0625,
+              -0.95,
+              0.16113870172425032,
+              0.34218126580760566
+            ],
+            [
+              0.125,
+              -0.95,
+              0.1460409536267496,
+              0.14049492016457177
+            ],
+            [
+              0.1875,
+              -0.95,
+              0.1488520990623366,
+              -0.01205444318663712
+            ],
+            [
+              0.25,
+              -0.95,
+              0.1580343595172575,
+              -0.09167230062406778
+            ],
+            [
+              0.3125,
+              -0.95,
+              0.16477860393104185,
+              -0.08691572035271383
+            ],
+            [
+              0.375,
+              -0.95,
+              0.1686330214376326,
+              0.0008897681391953349
+            ],
+            [
+              0.4375,
+              -0.95,
+              0.1771622939753924,
+              0.15810144585142433
+            ],
+            [
+              0.5,
+              -0.95,
+              0.20000000000000018,
+              0.35999999999999993
+            ],
+            [
+              0.5625,
+              -0.95,
+              0.24092023358143877,
+              0.5743529164106684
+            ],
+            [
+              0.625,
+              -0.95,
+              0.293010993647685,
+              0.7676899769440757
+            ],
+            [
+              0.6875,
+              -0.95,
+              0.34029472813897305,
+              0.9119153878732176
+            ],
+            [
+              0.75,
+              -0.95,
+              0.3649893295136133,
+              0.9880927602264842
+            ],
+            [
+              0.8125,
+              -0.95,
+              0.35622123300767833,
+              0.9867766650392944
+            ],
+            [
+              0.875,
+              -0.95,
+              0.315603061458568,
+              0.9072951289694522
+            ],
+            [
+              0.9375,
+              -0.95,
+              0.2569438258325809,
+              0.7584327363668499
+            ],
+            [
+              1.0,
+              -0.95,
+              0.2000000000000002,
+              0.5600000000000002
+            ]
+          ],
+          "flat": false
+        }
+      },
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -0.57,
+              1.1,
+              0.0
+            ],
+            [
+              0.0625,
+              -0.57,
+              1.1056507898615098,
+              -0.13007858454976376
+            ],
+            [
+              0.125,
+              -0.57,
+              1.1192637547141617,
+              -0.23962506525152516
+            ],
+            [
+              0.1875,
+              -0.57,
+              1.1328354162718797,
+              -0.31213472132060366
+            ],
+            [
+              0.25,
+              -0.57,
+              1.1384449028221473,
+              -0.3374265815157975
+            ],
+            [
+              0.3125,
+              -0.57,
+              1.1328354162718797,
+              -0.31213472132060366
+            ],
+            [
+              0.375,
+              -0.57,
+              1.1192637547141617,
+              -0.23962506525152516
+            ],
+            [
+              0.4375,
+              -0.57,
+              1.1056507898615098,
+              -0.1300785845497638
+            ],
+            [
+              0.5,
+              -0.57,
+              1.1,
+              -4.167953169730545e-17
+            ],
+            [
+              0.5625,
+              -0.57,
+              1.1056507898615098,
+              0.13007858454976373
+            ],
+            [
+              0.625,
+              -0.57,
+              1.1192637547141617,
+              0.2396250652515251
+            ],
+            [
+              0.6875,
+              -0.57,
+              1.1328354162718794,
+              0.31213472132060355
+            ],
+            [
+              0.75,
+              -0.57,
+              1.1384449028221473,
+              0.3374265815157975
+            ],
+            [
+              0.8125,
+              -0.57,
+              1.1328354162718794,
+              0.3121347213206036
+            ],
+            [
+              0.875,
+              -0.57,
+              1.1192637547141617,
+              0.23962506525152516
+            ],
+            [
+              0.9375,
+              -0.57,
+              1.1056507898615098,
+              0.13007858454976395
+            ],
+            [
+              1.0,
+              -0.57,
+              1.1,
+              8.33590633946109e-17
+            ]
+          ],
+          "pole": [
+            0,
+            -1,
+            0
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -1.03,
+              1.1,
+              0.0
+            ],
+            [
+              0.0625,
+              -1.03,
+              1.1056507898615098,
+              -0.13007858454976376
+            ],
+            [
+              0.125,
+              -1.03,
+              1.1192637547141617,
+              -0.23962506525152516
+            ],
+            [
+              0.1875,
+              -1.03,
+              1.1328354162718797,
+              -0.31213472132060366
+            ],
+            [
+              0.25,
+              -1.03,
+              1.1384449028221473,
+              -0.3374265815157975
+            ],
+            [
+              0.3125,
+              -1.03,
+              1.1328354162718797,
+              -0.31213472132060366
+            ],
+            [
+              0.375,
+              -1.03,
+              1.1192637547141617,
+              -0.23962506525152516
+            ],
+            [
+              0.4375,
+              -1.03,
+              1.1056507898615098,
+              -0.1300785845497638
+            ],
+            [
+              0.5,
+              -1.03,
+              1.1,
+              -4.167953169730545e-17
+            ],
+            [
+              0.5625,
+              -1.03,
+              1.1056507898615098,
+              0.13007858454976373
+            ],
+            [
+              0.625,
+              -1.03,
+              1.1192637547141617,
+              0.2396250652515251
+            ],
+            [
+              0.6875,
+              -1.03,
+              1.1328354162718794,
+              0.31213472132060355
+            ],
+            [
+              0.75,
+              -1.03,
+              1.1384449028221473,
+              0.3374265815157975
+            ],
+            [
+              0.8125,
+              -1.03,
+              1.1328354162718794,
+              0.3121347213206036
+            ],
+            [
+              0.875,
+              -1.03,
+              1.1192637547141617,
+              0.23962506525152516
+            ],
+            [
+              0.9375,
+              -1.03,
+              1.1056507898615098,
+              0.13007858454976395
+            ],
+            [
+              1.0,
+              -1.03,
+              1.1,
+              8.33590633946109e-17
+            ]
+          ],
+          "pole": [
+            0,
+            -1,
+            0
+          ]
+        }
+      },
+      "base": "stand_idle",
+      "head_direction": [
+        0,
+        1,
+        0
+      ]
+    },
+    "seesaw_seated": {
+      "stationary": true,
+      "duration": 4,
+      "body": {
+        "hip": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -1.5,
+              0.9,
+              0
+            ],
+            [
+              0.0625,
+              -1.509608818717904,
+              0.8195751211682609,
+              0
+            ],
+            [
+              0.125,
+              -1.514380608776973,
+              0.7510730030340951,
+              0
+            ],
+            [
+              0.1875,
+              -1.51583784912859,
+              0.7052114091079902,
+              0
+            ],
+            [
+              0.25,
+              -1.51602018532357,
+              0.6890993236830474,
+              0
+            ],
+            [
+              0.3125,
+              -1.51583784912859,
+              0.7052114091079902,
+              0
+            ],
+            [
+              0.375,
+              -1.514380608776973,
+              0.7510730030340951,
+              0
+            ],
+            [
+              0.4375,
+              -1.509608818717904,
+              0.8195751211682609,
+              0
+            ],
+            [
+              0.5,
+              -1.5,
+              0.9,
+              0
+            ],
+            [
+              0.5625,
+              -1.486109622024186,
+              0.9797969168072456,
+              0
+            ],
+            [
+              0.625,
+              -1.4710096285615588,
+              1.0467842317755562,
+              0
+            ],
+            [
+              0.6875,
+              -1.4592360505798716,
+              1.0911327628492509,
+              0
+            ],
+            [
+              0.75,
+              -1.4547840209011413,
+              1.1066186265632436,
+              0
+            ],
+            [
+              0.8125,
+              -1.4592360505798716,
+              1.0911327628492509,
+              0
+            ],
+            [
+              0.875,
+              -1.4710096285615588,
+              1.0467842317755562,
+              0
+            ],
+            [
+              0.9375,
+              -1.486109622024186,
+              0.9797969168072456,
+              0
+            ],
+            [
+              1.0,
+              -1.5,
+              0.9,
+              0
+            ]
+          ]
+        },
+        "direction": [
+          0,
+          1,
+          0
+        ]
+      },
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -1.1,
+              1.13,
+              0.035
+            ],
+            [
+              0.0625,
+              -1.122463364284614,
+              1.070609774377019,
+              0.035
+            ],
+            [
+              0.125,
+              -1.1389997713353475,
+              1.019381085062244,
+              0.035
+            ],
+            [
+              0.1875,
+              -1.1487486329542917,
+              0.9847565885844735,
+              0.035
+            ],
+            [
+              0.25,
+              -1.1519227710477569,
+              0.9725302198776345,
+              0.035
+            ],
+            [
+              0.3125,
+              -1.1487486329542917,
+              0.9847565885844735,
+              0.035
+            ],
+            [
+              0.375,
+              -1.1389997713353475,
+              1.019381085062244,
+              0.035
+            ],
+            [
+              0.4375,
+              -1.122463364284614,
+              1.070609774377019,
+              0.035
+            ],
+            [
+              0.5,
+              -1.1,
+              1.13,
+              0.035
+            ],
+            [
+              0.5625,
+              -1.0743968255929188,
+              1.1881057578456078,
+              0.035
+            ],
+            [
+              0.625,
+              -1.0502864027129093,
+              1.2362359861393153,
+              0.035
+            ],
+            [
+              0.6875,
+              -1.0329722268319135,
+              1.2677655813280646,
+              0.035
+            ],
+            [
+              0.75,
+              -1.026666980183698,
+              1.2787110419897787,
+              0.035
+            ],
+            [
+              0.8125,
+              -1.0329722268319135,
+              1.2677655813280646,
+              0.035
+            ],
+            [
+              0.875,
+              -1.0502864027129093,
+              1.2362359861393153,
+              0.035
+            ],
+            [
+              0.9375,
+              -1.0743968255929186,
+              1.1881057578456078,
+              0.035
+            ],
+            [
+              1.0,
+              -1.1,
+              1.13,
+              0.035
+            ]
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -1.1,
+              1.13,
+              -0.035
+            ],
+            [
+              0.0625,
+              -1.122463364284614,
+              1.070609774377019,
+              -0.035
+            ],
+            [
+              0.125,
+              -1.1389997713353475,
+              1.019381085062244,
+              -0.035
+            ],
+            [
+              0.1875,
+              -1.1487486329542917,
+              0.9847565885844735,
+              -0.035
+            ],
+            [
+              0.25,
+              -1.1519227710477569,
+              0.9725302198776345,
+              -0.035
+            ],
+            [
+              0.3125,
+              -1.1487486329542917,
+              0.9847565885844735,
+              -0.035
+            ],
+            [
+              0.375,
+              -1.1389997713353475,
+              1.019381085062244,
+              -0.035
+            ],
+            [
+              0.4375,
+              -1.122463364284614,
+              1.070609774377019,
+              -0.035
+            ],
+            [
+              0.5,
+              -1.1,
+              1.13,
+              -0.035
+            ],
+            [
+              0.5625,
+              -1.0743968255929188,
+              1.1881057578456078,
+              -0.035
+            ],
+            [
+              0.625,
+              -1.0502864027129093,
+              1.2362359861393153,
+              -0.035
+            ],
+            [
+              0.6875,
+              -1.0329722268319135,
+              1.2677655813280646,
+              -0.035
+            ],
+            [
+              0.75,
+              -1.026666980183698,
+              1.2787110419897787,
+              -0.035
+            ],
+            [
+              0.8125,
+              -1.0329722268319135,
+              1.2677655813280646,
+              -0.035
+            ],
+            [
+              0.875,
+              -1.0502864027129093,
+              1.2362359861393153,
+              -0.035
+            ],
+            [
+              0.9375,
+              -1.0743968255929186,
+              1.1881057578456078,
+              -0.035
+            ],
+            [
+              1.0,
+              -1.1,
+              1.13,
+              -0.035
+            ]
+          ]
+        }
+      },
+      "feet": {
+        "footLeft": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -1.25,
+              0.28,
+              0.23
+            ],
+            [
+              0.0625,
+              -1.226853110890673,
+              0.2138117930514778,
+              0.23
+            ],
+            [
+              0.125,
+              -1.2044844350588602,
+              0.15873495637925372,
+              0.23
+            ],
+            [
+              0.1875,
+              -1.1881579443796908,
+              0.1225229159800133,
+              0.23
+            ],
+            [
+              0.25,
+              -1.1821658455429367,
+              0.10992639630329004,
+              0.23
+            ],
+            [
+              0.3125,
+              -1.1881579443796908,
+              0.1225229159800133,
+              0.23
+            ],
+            [
+              0.375,
+              -1.2044844350588602,
+              0.15873495637925372,
+              0.23
+            ],
+            [
+              0.4375,
+              -1.226853110890673,
+              0.2138117930514778,
+              0.23
+            ],
+            [
+              0.5,
+              -1.25,
+              0.28,
+              0.23
+            ],
+            [
+              0.5625,
+              -1.2695789230610688,
+              0.3473299560839649,
+              0.23
+            ],
+            [
+              0.625,
+              -1.2833407627232496,
+              0.4051609803304712,
+              0.23
+            ],
+            [
+              0.6875,
+              -1.2910703053773602,
+              0.44412404409773043,
+              0.23
+            ],
+            [
+              0.75,
+              -1.293504326310989,
+              0.4578591487034537,
+              0.23
+            ],
+            [
+              0.8125,
+              -1.2910703053773602,
+              0.44412404409773043,
+              0.23
+            ],
+            [
+              0.875,
+              -1.2833407627232496,
+              0.4051609803304713,
+              0.23
+            ],
+            [
+              0.9375,
+              -1.2695789230610688,
+              0.347329956083965,
+              0.23
+            ],
+            [
+              1.0,
+              -1.25,
+              0.28,
+              0.23
+            ]
+          ]
+        },
+        "footRight": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -1.25,
+              0.28,
+              -0.23
+            ],
+            [
+              0.0625,
+              -1.226853110890673,
+              0.2138117930514778,
+              -0.23
+            ],
+            [
+              0.125,
+              -1.2044844350588602,
+              0.15873495637925372,
+              -0.23
+            ],
+            [
+              0.1875,
+              -1.1881579443796908,
+              0.1225229159800133,
+              -0.23
+            ],
+            [
+              0.25,
+              -1.1821658455429367,
+              0.10992639630329004,
+              -0.23
+            ],
+            [
+              0.3125,
+              -1.1881579443796908,
+              0.1225229159800133,
+              -0.23
+            ],
+            [
+              0.375,
+              -1.2044844350588602,
+              0.15873495637925372,
+              -0.23
+            ],
+            [
+              0.4375,
+              -1.226853110890673,
+              0.2138117930514778,
+              -0.23
+            ],
+            [
+              0.5,
+              -1.25,
+              0.28,
+              -0.23
+            ],
+            [
+              0.5625,
+              -1.2695789230610688,
+              0.3473299560839649,
+              -0.23
+            ],
+            [
+              0.625,
+              -1.2833407627232496,
+              0.4051609803304712,
+              -0.23
+            ],
+            [
+              0.6875,
+              -1.2910703053773602,
+              0.44412404409773043,
+              -0.23
+            ],
+            [
+              0.75,
+              -1.293504326310989,
+              0.4578591487034537,
+              -0.23
+            ],
+            [
+              0.8125,
+              -1.2910703053773602,
+              0.44412404409773043,
+              -0.23
+            ],
+            [
+              0.875,
+              -1.2833407627232496,
+              0.4051609803304713,
+              -0.23
+            ],
+            [
+              0.9375,
+              -1.2695789230610688,
+              0.347329956083965,
+              -0.23
+            ],
+            [
+              1.0,
+              -1.25,
+              0.28,
+              -0.23
+            ]
+          ]
+        }
+      },
+      "base": "stand_idle",
+      "head_direction": [
+        0,
+        1,
+        0
+      ]
+    },
+    "slide_seated": {
+      "stationary": true,
+      "duration": 4,
+      "body": {
+        "hip": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              0,
+              1.62,
+              -0.67
+            ],
+            [
+              0.18,
+              0,
+              1.62,
+              -0.67
+            ],
+            [
+              0.38,
+              0,
+              1.28,
+              -0.2
+            ],
+            [
+              0.6,
+              0,
+              0.66,
+              0.65
+            ],
+            [
+              0.73,
+              0,
+              0.36,
+              1.23
+            ],
+            [
+              0.92,
+              0,
+              0.78,
+              1.65
+            ],
+            [
+              1,
+              0,
+              0.78,
+              1.65
+            ]
+          ]
+        },
+        "direction": [
+          [
+            0,
+            0,
+            1,
+            0.15
+          ],
+          [
+            0.7,
+            0,
+            1,
+            -0.12
+          ],
+          [
+            0.9,
+            0,
+            1,
+            0.1
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ]
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              0.13,
+              1.22,
+              -0.12
+            ],
+            [
+              0.18,
+              0.13,
+              1.22,
+              -0.12
+            ],
+            [
+              0.38,
+              0.13,
+              0.9,
+              0.35
+            ],
+            [
+              0.6,
+              0.13,
+              0.34,
+              1.15
+            ],
+            [
+              0.73,
+              0.13,
+              0.055,
+              1.65
+            ],
+            [
+              1,
+              0.13,
+              0.055,
+              1.65
+            ]
+          ],
+          "flat": true
+        },
+        "footRight": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              -0.13,
+              1.22,
+              -0.12
+            ],
+            [
+              0.18,
+              -0.13,
+              1.22,
+              -0.12
+            ],
+            [
+              0.38,
+              -0.13,
+              0.9,
+              0.35
+            ],
+            [
+              0.6,
+              -0.13,
+              0.34,
+              1.15
+            ],
+            [
+              0.73,
+              -0.13,
+              0.055,
+              1.65
+            ],
+            [
+              1,
+              -0.13,
+              0.055,
+              1.65
+            ]
+          ],
+          "flat": true
+        }
+      },
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              0.25,
+              1.68,
+              -0.6
+            ],
+            [
+              0.2,
+              0.25,
+              1.68,
+              -0.6
+            ],
+            [
+              0.4,
+              0.25,
+              1.37,
+              -0.1
+            ],
+            [
+              0.6,
+              0.25,
+              0.8,
+              0.65
+            ],
+            [
+              0.73,
+              0.25,
+              0.64,
+              1.2
+            ],
+            [
+              1,
+              0.25,
+              1.03,
+              1.55
+            ]
+          ],
+          "pole": [
+            1,
+            0,
+            0
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              -0.25,
+              1.68,
+              -0.6
+            ],
+            [
+              0.2,
+              -0.25,
+              1.68,
+              -0.6
+            ],
+            [
+              0.4,
+              -0.25,
+              1.37,
+              -0.1
+            ],
+            [
+              0.6,
+              -0.25,
+              0.8,
+              0.65
+            ],
+            [
+              0.73,
+              -0.25,
+              0.64,
+              1.2
+            ],
+            [
+              1,
+              -0.25,
+              1.03,
+              1.55
+            ]
+          ],
+          "pole": [
+            -1,
+            0,
+            0
+          ]
+        }
+      },
+      "head_direction": [
+        0,
+        1,
+        0
+      ],
+      "playback": "once"
+    },
+    "car_enter": {
+      "stationary": true,
+      "duration": 6,
+      "body": {
+        "hip": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              -1.2,
+              0.78,
+              0.1
+            ],
+            [
+              0.18,
+              -1.2,
+              0.78,
+              0.1
+            ],
+            [
+              0.37,
+              -1.09,
+              0.68,
+              -0.1
+            ],
+            [
+              0.54,
+              -0.7,
+              0.67,
+              -0.15
+            ],
+            [
+              0.72,
+              -0.48,
+              0.67,
+              -0.15
+            ],
+            [
+              1,
+              -0.42,
+              0.67,
+              -0.15
+            ]
+          ]
+        },
+        "direction": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0.3,
+            0,
+            0.9,
+            0.4
+          ],
+          [
+            0.6,
+            0,
+            1,
+            0.12
+          ],
+          [
+            1,
+            0,
+            1,
+            0.08
+          ]
+        ],
+        "yaw": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.24,
+            0,
+            0,
+            0
+          ],
+          [
+            0.4,
+            -90,
+            0,
+            0
+          ],
+          [
+            1,
+            -90,
+            0,
+            0
+          ]
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              -1.2,
+              0.055,
+              0.25
+            ],
+            [
+              0.22,
+              -1.2,
+              0.055,
+              0.25
+            ],
+            [
+              0.34,
+              -0.95,
+              0.52,
+              0.3
+            ],
+            [
+              0.49,
+              -0.3,
+              0.475,
+              0.3
+            ],
+            [
+              1,
+              -0.3,
+              0.475,
+              0.35
+            ]
+          ],
+          "pole": [
+            -1,
+            0,
+            0
+          ]
+        },
+        "footRight": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              -1.2,
+              0.055,
+              -0.05
+            ],
+            [
+              0.52,
+              -1.15,
+              0.055,
+              -0.05
+            ],
+            [
+              0.65,
+              -0.9,
+              0.52,
+              0.18
+            ],
+            [
+              0.78,
+              -0.55,
+              0.475,
+              0.35
+            ],
+            [
+              1,
+              -0.55,
+              0.475,
+              0.35
+            ]
+          ],
+          "pole": [
+            -1,
+            0,
+            0
+          ]
+        }
+      },
+      "hands": {
+        "handLeft": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  0.18,
+                  0.96,
+                  0.12
+                ]
+              }
+            ],
+            [
+              0.08,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  0,
+                  0
+                ],
+                "marker": "driver_handle"
+              }
+            ],
+            [
+              0.22,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  0,
+                  0
+                ],
+                "marker": "driver_handle"
+              }
+            ],
+            [
+              0.4,
+              {
+                "space": "object",
+                "at": [
+                  -0.75,
+                  1.15,
+                  0.32
+                ]
+              }
+            ],
+            [
+              0.75,
+              {
+                "space": "object",
+                "at": [
+                  -0.52,
+                  1.02,
+                  0.27
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "object",
+                "at": [
+                  -0.52,
+                  1.02,
+                  0.27
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            0.4,
+            -1,
+            0
+          ]
+        },
+        "handRight": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.96,
+                  0.1
+                ]
+              }
+            ],
+            [
+              0.32,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.96,
+                  0.1
+                ]
+              }
+            ],
+            [
+              0.6,
+              {
+                "space": "object",
+                "at": [
+                  -0.28,
+                  1.02,
+                  0.27
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "object",
+                "at": [
+                  -0.28,
+                  1.02,
+                  0.27
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            -0.4,
+            -1,
+            0
+          ]
+        }
+      },
+      "playback": "once",
+      "head_direction": [
+        0,
+        1,
+        0
+      ],
+      "base": "stand_idle"
+    },
+    "car_exit": {
+      "stationary": true,
+      "duration": 6,
+      "body": {
+        "hip": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              -0.42,
+              0.67,
+              -0.15
+            ],
+            [
+              0.28,
+              -0.48,
+              0.67,
+              -0.15
+            ],
+            [
+              0.45999999999999996,
+              -0.7,
+              0.67,
+              -0.15
+            ],
+            [
+              0.63,
+              -1.09,
+              0.68,
+              -0.1
+            ],
+            [
+              0.8200000000000001,
+              -1.2,
+              0.78,
+              0.1
+            ],
+            [
+              1,
+              -1.2,
+              0.78,
+              0.1
+            ]
+          ]
+        },
+        "direction": [
+          [
+            0,
+            0,
+            1,
+            0.08
+          ],
+          [
+            0.4,
+            0,
+            0.9,
+            0.35
+          ],
+          [
+            0.75,
+            0,
+            0.9,
+            0.35
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ]
+        ],
+        "yaw": [
+          [
+            0,
+            -90,
+            0,
+            0
+          ],
+          [
+            0.55,
+            -90,
+            0,
+            0
+          ],
+          [
+            0.85,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              -0.3,
+              0.475,
+              0.35
+            ],
+            [
+              0.51,
+              -0.3,
+              0.475,
+              0.3
+            ],
+            [
+              0.6599999999999999,
+              -0.95,
+              0.52,
+              0.3
+            ],
+            [
+              0.78,
+              -1.2,
+              0.055,
+              0.25
+            ],
+            [
+              1,
+              -1.2,
+              0.055,
+              0.25
+            ]
+          ],
+          "pole": [
+            -1,
+            0,
+            0
+          ]
+        },
+        "footRight": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              -0.55,
+              0.475,
+              0.35
+            ],
+            [
+              0.21999999999999997,
+              -0.55,
+              0.475,
+              0.35
+            ],
+            [
+              0.35,
+              -0.9,
+              0.52,
+              0.18
+            ],
+            [
+              0.48,
+              -1.15,
+              0.055,
+              -0.05
+            ],
+            [
+              1,
+              -1.2,
+              0.055,
+              -0.05
+            ]
+          ],
+          "pole": [
+            -1,
+            0,
+            0
+          ]
+        }
+      },
+      "hands": {
+        "handLeft": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  -0.52,
+                  1.02,
+                  0.27
+                ]
+              }
+            ],
+            [
+              0.12,
+              {
+                "space": "object",
+                "at": [
+                  -0.79,
+                  0.91,
+                  -0.13
+                ]
+              }
+            ],
+            [
+              0.4,
+              {
+                "space": "object",
+                "at": [
+                  -0.75,
+                  1.15,
+                  0.32
+                ]
+              }
+            ],
+            [
+              0.7,
+              {
+                "space": "object",
+                "at": [
+                  -0.75,
+                  1.15,
+                  0.32
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  0.18,
+                  0.96,
+                  0.12
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            0.4,
+            -1,
+            0
+          ]
+        },
+        "handRight": {
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  -0.28,
+                  1.02,
+                  0.27
+                ]
+              }
+            ],
+            [
+              0.4,
+              {
+                "space": "object",
+                "at": [
+                  -0.28,
+                  1.02,
+                  0.27
+                ]
+              }
+            ],
+            [
+              0.72,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.96,
+                  0.1
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "root",
+                "at": [
+                  -0.18,
+                  0.96,
+                  0.1
+                ]
+              }
+            ]
+          ],
+          "pole": [
+            -0.4,
+            -1,
+            0
+          ]
+        }
+      },
+      "playback": "once",
+      "head_direction": [
+        0,
+        1,
+        0
+      ],
+      "base": "stand_idle"
+    },
+    "carry_shoulder": {
+      "item": {
+        "anchor": {
+          "space": "neck",
+          "at": [
+            -0.23,
+            -0.02,
+            0
+          ]
+        },
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "hands": {
+        "handRight": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0.2
+          ]
+        }
+      }
+    },
+    "seesaw_partner": {
+      "stationary": true,
+      "duration": 4,
+      "body": {
+        "hip": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              1.5,
+              0.9,
+              0
+            ],
+            [
+              0.0625,
+              1.486109622024186,
+              0.9797969168072456,
+              0
+            ],
+            [
+              0.125,
+              1.4710096285615588,
+              1.0467842317755562,
+              0
+            ],
+            [
+              0.1875,
+              1.4592360505798716,
+              1.0911327628492509,
+              0
+            ],
+            [
+              0.25,
+              1.4547840209011413,
+              1.1066186265632436,
+              0
+            ],
+            [
+              0.3125,
+              1.4592360505798716,
+              1.0911327628492509,
+              0
+            ],
+            [
+              0.375,
+              1.4710096285615588,
+              1.0467842317755562,
+              0
+            ],
+            [
+              0.4375,
+              1.486109622024186,
+              0.9797969168072456,
+              0
+            ],
+            [
+              0.5,
+              1.5,
+              0.9,
+              0
+            ],
+            [
+              0.5625,
+              1.509608818717904,
+              0.8195751211682611,
+              0
+            ],
+            [
+              0.625,
+              1.514380608776973,
+              0.7510730030340952,
+              0
+            ],
+            [
+              0.6875,
+              1.51583784912859,
+              0.7052114091079903,
+              0
+            ],
+            [
+              0.75,
+              1.51602018532357,
+              0.6890993236830474,
+              0
+            ],
+            [
+              0.8125,
+              1.51583784912859,
+              0.7052114091079903,
+              0
+            ],
+            [
+              0.875,
+              1.514380608776973,
+              0.7510730030340951,
+              0
+            ],
+            [
+              0.9375,
+              1.509608818717904,
+              0.8195751211682609,
+              0
+            ],
+            [
+              1.0,
+              1.5,
+              0.9,
+              0
+            ]
+          ]
+        },
+        "direction": [
+          0,
+          1,
+          0
+        ]
+      },
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              1.1,
+              1.13,
+              0.035
+            ],
+            [
+              0.0625,
+              1.0743968255929188,
+              1.1881057578456078,
+              0.035
+            ],
+            [
+              0.125,
+              1.0502864027129093,
+              1.2362359861393153,
+              0.035
+            ],
+            [
+              0.1875,
+              1.0329722268319135,
+              1.2677655813280646,
+              0.035
+            ],
+            [
+              0.25,
+              1.026666980183698,
+              1.2787110419897787,
+              0.035
+            ],
+            [
+              0.3125,
+              1.0329722268319135,
+              1.2677655813280646,
+              0.035
+            ],
+            [
+              0.375,
+              1.0502864027129093,
+              1.2362359861393153,
+              0.035
+            ],
+            [
+              0.4375,
+              1.0743968255929188,
+              1.1881057578456078,
+              0.035
+            ],
+            [
+              0.5,
+              1.1,
+              1.13,
+              0.035
+            ],
+            [
+              0.5625,
+              1.122463364284614,
+              1.070609774377019,
+              0.035
+            ],
+            [
+              0.625,
+              1.1389997713353475,
+              1.019381085062244,
+              0.035
+            ],
+            [
+              0.6875,
+              1.1487486329542917,
+              0.9847565885844736,
+              0.035
+            ],
+            [
+              0.75,
+              1.1519227710477569,
+              0.9725302198776345,
+              0.035
+            ],
+            [
+              0.8125,
+              1.1487486329542917,
+              0.9847565885844736,
+              0.035
+            ],
+            [
+              0.875,
+              1.1389997713353475,
+              1.019381085062244,
+              0.035
+            ],
+            [
+              0.9375,
+              1.1224633642846142,
+              1.070609774377019,
+              0.035
+            ],
+            [
+              1.0,
+              1.1,
+              1.13,
+              0.035
+            ]
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              1.1,
+              1.13,
+              -0.035
+            ],
+            [
+              0.0625,
+              1.0743968255929188,
+              1.1881057578456078,
+              -0.035
+            ],
+            [
+              0.125,
+              1.0502864027129093,
+              1.2362359861393153,
+              -0.035
+            ],
+            [
+              0.1875,
+              1.0329722268319135,
+              1.2677655813280646,
+              -0.035
+            ],
+            [
+              0.25,
+              1.026666980183698,
+              1.2787110419897787,
+              -0.035
+            ],
+            [
+              0.3125,
+              1.0329722268319135,
+              1.2677655813280646,
+              -0.035
+            ],
+            [
+              0.375,
+              1.0502864027129093,
+              1.2362359861393153,
+              -0.035
+            ],
+            [
+              0.4375,
+              1.0743968255929188,
+              1.1881057578456078,
+              -0.035
+            ],
+            [
+              0.5,
+              1.1,
+              1.13,
+              -0.035
+            ],
+            [
+              0.5625,
+              1.122463364284614,
+              1.070609774377019,
+              -0.035
+            ],
+            [
+              0.625,
+              1.1389997713353475,
+              1.019381085062244,
+              -0.035
+            ],
+            [
+              0.6875,
+              1.1487486329542917,
+              0.9847565885844736,
+              -0.035
+            ],
+            [
+              0.75,
+              1.1519227710477569,
+              0.9725302198776345,
+              -0.035
+            ],
+            [
+              0.8125,
+              1.1487486329542917,
+              0.9847565885844736,
+              -0.035
+            ],
+            [
+              0.875,
+              1.1389997713353475,
+              1.019381085062244,
+              -0.035
+            ],
+            [
+              0.9375,
+              1.1224633642846142,
+              1.070609774377019,
+              -0.035
+            ],
+            [
+              1.0,
+              1.1,
+              1.13,
+              -0.035
+            ]
+          ]
+        }
+      },
+      "feet": {
+        "footLeft": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              1.25,
+              0.28,
+              0.23
+            ],
+            [
+              0.0625,
+              1.2695789230610688,
+              0.3473299560839649,
+              0.23
+            ],
+            [
+              0.125,
+              1.2833407627232496,
+              0.4051609803304712,
+              0.23
+            ],
+            [
+              0.1875,
+              1.2910703053773602,
+              0.44412404409773043,
+              0.23
+            ],
+            [
+              0.25,
+              1.293504326310989,
+              0.4578591487034537,
+              0.23
+            ],
+            [
+              0.3125,
+              1.2910703053773602,
+              0.44412404409773043,
+              0.23
+            ],
+            [
+              0.375,
+              1.2833407627232496,
+              0.4051609803304712,
+              0.23
+            ],
+            [
+              0.4375,
+              1.2695789230610688,
+              0.3473299560839649,
+              0.23
+            ],
+            [
+              0.5,
+              1.25,
+              0.28,
+              0.23
+            ],
+            [
+              0.5625,
+              1.226853110890673,
+              0.2138117930514778,
+              0.23
+            ],
+            [
+              0.625,
+              1.2044844350588602,
+              0.15873495637925372,
+              0.23
+            ],
+            [
+              0.6875,
+              1.1881579443796908,
+              0.1225229159800133,
+              0.23
+            ],
+            [
+              0.75,
+              1.1821658455429367,
+              0.10992639630329004,
+              0.23
+            ],
+            [
+              0.8125,
+              1.1881579443796908,
+              0.1225229159800133,
+              0.23
+            ],
+            [
+              0.875,
+              1.2044844350588602,
+              0.1587349563792536,
+              0.23
+            ],
+            [
+              0.9375,
+              1.226853110890673,
+              0.21381179305147768,
+              0.23
+            ],
+            [
+              1.0,
+              1.25,
+              0.28,
+              0.23
+            ]
+          ]
+        },
+        "footRight": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              1.25,
+              0.28,
+              -0.23
+            ],
+            [
+              0.0625,
+              1.2695789230610688,
+              0.3473299560839649,
+              -0.23
+            ],
+            [
+              0.125,
+              1.2833407627232496,
+              0.4051609803304712,
+              -0.23
+            ],
+            [
+              0.1875,
+              1.2910703053773602,
+              0.44412404409773043,
+              -0.23
+            ],
+            [
+              0.25,
+              1.293504326310989,
+              0.4578591487034537,
+              -0.23
+            ],
+            [
+              0.3125,
+              1.2910703053773602,
+              0.44412404409773043,
+              -0.23
+            ],
+            [
+              0.375,
+              1.2833407627232496,
+              0.4051609803304712,
+              -0.23
+            ],
+            [
+              0.4375,
+              1.2695789230610688,
+              0.3473299560839649,
+              -0.23
+            ],
+            [
+              0.5,
+              1.25,
+              0.28,
+              -0.23
+            ],
+            [
+              0.5625,
+              1.226853110890673,
+              0.2138117930514778,
+              -0.23
+            ],
+            [
+              0.625,
+              1.2044844350588602,
+              0.15873495637925372,
+              -0.23
+            ],
+            [
+              0.6875,
+              1.1881579443796908,
+              0.1225229159800133,
+              -0.23
+            ],
+            [
+              0.75,
+              1.1821658455429367,
+              0.10992639630329004,
+              -0.23
+            ],
+            [
+              0.8125,
+              1.1881579443796908,
+              0.1225229159800133,
+              -0.23
+            ],
+            [
+              0.875,
+              1.2044844350588602,
+              0.1587349563792536,
+              -0.23
+            ],
+            [
+              0.9375,
+              1.226853110890673,
+              0.21381179305147768,
+              -0.23
+            ],
+            [
+              1.0,
+              1.25,
+              0.28,
+              -0.23
+            ]
+          ]
+        }
+      },
+      "base": "stand_idle",
+      "head_direction": [
+        0,
+        1,
+        0
+      ]
+    },
+    "hold_door": {
+      "base": "stand_idle",
+      "stationary": true,
+      "duration": 4,
+      "hands": {
+        "handRight": {
+          "space": "object",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_front",
+          "window": [
+            0.05,
+            0.18,
+            0.75,
+            0.9
+          ]
+        }
+      },
+      "playback": "once"
+    },
+    "push_door": {
+      "base": "stand_idle",
+      "stationary": true,
+      "duration": 4,
+      "hands": {
+        "handRight": {
+          "space": "object",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_front",
+          "window": [
+            0.05,
+            0.18,
+            0.75,
+            0.9
+          ]
+        }
+      },
+      "body": {
+        "hip": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              0.5,
+              0.74,
+              0.7
+            ],
+            [
+              0.25,
+              0.5,
+              0.72,
+              0.7
+            ],
+            [
+              0.44,
+              0.4,
+              0.7,
+              0.5
+            ],
+            [
+              0.63,
+              0.25,
+              0.7,
+              0.16
+            ],
+            [
+              0.83,
+              0.15,
+              0.74,
+              -0.1
+            ],
+            [
+              1,
+              0.15,
+              0.74,
+              -0.1
+            ]
+          ]
+        },
+        "direction": [
+          0,
+          1,
+          0.28
+        ]
+      },
+      "feet": {
+        "footLeft": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              0.35,
+              0.055,
+              0.6
+            ],
+            [
+              0.25,
+              0.35,
+              0.055,
+              0.6
+            ],
+            [
+              0.34,
+              0.32,
+              0.16,
+              0.44
+            ],
+            [
+              0.43,
+              0.28,
+              0.055,
+              0.26
+            ],
+            [
+              0.64,
+              0.28,
+              0.055,
+              0.26
+            ],
+            [
+              0.73,
+              0.18,
+              0.16,
+              0
+            ],
+            [
+              0.82,
+              0.1,
+              0.055,
+              -0.2
+            ],
+            [
+              1,
+              0.1,
+              0.055,
+              -0.2
+            ]
+          ]
+        },
+        "footRight": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              0.65,
+              0.055,
+              0.8
+            ],
+            [
+              0.44,
+              0.65,
+              0.055,
+              0.8
+            ],
+            [
+              0.53,
+              0.52,
+              0.18,
+              0.4
+            ],
+            [
+              0.62,
+              0.35,
+              0.055,
+              0.0
+            ],
+            [
+              1,
+              0.35,
+              0.055,
+              0.0
+            ]
+          ]
+        }
+      },
+      "playback": "once"
+    },
+    "pull_door": {
+      "base": "stand_idle",
+      "stationary": true,
+      "duration": 4,
+      "hands": {
+        "handRight": {
+          "space": "object",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_front",
+          "window": [
+            0.05,
+            0.18,
+            0.75,
+            0.9
+          ]
+        }
+      },
+      "playback": "once"
+    },
+    "parcel_terminal": {
+      "stationary": true,
+      "hands": {
+        "handRight": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              -0.2,
+              0.9,
+              0.2
+            ],
+            [
+              0.15,
+              0,
+              1.25,
+              0.38
+            ],
+            [
+              0.3,
+              0,
+              1.25,
+              0.38
+            ],
+            [
+              0.47,
+              0.25,
+              0.9,
+              0.38
+            ],
+            [
+              0.65,
+              0.25,
+              0.8,
+              0.38
+            ],
+            [
+              0.8,
+              0.2,
+              0.95,
+              0.2
+            ],
+            [
+              1,
+              -0.2,
+              0.9,
+              0.2
+            ]
+          ],
+          "pole": [
+            -0.2,
+            -1,
+            0
+          ],
+          "window": [
+            [
+              0.05,
+              0.15,
+              0.3,
+              0.4
+            ],
+            [
+              0.55,
+              0.65,
+              0.8,
+              0.9
+            ]
+          ]
+        }
+      },
+      "props": [
+        {
+          "type": "held_parcel",
+          "keys": [
+            [
+              0,
+              {
+                "space": "object",
+                "at": [
+                  -0.4,
+                  0.67,
+                  0.2
+                ]
+              }
+            ],
+            [
+              0.65,
+              {
+                "space": "object",
+                "at": [
+                  -0.4,
+                  0.67,
+                  0.2
+                ]
+              }
+            ],
+            [
+              0.75,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  -0.07,
+                  0.02
+                ]
+              }
+            ],
+            [
+              1,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  -0.07,
+                  0.02
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "playback": "once",
+      "shift": [
+        0,
+        -0.015,
+        0.06
+      ]
+    },
+    "throw_trash": {
+      "stationary": true,
+      "props": [
+        {
+          "type": "held_coffee_cup",
+          "keys": [
+            [
+              0,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.03
+                ]
+              }
+            ],
+            [
+              0.42,
+              {
+                "space": "handRight",
+                "at": [
+                  0,
+                  0,
+                  0.03
+                ]
+              }
+            ],
+            [
+              0.52,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  0.84,
+                  0.4
+                ]
+              }
+            ],
+            [
+              0.6,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  0.7,
+                  0.25
+                ]
+              }
+            ],
+            [
+              0.7,
+              {
+                "space": "object",
+                "at": [
+                  0,
+                  0.3,
+                  0
+                ]
+              }
+            ]
+          ],
+          "visible": [
+            0,
+            0.66
+          ],
+          "rotation": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0.42,
+              0,
+              0,
+              0
+            ],
+            [
+              0.65,
+              180,
+              0,
+              0
+            ]
+          ]
+        }
+      ],
+      "playback": "once"
+    },
+    "browse_bookstall": {
+      "item": {
+        "anchor": {
+          "space": "object",
+          "at": [
+            [
+              0,
+              0,
+              0.995,
+              0.23
+            ],
+            [
+              0.2,
+              0,
+              0.995,
+              0.23
+            ],
+            [
+              0.38,
+              0,
+              1.06,
+              0.55
+            ],
+            [
+              0.75,
+              0,
+              1.06,
+              0.55
+            ],
+            [
+              0.95,
+              0,
+              0.995,
+              0.23
+            ],
+            [
+              1,
+              0,
+              0.995,
+              0.23
+            ]
+          ]
+        },
+        "rotation": [
+          [
+            0,
+            70,
+            0,
+            0
+          ],
+          [
+            0.38,
+            25,
+            0,
+            0
+          ],
+          [
+            0.75,
+            25,
+            0,
+            0
+          ],
+          [
+            1,
+            70,
+            0,
+            0
+          ]
+        ]
+      },
+      "hands": {
+        "handLeft": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_left"
+        },
+        "handRight": {
+          "space": "item",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "marker": "grip_right"
+        }
+      },
+      "props": [
+        {
+          "type": "held_turning_page",
+          "space": "item",
+          "at": [
+            0,
+            0,
+            -0.04
+          ],
+          "marker": "model",
+          "rotation": [
+            [
+              0,
+              0,
+              180,
+              0
+            ],
+            [
+              0.25,
+              0,
+              180,
+              0
+            ],
+            [
+              0.65,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0
+            ]
+          ],
+          "rotation_space": "item",
+          "visible": [
+            0.25,
+            0.7
+          ]
+        }
+      ],
+      "body": {
+        "hip": {
+          "space": "root",
+          "at": [
+            0,
+            0.76,
+            0
+          ]
+        },
+        "direction": [
+          0,
+          1,
+          0.14
+        ]
+      },
+      "playback": "once"
+    },
+    "pat_dust": {
+      "stationary": true,
+      "playback": "once"
+    },
+    "look_up": {
+      "stationary": true,
+      "playback": "once"
+    },
+    "table_tennis_partner": {
+      "stationary": true,
+      "duration": 2,
+      "item": {
+        "follow_hand": true
+      },
+      "hands": {
+        "handRight": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              -0.24,
+              1.04,
+              0.4
+            ],
+            [
+              0.07,
+              -0.04,
+              1.1,
+              0.48
+            ],
+            [
+              0.2,
+              -0.27,
+              1.0,
+              0.22
+            ],
+            [
+              0.65,
+              -0.27,
+              1,
+              0.22
+            ],
+            [
+              0.87,
+              -0.44,
+              0.98,
+              0.1
+            ],
+            [
+              1,
+              -0.24,
+              1.04,
+              0.4
+            ]
+          ],
+          "pole": [
+            -0.5,
+            -1,
+            -0.1
+          ]
+        },
+        "handLeft": {
+          "space": "root",
+          "at": [
+            0.24,
+            1.05,
+            0.26
+          ],
+          "pole": [
+            0.5,
+            -1,
+            0
+          ]
+        }
+      },
+      "phase_offset": 0.5,
+      "base": "stand_idle"
+    },
+    "receive_flyer": {
+      "stationary": true,
+      "duration": 4,
+      "hands": {
+        "handRight": {
+          "space": "root",
+          "at": [
+            [
+              0,
+              -0.2,
+              0.9,
+              0.18
+            ],
+            [
+              0.25,
+              -0.2,
+              0.9,
+              0.18
+            ],
+            [
+              0.43,
+              -0.1,
+              1.02,
+              0.48
+            ],
+            [
+              0.62,
+              -0.1,
+              1.02,
+              0.48
+            ],
+            [
+              0.85,
+              -0.2,
+              0.9,
+              0.18
+            ],
+            [
+              1,
+              -0.2,
+              0.9,
+              0.18
+            ]
+          ]
+        }
+      },
+      "playback": "once"
+    },
+    "read_book": {
+      "item": {}
+    },
+    "take_photo": {
+      "hands": {
+        "handLeft": {
+          "space": "item",
+          "marker": "grip_left",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "pole": [
+            0.2,
+            -1,
+            0
+          ]
+        },
+        "handRight": {
+          "space": "item",
+          "marker": "grip_right",
+          "at": [
+            0,
+            0,
+            0
+          ],
+          "pole": [
+            -0.2,
+            -1,
+            0
+          ]
+        }
+      },
+      "item": {
+        "anchor": {
+          "space": "head",
+          "at": [
+            0,
+            -0.04,
+            0.32
+          ]
+        }
+      },
+      "playback": "once"
+    },
+    "lean_sign": {
+      "stationary": true,
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            -0.045,
+            0.98,
+            0
+          ],
+          "pole": [
+            0.3,
+            -1,
+            -0.2
+          ]
+        }
+      }
+    },
+    "waist_twister": {
+      "stationary": true,
+      "duration": 3,
+      "base": "stand_idle",
+      "body": {
+        "hip": {
+          "space": "object",
+          "at": [
+            0,
+            1.01,
+            0
+          ]
+        },
+        "direction": [
+          0,
+          1,
+          0.1
+        ]
+      },
+      "hands": {
+        "handLeft": {
+          "space": "object",
+          "at": [
+            -0.28,
+            1.15,
+            -0.5
+          ],
+          "pole": [
+            0.3,
+            -1,
+            0
+          ]
+        },
+        "handRight": {
+          "space": "object",
+          "at": [
+            0.28,
+            1.15,
+            -0.5
+          ],
+          "pole": [
+            -0.3,
+            -1,
+            0
+          ]
+        }
+      },
+      "feet": {
+        "footLeft": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              -0.13,
+              0.335,
+              0.0
+            ],
+            [
+              0.03125,
+              -0.12859908683147006,
+              0.335,
+              0.0190335195408528
+            ],
+            [
+              0.0625,
+              -0.12523773131214852,
+              0.335,
+              0.03486417438841904
+            ],
+            [
+              0.09375,
+              -0.121905594980107,
+              0.335,
+              0.045155574545631814
+            ],
+            [
+              0.125,
+              -0.12053390109368237,
+              0.335,
+              0.04869885714406856
+            ],
+            [
+              0.15625,
+              -0.121905594980107,
+              0.335,
+              0.045155574545631814
+            ],
+            [
+              0.1875,
+              -0.12523773131214852,
+              0.335,
+              0.03486417438841904
+            ],
+            [
+              0.21875,
+              -0.12859908683147006,
+              0.335,
+              0.019033519540852802
+            ],
+            [
+              0.25,
+              -0.13,
+              0.335,
+              6.112997982271465e-18
+            ],
+            [
+              0.28125,
+              -0.12859908683147006,
+              0.335,
+              -0.019033519540852792
+            ],
+            [
+              0.3125,
+              -0.12523773131214852,
+              0.335,
+              -0.03486417438841903
+            ],
+            [
+              0.34375,
+              -0.121905594980107,
+              0.335,
+              -0.04515557454563181
+            ],
+            [
+              0.375,
+              -0.12053390109368237,
+              0.335,
+              -0.04869885714406856
+            ],
+            [
+              0.40625,
+              -0.121905594980107,
+              0.335,
+              -0.045155574545631814
+            ],
+            [
+              0.4375,
+              -0.12523773131214852,
+              0.335,
+              -0.034864174388419045
+            ],
+            [
+              0.46875,
+              -0.12859908683147006,
+              0.335,
+              -0.019033519540852827
+            ],
+            [
+              0.5,
+              -0.13,
+              0.335,
+              -1.222599596454293e-17
+            ],
+            [
+              0.53125,
+              -0.12859908683147006,
+              0.335,
+              0.019033519540852806
+            ],
+            [
+              0.5625,
+              -0.12523773131214852,
+              0.335,
+              0.034864174388419024
+            ],
+            [
+              0.59375,
+              -0.121905594980107,
+              0.335,
+              0.04515557454563181
+            ],
+            [
+              0.625,
+              -0.12053390109368237,
+              0.335,
+              0.04869885714406856
+            ],
+            [
+              0.65625,
+              -0.121905594980107,
+              0.335,
+              0.045155574545631814
+            ],
+            [
+              0.6875,
+              -0.12523773131214852,
+              0.335,
+              0.03486417438841907
+            ],
+            [
+              0.71875,
+              -0.12859908683147006,
+              0.335,
+              0.019033519540852833
+            ],
+            [
+              0.75,
+              -0.13,
+              0.335,
+              1.8338993946814394e-17
+            ],
+            [
+              0.78125,
+              -0.12859908683147006,
+              0.335,
+              -0.0190335195408528
+            ],
+            [
+              0.8125,
+              -0.12523773131214852,
+              0.335,
+              -0.03486417438841905
+            ],
+            [
+              0.84375,
+              -0.121905594980107,
+              0.335,
+              -0.0451555745456318
+            ],
+            [
+              0.875,
+              -0.12053390109368237,
+              0.335,
+              -0.04869885714406856
+            ],
+            [
+              0.90625,
+              -0.121905594980107,
+              0.335,
+              -0.045155574545631814
+            ],
+            [
+              0.9375,
+              -0.12523773131214852,
+              0.335,
+              -0.03486417438841908
+            ],
+            [
+              0.96875,
+              -0.12859908683147006,
+              0.335,
+              -0.019033519540852837
+            ],
+            [
+              1.0,
+              -0.13,
+              0.335,
+              -2.445199192908586e-17
+            ]
+          ]
+        },
+        "footRight": {
+          "space": "object",
+          "at": [
+            [
+              0.0,
+              0.13,
+              0.335,
+              -0.0
+            ],
+            [
+              0.03125,
+              0.12859908683147006,
+              0.335,
+              -0.0190335195408528
+            ],
+            [
+              0.0625,
+              0.12523773131214852,
+              0.335,
+              -0.03486417438841904
+            ],
+            [
+              0.09375,
+              0.121905594980107,
+              0.335,
+              -0.045155574545631814
+            ],
+            [
+              0.125,
+              0.12053390109368237,
+              0.335,
+              -0.04869885714406856
+            ],
+            [
+              0.15625,
+              0.121905594980107,
+              0.335,
+              -0.045155574545631814
+            ],
+            [
+              0.1875,
+              0.12523773131214852,
+              0.335,
+              -0.03486417438841904
+            ],
+            [
+              0.21875,
+              0.12859908683147006,
+              0.335,
+              -0.019033519540852802
+            ],
+            [
+              0.25,
+              0.13,
+              0.335,
+              -6.112997982271465e-18
+            ],
+            [
+              0.28125,
+              0.12859908683147006,
+              0.335,
+              0.019033519540852792
+            ],
+            [
+              0.3125,
+              0.12523773131214852,
+              0.335,
+              0.03486417438841903
+            ],
+            [
+              0.34375,
+              0.121905594980107,
+              0.335,
+              0.04515557454563181
+            ],
+            [
+              0.375,
+              0.12053390109368237,
+              0.335,
+              0.04869885714406856
+            ],
+            [
+              0.40625,
+              0.121905594980107,
+              0.335,
+              0.045155574545631814
+            ],
+            [
+              0.4375,
+              0.12523773131214852,
+              0.335,
+              0.034864174388419045
+            ],
+            [
+              0.46875,
+              0.12859908683147006,
+              0.335,
+              0.019033519540852827
+            ],
+            [
+              0.5,
+              0.13,
+              0.335,
+              1.222599596454293e-17
+            ],
+            [
+              0.53125,
+              0.12859908683147006,
+              0.335,
+              -0.019033519540852806
+            ],
+            [
+              0.5625,
+              0.12523773131214852,
+              0.335,
+              -0.034864174388419024
+            ],
+            [
+              0.59375,
+              0.121905594980107,
+              0.335,
+              -0.04515557454563181
+            ],
+            [
+              0.625,
+              0.12053390109368237,
+              0.335,
+              -0.04869885714406856
+            ],
+            [
+              0.65625,
+              0.121905594980107,
+              0.335,
+              -0.045155574545631814
+            ],
+            [
+              0.6875,
+              0.12523773131214852,
+              0.335,
+              -0.03486417438841907
+            ],
+            [
+              0.71875,
+              0.12859908683147006,
+              0.335,
+              -0.019033519540852833
+            ],
+            [
+              0.75,
+              0.13,
+              0.335,
+              -1.8338993946814394e-17
+            ],
+            [
+              0.78125,
+              0.12859908683147006,
+              0.335,
+              0.0190335195408528
+            ],
+            [
+              0.8125,
+              0.12523773131214852,
+              0.335,
+              0.03486417438841905
+            ],
+            [
+              0.84375,
+              0.121905594980107,
+              0.335,
+              0.0451555745456318
+            ],
+            [
+              0.875,
+              0.12053390109368237,
+              0.335,
+              0.04869885714406856
+            ],
+            [
+              0.90625,
+              0.121905594980107,
+              0.335,
+              0.045155574545631814
+            ],
+            [
+              0.9375,
+              0.12523773131214852,
+              0.335,
+              0.03486417438841908
+            ],
+            [
+              0.96875,
+              0.12859908683147006,
+              0.335,
+              0.019033519540852837
+            ],
+            [
+              1.0,
+              0.13,
+              0.335,
+              2.445199192908586e-17
+            ]
+          ]
+        }
+      }
+    },
+    "hands_on_head": {
+      "hands": {
+        "handLeft": {
+          "space": "head",
+          "at": [
+            0.14,
+            0.16,
+            -0.06
+          ],
+          "window": [
+            0.13,
+            0.24,
+            0.6,
+            0.76
+          ]
+        },
+        "handRight": {
+          "space": "head",
+          "at": [
+            -0.14,
+            0.16,
+            -0.06
+          ],
+          "window": [
+            0.13,
+            0.24,
+            0.6,
+            0.76
+          ]
+        }
+      }
+    }
+  },
+  "objects": {
+    "laundry_rail": [
+      {
+        "nodes": [
+          "cloth_001"
+        ],
+        "visible": [
+          2,
+          3
+        ],
+        "clips": [
+          "hang_laundry"
+        ]
+      }
+    ],
+    "trash_bin": [
+      {
+        "nodes": [
+          "lid"
+        ],
+        "pivot": [
+          0,
+          0.84,
+          -0.26
+        ],
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "angle": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.2,
+            -105,
+            0,
+            0
+          ],
+          [
+            0.75,
+            -105,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ],
+        "clips": [
+          "rummage_bin"
+        ]
+      }
+    ],
+    "playground_swing": [
+      {
+        "nodes": [
+          "seat",
+          "hanger",
+          "hanger_001"
+        ],
+        "pivot": [
+          -0.8,
+          2.6,
+          0
+        ],
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "angle": [
+          [
+            0.0,
+            0.0,
+            0,
+            0
+          ],
+          [
+            0.0625,
+            4.974884620746167,
+            0,
+            0
+          ],
+          [
+            0.125,
+            9.19238815542512,
+            0,
+            0
+          ],
+          [
+            0.1875,
+            12.010433922646728,
+            0,
+            0
+          ],
+          [
+            0.25,
+            13.0,
+            0,
+            0
+          ],
+          [
+            0.3125,
+            12.010433922646728,
+            0,
+            0
+          ],
+          [
+            0.375,
+            9.19238815542512,
+            0,
+            0
+          ],
+          [
+            0.4375,
+            4.9748846207461686,
+            0,
+            0
+          ],
+          [
+            0.5,
+            1.592040838891559e-15,
+            0,
+            0
+          ],
+          [
+            0.5625,
+            -4.974884620746166,
+            0,
+            0
+          ],
+          [
+            0.625,
+            -9.192388155425117,
+            0,
+            0
+          ],
+          [
+            0.6875,
+            -12.010433922646724,
+            0,
+            0
+          ],
+          [
+            0.75,
+            -13.0,
+            0,
+            0
+          ],
+          [
+            0.8125,
+            -12.010433922646726,
+            0,
+            0
+          ],
+          [
+            0.875,
+            -9.19238815542512,
+            0,
+            0
+          ],
+          [
+            0.9375,
+            -4.974884620746175,
+            0,
+            0
+          ],
+          [
+            1.0,
+            -3.184081677783118e-15,
+            0,
+            0
+          ]
+        ]
+      }
+    ],
+    "playground_seesaw": [
+      {
+        "nodes": [
+          "beam",
+          "seat",
+          "seat_001",
+          "handhold",
+          "handhold_001"
+        ],
+        "pivot": [
+          0,
+          0.68,
+          0
+        ],
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "angle": [
+          [
+            0.0,
+            0.0,
+            0,
+            0
+          ],
+          [
+            0.0625,
+            3.0614674589207183,
+            0,
+            0
+          ],
+          [
+            0.125,
+            5.656854249492381,
+            0,
+            0
+          ],
+          [
+            0.1875,
+            7.391036260090294,
+            0,
+            0
+          ],
+          [
+            0.25,
+            8.0,
+            0,
+            0
+          ],
+          [
+            0.3125,
+            7.391036260090294,
+            0,
+            0
+          ],
+          [
+            0.375,
+            5.656854249492381,
+            0,
+            0
+          ],
+          [
+            0.4375,
+            3.061467458920719,
+            0,
+            0
+          ],
+          [
+            0.5,
+            9.797174393178826e-16,
+            0,
+            0
+          ],
+          [
+            0.5625,
+            -3.0614674589207174,
+            0,
+            0
+          ],
+          [
+            0.625,
+            -5.65685424949238,
+            0,
+            0
+          ],
+          [
+            0.6875,
+            -7.391036260090292,
+            0,
+            0
+          ],
+          [
+            0.75,
+            -8.0,
+            0,
+            0
+          ],
+          [
+            0.8125,
+            -7.391036260090293,
+            0,
+            0
+          ],
+          [
+            0.875,
+            -5.6568542494923815,
+            0,
+            0
+          ],
+          [
+            0.9375,
+            -3.061467458920723,
+            0,
+            0
+          ],
+          [
+            1.0,
+            -1.959434878635765e-15,
+            0,
+            0
+          ]
+        ]
+      }
+    ],
+    "fitness_air_walker": [
+      {
+        "nodes": [
+          "swing_arm",
+          "footplate"
+        ],
+        "pivot": [
+          -0.32,
+          1.4,
+          0
+        ],
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "angle": [
+          [
+            0.0,
+            0.0,
+            0,
+            0
+          ],
+          [
+            0.0625,
+            11.313708498984761,
+            0,
+            0
+          ],
+          [
+            0.125,
+            16.0,
+            0,
+            0
+          ],
+          [
+            0.1875,
+            11.313708498984761,
+            0,
+            0
+          ],
+          [
+            0.25,
+            1.959434878635765e-15,
+            0,
+            0
+          ],
+          [
+            0.3125,
+            -11.31370849898476,
+            0,
+            0
+          ],
+          [
+            0.375,
+            -16.0,
+            0,
+            0
+          ],
+          [
+            0.4375,
+            -11.313708498984763,
+            0,
+            0
+          ],
+          [
+            0.5,
+            -3.91886975727153e-15,
+            0,
+            0
+          ],
+          [
+            0.5625,
+            11.313708498984758,
+            0,
+            0
+          ],
+          [
+            0.625,
+            16.0,
+            0,
+            0
+          ],
+          [
+            0.6875,
+            11.313708498984774,
+            0,
+            0
+          ],
+          [
+            0.75,
+            5.878304635907295e-15,
+            0,
+            0
+          ],
+          [
+            0.8125,
+            -11.313708498984766,
+            0,
+            0
+          ],
+          [
+            0.875,
+            -16.0,
+            0,
+            0
+          ],
+          [
+            0.9375,
+            -11.313708498984775,
+            0,
+            0
+          ],
+          [
+            1.0,
+            -7.83773951454306e-15,
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "nodes": [
+          "swing_arm_001",
+          "footplate_001"
+        ],
+        "pivot": [
+          0.32,
+          1.4,
+          0
+        ],
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "angle": [
+          [
+            0.0,
+            -0.0,
+            0,
+            0
+          ],
+          [
+            0.0625,
+            -11.313708498984761,
+            0,
+            0
+          ],
+          [
+            0.125,
+            -16.0,
+            0,
+            0
+          ],
+          [
+            0.1875,
+            -11.313708498984761,
+            0,
+            0
+          ],
+          [
+            0.25,
+            -1.959434878635765e-15,
+            0,
+            0
+          ],
+          [
+            0.3125,
+            11.31370849898476,
+            0,
+            0
+          ],
+          [
+            0.375,
+            16.0,
+            0,
+            0
+          ],
+          [
+            0.4375,
+            11.313708498984763,
+            0,
+            0
+          ],
+          [
+            0.5,
+            3.91886975727153e-15,
+            0,
+            0
+          ],
+          [
+            0.5625,
+            -11.313708498984758,
+            0,
+            0
+          ],
+          [
+            0.625,
+            -16.0,
+            0,
+            0
+          ],
+          [
+            0.6875,
+            -11.313708498984774,
+            0,
+            0
+          ],
+          [
+            0.75,
+            -5.878304635907295e-15,
+            0,
+            0
+          ],
+          [
+            0.8125,
+            11.313708498984766,
+            0,
+            0
+          ],
+          [
+            0.875,
+            16.0,
+            0,
+            0
+          ],
+          [
+            0.9375,
+            11.313708498984775,
+            0,
+            0
+          ],
+          [
+            1.0,
+            7.83773951454306e-15,
+            0,
+            0
+          ]
+        ]
+      }
+    ],
+    "fitness_twister": [
+      {
+        "nodes": [
+          "disc"
+        ],
+        "pivot": [
+          0,
+          0.24,
+          0
+        ],
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "angle": [
+          [
+            0.0,
+            0.0,
+            0,
+            0
+          ],
+          [
+            0.0625,
+            15.556349186104047,
+            0,
+            0
+          ],
+          [
+            0.125,
+            22.0,
+            0,
+            0
+          ],
+          [
+            0.1875,
+            15.556349186104047,
+            0,
+            0
+          ],
+          [
+            0.25,
+            2.6942229581241772e-15,
+            0,
+            0
+          ],
+          [
+            0.3125,
+            -15.556349186104043,
+            0,
+            0
+          ],
+          [
+            0.375,
+            -22.0,
+            0,
+            0
+          ],
+          [
+            0.4375,
+            -15.556349186104049,
+            0,
+            0
+          ],
+          [
+            0.5,
+            -5.3884459162483544e-15,
+            0,
+            0
+          ],
+          [
+            0.5625,
+            15.556349186104041,
+            0,
+            0
+          ],
+          [
+            0.625,
+            22.0,
+            0,
+            0
+          ],
+          [
+            0.6875,
+            15.556349186104065,
+            0,
+            0
+          ],
+          [
+            0.75,
+            8.082668874372531e-15,
+            0,
+            0
+          ],
+          [
+            0.8125,
+            -15.556349186104054,
+            0,
+            0
+          ],
+          [
+            0.875,
+            -22.0,
+            0,
+            0
+          ],
+          [
+            0.9375,
+            -15.556349186104066,
+            0,
+            0
+          ],
+          [
+            1.0,
+            -1.0776891832496709e-14,
+            0,
+            0
+          ]
+        ]
+      }
+    ],
+    "car_interactive": [
+      {
+        "nodes": [
+          "driver_panel",
+          "driver_window",
+          "driver_handle"
+        ],
+        "pivot": [
+          -0.78,
+          0.68,
+          0.55
+        ],
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "angle": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.18,
+            55,
+            0,
+            0
+          ],
+          [
+            1,
+            55,
+            0,
+            0
+          ]
+        ],
+        "clips": [
+          "car_enter"
+        ]
+      },
+      {
+        "nodes": [
+          "driver_panel",
+          "driver_window",
+          "driver_handle"
+        ],
+        "pivot": [
+          -0.78,
+          0.68,
+          0.55
+        ],
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "angle": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.18,
+            55,
+            0,
+            0
+          ],
+          [
+            1,
+            55,
+            0,
+            0
+          ]
+        ],
+        "clips": [
+          "car_exit"
+        ]
+      }
+    ],
+    "door_single": [
+      {
+        "nodes": [
+          "Hinge"
+        ],
+        "pivot": [
+          -0.5,
+          0,
+          0
+        ],
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "angle": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.18,
+            0,
+            0,
+            0
+          ],
+          [
+            0.43,
+            18,
+            0,
+            0
+          ],
+          [
+            0.8,
+            45,
+            0,
+            0
+          ],
+          [
+            1,
+            45,
+            0,
+            0
+          ]
+        ],
+        "clips": [
+          "push_door"
+        ]
+      },
+      {
+        "nodes": [
+          "Hinge"
+        ],
+        "pivot": [
+          -0.5,
+          0,
+          0
+        ],
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "angle": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.18,
+            0,
+            0,
+            0
+          ],
+          [
+            0.6,
+            -45,
+            0,
+            0
+          ],
+          [
+            0.8,
+            -45,
+            0,
+            0
+          ],
+          [
+            1,
+            -45,
+            0,
+            0
+          ]
+        ],
+        "clips": [
+          "pull_door"
+        ]
+      },
+      {
+        "nodes": [
+          "Hinge"
+        ],
+        "pivot": [
+          -0.5,
+          0,
+          0
+        ],
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "angle": [
+          [
+            -0.0,
+            -45,
+            0,
+            0
+          ],
+          [
+            1,
+            -45,
+            0,
+            0
+          ]
+        ],
+        "clips": [
+          "hold_door"
+        ]
+      }
+    ],
+    "parcel_lockers": [
+      {
+        "nodes": [
+          "door_005"
+        ],
+        "pivot": [
+          -0.75,
+          0.77,
+          0.35
+        ],
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "angle": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0.3,
+            0,
+            0,
+            0
+          ],
+          [
+            0.45,
+            -85,
+            0,
+            0
+          ],
+          [
+            0.85,
+            -85,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    ]
+  },
+  "water_radius": 0.008,
+  "water_gray": 0.4
+}

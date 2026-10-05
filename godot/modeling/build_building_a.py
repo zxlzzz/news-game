@@ -1,5 +1,5 @@
 """Three-storey shop building. Run with Blender --background --python this_file.
-Self-contained; metres in game coordinates (+Y up, +Z front). No external assets.
+Final shell pass uses building_seal.py; metres in game coordinates (+Y up, +Z front). No external assets.
 """
 from pathlib import Path
 import bpy
@@ -136,3 +136,12 @@ def export():
 
 if __name__ == '__main__':
     build()
+
+
+# Shared final pass: sealed opaque windows and a hollow masonry shell.
+if __name__ == "__main__":
+    import sys as _sys
+    from pathlib import Path as _Path
+    _sys.path.insert(0, str(_Path(__file__).resolve().parent))
+    from building_seal import seal_building as _seal_building
+    _seal_building(_Path(__file__).resolve().parents[1] / "models" / (_Path(__file__).stem.removeprefix("build_") + ".glb"), __file__)

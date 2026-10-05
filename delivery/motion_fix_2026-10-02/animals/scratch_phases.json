@@ -1,0 +1,73 @@
+{
+  "fps": 120,
+  "breeds": [
+    "husky",
+    "shibainu"
+  ],
+  "scenarios": [
+    {
+      "speed": 0.35,
+      "action": "scratch",
+      "begin": 2,
+      "end": 4.1,
+      "seconds": 7.1,
+      "label": "scratch_cancel_4_1"
+    },
+    {
+      "speed": 0.35,
+      "action": "scratch",
+      "begin": 2,
+      "end": 4.25,
+      "seconds": 7.25,
+      "label": "scratch_cancel_4_25"
+    },
+    {
+      "speed": 0.35,
+      "action": "scratch",
+      "begin": 2,
+      "end": 4.5,
+      "seconds": 7.5,
+      "label": "scratch_cancel_4_5"
+    },
+    {
+      "speed": 0.35,
+      "action": "scratch",
+      "begin": 2,
+      "end": 4.75,
+      "seconds": 7.75,
+      "label": "scratch_cancel_4_75"
+    },
+    {
+      "speed": 0.35,
+      "action": "scratch",
+      "begin": 2,
+      "end": 5.0,
+      "seconds": 8.0,
+      "label": "scratch_cancel_5_0"
+    },
+    {
+      "speed": 0.35,
+      "action": "scratch",
+      "begin": 2,
+      "end": 5.25,
+      "seconds": 8.25,
+      "label": "scratch_cancel_5_25"
+    },
+    {
+      "speed": 0.35,
+      "action": "scratch",
+      "begin": 2,
+      "end": 5.5,
+      "seconds": 8.5,
+      "label": "scratch_cancel_5_5"
+    },
+    {
+      "speed": 0.35,
+      "action": "scratch",
+      "begin": 2,
+      "end": 5.75,
+      "seconds": 8.75,
+      "label": "scratch_cancel_5_75"
+    }
+  ]
+}

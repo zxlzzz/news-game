@@ -5,3 +5,5 @@
 [node name="HeldNewspaperFolded" type="Node3D" groups=["held"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+position = Vector3(0.02, 0.17, -0.24)
+rotation = Vector3(0, 1.5707963267948966, 0)

@@ -3,8 +3,16 @@
 [ext_resource type="Script" path="res://core/two_wheeler.gd" id="1"]
 [ext_resource type="PackedScene" path="res://models/bicycle.glb" id="2"]
 
-[node name="Bicycle" type="Node3D" groups=["vehicle", "rideable"]]
+[node name="Bicycle" type="Node3D" groups=["vehicle", "rideable", "pushed"]]
 script = ExtResource("1")
 travel_per_crank_turn = 4.5
 
 [node name="model" parent="." instance=ExtResource("2")]
+
+[node name="post_bikepush" type="Marker3D" parent="."]
+position = Vector3(0.6, 0, -0.1)
+rotation = Vector3(0, 0.0, 0)
+
+[node name="post_bikescan" type="Marker3D" parent="."]
+position = Vector3(0.6, 0, -0.1)
+rotation = Vector3(0, 0.0, 0)

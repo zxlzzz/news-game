@@ -1,16 +1,15 @@
 ## What the empty ground shows for one list entry, how it moves, and what dragging writes back
 ## (godot/README.md "空地"). The UI (empty_ground.gd) and tools/check_empty_ground.gd drive it.
 ##
-## Entries, all read from data: every clip in npc/motion/index.json, the movers in movers.json (dog, dog
-## walker, riders, pigeon) and, for each species in its animals, the scenarios ANIMAL_SCENARIOS and the
-## actions npc/animal-models.json gives that species.
+## Entries are individual named motions: human clips, constant rider/leash motions,
+## and each authored animation imported from the real animal models.
+## Behaviour demonstrations and transitions between motions belong in separate checks.
 ## A clip is placed from npc/clip-setup.json: a post kind puts an object type offering that post and the
 ## person on its marker; an item hangs a held type on the hand; a partner puts the second person where
 ## the first opens a place (a clip that is someone's partner shows the pair too). Things the setup names
 ## that do not exist are left out and listed in the entry's `missing` (the one exception to stopping).
-## A clip that travels walks its own displacement; one whose last frame repeats its first keeps going
-## (and climbing, on stairs) until params.replayAfter metres or params.replayRise metres up or down, then
-## starts over; others start over each pass.
+## Every selected action plays one source unit and then holds its endpoint,
+## including sources declared as repeatable. Travelling clips retain that unit's displacement.
 ## Pushed objects (type group ClipSetup.PUSHED) follow the person's root instead of the person standing on them.
 ##
 ## Dragging moves things over the ground (vertical with shift: see empty_ground.gd). On release only
@@ -20,24 +19,24 @@
 extends Node3D
 
 const ClipPose := preload("res://npc/clip_pose.gd")
+const ContactPose := preload("res://npc/contact_pose.gd")
+const InteractionPlayer := preload("res://npc/interaction_player.gd")
 const ClipSetup := preload("res://npc/clip_setup.gd")
 const InkFigure := preload("res://npc/ink_figure.gd")
 const Pigeon := preload("res://npc/procedural_pigeon.gd")
+const PigeonMotion := preload("res://npc/pigeon_motion.gd")
 const Rider := preload("res://npc/rider.gd")
 const DogWalker := preload("res://npc/dog_walker.gd")
-const Animal := preload("res://npc/animal.gd")
 const AnimalModel := preload("res://npc/animal_model.gd")
 const AnimalBody := preload("res://npc/animal_body.gd")
-const Preview := preload("res://tools/animal_behaviour_preview.gd")
+const AnimalClip := preload("res://tools/animal_clip_preview.gd")
 const Bounds := preload("res://core/bounds.gd")
 const PARAMS := "res://scenes/empty_ground/params.json"
 const MOVERS := "res://scenes/empty_ground/movers.json"
 const CROWD := "res://npc/crowd-params.json"
 const INDEX := "res://npc/motion/index.json"
 const BEHAVIOUR := "res://npc/animal-behaviour.json"
-const MOVER_KINDS := ["dog", "leash", "rider", "pigeon"]
-## Animal list entries that are review scenarios rather than actions of animal-models.json.
-const ANIMAL_SCENARIOS := ["walk", "trot", "behaviour"]
+const MOVER_KINDS := ["leash", "rider"]
 const FLAT := 0.0
 
 var level          # the empty ground (core/level.gd): apply_look_to, slot_map
@@ -62,9 +61,12 @@ var main = null           # the person of the selected clip
 var ms := {}              # mover / animal state
 var extras: Array = []    # other nodes placed for the entry (figures of movers, grid lines, platform)
 var _stale := {}          # type files written this session: loaded fresh next time
+var interactions := InteractionPlayer.new()
+var endpoint_loop = null
 
 ## Reads and checks everything; "" or the error.
 func setup_stage(level_) -> String:
+	if interactions.error != "": return _fail(interactions.error)
 	level = level_
 	name = "Stage"
 	p = _read(PARAMS)
@@ -74,7 +76,7 @@ func setup_stage(level_) -> String:
 	var index := _read(INDEX)
 	if error != "":
 		return error
-	for k in ["replayAfter", "replayRise", "frame", "manualOffset", "pickMargin", "speed", "panelWidth", "fontSize", "verticalKey"]:
+	for k in ["frame", "manualOffset", "pickMargin", "speed", "panelWidth", "fontSize", "verticalKey"]:
 		if not p.has(k):
 			return _fail("%s: no %s" % [PARAMS, k])
 	body_scale = bodies[crowd.body].scale
@@ -107,14 +109,17 @@ func setup_stage(level_) -> String:
 		if not (d.get("kind") in MOVER_KINDS and d.get("label") is String and d.get("cycle") is float and d.get("frame") is float and d.get("follow") is bool):
 			return _fail("%s: mover %s needs kind (one of %s), label, cycle, frame, follow" % [MOVERS, id, MOVER_KINDS])
 		_add({"id": id, "kind": "mover", "label": d.label, "missing": []})
+	for motion in PigeonMotion.entries():
+		_add({"id": "pigeon:" + motion.id, "kind": "pigeon_motion", "motion": motion.id,
+			"definition": motion, "label": "鸽子 · " + motion.label, "missing": []})
 	var species: Dictionary = AnimalModel.config().species
 	for sp in m.animals:
 		var a: Dictionary = m.animals[sp]
 		if not (species.has(sp) and a.get("label") is String and not AnimalModel.breeds(sp).is_empty()):
 			return _fail("%s: animals.%s needs a label and a species with breeds in npc/animal-models.json" % [MOVERS, sp])
-		for action in ANIMAL_SCENARIOS + species[sp]:
-			_add({"id": "%s:%s" % [sp, action], "kind": "animal", "species": sp, "action": action,
-				"label": "%s · %s" % [a.label, action], "missing": []})
+		for clip_entry in AnimalClip.entries(sp):
+			clip_entry.label = "%s · %s" % [a.label, clip_entry.clip]
+			_add(clip_entry)
 	return error
 
 func _add(e: Dictionary) -> void:
@@ -153,7 +158,7 @@ func item_choices() -> Array:
 func breed_choices() -> Array:
 	if entry.get("kind") == "animal":
 		return AnimalModel.breeds(entry.species)
-	if entry.get("kind") == "mover" and m.movers[entry.id].kind in ["dog", "leash"]:
+	if entry.get("kind") == "mover" and m.movers[entry.id].kind == "leash":
 		return AnimalModel.breeds("dog")
 	return []
 
@@ -210,11 +215,23 @@ func select(id: String, opts := {}) -> String:
 			_start_mover()
 		"animal":
 			_start_animal()
+		"pigeon_motion":
+			_start_pigeon_motion()
 	if error == "":
+		interactions.prepare(people, objects, _instance)
+		if opts.has("endpoint_loop"):
+			endpoint_loop = load(opts.endpoint_loop)
+			if endpoint_loop == null or endpoint_loop.actor_kind != entry.kind:
+				return _fail("invalid endpoint loop: "+str(opts.endpoint_loop))
+			var expected: String = ms.m.breed+"__"+entry.clip if entry.kind == "animal" else entry.id
+			if endpoint_loop.source != expected:
+				return _fail("endpoint loop belongs to "+endpoint_loop.source+", not "+expected)
 		seek(0.0)
 	return error
 
 func _clear() -> void:
+	endpoint_loop = null
+	interactions.clear()
 	for person in people.duplicate():
 		if not person.manual:
 			_free_person(person)
@@ -241,7 +258,8 @@ func _arrange_clip() -> void:
 	if lead == null:
 		return
 	if s.has("post") and setup.offers.has(s.post):
-		var type: String = options.get("object", setup.offers[s.post][0])
+		var preferred: String = interactions.data.clips.get(first,{}).get("object", "")
+		var type: String = options.get("object", setup.type_path(preferred) if preferred != "" else setup.offers[s.post][0])
 		if not type in setup.offers[s.post]:
 			_fail("%s does not offer post %s" % [type, s.post])
 			return
@@ -267,6 +285,9 @@ func _arrange_clip() -> void:
 		if other == null:
 			return
 		other.anchor = {"giver": lead, "clip": first}
+		var other_setup: Dictionary = setup.clips.get(s.partner.clip,{})
+		if other_setup.has("item"):
+			_hold(other,setup.type_path(other_setup.item.type),other_setup.item.hand)
 		if s.partner.clip == entry.clip:
 			main = other
 	cycle = _cycle(main)
@@ -278,7 +299,7 @@ func _person(clip_id: String, start: Transform3D, manual: bool):
 		return null
 	var fig := _figure(ink, depth_bias)
 	var person := {"fig": fig, "clip": clip, "clip_id": clip_id, "start": start, "anchor": null, "item": null,
-		"manual": manual, "root": start, "pose": {}}
+		"manual": manual, "started": clock, "root": start, "pose": {}}
 	people.append(person)
 	return person
 
@@ -313,20 +334,37 @@ func _marker(o: Dictionary, marker: String) -> Transform3D:
 func _hold(person: Dictionary, held: String, hand: String) -> void:
 	person.item = {"node": _instance(held), "type": held, "hand": hand}
 
-## Seconds until the entry starts over (see the header).
+## Seconds in one source action unit.
 func _cycle(person: Dictionary) -> float:
-	var c = person.clip
-	var stride: float = c.stride() * body_scale
-	if stride == 0.0 or not c.chains:
-		return c.duration()
-	return _loops(c, stride) * c.duration()
+	var interaction: Dictionary = interactions.data.clips.get(person.clip_id,{})
+	return interaction.get("duration", person.clip.duration())
+
+## Selected actions always play once, including authored loop sources.
+func repeats() -> bool:
+	return false
+
+## Whether the source is authored for reuse as a loop; preview still plays once.
+func source_repeats() -> bool:
+	if entry.get("kind", "") == "animal":
+		return AnimalClip.repeats(ms.m, entry.clip)
+	if entry.get("kind", "") == "pigeon_motion":
+		return entry.definition.loop
+	if entry.get("kind", "") == "mover":
+		return m.movers[entry.id].loop
+	if entry.get("kind", "") != "clip":
+		return false
+	var config: Dictionary = interactions.data.clips.get(main.clip_id, {})
+	var source = ClipPose.of(config.base) if config.has("base") else main.clip
+	return config.get("tracks_playback", "") == "loop" or (source.chains and config.get("playback", "") != "once")
+
+## Continuous authored hand/object tracks keep their own clock while the source holds.
+func tracks_repeat() -> bool:
+	return false
+
+func display_time() -> float:
+	return fposmod(t, cycle) if tracks_repeat() else t
 
 ## Loops a chaining clip plays before it starts over.
-func _loops(c, stride: float) -> int:
-	var n := maxi(1, ceili(p.replayAfter / stride))
-	var rise: float = absf(c.rise() * body_scale)
-	return mini(n, maxi(1, floori(p.replayRise / rise + 1e-6))) if rise > 1e-3 else n
-
 # ------------------------------------------------------------------ people
 
 ## Where the person stands at the clip's start (not scaled).
@@ -342,30 +380,29 @@ func _start(person: Dictionary) -> Transform3D:
 ## [root transform, phase] of a person at `time`.
 func _root(person: Dictionary, time: float) -> Array:
 	var c = person.clip
-	var d: float = c.duration()
+	var config: Dictionary = interactions.data.clips.get(person.clip_id,{})
+	if config.get("stationary",false):
+		var ph: float = interactions.phase_of(person,time)
+		return [_start(person),ph]
 	var stride: float = c.stride() * body_scale
-	var off := Vector3.ZERO
-	var phase: float
-	if stride == 0.0 or not c.chains:
-		phase = fposmod(time, d) / d
-		off.z = stride * phase
-	else:
-		var n := _loops(c, stride)
-		var tt := fposmod(time, n * d)
-		var k := floori(tt / d)
-		phase = tt / d - k
-		off = Vector3(0, c.rise() * body_scale * k, stride * (k + phase))
+	var phase: float = interactions.phase_of(person, time)
+	var progress: float = clampf(time / _cycle(person), 0.0, 1.0)
+	# ClipPose retains vertical source displacement within this once-played unit.
+	# Adding rise here doubles the stairs ascent/descent.
+	var off := Vector3(0, 0.0, stride * progress)
 	return [_start(person) * Transform3D(Basis(), off), phase]
 
 func _pose_people() -> void:
+	interactions.errors.clear()
 	for person in people:
-		var rp := _root(person, clock if person.manual else t)
+		person["play_once"] = true
+		var rp := _root(person, clock - person.started if person.manual else t)
 		var root: Transform3D = rp[0]
 		person.root = root
-		person.pose = person.clip.pose(rp[1])
+		var cfg: Dictionary = interactions.data.clips.get(person.clip_id,{})
+		var source = ClipPose.of(cfg.base) if cfg.has("base") else person.clip
+		person.pose = source.pose(rp[1], false).duplicate(true)
 		person.fig.transform = Transform3D(root.basis.scaled(Vector3.ONE * body_scale), root.origin)
-		var d: Dictionary = person.clip.drawing(person.pose)
-		person.fig.draw(d.segments, d.discs, d.triangles)
 		if person.item != null:
 			var q: Vector3
 			match person.item.hand:
@@ -381,6 +418,33 @@ func _pose_people() -> void:
 	for o in objects:
 		if o.pusher != null:
 			o.node.transform = o.pusher.root * _marker(o, o.marker).affine_inverse()
+	interactions.animate_objects(t, people)
+	for person in people:
+		if person.manual: continue
+		var phase: float = interactions.phase_of(person,t)
+		var track_phase: float = interactions.track_phase_of(person,t)
+		interactions.body(person,objects,people,phase,body_scale)
+		interactions.item(person,objects,people,track_phase,body_scale)
+		interactions.props(person,objects,people,track_phase,body_scale)
+	for person in people:
+		if person.manual: continue
+		var phase: float = interactions.phase_of(person,t)
+		interactions.contacts(person,objects,people,phase,body_scale,interactions.track_phase_of(person,t))
+	for person in people:
+		if person.manual: continue
+		var phase: float = interactions.track_phase_of(person,t)
+		if person.interaction.get("item",{}).get("follow_forearm",false) or person.interaction.get("item",{}).get("follow_hand",false):
+			interactions.item(person,objects,people,phase,body_scale)
+		interactions.props(person,objects,people,phase,body_scale)
+	for person in people:
+		var residual := ContactPose.ground_feet(person.pose,person.fig.global_transform,person.clip.P.line,func(_q: Vector3) -> float: return FLAT)
+		if residual > 0.001:
+			error = person.clip_id+": unreachable ground contact"
+			push_error(error)
+			get_tree().quit(1)
+			return
+		var d: Dictionary = person.clip.drawing(person.pose)
+		person.fig.draw(d.segments,d.discs,d.triangles)
 
 # ------------------------------------------------------------------ time
 
@@ -388,19 +452,40 @@ func _pose_people() -> void:
 func advance(dt: float) -> void:
 	clock += dt
 	var next := t + dt
-	if next >= cycle:
-		next = fposmod(next, cycle)
+	if next >= cycle and not tracks_repeat():
+		next = cycle
 	seek(next)
 
 ## Shows the entry at `time` seconds (movers are simulated up to it, from the start when going back).
 func seek(time: float) -> void:
-	t = clampf(time, 0.0, cycle)
+	t = maxf(time, 0.0) if tracks_repeat() else clampf(time, 0.0, cycle)
+	var display_time := t
+	if endpoint_loop != null:
+		t = 0.0 if endpoint_loop.endpoint == "start" else cycle
 	match entry.get("kind", ""):
 		"mover":
 			_mover_to(t)
 		"animal":
 			_animal_to(t)
+		"pigeon_motion":
+			_pigeon_to(t)
 	_pose_people()
+	if endpoint_loop != null:
+		var pose_: Dictionary = endpoint_loop.sample(display_time)
+		match entry.kind:
+			"clip":
+				main.pose = pose_
+				main.root = endpoint_loop.context.root
+				main.fig.transform = Transform3D(main.root.basis.scaled(Vector3.ONE*body_scale),main.root.origin)
+				var drawing: Dictionary = main.clip.drawing(pose_)
+				main.fig.draw(drawing.segments,drawing.discs,drawing.triangles)
+			"animal":
+				ms.body.show_pose(pose_)
+			"pigeon_motion":
+				ms.pose = pose_
+				var drawing: Dictionary = Pigeon.silhouette(pose_,ms.p)
+				ms.fig.draw(drawing.segments,drawing.discs,drawing.triangles)
+		t = display_time
 
 ## Where the camera should look while following, and the view height for the entry.
 func focus() -> Vector3:
@@ -409,16 +494,18 @@ func focus() -> Vector3:
 	return main.root.origin + Vector3.UP if main != null else Vector3.ZERO
 
 func follows() -> bool:
-	return m.movers[entry.id].follow if entry.get("kind") == "mover" else entry.get("kind") == "animal"
+	return m.movers[entry.id].follow if entry.get("kind") == "mover" else entry.get("kind") in ["animal", "pigeon_motion"]
 
 ## [look-at point, view height] that shows the whole entry.
 func framing() -> Array:
+	if entry.kind == "pigeon_motion":
+		return [ms.focus, entry.definition.frame]
 	if entry.kind == "mover":
 		return [ms.get("look", ms.focus), m.movers[entry.id].frame]
 	if entry.kind == "animal":
 		var r: Dictionary = ms.c.review
 		var box: AABB = ms.m.aabb
-		return [ms.focus, r.behaviour_camera_size if entry.action == "behaviour" else r.frame * maxf(box.size.x, maxf(box.size.y, box.size.z))]
+		return [ms.focus, r.frame * maxf(box.size.x, maxf(box.size.y, box.size.z))]
 	var box := AABB()
 	var any := false
 	for o in objects:
@@ -611,16 +698,6 @@ func _start_mover() -> void:
 	ms = {"d": d, "sim": INF, "focus": Vector3.ZERO}
 	cycle = d.cycle
 	match d.kind:
-		"dog":
-			ms.m = AnimalModel.info(_breed("dog"))
-			if ms.m.error != "":
-				_fail(ms.m.error)
-				return
-			ms.body = _animal_body(ms.m.breed)
-		"pigeon":
-			ms.p = Pigeon.load_params()
-			_ground_grid(d.grid)
-			ms.fig = _extra_figure()
 		"leash":
 			ms.breed = _breed("dog")
 			ms.dog_body = _animal_body(ms.breed)
@@ -633,6 +710,11 @@ func _start_mover() -> void:
 			ms.R = Rider.style(Rider.load_params(), ms.vehicle.rider_style)
 			ms.bodies = _read("res://npc/body-types.json")
 			ms.fig = _figure(ink, depth_bias, ms.vehicle)
+			if d.pedalling:
+				cycle = ms.vehicle.info().travelPerCrankTurn/d.cruise
+	if d.kind == "leash":
+		_mover_reset()
+		cycle = ms.dw.walk.stride()*body_scale/ms.dw.walk_speed() if d.walking else ms.dw.stand.duration()
 	if d.has("lookAt"):
 		_mover_to(d.lookAt)
 		ms.look = ms.focus + Vector3.UP * d.lookHeight
@@ -662,10 +744,6 @@ func _mover_reset() -> void:
 	ms.sim = 0.0
 	ms.yaw = 0.0
 	match d.kind:
-		"dog":
-			ms.dog = Animal.create(Vector3.ZERO, 0, ms.m)
-		"pigeon":
-			ms.pig = Pigeon.create(Vector3.ZERO, 0, ms.p)
 		"leash":
 			ms.dw = DogWalker.new(Vector3.ZERO, 0.0, body_scale, func(_q: Vector3) -> float: return FLAT, ms.breed)
 			if ms.dw.error != "":
@@ -683,53 +761,23 @@ func _mover_to(time: float) -> void:
 		_mover_step(ms.sim, dt)
 	_mover_draw()
 
-## The review scenarios (numbers in movers.json): the dog walks, trots, stands, walks on; the walker
-## walks then stands while wandering; riders cruise an S-curve, pedalling then coasting; the pigeon walks,
-## stands looking about, feeds, hops twice, takes off, flies a circle, lands and stands.
+## Play only the named constant mover motion; do not add turns or timed action changes.
 func _mover_step(time: float, dt: float) -> void:
 	var d: Dictionary = ms.d
 	match d.kind:
-		"dog":
-			var speed := 0.0
-			for s in d.speeds:
-				if time < s[0]:
-					speed = s[1]
-					break
-			ms.dog = Animal.step(ms.dog, {"speed": speed, "yaw": sin(time * d.turnFrequency) * d.turnAmplitude,
-				"ground": func(_q: Vector3) -> float: return FLAT}, dt, ms.m)
 		"leash":
-			ms.dw.step(ms.dw.walk_speed() if time < d.walkUntil else 0.0, sin(time * d.turnFrequency) * d.turnAmplitude, dt)
+			ms.dw.step(ms.dw.walk_speed() if d.walking else 0.0, 0.0, dt)
 		"rider":
-			var yaw_rate: float = d.yawRateAmplitude * sin(time * d.yawRateFrequency)
-			ms.ride = Rider.step(ms.ride, {"speed": d.cruise, "yawRate": yaw_rate, "pedalling": time < d.pedalUntil}, dt, ms.vehicle.info(), ms.R)
+			var yaw_rate := 0.0
+			ms.ride = Rider.step(ms.ride, {"speed": d.cruise, "yawRate": yaw_rate, "pedalling": d.pedalling}, dt, ms.vehicle.info(), ms.R)
 			ms.yaw += yaw_rate * dt
 			var v: Node3D = ms.vehicle
 			v.position += Vector3(sin(ms.yaw), 0, cos(ms.yaw)) * d.cruise * dt
 			v.rotation = Vector3(0, ms.yaw, 0)
 			v.rotate_object_local(Vector3.BACK, -ms.ride.roll)
-		"pigeon":
-			var pig: Dictionary = ms.pig
-			var flying: bool = time >= d.fly[0] and time < d.fly[1]
-			var hop = null
-			for at in d.hops:
-				if time - dt < at and at <= time:
-					hop = pig.position + Vector3(sin(pig.yaw), 0, cos(pig.yaw)) * d.hopDistance
-			var feeding: bool = time >= d.peck[0] and time < d.peck[1]
-			var speed: float = d.walkSpeed if time < d.walkUntil else (d.peckSpeed if feeding else (d.flySpeed if time >= d.fly[0] and pig.mode != "ground" else 0.0))
-			var yaw: float = (time - d.fly[0]) * d.circleRate if time >= d.fly[0] else sin(time * d.wanderFrequency) * d.wanderAmplitude
-			ms.pig = Pigeon.step(pig, {"speed": speed, "yaw": yaw, "ground": FLAT, "peck": feeding, "fly": flying,
-				"altitude": d.altitude, "hop": hop}, dt, ms.p)
 
 func _mover_draw() -> void:
 	match ms.d.kind:
-		"dog":
-			ms.body.show_pose(AnimalModel.pose(ms.m, ms.dog))
-			ms.focus = ms.dog.position + Vector3.UP * ms.m.p.body.shoulderY
-		"pigeon":
-			var sil := Pigeon.silhouette(Pigeon.pose(ms.pig, ms.p), ms.p)
-			ms.fig.draw(sil.segments, sil.discs, sil.triangles)
-			var flying: bool = ms.pig.mode in ["takeoff", "air", "landing"]
-			ms.focus = Vector3(ms.pig.position.x, ms.pig.position.y if flying else ms.pig.ground, ms.pig.position.z)
 		"leash":
 			var dw = ms.dw
 			var dog_pose: Dictionary = dw.dog_pose()
@@ -752,88 +800,45 @@ func mover_state() -> String:
 	if ms.is_empty():
 		return ""
 	match ms.get("d", {}).get("kind", ""):
-		"dog":
-			return "%s  %.2f m/s" % [ms.dog.gait, ms.dog.actualSpeed]
-		"pigeon":
-			return "%s  %.2f m/s" % [ms.pig.mode, ms.pig.speed]
 		"leash":
 			return "walker %.2f m/s   dog %s   rope %.2f / %.2f m" % [ms.dw.walker.speed, ms.dw.dog.gait, ms.dw.separation, ms.dw.leash_p.ropeLength]
 		"rider":
 			return "roll %.0f°" % rad_to_deg(ms.ride.roll)
-	if ms.has("animal"):
-		return "%s  %s  %.2f m/s" % [ms.m.breed, Animal.doing(ms.animal), ms.animal.actualSpeed] + (" / " + ms.brain.mode if entry.action == "behaviour" else "")
+	if entry.get("kind") == "animal":
+		return "%s  %s" % [ms.m.breed, "循环" if repeats() else "单次"]
+	if entry.get("kind") == "pigeon_motion":
+		return "循环" if repeats() else "单次"
 	return ""
 
-# ------------------------------------------------------------------ animals (animal-behaviour.json review block)
+# ------------------------------------------------------------------ individual authored animal clips
 
 func _start_animal() -> void:
 	var c: Dictionary = _read(BEHAVIOUR)
-	ms = {"c": c, "sim": INF, "focus": Vector3.ZERO}
+	ms = {"c": c, "focus": Vector3.ZERO}
 	ms.m = AnimalModel.info(_breed(entry.species))
-	ms.dog_m = AnimalModel.info(AnimalModel.breeds("dog")[0])
-	for info in [ms.m, ms.dog_m]:
-		if info.error != "":
-			_fail(info.error)
-			return
+	if ms.m.error != "":
+		_fail(ms.m.error)
+		return
+	if not ms.m.clips.has(entry.clip):
+		_fail("%s has no authored clip %s" % [ms.m.breed, entry.clip])
+		return
 	ms.body = _animal_body(ms.m.breed)
-	ms.humans = []
-	if entry.action == "behaviour":
-		if entry.species == "cat":
-			ms.other_body = _animal_body(ms.dog_m.breed)
-		for i in c.review.people.size():
-			ms.humans.append(_extra_figure())
-	cycle = c.review.behaviour_duration if entry.action == "behaviour" else c.review.cycle
-
-func _animal_reset() -> void:
-	ms.sim = 0.0
-	ms.animal = Animal.create(Vector3.ZERO, 0, ms.m)
-	ms.brain = {"mode": ""}
-	ms.behaviour = Preview.create(ms.m, ms.dog_m, ms.c)
+	cycle = AnimalClip.duration(ms.m, entry.clip)
 
 func _animal_to(time: float) -> void:
-	var dt: float = ms.c.review.dt
-	if time < ms.sim - 1e-6 or ms.sim == INF:
-		_animal_reset()
-	while ms.sim + dt <= time + 1e-6:
-		ms.sim += dt
-		_animal_step(ms.sim)
-	_animal_draw()
+	var pose: Dictionary = AnimalClip.pose(ms.m, entry.clip, time)
+	ms.body.show_pose(pose)
+	ms.focus = pose.root.origin
 
-## The animal review scenario: walk, do the action between walk_until and hold_until, walk on; walk / trot
-## wander; behaviour lets the controller react to scripted passers-by (and, for the cat, an
-## approaching dog).
-func _animal_step(time: float) -> void:
-	var q: Dictionary = ms.c.review
-	var action: String = entry.action
-	if action == "behaviour":
-		ms.behaviour = Preview.step(ms.behaviour, ms.m, ms.dog_m, ms.c, q.dt)
-		ms.animal = ms.behaviour.animal
-		ms.brain = ms.behaviour.brain
-		return
-	var active: bool = time >= q.walk_until and time < q.hold_until
-	var command := {"speed": q.speed, "yaw": 0.0, "action": action if active else "", "ground": func(_q: Vector3) -> float: return FLAT}
-	if action in ["walk", "trot"]:
-		command.speed = q.speed if action == "walk" else ms.m.p.motion.maxSpeed * q.trot_speed_fraction
-		command.yaw = sin(time * q.turn_frequency) * q.turn_amplitude
-		command.action = ""
-	ms.animal = Animal.step(ms.animal, command, q.dt, ms.m)
+# ------------------------------------------------------------------ individual route-independent pigeon motions
 
-func _animal_draw() -> void:
-	var q: Dictionary = ms.c.review
-	ms.body.show_pose(AnimalModel.pose(ms.m, ms.animal))
-	ms.focus = ms.animal.position
-	if entry.action != "behaviour":
-		return
-	var people_now := Preview.people_at(ms.sim, ms.c)
-	for i in people_now.size():
-		var pos: Vector3 = people_now[i].position
-		var phase: float = sin(ms.sim * q.person_step_frequency + i)
-		var hip: Vector3 = pos + Vector3.UP * q.person_hip
-		var segments: Array = [[hip, pos + Vector3.UP * q.person_neck, q.person_width]]
-		for sign in [-1, 1]:
-			segments.append([hip, pos + Vector3(sign * q.person_stride * phase, 0, sign * q.person_arm_side / 2), q.person_width])
-			var shoulder: Vector3 = pos + Vector3(0, q.person_shoulder, sign * q.person_arm_side)
-			segments.append([shoulder, shoulder + Vector3(-sign * q.person_stride * phase, -q.person_arm, 0), q.person_width])
-		ms.humans[i].draw(segments, [[pos + Vector3.UP * q.person_head, q.person_head_radius]], [])
-	if entry.species == "cat":
-		ms.other_body.show_pose(AnimalModel.pose(ms.dog_m, ms.behaviour.other))
+func _start_pigeon_motion() -> void:
+	ms = {"p": Pigeon.load_params(), "fig": _extra_figure(),
+		"focus": Vector3(0, entry.definition.target_height, 0)}
+	ms.fig.position.y = entry.definition.root_height
+	cycle = entry.definition.duration
+
+func _pigeon_to(time: float) -> void:
+	ms.pose = PigeonMotion.sample(entry.motion, time, ms.p, {}, false)
+	var drawing: Dictionary = Pigeon.silhouette(ms.pose, ms.p)
+	ms.fig.draw(drawing.segments, drawing.discs, drawing.triangles)

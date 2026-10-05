@@ -1,0 +1,62 @@
+[
+  {
+    "breed": "cat",
+    "clip": "NG_Tail_Wag_Slow",
+    "old_seconds": 3,
+    "old_cycles": 2
+  },
+  {
+    "breed": "cat",
+    "clip": "NG_Tail_Wag_Happy",
+    "old_seconds": 2,
+    "old_cycles": 4
+  },
+  {
+    "breed": "cat",
+    "clip": "NG_Sit_Wag",
+    "old_seconds": 3,
+    "old_cycles": 3
+  },
+  {
+    "breed": "cat",
+    "clip": "NG_Knead",
+    "old_seconds": 3.6,
+    "old_cycles": 2
+  },
+  {
+    "breed": "husky",
+    "clip": "NG_Tail_Wag_Slow",
+    "old_seconds": 3,
+    "old_cycles": 2
+  },
+  {
+    "breed": "husky",
+    "clip": "NG_Tail_Wag_Happy",
+    "old_seconds": 2,
+    "old_cycles": 4
+  },
+  {
+    "breed": "husky",
+    "clip": "NG_Sit_Wag",
+    "old_seconds": 3,
+    "old_cycles": 3
+  },
+  {
+    "breed": "shibainu",
+    "clip": "NG_Tail_Wag_Slow",
+    "old_seconds": 3,
+    "old_cycles": 2
+  },
+  {
+    "breed": "shibainu",
+    "clip": "NG_Tail_Wag_Happy",
+    "old_seconds": 2,
+    "old_cycles": 4
+  },
+  {
+    "breed": "shibainu",
+    "clip": "NG_Sit_Wag",
+    "old_seconds": 3,
+    "old_cycles": 3
+  }
+]

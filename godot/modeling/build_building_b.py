@@ -1,5 +1,5 @@
 """Four-storey corner block with a recessed top floor. Blender --background --python.
-Self-contained; all dimensions in metres, game +Y up / +Z front. Original geometry.
+Final shell pass uses building_seal.py; all dimensions in metres, game +Y up / +Z front. Original geometry.
 """
 from pathlib import Path
 import bpy
@@ -138,3 +138,12 @@ def build():
 
 if __name__ == '__main__':
     build()
+
+
+# Shared final pass: sealed opaque windows and a hollow masonry shell.
+if __name__ == "__main__":
+    import sys as _sys
+    from pathlib import Path as _Path
+    _sys.path.insert(0, str(_Path(__file__).resolve().parent))
+    from building_seal import seal_building as _seal_building
+    _seal_building(_Path(__file__).resolve().parents[1] / "models" / (_Path(__file__).stem.removeprefix("build_") + ".glb"), __file__)

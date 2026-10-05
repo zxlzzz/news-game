@@ -1,0 +1,196 @@
+{
+  "name": "push_bicycle",
+  "text": "A person walks forward with their right arm held straight down motionless alongside the body, while the left arm swings widely and naturally. Normal alternating steps, no object.",
+  "duration": 2.2333333333333334,
+  "seed": 2703,
+  "loop": true,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+      "source_frame": 16,
+      "frame": 16
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+      "source_frame": 33,
+      "frame": 33
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+      "source_frame": 50,
+      "frame": 50
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+      "source_frame": 66,
+      "frame": 66
+    }
+  ],
+  "effectors": [
+    {
+      "joints": [
+        "RightHand"
+      ],
+      "keyframes": [
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 0,
+          "frame": 0
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 3,
+          "frame": 3
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 6,
+          "frame": 6
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 9,
+          "frame": 9
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 12,
+          "frame": 12
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 15,
+          "frame": 15
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 18,
+          "frame": 18
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 21,
+          "frame": 21
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 24,
+          "frame": 24
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 27,
+          "frame": 27
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 30,
+          "frame": 30
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 33,
+          "frame": 33
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 36,
+          "frame": 36
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 39,
+          "frame": 39
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 42,
+          "frame": 42
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 45,
+          "frame": 45
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 48,
+          "frame": 48
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 51,
+          "frame": 51
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 54,
+          "frame": 54
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 57,
+          "frame": 57
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 60,
+          "frame": 60
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 63,
+          "frame": 63
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c808211a1a38176f55a181a1a935784461538ef5b443bc4dfa834975e130f041.npz",
+          "source_frame": 66,
+          "frame": 66
+        }
+      ]
+    }
+  ],
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 1.3328149318695068,
+  "mapped_average_speed_m_s": 1.0511158768686961,
+  "endpoint_cleanup": {
+    "maximum_source_error_m": 2.5463114639023843e-07,
+    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
+  },
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "push_bicycle",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  },
+  "single_unit": {
+    "clip": "push_bicycle",
+    "source_sha256": "7fc117bc95b13176619d315a5e016afb9fac243e260366ddbe7a60c864f7593e",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1,
+    "source": "assets/animations/generation_inputs/7fc117bc95b13176619d315a5e016afb9fac243e260366ddbe7a60c864f7593e.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
+  }
+}

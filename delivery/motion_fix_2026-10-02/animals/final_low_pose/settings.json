@@ -1,0 +1,42 @@
+{
+  "fps": 120,
+  "breeds": [
+    "husky",
+    "shibainu",
+    "cat"
+  ],
+  "scenarios": [
+    {
+      "label": "sit_urgent",
+      "action": "sit",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "lie_urgent",
+      "action": "lie",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "sleep_urgent",
+      "action": "sleep",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "seconds": 16
+    },
+    {
+      "label": "side_lie_urgent",
+      "action": "side_lie",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "seconds": 16
+    }
+  ]
+}

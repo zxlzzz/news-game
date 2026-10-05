@@ -1,0 +1,64 @@
+{
+  "status": "assistant_runtime_reviewed_user_acceptance_pending",
+  "clips": {
+    "drink": {
+      "duration_s": 3.46666666666667,
+      "source_chains": false,
+      "source_sha256": "bfbdadadc8dbfa7cc8d0f8c29023ac6f64768cb331e81569cd658457bba76a44",
+      "maximum_sleeve_grip_gap_m": 1.22892245713047e-07,
+      "maximum_sip_lip_target_gap_m": 1.20137002568299e-07,
+      "lowered_cup_up_start": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lowered_cup_up_end": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "sip_tilt_deg": 65,
+      "maximum_120_step_hand_head_relative_m": 0.04763830052464067,
+      "after_duration_holds_final_pose": true
+    },
+    "walk_drink": {
+      "duration_s": 4.4,
+      "source_chains": true,
+      "source_sha256": "28e6709649a8b4a2c8264f4ffb15500d77cd8b8a8b58c237dadb638e09224c7e",
+      "maximum_sleeve_grip_gap_m": 4.76837158203125e-07,
+      "maximum_sip_lip_target_gap_m": 2.66560078898692e-07,
+      "lowered_cup_up_start": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lowered_cup_up_end": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "sip_tilt_deg": 65,
+      "maximum_120_step_hand_head_relative_m": 0.060284914129398244,
+      "two_cycle_relative_hand_phase_agreement_m": 9.536743097449119e-07
+    }
+  },
+  "geometry": {
+    "grip_sleeve_m": [
+      -0.049,
+      -0.015,
+      0
+    ],
+    "rear_lid_lip_m": [
+      0,
+      0.0885,
+      -0.057
+    ],
+    "head_radius_m": 0.18,
+    "mouth_head_offset_m": [
+      0,
+      -0.055,
+      0.171391
+    ]
+  },
+  "limit": "The stylized head has no anatomical mouth landmark; the lower-front head-disc edge is the explicit visual sip target. Fingers/liquid/lid opening are not animated."
+}

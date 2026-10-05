@@ -33,6 +33,10 @@ func _process(_d: float) -> bool:
 	var started := {}
 	var dropped := {}
 	var last := {}
+	var seat_states := {}
+	var seated_entered := 0
+	var seated_left := 0
+	var seating_errors: Array[String] = []
 	var t := 0.0
 	var next_report := 10.0
 	while t < SECONDS:
@@ -43,6 +47,15 @@ func _process(_d: float) -> bool:
 			if person.type != "agent":
 				continue
 			var a = person.action
+			var seated: bool=a!=null and a.get("seated",false)
+			var was_seated: bool=seat_states.get(person.figure,false)
+			if seated and not was_seated: seated_entered+=1
+			if not seated and was_seated: seated_left+=1
+			seat_states[person.figure]=seated
+			if seated and not person.has("seat_transition") and absf(angle_difference(person.yaw,a.face))>0.01:
+				seating_errors.append("turning while seated")
+			if person.has("seat_transition") and person.seat_transition.time>crowd.p.seating.seconds+STEP:
+				seating_errors.append("stalled seat transition")
 			var old = last.get(person.figure)
 			if a != old:
 				if old != null and old.do == "use" and not old.arrived:
@@ -73,6 +86,11 @@ func _process(_d: float) -> bool:
 	if not no_row.is_empty():
 		print("post kinds in the scene with no row in the behaviour table (not used): %s" % [no_row])
 	var never := kinds.keys().filter(func(k): return rows.has(k) and not used.has(k))
+	print("seat transitions: entered %d, left %d" % [seated_entered,seated_left])
+	if seated_entered==0 or seated_left==0 or not seating_errors.is_empty():
+		printerr("BEHAVIOUR_FAIL: seating ",seating_errors)
+		quit(1)
+		return true
 	if not never.is_empty():
 		printerr("BEHAVIOUR_FAIL: posts never used in %d s: %s" % [SECONDS, never])
 		quit(1)

@@ -3,7 +3,7 @@
 ## one. What is placed for an entry, and what dragging writes, is stage.gd; this file is the panel, the
 ## mouse and the command line (godot/README.md "空地").
 ##   godot --path . res://scenes/empty_ground/level.tscn [-- options]
-##   --entry <id>          a clip id, a mover id of movers.json, or <species>:<action> (dog:sit)
+##   --entry <id>          a clip id, a mover id of movers.json, or <species>:<clip> (dog:NG_Sit_Down)
 ##   --item <held type>    --object <type>    --breed <breed>      the swaps the panel offers
 ##   --time <s>  --speed <x>
 ##   --shot <abs png>      one still (core/shot.gd), paused at --time
@@ -122,13 +122,16 @@ func _process(delta: float) -> void:
 		return
 	if playing:
 		stage.advance(delta * speed)
+		if stage.t >= stage.cycle and not stage.repeats():
+			playing=false
 	if follow:
 		cam.frame(stage.focus())
 	_show_time()
 
 func _show_time() -> void:
-	ui.slider.set_value_no_signal(stage.t)
-	ui.time.text = "%.2f / %.2f s" % [stage.t, stage.cycle]
+	var shown: float = stage.display_time()
+	ui.slider.set_value_no_signal(shown)
+	ui.time.text = "%.2f / %.2f s" % [shown, stage.cycle]
 	ui.caption.text = "%s   %.2f s   %s" % [stage.entry.id, stage.t, stage.mover_state()]
 
 func _capture() -> void:
@@ -181,7 +184,7 @@ func _build_ui(still: bool) -> void:
 	box.add_child(row)
 	ui.play = Button.new()
 	ui.play.text = "播放 / 暂停"
-	ui.play.pressed.connect(func(): playing = not playing)
+	ui.play.pressed.connect(_toggle_play)
 	row.add_child(ui.play)
 	var sp := SpinBox.new()
 	sp.min_value = stage.p.speed[0]
@@ -289,9 +292,13 @@ func _manual_spot() -> Vector3:
 
 # ------------------------------------------------------------------ mouse
 
+func _toggle_play() -> void:
+	if not playing and not stage.repeats() and stage.t >= stage.cycle: stage.seek(0)
+	playing=not playing
+
 func _on_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
-		playing = not playing
+		_toggle_play()
 		get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:

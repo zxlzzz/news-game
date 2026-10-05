@@ -1,0 +1,65 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\interactions\\after",
+  "entries": [
+    {
+      "id": "walk_backpack_straps",
+      "follow_pose": true
+    },
+    {
+      "id": "elder_assisted_walk",
+      "follow_pose": true
+    },
+    {
+      "id": "assist_elder_walk",
+      "follow_pose": true
+    },
+    {
+      "id": "vending_collect",
+      "follow_pose": false
+    },
+    {
+      "id": "hang_laundry",
+      "follow_pose": false
+    },
+    {
+      "id": "fruit_weigh",
+      "follow_pose": false
+    },
+    {
+      "id": "fruit_choose",
+      "follow_pose": false
+    },
+    {
+      "id": "distribute_flyer",
+      "follow_pose": false
+    },
+    {
+      "id": "receive_flyer",
+      "follow_pose": false
+    },
+    {
+      "id": "photo_overhead",
+      "follow_pose": false
+    },
+    {
+      "id": "chess_move",
+      "follow_pose": false
+    },
+    {
+      "id": "take_back_piece",
+      "follow_pose": false
+    },
+    {
+      "id": "table_tennis_play",
+      "follow_pose": false
+    }
+  ],
+  "samples": 24,
+  "columns": 6,
+  "cell": 384,
+  "views": [
+    0,
+    90
+  ],
+  "pitch": 15
+}

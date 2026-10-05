@@ -1,0 +1,206 @@
+{
+  "name": "walk_rigid",
+  "text": "A nervous person walks straight forward stiffly, spine upright, shoulders rigid, both straight arms held closely at their sides without swinging. Small regular steps and very little vertical bounce.",
+  "duration": 2.033333333333333,
+  "seed": 906,
+  "loop": true,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+      "source_frame": 15,
+      "frame": 15
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+      "source_frame": 30,
+      "frame": 30
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+      "source_frame": 45,
+      "frame": 45
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+      "source_frame": 60,
+      "frame": 60
+    }
+  ],
+  "review_source": {
+    "pilot": "walk_rigid_pilot",
+    "frames": [
+      83,
+      110
+    ],
+    "mapped_hand_targets": {
+      "Left": [
+        0.17,
+        0.72,
+        0
+      ],
+      "Right": [
+        -0.17,
+        0.72,
+        0
+      ]
+    }
+  },
+  "effectors": [
+    {
+      "joints": [
+        "LeftHand",
+        "RightHand"
+      ],
+      "keyframes": [
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 0,
+          "frame": 0
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 3,
+          "frame": 3
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 6,
+          "frame": 6
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 9,
+          "frame": 9
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 12,
+          "frame": 12
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 15,
+          "frame": 15
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 18,
+          "frame": 18
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 21,
+          "frame": 21
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 24,
+          "frame": 24
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 27,
+          "frame": 27
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 30,
+          "frame": 30
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 33,
+          "frame": 33
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 36,
+          "frame": 36
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 39,
+          "frame": 39
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 42,
+          "frame": 42
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 45,
+          "frame": 45
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 48,
+          "frame": 48
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 51,
+          "frame": 51
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 54,
+          "frame": 54
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 57,
+          "frame": 57
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4eca2783ee1dedf404d4272c64c8f368c6ee1e0e307bb15d6cafdd02d541215a.npz",
+          "source_frame": 60,
+          "frame": 60
+        }
+      ]
+    }
+  ],
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 1.855371356010437,
+  "mapped_average_speed_m_s": 1.4632266214593352,
+  "endpoint_cleanup": {
+    "maximum_source_error_m": 2.4027400513659813e-07,
+    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
+  },
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "walk_rigid",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  },
+  "single_unit": {
+    "clip": "walk_rigid",
+    "source_sha256": "cf032085659f8f351f5a5df549fe58549cac441d7f168be229fb7bf48e390596",
+    "original_frames": 61,
+    "take_frames": [
+      30,
+      60
+    ],
+    "original_units": 2,
+    "frames": 31,
+    "duration": 1.0,
+    "source": "assets/animations/generation_inputs/cf032085659f8f351f5a5df549fe58549cac441d7f168be229fb7bf48e390596.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
+  }
+}

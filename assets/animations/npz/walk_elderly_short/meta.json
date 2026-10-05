@@ -1,0 +1,206 @@
+{
+  "name": "walk_elderly_short",
+  "text": "An elderly person walks straight forward with very short shuffling steps, knees slightly bent, torso inclined forward a little, elbows bent and hands kept low in front. Small careful foot placements, slow continuous movement.",
+  "duration": 2.033333333333333,
+  "seed": 901,
+  "loop": true,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+      "source_frame": 15,
+      "frame": 15
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+      "source_frame": 30,
+      "frame": 30
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+      "source_frame": 45,
+      "frame": 45
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+      "source_frame": 60,
+      "frame": 60
+    }
+  ],
+  "review_source": {
+    "pilot": "walk_elderly_short_pilot",
+    "frames": [
+      117,
+      142
+    ],
+    "mapped_hand_targets": {
+      "Left": [
+        0.2,
+        0.62,
+        0.12
+      ],
+      "Right": [
+        -0.2,
+        0.62,
+        0.12
+      ]
+    }
+  },
+  "effectors": [
+    {
+      "joints": [
+        "LeftHand",
+        "RightHand"
+      ],
+      "keyframes": [
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 0,
+          "frame": 0
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 3,
+          "frame": 3
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 6,
+          "frame": 6
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 9,
+          "frame": 9
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 12,
+          "frame": 12
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 15,
+          "frame": 15
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 18,
+          "frame": 18
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 21,
+          "frame": 21
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 24,
+          "frame": 24
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 27,
+          "frame": 27
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 30,
+          "frame": 30
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 33,
+          "frame": 33
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 36,
+          "frame": 36
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 39,
+          "frame": 39
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 42,
+          "frame": 42
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 45,
+          "frame": 45
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 48,
+          "frame": 48
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 51,
+          "frame": 51
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 54,
+          "frame": 54
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 57,
+          "frame": 57
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/7b1ba58bbe3fb8943456b043c45826f04e0936a8d08af2de646ba94cb91be354.npz",
+          "source_frame": 60,
+          "frame": 60
+        }
+      ]
+    }
+  ],
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 0.7768117189407349,
+  "mapped_average_speed_m_s": 0.6126275385967941,
+  "endpoint_cleanup": {
+    "maximum_source_error_m": 1.2013700256829907e-07,
+    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
+  },
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "walk_elderly_short",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  },
+  "single_unit": {
+    "clip": "walk_elderly_short",
+    "source_sha256": "041f997d0f2367a648fcd458a1c276d97f0ea1824503cd3425d1272cff83cadf",
+    "original_frames": 61,
+    "take_frames": [
+      30,
+      60
+    ],
+    "original_units": 2,
+    "frames": 31,
+    "duration": 1.0,
+    "source": "assets/animations/generation_inputs/041f997d0f2367a648fcd458a1c276d97f0ea1824503cd3425d1272cff83cadf.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "fps": 120,
+  "breeds": [
+    "husky",
+    "shibainu"
+  ],
+  "scenarios": [
+    {
+      "label": "scratch_normal",
+      "action": "scratch",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0,
+      "seconds": 16
+    },
+    {
+      "label": "scratch_urgent",
+      "action": "scratch",
+      "begin": 2,
+      "end": 10,
+      "speed": 0.35,
+      "speed_after": 0.35,
+      "seconds": 16
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/motion_fix_2026-10-02/interactions/basketball_continuous",
+  "entries": [
+    {
+      "id": "basketball_dribble",
+      "label": "basketball_two_cycles",
+      "start": 0,
+      "duration": 6.8,
+      "size": 2.3
+    }
+  ],
+  "samples": 60,
+  "columns": 6,
+  "cell": 300,
+  "views": [
+    135,
+    225
+  ],
+  "pitch": 12,
+  "provenance": [
+    "res://npc/interactions.json",
+    "res://npc/motion/assist_elder_walk.json",
+    "res://npc/motion/atm_take_cash.json",
+    "res://npc/motion/basketball_dribble.json"
+  ]
+}

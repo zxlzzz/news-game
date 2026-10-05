@@ -10486,5 +10486,19 @@
       ]
     },
     "sha256": "2341592194092e108c35958804bc73ae7beb4dfc3f24fb705371024d098d6f0d"
+  },
+  "single_unit": {
+    "clip": "jog",
+    "source_sha256": "2341592194092e108c35958804bc73ae7beb4dfc3f24fb705371024d098d6f0d",
+    "original_frames": 79,
+    "take_frames": [
+      52,
+      78
+    ],
+    "original_units": 3,
+    "frames": 27,
+    "duration": 0.8666666666666667,
+    "source": "assets/animations/generation_inputs/2341592194092e108c35958804bc73ae7beb4dfc3f24fb705371024d098d6f0d.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
   }
 }

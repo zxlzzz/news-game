@@ -5,3 +5,6 @@
 [node name="HeldShoppingBag" type="Node3D" groups=["held"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.005, 0, 0.0199)
+rotation = Vector3(0, 1.5707963267948966, 0)
+position = Vector3(-0.025, 0, 0)

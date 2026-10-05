@@ -1,0 +1,80 @@
+{
+  "name": "walk_proud",
+  "text": "A person strides forward proudly with their chest lifted, chin raised and torso slightly leaning backward. Both arms swing broadly from the shoulders in time with confident long steps.",
+  "duration": 2.3,
+  "seed": 903,
+  "loop": true,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/2247c2237e224991dd343e8aa4538339c46ae11bbd4f17312dfc900ef3238cec.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/2247c2237e224991dd343e8aa4538339c46ae11bbd4f17312dfc900ef3238cec.npz",
+      "source_frame": 17,
+      "frame": 17
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/2247c2237e224991dd343e8aa4538339c46ae11bbd4f17312dfc900ef3238cec.npz",
+      "source_frame": 34,
+      "frame": 34
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/2247c2237e224991dd343e8aa4538339c46ae11bbd4f17312dfc900ef3238cec.npz",
+      "source_frame": 51,
+      "frame": 51
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/2247c2237e224991dd343e8aa4538339c46ae11bbd4f17312dfc900ef3238cec.npz",
+      "source_frame": 68,
+      "frame": 68
+    }
+  ],
+  "review_source": {
+    "pilot": "walk_proud_pilot",
+    "frames": [
+      52,
+      86
+    ],
+    "mapped_hand_targets": {}
+  },
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 1.4691338539123535,
+  "mapped_average_speed_m_s": 1.1586229131800896,
+  "endpoint_cleanup": {
+    "maximum_source_error_m": 2.3946401483954105e-07,
+    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
+  },
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "walk_proud",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  },
+  "single_unit": {
+    "clip": "walk_proud",
+    "source_sha256": "97d386488764cba4148bb0cb67b5f5374fe814177d417df3af3d12b216e8bfee",
+    "original_frames": 69,
+    "take_frames": [
+      34,
+      68
+    ],
+    "original_units": 2,
+    "frames": 35,
+    "duration": 1.1333333333333333,
+    "source": "assets/animations/generation_inputs/97d386488764cba4148bb0cb67b5f5374fe814177d417df3af3d12b216e8bfee.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
+  }
+}

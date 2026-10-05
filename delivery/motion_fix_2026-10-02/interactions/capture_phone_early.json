@@ -1,0 +1,19 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\interactions\\phone_early",
+  "entries": [
+    {
+      "id": "phone_urgent",
+      "label": "phone_urgent_native_early",
+      "duration": 0.4,
+      "follow_pose": true
+    }
+  ],
+  "samples": 12,
+  "columns": 6,
+  "cell": 384,
+  "views": [
+    0,
+    90
+  ],
+  "pitch": 15
+}

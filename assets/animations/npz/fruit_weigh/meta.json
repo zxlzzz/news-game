@@ -1,0 +1,998 @@
+{
+  "name": "fruit_weigh",
+  "text": "A standing fruit seller carefully moves both hands from one side of a waist high counter to the other, placing fruit onto a scale, looks down and waits.",
+  "duration": 5.0,
+  "seed": 2671,
+  "loop": false,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+      "source_frame": 50,
+      "frame": 50
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+      "source_frame": 100,
+      "frame": 100
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+      "source_frame": 149,
+      "frame": 149
+    }
+  ],
+  "effectors": [
+    {
+      "joints": [
+        "LeftHand",
+        "RightHand"
+      ],
+      "keyframes": [
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 0,
+          "frame": 0
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 1,
+          "frame": 1
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 2,
+          "frame": 2
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 3,
+          "frame": 3
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 4,
+          "frame": 4
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 5,
+          "frame": 5
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 6,
+          "frame": 6
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 7,
+          "frame": 7
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 8,
+          "frame": 8
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 9,
+          "frame": 9
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 10,
+          "frame": 10
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 11,
+          "frame": 11
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 12,
+          "frame": 12
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 13,
+          "frame": 13
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 14,
+          "frame": 14
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 15,
+          "frame": 15
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 16,
+          "frame": 16
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 17,
+          "frame": 17
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 18,
+          "frame": 18
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 19,
+          "frame": 19
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 20,
+          "frame": 20
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 21,
+          "frame": 21
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 22,
+          "frame": 22
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 23,
+          "frame": 23
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 24,
+          "frame": 24
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 25,
+          "frame": 25
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 26,
+          "frame": 26
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 27,
+          "frame": 27
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 28,
+          "frame": 28
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 29,
+          "frame": 29
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 30,
+          "frame": 30
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 31,
+          "frame": 31
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 32,
+          "frame": 32
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 33,
+          "frame": 33
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 34,
+          "frame": 34
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 35,
+          "frame": 35
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 36,
+          "frame": 36
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 37,
+          "frame": 37
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 38,
+          "frame": 38
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 39,
+          "frame": 39
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 40,
+          "frame": 40
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 41,
+          "frame": 41
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 42,
+          "frame": 42
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 43,
+          "frame": 43
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 44,
+          "frame": 44
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 45,
+          "frame": 45
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 46,
+          "frame": 46
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 47,
+          "frame": 47
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 48,
+          "frame": 48
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 49,
+          "frame": 49
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 50,
+          "frame": 50
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 51,
+          "frame": 51
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 52,
+          "frame": 52
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 53,
+          "frame": 53
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 54,
+          "frame": 54
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 55,
+          "frame": 55
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 56,
+          "frame": 56
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 57,
+          "frame": 57
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 58,
+          "frame": 58
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 59,
+          "frame": 59
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 60,
+          "frame": 60
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 61,
+          "frame": 61
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 62,
+          "frame": 62
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 63,
+          "frame": 63
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 64,
+          "frame": 64
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 65,
+          "frame": 65
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 66,
+          "frame": 66
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 67,
+          "frame": 67
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 68,
+          "frame": 68
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 69,
+          "frame": 69
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 70,
+          "frame": 70
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 71,
+          "frame": 71
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 72,
+          "frame": 72
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 73,
+          "frame": 73
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 74,
+          "frame": 74
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 75,
+          "frame": 75
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 76,
+          "frame": 76
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 77,
+          "frame": 77
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 78,
+          "frame": 78
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 79,
+          "frame": 79
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 80,
+          "frame": 80
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 81,
+          "frame": 81
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 82,
+          "frame": 82
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 83,
+          "frame": 83
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 84,
+          "frame": 84
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 85,
+          "frame": 85
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 86,
+          "frame": 86
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 87,
+          "frame": 87
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 88,
+          "frame": 88
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 89,
+          "frame": 89
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 90,
+          "frame": 90
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 91,
+          "frame": 91
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 92,
+          "frame": 92
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 93,
+          "frame": 93
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 94,
+          "frame": 94
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 95,
+          "frame": 95
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 96,
+          "frame": 96
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 97,
+          "frame": 97
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 98,
+          "frame": 98
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 99,
+          "frame": 99
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 100,
+          "frame": 100
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 101,
+          "frame": 101
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 102,
+          "frame": 102
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 103,
+          "frame": 103
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 104,
+          "frame": 104
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 105,
+          "frame": 105
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 106,
+          "frame": 106
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 107,
+          "frame": 107
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 108,
+          "frame": 108
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 109,
+          "frame": 109
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 110,
+          "frame": 110
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 111,
+          "frame": 111
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 112,
+          "frame": 112
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 113,
+          "frame": 113
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 114,
+          "frame": 114
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 115,
+          "frame": 115
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 116,
+          "frame": 116
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 117,
+          "frame": 117
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 118,
+          "frame": 118
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 119,
+          "frame": 119
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 120,
+          "frame": 120
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 121,
+          "frame": 121
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 122,
+          "frame": 122
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 123,
+          "frame": 123
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 124,
+          "frame": 124
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 125,
+          "frame": 125
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 126,
+          "frame": 126
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 127,
+          "frame": 127
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 128,
+          "frame": 128
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 129,
+          "frame": 129
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 130,
+          "frame": 130
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 131,
+          "frame": 131
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 132,
+          "frame": 132
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 133,
+          "frame": 133
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 134,
+          "frame": 134
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 135,
+          "frame": 135
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 136,
+          "frame": 136
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 137,
+          "frame": 137
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 138,
+          "frame": 138
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 139,
+          "frame": 139
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 140,
+          "frame": 140
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 141,
+          "frame": 141
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 142,
+          "frame": 142
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 143,
+          "frame": 143
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 144,
+          "frame": 144
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 145,
+          "frame": 145
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 146,
+          "frame": 146
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 147,
+          "frame": 147
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 148,
+          "frame": 148
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+          "source_frame": 149,
+          "frame": 149
+        }
+      ]
+    }
+  ],
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 0.04855002462863922,
+  "mapped_average_speed_m_s": 0.03828866295634008,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "fruit_weigh",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  },
+  "repair": {
+    "date": "2026-10-02",
+    "status": "applied_runtime_reviewed_pending_user_acceptance",
+    "method": "Reconstruct all77 joints from archived pre-EE local rotations and complete hierarchy; author complete anatomical arm chains for task grips where needed.",
+    "archived_rotation_source": "assets/animations/generation_inputs/4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2.npz",
+    "source_sha256": "4d140ed79e5ce3a02f4e62e69dd511c5cea5289320b1bf0128476d8946d3bde2",
+    "original_shipped_sha256": "25014156dc2dd1c204b14922297dcfe60462e2b3175f9149e77e1f5ca0447f75",
+    "task_arm_chains": [
+      {
+        "side": "Right",
+        "max_target_residual_m": 0.0,
+        "target_point": "wrist",
+        "palm_extension_m": 0.0,
+        "task_trajectory_torso_coordinates": [
+          [
+            0,
+            -0.1798841819980471,
+            -0.3290853979090717,
+            0.15779193121222243
+          ],
+          [
+            0.18,
+            -0.17,
+            -0.12,
+            0.2
+          ],
+          [
+            0.35,
+            -0.23,
+            0.02,
+            0.28
+          ],
+          [
+            0.55,
+            -0.48,
+            0.12,
+            0.26
+          ],
+          [
+            0.67,
+            -0.48,
+            0.12,
+            0.26
+          ],
+          [
+            0.84,
+            -0.24,
+            -0.05,
+            0.22
+          ],
+          [
+            1,
+            -0.1798841819980471,
+            -0.3290853979090717,
+            0.15779193121222243
+          ]
+        ]
+      }
+    ],
+    "original_body_root_legs": "Preserved from the archived original full motion; no temporal smoothing or selected-frame freezing.",
+    "derivatives": "global/local rotations and posed77 joints reconstructed together; archived root path, foot contacts and heading retained; loop final rotations/contacts/heading repeat first.",
+    "before": {
+      "frames": 150,
+      "max_bone_length_range_m": 0.0008959174156188965,
+      "fk_position_max_error_m": 3.772672698687529e-07,
+      "fk_rotation_max_error": 4.617557181063603e-07,
+      "local_rotation_orthogonality_max_error": 0.0014394078791933368,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.014064835384488106,
+          "frames": [
+            18,
+            19
+          ],
+          "max_fk_error_m": 2.4053377956079203e-07,
+          "fk_max_step_m": 0.014064750634133816
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.18108955025672913,
+          "frames": [
+            100,
+            101
+          ],
+          "max_fk_error_m": 2.417710618374258e-07,
+          "fk_max_step_m": 0.18108953535556793
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.07870014011859894,
+          "frames": [
+            27,
+            28
+          ],
+          "max_fk_error_m": 2.4439722778879513e-07,
+          "fk_max_step_m": 0.07870016247034073
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.02915402129292488,
+          "frames": [
+            33,
+            34
+          ],
+          "max_fk_error_m": 2.389128326285572e-07,
+          "fk_max_step_m": 0.02915392629802227
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.5190884470939636,
+          "frames": [
+            94,
+            95
+          ],
+          "max_fk_error_m": 2.4189299097088224e-07,
+          "fk_max_step_m": 0.5190884470939636
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.12004294991493225,
+          "frames": [
+            98,
+            99
+          ],
+          "max_fk_error_m": 2.4755667027420714e-07,
+          "fk_max_step_m": 0.1200430691242218
+        }
+      }
+    },
+    "after": {
+      "frames": 150,
+      "max_bone_length_range_m": 2.086162567138672e-07,
+      "fk_position_max_error_m": 3.769728778024728e-07,
+      "fk_rotation_max_error": 4.238326027916628e-07,
+      "local_rotation_orthogonality_max_error": 1.9175012560358486e-07,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.005357468035072088,
+          "frames": [
+            50,
+            51
+          ],
+          "max_fk_error_m": 2.389128326285572e-07,
+          "fk_max_step_m": 0.00535747641697526
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.016009073704481125,
+          "frames": [
+            63,
+            64
+          ],
+          "max_fk_error_m": 2.430305983125436e-07,
+          "fk_max_step_m": 0.016009051352739334
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.04599928855895996,
+          "frames": [
+            128,
+            129
+          ],
+          "max_fk_error_m": 2.427323977371998e-07,
+          "fk_max_step_m": 0.04599924013018608
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.011764485388994217,
+          "frames": [
+            14,
+            15
+          ],
+          "max_fk_error_m": 2.3890012812444184e-07,
+          "fk_max_step_m": 0.01176452450454235
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.013575931079685688,
+          "frames": [
+            14,
+            15
+          ],
+          "max_fk_error_m": 2.4575624024691933e-07,
+          "fk_max_step_m": 0.01357599813491106
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.01896868832409382,
+          "frames": [
+            112,
+            113
+          ],
+          "max_fk_error_m": 2.4620757699267415e-07,
+          "fk_max_step_m": 0.018968595191836357
+        }
+      }
+    },
+    "visual_evidence": "delivery/motion_fix_2026-10-02/interactions/after/fruit_weigh.png"
+  }
+}

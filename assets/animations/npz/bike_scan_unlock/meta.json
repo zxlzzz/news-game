@@ -1,0 +1,24 @@
+{
+  "name": "bike_scan_unlock",
+  "text": "Standing beside a bicycle, hold a phone in the right hand at waist height, bend slightly forward to aim the phone at the bike handlebar, briefly hold steady to scan, straighten up and lower the phone.",
+  "duration": 4,
+  "seed": 5303,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "bike_scan_unlock",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

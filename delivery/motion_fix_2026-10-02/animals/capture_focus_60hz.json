@@ -1,0 +1,232 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_focus_60hz",
+  "entries": [
+    {
+      "id": "dog:shake",
+      "label": "husky_shake_60hz",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 2.0,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "dog:shake_head",
+      "label": "husky_shake_head_60hz",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 2.0,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "dog:startle",
+      "label": "husky_startle_60hz",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 2.0,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "dog:scratch",
+      "label": "husky_scratch_60hz",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 5.2,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "dog:tail_tuck",
+      "label": "husky_tail_tuck_60hz",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 2.8,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "dog:shake",
+      "label": "shibainu_shake_60hz",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 2.0,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "dog:shake_head",
+      "label": "shibainu_shake_head_60hz",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 2.0,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "dog:startle",
+      "label": "shibainu_startle_60hz",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 2.0,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "dog:scratch",
+      "label": "shibainu_scratch_60hz",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 5.2,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "dog:tail_tuck",
+      "label": "shibainu_tail_tuck_60hz",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 2.8,
+      "duration": 3.0,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "cat:shake",
+      "label": "cat_shake_60hz",
+      "options": {},
+      "start": 2.0,
+      "duration": 3.0,
+      "size": 1.2,
+      "target_height": 0.16,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "cat:shake_head",
+      "label": "cat_shake_head_60hz",
+      "options": {},
+      "start": 2.0,
+      "duration": 3.0,
+      "size": 1.2,
+      "target_height": 0.16,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "cat:startle",
+      "label": "cat_startle_60hz",
+      "options": {},
+      "start": 2.0,
+      "duration": 3.0,
+      "size": 1.2,
+      "target_height": 0.16,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "cat:knead",
+      "label": "cat_knead_60hz",
+      "options": {},
+      "start": 5.2,
+      "duration": 3.0,
+      "size": 1.2,
+      "target_height": 0.16,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    },
+    {
+      "id": "cat:tail_tuck",
+      "label": "cat_tail_tuck_60hz",
+      "options": {},
+      "start": 2.8,
+      "duration": 3.0,
+      "size": 1.2,
+      "target_height": 0.16,
+      "review": {
+        "dt": 0.016666666666666666
+      }
+    }
+  ],
+  "samples": 180,
+  "columns": 15,
+  "cell": 256,
+  "views": [
+    0,
+    90,
+    270
+  ],
+  "pitch": 12,
+  "provenance": [
+    "res://tools/review_motion_batch.gd",
+    "res://scenes/empty_ground/stage.gd",
+    "res://npc/animal.gd",
+    "res://npc/animal_model.gd",
+    "res://npc/animal_body.gd",
+    "res://npc/procedural_dog.gd",
+    "res://npc/dog-params.json",
+    "res://npc/animal-models.json",
+    "res://npc/animal_controller.gd",
+    "res://npc/animal-behaviour.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://models/animal_husky.glb",
+    "res://models/animal_shibainu.glb",
+    "res://models/animal_cat.glb",
+    "res://tools/animal_behaviour_preview.gd"
+  ]
+}

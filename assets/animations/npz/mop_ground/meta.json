@@ -1,0 +1,174 @@
+{
+  "name": "mop_ground",
+  "text": "A cleaner mops the floor with a long upright mop held in both hands, pushes hands forward and draws them back in slow repeated strokes, bends slightly at hips, feet planted.",
+  "duration": 2.033333333333333,
+  "seed": 2611,
+  "loop": true,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+      "source_frame": 15,
+      "frame": 15
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+      "source_frame": 30,
+      "frame": 30
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+      "source_frame": 45,
+      "frame": 45
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+      "source_frame": 60,
+      "frame": 60
+    }
+  ],
+  "effectors": [
+    {
+      "joints": [
+        "LeftHand",
+        "RightHand"
+      ],
+      "keyframes": [
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 0,
+          "frame": 0
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 3,
+          "frame": 3
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 6,
+          "frame": 6
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 9,
+          "frame": 9
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 12,
+          "frame": 12
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 15,
+          "frame": 15
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 18,
+          "frame": 18
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 21,
+          "frame": 21
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 24,
+          "frame": 24
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 27,
+          "frame": 27
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 30,
+          "frame": 30
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 33,
+          "frame": 33
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 36,
+          "frame": 36
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 39,
+          "frame": 39
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 42,
+          "frame": 42
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 45,
+          "frame": 45
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 48,
+          "frame": 48
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 51,
+          "frame": 51
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 54,
+          "frame": 54
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 57,
+          "frame": 57
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c2324369a348637c2524c3d484c7db15e57ef3aeeed38699e9610d57aa91df97.npz",
+          "source_frame": 60,
+          "frame": 60
+        }
+      ]
+    }
+  ],
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 0.028632380068302155,
+  "mapped_average_speed_m_s": 0.022580741378787187,
+  "endpoint_cleanup": {
+    "maximum_source_error_m": 0.0,
+    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
+  },
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "stand_idle",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
+    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
+  }
+}

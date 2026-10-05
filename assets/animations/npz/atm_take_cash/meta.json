@@ -1,0 +1,995 @@
+{
+  "name": "atm_take_cash",
+  "text": "A standing person leans slightly forward, reaches the right hand into the cash slot of an ATM at waist height, withdraws banknotes and brings the hand back toward the abdomen.",
+  "duration": 5.0,
+  "seed": 3133,
+  "loop": false,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+      "source_frame": 50,
+      "frame": 50
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+      "source_frame": 100,
+      "frame": 100
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+      "source_frame": 149,
+      "frame": 149
+    }
+  ],
+  "effectors": [
+    {
+      "joints": [
+        "RightHand"
+      ],
+      "keyframes": [
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 0,
+          "frame": 0
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 1,
+          "frame": 1
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 2,
+          "frame": 2
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 3,
+          "frame": 3
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 4,
+          "frame": 4
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 5,
+          "frame": 5
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 6,
+          "frame": 6
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 7,
+          "frame": 7
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 8,
+          "frame": 8
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 9,
+          "frame": 9
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 10,
+          "frame": 10
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 11,
+          "frame": 11
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 12,
+          "frame": 12
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 13,
+          "frame": 13
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 14,
+          "frame": 14
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 15,
+          "frame": 15
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 16,
+          "frame": 16
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 17,
+          "frame": 17
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 18,
+          "frame": 18
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 19,
+          "frame": 19
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 20,
+          "frame": 20
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 21,
+          "frame": 21
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 22,
+          "frame": 22
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 23,
+          "frame": 23
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 24,
+          "frame": 24
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 25,
+          "frame": 25
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 26,
+          "frame": 26
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 27,
+          "frame": 27
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 28,
+          "frame": 28
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 29,
+          "frame": 29
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 30,
+          "frame": 30
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 31,
+          "frame": 31
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 32,
+          "frame": 32
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 33,
+          "frame": 33
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 34,
+          "frame": 34
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 35,
+          "frame": 35
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 36,
+          "frame": 36
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 37,
+          "frame": 37
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 38,
+          "frame": 38
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 39,
+          "frame": 39
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 40,
+          "frame": 40
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 41,
+          "frame": 41
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 42,
+          "frame": 42
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 43,
+          "frame": 43
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 44,
+          "frame": 44
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 45,
+          "frame": 45
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 46,
+          "frame": 46
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 47,
+          "frame": 47
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 48,
+          "frame": 48
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 49,
+          "frame": 49
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 50,
+          "frame": 50
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 51,
+          "frame": 51
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 52,
+          "frame": 52
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 53,
+          "frame": 53
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 54,
+          "frame": 54
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 55,
+          "frame": 55
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 56,
+          "frame": 56
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 57,
+          "frame": 57
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 58,
+          "frame": 58
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 59,
+          "frame": 59
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 60,
+          "frame": 60
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 61,
+          "frame": 61
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 62,
+          "frame": 62
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 63,
+          "frame": 63
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 64,
+          "frame": 64
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 65,
+          "frame": 65
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 66,
+          "frame": 66
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 67,
+          "frame": 67
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 68,
+          "frame": 68
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 69,
+          "frame": 69
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 70,
+          "frame": 70
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 71,
+          "frame": 71
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 72,
+          "frame": 72
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 73,
+          "frame": 73
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 74,
+          "frame": 74
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 75,
+          "frame": 75
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 76,
+          "frame": 76
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 77,
+          "frame": 77
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 78,
+          "frame": 78
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 79,
+          "frame": 79
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 80,
+          "frame": 80
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 81,
+          "frame": 81
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 82,
+          "frame": 82
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 83,
+          "frame": 83
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 84,
+          "frame": 84
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 85,
+          "frame": 85
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 86,
+          "frame": 86
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 87,
+          "frame": 87
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 88,
+          "frame": 88
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 89,
+          "frame": 89
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 90,
+          "frame": 90
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 91,
+          "frame": 91
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 92,
+          "frame": 92
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 93,
+          "frame": 93
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 94,
+          "frame": 94
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 95,
+          "frame": 95
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 96,
+          "frame": 96
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 97,
+          "frame": 97
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 98,
+          "frame": 98
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 99,
+          "frame": 99
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 100,
+          "frame": 100
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 101,
+          "frame": 101
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 102,
+          "frame": 102
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 103,
+          "frame": 103
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 104,
+          "frame": 104
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 105,
+          "frame": 105
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 106,
+          "frame": 106
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 107,
+          "frame": 107
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 108,
+          "frame": 108
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 109,
+          "frame": 109
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 110,
+          "frame": 110
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 111,
+          "frame": 111
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 112,
+          "frame": 112
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 113,
+          "frame": 113
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 114,
+          "frame": 114
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 115,
+          "frame": 115
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 116,
+          "frame": 116
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 117,
+          "frame": 117
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 118,
+          "frame": 118
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 119,
+          "frame": 119
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 120,
+          "frame": 120
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 121,
+          "frame": 121
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 122,
+          "frame": 122
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 123,
+          "frame": 123
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 124,
+          "frame": 124
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 125,
+          "frame": 125
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 126,
+          "frame": 126
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 127,
+          "frame": 127
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 128,
+          "frame": 128
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 129,
+          "frame": 129
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 130,
+          "frame": 130
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 131,
+          "frame": 131
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 132,
+          "frame": 132
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 133,
+          "frame": 133
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 134,
+          "frame": 134
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 135,
+          "frame": 135
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 136,
+          "frame": 136
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 137,
+          "frame": 137
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 138,
+          "frame": 138
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 139,
+          "frame": 139
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 140,
+          "frame": 140
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 141,
+          "frame": 141
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 142,
+          "frame": 142
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 143,
+          "frame": 143
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 144,
+          "frame": 144
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 145,
+          "frame": 145
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 146,
+          "frame": 146
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 147,
+          "frame": 147
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 148,
+          "frame": 148
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+          "source_frame": 149,
+          "frame": 149
+        }
+      ]
+    }
+  ],
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 0.05097569525241852,
+  "mapped_average_speed_m_s": 0.040201652407270125,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "atm_take_cash",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  },
+  "repair_u2": {
+    "date": "2026-10-02",
+    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
+    "method": "Preserve shipped body/root/feet and reconstruct complete77 hierarchy with a continuous complete task arm chain; no temporal smoothing or frame freezing.",
+    "original_shipped_sha256": "4d5b136f8624164d871b50a72dfab9ac6f8b2dafb41bf58dc223358bce3a91a0",
+    "preserved_unselected_body_fk_max_error_m": 0.0,
+    "unchanged_arrays": [
+      "root_positions",
+      "smooth_root_pos",
+      "foot_contacts",
+      "global_root_heading"
+    ],
+    "task_arm_chain": {
+      "side": "Right",
+      "torso_relative_wrist_keys_m": [
+        [
+          0,
+          -0.28686923008066034,
+          -0.30610193378499295,
+          0.07826057792737115
+        ],
+        [
+          0.18,
+          -0.25,
+          -0.15,
+          0.36
+        ],
+        [
+          0.4,
+          -0.25,
+          -0.15,
+          0.36
+        ],
+        [
+          0.55,
+          -0.15,
+          -0.12,
+          0.22
+        ],
+        [
+          0.82,
+          -0.17,
+          -0.12,
+          0.2
+        ],
+        [
+          1,
+          -0.17,
+          -0.12,
+          0.2
+        ]
+      ],
+      "max_target_residual_m": 0.0,
+      "pole_torso": [
+        -0.35,
+        -1,
+        -0.15
+      ]
+    },
+    "before": {
+      "frames": 150,
+      "max_bone_length_range_m": 0.0008679330348968506,
+      "fk_position_max_error_m": 4.851466428590356e-07,
+      "fk_rotation_max_error": 5.031211003370117e-07,
+      "local_rotation_orthogonality_max_error": 0.001616045927072603,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.006375826895236969,
+          "frames": [
+            136,
+            137
+          ],
+          "max_fk_error_m": 2.413114259525173e-07,
+          "fk_max_step_m": 0.006375826895236969
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.0063211810775101185,
+          "frames": [
+            137,
+            138
+          ],
+          "max_fk_error_m": 2.4038948254201387e-07,
+          "fk_max_step_m": 0.006321227177977562
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.008905681781470776,
+          "frames": [
+            89,
+            90
+          ],
+          "max_fk_error_m": 2.9807560508743336e-07,
+          "fk_max_step_m": 0.008905882015824318
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.01063695177435875,
+          "frames": [
+            37,
+            38
+          ],
+          "max_fk_error_m": 2.4211522031691857e-07,
+          "fk_max_step_m": 0.01063696201890707
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.15245501697063446,
+          "frames": [
+            143,
+            144
+          ],
+          "max_fk_error_m": 3.579381768759049e-07,
+          "fk_max_step_m": 0.1524548977613449
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.22290454804897308,
+          "frames": [
+            143,
+            144
+          ],
+          "max_fk_error_m": 3.6256091107134125e-07,
+          "fk_max_step_m": 0.22290459275245667
+        }
+      }
+    },
+    "after": {
+      "frames": 150,
+      "max_bone_length_range_m": 0.0008678734302520752,
+      "fk_position_max_error_m": 3.595628754737845e-07,
+      "fk_rotation_max_error": 3.9452916666959936e-07,
+      "local_rotation_orthogonality_max_error": 0.004031011823298967,
+      "hands": {
+        "LeftArm": {
+          "max_hip_relative_step_m": 0.006375810131430626,
+          "frames": [
+            136,
+            137
+          ],
+          "max_fk_error_m": 2.3914506641631306e-07,
+          "fk_max_step_m": 0.006375826895236969
+        },
+        "LeftForeArm": {
+          "max_hip_relative_step_m": 0.006321263033896685,
+          "frames": [
+            137,
+            138
+          ],
+          "max_fk_error_m": 2.416849440578517e-07,
+          "fk_max_step_m": 0.006321227177977562
+        },
+        "LeftHand": {
+          "max_hip_relative_step_m": 0.008905747905373573,
+          "frames": [
+            89,
+            90
+          ],
+          "max_fk_error_m": 2.428663492537453e-07,
+          "fk_max_step_m": 0.008905882015824318
+        },
+        "RightArm": {
+          "max_hip_relative_step_m": 0.010636905208230019,
+          "frames": [
+            37,
+            38
+          ],
+          "max_fk_error_m": 2.4027400513659813e-07,
+          "fk_max_step_m": 0.01063696201890707
+        },
+        "RightForeArm": {
+          "max_hip_relative_step_m": 0.016746174544095993,
+          "frames": [
+            18,
+            19
+          ],
+          "max_fk_error_m": 2.413114259525173e-07,
+          "fk_max_step_m": 0.016746198758482933
+        },
+        "RightHand": {
+          "max_hip_relative_step_m": 0.0217126552015543,
+          "frames": [
+            15,
+            16
+          ],
+          "max_fk_error_m": 2.425733214295178e-07,
+          "fk_max_step_m": 0.02171267569065094
+        }
+      }
+    },
+    "runtime_visual_evidence": "delivery/motion_fix_2026-10-02/interactions/u2_findings.md"
+  }
+}

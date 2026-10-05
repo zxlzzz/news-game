@@ -1,0 +1,144 @@
+{
+  "scope": "Fixed captured hip and wrist, upper/lower plane rotated only. Distal orientation remains captured; not a proof that the full 4-bone leg has no feasible pose.",
+  "folder": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\scratch_skin_normalized",
+  "breed": "shibainu",
+  "scenario": "scratch_urgent",
+  "frame": 1251,
+  "time": 10.425,
+  "removed_uniform_raise_m": 0.00440194550901651,
+  "glb_sha256": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d",
+  "dump_sha256": "fb4ffd1ba5642dfe4c06c29bf243fd2320b4c311f50a6fa0ebca8ee828cac58e",
+  "manifest_sha256": "899f414d98f66954f3008bbbd435017764d3bb604102abbbe353f4f70cb142fc",
+  "hip_m": [
+    0.06096428632736206,
+    0.171274877153337,
+    0.316874623298645
+  ],
+  "wrist_m": [
+    0.05019402503967285,
+    0.028547993861138824,
+    0.1642870008945465
+  ],
+  "sole_reconstruction": {
+    "LF": {
+      "min_y_m": -1.3954324376563854e-08,
+      "mean_xz_m": [
+        0.04521036396545547,
+        0.5616321036366563
+      ]
+    },
+    "LH": {
+      "min_y_m": 0.0006335519161514488,
+      "mean_xz_m": [
+        0.06388320106196128,
+        0.266226483566322
+      ]
+    },
+    "RF": {
+      "min_y_m": 0.003933564014947415,
+      "mean_xz_m": [
+        -0.04520201671214799,
+        0.5704577505733841
+      ]
+    },
+    "RH": {
+      "min_y_m": -3.281827028905372e-08,
+      "mean_xz_m": [
+        -0.06377009480658455,
+        0.2656964345969908
+      ]
+    }
+  },
+  "all_skin_current_floor_m": -0.004401968863650359,
+  "all_skin_lowest": {
+    "index": 967,
+    "point_m": [
+      0.0497060383686363,
+      -0.004401968863650359,
+      0.21426091000952407
+    ],
+    "influences": [
+      {
+        "bone": "BackLowerLeg.L",
+        "weight": 0.9483914971351624,
+        "bind_local_m": [
+          -0.007084116759115938,
+          0.053067505583913877,
+          -0.02891414021882993
+        ]
+      },
+      {
+        "bone": "FFB.L",
+        "weight": 0.05160851404070854,
+        "bind_local_m": [
+          -0.007084012985392879,
+          -0.057525807521723704,
+          0.02520925743091581
+        ]
+      }
+    ]
+  },
+  "leg_vertex_count": 346,
+  "sweep_step_degrees": 0.05,
+  "current_leg_floor_m": 0.013749893552116046,
+  "current_lowest": {
+    "index": 895,
+    "point_m": [
+      0.03900997768277817,
+      0.013749893552116046,
+      0.15740381858981575
+    ],
+    "influences": [
+      {
+        "bone": "BackLowerLeg.L",
+        "weight": 0.5376810431480408,
+        "bind_local_m": [
+          0.012294755178460286,
+          -0.011016358724727338,
+          -0.015052443215267108
+        ]
+      },
+      {
+        "bone": "BackUpperLeg.L",
+        "weight": 0.4623189866542816,
+        "bind_local_m": [
+          -0.01229477546565659,
+          0.19446492565728218,
+          0.012950464057459199
+        ]
+      }
+    ]
+  },
+  "optimal_plane_degrees": 150.15000000000003,
+  "optimal_leg_floor_m": 0.02329635974972319,
+  "optimal_limiting_vertex": {
+    "index": 895,
+    "point_m": [
+      0.03900997768277817,
+      0.013749893552116046,
+      0.15740381858981575
+    ],
+    "influences": [
+      {
+        "bone": "BackLowerLeg.L",
+        "weight": 0.5376810431480408,
+        "bind_local_m": [
+          0.012294755178460286,
+          -0.011016358724727338,
+          -0.015052443215267108
+        ]
+      },
+      {
+        "bone": "BackUpperLeg.L",
+        "weight": 0.4623189866542816,
+        "bind_local_m": [
+          -0.01229477546565659,
+          0.19446492565728218,
+          0.012950464057459199
+        ]
+      }
+    ]
+  },
+  "angles_at_or_above_floor_count": 7201,
+  "individually_impossible_vertices": []
+}

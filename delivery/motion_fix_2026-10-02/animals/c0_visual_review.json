@@ -1,0 +1,7 @@
+{
+  "reviewed": true,
+  "file": "delivery\\motion_fix_2026-10-02\\animals\\c0_actual\\husky_scratch_mid_cancel.png",
+  "sha256": "2b3abff86ea5884d3a1d2689279e6808e01b670bac3a5bc8dd3a6bb24aeffcc3",
+  "manifest_sha256": "14078f0c73cdc52c8136ef3a0ab1fe8ee31c811e7039e4ad78a9f5c4121f9c59",
+  "scope": "31 recorded matrices at 120 Hz, captured source index0 then recovery, three actual rendered views. Paw descends without visible immediate 47 degree reset. Replay-only, not a full-skin verification dataset; distal before/after matrices separately establish C0."
+}

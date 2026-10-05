@@ -1,0 +1,1 @@
+{"breeds": ["cat"], "scenarios": [{"label": "sit", "action": "sit", "speed": 0.35, "seconds": 16.0}]}

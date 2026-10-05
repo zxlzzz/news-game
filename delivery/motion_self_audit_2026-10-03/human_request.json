@@ -1,0 +1,746 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_self_audit_2026-10-03\\human",
+  "samples": 9,
+  "columns": 9,
+  "cell": 192,
+  "viewport": 512,
+  "include_endpoint": true,
+  "views": [
+    0,
+    90
+  ],
+  "pitch": 8,
+  "entries": [
+    {
+      "id": "adjust_clothes"
+    },
+    {
+      "id": "air_walker"
+    },
+    {
+      "id": "assist_elder_walk"
+    },
+    {
+      "id": "atm_keypad"
+    },
+    {
+      "id": "atm_take_cash"
+    },
+    {
+      "id": "back_away"
+    },
+    {
+      "id": "badminton_swing"
+    },
+    {
+      "id": "basketball_dribble"
+    },
+    {
+      "id": "basketball_shoot"
+    },
+    {
+      "id": "beckon"
+    },
+    {
+      "id": "bike_scan_unlock"
+    },
+    {
+      "id": "block_way"
+    },
+    {
+      "id": "bow"
+    },
+    {
+      "id": "breakfast_buy"
+    },
+    {
+      "id": "breakfast_sell"
+    },
+    {
+      "id": "browse_bookstall"
+    },
+    {
+      "id": "brush_clothes"
+    },
+    {
+      "id": "buy_newspaper"
+    },
+    {
+      "id": "cafe_sit_drink"
+    },
+    {
+      "id": "car_enter"
+    },
+    {
+      "id": "car_exit"
+    },
+    {
+      "id": "carry_bag"
+    },
+    {
+      "id": "carry_bags"
+    },
+    {
+      "id": "carry_box"
+    },
+    {
+      "id": "carry_bucket"
+    },
+    {
+      "id": "carry_shoulder"
+    },
+    {
+      "id": "carry_shoulder_bag"
+    },
+    {
+      "id": "check_watch"
+    },
+    {
+      "id": "cheer"
+    },
+    {
+      "id": "chess_move"
+    },
+    {
+      "id": "chess_watch"
+    },
+    {
+      "id": "choose_item"
+    },
+    {
+      "id": "cough"
+    },
+    {
+      "id": "cover_face"
+    },
+    {
+      "id": "crane_neck"
+    },
+    {
+      "id": "cross_arms"
+    },
+    {
+      "id": "crouch_check"
+    },
+    {
+      "id": "crouch_check_hold"
+    },
+    {
+      "id": "distribute_flyer"
+    },
+    {
+      "id": "dodge"
+    },
+    {
+      "id": "drink"
+    },
+    {
+      "id": "duck_cover"
+    },
+    {
+      "id": "duck_cover_hold"
+    },
+    {
+      "id": "eat_snack"
+    },
+    {
+      "id": "eat_walk"
+    },
+    {
+      "id": "elder_assisted_walk"
+    },
+    {
+      "id": "exercise"
+    },
+    {
+      "id": "fall_back"
+    },
+    {
+      "id": "fan_self"
+    },
+    {
+      "id": "film_phone"
+    },
+    {
+      "id": "football_juggle"
+    },
+    {
+      "id": "fountain_drink"
+    },
+    {
+      "id": "fruit_choose"
+    },
+    {
+      "id": "fruit_weigh"
+    },
+    {
+      "id": "give_item"
+    },
+    {
+      "id": "grab_snatch"
+    },
+    {
+      "id": "guard"
+    },
+    {
+      "id": "hail_taxi"
+    },
+    {
+      "id": "hands_behind_back"
+    },
+    {
+      "id": "hands_in_pockets"
+    },
+    {
+      "id": "hands_on_head"
+    },
+    {
+      "id": "hands_on_head_hold"
+    },
+    {
+      "id": "hands_on_hips"
+    },
+    {
+      "id": "hands_up"
+    },
+    {
+      "id": "hands_up_hold"
+    },
+    {
+      "id": "handshake_offer"
+    },
+    {
+      "id": "handshake_reply"
+    },
+    {
+      "id": "handstand"
+    },
+    {
+      "id": "hang_laundry"
+    },
+    {
+      "id": "hesitate_reach"
+    },
+    {
+      "id": "hold_door"
+    },
+    {
+      "id": "hold_guitar"
+    },
+    {
+      "id": "hold_umbrella"
+    },
+    {
+      "id": "hop"
+    },
+    {
+      "id": "inspect_item"
+    },
+    {
+      "id": "interrupt"
+    },
+    {
+      "id": "interview_answer"
+    },
+    {
+      "id": "interview_describe"
+    },
+    {
+      "id": "interview_followup"
+    },
+    {
+      "id": "interview_listen"
+    },
+    {
+      "id": "interview_point"
+    },
+    {
+      "id": "interview_question"
+    },
+    {
+      "id": "jog"
+    },
+    {
+      "id": "kneel_hold"
+    },
+    {
+      "id": "laugh"
+    },
+    {
+      "id": "lean_railing"
+    },
+    {
+      "id": "lean_sign"
+    },
+    {
+      "id": "lean_wall"
+    },
+    {
+      "id": "lecture"
+    },
+    {
+      "id": "leg_stretch"
+    },
+    {
+      "id": "lie_ground_hold"
+    },
+    {
+      "id": "look_around_nervous"
+    },
+    {
+      "id": "look_away"
+    },
+    {
+      "id": "look_down"
+    },
+    {
+      "id": "look_up"
+    },
+    {
+      "id": "magic_gesture"
+    },
+    {
+      "id": "march_in_place"
+    },
+    {
+      "id": "mop_ground"
+    },
+    {
+      "id": "pace"
+    },
+    {
+      "id": "parcel_terminal"
+    },
+    {
+      "id": "pat_dust"
+    },
+    {
+      "id": "pay"
+    },
+    {
+      "id": "peek_side"
+    },
+    {
+      "id": "phone_booth_call"
+    },
+    {
+      "id": "phone_call"
+    },
+    {
+      "id": "phone_urgent"
+    },
+    {
+      "id": "phone_walk"
+    },
+    {
+      "id": "photo_overhead"
+    },
+    {
+      "id": "pick_up"
+    },
+    {
+      "id": "point"
+    },
+    {
+      "id": "point_shout"
+    },
+    {
+      "id": "post_letter"
+    },
+    {
+      "id": "post_notice"
+    },
+    {
+      "id": "present"
+    },
+    {
+      "id": "press_button"
+    },
+    {
+      "id": "pull_door"
+    },
+    {
+      "id": "pull_suitcase"
+    },
+    {
+      "id": "pullup_hold"
+    },
+    {
+      "id": "pullup_raise"
+    },
+    {
+      "id": "push_bicycle"
+    },
+    {
+      "id": "push_cart"
+    },
+    {
+      "id": "push_door"
+    },
+    {
+      "id": "push_stroller"
+    },
+    {
+      "id": "reach_after"
+    },
+    {
+      "id": "read_book"
+    },
+    {
+      "id": "read_newspaper"
+    },
+    {
+      "id": "read_notice"
+    },
+    {
+      "id": "receive_flyer"
+    },
+    {
+      "id": "receive_item"
+    },
+    {
+      "id": "recoil"
+    },
+    {
+      "id": "rub_eye"
+    },
+    {
+      "id": "rub_hands"
+    },
+    {
+      "id": "rummage_bin"
+    },
+    {
+      "id": "run"
+    },
+    {
+      "id": "run_curve"
+    },
+    {
+      "id": "scratch_back"
+    },
+    {
+      "id": "scratch_head"
+    },
+    {
+      "id": "seesaw_partner"
+    },
+    {
+      "id": "seesaw_seated"
+    },
+    {
+      "id": "selfie"
+    },
+    {
+      "id": "shadow_box"
+    },
+    {
+      "id": "shake_foot"
+    },
+    {
+      "id": "shout"
+    },
+    {
+      "id": "shrug"
+    },
+    {
+      "id": "sigh"
+    },
+    {
+      "id": "sit_bench"
+    },
+    {
+      "id": "sit_ground"
+    },
+    {
+      "id": "sit_ground_dazed"
+    },
+    {
+      "id": "sit_ground_dazed_hold"
+    },
+    {
+      "id": "sit_knees_up"
+    },
+    {
+      "id": "sit_sideways"
+    },
+    {
+      "id": "sit_step"
+    },
+    {
+      "id": "skip"
+    },
+    {
+      "id": "slap_table"
+    },
+    {
+      "id": "slide_seated"
+    },
+    {
+      "id": "slouch_bench"
+    },
+    {
+      "id": "smoke"
+    },
+    {
+      "id": "smoke_walk"
+    },
+    {
+      "id": "sneeze"
+    },
+    {
+      "id": "spin"
+    },
+    {
+      "id": "square_dance"
+    },
+    {
+      "id": "squat"
+    },
+    {
+      "id": "squat_down"
+    },
+    {
+      "id": "squat_watch"
+    },
+    {
+      "id": "stand_hunched"
+    },
+    {
+      "id": "stand_idle"
+    },
+    {
+      "id": "stand_up"
+    },
+    {
+      "id": "stand_up_support_back"
+    },
+    {
+      "id": "stand_watch"
+    },
+    {
+      "id": "start_walk"
+    },
+    {
+      "id": "startle"
+    },
+    {
+      "id": "stop_hand"
+    },
+    {
+      "id": "stop_walk"
+    },
+    {
+      "id": "stretch"
+    },
+    {
+      "id": "stumble"
+    },
+    {
+      "id": "sweep_ground"
+    },
+    {
+      "id": "swing_seated"
+    },
+    {
+      "id": "table_tennis_partner"
+    },
+    {
+      "id": "table_tennis_play"
+    },
+    {
+      "id": "tai_chi"
+    },
+    {
+      "id": "take_back_piece"
+    },
+    {
+      "id": "take_photo"
+    },
+    {
+      "id": "talk_accuse"
+    },
+    {
+      "id": "talk_excited"
+    },
+    {
+      "id": "talk_gesture"
+    },
+    {
+      "id": "talk_shy"
+    },
+    {
+      "id": "throw_trash"
+    },
+    {
+      "id": "tiptoe"
+    },
+    {
+      "id": "trip_fall"
+    },
+    {
+      "id": "turn_about"
+    },
+    {
+      "id": "turn_left_quarter"
+    },
+    {
+      "id": "turn_page"
+    },
+    {
+      "id": "turn_right_quarter"
+    },
+    {
+      "id": "turn_walk"
+    },
+    {
+      "id": "vending_collect"
+    },
+    {
+      "id": "vendor_call"
+    },
+    {
+      "id": "vendor_tidy"
+    },
+    {
+      "id": "waist_twister"
+    },
+    {
+      "id": "walk"
+    },
+    {
+      "id": "walk_backpack_straps"
+    },
+    {
+      "id": "walk_backward"
+    },
+    {
+      "id": "walk_briefcase"
+    },
+    {
+      "id": "walk_brisk"
+    },
+    {
+      "id": "walk_cane"
+    },
+    {
+      "id": "walk_carry_bag"
+    },
+    {
+      "id": "walk_carry_bags"
+    },
+    {
+      "id": "walk_carry_box"
+    },
+    {
+      "id": "walk_check_watch"
+    },
+    {
+      "id": "walk_child_hand_down"
+    },
+    {
+      "id": "walk_closed_umbrella"
+    },
+    {
+      "id": "walk_cold"
+    },
+    {
+      "id": "walk_dog"
+    },
+    {
+      "id": "walk_drink"
+    },
+    {
+      "id": "walk_elderly_short"
+    },
+    {
+      "id": "walk_hands_pockets"
+    },
+    {
+      "id": "walk_hold_front"
+    },
+    {
+      "id": "walk_limp"
+    },
+    {
+      "id": "walk_look_up"
+    },
+    {
+      "id": "walk_newspaper"
+    },
+    {
+      "id": "walk_newspaper_underarm"
+    },
+    {
+      "id": "walk_one_arm_still"
+    },
+    {
+      "id": "walk_one_pocket"
+    },
+    {
+      "id": "walk_phone_call"
+    },
+    {
+      "id": "walk_proud"
+    },
+    {
+      "id": "walk_rigid"
+    },
+    {
+      "id": "walk_slow"
+    },
+    {
+      "id": "walk_stairs_down"
+    },
+    {
+      "id": "walk_stairs_up"
+    },
+    {
+      "id": "walk_talk"
+    },
+    {
+      "id": "walk_tired"
+    },
+    {
+      "id": "walk_umbrella"
+    },
+    {
+      "id": "wallet_takeout"
+    },
+    {
+      "id": "water_planter_hold"
+    },
+    {
+      "id": "wave"
+    },
+    {
+      "id": "wave_both_overhead"
+    },
+    {
+      "id": "whisper"
+    },
+    {
+      "id": "wipe_sweat"
+    },
+    {
+      "id": "yawn"
+    },
+    {
+      "id": "wave_overhead"
+    },
+    {
+      "id": "wave_overhead_v2"
+    },
+    {
+      "id": "wave_overhead_v3"
+    }
+  ],
+  "provenance": [
+    "res://npc/skeleton_mapping.gd",
+    "res://npc/clip_pose.gd",
+    "res://npc/contact_pose.gd",
+    "res://npc/interaction_player.gd",
+    "res://npc/interactions.json",
+    "res://scenes/empty_ground/stage.gd"
+  ]
+}

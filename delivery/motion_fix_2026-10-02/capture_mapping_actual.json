@@ -1,0 +1,129 @@
+{
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/motion_fix_2026-10-02/mapping_actual",
+  "samples": 24,
+  "columns": 6,
+  "cell": 320,
+  "views": [
+    45,
+    225
+  ],
+  "pitch": 15,
+  "entries": [
+    {
+      "id": "handstand",
+      "follow_pose": true
+    },
+    {
+      "id": "walk_cold",
+      "follow_pose": true
+    },
+    {
+      "id": "hang_laundry",
+      "follow_pose": true
+    },
+    {
+      "id": "skip",
+      "follow_pose": true
+    },
+    {
+      "id": "basketball_shoot",
+      "follow_pose": true
+    },
+    {
+      "id": "trip_fall",
+      "follow_pose": true
+    },
+    {
+      "id": "shadow_box",
+      "follow_pose": true
+    },
+    {
+      "id": "take_back_piece",
+      "follow_pose": true
+    },
+    {
+      "id": "rub_eye",
+      "follow_pose": true
+    },
+    {
+      "id": "whisper",
+      "follow_pose": true
+    },
+    {
+      "id": "drink",
+      "follow_pose": true
+    },
+    {
+      "id": "walk_drink",
+      "follow_pose": true
+    },
+    {
+      "id": "guard",
+      "follow_pose": true
+    },
+    {
+      "id": "cafe_sit_drink",
+      "follow_pose": true
+    },
+    {
+      "id": "hands_on_head",
+      "follow_pose": true
+    },
+    {
+      "id": "duck_cover",
+      "follow_pose": true
+    },
+    {
+      "id": "phone_booth_call",
+      "follow_pose": true
+    },
+    {
+      "id": "shout",
+      "follow_pose": true
+    },
+    {
+      "id": "wipe_sweat",
+      "follow_pose": true
+    },
+    {
+      "id": "dodge",
+      "follow_pose": true
+    },
+    {
+      "id": "swing_seated",
+      "follow_pose": true
+    },
+    {
+      "id": "scratch_head",
+      "follow_pose": true
+    },
+    {
+      "id": "wave_overhead",
+      "follow_pose": true
+    },
+    {
+      "id": "eat_walk",
+      "follow_pose": true
+    },
+    {
+      "id": "startle",
+      "follow_pose": true
+    },
+    {
+      "id": "recoil",
+      "follow_pose": true
+    },
+    {
+      "id": "basketball_dribble",
+      "follow_pose": true
+    },
+    {
+      "id": "smoke_walk",
+      "follow_pose": true
+    },
+    {
+      "id": "yawn",
+      "follow_pose": true
+    }
+  ]
+}

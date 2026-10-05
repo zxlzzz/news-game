@@ -1,0 +1,60 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_lie_recovery_60hz",
+  "entries": [
+    {
+      "id": "dog:lie",
+      "label": "husky_lie_recovery",
+      "options": {
+        "breed": "husky"
+      },
+      "start": 10.1,
+      "duration": 1.2,
+      "size": 1.6,
+      "target_height": 0.25,
+      "review": {
+        "dt": 0.008333333333333333
+      }
+    },
+    {
+      "id": "dog:lie",
+      "label": "shibainu_lie_recovery",
+      "options": {
+        "breed": "shibainu"
+      },
+      "start": 10.1,
+      "duration": 1.2,
+      "size": 1.3,
+      "target_height": 0.19,
+      "review": {
+        "dt": 0.008333333333333333
+      }
+    }
+  ],
+  "samples": 72,
+  "columns": 12,
+  "cell": 256,
+  "views": [
+    0,
+    90,
+    270
+  ],
+  "pitch": 12,
+  "provenance": [
+    "res://tools/review_motion_batch.gd",
+    "res://scenes/empty_ground/stage.gd",
+    "res://npc/animal.gd",
+    "res://npc/animal_model.gd",
+    "res://npc/animal_body.gd",
+    "res://npc/procedural_dog.gd",
+    "res://npc/dog-params.json",
+    "res://npc/animal-models.json",
+    "res://npc/animal_controller.gd",
+    "res://npc/animal-behaviour.json",
+    "res://npc/procedural_pigeon.gd",
+    "res://npc/pigeon-params.json",
+    "res://models/animal_husky.glb",
+    "res://models/animal_shibainu.glb",
+    "res://models/animal_cat.glb",
+    "res://tools/animal_behaviour_preview.gd"
+  ]
+}

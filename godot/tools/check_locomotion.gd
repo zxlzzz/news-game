@@ -50,9 +50,7 @@ func _initialize() -> void:
 
 ## Up and down a 0.15 m curb, straight and slanting, at any speed: every leg reaches its paw (within
 ## procedural_dog.gd OVERREACH), no planted leg folds tighter than it can (within the same), and every
-## planted paw stands on the ground under it. Four 0.15 x 0.3 m stairs at walking speeds: only printed,
-## not failed (known limit, godot/README.md: the gait does not pick its footholds by the steps, so a
-## dog's paws can land two steps apart, more than its legs span).
+## planted paw stands on the ground under it. The same checks apply to four 0.15 x 0.3 m stairs.
 func _check_dog_curb(breed: String, p: Dictionary) -> void:
 	# name: [ground, where it starts below, where it starts on top, the top height, speeds (-1: stop
 	# and go at the last one)]
@@ -63,6 +61,7 @@ func _check_dog_curb(breed: String, p: Dictionary) -> void:
 	var worst := 0.0
 	var worst_fold := 0.0
 	var worst_float := 0.0
+	var worst_penetration := 0.0
 	var by_kind := {}  # "curb 0" .. "stairs 88" -> [short, folded]
 	var cases := []
 	for g in grounds:
@@ -76,14 +75,16 @@ func _check_dog_curb(breed: String, p: Dictionary) -> void:
 		var gr: Array = grounds[c[3]]
 		var ground: Callable = gr[0]
 		var s := Dog.create(Vector3(0, 0.0 if c[0] else gr[3], gr[1] if c[0] else gr[2]), yaw, p)
+		var start_position: Vector3 = s.position
 		for i in 480:
 			var v: float = c[2] if c[2] > 0 else (gr[4][-1] if (i / 40) % 2 == 0 else 0.0)
 			s = Dog.step(s, {"speed": v, "yaw": yaw, "ground": ground}, 1.0 / 60, p)
 			for key in s.feet:
 				var paw: Vector3 = s.feet[key].point
+				worst_penetration=maxf(worst_penetration,ground.call(paw)-paw.y)
 				var l: Dictionary = Dog._leg(key, p)
 				var kind := "%s %d" % [c[3], c[1]]
-				var strict: bool = c[3] == "curb"
+				var strict: bool = true
 				var e: Vector3 = Dog._wrist(s, key, p, paw) - Dog._girdle(s, key, p).root
 				var k: Array = by_kind.get(kind, [0.0, 0.0])
 				k[0] = maxf(k[0], e.length() - l.a - l.b)
@@ -102,14 +103,18 @@ func _check_dog_curb(breed: String, p: Dictionary) -> void:
 						print("  %s case %s frame %d leg %s swing %s over %.4f body y %.3f paws %s" % [breed, c, i, key, s.feet[key].swing, over, s.position.y, s.feet.keys().map(func(k): return "%s %.3f%s" % [k, s.feet[k].point.y, "~" if s.feet[k].swing else ""])])
 				if not s.feet[key].swing:
 					worst_float = maxf(worst_float, absf(paw.y - ground.call(paw)))
+		if c[2] > 0 and c[1] <= 60 and s.position.distance_to(start_position) < 1.8:
+			_fail("%s stalled on %s: travelled %.3f m" % [breed, c, s.position.distance_to(start_position)])
 	if worst > Dog.OVERREACH:
-		_fail("%s on a curb: a leg is %.4f m short of its paw" % [breed, worst])
+		_fail("%s on a curb or stairs: a leg is %.4f m short of its paw" % [breed, worst])
 	if worst_fold > Dog.OVERREACH:
-		_fail("%s on a curb: a planted leg is folded %.4f m tighter than it can" % [breed, worst_fold])
+		_fail("%s on a curb or stairs: a planted leg is folded %.4f m tighter than it can" % [breed, worst_fold])
 	if worst_float > 1e-4:
 		_fail("%s on a curb or stairs: a planted paw is %.4f m off the ground" % [breed, worst_float])
+	if worst_penetration>1e-4:
+		_fail("%s on a curb or stairs: a swinging paw penetrates %.4f m" % [breed,worst_penetration])
 	print("%s by ground and angle (short, folded): %s" % [breed, by_kind.keys().map(func(k): return "%s: %.3f %.3f" % [k, by_kind[k][0], by_kind[k][1]])])
-	print("%s on a curb: legs at most %.4f m short, planted legs at most %.4f m too folded" % [breed, maxf(worst, 0), maxf(worst_fold, 0)])
+	print("%s on a curb or stairs: legs at most %.4f m short, planted legs at most %.4f m too folded" % [breed, maxf(worst, 0), maxf(worst_fold, 0)])
 
 func _check_dog(breed: String, p: Dictionary) -> void:
 	var top: float = p.motion.maxSpeed

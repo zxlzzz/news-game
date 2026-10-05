@@ -1,0 +1,42 @@
+{
+  "failures": [
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_urgent",
+      "paw": "LF",
+      "error_m": 0.05747370193676664,
+      "tolerance_m": 0.001,
+      "frame": 1268,
+      "time": 10.566666666666666
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_urgent",
+      "paw": "RF",
+      "error_m": 0.057473700061069104,
+      "tolerance_m": 0.001,
+      "frame": 1268,
+      "time": 10.566666666666666
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_urgent",
+      "paw": "RH",
+      "error_m": 0.057473709465213255,
+      "tolerance_m": 0.001,
+      "frame": 1268,
+      "time": 10.566666666666666
+    }
+  ],
+  "inputs": {
+    "res://models/animal_shibainu.glb": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d",
+    "res://npc/animal-models.json": "6efa5ca700fdb05d8fde507368ed60d823dc58cd6bcaaa9adf6fd365fdb8a9ad",
+    "res://npc/animal.gd": "fef42420f7e004a21fe0d0034241b0f81942d2fda74cae2eee9bbad8b829aa8b",
+    "res://npc/animal_model.gd": "e5f9a1755793991d04a8124944e7a174877aabfa36a41695e73a91ca234773a3",
+    "res://npc/dog-params.json": "6b3c7d070d74edcc0b7241b5e0a585b9d3734ca801656634e9f848844a404063",
+    "res://npc/procedural_dog.gd": "6b21264fa5eeb772f9757d53d20f63736e37b1b7d9e54284c2fa7fbb9e7c0801"
+  },
+  "contact_tolerance_m": 0.001,
+  "scenarios": 1,
+  "frames": 1920
+}

@@ -1,0 +1,370 @@
+[
+  {
+    "page": 1,
+    "ids": [
+      "air_walker",
+      "assist_elder_walk",
+      "atm_take_cash",
+      "badminton_swing"
+    ],
+    "available": [
+      "air_walker",
+      "assist_elder_walk",
+      "atm_take_cash",
+      "badminton_swing"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_01.png"
+  },
+  {
+    "page": 2,
+    "ids": [
+      "basketball_dribble",
+      "basketball_shoot",
+      "bike_scan_unlock",
+      "breakfast_buy"
+    ],
+    "available": [
+      "basketball_dribble",
+      "basketball_shoot",
+      "bike_scan_unlock",
+      "breakfast_buy"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_02.png"
+  },
+  {
+    "page": 3,
+    "ids": [
+      "breakfast_sell",
+      "browse_bookstall",
+      "buy_newspaper",
+      "cafe_sit_drink"
+    ],
+    "available": [
+      "breakfast_sell",
+      "browse_bookstall",
+      "buy_newspaper",
+      "cafe_sit_drink"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_03.png"
+  },
+  {
+    "page": 4,
+    "ids": [
+      "car_enter",
+      "car_exit",
+      "carry_box",
+      "carry_shoulder"
+    ],
+    "available": [
+      "car_enter",
+      "car_exit",
+      "carry_box",
+      "carry_shoulder"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_04.png"
+  },
+  {
+    "page": 5,
+    "ids": [
+      "carry_shoulder_bag",
+      "chess_move",
+      "distribute_flyer",
+      "drink"
+    ],
+    "available": [
+      "carry_shoulder_bag",
+      "chess_move",
+      "distribute_flyer",
+      "drink"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_05.png"
+  },
+  {
+    "page": 6,
+    "ids": [
+      "eat_snack",
+      "eat_walk",
+      "elder_assisted_walk",
+      "football_juggle"
+    ],
+    "available": [
+      "eat_snack",
+      "eat_walk",
+      "elder_assisted_walk",
+      "football_juggle"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_06.png"
+  },
+  {
+    "page": 7,
+    "ids": [
+      "fountain_drink",
+      "fruit_choose",
+      "fruit_weigh",
+      "give_item"
+    ],
+    "available": [
+      "fountain_drink",
+      "fruit_choose",
+      "fruit_weigh",
+      "give_item"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_07.png"
+  },
+  {
+    "page": 8,
+    "ids": [
+      "hands_on_head",
+      "handshake_offer",
+      "handshake_reply",
+      "hang_laundry"
+    ],
+    "available": [
+      "hands_on_head",
+      "handshake_offer",
+      "handshake_reply",
+      "hang_laundry"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_08.png"
+  },
+  {
+    "page": 9,
+    "ids": [
+      "hold_door",
+      "hold_guitar",
+      "interview_answer",
+      "interview_describe"
+    ],
+    "available": [
+      "hold_door",
+      "hold_guitar",
+      "interview_answer",
+      "interview_describe"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_09.png"
+  },
+  {
+    "page": 10,
+    "ids": [
+      "interview_followup",
+      "interview_listen",
+      "interview_point",
+      "interview_question"
+    ],
+    "available": [
+      "interview_followup",
+      "interview_listen",
+      "interview_point",
+      "interview_question"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_10.png"
+  },
+  {
+    "page": 11,
+    "ids": [
+      "lean_railing",
+      "lean_sign",
+      "leg_stretch",
+      "look_up"
+    ],
+    "available": [
+      "lean_railing",
+      "lean_sign",
+      "leg_stretch",
+      "look_up"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_11.png"
+  },
+  {
+    "page": 12,
+    "ids": [
+      "mop_ground",
+      "parcel_terminal",
+      "pat_dust",
+      "phone_booth_call"
+    ],
+    "available": [
+      "mop_ground",
+      "parcel_terminal",
+      "pat_dust",
+      "phone_booth_call"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_12.png"
+  },
+  {
+    "page": 13,
+    "ids": [
+      "phone_call",
+      "phone_urgent",
+      "photo_overhead",
+      "post_letter"
+    ],
+    "available": [
+      "phone_call",
+      "phone_urgent",
+      "photo_overhead",
+      "post_letter"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_13.png"
+  },
+  {
+    "page": 14,
+    "ids": [
+      "post_notice",
+      "press_button",
+      "pull_door",
+      "pull_suitcase"
+    ],
+    "available": [
+      "post_notice",
+      "press_button",
+      "pull_door",
+      "pull_suitcase"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_14.png"
+  },
+  {
+    "page": 15,
+    "ids": [
+      "pullup_hold",
+      "pullup_raise",
+      "push_bicycle",
+      "push_cart"
+    ],
+    "available": [
+      "pullup_hold",
+      "pullup_raise",
+      "push_bicycle",
+      "push_cart"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_15.png"
+  },
+  {
+    "page": 16,
+    "ids": [
+      "push_door",
+      "push_stroller",
+      "read_book",
+      "receive_flyer"
+    ],
+    "available": [
+      "push_door",
+      "push_stroller",
+      "read_book",
+      "receive_flyer"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_16.png"
+  },
+  {
+    "page": 17,
+    "ids": [
+      "receive_item",
+      "rummage_bin",
+      "seesaw_partner",
+      "seesaw_seated"
+    ],
+    "available": [
+      "receive_item",
+      "rummage_bin",
+      "seesaw_partner",
+      "seesaw_seated"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_17.png"
+  },
+  {
+    "page": 18,
+    "ids": [
+      "sit_sideways",
+      "slap_table",
+      "slide_seated",
+      "slouch_bench"
+    ],
+    "available": [
+      "sit_sideways",
+      "slap_table",
+      "slide_seated",
+      "slouch_bench"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_18.png"
+  },
+  {
+    "page": 19,
+    "ids": [
+      "sweep_ground",
+      "swing_seated",
+      "table_tennis_partner",
+      "table_tennis_play"
+    ],
+    "available": [
+      "sweep_ground",
+      "swing_seated",
+      "table_tennis_partner",
+      "table_tennis_play"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_19.png"
+  },
+  {
+    "page": 20,
+    "ids": [
+      "take_back_piece",
+      "take_photo",
+      "throw_trash",
+      "turn_page"
+    ],
+    "available": [
+      "take_back_piece",
+      "take_photo",
+      "throw_trash",
+      "turn_page"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_20.png"
+  },
+  {
+    "page": 21,
+    "ids": [
+      "vending_collect",
+      "waist_twister",
+      "walk_backpack_straps",
+      "walk_cane"
+    ],
+    "available": [
+      "vending_collect",
+      "waist_twister",
+      "walk_backpack_straps",
+      "walk_cane"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_21.png"
+  },
+  {
+    "page": 22,
+    "ids": [
+      "walk_carry_bags",
+      "walk_carry_box",
+      "walk_closed_umbrella",
+      "walk_drink"
+    ],
+    "available": [
+      "walk_carry_bags",
+      "walk_carry_box",
+      "walk_closed_umbrella",
+      "walk_drink"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_22.png"
+  },
+  {
+    "page": 23,
+    "ids": [
+      "walk_newspaper_underarm",
+      "walk_phone_call",
+      "wallet_takeout",
+      "water_planter_hold"
+    ],
+    "available": [
+      "walk_newspaper_underarm",
+      "walk_phone_call",
+      "wallet_takeout",
+      "water_planter_hold"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\contact_sheets\\contacts_23.png"
+  }
+]

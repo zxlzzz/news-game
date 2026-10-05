@@ -1,0 +1,38 @@
+{
+  "phone_urgent": {
+    "current": [
+      57.325171459114834
+    ],
+    "spread_disabled": [
+      14.793758055949992
+    ],
+    "head_touch_disabled": [
+      57.325171459114834
+    ]
+  },
+  "elder_assisted_walk": {
+    "current": [
+      29.01687906812746,
+      26.318652774990365
+    ],
+    "spread_disabled": [
+      28.31916723047597,
+      1.316967112868726
+    ],
+    "head_touch_disabled": [
+      29.01687906812746,
+      26.318652774990365
+    ]
+  },
+  "duck_cover": {
+    "current": [
+      20.45775541567162
+    ],
+    "spread_disabled": [
+      20.819853569324728
+    ],
+    "head_touch_disabled": [
+      9.6808726078114
+    ]
+  }
+}

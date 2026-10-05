@@ -1,0 +1,46 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-03\\captures",
+  "samples": 60,
+  "columns": 10,
+  "cell": 256,
+  "views": [
+    0,
+    90
+  ],
+  "pitch": 8,
+  "entries": [
+    {
+      "id": "walk",
+      "duration": 2.2
+    },
+    {
+      "id": "walk_hold_front",
+      "duration": 2.2
+    },
+    {
+      "id": "wave_overhead",
+      "duration": 3.0
+    },
+    {
+      "id": "hang_laundry",
+      "duration": 4.0
+    },
+    {
+      "id": "cat:NG_Sit_Down",
+      "options": {
+        "breed": "cat"
+      },
+      "duration": 1.6,
+      "size": 1.0,
+      "target_height": 0.18
+    }
+  ],
+  "provenance": [
+    "res://npc/skeleton_mapping.gd",
+    "res://npc/skeleton-params.json",
+    "res://npc/clip_pose.gd",
+    "res://npc/contact_pose.gd",
+    "res://npc/animal-models.json",
+    "res://tools/animal_clip_preview.gd"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "output": "C:/Users/Hsinlung/Desktop/news-game/delivery/motion_fix_2026-10-02/interactions/basketball_seam",
+  "entries": [
+    {
+      "id": "basketball_dribble",
+      "label": "basketball_seam",
+      "start": 3.05,
+      "duration": 0.5,
+      "size": 2.3
+    },
+    {
+      "id": "basketball_dribble",
+      "label": "basketball_second_floor",
+      "start": 4.3,
+      "duration": 0.4,
+      "size": 2.3
+    }
+  ],
+  "samples": 30,
+  "columns": 6,
+  "cell": 300,
+  "views": [
+    135,
+    225
+  ],
+  "pitch": 12,
+  "provenance": [
+    "res://npc/interactions.json",
+    "res://npc/motion/assist_elder_walk.json",
+    "res://npc/motion/atm_take_cash.json",
+    "res://npc/motion/basketball_dribble.json"
+  ]
+}

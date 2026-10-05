@@ -1,6 +1,8 @@
 ## Pure deterministic roaming controller. Caller owns position and locomotion.
-## step(state, position, people, animals, dt, config, species, centre, radius, body_radius)
+## step(state, position, people, animals, dt, config, species, centre, radius, body_radius, motion)
 ## Neighbours provide position, species and radius. Every choice is carried in state.
+## motion observes the actual action / phase / weight. Rest duration measures its stable hold;
+## braking and entry consume no rest time, while threats still interrupt on the next step.
 extends RefCounted
 
 static func create(yaw: float = 0) -> Dictionary:
@@ -26,12 +28,19 @@ static func _choose(s: Dictionary, p: Dictionary, centre: Vector3, radius: float
 
 static func step(previous: Dictionary, own: Vector3, people: Array, animals: Array,
 		dt: float, c: Dictionary, species: String, centre: Vector3,
-		radius: float, own_radius: float) -> Dictionary:
+		radius: float, own_radius: float, motion: Dictionary = {}) -> Dictionary:
 	assert(radius > own_radius + c.brain.range_stop_margin)
 	var s = previous.duplicate(true)
 	var p: Dictionary = c.brain
 	s.time += dt
-	s.elapsed += dt
+	if s.mode == "rest":
+		assert(not motion.is_empty(), "Rest timing requires the animal's actual motion state")
+		var resting: Array = p.rest_actions[species]
+		var expected: String = resting[int(s.rest_index) % resting.size()]
+		if motion.action == expected and motion.phase == "hold" and motion.weight == 1.0:
+			s.elapsed += dt
+	else:
+		s.elapsed += dt
 	if not s.has_target:
 		_choose(s, p, centre, radius - own_radius)
 	var threat = Vector3.ZERO
@@ -103,4 +112,4 @@ static func step(previous: Dictionary, own: Vector3, people: Array, animals: Arr
 	if species == "dog":
 		speed = minf(speed, maxf(0, animal_gap - p.clearance) / p.response_time)
 	return {"state": s, "velocity": Vector3(sin(s.yaw), 0, cos(s.yaw)) * speed,
-		"yaw": s.yaw, "action": action}
+		"yaw": s.yaw, "action": action, "urgent": s.mode == "flee"}

@@ -1,0 +1,152 @@
+[
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_gifs\\cat_sit_urgent.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_actual\\manifest.json",
+    "label": "cat_sit_urgent",
+    "encoded_duration_ms": 1400,
+    "expected_duration_ms": 1400.0,
+    "one_pass": true,
+    "sha256": "b8eb51f132f5789e29bbfdd842cc1dca95afb85a68e9f1fdf87059eb2015a2c7",
+    "manifest_sha256": "5b12ea242aeee6e5631ae60abd060f6c0bd593d7d6cc8c02c76393bdd4779858"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_gifs\\cat_lie_urgent.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_actual\\manifest.json",
+    "label": "cat_lie_urgent",
+    "encoded_duration_ms": 1400,
+    "expected_duration_ms": 1400.0,
+    "one_pass": true,
+    "sha256": "1e96d60c3c2833a75908f65b18239fccd969885069e551b70174c38c8fa3ab0d",
+    "manifest_sha256": "5b12ea242aeee6e5631ae60abd060f6c0bd593d7d6cc8c02c76393bdd4779858"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_gifs\\cat_sleep_urgent.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_actual\\manifest.json",
+    "label": "cat_sleep_urgent",
+    "encoded_duration_ms": 1400,
+    "expected_duration_ms": 1400.0,
+    "one_pass": true,
+    "sha256": "7fe95554611e76506f8e5c3361283e5083789bba9860da7bac029c62d5483d47",
+    "manifest_sha256": "5b12ea242aeee6e5631ae60abd060f6c0bd593d7d6cc8c02c76393bdd4779858"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_gifs\\cat_side_lie_urgent.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_actual\\manifest.json",
+    "label": "cat_side_lie_urgent",
+    "encoded_duration_ms": 1400,
+    "expected_duration_ms": 1400.0,
+    "one_pass": true,
+    "sha256": "a79c8aa6fd6a741feddc6960d6318dd924906885cf00fdb27b2df4029b98f3bf",
+    "manifest_sha256": "5b12ea242aeee6e5631ae60abd060f6c0bd593d7d6cc8c02c76393bdd4779858"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_gifs\\husky_lie_urgent.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_actual\\manifest.json",
+    "label": "husky_lie_urgent",
+    "encoded_duration_ms": 1400,
+    "expected_duration_ms": 1400.0,
+    "one_pass": true,
+    "sha256": "ba9a08340e98a738cdef907e3ce4aee3dca9c452dad491d3f0847bc24bf45686",
+    "manifest_sha256": "5b12ea242aeee6e5631ae60abd060f6c0bd593d7d6cc8c02c76393bdd4779858"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_gifs\\shibainu_lie_urgent.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\low_pose_actual\\manifest.json",
+    "label": "shibainu_lie_urgent",
+    "encoded_duration_ms": 1400,
+    "expected_duration_ms": 1400.0,
+    "one_pass": true,
+    "sha256": "9a0e1ef66a73cfbc8d0c14b77ccd665434625a1c5d7ab835cb03b527b279d595",
+    "manifest_sha256": "5b12ea242aeee6e5631ae60abd060f6c0bd593d7d6cc8c02c76393bdd4779858"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\recovery_gifs\\husky_scratch_normal_cancel.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\recovery_actual\\manifest.json",
+    "label": "husky_scratch_normal_cancel",
+    "encoded_duration_ms": 1500,
+    "expected_duration_ms": 1500.0,
+    "one_pass": true,
+    "sha256": "d803341c8c48546a499500b1177557e5b0d5d1ed91d6669f2211874fe3181428",
+    "manifest_sha256": "978cf3ec3ca409db64f7717312dec4d51f095ffd001e4a3972480bdbb130ccb5"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\recovery_gifs\\husky_scratch_urgent_cancel.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\recovery_actual\\manifest.json",
+    "label": "husky_scratch_urgent_cancel",
+    "encoded_duration_ms": 1500,
+    "expected_duration_ms": 1500.0,
+    "one_pass": true,
+    "sha256": "3b87393d1827c1b79e27b59678e9ed217cc0494dfdb83cf586744a792318f72d",
+    "manifest_sha256": "978cf3ec3ca409db64f7717312dec4d51f095ffd001e4a3972480bdbb130ccb5"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\recovery_gifs\\husky_scratch_normal_stand.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\recovery_actual\\manifest.json",
+    "label": "husky_scratch_normal_stand",
+    "encoded_duration_ms": 2900,
+    "expected_duration_ms": 2900.0,
+    "one_pass": true,
+    "sha256": "e06547eaad33b6d63c7de98c09aeb47e2e86485fb2a1007701e1602c09320665",
+    "manifest_sha256": "978cf3ec3ca409db64f7717312dec4d51f095ffd001e4a3972480bdbb130ccb5"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\recovery_gifs\\shibainu_scratch_normal_cancel.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\recovery_actual\\manifest.json",
+    "label": "shibainu_scratch_normal_cancel",
+    "encoded_duration_ms": 1500,
+    "expected_duration_ms": 1500.0,
+    "one_pass": true,
+    "sha256": "79f4fe681e8b651182fed4fdcda5d037d171dfa370ec33dba699d2b525bbdd80",
+    "manifest_sha256": "978cf3ec3ca409db64f7717312dec4d51f095ffd001e4a3972480bdbb130ccb5"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\recovery_gifs\\shibainu_scratch_urgent_cancel.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\recovery_actual\\manifest.json",
+    "label": "shibainu_scratch_urgent_cancel",
+    "encoded_duration_ms": 1500,
+    "expected_duration_ms": 1500.0,
+    "one_pass": true,
+    "sha256": "f3192efef9e169e5fd3c46bd8938115bd49fa351bd7d696d2dd6ed1c02ce50dc",
+    "manifest_sha256": "978cf3ec3ca409db64f7717312dec4d51f095ffd001e4a3972480bdbb130ccb5"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\recovery_gifs\\shibainu_scratch_normal_stand.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\recovery_actual\\manifest.json",
+    "label": "shibainu_scratch_normal_stand",
+    "encoded_duration_ms": 2900,
+    "expected_duration_ms": 2900.0,
+    "one_pass": true,
+    "sha256": "2005a5590a44666befdb862d8a12480815ee996913a9cb4c806aae10c53f8ec2",
+    "manifest_sha256": "978cf3ec3ca409db64f7717312dec4d51f095ffd001e4a3972480bdbb130ccb5"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\named_recording\\gifs\\cat_NG_Sit_Down.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\named_recording\\captures\\manifest.json",
+    "label": "cat_NG_Sit_Down",
+    "encoded_duration_ms": 2500,
+    "expected_duration_ms": 2500.0,
+    "one_pass": true,
+    "sha256": "3f3bc3a5213f2160f127b4dfd90997e406e00faa02bff01fd76480e12ec28e0e",
+    "manifest_sha256": "356d0c33236c0374ba8f1ea9b5946ac7f1cda462679ae902d18005aaa1136d28"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\named_recording\\gifs\\pigeon_flap_to_glide_stroke.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\named_recording\\captures\\manifest.json",
+    "label": "pigeon_flap_to_glide_stroke",
+    "encoded_duration_ms": 1150,
+    "expected_duration_ms": 1150.0,
+    "one_pass": true,
+    "sha256": "d47dc849bc66ad8bb3fa051e92d5150e51c89c60516b08f94bc6b449d0f785a1",
+    "manifest_sha256": "356d0c33236c0374ba8f1ea9b5946ac7f1cda462679ae902d18005aaa1136d28"
+  },
+  {
+    "file": "delivery\\motion_fix_2026-10-02\\animals\\named_recording\\gifs\\pigeon_flap_to_glide_soft.gif",
+    "capture": "delivery\\motion_fix_2026-10-02\\animals\\named_recording\\captures\\manifest.json",
+    "label": "pigeon_flap_to_glide_soft",
+    "encoded_duration_ms": 1150,
+    "expected_duration_ms": 1150.0,
+    "one_pass": true,
+    "sha256": "961ba9d5b9ed1c2a68e14faac865ac33eaa7c1dde0105b6dd628f9a8461aee13",
+    "manifest_sha256": "356d0c33236c0374ba8f1ea9b5946ac7f1cda462679ae902d18005aaa1136d28"
+  }
+]

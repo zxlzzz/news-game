@@ -1,0 +1,133 @@
+{
+  "failures": [
+    {
+      "breed": "husky",
+      "scenario": "scratch_normal",
+      "paw": "LF",
+      "error_m": 0.013035702651451809,
+      "tolerance_m": 0.001,
+      "frame": 1255,
+      "time": 10.458333333333334
+    },
+    {
+      "breed": "husky",
+      "scenario": "scratch_normal",
+      "paw": "RF",
+      "error_m": 0.013035706015461569,
+      "tolerance_m": 0.001,
+      "frame": 1255,
+      "time": 10.458333333333334
+    },
+    {
+      "breed": "husky",
+      "scenario": "scratch_normal",
+      "paw": "LH",
+      "error_m": 0.013141440742277528,
+      "tolerance_m": 0.001,
+      "frame": 1255,
+      "time": 10.458333333333334
+    },
+    {
+      "breed": "husky",
+      "scenario": "scratch_normal",
+      "paw": "RH",
+      "error_m": 0.013035546296062982,
+      "tolerance_m": 0.001,
+      "frame": 1255,
+      "time": 10.458333333333334
+    },
+    {
+      "breed": "husky",
+      "scenario": "scratch_urgent",
+      "paw": "LH",
+      "error_m": 0.0012815107175794351,
+      "tolerance_m": 0.001,
+      "frame": 1229,
+      "time": 10.241666666666667
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_normal",
+      "paw": "LF",
+      "error_m": 0.07190634727534614,
+      "tolerance_m": 0.001,
+      "frame": 1244,
+      "time": 10.366666666666667
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_normal",
+      "paw": "RF",
+      "error_m": 0.07190631477767136,
+      "tolerance_m": 0.001,
+      "frame": 1244,
+      "time": 10.366666666666667
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_normal",
+      "paw": "LH",
+      "error_m": 0.07190590871182775,
+      "tolerance_m": 0.001,
+      "frame": 1244,
+      "time": 10.366666666666667
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_normal",
+      "paw": "RH",
+      "error_m": 0.07190637946401021,
+      "tolerance_m": 0.001,
+      "frame": 1244,
+      "time": 10.366666666666667
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_urgent",
+      "paw": "LF",
+      "error_m": 0.004215233815696101,
+      "tolerance_m": 0.001,
+      "frame": 1251,
+      "time": 10.425
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_urgent",
+      "paw": "RF",
+      "error_m": 0.004401925659310298,
+      "tolerance_m": 0.001,
+      "frame": 1251,
+      "time": 10.425
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_urgent",
+      "paw": "LH",
+      "error_m": 0.004401561599776122,
+      "tolerance_m": 0.001,
+      "frame": 1251,
+      "time": 10.425
+    },
+    {
+      "breed": "shibainu",
+      "scenario": "scratch_urgent",
+      "paw": "RH",
+      "error_m": 0.004401856581538248,
+      "tolerance_m": 0.001,
+      "frame": 1251,
+      "time": 10.425
+    }
+  ],
+  "inputs": {
+    "res://models/animal_husky.glb": "bfe8391f30ce39c7c4543b94852d095dba7abdc068f12e02ea833c42110c7410",
+    "res://models/animal_shibainu.glb": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d",
+    "res://npc/animal-models.json": "6efa5ca700fdb05d8fde507368ed60d823dc58cd6bcaaa9adf6fd365fdb8a9ad",
+    "res://npc/animal.gd": "f29b2cb6833c4acacae0786c5471ac34b33f3efff9a449076e18e6693b72e9cc",
+    "res://npc/animal_model.gd": "f5446579f1cb5c40927f6b80d60ceb25ffe10c3416238ac84eec31745b24f008",
+    "res://npc/dog-params.json": "6b3c7d070d74edcc0b7241b5e0a585b9d3734ca801656634e9f848844a404063",
+    "res://npc/procedural_dog.gd": "6b21264fa5eeb772f9757d53d20f63736e37b1b7d9e54284c2fa7fbb9e7c0801"
+  },
+  "contact_tolerance_m": 0.001,
+  "scenarios": 4,
+  "frames": 7680
+}

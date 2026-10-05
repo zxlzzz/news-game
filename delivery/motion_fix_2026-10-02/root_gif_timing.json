@@ -1,0 +1,38 @@
+[
+  {
+    "gif": "playback\\gifs\\stand_up.gif",
+    "recorded_duration_ms": 5466.666666666671,
+    "gif_duration_ms": 5470,
+    "loop": null
+  },
+  {
+    "gif": "playback\\gifs\\trip_fall.gif",
+    "recorded_duration_ms": 5966.666666666671,
+    "gif_duration_ms": 5970,
+    "loop": null
+  },
+  {
+    "gif": "playback\\gifs\\scratch_head.gif",
+    "recorded_duration_ms": 4466.666666666671,
+    "gif_duration_ms": 4470,
+    "loop": null
+  },
+  {
+    "gif": "human_focus\\gifs\\duck_cover.gif",
+    "recorded_duration_ms": 400.0,
+    "gif_duration_ms": 400,
+    "loop": null
+  },
+  {
+    "gif": "human_focus\\gifs\\elder_assisted_walk.gif",
+    "recorded_duration_ms": 400.0,
+    "gif_duration_ms": 400,
+    "loop": null
+  },
+  {
+    "gif": "human_focus\\gifs\\handstand.gif",
+    "recorded_duration_ms": 2100.0,
+    "gif_duration_ms": 2100,
+    "loop": null
+  }
+]

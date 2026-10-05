@@ -2,10 +2,60 @@
   "_units": "metres, seconds, radians; +Y up, +Z the bird's forward at yaw 0. Body points are [along the back, square to it] from the hip (the leg joints' midpoint)",
   "body": {
     "hipY": 0.075,
-    "rump": [-0.118, 0.031],
-    "neck": [0.04, 0.031],
-    "shoulder": [-0.01, 0.046],
-    "profile": [[0.042, 0.022, 0.026], [0.04, 0.002, 0.04], [0.022, -0.008, 0.046], [-0.008, -0.004, 0.045], [-0.04, 0.004, 0.04], [-0.072, 0.016, 0.031], [-0.1, 0.026, 0.022], [-0.12, 0.031, 0.016]]
+    "rump": [
+      -0.118,
+      0.031
+    ],
+    "neck": [
+      0.04,
+      0.031
+    ],
+    "shoulder": [
+      -0.01,
+      0.046
+    ],
+    "profile": [
+      [
+        0.042,
+        0.022,
+        0.026
+      ],
+      [
+        0.04,
+        0.002,
+        0.04
+      ],
+      [
+        0.022,
+        -0.008,
+        0.046
+      ],
+      [
+        -0.008,
+        -0.004,
+        0.045
+      ],
+      [
+        -0.04,
+        0.004,
+        0.04
+      ],
+      [
+        -0.072,
+        0.016,
+        0.031
+      ],
+      [
+        -0.1,
+        0.026,
+        0.022
+      ],
+      [
+        -0.12,
+        0.031,
+        0.016
+      ]
+    ]
   },
   "pitch": {
     "stand": 0.5,
@@ -25,7 +75,17 @@
     "stillSpeed": 0.02,
     "pitchRate": 6
   },
-  "gait": { "liftAt": { "L": 0.0, "R": 0.5 }, "swing": 0.4, "frequency": { "base": 1.4, "perSpeed": 5.0 } },
+  "gait": {
+    "liftAt": {
+      "L": 0.0,
+      "R": 0.5
+    },
+    "swing": 0.4,
+    "frequency": {
+      "base": 1.4,
+      "perSpeed": 5.0
+    }
+  },
   "legs": {
     "a": 0.045,
     "b": 0.042,
@@ -39,25 +99,62 @@
     "backToe": 0.016,
     "toeSpread": 0.45,
     "toeOut": 0.12,
-    "tuck": [-0.04, 0.0],
+    "tuck": [
+      -0.04,
+      0.0
+    ],
     "hang": 0.92,
     "hangForward": 0.02
   },
   "head": {
-    "rest": [0.032, 0.026],
-    "air": [0.04, 0.012],
-    "neck": [0.02, 0.14],
+    "rest": [
+      0.032,
+      0.026
+    ],
+    "air": [
+      0.04,
+      0.012
+    ],
+    "neck": [
+      0.02,
+      0.14
+    ],
     "rate": 12,
-    "beak": [0.024, -0.004],
-    "bob": { "lead": 0.5, "thrust": 0.35, "maxLag": 0.04 },
-    "peck": { "reach": 0.07, "height": 0.012, "frequency": 2.2, "down": 0.35, "rate": 6, "beakDown": 1.1 },
-    "look": { "interval": [0.5, 2.0], "max": 1.1, "rate": 16 }
+    "beak": [
+      0.024,
+      -0.004
+    ],
+    "bob": {
+      "lead": 0.5,
+      "thrust": 0.35,
+      "maxLag": 0.04
+    },
+    "peck": {
+      "reach": 0.07,
+      "height": 0.012,
+      "frequency": 2.2,
+      "down": 0.35,
+      "rate": 6,
+      "beakDown": 1.1,
+      "contactClearance": 0.001
+    },
+    "look": {
+      "interval": [
+        0.5,
+        2.0
+      ],
+      "max": 1.1,
+      "rate": 16
+    }
   },
   "tail": {
     "root": 0.016,
     "length": 0.105,
     "lift": 0.25,
-    "tipHalfWidth": { "ground": 0.022, "air": 0.055 },
+    "tipHalfWidth": {
+      "ground": 0.022,
+      "air": 0.055
+    },
     "rate": 6
   },
   "wings": {
@@ -68,7 +165,13 @@
     "hopFrame": 6,
     "hopOpen": 0.5
   },
-  "hop": { "height": 0.1, "speed": 0.9, "minTime": 0.3, "crouch": 0.012, "feetUp": 0.01 },
+  "hop": {
+    "height": 0.1,
+    "speed": 0.9,
+    "minTime": 0.3,
+    "crouch": 0.012,
+    "feetUp": 0.01
+  },
   "fly": {
     "crouch": 0.022,
     "crouchTime": 0.12,
@@ -88,7 +191,11 @@
     "brake": 4,
     "tuckRate": 6,
     "landCrouch": 0.015,
-    "flapRate": { "takeoff": 2.0, "cruise": 1.3, "flare": 2.2 }
+    "flapRate": {
+      "takeoff": 2.0,
+      "cruise": 1.3,
+      "flare": 2.2
+    }
   },
   "silhouette": {
     "neck": 0.052,
@@ -97,6 +204,9 @@
     "leg": 0.006,
     "toe": 0.004,
     "wingEdge": 0.012,
-    "tail": [0.03, 0.014]
+    "tail": [
+      0.03,
+      0.014
+    ]
   }
 }

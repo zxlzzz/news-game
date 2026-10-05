@@ -46,3 +46,13 @@ research/*/photos/*.png
 research/*/maps/
 # drawn over the imagery, so it stays out like the imagery
 research/*/road_slopes.png
+
+# Local rollback copies; production models and builders are versioned separately.
+/godot/modeling/review/window_sealing/originals.zip
+/godot/modeling/review/window_sealing/before_roof_doors.zip
+
+# Regenerable pose exports from motion reviews.
+/delivery/**/poses/
+/delivery/**/full_poses/
+/delivery/**/*.bin
+/delivery/**/*.f32

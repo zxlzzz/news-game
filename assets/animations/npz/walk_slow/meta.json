@@ -7778,5 +7778,19 @@
       ]
     },
     "sha256": "b62b40756ca9978c9193f8baaab9e30b77b8d13f62c347c1bfdb6c49a4344adb"
+  },
+  "single_unit": {
+    "clip": "walk_slow",
+    "source_sha256": "b62b40756ca9978c9193f8baaab9e30b77b8d13f62c347c1bfdb6c49a4344adb",
+    "original_frames": 73,
+    "take_frames": [
+      36,
+      72
+    ],
+    "original_units": 2,
+    "frames": 37,
+    "duration": 1.2,
+    "source": "assets/animations/generation_inputs/b62b40756ca9978c9193f8baaab9e30b77b8d13f62c347c1bfdb6c49a4344adb.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
   }
 }

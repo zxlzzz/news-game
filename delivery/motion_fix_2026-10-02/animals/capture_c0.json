@@ -1,0 +1,22 @@
+{
+  "trace": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\final_c0\\runtime.json",
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\animals\\c0_actual",
+  "entries": [
+    {
+      "breed": "husky",
+      "label": "scratch_mid_cancel",
+      "start": 0,
+      "duration": 0.25833333333333336,
+      "samples": 31,
+      "size": 1.6
+    }
+  ],
+  "views": [
+    35,
+    90,
+    270
+  ],
+  "columns": 12,
+  "cell": 256,
+  "pitch": 12
+}

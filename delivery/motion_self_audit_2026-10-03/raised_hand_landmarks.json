@@ -1,0 +1,90 @@
+[
+  {
+    "id": "hands_up",
+    "source_peak_wrist_above_head_end_m": [
+      0.13583000000000012,
+      0.12153999999999998
+    ],
+    "final_peak_wrist_above_head_disc_m": [
+      0.019399892538785934,
+      0.03834719583392143
+    ]
+  },
+  {
+    "id": "hands_up_hold",
+    "source_peak_wrist_above_head_end_m": [
+      0.12818000000000018,
+      0.11532000000000009
+    ],
+    "final_peak_wrist_above_head_disc_m": [
+      0.017899464815855026,
+      0.02640385553240776
+    ]
+  },
+  {
+    "id": "cover_face",
+    "source_peak_wrist_above_head_end_m": [
+      -0.23755000000000015,
+      -0.22833000000000014
+    ],
+    "final_peak_wrist_above_head_disc_m": [
+      -0.410929799079895,
+      -0.41238918900489807
+    ]
+  },
+  {
+    "id": "cross_arms",
+    "source_peak_wrist_above_head_end_m": [
+      -0.38036000000000003,
+      -0.40391
+    ],
+    "final_peak_wrist_above_head_disc_m": [
+      -0.5280042886734009,
+      -0.5411848425865173
+    ]
+  },
+  {
+    "id": "wave_both_overhead",
+    "source_peak_wrist_above_head_end_m": [
+      0.30921,
+      0.30393000000000003
+    ],
+    "final_peak_wrist_above_head_disc_m": [
+      0.033831607550382614,
+      0.10469038784503937
+    ]
+  },
+  {
+    "id": "stretch",
+    "source_peak_wrist_above_head_end_m": [
+      0.2833699999999999,
+      0.2810600000000001
+    ],
+    "final_peak_wrist_above_head_disc_m": [
+      0.06409533321857452,
+      0.056478213518857956
+    ]
+  },
+  {
+    "id": "cheer",
+    "source_peak_wrist_above_head_end_m": [
+      0.2985,
+      0.2968700000000002
+    ],
+    "final_peak_wrist_above_head_disc_m": [
+      0.04345966503024101,
+      0.09011490643024445
+    ]
+  },
+  {
+    "id": "hail_taxi",
+    "source_peak_wrist_above_head_end_m": [
+      -0.84732,
+      -0.10812
+    ],
+    "final_peak_wrist_above_head_disc_m": [
+      -0.9529228806495667,
+      -0.20996922254562378
+    ]
+  }
+]

@@ -1,0 +1,521 @@
+{
+  "cat": {
+    "gait": {
+      "trot": {
+        "liftAt": {
+          "LF": 0.5,
+          "LH": 0.0,
+          "RF": 0.0,
+          "RH": 0.5
+        },
+        "stride": {
+          "base": 0.237963903646965,
+          "maximum": 0.294533901633892,
+          "maximumStance": 0.141376272784268,
+          "perSpeed": 0.483333321809769
+        },
+        "swing": {
+          "k": 0.52,
+          "max": 0.866666646003723,
+          "min": 0.12,
+          "minFrequency": 0.600000014305115
+        }
+      },
+      "walk": {
+        "liftAt": {
+          "LF": 0.566666666666667,
+          "LH": 0.316666666666667,
+          "RF": 0.0666666666666667,
+          "RH": 0.825
+        },
+        "stride": {
+          "base": 0.164113036997907,
+          "maximum": 0.220326658884574,
+          "maximumStance": 0.141376272784268,
+          "perSpeed": 0.333333325386047
+        },
+        "swing": {
+          "k": 0.358333333333333,
+          "max": 0.597222207983335,
+          "min": 0.12,
+          "minFrequency": 0.600000014305115
+        }
+      }
+    },
+    "drop": 0.0256636285149225,
+    "scenarios": {
+      "walk035": {
+        "frames": 960,
+        "fps": 120.0,
+        "mesh_floor_min_m": -1.0404902698173688e-06,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 2.1496633949291688e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 1.2241056602825317e-06,
+            "planted_sole_speed_max_mps": 0.00013718575326661706,
+            "paw_sweep_m": [
+              0.0002079860245536025,
+              0.02957026230240667,
+              0.1445832740385925
+            ]
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 6.134070679423819e-07,
+            "planted_sole_speed_max_mps": 2.888282332573843e-05,
+            "paw_sweep_m": [
+              0.00019689345675939773,
+              0.02791064303216545,
+              0.1445257526549466
+            ]
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 2.6558576995689345e-06,
+            "planted_sole_speed_max_mps": 4.1485790569775646e-05,
+            "paw_sweep_m": [
+              0.00021811963408804175,
+              0.024873100820777025,
+              0.1417133941747386
+            ]
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 3.654610369009085e-06,
+            "planted_sole_speed_max_mps": 0.00023681814038110135,
+            "paw_sweep_m": [
+              0.005618500053198701,
+              0.008475675796612445,
+              0.14165220414230006
+            ]
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.022998005151748657,
+          0.024411559104919434,
+          0.0006544366478919983,
+          0.02147633582353592
+        ],
+        "cycle_frequency_hz": 1.5885503904607399,
+        "actual_speed_mean_mps": 0.3499986648559573,
+        "fastest_bone": {
+          "bone": "Bone.013",
+          "phase": "walk",
+          "speed": 1.659348718822,
+          "time": 0.908333333333333
+        },
+        "phases": [
+          "walk"
+        ],
+        "clips": []
+      },
+      "trot": {
+        "frames": 960,
+        "fps": 120.0,
+        "mesh_floor_min_m": -1.0404902698173688e-06,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 4.3565213736496133e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 7.259587375960461e-07,
+            "planted_sole_speed_max_mps": 4.9894460094208426e-05,
+            "paw_sweep_m": [
+              0.000421953088755353,
+              0.030052499940598998,
+              0.1538204766068909
+            ]
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 6.634531562426881e-07,
+            "planted_sole_speed_max_mps": 5.229859873886168e-05,
+            "paw_sweep_m": [
+              0.0004251991443085523,
+              0.02830320004660418,
+              0.15373755416250878
+            ]
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 2.6558576995689345e-06,
+            "planted_sole_speed_max_mps": 4.392111115673342e-05,
+            "paw_sweep_m": [
+              0.0005179695297434159,
+              0.023983397617302324,
+              0.15424769314676645
+            ]
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 3.6352555060384717e-06,
+            "planted_sole_speed_max_mps": 0.00023378772080739853,
+            "paw_sweep_m": [
+              0.005567778116412826,
+              0.04453783444389274,
+              0.15677608054169312
+            ]
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.022988304495811462,
+          0.024428561329841614,
+          0.0006542801856994629,
+          0.02147652953863144
+        ],
+        "cycle_frequency_hz": 2.625259905111538,
+        "actual_speed_mean_mps": 0.7732214212417601,
+        "fastest_bone": {
+          "bone": "Bone.013",
+          "phase": "walk",
+          "speed": 2.77892254292965,
+          "time": 1.2
+        },
+        "phases": [
+          "walk"
+        ],
+        "clips": []
+      }
+    }
+  },
+  "husky": {
+    "gait": {
+      "trot": {
+        "liftAt": {
+          "LF": 0.5,
+          "LH": 0.0,
+          "RF": 0.0,
+          "RH": 0.5
+        },
+        "stride": {
+          "base": 0.481587182658992,
+          "maximum": 0.547710431838337,
+          "maximumStance": 0.230038381372101,
+          "perSpeed": 0.341333351135254
+        },
+        "swing": {
+          "k": 0.58,
+          "max": 0.618666698932648,
+          "min": 0.12,
+          "minFrequency": 0.937499951105567
+        }
+      },
+      "walk": {
+        "liftAt": {
+          "LF": 0.566666666666667,
+          "LH": 0.433333333333333,
+          "RF": 0.0916666666666667,
+          "RH": 0.933333333333333
+        },
+        "stride": {
+          "base": 0.30099198916187,
+          "maximum": 0.37814528444729,
+          "maximumStance": 0.230038381372101,
+          "perSpeed": 0.213333344459534
+        },
+        "swing": {
+          "k": 0.391666666666667,
+          "max": 0.417777799566587,
+          "min": 0.12,
+          "minFrequency": 0.937499951105567
+        }
+      }
+    },
+    "drop": 0.0233310034158147,
+    "scenarios": {
+      "walk035": {
+        "frames": 960,
+        "fps": 120.0,
+        "mesh_floor_min_m": -2.770733545167878e-07,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 2.641738692799045e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 8.748426490398087e-07,
+            "planted_sole_speed_max_mps": 0.00011139549561771333,
+            "paw_sweep_m": [
+              0.023095797305971014,
+              0.041676568834843664,
+              0.22404658887069484
+            ]
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 8.032440359496445e-07,
+            "planted_sole_speed_max_mps": 0.00010167208200057888,
+            "paw_sweep_m": [
+              0.023080651857393955,
+              0.05157832596172862,
+              0.22647317076335538
+            ]
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 2.5319689994356315e-06,
+            "planted_sole_speed_max_mps": 0.0001321415412814646,
+            "paw_sweep_m": [
+              0.0006965552987281964,
+              0.043707911860188464,
+              0.24028682384172417
+            ]
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 2.6087634966839393e-06,
+            "planted_sole_speed_max_mps": 4.8978037704023075e-05,
+            "paw_sweep_m": [
+              0.0007368245896948872,
+              0.04647666776172532,
+              0.24126148377335177
+            ]
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.01634877920150757,
+          0.013781100511550903,
+          0.01715785264968872,
+          0.01839238405227661
+        ],
+        "cycle_frequency_hz": 0.9316968767826403,
+        "actual_speed_mean_mps": 0.3499973893165591,
+        "fastest_bone": {
+          "bone": "BackLowerLeg.L",
+          "phase": "walk",
+          "speed": 1.9700776040554,
+          "time": 0.758333333333333
+        },
+        "phases": [
+          "walk"
+        ],
+        "clips": []
+      },
+      "trot": {
+        "frames": 960,
+        "fps": 120.0,
+        "mesh_floor_min_m": -3.222311433780386e-07,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 8.820983926211001e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 1.1130226800612946e-06,
+            "planted_sole_speed_max_mps": 0.00014963813920354656,
+            "paw_sweep_m": [
+              0.023100970873505156,
+              0.041164185686854315,
+              0.24730395283753648
+            ]
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 9.347229759144935e-07,
+            "planted_sole_speed_max_mps": 0.000125829352282536,
+            "paw_sweep_m": [
+              0.02308103782369387,
+              0.051683039349782856,
+              0.25348828390395894
+            ]
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 2.3330210162412417e-06,
+            "planted_sole_speed_max_mps": 0.00011388322383274225,
+            "paw_sweep_m": [
+              0.0006967193247671977,
+              0.05453384541461276,
+              0.2625713432524286
+            ]
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 2.4577050456396456e-06,
+            "planted_sole_speed_max_mps": 0.00011479933226276576,
+            "paw_sweep_m": [
+              0.0007361250891155802,
+              0.055867375109970085,
+              0.2603817048989088
+            ]
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.016365885734558105,
+          0.013795584440231323,
+          0.017174750566482544,
+          0.018441081047058105
+        ],
+        "cycle_frequency_hz": 3.0494030550044857,
+        "actual_speed_mean_mps": 1.6701793670654297,
+        "fastest_bone": {
+          "bone": "BackLowerLeg.R",
+          "phase": "walk",
+          "speed": 5.25464192032814,
+          "time": 0.783333333333333
+        },
+        "phases": [
+          "walk"
+        ],
+        "clips": []
+      }
+    }
+  },
+  "shibainu": {
+    "gait": {
+      "trot": {
+        "liftAt": {
+          "LF": 0.5,
+          "LH": 0.0,
+          "RF": 0.0,
+          "RH": 0.5
+        },
+        "stride": {
+          "base": 0.347253040472667,
+          "maximum": 0.390616224260153,
+          "maximumStance": 0.164058814189264,
+          "perSpeed": 0.341333351135254
+        },
+        "swing": {
+          "k": 0.58,
+          "max": 0.618666698932648,
+          "min": 0.12,
+          "minFrequency": 0.937499951105567
+        }
+      },
+      "walk": {
+        "liftAt": {
+          "LF": 0.558333333333333,
+          "LH": 0.425,
+          "RF": 0.0916666666666667,
+          "RH": 0.933333333333333
+        },
+        "stride": {
+          "base": 0.217033150295417,
+          "maximum": 0.273431356982107,
+          "maximumStance": 0.164058814189264,
+          "perSpeed": 0.213333344459534
+        },
+        "swing": {
+          "k": 0.4,
+          "max": 0.426666688919067,
+          "min": 0.12,
+          "minFrequency": 0.937499951105567
+        }
+      }
+    },
+    "drop": 0.0166730146384907,
+    "scenarios": {
+      "walk035": {
+        "frames": 960,
+        "fps": 120.0,
+        "mesh_floor_min_m": -2.3524936023784243e-07,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 2.639079991484383e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 4.512865169094168e-07,
+            "planted_sole_speed_max_mps": 3.4732337517363605e-05,
+            "paw_sweep_m": [
+              0.016509416073708746,
+              0.03026811335977697,
+              0.15991198549565944
+            ]
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 4.816517115356602e-07,
+            "planted_sole_speed_max_mps": 3.589487182594311e-05,
+            "paw_sweep_m": [
+              0.01649479811000265,
+              0.03784790611325484,
+              0.1618334700203088
+            ]
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 3.1647582117580715e-06,
+            "planted_sole_speed_max_mps": 3.509887871163053e-05,
+            "paw_sweep_m": [
+              0.0004979036093301914,
+              0.03161999673419222,
+              0.17237746694660339
+            ]
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 3.21309690834471e-06,
+            "planted_sole_speed_max_mps": 6.714913667920599e-05,
+            "paw_sweep_m": [
+              0.0005267216984711359,
+              0.03295543098663514,
+              0.1729140339965234
+            ]
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.012144908308982849,
+          0.010130718350410461,
+          0.01198810338973999,
+          0.012199461460113525
+        ],
+        "cycle_frequency_hz": 1.280028756990381,
+        "actual_speed_mean_mps": 0.3499981641769412,
+        "fastest_bone": {
+          "bone": "BackUpperLeg.L",
+          "phase": "walk",
+          "speed": 1.94938838481903,
+          "time": 0.608333333333333
+        },
+        "phases": [
+          "walk"
+        ],
+        "clips": []
+      },
+      "trot": {
+        "frames": 960,
+        "fps": 120.0,
+        "mesh_floor_min_m": -2.3166911775305076e-07,
+        "mesh_penetrating_frames_below_0_1mm": 0,
+        "worst_leg_length_change_m": 9.081237801814024e-07,
+        "feet": {
+          "LF": {
+            "planted_sole_target_max_error_m": 5.823380909240643e-07,
+            "planted_sole_speed_max_mps": 0.00010228821070908564,
+            "paw_sweep_m": [
+              0.016520998201465298,
+              0.029473574414224907,
+              0.17548152155063512
+            ]
+          },
+          "RF": {
+            "planted_sole_target_max_error_m": 6.943104569514318e-07,
+            "planted_sole_speed_max_mps": 9.365414346450356e-05,
+            "paw_sweep_m": [
+              0.016500933509606172,
+              0.03844084195339495,
+              0.17996382964552193
+            ]
+          },
+          "LH": {
+            "planted_sole_target_max_error_m": 3.0773656265574743e-06,
+            "planted_sole_speed_max_mps": 0.0001120026332752134,
+            "paw_sweep_m": [
+              0.0004977176820232104,
+              0.03907791402730401,
+              0.18726158211599309
+            ]
+          },
+          "RH": {
+            "planted_sole_target_max_error_m": 3.092785526892289e-06,
+            "planted_sole_speed_max_mps": 0.00011037237138786231,
+            "paw_sweep_m": [
+              0.0005266105425065504,
+              0.03916304807393994,
+              0.185697079165009
+            ]
+          }
+        },
+        "girdle_y_sweep_m": [
+          0.012148559093475342,
+          0.010137289762496948,
+          0.011981815099716187,
+          0.012199968099594116
+        ],
+        "cycle_frequency_hz": 3.0521131048988073,
+        "actual_speed_mean_mps": 1.1922003269195547,
+        "fastest_bone": {
+          "bone": "FFB.R",
+          "phase": "walk",
+          "speed": 3.7034947425127,
+          "time": 0.791666666666667
+        },
+        "phases": [
+          "walk"
+        ],
+        "clips": []
+      }
+    }
+  }
+}

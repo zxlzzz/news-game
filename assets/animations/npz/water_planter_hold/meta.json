@@ -1,0 +1,372 @@
+{
+  "name": "water_planter_hold",
+  "text": "A standing person holds a watering can steadily in the right hand in front, aiming its spout toward flowers. Small natural shifts, feet planted, left arm relaxed.",
+  "duration": 2.033333333333333,
+  "seed": 2806,
+  "loop": true,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+      "source_frame": 15,
+      "frame": 15
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+      "source_frame": 30,
+      "frame": 30
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+      "source_frame": 45,
+      "frame": 45
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+      "source_frame": 60,
+      "frame": 60
+    }
+  ],
+  "effectors": [
+    {
+      "joints": [
+        "RightHand"
+      ],
+      "keyframes": [
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 0,
+          "frame": 0
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 1,
+          "frame": 1
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 2,
+          "frame": 2
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 3,
+          "frame": 3
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 4,
+          "frame": 4
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 5,
+          "frame": 5
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 6,
+          "frame": 6
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 7,
+          "frame": 7
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 8,
+          "frame": 8
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 9,
+          "frame": 9
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 10,
+          "frame": 10
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 11,
+          "frame": 11
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 12,
+          "frame": 12
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 13,
+          "frame": 13
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 14,
+          "frame": 14
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 15,
+          "frame": 15
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 16,
+          "frame": 16
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 17,
+          "frame": 17
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 18,
+          "frame": 18
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 19,
+          "frame": 19
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 20,
+          "frame": 20
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 21,
+          "frame": 21
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 22,
+          "frame": 22
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 23,
+          "frame": 23
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 24,
+          "frame": 24
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 25,
+          "frame": 25
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 26,
+          "frame": 26
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 27,
+          "frame": 27
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 28,
+          "frame": 28
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 29,
+          "frame": 29
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 30,
+          "frame": 30
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 31,
+          "frame": 31
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 32,
+          "frame": 32
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 33,
+          "frame": 33
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 34,
+          "frame": 34
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 35,
+          "frame": 35
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 36,
+          "frame": 36
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 37,
+          "frame": 37
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 38,
+          "frame": 38
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 39,
+          "frame": 39
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 40,
+          "frame": 40
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 41,
+          "frame": 41
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 42,
+          "frame": 42
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 43,
+          "frame": 43
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 44,
+          "frame": 44
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 45,
+          "frame": 45
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 46,
+          "frame": 46
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 47,
+          "frame": 47
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 48,
+          "frame": 48
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 49,
+          "frame": 49
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 50,
+          "frame": 50
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 51,
+          "frame": 51
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 52,
+          "frame": 52
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 53,
+          "frame": 53
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 54,
+          "frame": 54
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 55,
+          "frame": 55
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 56,
+          "frame": 56
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 57,
+          "frame": 57
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 58,
+          "frame": 58
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 59,
+          "frame": 59
+        },
+        {
+          "source": "/batch/assets/animations/generation_inputs/c338ccf0485dedea662cdedd84041979230bc8d3bf42307c5450932dcafde982.npz",
+          "source_frame": 60,
+          "frame": 60
+        }
+      ]
+    }
+  ],
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 0.026007596403360367,
+  "mapped_average_speed_m_s": 0.020510722715583886,
+  "endpoint_cleanup": {
+    "maximum_source_error_m": 0.0,
+    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
+  },
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": "godot/npc/interactions.json",
+    "base_clip": "water_planter_hold",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

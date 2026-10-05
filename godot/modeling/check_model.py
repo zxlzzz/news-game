@@ -17,7 +17,7 @@ import json, math, os, re, struct, sys
 # Colour slots a material may be named after. Must equal the keys of godot/core/slots.tres;
 # when this script sits in the repo (godot/modeling/) it checks that and fails if they differ.
 SLOTS = {
-    "accent", "bark", "bike_lane", "concrete", "door", "fabric", "foliage", "grass", "hidden", "metal",
+    "accent", "bark", "bike_lane", "concrete", "door", "fabric", "foliage", "grass", "ground", "hidden", "metal",
     "metal_dark", "paint", "road", "sidewalk", "trim", "trim_dark", "wall", "wall_plaster", "wall_brick", "wall_stone", "water", "window", "wood",
 }
 # Slots that may carry a texture, used only for its alpha (cut-out decals).

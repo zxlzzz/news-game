@@ -5,3 +5,7 @@
 [node name="DrinkingFountain" type="Node3D" groups=["street_item"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+
+[node name="post_fountain" type="Marker3D" parent="."]
+position = Vector3(0, 0, 0.6)
+rotation = Vector3(0, 3.141592653589793, 0)

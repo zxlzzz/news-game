@@ -6,13 +6,8 @@ PARTS = [['box', 'table', (2, 0.12, 0.9), (0, 0.85, 0), 'wood'],
  ['box', 'leg', (0.12, 0.79, 0.12), (-0.85, 0.395, 0.3), 'wood'],
  ['box', 'leg', (0.12, 0.79, 0.12), (0.85, 0.395, -0.3), 'wood'],
  ['box', 'leg', (0.12, 0.79, 0.12), (0.85, 0.395, 0.3), 'wood'],
- ['box', 'crate', (0.56, 0.18, 0.72), (-0.65, 1.0, 0), 'wood'],
  ['box', 'crate', (0.56, 0.18, 0.72), (0, 1.0, 0), 'wood'],
  ['box', 'crate', (0.56, 0.18, 0.72), (0.65, 1.0, 0), 'wood'],
- ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (-0.8, 1.15, -0.2), 'accent'],
- ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (-0.8, 1.15, 0.15), 'accent'],
- ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (-0.55, 1.15, -0.2), 'accent'],
- ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (-0.55, 1.15, 0.15), 'accent'],
  ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (-0.15, 1.15, -0.2), 'accent'],
  ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (-0.15, 1.15, 0.15), 'accent'],
  ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (0.12, 1.15, -0.2), 'accent'],
@@ -21,7 +16,7 @@ PARTS = [['box', 'table', (2, 0.12, 0.9), (0, 0.85, 0), 'wood'],
  ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (0.5, 1.15, 0.15), 'accent'],
  ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (0.78, 1.15, -0.2), 'accent'],
  ['ellipsoid', 'fruit', (0.18, 0.2, 0.18), (0.78, 1.15, 0.15), 'accent']]
-GRIPS = {}
+GRIPS = {'scale_pad': (-0.48, 0.91, -0.30)}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 

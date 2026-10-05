@@ -1,0 +1,591 @@
+{
+  "clips": [
+    {
+      "clip": "NG_Stand_Breathe",
+      "source05_reviewed_page": "all48_01.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Stand_Alert",
+      "source05_reviewed_page": "all48_01.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Look_Left",
+      "source05_reviewed_page": "all48_02.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Head_Tilt_Left",
+      "source05_reviewed_page": "all48_02.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Ear_Twitch_Left",
+      "source05_reviewed_page": "all48_03.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Paw_Offer_Left",
+      "source05_reviewed_page": "all48_03.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Urinate_Left",
+      "source05_reviewed_page": "all48_04.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sit_Paw_Offer_Left",
+      "source05_reviewed_page": "all48_04.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Look_Right",
+      "source05_reviewed_page": "all48_05.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Head_Tilt_Right",
+      "source05_reviewed_page": "all48_05.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Ear_Twitch_Right",
+      "source05_reviewed_page": "all48_06.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Paw_Offer_Right",
+      "source05_reviewed_page": "all48_06.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Urinate_Right",
+      "source05_reviewed_page": "all48_07.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sit_Paw_Offer_Right",
+      "source05_reviewed_page": "all48_07.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Look_Around",
+      "source05_reviewed_page": "all48_08.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Look_Up",
+      "source05_reviewed_page": "all48_08.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Look_Down",
+      "source05_reviewed_page": "all48_09.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Ear_Twitch_Both",
+      "source05_reviewed_page": "all48_09.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Tail_Wag_Slow",
+      "source05_reviewed_page": "all48_10.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Tail_Wag_Happy",
+      "source05_reviewed_page": "all48_10.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Tail_Tuck_Cautious",
+      "source05_reviewed_page": "all48_11.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sniff_Air",
+      "source05_reviewed_page": "all48_11.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sniff_Ground_Enter",
+      "source05_reviewed_page": "all48_12.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sniff_Ground_Loop",
+      "source05_reviewed_page": "all48_12.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sniff_Ground_Exit",
+      "source05_reviewed_page": "all48_13.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Shake_Off",
+      "source05_reviewed_page": "all48_13.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Shake_Head",
+      "source05_reviewed_page": "all48_14.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sit_Down",
+      "source05_reviewed_page": "all48_14.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sit_Idle",
+      "source05_reviewed_page": "all48_15.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sit_Look_Around",
+      "source05_reviewed_page": "all48_15.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sit_Wag",
+      "source05_reviewed_page": "all48_16.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sit_Get_Up",
+      "source05_reviewed_page": "all48_16.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Lie_Down",
+      "source05_reviewed_page": "all48_17.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Lie_Idle",
+      "source05_reviewed_page": "all48_17.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Lie_Get_Up",
+      "source05_reviewed_page": "all48_18.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sit_To_Lie",
+      "source05_reviewed_page": "all48_18.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": true,
+      "source06_changed_views_reviewed": [
+        "game",
+        "side"
+      ],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Lie_To_Sit",
+      "source05_reviewed_page": "all48_19.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": true,
+      "source06_changed_views_reviewed": [
+        "game",
+        "side"
+      ],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sleep_Enter",
+      "source05_reviewed_page": "all48_19.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sleep_Breathe",
+      "source05_reviewed_page": "all48_20.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Sleep_Wake",
+      "source05_reviewed_page": "all48_20.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Play_Bow",
+      "source05_reviewed_page": "all48_21.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Stretch_Front",
+      "source05_reviewed_page": "all48_21.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Startle",
+      "source05_reviewed_page": "all48_22.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Side_Lie_Enter",
+      "source05_reviewed_page": "all48_22.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Side_Lie_Breathe",
+      "source05_reviewed_page": "all48_23.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Side_Lie_Exit",
+      "source05_reviewed_page": "all48_23.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Scratch_Left",
+      "source05_reviewed_page": "all48_24.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    },
+    {
+      "clip": "NG_Scratch_Right",
+      "source05_reviewed_page": "all48_24.png",
+      "timestamps": 11,
+      "views": [
+        "game",
+        "side"
+      ],
+      "source06_sheet_changed": false,
+      "source06_changed_views_reviewed": [],
+      "runtime_acceptance": "not_established_by_source_review"
+    }
+  ],
+  "dense_source06": [
+    "Startle game/side 0\u2013.4s25@60Hz",
+    "Shake_Head/Shake_Off game/side .15\u2013.55s25@60Hz",
+    "Scratch_Left/Right rearleft/rearright .9\u20131.3s25@60Hz"
+  ]
+}

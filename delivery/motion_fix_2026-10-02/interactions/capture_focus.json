@@ -1,0 +1,30 @@
+{
+  "output": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_fix_2026-10-02\\interactions\\focus",
+  "entries": [
+    "distribute_flyer",
+    "fruit_weigh",
+    "chess_move",
+    "take_back_piece",
+    "photo_overhead",
+    {
+      "id": "vending_collect",
+      "label": "vending_native_focus",
+      "start": 3.0,
+      "duration": 0.6
+    },
+    {
+      "id": "hang_laundry",
+      "label": "laundry_native_focus",
+      "start": 3.0,
+      "duration": 0.6
+    }
+  ],
+  "samples": 24,
+  "columns": 6,
+  "cell": 512,
+  "views": [
+    45,
+    135
+  ],
+  "pitch": 25
+}

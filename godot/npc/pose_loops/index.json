@@ -1,0 +1,3481 @@
+{
+	"clips": {
+		"adjust_clothes": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/adjust_clothes__end.tres",
+			"options": {},
+			"preview": "adjust_clothes",
+			"start": "res://npc/pose_loops/adjust_clothes__start.tres"
+		},
+		"air_walker": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/air_walker__end.tres",
+			"options": {},
+			"preview": "air_walker",
+			"start": "res://npc/pose_loops/air_walker__start.tres"
+		},
+		"assist_elder_walk": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/assist_elder_walk__end.tres",
+			"options": {},
+			"preview": "assist_elder_walk",
+			"start": "res://npc/pose_loops/assist_elder_walk__start.tres"
+		},
+		"atm_keypad": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/atm_keypad__end.tres",
+			"options": {},
+			"preview": "atm_keypad",
+			"start": "res://npc/pose_loops/atm_keypad__start.tres"
+		},
+		"atm_take_cash": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/atm_take_cash__end.tres",
+			"options": {},
+			"preview": "atm_take_cash",
+			"start": "res://npc/pose_loops/atm_take_cash__start.tres"
+		},
+		"back_away": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/back_away__end.tres",
+			"options": {},
+			"preview": "back_away",
+			"start": "res://npc/pose_loops/back_away__start.tres"
+		},
+		"badminton_swing": {
+			"duration": 2.6,
+			"end": "res://npc/pose_loops/badminton_swing__end.tres",
+			"options": {},
+			"preview": "badminton_swing",
+			"start": "res://npc/pose_loops/badminton_swing__start.tres"
+		},
+		"basketball_dribble": {
+			"duration": 3.29,
+			"end": "res://npc/pose_loops/basketball_dribble__end.tres",
+			"options": {},
+			"preview": "basketball_dribble",
+			"start": "res://npc/pose_loops/basketball_dribble__start.tres"
+		},
+		"basketball_shoot": {
+			"duration": 5.0,
+			"end": "res://npc/pose_loops/basketball_shoot__end.tres",
+			"options": {},
+			"preview": "basketball_shoot",
+			"start": "res://npc/pose_loops/basketball_shoot__start.tres"
+		},
+		"beckon": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/beckon__end.tres",
+			"options": {},
+			"preview": "beckon",
+			"start": "res://npc/pose_loops/beckon__start.tres"
+		},
+		"bike_scan_unlock": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/bike_scan_unlock__end.tres",
+			"options": {},
+			"preview": "bike_scan_unlock",
+			"start": "res://npc/pose_loops/bike_scan_unlock__start.tres"
+		},
+		"block_way": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/block_way__end.tres",
+			"options": {},
+			"preview": "block_way",
+			"start": "res://npc/pose_loops/block_way__start.tres"
+		},
+		"bow": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/bow__end.tres",
+			"options": {},
+			"preview": "bow",
+			"start": "res://npc/pose_loops/bow__start.tres"
+		},
+		"breakfast_buy": {
+			"duration": 6.0,
+			"end": "res://npc/pose_loops/breakfast_buy__end.tres",
+			"options": {},
+			"preview": "breakfast_buy",
+			"start": "res://npc/pose_loops/breakfast_buy__start.tres"
+		},
+		"breakfast_sell": {
+			"duration": 6.0,
+			"end": "res://npc/pose_loops/breakfast_sell__end.tres",
+			"options": {},
+			"preview": "breakfast_sell",
+			"start": "res://npc/pose_loops/breakfast_sell__start.tres"
+		},
+		"browse_bookstall": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/browse_bookstall__end.tres",
+			"options": {},
+			"preview": "browse_bookstall",
+			"start": "res://npc/pose_loops/browse_bookstall__start.tres"
+		},
+		"brush_clothes": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/brush_clothes__end.tres",
+			"options": {},
+			"preview": "brush_clothes",
+			"start": "res://npc/pose_loops/brush_clothes__start.tres"
+		},
+		"buy_newspaper": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/buy_newspaper__end.tres",
+			"options": {},
+			"preview": "buy_newspaper",
+			"start": "res://npc/pose_loops/buy_newspaper__start.tres"
+		},
+		"cafe_sit_drink": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/cafe_sit_drink__end.tres",
+			"options": {},
+			"preview": "cafe_sit_drink",
+			"start": "res://npc/pose_loops/cafe_sit_drink__start.tres"
+		},
+		"car_enter": {
+			"duration": 6.0,
+			"end": "res://npc/pose_loops/car_enter__end.tres",
+			"options": {},
+			"preview": "car_enter",
+			"start": "res://npc/pose_loops/car_enter__start.tres"
+		},
+		"car_exit": {
+			"duration": 6.0,
+			"end": "res://npc/pose_loops/car_exit__end.tres",
+			"options": {},
+			"preview": "car_exit",
+			"start": "res://npc/pose_loops/car_exit__start.tres"
+		},
+		"carry_bag": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/carry_bag__end.tres",
+			"options": {},
+			"preview": "carry_bag",
+			"start": "res://npc/pose_loops/carry_bag__start.tres"
+		},
+		"carry_bags": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/carry_bags__end.tres",
+			"options": {},
+			"preview": "carry_bags",
+			"start": "res://npc/pose_loops/carry_bags__start.tres"
+		},
+		"carry_box": {
+			"duration": 3.0,
+			"end": "res://npc/pose_loops/carry_box__end.tres",
+			"options": {},
+			"preview": "carry_box",
+			"start": "res://npc/pose_loops/carry_box__start.tres"
+		},
+		"carry_bucket": {
+			"duration": 1.5,
+			"end": "res://npc/pose_loops/carry_bucket__end.tres",
+			"options": {},
+			"preview": "carry_bucket",
+			"start": "res://npc/pose_loops/carry_bucket__start.tres"
+		},
+		"carry_shoulder": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/carry_shoulder__end.tres",
+			"options": {},
+			"preview": "carry_shoulder",
+			"start": "res://npc/pose_loops/carry_shoulder__start.tres"
+		},
+		"carry_shoulder_bag": {
+			"duration": 1.13333333333333,
+			"end": "res://npc/pose_loops/carry_shoulder_bag__end.tres",
+			"options": {},
+			"preview": "carry_shoulder_bag",
+			"start": "res://npc/pose_loops/carry_shoulder_bag__start.tres"
+		},
+		"cat__Idle": {
+			"duration": 1.11111108462016,
+			"end": "res://npc/pose_loops/cat__Idle__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:Idle",
+			"start": "res://npc/pose_loops/cat__Idle__start.tres"
+		},
+		"cat__NG_Head_Tilt_Left": {
+			"duration": 1.73333326975505,
+			"end": "res://npc/pose_loops/cat__NG_Head_Tilt_Left__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Head_Tilt_Left",
+			"start": "res://npc/pose_loops/cat__NG_Head_Tilt_Left__start.tres"
+		},
+		"cat__NG_Head_Tilt_Right": {
+			"duration": 1.73333326975505,
+			"end": "res://npc/pose_loops/cat__NG_Head_Tilt_Right__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Head_Tilt_Right",
+			"start": "res://npc/pose_loops/cat__NG_Head_Tilt_Right__start.tres"
+		},
+		"cat__NG_Knead": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/cat__NG_Knead__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Knead",
+			"start": "res://npc/pose_loops/cat__NG_Knead__start.tres"
+		},
+		"cat__NG_Lie_Down": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/cat__NG_Lie_Down__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Lie_Down",
+			"start": "res://npc/pose_loops/cat__NG_Lie_Down__start.tres"
+		},
+		"cat__NG_Lie_Get_Up": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Lie_Get_Up__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Lie_Get_Up",
+			"start": "res://npc/pose_loops/cat__NG_Lie_Get_Up__start.tres"
+		},
+		"cat__NG_Lie_Idle": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/cat__NG_Lie_Idle__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Lie_Idle",
+			"start": "res://npc/pose_loops/cat__NG_Lie_Idle__start.tres"
+		},
+		"cat__NG_Lie_To_Sit": {
+			"duration": 1.46666669845581,
+			"end": "res://npc/pose_loops/cat__NG_Lie_To_Sit__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Lie_To_Sit",
+			"start": "res://npc/pose_loops/cat__NG_Lie_To_Sit__start.tres"
+		},
+		"cat__NG_Look_Around": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Look_Around__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Look_Around",
+			"start": "res://npc/pose_loops/cat__NG_Look_Around__start.tres"
+		},
+		"cat__NG_Look_Down": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/cat__NG_Look_Down__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Look_Down",
+			"start": "res://npc/pose_loops/cat__NG_Look_Down__start.tres"
+		},
+		"cat__NG_Look_Left": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/cat__NG_Look_Left__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Look_Left",
+			"start": "res://npc/pose_loops/cat__NG_Look_Left__start.tres"
+		},
+		"cat__NG_Look_Right": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/cat__NG_Look_Right__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Look_Right",
+			"start": "res://npc/pose_loops/cat__NG_Look_Right__start.tres"
+		},
+		"cat__NG_Look_Up": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/cat__NG_Look_Up__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Look_Up",
+			"start": "res://npc/pose_loops/cat__NG_Look_Up__start.tres"
+		},
+		"cat__NG_Paw_Offer_Left": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/cat__NG_Paw_Offer_Left__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Paw_Offer_Left",
+			"start": "res://npc/pose_loops/cat__NG_Paw_Offer_Left__start.tres"
+		},
+		"cat__NG_Paw_Offer_Right": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/cat__NG_Paw_Offer_Right__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Paw_Offer_Right",
+			"start": "res://npc/pose_loops/cat__NG_Paw_Offer_Right__start.tres"
+		},
+		"cat__NG_Play_Bow": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/cat__NG_Play_Bow__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Play_Bow",
+			"start": "res://npc/pose_loops/cat__NG_Play_Bow__start.tres"
+		},
+		"cat__NG_Shake_Head": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/cat__NG_Shake_Head__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Shake_Head",
+			"start": "res://npc/pose_loops/cat__NG_Shake_Head__start.tres"
+		},
+		"cat__NG_Shake_Off": {
+			"duration": 1.46666669845581,
+			"end": "res://npc/pose_loops/cat__NG_Shake_Off__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Shake_Off",
+			"start": "res://npc/pose_loops/cat__NG_Shake_Off__start.tres"
+		},
+		"cat__NG_Side_Lie_Breathe": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Side_Lie_Breathe__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Side_Lie_Breathe",
+			"start": "res://npc/pose_loops/cat__NG_Side_Lie_Breathe__start.tres"
+		},
+		"cat__NG_Side_Lie_Enter": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/cat__NG_Side_Lie_Enter__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Side_Lie_Enter",
+			"start": "res://npc/pose_loops/cat__NG_Side_Lie_Enter__start.tres"
+		},
+		"cat__NG_Side_Lie_Exit": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/cat__NG_Side_Lie_Exit__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Side_Lie_Exit",
+			"start": "res://npc/pose_loops/cat__NG_Side_Lie_Exit__start.tres"
+		},
+		"cat__NG_Sit_Down": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Sit_Down__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sit_Down",
+			"start": "res://npc/pose_loops/cat__NG_Sit_Down__start.tres"
+		},
+		"cat__NG_Sit_Get_Up": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/cat__NG_Sit_Get_Up__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sit_Get_Up",
+			"start": "res://npc/pose_loops/cat__NG_Sit_Get_Up__start.tres"
+		},
+		"cat__NG_Sit_Idle": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/cat__NG_Sit_Idle__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sit_Idle",
+			"start": "res://npc/pose_loops/cat__NG_Sit_Idle__start.tres"
+		},
+		"cat__NG_Sit_Look_Around": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Sit_Look_Around__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sit_Look_Around",
+			"start": "res://npc/pose_loops/cat__NG_Sit_Look_Around__start.tres"
+		},
+		"cat__NG_Sit_Paw_Offer_Left": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/cat__NG_Sit_Paw_Offer_Left__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sit_Paw_Offer_Left",
+			"start": "res://npc/pose_loops/cat__NG_Sit_Paw_Offer_Left__start.tres"
+		},
+		"cat__NG_Sit_Paw_Offer_Right": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/cat__NG_Sit_Paw_Offer_Right__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sit_Paw_Offer_Right",
+			"start": "res://npc/pose_loops/cat__NG_Sit_Paw_Offer_Right__start.tres"
+		},
+		"cat__NG_Sit_To_Lie": {
+			"duration": 1.46666669845581,
+			"end": "res://npc/pose_loops/cat__NG_Sit_To_Lie__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sit_To_Lie",
+			"start": "res://npc/pose_loops/cat__NG_Sit_To_Lie__start.tres"
+		},
+		"cat__NG_Sit_Wag": {
+			"duration": 0.666666666666667,
+			"end": "res://npc/pose_loops/cat__NG_Sit_Wag__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sit_Wag",
+			"start": "res://npc/pose_loops/cat__NG_Sit_Wag__start.tres"
+		},
+		"cat__NG_Sleep_Breathe": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Sleep_Breathe__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sleep_Breathe",
+			"start": "res://npc/pose_loops/cat__NG_Sleep_Breathe__start.tres"
+		},
+		"cat__NG_Sleep_Enter": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Sleep_Enter__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sleep_Enter",
+			"start": "res://npc/pose_loops/cat__NG_Sleep_Enter__start.tres"
+		},
+		"cat__NG_Sleep_Wake": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/cat__NG_Sleep_Wake__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sleep_Wake",
+			"start": "res://npc/pose_loops/cat__NG_Sleep_Wake__start.tres"
+		},
+		"cat__NG_Sniff_Air": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/cat__NG_Sniff_Air__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sniff_Air",
+			"start": "res://npc/pose_loops/cat__NG_Sniff_Air__start.tres"
+		},
+		"cat__NG_Sniff_Ground": {
+			"duration": 2.13333336512248,
+			"end": "res://npc/pose_loops/cat__NG_Sniff_Ground__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sniff_Ground",
+			"start": "res://npc/pose_loops/cat__NG_Sniff_Ground__start.tres"
+		},
+		"cat__NG_Sniff_Ground_Enter": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/cat__NG_Sniff_Ground_Enter__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sniff_Ground_Enter",
+			"start": "res://npc/pose_loops/cat__NG_Sniff_Ground_Enter__start.tres"
+		},
+		"cat__NG_Sniff_Ground_Exit": {
+			"duration": 1.06666668256124,
+			"end": "res://npc/pose_loops/cat__NG_Sniff_Ground_Exit__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Sniff_Ground_Exit",
+			"start": "res://npc/pose_loops/cat__NG_Sniff_Ground_Exit__start.tres"
+		},
+		"cat__NG_Stand_Alert": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/cat__NG_Stand_Alert__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Stand_Alert",
+			"start": "res://npc/pose_loops/cat__NG_Stand_Alert__start.tres"
+		},
+		"cat__NG_Stand_Breathe": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/cat__NG_Stand_Breathe__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Stand_Breathe",
+			"start": "res://npc/pose_loops/cat__NG_Stand_Breathe__start.tres"
+		},
+		"cat__NG_Startle": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/cat__NG_Startle__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Startle",
+			"start": "res://npc/pose_loops/cat__NG_Startle__start.tres"
+		},
+		"cat__NG_Stretch_Front": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Stretch_Front__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Stretch_Front",
+			"start": "res://npc/pose_loops/cat__NG_Stretch_Front__start.tres"
+		},
+		"cat__NG_Tail_Tip_Flick": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/cat__NG_Tail_Tip_Flick__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Tail_Tip_Flick",
+			"start": "res://npc/pose_loops/cat__NG_Tail_Tip_Flick__start.tres"
+		},
+		"cat__NG_Tail_Tuck_Cautious": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/cat__NG_Tail_Tuck_Cautious__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Tail_Tuck_Cautious",
+			"start": "res://npc/pose_loops/cat__NG_Tail_Tuck_Cautious__start.tres"
+		},
+		"cat__NG_Tail_Wag_Happy": {
+			"duration": 0.333333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Tail_Wag_Happy__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Tail_Wag_Happy",
+			"start": "res://npc/pose_loops/cat__NG_Tail_Wag_Happy__start.tres"
+		},
+		"cat__NG_Tail_Wag_Slow": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/cat__NG_Tail_Wag_Slow__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Tail_Wag_Slow",
+			"start": "res://npc/pose_loops/cat__NG_Tail_Wag_Slow__start.tres"
+		},
+		"cat__NG_Threat_Arch": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/cat__NG_Threat_Arch__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Threat_Arch",
+			"start": "res://npc/pose_loops/cat__NG_Threat_Arch__start.tres"
+		},
+		"cat__NG_Threat_Arch_Enter": {
+			"duration": 0.666666666666667,
+			"end": "res://npc/pose_loops/cat__NG_Threat_Arch_Enter__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Threat_Arch_Enter",
+			"start": "res://npc/pose_loops/cat__NG_Threat_Arch_Enter__start.tres"
+		},
+		"cat__NG_Threat_Arch_Exit": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/cat__NG_Threat_Arch_Exit__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Threat_Arch_Exit",
+			"start": "res://npc/pose_loops/cat__NG_Threat_Arch_Exit__start.tres"
+		},
+		"cat__NG_Urinate_Left": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/cat__NG_Urinate_Left__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Urinate_Left",
+			"start": "res://npc/pose_loops/cat__NG_Urinate_Left__start.tres"
+		},
+		"cat__NG_Urinate_Right": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/cat__NG_Urinate_Right__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:NG_Urinate_Right",
+			"start": "res://npc/pose_loops/cat__NG_Urinate_Right__start.tres"
+		},
+		"cat__Walking": {
+			"duration": 1.11111108462016,
+			"end": "res://npc/pose_loops/cat__Walking__end.tres",
+			"options": {
+				"breed": "cat"
+			},
+			"preview": "cat:Walking",
+			"start": "res://npc/pose_loops/cat__Walking__start.tres"
+		},
+		"check_watch": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/check_watch__end.tres",
+			"options": {},
+			"preview": "check_watch",
+			"start": "res://npc/pose_loops/check_watch__start.tres"
+		},
+		"cheer": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/cheer__end.tres",
+			"options": {},
+			"preview": "cheer",
+			"start": "res://npc/pose_loops/cheer__start.tres"
+		},
+		"chess_move": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/chess_move__end.tres",
+			"options": {},
+			"preview": "chess_move",
+			"start": "res://npc/pose_loops/chess_move__start.tres"
+		},
+		"chess_watch": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/chess_watch__end.tres",
+			"options": {},
+			"preview": "chess_watch",
+			"start": "res://npc/pose_loops/chess_watch__start.tres"
+		},
+		"choose_item": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/choose_item__end.tres",
+			"options": {},
+			"preview": "choose_item",
+			"start": "res://npc/pose_loops/choose_item__start.tres"
+		},
+		"cough": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/cough__end.tres",
+			"options": {},
+			"preview": "cough",
+			"start": "res://npc/pose_loops/cough__start.tres"
+		},
+		"cover_face": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/cover_face__end.tres",
+			"options": {},
+			"preview": "cover_face",
+			"start": "res://npc/pose_loops/cover_face__start.tres"
+		},
+		"crane_neck": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/crane_neck__end.tres",
+			"options": {},
+			"preview": "crane_neck",
+			"start": "res://npc/pose_loops/crane_neck__start.tres"
+		},
+		"cross_arms": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/cross_arms__end.tres",
+			"options": {},
+			"preview": "cross_arms",
+			"start": "res://npc/pose_loops/cross_arms__start.tres"
+		},
+		"crouch_check": {
+			"duration": 4.46666666666667,
+			"end": "res://npc/pose_loops/crouch_check__end.tres",
+			"options": {},
+			"preview": "crouch_check",
+			"start": "res://npc/pose_loops/crouch_check__start.tres"
+		},
+		"crouch_check_hold": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/crouch_check_hold__end.tres",
+			"options": {},
+			"preview": "crouch_check_hold",
+			"start": "res://npc/pose_loops/crouch_check_hold__start.tres"
+		},
+		"distribute_flyer": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/distribute_flyer__end.tres",
+			"options": {},
+			"preview": "distribute_flyer",
+			"start": "res://npc/pose_loops/distribute_flyer__start.tres"
+		},
+		"dodge": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/dodge__end.tres",
+			"options": {},
+			"preview": "dodge",
+			"start": "res://npc/pose_loops/dodge__start.tres"
+		},
+		"drink": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/drink__end.tres",
+			"options": {},
+			"preview": "drink",
+			"start": "res://npc/pose_loops/drink__start.tres"
+		},
+		"duck_cover": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/duck_cover__end.tres",
+			"options": {},
+			"preview": "duck_cover",
+			"start": "res://npc/pose_loops/duck_cover__start.tres"
+		},
+		"duck_cover_hold": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/duck_cover_hold__end.tres",
+			"options": {},
+			"preview": "duck_cover_hold",
+			"start": "res://npc/pose_loops/duck_cover_hold__start.tres"
+		},
+		"eat_snack": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/eat_snack__end.tres",
+			"options": {},
+			"preview": "eat_snack",
+			"start": "res://npc/pose_loops/eat_snack__start.tres"
+		},
+		"eat_walk": {
+			"duration": 0.966666666666667,
+			"end": "res://npc/pose_loops/eat_walk__end.tres",
+			"options": {},
+			"preview": "eat_walk",
+			"start": "res://npc/pose_loops/eat_walk__start.tres"
+		},
+		"elder_assisted_walk": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/elder_assisted_walk__end.tres",
+			"options": {},
+			"preview": "elder_assisted_walk",
+			"start": "res://npc/pose_loops/elder_assisted_walk__start.tres"
+		},
+		"exercise": {
+			"duration": 1.76666666666667,
+			"end": "res://npc/pose_loops/exercise__end.tres",
+			"options": {},
+			"preview": "exercise",
+			"start": "res://npc/pose_loops/exercise__start.tres"
+		},
+		"fall_back": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/fall_back__end.tres",
+			"options": {},
+			"preview": "fall_back",
+			"start": "res://npc/pose_loops/fall_back__start.tres"
+		},
+		"fan_self": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/fan_self__end.tres",
+			"options": {},
+			"preview": "fan_self",
+			"start": "res://npc/pose_loops/fan_self__start.tres"
+		},
+		"film_phone": {
+			"duration": 5.0,
+			"end": "res://npc/pose_loops/film_phone__end.tres",
+			"options": {},
+			"preview": "film_phone",
+			"start": "res://npc/pose_loops/film_phone__start.tres"
+		},
+		"football_juggle": {
+			"duration": 1.67,
+			"end": "res://npc/pose_loops/football_juggle__end.tres",
+			"options": {},
+			"preview": "football_juggle",
+			"start": "res://npc/pose_loops/football_juggle__start.tres"
+		},
+		"fountain_drink": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/fountain_drink__end.tres",
+			"options": {},
+			"preview": "fountain_drink",
+			"start": "res://npc/pose_loops/fountain_drink__start.tres"
+		},
+		"fruit_choose": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/fruit_choose__end.tres",
+			"options": {},
+			"preview": "fruit_choose",
+			"start": "res://npc/pose_loops/fruit_choose__start.tres"
+		},
+		"fruit_weigh": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/fruit_weigh__end.tres",
+			"options": {},
+			"preview": "fruit_weigh",
+			"start": "res://npc/pose_loops/fruit_weigh__start.tres"
+		},
+		"give_item": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/give_item__end.tres",
+			"options": {},
+			"preview": "give_item",
+			"start": "res://npc/pose_loops/give_item__start.tres"
+		},
+		"grab_snatch": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/grab_snatch__end.tres",
+			"options": {},
+			"preview": "grab_snatch",
+			"start": "res://npc/pose_loops/grab_snatch__start.tres"
+		},
+		"guard": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/guard__end.tres",
+			"options": {},
+			"preview": "guard",
+			"start": "res://npc/pose_loops/guard__start.tres"
+		},
+		"hail_taxi": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/hail_taxi__end.tres",
+			"options": {},
+			"preview": "hail_taxi",
+			"start": "res://npc/pose_loops/hail_taxi__start.tres"
+		},
+		"hands_behind_back": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/hands_behind_back__end.tres",
+			"options": {},
+			"preview": "hands_behind_back",
+			"start": "res://npc/pose_loops/hands_behind_back__start.tres"
+		},
+		"hands_in_pockets": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/hands_in_pockets__end.tres",
+			"options": {},
+			"preview": "hands_in_pockets",
+			"start": "res://npc/pose_loops/hands_in_pockets__start.tres"
+		},
+		"hands_on_head": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/hands_on_head__end.tres",
+			"options": {},
+			"preview": "hands_on_head",
+			"start": "res://npc/pose_loops/hands_on_head__start.tres"
+		},
+		"hands_on_head_hold": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/hands_on_head_hold__end.tres",
+			"options": {},
+			"preview": "hands_on_head_hold",
+			"start": "res://npc/pose_loops/hands_on_head_hold__start.tres"
+		},
+		"hands_on_hips": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/hands_on_hips__end.tres",
+			"options": {},
+			"preview": "hands_on_hips",
+			"start": "res://npc/pose_loops/hands_on_hips__start.tres"
+		},
+		"hands_up": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/hands_up__end.tres",
+			"options": {},
+			"preview": "hands_up",
+			"start": "res://npc/pose_loops/hands_up__start.tres"
+		},
+		"hands_up_hold": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/hands_up_hold__end.tres",
+			"options": {},
+			"preview": "hands_up_hold",
+			"start": "res://npc/pose_loops/hands_up_hold__start.tres"
+		},
+		"handshake_offer": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/handshake_offer__end.tres",
+			"options": {},
+			"preview": "handshake_offer",
+			"start": "res://npc/pose_loops/handshake_offer__start.tres"
+		},
+		"handshake_reply": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/handshake_reply__end.tres",
+			"options": {},
+			"preview": "handshake_reply",
+			"start": "res://npc/pose_loops/handshake_reply__start.tres"
+		},
+		"handstand": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/handstand__end.tres",
+			"options": {},
+			"preview": "handstand",
+			"start": "res://npc/pose_loops/handstand__start.tres"
+		},
+		"hang_laundry": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/hang_laundry__end.tres",
+			"options": {},
+			"preview": "hang_laundry",
+			"start": "res://npc/pose_loops/hang_laundry__start.tres"
+		},
+		"hesitate_reach": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/hesitate_reach__end.tres",
+			"options": {},
+			"preview": "hesitate_reach",
+			"start": "res://npc/pose_loops/hesitate_reach__start.tres"
+		},
+		"hold_door": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/hold_door__end.tres",
+			"options": {},
+			"preview": "hold_door",
+			"start": "res://npc/pose_loops/hold_door__start.tres"
+		},
+		"hold_guitar": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/hold_guitar__end.tres",
+			"options": {},
+			"preview": "hold_guitar",
+			"start": "res://npc/pose_loops/hold_guitar__start.tres"
+		},
+		"hold_umbrella": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/hold_umbrella__end.tres",
+			"options": {},
+			"preview": "hold_umbrella",
+			"start": "res://npc/pose_loops/hold_umbrella__start.tres"
+		},
+		"hop": {
+			"duration": 1.76666666666667,
+			"end": "res://npc/pose_loops/hop__end.tres",
+			"options": {},
+			"preview": "hop",
+			"start": "res://npc/pose_loops/hop__start.tres"
+		},
+		"husky__Attack": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/husky__Attack__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Attack",
+			"start": "res://npc/pose_loops/husky__Attack__start.tres"
+		},
+		"husky__Death": {
+			"duration": 0.711111148198446,
+			"end": "res://npc/pose_loops/husky__Death__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Death",
+			"start": "res://npc/pose_loops/husky__Death__start.tres"
+		},
+		"husky__Eating": {
+			"duration": 1.77777783075968,
+			"end": "res://npc/pose_loops/husky__Eating__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Eating",
+			"start": "res://npc/pose_loops/husky__Eating__start.tres"
+		},
+		"husky__Gallop": {
+			"duration": 0.377777775128682,
+			"end": "res://npc/pose_loops/husky__Gallop__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Gallop",
+			"start": "res://npc/pose_loops/husky__Gallop__start.tres"
+		},
+		"husky__Gallop_Jump": {
+			"duration": 0.622222224871318,
+			"end": "res://npc/pose_loops/husky__Gallop_Jump__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Gallop_Jump",
+			"start": "res://npc/pose_loops/husky__Gallop_Jump__start.tres"
+		},
+		"husky__Idle": {
+			"duration": 2.22222216924032,
+			"end": "res://npc/pose_loops/husky__Idle__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Idle",
+			"start": "res://npc/pose_loops/husky__Idle__start.tres"
+		},
+		"husky__Idle_2": {
+			"duration": 2.22222216924032,
+			"end": "res://npc/pose_loops/husky__Idle_2__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Idle_2",
+			"start": "res://npc/pose_loops/husky__Idle_2__start.tres"
+		},
+		"husky__Idle_2_HeadLow": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/husky__Idle_2_HeadLow__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Idle_2_HeadLow",
+			"start": "res://npc/pose_loops/husky__Idle_2_HeadLow__start.tres"
+		},
+		"husky__Idle_HitReact_Left": {
+			"duration": 0.444444457689921,
+			"end": "res://npc/pose_loops/husky__Idle_HitReact_Left__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Idle_HitReact_Left",
+			"start": "res://npc/pose_loops/husky__Idle_HitReact_Left__start.tres"
+		},
+		"husky__Idle_HitReact_Right": {
+			"duration": 0.444444457689921,
+			"end": "res://npc/pose_loops/husky__Idle_HitReact_Right__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Idle_HitReact_Right",
+			"start": "res://npc/pose_loops/husky__Idle_HitReact_Right__start.tres"
+		},
+		"husky__Jump_ToIdle": {
+			"duration": 0.888888915379842,
+			"end": "res://npc/pose_loops/husky__Jump_ToIdle__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Jump_ToIdle",
+			"start": "res://npc/pose_loops/husky__Jump_ToIdle__start.tres"
+		},
+		"husky__NG_Ear_Twitch_Both": {
+			"duration": 0.933333317438761,
+			"end": "res://npc/pose_loops/husky__NG_Ear_Twitch_Both__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Ear_Twitch_Both",
+			"start": "res://npc/pose_loops/husky__NG_Ear_Twitch_Both__start.tres"
+		},
+		"husky__NG_Ear_Twitch_Left": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/husky__NG_Ear_Twitch_Left__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Ear_Twitch_Left",
+			"start": "res://npc/pose_loops/husky__NG_Ear_Twitch_Left__start.tres"
+		},
+		"husky__NG_Ear_Twitch_Right": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/husky__NG_Ear_Twitch_Right__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Ear_Twitch_Right",
+			"start": "res://npc/pose_loops/husky__NG_Ear_Twitch_Right__start.tres"
+		},
+		"husky__NG_Head_Tilt_Left": {
+			"duration": 1.73333326975505,
+			"end": "res://npc/pose_loops/husky__NG_Head_Tilt_Left__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Head_Tilt_Left",
+			"start": "res://npc/pose_loops/husky__NG_Head_Tilt_Left__start.tres"
+		},
+		"husky__NG_Head_Tilt_Right": {
+			"duration": 1.73333326975505,
+			"end": "res://npc/pose_loops/husky__NG_Head_Tilt_Right__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Head_Tilt_Right",
+			"start": "res://npc/pose_loops/husky__NG_Head_Tilt_Right__start.tres"
+		},
+		"husky__NG_Lie_Down": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/husky__NG_Lie_Down__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Lie_Down",
+			"start": "res://npc/pose_loops/husky__NG_Lie_Down__start.tres"
+		},
+		"husky__NG_Lie_Get_Up": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/husky__NG_Lie_Get_Up__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Lie_Get_Up",
+			"start": "res://npc/pose_loops/husky__NG_Lie_Get_Up__start.tres"
+		},
+		"husky__NG_Lie_Idle": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/husky__NG_Lie_Idle__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Lie_Idle",
+			"start": "res://npc/pose_loops/husky__NG_Lie_Idle__start.tres"
+		},
+		"husky__NG_Lie_To_Sit": {
+			"duration": 1.46666669845581,
+			"end": "res://npc/pose_loops/husky__NG_Lie_To_Sit__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Lie_To_Sit",
+			"start": "res://npc/pose_loops/husky__NG_Lie_To_Sit__start.tres"
+		},
+		"husky__NG_Look_Around": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/husky__NG_Look_Around__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Look_Around",
+			"start": "res://npc/pose_loops/husky__NG_Look_Around__start.tres"
+		},
+		"husky__NG_Look_Down": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/husky__NG_Look_Down__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Look_Down",
+			"start": "res://npc/pose_loops/husky__NG_Look_Down__start.tres"
+		},
+		"husky__NG_Look_Left": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/husky__NG_Look_Left__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Look_Left",
+			"start": "res://npc/pose_loops/husky__NG_Look_Left__start.tres"
+		},
+		"husky__NG_Look_Right": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/husky__NG_Look_Right__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Look_Right",
+			"start": "res://npc/pose_loops/husky__NG_Look_Right__start.tres"
+		},
+		"husky__NG_Look_Up": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/husky__NG_Look_Up__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Look_Up",
+			"start": "res://npc/pose_loops/husky__NG_Look_Up__start.tres"
+		},
+		"husky__NG_Paw_Offer_Left": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/husky__NG_Paw_Offer_Left__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Paw_Offer_Left",
+			"start": "res://npc/pose_loops/husky__NG_Paw_Offer_Left__start.tres"
+		},
+		"husky__NG_Paw_Offer_Right": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/husky__NG_Paw_Offer_Right__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Paw_Offer_Right",
+			"start": "res://npc/pose_loops/husky__NG_Paw_Offer_Right__start.tres"
+		},
+		"husky__NG_Play_Bow": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/husky__NG_Play_Bow__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Play_Bow",
+			"start": "res://npc/pose_loops/husky__NG_Play_Bow__start.tres"
+		},
+		"husky__NG_Scratch_Left": {
+			"duration": 2.93333339691162,
+			"end": "res://npc/pose_loops/husky__NG_Scratch_Left__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Scratch_Left",
+			"start": "res://npc/pose_loops/husky__NG_Scratch_Left__start.tres"
+		},
+		"husky__NG_Scratch_Right": {
+			"duration": 2.93333339691162,
+			"end": "res://npc/pose_loops/husky__NG_Scratch_Right__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Scratch_Right",
+			"start": "res://npc/pose_loops/husky__NG_Scratch_Right__start.tres"
+		},
+		"husky__NG_Shake_Head": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/husky__NG_Shake_Head__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Shake_Head",
+			"start": "res://npc/pose_loops/husky__NG_Shake_Head__start.tres"
+		},
+		"husky__NG_Shake_Off": {
+			"duration": 1.46666669845581,
+			"end": "res://npc/pose_loops/husky__NG_Shake_Off__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Shake_Off",
+			"start": "res://npc/pose_loops/husky__NG_Shake_Off__start.tres"
+		},
+		"husky__NG_Side_Lie_Breathe": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/husky__NG_Side_Lie_Breathe__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Side_Lie_Breathe",
+			"start": "res://npc/pose_loops/husky__NG_Side_Lie_Breathe__start.tres"
+		},
+		"husky__NG_Side_Lie_Enter": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/husky__NG_Side_Lie_Enter__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Side_Lie_Enter",
+			"start": "res://npc/pose_loops/husky__NG_Side_Lie_Enter__start.tres"
+		},
+		"husky__NG_Side_Lie_Exit": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/husky__NG_Side_Lie_Exit__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Side_Lie_Exit",
+			"start": "res://npc/pose_loops/husky__NG_Side_Lie_Exit__start.tres"
+		},
+		"husky__NG_Sit_Down": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/husky__NG_Sit_Down__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sit_Down",
+			"start": "res://npc/pose_loops/husky__NG_Sit_Down__start.tres"
+		},
+		"husky__NG_Sit_Get_Up": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/husky__NG_Sit_Get_Up__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sit_Get_Up",
+			"start": "res://npc/pose_loops/husky__NG_Sit_Get_Up__start.tres"
+		},
+		"husky__NG_Sit_Idle": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/husky__NG_Sit_Idle__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sit_Idle",
+			"start": "res://npc/pose_loops/husky__NG_Sit_Idle__start.tres"
+		},
+		"husky__NG_Sit_Look_Around": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/husky__NG_Sit_Look_Around__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sit_Look_Around",
+			"start": "res://npc/pose_loops/husky__NG_Sit_Look_Around__start.tres"
+		},
+		"husky__NG_Sit_Paw_Offer_Left": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/husky__NG_Sit_Paw_Offer_Left__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sit_Paw_Offer_Left",
+			"start": "res://npc/pose_loops/husky__NG_Sit_Paw_Offer_Left__start.tres"
+		},
+		"husky__NG_Sit_Paw_Offer_Right": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/husky__NG_Sit_Paw_Offer_Right__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sit_Paw_Offer_Right",
+			"start": "res://npc/pose_loops/husky__NG_Sit_Paw_Offer_Right__start.tres"
+		},
+		"husky__NG_Sit_To_Lie": {
+			"duration": 1.46666669845581,
+			"end": "res://npc/pose_loops/husky__NG_Sit_To_Lie__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sit_To_Lie",
+			"start": "res://npc/pose_loops/husky__NG_Sit_To_Lie__start.tres"
+		},
+		"husky__NG_Sit_Wag": {
+			"duration": 0.666666666666667,
+			"end": "res://npc/pose_loops/husky__NG_Sit_Wag__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sit_Wag",
+			"start": "res://npc/pose_loops/husky__NG_Sit_Wag__start.tres"
+		},
+		"husky__NG_Sleep_Breathe": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/husky__NG_Sleep_Breathe__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sleep_Breathe",
+			"start": "res://npc/pose_loops/husky__NG_Sleep_Breathe__start.tres"
+		},
+		"husky__NG_Sleep_Enter": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/husky__NG_Sleep_Enter__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sleep_Enter",
+			"start": "res://npc/pose_loops/husky__NG_Sleep_Enter__start.tres"
+		},
+		"husky__NG_Sleep_Wake": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/husky__NG_Sleep_Wake__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sleep_Wake",
+			"start": "res://npc/pose_loops/husky__NG_Sleep_Wake__start.tres"
+		},
+		"husky__NG_Sniff_Air": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/husky__NG_Sniff_Air__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sniff_Air",
+			"start": "res://npc/pose_loops/husky__NG_Sniff_Air__start.tres"
+		},
+		"husky__NG_Sniff_Ground": {
+			"duration": 2.13333336512248,
+			"end": "res://npc/pose_loops/husky__NG_Sniff_Ground__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sniff_Ground",
+			"start": "res://npc/pose_loops/husky__NG_Sniff_Ground__start.tres"
+		},
+		"husky__NG_Sniff_Ground_Enter": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/husky__NG_Sniff_Ground_Enter__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sniff_Ground_Enter",
+			"start": "res://npc/pose_loops/husky__NG_Sniff_Ground_Enter__start.tres"
+		},
+		"husky__NG_Sniff_Ground_Exit": {
+			"duration": 1.06666668256124,
+			"end": "res://npc/pose_loops/husky__NG_Sniff_Ground_Exit__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Sniff_Ground_Exit",
+			"start": "res://npc/pose_loops/husky__NG_Sniff_Ground_Exit__start.tres"
+		},
+		"husky__NG_Stand_Alert": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/husky__NG_Stand_Alert__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Stand_Alert",
+			"start": "res://npc/pose_loops/husky__NG_Stand_Alert__start.tres"
+		},
+		"husky__NG_Stand_Breathe": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/husky__NG_Stand_Breathe__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Stand_Breathe",
+			"start": "res://npc/pose_loops/husky__NG_Stand_Breathe__start.tres"
+		},
+		"husky__NG_Startle": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/husky__NG_Startle__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Startle",
+			"start": "res://npc/pose_loops/husky__NG_Startle__start.tres"
+		},
+		"husky__NG_Stretch_Front": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/husky__NG_Stretch_Front__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Stretch_Front",
+			"start": "res://npc/pose_loops/husky__NG_Stretch_Front__start.tres"
+		},
+		"husky__NG_Tail_Tuck_Cautious": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/husky__NG_Tail_Tuck_Cautious__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Tail_Tuck_Cautious",
+			"start": "res://npc/pose_loops/husky__NG_Tail_Tuck_Cautious__start.tres"
+		},
+		"husky__NG_Tail_Wag_Happy": {
+			"duration": 0.333333333333333,
+			"end": "res://npc/pose_loops/husky__NG_Tail_Wag_Happy__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Tail_Wag_Happy",
+			"start": "res://npc/pose_loops/husky__NG_Tail_Wag_Happy__start.tres"
+		},
+		"husky__NG_Tail_Wag_Slow": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/husky__NG_Tail_Wag_Slow__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Tail_Wag_Slow",
+			"start": "res://npc/pose_loops/husky__NG_Tail_Wag_Slow__start.tres"
+		},
+		"husky__NG_Urinate_Left": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/husky__NG_Urinate_Left__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Urinate_Left",
+			"start": "res://npc/pose_loops/husky__NG_Urinate_Left__start.tres"
+		},
+		"husky__NG_Urinate_Right": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/husky__NG_Urinate_Right__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:NG_Urinate_Right",
+			"start": "res://npc/pose_loops/husky__NG_Urinate_Right__start.tres"
+		},
+		"husky__Walk": {
+			"duration": 0.711111148198446,
+			"end": "res://npc/pose_loops/husky__Walk__end.tres",
+			"options": {
+				"breed": "husky"
+			},
+			"preview": "dog:Walk",
+			"start": "res://npc/pose_loops/husky__Walk__start.tres"
+		},
+		"inspect_item": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/inspect_item__end.tres",
+			"options": {},
+			"preview": "inspect_item",
+			"start": "res://npc/pose_loops/inspect_item__start.tres"
+		},
+		"interrupt": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/interrupt__end.tres",
+			"options": {},
+			"preview": "interrupt",
+			"start": "res://npc/pose_loops/interrupt__start.tres"
+		},
+		"interview_answer": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/interview_answer__end.tres",
+			"options": {},
+			"preview": "interview_answer",
+			"start": "res://npc/pose_loops/interview_answer__start.tres"
+		},
+		"interview_describe": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/interview_describe__end.tres",
+			"options": {},
+			"preview": "interview_describe",
+			"start": "res://npc/pose_loops/interview_describe__start.tres"
+		},
+		"interview_followup": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/interview_followup__end.tres",
+			"options": {},
+			"preview": "interview_followup",
+			"start": "res://npc/pose_loops/interview_followup__start.tres"
+		},
+		"interview_listen": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/interview_listen__end.tres",
+			"options": {},
+			"preview": "interview_listen",
+			"start": "res://npc/pose_loops/interview_listen__start.tres"
+		},
+		"interview_point": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/interview_point__end.tres",
+			"options": {},
+			"preview": "interview_point",
+			"start": "res://npc/pose_loops/interview_point__start.tres"
+		},
+		"interview_question": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/interview_question__end.tres",
+			"options": {},
+			"preview": "interview_question",
+			"start": "res://npc/pose_loops/interview_question__start.tres"
+		},
+		"jog": {
+			"duration": 0.866666666666667,
+			"end": "res://npc/pose_loops/jog__end.tres",
+			"options": {},
+			"preview": "jog",
+			"start": "res://npc/pose_loops/jog__start.tres"
+		},
+		"kneel_hold": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/kneel_hold__end.tres",
+			"options": {},
+			"preview": "kneel_hold",
+			"start": "res://npc/pose_loops/kneel_hold__start.tres"
+		},
+		"laugh": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/laugh__end.tres",
+			"options": {},
+			"preview": "laugh",
+			"start": "res://npc/pose_loops/laugh__start.tres"
+		},
+		"lean_railing": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/lean_railing__end.tres",
+			"options": {},
+			"preview": "lean_railing",
+			"start": "res://npc/pose_loops/lean_railing__start.tres"
+		},
+		"lean_sign": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/lean_sign__end.tres",
+			"options": {},
+			"preview": "lean_sign",
+			"start": "res://npc/pose_loops/lean_sign__start.tres"
+		},
+		"lean_wall": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/lean_wall__end.tres",
+			"options": {},
+			"preview": "lean_wall",
+			"start": "res://npc/pose_loops/lean_wall__start.tres"
+		},
+		"lecture": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/lecture__end.tres",
+			"options": {},
+			"preview": "lecture",
+			"start": "res://npc/pose_loops/lecture__start.tres"
+		},
+		"leg_stretch": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/leg_stretch__end.tres",
+			"options": {},
+			"preview": "leg_stretch",
+			"start": "res://npc/pose_loops/leg_stretch__start.tres"
+		},
+		"lie_ground_hold": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/lie_ground_hold__end.tres",
+			"options": {},
+			"preview": "lie_ground_hold",
+			"start": "res://npc/pose_loops/lie_ground_hold__start.tres"
+		},
+		"look_around_nervous": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/look_around_nervous__end.tres",
+			"options": {},
+			"preview": "look_around_nervous",
+			"start": "res://npc/pose_loops/look_around_nervous__start.tres"
+		},
+		"look_away": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/look_away__end.tres",
+			"options": {},
+			"preview": "look_away",
+			"start": "res://npc/pose_loops/look_away__start.tres"
+		},
+		"look_down": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/look_down__end.tres",
+			"options": {},
+			"preview": "look_down",
+			"start": "res://npc/pose_loops/look_down__start.tres"
+		},
+		"look_up": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/look_up__end.tres",
+			"options": {},
+			"preview": "look_up",
+			"start": "res://npc/pose_loops/look_up__start.tres"
+		},
+		"magic_gesture": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/magic_gesture__end.tres",
+			"options": {},
+			"preview": "magic_gesture",
+			"start": "res://npc/pose_loops/magic_gesture__start.tres"
+		},
+		"march_in_place": {
+			"duration": 1.8,
+			"end": "res://npc/pose_loops/march_in_place__end.tres",
+			"options": {},
+			"preview": "march_in_place",
+			"start": "res://npc/pose_loops/march_in_place__start.tres"
+		},
+		"mop_ground": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/mop_ground__end.tres",
+			"options": {},
+			"preview": "mop_ground",
+			"start": "res://npc/pose_loops/mop_ground__start.tres"
+		},
+		"pace": {
+			"duration": 9.96666666666667,
+			"end": "res://npc/pose_loops/pace__end.tres",
+			"options": {},
+			"preview": "pace",
+			"start": "res://npc/pose_loops/pace__start.tres"
+		},
+		"parcel_terminal": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/parcel_terminal__end.tres",
+			"options": {},
+			"preview": "parcel_terminal",
+			"start": "res://npc/pose_loops/parcel_terminal__start.tres"
+		},
+		"pat_dust": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/pat_dust__end.tres",
+			"options": {},
+			"preview": "pat_dust",
+			"start": "res://npc/pose_loops/pat_dust__start.tres"
+		},
+		"pay": {
+			"duration": 4.46666666666667,
+			"end": "res://npc/pose_loops/pay__end.tres",
+			"options": {},
+			"preview": "pay",
+			"start": "res://npc/pose_loops/pay__start.tres"
+		},
+		"peek_side": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/peek_side__end.tres",
+			"options": {},
+			"preview": "peek_side",
+			"start": "res://npc/pose_loops/peek_side__start.tres"
+		},
+		"phone_booth_call": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/phone_booth_call__end.tres",
+			"options": {},
+			"preview": "phone_booth_call",
+			"start": "res://npc/pose_loops/phone_booth_call__start.tres"
+		},
+		"phone_call": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/phone_call__end.tres",
+			"options": {},
+			"preview": "phone_call",
+			"start": "res://npc/pose_loops/phone_call__start.tres"
+		},
+		"phone_urgent": {
+			"duration": 6.96666666666667,
+			"end": "res://npc/pose_loops/phone_urgent__end.tres",
+			"options": {},
+			"preview": "phone_urgent",
+			"start": "res://npc/pose_loops/phone_urgent__start.tres"
+		},
+		"phone_walk": {
+			"duration": 2.16666666666667,
+			"end": "res://npc/pose_loops/phone_walk__end.tres",
+			"options": {},
+			"preview": "phone_walk",
+			"start": "res://npc/pose_loops/phone_walk__start.tres"
+		},
+		"photo_overhead": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/photo_overhead__end.tres",
+			"options": {},
+			"preview": "photo_overhead",
+			"start": "res://npc/pose_loops/photo_overhead__start.tres"
+		},
+		"pick_up": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/pick_up__end.tres",
+			"options": {},
+			"preview": "pick_up",
+			"start": "res://npc/pose_loops/pick_up__start.tres"
+		},
+		"pigeon:bank_left": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_bank_left__end.tres",
+			"options": {},
+			"preview": "pigeon:bank_left",
+			"start": "res://npc/pose_loops/pigeon_bank_left__start.tres"
+		},
+		"pigeon:bank_left_enter": {
+			"duration": 0.55,
+			"end": "res://npc/pose_loops/pigeon_bank_left_enter__end.tres",
+			"options": {},
+			"preview": "pigeon:bank_left_enter",
+			"start": "res://npc/pose_loops/pigeon_bank_left_enter__start.tres"
+		},
+		"pigeon:bank_left_exit": {
+			"duration": 0.55,
+			"end": "res://npc/pose_loops/pigeon_bank_left_exit__end.tres",
+			"options": {},
+			"preview": "pigeon:bank_left_exit",
+			"start": "res://npc/pose_loops/pigeon_bank_left_exit__start.tres"
+		},
+		"pigeon:bank_left_to_right": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_bank_left_to_right__end.tres",
+			"options": {},
+			"preview": "pigeon:bank_left_to_right",
+			"start": "res://npc/pose_loops/pigeon_bank_left_to_right__start.tres"
+		},
+		"pigeon:bank_right": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_bank_right__end.tres",
+			"options": {},
+			"preview": "pigeon:bank_right",
+			"start": "res://npc/pose_loops/pigeon_bank_right__start.tres"
+		},
+		"pigeon:bank_right_enter": {
+			"duration": 0.55,
+			"end": "res://npc/pose_loops/pigeon_bank_right_enter__end.tres",
+			"options": {},
+			"preview": "pigeon:bank_right_enter",
+			"start": "res://npc/pose_loops/pigeon_bank_right_enter__start.tres"
+		},
+		"pigeon:bank_right_exit": {
+			"duration": 0.55,
+			"end": "res://npc/pose_loops/pigeon_bank_right_exit__end.tres",
+			"options": {},
+			"preview": "pigeon:bank_right_exit",
+			"start": "res://npc/pose_loops/pigeon_bank_right_exit__start.tres"
+		},
+		"pigeon:brake_feet": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_brake_feet__end.tres",
+			"options": {},
+			"preview": "pigeon:brake_feet",
+			"start": "res://npc/pose_loops/pigeon_brake_feet__start.tres"
+		},
+		"pigeon:brake_from_glide": {
+			"duration": 0.55,
+			"end": "res://npc/pose_loops/pigeon_brake_from_glide__end.tres",
+			"options": {},
+			"preview": "pigeon:brake_from_glide",
+			"start": "res://npc/pose_loops/pigeon_brake_from_glide__start.tres"
+		},
+		"pigeon:climb": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_climb__end.tres",
+			"options": {},
+			"preview": "pigeon:climb",
+			"start": "res://npc/pose_loops/pigeon_climb__start.tres"
+		},
+		"pigeon:climb_enter": {
+			"duration": 0.55,
+			"end": "res://npc/pose_loops/pigeon_climb_enter__end.tres",
+			"options": {},
+			"preview": "pigeon:climb_enter",
+			"start": "res://npc/pose_loops/pigeon_climb_enter__start.tres"
+		},
+		"pigeon:climb_exit": {
+			"duration": 0.55,
+			"end": "res://npc/pose_loops/pigeon_climb_exit__end.tres",
+			"options": {},
+			"preview": "pigeon:climb_exit",
+			"start": "res://npc/pose_loops/pigeon_climb_exit__start.tres"
+		},
+		"pigeon:dive": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_dive__end.tres",
+			"options": {},
+			"preview": "pigeon:dive",
+			"start": "res://npc/pose_loops/pigeon_dive__start.tres"
+		},
+		"pigeon:dive_enter": {
+			"duration": 0.55,
+			"end": "res://npc/pose_loops/pigeon_dive_enter__end.tres",
+			"options": {},
+			"preview": "pigeon:dive_enter",
+			"start": "res://npc/pose_loops/pigeon_dive_enter__start.tres"
+		},
+		"pigeon:dive_exit": {
+			"duration": 0.55,
+			"end": "res://npc/pose_loops/pigeon_dive_exit__end.tres",
+			"options": {},
+			"preview": "pigeon:dive_exit",
+			"start": "res://npc/pose_loops/pigeon_dive_exit__start.tres"
+		},
+		"pigeon:flap": {
+			"duration": 0.4,
+			"end": "res://npc/pose_loops/pigeon_flap__end.tres",
+			"options": {},
+			"preview": "pigeon:flap",
+			"start": "res://npc/pose_loops/pigeon_flap__start.tres"
+		},
+		"pigeon:flap_to_glide_soft": {
+			"duration": 0.65,
+			"end": "res://npc/pose_loops/pigeon_flap_to_glide_soft__end.tres",
+			"options": {},
+			"preview": "pigeon:flap_to_glide_soft",
+			"start": "res://npc/pose_loops/pigeon_flap_to_glide_soft__start.tres"
+		},
+		"pigeon:flap_to_glide_stroke": {
+			"duration": 0.65,
+			"end": "res://npc/pose_loops/pigeon_flap_to_glide_stroke__end.tres",
+			"options": {},
+			"preview": "pigeon:flap_to_glide_stroke",
+			"start": "res://npc/pose_loops/pigeon_flap_to_glide_stroke__start.tres"
+		},
+		"pigeon:fold_after_lift": {
+			"duration": 0.8,
+			"end": "res://npc/pose_loops/pigeon_fold_after_lift__end.tres",
+			"options": {},
+			"preview": "pigeon:fold_after_lift",
+			"start": "res://npc/pose_loops/pigeon_fold_after_lift__start.tres"
+		},
+		"pigeon:fold_direct": {
+			"duration": 0.65,
+			"end": "res://npc/pose_loops/pigeon_fold_direct__end.tres",
+			"options": {},
+			"preview": "pigeon:fold_direct",
+			"start": "res://npc/pose_loops/pigeon_fold_direct__start.tres"
+		},
+		"pigeon:folded": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_folded__end.tres",
+			"options": {},
+			"preview": "pigeon:folded",
+			"start": "res://npc/pose_loops/pigeon_folded__start.tres"
+		},
+		"pigeon:glide": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_glide__end.tres",
+			"options": {},
+			"preview": "pigeon:glide",
+			"start": "res://npc/pose_loops/pigeon_glide__start.tres"
+		},
+		"pigeon:glide_to_flap": {
+			"duration": 0.45,
+			"end": "res://npc/pose_loops/pigeon_glide_to_flap__end.tres",
+			"options": {},
+			"preview": "pigeon:glide_to_flap",
+			"start": "res://npc/pose_loops/pigeon_glide_to_flap__start.tres"
+		},
+		"pigeon:hop": {
+			"duration": 0.65,
+			"end": "res://npc/pose_loops/pigeon_hop__end.tres",
+			"options": {},
+			"preview": "pigeon:hop",
+			"start": "res://npc/pose_loops/pigeon_hop__start.tres"
+		},
+		"pigeon:land_absorb": {
+			"duration": 0.9,
+			"end": "res://npc/pose_loops/pigeon_land_absorb__end.tres",
+			"options": {},
+			"preview": "pigeon:land_absorb",
+			"start": "res://npc/pose_loops/pigeon_land_absorb__start.tres"
+		},
+		"pigeon:land_flare": {
+			"duration": 0.7,
+			"end": "res://npc/pose_loops/pigeon_land_flare__end.tres",
+			"options": {},
+			"preview": "pigeon:land_flare",
+			"start": "res://npc/pose_loops/pigeon_land_flare__start.tres"
+		},
+		"pigeon:launch_open": {
+			"duration": 0.85,
+			"end": "res://npc/pose_loops/pigeon_launch_open__end.tres",
+			"options": {},
+			"preview": "pigeon:launch_open",
+			"start": "res://npc/pose_loops/pigeon_launch_open__start.tres"
+		},
+		"pigeon:launch_power": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_launch_power__end.tres",
+			"options": {},
+			"preview": "pigeon:launch_power",
+			"start": "res://npc/pose_loops/pigeon_launch_power__start.tres"
+		},
+		"pigeon:look_around": {
+			"duration": 2.4,
+			"end": "res://npc/pose_loops/pigeon_look_around__end.tres",
+			"options": {},
+			"preview": "pigeon:look_around",
+			"start": "res://npc/pose_loops/pigeon_look_around__start.tres"
+		},
+		"pigeon:peck": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_peck__end.tres",
+			"options": {},
+			"preview": "pigeon:peck",
+			"start": "res://npc/pose_loops/pigeon_peck__start.tres"
+		},
+		"pigeon:spread_wings": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_spread_wings__end.tres",
+			"options": {},
+			"preview": "pigeon:spread_wings",
+			"start": "res://npc/pose_loops/pigeon_spread_wings__start.tres"
+		},
+		"pigeon:touchdown_fold": {
+			"duration": 0.45,
+			"end": "res://npc/pose_loops/pigeon_touchdown_fold__end.tres",
+			"options": {},
+			"preview": "pigeon:touchdown_fold",
+			"start": "res://npc/pose_loops/pigeon_touchdown_fold__start.tres"
+		},
+		"pigeon:unfold_direct": {
+			"duration": 0.65,
+			"end": "res://npc/pose_loops/pigeon_unfold_direct__end.tres",
+			"options": {},
+			"preview": "pigeon:unfold_direct",
+			"start": "res://npc/pose_loops/pigeon_unfold_direct__start.tres"
+		},
+		"pigeon:unfold_lift": {
+			"duration": 0.8,
+			"end": "res://npc/pose_loops/pigeon_unfold_lift__end.tres",
+			"options": {},
+			"preview": "pigeon:unfold_lift",
+			"start": "res://npc/pose_loops/pigeon_unfold_lift__start.tres"
+		},
+		"pigeon:walk_in_place": {
+			"duration": 0.8,
+			"end": "res://npc/pose_loops/pigeon_walk_in_place__end.tres",
+			"options": {},
+			"preview": "pigeon:walk_in_place",
+			"start": "res://npc/pose_loops/pigeon_walk_in_place__start.tres"
+		},
+		"pigeon:wing_down": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_wing_down__end.tres",
+			"options": {},
+			"preview": "pigeon:wing_down",
+			"start": "res://npc/pose_loops/pigeon_wing_down__start.tres"
+		},
+		"pigeon:wing_up": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/pigeon_wing_up__end.tres",
+			"options": {},
+			"preview": "pigeon:wing_up",
+			"start": "res://npc/pose_loops/pigeon_wing_up__start.tres"
+		},
+		"point": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/point__end.tres",
+			"options": {},
+			"preview": "point",
+			"start": "res://npc/pose_loops/point__start.tres"
+		},
+		"point_shout": {
+			"duration": 4.46666666666667,
+			"end": "res://npc/pose_loops/point_shout__end.tres",
+			"options": {},
+			"preview": "point_shout",
+			"start": "res://npc/pose_loops/point_shout__start.tres"
+		},
+		"post_letter": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/post_letter__end.tres",
+			"options": {},
+			"preview": "post_letter",
+			"start": "res://npc/pose_loops/post_letter__start.tres"
+		},
+		"post_notice": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/post_notice__end.tres",
+			"options": {},
+			"preview": "post_notice",
+			"start": "res://npc/pose_loops/post_notice__start.tres"
+		},
+		"present": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/present__end.tres",
+			"options": {},
+			"preview": "present",
+			"start": "res://npc/pose_loops/present__start.tres"
+		},
+		"press_button": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/press_button__end.tres",
+			"options": {},
+			"preview": "press_button",
+			"start": "res://npc/pose_loops/press_button__start.tres"
+		},
+		"pull_door": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/pull_door__end.tres",
+			"options": {},
+			"preview": "pull_door",
+			"start": "res://npc/pose_loops/pull_door__start.tres"
+		},
+		"pull_suitcase": {
+			"duration": 1.5,
+			"end": "res://npc/pose_loops/pull_suitcase__end.tres",
+			"options": {},
+			"preview": "pull_suitcase",
+			"start": "res://npc/pose_loops/pull_suitcase__start.tres"
+		},
+		"pullup_hold": {
+			"duration": 3.0,
+			"end": "res://npc/pose_loops/pullup_hold__end.tres",
+			"options": {},
+			"preview": "pullup_hold",
+			"start": "res://npc/pose_loops/pullup_hold__start.tres"
+		},
+		"pullup_raise": {
+			"duration": 3.0,
+			"end": "res://npc/pose_loops/pullup_raise__end.tres",
+			"options": {},
+			"preview": "pullup_raise",
+			"start": "res://npc/pose_loops/pullup_raise__start.tres"
+		},
+		"push_bicycle": {
+			"duration": 1.1,
+			"end": "res://npc/pose_loops/push_bicycle__end.tres",
+			"options": {},
+			"preview": "push_bicycle",
+			"start": "res://npc/pose_loops/push_bicycle__start.tres"
+		},
+		"push_cart": {
+			"duration": 1.1,
+			"end": "res://npc/pose_loops/push_cart__end.tres",
+			"options": {},
+			"preview": "push_cart",
+			"start": "res://npc/pose_loops/push_cart__start.tres"
+		},
+		"push_door": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/push_door__end.tres",
+			"options": {},
+			"preview": "push_door",
+			"start": "res://npc/pose_loops/push_door__start.tres"
+		},
+		"push_stroller": {
+			"duration": 1.1,
+			"end": "res://npc/pose_loops/push_stroller__end.tres",
+			"options": {},
+			"preview": "push_stroller",
+			"start": "res://npc/pose_loops/push_stroller__start.tres"
+		},
+		"reach_after": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/reach_after__end.tres",
+			"options": {},
+			"preview": "reach_after",
+			"start": "res://npc/pose_loops/reach_after__start.tres"
+		},
+		"read_book": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/read_book__end.tres",
+			"options": {},
+			"preview": "read_book",
+			"start": "res://npc/pose_loops/read_book__start.tres"
+		},
+		"read_newspaper": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/read_newspaper__end.tres",
+			"options": {},
+			"preview": "read_newspaper",
+			"start": "res://npc/pose_loops/read_newspaper__start.tres"
+		},
+		"read_notice": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/read_notice__end.tres",
+			"options": {},
+			"preview": "read_notice",
+			"start": "res://npc/pose_loops/read_notice__start.tres"
+		},
+		"receive_flyer": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/receive_flyer__end.tres",
+			"options": {},
+			"preview": "receive_flyer",
+			"start": "res://npc/pose_loops/receive_flyer__start.tres"
+		},
+		"receive_item": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/receive_item__end.tres",
+			"options": {},
+			"preview": "receive_item",
+			"start": "res://npc/pose_loops/receive_item__start.tres"
+		},
+		"recoil": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/recoil__end.tres",
+			"options": {},
+			"preview": "recoil",
+			"start": "res://npc/pose_loops/recoil__start.tres"
+		},
+		"rub_eye": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/rub_eye__end.tres",
+			"options": {},
+			"preview": "rub_eye",
+			"start": "res://npc/pose_loops/rub_eye__start.tres"
+		},
+		"rub_hands": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/rub_hands__end.tres",
+			"options": {},
+			"preview": "rub_hands",
+			"start": "res://npc/pose_loops/rub_hands__start.tres"
+		},
+		"rummage_bin": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/rummage_bin__end.tres",
+			"options": {},
+			"preview": "rummage_bin",
+			"start": "res://npc/pose_loops/rummage_bin__start.tres"
+		},
+		"run": {
+			"duration": 1.36666666666667,
+			"end": "res://npc/pose_loops/run__end.tres",
+			"options": {},
+			"preview": "run",
+			"start": "res://npc/pose_loops/run__start.tres"
+		},
+		"run_curve": {
+			"duration": 8.2,
+			"end": "res://npc/pose_loops/run_curve__end.tres",
+			"options": {},
+			"preview": "run_curve",
+			"start": "res://npc/pose_loops/run_curve__start.tres"
+		},
+		"scratch_back": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/scratch_back__end.tres",
+			"options": {},
+			"preview": "scratch_back",
+			"start": "res://npc/pose_loops/scratch_back__start.tres"
+		},
+		"scratch_head": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/scratch_head__end.tres",
+			"options": {},
+			"preview": "scratch_head",
+			"start": "res://npc/pose_loops/scratch_head__start.tres"
+		},
+		"seesaw_partner": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/seesaw_partner__end.tres",
+			"options": {},
+			"preview": "seesaw_partner",
+			"start": "res://npc/pose_loops/seesaw_partner__start.tres"
+		},
+		"seesaw_seated": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/seesaw_seated__end.tres",
+			"options": {},
+			"preview": "seesaw_seated",
+			"start": "res://npc/pose_loops/seesaw_seated__start.tres"
+		},
+		"selfie": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/selfie__end.tres",
+			"options": {},
+			"preview": "selfie",
+			"start": "res://npc/pose_loops/selfie__start.tres"
+		},
+		"shadow_box": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/shadow_box__end.tres",
+			"options": {},
+			"preview": "shadow_box",
+			"start": "res://npc/pose_loops/shadow_box__start.tres"
+		},
+		"shake_foot": {
+			"duration": 2.46666666666667,
+			"end": "res://npc/pose_loops/shake_foot__end.tres",
+			"options": {},
+			"preview": "shake_foot",
+			"start": "res://npc/pose_loops/shake_foot__start.tres"
+		},
+		"shibainu__Attack": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/shibainu__Attack__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Attack",
+			"start": "res://npc/pose_loops/shibainu__Attack__start.tres"
+		},
+		"shibainu__Death": {
+			"duration": 0.711111148198446,
+			"end": "res://npc/pose_loops/shibainu__Death__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Death",
+			"start": "res://npc/pose_loops/shibainu__Death__start.tres"
+		},
+		"shibainu__Eating": {
+			"duration": 1.77777783075968,
+			"end": "res://npc/pose_loops/shibainu__Eating__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Eating",
+			"start": "res://npc/pose_loops/shibainu__Eating__start.tres"
+		},
+		"shibainu__Gallop": {
+			"duration": 0.377777775128682,
+			"end": "res://npc/pose_loops/shibainu__Gallop__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Gallop",
+			"start": "res://npc/pose_loops/shibainu__Gallop__start.tres"
+		},
+		"shibainu__Gallop_Jump": {
+			"duration": 0.622222224871318,
+			"end": "res://npc/pose_loops/shibainu__Gallop_Jump__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Gallop_Jump",
+			"start": "res://npc/pose_loops/shibainu__Gallop_Jump__start.tres"
+		},
+		"shibainu__Idle": {
+			"duration": 2.22222216924032,
+			"end": "res://npc/pose_loops/shibainu__Idle__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Idle",
+			"start": "res://npc/pose_loops/shibainu__Idle__start.tres"
+		},
+		"shibainu__Idle_2": {
+			"duration": 2.22222216924032,
+			"end": "res://npc/pose_loops/shibainu__Idle_2__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Idle_2",
+			"start": "res://npc/pose_loops/shibainu__Idle_2__start.tres"
+		},
+		"shibainu__Idle_2_HeadLow": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/shibainu__Idle_2_HeadLow__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Idle_2_HeadLow",
+			"start": "res://npc/pose_loops/shibainu__Idle_2_HeadLow__start.tres"
+		},
+		"shibainu__Idle_HitReact_Left": {
+			"duration": 0.444444457689921,
+			"end": "res://npc/pose_loops/shibainu__Idle_HitReact_Left__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Idle_HitReact_Left",
+			"start": "res://npc/pose_loops/shibainu__Idle_HitReact_Left__start.tres"
+		},
+		"shibainu__Idle_HitReact_Right": {
+			"duration": 0.444444457689921,
+			"end": "res://npc/pose_loops/shibainu__Idle_HitReact_Right__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Idle_HitReact_Right",
+			"start": "res://npc/pose_loops/shibainu__Idle_HitReact_Right__start.tres"
+		},
+		"shibainu__Jump_ToIdle": {
+			"duration": 0.888888915379842,
+			"end": "res://npc/pose_loops/shibainu__Jump_ToIdle__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Jump_ToIdle",
+			"start": "res://npc/pose_loops/shibainu__Jump_ToIdle__start.tres"
+		},
+		"shibainu__NG_Ear_Twitch_Both": {
+			"duration": 0.933333317438761,
+			"end": "res://npc/pose_loops/shibainu__NG_Ear_Twitch_Both__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Ear_Twitch_Both",
+			"start": "res://npc/pose_loops/shibainu__NG_Ear_Twitch_Both__start.tres"
+		},
+		"shibainu__NG_Ear_Twitch_Left": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/shibainu__NG_Ear_Twitch_Left__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Ear_Twitch_Left",
+			"start": "res://npc/pose_loops/shibainu__NG_Ear_Twitch_Left__start.tres"
+		},
+		"shibainu__NG_Ear_Twitch_Right": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/shibainu__NG_Ear_Twitch_Right__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Ear_Twitch_Right",
+			"start": "res://npc/pose_loops/shibainu__NG_Ear_Twitch_Right__start.tres"
+		},
+		"shibainu__NG_Head_Tilt_Left": {
+			"duration": 1.73333326975505,
+			"end": "res://npc/pose_loops/shibainu__NG_Head_Tilt_Left__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Head_Tilt_Left",
+			"start": "res://npc/pose_loops/shibainu__NG_Head_Tilt_Left__start.tres"
+		},
+		"shibainu__NG_Head_Tilt_Right": {
+			"duration": 1.73333326975505,
+			"end": "res://npc/pose_loops/shibainu__NG_Head_Tilt_Right__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Head_Tilt_Right",
+			"start": "res://npc/pose_loops/shibainu__NG_Head_Tilt_Right__start.tres"
+		},
+		"shibainu__NG_Lie_Down": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/shibainu__NG_Lie_Down__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Lie_Down",
+			"start": "res://npc/pose_loops/shibainu__NG_Lie_Down__start.tres"
+		},
+		"shibainu__NG_Lie_Get_Up": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/shibainu__NG_Lie_Get_Up__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Lie_Get_Up",
+			"start": "res://npc/pose_loops/shibainu__NG_Lie_Get_Up__start.tres"
+		},
+		"shibainu__NG_Lie_Idle": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/shibainu__NG_Lie_Idle__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Lie_Idle",
+			"start": "res://npc/pose_loops/shibainu__NG_Lie_Idle__start.tres"
+		},
+		"shibainu__NG_Lie_To_Sit": {
+			"duration": 1.46666669845581,
+			"end": "res://npc/pose_loops/shibainu__NG_Lie_To_Sit__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Lie_To_Sit",
+			"start": "res://npc/pose_loops/shibainu__NG_Lie_To_Sit__start.tres"
+		},
+		"shibainu__NG_Look_Around": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/shibainu__NG_Look_Around__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Look_Around",
+			"start": "res://npc/pose_loops/shibainu__NG_Look_Around__start.tres"
+		},
+		"shibainu__NG_Look_Down": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/shibainu__NG_Look_Down__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Look_Down",
+			"start": "res://npc/pose_loops/shibainu__NG_Look_Down__start.tres"
+		},
+		"shibainu__NG_Look_Left": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/shibainu__NG_Look_Left__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Look_Left",
+			"start": "res://npc/pose_loops/shibainu__NG_Look_Left__start.tres"
+		},
+		"shibainu__NG_Look_Right": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/shibainu__NG_Look_Right__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Look_Right",
+			"start": "res://npc/pose_loops/shibainu__NG_Look_Right__start.tres"
+		},
+		"shibainu__NG_Look_Up": {
+			"duration": 1.86666663487752,
+			"end": "res://npc/pose_loops/shibainu__NG_Look_Up__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Look_Up",
+			"start": "res://npc/pose_loops/shibainu__NG_Look_Up__start.tres"
+		},
+		"shibainu__NG_Paw_Offer_Left": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/shibainu__NG_Paw_Offer_Left__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Paw_Offer_Left",
+			"start": "res://npc/pose_loops/shibainu__NG_Paw_Offer_Left__start.tres"
+		},
+		"shibainu__NG_Paw_Offer_Right": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/shibainu__NG_Paw_Offer_Right__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Paw_Offer_Right",
+			"start": "res://npc/pose_loops/shibainu__NG_Paw_Offer_Right__start.tres"
+		},
+		"shibainu__NG_Play_Bow": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/shibainu__NG_Play_Bow__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Play_Bow",
+			"start": "res://npc/pose_loops/shibainu__NG_Play_Bow__start.tres"
+		},
+		"shibainu__NG_Scratch_Left": {
+			"duration": 2.93333339691162,
+			"end": "res://npc/pose_loops/shibainu__NG_Scratch_Left__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Scratch_Left",
+			"start": "res://npc/pose_loops/shibainu__NG_Scratch_Left__start.tres"
+		},
+		"shibainu__NG_Scratch_Right": {
+			"duration": 2.93333339691162,
+			"end": "res://npc/pose_loops/shibainu__NG_Scratch_Right__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Scratch_Right",
+			"start": "res://npc/pose_loops/shibainu__NG_Scratch_Right__start.tres"
+		},
+		"shibainu__NG_Shake_Head": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/shibainu__NG_Shake_Head__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Shake_Head",
+			"start": "res://npc/pose_loops/shibainu__NG_Shake_Head__start.tres"
+		},
+		"shibainu__NG_Shake_Off": {
+			"duration": 1.46666669845581,
+			"end": "res://npc/pose_loops/shibainu__NG_Shake_Off__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Shake_Off",
+			"start": "res://npc/pose_loops/shibainu__NG_Shake_Off__start.tres"
+		},
+		"shibainu__NG_Side_Lie_Breathe": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/shibainu__NG_Side_Lie_Breathe__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Side_Lie_Breathe",
+			"start": "res://npc/pose_loops/shibainu__NG_Side_Lie_Breathe__start.tres"
+		},
+		"shibainu__NG_Side_Lie_Enter": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/shibainu__NG_Side_Lie_Enter__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Side_Lie_Enter",
+			"start": "res://npc/pose_loops/shibainu__NG_Side_Lie_Enter__start.tres"
+		},
+		"shibainu__NG_Side_Lie_Exit": {
+			"duration": 1.60000006357829,
+			"end": "res://npc/pose_loops/shibainu__NG_Side_Lie_Exit__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Side_Lie_Exit",
+			"start": "res://npc/pose_loops/shibainu__NG_Side_Lie_Exit__start.tres"
+		},
+		"shibainu__NG_Sit_Down": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/shibainu__NG_Sit_Down__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sit_Down",
+			"start": "res://npc/pose_loops/shibainu__NG_Sit_Down__start.tres"
+		},
+		"shibainu__NG_Sit_Get_Up": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/shibainu__NG_Sit_Get_Up__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sit_Get_Up",
+			"start": "res://npc/pose_loops/shibainu__NG_Sit_Get_Up__start.tres"
+		},
+		"shibainu__NG_Sit_Idle": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/shibainu__NG_Sit_Idle__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sit_Idle",
+			"start": "res://npc/pose_loops/shibainu__NG_Sit_Idle__start.tres"
+		},
+		"shibainu__NG_Sit_Look_Around": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/shibainu__NG_Sit_Look_Around__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sit_Look_Around",
+			"start": "res://npc/pose_loops/shibainu__NG_Sit_Look_Around__start.tres"
+		},
+		"shibainu__NG_Sit_Paw_Offer_Left": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/shibainu__NG_Sit_Paw_Offer_Left__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sit_Paw_Offer_Left",
+			"start": "res://npc/pose_loops/shibainu__NG_Sit_Paw_Offer_Left__start.tres"
+		},
+		"shibainu__NG_Sit_Paw_Offer_Right": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/shibainu__NG_Sit_Paw_Offer_Right__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sit_Paw_Offer_Right",
+			"start": "res://npc/pose_loops/shibainu__NG_Sit_Paw_Offer_Right__start.tres"
+		},
+		"shibainu__NG_Sit_To_Lie": {
+			"duration": 1.46666669845581,
+			"end": "res://npc/pose_loops/shibainu__NG_Sit_To_Lie__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sit_To_Lie",
+			"start": "res://npc/pose_loops/shibainu__NG_Sit_To_Lie__start.tres"
+		},
+		"shibainu__NG_Sit_Wag": {
+			"duration": 0.666666666666667,
+			"end": "res://npc/pose_loops/shibainu__NG_Sit_Wag__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sit_Wag",
+			"start": "res://npc/pose_loops/shibainu__NG_Sit_Wag__start.tres"
+		},
+		"shibainu__NG_Sleep_Breathe": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/shibainu__NG_Sleep_Breathe__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sleep_Breathe",
+			"start": "res://npc/pose_loops/shibainu__NG_Sleep_Breathe__start.tres"
+		},
+		"shibainu__NG_Sleep_Enter": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/shibainu__NG_Sleep_Enter__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sleep_Enter",
+			"start": "res://npc/pose_loops/shibainu__NG_Sleep_Enter__start.tres"
+		},
+		"shibainu__NG_Sleep_Wake": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/shibainu__NG_Sleep_Wake__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sleep_Wake",
+			"start": "res://npc/pose_loops/shibainu__NG_Sleep_Wake__start.tres"
+		},
+		"shibainu__NG_Sniff_Air": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/shibainu__NG_Sniff_Air__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sniff_Air",
+			"start": "res://npc/pose_loops/shibainu__NG_Sniff_Air__start.tres"
+		},
+		"shibainu__NG_Sniff_Ground": {
+			"duration": 2.13333336512248,
+			"end": "res://npc/pose_loops/shibainu__NG_Sniff_Ground__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sniff_Ground",
+			"start": "res://npc/pose_loops/shibainu__NG_Sniff_Ground__start.tres"
+		},
+		"shibainu__NG_Sniff_Ground_Enter": {
+			"duration": 1.19999996821086,
+			"end": "res://npc/pose_loops/shibainu__NG_Sniff_Ground_Enter__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sniff_Ground_Enter",
+			"start": "res://npc/pose_loops/shibainu__NG_Sniff_Ground_Enter__start.tres"
+		},
+		"shibainu__NG_Sniff_Ground_Exit": {
+			"duration": 1.06666668256124,
+			"end": "res://npc/pose_loops/shibainu__NG_Sniff_Ground_Exit__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Sniff_Ground_Exit",
+			"start": "res://npc/pose_loops/shibainu__NG_Sniff_Ground_Exit__start.tres"
+		},
+		"shibainu__NG_Stand_Alert": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/shibainu__NG_Stand_Alert__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Stand_Alert",
+			"start": "res://npc/pose_loops/shibainu__NG_Stand_Alert__start.tres"
+		},
+		"shibainu__NG_Stand_Breathe": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/shibainu__NG_Stand_Breathe__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Stand_Breathe",
+			"start": "res://npc/pose_loops/shibainu__NG_Stand_Breathe__start.tres"
+		},
+		"shibainu__NG_Startle": {
+			"duration": 0.800000031789144,
+			"end": "res://npc/pose_loops/shibainu__NG_Startle__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Startle",
+			"start": "res://npc/pose_loops/shibainu__NG_Startle__start.tres"
+		},
+		"shibainu__NG_Stretch_Front": {
+			"duration": 3.33333333333333,
+			"end": "res://npc/pose_loops/shibainu__NG_Stretch_Front__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Stretch_Front",
+			"start": "res://npc/pose_loops/shibainu__NG_Stretch_Front__start.tres"
+		},
+		"shibainu__NG_Tail_Tuck_Cautious": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/shibainu__NG_Tail_Tuck_Cautious__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Tail_Tuck_Cautious",
+			"start": "res://npc/pose_loops/shibainu__NG_Tail_Tuck_Cautious__start.tres"
+		},
+		"shibainu__NG_Tail_Wag_Happy": {
+			"duration": 0.333333333333333,
+			"end": "res://npc/pose_loops/shibainu__NG_Tail_Wag_Happy__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Tail_Wag_Happy",
+			"start": "res://npc/pose_loops/shibainu__NG_Tail_Wag_Happy__start.tres"
+		},
+		"shibainu__NG_Tail_Wag_Slow": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/shibainu__NG_Tail_Wag_Slow__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Tail_Wag_Slow",
+			"start": "res://npc/pose_loops/shibainu__NG_Tail_Wag_Slow__start.tres"
+		},
+		"shibainu__NG_Urinate_Left": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/shibainu__NG_Urinate_Left__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Urinate_Left",
+			"start": "res://npc/pose_loops/shibainu__NG_Urinate_Left__start.tres"
+		},
+		"shibainu__NG_Urinate_Right": {
+			"duration": 2.66666666666667,
+			"end": "res://npc/pose_loops/shibainu__NG_Urinate_Right__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:NG_Urinate_Right",
+			"start": "res://npc/pose_loops/shibainu__NG_Urinate_Right__start.tres"
+		},
+		"shibainu__Walk": {
+			"duration": 0.711111148198446,
+			"end": "res://npc/pose_loops/shibainu__Walk__end.tres",
+			"options": {
+				"breed": "shibainu"
+			},
+			"preview": "dog:Walk",
+			"start": "res://npc/pose_loops/shibainu__Walk__start.tres"
+		},
+		"shout": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/shout__end.tres",
+			"options": {},
+			"preview": "shout",
+			"start": "res://npc/pose_loops/shout__start.tres"
+		},
+		"shrug": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/shrug__end.tres",
+			"options": {},
+			"preview": "shrug",
+			"start": "res://npc/pose_loops/shrug__start.tres"
+		},
+		"sigh": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/sigh__end.tres",
+			"options": {},
+			"preview": "sigh",
+			"start": "res://npc/pose_loops/sigh__start.tres"
+		},
+		"sit_bench": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/sit_bench__end.tres",
+			"options": {},
+			"preview": "sit_bench",
+			"start": "res://npc/pose_loops/sit_bench__start.tres"
+		},
+		"sit_ground": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/sit_ground__end.tres",
+			"options": {},
+			"preview": "sit_ground",
+			"start": "res://npc/pose_loops/sit_ground__start.tres"
+		},
+		"sit_ground_dazed": {
+			"duration": 5.96666666666667,
+			"end": "res://npc/pose_loops/sit_ground_dazed__end.tres",
+			"options": {},
+			"preview": "sit_ground_dazed",
+			"start": "res://npc/pose_loops/sit_ground_dazed__start.tres"
+		},
+		"sit_ground_dazed_hold": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/sit_ground_dazed_hold__end.tres",
+			"options": {},
+			"preview": "sit_ground_dazed_hold",
+			"start": "res://npc/pose_loops/sit_ground_dazed_hold__start.tres"
+		},
+		"sit_knees_up": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/sit_knees_up__end.tres",
+			"options": {},
+			"preview": "sit_knees_up",
+			"start": "res://npc/pose_loops/sit_knees_up__start.tres"
+		},
+		"sit_sideways": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/sit_sideways__end.tres",
+			"options": {},
+			"preview": "sit_sideways",
+			"start": "res://npc/pose_loops/sit_sideways__start.tres"
+		},
+		"sit_step": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/sit_step__end.tres",
+			"options": {},
+			"preview": "sit_step",
+			"start": "res://npc/pose_loops/sit_step__start.tres"
+		},
+		"skip": {
+			"duration": 1.73333333333333,
+			"end": "res://npc/pose_loops/skip__end.tres",
+			"options": {},
+			"preview": "skip",
+			"start": "res://npc/pose_loops/skip__start.tres"
+		},
+		"slap_table": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/slap_table__end.tres",
+			"options": {},
+			"preview": "slap_table",
+			"start": "res://npc/pose_loops/slap_table__start.tres"
+		},
+		"slide_seated": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/slide_seated__end.tres",
+			"options": {},
+			"preview": "slide_seated",
+			"start": "res://npc/pose_loops/slide_seated__start.tres"
+		},
+		"slouch_bench": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/slouch_bench__end.tres",
+			"options": {},
+			"preview": "slouch_bench",
+			"start": "res://npc/pose_loops/slouch_bench__start.tres"
+		},
+		"smoke": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/smoke__end.tres",
+			"options": {},
+			"preview": "smoke",
+			"start": "res://npc/pose_loops/smoke__start.tres"
+		},
+		"smoke_walk": {
+			"duration": 4.2,
+			"end": "res://npc/pose_loops/smoke_walk__end.tres",
+			"options": {},
+			"preview": "smoke_walk",
+			"start": "res://npc/pose_loops/smoke_walk__start.tres"
+		},
+		"sneeze": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/sneeze__end.tres",
+			"options": {},
+			"preview": "sneeze",
+			"start": "res://npc/pose_loops/sneeze__start.tres"
+		},
+		"spin": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/spin__end.tres",
+			"options": {},
+			"preview": "spin",
+			"start": "res://npc/pose_loops/spin__start.tres"
+		},
+		"square_dance": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/square_dance__end.tres",
+			"options": {},
+			"preview": "square_dance",
+			"start": "res://npc/pose_loops/square_dance__start.tres"
+		},
+		"squat": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/squat__end.tres",
+			"options": {},
+			"preview": "squat",
+			"start": "res://npc/pose_loops/squat__start.tres"
+		},
+		"squat_down": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/squat_down__end.tres",
+			"options": {},
+			"preview": "squat_down",
+			"start": "res://npc/pose_loops/squat_down__start.tres"
+		},
+		"squat_watch": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/squat_watch__end.tres",
+			"options": {},
+			"preview": "squat_watch",
+			"start": "res://npc/pose_loops/squat_watch__start.tres"
+		},
+		"stand_hunched": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/stand_hunched__end.tres",
+			"options": {},
+			"preview": "stand_hunched",
+			"start": "res://npc/pose_loops/stand_hunched__start.tres"
+		},
+		"stand_idle": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/stand_idle__end.tres",
+			"options": {},
+			"preview": "stand_idle",
+			"start": "res://npc/pose_loops/stand_idle__start.tres"
+		},
+		"stand_up": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/stand_up__end.tres",
+			"options": {},
+			"preview": "stand_up",
+			"start": "res://npc/pose_loops/stand_up__start.tres"
+		},
+		"stand_up_support_back": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/stand_up_support_back__end.tres",
+			"options": {},
+			"preview": "stand_up_support_back",
+			"start": "res://npc/pose_loops/stand_up_support_back__start.tres"
+		},
+		"stand_watch": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/stand_watch__end.tres",
+			"options": {},
+			"preview": "stand_watch",
+			"start": "res://npc/pose_loops/stand_watch__start.tres"
+		},
+		"start_walk": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/start_walk__end.tres",
+			"options": {},
+			"preview": "start_walk",
+			"start": "res://npc/pose_loops/start_walk__start.tres"
+		},
+		"startle": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/startle__end.tres",
+			"options": {},
+			"preview": "startle",
+			"start": "res://npc/pose_loops/startle__start.tres"
+		},
+		"stop_hand": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/stop_hand__end.tres",
+			"options": {},
+			"preview": "stop_hand",
+			"start": "res://npc/pose_loops/stop_hand__start.tres"
+		},
+		"stop_walk": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/stop_walk__end.tres",
+			"options": {},
+			"preview": "stop_walk",
+			"start": "res://npc/pose_loops/stop_walk__start.tres"
+		},
+		"stretch": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/stretch__end.tres",
+			"options": {},
+			"preview": "stretch",
+			"start": "res://npc/pose_loops/stretch__start.tres"
+		},
+		"stumble": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/stumble__end.tres",
+			"options": {},
+			"preview": "stumble",
+			"start": "res://npc/pose_loops/stumble__start.tres"
+		},
+		"sweep_ground": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/sweep_ground__end.tres",
+			"options": {},
+			"preview": "sweep_ground",
+			"start": "res://npc/pose_loops/sweep_ground__start.tres"
+		},
+		"swing_seated": {
+			"duration": 4.0,
+			"end": "res://npc/pose_loops/swing_seated__end.tres",
+			"options": {},
+			"preview": "swing_seated",
+			"start": "res://npc/pose_loops/swing_seated__start.tres"
+		},
+		"table_tennis_partner": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/table_tennis_partner__end.tres",
+			"options": {},
+			"preview": "table_tennis_partner",
+			"start": "res://npc/pose_loops/table_tennis_partner__start.tres"
+		},
+		"table_tennis_play": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/table_tennis_play__end.tres",
+			"options": {},
+			"preview": "table_tennis_play",
+			"start": "res://npc/pose_loops/table_tennis_play__start.tres"
+		},
+		"tai_chi": {
+			"duration": 6.96666666666667,
+			"end": "res://npc/pose_loops/tai_chi__end.tres",
+			"options": {},
+			"preview": "tai_chi",
+			"start": "res://npc/pose_loops/tai_chi__start.tres"
+		},
+		"take_back_piece": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/take_back_piece__end.tres",
+			"options": {},
+			"preview": "take_back_piece",
+			"start": "res://npc/pose_loops/take_back_piece__start.tres"
+		},
+		"take_photo": {
+			"duration": 5.0,
+			"end": "res://npc/pose_loops/take_photo__end.tres",
+			"options": {},
+			"preview": "take_photo",
+			"start": "res://npc/pose_loops/take_photo__start.tres"
+		},
+		"talk_accuse": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/talk_accuse__end.tres",
+			"options": {},
+			"preview": "talk_accuse",
+			"start": "res://npc/pose_loops/talk_accuse__start.tres"
+		},
+		"talk_excited": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/talk_excited__end.tres",
+			"options": {},
+			"preview": "talk_excited",
+			"start": "res://npc/pose_loops/talk_excited__start.tres"
+		},
+		"talk_gesture": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/talk_gesture__end.tres",
+			"options": {},
+			"preview": "talk_gesture",
+			"start": "res://npc/pose_loops/talk_gesture__start.tres"
+		},
+		"talk_shy": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/talk_shy__end.tres",
+			"options": {},
+			"preview": "talk_shy",
+			"start": "res://npc/pose_loops/talk_shy__start.tres"
+		},
+		"throw_trash": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/throw_trash__end.tres",
+			"options": {},
+			"preview": "throw_trash",
+			"start": "res://npc/pose_loops/throw_trash__start.tres"
+		},
+		"tiptoe": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/tiptoe__end.tres",
+			"options": {},
+			"preview": "tiptoe",
+			"start": "res://npc/pose_loops/tiptoe__start.tres"
+		},
+		"trip_fall": {
+			"duration": 4.46666666666667,
+			"end": "res://npc/pose_loops/trip_fall__end.tres",
+			"options": {},
+			"preview": "trip_fall",
+			"start": "res://npc/pose_loops/trip_fall__start.tres"
+		},
+		"turn_about": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/turn_about__end.tres",
+			"options": {},
+			"preview": "turn_about",
+			"start": "res://npc/pose_loops/turn_about__start.tres"
+		},
+		"turn_left_quarter": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/turn_left_quarter__end.tres",
+			"options": {},
+			"preview": "turn_left_quarter",
+			"start": "res://npc/pose_loops/turn_left_quarter__start.tres"
+		},
+		"turn_page": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/turn_page__end.tres",
+			"options": {},
+			"preview": "turn_page",
+			"start": "res://npc/pose_loops/turn_page__start.tres"
+		},
+		"turn_right_quarter": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/turn_right_quarter__end.tres",
+			"options": {},
+			"preview": "turn_right_quarter",
+			"start": "res://npc/pose_loops/turn_right_quarter__start.tres"
+		},
+		"turn_walk": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/turn_walk__end.tres",
+			"options": {},
+			"preview": "turn_walk",
+			"start": "res://npc/pose_loops/turn_walk__start.tres"
+		},
+		"vending_collect": {
+			"duration": 4.96666666666667,
+			"end": "res://npc/pose_loops/vending_collect__end.tres",
+			"options": {},
+			"preview": "vending_collect",
+			"start": "res://npc/pose_loops/vending_collect__start.tres"
+		},
+		"vendor_call": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/vendor_call__end.tres",
+			"options": {},
+			"preview": "vendor_call",
+			"start": "res://npc/pose_loops/vendor_call__start.tres"
+		},
+		"vendor_tidy": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/vendor_tidy__end.tres",
+			"options": {},
+			"preview": "vendor_tidy",
+			"start": "res://npc/pose_loops/vendor_tidy__start.tres"
+		},
+		"waist_twister": {
+			"duration": 3.0,
+			"end": "res://npc/pose_loops/waist_twister__end.tres",
+			"options": {},
+			"preview": "waist_twister",
+			"start": "res://npc/pose_loops/waist_twister__start.tres"
+		},
+		"walk": {
+			"duration": 1.1,
+			"end": "res://npc/pose_loops/walk__end.tres",
+			"options": {},
+			"preview": "walk",
+			"start": "res://npc/pose_loops/walk__start.tres"
+		},
+		"walk_backpack_straps": {
+			"duration": 1.13333333333333,
+			"end": "res://npc/pose_loops/walk_backpack_straps__end.tres",
+			"options": {},
+			"preview": "walk_backpack_straps",
+			"start": "res://npc/pose_loops/walk_backpack_straps__start.tres"
+		},
+		"walk_backward": {
+			"duration": 1.96666666666667,
+			"end": "res://npc/pose_loops/walk_backward__end.tres",
+			"options": {},
+			"preview": "walk_backward",
+			"start": "res://npc/pose_loops/walk_backward__start.tres"
+		},
+		"walk_briefcase": {
+			"duration": 1.1,
+			"end": "res://npc/pose_loops/walk_briefcase__end.tres",
+			"options": {},
+			"preview": "walk_briefcase",
+			"start": "res://npc/pose_loops/walk_briefcase__start.tres"
+		},
+		"walk_brisk": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/walk_brisk__end.tres",
+			"options": {},
+			"preview": "walk_brisk",
+			"start": "res://npc/pose_loops/walk_brisk__start.tres"
+		},
+		"walk_cane": {
+			"duration": 1.53333333333333,
+			"end": "res://npc/pose_loops/walk_cane__end.tres",
+			"options": {},
+			"preview": "walk_cane",
+			"start": "res://npc/pose_loops/walk_cane__start.tres"
+		},
+		"walk_carry_bag": {
+			"duration": 1.36666666666667,
+			"end": "res://npc/pose_loops/walk_carry_bag__end.tres",
+			"options": {},
+			"preview": "walk_carry_bag",
+			"start": "res://npc/pose_loops/walk_carry_bag__start.tres"
+		},
+		"walk_carry_bags": {
+			"duration": 1.5,
+			"end": "res://npc/pose_loops/walk_carry_bags__end.tres",
+			"options": {},
+			"preview": "walk_carry_bags",
+			"start": "res://npc/pose_loops/walk_carry_bags__start.tres"
+		},
+		"walk_carry_box": {
+			"duration": 1.5,
+			"end": "res://npc/pose_loops/walk_carry_box__end.tres",
+			"options": {},
+			"preview": "walk_carry_box",
+			"start": "res://npc/pose_loops/walk_carry_box__start.tres"
+		},
+		"walk_check_watch": {
+			"duration": 1.1,
+			"end": "res://npc/pose_loops/walk_check_watch__end.tres",
+			"options": {},
+			"preview": "walk_check_watch",
+			"start": "res://npc/pose_loops/walk_check_watch__start.tres"
+		},
+		"walk_child_hand_down": {
+			"duration": 1.43333333333333,
+			"end": "res://npc/pose_loops/walk_child_hand_down__end.tres",
+			"options": {},
+			"preview": "walk_child_hand_down",
+			"start": "res://npc/pose_loops/walk_child_hand_down__start.tres"
+		},
+		"walk_closed_umbrella": {
+			"duration": 2.4,
+			"end": "res://npc/pose_loops/walk_closed_umbrella__end.tres",
+			"options": {},
+			"preview": "walk_closed_umbrella",
+			"start": "res://npc/pose_loops/walk_closed_umbrella__start.tres"
+		},
+		"walk_cold": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/walk_cold__end.tres",
+			"options": {},
+			"preview": "walk_cold",
+			"start": "res://npc/pose_loops/walk_cold__start.tres"
+		},
+		"walk_dog": {
+			"duration": 1.16666666666667,
+			"end": "res://npc/pose_loops/walk_dog__end.tres",
+			"options": {},
+			"preview": "walk_dog",
+			"start": "res://npc/pose_loops/walk_dog__start.tres"
+		},
+		"walk_drink": {
+			"duration": 4.4,
+			"end": "res://npc/pose_loops/walk_drink__end.tres",
+			"options": {},
+			"preview": "walk_drink",
+			"start": "res://npc/pose_loops/walk_drink__start.tres"
+		},
+		"walk_elderly_short": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/walk_elderly_short__end.tres",
+			"options": {},
+			"preview": "walk_elderly_short",
+			"start": "res://npc/pose_loops/walk_elderly_short__start.tres"
+		},
+		"walk_hands_pockets": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/walk_hands_pockets__end.tres",
+			"options": {},
+			"preview": "walk_hands_pockets",
+			"start": "res://npc/pose_loops/walk_hands_pockets__start.tres"
+		},
+		"walk_hold_front": {
+			"duration": 1.5,
+			"end": "res://npc/pose_loops/walk_hold_front__end.tres",
+			"options": {},
+			"preview": "walk_hold_front",
+			"start": "res://npc/pose_loops/walk_hold_front__start.tres"
+		},
+		"walk_limp": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/walk_limp__end.tres",
+			"options": {},
+			"preview": "walk_limp",
+			"start": "res://npc/pose_loops/walk_limp__start.tres"
+		},
+		"walk_look_up": {
+			"duration": 1.4,
+			"end": "res://npc/pose_loops/walk_look_up__end.tres",
+			"options": {},
+			"preview": "walk_look_up",
+			"start": "res://npc/pose_loops/walk_look_up__start.tres"
+		},
+		"walk_newspaper": {
+			"duration": 1.5,
+			"end": "res://npc/pose_loops/walk_newspaper__end.tres",
+			"options": {},
+			"preview": "walk_newspaper",
+			"start": "res://npc/pose_loops/walk_newspaper__start.tres"
+		},
+		"walk_newspaper_underarm": {
+			"duration": 1.1,
+			"end": "res://npc/pose_loops/walk_newspaper_underarm__end.tres",
+			"options": {},
+			"preview": "walk_newspaper_underarm",
+			"start": "res://npc/pose_loops/walk_newspaper_underarm__start.tres"
+		},
+		"walk_one_arm_still": {
+			"duration": 1.1,
+			"end": "res://npc/pose_loops/walk_one_arm_still__end.tres",
+			"options": {},
+			"preview": "walk_one_arm_still",
+			"start": "res://npc/pose_loops/walk_one_arm_still__start.tres"
+		},
+		"walk_one_pocket": {
+			"duration": 1.1,
+			"end": "res://npc/pose_loops/walk_one_pocket__end.tres",
+			"options": {},
+			"preview": "walk_one_pocket",
+			"start": "res://npc/pose_loops/walk_one_pocket__start.tres"
+		},
+		"walk_phone_call": {
+			"duration": 2.26666666666667,
+			"end": "res://npc/pose_loops/walk_phone_call__end.tres",
+			"options": {},
+			"preview": "walk_phone_call",
+			"start": "res://npc/pose_loops/walk_phone_call__start.tres"
+		},
+		"walk_proud": {
+			"duration": 1.13333333333333,
+			"end": "res://npc/pose_loops/walk_proud__end.tres",
+			"options": {},
+			"preview": "walk_proud",
+			"start": "res://npc/pose_loops/walk_proud__start.tres"
+		},
+		"walk_rigid": {
+			"duration": 1.0,
+			"end": "res://npc/pose_loops/walk_rigid__end.tres",
+			"options": {},
+			"preview": "walk_rigid",
+			"start": "res://npc/pose_loops/walk_rigid__start.tres"
+		},
+		"walk_slow": {
+			"duration": 1.2,
+			"end": "res://npc/pose_loops/walk_slow__end.tres",
+			"options": {},
+			"preview": "walk_slow",
+			"start": "res://npc/pose_loops/walk_slow__start.tres"
+		},
+		"walk_stairs_down": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/walk_stairs_down__end.tres",
+			"options": {},
+			"preview": "walk_stairs_down",
+			"start": "res://npc/pose_loops/walk_stairs_down__start.tres"
+		},
+		"walk_stairs_up": {
+			"duration": 1.33333333333333,
+			"end": "res://npc/pose_loops/walk_stairs_up__end.tres",
+			"options": {},
+			"preview": "walk_stairs_up",
+			"start": "res://npc/pose_loops/walk_stairs_up__start.tres"
+		},
+		"walk_talk": {
+			"duration": 4.06666666666667,
+			"end": "res://npc/pose_loops/walk_talk__end.tres",
+			"options": {},
+			"preview": "walk_talk",
+			"start": "res://npc/pose_loops/walk_talk__start.tres"
+		},
+		"walk_tired": {
+			"duration": 1.36666666666667,
+			"end": "res://npc/pose_loops/walk_tired__end.tres",
+			"options": {},
+			"preview": "walk_tired",
+			"start": "res://npc/pose_loops/walk_tired__start.tres"
+		},
+		"walk_umbrella": {
+			"duration": 2.23333333333333,
+			"end": "res://npc/pose_loops/walk_umbrella__end.tres",
+			"options": {},
+			"preview": "walk_umbrella",
+			"start": "res://npc/pose_loops/walk_umbrella__start.tres"
+		},
+		"wallet_takeout": {
+			"duration": 3.96666666666667,
+			"end": "res://npc/pose_loops/wallet_takeout__end.tres",
+			"options": {},
+			"preview": "wallet_takeout",
+			"start": "res://npc/pose_loops/wallet_takeout__start.tres"
+		},
+		"water_planter_hold": {
+			"duration": 2.0,
+			"end": "res://npc/pose_loops/water_planter_hold__end.tres",
+			"options": {},
+			"preview": "water_planter_hold",
+			"start": "res://npc/pose_loops/water_planter_hold__start.tres"
+		},
+		"wave": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/wave__end.tres",
+			"options": {},
+			"preview": "wave",
+			"start": "res://npc/pose_loops/wave__start.tres"
+		},
+		"wave_both_overhead": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/wave_both_overhead__end.tres",
+			"options": {},
+			"preview": "wave_both_overhead",
+			"start": "res://npc/pose_loops/wave_both_overhead__start.tres"
+		},
+		"wave_overhead": {
+			"duration": 1.7,
+			"end": "res://npc/pose_loops/wave_overhead__end.tres",
+			"options": {},
+			"preview": "wave_overhead",
+			"start": "res://npc/pose_loops/wave_overhead__start.tres"
+		},
+		"wave_overhead_v2": {
+			"duration": 0.5,
+			"end": "res://npc/pose_loops/wave_overhead_v2__end.tres",
+			"options": {},
+			"preview": "wave_overhead_v2",
+			"start": "res://npc/pose_loops/wave_overhead_v2__start.tres"
+		},
+		"wave_overhead_v3": {
+			"duration": 1.76666666666667,
+			"end": "res://npc/pose_loops/wave_overhead_v3__end.tres",
+			"options": {},
+			"preview": "wave_overhead_v3",
+			"start": "res://npc/pose_loops/wave_overhead_v3__start.tres"
+		},
+		"whisper": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/whisper__end.tres",
+			"options": {},
+			"preview": "whisper",
+			"start": "res://npc/pose_loops/whisper__start.tres"
+		},
+		"wipe_sweat": {
+			"duration": 2.96666666666667,
+			"end": "res://npc/pose_loops/wipe_sweat__end.tres",
+			"options": {},
+			"preview": "wipe_sweat",
+			"start": "res://npc/pose_loops/wipe_sweat__start.tres"
+		},
+		"yawn": {
+			"duration": 3.46666666666667,
+			"end": "res://npc/pose_loops/yawn__end.tres",
+			"options": {},
+			"preview": "yawn",
+			"start": "res://npc/pose_loops/yawn__start.tres"
+		}
+	},
+	"format": "endpoint_hold_v1"
+}

@@ -1,0 +1,26 @@
+{
+  "before": {
+    "godot/npc/animal.gd": "7bfb0cc372ab3363eaeb6dce05446adf29531f0b4a001fdf7311446723781ddc",
+    "godot/npc/animal_model.gd": "d24184cd5cc36ed36132eaec37069fa60d4ad1f4d471c43d40591343146c8841",
+    "godot/npc/animal-models.json": "ad2cd236c04daf32f0d289bdf3e1b41f529de810d9bb9c436633b98acf2ef4b2",
+    "godot/npc/procedural_dog.gd": "6b21264fa5eeb772f9757d53d20f63736e37b1b7d9e54284c2fa7fbb9e7c0801",
+    "godot/npc/dog-params.json": "6b3c7d070d74edcc0b7241b5e0a585b9d3734ca801656634e9f848844a404063",
+    "godot/models/animal_cat.glb": "16e90c9ed9ac4675861d0cd7218443e6c792eb9eff34c24ed1995f4d5ae2a2c8",
+    "godot/models/animal_husky.glb": "bfe8391f30ce39c7c4543b94852d095dba7abdc068f12e02ea833c42110c7410",
+    "godot/models/animal_shibainu.glb": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d"
+  },
+  "after": {
+    "godot/npc/animal.gd": "7bfb0cc372ab3363eaeb6dce05446adf29531f0b4a001fdf7311446723781ddc",
+    "godot/npc/animal_model.gd": "d24184cd5cc36ed36132eaec37069fa60d4ad1f4d471c43d40591343146c8841",
+    "godot/npc/animal-models.json": "ad2cd236c04daf32f0d289bdf3e1b41f529de810d9bb9c436633b98acf2ef4b2",
+    "godot/npc/procedural_dog.gd": "6b21264fa5eeb772f9757d53d20f63736e37b1b7d9e54284c2fa7fbb9e7c0801",
+    "godot/npc/dog-params.json": "6b3c7d070d74edcc0b7241b5e0a585b9d3734ca801656634e9f848844a404063",
+    "godot/models/animal_cat.glb": "16e90c9ed9ac4675861d0cd7218443e6c792eb9eff34c24ed1995f4d5ae2a2c8",
+    "godot/models/animal_husky.glb": "bfe8391f30ce39c7c4543b94852d095dba7abdc068f12e02ea833c42110c7410",
+    "godot/models/animal_shibainu.glb": "fccbd1d53a63736857817a048e1c021b659c63166bc0ebaf88d5754b8201c19d"
+  },
+  "completed": true,
+  "exit_code": 0,
+  "log": "check_behaviour_named_final.log",
+  "simulated_seconds": 300
+}

@@ -1,0 +1,22 @@
+{
+  "husky06": {
+    "overview_entries": 20,
+    "overview_times_per_view": 40,
+    "views": [
+      35,
+      90
+    ],
+    "capture": "after_husky/manifest.json",
+    "normal_out_entries": 5,
+    "normal_out_times_per_view": 130,
+    "normal_out_capture": "normal_out_husky/manifest.json",
+    "reviewed_by": "root",
+    "observations": [
+      "Lie and side-lie now reach visibly distinct supported poses. Normal exits return through standing.",
+      "Scratch lowers the raised hind paw before the natural get-up sequence.",
+      "Tail tuck remains a lowered horizontal tail in this version and is being reworked.",
+      "Shake and startle require 60Hz actual frames; the 40-frame overview cannot establish their timing."
+    ],
+    "acceptance": "Engineering visual review; Hsinlung has not accepted this version."
+  }
+}

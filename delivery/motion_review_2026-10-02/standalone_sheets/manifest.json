@@ -1,0 +1,371 @@
+[
+  {
+    "page": 1,
+    "clips": [
+      "adjust_clothes",
+      "atm_keypad",
+      "back_away",
+      "beckon"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_01.png"
+  },
+  {
+    "page": 2,
+    "clips": [
+      "block_way",
+      "bow",
+      "brush_clothes",
+      "carry_bag"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_02.png"
+  },
+  {
+    "page": 3,
+    "clips": [
+      "carry_bags",
+      "carry_bucket",
+      "check_watch",
+      "cheer"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_03.png"
+  },
+  {
+    "page": 4,
+    "clips": [
+      "chess_watch",
+      "choose_item",
+      "cough",
+      "cover_face"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_04.png"
+  },
+  {
+    "page": 5,
+    "clips": [
+      "crane_neck",
+      "cross_arms",
+      "crouch_check",
+      "crouch_check_hold"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_05.png"
+  },
+  {
+    "page": 6,
+    "clips": [
+      "dodge",
+      "duck_cover",
+      "duck_cover_hold",
+      "exercise"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_06.png"
+  },
+  {
+    "page": 7,
+    "clips": [
+      "fall_back",
+      "fan_self",
+      "film_phone",
+      "grab_snatch"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_07.png"
+  },
+  {
+    "page": 8,
+    "clips": [
+      "guard",
+      "hail_taxi",
+      "hands_behind_back",
+      "hands_in_pockets"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_08.png"
+  },
+  {
+    "page": 9,
+    "clips": [
+      "hands_on_head_hold",
+      "hands_on_hips",
+      "hands_up",
+      "hands_up_hold"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_09.png"
+  },
+  {
+    "page": 10,
+    "clips": [
+      "handstand",
+      "hesitate_reach",
+      "hold_umbrella",
+      "hop"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_10.png"
+  },
+  {
+    "page": 11,
+    "clips": [
+      "inspect_item",
+      "interrupt",
+      "jog",
+      "kneel_hold"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_11.png"
+  },
+  {
+    "page": 12,
+    "clips": [
+      "laugh",
+      "lean_wall",
+      "lecture",
+      "lie_ground_hold"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_12.png"
+  },
+  {
+    "page": 13,
+    "clips": [
+      "look_around_nervous",
+      "look_away",
+      "look_down",
+      "magic_gesture"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_13.png"
+  },
+  {
+    "page": 14,
+    "clips": [
+      "march_in_place",
+      "pace",
+      "pay",
+      "peek_side"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_14.png"
+  },
+  {
+    "page": 15,
+    "clips": [
+      "phone_walk",
+      "pick_up",
+      "point",
+      "point_shout"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_15.png"
+  },
+  {
+    "page": 16,
+    "clips": [
+      "present",
+      "reach_after",
+      "read_newspaper",
+      "read_notice"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_16.png"
+  },
+  {
+    "page": 17,
+    "clips": [
+      "recoil",
+      "rub_eye",
+      "rub_hands",
+      "run"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_17.png"
+  },
+  {
+    "page": 18,
+    "clips": [
+      "run_curve",
+      "scratch_back",
+      "scratch_head",
+      "selfie"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_18.png"
+  },
+  {
+    "page": 19,
+    "clips": [
+      "shadow_box",
+      "shake_foot",
+      "shout",
+      "shrug"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_19.png"
+  },
+  {
+    "page": 20,
+    "clips": [
+      "sigh",
+      "sit_bench",
+      "sit_ground",
+      "sit_ground_dazed"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_20.png"
+  },
+  {
+    "page": 21,
+    "clips": [
+      "sit_ground_dazed_hold",
+      "sit_knees_up",
+      "sit_step",
+      "skip"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_21.png"
+  },
+  {
+    "page": 22,
+    "clips": [
+      "smoke",
+      "smoke_walk",
+      "sneeze",
+      "spin"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_22.png"
+  },
+  {
+    "page": 23,
+    "clips": [
+      "square_dance",
+      "squat",
+      "squat_down",
+      "squat_watch"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_23.png"
+  },
+  {
+    "page": 24,
+    "clips": [
+      "stand_hunched",
+      "stand_idle",
+      "stand_up",
+      "stand_up_support_back"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_24.png"
+  },
+  {
+    "page": 25,
+    "clips": [
+      "stand_watch",
+      "start_walk",
+      "startle",
+      "stop_hand"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_25.png"
+  },
+  {
+    "page": 26,
+    "clips": [
+      "stop_walk",
+      "stretch",
+      "stumble",
+      "tai_chi"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_26.png"
+  },
+  {
+    "page": 27,
+    "clips": [
+      "talk_accuse",
+      "talk_excited",
+      "talk_gesture",
+      "talk_shy"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_27.png"
+  },
+  {
+    "page": 28,
+    "clips": [
+      "tiptoe",
+      "trip_fall",
+      "turn_about",
+      "turn_left_quarter"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_28.png"
+  },
+  {
+    "page": 29,
+    "clips": [
+      "turn_right_quarter",
+      "turn_walk",
+      "vendor_call",
+      "vendor_tidy"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_29.png"
+  },
+  {
+    "page": 30,
+    "clips": [
+      "walk",
+      "walk_backward",
+      "walk_briefcase",
+      "walk_brisk"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_30.png"
+  },
+  {
+    "page": 31,
+    "clips": [
+      "walk_carry_bag",
+      "walk_check_watch",
+      "walk_child_hand_down",
+      "walk_cold"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_31.png"
+  },
+  {
+    "page": 32,
+    "clips": [
+      "walk_dog",
+      "walk_elderly_short",
+      "walk_hands_pockets",
+      "walk_hold_front"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_32.png"
+  },
+  {
+    "page": 33,
+    "clips": [
+      "walk_limp",
+      "walk_look_up",
+      "walk_newspaper",
+      "walk_one_arm_still"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_33.png"
+  },
+  {
+    "page": 34,
+    "clips": [
+      "walk_one_pocket",
+      "walk_proud",
+      "walk_rigid",
+      "walk_slow"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_34.png"
+  },
+  {
+    "page": 35,
+    "clips": [
+      "walk_stairs_down",
+      "walk_stairs_up",
+      "walk_talk",
+      "walk_tired"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_35.png"
+  },
+  {
+    "page": 36,
+    "clips": [
+      "walk_umbrella",
+      "wave",
+      "wave_both_overhead",
+      "wave_overhead"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_36.png"
+  },
+  {
+    "page": 37,
+    "clips": [
+      "whisper",
+      "wipe_sweat",
+      "yawn"
+    ],
+    "path": "C:\\Users\\Hsinlung\\Desktop\\news-game\\delivery\\motion_review_2026-10-02\\standalone_sheets\\standalone_37.png"
+  }
+]

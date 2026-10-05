@@ -1,0 +1,152 @@
+{
+  "fps": 30,
+  "breeds": [
+    "cat"
+  ],
+  "scenarios": [
+    {
+      "speed": 0.35,
+      "label": "sit_cancel",
+      "action": "sit",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "sit_look_cancel",
+      "action": "sit_look",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "lie_cancel",
+      "action": "lie",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "sleep_cancel",
+      "action": "sleep",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "side_lie_cancel",
+      "action": "side_lie",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "knead_cancel",
+      "action": "knead",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "sniff_cancel",
+      "action": "sniff",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "sniff_air_cancel",
+      "action": "sniff_air",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "alert_cancel",
+      "action": "alert",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "look_around_cancel",
+      "action": "look_around",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "shake_cancel",
+      "action": "shake",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "shake_head_cancel",
+      "action": "shake_head",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "paw_cancel",
+      "action": "paw",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "play_bow_cancel",
+      "action": "play_bow",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "stretch_cancel",
+      "action": "stretch",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "startle_cancel",
+      "action": "startle",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "tail_tuck_cancel",
+      "action": "tail_tuck",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    },
+    {
+      "speed": 0.35,
+      "label": "tail_flick_cancel",
+      "action": "tail_flick",
+      "begin": 2,
+      "end": 10,
+      "seconds": 16
+    }
+  ]
+}

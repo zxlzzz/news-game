@@ -1,0 +1,302 @@
+[
+  {
+    "clip": "assist_elder_walk",
+    "source_sha256": "68b50aef191a42ef52711219975ca2c1abe69f7af7501b8911d8daf0e5bd435f",
+    "original_frames": 61,
+    "take_frames": [
+      30,
+      60
+    ],
+    "original_units": 2,
+    "frames": 31,
+    "duration": 1.0
+  },
+  {
+    "clip": "carry_bucket",
+    "source_sha256": "b5e08f305b8a59acccc697a86c2bf91acedd126a58a75032db2bf87840e010b7",
+    "original_frames": 91,
+    "take_frames": [
+      45,
+      90
+    ],
+    "original_units": 2,
+    "frames": 46,
+    "duration": 1.5
+  },
+  {
+    "clip": "eat_walk",
+    "source_sha256": "c26b525e236883bf3b4d1d82b9748e2c3c74b7fbbd167a050a81f9a3118913a4",
+    "original_frames": 59,
+    "take_frames": [
+      29,
+      58
+    ],
+    "original_units": 2,
+    "frames": 30,
+    "duration": 0.9666666666666667
+  },
+  {
+    "clip": "elder_assisted_walk",
+    "source_sha256": "18e918810e160d1c2f17b33ab63b07f422e8a18424e3a622b176601c837337f7",
+    "original_frames": 61,
+    "take_frames": [
+      30,
+      60
+    ],
+    "original_units": 2,
+    "frames": 31,
+    "duration": 1.0
+  },
+  {
+    "clip": "jog",
+    "source_sha256": "2341592194092e108c35958804bc73ae7beb4dfc3f24fb705371024d098d6f0d",
+    "original_frames": 79,
+    "take_frames": [
+      52,
+      78
+    ],
+    "original_units": 3,
+    "frames": 27,
+    "duration": 0.8666666666666667
+  },
+  {
+    "clip": "pull_suitcase",
+    "source_sha256": "0c6ba0607a2bffd8942fd2e94a3a9e1a18e41a98547bf519b34d3575f7c7bc2a",
+    "original_frames": 91,
+    "take_frames": [
+      45,
+      90
+    ],
+    "original_units": 2,
+    "frames": 46,
+    "duration": 1.5
+  },
+  {
+    "clip": "push_bicycle",
+    "source_sha256": "7fc117bc95b13176619d315a5e016afb9fac243e260366ddbe7a60c864f7593e",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1
+  },
+  {
+    "clip": "push_cart",
+    "source_sha256": "13a0cb84a901d2c017ac6112c4a21fb4c75d0ec864f435e2ff413f09e94a0ae9",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1
+  },
+  {
+    "clip": "push_stroller",
+    "source_sha256": "16c7f69d029e4e54afea9bb68709afffdf37a4d24f020aee6ff02ca92e5315f9",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1
+  },
+  {
+    "clip": "walk",
+    "source_sha256": "0afdf3b99f70dca4943467d4e3782a97ea6e9e5f0d2a3a7c60170f8c4fdc12d0",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1
+  },
+  {
+    "clip": "walk_backpack_straps",
+    "source_sha256": "3a985d64917e1bc88ca774901c2ef3660450960237416a2c7a6cd43d88fa4f54",
+    "original_frames": 69,
+    "take_frames": [
+      34,
+      68
+    ],
+    "original_units": 2,
+    "frames": 35,
+    "duration": 1.1333333333333333
+  },
+  {
+    "clip": "walk_briefcase",
+    "source_sha256": "3425fe8be1eb767e22626bb482c08fd45c476df1aa83db0d1ad1cafbd6db0c54",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1
+  },
+  {
+    "clip": "walk_carry_box",
+    "source_sha256": "68785533802e9dd88acfc7107f3caea756bdfc96ee6c2bb010fa85fb11bf14f0",
+    "original_frames": 91,
+    "take_frames": [
+      45,
+      90
+    ],
+    "original_units": 2,
+    "frames": 46,
+    "duration": 1.5
+  },
+  {
+    "clip": "walk_check_watch",
+    "source_sha256": "a317d0a11c589cb544d8b11e1f45c9e5ac4dd036d5628b2baa6c5916290e4964",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1
+  },
+  {
+    "clip": "walk_closed_umbrella",
+    "source_sha256": "3f5b77db7c712a263e8f60b672e7fbcac613cc4f597de1abe959c2fa27bfb207",
+    "original_frames": 145,
+    "take_frames": [
+      72,
+      144
+    ],
+    "original_units": 2,
+    "frames": 73,
+    "duration": 2.4
+  },
+  {
+    "clip": "walk_cold",
+    "source_sha256": "5bc5f75239ae75f4418687f5c9137b3ec0cad35082a89111c74a8d5912841f76",
+    "original_frames": 61,
+    "take_frames": [
+      30,
+      60
+    ],
+    "original_units": 2,
+    "frames": 31,
+    "duration": 1.0
+  },
+  {
+    "clip": "walk_dog",
+    "source_sha256": "a501c8637321d0890ac9f4c61099c49f85b0c482c89e05b14a48ababa005d195",
+    "original_frames": 71,
+    "take_frames": [
+      35,
+      70
+    ],
+    "original_units": 2,
+    "frames": 36,
+    "duration": 1.1666666666666667
+  },
+  {
+    "clip": "walk_elderly_short",
+    "source_sha256": "041f997d0f2367a648fcd458a1c276d97f0ea1824503cd3425d1272cff83cadf",
+    "original_frames": 61,
+    "take_frames": [
+      30,
+      60
+    ],
+    "original_units": 2,
+    "frames": 31,
+    "duration": 1.0
+  },
+  {
+    "clip": "walk_hold_front",
+    "source_sha256": "584e12956451e5cb8d206bf5dcaee3c3a6e9bbca77e719d051dffb4fc6857e3e",
+    "original_frames": 91,
+    "take_frames": [
+      45,
+      90
+    ],
+    "original_units": 2,
+    "frames": 46,
+    "duration": 1.5
+  },
+  {
+    "clip": "walk_newspaper_underarm",
+    "source_sha256": "d2b2b45880b7ccafd6f6b429e49ad2adb2ba9cb618b60686d473ba6040d87889",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1
+  },
+  {
+    "clip": "walk_one_arm_still",
+    "source_sha256": "0161c3e9b652c74f629639b1cfa0ee89ea15e67b1524218c8c8a6b4103059b94",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1
+  },
+  {
+    "clip": "walk_one_pocket",
+    "source_sha256": "42c50917244841c9b63a32aa730ff9e9a980fc323fedf41a647e967e1c247d09",
+    "original_frames": 67,
+    "take_frames": [
+      33,
+      66
+    ],
+    "original_units": 2,
+    "frames": 34,
+    "duration": 1.1
+  },
+  {
+    "clip": "walk_proud",
+    "source_sha256": "97d386488764cba4148bb0cb67b5f5374fe814177d417df3af3d12b216e8bfee",
+    "original_frames": 69,
+    "take_frames": [
+      34,
+      68
+    ],
+    "original_units": 2,
+    "frames": 35,
+    "duration": 1.1333333333333333
+  },
+  {
+    "clip": "walk_rigid",
+    "source_sha256": "cf032085659f8f351f5a5df549fe58549cac441d7f168be229fb7bf48e390596",
+    "original_frames": 61,
+    "take_frames": [
+      30,
+      60
+    ],
+    "original_units": 2,
+    "frames": 31,
+    "duration": 1.0
+  },
+  {
+    "clip": "walk_slow",
+    "source_sha256": "b62b40756ca9978c9193f8baaab9e30b77b8d13f62c347c1bfdb6c49a4344adb",
+    "original_frames": 73,
+    "take_frames": [
+      36,
+      72
+    ],
+    "original_units": 2,
+    "frames": 37,
+    "duration": 1.2
+  }
+]
