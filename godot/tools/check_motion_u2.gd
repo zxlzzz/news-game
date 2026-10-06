@@ -31,12 +31,12 @@ func run() -> void:
 	level.set_process(false)
 	var st = level.stage
 	var result := {"coordinates":"world metres","samples_per_second":30,"clips":{}}
-	for id in ["atm_take_cash","assist_elder_walk","fountain_drink","basketball_dribble"]:
+	for id in ["atm_take_cash","assist_elder_walk","fountain_drink"]:
 		assert(st.select(id)=="")
 		var duration: float = st.interactions.data.clips.get(id,{}).get("duration",st.main.clip.duration())
 		st.cycle=maxf(st.cycle,duration+0.2)
 		var rows := []
-		var horizon: float = 2.0*duration+0.1 if id=="basketball_dribble" else duration+0.1
+		var horizon: float = duration+0.1
 		st.cycle=maxf(st.cycle,horizon)
 		for sample in ceili(horizon*30)+1:
 			var time: float = sample/30.0
@@ -59,7 +59,7 @@ func run() -> void:
 					"final":pose(person.pose,person.fig.global_transform),"tracks":tracks,"props":props})
 			rows.append(row)
 		var boundaries := []
-		var phases: Array = [.4,.45,.95,1.0] if id=="atm_take_cash" else [.125,.25,.375,.5,.625,.75,.875,1.0,1.125,1.25,1.375,1.5,1.625,1.75,1.875,2.0] if id=="basketball_dribble" else [1.0]
+		var phases: Array = [.4,.45,.95,1.0] if id=="atm_take_cash" else [1.0]
 		for phase in phases:
 			var samples := []
 			for dt in [-0.0001,0.0,0.0001]:

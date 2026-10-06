@@ -500,27 +500,6 @@
       },
       "post": "bikescan"
     },
-    "badminton_swing": {
-      "item": {
-        "type": "held_badminton_racket",
-        "hand": "right"
-      }
-    },
-    "table_tennis_play": {
-      "item": {
-        "type": "held_table_tennis_paddle",
-        "hand": "right"
-      },
-      "post": "pingpong",
-      "partner": {
-        "clip": "table_tennis_partner",
-        "at": [
-          0,
-          3.6
-        ],
-        "yaw": 180
-      }
-    },
     "distribute_flyer": {
       "item": {
         "type": "held_flyer_stack",
@@ -563,15 +542,6 @@
     },
     "car_exit": {
       "post": "carexit"
-    },
-    "table_tennis_partner": {
-      "item": {
-        "type": "held_table_tennis_paddle",
-        "hand": "right"
-      }
-    },
-    "basketball_shoot": {
-      "post": "shoot"
     }
   }
 }

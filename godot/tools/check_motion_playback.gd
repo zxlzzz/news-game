@@ -96,7 +96,7 @@ func _process(_dt: float) -> bool:
 		st.seek(st.cycle * 0.35)
 		check(gap(seek_pose, st.main.pose) < 0.00001, id + ": scrubbing depends on previous time")
 		report.scenarios[id] = {"cycle": st.cycle, "hold_gap": end_gap, "repeats": st.repeats()}
-	for id in ["walk", "football_juggle", "air_walker", "swing_seated", "table_tennis_play", "table_tennis_partner"]:
+	for id in ["walk", "air_walker", "swing_seated"]:
 		var err: String = st.select(id, {})
 		check(err == "", id + ": " + err)
 		if err != "":
@@ -106,19 +106,19 @@ func _process(_dt: float) -> bool:
 		st.advance(0.02)
 		check(st.t == st.cycle, id + ": preview did not stop at its endpoint")
 		report.scenarios[id] = {"cycle": st.cycle, "repeats": st.repeats(), "time_after_wrap": st.t}
-	check(st.select("basketball_dribble", {}) == "", "continuous dribble could not be selected")
-	var dribble_cycle: float = st.cycle
-	st.seek(dribble_cycle)
+	check(st.select("turn_page", {}) == "", "turn_page could not be selected")
+	var prop_cycle: float = st.cycle
+	st.seek(prop_cycle)
 	var held_body: Dictionary = st.main.pose.duplicate(true)
-	var held_ball: Transform3D = st.main.props[0].node.transform
-	st.advance(dribble_cycle)
-	check(st.t == dribble_cycle, "dribble continued beyond one action")
-	check(gap(held_body,st.main.pose)<0.00001 and held_ball.is_equal_approx(st.main.props[0].node.transform), "dribble endpoint changed after completion")
+	var held_prop: Transform3D = st.main.props[0].node.transform
+	st.advance(prop_cycle)
+	check(st.t == prop_cycle, "turn_page continued beyond one action")
+	check(gap(held_body,st.main.pose)<0.00001 and held_prop.is_equal_approx(st.main.props[0].node.transform), "turn_page endpoint changed after completion")
 	level.playing = false
 	level._toggle_play()
 	check(level.playing and st.t == 0.0, "replaying a finished action did not restart from its beginning")
 	level.playing = false
-	report.scenarios.basketball_dribble = {"cycle": dribble_cycle, "repeats": st.repeats()}
+	report.scenarios.turn_page = {"cycle": prop_cycle, "repeats": st.repeats()}
 	check(st.select("stand_up", {}) == "", "manual stand_up could not be selected")
 	st.seek(0.0)
 	var start_pose: Dictionary = st.main.pose.duplicate(true)

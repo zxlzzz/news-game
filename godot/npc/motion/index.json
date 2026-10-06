@@ -89,21 +89,6 @@
    "frames": 120
   },
   {
-   "id": "badminton_swing",
-   "fps": 30.0,
-   "frames": 120
-  },
-  {
-   "id": "basketball_dribble",
-   "fps": 30.0,
-   "frames": 120
-  },
-  {
-   "id": "basketball_shoot",
-   "fps": 30.0,
-   "frames": 150
-  },
-  {
    "id": "beckon",
    "fps": 30.0,
    "frames": 105
@@ -262,11 +247,6 @@
    "frames": 150
   },
   {
-   "id": "dodge",
-   "fps": 30.0,
-   "frames": 90
-  },
-  {
    "id": "drink",
    "fps": 30.0,
    "frames": 105
@@ -327,11 +307,6 @@
    "seam_closed_m": 0.0
   },
   {
-   "id": "football_juggle",
-   "fps": 30.0,
-   "frames": 120
-  },
-  {
    "id": "fountain_drink",
    "fps": 30.0,
    "frames": 150
@@ -355,11 +330,6 @@
    "id": "grab_snatch",
    "fps": 30.0,
    "frames": 90
-  },
-  {
-   "id": "guard",
-   "fps": 30.0,
-   "frames": 120
   },
   {
    "id": "hail_taxi",
@@ -574,11 +544,6 @@
    "id": "look_up",
    "fps": 30.0,
    "frames": 90
-  },
-  {
-   "id": "magic_gesture",
-   "fps": 30.0,
-   "frames": 120
   },
   {
    "id": "march_in_place",
@@ -825,13 +790,6 @@
    "frames": 90
   },
   {
-   "id": "shadow_box",
-   "fps": 30.0,
-   "frames": 150,
-   "loop": true,
-   "seam_closed_m": 0.0
-  },
-  {
    "id": "shake_foot",
    "fps": 30.0,
    "frames": 75
@@ -945,11 +903,6 @@
    "seam_closed_m": 0.0
   },
   {
-   "id": "square_dance",
-   "fps": 30.0,
-   "frames": 120
-  },
-  {
    "id": "squat",
    "fps": 30.0,
    "frames": 61,
@@ -1032,16 +985,6 @@
   },
   {
    "id": "swing_seated",
-   "fps": 30.0,
-   "frames": 120
-  },
-  {
-   "id": "table_tennis_partner",
-   "fps": 30.0,
-   "frames": 120
-  },
-  {
-   "id": "table_tennis_play",
    "fps": 30.0,
    "frames": 120
   },

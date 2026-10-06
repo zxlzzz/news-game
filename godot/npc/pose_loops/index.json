@@ -42,27 +42,6 @@
 			"preview": "back_away",
 			"start": "res://npc/pose_loops/back_away__start.tres"
 		},
-		"badminton_swing": {
-			"duration": 2.6,
-			"end": "res://npc/pose_loops/badminton_swing__end.tres",
-			"options": {},
-			"preview": "badminton_swing",
-			"start": "res://npc/pose_loops/badminton_swing__start.tres"
-		},
-		"basketball_dribble": {
-			"duration": 3.29,
-			"end": "res://npc/pose_loops/basketball_dribble__end.tres",
-			"options": {},
-			"preview": "basketball_dribble",
-			"start": "res://npc/pose_loops/basketball_dribble__start.tres"
-		},
-		"basketball_shoot": {
-			"duration": 5.0,
-			"end": "res://npc/pose_loops/basketball_shoot__end.tres",
-			"options": {},
-			"preview": "basketball_shoot",
-			"start": "res://npc/pose_loops/basketball_shoot__start.tres"
-		},
 		"beckon": {
 			"duration": 3.46666666666667,
 			"end": "res://npc/pose_loops/beckon__end.tres",
@@ -723,13 +702,6 @@
 			"preview": "distribute_flyer",
 			"start": "res://npc/pose_loops/distribute_flyer__start.tres"
 		},
-		"dodge": {
-			"duration": 2.96666666666667,
-			"end": "res://npc/pose_loops/dodge__end.tres",
-			"options": {},
-			"preview": "dodge",
-			"start": "res://npc/pose_loops/dodge__start.tres"
-		},
 		"drink": {
 			"duration": 3.46666666666667,
 			"end": "res://npc/pose_loops/drink__end.tres",
@@ -800,13 +772,6 @@
 			"preview": "film_phone",
 			"start": "res://npc/pose_loops/film_phone__start.tres"
 		},
-		"football_juggle": {
-			"duration": 1.67,
-			"end": "res://npc/pose_loops/football_juggle__end.tres",
-			"options": {},
-			"preview": "football_juggle",
-			"start": "res://npc/pose_loops/football_juggle__start.tres"
-		},
 		"fountain_drink": {
 			"duration": 4.96666666666667,
 			"end": "res://npc/pose_loops/fountain_drink__end.tres",
@@ -841,13 +806,6 @@
 			"options": {},
 			"preview": "grab_snatch",
 			"start": "res://npc/pose_loops/grab_snatch__start.tres"
-		},
-		"guard": {
-			"duration": 3.96666666666667,
-			"end": "res://npc/pose_loops/guard__end.tres",
-			"options": {},
-			"preview": "guard",
-			"start": "res://npc/pose_loops/guard__start.tres"
 		},
 		"hail_taxi": {
 			"duration": 4.96666666666667,
@@ -1655,13 +1613,6 @@
 			"preview": "look_up",
 			"start": "res://npc/pose_loops/look_up__start.tres"
 		},
-		"magic_gesture": {
-			"duration": 3.96666666666667,
-			"end": "res://npc/pose_loops/magic_gesture__end.tres",
-			"options": {},
-			"preview": "magic_gesture",
-			"start": "res://npc/pose_loops/magic_gesture__start.tres"
-		},
 		"march_in_place": {
 			"duration": 1.8,
 			"end": "res://npc/pose_loops/march_in_place__end.tres",
@@ -2228,13 +2179,6 @@
 			"options": {},
 			"preview": "selfie",
 			"start": "res://npc/pose_loops/selfie__start.tres"
-		},
-		"shadow_box": {
-			"duration": 4.96666666666667,
-			"end": "res://npc/pose_loops/shadow_box__end.tres",
-			"options": {},
-			"preview": "shadow_box",
-			"start": "res://npc/pose_loops/shadow_box__start.tres"
 		},
 		"shake_foot": {
 			"duration": 2.46666666666667,
@@ -2909,13 +2853,6 @@
 			"preview": "spin",
 			"start": "res://npc/pose_loops/spin__start.tres"
 		},
-		"square_dance": {
-			"duration": 3.96666666666667,
-			"end": "res://npc/pose_loops/square_dance__end.tres",
-			"options": {},
-			"preview": "square_dance",
-			"start": "res://npc/pose_loops/square_dance__start.tres"
-		},
 		"squat": {
 			"duration": 2.0,
 			"end": "res://npc/pose_loops/squat__end.tres",
@@ -3027,20 +2964,6 @@
 			"options": {},
 			"preview": "swing_seated",
 			"start": "res://npc/pose_loops/swing_seated__start.tres"
-		},
-		"table_tennis_partner": {
-			"duration": 2.0,
-			"end": "res://npc/pose_loops/table_tennis_partner__end.tres",
-			"options": {},
-			"preview": "table_tennis_partner",
-			"start": "res://npc/pose_loops/table_tennis_partner__start.tres"
-		},
-		"table_tennis_play": {
-			"duration": 2.0,
-			"end": "res://npc/pose_loops/table_tennis_play__end.tres",
-			"options": {},
-			"preview": "table_tennis_play",
-			"start": "res://npc/pose_loops/table_tennis_play__start.tres"
 		},
 		"tai_chi": {
 			"duration": 6.96666666666667,

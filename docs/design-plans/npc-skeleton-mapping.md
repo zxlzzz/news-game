@@ -56,11 +56,7 @@ Hsinlung 已于 2026-09-20 确认这套造型、比例和映射为当前基线�
    - 小臂跟着大臂做同一个旋转，肘的弯曲形状不变。
    - 手在头旁边的动作（挠头、打电话、揉眼、捂脸、喝水）大臂接近水平，不会触发这条规则。
 8. **脚尖** = 踝 + u(LeftFoot→LeftToeEnd) × 脚长。
-9. **手的位置（2026-10-01 加，待 Hsinlung 看图确认）**。第 6、7 步只照抄方向；火柴人大臂短（0.096）、小臂长（0.124）、头大，照抄方向会把手放错地方：挠头、抱头、捂脸、捂嘴的手落到下巴和脖子，胸前拿书、拿相机的手被抬到下巴。所以第 6、7 步算出的手只作起点，再保住两种关系，然后用两骨 IK 从颈根重解肘和手（骨长不变）：
-   - **高度**：手在躯干轴（Hips→Neck1）上的高度按身体部位分段对应：源 [站姿手、Hips、Neck1、头中心、HeadEnd] → 火柴人 [站姿手、胯、颈根、头中心、头顶]，两端按最近一段延长。站姿手两端取 `stand_idle` 第 0 帧，左右各自标定，所以站着时手的位置与第 6、7 步完全相同。手的前后、左右仍取第 6、7 步的结果（火柴人没有身体宽度，按比例缩放会把叉腰、插兜的手推离身体，试过不行）。
-   - **贴头**（2026-10-02 修正）：源手掌点仍为 Hand 沿小臂方向再走 palm 米；源头中心和半径仍从 Head、HeadEnd 推导。目标方向取源头中心指向手掌的方向，目标距离是火柴人头半径加半线宽，再加源手掌到头表面的非负间隙 × 腿长比例 r。头的半径按火柴人比例取，手接近或离开的间隙按肢体比例取；不再把整个偏移都乘大头的倍率。headFar 到 headTouch 的贴头权重不变。
-   - 高度映射可能先把手推入火柴人的大头区域。此时另保留源手的表面间隙：先算普通目标和上述贴头目标的差 error，再取 `excess = max(0, 1 - gap*r/error)`；以普通目标离火柴人头中心从两倍安全半径到安全半径的 smoothstep 权重乘 excess。贴头权重取这个几何补偿与源贴头权重的较大者。远处源手的间隙允许它保留普通方向，避免把所有靠近画面头部的手都吸向头。此处安全半径为 headR + line/2；error 的分母只加数值零保护。
-   - **不穿头**：肘的弯向取第 6、7 步的肘，加一点源骨架自己的肘弯方向（大臂长 × 0.1）稳住接近伸直时的弯向。胳膊开始切进头圆（到头中心距离小于 0.9 × 头半径）时，肘改向外弯；仍切进且手不在贴头、也没有手撑地时，退回第 6、7 步的结果。两次过渡宽度仍为 0.25 × 头半径。它们是逐帧几何函数，没有时间低通；源肘、肩或手自身的突跳仍可能传入，不能据此保证任意素材相邻帧都连续。
+9. 手的端点不落在头里。第 6、7 步算出的手端如果落进头的圆（到头中心的距离小于头半径 + 半线宽），就放到圆的边上。放在哪一侧，取源数据里手掌相对头中心的方向（手掌 = Hand 沿小臂方向再走 palm 米；方向按源头轴到火柴人头轴的转动换过来）。距离在“边 ± 0.25 × 头半径”之间平滑过渡。手端移动后从颈根用两骨 IK 重解，肘的弯向取第 6、7 步的肘。手端没进头、也不撑地时，第 6、7 步的结果原样输出。小臂可以和头的圆重叠。
 
 10. **倒立的手支撑**（2026-10-02）：每侧从源手掌离地高度及躯干轴向下的程度推导 supportHands 权重，普通直立动作为 0，连续值随当前源姿态改变，不按动作名判定。两掌共同撑地时，用源上臂与前臂的伸展率、火柴人两腕的水平间隔和臂长推导颈根离支撑面的高度；相应升高整个身体，包括脚目标，保留腿形。手目标在地面上方半线宽处，两骨 IK 保臂长，手撑地时不退回张臂姿势。mapFrame 输出 `supportHands = [leftWeight, rightWeight]`；ClipPose 保存并逐侧混合它。
 
@@ -89,8 +85,8 @@ Hsinlung 已于 2026-09-20 确认这套造型、比例和映射为当前基线�
 | 线宽 line | 0.035 |
 | 躯干线宽倍数 torsoLine | 1.15（躯干和脖子的线宽 = 线宽 × 1.15） |
 | 手掌长 palm | 0.09（源数据，米；第 9 步贴头判断用） |
-| 完全贴头距离 headTouch | 0.04（源数据，米） |
-| 开始贴头距离 headFar | 0.16（源数据，米） |
+| headTouch | 0.04（源数据，米；只给第 10 步倒立撑地用：手掌离地不高于它时，撑地权重取满） |
+| headFar | 0.16（源数据，米；只给第 10 步倒立撑地用：手掌离地高于它时，撑地权重为 0） |
 
 ## 5. 画法
 
@@ -115,6 +111,7 @@ Hsinlung 已于 2026-09-20 确认这套造型、比例和映射为当前基线�
 - 抱臂（cross_arms）从正面看像胸前一个"十"字，斜着看好一些。任何火柴人画抱臂都有这个问题。
 - 举高拍照（photo_overhead）的胳膊是往前上方举的，正面看会挡在脸前，这是真实的前后关系。
 - （2026-10-01）第 9 步之后，photo_overhead 的手机举到头顶上方；手往正上方伸直的动作（stretch、hands_up）仍按最小张角张开，手到不了头顶正上方：火柴人臂长 0.22、头顶离颈根 0.135，伸直向上必然穿头。
+- （2026-10-06）第 9 步简化后，胸前动作（rub_hands、adjust_clothes、eat_snack、hold_umbrella 等）的手在正面看会叠在头的下沿，侧面看手在头的前方，不是碰到下巴，不修。
 
 ## 8. 参考材料与检验范围
 
@@ -130,8 +127,3 @@ This is human visual judgment, not a new angle/speed threshold check. Bone-lengt
 
 - `stand_idle.png`、`phone_walk.png`、`scratch_head.png`、`squat_watch.png`、`bow.png`、`wave_both_overhead.png`、`stretch.png`、`cheer.png`：每张是一条动作，5 帧，每帧画三个视角（正面 -8°、侧面、斜上 -35°/15°）。
 - `overview_1.png` 到 `overview_3.png`：全部 63 条动作，每条均匀取 5 帧，正面视角。
-
-
-## 2026-10-03 clearance repair
-
-The final head-clearance pass now rotates the complete arm about N, retaining both lengths and its elbow shape. The elbow-circle search could alternate between wrist displacement and a distant elbow solution on adjacent smooth source frames (duck_cover). The new pass uses the closest forearm point to select the rotation away from the head and solves only the required clearance angle. No temporal smoothing or clip-name exception is used. ClipPose also applies this clearance to interpolated samples before object contacts; clear native frames do not guarantee clear interpolated forearms. JS/GD implementations remain paired. Object contacts can still reintroduce head overlap; final acting and contact acceptance remain open. Evidence: delivery/motion_self_audit_2026-10-03/repair_round2.md.

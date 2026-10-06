@@ -169,24 +169,6 @@ func pose(phase: float, repeat: bool = true) -> Dictionary:
 	var i := mini(floori(x), _mapped.size() - 1)
 	var j := mini(i + 1, _mapped.size() - 1)
 	var result := blend(_mapped[i], _mapped[j], x - i)
-	# Direction interpolation retains lengths, but a curved hand path can still
-	# cross the enlarged head between two clear native poses. Correct this
-	# sampled geometry before callers apply their object contacts.
-	if i == j or x-i <= 0.0:
-		return result
-	result = result.duplicate(true)
-	var n: Vector3 = result.neck
-	var to_array := func(q: Vector3) -> Array: return [q.x,q.y,q.z]
-	for side in 2:
-		var index := 2 if side == 0 else 7
-		var arm := {"knee":to_array.call(result.segs[index][1]),"end":to_array.call(result.segs[index+1][1])}
-		var corrected: Dictionary = _mapper.clearArm(to_array.call(n),to_array.call(result.head),arm,P,[1 if side==0 else -1,0,0])
-		var elbow := Vector3(corrected.knee[0],corrected.knee[1],corrected.knee[2])
-		var hand := Vector3(corrected.end[0],corrected.end[1],corrected.end[2])
-		result.segs[index][1] = elbow
-		result.segs[index+1][0] = elbow
-		result.segs[index+1][1] = hand
-		result["handLeft" if side==0 else "handRight"] = hand
 	return result
 
 ## Crossfade two poses of the same mapping (same segment list), w = 0 -> a, 1 -> b.
