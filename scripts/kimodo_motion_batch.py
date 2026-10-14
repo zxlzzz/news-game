@@ -3,6 +3,9 @@
 Run inside the existing Kimodo environment after freeing the demo's GPU memory:
   python -u kimodo_motion_batch.py --output /tmp/kimodo_review
 Request: {"name":"wipe_sweat","text":"A person ...","duration":3,"seed":42}
+End-effector keys ("effectors": [{"joints": ["RightHand"], "keyframes": [{"frame", "source", "source_frame",
+"targets": {"RightHand": [x, y, z]}} or "offset": [x, y, z]]}]) bend the source pose's limb to the target,
+rotations included; a position change without matching rotations is undone by Kimodo's correction.
 Use {"name":"wipe_sweat","inspect":true} to refresh review output, or 'quit'.
 Only selected <name>/ directories are deliverables. Sheets and metrics are temporary.
 This tool never approves a motion, mutates joints, or generates the next job itself.
@@ -14,6 +17,82 @@ import traceback
 
 import numpy as np
 from PIL import Image, ImageDraw
+
+
+# Limb chains of SOMA30 for end-effector keys: (upper joint, middle joint, end joint).
+CHAINS = {'RightHand': ('RightArm', 'RightForeArm', 'RightHand'), 'LeftHand': ('LeftArm', 'LeftForeArm', 'LeftHand'),
+          'RightFoot': ('RightLeg', 'RightShin', 'RightFoot'), 'LeftFoot': ('LeftLeg', 'LeftShin', 'LeftFoot')}
+
+
+def rotation_between(a, b):
+    """Smallest rotation matrix taking direction a to direction b."""
+    a = a / np.linalg.norm(a)
+    b = b / np.linalg.norm(b)
+    v = np.cross(a, b)
+    s, c = float(np.linalg.norm(v)), float(np.dot(a, b))
+    if s < 1e-9:
+        if c > 0:
+            return np.eye(3)
+        axis = np.cross(a, [1.0, 0.0, 0.0])
+        if np.linalg.norm(axis) < 1e-6:
+            axis = np.cross(a, [0.0, 1.0, 0.0])
+        v, s, c = axis / np.linalg.norm(axis), 0.0, -1.0
+        k = np.array([[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]])
+        return np.eye(3) + 2 * k @ k
+    k = np.array([[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]]) / s
+    angle = np.arctan2(s, c)
+    return np.eye(3) + np.sin(angle) * k + (1 - np.cos(angle)) * k @ k
+
+
+def pose_to_targets(pos, rot, names, parents, targets):
+    """A key pose whose positions AND global rotations put each named end joint at its target.
+    Kimodo's correction rebuilds a key from its rotations, so moving only the end joint's position does
+    nothing (the hand goes back where the rotations put it). Hands and feet: two-bone IK of the limb,
+    the knee/elbow keeping its bend side; the subtree below each bone turns with it. Hips: the whole pose moves."""
+    pos, rot = pos.copy(), rot.copy()
+    index = {n: i for i, n in enumerate(names)}
+    children = {i: [j for j, q in enumerate(parents) if q == i] for i in range(len(names))}
+
+    def subtree(i):
+        out = [i]
+        for j in children[i]:
+            out += subtree(j)
+        return out
+
+    middles = {chain[1] for chain in CHAINS.values()}
+    for joint, target in targets.items():
+        target = np.asarray(target, dtype=float)
+        if joint in middles:
+            continue  # an elbow/knee given with its hand/foot (scripts/figure_targets.py)
+        if joint == 'Hips':
+            pos += target - pos[index['Hips']]
+            continue
+        a, b, c = (index[n] for n in CHAINS[joint])
+        S, E, W = pos[a].astype(float), pos[b].astype(float), pos[c].astype(float)
+        l1, l2 = np.linalg.norm(E - S), np.linalg.norm(W - E)
+        if CHAINS[joint][1] in targets:
+            E2 = np.asarray(targets[CHAINS[joint][1]], dtype=float)
+            W2 = target
+        else:
+            reach = target - S
+            if np.linalg.norm(reach) > l1 + l2:
+                print(f'WARNING {joint} target {np.linalg.norm(reach) - l1 - l2:.3f} m beyond the arm/leg', flush=True)
+            d = float(np.clip(np.linalg.norm(reach), abs(l1 - l2) + 1e-6, l1 + l2 - 1e-6))
+            axis = reach / np.linalg.norm(reach)
+            pole = (E - S) - axis * np.dot(E - S, axis)
+            if np.linalg.norm(pole) < 1e-8:
+                pole = np.cross(axis, [0.0, 1.0, 0.0])
+            x = (l1 * l1 - l2 * l2 + d * d) / (2 * d)
+            E2 = S + axis * x + pole / np.linalg.norm(pole) * np.sqrt(max(0.0, l1 * l1 - x * x))
+            W2 = S + axis * d
+        R1 = rotation_between(E - S, E2 - S)
+        R2 = rotation_between(R1 @ (W - E), W2 - E2)
+        rot[a] = R1 @ rot[a]
+        for j in subtree(b):
+            p1 = S + R1 @ (pos[j] - S)
+            pos[j] = E2 + R2 @ (p1 - E2)
+            rot[j] = R2 @ R1 @ rot[j]
+    return pos, rot
 
 
 def inspect_motion(folder, names, parents):
@@ -109,8 +188,9 @@ def main():
             folder = args.output / name
             if not cfg.get('inspect'):
                 duration = float(cfg['duration'])
-                if not 2 <= duration <= 10:
-                    raise ValueError('Duration must be between 2 and 10 seconds')
+                # Kimodo is trained on 2-10 s; shorter takes are only for short, fully keyed gestures.
+                if not 1 <= duration <= 10:
+                    raise ValueError('Duration must be between 1 and 10 seconds')
                 seed_everything(cfg['seed'])
                 frames = round(duration * model.fps)
                 constraints = []
@@ -135,6 +215,14 @@ def main():
                             positions = reference['posed_joints'][source_frame, subset].copy()
                             rotations = reference['global_rot_mats'][source_frame, subset].copy()
                         positions += np.asarray(keyframe.get('translation', [0, 0, 0]), dtype=positions.dtype)
+                        if keyframe.get('targets'):
+                            # e.g. {"Hips": lower, "LeftFoot": where it was, "RightFoot": ...}: a seated pose sunk onto a
+                            # lower seat with the feet kept on the floor (pose_to_targets, applied in order).
+                            names30 = list(model.skeleton.bone_order_names)
+                            parents30 = [int(q) for q in model.skeleton.joint_parents.cpu().numpy()]
+                            positions, rotations = pose_to_targets(positions, rotations, names30, parents30,
+                                {j: np.asarray(t, dtype=float) for j, t in keyframe['targets'].items()})
+                            positions, rotations = positions.astype(np.float32), rotations.astype(np.float32)
                         frame = keyframe['frame']
                         frame = frames + frame if frame < 0 else frame
                         if not 0 <= frame < frames:
@@ -167,49 +255,81 @@ def main():
                     constraints = [FullBodyConstraintSet(model.skeleton, torch.tensor([0, frames-1]),
                         torch.tensor(endpoint_pose['posed_joints'][[0,0]], device=model.device)[:,subset],
                         torch.tensor(endpoint_pose['global_rot_mats'][[0,0]], device=model.device)[:,subset])]
+                # End-effector keys. Every key of one frame becomes ONE pose (the first key's source frame, bent to
+                # all targets of that frame): each constraint set also fixes the root and heading of its frames, so
+                # two keys of one frame taken from different poses contradict each other and one is dropped.
+                names30 = list(model.skeleton.bone_order_names)
+                parents30 = [int(q) for q in model.skeleton.joint_parents.cpu().numpy()]
+                subset = model.skeleton.get_skel_slice(model.skeleton.somaskel77)
+                slots = {}
                 for effector in cfg.get('effectors', []):
-                    subset = model.skeleton.get_skel_slice(model.skeleton.somaskel77)
-                    positions, rotations, indices = [], [], []
-                    for key in effector['keyframes']:
-                        with np.load(key['source'], allow_pickle=False) as reference:
-                            sf = key.get('source_frame', 0)
-                            pos = reference['posed_joints'][sf, subset].copy()
-                            rot = reference['global_rot_mats'][sf, subset].copy()
-                        # EndEffectorConstraintSet expands Hand to Hand+MiddleEnd and
-                        # Foot to Foot+ToeBase. Translate the complete constrained
-                        # group so its internal geometry remains consistent.
-                        _, position_names = model.skeleton.expand_joint_names(effector['joints'])
-                        for joint in set(position_names):
-                            pos[model.skeleton.bone_index[joint]] += np.asarray(key.get('offset', [0,0,0]), dtype=pos.dtype)
-                        positions.append(pos); rotations.append(rot); indices.append(key['frame'])
-                    # Kimodo's correction masks dispatch on left-hand/right-foot/etc.
-                    # The generic "end-effector" class conditions diffusion but is
-                    # ignored by correction. Split groups into the named classes.
                     if effector.get('guide_joints'):
                         raise ValueError('Elbow guides are not supported by final motion correction')
                     for joint in effector['joints']:
-                        arguments = (model.skeleton, torch.tensor(indices),
-                            torch.tensor(np.stack(positions), device=model.device),
-                            torch.tensor(np.stack(rotations), device=model.device), None)
-                        if joint in effector_classes:
-                            constraints.append(effector_classes[joint](*arguments))
-                        elif joint == 'Hips':
-                            constraints.append(EndEffectorConstraintSet(*arguments, joint_names=[joint]))
-                        else:
+                        if joint not in effector_classes and joint != 'Hips':
                             raise ValueError(f'Unsupported end-effector {joint}')
-                    constraint_targets.append(dict(type='end-effector', frames=indices, joints=effector['joints'],
-                        correction_masks=[effector_classes[j].name for j in effector['joints'] if j in effector_classes],
+                    for key in effector['keyframes']:
+                        frame = frames + key['frame'] if key['frame'] < 0 else key['frame']
+                        if not 0 <= frame < frames:
+                            raise ValueError('Effector key outside the output clip')
+                        slot = slots.setdefault(frame, {'source': key['source'], 'source_frame': key.get('source_frame', 0),
+                                                        'targets': {}, 'offsets': {}, 'joints': []})
+                        for j, t in key.get('targets', {}).items():
+                            slot['targets'][j] = np.asarray(t, dtype=float)
+                        if 'offset' in key:
+                            for joint in effector['joints']:
+                                slot['offsets'][joint] = np.asarray(key['offset'], dtype=float)
+                        slot['joints'] += [j for j in effector['joints'] if j not in slot['joints']]
+                per_joint = {}
+                for frame in sorted(slots):
+                    slot = slots[frame]
+                    with np.load(slot['source'], allow_pickle=False) as reference:
+                        pos = reference['posed_joints'][slot['source_frame'], subset].copy()
+                        rot = reference['global_rot_mats'][slot['source_frame'], subset].copy()
+                    targets = dict(slot['targets'])
+                    for joint, offset in slot['offsets'].items():
+                        targets[joint] = pos[names30.index(joint)] + offset
+                    pos, rot = pose_to_targets(pos, rot, names30, parents30, targets)
+                    for joint in slot['joints']:
+                        entry = per_joint.setdefault(joint, ([], [], []))
+                        entry[0].append(frame)
+                        entry[1].append(pos.astype(np.float32))
+                        entry[2].append(rot.astype(np.float32))
+                for joint, (indices, positions, rotations) in per_joint.items():
+                    # Kimodo's correction masks dispatch on left-hand/right-foot/etc.; the generic
+                    # "end-effector" class conditions diffusion but is ignored by correction.
+                    arguments = (model.skeleton, torch.tensor(indices),
+                        torch.tensor(np.stack(positions), device=model.device),
+                        torch.tensor(np.stack(rotations), device=model.device), None)
+                    if joint in effector_classes:
+                        constraints.append(effector_classes[joint](*arguments))
+                    else:
+                        constraints.append(EndEffectorConstraintSet(*arguments, joint_names=[joint]))
+                    constraint_targets.append(dict(type='end-effector', frames=indices, joints=[joint],
+                        correction_masks=[effector_classes[joint].name] if joint in effector_classes else [],
                         skeleton='SOMA30', positions=np.stack(positions).tolist(), rotations=np.stack(rotations).tolist()))
+                # Scene guidance (the fork's kimodo/scene_guidance.py): keep the stick figure out of object boxes.
+                model.scene_guidance = None
+                if cfg.get('scene'):
+                    from kimodo.scene_guidance import SceneGuidance
+                    scene = dict(cfg['scene'])
+                    for key in ('boxes', 'item_boxes'):
+                        if isinstance(scene.get(key), str):
+                            scene[key] = json.loads(pathlib.Path(scene[key]).read_text())['boxes']
+                    if scene.get('item_boxes'):
+                        scene['item'] = {'boxes': scene.pop('item_boxes'), 'hand': scene.pop('item_hand', 'both')}
+                    scene['rest_names'] = names
+                    model.scene_guidance = SceneGuidance(scene, model)
                 output = model([cfg['text']], [frames],
                                num_denoising_steps=100, num_samples=1, multi_prompt=True,
                                constraint_lst=constraints,
-                               num_transition_frames=5, post_processing=True, return_numpy=True,
+                               num_transition_frames=5, post_processing=cfg.get('post_processing', True), return_numpy=True,
                                cfg_type='separated', cfg_weight=[2., 2.], progress_bar=lambda values: values)
                 output = {k: v[0] if hasattr(v, 'shape') and v.ndim > 0 and v.shape[0] == 1 else v for k, v in output.items()}
                 folder.mkdir(exist_ok=True)
                 save_kimodo_npz(str(folder / 'motion.npz'), output)
                 cfg.update(model='Kimodo-SOMA-RP-v1.1', text_encoder='matbee/kimodo-llm2vec-nf4',
-                           fps=float(model.fps), diffusion_steps=100, post_processing=True,
+                           fps=float(model.fps), diffusion_steps=100, post_processing=cfg.get('post_processing', True),
                            cfg={'enabled': True, 'text_weight': 2., 'constraint_weight': 2.}, num_samples=1)
                 if cfg.get('endpoints'):
                     error = np.linalg.norm(output['posed_joints'][[0,-1]] - endpoint_pose['posed_joints'][0], axis=-1)
@@ -226,6 +346,11 @@ def main():
                                                - np.asarray(target['positions'])[:,selected], axis=-1)
                         errors.append(dict(type=target['type'], frames=target['frames'], mean_error_m=error.mean(axis=1).tolist()))
                     cfg['keyframe_errors'] = errors
+                if model.scene_guidance is not None:
+                    log = model.scene_guidance.log
+                    cfg['scene_guidance'] = dict(steps=len(log), first_penetration=log[0][1] if log else None,
+                                                 last=[round(v, 6) for v in log[-1][1:]] if log else None)
+                    model.scene_guidance = None
                 (folder / 'meta.json').write_text(json.dumps(cfg, indent=2))
             metrics = inspect_motion(folder, names, parents)
             print('DONE ' + name + ' ' + json.dumps(metrics), flush=True)

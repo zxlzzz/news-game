@@ -1,25 +1,422 @@
 {
   "name": "cafe_sit_drink",
-  "text": "Sitting on a chair at a cafe table, both feet resting on the floor, pick up a cup with the right hand, gently raise it to the mouth, sip while slightly tilting the wrist, lower it back to the table. Left hand rests on the thigh.",
+  "text": "A seated person reaches with the right hand for a cup on a table, raises the cup to the lips, takes one sip, lowers the cup back to the table, then rests the right hand on the lap. Left hand stays on lap.",
   "duration": 5,
-  "seed": 5302,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A seated person reaches with the right hand for a cup on a table, raises the cup to the lips, takes one sip, lowers the cup back to the table, then rests the right hand on the lap. Left hand stays on lap.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "cup_landing",
+        "phases": [
+          0.2
+        ],
+        "window": [
+          0.12,
+          0.15,
+          0.2,
+          0.23
+        ],
+        "grip_item": "held_coffee_cup",
+        "grip": "grip_sleeve",
+        "rest": "rest",
+        "episode": "held_transfer"
+      },
+      {
+        "joint": "RightHand",
+        "marker": "cup_landing",
+        "phases": [
+          0.85
+        ],
+        "window": [
+          0.77,
+          0.8,
+          0.85,
+          0.88
+        ],
+        "grip_item": "held_coffee_cup",
+        "grip": "grip_sleeve",
+        "rest": "rest",
+        "episode": "held_transfer"
+      }
+    ],
+    "object": "cafe_table",
+    "post": "post_cafesit",
+    "description": "Start at cafe_table.post_cafesit facing the model standing marker direction. A person sits upright at a cafe table with both feet flat on the floor. The LEFT hand stays resting low on the left thigh throughout, below the tabletop, elbow down beside the body. Only the RIGHT hand picks up a cup, raises it to the mouth, takes a sip and returns it to the table. Keep the back upright, knees apart, both thighs forward and parallel. One sip, then put the cup down. Hips touches the physical model marker hip_seat at 0.00s, 5.00s. RightHand touches the physical model marker cup_landing at 1.00s. RightHand touches the physical model marker cup_landing at 4.25s. Grasp held_coffee_cup at grip_sleeve at 1.00s. Release at 4.25s onto cup_landing using the item rest marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep thighs beneath the tabletop, torso at the table edge, and both forearms above the tabletop.",
+    "transfers": [
+      {
+        "type": "held_coffee_cup",
+        "grip": "grip_sleeve",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.2,
+        "initial": {
+          "space": "object",
+          "marker": "cup_landing"
+        },
+        "landing": {
+          "space": "object",
+          "marker": "cup_landing"
+        },
+        "release": 0.85,
+        "initial_anchor": "rest"
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep thighs beneath the tabletop, torso at the table edge, and both forearms above the tabletop.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 0,
+        "align_hip": "hip_seat"
+      }
+    ],
+    "seat_surface": {
+      "node": "seat",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "frame": 149,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "65921e63fec91d1385b0da409a55b9f0c84aacf43556b2f6cefa44a2774acbcd",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "notes": "Raw source preserved; current contact/clearance evidence is in docs/asset-contact-repair-2026-10-10.json. No real-time visual approval is claimed.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"notes\": \"Raw source preserved; current contact/clearance evidence is in docs/asset-contact-repair-2026-10-10.json. No real-time visual approval is claimed.\"\r\n  }",
+      "original_record_sha256": "9e7bd0dc28072869738b45446dd84e54bc31645e6db437ff7198412c492f60be",
+      "current_source_sha256_at_reconciliation": "65921e63fec91d1385b0da409a55b9f0c84aacf43556b2f6cefa44a2774acbcd",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks."
   },
-  "num_samples": 1,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "sit_bench",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
-    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
-  }
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 0-4.967 s front and side overview plus enlarged sip: right hand takes cup, drinks and replaces it; left hand stays low. Cup lip meets lower front of head.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 0-4.967 s front and side overview plus enlarged sip: right hand takes cup, drinks and replaces it; left hand stays low. Cup lip meets lower front of head.\"\r\n  }",
+      "original_record_sha256": "d9c92ad6a26f80bb3f441a053a1dcb19505abee6a9e37b993fe5425efc89e6e6",
+      "current_source_sha256_at_reconciliation": "65921e63fec91d1385b0da409a55b9f0c84aacf43556b2f6cefa44a2774acbcd",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "runtime_scene": {
+    "text": "A person sits upright at a cafe table with both feet flat on the floor. The LEFT hand stays resting low on the left thigh throughout, below the tabletop, elbow down beside the body. Only the RIGHT hand picks up a cup, raises it to the mouth, takes a sip and returns it to the table. Keep the back upright, knees apart, both thighs forward and parallel. One sip, then put the cup down.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "cup_landing",
+        "phases": [
+          0.2
+        ],
+        "window": [
+          0.12,
+          0.15,
+          0.2,
+          0.23
+        ],
+        "grip_item": "held_coffee_cup",
+        "grip": "grip_near",
+        "rest": "rest",
+        "episode": "held_transfer",
+        "surface_node": "tabletop"
+      },
+      {
+        "joint": "RightHand",
+        "marker": "cup_landing",
+        "phases": [
+          0.85
+        ],
+        "window": [
+          0.12,
+          0.15,
+          0.2,
+          0.23
+        ],
+        "grip_item": "held_coffee_cup",
+        "grip": "grip_near",
+        "rest": "rest",
+        "episode": "held_transfer",
+        "surface_node": "tabletop"
+      }
+    ],
+    "object": "cafe_table",
+    "post": "post_cafesit",
+    "description": "Start at cafe_table.post_cafesit facing the model standing marker direction. A person sits upright at a cafe table with both feet flat on the floor. The LEFT hand stays resting low on the left thigh throughout, below the tabletop, elbow down beside the body. Only the RIGHT hand picks up a cup, raises it to the mouth, takes a sip and returns it to the table. Keep the back upright, knees apart, both thighs forward and parallel. One sip, then put the cup down. Hips touches the physical model marker hip_seat at 0.00s, 5.00s. RightHand touches the physical model marker cup_landing at 1.00s. RightHand touches the physical model marker cup_landing at 4.25s. Grasp held_coffee_cup at grip_sleeve at 1.00s. Release at 4.25s onto cup_landing using the item rest marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep thighs beneath the tabletop, torso at the table edge, and both forearms above the tabletop.",
+    "transfers": [
+      {
+        "type": "held_coffee_cup",
+        "grip": "grip_near",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.2,
+        "initial": {
+          "space": "object",
+          "marker": "cup_landing"
+        },
+        "landing": {
+          "space": "object",
+          "marker": "cup_landing"
+        },
+        "release": 0.85,
+        "initial_anchor": "rest",
+        "mouth_contact": {
+          "marker": "lip",
+          "head_offset": [
+            0,
+            -0.35,
+            0.98
+          ],
+          "window": [
+            0.24,
+            0.4,
+            0.7,
+            0.78
+          ],
+          "tilt_degrees": -22
+        },
+        "orientation": "upright",
+        "solid_grasp": true,
+        "keep_grip": true
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep thighs beneath the tabletop, torso at the table edge, and both forearms above the tabletop.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 0,
+        "align_hip": "hip_seat"
+      }
+    ],
+    "seat_surface": {
+      "node": "seat",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "arm_obstacles": [
+      "tabletop"
+    ],
+    "leg_obstacles": [
+      "base"
+    ],
+    "grasp_pole": [
+      -0.6,
+      -1,
+      -0.2
+    ],
+    "reach_torso": true
+  },
+  "runtime_interaction": {
+    "duration": 4.966666666666667,
+    "preserve_root": true,
+    "preserve_origin": true,
+    "preserve_heading": true,
+    "stationary": true,
+    "playback": "once",
+    "object": "cafe_table",
+    "post_marker": "post_cafesit",
+    "contacts": [
+      {
+        "joint": "hip",
+        "target": {
+          "space": "object",
+          "marker": "hip_seat"
+        },
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "handRight",
+        "target": {
+          "space": "object",
+          "marker": "cup_landing",
+          "grip_item": "held_coffee_cup",
+          "grip": "grip_near",
+          "rest": "rest",
+          "surface_node": "tabletop"
+        },
+        "window": [
+          0.12,
+          0.15,
+          0.2,
+          0.23
+        ]
+      },
+      {
+        "joint": "handRight",
+        "target": {
+          "space": "object",
+          "marker": "cup_landing",
+          "grip_item": "held_coffee_cup",
+          "grip": "grip_near",
+          "rest": "rest",
+          "surface_node": "tabletop"
+        },
+        "window": [
+          0.77,
+          0.8,
+          0.85,
+          0.88
+        ]
+      }
+    ],
+    "transfers": [
+      {
+        "type": "held_coffee_cup",
+        "grip": "grip_near",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.2,
+        "initial": {
+          "space": "object",
+          "marker": "cup_landing"
+        },
+        "landing": {
+          "space": "object",
+          "marker": "cup_landing"
+        },
+        "release": 0.85,
+        "initial_anchor": "rest",
+        "mouth_contact": {
+          "marker": "lip",
+          "head_offset": [
+            0,
+            -0.35,
+            0.98
+          ],
+          "window": [
+            0.24,
+            0.4,
+            0.7,
+            0.78
+          ],
+          "tilt_degrees": -22
+        },
+        "orientation": "upright",
+        "solid_grasp": true,
+        "keep_grip": true
+      }
+    ],
+    "seat_surface": {
+      "node": "seat",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "reach_torso": true,
+    "leg_obstacles": [
+      "base"
+    ],
+    "grasp_pole": [
+      -0.6,
+      -1,
+      -0.2
+    ],
+    "arm_obstacles": [
+      "tabletop"
+    ]
+  },
+  "source_frame": "fixed"
 }

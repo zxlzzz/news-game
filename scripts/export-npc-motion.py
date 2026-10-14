@@ -7,6 +7,8 @@ Requires numpy; the Kimodo model is not loaded.
 Writes <out>/index.json (joint names, SOMA77 indices and parents, clip list) and <out>/<clip>.json
 ({fps, frames}; frames[f][j] = [x, y, z] of index.json names[j], metres, Y up, original SOMA coordinates).
 Joints: only the 16 source joints sth/motion-study/skeleton-mapping.mjs reads.
+A meta.json "source_frame": "fixed" (the clip was generated with its stance, e.g. an object's post marker, at the
+origin facing +Z) is copied into the clip; godot/tools/bake_motion.gd then keeps those coordinates.
 Root: in every clip posed_joints[:, Hips] equals root_positions exactly (checked below; the export stops
 otherwise), so the Hips column already carries the root displacement and no separate root array is written.
 Loops (design_route_npc_motion_supply.md §5 item 4): clips with "loop": true in
@@ -15,6 +17,9 @@ frame (every joint, after taking out the root's three-dimensional travel) is spr
 frame repeats the first and the root's three-dimensional path is untouched. The export stops instead when that
 difference exceeds SEAM_MAX_M or when a different set of feet is on the ground at the two ends (checked only
 when there is a seam to close: a clip whose last frame already repeats the first is left as is).
+Smoothing: a meta.json "smooth_frames": s (written by scripts/motion_install.py --smooth) blurs the joint paths over
+time (Gaussian, s frames) before anything else. Kimodo's post-processing pulls each pinned frame onto its pin on its
+own, so a held still pose (slouching on a bench) twitches at its pins; only for such clips.
 """
 import argparse
 import ast
@@ -44,6 +49,15 @@ def write_json(path, value, **options):
         os.replace(temporary,path)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def smooth(joints, sigma):
+    """joints (frames, J, 3) blurred along the frames (Gaussian, sigma frames, ends held)."""
+    r = max(1, int(np.ceil(3 * sigma)))
+    k = np.exp(-0.5 * (np.arange(-r, r + 1) / sigma) ** 2)
+    k /= k.sum()
+    padded = np.concatenate([np.repeat(joints[:1], r, 0), joints, np.repeat(joints[-1:], r, 0)])
+    return sum(k[i] * padded[i:i + len(joints)] for i in range(2 * r + 1))
 
 
 def close_seam(name, joints, contacts):
@@ -102,12 +116,22 @@ def main():
             joints = posed[:, indices]
             contacts = source['foot_contacts']
         assert np.isfinite(joints).all() and len(joints) > 0, folder.name
+        if meta.get('smooth_frames'):
+            joints = smooth(joints.astype(float), float(meta['smooth_frames']))
         seam = None
         if meta.get('loop', folder.name in loops):
             joints, seam = close_seam(folder.name, joints.astype(float), contacts)
         fps = float(meta['fps'])
         assert fps > 0, f'{folder.name}: fps {fps}'
         clip = {'fps': fps, 'frames': np.round(joints.astype(float), 5).tolist()}
+        if meta.get('source_frame') is not None:
+            # "fixed": generated with the stance at the origin facing +Z (an object's post); the bake keeps it.
+            assert meta['source_frame'] == 'fixed', f'{folder.name}: unknown source_frame {meta["source_frame"]}'
+            clip['source_frame'] = meta['source_frame']
+            scene = meta.get('scene', {})
+            if scene.get('object') and scene.get('post'):
+                # the object type and post marker the clip was made at; the bake reads contact markers there
+                clip['made_at'] = {'object': scene['object'], 'post': scene['post']}
         write_json(args.out / f'{folder.name}.json',clip,separators=(',', ':'))
         clips.append({'id': folder.name, 'fps': fps, 'frames': len(joints)})
         if seam is not None:

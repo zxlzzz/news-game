@@ -1,0 +1,97 @@
+{
+  "name": "carry_bucket",
+  "text": "A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_bucket",
+      "hand": "both",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking. Hold held_bucket with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.008633919060230255,
+          0.0,
+          -0.03002663515508175
+        ]
+      },
+      {
+        "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.008633919060230255,
+          0.0,
+          -0.03002663515508175
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.008633919060230255,
+        0.0,
+        -0.03002663515508175
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "bf0845846cc1943f79aac7fb7c7316b2db4efc5828908bd2ea9a704f815963f3",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.008633919060230255,
+        0.0,
+        -0.03002663515508175
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "bf0845846cc1943f79aac7fb7c7316b2db4efc5828908bd2ea9a704f815963f3",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  }
+}

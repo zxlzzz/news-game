@@ -1,0 +1,112 @@
+{
+  "name": "push_stroller",
+  "text": "A person steadily walks straight forward pushing a baby stroller, with both hands continuously on the stroller handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person steadily walks straight forward pushing a baby stroller, with both hands continuously on the stroller handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "baby_stroller",
+    "post": "post_push",
+    "description": "The person starts at baby_stroller.post_push and faces the model standing marker direction. LeftHand touches grip_left at 0.00s,5.00s. RightHand touches grip_right at 0.00s,5.00s.  A person steadily walks straight forward pushing a baby stroller, with both hands continuously on the stroller handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing. Both hands are occupied at their corresponding contact points; the description defines their release. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "travel_with_actor": true
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "baby_stroller",
+      "marker": "grip_left",
+      "space": "carried",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.19069,
+            1.181801,
+            0.236549
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.19069,
+            1.181801,
+            0.236549
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "baby_stroller",
+      "marker": "grip_right",
+      "space": "carried",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.18169,
+            1.181703,
+            0.236638
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.18169,
+            1.181703,
+            0.236638
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "b22c603722f9aa927d25b1b24a6f0c3c82f90932d72394a938b6ccd255656cd5",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

@@ -558,8 +558,7 @@
       }
     },
     "continuous_arm_orientation_reference": "assets/animations/generation_inputs/120ab724e5537c56355497475424838702e34f3a622db8e64b69f6fcdb9df7ea.npz",
-    "reference_scope": "Only arm orientation; archived body/gait is not substituted.",
-    "runtime_visual_evidence": "delivery/motion_fix_2026-10-02/interactions/u2_findings.md"
+    "reference_scope": "Only arm orientation; archived body/gait is not substituted."
   },
   "single_unit": {
     "clip": "assist_elder_walk",

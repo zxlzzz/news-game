@@ -1,0 +1,166 @@
+{
+  "name": "atm_keypad",
+  "text": "Stand relaxed in front of the ATM. Reach the RIGHT hand forward and slightly upward onto the real keypad, press several keys with short fingertip taps, withdraw that same hand and lower it beside the right thigh. Keep the LEFT arm hanging relaxed beside the left thigh throughout. Finish fully upright with both arms relaxed down. Feet stay planted.",
+  "duration": 6,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Stand relaxed in front of the ATM. Reach the RIGHT hand forward and slightly upward onto the real keypad, press several keys with short fingertip taps, withdraw that same hand and lower it beside the right thigh. Keep the LEFT arm hanging relaxed beside the left thigh throughout. Finish fully upright with both arms relaxed down. Feet stay planted.",
+    "duration": 6,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "keypad_press",
+        "phases": [
+          0.25,
+          0.65
+        ],
+        "window": [
+          0.16,
+          0.25,
+          0.65,
+          0.76
+        ],
+        "surface_node": "keyboard"
+      }
+    ],
+    "object": "atm_standalone",
+    "post": "post_atm",
+    "description": "Start at atm_standalone.post_atm facing the model standing marker direction. Stand relaxed in front of the ATM. Reach the RIGHT hand forward and slightly upward onto the real keypad, press several keys with short fingertip taps, withdraw that same hand and lower it beside the right thigh. Keep the LEFT arm hanging relaxed beside the left thigh throughout. Finish fully upright with both arms relaxed down. Feet stay planted. RightHand touches the physical model marker keypad_press at 1.50s, 3.90s. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "source_frame": 0,
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "source_frame": 0,
+        "phase": 1
+      },
+      {
+        "source": "assets/animations/sources/player_review_vending_collect/motion.npz",
+        "source_frame": 75,
+        "translation": [
+          -0.004896133206784725,
+          0,
+          -0.035100504755973816
+        ],
+        "phase": 0.25
+      },
+      {
+        "source": "assets/animations/sources/player_review_vending_collect/motion.npz",
+        "source_frame": 75,
+        "translation": [
+          -0.004896133206784725,
+          0,
+          -0.035100504755973816
+        ],
+        "phase": 0.65
+      }
+    ],
+    "arm_obstacles": [
+      "*"
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "atm_standalone",
+      "marker": "keypad_press",
+      "space": "world",
+      "episode": "keypad_press",
+      "keys": [
+        {
+          "frame": 45,
+          "position": [
+            -0.100249,
+            1.310106,
+            0.454192
+          ]
+        },
+        {
+          "frame": 116,
+          "position": [
+            -0.100249,
+            1.310106,
+            0.454192
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 179
+    },
+    {
+      "source": "assets/animations/sources/d93ef9c20fb33f57/motion.npz",
+      "source_frame": 75,
+      "translation": [
+        -0.004896133206784725,
+        0,
+        -0.035100504755973816
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "d93ef9c20fb33f57247f6f8802d9f654074ebb4d419cbb60bd350d08e159cad4",
+        "hand_edited": false
+      },
+      "frame": 45
+    },
+    {
+      "source": "assets/animations/sources/d93ef9c20fb33f57/motion.npz",
+      "source_frame": 75,
+      "translation": [
+        -0.004896133206784725,
+        0,
+        -0.035100504755973816
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "d93ef9c20fb33f57247f6f8802d9f654074ebb4d419cbb60bd350d08e159cad4",
+        "hand_edited": false
+      },
+      "frame": 116
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 4,
+  "raw_sha256": "4e2d9dc0f6ab477886d6e37ac8f7b310669bdf0b6f36033d23b2fe753da23042",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/object-source/generated/atm_keypad/attempt_002/motion.npz",
+    "original_meta_sha256": "728bc90ddf907051ec4afa6370fd2a5510b2affec3c4157f2f856f4edadf2474",
+    "original_meta_file": "generation-original-meta-728bc90ddf90.json",
+    "raw_npz_unchanged": true
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "clip": "slap_table",
+  "text": "A person standing at a table raises the right hand above the table top and slaps it once hard with the flat palm, leaning in a little, then lifts the hand off. The left arm hangs still. The feet stay planted.",
+  "duration": 1.2,
+  "seeds": [
+    7,
+    61007
+  ],
+  "base": "stand",
+  "object": {
+    "type": "cafe_table",
+    "post": "post_table"
+  },
+  "keys": [
+    {
+      "t": 0.28,
+      "Right": {
+        "marker": "table_press",
+        "offset": [
+          0,
+          0.6,
+          -0.1
+        ]
+      },
+      "Left": "keep"
+    },
+    {
+      "t": [
+        0.5,
+        0.6
+      ],
+      "Right": {
+        "marker": "table_press",
+        "offset": [
+          0,
+          0.055,
+          0
+        ]
+      },
+      "Left": "keep"
+    },
+    {
+      "t": 0.85,
+      "Right": {
+        "marker": "table_press",
+        "offset": [
+          0,
+          0.18,
+          -0.08
+        ]
+      }
+    }
+  ]
+}

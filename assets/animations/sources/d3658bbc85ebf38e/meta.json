@@ -1,0 +1,189 @@
+{
+  "name": "waist_twister",
+  "text": "A person stands on a park waist twisting exercise disc, feet together, both hands holding a bar in front at waist height, twists hips and feet left and right while shoulders face forward.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A person stands on a park waist twisting exercise disc, feet together, both hands holding a bar in front at waist height, twists hips and feet left and right while shoulders face forward.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "fitness_twister",
+    "post": "post_twister",
+    "description": "The person starts at fitness_twister.post_twister and faces the model standing marker direction. LeftHand touches grip_left at 0.00s,5.00s. RightHand touches grip_right at 0.00s,5.00s. LeftFoot touches foot_left at 0.00s,5.00s. RightFoot touches foot_right at 0.00s,5.00s.  A person stands on a park waist twisting exercise disc, feet together, both hands holding a bar in front at waist height, twists hips and feet left and right while shoulders face forward. Both hands are occupied at their corresponding contact points; the description defines their release. Keep both soles on the rotating disc, torso behind the support bar, and elbows outside the upright.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep both soles on the rotating disc, torso behind the support bar, and elbows outside the upright."
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "fitness_twister",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.238076,
+            1.308728,
+            0.289012
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.238076,
+            1.308728,
+            0.289012
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "fitness_twister",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.235864,
+            1.308674,
+            0.289119
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.235864,
+            1.308674,
+            0.289119
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "fitness_twister",
+      "marker": "foot_left",
+      "space": "world",
+      "episode": "foot_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.1268,
+            0.425233,
+            -0.1268
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.1268,
+            0.425233,
+            -0.1268
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "fitness_twister",
+      "marker": "foot_right",
+      "space": "world",
+      "episode": "foot_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.1268,
+            0.425322,
+            -0.1268
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.1268,
+            0.425322,
+            -0.1268
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "d3658bbc85ebf38e0daa56045b7423502a2af292673f9816238b18be7196cb60",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

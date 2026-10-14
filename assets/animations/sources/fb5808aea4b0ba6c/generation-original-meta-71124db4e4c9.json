@@ -1,0 +1,130 @@
+{
+  "name": "enter_walk_umbrella",
+  "text": "A person smoothly changes from standing holding an open umbrella in the right hand near the shoulder to walking forward holding an open umbrella in the right hand near the shoulder. One natural continuous transition.",
+  "duration": 2.0,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "A person smoothly changes from standing holding an open umbrella in the right hand near the shoulder to walking forward holding an open umbrella in the right hand near the shoulder. One natural continuous transition.",
+    "duration": 2.0,
+    "contacts": [],
+    "item": {
+      "type": "held_umbrella_open",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true,
+      "grasp_window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "description": "A person smoothly changes from standing holding an open umbrella in the right hand near the shoulder to walking forward holding an open umbrella in the right hand near the shoulder. One natural continuous transition. Use the same physical item and object as the adjoining production clip.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "runtime_contacts": []
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/e126fd3661ef7631/motion.npz",
+      "source_frame": -1,
+      "frame": 0,
+      "translation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e126fd3661ef7631d2bcef473277dbecb0bb84e668055c0d4eee90fd86196937",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/82d362cb6259679a/motion.npz",
+      "source_frame": 0,
+      "frame": 59,
+      "translation": [
+        -1.1687932399695455e-08,
+        0.0,
+        1.2605571746826172
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "82d362cb6259679a87ac2918d37807f59e8074fc1d80a8361fe8cf2b345e6765",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "fb5808aea4b0ba6c1087aa1e95175ddbf97a1a673652dabeed79773a9d477ad7",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "fb5808aea4b0ba6c1087aa1e95175ddbf97a1a673652dabeed79773a9d477ad7",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "transition_boundaries": {
+    "entry": {
+      "clip": "hold_umbrella",
+      "frame": -1,
+      "sha256": "e126fd3661ef7631d2bcef473277dbecb0bb84e668055c0d4eee90fd86196937"
+    },
+    "exit": {
+      "clip": "walk_umbrella",
+      "frame": 0,
+      "sha256": "82d362cb6259679a87ac2918d37807f59e8074fc1d80a8361fe8cf2b345e6765"
+    }
+  },
+  "generation_pose_ids": {
+    "entry": "umbrella",
+    "exit": "walk_umbrella"
+  },
+  "endpoint_review": {
+    "source_tolerance_m": 0.005,
+    "boundaries": {
+      "entry": {
+        "max_position_gap_m": 0.0017951336922124028,
+        "pelvis_feet_hands_velocity_gap_m_s": [
+          0.0961860716342926,
+          0.10352744162082672,
+          0.06391485035419464,
+          0.08411860466003418,
+          0.07657352089881897
+        ],
+        "max_velocity_gap_m_s": 0.2993624806404114
+      },
+      "exit": {
+        "max_position_gap_m": 0.0008211730746552348,
+        "pelvis_feet_hands_velocity_gap_m_s": [
+          0.19744886457920074,
+          0.21064919233322144,
+          0.8268373012542725,
+          0.30371156334877014,
+          0.2814478278160095
+        ],
+        "max_velocity_gap_m_s": 0.9981304407119751
+      }
+    }
+  },
+  "generation_statistics": {
+    "fullbody_frames": 2,
+    "fullbody_fraction": 0.03333333333333333,
+    "frozen_frames": 0,
+    "mean_root_horizontal_speed_m_s": 0.6634414792060852
+  }
+}

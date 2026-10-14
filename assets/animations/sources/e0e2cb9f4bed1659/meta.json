@@ -1,0 +1,99 @@
+{
+  "name": "adjust_clothes",
+  "text": "A person stands relaxed, then tidies their shirt collar. The left hand lifts to the opposite collar corner below the neck, grips it and gives a clear downward tug, releases and lowers. Then the right hand lifts to the other collar corner, grips it and gives a clear downward tug. After tidying, release the collar and lower both arms completely to hang relaxed beside the thighs. Finish standing upright and still with both hands down. Feet stay planted. Do not touch the face.",
+  "duration": 6.0,
+  "seed": 20261010,
+  "attempt": 2,
+  "scene": {
+    "activity": "adjust_clothes",
+    "body_only": true,
+    "description": "A person stands relaxed, then tidies their shirt collar. The left hand lifts to the opposite collar corner below the neck, grips it and gives a clear downward tug, releases and lowers. Then the right hand lifts to the other collar corner, grips it and gives a clear downward tug. After tidying, release the collar and lower both arms completely to hang relaxed beside the thighs. Finish standing upright and still with both hands down. Feet stay planted. Do not touch the face.",
+    "complete_activity": true,
+    "generation_stage": "complete_activity",
+    "reference_visual_check": "Left collar contact from attempt_001 frame45; right contact from right-reference frame15; both personally inspected as 1024px front/side stills. One real contact key per hand.",
+    "previous_candidate_limit": "Right hand never rose in attempt_001; the endpoint alone was insufficient."
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/6b30c566acdf7d1d/motion.npz",
+      "source_frame": 45,
+      "frame": 45,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "6b30c566acdf7d1d7f39fbc1379302eada8b5ef57a9be4d23de003c0c5e478d7",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/afad0217d513816d/motion.npz",
+      "source_frame": 15,
+      "frame": 105,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "afad0217d513816d157ce31de30a9ce94dd816585e9011683e1cdb388290e5e0",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 179,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 4,
+  "raw_sha256": "e0e2cb9f4bed165915ed4bc0f01cafe57f889aa75848e946be9dfbb730abbac1",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/adjust_clothes/attempt_002/motion.npz",
+    "original_meta_sha256": "f277917b4accd3d9a8d450e782e90d91e1199bd067a2fb9713f1d45455502a22",
+    "original_meta_file": "generation-original-meta.json",
+    "raw_npz_unchanged": true
+  }
+}

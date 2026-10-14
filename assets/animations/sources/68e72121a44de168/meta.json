@@ -1,0 +1,35 @@
+{
+  "name": "carry_shoulder",
+  "text": "A person stands carrying a long heavy rolled carpet resting across the right shoulder. The right elbow is bent and lifted sideways, the right hand is beside the right temple steadying the load above the shoulder. The left arm hangs down. Torso leans slightly left to balance. Maintain this carrying pose throughout without walking.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "A person stands carrying a long heavy rolled carpet resting across the right shoulder. The right elbow is bent and lifted sideways, the right hand is beside the right temple steadying the load above the shoulder. The left arm hangs down. Torso leans slightly left to balance. Maintain this carrying pose throughout without walking.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_rolled_carpet",
+      "hand": "right",
+      "grip": "shoulder_grip",
+      "orientation": "upright"
+    },
+    "description": "Start at level ground facing +Z. A person stands carrying a long heavy rolled carpet resting across the right shoulder. The right elbow is bent and lifted sideways, the right hand is beside the right temple steadying the load above the shoulder. The left arm hangs down. Torso leans slightly left to balance. Maintain this carrying pose throughout without walking. Hold held_rolled_carpet with right at its shoulder_grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "68e72121a44de168ca488aa537794dfbd8ee50f032456b14c71fb792ae8ba119",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

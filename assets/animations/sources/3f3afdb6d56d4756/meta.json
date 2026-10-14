@@ -1,0 +1,111 @@
+{
+  "name": "lean_railing",
+  "text": "A person stands behind a waist-high railing, places both hands on the top bar and leans forward slightly to look beyond it. Both feet remain planted, elbows slightly bent, hips behind the rail. Keep both hands on the railing throughout.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person stands behind a waist-high railing, places both hands on the top bar and leans forward slightly to look beyond it. Both feet remain planted, elbows slightly bent, hips behind the rail. Keep both hands on the railing throughout.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "sidewalk_guardrail",
+    "post": "post_rail",
+    "description": "The person starts at sidewalk_guardrail.post_rail and faces the model standing marker direction. LeftHand touches grip_left at 0.00s,5.00s. RightHand touches grip_right at 0.00s,5.00s.  A person stands behind a waist-high railing, places both hands on the top bar and leans forward slightly to look beyond it. Both feet remain planted, elbows slightly bent, hips behind the rail. Keep both hands on the railing throughout. Both hands are occupied at their corresponding contact points; the description defines their release. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "sidewalk_guardrail",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.190515,
+            1.262188,
+            0.35642
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.190515,
+            1.262188,
+            0.35642
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "sidewalk_guardrail",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.147604,
+            1.262118,
+            0.372734
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.147604,
+            1.262118,
+            0.372734
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "3f3afdb6d56d47562c4d3d6c342901a9877900dadc5366289a274266f8ddd6d2",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

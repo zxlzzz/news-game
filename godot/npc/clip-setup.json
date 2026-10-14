@@ -48,7 +48,74 @@
       }
     },
     "buy_newspaper": {
-      "post": "newsbuy"
+      "post": "newsbuy",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.3,
+              "side"
+            ],
+            [
+              0.9,
+              "paper_pickup^"
+            ],
+            [
+              1.2,
+              "paper_pickup^"
+            ],
+            [
+              1.8,
+              "chest"
+            ],
+            [
+              2.2,
+              "chest"
+            ],
+            [
+              2.7,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.3,
+            "paper_pickup"
+          ],
+          [
+            1.6,
+            "paper_pickup"
+          ],
+          [
+            2.8,
+            "ahead"
+          ]
+        ],
+        "show": [
+          1.1,
+          3.0
+        ]
+      },
+      "item": {
+        "type": "held_newspaper_folded",
+        "hand": "right"
+      }
     },
     "breakfast_sell": {
       "post": "breakfastsell",
@@ -62,13 +129,141 @@
       }
     },
     "fruit_choose": {
-      "post": "fruitpick"
+      "post": "fruitpick",
+      "pose": {
+        "seconds": 3.2,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.3,
+              "side"
+            ],
+            [
+              0.85,
+              "fruit_rest_front^@15"
+            ],
+            [
+              1.05,
+              "fruit_rest_front^"
+            ],
+            [
+              1.25,
+              "fruit_rest_front^"
+            ],
+            [
+              1.6,
+              "fruit_rest_front^@15"
+            ],
+            [
+              1.9,
+              "fruit_rest_front^@15"
+            ],
+            [
+              2.2,
+              "fruit_rest_front^"
+            ],
+            [
+              2.35,
+              "fruit_rest_front^"
+            ],
+            [
+              2.55,
+              "fruit_rest_front^@15"
+            ],
+            [
+              3.1,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "fruit_rest_front^"
+          ]
+        ],
+        "carry": [
+          {
+            "part": "fruit_003",
+            "hand": "right",
+            "time": [
+              1.15,
+              2.28
+            ]
+          }
+        ]
+      }
     },
     "fruit_weigh": {
       "post": "fruitweigh"
     },
     "post_notice": {
-      "post": "postnotice"
+      "post": "postnotice",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.4,
+              "side"
+            ],
+            [
+              1.0,
+              "notice_left"
+            ],
+            [
+              2.0,
+              "notice_left"
+            ],
+            [
+              2.6,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.4,
+              "side"
+            ],
+            [
+              1.0,
+              "notice_right"
+            ],
+            [
+              2.0,
+              "notice_right"
+            ],
+            [
+              2.6,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "notice_landing"
+          ]
+        ]
+      }
     },
     "browse_bookstall": {
       "post": "browsebook",
@@ -115,7 +310,7 @@
         "clip": "interview_describe",
         "at": [
           -0.18,
-          0.9
+          1.2
         ],
         "yaw": 180
       }
@@ -135,13 +330,158 @@
       }
     },
     "post_letter": {
-      "post": "mail"
+      "post": "mail",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.4,
+              "side"
+            ],
+            [
+              1.0,
+              "letter_insert"
+            ],
+            [
+              1.6,
+              "letter_insert"
+            ],
+            [
+              2.3,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "letter_insert"
+          ]
+        ],
+        "show": [
+          0,
+          1.5
+        ]
+      },
+      "item": {
+        "type": "held_envelope",
+        "hand": "right"
+      }
     },
     "atm_keypad": {
-      "post": "atm"
+      "post": "atm",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.3,
+              "side"
+            ],
+            [
+              0.9,
+              "keypad_press@3"
+            ],
+            [
+              1.1,
+              "keypad_press"
+            ],
+            [
+              1.3,
+              "keypad_press@3"
+            ],
+            [
+              1.5,
+              "keypad_press"
+            ],
+            [
+              1.7,
+              "keypad_press@3"
+            ],
+            [
+              1.9,
+              "keypad_press"
+            ],
+            [
+              2.0,
+              "keypad_press"
+            ],
+            [
+              2.6,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "keypad_press"
+          ]
+        ]
+      }
     },
     "parcel_terminal": {
-      "post": "parcel"
+      "post": "parcel",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "right": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "left": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.4,
+              "side"
+            ],
+            [
+              1.0,
+              "screen_press"
+            ],
+            [
+              1.6,
+              "screen_press"
+            ],
+            [
+              2.3,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "screen_press"
+          ]
+        ]
+      }
     },
     "walk_briefcase": {
       "item": {
@@ -156,64 +496,820 @@
       }
     },
     "sit_bench": {
-      "post": "sit"
+      "post": "sit",
+      "pose": {
+        "seconds": 4,
+        "seat": "hip_seat",
+        "back": "back_rest",
+        "feet": [
+          "foot_left",
+          "foot_right"
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "lap"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "lap"
+            ]
+          ]
+        }
+      }
     },
     "slouch_bench": {
-      "post": "sit"
+      "post": "sit",
+      "pose": {
+        "seconds": 4,
+        "seat": "hip_seat_front",
+        "back": "back_rest",
+        "feet": [
+          "foot_far_left",
+          "foot_far_right"
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "lap"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "lap"
+            ]
+          ]
+        }
+      }
     },
     "sit_sideways": {
       "post": "sit"
     },
     "leg_stretch": {
-      "post": "stretch"
+      "post": "stretch",
+      "pose": {
+        "seconds": 3,
+        "feet": [
+          "stretch_heel",
+          "stance"
+        ],
+        "lean": [
+          [
+            0,
+            10
+          ],
+          [
+            0.8,
+            32
+          ],
+          [
+            2.4,
+            32
+          ],
+          [
+            3,
+            10
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "knee"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "knee:left"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ]
+        ]
+      }
     },
     "chess_move": {
-      "post": "chess"
+      "post": "chess",
+      "pose": {
+        "seconds": 3,
+        "seat": "hip_seat_a",
+        "feet": [
+          "foot_left_a",
+          "foot_right_a"
+        ],
+        "lean": [
+          [
+            0,
+            6
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "rest_left_a"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "rest_right_a"
+            ],
+            [
+              0.5,
+              "rest_right_a"
+            ],
+            [
+              1.1,
+              "piece_pickup_a^@3"
+            ],
+            [
+              1.35,
+              "piece_pickup_a^@3"
+            ],
+            [
+              1.95,
+              "piece_landing_a@13"
+            ],
+            [
+              2.15,
+              "piece_landing_a@13"
+            ],
+            [
+              2.8,
+              "rest_right_a"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.4,
+            "piece_pickup_a"
+          ],
+          [
+            1.5,
+            "piece_landing_a"
+          ],
+          [
+            2.4,
+            "piece_landing_a"
+          ],
+          [
+            3,
+            "ahead"
+          ]
+        ],
+        "carry": [
+          {
+            "part": "piece_chess_move",
+            "hand": "right",
+            "time": [
+              1.25,
+              2.05
+            ]
+          }
+        ]
+      }
     },
     "take_back_piece": {
       "post": "chess"
     },
     "chess_watch": {
-      "post": "watch"
+      "post": "watch",
+      "pose": {
+        "seconds": 3,
+        "lean": [
+          [
+            0,
+            0
+          ],
+          [
+            0.6,
+            25
+          ],
+          [
+            2.3,
+            25
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.8,
+              "side"
+            ],
+            [
+              1.3,
+              "chess_move_side_pickup_a@20"
+            ],
+            [
+              2.0,
+              "chess_move_side_pickup_a@20"
+            ],
+            [
+              2.6,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.5,
+            "chess_move_side_pickup_a"
+          ],
+          [
+            2.4,
+            "chess_move_side_pickup_a"
+          ],
+          [
+            3,
+            "ahead"
+          ]
+        ]
+      }
     },
     "vendor_call": {
-      "post": "vendor"
+      "post": "vendor",
+      "pose": {
+        "seconds": 3.5,
+        "hands": {
+          "left": [
+            [
+              0,
+              "counter_rest"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "counter_rest_right"
+            ],
+            [
+              0.4,
+              "counter_rest_right"
+            ],
+            [
+              0.9,
+              "mouth"
+            ],
+            [
+              2.6,
+              "mouth"
+            ],
+            [
+              3.1,
+              "counter_rest_right"
+            ]
+          ]
+        }
+      }
     },
     "vendor_tidy": {
-      "post": "vendor"
+      "post": "vendor",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "counter_rest"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "counter_rest_right"
+            ],
+            [
+              0.4,
+              "counter_rest_right"
+            ],
+            [
+              0.9,
+              "apples_c^"
+            ],
+            [
+              1.3,
+              "apples_d^"
+            ],
+            [
+              1.7,
+              "apples_e^"
+            ],
+            [
+              2.0,
+              "apples_e^"
+            ],
+            [
+              2.6,
+              "counter_rest_right"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.4,
+            "apples_c"
+          ],
+          [
+            2.2,
+            "apples_e"
+          ],
+          [
+            3,
+            "ahead"
+          ]
+        ]
+      }
     },
     "choose_item": {
-      "post": "customer"
+      "post": "customer",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.4,
+              "side"
+            ],
+            [
+              1.0,
+              "apples_a^"
+            ],
+            [
+              1.4,
+              "apples_a^"
+            ],
+            [
+              1.8,
+              "apples_b^"
+            ],
+            [
+              2.0,
+              "apples_b^"
+            ],
+            [
+              2.6,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.4,
+            "apples_a"
+          ],
+          [
+            2.1,
+            "apples_b"
+          ],
+          [
+            2.8,
+            "ahead"
+          ]
+        ]
+      }
     },
     "pay": {
-      "post": "customer"
+      "post": "customer",
+      "pose": {
+        "seconds": 3.5,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.3,
+              "side"
+            ],
+            [
+              0.8,
+              "pocket"
+            ],
+            [
+              1.1,
+              "pocket"
+            ],
+            [
+              1.8,
+              "cash_landing"
+            ],
+            [
+              2.3,
+              "cash_landing"
+            ],
+            [
+              3.0,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            1.2,
+            "cash_landing"
+          ],
+          [
+            2.5,
+            "cash_landing"
+          ],
+          [
+            3.5,
+            "ahead"
+          ]
+        ],
+        "show": [
+          1.0,
+          2.1
+        ]
+      },
+      "item": {
+        "type": "held_banknote",
+        "hand": "right"
+      }
     },
     "hesitate_reach": {
-      "post": "customer"
+      "post": "customer",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.4,
+              "side"
+            ],
+            [
+              1.1,
+              "apples_a@8"
+            ],
+            [
+              1.7,
+              "apples_a@8"
+            ],
+            [
+              2.5,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "apples_a"
+          ]
+        ]
+      }
     },
     "lean_railing": {
-      "post": "rail"
+      "post": "rail",
+      "pose": {
+        "seconds": 4,
+        "lean": [
+          [
+            0,
+            12
+          ]
+        ],
+        "hands": {
+          "right": [
+            [
+              0,
+              "grip_left"
+            ]
+          ],
+          "left": [
+            [
+              0,
+              "grip_right"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ]
+        ]
+      }
     },
     "lean_sign": {
-      "post": "pole"
+      "post": "pole",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "hang"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "pocket"
+            ]
+          ]
+        },
+        "rest": "lean_grip",
+        "life": false
+      }
     },
     "lean_wall": {
       "post": "wall"
     },
     "press_button": {
-      "post": "button"
+      "post": "button",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.5,
+              "side"
+            ],
+            [
+              1.1,
+              "button_press"
+            ],
+            [
+              1.4,
+              "button_press"
+            ],
+            [
+              2.0,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.4,
+            "button_press"
+          ],
+          [
+            1.8,
+            "button_press"
+          ],
+          [
+            2.6,
+            "ahead"
+          ]
+        ]
+      }
     },
     "read_notice": {
-      "post": "notice"
+      "post": "notice",
+      "pose": {
+        "seconds": 4,
+        "lean": [
+          [
+            0,
+            0
+          ],
+          [
+            0.8,
+            6
+          ],
+          [
+            3.2,
+            6
+          ],
+          [
+            4,
+            0
+          ]
+        ],
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.6,
+            "notice_left"
+          ],
+          [
+            2.0,
+            "notice_right"
+          ],
+          [
+            3.4,
+            "notice_landing"
+          ],
+          [
+            4,
+            "ahead"
+          ]
+        ]
+      }
     },
     "sit_step": {
       "post": "step"
     },
     "slap_table": {
-      "post": "table"
+      "post": "table",
+      "pose": {
+        "seconds": 1.2,
+        "lean": [
+          [
+            0,
+            0
+          ],
+          [
+            0.45,
+            8
+          ],
+          [
+            0.7,
+            10
+          ],
+          [
+            1.2,
+            0
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.15,
+              "side"
+            ],
+            [
+              0.45,
+              "table_press@15"
+            ],
+            [
+              0.6,
+              "table_press",
+              "hit"
+            ],
+            [
+              0.75,
+              "table_press"
+            ],
+            [
+              1.05,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "table_press"
+          ]
+        ]
+      }
     },
     "throw_trash": {
-      "post": "trash"
+      "post": "trash",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.4,
+              "side"
+            ],
+            [
+              1.0,
+              "drop_hand"
+            ],
+            [
+              1.3,
+              "drop_hand"
+            ],
+            [
+              1.9,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.4,
+            "drop_release"
+          ],
+          [
+            1.6,
+            "drop_release"
+          ],
+          [
+            2.4,
+            "ahead"
+          ]
+        ]
+      }
     },
     "push_cart": {
       "post": "push"
@@ -240,6 +1336,23 @@
       "item": {
         "type": "held_shopping_bag",
         "hand": "right"
+      },
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ]
+          ]
+        }
       }
     },
     "walk_carry_bag": {
@@ -250,21 +1363,31 @@
     },
     "carry_bags": {
       "item": {
-        "type": "held_shopping_bags",
-        "hand": "both"
+        "type": "held_shopping_bag",
+        "hand": "right"
       }
     },
     "walk_carry_bags": {
       "item": {
-        "type": "held_shopping_bags",
-        "hand": "both"
+        "type": "held_shopping_bag",
+        "hand": "right"
       }
     },
     "carry_box": {
       "item": {
         "type": "held_cardboard_box",
         "hand": "both"
-      }
+      },
+      "contacts": [
+        {
+          "joint": "handLeft",
+          "to": "item:grip_left"
+        },
+        {
+          "joint": "handRight",
+          "to": "item:grip_right"
+        }
+      ]
     },
     "walk_carry_box": {
       "item": {
@@ -288,6 +1411,39 @@
       "item": {
         "type": "held_coffee_cup",
         "hand": "right"
+      },
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "chest"
+            ],
+            [
+              0.5,
+              "chest"
+            ],
+            [
+              1.1,
+              "mouth"
+            ],
+            [
+              1.7,
+              "mouth"
+            ],
+            [
+              2.4,
+              "chest"
+            ]
+          ]
+        }
       }
     },
     "walk_drink": {
@@ -300,18 +1456,122 @@
       "item": {
         "type": "held_snack_bag",
         "hand": "left"
+      },
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "belly"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "chest"
+            ],
+            [
+              0.4,
+              "chest"
+            ],
+            [
+              1.0,
+              "mouth"
+            ],
+            [
+              1.5,
+              "mouth"
+            ],
+            [
+              2.2,
+              "chest"
+            ]
+          ]
+        }
       }
     },
     "eat_walk": {
       "item": {
         "type": "held_snack_bag",
-        "hand": "left"
+        "hand": "right"
       }
     },
     "fan_self": {
       "item": {
         "type": "held_fan",
         "hand": "right"
+      },
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "fan"
+            ]
+          ]
+        },
+        "wrist": [
+          [
+            0.0,
+            0
+          ],
+          [
+            0.25,
+            40
+          ],
+          [
+            0.5,
+            0
+          ],
+          [
+            0.75,
+            40
+          ],
+          [
+            1.0,
+            0
+          ],
+          [
+            1.25,
+            40
+          ],
+          [
+            1.5,
+            0
+          ],
+          [
+            1.75,
+            40
+          ],
+          [
+            2.0,
+            0
+          ],
+          [
+            2.25,
+            40
+          ],
+          [
+            2.5,
+            0
+          ],
+          [
+            2.75,
+            40
+          ],
+          [
+            3.0,
+            0
+          ]
+        ]
       }
     },
     "film_phone": {
@@ -330,12 +1590,68 @@
       "item": {
         "type": "held_phone",
         "hand": "right"
+      },
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.5,
+              "side"
+            ],
+            [
+              1.2,
+              "front_up"
+            ],
+            [
+              2.2,
+              "front_up"
+            ],
+            [
+              2.7,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ]
+        ]
       }
     },
     "phone_call": {
       "item": {
         "type": "held_phone",
         "hand": "right"
+      },
+      "pose": {
+        "seconds": 4,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "ear"
+            ]
+          ]
+        }
       }
     },
     "phone_urgent": {
@@ -359,7 +1675,52 @@
     "inspect_item": {
       "item": {
         "type": "held_phone",
-        "hand": "right"
+        "hand": "left"
+      },
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "right": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "left": [
+            [
+              0,
+              "inspect"
+            ],
+            [
+              1.0,
+              "inspect"
+            ],
+            [
+              1.6,
+              "chest"
+            ],
+            [
+              2.2,
+              "inspect"
+            ],
+            [
+              3,
+              "inspect"
+            ]
+          ]
+        },
+        "lean": [
+          [
+            0,
+            8
+          ]
+        ],
+        "look": [
+          [
+            0,
+            "hand:left"
+          ]
+        ]
       }
     },
     "take_photo": {
@@ -387,10 +1748,7 @@
       }
     },
     "pull_suitcase": {
-      "item": {
-        "type": "held_suitcase",
-        "hand": "right"
-      }
+      "post": "pull"
     },
     "read_book": {
       "item": {
@@ -420,6 +1778,39 @@
       "item": {
         "type": "held_cigarette",
         "hand": "right"
+      },
+      "pose": {
+        "seconds": 4,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "chest"
+            ],
+            [
+              0.6,
+              "chest"
+            ],
+            [
+              1.2,
+              "mouth"
+            ],
+            [
+              1.8,
+              "mouth"
+            ],
+            [
+              2.5,
+              "chest"
+            ]
+          ]
+        }
       }
     },
     "smoke_walk": {
@@ -442,13 +1833,77 @@
           0.94
         ],
         "yaw": 180
-      }
+      },
+      "stationary": true
     },
     "breakfast_buy": {
       "post": "breakfastbuy"
     },
     "atm_take_cash": {
-      "post": "atm"
+      "post": "atm",
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.3,
+              "side"
+            ],
+            [
+              0.9,
+              "cash_pickup"
+            ],
+            [
+              1.3,
+              "cash_pickup"
+            ],
+            [
+              1.9,
+              "pocket"
+            ],
+            [
+              2.2,
+              "pocket"
+            ],
+            [
+              2.7,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "cash_pickup"
+          ],
+          [
+            1.4,
+            "cash_pickup"
+          ],
+          [
+            2.0,
+            "ahead"
+          ]
+        ],
+        "show": [
+          1.2,
+          2.1
+        ]
+      },
+      "item": {
+        "type": "held_banknote",
+        "hand": "right"
+      }
     },
     "vending_collect": {
       "post": "vendcollect"
@@ -464,41 +1919,151 @@
       "partner": {
         "clip": "elder_assisted_walk",
         "at": [
-          -0.48,
-          0
+          -0.443,
+          -0.087
         ],
         "yaw": 0
       }
     },
     "fountain_drink": {
-      "post": "fountain"
+      "post": "fountain",
+      "pose": {
+        "seconds": 3.5,
+        "lean": [
+          [
+            0,
+            0
+          ],
+          [
+            0.6,
+            0
+          ],
+          [
+            1.4,
+            30
+          ],
+          [
+            2.4,
+            30
+          ],
+          [
+            3.1,
+            0
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.5,
+              "side"
+            ],
+            [
+              1.2,
+              "rim_left"
+            ],
+            [
+              2.5,
+              "rim_left"
+            ],
+            [
+              3.1,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.5,
+              "side"
+            ],
+            [
+              1.2,
+              "rim_right"
+            ],
+            [
+              2.5,
+              "rim_right"
+            ],
+            [
+              3.1,
+              "side"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "spout_drink"
+          ]
+        ]
+      }
     },
     "wallet_takeout": {
       "item": {
         "type": "held_wallet",
         "hand": "right"
+      },
+      "pose": {
+        "seconds": 3,
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.3,
+              "side"
+            ],
+            [
+              0.8,
+              "pocket"
+            ],
+            [
+              1.2,
+              "pocket"
+            ],
+            [
+              1.9,
+              "chest"
+            ],
+            [
+              2.6,
+              "chest"
+            ]
+          ]
+        },
+        "show": [
+          1.0,
+          3.0
+        ]
       }
     },
     "phone_booth_call": {
-      "item": {
-        "type": "held_telephone_receiver",
-        "hand": "right"
-      },
       "post": "payphone"
     },
     "cafe_sit_drink": {
-      "item": {
-        "type": "held_coffee_cup",
-        "hand": "right"
-      },
       "post": "cafesit"
     },
     "bike_scan_unlock": {
+      "post": "bikescan",
       "item": {
         "type": "held_phone",
         "hand": "right"
-      },
-      "post": "bikescan"
+      }
     },
     "distribute_flyer": {
       "item": {
@@ -512,7 +2077,8 @@
           0.94
         ],
         "yaw": 180
-      }
+      },
+      "stationary": true
     },
     "rummage_bin": {
       "post": "rummage"
@@ -529,7 +2095,7 @@
         "clip": "seesaw_partner",
         "at": [
           0,
-          3.0
+          3
         ],
         "yaw": 180
       }
@@ -542,6 +2108,666 @@
     },
     "car_exit": {
       "post": "carexit"
+    },
+    "sit_down": {
+      "post": "sit",
+      "pose": {
+        "seconds": 2,
+        "seat": "hip_seat",
+        "back": "back_rest",
+        "feet": [
+          "foot_left",
+          "foot_right"
+        ],
+        "hip": [
+          [
+            0,
+            "stand"
+          ],
+          [
+            0.25,
+            "stand"
+          ],
+          [
+            1.55,
+            "seat"
+          ]
+        ],
+        "lean": [
+          [
+            0,
+            0
+          ],
+          [
+            0.25,
+            0
+          ],
+          [
+            0.85,
+            32
+          ],
+          [
+            1.55,
+            0
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.7,
+              "side"
+            ],
+            [
+              1.6,
+              "lap"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "side"
+            ],
+            [
+              0.7,
+              "side"
+            ],
+            [
+              1.6,
+              "lap"
+            ]
+          ]
+        },
+        "life": false
+      }
+    },
+    "stand_up": {
+      "post": "sit",
+      "pose": {
+        "seconds": 2,
+        "seat": "hip_seat",
+        "back": "back_rest",
+        "feet": [
+          "foot_left",
+          "foot_right"
+        ],
+        "hip": [
+          [
+            0,
+            "seat"
+          ],
+          [
+            0.35,
+            "seat"
+          ],
+          [
+            1.6,
+            "stand"
+          ]
+        ],
+        "lean": [
+          [
+            0,
+            0
+          ],
+          [
+            0.3,
+            0
+          ],
+          [
+            0.85,
+            35
+          ],
+          [
+            1.6,
+            0
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "lap"
+            ],
+            [
+              0.4,
+              "lap"
+            ],
+            [
+              1.3,
+              "side"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "lap"
+            ],
+            [
+              0.4,
+              "lap"
+            ],
+            [
+              1.3,
+              "side"
+            ]
+          ]
+        },
+        "life": false
+      }
+    },
+    "ride_bicycle": {
+      "post": "rider"
+    },
+    "coast_bicycle": {
+      "post": "rider"
+    },
+    "ride_scooter": {
+      "post": "rider"
+    },
+    "pick_up": {
+      "post": "pickup"
+    },
+    "seesaw_partner": {
+      "post": "seesaw"
+    },
+    "interview_point": {
+      "partner": {
+        "clip": "interview_listen",
+        "at": [
+          1.2,
+          0.85
+        ],
+        "yaw": -126
+      }
+    },
+    "chess_move_diagonal": {
+      "post": "chess",
+      "pose": {
+        "seconds": 3,
+        "seat": "hip_seat_a",
+        "feet": [
+          "foot_left_a",
+          "foot_right_a"
+        ],
+        "lean": [
+          [
+            0,
+            6
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "rest_left_a"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "rest_right_a"
+            ],
+            [
+              0.5,
+              "rest_right_a"
+            ],
+            [
+              1.1,
+              "chess_move_diagonal_pickup_a^@3"
+            ],
+            [
+              1.35,
+              "chess_move_diagonal_pickup_a^@3"
+            ],
+            [
+              1.95,
+              "chess_move_diagonal_landing_a@13"
+            ],
+            [
+              2.15,
+              "chess_move_diagonal_landing_a@13"
+            ],
+            [
+              2.8,
+              "rest_right_a"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.4,
+            "chess_move_diagonal_pickup_a"
+          ],
+          [
+            1.5,
+            "chess_move_diagonal_landing_a"
+          ],
+          [
+            2.4,
+            "chess_move_diagonal_landing_a"
+          ],
+          [
+            3,
+            "ahead"
+          ]
+        ],
+        "carry": [
+          {
+            "part": "piece_chess_move_diagonal",
+            "hand": "right",
+            "time": [
+              1.25,
+              2.05
+            ]
+          }
+        ]
+      }
+    },
+    "chess_move_side": {
+      "post": "chess",
+      "pose": {
+        "seconds": 3,
+        "seat": "hip_seat_a",
+        "feet": [
+          "foot_left_a",
+          "foot_right_a"
+        ],
+        "lean": [
+          [
+            0,
+            6
+          ]
+        ],
+        "hands": {
+          "right": [
+            [
+              0,
+              "rest_right_a"
+            ]
+          ],
+          "left": [
+            [
+              0,
+              "rest_left_a"
+            ],
+            [
+              0.5,
+              "rest_left_a"
+            ],
+            [
+              1.1,
+              "chess_move_side_pickup_a^@3"
+            ],
+            [
+              1.35,
+              "chess_move_side_pickup_a^@3"
+            ],
+            [
+              1.95,
+              "chess_move_side_landing_a@13"
+            ],
+            [
+              2.15,
+              "chess_move_side_landing_a@13"
+            ],
+            [
+              2.8,
+              "rest_left_a"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.4,
+            "chess_move_side_pickup_a"
+          ],
+          [
+            1.5,
+            "chess_move_side_landing_a"
+          ],
+          [
+            2.4,
+            "chess_move_side_landing_a"
+          ],
+          [
+            3,
+            "ahead"
+          ]
+        ],
+        "carry": [
+          {
+            "part": "piece_chess_move_side",
+            "hand": "left",
+            "time": [
+              1.25,
+              2.05
+            ]
+          }
+        ]
+      }
+    },
+    "chess_move_far": {
+      "post": "chess",
+      "pose": {
+        "seconds": 3,
+        "seat": "hip_seat_a",
+        "feet": [
+          "foot_left_a",
+          "foot_right_a"
+        ],
+        "lean": [
+          [
+            0,
+            6
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "rest_left_a"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "rest_right_a"
+            ],
+            [
+              0.5,
+              "rest_right_a"
+            ],
+            [
+              1.1,
+              "chess_move_far_pickup_a^@3"
+            ],
+            [
+              1.35,
+              "chess_move_far_pickup_a^@3"
+            ],
+            [
+              1.95,
+              "chess_move_far_landing_a@13"
+            ],
+            [
+              2.15,
+              "chess_move_far_landing_a@13"
+            ],
+            [
+              2.8,
+              "rest_right_a"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.4,
+            "chess_move_far_pickup_a"
+          ],
+          [
+            1.5,
+            "chess_move_far_landing_a"
+          ],
+          [
+            2.4,
+            "chess_move_far_landing_a"
+          ],
+          [
+            3,
+            "ahead"
+          ]
+        ],
+        "carry": [
+          {
+            "part": "piece_chess_move_far",
+            "hand": "right",
+            "time": [
+              1.25,
+              2.05
+            ]
+          }
+        ]
+      }
+    },
+    "chess_capture": {
+      "post": "chess",
+      "pose": {
+        "seconds": 4,
+        "seat": "hip_seat_a",
+        "feet": [
+          "foot_left_a",
+          "foot_right_a"
+        ],
+        "lean": [
+          [
+            0,
+            6
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "rest_left_a"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "rest_right_a"
+            ],
+            [
+              0.4,
+              "rest_right_a"
+            ],
+            [
+              0.9,
+              "chess_capture_landing_a^@3"
+            ],
+            [
+              1.1,
+              "chess_capture_landing_a^@3"
+            ],
+            [
+              1.6,
+              "capture_removed_right_a@10"
+            ],
+            [
+              1.8,
+              "capture_removed_right_a@10"
+            ],
+            [
+              2.3,
+              "chess_capture_pickup_a^@3"
+            ],
+            [
+              2.5,
+              "chess_capture_pickup_a^@3"
+            ],
+            [
+              3.0,
+              "chess_capture_landing_a^@3"
+            ],
+            [
+              3.2,
+              "chess_capture_landing_a^@3"
+            ],
+            [
+              3.8,
+              "rest_right_a"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.4,
+            "chess_capture_landing_a"
+          ],
+          [
+            1.3,
+            "capture_removed_right_a"
+          ],
+          [
+            2.0,
+            "chess_capture_pickup_a"
+          ],
+          [
+            2.8,
+            "chess_capture_landing_a"
+          ],
+          [
+            3.4,
+            "chess_capture_landing_a"
+          ],
+          [
+            4,
+            "ahead"
+          ]
+        ],
+        "carry": [
+          {
+            "part": "piece_opponent",
+            "hand": "right",
+            "time": [
+              1.0,
+              1.7
+            ]
+          },
+          {
+            "part": "piece_chess_capture",
+            "hand": "right",
+            "time": [
+              2.4,
+              3.1
+            ]
+          }
+        ]
+      }
+    },
+    "chess_think": {
+      "post": "chess",
+      "pose": {
+        "seconds": 3.5,
+        "seat": "hip_seat_a",
+        "feet": [
+          "foot_left_a",
+          "foot_right_a"
+        ],
+        "lean": [
+          [
+            0,
+            6
+          ],
+          [
+            0.6,
+            18
+          ],
+          [
+            2.8,
+            18
+          ],
+          [
+            3.5,
+            6
+          ]
+        ],
+        "hands": {
+          "left": [
+            [
+              0,
+              "rest_left_a"
+            ],
+            [
+              0.5,
+              "rest_left_a"
+            ],
+            [
+              1.0,
+              "chin"
+            ],
+            [
+              2.0,
+              "chin"
+            ],
+            [
+              2.5,
+              "rest_left_a"
+            ]
+          ],
+          "right": [
+            [
+              0,
+              "rest_right_a"
+            ],
+            [
+              2.0,
+              "rest_right_a"
+            ],
+            [
+              2.5,
+              "chess_move_far_landing_a@15"
+            ],
+            [
+              2.9,
+              "chess_move_far_landing_a@15"
+            ],
+            [
+              3.4,
+              "rest_right_a"
+            ]
+          ]
+        },
+        "look": [
+          [
+            0,
+            "ahead"
+          ],
+          [
+            0.5,
+            "chess_move_far_pickup_a"
+          ],
+          [
+            3.0,
+            "chess_move_far_landing_a"
+          ],
+          [
+            3.5,
+            "ahead"
+          ]
+        ]
+      }
+    },
+    "look_up": {
+      "stationary": true
+    },
+    "pat_dust": {
+      "stationary": true
+    },
+    "receive_item": {
+      "stationary": true
+    },
+    "receive_flyer": {
+      "stationary": true
     }
   }
 }

@@ -1,0 +1,81 @@
+{
+  "name": "loop_push_bicycle",
+  "text": "Stand still beside the right side of an upright bicycle, left hand resting on the near handlebar. Left elbow bends naturally toward the bicycle, right arm hangs relaxed. Keep both feet planted beside the frame, clear of its wheels. Do not walk or pedal.",
+  "duration": 3.0,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "Stand still beside the right side of an upright bicycle, left hand resting on the near handlebar. Left elbow bends naturally toward the bicycle, right arm hangs relaxed. Keep both feet planted beside the frame, clear of its wheels. Do not walk or pedal.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_push",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bicycle",
+    "post": "post_bikepush",
+    "description": "Start at bicycle.post_bikepush facing the model standing marker direction. Stand still beside the right side of an upright bicycle, left hand resting on the near handlebar. Left elbow bends naturally toward the bicycle, right arm hangs relaxed. Keep both feet planted beside the frame, clear of its wheels. Do not walk or pedal. LeftHand touches the physical model marker grip_push at 0.00s, 3.00s. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": false
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "bicycle",
+      "marker": "grip_push",
+      "space": "world",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.3032949442882091,
+            1.2664188330513526,
+            0.30171567901968954
+          ],
+          "root_xz": [
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            -0.3032949442882091,
+            1.2664188330513526,
+            0.30171567901968954
+          ],
+          "root_xz": [
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "cb1860c0b8677a3790339c0e1b66b74c00d24b5030985a4f8b5525e603b20b85",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

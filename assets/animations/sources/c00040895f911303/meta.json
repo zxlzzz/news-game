@@ -1,0 +1,114 @@
+{
+  "name": "carry_shoulder_bag",
+  "text": "Walking straight forward while gripping a shoulder bag strap at the right collarbone with the right hand. Right elbow bent down by the body. Left arm swings naturally down by the left thigh. Keep right hand at the strap and keep walking.",
+  "duration": 1.3,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "Walking straight forward while gripping a shoulder bag strap at the right collarbone with the right hand. Right elbow bent down by the body. Left arm swings naturally down by the left thigh. Keep right hand at the strap and keep walking.",
+    "duration": 1.3,
+    "contacts": [],
+    "item": {
+      "type": "held_shoulder_bag",
+      "hand": "back",
+      "grip": "strap_mount",
+      "hand_contact": {
+        "joint": "handRight",
+        "marker": "strap_top",
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    },
+    "description": "Start at level ground facing +Z. Walking straight forward while gripping a shoulder bag strap at the right collarbone with the right hand. Right elbow bent down by the body. Left arm swings naturally down by the left thigh. Keep right hand at the strap and keep walking. Hold held_shoulder_bag with back at its strap_mount marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/48aad40b45ccdb27/motion.npz",
+        "source_frame": 36,
+        "phase": 0,
+        "translation": [
+          0.1150260791182518,
+          0.0,
+          -1.276835322380066
+        ]
+      },
+      {
+        "source": "assets/animations/sources/48aad40b45ccdb27/motion.npz",
+        "source_frame": 36,
+        "phase": 1,
+        "translation": [
+          -0.010261453688144684,
+          0.0,
+          0.16936659812927246
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/48aad40b45ccdb27/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.1150260791182518,
+        0.0,
+        -1.276835322380066
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "48aad40b45ccdb27f8066cdea73bf414219b37f5e2c521d11bc6c378637c80cc",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/48aad40b45ccdb27/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        -0.010261453688144684,
+        0.0,
+        0.16936659812927246
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "48aad40b45ccdb27f8066cdea73bf414219b37f5e2c521d11bc6c378637c80cc",
+        "hand_edited": false
+      },
+      "frame": 38
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "c00040895f911303decac52a56382011d7d775d72e8c3cf31f8b966f4c15db7d",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "c00040895f911303decac52a56382011d7d775d72e8c3cf31f8b966f4c15db7d",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"c00040895f911303decac52a56382011d7d775d72e8c3cf31f8b966f4c15db7d\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "9299387858a9ed2ae846ae37ccb1ffd133d99012057dc213c175b00ed84b45ae",
+      "current_source_sha256_at_reconciliation": "c00040895f911303decac52a56382011d7d775d72e8c3cf31f8b966f4c15db7d",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

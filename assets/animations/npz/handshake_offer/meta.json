@@ -299,5 +299,22 @@
     "contacts": null,
     "base_clip": "handshake_offer",
     "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 4 s two-view overview: hands meet at a shared middle height, remain together and release. Physical partner-hand contact preserves reply native hand motion.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 4 s two-view overview: hands meet at a shared middle height, remain together and release. Physical partner-hand contact preserves reply native hand motion.\"\r\n  }",
+      "original_record_sha256": "9f4d1c24efa0a17c03d5af1f7d4f8c7eef7a01a2d5d996b8576b4e486eb44e08",
+      "current_source_sha256_at_reconciliation": "72172d400101c812f608c7cc8ed7f18f6510ae215b32985caf09b6c096f41042",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
   }
 }

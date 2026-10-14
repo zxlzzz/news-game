@@ -1,0 +1,34 @@
+{
+  "name": "hold_umbrella",
+  "text": "A person stands still holding the shaft of an open umbrella upright in their right hand just in front of the right shoulder at chest height. The right elbow points down beside the body, forearm upright. Left arm hangs relaxed. Maintain the umbrella-holding pose steadily, with only a small natural shift of weight between the feet.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person stands still holding the shaft of an open umbrella upright in their right hand just in front of the right shoulder at chest height. The right elbow points down beside the body, forearm upright. Left arm hangs relaxed. Maintain the umbrella-holding pose steadily, with only a small natural shift of weight between the feet.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_umbrella_open",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. A person stands still holding the shaft of an open umbrella upright in their right hand just in front of the right shoulder at chest height. The right elbow points down beside the body, forearm upright. Left arm hangs relaxed. Maintain the umbrella-holding pose steadily, with only a small natural shift of weight between the feet. Hold held_umbrella_open with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "59b23f213129d3104567b9d656ba53ca002be0dfbc99d2252b2817974e8ecbcf",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

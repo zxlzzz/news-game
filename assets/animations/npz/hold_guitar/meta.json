@@ -1,52 +1,96 @@
 {
   "name": "hold_guitar",
   "text": "A standing musician holds an acoustic guitar across the front of the waist without playing. The left arm reaches diagonally left to hold the guitar neck at chest height, left elbow bent; the right forearm rests across the rounded guitar body in front of the abdomen. Hands stay apart and maintain the asymmetric guitar-holding pose. Small natural weight shift, no strumming.",
-  "duration": 4.0,
-  "seed": 42,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A standing musician holds an acoustic guitar across the front of the waist without playing. The left arm reaches diagonally left to hold the guitar neck at chest height, left elbow bent; the right forearm rests across the rounded guitar body in front of the abdomen. Hands stay apart and maintain the asymmetric guitar-holding pose. Small natural weight shift, no strumming.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_guitar",
+      "hand": "both",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A standing musician holds an acoustic guitar across the front of the waist without playing. The left arm reaches diagonally left to hold the guitar neck at chest height, left elbow bent; the right forearm rests across the rounded guitar body in front of the abdomen. Hands stay apart and maintain the asymmetric guitar-holding pose. Small natural weight shift, no strumming. Hold held_guitar with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/c99eecb08b820e8d/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.0076155164279043674,
+          0.0,
+          -0.024115823209285736
+        ]
+      },
+      {
+        "source": "assets/animations/sources/c99eecb08b820e8d/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.0076155164279043674,
+          0.0,
+          -0.024115823209285736
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/c99eecb08b820e8d/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.0076155164279043674,
+        0.0,
+        -0.024115823209285736
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "c99eecb08b820e8d93b32cecb7c575d7c4991628ddefa9a4704be3826cf72f46",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/c99eecb08b820e8d/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.0076155164279043674,
+        0.0,
+        -0.024115823209285736
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "c99eecb08b820e8d93b32cecb7c575d7c4991628ddefa9a4704be3826cf72f46",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
-  },
-  "num_samples": 1,
-  "generation_duration": 4,
-  "loop": false,
-  "trim": {
-    "take_frames": [
-      0,
-      119
-    ],
-    "reason": "Full generated clip."
-  },
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "cd21d5db5ace903f43b25d88739d9845b525a18e81831250ea5266750351f3de",
+  "low_memory": false,
+  "hand_edited": false,
   "review": {
-    "status": "selected",
-    "attempts": 1,
-    "views": [
-      "front",
-      "side",
-      "hands if prop-related"
-    ],
-    "notes_zh": "左手向侧前方托琴颈、右前臂横在腹前琴身位置，稳定持琴而非弹奏；腕距约50厘米。手指固定放松，不含按弦，具体琴体挂接需后续对齐。",
-    "metrics": {
-      "frames": 120,
-      "seam_root_aligned_max_joint_m": 0.110893456645924,
-      "root_speed_min_mps": 0.0025821097660809755,
-      "root_speed_max_mps": 0.19599558413028717,
-      "root_delta_m": [
-        0.0060569122433662415,
-        -0.0,
-        0.02774413675069809
-      ],
-      "seam_global_rotation_matrix_max_abs": 0.5485235452651978,
-      "floor_min_joint_y_m": 0.0038444995880126953,
-      "finite": true
-    },
-    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
-    "batch_category": "daily"
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "cd21d5db5ace903f43b25d88739d9845b525a18e81831250ea5266750351f3de",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
   }
 }

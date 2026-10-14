@@ -1,0 +1,106 @@
+{
+  "name": "hold_umbrella",
+  "text": "A person stands still holding the shaft of an open umbrella upright in their right hand just in front of the right shoulder at chest height. The right elbow points down beside the body, forearm upright. Left arm hangs relaxed. Maintain the umbrella-holding pose steadily, with only a small natural shift of weight between the feet.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 6,
+  "scene": {
+    "text": "A person stands still holding the shaft of an open umbrella upright in their right hand just in front of the right shoulder at chest height. The right elbow points down beside the body, forearm upright. Left arm hangs relaxed. Maintain the umbrella-holding pose steadily, with only a small natural shift of weight between the feet.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_umbrella_open",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands still holding the shaft of an open umbrella upright in their right hand just in front of the right shoulder at chest height. The right elbow points down beside the body, forearm upright. Left arm hangs relaxed. Maintain the umbrella-holding pose steadily, with only a small natural shift of weight between the feet. Hold held_umbrella_open with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.0039873309433460236,
+          0.0,
+          0.006256722845137119
+        ]
+      },
+      {
+        "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.0039873309433460236,
+          0.0,
+          0.006256722845137119
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.0039873309433460236,
+        0.0,
+        0.006256722845137119
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "59b23f213129d3104567b9d656ba53ca002be0dfbc99d2252b2817974e8ecbcf",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.0039873309433460236,
+        0.0,
+        0.006256722845137119
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "59b23f213129d3104567b9d656ba53ca002be0dfbc99d2252b2817974e8ecbcf",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "e126fd3661ef7631d2bcef473277dbecb0bb84e668055c0d4eee90fd86196937",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "e126fd3661ef7631d2bcef473277dbecb0bb84e668055c0d4eee90fd86196937",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"e126fd3661ef7631d2bcef473277dbecb0bb84e668055c0d4eee90fd86196937\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "e46dfeb46f4a04fed697058a195f641b9859fbbbf93e6fadd85554bba3f16607",
+      "current_source_sha256_at_reconciliation": "e126fd3661ef7631d2bcef473277dbecb0bb84e668055c0d4eee90fd86196937",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

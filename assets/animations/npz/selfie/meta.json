@@ -1,95 +1,96 @@
 {
   "name": "selfie",
   "text": "A person extends their right arm forward and slightly upward holding a smartphone, tilts their head toward the phone and poses for a selfie.",
-  "duration": 3,
-  "seed": 42,
-  "endpoints": false,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person extends their right arm forward and slightly upward holding a smartphone, tilts their head toward the phone and poses for a selfie.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_phone",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person extends their right arm forward and slightly upward holding a smartphone, tilts their head toward the phone and poses for a selfie. Hold held_phone with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/0c8f05b7da9ce775/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.010828554630279541,
+          0.0,
+          -0.009328082203865051
+        ]
+      },
+      {
+        "source": "assets/animations/sources/0c8f05b7da9ce775/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.010828554630279541,
+          0.0,
+          -0.009328082203865051
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/0c8f05b7da9ce775/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.010828554630279541,
+        0.0,
+        -0.009328082203865051
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "0c8f05b7da9ce7758f4d7d52b934c4186242b2cbcd34d1d6b7dbe2d12cb9e350",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/0c8f05b7da9ce775/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.010828554630279541,
+        0.0,
+        -0.009328082203865051
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "0c8f05b7da9ce7758f4d7d52b934c4186242b2cbcd34d1d6b7dbe2d12cb9e350",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
-  },
-  "num_samples": 1,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "ca1df5317ddde861acfa943bd7e1e912b87771c00d3b0dd10e66df73fe7efe34",
+  "low_memory": false,
+  "hand_edited": false,
   "review": {
-    "status": "selected",
-    "notes_zh": "右手从胸前伸向前上方，头向持机方向；后段左手也抬到胸肩附近配合摆姿。末尾保持，无道具实体，无首尾约束。",
-    "attempts": 1,
-    "views": [
-      "front",
-      "side",
-      "head"
-    ],
-    "metrics": {
-      "frames": 90,
-      "finite": true,
-      "bone_length_range_mm": 0.747,
-      "max_joint_step_m": 0.095,
-      "root_horizontal_range_m": [
-        0.009999999776482582,
-        0.05700000002980232
-      ],
-      "LeftHand_head_distance_m": [
-        0.7639999985694885,
-        0.7630000114440918,
-        0.7639999985694885,
-        0.7699999809265137,
-        0.7770000100135803,
-        0.7559999823570251,
-        0.3919999897480011,
-        0.24500000476837158,
-        0.24199999868869781
-      ],
-      "RightHand_head_distance_m": [
-        0.36800000071525574,
-        0.36500000953674316,
-        0.36800000071525574,
-        0.375,
-        0.515999972820282,
-        0.6110000014305115,
-        0.628000020980835,
-        0.6269999742507935,
-        0.6299999952316284
-      ],
-      "hand_separation_m": [
-        0.5830000042915344,
-        0.5860000252723694,
-        0.5870000123977661,
-        0.6370000243186951,
-        0.984000027179718,
-        1.097000002861023,
-        0.7580000162124634,
-        0.6610000133514404,
-        0.6629999876022339
-      ],
-      "head_yaw_range_deg": 6.49,
-      "head_pitch_range_deg": 56.21,
-      "head_yaw_samples_deg": [
-        0.0,
-        -0.0,
-        0.10000000149011612,
-        3.0999999046325684,
-        5.400000095367432,
-        1.2000000476837158,
-        1.600000023841858,
-        4.099999904632568,
-        4.199999809265137
-      ],
-      "head_pitch_samples_deg": [
-        0.0,
-        -0.30000001192092896,
-        -2.0999999046325684,
-        -13.100000381469727,
-        -34.0,
-        -52.599998474121094,
-        -55.599998474121094,
-        -56.099998474121094,
-        -55.900001525878906
-      ]
-    }
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "ca1df5317ddde861acfa943bd7e1e912b87771c00d3b0dd10e66df73fe7efe34",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
   }
 }

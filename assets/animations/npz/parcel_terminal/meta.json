@@ -1,304 +1,127 @@
 {
   "name": "parcel_terminal",
-  "text": "A standing person taps a parcel locker touchscreen at chest height with the right hand several times, then lowers the hand, feet planted.",
-  "duration": 5.0,
-  "seed": 2406,
-  "loop": false,
-  "keyframes": [
+  "text": "A person stands facing a parcel locker. Raise the right hand to tap a touchscreen at chest height, withdraw it, bend slightly and reach into an opened compartment at waist height, retrieve a small parcel and bring it to the abdomen. Left hand stays by the left thigh. Keep torso clear of the locker.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A person stands facing a parcel locker. Raise the right hand to tap a touchscreen at chest height, withdraw it, bend slightly and reach into an opened compartment at waist height, retrieve a small parcel and bring it to the abdomen. Left hand stays by the left thigh. Keep torso clear of the locker.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "screen_press",
+        "phases": [
+          0.18,
+          0.3
+        ],
+        "window": [
+          0.145,
+          0.18,
+          0.3,
+          0.33499999999999996
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "parcel_pickup",
+        "phases": [
+          0.53,
+          0.63
+        ],
+        "window": [
+          0.495,
+          0.53,
+          0.63,
+          0.665
+        ]
+      }
+    ],
+    "object": "parcel_lockers",
+    "post": "post_parcel",
+    "description": "The person starts at parcel_lockers.post_parcel and faces the model standing marker direction. RightHand touches screen_press at 0.90s,1.50s. RightHand touches parcel_pickup at 2.65s,3.15s. Grasp held_parcel at grip at 3.15s. A person stands facing a parcel locker. Raise the right hand to tap a touchscreen at chest height, withdraw it, bend slightly and reach into an opened compartment at waist height, retrieve a small parcel and bring it to the abdomen. Left hand stays by the left thigh. Keep torso clear of the locker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "transfers": [
+      {
+        "type": "held_parcel",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.63,
+        "initial": {
+          "space": "object",
+          "marker": "parcel_pickup"
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [
     {
-      "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-      "source_frame": 0,
-      "frame": 0
+      "joint": "RightHand",
+      "model": "parcel_lockers",
+      "marker": "screen_press",
+      "space": "world",
+      "episode": "screen_press",
+      "keys": [
+        {
+          "frame": 27,
+          "position": [
+            0.001147,
+            1.39332,
+            0.362762
+          ]
+        },
+        {
+          "frame": 45,
+          "position": [
+            0.001147,
+            1.39332,
+            0.362762
+          ]
+        }
+      ]
     },
     {
-      "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-      "source_frame": 149,
-      "frame": 149
-    }
-  ],
-  "effectors": [
-    {
-      "joints": [
-        "RightHand"
-      ],
-      "keyframes": [
+      "joint": "RightHand",
+      "model": "parcel_lockers",
+      "marker": "parcel_pickup",
+      "space": "world",
+      "episode": "parcel_pickup",
+      "keys": [
         {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 0,
-          "frame": 0
+          "frame": 79,
+          "position": [
+            -0.33744,
+            0.961622,
+            0.55745
+          ]
         },
         {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 3,
-          "frame": 3
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 6,
-          "frame": 6
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 9,
-          "frame": 9
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 12,
-          "frame": 12
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 15,
-          "frame": 15
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 18,
-          "frame": 18
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 21,
-          "frame": 21
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 24,
-          "frame": 24
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 27,
-          "frame": 27
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 30,
-          "frame": 30
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 33,
-          "frame": 33
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 36,
-          "frame": 36
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 39,
-          "frame": 39
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 42,
-          "frame": 42
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 45,
-          "frame": 45
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 48,
-          "frame": 48
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 51,
-          "frame": 51
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 54,
-          "frame": 54
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 57,
-          "frame": 57
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 60,
-          "frame": 60
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 63,
-          "frame": 63
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 66,
-          "frame": 66
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 69,
-          "frame": 69
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 72,
-          "frame": 72
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 75,
-          "frame": 75
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 78,
-          "frame": 78
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 81,
-          "frame": 81
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 84,
-          "frame": 84
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 87,
-          "frame": 87
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 90,
-          "frame": 90
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 93,
-          "frame": 93
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 96,
-          "frame": 96
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 99,
-          "frame": 99
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 102,
-          "frame": 102
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 105,
-          "frame": 105
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 108,
-          "frame": 108
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 111,
-          "frame": 111
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 114,
-          "frame": 114
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 117,
-          "frame": 117
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 120,
-          "frame": 120
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 123,
-          "frame": 123
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 126,
-          "frame": 126
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 129,
-          "frame": 129
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 132,
-          "frame": 132
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 135,
-          "frame": 135
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 138,
-          "frame": 138
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 141,
-          "frame": 141
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 144,
-          "frame": 144
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 147,
-          "frame": 147
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/2b32af9c318b424750d4ff55d9d1af9af3fb537d38bf346b8904c32eca2a5f0e.npz",
-          "source_frame": 149,
-          "frame": 149
+          "frame": 94,
+          "position": [
+            -0.33744,
+            0.961622,
+            0.55745
+          ]
         }
       ]
     }
   ],
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
-  "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "136557705b4b6dce2ec33ee6cc90473f4ae3d98f653e699519bf42ff349bb81b",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_failed",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "136557705b4b6dce2ec33ee6cc90473f4ae3d98f653e699519bf42ff349bb81b",
+    "notes": "Full final-scene review found unreachable physical contacts. Existing source retained pending repair; this clip is not visually approved."
   },
-  "num_samples": 1,
-  "root_average_speed_m_s": 0.02989584393799305,
-  "mapped_average_speed_m_s": 0.023577163988953508,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "stand_idle",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
-    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
-  }
+  "source_frame": "fixed"
 }

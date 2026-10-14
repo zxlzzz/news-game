@@ -1,0 +1,390 @@
+{
+  "name": "ride_scooter",
+  "text": "A person sits upright on a motor scooter seat, both hands continuously on the handlebars, both feet flat on the footrests, knees parallel and pointing forward. Remain in this riding posture with gentle body sway.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "object": "scooter",
+    "post": "post_rider",
+    "duration": 3.0,
+    "text": "A person sits upright on a motor scooter seat, both hands continuously on the handlebars, both feet flat on the footrests, knees parallel and pointing forward. Remain in this riding posture with gentle body sway.",
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "idle_hand": "Both hands follow the stated task; a hand without a task rests beside its thigh.",
+    "clearance": "Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "description": "Start at scooter.post_rider facing the model standing marker direction. A person sits upright on a motor scooter seat, both hands continuously on the handlebars, both feet flat on the footrests, knees parallel and pointing forward. Remain in this riding posture with gentle body sway. Hips touches the physical model marker hip_seat at 0.00s, 3.00s. LeftHand touches the physical model marker grip_left at 0.00s, 3.00s. RightHand touches the physical model marker grip_right at 0.00s, 3.00s. LeftFoot touches the physical model marker foot_left at 0.00s, 3.00s. RightFoot touches the physical model marker foot_right at 0.00s, 3.00s. Both hands follow the stated task; a hand without a task rests beside its thigh. Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/eb317649b5c84540/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/sources/eb317649b5c84540/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_seat"
+      }
+    ],
+    "seat_surface": {
+      "node": "saddle",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "scooter",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.8876,
+            -0.2536
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.0,
+            0.8876,
+            -0.2536
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "scooter",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.221333,
+            1.278003,
+            0.335815
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.221333,
+            1.278003,
+            0.335815
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "scooter",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.218754,
+            1.27798,
+            0.336027
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            -0.218754,
+            1.27798,
+            0.336027
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "scooter",
+      "marker": "foot_left",
+      "space": "world",
+      "episode": "foot_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.1268,
+            0.482293,
+            0.17752
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.1268,
+            0.482293,
+            0.17752
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "scooter",
+      "marker": "foot_right",
+      "space": "world",
+      "episode": "foot_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.1268,
+            0.482382,
+            0.17752
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            -0.1268,
+            0.482382,
+            0.17752
+          ],
+          "root_xz": [
+            0.0,
+            -0.2536
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/eb317649b5c84540/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        0.02539789490401745,
+        -0.2518325494766237,
+        0.05601129069328309
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "eb317649b5c84540b384d800cb42f6965919f2c3bc34e97b749c606e3aeb2169",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "placement_basis": [
+        [
+          0.9981060152753691,
+          0,
+          -0.06151733309502815
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.06151733309502815,
+          0,
+          0.9981060152753691
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    },
+    {
+      "source": "assets/animations/sources/eb317649b5c84540/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        0.02539789490401745,
+        -0.2518325494766237,
+        0.05601129069328309
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "eb317649b5c84540b384d800cb42f6965919f2c3bc34e97b749c606e3aeb2169",
+        "hand_edited": false
+      },
+      "frame": 89,
+      "placement_basis": [
+        [
+          0.9981060152753691,
+          0,
+          -0.06151733309502815
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.06151733309502815,
+          0,
+          0.9981060152753691
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "583c24ad6f495fcf1408f02ca0d9743bf36d94c451915179e7654b3e68f9bd07",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_review_pending",
+    "accepted_by_hsinlung": false
+  },
+  "delivery_source": ".tmp/full_motion_review/generated/ride_scooter/attempt_001",
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Seated riding hold plausible; close view needed. Compact seated lean, supported feet, hands on bars.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Seated riding hold plausible; close view needed. Compact seated lean, supported feet, hands on bars.\"\r\n  }",
+      "original_record_sha256": "8266345915a7c192aac64316922b70474e0756aa10cf58f68bb331f806c1708c",
+      "current_source_sha256_at_reconciliation": "583c24ad6f495fcf1408f02ca0d9743bf36d94c451915179e7654b3e68f9bd07",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
+}

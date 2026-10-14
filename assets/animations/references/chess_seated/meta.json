@@ -1,0 +1,262 @@
+{
+  "name": "chess_think",
+  "text": "A seated chess player studies the board, leans forward looking across the pieces, rests the left hand briefly near the chin to think, then points towards a square and returns the hand to the lap. No piece moves. Hips stay on the stool and feet planted.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A seated chess player studies the board, leans forward looking across the pieces, rests the left hand briefly near the chin to think, then points towards a square and returns the hand to the lap. No piece moves. Hips stay on the stool and feet planted.",
+    "duration": 5,
+    "object": "park_chess_table",
+    "post": "post_chess_a",
+    "seat_surface": {
+      "node": "stool_seat_a",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 0,
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 1,
+        "align_hip": "hip_seat"
+      }
+    ],
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "transfers": [],
+    "idle_hand": "The inactive hand rests low on the thigh.",
+    "clearance": "Keep hips centred on the actual stool and the reaching forearm above the tabletop.",
+    "description": "Start at park_chess_table.post_chess_a facing the model standing marker direction. A seated chess player studies the board, leans forward looking across the pieces, rests the left hand briefly near the chin to think, then points towards a square and returns the hand to the lap. No piece moves. Hips stay on the stool and feet planted. Hips touches the physical model marker hip_seat at 0.00s, 5.00s. The inactive hand rests low on the thigh. Keep hips centred on the actual stool and the reaching forearm above the tabletop."
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "park_chess_table",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        0.0,
+        0.018900004005432125,
+        0.0
+      ],
+      "placement_basis": [
+        [
+          0.998562408788042,
+          0,
+          -0.053601452922688496
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.053601452922688496,
+          0,
+          0.998562408788042
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    },
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        0.0,
+        0.018900004005432125,
+        0.0
+      ],
+      "placement_basis": [
+        [
+          0.998562408788042,
+          0,
+          -0.053601452922688496
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.053601452922688496,
+          0,
+          0.998562408788042
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "4568eade3064790f0bf9ba07b9d79b23d6d757fd27288a6d56972d102f24881c",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "notes": "Raw generator output preserved; contact and staged review recorded separately. No blanket visual approval.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\n    \"status\": \"repair_candidate\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Raw generator output preserved; contact and staged review recorded separately. No blanket visual approval.\"\n  }",
+      "original_record_sha256": "2902d57c0621478e519cd36730e8a2b3cf466926095f1e01733e6ec050f3975f",
+      "current_source_sha256_at_reconciliation": "4568eade3064790f0bf9ba07b9d79b23d6d757fd27288a6d56972d102f24881c",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks."
+  },
+  "runtime_scene": {
+    "text": "A seated chess player studies the board, leans forward looking across the pieces, rests the left hand briefly near the chin to think, then points towards a square and returns the hand to the lap. No piece moves. Hips stay on the stool and feet planted.",
+    "duration": 5,
+    "object": "park_chess_table",
+    "post": "post_chess_a",
+    "seat_surface": {
+      "node": "stool_seat",
+      "by_post": true,
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 0,
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 1,
+        "align_hip": "hip_seat"
+      }
+    ],
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "by_post": true
+      }
+    ],
+    "transfers": [],
+    "idle_hand": "The inactive hand rests low on the thigh.",
+    "clearance": "Keep hips centred on the actual stool and the reaching forearm above the tabletop.",
+    "runtime_contacts": [
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "by_post": true
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "by_post": true
+      }
+    ]
+  }
+}

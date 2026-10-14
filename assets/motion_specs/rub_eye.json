@@ -1,0 +1,14 @@
+{
+  "clip": "rub_eye",
+  "text": "A person standing still raises the right hand to the right eye and rubs the eye with the knuckles for a moment, head slightly lowered, then lowers the hand back to the side.",
+  "duration": 3.0,
+  "seeds": [7, 61007],
+  "base": "stand",
+  "keys": [
+    {"t": 0.8, "Right": {"head": [-0.06, 0.03, 0.2]}},
+    {"t": 1.05, "Right": {"head": [-0.03, 0.0, 0.205]}},
+    {"t": 1.3, "Right": {"head": [-0.07, 0.01, 0.2]}},
+    {"t": 1.55, "Right": {"head": [-0.03, 0.03, 0.205]}},
+    {"t": 1.8, "Right": {"head": [-0.06, 0.02, 0.2]}}
+  ]
+}

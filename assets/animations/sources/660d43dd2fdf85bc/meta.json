@@ -1,0 +1,34 @@
+{
+  "name": "fan_self",
+  "text": "A person stands in hot weather and fans their face with a handheld folding fan in their right hand. Right elbow is bent at the side, right wrist and forearm make repeated short brisk back-and-forth strokes beside the cheek to blow air toward the face. Left arm hangs relaxed. Repeat the fanning movement several times while standing.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person stands in hot weather and fans their face with a handheld folding fan in their right hand. Right elbow is bent at the side, right wrist and forearm make repeated short brisk back-and-forth strokes beside the cheek to blow air toward the face. Left arm hangs relaxed. Repeat the fanning movement several times while standing.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_fan",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  right hand holds held_fan at the item grip marker.  A person stands in hot weather and fans their face with a handheld folding fan in their right hand. Right elbow is bent at the side, right wrist and forearm make repeated short brisk back-and-forth strokes beside the cheek to blow air toward the face. Left arm hangs relaxed. Repeat the fanning movement several times while standing. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "660d43dd2fdf85bcd8c674d276a27f18ede7b1a26d8d4e8573a476d5b227e78e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

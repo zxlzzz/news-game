@@ -1,0 +1,13 @@
+{
+  "clip": "choose_item",
+  "text": "A customer stands at a fruit stall, leans over the counter a little and reaches into the crate of apples with the right hand, feels a couple of apples one after another, then straightens up.",
+  "duration": 3.0,
+  "seeds": [7, 61007],
+  "base": "customer",
+  "object": {"type": "market_stall", "post": "post_customer"},
+  "keys": [
+    {"t": 0.8, "Right": {"at": [-0.08, 1.1, 0.52]}},
+    {"t": [1.0, 1.2], "Right": {"at": [-0.08, 1.09, 0.5]}},
+    {"t": [1.6, 1.8], "Right": {"at": [0.08, 1.09, 0.58]}}
+  ]
+}

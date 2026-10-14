@@ -1,0 +1,66 @@
+{
+  "name": "hop",
+  "text": "A person repeatedly makes small vertical hops in place with BOTH FEET CLOSE TOGETHER. Bend both knees together, push off from both feet simultaneously, rise briefly, and land softly on both feet simultaneously. Keep the feet beside each other throughout, never spread the legs sideways and never alternate them. Make three small hops in this short looping sequence. Arms remain down with a small natural swing for balance, no arms overhead and no jumping jacks. Stay in the same place. Start and finish grounded in the same narrow relaxed stance.",
+  "duration": 3.0,
+  "seed": 20261010,
+  "attempt": 1,
+  "scene": {
+    "activity": "hop",
+    "body_only": true,
+    "description": "Three small synchronous two-foot vertical hops; closed grounded phase from verified unedited hop reference.",
+    "reference_visual_check": "Native-frame front/side 1024px stills at 0,27,54,90,119 were inspected; both feet airborne together in four reference intervals. Not realtime viewing."
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/43cf4cf4fcba41ea/motion.npz",
+      "source_frame": 0,
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "43cf4cf4fcba41ea1beb793f3fe0a26dcd3d0c997fdbdbfb0a8f26e056fa8524",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/43cf4cf4fcba41ea/motion.npz",
+      "source_frame": 0,
+      "frame": 89,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "43cf4cf4fcba41ea1beb793f3fe0a26dcd3d0c997fdbdbfb0a8f26e056fa8524",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": true,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "cca740d6a21f9e04c33797438deaed98fe7f22354e9f5dc9b84663abc77a0240",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/hop/attempt_001/motion.npz",
+    "original_meta_sha256": "de1ea4af06e2f9044edd9a08f51d262bf3bfeedcb84213556e544f6668e63494",
+    "original_meta_file": "generation-original-meta.json",
+    "raw_npz_unchanged": true
+  }
+}

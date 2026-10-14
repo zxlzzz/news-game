@@ -1,0 +1,41 @@
+{
+  "name": "walk_dog",
+  "text": "A person walks slowly and steadily forward, keeping the RIGHT arm lowered straight and relaxed beside the body throughout. The right wrist stays down at upper thigh height beside the hip, elbow pointing down with just a small bend. The right hand loosely holds a small leash loop, a slack leash hangs down to a dog walking alongside. The LEFT arm swings naturally. Smooth regular steps. The right arm remains low and quiet, never reaches forward.",
+  "duration": 5,
+  "seed": 61008,
+  "attempt": 2,
+  "scene": {
+    "text": "A person walks slowly and steadily forward, keeping the RIGHT arm lowered straight and relaxed beside the body throughout. The right wrist stays down at upper thigh height beside the hip, elbow pointing down with just a small bend. The right hand loosely holds a small leash loop, a slack leash hangs down to a dog walking alongside. The LEFT arm swings naturally. Smooth regular steps. The right arm remains low and quiet, never reaches forward.",
+    "duration": 5,
+    "contacts": [],
+    "idle_hand": "Right arm hangs lowered; left arm performs the natural locomotion.",
+    "clearance": "Maintain a relaxed lowered arm.",
+    "generation_stage": "native_pose_reference"
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/bf03272873fd2a7c/motion.npz",
+      "source_frame": 45,
+      "frame": 0,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "bf03272873fd2a7c47cca0ec309eef2ff169e5a7801a5ff48b8ea30e0d9d980f",
+        "hand_edited": false
+      }
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 1,
+  "raw_sha256": "e01b65db08f860893bf40d6cd584ab3d6ee2a297b6a3001c2b1bdafa15f3eb26",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

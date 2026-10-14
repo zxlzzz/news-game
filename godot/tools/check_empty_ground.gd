@@ -134,7 +134,7 @@ func _check_writer() -> void:
 	var path := "res://types/bench.tscn"
 	var text := FileAccess.get_file_as_string(path)
 	var xf := Transform3D(Basis(Vector3.UP, PI / 2), Vector3(0.1, 0, -0.25))
-	var out := Stage.set_transform_text(text, "post_sit_0", xf)
+	var out := Stage.set_transform_text(text, "post_stretch", xf)
 	var a := text.replace("\r\n", "\n").split("\n")
 	var b := out.replace("\r\n", "\n").split("\n")
 	var changed := 0
@@ -143,7 +143,7 @@ func _check_writer() -> void:
 			changed += 1
 	var want := "transform = " + Stage.transform_text(xf)
 	if out == "" or a.size() != b.size() or changed != 1 or not want in b:
-		_fail("tscn writer: setting post_sit_0 in %s did not change exactly its transform line" % path)
+		_fail("tscn writer: setting post_stretch in %s did not change exactly its transform line" % path)
 	if Stage.transform_text(xf) != "Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.1, 0, -0.25)":
 		_fail("tscn writer: a 90 degree yaw is written as %s (rows of the basis, then the origin)" % Stage.transform_text(xf))
 	if Stage.set_transform_text(text, "no_such_node", xf) != "":

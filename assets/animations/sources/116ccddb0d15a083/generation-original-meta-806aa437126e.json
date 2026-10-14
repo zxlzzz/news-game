@@ -1,0 +1,31 @@
+{
+  "name": "vendor_call",
+  "text": "A standing market vendor calls out to customers. The right forearm rises beside the mouth as if calling, then the right arm opens forward in a welcoming gesture toward the goods. The left hand remains relaxed near the waist. The feet stay planted and the body stays behind the counter.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing market vendor calls out to customers. The right forearm rises beside the mouth as if calling, then the right arm opens forward in a welcoming gesture toward the goods. The left hand remains relaxed near the waist. The feet stay planted and the body stays behind the counter.",
+    "duration": 5,
+    "contacts": [],
+    "object": "market_stall",
+    "post": "post_vendor",
+    "description": "The person starts at market_stall.post_vendor and faces the model standing marker direction.   A standing market vendor calls out to customers. The right forearm rises beside the mouth as if calling, then the right arm opens forward in a welcoming gesture toward the goods. The left hand remains relaxed near the waist. The feet stay planted and the body stays behind the counter. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep torso on its standing side of the counter, elbows above the edge while reaching to goods.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep torso on its standing side of the counter, elbows above the edge while reaching to goods."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "116ccddb0d15a08396cf417cc4858e35843415dc25adbed901cd52f138607839",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

@@ -1,272 +1,22 @@
 {
   "description": "Entry/exit poses per clip; original NPZ frame indices. Root displacement is retained. Clips with loop true are played as loops; scripts/export-npc-motion.py closes their seam by spreading the last-minus-first difference over the clip (max 15 cm, same feet on the ground at both ends).",
   "clips": {
-    "vendor_call": {
-      "loop": false,
-      "entry": {
-        "clip": "vendor_call",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "vendor_call",
-        "frame": 119
-      },
-      "source_root_delta_m": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.0
-    },
-    "vendor_tidy": {
-      "loop": false,
-      "entry": {
-        "clip": "vendor_tidy",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "vendor_tidy",
-        "frame": 119
-      },
-      "source_root_delta_m": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.0
-    },
-    "give_item": {
-      "loop": false,
-      "entry": {
-        "clip": "give_item",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "give_item",
-        "frame": 104
-      },
-      "source_root_delta_m": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.0
-    },
-    "receive_item": {
-      "loop": false,
-      "entry": {
-        "clip": "receive_item",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "receive_item",
-        "frame": 104
-      },
-      "source_root_delta_m": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.0
-    },
-    "choose_item": {
-      "loop": false,
-      "entry": {
-        "clip": "choose_item",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "choose_item",
-        "frame": 119
-      },
-      "source_root_delta_m": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.0
-    },
-    "pay": {
-      "loop": false,
-      "entry": {
-        "clip": "pay",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "pay",
-        "frame": 134
-      },
-      "source_root_delta_m": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.0
-    },
-    "chess_watch": {
-      "loop": false,
-      "entry": {
-        "clip": "chess_watch",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "chess_watch",
-        "frame": 119
-      },
-      "source_root_delta_m": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.0
-    },
-    "chess_move": {
-      "loop": false,
-      "entry": {
-        "clip": "chess_move",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "chess_move",
-        "frame": 119
-      },
-      "source_root_delta_m": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.0
-    },
-    "walk": {
+    "assist_elder_walk": {
       "loop": true,
       "entry": {
-        "clip": "walk",
+        "clip": "assist_elder_walk",
         "frame": 0
       },
       "exit": {
-        "clip": "walk",
-        "frame": 33
+        "clip": "assist_elder_walk",
+        "frame": 30
       },
       "source_root_delta_m": [
         0.0,
         0.0,
-        1.5
+        0.622570276260376
       ],
-      "endpoint_root_aligned_max_joint_m": 2.384185791015625e-07,
-      "duplicate_endpoint": true,
-      "cycle_duration_seconds": 2.2
-    },
-    "walk_slow": {
-      "loop": true,
-      "entry": {
-        "clip": "walk_slow",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "walk_slow",
-        "frame": 36
-      },
-      "source_root_delta_m": [
-        -0.10042500495910645,
-        0.0,
-        1.341365098953247
-      ],
-      "endpoint_root_aligned_max_joint_m": 2.385349660155493e-07,
-      "duplicate_endpoint": true,
-      "cycle_duration_seconds": 2.4
-    },
-    "sit_bench": {
-      "loop": true,
-      "entry": {
-        "clip": "sit_bench",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "sit_bench",
-        "frame": 89
-      },
-      "source_root_delta_m": [
-        -1.4551915228366852e-11,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 1.0186340659856796e-10,
-      "duplicate_endpoint": true,
-      "cycle_duration_seconds": 2.966666666666667
-    },
-    "slouch_bench": {
-      "loop": true,
-      "entry": {
-        "clip": "slouch_bench",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "slouch_bench",
-        "frame": 89
-      },
-      "source_root_delta_m": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.0,
-      "duplicate_endpoint": true,
-      "cycle_duration_seconds": 2.966666666666667
-    },
-    "jog": {
-      "loop": true,
-      "entry": {
-        "clip": "jog",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "jog",
-        "frame": 26
-      },
-      "source_root_delta_m": [
-        -0.2015399932861328,
-        0.0,
-        2.0545058250427246
-      ],
-      "endpoint_root_aligned_max_joint_m": 4.777675730550706e-07,
-      "duplicate_endpoint": true,
-      "cycle_duration_seconds": 2.6
-    },
-    "walk_dog": {
-      "loop": true,
-      "entry": {
-        "clip": "walk_dog",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "walk_dog",
-        "frame": 35
-      },
-      "source_root_delta_m": [
-        -0.19471698999404907,
-        0.0,
-        1.7254481315612793
-      ],
-      "endpoint_root_aligned_max_joint_m": 2.4027400458748785e-07,
-      "duplicate_endpoint": true,
-      "cycle_duration_seconds": 2.3333333333333335
-    },
-    "stand_idle": {
-      "loop": true,
-      "entry": {
-        "clip": "stand_idle",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "stand_idle",
-        "frame": 119
-      },
-      "source_root_delta_m": [
-        -0.005631837993860245,
-        0.0,
-        -0.003138924017548561
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.12670408189296722
+      "endpoint_root_aligned_max_joint_m": 1.1920928955078125e-07
     },
     "eat_walk": {
       "loop": true,
@@ -287,6 +37,59 @@
       "duplicate_endpoint": true,
       "cycle_duration_seconds": 1.9333333333333333
     },
+    "elder_assisted_walk": {
+      "loop": true,
+      "entry": {
+        "clip": "elder_assisted_walk",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "elder_assisted_walk",
+        "frame": 30
+      },
+      "source_root_delta_m": [
+        0.10964670032262802,
+        0.0,
+        0.6128387451171875
+      ],
+      "endpoint_root_aligned_max_joint_m": 3.965641076019783e-07
+    },
+    "give_item": {
+      "loop": false,
+      "entry": {
+        "clip": "give_item",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "give_item",
+        "frame": 104
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0
+    },
+    "jog": {
+      "loop": true,
+      "entry": {
+        "clip": "jog",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "jog",
+        "frame": 26
+      },
+      "source_root_delta_m": [
+        -0.2015399932861328,
+        0.0,
+        2.0545058250427246
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.777675730550706e-07,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.6
+    },
     "phone_walk": {
       "loop": true,
       "entry": {
@@ -306,34 +109,48 @@
       "duplicate_endpoint": true,
       "cycle_duration_seconds": 2.1666666666666665
     },
-    "sweep_ground": {
-      "loop": true
-    },
-    "push_cart": {
-      "loop": true,
+    "receive_item": {
+      "loop": false,
       "entry": {
-        "clip": "push_cart",
+        "clip": "receive_item",
         "frame": 0
       },
       "exit": {
-        "clip": "push_cart",
-        "frame": 33
+        "clip": "receive_item",
+        "frame": 104
       },
       "source_root_delta_m": [
         0.0,
         0.0,
-        1.5
+        0.0
       ],
       "endpoint_root_aligned_max_joint_m": 0.0
     },
-    "push_stroller": {
+    "stand_idle": {
       "loop": true,
       "entry": {
-        "clip": "push_stroller",
+        "clip": "stand_idle",
         "frame": 0
       },
       "exit": {
-        "clip": "push_stroller",
+        "clip": "stand_idle",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        -0.005631837993860245,
+        0.0,
+        -0.003138924017548561
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.12670408189296722
+    },
+    "walk": {
+      "loop": true,
+      "entry": {
+        "clip": "walk",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk",
         "frame": 33
       },
       "source_root_delta_m": [
@@ -341,24 +158,26 @@
         0.0,
         1.5
       ],
-      "endpoint_root_aligned_max_joint_m": 0.00024532525317267804
+      "endpoint_root_aligned_max_joint_m": 2.384185791015625e-07,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.2
     },
-    "pull_suitcase": {
+    "walk_check_watch": {
       "loop": true,
       "entry": {
-        "clip": "pull_suitcase",
+        "clip": "walk_check_watch",
         "frame": 0
       },
       "exit": {
-        "clip": "pull_suitcase",
-        "frame": 45
+        "clip": "walk_check_watch",
+        "frame": 33
       },
       "source_root_delta_m": [
-        -0.13290974497795105,
+        -0.0227632662281394,
         0.0,
-        1.4590535163879395
+        1.587843418121338
       ],
-      "endpoint_root_aligned_max_joint_m": 2.4027400458748785e-07
+      "endpoint_root_aligned_max_joint_m": 4.770999297689224e-07
     },
     "walk_cold": {
       "loop": true,
@@ -377,6 +196,25 @@
       ],
       "endpoint_root_aligned_max_joint_m": 2.384476811558792e-07
     },
+    "walk_dog": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_dog",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_dog",
+        "frame": 35
+      },
+      "source_root_delta_m": [
+        -0.19471698999404907,
+        0.0,
+        1.7254481315612793
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.4027400458748785e-07,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.3333333333333335
+    },
     "walk_elderly_short": {
       "loop": true,
       "entry": {
@@ -393,23 +231,6 @@
         0.6128387451171875
       ],
       "endpoint_root_aligned_max_joint_m": 2.394640249012142e-07
-    },
-    "walk_hold_front": {
-      "loop": true,
-      "entry": {
-        "clip": "walk_hold_front",
-        "frame": 0
-      },
-      "exit": {
-        "clip": "walk_hold_front",
-        "frame": 45
-      },
-      "source_root_delta_m": [
-        0.032319800928235054,
-        0.0,
-        1.2245619297027588
-      ],
-      "endpoint_root_aligned_max_joint_m": 4.768407961680544e-07
     },
     "walk_one_arm_still": {
       "loop": true,
@@ -479,6 +300,305 @@
       ],
       "endpoint_root_aligned_max_joint_m": 4.770699320310986e-07
     },
+    "walk_slow": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_slow",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_slow",
+        "frame": 36
+      },
+      "source_root_delta_m": [
+        -0.10042500495910645,
+        0.0,
+        1.341365098953247
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.385349660155493e-07,
+      "duplicate_endpoint": true,
+      "cycle_duration_seconds": 2.4
+    },
+    "adjust_clothes": {
+      "loop": false,
+      "entry": {
+        "clip": "adjust_clothes",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "adjust_clothes",
+        "frame": 179
+      },
+      "entry_pose": "stand",
+      "exit_pose": "stand",
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": false,
+      "source": "Unaltered generated motion with sparse whole-body references; full named activity reviewed in actual stage"
+    },
+    "air_walker": {
+      "loop": true,
+      "entry": {
+        "clip": "air_walker",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "air_walker",
+        "frame": 89
+      },
+      "duplicate_endpoint": true,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "atm_keypad": {
+      "loop": false,
+      "entry": {
+        "clip": "atm_keypad",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "atm_keypad",
+        "frame": 179
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "Unedited Kimodo sparse whole-body reference generation; no seam fitting",
+      "entry_pose": "stand",
+      "exit_pose": "stand"
+    },
+    "atm_take_cash": {
+      "loop": false,
+      "entry": {
+        "clip": "atm_take_cash",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "atm_take_cash",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0,
+        6.759166717529297e-05,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.3780585351506047,
+      "duplicate_endpoint": false,
+      "source": "Unedited Kimodo sparse whole-body reference generation; no seam fitting",
+      "entry_pose": "stand",
+      "exit_pose": "retained right-hand low banknote hold",
+      "exit_whole_reference": {
+        "frame": 149,
+        "source": "assets/animations/sources/f3e6da402e680bda/motion.npz",
+        "source_frame": 28,
+        "placement_basis": [
+          [
+            0.992980301380158,
+            0.0,
+            -0.118279792368412
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.118279792368412,
+            0.0,
+            0.992980301380158
+          ]
+        ],
+        "translation": [
+          -0.2618452012538912,
+          0.007072806358337402,
+          -0.24860924482345592
+        ],
+        "provenance": {
+          "kind": "kimodo_raw",
+          "sha256": "f3e6da402e680bda72b74331ef5ad944b13f61d2019da566020db68f1377e758",
+          "hand_edited": false
+        }
+      }
+    },
+    "bike_scan_unlock": {
+      "loop": false,
+      "entry": {
+        "clip": "bike_scan_unlock",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "bike_scan_unlock",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        -0.05946729704737663,
+        -0.0024358034133911133,
+        0.0020308755338191986
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.4644259512424469,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "block_way": {
+      "loop": false,
+      "entry": {
+        "clip": "block_way",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "block_way",
+        "frame": 89
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "browse_bookstall": {
+      "loop": true,
+      "entry": {
+        "clip": "browse_bookstall",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "browse_bookstall",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "buy_newspaper": {
+      "loop": false,
+      "entry": {
+        "clip": "buy_newspaper",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "buy_newspaper",
+        "frame": 69
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited source frames 0-69 retained as independent pickup; full ancestor preserved. User acceptance pending."
+    },
+    "cafe_sit_drink": {
+      "loop": false,
+      "entry": {
+        "clip": "cafe_sit_drink",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "cafe_sit_drink",
+        "frame": 149
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "car_enter": {
+      "loop": false,
+      "entry": {
+        "clip": "car_enter",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "car_enter",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.42276859283447266,
+        -0.22705262899398804,
+        1.007658839225769
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.3928022086620331,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "car_exit": {
+      "loop": false,
+      "entry": {
+        "clip": "car_exit",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "car_exit",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.23191171884536743,
+        -1.090480089187622
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.2686465978622437,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "carry_bag": {
+      "loop": true,
+      "entry": {
+        "clip": "carry_bag",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "carry_bag",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "carry_bags": {
+      "loop": true,
+      "entry": {
+        "clip": "carry_bags",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "carry_bags",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "carry_box": {
+      "loop": true,
+      "entry": {
+        "clip": "carry_box",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "carry_box",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
     "carry_bucket": {
       "loop": true,
       "entry": {
@@ -487,48 +607,821 @@
       },
       "exit": {
         "clip": "carry_bucket",
-        "frame": 45
+        "frame": 89
       },
       "source_root_delta_m": [
-        0.032319800928235054,
         0.0,
-        1.2245619297027588
+        0.0,
+        0.0
       ],
-      "endpoint_root_aligned_max_joint_m": 1.175751208010185e-05
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
     },
-    "walk_briefcase": {
+    "carry_shoulder": {
       "loop": true,
       "entry": {
-        "clip": "walk_briefcase",
+        "clip": "carry_shoulder",
         "frame": 0
       },
       "exit": {
-        "clip": "walk_briefcase",
-        "frame": 33
+        "clip": "carry_shoulder",
+        "frame": 89
       },
       "source_root_delta_m": [
-        -0.09186512231826782,
         0.0,
-        1.2677478790283203
+        0.0,
+        0.0
       ],
-      "endpoint_root_aligned_max_joint_m": 2.457562461863554e-07
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
     },
-    "walk_check_watch": {
+    "carry_shoulder_bag": {
       "loop": true,
       "entry": {
-        "clip": "walk_check_watch",
+        "clip": "carry_shoulder_bag",
         "frame": 0
       },
       "exit": {
-        "clip": "walk_check_watch",
-        "frame": 33
+        "clip": "carry_shoulder_bag",
+        "frame": 41
+      },
+      "duplicate_endpoint": true,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "chess_capture": {
+      "start": {
+        "clip": "chess_capture",
+        "frame": 0
+      },
+      "end": {
+        "clip": "chess_capture",
+        "frame": 179
+      },
+      "loop": false,
+      "source": "Unedited model-first Kimodo output; no seam spreading"
+    },
+    "chess_move": {
+      "start": {
+        "clip": "chess_move",
+        "frame": 0
+      },
+      "end": {
+        "clip": "chess_move",
+        "frame": 134
+      },
+      "loop": false,
+      "source": "Unedited model-first Kimodo output; no seam spreading"
+    },
+    "chess_move_diagonal": {
+      "start": {
+        "clip": "chess_move_diagonal",
+        "frame": 0
+      },
+      "end": {
+        "clip": "chess_move_diagonal",
+        "frame": 134
+      },
+      "loop": false,
+      "source": "Unedited model-first Kimodo output; no seam spreading"
+    },
+    "chess_move_far": {
+      "start": {
+        "clip": "chess_move_far",
+        "frame": 0
+      },
+      "end": {
+        "clip": "chess_move_far",
+        "frame": 134
+      },
+      "loop": false,
+      "source": "Unedited model-first Kimodo output; no seam spreading"
+    },
+    "chess_move_side": {
+      "start": {
+        "clip": "chess_move_side",
+        "frame": 0
+      },
+      "end": {
+        "clip": "chess_move_side",
+        "frame": 134
+      },
+      "loop": false,
+      "source": "Unedited model-first Kimodo output; no seam spreading"
+    },
+    "chess_think": {
+      "start": {
+        "clip": "chess_think",
+        "frame": 0
+      },
+      "end": {
+        "clip": "chess_think",
+        "frame": 149
+      },
+      "loop": false,
+      "source": "Unedited model-first Kimodo output; no seam spreading"
+    },
+    "chess_watch": {
+      "loop": true,
+      "entry": {
+        "clip": "chess_watch",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "chess_watch",
+        "frame": 89
       },
       "source_root_delta_m": [
-        -0.0227632662281394,
         0.0,
-        1.587843418121338
+        0.0,
+        0.0
       ],
-      "endpoint_root_aligned_max_joint_m": 4.770999297689224e-07
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "choose_item": {
+      "loop": false,
+      "entry": {
+        "clip": "choose_item",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "choose_item",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        -0.013324050232768059,
+        0.0031255483627319336,
+        -0.0015029506757855415
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.12947706878185272,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "coast_bicycle": {
+      "loop": true,
+      "entry": {
+        "clip": "coast_bicycle",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "coast_bicycle",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "Unedited Kimodo output; actual stage review pending."
+    },
+    "drink": {
+      "loop": false,
+      "entry": {
+        "clip": "drink",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "drink",
+        "frame": 119
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "eat_snack": {
+      "loop": false,
+      "entry": {
+        "clip": "eat_snack",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "eat_snack",
+        "frame": 119
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "fall_back": {
+      "loop": false,
+      "entry": {
+        "clip": "fall_back",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "fall_back",
+        "frame": 119
+      },
+      "entry_pose": "stand",
+      "exit_pose": "lie_ground",
+      "duplicate_endpoint": false,
+      "source": "Unedited Kimodo raw motion; visually reviewed backward fall"
+    },
+    "fan_self": {
+      "loop": true,
+      "entry": {
+        "clip": "fan_self",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "fan_self",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "film_phone": {
+      "loop": true,
+      "entry": {
+        "clip": "film_phone",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "film_phone",
+        "frame": 89
+      },
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending.",
+      "duplicate_endpoint": true
+    },
+    "fountain_drink": {
+      "loop": true,
+      "entry": {
+        "clip": "fountain_drink",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "fountain_drink",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "fruit_choose": {
+      "start": {
+        "clip": "fruit_choose",
+        "frame": 0
+      },
+      "end": {
+        "clip": "fruit_choose",
+        "frame": 149
+      },
+      "loop": false,
+      "source": "Unedited model-first Kimodo output; no seam spreading"
+    },
+    "fruit_weigh": {
+      "start": {
+        "clip": "fruit_weigh",
+        "frame": 0
+      },
+      "end": {
+        "clip": "fruit_weigh",
+        "frame": 149
+      },
+      "loop": false,
+      "source": "Unedited model-first Kimodo output; no seam spreading"
+    },
+    "hail_taxi": {
+      "loop": false,
+      "entry": {
+        "clip": "hail_taxi",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "hail_taxi",
+        "frame": 149
+      },
+      "entry_pose": "stand",
+      "exit_pose": "stand",
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": false,
+      "source": "Unaltered generated motion with sparse whole-body references; full named activity reviewed in actual stage"
+    },
+    "hang_laundry": {
+      "loop": false,
+      "entry": {
+        "clip": "hang_laundry",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "hang_laundry",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        -0.0006449650973081589,
+        0.0011121034622192383,
+        0.0007997984066605568
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.03615334630012512,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "hesitate_reach": {
+      "loop": false,
+      "entry": {
+        "clip": "hesitate_reach",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "hesitate_reach",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        -0.004465112462639809,
+        0.0003719329833984375,
+        -0.002533210441470146
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.17798562347888947,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "hold_door": {
+      "loop": true,
+      "entry": {
+        "clip": "hold_door",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "hold_door",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "hold_guitar": {
+      "loop": true,
+      "entry": {
+        "clip": "hold_guitar",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "hold_guitar",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "hold_umbrella": {
+      "loop": false,
+      "entry": {
+        "clip": "hold_umbrella",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "hold_umbrella",
+        "frame": 89
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "hop": {
+      "loop": true,
+      "entry": {
+        "clip": "hop",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "hop",
+        "frame": 89
+      },
+      "entry_pose": "hop_grounded",
+      "exit_pose": "hop_grounded",
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "Unaltered generated motion with sparse whole-body references; full named activity reviewed in actual stage"
+    },
+    "inspect_item": {
+      "loop": false,
+      "entry": {
+        "clip": "inspect_item",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "inspect_item",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.009338350966572762,
+        -0.002857387065887451,
+        0.014453493058681488
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.058508679270744324,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "lean_railing": {
+      "loop": true,
+      "entry": {
+        "clip": "lean_railing",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "lean_railing",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "lean_sign": {
+      "loop": true,
+      "entry": {
+        "clip": "lean_sign",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "lean_sign",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "lean_wall": {
+      "loop": true,
+      "entry": {
+        "clip": "lean_wall",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "lean_wall",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "source": "Untouched Kimodo sparse genuine whole-pose generation"
+    },
+    "leg_stretch": {
+      "loop": true,
+      "entry": {
+        "clip": "leg_stretch",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "leg_stretch",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "mop_ground": {
+      "loop": true,
+      "entry": {
+        "clip": "mop_ground",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "mop_ground",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "parcel_terminal": {
+      "loop": false,
+      "entry": {
+        "clip": "parcel_terminal",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "parcel_terminal",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        -0.038144104182720184,
+        0.0048577189445495605,
+        -0.013895673677325249
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.6076183319091797,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "pay": {
+      "loop": false,
+      "entry": {
+        "clip": "pay",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "pay",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "peek_side": {
+      "loop": false,
+      "entry": {
+        "clip": "peek_side",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "peek_side",
+        "frame": 119
+      },
+      "entry_pose": "stand",
+      "exit_pose": "stand",
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": false,
+      "source": "Unaltered generated motion with sparse whole-body references; full named activity reviewed in actual stage"
+    },
+    "phone_booth_call": {
+      "loop": false,
+      "entry": {
+        "clip": "phone_booth_call",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "phone_booth_call",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        -0.03067653626203537,
+        -0.0014058351516723633,
+        -0.005356756038963795
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.8984144330024719,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "phone_call": {
+      "loop": false,
+      "entry": {
+        "clip": "phone_call",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "phone_call",
+        "frame": 119
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "phone_urgent": {
+      "loop": true,
+      "entry": {
+        "clip": "phone_urgent",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "phone_urgent",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "photo_overhead": {
+      "loop": true,
+      "entry": {
+        "clip": "photo_overhead",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "photo_overhead",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "pick_up": {
+      "loop": false,
+      "entry": {
+        "clip": "pick_up",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "pick_up",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "point_shout": {
+      "loop": false,
+      "entry": {
+        "clip": "point_shout",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "point_shout",
+        "frame": 149
+      },
+      "entry_pose": "stand",
+      "exit_pose": "stand",
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": false,
+      "source": "Unaltered generated motion with sparse whole-body references; full named activity reviewed in actual stage"
+    },
+    "post_letter": {
+      "loop": false,
+      "entry": {
+        "clip": "post_letter",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "post_letter",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0009583383798599243,
+        0.0008907318115234375,
+        -0.006851104088127613
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.05456787347793579,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "post_notice": {
+      "loop": false,
+      "entry": {
+        "clip": "post_notice",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "post_notice",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0001874370500445366,
+        0.0012754201889038086,
+        -0.00044640875421464443
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0250187236815691,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "press_button": {
+      "loop": false,
+      "entry": {
+        "clip": "press_button",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "press_button",
+        "frame": 89
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "pull_door": {
+      "loop": false,
+      "entry": {
+        "clip": "pull_door",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "pull_door",
+        "frame": 89
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "pull_suitcase": {
+      "loop": true,
+      "entry": {
+        "clip": "pull_suitcase",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "pull_suitcase",
+        "frame": 41
+      },
+      "duplicate_endpoint": true,
+      "source": "Exact native arrays reused from another reviewed clip; context placement/contact only. See meta.json reuse. User acceptance pending."
+    },
+    "pullup_hold": {
+      "loop": true,
+      "entry": {
+        "clip": "pullup_hold",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "pullup_hold",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "pullup_raise": {
+      "loop": true,
+      "entry": {
+        "clip": "pullup_raise",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "pullup_raise",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
     },
     "push_bicycle": {
       "loop": true,
@@ -538,82 +1431,552 @@
       },
       "exit": {
         "clip": "push_bicycle",
-        "frame": 33
+        "frame": 38
       },
       "source_root_delta_m": [
-        -0.09186512231826782,
+        0.004780076444149017,
         0.0,
-        1.2677478790283203
+        1.7109853029251099
       ],
-      "endpoint_root_aligned_max_joint_m": 4.805480091749757e-07
+      "endpoint_root_aligned_max_joint_m": 1.212866607147589e-07,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
     },
-    "walk_closed_umbrella": {
+    "push_cart": {
       "loop": true,
       "entry": {
-        "clip": "walk_closed_umbrella",
+        "clip": "push_cart",
         "frame": 0
       },
       "exit": {
-        "clip": "walk_closed_umbrella",
-        "frame": 72
+        "clip": "push_cart",
+        "frame": 44
       },
-      "source_root_delta_m": [
-        -0.2008500099182129,
-        0.0,
-        2.682729959487915
-      ],
-      "endpoint_root_aligned_max_joint_m": 2.457562461863554e-07
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending.",
+      "duplicate_endpoint": true
     },
-    "walk_newspaper_underarm": {
-      "loop": true,
+    "push_door": {
+      "loop": false,
       "entry": {
-        "clip": "walk_newspaper_underarm",
+        "clip": "push_door",
         "frame": 0
       },
       "exit": {
-        "clip": "walk_newspaper_underarm",
-        "frame": 33
+        "clip": "push_door",
+        "frame": 89
       },
-      "source_root_delta_m": [
-        -0.022763267159461975,
-        0.0,
-        1.587843418121338
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.00013781185603683509
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
     },
-    "walk_carry_box": {
+    "push_stroller": {
       "loop": true,
       "entry": {
-        "clip": "walk_carry_box",
+        "clip": "push_stroller",
         "frame": 0
       },
       "exit": {
-        "clip": "walk_carry_box",
-        "frame": 45
+        "clip": "push_stroller",
+        "frame": 44
       },
-      "source_root_delta_m": [
-        0.032319797202944756,
-        0.0,
-        1.2245619297027588
-      ],
-      "endpoint_root_aligned_max_joint_m": 0.00013660833316658734
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending.",
+      "duplicate_endpoint": true
     },
-    "elder_assisted_walk": {
+    "read_book": {
       "loop": true,
       "entry": {
-        "clip": "elder_assisted_walk",
+        "clip": "read_book",
         "frame": 0
       },
       "exit": {
-        "clip": "elder_assisted_walk",
-        "frame": 30
+        "clip": "read_book",
+        "frame": 89
       },
       "source_root_delta_m": [
-        0.10964670032262802,
         0.0,
-        0.6128387451171875
+        0.0,
+        0.0
       ],
-      "endpoint_root_aligned_max_joint_m": 3.965641076019783e-07
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "read_newspaper": {
+      "loop": true,
+      "entry": {
+        "clip": "read_newspaper",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "read_newspaper",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "read_notice": {
+      "loop": true,
+      "entry": {
+        "clip": "read_notice",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "read_notice",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "ride_bicycle": {
+      "loop": true,
+      "entry": {
+        "clip": "ride_bicycle",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "ride_bicycle",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "Untouched archived Kimodo loop c71a7c0388b7f9c5; complete native pose and rotation endpoints equal. Current-model repair candidate; visual acceptance pending."
+    },
+    "ride_scooter": {
+      "loop": true,
+      "entry": {
+        "clip": "ride_scooter",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "ride_scooter",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "Unedited Kimodo output; actual stage review pending."
+    },
+    "seesaw_partner": {
+      "loop": true,
+      "entry": {
+        "clip": "seesaw_partner",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "seesaw_partner",
+        "frame": 119
+      },
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending.",
+      "duplicate_endpoint": true
+    },
+    "seesaw_seated": {
+      "loop": true,
+      "entry": {
+        "clip": "seesaw_seated",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "seesaw_seated",
+        "frame": 119
+      },
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending.",
+      "duplicate_endpoint": true
+    },
+    "selfie": {
+      "loop": true,
+      "entry": {
+        "clip": "selfie",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "selfie",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "shrug": {
+      "loop": false,
+      "entry": {
+        "clip": "shrug",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "shrug",
+        "frame": 89
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "sit_bench": {
+      "loop": true,
+      "entry": {
+        "clip": "sit_bench",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "sit_bench",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "sit_down": {
+      "loop": false,
+      "entry": {
+        "clip": "sit_down",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "sit_down",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.0,
+        -0.4347917437553406,
+        -0.6086400151252747
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.6860131621360779,
+      "duplicate_endpoint": false,
+      "source": "Unaltered Kimodo output; interface dependencies in meta.json transition_boundaries."
+    },
+    "sit_sideways": {
+      "loop": false,
+      "entry": {
+        "clip": "sit_sideways",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "sit_sideways",
+        "frame": 119
+      },
+      "duplicate_endpoint": false,
+      "source": "Exact native arrays reused from another reviewed clip; context placement/contact only. See meta.json reuse. User acceptance pending."
+    },
+    "sit_step": {
+      "loop": true,
+      "entry": {
+        "clip": "sit_step",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "sit_step",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "slap_table": {
+      "loop": false,
+      "entry": {
+        "clip": "slap_table",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "slap_table",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        -0.001563301426358521,
+        0.0011387467384338379,
+        -0.002338006626814604
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.01706187054514885,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "slide_seated": {
+      "loop": false,
+      "entry": {
+        "clip": "slide_seated",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "slide_seated",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0,
+        -1.7878800630569458,
+        2.3457999229431152
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.6656007889869215e-07,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "slouch_bench": {
+      "loop": false,
+      "entry": {
+        "clip": "slouch_bench",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "slouch_bench",
+        "frame": 119
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "smoke": {
+      "loop": true,
+      "entry": {
+        "clip": "smoke",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "smoke",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "smoke_walk": {
+      "loop": true,
+      "entry": {
+        "clip": "smoke_walk",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "smoke_walk",
+        "frame": 37
+      },
+      "source_root_delta_m": [
+        -0.08053255081176758,
+        0.0,
+        1.4364991188049316
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.4901161193847656e-08,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "stand_up": {
+      "loop": false,
+      "entry": {
+        "clip": "stand_up",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "stand_up",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.00630656722933054,
+        0.4385969042778015,
+        0.5980482697486877
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.6892907619476318,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "sweep_ground": {
+      "loop": false,
+      "entry": {
+        "clip": "sweep_ground",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "sweep_ground",
+        "frame": 119
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "swing_seated": {
+      "loop": true,
+      "entry": {
+        "clip": "swing_seated",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "swing_seated",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "take_back_piece": {
+      "loop": false,
+      "entry": {
+        "clip": "take_back_piece",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "take_back_piece",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        -0.0002540219575166702,
+        0.007228195667266846,
+        0.004713121801614761
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.2703770697116852,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "take_photo": {
+      "loop": false,
+      "entry": {
+        "clip": "take_photo",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "take_photo",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.03063981793820858,
+        0.0032128095626831055,
+        -0.054153840988874435
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.8774065971374512,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "throw_trash": {
+      "loop": false,
+      "entry": {
+        "clip": "throw_trash",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "throw_trash",
+        "frame": 89
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "turn_page": {
+      "loop": false,
+      "entry": {
+        "clip": "turn_page",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "turn_page",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        0.00314484816044569,
+        -0.0012485980987548828,
+        0.0038558333180844784
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.7471643090248108,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "vending_collect": {
+      "loop": false,
+      "entry": {
+        "clip": "vending_collect",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "vending_collect",
+        "frame": 69
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited source frames 0-69 retained as independent pickup; full ancestor preserved. User acceptance pending."
+    },
+    "vendor_call": {
+      "loop": false,
+      "entry": {
+        "clip": "vendor_call",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "vendor_call",
+        "frame": 119
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "vendor_tidy": {
+      "loop": true,
+      "entry": {
+        "clip": "vendor_tidy",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "vendor_tidy",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "waist_twister": {
+      "loop": true,
+      "entry": {
+        "clip": "waist_twister",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "waist_twister",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
     },
     "walk_backpack_straps": {
       "loop": true,
@@ -623,31 +1986,311 @@
       },
       "exit": {
         "clip": "walk_backpack_straps",
-        "frame": 34
+        "frame": 39
       },
       "source_root_delta_m": [
-        -0.05200211703777313,
+        -0.09143716841936111,
         0.0,
-        1.5936980247497559
+        1.4449673891067505
       ],
-      "endpoint_root_aligned_max_joint_m": 2.388837865275353e-07
+      "endpoint_root_aligned_max_joint_m": 1.1944189282075968e-07,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
     },
-    "assist_elder_walk": {
+    "walk_briefcase": {
       "loop": true,
       "entry": {
-        "clip": "assist_elder_walk",
+        "clip": "walk_briefcase",
         "frame": 0
       },
       "exit": {
-        "clip": "assist_elder_walk",
-        "frame": 30
+        "clip": "walk_briefcase",
+        "frame": 37
+      },
+      "source_root_delta_m": [
+        -0.06825698167085648,
+        0.0,
+        1.4929437637329102
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.1944189282075968e-07,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "walk_cane": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_cane",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_cane",
+        "frame": 41
+      },
+      "duplicate_endpoint": true,
+      "source": "Exact native arrays reused from another reviewed clip; context placement/contact only. See meta.json reuse. User acceptance pending."
+    },
+    "walk_carry_bag": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_carry_bag",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_carry_bag",
+        "frame": 41
+      },
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending.",
+      "duplicate_endpoint": true
+    },
+    "walk_carry_bags": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_carry_bags",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_carry_bags",
+        "frame": 39
+      },
+      "source_root_delta_m": [
+        -0.12241510301828384,
+        0.0,
+        1.2747079133987427
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.212866607147589e-07,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "walk_carry_box": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_carry_box",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_carry_box",
+        "frame": 47
+      },
+      "source_root_delta_m": [
+        -0.08725030720233917,
+        0.0,
+        1.2518415451049805
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.4901161193847656e-08,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "walk_closed_umbrella": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_closed_umbrella",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_closed_umbrella",
+        "frame": 39
+      },
+      "source_root_delta_m": [
+        -0.10377320647239685,
+        0.0,
+        1.4327974319458008
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.9802322387695312e-08,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "walk_drink": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_drink",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_drink",
+        "frame": 119
+      },
+      "source_root_delta_m": [
+        -0.2620301842689514,
+        0.0,
+        4.684783935546875
+      ],
+      "endpoint_root_aligned_max_joint_m": 4.76837158203125e-07,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; official postprocessing; no seam spreading"
+    },
+    "walk_hold_front": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_hold_front",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_hold_front",
+        "frame": 39
+      },
+      "source_root_delta_m": [
+        -0.052178241312503815,
+        0.0,
+        1.3707367181777954
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.1944189282075968e-07,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "walk_newspaper": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_newspaper",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_newspaper",
+        "frame": 44
+      },
+      "source_root_delta_m": [
+        -0.03228352963924408,
+        0.0,
+        1.3639028072357178
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.4901161193847656e-08,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "walk_newspaper_underarm": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_newspaper_underarm",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_newspaper_underarm",
+        "frame": 37
+      },
+      "source_root_delta_m": [
+        -0.067517951130867,
+        0.0,
+        1.3768945932388306
+      ],
+      "endpoint_root_aligned_max_joint_m": 1.1944189282075968e-07,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "walk_phone_call": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_phone_call",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_phone_call",
+        "frame": 41
+      },
+      "duplicate_endpoint": true,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "walk_stairs_down": {
+      "loop": false,
+      "entry": {
+        "clip": "walk_stairs_down",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_stairs_down",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.07887996733188629,
+        -1.522166132926941,
+        3.996269702911377
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.07527729868888855,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "walk_stairs_up": {
+      "loop": false,
+      "entry": {
+        "clip": "walk_stairs_up",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_stairs_up",
+        "frame": 149
+      },
+      "source_root_delta_m": [
+        0.0,
+        1.5215998888015747,
+        3.2334001064300537
+      ],
+      "endpoint_root_aligned_max_joint_m": 2.6656007889869215e-07,
+      "duplicate_endpoint": false,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "walk_umbrella": {
+      "loop": true,
+      "entry": {
+        "clip": "walk_umbrella",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "walk_umbrella",
+        "frame": 41
+      },
+      "duplicate_endpoint": true,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
+    },
+    "wallet_takeout": {
+      "loop": false,
+      "entry": {
+        "clip": "wallet_takeout",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "wallet_takeout",
+        "frame": 179
       },
       "source_root_delta_m": [
         0.0,
         0.0,
-        0.622570276260376
+        0.0
       ],
-      "endpoint_root_aligned_max_joint_m": 1.1920928955078125e-07
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "Unedited Kimodo whole-body reference generation; no seam fitting",
+      "entry_pose": "stand",
+      "exit_pose": "stand"
+    },
+    "water_planter_hold": {
+      "loop": true,
+      "entry": {
+        "clip": "water_planter_hold",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "water_planter_hold",
+        "frame": 89
+      },
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "duplicate_endpoint": true,
+      "source": "unaltered Kimodo; no seam spreading"
+    },
+    "wave": {
+      "loop": false,
+      "entry": {
+        "clip": "wave",
+        "frame": 0
+      },
+      "exit": {
+        "clip": "wave",
+        "frame": 119
+      },
+      "duplicate_endpoint": false,
+      "source": "Unedited native generation; assistant chronological visual review. User acceptance pending."
     }
   }
 }

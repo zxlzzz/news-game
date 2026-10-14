@@ -1,0 +1,123 @@
+{
+  "name": "fruit_choose",
+  "text": "A standing customer selects one grapefruit with the right hand, grips its near side, lifts it above the fruit crate, draws it towards the chest to inspect it while looking down, then gently puts the same fruit back in its original place. Clear pickup, raised inspection and deliberate return. The left arm stays down. Feet stay planted, torso stays outside the stall.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing customer selects one grapefruit with the right hand, grips its near side, lifts it above the fruit crate, draws it towards the chest to inspect it while looking down, then gently puts the same fruit back in its original place. Clear pickup, raised inspection and deliberate return. The left arm stays down. Feet stay planted, torso stays outside the stall.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "fruit_rest_front",
+        "grip_item": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "phases": [
+          0.28
+        ],
+        "window": [
+          0.2,
+          0.25,
+          0.28,
+          0.32
+        ],
+        "episode": "fruit_transfer"
+      },
+      {
+        "joint": "RightHand",
+        "marker": "fruit_rest_front",
+        "grip_item": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "phases": [
+          0.76
+        ],
+        "window": [
+          0.68,
+          0.73,
+          0.76,
+          0.8
+        ],
+        "episode": "fruit_transfer"
+      }
+    ],
+    "object": "fruit_stand",
+    "post": "post_fruitpick",
+    "description": "Start at fruit_stand.post_fruitpick facing the model standing marker direction. A standing customer selects one grapefruit with the right hand, grips its near side, lifts it above the fruit crate, draws it towards the chest to inspect it while looking down, then gently puts the same fruit back in its original place. Clear pickup, raised inspection and deliberate return. The left arm stays down. Feet stay planted, torso stays outside the stall. RightHand touches the physical model marker fruit_rest_front at 1.40s. RightHand touches the physical model marker fruit_rest_front at 3.80s. Grasp held_fruit at grip_front at 1.40s. Release at 3.80s onto fruit_rest_front using the item rest marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep torso outside the counter, the held fruit clear of the baskets and the hand above the scale tray.",
+    "transfers": [
+      {
+        "type": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.28,
+        "release": 0.76,
+        "initial": {
+          "space": "object",
+          "marker": "fruit_rest_front"
+        },
+        "landing": {
+          "space": "object",
+          "marker": "fruit_rest_front"
+        },
+        "source_part": "fruit_003",
+        "initial_anchor": "rest",
+        "orientation": "upright",
+        "solid_grasp": true
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep torso outside the counter, the held fruit clear of the baskets and the hand above the scale tray."
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "fruit_stand",
+      "marker": "fruit_rest_front",
+      "space": "world",
+      "episode": "fruit_transfer",
+      "keys": [
+        {
+          "frame": 42,
+          "position": [
+            -0.100249,
+            1.342532,
+            0.386474
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "fruit_stand",
+      "marker": "fruit_rest_front",
+      "space": "world",
+      "episode": "fruit_transfer",
+      "keys": [
+        {
+          "frame": 113,
+          "position": [
+            -0.100249,
+            1.342532,
+            0.386474
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "e8055c932e46a424bbd09b0cafd4158c58a51642715e17a949855a348b5de01c",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

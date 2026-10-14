@@ -1,0 +1,34 @@
+{
+  "name": "smoke",
+  "text": "A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_cigarette",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  right hand holds held_cigarette at the item grip marker.  A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "7846798ef9675409b5fb6e01c9b7fc6fc450ee06cb7786fcb24549944cb374e9",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

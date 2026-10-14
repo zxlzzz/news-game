@@ -1,0 +1,36 @@
+{
+  "name": "browse_bookstall",
+  "text": "Standing at a bookstall, reading an open book with both hands low in front of the chest, elbows bent down beside the ribs.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Standing at a bookstall, reading an open book with both hands low in front of the chest, elbows bent down beside the ribs.",
+    "duration": 5,
+    "contacts": [],
+    "object": "outdoor_bookstall",
+    "post": "post_browsebook",
+    "item": {
+      "type": "held_book_open",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "Start at outdoor_bookstall.post_browsebook facing the model standing marker direction. Standing at a bookstall, reading an open book with both hands low in front of the chest, elbows bent down beside the ribs. Hold held_book_open with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep torso outside the counter and hands above the open book, with the book clear of the front edge.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep torso outside the counter and hands above the open book, with the book clear of the front edge."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "2394f8345a208e4b81723b08b8cc0edaeaa74f4661a39012ff79f6405f0d5ddf",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

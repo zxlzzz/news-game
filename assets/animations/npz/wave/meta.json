@@ -1,17 +1,74 @@
 {
   "name": "wave",
-  "text": "A person standing in place raises their right hand beside their head and waves hello, then lowers their arm to their side.",
-  "duration": 3,
-  "seed": 42,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "text": "Standing upright, raise the right arm well above the head and wave the whole forearm from side to side broadly three times to greet a distant friend, then lower the arm. The left arm hangs relaxed.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Standing upright, raise the right arm well above the head and wave the whole forearm from side to side broadly three times to greet a distant friend, then lower the arm. The left arm hangs relaxed.",
+    "duration": 4,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 119,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "83779bb269a2e526879246c5014921dc763ddd1f30709902dcb82d54275aec46",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
   },
-  "num_samples": 1
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 0-3.967 s front sequence at 30 fps and side overview: continuous repeated forearm greeting, then a clean return to relaxed arms.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 0-3.967 s front sequence at 30 fps and side overview: continuous repeated forearm greeting, then a clean return to relaxed arms.\"\r\n  }",
+      "original_record_sha256": "03f3cec3f3ba5d36017dc44e5cf3d447df0566be0a679f324a2975e54adc4abf",
+      "current_source_sha256_at_reconciliation": "83779bb269a2e526879246c5014921dc763ddd1f30709902dcb82d54275aec46",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
 }

@@ -1,0 +1,99 @@
+{
+  "name": "point_shout",
+  "text": "A standing person raises the RIGHT arm forward to point at someone in the distance while shouting. Keep the extended right arm approximately horizontal at shoulder height throughout the pointing gesture, making two small emphatic forward jabs. The gesture is directed forward, not swept upward toward the head or swung down. The left arm stays relaxed at the side. Then stop pointing, lower the RIGHT arm completely beside the thigh, and stand upright and still with both arms hanging down. Feet remain planted.",
+  "duration": 5.0,
+  "seed": 20261010,
+  "attempt": 2,
+  "scene": {
+    "activity": "point_shout",
+    "body_only": true,
+    "description": "A standing person raises the RIGHT arm forward to point at someone in the distance while shouting. Keep the extended right arm approximately horizontal at shoulder height throughout the pointing gesture, making two small emphatic forward jabs. The gesture is directed forward, not swept upward toward the head or swung down. The left arm stays relaxed at the side. Then stop pointing, lower the RIGHT arm completely beside the thigh, and stand upright and still with both arms hanging down. Feet remain planted.",
+    "complete_activity": true,
+    "generation_stage": "complete_activity",
+    "reference_visual_check": "Attempt_001 frame82 at 2.733s personally inspected in front/side 1024px stills: forward horizontal pointing pose. Repeated only at the two semantic pointing phases, not as a dense hold.",
+    "previous_candidate_limit": "Attempt_001 repeatedly lifted the hand beside the face and dropped it, instead of directing two horizontal forward jabs."
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/f47c2f0fa46fea96/motion.npz",
+      "source_frame": 82,
+      "frame": 45,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f47c2f0fa46fea967fcf9967a3fb47c7292c8877e0df0a0d16f9991addc04c91",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/f47c2f0fa46fea96/motion.npz",
+      "source_frame": 82,
+      "frame": 85,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f47c2f0fa46fea967fcf9967a3fb47c7292c8877e0df0a0d16f9991addc04c91",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 149,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 4,
+  "raw_sha256": "abeaeac64e5c4545f64511e89a7d01a274ed5cb0f06996c5e9aeb47cb428e3d8",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/point_shout/attempt_002/motion.npz",
+    "original_meta_sha256": "47475b53b3bb765d3678bf94076521188b549dd10a4ebd79cd36d64cca2c8577",
+    "original_meta_file": "generation-original-meta.json",
+    "raw_npz_unchanged": true
+  }
+}

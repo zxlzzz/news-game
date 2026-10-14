@@ -1,52 +1,113 @@
 {
   "name": "smoke",
   "text": "A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place.",
-  "duration": 5.0,
-  "seed": 42,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_cigarette",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place. Hold held_cigarette with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/7846798ef9675409/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.004453457426279783,
+          0.0,
+          -0.004437695723026991
+        ]
+      },
+      {
+        "source": "assets/animations/sources/7846798ef9675409/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.004453457426279783,
+          0.0,
+          -0.004437695723026991
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/7846798ef9675409/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.004453457426279783,
+        0.0,
+        -0.004437695723026991
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "7846798ef9675409b5fb6e01c9b7fc6fc450ee06cb7786fcb24549944cb374e9",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/7846798ef9675409/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.004453457426279783,
+        0.0,
+        -0.004437695723026991
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "7846798ef9675409b5fb6e01c9b7fc6fc450ee06cb7786fcb24549944cb374e9",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
-  },
-  "num_samples": 1,
-  "generation_duration": 5,
-  "loop": false,
-  "trim": {
-    "take_frames": [
-      0,
-      149
-    ],
-    "reason": "Full generated clip."
-  },
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "3eb0f951acf21a47b086f8acfa12c9b76aa96dfb906fc999a57e9bab0e188b15",
+  "low_memory": false,
+  "hand_edited": false,
   "review": {
-    "status": "selected",
-    "attempts": 1,
-    "views": [
-      "front",
-      "side",
-      "hands if prop-related"
-    ],
-    "notes_zh": "站姿右手在嘴边停留后移开至胸前，左手自然下垂；无吸烟特效，手指仍为生成器放松姿态，未宣称两指夹烟。",
-    "metrics": {
-      "frames": 150,
-      "seam_root_aligned_max_joint_m": 0.17986398221452382,
-      "root_speed_min_mps": 0.0020413172896951437,
-      "root_speed_max_mps": 0.19590401649475098,
-      "root_delta_m": [
-        0.03909409046173096,
-        -0.0,
-        -0.012802481651306152
-      ],
-      "seam_global_rotation_matrix_max_abs": 0.604932427406311,
-      "floor_min_joint_y_m": 0.002864241600036621,
-      "finite": true
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "3eb0f951acf21a47b086f8acfa12c9b76aa96dfb906fc999a57e9bab0e188b15",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "0-3 s. Hand moves slightly around mouth but remains raised; inspect cigarette orientation and face contact. Whole 3 s front and side overview plus enlarged side frame: cigarette points outward from lower front of face; restrained inhale hold. This is a smoking hold, not an acquire-and-lower sequence.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"0-3 s. Hand moves slightly around mouth but remains raised; inspect cigarette orientation and face contact. Whole 3 s front and side overview plus enlarged side frame: cigarette points outward from lower front of face; restrained inhale hold. This is a smoking hold, not an acquire-and-lower sequence.\"\r\n  }",
+      "original_record_sha256": "fcbb9c2d09d069d5259a2983d344ecbb12add2fc684ce64d8decf448d97924f2",
+      "current_source_sha256_at_reconciliation": "3eb0f951acf21a47b086f8acfa12c9b76aa96dfb906fc999a57e9bab0e188b15",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
     },
-    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
-    "batch_category": "daily"
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
   }
 }

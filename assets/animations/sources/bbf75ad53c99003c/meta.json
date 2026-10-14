@@ -1,0 +1,150 @@
+{
+  "name": "enter_lean_wall",
+  "duration": 2.0,
+  "seed": 20261011,
+  "attempt": 1,
+  "text": "A relaxed standing person takes a short careful step backward toward the wall behind them. Bend the knees gently and incline the chest and head forward first, then bring the hips and lower back gently against the wall. Both feet finish planted a little in front of the hips, both arms hang relaxed down. Finish still in the supported relaxed lower-back resting posture. Keep the head and upper back away from the wall throughout. No sitting or falling.",
+  "scene": {
+    "activity": "enter_lean_wall",
+    "object": "compound_wall_solid",
+    "description": "A relaxed standing person takes a short careful step backward toward the wall behind them. Bend the knees gently and incline the chest and head forward first, then bring the hips and lower back gently against the wall. Both feet finish planted a little in front of the hips, both arms hang relaxed down. Finish still in the supported relaxed lower-back resting posture. Keep the head and upper back away from the wall throughout. No sitting or falling.",
+    "candidate_post_position": [
+      -0.03,
+      0,
+      0.220375
+    ],
+    "body_reference": {
+      "source": "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/fall_back/motion.npz",
+      "source_sha256": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+      "source_frame": 10,
+      "placement_basis": [
+        [
+          0.9997338652610779,
+          0.0,
+          0.023069145157933235
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.023069145157933235,
+          0.0,
+          0.9997338652610779
+        ]
+      ],
+      "whole_translation": [
+        0.03149400278925896,
+        0.0,
+        0.10289184749126434
+      ],
+      "intended_support": "Actual lower-back capsule touching the real wall front; complete genuine slightly bent-knee body posture, not upper-back centre forcibly set to a surface marker.",
+      "physical_static_evidence": "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-reference-screen/whole-pose-solid.json",
+      "source_whole_front_and_side_images_seen": true
+    },
+    "whole_translation_activity": "Stand 0.27 source metres farther from the shared rest stance; step backward/forward while retaining the real whole-body bow before approaching/after leaving the wall."
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0.27
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 30,
+      "source": "assets/animations/sources/e9f44a3a86a83207/motion.npz",
+      "source_frame": 10,
+      "placement_basis": [
+        [
+          0.9997338652610779,
+          0.0,
+          0.023069145157933235
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.023069145157933235,
+          0.0,
+          0.9997338652610779
+        ]
+      ],
+      "translation": [
+        0.03149400278925896,
+        0.0,
+        0.20289184749126435
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 59,
+      "source": "assets/animations/sources/e9f44a3a86a83207/motion.npz",
+      "source_frame": 10,
+      "placement_basis": [
+        [
+          0.9997338652610779,
+          0.0,
+          0.023069145157933235
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.023069145157933235,
+          0.0,
+          0.9997338652610779
+        ]
+      ],
+      "translation": [
+        0.03149400278925896,
+        0.0,
+        0.10289184749126434
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 3,
+  "raw_sha256": "bbf75ad53c99003cd8f65c73fb182b030976db6725a31fcaefe680a4e947f4b3",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/enter_lean_wall/attempt_001/motion.npz",
+    "original_meta_file": "generation-original-meta.json",
+    "original_meta_sha256": "edad57afc53352939ac48a9c8be94e8889f3bcd116f174e03a723afa502e6e43",
+    "raw_npz_unchanged": true
+  }
+}

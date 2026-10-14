@@ -1,0 +1,111 @@
+{
+  "name": "vendor_tidy",
+  "text": "A standing shopkeeper arranges objects on a counter at waist height in front of them. They lean slightly forward, reach both hands down to the counter, move the objects a short distance to the left and right, then bring their hands back. Their feet stay planted throughout.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing shopkeeper arranges objects on a counter at waist height in front of them. They lean slightly forward, reach both hands down to the counter, move the objects a short distance to the left and right, then bring their hands back. Their feet stay planted throughout.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "goods_left",
+        "phases": [
+          0.3,
+          0.65
+        ],
+        "window": [
+          0.265,
+          0.3,
+          0.65,
+          0.685
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "goods_right",
+        "phases": [
+          0.3,
+          0.65
+        ],
+        "window": [
+          0.265,
+          0.3,
+          0.65,
+          0.685
+        ]
+      }
+    ],
+    "object": "market_stall",
+    "post": "post_vendor",
+    "description": "The person starts at market_stall.post_vendor and faces the model standing marker direction. LeftHand touches goods_left at 1.50s,3.25s. RightHand touches goods_right at 1.50s,3.25s.  A standing shopkeeper arranges objects on a counter at waist height in front of them. They lean slightly forward, reach both hands down to the counter, move the objects a short distance to the left and right, then bring their hands back. Their feet stay planted throughout. Both hands are occupied at their corresponding contact points; the description defines their release. Keep torso on its standing side of the counter, elbows above the edge while reaching to goods.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep torso on its standing side of the counter, elbows above the edge while reaching to goods."
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "market_stall",
+      "marker": "goods_left",
+      "space": "world",
+      "episode": "goods_left",
+      "keys": [
+        {
+          "frame": 45,
+          "position": [
+            -0.379631,
+            1.249495,
+            0.479401
+          ]
+        },
+        {
+          "frame": 97,
+          "position": [
+            -0.379631,
+            1.249495,
+            0.479401
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "market_stall",
+      "marker": "goods_right",
+      "space": "world",
+      "episode": "goods_right",
+      "keys": [
+        {
+          "frame": 45,
+          "position": [
+            0.382058,
+            1.249421,
+            0.479575
+          ]
+        },
+        {
+          "frame": 97,
+          "position": [
+            0.382058,
+            1.249421,
+            0.479575
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "8d4745c5850189966bc733fe01d84a80616cfac5a20c872192ff779984caf895",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

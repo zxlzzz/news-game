@@ -1,0 +1,104 @@
+{
+  "name": "walk_newspaper_underarm",
+  "text": "Walking forward, the left upper arm presses a folded newspaper against the left ribs, left forearm across the waist. The right arm swings freely.",
+  "duration": 1.2666666666666666,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Walking forward, the left upper arm presses a folded newspaper against the left ribs, left forearm across the waist. The right arm swings freely.",
+    "duration": 1.2666666666666666,
+    "contacts": [],
+    "item": {
+      "type": "held_newspaper_folded",
+      "hand": "left",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. Walking forward, the left upper arm presses a folded newspaper against the left ribs, left forearm across the waist. The right arm swings freely. Hold held_newspaper_folded with left at its grip marker. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/8cb6bdaafe30a5f0/motion.npz",
+        "source_frame": 36,
+        "phase": 0,
+        "translation": [
+          0.07910026609897614,
+          0.0,
+          -1.2929388284683228
+        ]
+      },
+      {
+        "source": "assets/animations/sources/8cb6bdaafe30a5f0/motion.npz",
+        "source_frame": 36,
+        "phase": 1,
+        "translation": [
+          0.01158231496810913,
+          0.0,
+          0.08395576477050781
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/8cb6bdaafe30a5f0/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.07910026609897614,
+        0.0,
+        -1.2929388284683228
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "8cb6bdaafe30a5f035c53d53eff4af97e4f57534d113502978ea2126da250800",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/8cb6bdaafe30a5f0/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.01158231496810913,
+        0.0,
+        0.08395576477050781
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "8cb6bdaafe30a5f035c53d53eff4af97e4f57534d113502978ea2126da250800",
+        "hand_edited": false
+      },
+      "frame": 37
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "5f76e9ac24794e9cfa472de5e78b3cca8ae25da22cfc91cb83f2ed93ba924cd4",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "5f76e9ac24794e9cfa472de5e78b3cca8ae25da22cfc91cb83f2ed93ba924cd4",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"5f76e9ac24794e9cfa472de5e78b3cca8ae25da22cfc91cb83f2ed93ba924cd4\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "45ebcd31657eeca03a0241f10888a940e91a74533ada7c93634b9ffca09eb6d9",
+      "current_source_sha256_at_reconciliation": "5f76e9ac24794e9cfa472de5e78b3cca8ae25da22cfc91cb83f2ed93ba924cd4",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://core/orbit_camera.gd" id="1"]
+[ext_resource type="Script" path="res://scenes/empty_ground/preview_camera.gd" id="1"]
 
 [node name="View" type="Node3D"]
 
@@ -9,8 +9,8 @@ transform = Transform3D(0.819152, -0.214866, 0.531811, 0, 0.927184, 0.374607, -0
 projection = 1
 current = true
 size = 4.0
-near = 0.5
-far = 200.0
+near = 0.005
+far = 500.0
 script = ExtResource("1")
 params = "res://scenes/empty_ground/camera-params.json"
 

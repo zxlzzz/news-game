@@ -1,0 +1,34 @@
+{
+  "name": "walk_carry_bags",
+  "text": "A person walks forward carrying a heavy grocery bag in each hand, both arms hanging straight down beside the thighs with the hands steady, no arm swinging, small balanced steps forward.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks forward carrying a heavy grocery bag in each hand, both arms hanging straight down beside the thighs with the hands steady, no arm swinging, small balanced steps forward.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_shopping_bags",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. A person walks forward carrying a heavy grocery bag in each hand, both arms hanging straight down beside the thighs with the hands steady, no arm swinging, small balanced steps forward. Hold held_shopping_bags with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "4673b2e77e488b307787a294d58d3fcf6ac5fb54c7f6ec994fc65d08bf0611fb",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

@@ -2,23 +2,115 @@
   "name": "phone_booth_call",
   "text": "Standing facing a payphone at chest height, reach the right hand forward to pick up the receiver, bring it to the right ear, listen with elbow pointing down, then replace the receiver forward at chest height.",
   "duration": 5,
-  "seed": 5301,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
-  "fps": 30.0,
-  "diffusion_steps": 100,
-  "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Standing facing a payphone at chest height, reach the right hand forward to pick up the receiver, bring it to the right ear, listen with elbow pointing down, then replace the receiver forward at chest height.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "receiver_rest",
+        "phases": [
+          0.2
+        ],
+        "window": [
+          0.11499999999999999,
+          0.15,
+          0.2,
+          0.23500000000000001
+        ],
+        "episode": "held_transfer"
+      },
+      {
+        "joint": "RightHand",
+        "marker": "receiver_rest",
+        "phases": [
+          0.85
+        ],
+        "window": [
+          0.765,
+          0.8,
+          0.85,
+          0.885
+        ],
+        "episode": "held_transfer"
+      }
+    ],
+    "object": "phone_booth",
+    "post": "post_payphone",
+    "description": "Start at phone_booth.post_payphone facing the model standing marker direction. Standing facing a payphone at chest height, reach the right hand forward to pick up the receiver, bring it to the right ear, listen with elbow pointing down, then replace the receiver forward at chest height. RightHand touches the physical model marker receiver_rest at 1.00s. RightHand touches the physical model marker receiver_rest at 4.25s. Grasp held_telephone_receiver at grip at 1.00s. Release at 4.25s onto receiver_rest using the item grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep forearm clear of the side panels and receiver cord; do not put the elbow through the payphone box.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep forearm clear of the side panels and receiver cord; do not put the elbow through the payphone box.",
+    "transfers": [
+      {
+        "type": "held_telephone_receiver",
+        "hand": "handRight",
+        "grip": "grip",
+        "take": 0.2,
+        "release": 0.85,
+        "initial": {
+          "marker": "receiver_rest"
+        },
+        "landing": {
+          "marker": "receiver_rest"
+        }
+      }
+    ]
   },
-  "num_samples": 1,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "phone_booth_call",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
-  }
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "phone_booth",
+      "marker": "receiver_rest",
+      "space": "world",
+      "episode": "held_transfer",
+      "keys": [
+        {
+          "frame": 30,
+          "position": [
+            0.085794,
+            1.435644,
+            0.420322
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "phone_booth",
+      "marker": "receiver_rest",
+      "space": "world",
+      "episode": "held_transfer",
+      "keys": [
+        {
+          "frame": 127,
+          "position": [
+            0.085794,
+            1.435644,
+            0.420322
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "3d39fba2c36a84473025c02a01c6ea4ac7687d1538244b9f9e10b1ffcc71e2c1",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "3d39fba2c36a84473025c02a01c6ea4ac7687d1538244b9f9e10b1ffcc71e2c1",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "source_frame": "fixed"
 }

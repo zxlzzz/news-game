@@ -1,24 +1,42 @@
 {
   "name": "bike_scan_unlock",
   "text": "Standing beside a bicycle, hold a phone in the right hand at waist height, bend slightly forward to aim the phone at the bike handlebar, briefly hold steady to scan, straighten up and lower the phone.",
-  "duration": 4,
-  "seed": 5303,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
-  "fps": 30.0,
-  "diffusion_steps": 100,
-  "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Standing beside a bicycle, hold a phone in the right hand at waist height, bend slightly forward to aim the phone at the bike handlebar, briefly hold steady to scan, straighten up and lower the phone.",
+    "duration": 5,
+    "contacts": [],
+    "object": "bicycle",
+    "post": "post_bikescan",
+    "item": {
+      "type": "held_phone",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "The person starts at bicycle.post_bikescan and faces the model standing marker direction.  right hand holds held_phone at the item grip marker.  Standing beside a bicycle, hold a phone in the right hand at waist height, bend slightly forward to aim the phone at the bike handlebar, briefly hold steady to scan, straighten up and lower the phone. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
   },
-  "num_samples": 1,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "bike_scan_unlock",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
-  }
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "f98330925e9186c86bcebb38177221c7c890c10d4e77d942884f2d9a462eab40",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "f98330925e9186c86bcebb38177221c7c890c10d4e77d942884f2d9a462eab40",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "source_frame": "fixed"
 }

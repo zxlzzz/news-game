@@ -1,0 +1,363 @@
+{
+  "name": "coast_bicycle",
+  "text": "Sitting on a bicycle saddle, holding the handlebars with both hands, elbows bent downward beside the ribs. Feet rest on the pedals. Relaxed forward lean.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "object": "bicycle",
+    "post": "post_rider",
+    "duration": 4,
+    "text": "Sitting on a bicycle saddle, holding the handlebars with both hands, elbows bent downward beside the ribs. Feet rest on the pedals. Relaxed forward lean.",
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "idle_hand": "Both hands follow the stated task; a hand without a task rests beside its thigh.",
+    "clearance": "Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "description": "Start at bicycle.post_rider facing the model standing marker direction. Sitting on a bicycle saddle, holding the handlebars with both hands, elbows bent downward beside the ribs. Feet rest on the pedals. Relaxed forward lean. Hips touches the physical model marker hip_seat at 0.00s, 4.00s. LeftHand touches the physical model marker grip_left at 0.00s, 4.00s. RightHand touches the physical model marker grip_right at 0.00s, 4.00s. LeftFoot touches the physical model marker foot_left at 0.00s, 4.00s. RightFoot touches the physical model marker foot_right at 0.00s, 4.00s. Both hands follow the stated task; a hand without a task rests beside its thigh. Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/c671f540fb205db7/motion.npz",
+        "source_frame": 30,
+        "phase": 0,
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/sources/c671f540fb205db7/motion.npz",
+        "source_frame": 30,
+        "phase": 1,
+        "align_hip": "hip_seat"
+      }
+    ],
+    "loop": true,
+    "seat_surface": {
+      "node": "saddle",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bicycle",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.86224,
+            -0.21556
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.0,
+            0.86224,
+            -0.21556
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "bicycle",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.204409,
+            1.218796,
+            0.145388
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.204409,
+            1.218796,
+            0.145388
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "bicycle",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.201825,
+            1.218761,
+            0.14552
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            -0.201825,
+            1.218761,
+            0.14552
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "bicycle",
+      "marker": "foot_left",
+      "space": "world",
+      "episode": "foot_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.22824,
+            0.647133,
+            0.1902
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.22824,
+            0.647133,
+            0.1902
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "bicycle",
+      "marker": "foot_right",
+      "space": "world",
+      "episode": "foot_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.22824,
+            0.647222,
+            -0.1902
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            -0.22824,
+            0.647222,
+            -0.1902
+          ],
+          "root_xz": [
+            0.0,
+            -0.21556
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/c671f540fb205db7/motion.npz",
+      "source_frame": 30,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "c671f540fb205db7f1d0c235677457769dd1462dc8cb5fc98c3f9d1f11e4e6c0",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        -0.008556975051760674,
+        0.6898609235191345,
+        -0.257272112724781
+      ],
+      "placement_basis": [
+        [
+          0.9986317846127949,
+          0,
+          -0.05229300872071202
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.05229300872071202,
+          0,
+          0.9986317846127949
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    },
+    {
+      "source": "assets/animations/sources/c671f540fb205db7/motion.npz",
+      "source_frame": 30,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "c671f540fb205db7f1d0c235677457769dd1462dc8cb5fc98c3f9d1f11e4e6c0",
+        "hand_edited": false
+      },
+      "frame": 119,
+      "translation": [
+        -0.008556975051760674,
+        0.6898609235191345,
+        -0.257272112724781
+      ],
+      "placement_basis": [
+        [
+          0.9986317846127949,
+          0,
+          -0.05229300872071202
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.05229300872071202,
+          0,
+          0.9986317846127949
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "c12790255499d1334b887a3182136c773ca5eb4a83c2de0ee147e25c862da3a9",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_review_pending",
+    "accepted_by_hsinlung": false
+  },
+  "delivery_source": ".tmp/full_motion_review/generated/coast_bicycle/attempt_001",
+  "source_frame": "fixed"
+}

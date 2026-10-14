@@ -1,0 +1,104 @@
+{
+  "name": "loop_newspaper_underarm",
+  "text": "Stand still upright, the left upper arm gently pressing a folded newspaper against the left ribs and the left forearm across the waist. Right arm hangs relaxed. Feet stay planted apart, with subtle breathing and weight shifts.",
+  "duration": 3.0,
+  "seed": 61008,
+  "attempt": 2,
+  "scene": {
+    "text": "Stand still upright, the left upper arm gently pressing a folded newspaper against the left ribs and the left forearm across the waist. Right arm hangs relaxed. Feet stay planted apart, with subtle breathing and weight shifts.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_newspaper_folded",
+      "hand": "left",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. Stand still upright, the left upper arm gently pressing a folded newspaper against the left ribs and the left forearm across the waist. Right arm hangs relaxed. Feet stay planted apart, with subtle breathing and weight shifts. Hold held_newspaper_folded with left at its grip marker. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/b6e012568dd0e616/motion.npz",
+      "source_frame": 67,
+      "frame": 0,
+      "translation": [
+        -0.06916673481464386,
+        0,
+        -0.034397147595882416
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "b6e012568dd0e616bf0e061c9debe804bec70111dc2bb62da0e38028cb201041",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/b6e012568dd0e616/motion.npz",
+      "source_frame": 67,
+      "frame": 89,
+      "translation": [
+        -0.06916673481464386,
+        0,
+        -0.034397147595882416
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "b6e012568dd0e616bf0e061c9debe804bec70111dc2bb62da0e38028cb201041",
+        "hand_edited": false
+      }
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "79ab746bc48e9fab5962eef0ad02c4e0b107fac17300edcb7bffb8f32f4ac1c7",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "79ab746bc48e9fab5962eef0ad02c4e0b107fac17300edcb7bffb8f32f4ac1c7",
+    "notes": "Reviewed with the actual item/object from front and side. Source arrays remain unedited; endpoint audit is separate from acting quality.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"raw_sha256\": \"79ab746bc48e9fab5962eef0ad02c4e0b107fac17300edcb7bffb8f32f4ac1c7\",\n    \"notes\": \"Reviewed with the actual item/object from front and side. Source arrays remain unedited; endpoint audit is separate from acting quality.\"\n  }",
+      "original_record_sha256": "81c23d7283dd82da5a5114bda3cd3fb0b2e226d82fdfc1b4bdba2035cca873e6",
+      "current_source_sha256_at_reconciliation": "79ab746bc48e9fab5962eef0ad02c4e0b107fac17300edcb7bffb8f32f4ac1c7",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  },
+  "generation_pose_ids": {},
+  "endpoint_review": {
+    "source_tolerance_m": 0.005,
+    "boundaries": {
+      "loop": {
+        "max_position_gap_m": 0.0,
+        "pelvis_feet_hands_velocity_gap_m_s": [
+          0.17418083548545837,
+          0.1523786038160324,
+          0.15763570368289948,
+          0.06723669171333313,
+          0.2600022554397583
+        ],
+        "max_velocity_gap_m_s": 0.28820937871932983
+      }
+    }
+  },
+  "generation_statistics": {
+    "fullbody_frames": 2,
+    "fullbody_fraction": 0.022222222222222223,
+    "frozen_frames": 0,
+    "mean_root_horizontal_speed_m_s": 0.025589345023036003
+  }
+}

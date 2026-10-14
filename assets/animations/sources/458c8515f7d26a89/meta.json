@@ -1,0 +1,143 @@
+{
+  "name": "push_bicycle",
+  "text": "A person walks forward on the right side of a bicycle, holding the near handlebar with the left hand. The left forearm reaches across toward the bicycle without crossing the torso. Right arm swings gently. Guide the bicycle upright, feet and knees stay beside the frame and rear wheel.",
+  "duration": 1.3,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person walks forward on the right side of a bicycle, holding the near handlebar with the left hand. The left forearm reaches across toward the bicycle without crossing the torso. Right arm swings gently. Guide the bicycle upright, feet and knees stay beside the frame and rear wheel.",
+    "duration": 1.3,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_push",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bicycle",
+    "post": "post_bikepush",
+    "description": "Start at bicycle.post_bikepush facing the model standing marker direction. A person walks forward on the right side of a bicycle, holding the near handlebar with the left hand. The left forearm reaches across toward the bicycle without crossing the torso. Right arm swings gently. Guide the bicycle upright, feet and knees stay beside the frame and rear wheel. LeftHand touches the physical model marker grip_push at 0.00s, 1.30s. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "travel_with_actor": true,
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/15c4d5aa8afe9a9f/motion.npz",
+        "source_frame": 36,
+        "phase": 0,
+        "translation": [
+          0.04368565231561661,
+          0.0,
+          -1.435301661491394
+        ]
+      },
+      {
+        "source": "assets/animations/sources/15c4d5aa8afe9a9f/motion.npz",
+        "source_frame": 36,
+        "phase": 1,
+        "translation": [
+          0.048465728759765625,
+          0.0,
+          0.2756836414337158
+        ]
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "bicycle",
+      "marker": "grip_push",
+      "space": "carried",
+      "episode": "grip_push",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.303475,
+            1.266419,
+            0.301704
+          ]
+        },
+        {
+          "frame": 38,
+          "position": [
+            -0.303475,
+            1.266419,
+            0.301704
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/15c4d5aa8afe9a9f/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.04368565231561661,
+        0.0,
+        -1.435301661491394
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "15c4d5aa8afe9a9f1f33c8681f84d591155e5720a5d994dc5c73a850e062f6fe",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/15c4d5aa8afe9a9f/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.048465728759765625,
+        0.0,
+        0.2756836414337158
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "15c4d5aa8afe9a9f1f33c8681f84d591155e5720a5d994dc5c73a850e062f6fe",
+        "hand_edited": false
+      },
+      "frame": 38
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "458c8515f7d26a89fd5f2d908f0a58d6405a66cc69b7c185a864b16d17314d5f",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "458c8515f7d26a89fd5f2d908f0a58d6405a66cc69b7c185a864b16d17314d5f",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"458c8515f7d26a89fd5f2d908f0a58d6405a66cc69b7c185a864b16d17314d5f\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "15b176881a2b695566bb606d8f6aa3411275104e7b9980a64336802279a2f674",
+      "current_source_sha256_at_reconciliation": "458c8515f7d26a89fd5f2d908f0a58d6405a66cc69b7c185a864b16d17314d5f",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

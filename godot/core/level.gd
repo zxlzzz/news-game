@@ -22,6 +22,8 @@ const LEVEL_PARAMS := "res://core/level-params.json"
 @export var palette: ScenePalette
 @export var view: PackedScene
 @export var population: Population
+## Static object-only scenes skip both roaming people and automatic post occupants.
+@export var spawn_population := true
 ## Third-party material name -> slot, from core/material_maps (read by the look and by core/walk_grid.gd).
 var slot_map: Dictionary
 
@@ -45,7 +47,8 @@ func _ready() -> void:
 			_merge_road_modules(c)
 	# People before the look: riders bring vehicle models that need the ink look too.
 	# (Their stick figures have no mesh until their first frame, so the look pass skips them.)
-	add_child(Crowd.new(self))
+	if spawn_population:
+		add_child(Crowd.new(self))
 	if lp.mergeTile > 0:
 		_merge_static(self, lp.mergeTile)
 		for c in get_children():
@@ -240,7 +243,7 @@ func _merge_static(parent: Node3D, tile: float) -> void:
 
 static func _mesh_instances(n: Node, out: Array[MeshInstance3D]) -> void:
 	# Doors nested inside buildings must retain their moving meshes and hinge tree.
-	if n.is_in_group(&"operable_door"):
+	if n.is_in_group(&"operable_door") or n.is_in_group(&"operable_window"):
 		return
 	if n is MeshInstance3D and (n as MeshInstance3D).mesh != null:
 		out.append(n)

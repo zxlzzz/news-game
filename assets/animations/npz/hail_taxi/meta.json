@@ -1,27 +1,188 @@
 {
   "name": "hail_taxi",
-  "text": "A standing person near a street lifts the right arm high and waves broadly twice to hail a taxi, leans forward slightly, then lowers the arm. Feet planted.",
-  "duration": 5,
-  "seed": 2203,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "text": "A standing person near a street lifts the RIGHT arm high and waves broadly twice to hail a taxi, leaning forward slightly. Then finish the wave, lower the right arm fully to hang relaxed by the right thigh and straighten the torso. The left arm hangs naturally beside the left thigh. Finish upright and still with both arms down. Feet stay planted.",
+  "duration": 5.0,
+  "seed": 20261010,
+  "attempt": 1,
+  "scene": {
+    "activity": "hail_taxi",
+    "body_only": true,
+    "description": "A standing person near a street lifts the RIGHT arm high and waves broadly twice to hail a taxi, leaning forward slightly. Then finish the wave, lower the right arm fully to hang relaxed by the right thigh and straighten the torso. The left arm hangs naturally beside the left thigh. Finish upright and still with both arms down. Feet stay planted.",
+    "complete_activity": true,
+    "generation_stage": "complete_activity"
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 149,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "6642826f062db72c75201e4e676276531a66e626967611ba53b1da2e5ae0e06f",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "6642826f062db72c75201e4e676276531a66e626967611ba53b1da2e5ae0e06f",
+    "date": "2026-10-10",
+    "observations": "Right arm raises and waves beside the head, then fully lowers by about 3 seconds. It stays lowered at the endpoint and half a second afterward. Front/side silhouette overlap near 1.5 seconds is a projection: actual native stage forearm/head sphere-proxy gap remains at least +0.0241m.",
+    "review_folder": ".tmp/motion-repair-2026-10-10/semantic/actual-stage",
+    "record": "docs/motion-review-evidence-2026-10-11/records/semantic-five-source-publication.json",
+    "captured_views_degrees": [
+      0,
+      90,
+      135
+    ],
+    "personally_inspected_all_activity_time_views_degrees": [
+      0,
+      135
+    ],
+    "activity_time_samples": 31,
+    "image_resolution": [
+      1024,
+      1024
+    ],
+    "personal_view_method": "Original-pixel 400x600 actor crops in 38 temporal pages; additional full 1024px critical side stills and front post-action hold",
+    "approx_sample_interval_seconds": 0.16555555555555568,
+    "post_action_hold_seconds": 0.5,
+    "full_speed_playback_viewed": false,
+    "native_stage_geometry_samples": 150,
+    "native_stage_metrics": {
+      "id": "hail_taxi",
+      "native_samples": 150,
+      "head_forearm_sphere_proxy_min": {
+        "gap_m": 0.02411709655411253,
+        "sample": 46,
+        "time": 1.53333333333333,
+        "segment": 8,
+        "side": "Right",
+        "nearest_fraction": 0.7340107538805464
+      },
+      "head_forearm_sphere_proxy_max": {
+        "gap_m": 0.2652665698437933,
+        "sample": 70,
+        "time": 2.33333333333333,
+        "segment": 3,
+        "side": "Left",
+        "nearest_fraction": 0.0
+      },
+      "min_gap_at_capture_1_49s": {
+        "gap_m": 0.03315175380708745,
+        "sample": 45,
+        "time": 1.5,
+        "segment": 8,
+        "side": "Right",
+        "nearest_fraction": 0.7026520962360003
+      },
+      "largest_adjacent_drawn_endpoint_step_m": 0.1137220216095112,
+      "largest_step_from_sample": 9,
+      "largest_step_endpoint_index": 17,
+      "drawn_first_last_max_endpoint_gap_m": 0.0
+    },
+    "version_inputs_sha256": {
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/adjust_clothes.json": "1424c0eddb3514df5aafaaa089b5faa4598a9a1f0868149aded4b1a71d82c31e",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hail_taxi.json": "0afd1117eafd5efbda302a92b4f2905eedb918e0890a1eeb8b3be05b3fa90a94",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hop.json": "2f678f12be81a4c58d3ee19c35c9254923a8c6f766afbd83628e57662c20cc86",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/peek_side.json": "c91ef19e968a8439833962fd23911bc16b7f201fc2862d8b0759ec27aa2584a4",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/point_shout.json": "30c971b97193c81d42f9d0b7bb965fc2fa0cdddd698d40b3fe1bae019a87d03e",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate_clip.gd": "0ab272876a6e0de731dac61956e430e2b3e792d4f4f36ae86149f80d2ef3e8b1",
+      "res://npc/clip-setup.json": "e1b8ce367a757da469a79713d8eebe1e575a864fa8298e4c5d24953ac162ae96",
+      "res://npc/clip_pose.gd": "e57205988edb80d125484dfee341e5520ea7c6685377855bec355a4f21b1b182",
+      "res://npc/contact_pose.gd": "2434e70425aee11488b32a46347e9c7e5c00f49eb3505b40abf5c59e7554604c",
+      "res://npc/interactions.json": "53ca88b05f82dbbe3dd4a815bcc90c0b5b013bc1618394ca60bcd42b9e0bcd04",
+      "res://npc/skeleton_mapping.gd": "0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc"
+    },
+    "limitations": "Seek-based static sampling, not complete intended-speed playback; native stage geometry describes measured positions and does not approve naturalness or continuous-time dynamics.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"raw_sha256\": \"6642826f062db72c75201e4e676276531a66e626967611ba53b1da2e5ae0e06f\",\r\n    \"date\": \"2026-10-10\",\r\n    \"observations\": \"Right arm raises and waves beside the head, then fully lowers by about 3 seconds. It stays lowered at the endpoint and half a second afterward. Front/side silhouette overlap near 1.5 seconds is a projection: actual native stage forearm/head sphere-proxy gap remains at least +0.0241m.\",\r\n    \"review_folder\": \".tmp/motion-repair-2026-10-10/semantic/actual-stage\",\r\n    \"record\": \".tmp/motion-repair-2026-10-10/semantic/semantic-repair-summary.json\",\r\n    \"captured_views_degrees\": [\r\n      0,\r\n      90,\r\n      135\r\n    ],\r\n    \"personally_inspected_all_activity_time_views_degrees\": [\r\n      0,\r\n      135\r\n    ],\r\n    \"activity_time_samples\": 31,\r\n    \"image_resolution\": [\r\n      1024,\r\n      1024\r\n    ],\r\n    \"personal_view_method\": \"Original-pixel 400x600 actor crops in 38 temporal pages; additional full 1024px critical side stills and front post-action hold\",\r\n    \"approx_sample_interval_seconds\": 0.16555555555555568,\r\n    \"post_action_hold_seconds\": 0.5,\r\n    \"full_speed_playback_viewed\": false,\r\n    \"native_stage_geometry_samples\": 150,\r\n    \"native_stage_metrics\": {\r\n      \"id\": \"hail_taxi\",\r\n      \"native_samples\": 150,\r\n      \"head_forearm_sphere_proxy_min\": {\r\n        \"gap_m\": 0.02411709655411253,\r\n        \"sample\": 46,\r\n        \"time\": 1.53333333333333,\r\n        \"segment\": 8,\r\n        \"side\": \"Right\",\r\n        \"nearest_fraction\": 0.7340107538805464\r\n      },\r\n      \"head_forearm_sphere_proxy_max\": {\r\n        \"gap_m\": 0.2652665698437933,\r\n        \"sample\": 70,\r\n        \"time\": 2.33333333333333,\r\n        \"segment\": 3,\r\n        \"side\": \"Left\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"min_gap_at_capture_1_49s\": {\r\n        \"gap_m\": 0.03315175380708745,\r\n        \"sample\": 45,\r\n        \"time\": 1.5,\r\n        \"segment\": 8,\r\n        \"side\": \"Right\",\r\n        \"nearest_fraction\": 0.7026520962360003\r\n      },\r\n      \"largest_adjacent_drawn_endpoint_step_m\": 0.1137220216095112,\r\n      \"largest_step_from_sample\": 9,\r\n      \"largest_step_endpoint_index\": 17,\r\n      \"drawn_first_last_max_endpoint_gap_m\": 0.0\r\n    },\r\n    \"version_inputs_sha256\": {\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/adjust_clothes.json\": \"1424c0eddb3514df5aafaaa089b5faa4598a9a1f0868149aded4b1a71d82c31e\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hail_taxi.json\": \"0afd1117eafd5efbda302a92b4f2905eedb918e0890a1eeb8b3be05b3fa90a94\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hop.json\": \"2f678f12be81a4c58d3ee19c35c9254923a8c6f766afbd83628e57662c20cc86\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/peek_side.json\": \"c91ef19e968a8439833962fd23911bc16b7f201fc2862d8b0759ec27aa2584a4\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/point_shout.json\": \"30c971b97193c81d42f9d0b7bb965fc2fa0cdddd698d40b3fe1bae019a87d03e\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate_clip.gd\": \"0ab272876a6e0de731dac61956e430e2b3e792d4f4f36ae86149f80d2ef3e8b1\",\r\n      \"res://npc/clip-setup.json\": \"e1b8ce367a757da469a79713d8eebe1e575a864fa8298e4c5d24953ac162ae96\",\r\n      \"res://npc/clip_pose.gd\": \"e57205988edb80d125484dfee341e5520ea7c6685377855bec355a4f21b1b182\",\r\n      \"res://npc/contact_pose.gd\": \"2434e70425aee11488b32a46347e9c7e5c00f49eb3505b40abf5c59e7554604c\",\r\n      \"res://npc/interactions.json\": \"53ca88b05f82dbbe3dd4a815bcc90c0b5b013bc1618394ca60bcd42b9e0bcd04\",\r\n      \"res://npc/skeleton_mapping.gd\": \"0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc\"\r\n    },\r\n    \"limitations\": \"Seek-based static sampling, not complete intended-speed playback; native stage geometry describes measured positions and does not approve naturalness or continuous-time dynamics.\"\r\n  }",
+      "original_record_sha256": "efb06b8198f793bd4e49de512ea14b2b9cc31d9381fd4708a4d78d0493ab7736",
+      "current_source_sha256_at_reconciliation": "6642826f062db72c75201e4e676276531a66e626967611ba53b1da2e5ae0e06f",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "evidence_path_migrations": [
+      {
+        "field": "record",
+        "original_path": ".tmp/motion-repair-2026-10-10/semantic/semantic-repair-summary.json",
+        "durable_path": "docs/motion-review-evidence-2026-10-11/records/semantic-five-source-publication.json",
+        "sha256": "cee7c09f347dbc6b936323895946b3f31de7b6cb3ddde94d400428813ffa5348",
+        "content_changed": false
+      }
+    ],
+    "record_sha256": "cee7c09f347dbc6b936323895946b3f31de7b6cb3ddde94d400428813ffa5348"
   },
-  "num_samples": 1,
-  "loop": false,
-  "root_average_speed_m_s": 0.017042700201272964,
-  "mapped_average_speed_m_s": 0.013440615300688458,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": null,
-    "base_clip": "hail_taxi",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/hail_taxi/attempt_001/motion.npz",
+    "original_meta_sha256": "3cda00251dceb18f82428ce7471a5905a2a7e325f972421febf4e8ac63089575",
+    "original_meta_file": "generation-original-meta.json",
+    "raw_npz_unchanged": true
+  },
+  "delivery_source": "assets/animations/sources/6642826f062db72c",
+  "repair": {
+    "date": "2026-10-10",
+    "reason": "Named activity had a wrong final state or wrong synchronous-hop meaning",
+    "replaced_source_sha256": "7f2440a89d0867c10a2a2f559d5c39cd7e807fd78052be7748e2db958f86045c",
+    "replaced_meta_sha256": "9bb5645bfd216902d6714db226ea537d0c1c8cec7e9266abcfadd03eb1453e4c",
+    "generated_source_npz_unchanged": true
+  },
+  "material_endpoints": {
+    "entry": "stand",
+    "exit": "stand",
+    "kind": "transition",
+    "source_sha256": "6642826f062db72c75201e4e676276531a66e626967611ba53b1da2e5ae0e06f",
+    "boundary_edits": [],
+    "boundary_velocity_alignment": [],
+    "trim": null,
+    "method": "Unedited Kimodo sparse semantic full-body key generation; no authored joint path, seam fitting or FK boundary edit",
+    "entry_reference": {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d"
+    },
+    "exit_reference": {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d"
+    }
   }
 }

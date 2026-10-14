@@ -155,6 +155,8 @@ func choose(person: Dictionary, posts: Array, rng: RandomNumberGenerator):
 		for post in posts:
 			if post.kind != kind or post.agent != null or not _gates_hold(row, post, posts):
 				continue
+			if post.has("room") and not post.room.call():
+				continue  # a seat span with no free place (crowd.gd)
 			var s := score(r, person.kind, person.pos, post.marker.global_position)
 			var pick: float = s + rng.randf() * jitter
 			if s > 0.0 and pick > best_pick:

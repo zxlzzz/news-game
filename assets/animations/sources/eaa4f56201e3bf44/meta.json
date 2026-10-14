@@ -1,0 +1,130 @@
+{
+  "name": "loop_push_handle",
+  "text": "Stand still behind a shopping cart, both hands resting on the handle in front of the abdomen. Elbows relaxed and bent down, forearms forward. Both feet stay planted apart, torso upright, with subtle breathing. Do not push or walk.",
+  "duration": 3.0,
+  "seed": 61008,
+  "attempt": 2,
+  "scene": {
+    "text": "Stand still behind a shopping cart, both hands resting on the handle in front of the abdomen. Elbows relaxed and bent down, forearms forward. Both feet stay planted apart, torso upright, with subtle breathing. Do not push or walk.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "shopping_cart",
+    "post": "post_push",
+    "description": "Start at shopping_cart.post_push facing the model standing marker direction. Stand still behind a shopping cart, both hands resting on the handle in front of the abdomen. Elbows relaxed and bent down, forearms forward. Both feet stay planted apart, torso upright, with subtle breathing. Do not push or walk. LeftHand touches the physical model marker grip_left at 0.00s, 3.00s. RightHand touches the physical model marker grip_right at 0.00s, 3.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/073dba28e148d051/motion.npz",
+      "source_frame": 67,
+      "frame": 0,
+      "translation": [
+        -0.02680997923016548,
+        0,
+        -0.023368703201413155
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "073dba28e148d0514da72441a16ba0eaf124d14241f79457a27fbb8f4130c915",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/073dba28e148d051/motion.npz",
+      "source_frame": 67,
+      "frame": 89,
+      "translation": [
+        -0.02680997923016548,
+        0,
+        -0.023368703201413155
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "073dba28e148d0514da72441a16ba0eaf124d14241f79457a27fbb8f4130c915",
+        "hand_edited": false
+      }
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "eaa4f56201e3bf44ddab31eb9ec57757327ff391105ad285a04afec7df5ad958",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "eaa4f56201e3bf44ddab31eb9ec57757327ff391105ad285a04afec7df5ad958",
+    "notes": "Reviewed with the actual item/object from front and side. Source arrays remain unedited; endpoint audit is separate from acting quality.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"raw_sha256\": \"eaa4f56201e3bf44ddab31eb9ec57757327ff391105ad285a04afec7df5ad958\",\n    \"notes\": \"Reviewed with the actual item/object from front and side. Source arrays remain unedited; endpoint audit is separate from acting quality.\"\n  }",
+      "original_record_sha256": "47541b0ffa8edd1bce50faec801c4d80510c95a337e9ba31de28c7d802d46957",
+      "current_source_sha256_at_reconciliation": "eaa4f56201e3bf44ddab31eb9ec57757327ff391105ad285a04afec7df5ad958",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  },
+  "generation_pose_ids": {},
+  "endpoint_review": {
+    "source_tolerance_m": 0.005,
+    "boundaries": {
+      "loop": {
+        "max_position_gap_m": 0.0,
+        "pelvis_feet_hands_velocity_gap_m_s": [
+          0.144643172621727,
+          0.16092993319034576,
+          0.1340729147195816,
+          0.1455780267715454,
+          0.1626860648393631
+        ],
+        "max_velocity_gap_m_s": 0.20383289456367493
+      }
+    }
+  },
+  "generation_statistics": {
+    "fullbody_frames": 2,
+    "fullbody_fraction": 0.022222222222222223,
+    "frozen_frames": 0,
+    "mean_root_horizontal_speed_m_s": 0.012046054936945438
+  }
+}

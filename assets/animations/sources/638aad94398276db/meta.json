@@ -1,0 +1,114 @@
+{
+  "name": "sit_bench",
+  "text": "A person sits quietly upright on a bench, both thighs pointing forward in parallel, both lower legs vertical, both soles flat on the floor and both knees comfortably apart. Both hands lie on the lap. Keep legs uncrossed and feet planted throughout. Subtle breathing only.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person sits quietly upright on a bench, both thighs pointing forward in parallel, both lower legs vertical, both soles flat on the floor and both knees comfortably apart. Both hands lie on the lap. Keep legs uncrossed and feet planted throughout. Subtle breathing only.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bench",
+    "post": "post_sit_1",
+    "description": "The person starts at bench.post_sit_1 and faces the model standing marker direction. Hips touches hip_seat at 0.00s,5.00s.  A person sits quietly upright on a bench, both thighs pointing forward in parallel, both lower legs vertical, both soles flat on the floor and both knees comfortably apart. Both hands lie on the lap. Keep legs uncrossed and feet planted throughout. Subtle breathing only. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 0,
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 1,
+        "align_hip": "hip_seat"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bench",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        0.0,
+        0.018900004005432125,
+        0.0
+      ]
+    },
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        0.0,
+        0.018900004005432125,
+        0.0
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "638aad94398276dbe8bb7d2b6432de9cf53b479ad6ebe800adf20da7971bbfaf",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

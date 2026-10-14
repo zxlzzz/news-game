@@ -1,0 +1,29 @@
+{
+  "name": "seesaw_seated",
+  "text": "A person sits astride a seesaw seat, facing forward toward a vertical handle. Both thighs spread sideways around the narrow beam, knees bent and pointing outward, shins descending outside the beam, feet apart. Both hands grasp the handle in front of the abdomen, elbows down, torso upright. The seesaw rocks gently up and down. Remain astride, do not stand or bring the knees together.",
+  "duration": 5,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "A person sits astride a seesaw seat, facing forward toward a vertical handle. Both thighs spread sideways around the narrow beam, knees bent and pointing outward, shins descending outside the beam, feet apart. Both hands grasp the handle in front of the abdomen, elbows down, torso upright. The seesaw rocks gently up and down. Remain astride, do not stand or bring the knees together.",
+    "duration": 5,
+    "contacts": [],
+    "idle_hand": "Hands follow the stated task.",
+    "clearance": "Keep the head, torso and limbs outside solid surfaces.",
+    "generation_stage": "text_only_pilot"
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "d9172406108f3e3c2d0fd02338547e977012211fc5065a34b8d6f8df82e65d1a",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

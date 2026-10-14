@@ -1,995 +1,729 @@
 {
   "name": "atm_take_cash",
-  "text": "A standing person leans slightly forward, reaches the right hand into the cash slot of an ATM at waist height, withdraws banknotes and brings the hand back toward the abdomen.",
-  "duration": 5.0,
-  "seed": 3133,
-  "loop": false,
-  "keyframes": [
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "text": "An adult stands facing an ATM. The right hand reaches to the low cash slot and takes the banknotes. The person first pulls the right hand backwards below the keyboard into a low position in front of the waist. Keeping the cash low, the person briefly looks down to check it. The right elbow remains relaxed low beside the body. The left hand stays empty and down. The person finishes upright with the banknotes still in the right hand at waist height, both feet settled on the ground. The right hand does not raise the banknotes to the face.",
+  "scene": {
+    "text": "Standing in front of an ATM, lean slightly forward and reach the RIGHT hand into the waist-high cash slot. Grip the banknotes and first withdraw them completely straight out from the opening below the projecting keyboard. Bring the withdrawn cash toward the low front of the abdomen before looking down at it. Keep the banknotes at this comfortable lower-abdomen height while briefly inspecting them. Finish holding the same banknotes in the RIGHT hand at the low front of the abdomen, elbow bent comfortably down. The empty LEFT hand hangs beside the left thigh throughout. Do not lift the cash toward the keyboard, chest or face, exchange hands, drop the cash or release it.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "cash_pickup",
+        "phases": [
+          0.2,
+          0.32
+        ],
+        "window": [
+          0.165,
+          0.2,
+          0.32,
+          0.355
+        ]
+      }
+    ],
+    "object": "atm_standalone",
+    "post": "post_atm",
+    "description": "Standing in front of an ATM, lean slightly forward and reach the RIGHT hand into the waist-high cash slot. Grip the banknotes and first withdraw them completely straight out from the opening below the projecting keyboard. Bring the withdrawn cash toward the low front of the abdomen before looking down at it. Keep the banknotes at this comfortable lower-abdomen height while briefly inspecting them. Finish holding the same banknotes in the RIGHT hand at the low front of the abdomen, elbow bent comfortably down. The empty LEFT hand hangs beside the left thigh throughout. Do not lift the cash toward the keyboard, chest or face, exchange hands, drop the cash or release it.",
+    "transfers": [
+      {
+        "type": "held_banknote",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.32,
+        "initial": {
+          "space": "object",
+          "marker": "cash_pickup"
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "fullbody": [
+      {
+        "phase": 0.0,
+        "source": "assets/animations/poses/stand.json",
+        "source_frame": 0
+      },
+      {
+        "phase": 0.20134228187919462,
+        "source": "assets/animations/sources/116ccddb0d15a083/motion.npz",
+        "source_frame": 65,
+        "translation": [
+          -0.03429980203509331,
+          0,
+          0.013403307646512985
+        ]
+      },
+      {
+        "phase": 0.3221476510067114,
+        "source": "assets/animations/sources/116ccddb0d15a083/motion.npz",
+        "source_frame": 65,
+        "translation": [
+          -0.03429980203509331,
+          0,
+          0.013403307646512985
+        ]
+      },
+      {
+        "phase": 0.40268456375838924,
+        "source": "assets/animations/npz/pay/motion.npz",
+        "source_frame": 28,
+        "translation": [
+          -0.2618452012538912,
+          0.007072806358337402,
+          -0.24860924482345592
+        ],
+        "placement_basis": [
+          [
+            0.992980301380158,
+            0.0,
+            -0.118279792368412
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.118279792368412,
+            0.0,
+            0.992980301380158
+          ]
+        ]
+      },
+      {
+        "phase": 1.0,
+        "source": "assets/animations/npz/pay/motion.npz",
+        "source_frame": 28,
+        "translation": [
+          -0.2618452012538912,
+          0.007072806358337402,
+          -0.24860924482345592
+        ],
+        "placement_basis": [
+          [
+            0.992980301380158,
+            0.0,
+            -0.118279792368412
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.118279792368412,
+            0.0,
+            0.992980301380158
+          ]
+        ]
+      }
+    ],
+    "arm_obstacles": [
+      "*"
+    ],
+    "generation_stage": "genuine_low_withdraw_and_retained_low_finish",
+    "complete_activity_scope": "Actual slot grasp followed by whole-pose withdrawal clear of the unchanged keyboard before low-held inspection. This is a candidate until every actual mesh relation and actual image is checked.",
+    "reference_qualification": {
+      "raw_source": "assets/animations/npz/atm_take_cash/motion.npz",
+      "raw_sha256": "abe2aedd114d21b2e2171981c4aa2ec95fa138143c90df081e302bfaf34d218a",
+      "source_frame": 149,
+      "full77_unedited": true,
+      "actual_same_hand_end_seen_in_all_angles": [
+        90,
+        135,
+        225
+      ],
+      "whole_stage_reference_time_s": 5,
+      "actual_paper_bounds_world_m": {
+        "min": [
+          -0.1111,
+          1.168,
+          0.3244
+        ],
+        "max": [
+          0.0413,
+          1.2076,
+          0.4142
+        ]
+      },
+      "keyboard_bounds_world_m": {
+        "min": [
+          -0.3000000715,
+          1.1599999666,
+          0.4849999845
+        ],
+        "max": [
+          0.2999999523,
+          1.2280000448,
+          0.7150000334
+        ]
+      },
+      "minimum_forward_separation_to_keyboard_m": 0.0708,
+      "geometry_proof": ".tmp/motion-repair-2026-10-10/semantic/context-corpus-current/atm-prop-runtime-version-equivalence.json",
+      "limitations": "The existing complete end pose and unchanged source are qualified for this sparse reference. This does not approve the newly generated middle activity or all concave scene surfaces.",
+      "superseded_as_withdrawal_reference": true,
+      "still_valid_for": "Historical retained-cash pose only; it is too high for the current low-finish target and no longer constrains this source."
+    },
+    "whole_body_reference_qualification": {
+      "scope": "Only this complete original source pose qualifies as a sparse reference; diagnostic fixture is not a generated motion.",
+      "whole_source_reference": {
+        "frame": [
+          [
+            0.0,
+            0.99838650226593,
+            0.0
+          ],
+          [
+            -0.00834991725640943,
+            1.45694851875305,
+            0.00218881100798484
+          ],
+          [
+            -0.0133087931472864,
+            1.58289527893066,
+            0.0735986667774047
+          ],
+          [
+            -0.0233906408792828,
+            1.74354386329651,
+            0.05637360482589
+          ],
+          [
+            0.159242320193179,
+            1.39401316642761,
+            0.0171098050561935
+          ],
+          [
+            0.300199335601997,
+            1.14347696304321,
+            0.0256692075979281
+          ],
+          [
+            0.302114648702672,
+            0.894333064556122,
+            0.132452791154561
+          ],
+          [
+            0.131029280445596,
+            0.488321244716644,
+            0.0585401394058815
+          ],
+          [
+            0.133451570975986,
+            0.0704732537269592,
+            -0.00723875839481968
+          ],
+          [
+            0.219228287507252,
+            0.00449854135513305,
+            0.17091810792322
+          ],
+          [
+            -0.176409296737685,
+            1.40037047863007,
+            0.0171401503326596
+          ],
+          [
+            -0.306194699206559,
+            1.14857625961304,
+            0.0657064804069274
+          ],
+          [
+            -0.14804396001554,
+            1.01373744010925,
+            0.240212725115415
+          ],
+          [
+            -0.0845945582558849,
+            0.483906626701355,
+            0.103494417758149
+          ],
+          [
+            -0.075899426790087,
+            0.0613378286361694,
+            0.0869791119503993
+          ],
+          [
+            -0.107168499037307,
+            -0.0070728063583374,
+            0.281707894221996
+          ],
+          [
+            0.104374166193921,
+            0.918546557426453,
+            0.0245362123481863
+          ],
+          [
+            -0.0963278954996127,
+            0.910727202892304,
+            0.0264065444489248
+          ]
+        ],
+        "hands_rotations": [
+          [
+            [
+              0.174975932903846,
+              0.783858473643972,
+              -0.596714329673624
+            ],
+            [
+              -0.892961859703064,
+              0.381812781095505,
+              0.240287721157074
+            ],
+            [
+              0.415672589810463,
+              0.490348693269316,
+              0.766758890415511
+            ]
+          ],
+          [
+            [
+              -0.439915505137893,
+              -0.843394065043137,
+              0.308260754921226
+            ],
+            [
+              0.310462325811386,
+              0.179606467485428,
+              0.933452129364014
+            ],
+            [
+              -0.843137970540484,
+              0.50700128089139,
+              0.183087992864563
+            ]
+          ]
+        ],
+        "left_hand_relative_hips": [
+          0.302114648702672,
+          -0.104053437709808,
+          0.132452791154561
+        ],
+        "name": "pay",
+        "placement_basis": [
+          [
+            0.992980301380158,
+            0.0,
+            -0.118279792368412
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.118279792368412,
+            0.0,
+            0.992980301380158
+          ]
+        ],
+        "rank_score": 0.0319753375913902,
+        "right_hand_relative_hips": [
+          -0.14804396001554,
+          0.0153509378433228,
+          0.240212725115415
+        ],
+        "source": "assets/animations/npz/pay/motion.npz",
+        "source_frame": 28.0,
+        "source_sha256": "f3e6da402e680bda72b74331ef5ad944b13f61d2019da566020db68f1377e758",
+        "translation": [
+          -0.230601676997451,
+          0.0,
+          -0.277835078887664
+        ],
+        "whole77_unmodified": true
+      },
+      "physical_report": "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/cash-low-whole-actual.json",
+      "physical_report_sha256": "27dbfbd6e751d0ea1f9644ae4bc0488669db2deaf31f15de49a4490f6146f47f",
+      "tests": [
+        "Canonical loader and actual Stage contacts",
+        "Every body capsule and head against ATM and held note physical meshes",
+        "Real note indexed convex SAT against20 convex ATM parts",
+        "Real concave triangle clipping and closed-surface parity against3 slot/cabinet parts",
+        "Forearms against actual head/neck/torso/legs and cross-arm capsules"
+      ],
+      "shared_shoulder_attachment_scope": "Upperarm common-neck/head7.5mm and mutual common-neck upperarms105mm retained as explicit attachment observations, not a blanket collision waiver.",
+      "actual_source_pose_image_reviews": [
+        {
+          "path": "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/actual-cash-low-pay28/genuine_low_cash_pay28_v0_f000.png",
+          "sha256": "51640f706ca73dac41fa42ea8ce34e3d2cdf966e225f3272034df9682ddd7bdd",
+          "angle": 90,
+          "personally_seen": true,
+          "detail": "original",
+          "observation": "Right hand and retained note are visibly below keyboard and withdrawn forward toward the lower abdomen; empty left arm hangs, torso upright and both soles supported. Side90 reveals note clearly."
+        },
+        {
+          "path": "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/actual-cash-low-pay28/genuine_low_cash_pay28_v1_f000.png",
+          "sha256": "abde8c5c77ce55f520d8378b76407c43c37fa20d4b4dc369eee82bafb4bbf511",
+          "angle": 135,
+          "personally_seen": true,
+          "detail": "original",
+          "observation": "Complete standing actor and device remain visible; right hand/note partly hidden by actor or edge-on. This angle alone does not establish exact grasp or clearance."
+        },
+        {
+          "path": "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/actual-cash-low-pay28/genuine_low_cash_pay28_v2_f000.png",
+          "sha256": "1c63a3283014522c7376bfbf3e829b7c16e31fde85012d8a71a8274a38f84543",
+          "angle": 225,
+          "personally_seen": true,
+          "detail": "original",
+          "observation": "Complete standing actor and device remain visible; right hand/note partly hidden by actor or edge-on. This angle alone does not establish exact grasp or clearance."
+        }
+      ],
+      "capture_inputs_sha256": {
+        "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/cash-candidate-clip-current.gd": "6c7b5ff846b15fc38186350f165e5f4507dddf09379b8c1e850c091b6eb02a28",
+        "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/cash-low-pay28-fixture.json": "866cece4ee7c8d846e164c6f3a5a61aa16bfd3dcd2a91d8f58ce957def736a7f",
+        "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/cash-low-pay28-fixture.provenance.json": "2bb44bc48e26152dad8258c75c7c063f1823fd23fd4f7583d28bc51595a1ad33",
+        "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/cash-low-whole-stage.request.json": "c3ff2fdbecc40e2fd890ba1e05a6ef0582a413429b8ed7cdd2a44019c5267de1",
+        "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/generated/carry_shoulder_reference/attempt_001/motion.npz": "c361aebb479aac6de625a6d3fc0624f3d736fe49c6fd63196add448c49b43f3a",
+        "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/generated/enter_suitcase/attempt_002/motion.npz": "fea470b995f161ee23c88e183361a66852a8a5cfcecff5569fa9100bd0285e42",
+        "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/generated/exit_suitcase/attempt_001/motion.npz": "e99b6aa47e79143bd54bf29752e642a550898733d27f3c500be340119ed391af",
+        "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/generated/stand_suitcase_reference/attempt_001/motion.npz": "40b6ebe97b6941c98f941c020cd61b0121313b4f1e0330706405dcb95b25390f",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/adjust_clothes/motion.npz": "e0e2cb9f4bed165915ed4bc0f01cafe57f889aa75848e946be9dfbb730abbac1",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/atm_keypad/motion.npz": "4e2d9dc0f6ab477886d6e37ac8f7b310669bdf0b6f36033d23b2fe753da23042",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/atm_take_cash/motion.npz": "abe2aedd114d21b2e2171981c4aa2ec95fa138143c90df081e302bfaf34d218a",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/buy_newspaper/motion.npz": "bf0dc0fdaac23e62031f551baa57c474ba6f2be2a03b525db2663a96bd3bcc08",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/car_exit/motion.npz": "850318e2992a8f594d2640df31ce8e08e1e3ba9beb7c6fc2e72af5a1a45236a7",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/carry_bags/motion.npz": "368d0aea63f3fcdd39f4d328f97d9b56ebe4c39cef9fe1065616dedd63dd60b0",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/chess_watch/motion.npz": "4e0d5cc33d9f4e7b50a15d1594f2c7fb4ada96284e46e58bb8cb4f263a00f189",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/choose_item/motion.npz": "5dbdffb86bd6f4f496da689a0ceb466cc8a3693563467234405b680696bb7944",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/drink/motion.npz": "cc281808350f7269a553c6e395cd96cb6397f411f89d4c49b1e5b6396c000ebd",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/enter_carry_box/motion.npz": "9bd179e5b19f297610849a23250a1c7404a4379188b46daf4698b32983593102",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/enter_carry_shoulder/motion.npz": "21cc71c7578acda3d0401d452c555de95668ba8c2a423115024606445f245d4d",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/enter_dog_leash/motion.npz": "06de3fe7dfdd8f372dbed1b58d9c4ce6bbc32ff3e13f3e489ec10d32cff720b0",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/enter_hold_door/motion.npz": "1cfe3f1351fddbe5fbf2c6b03ebc6b5a1fe60165663645c1013ecc5f9a4bec1b",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/enter_walk_dog/motion.npz": "0972e8a87a0bbd4403c91b6a7aadbe0c8f1900b36c7eeea5ef288884b68a964e",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_carry_box/motion.npz": "b3094acaa0178b8695259a1945865823c3ba785e7e7c2612408993ab6550fa7a",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_carry_shoulder/motion.npz": "cefb6103d3f49cdbcf6a653ea1bacc76cf7143408493e50a60fb76ffa83bf6f3",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_cleaning_pole/motion.npz": "24fd4df158bf63a0aecb42f37c99fbb5126b3ea12a98f24a48653dd5cdd5e57e",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_dog_leash/motion.npz": "3c4562b3bfff129384dec9d8b9c1318265734151b48ec14f532beead2e4a3a39",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_eat_walk/motion.npz": "3449fea834bb9385523883fb10e567d10e6d65e99c14093a18504d857df4113d",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_guitar/motion.npz": "0d0985e156ad8de4249d756421c834ef2156bccf820b643f335618df521ca1d0",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_sit_chair/motion.npz": "f98d44856d2012dc36777ea84b1b39fd2f23e5fdba0c39b71ce9a03b3a422f51",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_small_item/motion.npz": "db1b1e6e293e33a093079363fedf86bc9165734171c08e5da3dc0a6fb227717e",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_stairs_down/motion.npz": "67ed5e585de7547f5288b371a049a3ce8e7e2f100c2891c73d7ef16a5e00cb90",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/exit_walk_dog/motion.npz": "49852701b3ed5a9a4bc412b9d501298e20b0f84596e135cdd33d2a39db551295",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/fountain_drink/motion.npz": "af1a0df62c0a82788691dfe6abffed43b179b79e0590ba3c961de46370bc7ab3",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/fruit_choose/motion.npz": "9ed4099600bb9fdd15051850da4ff45e254fe2a8fecad9e0cf92029ca12ecee3",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/fruit_weigh/motion.npz": "01312ab8ebf9e1ccfdffac494d570dd27fcc9b095c4e1d6fb61e4f587d7660b6",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/parcel_terminal/motion.npz": "136557705b4b6dce2ec33ee6cc90473f4ae3d98f653e699519bf42ff349bb81b",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/pay/motion.npz": "f3e6da402e680bda72b74331ef5ad944b13f61d2019da566020db68f1377e758",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/phone_booth_call/motion.npz": "3d39fba2c36a84473025c02a01c6ea4ac7687d1538244b9f9e10b1ffcc71e2c1",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/phone_call/motion.npz": "f5008f0ca024b36ada624db277c9e619f6fa1488d00e6de8f87dde572c745afb",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/point_shout/motion.npz": "abeaeac64e5c4545f64511e89a7d01a274ed5cb0f06996c5e9aeb47cb428e3d8",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/post_letter/motion.npz": "f8acf65a4f70d801fe2de99a41a3ca1653f05bbf3b0c59faa4d73f2bd0d61426",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/post_notice/motion.npz": "4f942136fffd3cbd9b12ebaba867dd835d608e25b3bd17922f72bc41b76ddb40",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/press_button/motion.npz": "633698a2518cb0b8fc87cec8f4251420bb6fb44c3843cdf1e73811e28c9112fc",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/pull_door/motion.npz": "fc881b87a0513daf42126100b49b25047390acc70cd8d5f92ff4135b1f513319",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/push_door/motion.npz": "418bf1772a6d9095d82035f20dd5996ac7c73f670cdd22186fcac2116d646b31",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/shrug/motion.npz": "a6c27da7182939e2a2066e2e3c050b92f3958d033efd835b9dab78ea1a3ec054",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/slap_table/motion.npz": "6827682e8f5c13aa83874acfc4f03d232b64a8fef4729008a5fb3b18d09a715a",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/vendor_call/motion.npz": "e6ebbc49e7d6652adc8c25fae78d83fbfa927e3c553a748fc307d1e7431420fe",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/vendor_tidy/motion.npz": "fdb5313c49b0eb3304433f7fd9f65e44ea5f4e15be7c65ff9d006eb30a5e482d",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/walk_dog/motion.npz": "1f1c1645e1680eb0aeebceb6342d2b3fbb11ebac34ba23f37bd415067f4dcdba",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/wave/motion.npz": "83779bb269a2e526879246c5014921dc763ddd1f30709902dcb82d54275aec46",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/073dba28e148d051/motion.npz": "073dba28e148d0514da72441a16ba0eaf124d14241f79457a27fbb8f4130c915",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/116ccddb0d15a083/motion.npz": "116ccddb0d15a08396cf417cc4858e35843415dc25adbed901cd52f138607839",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/1e4465fa9a9d4d41/motion.npz": "1e4465fa9a9d4d41acbff016fe2edd4c709b3f575cf0ca1b67b77f7b9b5cfec5",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/2394f8345a208e4b/motion.npz": "2394f8345a208e4b81723b08b8cc0edaeaa74f4661a39012ff79f6405f0d5ddf",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/23cebadf34238810/motion.npz": "23cebadf3423881021c42f2eef10b118a92fec303bfdba665fdb2096a73fa4c4",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/3cb028226f6cf068/motion.npz": "3cb028226f6cf068a84e8b9e3ea5931856255cd0a7b13b26ca10c56e7565276f",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/3d4de7487457d3fe/motion.npz": "3d4de7487457d3fe934281044c04e8332a9b9ba6419baa70826146c7433c4a89",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/3f3afdb6d56d4756/motion.npz": "3f3afdb6d56d47562c4d3d6c342901a9877900dadc5366289a274266f8ddd6d2",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/49b7d2715e697593/motion.npz": "49b7d2715e69759332f331116299c817f2d21a2336a9adbcd68bc961afd085b4",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/4cd9c797f8211cd4/motion.npz": "4cd9c797f8211cd4e85f977b3c8b201ee3950f4d927f2c7e941f6166aadca4fa",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/68e72121a44de168/motion.npz": "68e72121a44de168ca488aa537794dfbd8ee50f032456b14c71fb792ae8ba119",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/69ab5b949d6773e9/motion.npz": "69ab5b949d6773e98bb4f3fd098e08afca87199d4692814cf569c7824770f65e",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/795ce7eeb76b3f92/motion.npz": "795ce7eeb76b3f925e76390beed0a8264fcc64c05bf3a8103ce5816a06abef23",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/8306b76f70dadc83/motion.npz": "8306b76f70dadc8301c7c17e1145d707384f62257ac3b55800f40366d63819a5",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/8d4745c585018996/motion.npz": "8d4745c5850189966bc733fe01d84a80616cfac5a20c872192ff779984caf895",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/a8e495f8e2e89f35/motion.npz": "a8e495f8e2e89f35547b883392a12135b4cf3e5a1b43e094c5ce2dd7bc8bdf1d",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/afad0217d513816d/motion.npz": "afad0217d513816d157ce31de30a9ce94dd816585e9011683e1cdb388290e5e0",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/cfe268a3c1e8f72d/motion.npz": "cfe268a3c1e8f72ded1219dda39b77dcf505f1737a2959588dac44f98d5f2918",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/d3658bbc85ebf38e/motion.npz": "d3658bbc85ebf38e0daa56045b7423502a2af292673f9816238b18be7196cb60",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/d93ef9c20fb33f57/motion.npz": "d93ef9c20fb33f57247f6f8802d9f654074ebb4d419cbb60bd350d08e159cad4",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/e01b65db08f86089/motion.npz": "e01b65db08f860893bf40d6cd584ab3d6ee2a297b6a3001c2b1bdafa15f3eb26",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/e1cc9a075d9a937e/motion.npz": "e1cc9a075d9a937e80d1e76ee79ac21c1b272d67a5c7d67a4eee5a1a5f9cef8a",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/f02c2380d595d2d2/motion.npz": "f02c2380d595d2d2620bbdeb4cb52ed9adb626e1fb27b02e8d03c5668e23d7aa",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/f47c2f0fa46fea96/motion.npz": "f47c2f0fa46fea967fcf9967a3fb47c7292c8877e0df0a0d16f9991addc04c91",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/f989b0c6676a8ce1/motion.npz": "f989b0c6676a8ce1f57e3c5eef33f28a3c0a9c992e8e940e24d968bc6b09d1ce",
+        "C:/Users/Hsinlung/Desktop/news-game/assets/animations/sources/player_review_buy_newspaper/motion.npz": "80ec4961476495ae836007d3ca14f3286822712b3eb6ce52a21bb2d1a795b895",
+        "res://../.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/capture_cash_withdraw.gd": "4c2a6e24f6fa69854b366e2b174fad46bac4d16be909e0fe403aaac1f7dd09f9",
+        "res://../.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/qualify_cash_low_whole.gd": "2226b70886ea2caa79b3ff204e5ee71988952206bf975ce60be1e6f9f8dd8133",
+        "res://models/atm_standalone.glb": "1971a9ef8d58020046f2e71bb74b0e20f0e3c9f4fcae4f33c7e9a7a31dccbafc",
+        "res://models/held_banknote.glb": "db2f6cfd149e42c41f0d04df5f1a9ef28455b8d795fdb0904cecf1bf2fd66255",
+        "res://npc/body-types.json": "ba6f473aec56c464190a16155d47ad83f23092a3e08c36b3bd2756333c06fd8f",
+        "res://npc/clip-setup.json": "46aff7c7698c35fa1c8e96574a2b0ae5b486a4d86611a037fdbf086fa394d318",
+        "res://npc/clip_pose.gd": "c98109a3bbbf12a5781b480b0f64ce69041c00ca20c108af17af27604f6ff584",
+        "res://npc/clip_setup.gd": "dab061e0bd8307d5264e6fa522b0010993df98d5544cb3f72be46a5bd9fef9c1",
+        "res://npc/contact_pose.gd": "3a89c728152a84ed5df31bffb2258adb95c5a3a1697cdcb863e57871f965b9bd",
+        "res://npc/contact_surface.gd": "55855e31d776100b6d5c408b817727f5a00da4b0c8722a6e831a759067c7107c",
+        "res://npc/interaction_player.gd": "c65a0b08dba0eaaffc822420edab860f16dc95791948bbe64355796e49af1c64",
+        "res://npc/interactions.json": "1e96bc69d488fd3357ba5a24fe86510322abd223a79412b69a8ded6df13445a0",
+        "res://npc/motion-playback.json": "bd1a7dc1fd99b9dd3bed7ac929c9db51efb973904629748768a069d874460629",
+        "res://npc/motion/atm_take_cash.json": "7e151281803a344ec8f0b3acd0c6da5e070faff9e51bb9bdafe051320720bb04",
+        "res://npc/prop-grasp-params.json": "f22bf8023a154ef4471063c288c6567cd4ea43ab6e0c5186abe58ca9ee02bf70",
+        "res://npc/prop_grasp.gd": "44aa391af693b163b2a16e6cf8b1d02805b3f8769f09f3f26c5133d265be290d",
+        "res://npc/skeleton-params.json": "b45ded4548c6bf24e1e57c148459cb4e2e0b4d40d7e7bf89a97690a6edba526e",
+        "res://npc/skeleton_mapping.gd": "0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc",
+        "res://scenes/empty_ground/params.json": "ba986ffcb7d20de1b3484a0ae10fab2e06fd288844a84338d71dc848e81aeeb9",
+        "res://scenes/empty_ground/stage.gd": "4af7d468eef17391e30716e02d23145da0e503840fab51966915a6755bb80046"
+      }
+    },
+    "low_whole_key_transform": {
+      "contract": "worker rotates all original77 joints around original Hips, then translates; fixture rotates whole world coordinates. translation_worker=translation_fixture+B@hips-hips.",
+      "world_translation": [
+        -0.230601676997451,
+        0.0070728063583374,
+        -0.277835078887664
+      ],
+      "worker_translation": [
+        -0.2618452012538912,
+        0.007072806358337402,
+        -0.24860924482345592
+      ],
+      "exact_full77_fixture_match_m": 1.2412670766236366e-16,
+      "prior_uncompensated_rigid_placement_error_m": 0.04278208953185193,
+      "f60_purpose": "One genuine withdrawal waypoint0.4s after take preserves the below-keyboard withdrawal proven in attempt002. It is not a held interval, duplicated joint path or dense constraints.",
+      "f149_purpose": "Same original genuine low retained-cash whole pose completes the intended activity; old high end is removed.",
+      "original_source_min_Y_m": -0.007072806358337402,
+      "whole_floor_lift_m": 0.0070728063583374,
+      "all77_placed_min_Y_m": 0.0
+    },
+    "low_floor_reference_qualification": {
+      "actual_report": "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/context-corpus-current/cash-low-pay28-floor-actual.json",
+      "actual_report_sha256": "694daf41e088f8c22a0392caf17475cdc919447ffe04fe8616e04ada11093265",
+      "scope": "This originalwhole pose plus rigid floor/heading placement only. Complete body/held realmesh clear, note→23ATM parts clear, distal self/cross arms clear; sharedN observations kept explicit. All activityframes remain unqualified until actual generated source reviewed."
+    }
+  },
+  "contacts": [
     {
-      "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
+      "joint": "RightHand",
+      "model": "atm_standalone",
+      "marker": "cash_pickup",
+      "space": "world",
+      "episode": "cash_pickup",
+      "keys": [
+        {
+          "frame": 30,
+          "position": [
+            0.001328,
+            1.090024,
+            0.50244
+          ]
+        },
+        {
+          "frame": 48,
+          "position": [
+            0.001328,
+            1.090024,
+            0.50244
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
       "source_frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
       "frame": 0
     },
     {
-      "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-      "source_frame": 50,
-      "frame": 50
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-      "source_frame": 100,
-      "frame": 100
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-      "source_frame": 149,
-      "frame": 149
-    }
-  ],
-  "effectors": [
-    {
-      "joints": [
-        "RightHand"
+      "source": "assets/animations/sources/116ccddb0d15a083/motion.npz",
+      "source_frame": 65,
+      "translation": [
+        -0.03429980203509331,
+        0,
+        0.013403307646512985
       ],
-      "keyframes": [
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 0,
-          "frame": 0
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 1,
-          "frame": 1
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 2,
-          "frame": 2
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 3,
-          "frame": 3
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 4,
-          "frame": 4
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 5,
-          "frame": 5
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 6,
-          "frame": 6
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 7,
-          "frame": 7
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 8,
-          "frame": 8
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 9,
-          "frame": 9
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 10,
-          "frame": 10
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 11,
-          "frame": 11
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 12,
-          "frame": 12
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 13,
-          "frame": 13
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 14,
-          "frame": 14
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 15,
-          "frame": 15
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 16,
-          "frame": 16
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 17,
-          "frame": 17
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 18,
-          "frame": 18
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 19,
-          "frame": 19
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 20,
-          "frame": 20
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 21,
-          "frame": 21
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 22,
-          "frame": 22
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 23,
-          "frame": 23
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 24,
-          "frame": 24
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 25,
-          "frame": 25
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 26,
-          "frame": 26
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 27,
-          "frame": 27
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 28,
-          "frame": 28
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 29,
-          "frame": 29
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 30,
-          "frame": 30
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 31,
-          "frame": 31
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 32,
-          "frame": 32
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 33,
-          "frame": 33
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 34,
-          "frame": 34
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 35,
-          "frame": 35
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 36,
-          "frame": 36
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 37,
-          "frame": 37
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 38,
-          "frame": 38
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 39,
-          "frame": 39
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 40,
-          "frame": 40
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 41,
-          "frame": 41
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 42,
-          "frame": 42
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 43,
-          "frame": 43
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 44,
-          "frame": 44
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 45,
-          "frame": 45
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 46,
-          "frame": 46
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 47,
-          "frame": 47
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 48,
-          "frame": 48
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 49,
-          "frame": 49
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 50,
-          "frame": 50
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 51,
-          "frame": 51
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 52,
-          "frame": 52
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 53,
-          "frame": 53
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 54,
-          "frame": 54
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 55,
-          "frame": 55
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 56,
-          "frame": 56
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 57,
-          "frame": 57
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 58,
-          "frame": 58
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 59,
-          "frame": 59
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 60,
-          "frame": 60
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 61,
-          "frame": 61
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 62,
-          "frame": 62
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 63,
-          "frame": 63
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 64,
-          "frame": 64
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 65,
-          "frame": 65
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 66,
-          "frame": 66
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 67,
-          "frame": 67
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 68,
-          "frame": 68
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 69,
-          "frame": 69
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 70,
-          "frame": 70
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 71,
-          "frame": 71
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 72,
-          "frame": 72
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 73,
-          "frame": 73
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 74,
-          "frame": 74
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 75,
-          "frame": 75
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 76,
-          "frame": 76
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 77,
-          "frame": 77
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 78,
-          "frame": 78
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 79,
-          "frame": 79
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 80,
-          "frame": 80
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 81,
-          "frame": 81
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 82,
-          "frame": 82
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 83,
-          "frame": 83
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 84,
-          "frame": 84
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 85,
-          "frame": 85
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 86,
-          "frame": 86
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 87,
-          "frame": 87
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 88,
-          "frame": 88
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 89,
-          "frame": 89
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 90,
-          "frame": 90
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 91,
-          "frame": 91
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 92,
-          "frame": 92
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 93,
-          "frame": 93
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 94,
-          "frame": 94
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 95,
-          "frame": 95
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 96,
-          "frame": 96
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 97,
-          "frame": 97
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 98,
-          "frame": 98
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 99,
-          "frame": 99
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 100,
-          "frame": 100
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 101,
-          "frame": 101
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 102,
-          "frame": 102
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 103,
-          "frame": 103
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 104,
-          "frame": 104
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 105,
-          "frame": 105
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 106,
-          "frame": 106
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 107,
-          "frame": 107
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 108,
-          "frame": 108
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 109,
-          "frame": 109
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 110,
-          "frame": 110
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 111,
-          "frame": 111
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 112,
-          "frame": 112
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 113,
-          "frame": 113
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 114,
-          "frame": 114
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 115,
-          "frame": 115
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 116,
-          "frame": 116
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 117,
-          "frame": 117
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 118,
-          "frame": 118
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 119,
-          "frame": 119
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 120,
-          "frame": 120
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 121,
-          "frame": 121
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 122,
-          "frame": 122
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 123,
-          "frame": 123
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 124,
-          "frame": 124
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 125,
-          "frame": 125
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 126,
-          "frame": 126
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 127,
-          "frame": 127
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 128,
-          "frame": 128
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 129,
-          "frame": 129
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 130,
-          "frame": 130
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 131,
-          "frame": 131
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 132,
-          "frame": 132
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 133,
-          "frame": 133
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 134,
-          "frame": 134
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 135,
-          "frame": 135
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 136,
-          "frame": 136
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 137,
-          "frame": 137
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 138,
-          "frame": 138
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 139,
-          "frame": 139
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 140,
-          "frame": 140
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 141,
-          "frame": 141
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 142,
-          "frame": 142
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 143,
-          "frame": 143
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 144,
-          "frame": 144
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 145,
-          "frame": 145
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 146,
-          "frame": 146
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 147,
-          "frame": 147
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 148,
-          "frame": 148
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/a8010ffd4bde98699207b2f891e7e761a141c264f853d7da3996c217cebce69b.npz",
-          "source_frame": 149,
-          "frame": 149
-        }
-      ]
-    }
-  ],
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
-  "fps": 30.0,
-  "diffusion_steps": 100,
-  "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
-  },
-  "num_samples": 1,
-  "root_average_speed_m_s": 0.05097569525241852,
-  "mapped_average_speed_m_s": 0.040201652407270125,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "atm_take_cash",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
-  },
-  "repair_u2": {
-    "date": "2026-10-02",
-    "status": "repaired_assistant_visual_reviewed_user_acceptance_pending",
-    "method": "Preserve shipped body/root/feet and reconstruct complete77 hierarchy with a continuous complete task arm chain; no temporal smoothing or frame freezing.",
-    "original_shipped_sha256": "4d5b136f8624164d871b50a72dfab9ac6f8b2dafb41bf58dc223358bce3a91a0",
-    "preserved_unselected_body_fk_max_error_m": 0.0,
-    "unchanged_arrays": [
-      "root_positions",
-      "smooth_root_pos",
-      "foot_contacts",
-      "global_root_heading"
-    ],
-    "task_arm_chain": {
-      "side": "Right",
-      "torso_relative_wrist_keys_m": [
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "116ccddb0d15a08396cf417cc4858e35843415dc25adbed901cd52f138607839",
+        "hand_edited": false
+      },
+      "frame": 30
+    },
+    {
+      "source": "assets/animations/sources/116ccddb0d15a083/motion.npz",
+      "source_frame": 65,
+      "translation": [
+        -0.03429980203509331,
+        0,
+        0.013403307646512985
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "116ccddb0d15a08396cf417cc4858e35843415dc25adbed901cd52f138607839",
+        "hand_edited": false
+      },
+      "frame": 48
+    },
+    {
+      "frame": 60,
+      "source": "assets/animations/sources/f3e6da402e680bda/motion.npz",
+      "source_frame": 28,
+      "placement_basis": [
         [
-          0,
-          -0.28686923008066034,
-          -0.30610193378499295,
-          0.07826057792737115
+          0.992980301380158,
+          0.0,
+          -0.118279792368412
         ],
         [
-          0.18,
-          -0.25,
-          -0.15,
-          0.36
+          0.0,
+          1.0,
+          0.0
         ],
         [
-          0.4,
-          -0.25,
-          -0.15,
-          0.36
-        ],
-        [
-          0.55,
-          -0.15,
-          -0.12,
-          0.22
-        ],
-        [
-          0.82,
-          -0.17,
-          -0.12,
-          0.2
-        ],
-        [
-          1,
-          -0.17,
-          -0.12,
-          0.2
+          0.118279792368412,
+          0.0,
+          0.992980301380158
         ]
       ],
-      "max_target_residual_m": 0.0,
-      "pole_torso": [
-        -0.35,
-        -1,
-        -0.15
-      ]
-    },
-    "before": {
-      "frames": 150,
-      "max_bone_length_range_m": 0.0008679330348968506,
-      "fk_position_max_error_m": 4.851466428590356e-07,
-      "fk_rotation_max_error": 5.031211003370117e-07,
-      "local_rotation_orthogonality_max_error": 0.001616045927072603,
-      "hands": {
-        "LeftArm": {
-          "max_hip_relative_step_m": 0.006375826895236969,
-          "frames": [
-            136,
-            137
-          ],
-          "max_fk_error_m": 2.413114259525173e-07,
-          "fk_max_step_m": 0.006375826895236969
-        },
-        "LeftForeArm": {
-          "max_hip_relative_step_m": 0.0063211810775101185,
-          "frames": [
-            137,
-            138
-          ],
-          "max_fk_error_m": 2.4038948254201387e-07,
-          "fk_max_step_m": 0.006321227177977562
-        },
-        "LeftHand": {
-          "max_hip_relative_step_m": 0.008905681781470776,
-          "frames": [
-            89,
-            90
-          ],
-          "max_fk_error_m": 2.9807560508743336e-07,
-          "fk_max_step_m": 0.008905882015824318
-        },
-        "RightArm": {
-          "max_hip_relative_step_m": 0.01063695177435875,
-          "frames": [
-            37,
-            38
-          ],
-          "max_fk_error_m": 2.4211522031691857e-07,
-          "fk_max_step_m": 0.01063696201890707
-        },
-        "RightForeArm": {
-          "max_hip_relative_step_m": 0.15245501697063446,
-          "frames": [
-            143,
-            144
-          ],
-          "max_fk_error_m": 3.579381768759049e-07,
-          "fk_max_step_m": 0.1524548977613449
-        },
-        "RightHand": {
-          "max_hip_relative_step_m": 0.22290454804897308,
-          "frames": [
-            143,
-            144
-          ],
-          "max_fk_error_m": 3.6256091107134125e-07,
-          "fk_max_step_m": 0.22290459275245667
-        }
+      "translation": [
+        -0.2618452012538912,
+        0.007072806358337402,
+        -0.24860924482345592
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f3e6da402e680bda72b74331ef5ad944b13f61d2019da566020db68f1377e758",
+        "hand_edited": false
       }
     },
-    "after": {
-      "frames": 150,
-      "max_bone_length_range_m": 0.0008678734302520752,
-      "fk_position_max_error_m": 3.595628754737845e-07,
-      "fk_rotation_max_error": 3.9452916666959936e-07,
-      "local_rotation_orthogonality_max_error": 0.004031011823298967,
-      "hands": {
-        "LeftArm": {
-          "max_hip_relative_step_m": 0.006375810131430626,
-          "frames": [
-            136,
-            137
-          ],
-          "max_fk_error_m": 2.3914506641631306e-07,
-          "fk_max_step_m": 0.006375826895236969
-        },
-        "LeftForeArm": {
-          "max_hip_relative_step_m": 0.006321263033896685,
-          "frames": [
-            137,
-            138
-          ],
-          "max_fk_error_m": 2.416849440578517e-07,
-          "fk_max_step_m": 0.006321227177977562
-        },
-        "LeftHand": {
-          "max_hip_relative_step_m": 0.008905747905373573,
-          "frames": [
-            89,
-            90
-          ],
-          "max_fk_error_m": 2.428663492537453e-07,
-          "fk_max_step_m": 0.008905882015824318
-        },
-        "RightArm": {
-          "max_hip_relative_step_m": 0.010636905208230019,
-          "frames": [
-            37,
-            38
-          ],
-          "max_fk_error_m": 2.4027400513659813e-07,
-          "fk_max_step_m": 0.01063696201890707
-        },
-        "RightForeArm": {
-          "max_hip_relative_step_m": 0.016746174544095993,
-          "frames": [
-            18,
-            19
-          ],
-          "max_fk_error_m": 2.413114259525173e-07,
-          "fk_max_step_m": 0.016746198758482933
-        },
-        "RightHand": {
-          "max_hip_relative_step_m": 0.0217126552015543,
-          "frames": [
-            15,
-            16
-          ],
-          "max_fk_error_m": 2.425733214295178e-07,
-          "fk_max_step_m": 0.02171267569065094
-        }
+    {
+      "frame": 149,
+      "source": "assets/animations/sources/f3e6da402e680bda/motion.npz",
+      "source_frame": 28,
+      "placement_basis": [
+        [
+          0.992980301380158,
+          0.0,
+          -0.118279792368412
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.118279792368412,
+          0.0,
+          0.992980301380158
+        ]
+      ],
+      "translation": [
+        -0.2618452012538912,
+        0.007072806358337402,
+        -0.24860924482345592
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f3e6da402e680bda72b74331ef5ad944b13f61d2019da566020db68f1377e758",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "post_processing": true,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "position_only": true,
+  "fullbody_constraint_frames": 5,
+  "raw_sha256": "22aab12a521089bf59c556cf6026eba732ec8d4249286fb5f9a1f18c53e30066",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "22aab12a521089bf59c556cf6026eba732ec8d4249286fb5f9a1f18c53e30066",
+    "observations": "Withdraw and retain the same banknote in the right hand at the qualified low abdomen/waist reference. The left arm stays down. Common physical contact preparation resolves the free approach before acquisition; final actual-source checks are recorded separately.",
+    "full_speed_playback_viewed": false,
+    "formal_verification_pending": false,
+    "assistant_finite_physical_verification_passed": true,
+    "actual_sampled_views_personally_seen": 96,
+    "verification_record": "docs/motion-atm-cash-repair-2026-10-11.json",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"date\": \"2026-10-11\",\r\n    \"raw_sha256\": \"22aab12a521089bf59c556cf6026eba732ec8d4249286fb5f9a1f18c53e30066\",\r\n    \"observations\": \"Withdraw and retain the same banknote in the right hand at the qualified low abdomen/waist reference. The left arm stays down. Common physical contact preparation resolves the free approach before acquisition; final actual-source checks are recorded separately.\",\r\n    \"full_speed_playback_viewed\": false,\r\n    \"formal_verification_pending\": false,\r\n    \"assistant_finite_physical_verification_passed\": true,\r\n    \"actual_sampled_views_personally_seen\": 96,\r\n    \"verification_record\": \"docs/motion-atm-cash-repair-2026-10-11.json\"\r\n  }",
+      "original_record_sha256": "b4396c3452dbe70ccd0c697a297f575d3aaeababce4f24966e8c627877f27edd",
+      "current_source_sha256_at_reconciliation": "22aab12a521089bf59c556cf6026eba732ec8d4249286fb5f9a1f18c53e30066",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks."
+  },
+  "repair": {
+    "date": "2026-10-11",
+    "reason": "Wrong retained finishing height, banknote/ATM intersection, and discontinuous free approach from local clearance branches.",
+    "replaced_source_sha256": "abe2aedd114d21b2e2171981c4aa2ec95fa138143c90df081e302bfaf34d218a",
+    "replaced_meta_sha256": "4453f1e6c5ac321e62fc446a60b3e299cdf975472316684337e4806b9e445ebc",
+    "generated_source_npz_unchanged": true,
+    "rollback_archive": "docs\\motion-atm-cash-originals-2026-10-11.zip"
+  },
+  "source_archive": {
+    "source_npz": "assets\\animations\\sources\\22aab12a521089bf\\motion.npz",
+    "original_generation_meta": "assets\\animations\\sources\\22aab12a521089bf\\meta.json",
+    "original_generation_meta_sha256": "ff2536686d978e591a5215f5c823134421fa5cd967e052e15273e726dc1406a2",
+    "raw_npz_unchanged": true
+  },
+  "delivery_source": "assets\\animations\\sources\\22aab12a521089bf",
+  "material_endpoints": {
+    "entry": "stand",
+    "exit": "retained right-hand low banknote hold",
+    "exit_whole_reference": {
+      "frame": 149,
+      "source": "assets/animations/sources/f3e6da402e680bda/motion.npz",
+      "source_frame": 28,
+      "placement_basis": [
+        [
+          0.992980301380158,
+          0.0,
+          -0.118279792368412
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.118279792368412,
+          0.0,
+          0.992980301380158
+        ]
+      ],
+      "translation": [
+        -0.2618452012538912,
+        0.007072806358337402,
+        -0.24860924482345592
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f3e6da402e680bda72b74331ef5ad944b13f61d2019da566020db68f1377e758",
+        "hand_edited": false
       }
     },
-    "runtime_visual_evidence": "delivery/motion_fix_2026-10-02/interactions/u2_findings.md"
-  }
+    "kind": "transition",
+    "source_sha256": "22aab12a521089bf59c556cf6026eba732ec8d4249286fb5f9a1f18c53e30066",
+    "boundary_edits": [],
+    "boundary_velocity_alignment": [],
+    "trim": null,
+    "method": "Untouched Kimodo whole source with genuine sparse complete-body references; common physical runtime contact, no authored joint paths or seam edits."
+  },
+  "source_frame": "fixed"
 }

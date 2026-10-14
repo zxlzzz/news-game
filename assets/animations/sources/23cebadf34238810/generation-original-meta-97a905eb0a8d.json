@@ -1,0 +1,75 @@
+{
+  "name": "atm_keypad",
+  "text": "A standing person uses an ATM in front, right hand reaches to a keypad at upper abdomen height, presses several keys, then lowers. Feet planted, left arm relaxed.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A standing person uses an ATM in front, right hand reaches to a keypad at upper abdomen height, presses several keys, then lowers. Feet planted, left arm relaxed.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "keypad_press",
+        "phases": [
+          0.25,
+          0.65
+        ],
+        "window": [
+          0.215,
+          0.25,
+          0.65,
+          0.685
+        ]
+      }
+    ],
+    "object": "atm_standalone",
+    "post": "post_atm",
+    "description": "The person starts at atm_standalone.post_atm and faces the model standing marker direction. RightHand touches keypad_press at 1.25s,3.25s.  A standing person uses an ATM in front, right hand reaches to a keypad at upper abdomen height, presses several keys, then lowers. Feet planted, left arm relaxed. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "atm_standalone",
+      "marker": "keypad_press",
+      "space": "world",
+      "episode": "keypad_press",
+      "keys": [
+        {
+          "frame": 37,
+          "position": [
+            -0.100429,
+            1.384856,
+            0.454181
+          ]
+        },
+        {
+          "frame": 97,
+          "position": [
+            -0.100429,
+            1.384856,
+            0.454181
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "23cebadf3423881021c42f2eef10b118a92fec303bfdba665fdb2096a73fa4c4",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "visual_pass",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "23cebadf3423881021c42f2eef10b118a92fec303bfdba665fdb2096a73fa4c4",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8"
+  }
+}

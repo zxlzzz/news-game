@@ -1,0 +1,540 @@
+{
+  "name": "walk_stairs_down",
+  "text": "Starting on the TOP landing of an eight-step staircase, immediately walk steadily FORWARDS DOWN the stairs. Take eight equally timed alternating steps during the first four seconds, one tread per step, each tread nineteen centimetres lower and thirty-eight centimetres forwards. Lower the pelvis progressively at the same even rate as the steps, transferring weight onto each lower tread. Keep the torso upright and arms swinging gently beside the body. Reach the BOTTOM flat ground at four seconds, then stand there naturally for the final second. No initial waiting, hopping, crouching or sitting.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 7,
+  "scene": {
+    "text": "Starting on the TOP landing of an eight-step staircase, immediately walk steadily FORWARDS DOWN the stairs. Take eight equally timed alternating steps during the first four seconds, one tread per step, each tread nineteen centimetres lower and thirty-eight centimetres forwards. Lower the pelvis progressively at the same even rate as the steps, transferring weight onto each lower tread. Keep the torso upright and arms swinging gently beside the body. Reach the BOTTOM flat ground at four seconds, then stand there naturally for the final second. No initial waiting, hopping, crouching or sitting.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftFoot",
+        "marker": "tread_7_left",
+        "phases": [
+          0.1,
+          0.165
+        ],
+        "window": [
+          0.075,
+          0.1,
+          0.165,
+          0.19
+        ],
+        "episode": "step_0"
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "tread_6_right",
+        "phases": [
+          0.2,
+          0.265
+        ],
+        "window": [
+          0.175,
+          0.2,
+          0.265,
+          0.29
+        ],
+        "episode": "step_1"
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "tread_5_left",
+        "phases": [
+          0.3,
+          0.365
+        ],
+        "window": [
+          0.275,
+          0.3,
+          0.365,
+          0.39
+        ],
+        "episode": "step_2"
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "tread_4_right",
+        "phases": [
+          0.4,
+          0.465
+        ],
+        "window": [
+          0.375,
+          0.4,
+          0.465,
+          0.49
+        ],
+        "episode": "step_3"
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "tread_3_left",
+        "phases": [
+          0.5,
+          0.565
+        ],
+        "window": [
+          0.475,
+          0.5,
+          0.565,
+          0.59
+        ],
+        "episode": "step_4"
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "tread_2_right",
+        "phases": [
+          0.6,
+          0.665
+        ],
+        "window": [
+          0.575,
+          0.6,
+          0.665,
+          0.69
+        ],
+        "episode": "step_5"
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "tread_1_left",
+        "phases": [
+          0.7,
+          0.765
+        ],
+        "window": [
+          0.675,
+          0.7,
+          0.765,
+          0.79
+        ],
+        "episode": "step_6"
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "bottom_right",
+        "phases": [
+          0.8,
+          0.865
+        ],
+        "window": [
+          0.775,
+          0.8,
+          0.865,
+          0.89
+        ],
+        "episode": "step_7"
+      }
+    ],
+    "object": "outdoor_steps_8",
+    "post": "post_downstairs",
+    "description": "Start at outdoor_steps_8.post_downstairs facing the model standing marker direction. Starting on the TOP landing of an eight-step staircase, immediately walk steadily FORWARDS DOWN the stairs. Take eight equally timed alternating steps during the first four seconds, one tread per step, each tread nineteen centimetres lower and thirty-eight centimetres forwards. Lower the pelvis progressively at the same even rate as the steps, transferring weight onto each lower tread. Keep the torso upright and arms swinging gently beside the body. Reach the BOTTOM flat ground at four seconds, then stand there naturally for the final second. No initial waiting, hopping, crouching or sitting. The model base is the generation floor; keep elevated treads above it, including the starting landing. LeftFoot touches the physical model marker tread_7_left at 0.50s, 0.83s. RightFoot touches the physical model marker tread_6_right at 1.00s, 1.33s. LeftFoot touches the physical model marker tread_5_left at 1.50s, 1.82s. RightFoot touches the physical model marker tread_4_right at 2.00s, 2.33s. LeftFoot touches the physical model marker tread_3_left at 2.50s, 2.82s. RightFoot touches the physical model marker tread_2_right at 3.00s, 3.33s. LeftFoot touches the physical model marker tread_1_left at 3.50s, 3.83s. RightFoot touches the physical model marker bottom_right at 4.00s, 4.33s. At 0.50s the body stands at the model stance_step_7 marker. At 0.83s the body stands at the model stance_step_7 marker. At 1.00s the body stands at the model stance_step_6 marker. At 1.33s the body stands at the model stance_step_6 marker. At 1.50s the body stands at the model stance_step_5 marker. At 1.82s the body stands at the model stance_step_5 marker. At 2.00s the body stands at the model stance_step_4 marker. At 2.33s the body stands at the model stance_step_4 marker. At 2.50s the body stands at the model stance_step_3 marker. At 2.82s the body stands at the model stance_step_3 marker. At 3.00s the body stands at the model stance_step_2 marker. At 3.33s the body stands at the model stance_step_2 marker. At 3.50s the body stands at the model stance_step_1 marker. At 3.83s the body stands at the model stance_step_1 marker. At 4.00s the body stands at the model landing_bottom marker. At 4.33s the body stands at the model landing_bottom marker. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep swinging toes above each stair nose; plant soles on the treads and keep feet out of the vertical risers.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep swinging toes above each stair nose; plant soles on the treads and keep feet out of the vertical risers.",
+    "body_stances": [
+      {
+        "phase": 0.1,
+        "marker": "stance_step_7"
+      },
+      {
+        "phase": 0.165,
+        "marker": "stance_step_7"
+      },
+      {
+        "phase": 0.2,
+        "marker": "stance_step_6"
+      },
+      {
+        "phase": 0.265,
+        "marker": "stance_step_6"
+      },
+      {
+        "phase": 0.3,
+        "marker": "stance_step_5"
+      },
+      {
+        "phase": 0.365,
+        "marker": "stance_step_5"
+      },
+      {
+        "phase": 0.4,
+        "marker": "stance_step_4"
+      },
+      {
+        "phase": 0.465,
+        "marker": "stance_step_4"
+      },
+      {
+        "phase": 0.5,
+        "marker": "stance_step_3"
+      },
+      {
+        "phase": 0.565,
+        "marker": "stance_step_3"
+      },
+      {
+        "phase": 0.6,
+        "marker": "stance_step_2"
+      },
+      {
+        "phase": 0.665,
+        "marker": "stance_step_2"
+      },
+      {
+        "phase": 0.7,
+        "marker": "stance_step_1"
+      },
+      {
+        "phase": 0.765,
+        "marker": "stance_step_1"
+      },
+      {
+        "phase": 0.8,
+        "marker": "landing_bottom"
+      },
+      {
+        "phase": 0.865,
+        "marker": "landing_bottom"
+      }
+    ],
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0,
+        "align_stand": "landing_top"
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0.5,
+        "align_stand": "stance_step_3"
+      }
+    ],
+    "generation_floor": "model"
+  },
+  "contacts": [
+    {
+      "joint": "LeftFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_7_left",
+      "space": "world",
+      "episode": "step_0",
+      "keys": [
+        {
+          "frame": 15,
+          "position": [
+            0.16484,
+            1.401593,
+            0.3804
+          ],
+          "root_xz": [
+            0.0,
+            0.3804
+          ]
+        },
+        {
+          "frame": 25,
+          "position": [
+            0.16484,
+            1.401593,
+            0.3804
+          ],
+          "root_xz": [
+            0.0,
+            0.3804
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_6_right",
+      "space": "world",
+      "episode": "step_1",
+      "keys": [
+        {
+          "frame": 30,
+          "position": [
+            -0.16484,
+            1.211482,
+            0.7608
+          ],
+          "root_xz": [
+            0.0,
+            0.7608
+          ]
+        },
+        {
+          "frame": 39,
+          "position": [
+            -0.16484,
+            1.211482,
+            0.7608
+          ],
+          "root_xz": [
+            0.0,
+            0.7608
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_5_left",
+      "space": "world",
+      "episode": "step_2",
+      "keys": [
+        {
+          "frame": 45,
+          "position": [
+            0.16484,
+            1.021193,
+            1.1412
+          ],
+          "root_xz": [
+            0.0,
+            1.1412
+          ]
+        },
+        {
+          "frame": 54,
+          "position": [
+            0.16484,
+            1.021193,
+            1.1412
+          ],
+          "root_xz": [
+            0.0,
+            1.1412
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_4_right",
+      "space": "world",
+      "episode": "step_3",
+      "keys": [
+        {
+          "frame": 60,
+          "position": [
+            -0.16484,
+            0.831082,
+            1.5216
+          ],
+          "root_xz": [
+            0.0,
+            1.5215999999999998
+          ]
+        },
+        {
+          "frame": 69,
+          "position": [
+            -0.16484,
+            0.831082,
+            1.5216
+          ],
+          "root_xz": [
+            0.0,
+            1.5215999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_3_left",
+      "space": "world",
+      "episode": "step_4",
+      "keys": [
+        {
+          "frame": 74,
+          "position": [
+            0.16484,
+            0.640793,
+            1.902
+          ],
+          "root_xz": [
+            0.0,
+            1.9019999999999997
+          ]
+        },
+        {
+          "frame": 84,
+          "position": [
+            0.16484,
+            0.640793,
+            1.902
+          ],
+          "root_xz": [
+            0.0,
+            1.9019999999999997
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_2_right",
+      "space": "world",
+      "episode": "step_5",
+      "keys": [
+        {
+          "frame": 89,
+          "position": [
+            -0.16484,
+            0.450682,
+            2.2824
+          ],
+          "root_xz": [
+            0.0,
+            2.2824
+          ]
+        },
+        {
+          "frame": 99,
+          "position": [
+            -0.16484,
+            0.450682,
+            2.2824
+          ],
+          "root_xz": [
+            0.0,
+            2.2824
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_1_left",
+      "space": "world",
+      "episode": "step_6",
+      "keys": [
+        {
+          "frame": 104,
+          "position": [
+            0.16484,
+            0.260393,
+            2.6628
+          ],
+          "root_xz": [
+            0.0,
+            2.6628
+          ]
+        },
+        {
+          "frame": 114,
+          "position": [
+            0.16484,
+            0.260393,
+            2.6628
+          ],
+          "root_xz": [
+            0.0,
+            2.6628
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "outdoor_steps_8",
+      "marker": "bottom_right",
+      "space": "world",
+      "episode": "step_7",
+      "keys": [
+        {
+          "frame": 119,
+          "position": [
+            -0.16484,
+            0.070282,
+            3.2334
+          ],
+          "root_xz": [
+            0.0,
+            3.2333999999999996
+          ]
+        },
+        {
+          "frame": 129,
+          "position": [
+            -0.16484,
+            0.070282,
+            3.2334
+          ],
+          "root_xz": [
+            0.0,
+            3.2333999999999996
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        0.0,
+        1.5215999999999998,
+        0.0
+      ]
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 74,
+      "translation": [
+        0.0,
+        0.5705999999999999,
+        1.9019999999999997
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "224972c71bcc1dc65f1cc6eda953d33c6edab8a0b67c696dce7e3bc8e95a86f1",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Front and side: the body now descends with the tread sequence and walks onto flat ground without the crouch/hop. Two full-body keys retained; no extra contact frames. Hsinlung review pending.",
+    "raw_sha256": "224972c71bcc1dc65f1cc6eda953d33c6edab8a0b67c696dce7e3bc8e95a86f1",
+    "renderer_sha256": "5698941350737eb83b5460e2dac78499131edeb1622c7c896b45455da1ad490c",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Front and side: the body now descends with the tread sequence and walks onto flat ground without the crouch/hop. Two full-body keys retained; no extra contact frames. Hsinlung review pending.\",\n    \"raw_sha256\": \"224972c71bcc1dc65f1cc6eda953d33c6edab8a0b67c696dce7e3bc8e95a86f1\",\n    \"renderer_sha256\": \"5698941350737eb83b5460e2dac78499131edeb1622c7c896b45455da1ad490c\"\n  }",
+      "original_record_sha256": "f96fee5b05ce59c8e3ea3341e27adf22ed9928da51b2bc90356accbae9f7048b",
+      "current_source_sha256_at_reconciliation": "224972c71bcc1dc65f1cc6eda953d33c6edab8a0b67c696dce7e3bc8e95a86f1",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

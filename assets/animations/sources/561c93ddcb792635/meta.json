@@ -1,0 +1,539 @@
+{
+  "name": "walk_stairs_up",
+  "text": "A person walks up eight stairs at a steady pace, alternating feet with one foot on each tread. Keep the torso upright, lift swinging toes clear of each riser, keep the supporting sole planted and swing the free arms naturally. Finish standing still on the top landing.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks up eight stairs at a steady pace, alternating feet with one foot on each tread. Keep the torso upright, lift swinging toes clear of each riser, keep the supporting sole planted and swing the free arms naturally. Finish standing still on the top landing.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftFoot",
+        "marker": "tread_1_right",
+        "phases": [
+          0.1,
+          0.165
+        ],
+        "window": [
+          0.075,
+          0.1,
+          0.165,
+          0.19
+        ],
+        "episode": "step_0"
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "tread_2_left",
+        "phases": [
+          0.2,
+          0.265
+        ],
+        "window": [
+          0.175,
+          0.2,
+          0.265,
+          0.29
+        ],
+        "episode": "step_1"
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "tread_3_right",
+        "phases": [
+          0.3,
+          0.365
+        ],
+        "window": [
+          0.275,
+          0.3,
+          0.365,
+          0.39
+        ],
+        "episode": "step_2"
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "tread_4_left",
+        "phases": [
+          0.4,
+          0.465
+        ],
+        "window": [
+          0.375,
+          0.4,
+          0.465,
+          0.49
+        ],
+        "episode": "step_3"
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "tread_5_right",
+        "phases": [
+          0.5,
+          0.565
+        ],
+        "window": [
+          0.475,
+          0.5,
+          0.565,
+          0.59
+        ],
+        "episode": "step_4"
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "tread_6_left",
+        "phases": [
+          0.6,
+          0.665
+        ],
+        "window": [
+          0.575,
+          0.6,
+          0.665,
+          0.69
+        ],
+        "episode": "step_5"
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "tread_7_right",
+        "phases": [
+          0.7,
+          0.765
+        ],
+        "window": [
+          0.675,
+          0.7,
+          0.765,
+          0.79
+        ],
+        "episode": "step_6"
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "tread_8_left",
+        "phases": [
+          0.8,
+          0.865
+        ],
+        "window": [
+          0.775,
+          0.8,
+          0.865,
+          0.89
+        ],
+        "episode": "step_7"
+      }
+    ],
+    "object": "outdoor_steps_8",
+    "post": "post_upstairs",
+    "description": "Start at outdoor_steps_8.post_upstairs facing the model standing marker direction. A person walks up eight stairs at a steady pace, alternating feet with one foot on each tread. Keep the torso upright, lift swinging toes clear of each riser, keep the supporting sole planted and swing the free arms naturally. Finish standing still on the top landing. LeftFoot touches the physical model marker tread_1_right at 0.50s, 0.83s. RightFoot touches the physical model marker tread_2_left at 1.00s, 1.33s. LeftFoot touches the physical model marker tread_3_right at 1.50s, 1.82s. RightFoot touches the physical model marker tread_4_left at 2.00s, 2.33s. LeftFoot touches the physical model marker tread_5_right at 2.50s, 2.82s. RightFoot touches the physical model marker tread_6_left at 3.00s, 3.33s. LeftFoot touches the physical model marker tread_7_right at 3.50s, 3.83s. RightFoot touches the physical model marker tread_8_left at 4.00s, 4.33s. At 0.50s the body stands at the model stance_step_1 marker. At 0.83s the body stands at the model stance_step_1 marker. At 1.00s the body stands at the model stance_step_2 marker. At 1.33s the body stands at the model stance_step_2 marker. At 1.50s the body stands at the model stance_step_3 marker. At 1.82s the body stands at the model stance_step_3 marker. At 2.00s the body stands at the model stance_step_4 marker. At 2.33s the body stands at the model stance_step_4 marker. At 2.50s the body stands at the model stance_step_5 marker. At 2.82s the body stands at the model stance_step_5 marker. At 3.00s the body stands at the model stance_step_6 marker. At 3.33s the body stands at the model stance_step_6 marker. At 3.50s the body stands at the model stance_step_7 marker. At 3.83s the body stands at the model stance_step_7 marker. At 4.00s the body stands at the model stance_step_8 marker. At 4.33s the body stands at the model stance_step_8 marker. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep swinging toes above each stair nose; plant soles on the treads and keep feet out of the vertical risers.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep swinging toes above each stair nose; plant soles on the treads and keep feet out of the vertical risers.",
+    "body_stances": [
+      {
+        "phase": 0.1,
+        "marker": "stance_step_1"
+      },
+      {
+        "phase": 0.165,
+        "marker": "stance_step_1"
+      },
+      {
+        "phase": 0.2,
+        "marker": "stance_step_2"
+      },
+      {
+        "phase": 0.265,
+        "marker": "stance_step_2"
+      },
+      {
+        "phase": 0.3,
+        "marker": "stance_step_3"
+      },
+      {
+        "phase": 0.365,
+        "marker": "stance_step_3"
+      },
+      {
+        "phase": 0.4,
+        "marker": "stance_step_4"
+      },
+      {
+        "phase": 0.465,
+        "marker": "stance_step_4"
+      },
+      {
+        "phase": 0.5,
+        "marker": "stance_step_5"
+      },
+      {
+        "phase": 0.565,
+        "marker": "stance_step_5"
+      },
+      {
+        "phase": 0.6,
+        "marker": "stance_step_6"
+      },
+      {
+        "phase": 0.665,
+        "marker": "stance_step_6"
+      },
+      {
+        "phase": 0.7,
+        "marker": "stance_step_7"
+      },
+      {
+        "phase": 0.765,
+        "marker": "stance_step_7"
+      },
+      {
+        "phase": 0.8,
+        "marker": "stance_step_8"
+      },
+      {
+        "phase": 0.865,
+        "marker": "stance_step_8"
+      }
+    ],
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0,
+        "align_stand": "landing_bottom"
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 1,
+        "align_stand": "landing_top"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "LeftFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_1_right",
+      "space": "world",
+      "episode": "step_0",
+      "keys": [
+        {
+          "frame": 15,
+          "position": [
+            0.16484,
+            0.260393,
+            0.5706
+          ],
+          "root_xz": [
+            0.0,
+            0.5705999999999999
+          ]
+        },
+        {
+          "frame": 25,
+          "position": [
+            0.16484,
+            0.260393,
+            0.5706
+          ],
+          "root_xz": [
+            0.0,
+            0.5705999999999999
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_2_left",
+      "space": "world",
+      "episode": "step_1",
+      "keys": [
+        {
+          "frame": 30,
+          "position": [
+            -0.16484,
+            0.450682,
+            0.951
+          ],
+          "root_xz": [
+            0.0,
+            0.9509999999999998
+          ]
+        },
+        {
+          "frame": 39,
+          "position": [
+            -0.16484,
+            0.450682,
+            0.951
+          ],
+          "root_xz": [
+            0.0,
+            0.9509999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_3_right",
+      "space": "world",
+      "episode": "step_2",
+      "keys": [
+        {
+          "frame": 45,
+          "position": [
+            0.16484,
+            0.640793,
+            1.3314
+          ],
+          "root_xz": [
+            0.0,
+            1.3314
+          ]
+        },
+        {
+          "frame": 54,
+          "position": [
+            0.16484,
+            0.640793,
+            1.3314
+          ],
+          "root_xz": [
+            0.0,
+            1.3314
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_4_left",
+      "space": "world",
+      "episode": "step_3",
+      "keys": [
+        {
+          "frame": 60,
+          "position": [
+            -0.16484,
+            0.831082,
+            1.7118
+          ],
+          "root_xz": [
+            0.0,
+            1.7118
+          ]
+        },
+        {
+          "frame": 69,
+          "position": [
+            -0.16484,
+            0.831082,
+            1.7118
+          ],
+          "root_xz": [
+            0.0,
+            1.7118
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_5_right",
+      "space": "world",
+      "episode": "step_4",
+      "keys": [
+        {
+          "frame": 74,
+          "position": [
+            0.16484,
+            1.021193,
+            2.0922
+          ],
+          "root_xz": [
+            0.0,
+            2.0921999999999996
+          ]
+        },
+        {
+          "frame": 84,
+          "position": [
+            0.16484,
+            1.021193,
+            2.0922
+          ],
+          "root_xz": [
+            0.0,
+            2.0921999999999996
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_6_left",
+      "space": "world",
+      "episode": "step_5",
+      "keys": [
+        {
+          "frame": 89,
+          "position": [
+            -0.16484,
+            1.211482,
+            2.4726
+          ],
+          "root_xz": [
+            0.0,
+            2.4725999999999995
+          ]
+        },
+        {
+          "frame": 99,
+          "position": [
+            -0.16484,
+            1.211482,
+            2.4726
+          ],
+          "root_xz": [
+            0.0,
+            2.4725999999999995
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_7_right",
+      "space": "world",
+      "episode": "step_6",
+      "keys": [
+        {
+          "frame": 104,
+          "position": [
+            0.16484,
+            1.401593,
+            2.853
+          ],
+          "root_xz": [
+            0.0,
+            2.8529999999999998
+          ]
+        },
+        {
+          "frame": 114,
+          "position": [
+            0.16484,
+            1.401593,
+            2.853
+          ],
+          "root_xz": [
+            0.0,
+            2.8529999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "outdoor_steps_8",
+      "marker": "tread_8_left",
+      "space": "world",
+      "episode": "step_7",
+      "keys": [
+        {
+          "frame": 119,
+          "position": [
+            -0.16484,
+            1.591882,
+            3.2334
+          ],
+          "root_xz": [
+            0.0,
+            3.2333999999999996
+          ]
+        },
+        {
+          "frame": 129,
+          "position": [
+            -0.16484,
+            1.591882,
+            3.2334
+          ],
+          "root_xz": [
+            0.0,
+            3.2333999999999996
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        0.0,
+        1.5215999999999998,
+        3.2333999999999996
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "561c93ddcb792635232be79561537a1956ae76ea69266d3dd405497668267597",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "561c93ddcb792635232be79561537a1956ae76ea69266d3dd405497668267597",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"561c93ddcb792635232be79561537a1956ae76ea69266d3dd405497668267597\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "814659c88853f3db27a7d20e53e517c2c8b36ba11a126dffa681fd72923ccb6f",
+      "current_source_sha256_at_reconciliation": "561c93ddcb792635232be79561537a1956ae76ea69266d3dd405497668267597",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

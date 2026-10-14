@@ -4,7 +4,7 @@
   "fov": 35.0,
   "distance": 60.0,
   "pitch": [3.0, 89.0],
-  "height": [0.8, 60.0],
+  "height": [0.08, 120.0],
   "keySpeed": 0.6,
   "dragStart": 5.0,
   "turnPerPixel": 0.3,

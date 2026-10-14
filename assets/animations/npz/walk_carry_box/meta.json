@@ -1,537 +1,135 @@
 {
   "name": "walk_carry_box",
-  "text": "A person walks forward while carefully carrying a small closed book horizontally in both hands at waist level in front of their stomach. Elbows bent, hands held close together and steady, regular careful steps.",
-  "duration": 3.033333333333333,
-  "seed": 3054,
+  "text": "A person walks carefully forward carrying a cardboard box in both hands in front of the abdomen. The hands support its two side faces, elbows bent close to the ribs. Keep the box level and clear of the thighs while taking steady alternating steps. Do not release either hand.",
+  "duration": 1.6,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks carefully forward carrying a cardboard box in both hands in front of the abdomen. The hands support its two side faces, elbows bent close to the ribs. Keep the box level and clear of the thighs while taking steady alternating steps. Do not release either hand.",
+    "duration": 1.6,
+    "contacts": [],
+    "item": {
+      "type": "held_cardboard_box",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. A person walks carefully forward carrying a cardboard box in both hands in front of the abdomen. The hands support its two side faces, elbows bent close to the ribs. Keep the box level and clear of the thighs while taking steady alternating steps. Do not release either hand. Hold held_cardboard_box with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/f34a80d410f00725/motion.npz",
+        "source_frame": 21,
+        "phase": 0,
+        "translation": [
+          -0.0574847050011158,
+          0.0,
+          -0.12906131148338318
+        ]
+      },
+      {
+        "source": "assets/animations/sources/f34a80d410f00725/motion.npz",
+        "source_frame": 21,
+        "phase": 1,
+        "translation": [
+          -0.14473500847816467,
+          0.0,
+          1.122780203819275
+        ]
+      }
+    ]
+  },
+  "contacts": [],
   "loop": true,
-  "keyframes": [
+  "fullbody": [
     {
-      "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-      "source_frame": 0,
+      "source": "assets/animations/sources/f34a80d410f00725/motion.npz",
+      "source_frame": 21,
+      "translation": [
+        -0.0574847050011158,
+        0.0,
+        -0.12906131148338318
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f34a80d410f0072524886f335961d0a1efee6d6a31f72deae5df46ca608d9a55",
+        "hand_edited": false
+      },
       "frame": 0
     },
     {
-      "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-      "source_frame": 22,
-      "frame": 22
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-      "source_frame": 45,
-      "frame": 45
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-      "source_frame": 68,
-      "frame": 68
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-      "source_frame": 90,
-      "frame": 90
-    }
-  ],
-  "effectors": [
-    {
-      "joints": [
-        "LeftHand",
-        "RightHand"
+      "source": "assets/animations/sources/f34a80d410f00725/motion.npz",
+      "source_frame": 21,
+      "translation": [
+        -0.14473500847816467,
+        0.0,
+        1.122780203819275
       ],
-      "keyframes": [
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 0,
-          "frame": 0
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 1,
-          "frame": 1
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 2,
-          "frame": 2
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 3,
-          "frame": 3
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 4,
-          "frame": 4
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 5,
-          "frame": 5
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 6,
-          "frame": 6
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 7,
-          "frame": 7
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 8,
-          "frame": 8
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 9,
-          "frame": 9
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 10,
-          "frame": 10
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 11,
-          "frame": 11
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 12,
-          "frame": 12
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 13,
-          "frame": 13
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 14,
-          "frame": 14
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 15,
-          "frame": 15
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 16,
-          "frame": 16
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 17,
-          "frame": 17
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 18,
-          "frame": 18
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 19,
-          "frame": 19
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 20,
-          "frame": 20
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 21,
-          "frame": 21
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 22,
-          "frame": 22
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 23,
-          "frame": 23
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 24,
-          "frame": 24
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 25,
-          "frame": 25
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 26,
-          "frame": 26
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 27,
-          "frame": 27
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 28,
-          "frame": 28
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 29,
-          "frame": 29
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 30,
-          "frame": 30
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 31,
-          "frame": 31
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 32,
-          "frame": 32
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 33,
-          "frame": 33
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 34,
-          "frame": 34
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 35,
-          "frame": 35
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 36,
-          "frame": 36
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 37,
-          "frame": 37
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 38,
-          "frame": 38
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 39,
-          "frame": 39
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 40,
-          "frame": 40
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 41,
-          "frame": 41
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 42,
-          "frame": 42
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 43,
-          "frame": 43
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 44,
-          "frame": 44
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 45,
-          "frame": 45
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 46,
-          "frame": 46
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 47,
-          "frame": 47
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 48,
-          "frame": 48
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 49,
-          "frame": 49
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 50,
-          "frame": 50
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 51,
-          "frame": 51
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 52,
-          "frame": 52
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 53,
-          "frame": 53
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 54,
-          "frame": 54
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 55,
-          "frame": 55
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 56,
-          "frame": 56
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 57,
-          "frame": 57
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 58,
-          "frame": 58
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 59,
-          "frame": 59
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 60,
-          "frame": 60
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 61,
-          "frame": 61
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 62,
-          "frame": 62
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 63,
-          "frame": 63
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 64,
-          "frame": 64
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 65,
-          "frame": 65
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 66,
-          "frame": 66
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 67,
-          "frame": 67
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 68,
-          "frame": 68
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 69,
-          "frame": 69
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 70,
-          "frame": 70
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 71,
-          "frame": 71
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 72,
-          "frame": 72
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 73,
-          "frame": 73
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 74,
-          "frame": 74
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 75,
-          "frame": 75
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 76,
-          "frame": 76
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 77,
-          "frame": 77
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 78,
-          "frame": 78
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 79,
-          "frame": 79
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 80,
-          "frame": 80
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 81,
-          "frame": 81
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 82,
-          "frame": 82
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 83,
-          "frame": 83
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 84,
-          "frame": 84
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 85,
-          "frame": 85
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 86,
-          "frame": 86
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 87,
-          "frame": 87
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 88,
-          "frame": 88
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 89,
-          "frame": 89
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/93c844b54c3f3e0d7a4983278441e4a08aa43b3afb667bd62acf684d8cbe8a36.npz",
-          "source_frame": 90,
-          "frame": 90
-        }
-      ]
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f34a80d410f0072524886f335961d0a1efee6d6a31f72deae5df46ca608d9a55",
+        "hand_edited": false
+      },
+      "frame": 47
     }
   ],
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237",
+    "observations": {
+      "entry": "Starts already carrying the carton with one foot in the gait phase.",
+      "activity": "All eighteen original-pixel side crops show alternating steps while the carton stays retained in front; this is the same genuine travel heading used by its transitions.",
+      "release_end": "The exact gait endpoint retains the carton and original gait pose; numerical wrap and same-family boundaries are checked separately."
+    },
+    "viewed_images_sha256": {
+      "docs/motion-review-evidence-2026-10-11/viewed/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p00.png": "255fd6ff091f2e1647757d372c3cf2cf8863fa3278f31084d3ff21633ac74a86",
+      "docs/motion-review-evidence-2026-10-11/viewed/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p01.png": "0d7e03c2182c0bc561e9cac7c675c46a32927669566cc89d6abdd7db3ba7af15",
+      "docs/motion-review-evidence-2026-10-11/viewed/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p02.png": "1d957fd79549c29eccf23249d09c08a30eb4735957b4b403f5f08a1babbcfa65"
+    },
+    "full_speed_observed": false,
+    "scope": "Recorded assistant observations of the named source; sampled images do not establish intended-speed playback or user acceptance.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "existing_viewed_evidence_persistent_path_migration",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"raw_sha256\": \"a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237\",\r\n    \"observations\": {\r\n      \"entry\": \"Starts already carrying the carton with one foot in the gait phase.\",\r\n      \"activity\": \"All eighteen original-pixel side crops show alternating steps while the carton stays retained in front; this is the same genuine travel heading used by its transitions.\",\r\n      \"release_end\": \"The exact gait endpoint retains the carton and original gait pose; numerical wrap and same-family boundaries are checked separately.\"\r\n    },\r\n    \"viewed_images_sha256\": {\r\n      \".tmp/motion-repair-2026-10-10/object-source/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p00.png\": \"255fd6ff091f2e1647757d372c3cf2cf8863fa3278f31084d3ff21633ac74a86\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p01.png\": \"0d7e03c2182c0bc561e9cac7c675c46a32927669566cc89d6abdd7db3ba7af15\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p02.png\": \"1d957fd79549c29eccf23249d09c08a30eb4735957b4b403f5f08a1babbcfa65\"\r\n    },\r\n    \"full_speed_observed\": false,\r\n    \"scope\": \"Recorded assistant observations of the named source; sampled images do not establish intended-speed playback or user acceptance.\"\r\n  }",
+      "original_record_sha256": "c60f70c36e90da2117f11c791c57928270f93e17e4e8d5f799ca1b36be9d2226",
+      "current_source_sha256_at_reconciliation": "a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 1,
+    "evidence_format": "phased_observations",
+    "viewed_evidence_archive": {
+      "file": "docs/motion-review-evidence-2026-10-11/viewed-images.json",
+      "sha256": "293dcd81a1ab6c3fcbe8adc9093fa2d9d180f21980611f7e468e5aa29324ddfa"
+    }
   },
-  "num_samples": 1,
-  "root_average_speed_m_s": 0.8353375792503357,
-  "mapped_average_speed_m_s": 0.6587835798504225,
-  "endpoint_cleanup": {
-    "maximum_source_error_m": 0.00013575049524661154,
-    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
-  },
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "walk_carry_box",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
-  },
-  "single_unit": {
-    "clip": "walk_carry_box",
-    "source_sha256": "68785533802e9dd88acfc7107f3caea756bdfc96ee6c2bb010fa85fb11bf14f0",
-    "original_frames": 91,
-    "take_frames": [
-      45,
-      90
-    ],
-    "original_units": 2,
-    "frames": 46,
-    "duration": 1.5,
-    "source": "assets/animations/generation_inputs/68785533802e9dd88acfc7107f3caea756bdfc96ee6c2bb010fa85fb11bf14f0.npz",
-    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Alternating steps with stable box; no obvious fold.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Alternating steps with stable box; no obvious fold.\"\r\n  }",
+      "original_record_sha256": "34a572f81ff9bea44e55a475a578e558e0dd99b8836b3cc035b82b63b3810ae8",
+      "current_source_sha256_at_reconciliation": "a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
   }
 }

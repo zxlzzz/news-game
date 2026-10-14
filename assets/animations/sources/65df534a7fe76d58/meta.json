@@ -1,0 +1,72 @@
+{
+  "name": "sit_step",
+  "text": "A person sits resting on a low 30cm-high entrance step, knees bent up, both feet planted on the pavement in front of the steps. Lean the torso slightly forward with forearms resting loosely over the thighs. Remain seated, do not stand.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person sits resting on a low 30cm-high entrance step, knees bent up, both feet planted on the pavement in front of the steps. Lean the torso slightly forward with forearms resting loosely over the thighs. Remain seated, do not stand.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_step",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "building_bank",
+    "post": "post_step",
+    "description": "The person starts at building_bank.post_step and faces the model standing marker direction. Hips touches hip_step at 0.00s,5.00s.  A person sits resting on a low 30cm-high entrance step, knees bent up, both feet planted on the pavement in front of the steps. Lean the torso slightly forward with forearms resting loosely over the thighs. Remain seated, do not stand. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "building_bank",
+      "marker": "hip_step",
+      "space": "world",
+      "episode": "hip_step",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.012528,
+            0.3804,
+            0.126181
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.012528,
+            0.3804,
+            0.126181
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "65df534a7fe76d58660b11249553bfd35d095e23378a0ff12f4689442d9d3d6e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

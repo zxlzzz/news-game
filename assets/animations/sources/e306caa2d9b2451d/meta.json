@@ -1,0 +1,62 @@
+{
+  "name": "loop_dog_leash",
+  "text": "A person stands quietly with both arms relaxed beside the body. The right hand loosely holds a slack dog leash, wrist at upper thigh height. Stay upright with knees straight, feet planted, subtle breathing only.",
+  "duration": 3,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person stands quietly with both arms relaxed beside the body. The right hand loosely holds a slack dog leash, wrist at upper thigh height. Stay upright with knees straight, feet planted, subtle breathing only.",
+    "duration": 3,
+    "contacts": [],
+    "loop": true,
+    "idle_hand": "Both hands hang beside the thighs.",
+    "clearance": "Keep arms relaxed outside the torso.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 1
+      }
+    ],
+    "description": "Start at level ground facing +Z. A person stands quietly with both arms relaxed beside the body. The right hand loosely holds a slack dog leash, wrist at upper thigh height. Stay upright with knees straight, feet planted, subtle breathing only. Both hands hang beside the thighs. Keep arms relaxed outside the torso."
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "e306caa2d9b2451d46f782df5304921b1f80aec9f5206de40ad8092aab7bd2da",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_review_pending",
+    "accepted_by_hsinlung": false
+  },
+  "delivery_source": ".tmp/full_motion_review/generated/loop_dog_leash/attempt_003"
+}

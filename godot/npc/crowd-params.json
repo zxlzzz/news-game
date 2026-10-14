@@ -1,5 +1,5 @@
 {
-  "_note": "Who the Crowd node (npc/crowd.gd) puts in a level and how. Counts of free-roaming people are in each scene's population.tres; people at posts follow the post markers of the object types. Clip weights are relative. posts: every post kind a type in a non-behaviour scene (street_demo) offers must be here; chance 0 = nobody is put there by chance (the kinds added with npc/clip-setup.json, 2026-09-27). Lengths in metres. grid (core/walk_grid.gd): maxStep = the highest step up or down per mode (riders take no curbs); heightTolerance = surfaces closer in height than this are one. dogWalker.breeds: relative weights of the dog breeds (npc/animal-models.json). postStep: an agent (population.behaviour) whose walk ends this close to a post walks the rest straight onto it. offScreenMargin: a person farther than this outside the camera's view is hidden and not redrawn (still moves). redrawMetres: with a view N x this many metres tall (where the camera looks), a walking figure's pose is rebuilt every N frames, in turn (its position moves every frame).",
+  "_note": "Who the Crowd node (npc/crowd.gd) puts in a level and how. Counts of free-roaming people are in each scene's population.tres; people at posts follow the post markers of the object types. Clip weights are relative. posts: every post kind a type in a non-behaviour scene (street_demo) offers must be here; chance 0 = nobody is put there by chance (the kinds added with npc/clip-setup.json, 2026-09-27). Lengths in metres. grid (core/walk_grid.gd): maxStep = the highest step up or down per mode (riders take no curbs); heightTolerance = surfaces closer in height than this are one. dogWalker.breeds: relative weights of the dog breeds (npc/animal-models.json). postStep: an agent (population.behaviour) whose walk ends this close to a post walks the rest straight onto it. offScreenMargin: a person farther than this outside the camera's view is hidden and not redrawn (still moves). redrawMetres: with a view N x this many metres tall (where the camera looks), a walking figure's pose is rebuilt every N frames, in turn (its position moves every frame). fade: a switch to another clip blends from the last drawn pose over seconds (npc/pose_fade.gd); not after a jump farther than jump metres. idleClip: what an agent plays between actions. seating: the clips in clips are played sitting at a post whose marker has an approach child; the person walks to the approach and, where transitions names clips for the post kind, plays down (once) at the post, the seated clip, then up; without transitions the switch is only faded.",
   "body": "adult",
   "ink": [
     0.06,
@@ -8,6 +8,11 @@
   ],
   "depthBias": 0.03,
   "turnRate": 4.0,
+  "fade": {
+    "seconds": 0.25,
+    "jump": 1.0
+  },
+  "idleClip": "stand_idle",
   "grid": {
     "cell": 0.25,
     "clearance": 0.3,
@@ -112,7 +117,12 @@
     "chess": {
       "chance": 1.0,
       "clips": {
-        "chess_move": 1
+        "chess_move": 1,
+        "chess_move_diagonal": 1,
+        "chess_move_side": 1,
+        "chess_move_far": 1,
+        "chess_capture": 1,
+        "chess_think": 1
       }
     },
     "watch": {
@@ -159,35 +169,23 @@
     }
   },
   "seating": {
-    "seconds": 1.5,
-    "lean": 0.32,
-    "approach": {
-      "sit": [
-        0,
-        0,
-        0.38
-      ],
-      "chess": [
-        0.48,
-        0,
-        0
-      ]
-    },
     "clips": [
       "sit_bench",
       "slouch_bench",
-      "chess_move"
+      "chess_move",
+      "chess_move_diagonal",
+      "chess_move_side",
+      "chess_move_far",
+      "chess_capture",
+      "chess_think"
     ],
-    "steps": [
-      [
-        0,
-        0.42
-      ],
-      [
-        0.44,
-        0.86
-      ]
-    ],
-    "foot_lift": 0.07
-  }
+    "transitions": {
+      "sit": {
+        "down": "sit_down",
+        "up": "stand_up"
+      }
+    }
+  },
+  "postApproachTurn": 1.2,
+  "postSnapRadius": 0.06
 }

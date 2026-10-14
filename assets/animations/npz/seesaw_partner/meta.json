@@ -1,26 +1,133 @@
 {
   "name": "seesaw_partner",
-  "text": "Sitting astride a seesaw seat, facing inward, both hands hold a short vertical handle between the thighs. Knees bent and apart, feet near the ground. Gently rise and lower twice with the seesaw, torso upright.",
+  "text": "Sitting astride a seesaw seat, holding the low handle in both hands with elbows pointing down. The knees bend as the seat lowers and the legs extend as the seat rises. Gentle seated rocking.",
   "duration": 4,
-  "seed": 5312,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Sitting astride a seesaw seat, holding the low handle in both hands with elbows pointing down. The knees bend as the seat lowers and the legs extend as the seat rises. Gentle seated rocking.",
+    "duration": 4,
+    "object": "playground_seesaw",
+    "post": "post_seesaw_2",
+    "loop": true,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_right_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "idle_hand": "Both hands grasp the horizontal handle.",
+    "clearance": "Thighs and shins stay on opposite sides of the beam and clear the seat; keep the head clear of the handle.",
+    "seat_surface": {
+      "node": "seat_001",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "description": "Start at playground_seesaw.post_seesaw_2 facing the model standing marker direction. A person sits astride a seesaw. Both thighs spread sideways around the narrow beam, knees point outward and shins hang outside its sides. Both hands remain on the horizontal grip ahead of the waist, elbows down. Keep the torso upright as the beam rocks gently; remain sitting astride, never stand or bring the knees together. Hips touches the physical model marker hip_right at 0.00s, 4.00s. LeftHand touches the physical model marker grip_right_left at 0.00s, 4.00s. RightHand touches the physical model marker grip_right_right at 0.00s, 4.00s. Both hands grasp the horizontal handle. Thighs and shins stay on opposite sides of the beam and clear the seat; keep the head clear of the handle."
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      },
+      "translation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "frame": 119,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      },
+      "translation": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "loop": true,
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "d08ceac93f7bb4f8ca031f30dc082da6348d67501d352638619fe530b9ebc20d",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
   },
-  "num_samples": 1,
-  "source": "seesaw_seated, opposing participant",
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "stand_idle",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
-    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
-  }
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 3.967 s front/side overview: supported sitting and lowered elbows through both beam reversals.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 3.967 s front/side overview: supported sitting and lowered elbows through both beam reversals.\"\r\n  }",
+      "original_record_sha256": "b65ea7863c9223a0962022fbb548d629b2a3f0c79c21f278ef5671165ca4e726",
+      "current_source_sha256_at_reconciliation": "d08ceac93f7bb4f8ca031f30dc082da6348d67501d352638619fe530b9ebc20d",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
 }

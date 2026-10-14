@@ -1,0 +1,326 @@
+{
+  "name": "ride_bicycle",
+  "text": "A person sits on a bicycle saddle, leans slightly forward, keeps both hands on the handlebars, and pedals slowly with alternating circular leg movements. Keep knees on either side of the frame and torso steady. One full pedal revolution.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "object": "bicycle",
+    "post": "post_rider",
+    "duration": 4,
+    "text": "A person sits on a bicycle saddle, leans slightly forward, keeps both hands on the handlebars, and pedals slowly with alternating circular leg movements. Keep knees on either side of the frame and torso steady. One full pedal revolution.",
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "idle_hand": "Both hands follow the stated task; a hand without a task rests beside its thigh.",
+    "clearance": "Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "description": "Start at bicycle.post_rider facing the model standing marker direction. A person sits on a bicycle saddle, leans slightly forward, keeps both hands on the handlebars, and pedals slowly with alternating circular leg movements. Keep knees on either side of the frame and torso steady. One full pedal revolution. Hips touches the physical model marker hip_seat at 0.00s, 4.00s. LeftHand touches the physical model marker grip_left at 0.00s, 4.00s. RightHand touches the physical model marker grip_right at 0.00s, 4.00s. LeftFoot touches the physical model marker foot_left at 0.00s, 4.00s. RightFoot touches the physical model marker foot_right at 0.00s, 4.00s. Both hands follow the stated task; a hand without a task rests beside its thigh. Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/ed1a2ca7b428e34a/motion.npz",
+        "source_frame": 30,
+        "phase": 0,
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/sources/ed1a2ca7b428e34a/motion.npz",
+        "source_frame": 30,
+        "phase": 1,
+        "align_hip": "hip_seat"
+      }
+    ],
+    "loop": true
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bicycle",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            1.1412,
+            -0.30432
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.0,
+            1.1412,
+            -0.30432
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "bicycle",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.204229,
+            1.311598,
+            0.217087
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.204229,
+            1.311598,
+            0.217087
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "bicycle",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.202005,
+            1.311498,
+            0.217169
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            -0.202005,
+            1.311498,
+            0.217169
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "bicycle",
+      "marker": "foot_left",
+      "space": "world",
+      "episode": "foot_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.22824,
+            0.799293,
+            0.0
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.22824,
+            0.799293,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "bicycle",
+      "marker": "foot_right",
+      "space": "world",
+      "episode": "foot_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.22824,
+            0.418982,
+            0.0
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            -0.22824,
+            0.418982,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/ed1a2ca7b428e34a/motion.npz",
+      "source_frame": 30,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "ed1a2ca7b428e34aee654bb5a0f7ce9846db17764ef225dfcb23eafcd294632c",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        -0.11772586405277252,
+        0.08041530246734618,
+        -2.1828737481307985
+      ],
+      "placement_basis": [
+        [
+          0.9855241770996366,
+          0,
+          -0.1695349413899218
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.1695349413899218,
+          0,
+          0.9855241770996366
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    },
+    {
+      "source": "assets/animations/sources/ed1a2ca7b428e34a/motion.npz",
+      "source_frame": 30,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "ed1a2ca7b428e34aee654bb5a0f7ce9846db17764ef225dfcb23eafcd294632c",
+        "hand_edited": false
+      },
+      "frame": 119,
+      "translation": [
+        -0.11772586405277252,
+        0.08041530246734618,
+        -2.1828737481307985
+      ],
+      "placement_basis": [
+        [
+          0.9855241770996366,
+          0,
+          -0.1695349413899218
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.1695349413899218,
+          0,
+          0.9855241770996366
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "c71a7c0388b7f9c51f9be63b21dc987a518736537794da7428d658dd2356e2fe",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "c71a7c0388b7f9c51f9be63b21dc987a518736537794da7428d658dd2356e2fe",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\r\n    \"status\": \"visual_pass\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\r\n    \"raw_sha256\": \"c71a7c0388b7f9c51f9be63b21dc987a518736537794da7428d658dd2356e2fe\",\r\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\r\n  }",
+      "original_record_sha256": "3f331e688ed8519c2b18d658251e31678782f9c4c2a3630e51bdb4b5d36b0a3f",
+      "current_source_sha256_at_reconciliation": "c71a7c0388b7f9c51f9be63b21dc987a518736537794da7428d658dd2356e2fe",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

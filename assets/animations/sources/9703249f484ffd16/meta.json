@@ -1,0 +1,87 @@
+{
+  "name": "pay",
+  "text": "A person takes cash from their right trouser pocket, extends their right hand to put the cash on the counter in front, and draws the empty hand back down to their side. Their left arm stays relaxed and they remain standing still.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person takes cash from their right trouser pocket, extends their right hand to put the cash on the counter in front, and draws the empty hand back down to their side. Their left arm stays relaxed and they remain standing still.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "cash_landing",
+        "phases": [
+          0.5,
+          0.6
+        ],
+        "window": [
+          0.46499999999999997,
+          0.5,
+          0.6,
+          0.635
+        ],
+        "surface_node": "counter"
+      }
+    ],
+    "object": "market_stall",
+    "post": "post_customer",
+    "description": "The person starts at market_stall.post_customer and faces the model standing marker direction. RightHand touches cash_landing at 2.50s,3.00s.  A person takes cash from their right trouser pocket, extends their right hand to put the cash on the counter in front, and draws the empty hand back down to their side. Their left arm stays relaxed and they remain standing still. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep torso on its standing side of the counter, elbows above the edge while reaching to goods.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep torso on its standing side of the counter, elbows above the edge while reaching to goods."
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "market_stall",
+      "marker": "cash_landing",
+      "space": "world",
+      "episode": "cash_landing",
+      "keys": [
+        {
+          "frame": 74,
+          "position": [
+            0.382058,
+            1.097057,
+            0.615009
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.382058,
+            1.097057,
+            0.615009
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "9703249f484ffd16b20c4f23fc3b942f7d4b2860210bd27c36e8811749338921",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "9703249f484ffd16b20c4f23fc3b942f7d4b2860210bd27c36e8811749338921",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\r\n    \"status\": \"visual_pass\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\r\n    \"raw_sha256\": \"9703249f484ffd16b20c4f23fc3b942f7d4b2860210bd27c36e8811749338921\",\r\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\r\n  }",
+      "original_record_sha256": "857a3d6daee58c0d149f733b188cf983784266dd43c4b77ff715cea4f39a7d42",
+      "current_source_sha256_at_reconciliation": "9703249f484ffd16b20c4f23fc3b942f7d4b2860210bd27c36e8811749338921",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

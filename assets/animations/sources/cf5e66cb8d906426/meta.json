@@ -1,0 +1,36 @@
+{
+  "name": "mop_ground",
+  "text": "A person mops the floor with a long mop held in both hands, left hand at chest height and right hand low beside the right hip. Both elbows point down. Keep the mop head on the floor and make short forward and backward strokes, feet planted.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person mops the floor with a long mop held in both hands, left hand at chest height and right hand low beside the right hip. Both elbows point down. Keep the mop head on the floor and make short forward and backward strokes, feet planted.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_mop",
+      "hand": "right",
+      "grip": "grip_low",
+      "support_grip": "grip_high",
+      "support_hand": "left"
+    },
+    "description": "Start at level ground facing +Z. A person mops the floor with a long mop held in both hands, left hand at chest height and right hand low beside the right hip. Both elbows point down. Keep the mop head on the floor and make short forward and backward strokes, feet planted. Hold held_mop with right at its grip_low marker. Both hands continuously grasp their marked positions on the handle. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands continuously grasp their marked positions on the handle.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "cf5e66cb8d906426c57476d64aeef5e232a70b33064e93d32000970c968e4f26",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

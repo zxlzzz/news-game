@@ -1,0 +1,228 @@
+{
+  "name": "ride_scooter",
+  "text": "A person sits upright on a motor scooter seat, both hands continuously on the handlebars, both feet flat on the footrests, knees parallel and pointing forward. Remain in this riding posture with gentle body sway.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "object": "scooter",
+    "post": "post_rider",
+    "duration": 4,
+    "text": "A person sits upright on a motor scooter seat, both hands continuously on the handlebars, both feet flat on the footrests, knees parallel and pointing forward. Remain in this riding posture with gentle body sway.",
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "idle_hand": "Both hands follow the stated task; a hand without a task rests beside its thigh.",
+    "clearance": "Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "description": "Start at scooter.post_rider facing the model standing marker direction. A person sits upright on a motor scooter seat, both hands continuously on the handlebars, both feet flat on the footrests, knees parallel and pointing forward. Remain in this riding posture with gentle body sway. Hips touches the physical model marker hip_seat at 0.00s, 4.00s. LeftHand touches the physical model marker grip_left at 0.00s, 4.00s. RightHand touches the physical model marker grip_right at 0.00s, 4.00s. LeftFoot touches the physical model marker foot_left at 0.00s, 4.00s. RightFoot touches the physical model marker foot_right at 0.00s, 4.00s. Both hands follow the stated task; a hand without a task rests beside its thigh. Keep the torso, head and limbs outside solid model surfaces throughout."
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "scooter",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            1.08414,
+            -0.2536
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.0,
+            1.08414,
+            -0.2536
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "scooter",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.221152,
+            1.343386,
+            0.420169
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.221152,
+            1.343386,
+            0.420169
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "scooter",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.218935,
+            1.343317,
+            0.420322
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            -0.218935,
+            1.343317,
+            0.420322
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "scooter",
+      "marker": "foot_left",
+      "space": "world",
+      "episode": "foot_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.1268,
+            0.482293,
+            0.17752
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.1268,
+            0.482293,
+            0.17752
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "scooter",
+      "marker": "foot_right",
+      "space": "world",
+      "episode": "foot_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.1268,
+            0.482382,
+            0.17752
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            -0.1268,
+            0.482382,
+            0.17752
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "eb317649b5c84540b384d800cb42f6965919f2c3bc34e97b749c606e3aeb2169",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

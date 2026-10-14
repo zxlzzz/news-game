@@ -1,0 +1,30 @@
+{
+  "name": "reach_overhead_reference",
+  "text": "A person stands still and stretches both arms straight up into the air above the head. Both elbows fully raised and wrists together above the crown. Hold both arms high overhead throughout. Torso vertical, legs straight, feet planted.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A person stands still and stretches both arms straight up into the air above the head. Both elbows fully raised and wrists together above the crown. Hold both arms high overhead throughout. Torso vertical, legs straight, feet planted.",
+    "duration": 4,
+    "contacts": [],
+    "idle_hand": "Both hands follow the specified pose.",
+    "clearance": "The entire body stays on clear level ground; no object is present in this pose reference.",
+    "description": "Start at level ground facing +Z. A person stands still and stretches both arms straight up into the air above the head. Both elbows fully raised and wrists together above the crown. Hold both arms high overhead throughout. Torso vertical, legs straight, feet planted. Both hands follow the specified pose. The entire body stays on clear level ground; no object is present in this pose reference.",
+    "generation_stage": "text_only_pilot"
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "459f4e34d4807aa829f2186445b654c1f48f476135338216e4552fbeadc5b2e9",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

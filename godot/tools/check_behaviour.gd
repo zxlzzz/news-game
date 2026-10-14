@@ -9,6 +9,7 @@
 extends SceneTree
 
 const SCENE := "res://scenes/two_streets/level.tscn"
+const ClipPose := preload("res://npc/clip_pose.gd")
 const SECONDS := 300
 const STEP := 0.1
 
@@ -37,6 +38,10 @@ func _process(_d: float) -> bool:
 	var seated_entered := 0
 	var seated_left := 0
 	var seating_errors: Array[String] = []
+	var seat_seconds := 0.0
+	for kind in crowd.p.seating.transitions:
+		for id in crowd.p.seating.transitions[kind].values():
+			seat_seconds = maxf(seat_seconds, ClipPose.of(id).duration())
 	var t := 0.0
 	var next_report := 10.0
 	while t < SECONDS:
@@ -54,7 +59,7 @@ func _process(_d: float) -> bool:
 			seat_states[person.figure]=seated
 			if seated and not person.has("seat_transition") and absf(angle_difference(person.yaw,a.face))>0.01:
 				seating_errors.append("turning while seated")
-			if person.has("seat_transition") and person.seat_transition.time>crowd.p.seating.seconds+STEP:
+			if person.has("seat_transition") and person.seat_transition.time>seat_seconds+STEP:
 				seating_errors.append("stalled seat transition")
 			var old = last.get(person.figure)
 			if a != old:

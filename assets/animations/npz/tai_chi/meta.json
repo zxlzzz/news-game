@@ -20904,5 +20904,22 @@
     },
     "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
     "batch_category": "daily"
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Slow arm circles and weight shifts read as tai chi.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Slow arm circles and weight shifts read as tai chi.\"\r\n  }",
+      "original_record_sha256": "4f538eff1b90b39619dfb0af4d30316c53b9e3bcf30957131a9aad275119d0de",
+      "current_source_sha256_at_reconciliation": "f207136bf08f818005f4d2d2afcac3f7d34d0e1420ac344a0492af61a0b3e73a",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
   }
 }

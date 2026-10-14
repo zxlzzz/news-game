@@ -1,24 +1,452 @@
 {
   "name": "slide_seated",
-  "text": "Sitting at the top of a slide facing forward, legs together extended in front, palms resting beside the hips. Push off with the hands, slide forward while seated with torso upright and feet forward, then place feet on the ground and stand up.",
-  "duration": 4,
-  "seed": 5311,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "text": "Remain seated on the chute throughout a playground slide ride, both knees bent upwards and both feet in front of the hips on the chute. Push off gently with the palms, then glide down smoothly while keeping the torso upright and knees ahead of the torso. End seated at the bottom with both feet resting on the ground.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 10,
+  "scene": {
+    "text": "Remain seated on the chute throughout a playground slide ride, both knees bent upwards and both feet in front of the hips on the chute. Push off gently with the palms, then glide down smoothly while keeping the torso upright and knees ahead of the torso. End seated at the bottom with both feet resting on the ground.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_start",
+        "phases": [
+          0
+        ],
+        "window": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "runtime": false
+      },
+      {
+        "joint": "Hips",
+        "marker": "hip_finish",
+        "phases": [
+          1
+        ],
+        "window": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "runtime": false
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "push_left",
+        "phases": [
+          0,
+          0.2
+        ],
+        "window": [
+          0,
+          0,
+          0.2,
+          0.23500000000000001
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "push_right",
+        "phases": [
+          0,
+          0.2
+        ],
+        "window": [
+          0,
+          0,
+          0.2,
+          0.23500000000000001
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_start_left",
+        "phases": [
+          0
+        ],
+        "window": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "runtime": false
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_finish_left",
+        "phases": [
+          1
+        ],
+        "window": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "runtime": false
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_start_right",
+        "phases": [
+          0
+        ],
+        "window": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "runtime": false
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_finish_right",
+        "phases": [
+          1
+        ],
+        "window": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "runtime": false
+      }
+    ],
+    "object": "playground_slide",
+    "post": "post_slide",
+    "description": "Start at playground_slide.post_slide facing the model standing marker direction. Remain seated on the chute throughout a playground slide ride, both knees bent upwards and both feet in front of the hips on the chute. Push off gently with the palms, then glide down smoothly while keeping the torso upright and knees ahead of the torso. End seated at the bottom with both feet resting on the ground. Hips touches the physical model marker hip_start at 0.00s. Hips touches the physical model marker hip_finish at 5.00s. LeftHand touches the physical model marker push_left at 0.00s, 1.00s. RightHand touches the physical model marker push_right at 0.00s, 1.00s. LeftFoot touches the physical model marker foot_start_left at 0.00s. LeftFoot touches the physical model marker foot_finish_left at 5.00s. RightFoot touches the physical model marker foot_start_right at 0.00s. RightFoot touches the physical model marker foot_finish_right at 5.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Keep hips over the chute, hands above the side rails and feet in front, then clear the slide exit.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep hips over the chute, hands above the side rails and feet in front, then clear the slide exit.",
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/742c7fb70c223f98/motion.npz",
+        "source_frame": 30,
+        "phase": 0,
+        "align_hip": "hip_start"
+      },
+      {
+        "source": "assets/animations/sources/742c7fb70c223f98/motion.npz",
+        "source_frame": 30,
+        "phase": 1,
+        "align_hip": "hip_finish"
+      }
+    ],
+    "runtime_contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_start",
+        "end_marker": "hip_finish",
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_start_left",
+        "end_marker": "foot_finish_left",
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_start_right",
+        "end_marker": "foot_finish_right",
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "playground_slide",
+      "marker": "hip_start",
+      "space": "world",
+      "episode": "hip_start",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            1.97808,
+            0.1268
+          ],
+          "root_xz": [
+            0.0,
+            0.12679999999999997
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "Hips",
+      "model": "playground_slide",
+      "marker": "hip_finish",
+      "space": "world",
+      "episode": "hip_finish",
+      "keys": [
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            0.1902,
+            2.4726
+          ],
+          "root_xz": [
+            0.0,
+            2.4725999999999995
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "playground_slide",
+      "marker": "push_left",
+      "space": "world",
+      "episode": "push_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.21269,
+            2.01309,
+            0.106958
+          ],
+          "root_xz": [
+            0.0,
+            0.12679999999999997
+          ]
+        },
+        {
+          "frame": 30,
+          "position": [
+            0.21269,
+            1.689506,
+            0.064776
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "playground_slide",
+      "marker": "push_right",
+      "space": "world",
+      "episode": "push_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.21047,
+            2.012943,
+            0.106958
+          ],
+          "root_xz": [
+            0.0,
+            0.12679999999999997
+          ]
+        },
+        {
+          "frame": 30,
+          "position": [
+            -0.21047,
+            1.689584,
+            0.064805
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "playground_slide",
+      "marker": "foot_start_left",
+      "space": "world",
+      "episode": "foot_start_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.15216,
+            1.566433,
+            0.7608
+          ],
+          "root_xz": [
+            0.0,
+            0.12679999999999997
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "playground_slide",
+      "marker": "foot_finish_left",
+      "space": "world",
+      "episode": "foot_finish_left",
+      "keys": [
+        {
+          "frame": 149,
+          "position": [
+            0.15216,
+            0.070193,
+            3.17
+          ],
+          "root_xz": [
+            0.0,
+            2.4725999999999995
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "playground_slide",
+      "marker": "foot_start_right",
+      "space": "world",
+      "episode": "foot_start_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.15216,
+            1.566522,
+            0.7608
+          ],
+          "root_xz": [
+            0.0,
+            0.12679999999999997
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "playground_slide",
+      "marker": "foot_finish_right",
+      "space": "world",
+      "episode": "foot_finish_right",
+      "keys": [
+        {
+          "frame": 149,
+          "position": [
+            -0.15216,
+            0.070282,
+            3.17
+          ],
+          "root_xz": [
+            0.0,
+            2.4725999999999995
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/742c7fb70c223f98/motion.npz",
+      "source_frame": 30,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "742c7fb70c223f98a433b2bdcfbccf01cc04f3609e1c8d7b7032fbb03d971631",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        -0.001803779974579811,
+        1.8586619153785704,
+        0.12601198113588613
+      ],
+      "placement_basis": [
+        [
+          0.9997312639482688,
+          0,
+          -0.023181886989563444
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.023181886989563444,
+          0,
+          0.9997312639482688
+        ]
+      ],
+      "placement_marker": "hip_start"
+    },
+    {
+      "source": "assets/animations/sources/742c7fb70c223f98/motion.npz",
+      "source_frame": 30,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "742c7fb70c223f98a433b2bdcfbccf01cc04f3609e1c8d7b7032fbb03d971631",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        -0.001803779974579811,
+        0.07078191537857054,
+        2.4718119811358856
+      ],
+      "placement_basis": [
+        [
+          0.9997312639482688,
+          0,
+          -0.023181886989563444
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.023181886989563444,
+          0,
+          0.9997312639482688
+        ]
+      ],
+      "placement_marker": "hip_finish"
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "adcbb8c7b7290150eb9a3aae1bc1df540a9c14924f2005accd0fa2ee4951d702",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "adcbb8c7b7290150eb9a3aae1bc1df540a9c14924f2005accd0fa2ee4951d702",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
   },
-  "num_samples": 1,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "slide_seated",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
-  }
+  "source_frame": "fixed"
 }

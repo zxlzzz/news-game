@@ -110,10 +110,13 @@ func _process(_dt: float) -> bool:
 	var prop_cycle: float = st.cycle
 	st.seek(prop_cycle)
 	var held_body: Dictionary = st.main.pose.duplicate(true)
-	var held_prop: Transform3D = st.main.props[0].node.transform
+	check(st.main.item != null, "turn_page has no held book")
+	if st.main.item == null:
+		return finish()
+	var held_prop: Transform3D = st.main.item.node.transform
 	st.advance(prop_cycle)
 	check(st.t == prop_cycle, "turn_page continued beyond one action")
-	check(gap(held_body,st.main.pose)<0.00001 and held_prop.is_equal_approx(st.main.props[0].node.transform), "turn_page endpoint changed after completion")
+	check(gap(held_body,st.main.pose)<0.00001 and held_prop.is_equal_approx(st.main.item.node.transform), "turn_page endpoint changed after completion")
 	level.playing = false
 	level._toggle_play()
 	check(level.playing and st.t == 0.0, "replaying a finished action did not restart from its beginning")
@@ -121,7 +124,11 @@ func _process(_dt: float) -> bool:
 	report.scenarios.turn_page = {"cycle": prop_cycle, "repeats": st.repeats()}
 	check(st.select("stand_up", {}) == "", "manual stand_up could not be selected")
 	st.seek(0.0)
-	var start_pose: Dictionary = st.main.pose.duplicate(true)
+	# A manually placed person has no bench contact; compare two manual starts.
+	check(st.add_person(Vector3(3, 0, 0)) == "", "manual stand_up baseline could not be added")
+	var baseline: Dictionary = st.people[-1]
+	var start_pose: Dictionary = baseline.pose.duplicate(true)
+	st._free_person(baseline)
 	st.clock = 21.0
 	check(st.add_person(Vector3(2, 0, 0)) == "", "manual stand_up could not be added")
 	var added: Dictionary = st.people[-1]

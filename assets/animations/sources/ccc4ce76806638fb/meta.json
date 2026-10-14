@@ -1,0 +1,36 @@
+{
+  "name": "water_planter_hold",
+  "text": "A person stands facing a low window flower planter. Hold a watering can by its upper handle in the right hand in front of the waist, tip its spout gently toward the soil, then restore it upright. Left hand hangs relaxed. Remain outside the planter and keep the can clear of the flowers and ledge.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person stands facing a low window flower planter. Hold a watering can by its upper handle in the right hand in front of the waist, tip its spout gently toward the soil, then restore it upright. Left hand hangs relaxed. Remain outside the planter and keep the can clear of the flowers and ledge.",
+    "duration": 5,
+    "contacts": [],
+    "object": "window_planter",
+    "post": "post_water",
+    "item": {
+      "type": "held_watering_can",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "The person starts at window_planter.post_water and faces the model standing marker direction.  right hand holds held_watering_can at the item grip marker.  A person stands facing a low window flower planter. Hold a watering can by its upper handle in the right hand in front of the waist, tip its spout gently toward the soil, then restore it upright. Left hand hangs relaxed. Remain outside the planter and keep the can clear of the flowers and ledge. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "ccc4ce76806638fb015952d5b50a1756bba7dab6cf67f0d226797d9c520946ee",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

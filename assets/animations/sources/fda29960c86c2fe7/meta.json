@@ -1,0 +1,116 @@
+{
+  "name": "eat_walk",
+  "text": "Walking forward with a snack bag held low in the right hand, a person uses the left hand to take a small snack from the bag and eat it, then lowers the left hand.",
+  "duration": 1.2666666666666666,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "Walking forward with a snack bag held low in the right hand, a person uses the left hand to take a small snack from the bag and eat it, then lowers the left hand.",
+    "duration": 1.2666666666666666,
+    "contacts": [],
+    "item": {
+      "type": "held_snack_bag",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright"
+    },
+    "description": "Start at level ground facing +Z. Walking forward with a snack bag held low in the right hand, a person uses the left hand to take a small snack from the bag and eat it, then lowers the left hand. Hold held_snack_bag with right at its grip marker. The handLeft holds held_snack_piece at its grip marker during the visible interval. The right hand steadies the snack bag near the right thigh; the left hand eats the small snack. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand steadies the snack bag near the right thigh; the left hand eats the small snack.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "props": [
+      {
+        "type": "held_snack_piece",
+        "space": "handLeft",
+        "grip": "grip",
+        "visible": [
+          0,
+          1
+        ]
+      }
+    ],
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/f2794912db1545de/motion.npz",
+        "source_frame": 42,
+        "phase": 0,
+        "translation": [
+          0.041155051440000534,
+          0.0,
+          -1.5954495668411255
+        ]
+      },
+      {
+        "source": "assets/animations/sources/f2794912db1545de/motion.npz",
+        "source_frame": 42,
+        "phase": 1,
+        "translation": [
+          0.031565334647893906,
+          0.0,
+          -0.2360684871673584
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/f2794912db1545de/motion.npz",
+      "source_frame": 42,
+      "translation": [
+        0.041155051440000534,
+        0.0,
+        -1.5954495668411255
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f2794912db1545decff75d786f1cc1b57f28cb9d19b116fe95535c21d4ec00d9",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/f2794912db1545de/motion.npz",
+      "source_frame": 42,
+      "translation": [
+        0.031565334647893906,
+        0.0,
+        -0.2360684871673584
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f2794912db1545decff75d786f1cc1b57f28cb9d19b116fe95535c21d4ec00d9",
+        "hand_edited": false
+      },
+      "frame": 37
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "fda29960c86c2fe7e9eb80e1dc794c43662385e78fee22ea54e6315392cd5c73",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "fda29960c86c2fe7e9eb80e1dc794c43662385e78fee22ea54e6315392cd5c73",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"fda29960c86c2fe7e9eb80e1dc794c43662385e78fee22ea54e6315392cd5c73\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "25cefd5232fc966398103a23d82dc53449a3f0b291481c36acb1b3700e29e198",
+      "current_source_sha256_at_reconciliation": "fda29960c86c2fe7e9eb80e1dc794c43662385e78fee22ea54e6315392cd5c73",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

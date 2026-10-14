@@ -4,13 +4,14 @@
 // segs: [start, end, lineWidthMultiplier]. Projection is the renderer's job.
 export function createSkeletonMapper(names, restFrame) {
   const J=Object.fromEntries(names.map((name,i)=>[name,i]));
-  for (const name of ['Hips','Neck1','Head','HeadEnd', ...['Left','Right'].flatMap(s=>['Arm','ForeArm','Hand','Shin','Foot','ToeEnd'].map(n=>s+n))]) {
+  for (const name of ['Hips','Neck1','Head','HeadEnd', ...['Left','Right'].flatMap(s=>['Arm','ForeArm','Hand','Shin','Foot','ToeEnd','Leg'].map(n=>s+n))]) {
     if (!(name in J)) throw new Error(`Missing source joint: ${name}`);
   }
-  const SRC={thigh:.528,shin:.423}; // source standing leg lengths, metres
+
 const add=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]],sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],mul=(a,s)=>[a[0]*s,a[1]*s,a[2]*s];
 const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],len=a=>Math.hypot(a[0],a[1],a[2]),unit=a=>mul(a,1/Math.max(len(a),1e-9));
 const mix=(a,b,t)=>add(mul(a,1-t),mul(b,t));
+const sourceLegLength=["Left","Right"].reduce((sum,sd)=>sum+(len(sub(restFrame[J[sd+"Shin"]],restFrame[J[sd+"Leg"]]))+len(sub(restFrame[J[sd+"Foot"]],restFrame[J[sd+"Shin"]])))*.5,0);
 function ik(root,l1,l2,target,kneeHint){ // two-bone, cosine rule; bend side from source knee
   const aim=sub(target,root),d=Math.min(Math.max(len(aim),Math.abs(l1-l2)+1e-6),l1+l2-1e-6),ax=unit(aim);
   let b=sub(kneeHint,mul(ax,dot(kneeHint,ax)));
@@ -74,15 +75,20 @@ function armsByDirection(s,P,hdir,side){const g=n=>s[J[n]],out={};
 function mapFrame(s,P,origin){ // s: source frame indexed by names -> drawn figure
   const g=n=>s[J[n]];
   const hs=g('Hips');
-  const r=(P.thigh+P.shin)/(SRC.thigh+SRC.shin),o=origin;
+  const r=(P.thigh+P.shin)/sourceLegLength,o=origin;
   const S=p=>[o[0]+(p[0]-o[0])*r,p[1]*r,o[2]+(p[2]-o[2])*r]; // whole walk scaled with leg length
   let H=S(hs);
-  // lower hips if an ankle target is out of reach
-  let drop=0;const reach=P.thigh+P.shin-1e-4;
-  for(const sd of['Left','Right']){const o=sub(H,S(g(sd+'Foot'))),h2=o[0]**2+o[2]**2;
-    if(o[1]>0&&len(o)>reach&&h2<reach*reach)drop=Math.max(drop,o[1]-Math.sqrt(reach*reach-h2));}
-  H=[H[0],H[1]-drop,H[2]];
-  const F=torsoFrame(s),supportHands=[],supportTargets={};
+  const F=torsoFrame(s),legs={}; let floorDelta=-Infinity;
+  for(const sd of ['Left','Right']) {
+    const upper=mul(unit(sub(g(sd+'Shin'),g(sd+'Leg'))),P.thigh);
+    const lower=mul(unit(sub(g(sd+'Foot'),g(sd+'Shin'))),P.shin);
+    const end=add(upper,lower),spacing=mul(F[0],dot(sub(g(sd+'Leg'),hs),F[0])*r);
+    const from=unit(end),to=unit(add(end,spacing));
+    legs[sd]={knee:rotTo(from,to,upper),end:rotTo(from,to,end)};
+    floorDelta=Math.max(floorDelta,S(g(sd+'Foot'))[1]-H[1]-legs[sd].end[1]);
+  }
+  H[1]+=floorDelta;
+  const supportHands=[],supportTargets={};
   let N=add(H,mul(F[1],P.torso)),lift=0;
   for(const sd of['Left','Right']){
     const hand=g(sd+'Hand'),fore=sub(hand,g(sd+'ForeArm'));
@@ -124,8 +130,7 @@ function mapFrame(s,P,origin){ // s: source frame indexed by names -> drawn figu
       const arm=ik(N,P.upperArm,P.foreArm,mix(out,supportTargets[sd],support),a.el);
       el=arm.knee;hd=arm.end;
     }
-    const ankle=add(S(g(sd+'Foot')),[0,lift,0]);
-    const {knee,end}=ik(H,P.thigh,P.shin,ankle,sub(g(sd+'Shin'),hs));
+    const knee=add(H,legs[sd].knee),end=add(H,legs[sd].end);
     const toe=add(end,mul(unit(sub(g(sd+'ToeEnd'),g(sd+'Foot'))),P.foot));
     f.segs.push([N,el,1],[el,hd,1],[H,knee,1],[knee,end,1]);
     if(P.foot>0)f.segs.push([end,toe,1]);

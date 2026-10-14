@@ -1,0 +1,32 @@
+{
+  "name": "walk_sip_retained_reference",
+  "text": "A person walks continuously forward at an ordinary relaxed pace for five seconds. The right hand carries a small upright lidded coffee cup at low chest height. During the middle of the walk, the person clearly raises this same cup to the lips, tilts it slightly for exactly one sip, and then lowers it back to the original low chest carry while still walking. Keep the right elbow below the cup and the cup on the right side without crossing arms. The left arm swings naturally. Do not stop walking, crouch, drink with the left hand, raise an empty hand or keep the cup low throughout.",
+  "duration": 5.0,
+  "seed": 61137,
+  "attempt": 1,
+  "loop": false,
+  "contacts": [],
+  "fullbody": [],
+  "post_processing": false,
+  "scene": {
+    "description": "A genuine complete walking activity probe for the existing one-sip-per-loop requirement, with the same lidded coffee cup retained in the right hand. No imposed positions or modified pose. Actual physical cup and complete source qualification follow generation.",
+    "item": {
+      "type": "held_coffee_cup",
+      "hand": "right",
+      "grip": "grip_sleeve"
+    },
+    "acceptance": "A sip while walking and a return to the same retained carry; complete SOMA77 source, finger rotations, physical cup orientation and dense body clearance remain unqualified until inspected."
+  },
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "edd568eea1340b286fb051f445430e580776c3011f2204e50a70d1947907bd39",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

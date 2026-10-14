@@ -1,0 +1,142 @@
+{
+  "name": "leg_stretch",
+  "text": "Standing on the right leg, left heel already resting on a low bench in front, left leg stretched straight forward. Lean forward over the left leg and hold the stretch. Hands reach toward the left knee.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 7,
+  "scene": {
+    "text": "Standing on the right leg, left heel already resting on a low bench in front, left leg stretched straight forward. Lean forward over the left leg and hold the stretch. Hands reach toward the left knee.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "LeftFoot",
+        "marker": "stretch_heel",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bench",
+    "post": "post_stretch",
+    "description": "Start at bench.post_stretch facing the model standing marker direction. Standing on the right leg, left heel already resting on a low bench in front, left leg stretched straight forward. Lean forward over the left leg and hold the stretch. Hands reach toward the left knee. LeftFoot touches the physical model marker stretch_heel at 0.00s, 3.00s. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep the raised heel on the seat, torso in front of the bench, free standing foot on the floor and body clear of the backrest.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep the raised heel on the seat, torso in front of the bench, free standing foot on the floor and body clear of the backrest.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/296ac72e596b563f/motion.npz",
+        "source_frame": 135,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "source": "assets/animations/sources/296ac72e596b563f/motion.npz",
+        "source_frame": 135,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "LeftFoot",
+      "model": "bench",
+      "marker": "stretch_heel",
+      "space": "world",
+      "episode": "stretch_heel",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.274393,
+            0.640793,
+            0.844079
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.274393,
+            0.640793,
+            0.844079
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/296ac72e596b563f/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "296ac72e596b563fe301db55f4e104042f6cdc302a8e7ba8eab9a349c3e8bcf1",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/296ac72e596b563f/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "296ac72e596b563fe301db55f4e104042f6cdc302a8e7ba8eab9a349c3e8bcf1",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "f5e712e60917bb05fcb12009af815a696aeb42a11007247191915ff0ccf6cda5",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "f5e712e60917bb05fcb12009af815a696aeb42a11007247191915ff0ccf6cda5",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"f5e712e60917bb05fcb12009af815a696aeb42a11007247191915ff0ccf6cda5\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "5685aee4faaf87b6ef4af8fb1b8109a2a81f2682bfe589889a5b93669ea3d5ed",
+      "current_source_sha256_at_reconciliation": "f5e712e60917bb05fcb12009af815a696aeb42a11007247191915ff0ccf6cda5",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

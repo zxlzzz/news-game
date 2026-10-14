@@ -1,0 +1,111 @@
+{
+  "name": "walk_dog",
+  "text": "A person walks slowly and steadily forward, keeping the RIGHT arm lowered straight and relaxed beside the body throughout. The right wrist stays down at upper thigh height beside the hip, elbow pointing down with just a small bend. The right hand loosely holds a small leash loop, a slack leash hangs down to a dog walking alongside. The LEFT arm swings naturally. Smooth regular steps. The right arm remains low and quiet, never reaches forward.",
+  "duration": 1.2666666666666666,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks slowly and steadily forward, keeping the RIGHT arm lowered straight and relaxed beside the body throughout. The right wrist stays down at upper thigh height beside the hip, elbow pointing down with just a small bend. The right hand loosely holds a small leash loop, a slack leash hangs down to a dog walking alongside. The LEFT arm swings naturally. Smooth regular steps. The right arm remains low and quiet, never reaches forward.",
+    "duration": 1.2666666666666666,
+    "contacts": [],
+    "idle_hand": "Right arm hangs lowered; left arm performs the natural locomotion.",
+    "clearance": "Maintain a relaxed lowered arm.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/e01b65db08f86089/motion.npz",
+        "source_frame": 49,
+        "phase": 0,
+        "translation": [
+          -0.05281984806060791,
+          0.0,
+          -1.0865164995193481
+        ]
+      },
+      {
+        "source": "assets/animations/sources/e01b65db08f86089/motion.npz",
+        "source_frame": 67,
+        "phase": 0.4864864864864865,
+        "translation": [
+          -0.05281984806060791,
+          0.0,
+          -1.0865164995193481
+        ]
+      },
+      {
+        "source": "assets/animations/sources/e01b65db08f86089/motion.npz",
+        "source_frame": 49,
+        "phase": 1,
+        "translation": [
+          -0.11578312516212463,
+          0.0,
+          0.18308210372924805
+        ]
+      }
+    ],
+    "description": "Start at level ground facing +Z. A person walks slowly and steadily forward, keeping the RIGHT arm lowered straight and relaxed beside the body throughout. The right wrist stays down at upper thigh height beside the hip, elbow pointing down with just a small bend. The right hand loosely holds a small leash loop, a slack leash hangs down to a dog walking alongside. The LEFT arm swings naturally. Smooth regular steps. The right arm remains low and quiet, never reaches forward. Right arm hangs lowered; left arm performs the natural locomotion. Maintain a relaxed lowered arm."
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/e01b65db08f86089/motion.npz",
+      "source_frame": 49,
+      "translation": [
+        -0.05281984806060791,
+        0.0,
+        -1.0865164995193481
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e01b65db08f860893bf40d6cd584ab3d6ee2a297b6a3001c2b1bdafa15f3eb26",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/e01b65db08f86089/motion.npz",
+      "source_frame": 67,
+      "translation": [
+        -0.05281984806060791,
+        0.0,
+        -1.0865164995193481
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e01b65db08f860893bf40d6cd584ab3d6ee2a297b6a3001c2b1bdafa15f3eb26",
+        "hand_edited": false
+      },
+      "frame": 18
+    },
+    {
+      "source": "assets/animations/sources/e01b65db08f86089/motion.npz",
+      "source_frame": 49,
+      "translation": [
+        -0.11578312516212463,
+        0.0,
+        0.18308210372924805
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e01b65db08f860893bf40d6cd584ab3d6ee2a297b6a3001c2b1bdafa15f3eb26",
+        "hand_edited": false
+      },
+      "frame": 37
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 3,
+  "raw_sha256": "1f1c1645e1680eb0aeebceb6342d2b3fbb11ebac34ba23f37bd415067f4dcdba",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_review_pending",
+    "accepted_by_hsinlung": false
+  },
+  "delivery_source": ".tmp/full_motion_review/generated/walk_dog/attempt_003"
+}

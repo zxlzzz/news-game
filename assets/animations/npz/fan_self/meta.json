@@ -1,52 +1,96 @@
 {
   "name": "fan_self",
   "text": "A person stands in hot weather and fans their face with a handheld folding fan in their right hand. Right elbow is bent at the side, right wrist and forearm make repeated short brisk back-and-forth strokes beside the cheek to blow air toward the face. Left arm hangs relaxed. Repeat the fanning movement several times while standing.",
-  "duration": 5.0,
-  "seed": 42,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person stands in hot weather and fans their face with a handheld folding fan in their right hand. Right elbow is bent at the side, right wrist and forearm make repeated short brisk back-and-forth strokes beside the cheek to blow air toward the face. Left arm hangs relaxed. Repeat the fanning movement several times while standing.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_fan",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands in hot weather and fans their face with a handheld folding fan in their right hand. Right elbow is bent at the side, right wrist and forearm make repeated short brisk back-and-forth strokes beside the cheek to blow air toward the face. Left arm hangs relaxed. Repeat the fanning movement several times while standing. Hold held_fan with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/660d43dd2fdf85bc/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.004637567326426506,
+          0.0,
+          -0.006477886810898781
+        ]
+      },
+      {
+        "source": "assets/animations/sources/660d43dd2fdf85bc/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.004637567326426506,
+          0.0,
+          -0.006477886810898781
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/660d43dd2fdf85bc/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.004637567326426506,
+        0.0,
+        -0.006477886810898781
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "660d43dd2fdf85bcd8c674d276a27f18ede7b1a26d8d4e8573a476d5b227e78e",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/660d43dd2fdf85bc/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.004637567326426506,
+        0.0,
+        -0.006477886810898781
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "660d43dd2fdf85bcd8c674d276a27f18ede7b1a26d8d4e8573a476d5b227e78e",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
-  },
-  "num_samples": 1,
-  "generation_duration": 5,
-  "loop": false,
-  "trim": {
-    "take_frames": [
-      0,
-      149
-    ],
-    "reason": "Full generated clip."
-  },
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "fbb0c575099ddab94cc19c9e36cf4de0a9224449db34078c6c7bdd7cf3b124d9",
+  "low_memory": false,
+  "hand_edited": false,
   "review": {
-    "status": "selected",
-    "attempts": 1,
-    "views": [
-      "front",
-      "side",
-      "hands if prop-related"
-    ],
-    "notes_zh": "右手举在脸旁，前臂与腕部反复短促往返扇风；位置数据可辨5次往返峰值，左手放松下垂。扇面实体由held_fan挂接。",
-    "metrics": {
-      "frames": 150,
-      "seam_root_aligned_max_joint_m": 0.15936864892168415,
-      "root_speed_min_mps": 0.00027931432123295963,
-      "root_speed_max_mps": 0.04872119426727295,
-      "root_delta_m": [
-        0.012479953467845917,
-        -0.0,
-        0.025059815496206284
-      ],
-      "seam_global_rotation_matrix_max_abs": 0.9547544121742249,
-      "floor_min_joint_y_m": 0.002023756504058838,
-      "finite": true
-    },
-    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
-    "batch_category": "daily"
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "fbb0c575099ddab94cc19c9e36cf4de0a9224449db34078c6c7bdd7cf3b124d9",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
   }
 }

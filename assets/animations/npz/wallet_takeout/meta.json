@@ -1,24 +1,224 @@
 {
   "name": "wallet_takeout",
-  "text": "Standing casually, reach the right hand down to the right hip pocket, take out a wallet, bring it in front of the waist, open it with the left hand, then return it to the right pocket. Elbows relaxed close to the ribs.",
-  "duration": 4,
-  "seed": 5300,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "text": "Stand relaxed with both arms down. Reach the RIGHT hand to the right hip pocket, take out a wallet and bring it only to waist height in front of the abdomen. Use the LEFT hand briefly to open and check the wallet while looking down. Close it, move it back to the right hip pocket with the RIGHT hand, tuck it away, release it and lower both empty arms beside the thighs. Finish standing relaxed. Keep elbows low; never raise the wallet near the face.",
+  "duration": 6,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Stand relaxed with both arms down. Reach the RIGHT hand to the right hip pocket, take out a wallet and bring it only to waist height in front of the abdomen. Use the LEFT hand briefly to open and check the wallet while looking down. Close it, move it back to the right hip pocket with the RIGHT hand, tuck it away, release it and lower both empty arms beside the thighs. Finish standing relaxed. Keep elbows low; never raise the wallet near the face.",
+    "duration": 6,
+    "contacts": [],
+    "item": {
+      "type": "held_wallet",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. Stand relaxed with both arms down. Reach the RIGHT hand to the right hip pocket, take out a wallet and bring it only to waist height in front of the abdomen. Use the LEFT hand briefly to open and check the wallet while looking down. Close it, move it back to the right hip pocket with the RIGHT hand, tuck it away, release it and lower both empty arms beside the thighs. Finish standing relaxed. Keep elbows low; never raise the wallet near the face. Hold held_wallet with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 1
+      },
+      {
+        "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+        "source_frame": 18,
+        "translation": [
+          -0.00032386055681854486,
+          0,
+          0.012036845088005066
+        ],
+        "phase": 0.35
+      },
+      {
+        "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+        "source_frame": 18,
+        "translation": [
+          -0.00032386055681854486,
+          0,
+          0.012036845088005066
+        ],
+        "phase": 0.55
+      }
+    ],
+    "item_visible": [
+      0.16,
+      0.86
+    ]
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 179
+    },
+    {
+      "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+      "source_frame": 18,
+      "translation": [
+        -0.00032386055681854486,
+        0,
+        0.012036845088005066
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "3d4de7487457d3fe934281044c04e8332a9b9ba6419baa70826146c7433c4a89",
+        "hand_edited": false
+      },
+      "frame": 63
+    },
+    {
+      "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+      "source_frame": 18,
+      "translation": [
+        -0.00032386055681854486,
+        0,
+        0.012036845088005066
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "3d4de7487457d3fe934281044c04e8332a9b9ba6419baa70826146c7433c4a89",
+        "hand_edited": false
+      },
+      "frame": 98
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 4,
+  "raw_sha256": "5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb",
+    "observations": "The right hand takes the wallet from the right hip; it becomes visible at 0.15 s beside that hip before it rises. Both hands check it in front of the body, then the right hand returns it to the hip. It disappears after returning at 5.16 s, and both empty arms lower and remain down through the endpoint and additional half-second hold. The true outer fold-edge grip and complete physical arm clearance were checked, including the rapid 3.7-4.0 s return.",
+    "review_folder": ".tmp/motion-repair-2026-10-10/object-source/stage-wallet-current",
+    "captured_and_personally_inspected_time_views_degrees": [
+      0.0,
+      90.0,
+      135.0
+    ],
+    "activity_time_samples": 40,
+    "image_resolution": [
+      1024,
+      1024
+    ],
+    "personal_view_method": "All 40 sought time poses inspected in three-angle paged sheets; early pickup and return contacts viewed at 1024 resolution",
+    "post_action_hold_seconds": 0.5,
+    "full_speed_playback_viewed": false,
+    "native_stage_geometry_samples": 359,
+    "physical_result": {
+      "failures": [],
+      "faults": [],
+      "correction_step_candidates": [],
+      "minimum_core_gap_m": 0.0239009650231555
+    },
+    "capture_inputs_sha256": {
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/candidate_clip_current.gd": "553e8b8b0c90fe7cc6990b082211b11f36ea2e03598d516fc74fd254c152d296",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/generated/wallet_takeout/attempt_002/motion.npz": "5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/wallet_takeout-candidate.json": "3b29359b78bbff6fc0c0055020f611f0136d2d1fc82451da8ea7d7f75b5a9971",
+      "res://models/held_wallet.glb": "e04dca75849dc58c429502eb3a70d10d992b82cc66d411b4029f4652eec01d4b",
+      "res://npc/clip_pose.gd": "00dafe67ac8c35a3314dbd16e903ac262e48b0ae5a80560bd0a8505b664046ca",
+      "res://npc/contact_pose.gd": "8034f6b0bad367810412aa1f43c2537978e3053582f2185adaa5ee1b25d285aa",
+      "res://npc/contact_surface.gd": "f9968e058a87fbb84910ba70fb6e7074a7f8cd2893d354691292d901a5d878ca",
+      "res://npc/interaction_player.gd": "2325d6e0fe0790a0d74ace618a18aee02b20741077c9477b3a763e1bdcb59944",
+      "res://npc/interactions.json": "dc55bba82dfb3f2b8cdea91ea93e4cd8b302e33bd017e66dffd9238e5ab1e11d",
+      "res://npc/motion-playback.json": "27b678443cdbd41d71bbfd4504761737573b258148190e1c6c9abce925cc3fbb",
+      "res://npc/prop_grasp.gd": "ea91d8af94557cf3b5e6c64e06cdc4475548c8647d38f8539d6bd3a86027d372"
+    },
+    "physical_inputs_sha256": {
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-recheck-2026-10-10/playback/wallet-timed-source-approach-final-request.json": "68cc9ec8aaf0bd899412f55a9177a0476513ef4081ad03c49f35a932f7367542",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/candidate_clip_current.gd": "553e8b8b0c90fe7cc6990b082211b11f36ea2e03598d516fc74fd254c152d296",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/generated/wallet_takeout/attempt_002/motion.npz": "5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/wallet_takeout-candidate.json": "3b29359b78bbff6fc0c0055020f611f0136d2d1fc82451da8ea7d7f75b5a9971",
+      "res://models/held_wallet.glb": "e04dca75849dc58c429502eb3a70d10d992b82cc66d411b4029f4652eec01d4b",
+      "res://npc/clip-setup.json": "0d039a55bbf511f2b3cb6b7c116681c6a876918903e084fce30d2762705fad62",
+      "res://npc/clip_pose.gd": "00dafe67ac8c35a3314dbd16e903ac262e48b0ae5a80560bd0a8505b664046ca",
+      "res://npc/contact_pose.gd": "8034f6b0bad367810412aa1f43c2537978e3053582f2185adaa5ee1b25d285aa",
+      "res://npc/contact_surface.gd": "f9968e058a87fbb84910ba70fb6e7074a7f8cd2893d354691292d901a5d878ca",
+      "res://npc/interaction_player.gd": "2325d6e0fe0790a0d74ace618a18aee02b20741077c9477b3a763e1bdcb59944",
+      "res://npc/interactions.json": "dc55bba82dfb3f2b8cdea91ea93e4cd8b302e33bd017e66dffd9238e5ab1e11d",
+      "res://npc/motion-playback.json": "27b678443cdbd41d71bbfd4504761737573b258148190e1c6c9abce925cc3fbb",
+      "res://npc/prop-grasp-params.json": "f22bf8023a154ef4471063c288c6567cd4ea43ab6e0c5186abe58ca9ee02bf70",
+      "res://npc/prop_grasp.gd": "ea91d8af94557cf3b5e6c64e06cdc4475548c8647d38f8539d6bd3a86027d372",
+      "res://npc/skeleton_mapping.gd": "0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc"
+    },
+    "physical_record": "docs/motion-review-evidence-2026-10-11/records/wallet-physical-audit.json",
+    "limitations": "Seek-based actual image inspection and native/intervening physical geometry; intended-speed playback has not been observed.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"date\": \"2026-10-11\",\r\n    \"raw_sha256\": \"5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb\",\r\n    \"observations\": \"The right hand takes the wallet from the right hip; it becomes visible at 0.15 s beside that hip before it rises. Both hands check it in front of the body, then the right hand returns it to the hip. It disappears after returning at 5.16 s, and both empty arms lower and remain down through the endpoint and additional half-second hold. The true outer fold-edge grip and complete physical arm clearance were checked, including the rapid 3.7-4.0 s return.\",\r\n    \"review_folder\": \".tmp/motion-repair-2026-10-10/object-source/stage-wallet-current\",\r\n    \"captured_and_personally_inspected_time_views_degrees\": [\r\n      0.0,\r\n      90.0,\r\n      135.0\r\n    ],\r\n    \"activity_time_samples\": 40,\r\n    \"image_resolution\": [\r\n      1024,\r\n      1024\r\n    ],\r\n    \"personal_view_method\": \"All 40 sought time poses inspected in three-angle paged sheets; early pickup and return contacts viewed at 1024 resolution\",\r\n    \"post_action_hold_seconds\": 0.5,\r\n    \"full_speed_playback_viewed\": false,\r\n    \"native_stage_geometry_samples\": 359,\r\n    \"physical_result\": {\r\n      \"failures\": [],\r\n      \"faults\": [],\r\n      \"correction_step_candidates\": [],\r\n      \"minimum_core_gap_m\": 0.0239009650231555\r\n    },\r\n    \"capture_inputs_sha256\": {\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/candidate_clip_current.gd\": \"553e8b8b0c90fe7cc6990b082211b11f36ea2e03598d516fc74fd254c152d296\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/generated/wallet_takeout/attempt_002/motion.npz\": \"5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/wallet_takeout-candidate.json\": \"3b29359b78bbff6fc0c0055020f611f0136d2d1fc82451da8ea7d7f75b5a9971\",\r\n      \"res://models/held_wallet.glb\": \"e04dca75849dc58c429502eb3a70d10d992b82cc66d411b4029f4652eec01d4b\",\r\n      \"res://npc/clip_pose.gd\": \"00dafe67ac8c35a3314dbd16e903ac262e48b0ae5a80560bd0a8505b664046ca\",\r\n      \"res://npc/contact_pose.gd\": \"8034f6b0bad367810412aa1f43c2537978e3053582f2185adaa5ee1b25d285aa\",\r\n      \"res://npc/contact_surface.gd\": \"f9968e058a87fbb84910ba70fb6e7074a7f8cd2893d354691292d901a5d878ca\",\r\n      \"res://npc/interaction_player.gd\": \"2325d6e0fe0790a0d74ace618a18aee02b20741077c9477b3a763e1bdcb59944\",\r\n      \"res://npc/interactions.json\": \"dc55bba82dfb3f2b8cdea91ea93e4cd8b302e33bd017e66dffd9238e5ab1e11d\",\r\n      \"res://npc/motion-playback.json\": \"27b678443cdbd41d71bbfd4504761737573b258148190e1c6c9abce925cc3fbb\",\r\n      \"res://npc/prop_grasp.gd\": \"ea91d8af94557cf3b5e6c64e06cdc4475548c8647d38f8539d6bd3a86027d372\"\r\n    },\r\n    \"physical_inputs_sha256\": {\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-recheck-2026-10-10/playback/wallet-timed-source-approach-final-request.json\": \"68cc9ec8aaf0bd899412f55a9177a0476513ef4081ad03c49f35a932f7367542\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/candidate_clip_current.gd\": \"553e8b8b0c90fe7cc6990b082211b11f36ea2e03598d516fc74fd254c152d296\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/generated/wallet_takeout/attempt_002/motion.npz\": \"5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/object-source/wallet_takeout-candidate.json\": \"3b29359b78bbff6fc0c0055020f611f0136d2d1fc82451da8ea7d7f75b5a9971\",\r\n      \"res://models/held_wallet.glb\": \"e04dca75849dc58c429502eb3a70d10d992b82cc66d411b4029f4652eec01d4b\",\r\n      \"res://npc/clip-setup.json\": \"0d039a55bbf511f2b3cb6b7c116681c6a876918903e084fce30d2762705fad62\",\r\n      \"res://npc/clip_pose.gd\": \"00dafe67ac8c35a3314dbd16e903ac262e48b0ae5a80560bd0a8505b664046ca\",\r\n      \"res://npc/contact_pose.gd\": \"8034f6b0bad367810412aa1f43c2537978e3053582f2185adaa5ee1b25d285aa\",\r\n      \"res://npc/contact_surface.gd\": \"f9968e058a87fbb84910ba70fb6e7074a7f8cd2893d354691292d901a5d878ca\",\r\n      \"res://npc/interaction_player.gd\": \"2325d6e0fe0790a0d74ace618a18aee02b20741077c9477b3a763e1bdcb59944\",\r\n      \"res://npc/interactions.json\": \"dc55bba82dfb3f2b8cdea91ea93e4cd8b302e33bd017e66dffd9238e5ab1e11d\",\r\n      \"res://npc/motion-playback.json\": \"27b678443cdbd41d71bbfd4504761737573b258148190e1c6c9abce925cc3fbb\",\r\n      \"res://npc/prop-grasp-params.json\": \"f22bf8023a154ef4471063c288c6567cd4ea43ab6e0c5186abe58ca9ee02bf70\",\r\n      \"res://npc/prop_grasp.gd\": \"ea91d8af94557cf3b5e6c64e06cdc4475548c8647d38f8539d6bd3a86027d372\",\r\n      \"res://npc/skeleton_mapping.gd\": \"0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc\"\r\n    },\r\n    \"physical_record\": \".tmp/motion-recheck-2026-10-10/playback/wallet-timed-source-approach-final.json\",\r\n    \"limitations\": \"Seek-based actual image inspection and native/intervening physical geometry; intended-speed playback has not been observed.\"\r\n  }",
+      "original_record_sha256": "7cf94f694bfa9f51fe60a81d2470822f6754b95c97b118afd4950040498ead4c",
+      "current_source_sha256_at_reconciliation": "5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "evidence_path_migrations": [
+      {
+        "field": "physical_record",
+        "original_path": ".tmp/motion-recheck-2026-10-10/playback/wallet-timed-source-approach-final.json",
+        "durable_path": "docs/motion-review-evidence-2026-10-11/records/wallet-physical-audit.json",
+        "sha256": "63416ab863fe0ebe0ded55775aa5aac6c0497b2fdcdc4297e0eaa19a8696dea1",
+        "content_changed": false
+      }
+    ],
+    "physical_record_sha256": "63416ab863fe0ebe0ded55775aa5aac6c0497b2fdcdc4297e0eaa19a8696dea1",
+    "dated_source_review_record": "docs/motion-review-evidence-2026-10-11/records/wallet-source-review.json",
+    "dated_source_review_record_sha256": "727bac0a232fe85853bda04f034420ab5c3d063447124281207803feef1ee05f"
   },
-  "num_samples": 1,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "wallet_takeout",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/object-source/generated/wallet_takeout/attempt_002/motion.npz",
+    "original_meta_sha256": "c979321ee4dc55832e378ebd8b1e720a2c635672da361f23503c185d6a21bf9e",
+    "original_meta_file": "generation-original-meta-c979321ee4dc.json",
+    "raw_npz_unchanged": true
+  },
+  "delivery_source": "assets/animations/sources/5002121c972d9427",
+  "repair": {
+    "date": "2026-10-11",
+    "reason": "Regenerate the complete take-out/check/stow activity; repair physical fold-edge grasp, engagement and visibility timing",
+    "replaced_source_sha256": "8306b76f70dadc8301c7c17e1145d707384f62257ac3b55800f40366d63819a5",
+    "replaced_meta_sha256": "d162f9e57a4c64ec2c5308f03f9f253f207a75f0ebe471d146b3798779d600f7",
+    "generated_source_npz_unchanged": true
+  },
+  "material_endpoints": {
+    "entry": "stand",
+    "exit": "stand",
+    "kind": "transition",
+    "source_sha256": "5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb",
+    "boundary_edits": [],
+    "boundary_velocity_alignment": [],
+    "trim": null,
+    "method": "Unedited Kimodo whole-body references; continuous actual model-surface contact at runtime; no authored joint paths or seam fitting"
   }
 }

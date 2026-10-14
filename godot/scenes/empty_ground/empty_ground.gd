@@ -32,6 +32,7 @@ var _args: PackedStringArray
 var _shown: Array = []   # entry ids in the list, in order
 var _grab := {}
 var _grab_point := Vector3.ZERO
+var _models := false
 
 ## Passes unhandled input to the ground; added last, so it hears the mouse before the camera does.
 class Catcher extends Node:
@@ -68,7 +69,7 @@ func _ready() -> void:
 	capture_dir = _arg("--capture", "")
 	capture_left = int(_arg("--frames", "0"))
 	capture_every = int(_arg("--every", "4"))
-	var still := _args.has("--shot") or capture_dir != ""
+	var still := (_args.has("--shot") and not _args.has("--shot-ui")) or capture_dir != ""
 	_build_ui(still)
 	var catcher := Catcher.new()
 	catcher.ground = self
@@ -81,11 +82,15 @@ func _ready() -> void:
 	if _args.has("--breed"):
 		opts.breed = _arg("--breed", "")
 	speed = float(_arg("--speed", "1"))
-	_select(_arg("--entry", stage.entries[0].id), opts, true)
+	var initial := _arg("--entry", "model:" + _arg("--model", "") if _args.has("--model") else stage.entries[0].id)
+	_models = initial.begins_with("model:")
+	ui.tabs.current_tab = 1 if _models else 0
+	_fill_list()
+	_select(initial, opts, true)
 	stage.seek(float(_arg("--time", "0")))
 	if follow:
 		cam.frame(stage.focus())
-	playing = not _args.has("--shot")
+	playing = not _args.has("--shot") and stage.entry.kind != "model"
 	if capture_dir != "":
 		DirAccess.make_dir_recursive_absolute(capture_dir)
 
@@ -95,6 +100,20 @@ func _select(id: String, opts: Dictionary, frame_view: bool) -> void:
 		_die(err)
 		return
 	var e: Dictionary = stage.entry
+	var model_mode: bool = e.kind == "model"
+	playing = not model_mode and not _args.has("--shot")
+	cam.sidebar_width = float(stage.p.panelWidth) if model_mode and ui.panel.visible else 0.0
+	# Models and people are framed about their middle, not their feet (a standing figure is 1.7 m tall).
+	cam.model_height = stage.framing()[0].y if model_mode or e.kind == "clip" else 0.0
+	if e.kind == "clip" and _args.has("--look"):
+		cam.model_height = float(_arg("--look-y", "0.85"))  # the middle of a person standing at --look, or a close-up height
+	for control in ui.motion_controls:
+		control.visible = not model_mode
+	if model_mode:
+		for control in ui.part_controls: control.visible = stage.cycle > 0.0
+	ui.hint.text = "模型保持实际尺寸。滚轮缩放；中键拖动旋转、俯仰；空白处左键拖动平移。" if model_mode else "左键拖东西：在地面上挪；按住 %s 拖：上下。松手写回相对位置。右键删掉手加的。空格播放 / 暂停。" % stage.p.verticalKey
+	if model_mode and stage.cycle > 0.0:
+		ui.hint.text += " 空格或播放按钮试动部件；拖动进度回看。"
 	if ui.has("list"):
 		var i := _shown.find(id)
 		if i >= 0:
@@ -105,6 +124,9 @@ func _select(id: String, opts: Dictionary, frame_view: bool) -> void:
 		_fill_choice(ui.breed, stage.breed_choices(), stage.options.get("breed", ""))
 		ui.slider.max_value = stage.cycle
 		ui.status.text = ("缺：" + "；".join(e.missing)) if not e.missing.is_empty() else ""
+		if model_mode:
+			var bounds := Stage.Bounds.of_node(stage.objects.filter(func(o): return not o.manual)[0].node)
+			ui.status.text = "%s\n宽 %.3f × 高 %.3f × 深 %.3f 米" % [e.label, bounds.size.x, bounds.size.y, bounds.size.z]
 	if frame_view:
 		var fr: Array = stage.framing()
 		cam.frame(cam.look if _args.has("--look") else fr[0], -1.0 if _args.has("--size") else fr[1])
@@ -132,7 +154,7 @@ func _show_time() -> void:
 	var shown: float = stage.display_time()
 	ui.slider.set_value_no_signal(shown)
 	ui.time.text = "%.2f / %.2f s" % [shown, stage.cycle]
-	ui.caption.text = "%s   %.2f s   %s" % [stage.entry.id, stage.t, stage.mover_state()]
+	ui.caption.text = stage.entry.label if stage.entry.kind == "model" else "%s   %.2f s   %s" % [stage.entry.id, stage.t, stage.mover_state()]
 
 func _capture() -> void:
 	if _capturing:
@@ -165,6 +187,7 @@ func _build_ui(still: bool) -> void:
 	ui.caption.position = Vector2(16, 12) if still else Vector2(stage.p.panelWidth + 24, 12)
 	layer.add_child(ui.caption)
 	var panel := PanelContainer.new()
+	ui.panel = panel
 	panel.theme = theme
 	panel.set_anchors_preset(Control.PRESET_LEFT_WIDE)
 	panel.offset_right = stage.p.panelWidth
@@ -172,6 +195,15 @@ func _build_ui(still: bool) -> void:
 	layer.add_child(panel)
 	var box := VBoxContainer.new()
 	panel.add_child(box)
+	ui.tabs = TabBar.new()
+	ui.tabs.add_tab("动作")
+	ui.tabs.add_tab("模型")
+	ui.tabs.add_tab("改好的")  # clips built on the figure (clip-setup.json "pose", docs/动作重做方案.md)
+	ui.tabs.tab_changed.connect(func(index):
+		_models = index == 1
+		_fill_list()
+		if not _shown.is_empty(): _select(_shown[0], {}, true))
+	box.add_child(ui.tabs)
 	ui.filter = LineEdit.new()
 	ui.filter.placeholder_text = "筛选"
 	ui.filter.text_changed.connect(func(_s): _fill_list())
@@ -180,8 +212,10 @@ func _build_ui(still: bool) -> void:
 	ui.list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	ui.list.item_selected.connect(func(i): _select(_shown[i], {}, true))
 	box.add_child(ui.list)
+	ui.motion_controls = []
 	var row := HBoxContainer.new()
 	box.add_child(row)
+	ui.motion_controls.append(row)
 	ui.play = Button.new()
 	ui.play.text = "播放 / 暂停"
 	ui.play.pressed.connect(_toggle_play)
@@ -198,21 +232,29 @@ func _build_ui(still: bool) -> void:
 	ui.slider.step = 0.001
 	ui.slider.value_changed.connect(func(v): stage.seek(v))
 	box.add_child(ui.slider)
+	ui.motion_controls.append(ui.slider)
 	ui.time = Label.new()
 	box.add_child(ui.time)
+	ui.motion_controls.append(ui.time)
+	ui.part_controls = [row, ui.slider, ui.time]
 	ui.item = _choice(box, "配件", "item")
 	ui.object = _choice(box, "物件", "object")
 	ui.breed = _choice(box, "品种", "breed")
+	for choice in [ui.item, ui.object, ui.breed]:
+		ui.motion_controls.append(choice.get_parent())
 	ui.follow = CheckBox.new()
 	ui.follow.text = "镜头跟随"
 	ui.follow.toggled.connect(func(on): follow = on)
 	box.add_child(ui.follow)
+	ui.motion_controls.append(ui.follow)
 	var add := Button.new()
 	add.text = "加一个人（播当前动作）"
 	add.pressed.connect(func(): _status(stage.add_person(_manual_spot())))
 	box.add_child(add)
+	ui.motion_controls.append(add)
 	var row2 := HBoxContainer.new()
 	box.add_child(row2)
+	ui.motion_controls.append(row2)
 	var types := OptionButton.new()
 	types.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	types.fit_to_longest_item = false
@@ -233,6 +275,7 @@ func _build_ui(still: bool) -> void:
 	hint.custom_minimum_size = Vector2(stage.p.panelWidth - 16, 0)
 	hint.modulate = Color(1, 1, 1, 0.6)
 	hint.text = "左键拖东西：在地面上挪；按住 %s 拖：上下。松手写回相对位置（人在物件上、配件在手里、两人之间）。右键删掉手加的。空格播放 / 暂停。" % stage.p.verticalKey
+	ui.hint = hint
 	box.add_child(hint)
 	_fill_list()
 
@@ -270,8 +313,13 @@ func _fill_list() -> void:
 	ui.list.clear()
 	_shown.clear()
 	var f: String = ui.filter.text.strip_edges()
+	var built: bool = ui.tabs.current_tab == 2
 	for e in stage.entries:
-		if f != "" and not f in e.label:
+		if (e.kind == "model") != _models:
+			continue
+		if built and not (e.kind == "clip" and stage.setup.clips.get(e.clip, {}).has("pose")):
+			continue
+		if f != "" and not f.to_lower() in e.label.to_lower():
 			continue
 		var text: String = e.label + ("   — 缺：" + "；".join(e.missing) if not e.missing.is_empty() else "")
 		var i: int = ui.list.add_item(text)
@@ -293,6 +341,7 @@ func _manual_spot() -> Vector3:
 # ------------------------------------------------------------------ mouse
 
 func _toggle_play() -> void:
+	if stage.cycle <= 0.0: return
 	if not playing and not stage.repeats() and stage.t >= stage.cycle: stage.seek(0)
 	playing=not playing
 

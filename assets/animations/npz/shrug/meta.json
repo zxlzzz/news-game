@@ -1,17 +1,74 @@
 {
   "name": "shrug",
-  "text": "A person shrugs their shoulders and spreads both hands out with palms facing up to show they do not know, then lowers their arms.",
+  "text": "Standing, raise both bent forearms outward with palms upward and elbows away from the waist in a clear exaggerated what-can-I-do shrug, hold briefly, then lower both arms.",
   "duration": 3,
-  "seed": 42,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Standing, raise both bent forearms outward with palms upward and elbows away from the waist in a clear exaggerated what-can-I-do shrug, hold briefly, then lower both arms.",
+    "duration": 3,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 89,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "a6c27da7182939e2a2066e2e3c050b92f3958d033efd835b9dab78ea1a3ec054",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
   },
-  "num_samples": 1
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 0-2.967 s front sequence at 30 fps and side overview: both forearms open, pause in an expressive shrug, and lower naturally.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 0-2.967 s front sequence at 30 fps and side overview: both forearms open, pause in an expressive shrug, and lower naturally.\"\r\n  }",
+      "original_record_sha256": "7ddabd5b9d9b4cf987c6223414530bc00fa475f7fadf087c581db05c4a321537",
+      "current_source_sha256_at_reconciliation": "a6c27da7182939e2a2066e2e3c050b92f3958d033efd835b9dab78ea1a3ec054",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
 }

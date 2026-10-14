@@ -10,6 +10,8 @@
 ## that do not exist are left out and listed in the entry's `missing` (the one exception to stopping).
 ## Every selected action plays one source unit and then holds its endpoint,
 ## including sources declared as repeatable. Travelling clips retain that unit's displacement.
+## Clips play as baked (tools/bake_motion.gd), the same poses the streets draw; nothing is solved here except
+## lifting a foot that would be below the floor.
 ## Pushed objects (type group ClipSetup.PUSHED) follow the person's root instead of the person standing on them.
 ##
 ## Dragging moves things over the ground (vertical with shift: see empty_ground.gd). On release only
@@ -20,7 +22,6 @@ extends Node3D
 
 const ClipPose := preload("res://npc/clip_pose.gd")
 const ContactPose := preload("res://npc/contact_pose.gd")
-const InteractionPlayer := preload("res://npc/interaction_player.gd")
 const ClipSetup := preload("res://npc/clip_setup.gd")
 const InkFigure := preload("res://npc/ink_figure.gd")
 const Pigeon := preload("res://npc/procedural_pigeon.gd")
@@ -31,6 +32,7 @@ const AnimalModel := preload("res://npc/animal_model.gd")
 const AnimalBody := preload("res://npc/animal_body.gd")
 const AnimalClip := preload("res://tools/animal_clip_preview.gd")
 const Bounds := preload("res://core/bounds.gd")
+const ModelParts := preload("res://props/model_parts.gd")
 const PARAMS := "res://scenes/empty_ground/params.json"
 const MOVERS := "res://scenes/empty_ground/movers.json"
 const CROWD := "res://npc/crowd-params.json"
@@ -61,12 +63,12 @@ var main = null           # the person of the selected clip
 var ms := {}              # mover / animal state
 var extras: Array = []    # other nodes placed for the entry (figures of movers, grid lines, platform)
 var _stale := {}          # type files written this session: loaded fresh next time
-var interactions := InteractionPlayer.new()
-var endpoint_loop = null
+var model_parts: Array[Node3D] = []
+var model_joints: Array[Node3D] = []
+var model_sweep := AABB()
 
 ## Reads and checks everything; "" or the error.
 func setup_stage(level_) -> String:
-	if interactions.error != "": return _fail(interactions.error)
 	level = level_
 	name = "Stage"
 	p = _read(PARAMS)
@@ -76,9 +78,11 @@ func setup_stage(level_) -> String:
 	var index := _read(INDEX)
 	if error != "":
 		return error
-	for k in ["frame", "manualOffset", "pickMargin", "speed", "panelWidth", "fontSize", "verticalKey"]:
+	for k in ["frame", "modelFrame", "modelGroundGap", "modelPreview", "manualOffset", "pickMargin", "speed", "panelWidth", "fontSize", "verticalKey"]:
 		if not p.has(k):
 			return _fail("%s: no %s" % [PARAMS, k])
+	if not (p.modelPreview.seconds > 0 and p.modelPreview.samples >= 3):
+		return _fail(PARAMS + ": invalid model preview duration or samples")
 	body_scale = bodies[crowd.body].scale
 	ink = Color(crowd.ink[0], crowd.ink[1], crowd.ink[2])
 	depth_bias = crowd.depthBias
@@ -86,7 +90,7 @@ func setup_stage(level_) -> String:
 	if setup.error != "":
 		return _fail(setup.error)
 	for c in setup.clips:
-		if setup.clips[c].has("partner"):
+		if setup.clips[c].has("partner") and setup.clips[c].partner.get("reverse_preview", true):
 			partner_of[setup.clips[c].partner.clip] = c
 	for c in index.clips:
 		var id: String = c.id
@@ -120,6 +124,11 @@ func setup_stage(level_) -> String:
 		for clip_entry in AnimalClip.entries(sp):
 			clip_entry.label = "%s · %s" % [a.label, clip_entry.clip]
 			_add(clip_entry)
+	# Show every production model, including assets without an interaction type.
+	for file in DirAccess.get_files_at("res://models"):
+		if file.ends_with(".glb"):
+			_add({"id": "model:" + file.get_basename(), "kind": "model",
+				"path": "res://models/" + file, "label": file.get_basename(), "missing": []})
 	return error
 
 func _add(e: Dictionary) -> void:
@@ -217,21 +226,64 @@ func select(id: String, opts := {}) -> String:
 			_start_animal()
 		"pigeon_motion":
 			_start_pigeon_motion()
+		"model":
+			_show_model()
 	if error == "":
-		interactions.prepare(people, objects, _instance)
-		if opts.has("endpoint_loop"):
-			endpoint_loop = load(opts.endpoint_loop)
-			if endpoint_loop == null or endpoint_loop.actor_kind != entry.kind:
-				return _fail("invalid endpoint loop: "+str(opts.endpoint_loop))
-			var expected: String = ms.m.breed+"__"+entry.clip if entry.kind == "animal" else entry.id
-			if endpoint_loop.source != expected:
-				return _fail("endpoint loop belongs to "+endpoint_loop.source+", not "+expected)
 		seek(0.0)
 	return error
 
+## Display the authored mesh at real scale, resting on the preview ground.
+func _show_model() -> void:
+	var model: Node3D
+	var breeds: Dictionary = AnimalModel.config().breeds
+	for breed in breeds:
+		if breeds[breed].glb == entry.path:
+			model = AnimalBody.new()
+			add_child(model)
+			model.setup(breed)
+			break
+	if model == null:
+		var assembled: String = "res://types/"+entry.path.get_file().get_basename()+".tscn"
+		var named: String = entry.path.get_file().get_basename()
+		var use_type := named.begins_with("building_") or named.begins_with("window_") or named == "door_single"
+		model = _instance(assembled if use_type and ResourceLoader.exists(assembled) else entry.path)
+	var box := Bounds.of_node(model)
+	if box.size == Vector3.ZERO:
+		model.queue_free()
+		_fail(entry.path + ": no visible model geometry")
+		return
+	model.position -= Vector3(box.get_center().x, box.position.y, box.get_center().z)
+	# Keep model surfaces separate from the preview floor, including flat roads/decals.
+	model.position.y += float(p.modelGroundGap)
+	objects.append({"node": model, "type": entry.path, "manual": false,
+		"pusher": null, "marker": ""})
+	model_parts = ModelParts.parts(model)
+	_collect_model_joints(model)
+	cycle = float(p.modelPreview.seconds) if not model_parts.is_empty() or not model_joints.is_empty() else 0.0
+	model_sweep = Bounds.of_node(model)
+	if cycle > 0.0:
+		for sample in int(p.modelPreview.samples):
+			_model_pose(float(sample) / float(p.modelPreview.samples - 1))
+			model_sweep = model_sweep.merge(Bounds.of_node(model))
+		_model_pose(0.0)
+
+func _collect_model_joints(node: Node) -> void:
+	if node.has_method("set_open") and node.get("hinge") != null:
+		model_joints.append(node)
+		node.set_process(false)
+		node.set_physics_process(false)
+	for child in node.get_children(): _collect_model_joints(child)
+
+func _model_pose(ratio: float) -> void:
+	for part in model_parts: ModelParts.set_ratio(part,ratio)
+	for joint in model_joints:
+		joint.open_ratio = ratio
+		assert(joint.has_method("_apply_pose"),"Model joint has no pose driver")
+		joint._apply_pose()
+
 func _clear() -> void:
-	endpoint_loop = null
-	interactions.clear()
+	model_parts.clear()
+	model_joints.clear()
 	for person in people.duplicate():
 		if not person.manual:
 			_free_person(person)
@@ -258,20 +310,26 @@ func _arrange_clip() -> void:
 	if lead == null:
 		return
 	if s.has("post") and setup.offers.has(s.post):
-		var preferred: String = interactions.data.clips.get(first,{}).get("object", "")
-		var type: String = options.get("object", setup.type_path(preferred) if preferred != "" else setup.offers[s.post][0])
+		var type: String = options.get("object", setup.offers[s.post][0])
 		if not type in setup.offers[s.post]:
 			_fail("%s does not offer post %s" % [type, s.post])
 			return
 		var o := _object(type, false)
 		var markers: Array = setup.types[type].posts.keys().filter(func(n): return setup.types[type].posts[n] == s.post)
 		markers.sort()
+		var requested: String=options.get("post_marker",markers[0])
+		assert(requested in markers,"Missing scene stance: "+requested)
+		markers.erase(requested)
+		markers.push_front(requested)
 		var mk: Node3D = o.node.get_node(markers[0])
 		if ClipSetup.PUSHED in setup.types[type].groups:
 			o.pusher = lead
 			o.marker = markers[0]
 		else:
 			o.node.transform = lead.start * _marker(o, markers[0]).affine_inverse()
+			# A post is the actor stance, not the ground origin of the object.
+			# Grounded types stay on the floor; _start then retains post height.
+			o.node.position.y=lead.start.origin.y
 			lead.anchor = {"object": o, "marker": mk.name}
 	if s.has("item") and (options.has("item") or setup.types.has(setup.type_path(s.item.type))):
 		var held: String = options.get("item", setup.type_path(s.item.type))
@@ -336,8 +394,7 @@ func _hold(person: Dictionary, held: String, hand: String) -> void:
 
 ## Seconds in one source action unit.
 func _cycle(person: Dictionary) -> float:
-	var interaction: Dictionary = interactions.data.clips.get(person.clip_id,{})
-	return interaction.get("duration", person.clip.duration())
+	return person.clip.duration()
 
 ## Selected actions always play once, including authored loop sources.
 func repeats() -> bool:
@@ -353,9 +410,7 @@ func source_repeats() -> bool:
 		return m.movers[entry.id].loop
 	if entry.get("kind", "") != "clip":
 		return false
-	var config: Dictionary = interactions.data.clips.get(main.clip_id, {})
-	var source = ClipPose.of(config.base) if config.has("base") else main.clip
-	return config.get("tracks_playback", "") == "loop" or (source.chains and config.get("playback", "") != "once")
+	return main.clip.chains
 
 ## Continuous authored hand/object tracks keep their own clock while the source holds.
 func tracks_repeat() -> bool:
@@ -377,32 +432,51 @@ func _start(person: Dictionary) -> Transform3D:
 	var pa: Dictionary = setup.clips[a.clip].partner
 	return _start(a.giver) * Transform3D(Basis(Vector3.UP, deg_to_rad(pa.yaw)), Vector3(pa.at.x, 0, pa.at.y))
 
-## [root transform, phase] of a person at `time`.
+## [root transform, phase] of a person at `time`: an in-place clip stays at its start, a travelling one moves
+## along +Z by its stride over the unit. People added by hand repeat a chaining clip on their own clock.
 func _root(person: Dictionary, time: float) -> Array:
 	var c = person.clip
-	var config: Dictionary = interactions.data.clips.get(person.clip_id,{})
-	if config.get("stationary",false):
-		var ph: float = interactions.phase_of(person,time)
-		return [_start(person),ph]
-	var stride: float = c.stride() * body_scale
-	var phase: float = interactions.phase_of(person, time)
-	var progress: float = clampf(time / _cycle(person), 0.0, 1.0)
-	# ClipPose retains vertical source displacement within this once-played unit.
-	# Adding rise here doubles the stairs ascent/descent.
-	var off := Vector3(0, 0.0, stride * progress)
-	return [_start(person) * Transform3D(Basis(), off), phase]
+	var phase: float = time / c.duration()
+	phase = fposmod(phase, 1.0) if person.manual and c.chains else clampf(phase, 0.0, 1.0)
+	if c.in_place:
+		return [_start(person), phase]
+	return [_start(person) * Transform3D(Basis(), Vector3(0, 0, c.stride() * body_scale * phase)), phase]
+
+## Parts of the person's object the clip carries (a chess piece, a fruit): where the clip has them; back at rest
+## before they are picked up.
+func _carry_parts(person: Dictionary, extras: Dictionary) -> void:
+	var a = person.anchor
+	if a == null or not a.has("object") or person.clip.carries().is_empty():
+		return
+	var o: Dictionary = a.object
+	var post: Node3D = o.node.get_node(String(a.marker))
+	if not o.has("part_rest"):
+		o.part_rest = {}
+	for part in person.clip.carries():
+		var node := o.node.find_child(part, true, false) as Node3D
+		if node == null:
+			_fail("%s has no part %s (carried by %s)" % [o.type, part, person.clip_id])
+			return
+		if not o.part_rest.has(part):
+			o.part_rest[part] = node.global_transform
+		var rest: Transform3D = o.part_rest[part]
+		if extras.parts.has(part):
+			node.global_transform = Transform3D(rest.basis, post.global_transform * extras.parts[part])
+		else:
+			node.global_transform = rest
+
+## The preview floor is flat.
+func _floor_at(_point: Vector3) -> float:
+	return FLAT
 
 func _pose_people() -> void:
-	interactions.errors.clear()
 	for person in people:
-		person["play_once"] = true
 		var rp := _root(person, clock - person.started if person.manual else t)
 		var root: Transform3D = rp[0]
 		person.root = root
-		var cfg: Dictionary = interactions.data.clips.get(person.clip_id,{})
-		var source = ClipPose.of(cfg.base) if cfg.has("base") else person.clip
-		person.pose = source.pose(rp[1], false).duplicate(true)
+		person.pose = person.clip.pose(rp[1], false).duplicate(true)
 		person.fig.transform = Transform3D(root.basis.scaled(Vector3.ONE * body_scale), root.origin)
+		var extras: Dictionary = person.clip.extras(rp[1], false)
 		if person.item != null:
 			var q: Vector3
 			match person.item.hand:
@@ -414,37 +488,18 @@ func _pose_people() -> void:
 					q = (person.pose.handLeft + person.pose.handRight) / 2
 				"back":
 					q = person.pose.neck
-			person.item.node.transform = Transform3D(root.basis, person.fig.transform * q)
+			person.item.node.transform = Transform3D(root.basis * Basis(extras.turn), person.fig.transform * q)
+			person.item.node.visible = extras.shown
+		_carry_parts(person, extras)
 	for o in objects:
 		if o.pusher != null:
 			o.node.transform = o.pusher.root * _marker(o, o.marker).affine_inverse()
-	interactions.animate_objects(t, people)
 	for person in people:
-		if person.manual: continue
-		var phase: float = interactions.phase_of(person,t)
-		var track_phase: float = interactions.track_phase_of(person,t)
-		interactions.body(person,objects,people,phase,body_scale)
-		interactions.item(person,objects,people,track_phase,body_scale)
-		interactions.props(person,objects,people,track_phase,body_scale)
-	for person in people:
-		if person.manual: continue
-		var phase: float = interactions.phase_of(person,t)
-		interactions.contacts(person,objects,people,phase,body_scale,interactions.track_phase_of(person,t))
-	for person in people:
-		if person.manual: continue
-		var phase: float = interactions.track_phase_of(person,t)
-		if person.interaction.get("item",{}).get("follow_forearm",false) or person.interaction.get("item",{}).get("follow_hand",false):
-			interactions.item(person,objects,people,phase,body_scale)
-		interactions.props(person,objects,people,phase,body_scale)
-	for person in people:
-		var residual := ContactPose.ground_feet(person.pose,person.fig.global_transform,person.clip.P.line,func(_q: Vector3) -> float: return FLAT)
-		if residual > 0.001:
-			error = person.clip_id+": unreachable ground contact"
-			push_error(error)
-			get_tree().quit(1)
+		if ContactPose.ground_feet(person.pose, person.fig.global_transform, person.clip.P.line, _floor_at) > 0.001:
+			_fail(person.clip_id + ": a foot cannot reach the floor")
 			return
 		var d: Dictionary = person.clip.drawing(person.pose)
-		person.fig.draw(d.segments,d.discs,d.triangles)
+		person.fig.draw(d.segments, d.discs, d.triangles)
 
 # ------------------------------------------------------------------ time
 
@@ -459,10 +514,9 @@ func advance(dt: float) -> void:
 ## Shows the entry at `time` seconds (movers are simulated up to it, from the start when going back).
 func seek(time: float) -> void:
 	t = maxf(time, 0.0) if tracks_repeat() else clampf(time, 0.0, cycle)
-	var display_time := t
-	if endpoint_loop != null:
-		t = 0.0 if endpoint_loop.endpoint == "start" else cycle
 	match entry.get("kind", ""):
+		"model":
+			if cycle > 0.0: _model_pose(t / cycle)
 		"mover":
 			_mover_to(t)
 		"animal":
@@ -470,22 +524,6 @@ func seek(time: float) -> void:
 		"pigeon_motion":
 			_pigeon_to(t)
 	_pose_people()
-	if endpoint_loop != null:
-		var pose_: Dictionary = endpoint_loop.sample(display_time)
-		match entry.kind:
-			"clip":
-				main.pose = pose_
-				main.root = endpoint_loop.context.root
-				main.fig.transform = Transform3D(main.root.basis.scaled(Vector3.ONE*body_scale),main.root.origin)
-				var drawing: Dictionary = main.clip.drawing(pose_)
-				main.fig.draw(drawing.segments,drawing.discs,drawing.triangles)
-			"animal":
-				ms.body.show_pose(pose_)
-			"pigeon_motion":
-				ms.pose = pose_
-				var drawing: Dictionary = Pigeon.silhouette(pose_,ms.p)
-				ms.fig.draw(drawing.segments,drawing.discs,drawing.triangles)
-		t = display_time
 
 ## Where the camera should look while following, and the view height for the entry.
 func focus() -> Vector3:
@@ -498,6 +536,10 @@ func follows() -> bool:
 
 ## [look-at point, view height] that shows the whole entry.
 func framing() -> Array:
+	if entry.kind == "model":
+		var model_box := model_sweep
+		var extent := maxf(model_box.size.x, maxf(model_box.size.y, model_box.size.z))
+		return [model_box.get_center(), clampf(extent * p.frame.margin, p.modelFrame.min, p.modelFrame.max)]
 	if entry.kind == "pigeon_motion":
 		return [ms.focus, entry.definition.frame]
 	if entry.kind == "mover":
@@ -546,6 +588,7 @@ func all_types() -> Array:
 ## What is under a screen point: {what: item | person | object, ref} or {}. Items first, then people,
 ## then objects; the smallest on screen wins. Movers are not draggable.
 func pick(screen: Vector2, cam: Camera3D) -> Dictionary:
+	if entry.get("kind") == "model": return {}
 	var margin: float = p.pickMargin
 	for tier in ["item", "person", "object"]:
 		var best := {}
@@ -745,11 +788,12 @@ func _mover_reset() -> void:
 	ms.yaw = 0.0
 	match d.kind:
 		"leash":
-			ms.dw = DogWalker.new(Vector3.ZERO, 0.0, body_scale, func(_q: Vector3) -> float: return FLAT, ms.breed)
+			ms.dw = DogWalker.new(Vector3.ZERO, 0.0, body_scale, _floor_at, ms.breed)
 			if ms.dw.error != "":
 				_fail(ms.dw.error)
 		"rider":
 			ms.ride = Rider.start()
+			ms.ride.pedalling=d.pedalling
 			ms.vehicle.transform = Transform3D.IDENTITY
 
 func _mover_to(time: float) -> void:
@@ -787,11 +831,11 @@ func _mover_draw() -> void:
 			ms.walker_fig.transform = dw.walker_transform().scaled_local(Vector3.ONE * dw.body_scale)
 			ms.focus = (dw.walker.position + dw.dog.position) / 2 + Vector3.UP * 0.7
 		"rider":
+			ms.vehicle.set_motion(ms.ride.wheelAngle, ms.ride.crankPhase)
 			var pose := Rider.solve(ms.vehicle.contacts(ms.ride.crankPhase, ms.R.gripFromBarEnd), ms.P, ms.bodies[ms.R.body].scale, ms.R, ms.ride)
 			if not pose.errors.is_empty():
 				_fail("%s: rider %s" % [entry.id, pose.errors])
 				return
-			ms.vehicle.set_motion(ms.ride.wheelAngle, ms.ride.crankPhase)
 			ms.fig.draw(pose.segments, pose.discs, [])
 			ms.focus = ms.vehicle.position + Vector3.UP * 0.9
 

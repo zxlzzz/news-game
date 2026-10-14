@@ -1,0 +1,183 @@
+{
+  "name": "pay",
+  "text": "A customer takes a small step diagonally forward toward the market counter to pay. At the closer position the RIGHT hand reaches forwards and down to place money on the clear front ledge of the counter. Pause briefly in contact, then withdraw the hand and take a small step back to the original relaxed standing position. The left arm hangs naturally. Keep the hand above the counter, never reach through its front panel or the goods boxes.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A customer takes a small step diagonally forward toward the market counter to pay. At the closer position the RIGHT hand reaches forwards and down to place money on the clear front ledge of the counter. Pause briefly in contact, then withdraw the hand and take a small step back to the original relaxed standing position. The left arm hangs naturally. Keep the hand above the counter, never reach through its front panel or the goods boxes.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "cash_landing",
+        "phases": [
+          0.5,
+          0.6
+        ],
+        "window": [
+          0.46499999999999997,
+          0.5,
+          0.6,
+          0.635
+        ],
+        "surface_node": "counter"
+      }
+    ],
+    "object": "market_stall",
+    "post": "post_customer",
+    "description": "Start at market_stall.post_customer facing the model standing marker direction. A customer takes a small step diagonally forward toward the market counter to pay. At the closer position the RIGHT hand reaches forwards and down to place money on the clear front ledge of the counter. Pause briefly in contact, then withdraw the hand and take a small step back to the original relaxed standing position. The left arm hangs naturally. Keep the hand above the counter, never reach through its front panel or the goods boxes. RightHand touches the physical model marker cash_landing at 2.50s, 3.00s. At 2.50s the body stands at the model stance_pay marker. At 3.00s the body stands at the model stance_pay marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep torso on its standing side of the counter, elbows above the edge while reaching to goods.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep torso on its standing side of the counter, elbows above the edge while reaching to goods.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/sources/9703249f484ffd16/motion.npz",
+        "source_frame": 74,
+        "phase": 0.48,
+        "align_stand": "stance_pay"
+      },
+      {
+        "source": "assets/animations/sources/9703249f484ffd16/motion.npz",
+        "source_frame": 74,
+        "phase": 0.62,
+        "align_stand": "stance_pay"
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 1
+      }
+    ],
+    "loop": false,
+    "body_stances": [
+      {
+        "phase": 0.5,
+        "marker": "stance_pay"
+      },
+      {
+        "phase": 0.6,
+        "marker": "stance_pay"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "market_stall",
+      "marker": "cash_landing",
+      "space": "world",
+      "episode": "cash_landing",
+      "keys": [
+        {
+          "frame": 74,
+          "position": [
+            0.508698,
+            1.097057,
+            0.635672
+          ],
+          "root_xz": [
+            0.38039999999999996,
+            0.3804
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.508698,
+            1.097057,
+            0.635672
+          ],
+          "root_xz": [
+            0.38039999999999996,
+            0.3804
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/9703249f484ffd16/motion.npz",
+      "source_frame": 74,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "9703249f484ffd16b20c4f23fc3b942f7d4b2860210bd27c36e8811749338921",
+        "hand_edited": false
+      },
+      "frame": 72,
+      "translation": [
+        0.3802013837030157,
+        0.0,
+        0.38285194812305273
+      ]
+    },
+    {
+      "source": "assets/animations/sources/9703249f484ffd16/motion.npz",
+      "source_frame": 74,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "9703249f484ffd16b20c4f23fc3b942f7d4b2860210bd27c36e8811749338921",
+        "hand_edited": false
+      },
+      "frame": 92,
+      "translation": [
+        0.3802013837030157,
+        0.0,
+        0.38285194812305273
+      ]
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 149
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 4,
+  "raw_sha256": "f3e6da402e680bda72b74331ef5ad944b13f61d2019da566020db68f1377e758",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_reviewed",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "f3e6da402e680bda72b74331ef5ad944b13f61d2019da566020db68f1377e758",
+    "notes": "Actual empty-ground playback at 60 Hz: approach, payment contact and withdrawal clear the counter and goods boxes. Three-view filmstrip inspected; natural step closer replaces an unreachable stationary reach."
+  },
+  "visual_review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Extends hand over counter then retracts; contact occluded. Whole 5 s clear customer-side overview: forward step, low reach over counter, withdrawal and small step back.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Extends hand over counter then retracts; contact occluded. Whole 5 s clear customer-side overview: forward step, low reach over counter, withdrawal and small step back.\"\r\n  }",
+      "original_record_sha256": "e465e7917af303cdb85b95686f18bd442a81deaea5c779ded3f98d3a54c31ac0",
+      "current_source_sha256_at_reconciliation": "f3e6da402e680bda72b74331ef5ad944b13f61d2019da566020db68f1377e758",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

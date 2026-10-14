@@ -1,0 +1,34 @@
+{
+  "name": "walk_carry_bag",
+  "text": "A person walks forward carrying a heavy shopping bag in the right hand down beside the right thigh. The right arm stays straight and steady pointing down, while the left arm swings freely. Continuous natural walking.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person walks forward carrying a heavy shopping bag in the right hand down beside the right thigh. The right arm stays straight and steady pointing down, while the left arm swings freely. Continuous natural walking.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_shopping_bag",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  right hand holds held_shopping_bag at the item grip marker.  A person walks forward carrying a heavy shopping bag in the right hand down beside the right thigh. The right arm stays straight and steady pointing down, while the left arm swings freely. Continuous natural walking. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "900db4f32c1ebc16c54aa46916b4010aedecbb5f20d4565023e5939374e071dc",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

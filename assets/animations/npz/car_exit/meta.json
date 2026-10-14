@@ -1,25 +1,272 @@
 {
   "name": "car_exit",
   "text": "Sitting in a low car driver seat, open the door with the left hand. Turn the body sideways, place the left foot outside on the ground, bring the right leg out, lean forward and stand up beside the car. Finish upright with both feet on the ground.",
-  "duration": 6,
-  "seed": 5314,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 7,
+  "scene": {
+    "text": "Sitting in a low car driver seat, open the door with the left hand. Turn the body sideways, place the left foot outside on the ground, bring the right leg out, lean forward and stand up beside the car. Finish upright with both feet on the ground.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          0.3
+        ],
+        "window": [
+          0,
+          0,
+          0.3,
+          0.35
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "door_grip",
+        "phases": [
+          0.12,
+          0.28
+        ],
+        "window": [
+          0.08499999999999999,
+          0.12,
+          0.28,
+          0.31500000000000006
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_exit_left",
+        "phases": [
+          0.4,
+          1
+        ],
+        "window": [
+          0.35,
+          0.4,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_exit_right",
+        "phases": [
+          0.6,
+          1
+        ],
+        "window": [
+          0.55,
+          0.6,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "car_interactive",
+    "post": "post_carexit",
+    "description": "Start at car_interactive.post_carexit facing the model standing marker direction. Sitting in a low car driver seat, open the door with the left hand. Turn the body sideways, place the left foot outside on the ground, bring the right leg out, lean forward and stand up beside the car. Finish upright with both feet on the ground. Hips touches the physical model marker hip_seat at 0.00s, 1.50s. LeftHand touches the physical model marker door_grip at 0.60s, 1.40s. LeftFoot touches the physical model marker foot_exit_left at 2.00s, 5.00s. RightFoot touches the physical model marker foot_exit_right at 3.00s, 5.00s. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep head below the roof while passing the opening; lift feet over the sill and avoid the moving door leaf.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep head below the roof while passing the opening; lift feet over the sill and avoid the moving door leaf.",
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/972c6405bc8e7606/motion.npz",
+        "source_frame": 0,
+        "phase": 0,
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "source_frame": 0,
+        "phase": 1,
+        "align_stand": "stance_car_exit"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "car_interactive",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.4438,
+            0.77348,
+            1.02708
+          ],
+          "root_xz": [
+            0.4438,
+            1.0270799999999998
+          ]
+        },
+        {
+          "frame": 45,
+          "position": [
+            0.4438,
+            0.77348,
+            1.02708
+          ],
+          "root_xz": [
+            0.4438,
+            1.0270799999999998
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "car_interactive",
+      "marker": "door_grip",
+      "space": "world",
+      "episode": "door_grip",
+      "keys": [
+        {
+          "frame": 18,
+          "position": [
+            0.29541,
+            1.028496,
+            0.161517
+          ],
+          "root_xz": [
+            0.4438,
+            1.0270799999999998
+          ]
+        },
+        {
+          "frame": 42,
+          "position": [
+            0.152136,
+            1.028496,
+            0.047501
+          ],
+          "root_xz": [
+            0.4438,
+            1.0270799999999998
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "car_interactive",
+      "marker": "foot_exit_left",
+      "space": "world",
+      "episode": "foot_exit_left",
+      "keys": [
+        {
+          "frame": 60,
+          "position": [
+            0.2536,
+            0.070193,
+            -0.0634
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.2536,
+            0.070193,
+            -0.0634
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "car_interactive",
+      "marker": "foot_exit_right",
+      "space": "world",
+      "episode": "foot_exit_right",
+      "keys": [
+        {
+          "frame": 89,
+          "position": [
+            0.634,
+            0.070282,
+            -0.0634
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.634,
+            0.070282,
+            -0.0634
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/972c6405bc8e7606/motion.npz",
+      "source_frame": 0,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "972c6405bc8e76064dc00a120a43e653aeed850fe5e14d3ec5aec524ba70678e",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        0.4879835597157478,
+        0.6387490052986144,
+        0.9853334357905386
+      ],
+      "placement_basis": [
+        [
+          0.17962741666453125,
+          0,
+          -0.9837347158570886
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.9837347158570886,
+          0,
+          0.17962741666453125
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        0.4437999999999999,
+        0.0,
+        -0.06340000000000005
+      ]
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "850318e2992a8f594d2640df31ce8e08e1e3ba9beb7c6fc2e72af5a1a45236a7",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_failed",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "850318e2992a8f594d2640df31ce8e08e1e3ba9beb7c6fc2e72af5a1a45236a7",
+    "notes": "Full final-scene review found unreachable physical contacts. Existing source retained pending repair; this clip is not visually approved."
   },
-  "num_samples": 1,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "stand_idle",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
-    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
-  }
+  "source_frame": "fixed"
 }

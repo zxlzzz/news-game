@@ -1,95 +1,188 @@
 {
   "name": "peek_side",
-  "text": "A person leans their upper body to the left and peeks around a corner, then straightens up.",
-  "duration": 3.5,
-  "seed": 42,
-  "endpoints": false,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "text": "A standing person leans their upper body to the LEFT and peers cautiously around a corner, holds the peek briefly, then brings their upper body back over the hips and straightens fully upright. Both arms hang relaxed beside the thighs, feet stay planted. Finish upright and still in the relaxed standing pose.",
+  "duration": 4.0,
+  "seed": 20261010,
+  "attempt": 1,
+  "scene": {
+    "activity": "peek_side",
+    "body_only": true,
+    "description": "A standing person leans their upper body to the LEFT and peers cautiously around a corner, holds the peek briefly, then brings their upper body back over the hips and straightens fully upright. Both arms hang relaxed beside the thighs, feet stay planted. Finish upright and still in the relaxed standing pose.",
+    "complete_activity": true,
+    "generation_stage": "complete_activity"
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 119,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
-  },
-  "num_samples": 1,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "846e4db395cc9dd15fe093302431bcf92317e9d56013dc36bb5f7ff5ff7be052",
+  "low_memory": true,
+  "hand_edited": false,
   "review": {
-    "status": "selected",
-    "notes_zh": "由站立向左侧倾并转头，保持探看；末尾未完全收回，无首尾约束。",
-    "attempts": 1,
-    "views": [
-      "front",
-      "side",
-      "head"
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "846e4db395cc9dd15fe093302431bcf92317e9d56013dc36bb5f7ff5ff7be052",
+    "date": "2026-10-10",
+    "observations": "The upper body makes a mild leftward lean and peers, then straightens over the hips. Both arms stay lowered; the endpoint and later hold are upright.",
+    "review_folder": ".tmp/motion-repair-2026-10-10/semantic/actual-stage",
+    "record": "docs/motion-review-evidence-2026-10-11/records/semantic-five-source-publication.json",
+    "captured_views_degrees": [
+      0,
+      90,
+      135
     ],
-    "metrics": {
-      "frames": 105,
-      "finite": true,
-      "bone_length_range_mm": 1.0,
-      "max_joint_step_m": 0.019,
-      "root_horizontal_range_m": [
-        0.11900000274181366,
-        0.052000001072883606
-      ],
-      "LeftHand_head_distance_m": [
-        0.753000020980835,
-        0.7260000109672546,
-        0.7200000286102295,
-        0.7289999723434448,
-        0.7310000061988831,
-        0.7350000143051147,
-        0.7429999709129333,
-        0.7440000176429749,
-        0.7590000033378601
-      ],
-      "RightHand_head_distance_m": [
-        0.7620000243186951,
-        0.7519999742507935,
-        0.7179999947547913,
-        0.6899999976158142,
-        0.6840000152587891,
-        0.6899999976158142,
-        0.6940000057220459,
-        0.6890000104904175,
-        0.6809999942779541
-      ],
-      "hand_separation_m": [
-        0.5059999823570251,
-        0.5080000162124634,
-        0.48899999260902405,
-        0.46700000762939453,
-        0.4729999899864197,
-        0.47200000286102295,
-        0.4729999899864197,
-        0.4699999988079071,
-        0.46299999952316284
-      ],
-      "head_yaw_range_deg": 75.7,
-      "head_pitch_range_deg": 6.85,
-      "head_yaw_samples_deg": [
-        0.0,
-        -56.599998474121094,
-        -71.9000015258789,
-        -74.30000305175781,
-        -74.9000015258789,
-        -72.0,
-        -60.20000076293945,
-        -56.0,
-        -22.5
-      ],
-      "head_pitch_samples_deg": [
-        0.0,
-        6.800000190734863,
-        3.9000000953674316,
-        1.899999976158142,
-        2.299999952316284,
-        3.0999999046325684,
-        3.0999999046325684,
-        4.5,
-        3.0
-      ]
+    "personally_inspected_all_activity_time_views_degrees": [
+      0,
+      135
+    ],
+    "activity_time_samples": 25,
+    "image_resolution": [
+      1024,
+      1024
+    ],
+    "personal_view_method": "Original-pixel 400x600 actor crops in 38 temporal pages; additional full 1024px critical side stills and front post-action hold",
+    "approx_sample_interval_seconds": 0.1652777777777779,
+    "post_action_hold_seconds": 0.5,
+    "full_speed_playback_viewed": false,
+    "native_stage_geometry_samples": 120,
+    "native_stage_metrics": {
+      "id": "peek_side",
+      "native_samples": 120,
+      "head_forearm_sphere_proxy_min": {
+        "gap_m": 0.23978853471299294,
+        "sample": 32,
+        "time": 1.06666666666667,
+        "segment": 8,
+        "side": "Right",
+        "nearest_fraction": 0.0
+      },
+      "head_forearm_sphere_proxy_max": {
+        "gap_m": 0.261868368615039,
+        "sample": 26,
+        "time": 0.866666666666667,
+        "segment": 3,
+        "side": "Left",
+        "nearest_fraction": 0.0
+      },
+      "min_gap_at_capture_1_49s": {
+        "gap_m": 0.24321650011133678,
+        "sample": 44,
+        "time": 1.46666666666667,
+        "segment": 8,
+        "side": "Right",
+        "nearest_fraction": 0.0
+      },
+      "largest_adjacent_drawn_endpoint_step_m": 0.01116725106857355,
+      "largest_step_from_sample": 18,
+      "largest_step_endpoint_index": 24,
+      "drawn_first_last_max_endpoint_gap_m": 0.0
+    },
+    "version_inputs_sha256": {
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/adjust_clothes.json": "1424c0eddb3514df5aafaaa089b5faa4598a9a1f0868149aded4b1a71d82c31e",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hail_taxi.json": "0afd1117eafd5efbda302a92b4f2905eedb918e0890a1eeb8b3be05b3fa90a94",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hop.json": "2f678f12be81a4c58d3ee19c35c9254923a8c6f766afbd83628e57662c20cc86",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/peek_side.json": "c91ef19e968a8439833962fd23911bc16b7f201fc2862d8b0759ec27aa2584a4",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/point_shout.json": "30c971b97193c81d42f9d0b7bb965fc2fa0cdddd698d40b3fe1bae019a87d03e",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate_clip.gd": "0ab272876a6e0de731dac61956e430e2b3e792d4f4f36ae86149f80d2ef3e8b1",
+      "res://npc/clip-setup.json": "e1b8ce367a757da469a79713d8eebe1e575a864fa8298e4c5d24953ac162ae96",
+      "res://npc/clip_pose.gd": "e57205988edb80d125484dfee341e5520ea7c6685377855bec355a4f21b1b182",
+      "res://npc/contact_pose.gd": "2434e70425aee11488b32a46347e9c7e5c00f49eb3505b40abf5c59e7554604c",
+      "res://npc/interactions.json": "53ca88b05f82dbbe3dd4a815bcc90c0b5b013bc1618394ca60bcd42b9e0bcd04",
+      "res://npc/skeleton_mapping.gd": "0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc"
+    },
+    "limitations": "Seek-based static sampling, not complete intended-speed playback; native stage geometry describes measured positions and does not approve naturalness or continuous-time dynamics.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"raw_sha256\": \"846e4db395cc9dd15fe093302431bcf92317e9d56013dc36bb5f7ff5ff7be052\",\r\n    \"date\": \"2026-10-10\",\r\n    \"observations\": \"The upper body makes a mild leftward lean and peers, then straightens over the hips. Both arms stay lowered; the endpoint and later hold are upright.\",\r\n    \"review_folder\": \".tmp/motion-repair-2026-10-10/semantic/actual-stage\",\r\n    \"record\": \".tmp/motion-repair-2026-10-10/semantic/semantic-repair-summary.json\",\r\n    \"captured_views_degrees\": [\r\n      0,\r\n      90,\r\n      135\r\n    ],\r\n    \"personally_inspected_all_activity_time_views_degrees\": [\r\n      0,\r\n      135\r\n    ],\r\n    \"activity_time_samples\": 25,\r\n    \"image_resolution\": [\r\n      1024,\r\n      1024\r\n    ],\r\n    \"personal_view_method\": \"Original-pixel 400x600 actor crops in 38 temporal pages; additional full 1024px critical side stills and front post-action hold\",\r\n    \"approx_sample_interval_seconds\": 0.1652777777777779,\r\n    \"post_action_hold_seconds\": 0.5,\r\n    \"full_speed_playback_viewed\": false,\r\n    \"native_stage_geometry_samples\": 120,\r\n    \"native_stage_metrics\": {\r\n      \"id\": \"peek_side\",\r\n      \"native_samples\": 120,\r\n      \"head_forearm_sphere_proxy_min\": {\r\n        \"gap_m\": 0.23978853471299294,\r\n        \"sample\": 32,\r\n        \"time\": 1.06666666666667,\r\n        \"segment\": 8,\r\n        \"side\": \"Right\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"head_forearm_sphere_proxy_max\": {\r\n        \"gap_m\": 0.261868368615039,\r\n        \"sample\": 26,\r\n        \"time\": 0.866666666666667,\r\n        \"segment\": 3,\r\n        \"side\": \"Left\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"min_gap_at_capture_1_49s\": {\r\n        \"gap_m\": 0.24321650011133678,\r\n        \"sample\": 44,\r\n        \"time\": 1.46666666666667,\r\n        \"segment\": 8,\r\n        \"side\": \"Right\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"largest_adjacent_drawn_endpoint_step_m\": 0.01116725106857355,\r\n      \"largest_step_from_sample\": 18,\r\n      \"largest_step_endpoint_index\": 24,\r\n      \"drawn_first_last_max_endpoint_gap_m\": 0.0\r\n    },\r\n    \"version_inputs_sha256\": {\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/adjust_clothes.json\": \"1424c0eddb3514df5aafaaa089b5faa4598a9a1f0868149aded4b1a71d82c31e\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hail_taxi.json\": \"0afd1117eafd5efbda302a92b4f2905eedb918e0890a1eeb8b3be05b3fa90a94\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hop.json\": \"2f678f12be81a4c58d3ee19c35c9254923a8c6f766afbd83628e57662c20cc86\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/peek_side.json\": \"c91ef19e968a8439833962fd23911bc16b7f201fc2862d8b0759ec27aa2584a4\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/point_shout.json\": \"30c971b97193c81d42f9d0b7bb965fc2fa0cdddd698d40b3fe1bae019a87d03e\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate_clip.gd\": \"0ab272876a6e0de731dac61956e430e2b3e792d4f4f36ae86149f80d2ef3e8b1\",\r\n      \"res://npc/clip-setup.json\": \"e1b8ce367a757da469a79713d8eebe1e575a864fa8298e4c5d24953ac162ae96\",\r\n      \"res://npc/clip_pose.gd\": \"e57205988edb80d125484dfee341e5520ea7c6685377855bec355a4f21b1b182\",\r\n      \"res://npc/contact_pose.gd\": \"2434e70425aee11488b32a46347e9c7e5c00f49eb3505b40abf5c59e7554604c\",\r\n      \"res://npc/interactions.json\": \"53ca88b05f82dbbe3dd4a815bcc90c0b5b013bc1618394ca60bcd42b9e0bcd04\",\r\n      \"res://npc/skeleton_mapping.gd\": \"0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc\"\r\n    },\r\n    \"limitations\": \"Seek-based static sampling, not complete intended-speed playback; native stage geometry describes measured positions and does not approve naturalness or continuous-time dynamics.\"\r\n  }",
+      "original_record_sha256": "e161749be0b427f6bc55414e8df00c876b9caa0872ae1da0590ffc9ad9e15e9a",
+      "current_source_sha256_at_reconciliation": "846e4db395cc9dd15fe093302431bcf92317e9d56013dc36bb5f7ff5ff7be052",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "evidence_path_migrations": [
+      {
+        "field": "record",
+        "original_path": ".tmp/motion-repair-2026-10-10/semantic/semantic-repair-summary.json",
+        "durable_path": "docs/motion-review-evidence-2026-10-11/records/semantic-five-source-publication.json",
+        "sha256": "cee7c09f347dbc6b936323895946b3f31de7b6cb3ddde94d400428813ffa5348",
+        "content_changed": false
+      }
+    ],
+    "record_sha256": "cee7c09f347dbc6b936323895946b3f31de7b6cb3ddde94d400428813ffa5348"
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/peek_side/attempt_001/motion.npz",
+    "original_meta_sha256": "95cbd044ac94af9d8ee7ef7ef292d72b3db860383eb4b02b51a87f0295704bfe",
+    "original_meta_file": "generation-original-meta.json",
+    "raw_npz_unchanged": true
+  },
+  "delivery_source": "assets/animations/sources/846e4db395cc9dd1",
+  "repair": {
+    "date": "2026-10-10",
+    "reason": "Named activity had a wrong final state or wrong synchronous-hop meaning",
+    "replaced_source_sha256": "926d563f1dcbc74116d515aee10725304fc903b5cf6b839bb5d8f7f50b6b2eb5",
+    "replaced_meta_sha256": "12456998827a32c24ede0d18a10a4aa0c0139c3a6626a3e31dbfbfb7d25158ea",
+    "generated_source_npz_unchanged": true
+  },
+  "material_endpoints": {
+    "entry": "stand",
+    "exit": "stand",
+    "kind": "transition",
+    "source_sha256": "846e4db395cc9dd15fe093302431bcf92317e9d56013dc36bb5f7ff5ff7be052",
+    "boundary_edits": [],
+    "boundary_velocity_alignment": [],
+    "trim": null,
+    "method": "Unedited Kimodo sparse semantic full-body key generation; no authored joint path, seam fitting or FK boundary edit",
+    "entry_reference": {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d"
+    },
+    "exit_reference": {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d"
     }
   }
 }

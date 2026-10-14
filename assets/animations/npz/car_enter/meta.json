@@ -1,25 +1,258 @@
 {
   "name": "car_enter",
   "text": "Standing next to the driver door of a car, use the left hand to pull the door open. Turn sideways, bend knees and duck the head, move hips sideways into the low driver seat first, then lift the outside leg over the sill and bring both feet forward into the footwell. Finish seated upright.",
-  "duration": 6,
-  "seed": 5313,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 6,
+  "scene": {
+    "text": "Standing next to the driver door of a car, use the left hand to pull the door open. Turn sideways, bend knees and duck the head, move hips sideways into the low driver seat first, then lift the outside leg over the sill and bring both feet forward into the footwell. Finish seated upright.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "door_grip",
+        "phases": [
+          0.12,
+          0.28
+        ],
+        "window": [
+          0.08499999999999999,
+          0.12,
+          0.28,
+          0.31500000000000006
+        ]
+      },
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0.7,
+          1
+        ],
+        "window": [
+          0.65,
+          0.7,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0.65,
+          1
+        ],
+        "window": [
+          0.6,
+          0.65,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0.8,
+          1
+        ],
+        "window": [
+          0.75,
+          0.8,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "car_interactive",
+    "post": "post_carenter",
+    "description": "Start at car_interactive.post_carenter facing the model standing marker direction. Standing next to the driver door of a car, use the left hand to pull the door open. Turn sideways, bend knees and duck the head, move hips sideways into the low driver seat first, then lift the outside leg over the sill and bring both feet forward into the footwell. Finish seated upright. LeftHand touches the physical model marker door_grip at 0.60s, 1.40s. Hips touches the physical model marker hip_seat at 3.50s, 5.00s. LeftFoot touches the physical model marker foot_left at 3.25s, 5.00s. RightFoot touches the physical model marker foot_right at 4.00s, 5.00s. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep head below the roof while passing the opening; lift feet over the sill and avoid the moving door leaf.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep head below the roof while passing the opening; lift feet over the sill and avoid the moving door leaf.",
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/32dc7dc2b77515b8/motion.npz",
+        "source_frame": 149,
+        "phase": 1,
+        "align_hip": "hip_seat"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "car_interactive",
+      "marker": "door_grip",
+      "space": "world",
+      "episode": "door_grip",
+      "keys": [
+        {
+          "frame": 18,
+          "position": [
+            0.14777,
+            1.105646,
+            -0.180163
+          ]
+        },
+        {
+          "frame": 42,
+          "position": [
+            0.004496,
+            1.105646,
+            -0.294179
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "Hips",
+      "model": "car_interactive",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 104,
+          "position": [
+            0.4438,
+            0.77348,
+            1.02708
+          ],
+          "root_xz": [
+            0.4438,
+            1.0270799999999998
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.4438,
+            0.77348,
+            1.02708
+          ],
+          "root_xz": [
+            0.4438,
+            1.0270799999999998
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "car_interactive",
+      "marker": "foot_left",
+      "space": "world",
+      "episode": "foot_left",
+      "keys": [
+        {
+          "frame": 97,
+          "position": [
+            -0.1268,
+            0.602753,
+            0.8876
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.1268,
+            0.602753,
+            0.8876
+          ],
+          "root_xz": [
+            0.4438,
+            1.0270799999999998
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "car_interactive",
+      "marker": "foot_right",
+      "space": "world",
+      "episode": "foot_right",
+      "keys": [
+        {
+          "frame": 119,
+          "position": [
+            -0.1268,
+            0.602842,
+            1.2046
+          ],
+          "root_xz": [
+            0.4438,
+            1.0270799999999998
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.1268,
+            0.602842,
+            1.2046
+          ],
+          "root_xz": [
+            0.4438,
+            1.0270799999999998
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/32dc7dc2b77515b8/motion.npz",
+      "source_frame": 149,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "32dc7dc2b77515b8773f264d72272ec64dfc28e685c38a86db73dc34cdaa1071",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        0.6061575389385223,
+        -0.2268943171691895,
+        -0.18178754989624046
+      ],
+      "placement_basis": [
+        [
+          0.011379610880662725,
+          0,
+          0.9999352501318296
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.9999352501318296,
+          0,
+          0.011379610880662725
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 1,
+  "raw_sha256": "73cc111541bc5cb9bc906e89b42a8415b9dc6a75ab84875d9c1ec9bff01c6d06",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "73cc111541bc5cb9bc906e89b42a8415b9dc6a75ab84875d9c1ec9bff01c6d06",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
   },
-  "num_samples": 1,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "stand_idle",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
-    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
-  }
+  "source_frame": "fixed"
 }

@@ -1,0 +1,172 @@
+{
+  "name": "atm_take_cash",
+  "text": "Standing in front of an ATM, lean slightly forward and reach the RIGHT hand into the waist-high cash slot, grip the banknotes, withdraw the RIGHT hand and bring the cash to the front of the abdomen. Finish holding the banknotes in the RIGHT hand at abdomen height, elbow bent comfortably down. The empty LEFT hand stays hanging beside the left thigh throughout. Do not exchange hands or drop the right arm at the end.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Standing in front of an ATM, lean slightly forward and reach the RIGHT hand into the waist-high cash slot, grip the banknotes, withdraw the RIGHT hand and bring the cash to the front of the abdomen. Finish holding the banknotes in the RIGHT hand at abdomen height, elbow bent comfortably down. The empty LEFT hand stays hanging beside the left thigh throughout. Do not exchange hands or drop the right arm at the end.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "cash_pickup",
+        "phases": [
+          0.2,
+          0.32
+        ],
+        "window": [
+          0.165,
+          0.2,
+          0.32,
+          0.355
+        ]
+      }
+    ],
+    "object": "atm_standalone",
+    "post": "post_atm",
+    "description": "Start at atm_standalone.post_atm facing the model standing marker direction. Standing in front of an ATM, lean slightly forward and reach the RIGHT hand into the waist-high cash slot, grip the banknotes, withdraw the RIGHT hand and bring the cash to the front of the abdomen. Finish holding the banknotes in the RIGHT hand at abdomen height, elbow bent comfortably down. The empty LEFT hand stays hanging beside the left thigh throughout. Do not exchange hands or drop the right arm at the end. RightHand touches the physical model marker cash_pickup at 1.00s, 1.60s. Grasp held_banknote at grip at 1.60s. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "transfers": [
+      {
+        "type": "held_banknote",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.32,
+        "initial": {
+          "space": "object",
+          "marker": "cash_pickup"
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "source_frame": 0,
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/poses/small_item.json",
+        "source_frame": 0,
+        "phase": 1
+      },
+      {
+        "source": "assets/animations/sources/116ccddb0d15a083/motion.npz",
+        "source_frame": 65,
+        "translation": [
+          -0.03429980203509331,
+          0,
+          0.013403307646512985
+        ],
+        "phase": 0.2
+      },
+      {
+        "source": "assets/animations/sources/116ccddb0d15a083/motion.npz",
+        "source_frame": 65,
+        "translation": [
+          -0.03429980203509331,
+          0,
+          0.013403307646512985
+        ],
+        "phase": 0.32
+      }
+    ],
+    "arm_obstacles": [
+      "*"
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "atm_standalone",
+      "marker": "cash_pickup",
+      "space": "world",
+      "episode": "cash_pickup",
+      "keys": [
+        {
+          "frame": 30,
+          "position": [
+            0.001328,
+            1.090024,
+            0.50244
+          ]
+        },
+        {
+          "frame": 48,
+          "position": [
+            0.001328,
+            1.090024,
+            0.50244
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/poses/small_item.json",
+      "source_frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "28bf691c92ca680e7615fd946aee6ee7159e1b24de9f1c98a403e0a6712e4493",
+        "hand_edited": false
+      },
+      "frame": 149
+    },
+    {
+      "source": "assets/animations/sources/116ccddb0d15a083/motion.npz",
+      "source_frame": 65,
+      "translation": [
+        -0.03429980203509331,
+        0,
+        0.013403307646512985
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "116ccddb0d15a08396cf417cc4858e35843415dc25adbed901cd52f138607839",
+        "hand_edited": false
+      },
+      "frame": 30
+    },
+    {
+      "source": "assets/animations/sources/116ccddb0d15a083/motion.npz",
+      "source_frame": 65,
+      "translation": [
+        -0.03429980203509331,
+        0,
+        0.013403307646512985
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "116ccddb0d15a08396cf417cc4858e35843415dc25adbed901cd52f138607839",
+        "hand_edited": false
+      },
+      "frame": 48
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 4,
+  "raw_sha256": "abe2aedd114d21b2e2171981c4aa2ec95fa138143c90df081e302bfaf34d218a",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

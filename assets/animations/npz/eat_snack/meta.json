@@ -1,95 +1,167 @@
 {
   "name": "eat_snack",
-  "text": "A person eats a small snack, repeatedly bringing their right hand to their mouth and lowering it.",
-  "duration": 3.5,
-  "seed": 42,
-  "endpoints": false,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "duration": 4,
+  "attempt": 2,
+  "text": "Standing with a snack bag held down by the left hip. Lift a biscuit with the right hand from waist height to the mouth, take one bite, then lower the right hand back to the waist. Keep the left hand down.",
+  "seed": 61007,
+  "scene": {
+    "text": "Standing with a snack bag held down by the left hip. Lift a biscuit with the right hand from waist height to the mouth, take one bite, then lower the right hand back to the waist. Keep the left hand down.",
+    "duration": 4,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 119,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
-  },
-  "num_samples": 1,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "1a2f901b587afaad311dfd8df27b6e90ef2abcf7b669dbd47423c866e522976c",
+  "low_memory": false,
+  "hand_edited": false,
   "review": {
-    "status": "selected",
-    "notes_zh": "右手到嘴前小幅靠近／离开，末尾降回身前；反复幅度较小，非明显多口进食。无食物实体和捏取指型，无首尾约束。",
-    "attempts": 1,
-    "views": [
-      "front",
-      "side",
-      "head"
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "notes": "Raw source preserved; current contact/clearance evidence is in docs/asset-contact-repair-2026-10-10.json. No real-time visual approval is claimed.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"notes\": \"Raw source preserved; current contact/clearance evidence is in docs/asset-contact-repair-2026-10-10.json. No real-time visual approval is claimed.\"\r\n  }",
+      "original_record_sha256": "9e7bd0dc28072869738b45446dd84e54bc31645e6db437ff7198412c492f60be",
+      "current_source_sha256_at_reconciliation": "1a2f901b587afaad311dfd8df27b6e90ef2abcf7b669dbd47423c866e522976c",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks."
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Full 3.967 s two-view overview: left hand lifts snack to lower face then returns down; right hand holds bag low. No reach into bag is claimed.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Full 3.967 s two-view overview: left hand lifts snack to lower face then returns down; right hand holds bag low. No reach into bag is claimed.\"\r\n  }",
+      "original_record_sha256": "6033aabcae35a444b5ffd00400432fd94fba6d1cc6fd66a16e4a4aa58cc205da",
+      "current_source_sha256_at_reconciliation": "1a2f901b587afaad311dfd8df27b6e90ef2abcf7b669dbd47423c866e522976c",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "runtime_scene": {
+    "text": "Holding a snack bag low in their right hand, a standing person picks a snack with their left hand and brings it to their mouth to eat, then lowers the left hand.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "grip": "grip_top",
+      "orientation": "upright",
+      "source_grasp": true,
+      "follow_hand": true,
+      "solid_grasp": true,
+      "type": "held_snack_bag",
+      "hand": "right"
+    },
+    "description": "Start at level ground facing +Z. Holding a snack bag low in their right hand, a standing person picks a snack with their left hand and brings it to their mouth to eat, then lowers the left hand. Hold held_snack_bag with right at its grip marker. The handLeft holds held_snack_piece at its grip marker during the visible interval. The right hand steadies the snack bag near the right thigh; the left hand eats the small snack. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand steadies the snack bag near the right thigh; the left hand eats the small snack.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "props": [
+      {
+        "type": "held_snack_piece",
+        "space": "handLeft",
+        "grip": "grip",
+        "visible": [
+          0,
+          1
+        ],
+        "solid_grasp": true
+      }
     ],
-    "metrics": {
-      "frames": 105,
-      "finite": true,
-      "bone_length_range_mm": 0.812,
-      "max_joint_step_m": 0.042,
-      "root_horizontal_range_m": [
-        0.012000000104308128,
-        0.04100000113248825
-      ],
-      "LeftHand_head_distance_m": [
-        0.765999972820282,
-        0.7440000176429749,
-        0.746999979019165,
-        0.7649999856948853,
-        0.7689999938011169,
-        0.7689999938011169,
-        0.765999972820282,
-        0.7670000195503235,
-        0.7730000019073486
-      ],
-      "RightHand_head_distance_m": [
-        0.2930000126361847,
-        0.1679999977350235,
-        0.1979999989271164,
-        0.257999986410141,
-        0.2680000066757202,
-        0.25699999928474426,
-        0.22300000488758087,
-        0.2809999883174896,
-        0.5080000162124634
-      ],
-      "hand_separation_m": [
-        0.6259999871253967,
-        0.6660000085830688,
-        0.6570000052452087,
-        0.640999972820282,
-        0.6399999856948853,
-        0.6460000276565552,
-        0.6669999957084656,
-        0.6380000114440918,
-        0.5080000162124634
-      ],
-      "head_yaw_range_deg": 5.37,
-      "head_pitch_range_deg": 31.16,
-      "head_yaw_samples_deg": [
-        0.0,
-        2.9000000953674316,
-        1.100000023841858,
-        0.4000000059604645,
-        -1.100000023841858,
-        -0.6000000238418579,
-        -0.699999988079071,
-        -1.2999999523162842,
-        0.30000001192092896
-      ],
-      "head_pitch_samples_deg": [
-        0.0,
-        16.5,
-        10.600000381469727,
-        -3.4000000953674316,
-        -5.599999904632568,
-        -5.0,
-        -1.2999999523162842,
-        -2.0,
-        -6.699999809265137
-      ]
-    }
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/7e59b94258e871e3/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.0061021363362669945,
+          0.0,
+          -0.00317155453376472
+        ]
+      },
+      {
+        "source": "assets/animations/sources/7e59b94258e871e3/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.0061021363362669945,
+          0.0,
+          -0.00317155453376472
+        ]
+      }
+    ]
+  },
+  "runtime_interaction": {
+    "duration": 3.966666666666667,
+    "preserve_root": false,
+    "preserve_origin": false,
+    "preserve_heading": false,
+    "stationary": false,
+    "item": {
+      "grip": "grip_top",
+      "orientation": "upright",
+      "source_grasp": true,
+      "follow_hand": true,
+      "solid_grasp": true
+    },
+    "props": [
+      {
+        "type": "held_snack_piece",
+        "space": "handLeft",
+        "grip": "grip",
+        "visible": [
+          0,
+          1
+        ],
+        "solid_grasp": true
+      }
+    ],
+    "playback": "once"
   }
 }

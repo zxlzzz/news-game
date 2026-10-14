@@ -1,52 +1,73 @@
 {
   "name": "carry_bag",
-  "text": "A person stands still holding a heavy shopping bag in the right hand down beside the right thigh. The right arm hangs nearly straight under the weight, right hand remains low. Left arm hangs loose at the left side. Small weight shift between the feet. Stay standing in the same spot throughout.",
-  "duration": 4.0,
-  "seed": 42,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "text": "A person stands relaxed with arms hanging loosely by their sides, feet planted. Remain completely still with only subtle breathing.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 8,
+  "scene": {
+    "text": "A person stands relaxed with arms hanging loosely by their sides, feet planted. Remain completely still with only subtle breathing.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_shopping_bag",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands relaxed with arms hanging loosely by their sides, feet planted. Remain completely still with only subtle breathing. Hold held_shopping_bag with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 1
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
-  },
-  "num_samples": 1,
-  "generation_duration": 4,
-  "loop": false,
-  "trim": {
-    "take_frames": [
-      0,
-      119
-    ],
-    "reason": "Full generated clip."
-  },
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "bf03272873fd2a7c47cca0ec309eef2ff169e5a7801a5ff48b8ea30e0d9d980f",
+  "low_memory": false,
+  "hand_edited": false,
   "review": {
-    "status": "selected",
-    "attempts": 1,
-    "views": [
-      "front",
-      "side",
-      "hands if prop-related"
-    ],
-    "notes_zh": "右手持续低垂提袋，左手从抬起回到体侧；站姿轻微换重心。固定放松手指，未宣称手指闭合抓住袋柄。",
-    "metrics": {
-      "frames": 120,
-      "seam_root_aligned_max_joint_m": 0.7520456127548965,
-      "root_speed_min_mps": 0.0024850815534591675,
-      "root_speed_max_mps": 0.07113943248987198,
-      "root_delta_m": [
-        0.004438877105712891,
-        0.0,
-        -0.017793796956539154
-      ],
-      "seam_global_rotation_matrix_max_abs": 1.6870508193969727,
-      "floor_min_joint_y_m": 0.0026674866676330566,
-      "finite": true
-    },
-    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
-    "batch_category": "daily"
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "bf03272873fd2a7c47cca0ec309eef2ff169e5a7801a5ff48b8ea30e0d9d980f",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
   }
 }

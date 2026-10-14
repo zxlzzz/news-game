@@ -1,513 +1,265 @@
 {
   "name": "pullup_hold",
-  "text": "A person maintains a bent arm hang from a horizontal pull up bar, feet suspended, torso upright, hands fixed to the bar. Gentle breathing and a small natural body sway.",
-  "duration": 3.033333333333333,
-  "seed": 2840,
-  "loop": true,
-  "keyframes": [
+  "text": "Maintain an upright standing-like body posture below a high horizontal bar, torso vertical, head above the hips, elbows bent down beside the ribs and feet below the hips. Hold the body completely still with only subtle breathing; the hands maintain the same grip above the shoulders throughout.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 7,
+  "scene": {
+    "text": "Maintain an upright standing-like body posture below a high horizontal bar, torso vertical, head above the hips, elbows bent down beside the ribs and feet below the hips. Hold the body completely still with only subtle breathing; the hands maintain the same grip above the shoulders throughout.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_hang_high",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "runtime": true
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "fitness_pullup",
+    "post": "post_pullup",
+    "description": "Start at fitness_pullup.post_pullup facing the model standing marker direction. Maintain an upright standing-like body posture below a high horizontal bar, torso vertical, head above the hips, elbows bent down beside the ribs and feet below the hips. Hold the body completely still with only subtle breathing; the hands maintain the same grip above the shoulders throughout. Hips touches the physical model marker hip_hang_high at 0.00s, 5.00s. LeftHand touches the physical model marker grip_left at 0.00s, 5.00s. RightHand touches the physical model marker grip_right at 0.00s, 5.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Suspend the body below the crossbar and between the uprights, with feet clear of the ground.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Suspend the body below the crossbar and between the uprights, with feet clear of the ground.",
+    "fullbody": [
+      {
+        "source": "assets/animations/npz/pullup_raise/motion.npz",
+        "source_frame": 75,
+        "phase": 0,
+        "align_hip": "hip_hang_high"
+      },
+      {
+        "source": "assets/animations/npz/pullup_raise/motion.npz",
+        "source_frame": 75,
+        "phase": 1,
+        "align_hip": "hip_hang_high"
+      }
+    ],
+    "loop": true
+  },
+  "contacts": [
     {
-      "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-      "source_frame": 0,
-      "frame": 0
+      "joint": "Hips",
+      "model": "fitness_pullup",
+      "marker": "hip_hang_high",
+      "space": "world",
+      "episode": "hip_hang_high",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            2.1556,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            2.1556,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
     },
     {
-      "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-      "source_frame": 45,
-      "frame": 45
+      "joint": "LeftHand",
+      "model": "fitness_pullup",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.238076,
+            2.706776,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.238076,
+            2.706776,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
     },
     {
-      "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-      "source_frame": 90,
-      "frame": 90
-    }
-  ],
-  "effectors": [
-    {
-      "joints": [
-        "LeftHand",
-        "RightHand"
-      ],
-      "keyframes": [
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 0,
-          "frame": 0
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 1,
-          "frame": 1
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 2,
-          "frame": 2
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 3,
-          "frame": 3
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 4,
-          "frame": 4
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 5,
-          "frame": 5
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 6,
-          "frame": 6
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 7,
-          "frame": 7
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 8,
-          "frame": 8
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 9,
-          "frame": 9
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 10,
-          "frame": 10
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 11,
-          "frame": 11
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 12,
-          "frame": 12
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 13,
-          "frame": 13
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 14,
-          "frame": 14
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 15,
-          "frame": 15
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 16,
-          "frame": 16
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 17,
-          "frame": 17
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 18,
-          "frame": 18
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 19,
-          "frame": 19
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 20,
-          "frame": 20
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 21,
-          "frame": 21
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 22,
-          "frame": 22
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 23,
-          "frame": 23
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 24,
-          "frame": 24
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 25,
-          "frame": 25
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 26,
-          "frame": 26
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 27,
-          "frame": 27
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 28,
-          "frame": 28
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 29,
-          "frame": 29
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 30,
-          "frame": 30
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 31,
-          "frame": 31
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 32,
-          "frame": 32
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 33,
-          "frame": 33
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 34,
-          "frame": 34
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 35,
-          "frame": 35
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 36,
-          "frame": 36
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 37,
-          "frame": 37
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 38,
-          "frame": 38
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 39,
-          "frame": 39
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 40,
-          "frame": 40
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 41,
-          "frame": 41
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 42,
-          "frame": 42
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 43,
-          "frame": 43
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 44,
-          "frame": 44
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 45,
-          "frame": 45
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 46,
-          "frame": 46
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 47,
-          "frame": 47
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 48,
-          "frame": 48
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 49,
-          "frame": 49
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 50,
-          "frame": 50
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 51,
-          "frame": 51
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 52,
-          "frame": 52
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 53,
-          "frame": 53
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 54,
-          "frame": 54
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 55,
-          "frame": 55
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 56,
-          "frame": 56
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 57,
-          "frame": 57
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 58,
-          "frame": 58
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 59,
-          "frame": 59
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 60,
-          "frame": 60
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 61,
-          "frame": 61
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 62,
-          "frame": 62
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 63,
-          "frame": 63
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 64,
-          "frame": 64
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 65,
-          "frame": 65
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 66,
-          "frame": 66
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 67,
-          "frame": 67
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 68,
-          "frame": 68
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 69,
-          "frame": 69
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 70,
-          "frame": 70
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 71,
-          "frame": 71
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 72,
-          "frame": 72
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 73,
-          "frame": 73
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 74,
-          "frame": 74
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 75,
-          "frame": 75
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 76,
-          "frame": 76
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 77,
-          "frame": 77
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 78,
-          "frame": 78
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 79,
-          "frame": 79
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 80,
-          "frame": 80
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 81,
-          "frame": 81
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 82,
-          "frame": 82
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 83,
-          "frame": 83
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 84,
-          "frame": 84
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 85,
-          "frame": 85
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 86,
-          "frame": 86
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 87,
-          "frame": 87
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 88,
-          "frame": 88
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 89,
-          "frame": 89
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/58aad703326dc9b57b66c457878ee6ebde21174cd62764e2a6e0258c175f2d1f.npz",
-          "source_frame": 90,
-          "frame": 90
+      "joint": "RightHand",
+      "model": "fitness_pullup",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.235864,
+            2.706809,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.235864,
+            2.706809,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
         }
       ]
     }
   ],
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/npz/pullup_raise/motion.npz",
+      "source_frame": 75,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "095b04bdd34a326bb79d66200df0a265110ec8a7c9d9b50825dfb22e5c42c63e",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        -0.0018634162843227386,
+        0.005126882171630598,
+        0.0016161203384399414
+      ],
+      "placement_basis": [
+        [
+          0.9999932138573063,
+          0,
+          -0.003684052026723644
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.003684052026723644,
+          0,
+          0.9999932138573063
+        ]
+      ],
+      "placement_marker": "hip_hang_high"
+    },
+    {
+      "source": "assets/animations/npz/pullup_raise/motion.npz",
+      "source_frame": 75,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "095b04bdd34a326bb79d66200df0a265110ec8a7c9d9b50825dfb22e5c42c63e",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        -0.0018634162843227386,
+        0.005126882171630598,
+        0.0016161203384399414
+      ],
+      "placement_basis": [
+        [
+          0.9999932138573063,
+          0,
+          -0.003684052026723644
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.003684052026723644,
+          0,
+          0.9999932138573063
+        ]
+      ],
+      "placement_marker": "hip_hang_high"
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "89564ad5c247a482ee27e87d3d4de1eccdb0e9755601e59e745ca15d569fab08",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "89564ad5c247a482ee27e87d3d4de1eccdb0e9755601e59e745ca15d569fab08",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
   },
-  "num_samples": 1,
-  "root_average_speed_m_s": 0.10213427990674973,
-  "mapped_average_speed_m_s": 0.08054753935863543,
-  "endpoint_cleanup": {
-    "maximum_source_error_m": 0.0,
-    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
-  },
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "pullup_hold",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
-  }
+  "source_frame": "fixed"
 }

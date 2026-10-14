@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="news-game"
-run/main_scene="res://scenes/street_demo/level.tscn"
+run/main_scene="res://scenes/empty_ground/level.tscn"
 config/features=PackedStringArray("4.7")
 
 [autoload]

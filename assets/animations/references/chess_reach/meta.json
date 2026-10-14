@@ -1,0 +1,186 @@
+{
+  "name": "chess_move_side",
+  "text": "A person sits centred on a stool facing a chessboard, both feet planted. Use the LEFT hand to move a piece sideways across the near rank, from the left side towards the centre. Lift it before moving, set it down and return the left hand to the lap. The right hand rests on the right thigh. Keep hips supported on the stool, bend at the waist only as needed, and keep the inactive hand low on the thigh.",
+  "duration": 4.5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person sits centred on a stool facing a chessboard, both feet planted. Use the LEFT hand to move a piece sideways across the near rank, from the left side towards the centre. Lift it before moving, set it down and return the left hand to the lap. The right hand rests on the right thigh. Keep hips supported on the stool, bend at the waist only as needed, and keep the inactive hand low on the thigh.",
+    "duration": 4.5,
+    "object": "park_chess_table",
+    "post": "post_chess_a",
+    "seat_surface": {
+      "node": "stool_seat_a",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "chess_move_side_pickup",
+        "grip_item": "held_chess_piece",
+        "grip": "grip",
+        "rest": "rest",
+        "phases": [
+          0.3
+        ],
+        "window": [
+          0.19999999999999998,
+          0.27499999999999997,
+          0.3,
+          0.325
+        ],
+        "episode": "own_piece"
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "chess_move_side_landing",
+        "grip_item": "held_chess_piece",
+        "grip": "grip",
+        "rest": "rest",
+        "phases": [
+          0.66
+        ],
+        "window": [
+          0.56,
+          0.635,
+          0.66,
+          0.685
+        ],
+        "episode": "own_piece"
+      }
+    ],
+    "transfers": [
+      {
+        "type": "held_chess_piece",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handLeft",
+        "take": 0.3,
+        "release": 0.66,
+        "initial": {
+          "space": "object",
+          "marker": "chess_move_side_pickup"
+        },
+        "landing": {
+          "space": "object",
+          "marker": "chess_move_side_landing"
+        },
+        "initial_anchor": "rest",
+        "orientation": "upright",
+        "solid_grasp": true
+      }
+    ],
+    "idle_hand": "The inactive hand rests low on the thigh.",
+    "clearance": "Keep hips centred on the actual stool and the reaching forearm above the tabletop.",
+    "description": "Start at park_chess_table.post_chess_a facing the model standing marker direction. A person sits centred on a stool facing a chessboard, both feet planted. Use the LEFT hand to move a piece sideways across the near rank, from the left side towards the centre. Lift it before moving, set it down and return the left hand to the lap. The right hand rests on the right thigh. Keep hips supported on the stool, bend at the waist only as needed, and keep the inactive hand low on the thigh. Hips touches the physical model marker hip_seat at 0.00s, 4.50s. LeftHand touches the physical model marker chess_move_side_pickup at 1.35s. LeftHand touches the physical model marker chess_move_side_landing at 2.97s. Grasp held_chess_piece at grip at 1.35s. Release at 2.97s onto chess_move_side_landing using the item rest marker. The inactive hand rests low on the thigh. Keep hips centred on the actual stool and the reaching forearm above the tabletop."
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "park_chess_table",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 134,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "park_chess_table",
+      "marker": "chess_move_side_pickup",
+      "space": "world",
+      "episode": "own_piece",
+      "keys": [
+        {
+          "frame": 40,
+          "position": [
+            0.099695,
+            0.861155,
+            0.425469
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "park_chess_table",
+      "marker": "chess_move_side_landing",
+      "space": "world",
+      "episode": "own_piece",
+      "keys": [
+        {
+          "frame": 88,
+          "position": [
+            -0.031462,
+            0.861155,
+            0.425469
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "cd8aec84a3f46865bdd32bc18eab713b8ab5dfed274547f07d34bc3d16604701",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

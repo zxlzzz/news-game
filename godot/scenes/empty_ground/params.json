@@ -1,11 +1,20 @@
 {
-  "_note": "frame: the view on selecting a clip covers what was placed, margin times its size, between min and max metres tall. pickMargin: pixels around a thing that still grab it. manualOffset: metres in front of the view centre where a person or object added by hand appears. speed: [min, max, step] of the playback speed. panelWidth, fontSize: the list panel (pixels). verticalKey: hold it while dragging to move up and down instead of over the ground.",
+  "_note": "frame: the view on selecting a clip covers what was placed, margin times its size, between min and max metres tall. pickMargin: pixels around a thing that still grab it. manualOffset: metres in front of the view centre where a person or object added by hand appears. speed: [min, max, step] of the playback speed. panelWidth, fontSize: the list panel (pixels). verticalKey: hold it while dragging to move up and down instead of over the ground. modelGroundGap: preview-only separation from the floor for flat road/paint surfaces. modelPreview: duration and framing samples for an independent component demonstration.",
   "frame": {
     "margin": 1.8,
     "min": 3.0,
     "max": 40.0
   },
   "pickMargin": 6.0,
+  "modelFrame": {
+    "min": 0.08,
+    "max": 120.0
+  },
+  "modelGroundGap": 0.005,
+  "modelPreview": {
+    "seconds": 3.0,
+    "samples": 17
+  },
   "manualOffset": 1.5,
   "speed": [
     0.1,

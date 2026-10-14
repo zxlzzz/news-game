@@ -1,0 +1,67 @@
+{
+  "name": "peek_side",
+  "text": "A standing person leans their upper body to the LEFT and peers cautiously around a corner, holds the peek briefly, then brings their upper body back over the hips and straightens fully upright. Both arms hang relaxed beside the thighs, feet stay planted. Finish upright and still in the relaxed standing pose.",
+  "duration": 4.0,
+  "seed": 20261010,
+  "attempt": 1,
+  "scene": {
+    "activity": "peek_side",
+    "body_only": true,
+    "description": "A standing person leans their upper body to the LEFT and peers cautiously around a corner, holds the peek briefly, then brings their upper body back over the hips and straightens fully upright. Both arms hang relaxed beside the thighs, feet stay planted. Finish upright and still in the relaxed standing pose.",
+    "complete_activity": true,
+    "generation_stage": "complete_activity"
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 119,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "846e4db395cc9dd15fe093302431bcf92317e9d56013dc36bb5f7ff5ff7be052",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/peek_side/attempt_001/motion.npz",
+    "original_meta_sha256": "95cbd044ac94af9d8ee7ef7ef292d72b3db860383eb4b02b51a87f0295704bfe",
+    "original_meta_file": "generation-original-meta.json",
+    "raw_npz_unchanged": true
+  }
+}

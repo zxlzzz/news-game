@@ -1,0 +1,116 @@
+{
+  "name": "loop_suitcase",
+  "text": "Stand still upright beside a wheeled suitcase on the right. The right hand holds its low handle near the thigh, right elbow down and arm nearly straight. Left arm hangs relaxed. Both feet remain planted and the suitcase stays on its wheels.",
+  "duration": 3.0,
+  "seed": 61008,
+  "attempt": 2,
+  "scene": {
+    "text": "Stand still upright beside a wheeled suitcase on the right. The right hand holds its low handle near the thigh, right elbow down and arm nearly straight. Left arm hangs relaxed. Both feet remain planted and the suitcase stays on its wheels.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "grip",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "description": "Start at rolling_suitcase.post_pull facing the model standing marker direction. Stand still upright beside a wheeled suitcase on the right. The right hand holds its low handle near the thigh, right elbow down and arm nearly straight. Left arm hangs relaxed. Both feet remain planted and the suitcase stays on its wheels. RightHand touches the physical model marker grip at 0.00s, 3.00s. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "object": "rolling_suitcase",
+    "post": "post_pull",
+    "loop": true
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/4cd9c797f8211cd4/motion.npz",
+      "source_frame": 67,
+      "frame": 0,
+      "translation": [
+        -0.04039481282234192,
+        0,
+        -0.040239378809928894
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "4cd9c797f8211cd4e85f977b3c8b201ee3950f4d927f2c7e941f6166aadca4fa",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/4cd9c797f8211cd4/motion.npz",
+      "source_frame": 67,
+      "frame": 89,
+      "translation": [
+        -0.04039481282234192,
+        0,
+        -0.040239378809928894
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "4cd9c797f8211cd4e85f977b3c8b201ee3950f4d927f2c7e941f6166aadca4fa",
+        "hand_edited": false
+      }
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "48513cd155aacfefbc3e0fda44d9b76d3549110521b763f05441302ed5313d25",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "48513cd155aacfefbc3e0fda44d9b76d3549110521b763f05441302ed5313d25",
+    "notes": "Reviewed with the actual item/object from front and side. Source arrays remain unedited; endpoint audit is separate from acting quality.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"raw_sha256\": \"48513cd155aacfefbc3e0fda44d9b76d3549110521b763f05441302ed5313d25\",\n    \"notes\": \"Reviewed with the actual item/object from front and side. Source arrays remain unedited; endpoint audit is separate from acting quality.\"\n  }",
+      "original_record_sha256": "129c1b4baa2edfa5d316e3fb0a39ddd22c9ffce36f2a8d3caea88ae1d5707419",
+      "current_source_sha256_at_reconciliation": "48513cd155aacfefbc3e0fda44d9b76d3549110521b763f05441302ed5313d25",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  },
+  "generation_pose_ids": {},
+  "endpoint_review": {
+    "source_tolerance_m": 0.005,
+    "boundaries": {
+      "loop": {
+        "max_position_gap_m": 0.0,
+        "pelvis_feet_hands_velocity_gap_m_s": [
+          0.07618705928325653,
+          0.12566980719566345,
+          0.10323469340801239,
+          0.0921303927898407,
+          0.21995435655117035
+        ],
+        "max_velocity_gap_m_s": 0.3611201047897339
+      }
+    }
+  },
+  "generation_statistics": {
+    "fullbody_frames": 2,
+    "fullbody_fraction": 0.022222222222222223,
+    "frozen_frames": 0,
+    "mean_root_horizontal_speed_m_s": 0.057946402579545975
+  }
+}

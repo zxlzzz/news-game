@@ -1,237 +1,177 @@
 {
   "name": "carry_bucket",
-  "text": "A person walks forward while carefully carrying a small closed book horizontally in both hands at waist level in front of their stomach. Elbows bent, hands held close together and steady, regular careful steps.",
-  "duration": 3.033333333333333,
-  "seed": 2208,
+  "text": "A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_bucket",
+      "hand": "both",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking. Hold held_bucket with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.008633919060230255,
+          0.0,
+          -0.03002663515508175
+        ]
+      },
+      {
+        "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.008633919060230255,
+          0.0,
+          -0.03002663515508175
+        ]
+      }
+    ]
+  },
+  "contacts": [],
   "loop": true,
-  "keyframes": [
+  "fullbody": [
     {
-      "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-      "source_frame": 0,
+      "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.008633919060230255,
+        0.0,
+        -0.03002663515508175
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "bf0845846cc1943f79aac7fb7c7316b2db4efc5828908bd2ea9a704f815963f3",
+        "hand_edited": false
+      },
       "frame": 0
     },
     {
-      "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-      "source_frame": 22,
-      "frame": 22
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-      "source_frame": 45,
-      "frame": 45
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-      "source_frame": 68,
-      "frame": 68
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-      "source_frame": 90,
-      "frame": 90
-    }
-  ],
-  "effectors": [
-    {
-      "joints": [
-        "LeftHand",
-        "RightHand"
+      "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.008633919060230255,
+        0.0,
+        -0.03002663515508175
       ],
-      "keyframes": [
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 0,
-          "frame": 0
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 3,
-          "frame": 3
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 6,
-          "frame": 6
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 9,
-          "frame": 9
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 12,
-          "frame": 12
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 15,
-          "frame": 15
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 18,
-          "frame": 18
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 21,
-          "frame": 21
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 24,
-          "frame": 24
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 27,
-          "frame": 27
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 30,
-          "frame": 30
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 33,
-          "frame": 33
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 36,
-          "frame": 36
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 39,
-          "frame": 39
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 42,
-          "frame": 42
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 45,
-          "frame": 45
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 48,
-          "frame": 48
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 51,
-          "frame": 51
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 54,
-          "frame": 54
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 57,
-          "frame": 57
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 60,
-          "frame": 60
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 63,
-          "frame": 63
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 66,
-          "frame": 66
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 69,
-          "frame": 69
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 72,
-          "frame": 72
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 75,
-          "frame": 75
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 78,
-          "frame": 78
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 81,
-          "frame": 81
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 84,
-          "frame": 84
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 87,
-          "frame": 87
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/6e9b834c5976549720b2873919ba243f98cb1ab7208a7b6fe49cc4bb43c19239.npz",
-          "source_frame": 90,
-          "frame": 90
-        }
-      ]
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "bf0845846cc1943f79aac7fb7c7316b2db4efc5828908bd2ea9a704f815963f3",
+        "hand_edited": false
+      },
+      "frame": 89
     }
   ],
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e",
+    "observations": {
+      "entry": "Both hands hold the low upright bucket in front of the hips.",
+      "activity": "All thirty side-view samples keep the same low, two-handed upright carry with planted feet and small torso movement. Independent complete thirty-sample front and rear observations are recorded separately.",
+      "release_end": "The bucket remains held low by both hands at the exact endpoint and in all three post-action views; no release or empty-handed pose appears."
+    },
+    "viewed_images_sha256": {
+      "docs/motion-review-evidence-2026-10-11/viewed/bucket-retained-transitions/actual-installed-original/carry_bucket_v1_f000.png": "ef848487626be5a19ea11e937934c96dab6b3032f65c739fdeed42abcca5ad9a",
+      "docs/motion-review-evidence-2026-10-11/viewed/bucket-retained-transitions/actual-installed-original/carry_bucket_v1_f027.png": "ff2e838819af6d82676a0236676409094e1627ce5d466369af1fba4b72577e92",
+      "docs/motion-review-evidence-2026-10-11/viewed/bucket-retained-transitions/actual-installed-original/carry_bucket_v1_f029.png": "09ed06fc23f562832cbf382324e329f4f6c26a9d84aae9c1beba819e959bd58a",
+      "docs/motion-review-evidence-2026-10-11/viewed/bucket-retained-transitions/actual-installed-original/carry_bucket_post_v0_f000.png": "48661f52a77aea92b1b28785bf578c47e204d6654e6a1b0b97cc100bbc569c84",
+      "docs/motion-review-evidence-2026-10-11/viewed/bucket-retained-transitions/actual-installed-original/carry_bucket_post_v1_f000.png": "ea5d8e4d16c5e8303aea9cc0afd776a2e5bb1b47a11a68a11a257570c5171059",
+      "docs/motion-review-evidence-2026-10-11/viewed/bucket-retained-transitions/actual-installed-original/carry_bucket_post_v2_f000.png": "7372d8be93d7be7397a3b7bfb562ea8c8b4bfc4d76dc877af7230e3b6e91eef3"
+    },
+    "full_speed_observed": false,
+    "scope": "Formal source/model/interface: personally seen original-pixel native intervals and all three post-action views. Earlier complete ninety-source-index side views of both transitions and thirty-source-index carry views are paired with all 537 final-body numerical comparisons; the largest final-body difference is below three micrometres. This does not establish intended-speed playback.",
+    "physical_check": ".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/installed-bucket-native.json",
+    "body_self_check": ".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/installed-geometry-and-self-proof.json",
+    "boundary_check": ".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/candidate-boundary-proof.json",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "existing_viewed_evidence_persistent_path_migration",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"raw_sha256\": \"32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e\",\r\n    \"observations\": {\r\n      \"entry\": \"Both hands hold the low upright bucket in front of the hips.\",\r\n      \"activity\": \"All thirty side-view samples keep the same low, two-handed upright carry with planted feet and small torso movement. Independent complete thirty-sample front and rear observations are recorded separately.\",\r\n      \"release_end\": \"The bucket remains held low by both hands at the exact endpoint and in all three post-action views; no release or empty-handed pose appears.\"\r\n    },\r\n    \"viewed_images_sha256\": {\r\n      \".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/actual-installed-original/carry_bucket_v1_f000.png\": \"ef848487626be5a19ea11e937934c96dab6b3032f65c739fdeed42abcca5ad9a\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/actual-installed-original/carry_bucket_v1_f027.png\": \"ff2e838819af6d82676a0236676409094e1627ce5d466369af1fba4b72577e92\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/actual-installed-original/carry_bucket_v1_f029.png\": \"09ed06fc23f562832cbf382324e329f4f6c26a9d84aae9c1beba819e959bd58a\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/actual-installed-original/carry_bucket_post_v0_f000.png\": \"48661f52a77aea92b1b28785bf578c47e204d6654e6a1b0b97cc100bbc569c84\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/actual-installed-original/carry_bucket_post_v1_f000.png\": \"ea5d8e4d16c5e8303aea9cc0afd776a2e5bb1b47a11a68a11a257570c5171059\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/actual-installed-original/carry_bucket_post_v2_f000.png\": \"7372d8be93d7be7397a3b7bfb562ea8c8b4bfc4d76dc877af7230e3b6e91eef3\"\r\n    },\r\n    \"full_speed_observed\": false,\r\n    \"scope\": \"Formal source/model/interface: personally seen original-pixel native intervals and all three post-action views. Earlier complete ninety-source-index side views of both transitions and thirty-source-index carry views are paired with all 537 final-body numerical comparisons; the largest final-body difference is below three micrometres. This does not establish intended-speed playback.\",\r\n    \"physical_check\": \".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/installed-bucket-native.json\",\r\n    \"body_self_check\": \".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/installed-geometry-and-self-proof.json\",\r\n    \"boundary_check\": \".tmp/motion-repair-2026-10-10/object-source/bucket-retained-transitions/candidate-boundary-proof.json\"\r\n  }",
+      "original_record_sha256": "c0962358bd2e29c9825e94dd012233bc5eca7377a0ffabce3284f7cc4387b094",
+      "current_source_sha256_at_reconciliation": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 1,
+    "evidence_format": "phased_observations",
+    "viewed_evidence_archive": {
+      "file": "docs/motion-review-evidence-2026-10-11/viewed-images.json",
+      "sha256": "293dcd81a1ab6c3fcbe8adc9093fa2d9d180f21980611f7e468e5aa29324ddfa"
+    }
   },
-  "num_samples": 1,
-  "root_average_speed_m_s": 0.8582387566566467,
-  "mapped_average_speed_m_s": 0.6768444453128128,
-  "endpoint_cleanup": {
-    "maximum_source_error_m": 4.7706993200336e-07,
-    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
-  },
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": null,
-    "base_clip": "carry_bucket",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
-  },
-  "single_unit": {
-    "clip": "carry_bucket",
-    "source_sha256": "b5e08f305b8a59acccc697a86c2bf91acedd126a58a75032db2bf87840e010b7",
-    "original_frames": 91,
-    "take_frames": [
-      45,
-      90
-    ],
-    "original_units": 2,
-    "frames": 46,
-    "duration": 1.5,
-    "source": "assets/animations/generation_inputs/b5e08f305b8a59acccc697a86c2bf91acedd126a58a75032db2bf87840e010b7.npz",
-    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
+  "runtime_scene": {
+    "text": "A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_bucket",
+      "hand": "both",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true,
+      "follow_hand": false,
+      "solid_grasp": true,
+      "keep_grip": true,
+      "grasp_window": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "grip_surfaces": {
+        "handLeft": "grip_left_surface",
+        "handRight": "grip_right_surface"
+      }
+    },
+    "description": "Start at level ground facing +Z. A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking. Hold held_bucket with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.008633919060230255,
+          0.0,
+          -0.03002663515508175
+        ]
+      },
+      {
+        "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.008633919060230255,
+          0.0,
+          -0.03002663515508175
+        ]
+      }
+    ]
   }
 }

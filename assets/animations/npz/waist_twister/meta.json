@@ -1,982 +1,251 @@
 {
   "name": "waist_twister",
   "text": "A person stands on a park waist twisting exercise disc, feet together, both hands holding a bar in front at waist height, twists hips and feet left and right while shoulders face forward.",
-  "duration": 3.033333333333333,
-  "seed": 3134,
-  "loop": true,
-  "keyframes": [
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "A person stands on a park waist twisting exercise disc, feet together, both hands holding a bar in front at waist height, twists hips and feet left and right while shoulders face forward.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "fitness_twister",
+    "post": "post_twister",
+    "description": "Start at fitness_twister.post_twister facing the model standing marker direction. A person stands on a park waist twisting exercise disc, feet together, both hands holding a bar in front at waist height, twists hips and feet left and right while shoulders face forward. LeftHand touches the physical model marker grip_left at 0.00s, 3.00s. RightHand touches the physical model marker grip_right at 0.00s, 3.00s. LeftFoot touches the physical model marker foot_left at 0.00s, 3.00s. RightFoot touches the physical model marker foot_right at 0.00s, 3.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Keep both soles on the rotating disc, torso behind the support bar, and elbows outside the upright.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep both soles on the rotating disc, torso behind the support bar, and elbows outside the upright.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/d3658bbc85ebf38e/motion.npz",
+        "source_frame": 135,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "source": "assets/animations/sources/d3658bbc85ebf38e/motion.npz",
+        "source_frame": 135,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "contacts": [
     {
-      "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-      "source_frame": 0,
+      "joint": "LeftHand",
+      "model": "fitness_twister",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.238076,
+            1.308728,
+            0.289012
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.238076,
+            1.308728,
+            0.289012
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "fitness_twister",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.235864,
+            1.308674,
+            0.289119
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            -0.235864,
+            1.308674,
+            0.289119
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "fitness_twister",
+      "marker": "foot_left",
+      "space": "world",
+      "episode": "foot_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.1268,
+            0.425233,
+            -0.1268
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            -0.1268,
+            0.425233,
+            -0.1268
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "fitness_twister",
+      "marker": "foot_right",
+      "space": "world",
+      "episode": "foot_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.1268,
+            0.425322,
+            -0.1268
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.1268,
+            0.425322,
+            -0.1268
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/d3658bbc85ebf38e/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "d3658bbc85ebf38e0daa56045b7423502a2af292673f9816238b18be7196cb60",
+        "hand_edited": false
+      },
       "frame": 0
     },
     {
-      "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-      "source_frame": 30,
-      "frame": 30
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-      "source_frame": 60,
-      "frame": 60
-    },
-    {
-      "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-      "source_frame": 90,
-      "frame": 90
+      "source": "assets/animations/sources/d3658bbc85ebf38e/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "d3658bbc85ebf38e0daa56045b7423502a2af292673f9816238b18be7196cb60",
+        "hand_edited": false
+      },
+      "frame": 89
     }
   ],
-  "effectors": [
-    {
-      "joints": [
-        "LeftHand",
-        "RightHand"
-      ],
-      "keyframes": [
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 0,
-          "frame": 0
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 1,
-          "frame": 1
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 2,
-          "frame": 2
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 3,
-          "frame": 3
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 4,
-          "frame": 4
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 5,
-          "frame": 5
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 6,
-          "frame": 6
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 7,
-          "frame": 7
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 8,
-          "frame": 8
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 9,
-          "frame": 9
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 10,
-          "frame": 10
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 11,
-          "frame": 11
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 12,
-          "frame": 12
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 13,
-          "frame": 13
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 14,
-          "frame": 14
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 15,
-          "frame": 15
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 16,
-          "frame": 16
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 17,
-          "frame": 17
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 18,
-          "frame": 18
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 19,
-          "frame": 19
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 20,
-          "frame": 20
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 21,
-          "frame": 21
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 22,
-          "frame": 22
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 23,
-          "frame": 23
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 24,
-          "frame": 24
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 25,
-          "frame": 25
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 26,
-          "frame": 26
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 27,
-          "frame": 27
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 28,
-          "frame": 28
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 29,
-          "frame": 29
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 30,
-          "frame": 30
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 31,
-          "frame": 31
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 32,
-          "frame": 32
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 33,
-          "frame": 33
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 34,
-          "frame": 34
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 35,
-          "frame": 35
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 36,
-          "frame": 36
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 37,
-          "frame": 37
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 38,
-          "frame": 38
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 39,
-          "frame": 39
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 40,
-          "frame": 40
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 41,
-          "frame": 41
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 42,
-          "frame": 42
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 43,
-          "frame": 43
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 44,
-          "frame": 44
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 45,
-          "frame": 45
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 46,
-          "frame": 46
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 47,
-          "frame": 47
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 48,
-          "frame": 48
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 49,
-          "frame": 49
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 50,
-          "frame": 50
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 51,
-          "frame": 51
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 52,
-          "frame": 52
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 53,
-          "frame": 53
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 54,
-          "frame": 54
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 55,
-          "frame": 55
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 56,
-          "frame": 56
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 57,
-          "frame": 57
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 58,
-          "frame": 58
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 59,
-          "frame": 59
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 60,
-          "frame": 60
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 61,
-          "frame": 61
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 62,
-          "frame": 62
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 63,
-          "frame": 63
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 64,
-          "frame": 64
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 65,
-          "frame": 65
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 66,
-          "frame": 66
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 67,
-          "frame": 67
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 68,
-          "frame": 68
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 69,
-          "frame": 69
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 70,
-          "frame": 70
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 71,
-          "frame": 71
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 72,
-          "frame": 72
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 73,
-          "frame": 73
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 74,
-          "frame": 74
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 75,
-          "frame": 75
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 76,
-          "frame": 76
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 77,
-          "frame": 77
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 78,
-          "frame": 78
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 79,
-          "frame": 79
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 80,
-          "frame": 80
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 81,
-          "frame": 81
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 82,
-          "frame": 82
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 83,
-          "frame": 83
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 84,
-          "frame": 84
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 85,
-          "frame": 85
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 86,
-          "frame": 86
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 87,
-          "frame": 87
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 88,
-          "frame": 88
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 89,
-          "frame": 89
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 90,
-          "frame": 90
-        }
-      ]
-    },
-    {
-      "joints": [
-        "LeftFoot",
-        "RightFoot"
-      ],
-      "keyframes": [
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 0,
-          "frame": 0
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 1,
-          "frame": 1
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 2,
-          "frame": 2
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 3,
-          "frame": 3
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 4,
-          "frame": 4
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 5,
-          "frame": 5
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 6,
-          "frame": 6
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 7,
-          "frame": 7
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 8,
-          "frame": 8
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 9,
-          "frame": 9
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 10,
-          "frame": 10
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 11,
-          "frame": 11
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 12,
-          "frame": 12
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 13,
-          "frame": 13
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 14,
-          "frame": 14
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 15,
-          "frame": 15
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 16,
-          "frame": 16
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 17,
-          "frame": 17
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 18,
-          "frame": 18
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 19,
-          "frame": 19
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 20,
-          "frame": 20
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 21,
-          "frame": 21
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 22,
-          "frame": 22
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 23,
-          "frame": 23
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 24,
-          "frame": 24
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 25,
-          "frame": 25
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 26,
-          "frame": 26
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 27,
-          "frame": 27
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 28,
-          "frame": 28
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 29,
-          "frame": 29
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 30,
-          "frame": 30
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 31,
-          "frame": 31
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 32,
-          "frame": 32
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 33,
-          "frame": 33
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 34,
-          "frame": 34
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 35,
-          "frame": 35
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 36,
-          "frame": 36
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 37,
-          "frame": 37
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 38,
-          "frame": 38
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 39,
-          "frame": 39
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 40,
-          "frame": 40
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 41,
-          "frame": 41
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 42,
-          "frame": 42
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 43,
-          "frame": 43
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 44,
-          "frame": 44
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 45,
-          "frame": 45
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 46,
-          "frame": 46
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 47,
-          "frame": 47
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 48,
-          "frame": 48
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 49,
-          "frame": 49
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 50,
-          "frame": 50
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 51,
-          "frame": 51
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 52,
-          "frame": 52
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 53,
-          "frame": 53
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 54,
-          "frame": 54
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 55,
-          "frame": 55
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 56,
-          "frame": 56
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 57,
-          "frame": 57
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 58,
-          "frame": 58
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 59,
-          "frame": 59
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 60,
-          "frame": 60
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 61,
-          "frame": 61
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 62,
-          "frame": 62
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 63,
-          "frame": 63
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 64,
-          "frame": 64
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 65,
-          "frame": 65
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 66,
-          "frame": 66
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 67,
-          "frame": 67
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 68,
-          "frame": 68
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 69,
-          "frame": 69
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 70,
-          "frame": 70
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 71,
-          "frame": 71
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 72,
-          "frame": 72
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 73,
-          "frame": 73
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 74,
-          "frame": 74
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 75,
-          "frame": 75
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 76,
-          "frame": 76
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 77,
-          "frame": 77
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 78,
-          "frame": 78
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 79,
-          "frame": 79
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 80,
-          "frame": 80
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 81,
-          "frame": 81
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 82,
-          "frame": 82
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 83,
-          "frame": 83
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 84,
-          "frame": 84
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 85,
-          "frame": 85
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 86,
-          "frame": 86
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 87,
-          "frame": 87
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 88,
-          "frame": 88
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 89,
-          "frame": 89
-        },
-        {
-          "source": "/batch/assets/animations/generation_inputs/83753b7d8d3ca0abb7d5d6b1084c2636a53c0fad97318c3f3518c28001975ca2.npz",
-          "source_frame": 90,
-          "frame": 90
-        }
-      ]
-    }
-  ],
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "5a0e186414403abe27b20ef3ef8f60ea0daa4fb9ea03cba98805cf364a39c69a",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "5a0e186414403abe27b20ef3ef8f60ea0daa4fb9ea03cba98805cf364a39c69a",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
   },
-  "num_samples": 1,
-  "root_average_speed_m_s": 0.11368915438652039,
-  "mapped_average_speed_m_s": 0.08966021639315487,
-  "endpoint_cleanup": {
-    "maximum_source_error_m": 0.0,
-    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
-  },
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "stand_idle",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
-    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
-  }
+  "source_frame": "fixed"
 }

@@ -1,0 +1,31 @@
+{
+  "name": "read_notice",
+  "text": "Standing still facing a noticeboard and reading the notices. Both arms remain down, hands relaxed beside the thighs.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Standing still facing a noticeboard and reading the notices. Both arms remain down, hands relaxed beside the thighs.",
+    "duration": 5,
+    "contacts": [],
+    "object": "notice_board",
+    "post": "post_notice",
+    "description": "Start at notice_board.post_notice facing the model standing marker direction. Standing still facing a noticeboard and reading the notices. Both arms remain down, hands relaxed beside the thighs. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep torso and elbows in front of the panel; hands may touch only its front face.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep torso and elbows in front of the panel; hands may touch only its front face."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "f989b0c6676a8ce1f57e3c5eef33f28a3c0a9c992e8e940e24d968bc6b09d1ce",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

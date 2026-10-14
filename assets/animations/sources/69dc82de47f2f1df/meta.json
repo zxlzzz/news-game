@@ -1,0 +1,34 @@
+{
+  "name": "turn_page",
+  "text": "A standing person holds an open book in the left hand at chest height, looking down at the pages. The right hand reaches to the right edge of the book, lifts one page and sweeps it across from right to left, then rests again near the lower edge. The left hand stays steady supporting the book. One clear page-turning motion.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing person holds an open book in the left hand at chest height, looking down at the pages. The right hand reaches to the right edge of the book, lifts one page and sweeps it across from right to left, then rests again near the lower edge. The left hand stays steady supporting the book. One clear page-turning motion.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_book_open",
+      "hand": "left",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  left hand holds held_book_open at the item grip marker.  A standing person holds an open book in the left hand at chest height, looking down at the pages. The right hand reaches to the right edge of the book, lifts one page and sweeps it across from right to left, then rests again near the lower edge. The left hand stays steady supporting the book. One clear page-turning motion. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "69dc82de47f2f1df21945d9eafcdb1eeb83f07a3377f9c30a393983ad4cc7b60",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

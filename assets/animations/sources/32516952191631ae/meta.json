@@ -1,0 +1,106 @@
+{
+  "name": "carry_bucket",
+  "text": "A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_bucket",
+      "hand": "both",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A standing person carries a bucket by its raised handle with both hands together in front of the waist. Elbows relaxed down, bucket hanging below the hands. Stand upright with natural breathing, no walking. Hold held_bucket with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.008633919060230255,
+          0.0,
+          -0.03002663515508175
+        ]
+      },
+      {
+        "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.008633919060230255,
+          0.0,
+          -0.03002663515508175
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.008633919060230255,
+        0.0,
+        -0.03002663515508175
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "bf0845846cc1943f79aac7fb7c7316b2db4efc5828908bd2ea9a704f815963f3",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/bf0845846cc1943f/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.008633919060230255,
+        0.0,
+        -0.03002663515508175
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "bf0845846cc1943f79aac7fb7c7316b2db4efc5828908bd2ea9a704f815963f3",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "a323e93ff2b755e9633585d22908270b374f3ec933300d604e1f333bab97ef83",
+      "current_source_sha256_at_reconciliation": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

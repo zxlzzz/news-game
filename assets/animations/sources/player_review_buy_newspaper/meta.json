@@ -1,0 +1,87 @@
+{
+  "name": "buy_newspaper",
+  "text": "A standing customer at a street newsstand reaches forward with the right hand at waist height, picks up a folded newspaper and brings it to the chest. Feet planted.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A standing customer at a street newsstand reaches forward with the right hand at waist height, picks up a folded newspaper and brings it to the chest. Feet planted.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "paper_pickup",
+        "phases": [
+          0.35,
+          0.48
+        ],
+        "window": [
+          0.31499999999999995,
+          0.35,
+          0.48,
+          0.515
+        ]
+      }
+    ],
+    "object": "newspaper_kiosk",
+    "post": "post_newsbuy",
+    "description": "The person starts at newspaper_kiosk.post_newsbuy and faces the model standing marker direction. RightHand touches paper_pickup at 1.75s,2.40s. Grasp held_newspaper_folded at grip at 2.40s. A standing customer at a street newsstand reaches forward with the right hand at waist height, picks up a folded newspaper and brings it to the chest. Feet planted. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "transfers": [
+      {
+        "type": "held_newspaper_folded",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.48,
+        "initial": {
+          "space": "object",
+          "marker": "paper_pickup"
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "newspaper_kiosk",
+      "marker": "paper_pickup",
+      "space": "world",
+      "episode": "paper_pickup",
+      "keys": [
+        {
+          "frame": 52,
+          "position": [
+            -0.041176,
+            1.300209,
+            0.564221
+          ]
+        },
+        {
+          "frame": 72,
+          "position": [
+            -0.041176,
+            1.300209,
+            0.564221
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "80ec4961476495ae836007d3ca14f3286822712b3eb6ce52a21bb2d1a795b895",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_failed",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "80ec4961476495ae836007d3ca14f3286822712b3eb6ce52a21bb2d1a795b895",
+    "notes": "Full final-scene review found unreachable physical contacts. Existing source retained pending repair; this clip is not visually approved."
+  }
+}

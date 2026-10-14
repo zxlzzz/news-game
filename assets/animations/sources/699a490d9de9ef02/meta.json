@@ -1,0 +1,36 @@
+{
+  "name": "walk_umbrella",
+  "text": "A person walks forwards continuously at a normal walking pace carrying an open umbrella. Take eight alternating walking steps, travelling several metres. The right elbow bends down and the right wrist holds the umbrella shaft steady in front of the shoulder; the left arm swings freely. Keep walking throughout.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person walks forwards continuously at a normal walking pace carrying an open umbrella. Take eight alternating walking steps, travelling several metres. The right elbow bends down and the right wrist holds the umbrella shaft steady in front of the shoulder; the left arm swings freely. Keep walking throughout.",
+    "duration": 5,
+    "contacts": [],
+    "item": {
+      "type": "held_umbrella_open",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person walks forwards continuously at a normal walking pace carrying an open umbrella. Take eight alternating walking steps, travelling several metres. The right elbow bends down and the right wrist holds the umbrella shaft steady in front of the shoulder; the left arm swings freely. Keep walking throughout. Hold held_umbrella_open with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "699a490d9de9ef020a646da6897b2de12c7eaaf4e790dc75b2391b45ffef0087",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

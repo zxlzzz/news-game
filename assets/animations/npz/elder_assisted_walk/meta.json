@@ -501,8 +501,7 @@
           "fk_max_step_m": 0.018295451998710632
         }
       }
-    },
-    "visual_evidence": "delivery/motion_fix_2026-10-02/interactions/after/elder_assisted_walk.png"
+    }
   },
   "single_unit": {
     "clip": "elder_assisted_walk",

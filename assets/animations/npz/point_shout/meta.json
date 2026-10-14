@@ -1,52 +1,220 @@
 {
   "name": "point_shout",
-  "text": "An angry person leans forward and thrusts their RIGHT ARM straight out horizontally in front of them, pointing at someone in the distance while shouting. The right elbow is fully straight, wrist at shoulder height. Repeatedly jab the entire extended arm forwards emphatically. The left hand rests on the hip. Then relax the right arm down.",
-  "duration": 4.5,
-  "seed": 43,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "text": "A standing person raises the RIGHT arm forward to point at someone in the distance while shouting. Keep the extended right arm approximately horizontal at shoulder height throughout the pointing gesture, making two small emphatic forward jabs. The gesture is directed forward, not swept upward toward the head or swung down. The left arm stays relaxed at the side. Then stop pointing, lower the RIGHT arm completely beside the thigh, and stand upright and still with both arms hanging down. Feet remain planted.",
+  "duration": 5.0,
+  "seed": 20261010,
+  "attempt": 2,
+  "scene": {
+    "activity": "point_shout",
+    "body_only": true,
+    "description": "A standing person raises the RIGHT arm forward to point at someone in the distance while shouting. Keep the extended right arm approximately horizontal at shoulder height throughout the pointing gesture, making two small emphatic forward jabs. The gesture is directed forward, not swept upward toward the head or swung down. The left arm stays relaxed at the side. Then stop pointing, lower the RIGHT arm completely beside the thigh, and stand upright and still with both arms hanging down. Feet remain planted.",
+    "complete_activity": true,
+    "generation_stage": "complete_activity",
+    "reference_visual_check": "Attempt_001 frame82 at 2.733s personally inspected in front/side 1024px stills: forward horizontal pointing pose. Repeated only at the two semantic pointing phases, not as a dense hold.",
+    "previous_candidate_limit": "Attempt_001 repeatedly lifted the hand beside the face and dropped it, instead of directing two horizontal forward jabs."
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/f47c2f0fa46fea96/motion.npz",
+      "source_frame": 82,
+      "frame": 45,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f47c2f0fa46fea967fcf9967a3fb47c7292c8877e0df0a0d16f9991addc04c91",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/f47c2f0fa46fea96/motion.npz",
+      "source_frame": 82,
+      "frame": 85,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f47c2f0fa46fea967fcf9967a3fb47c7292c8877e0df0a0d16f9991addc04c91",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 149,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
-  },
-  "num_samples": 1,
-  "generation_duration": 4.5,
-  "loop": false,
-  "trim": {
-    "take_frames": [
-      0,
-      134
-    ],
-    "reason": "Full generated clip."
-  },
+  "position_only": true,
+  "fullbody_constraint_frames": 4,
+  "raw_sha256": "abeaeac64e5c4545f64511e89a7d01a274ed5cb0f06996c5e9aeb47cb428e3d8",
+  "low_memory": true,
+  "hand_edited": false,
   "review": {
-    "status": "selected",
-    "attempts": 2,
-    "views": [
-      "front",
-      "side",
-      "hands if prop-related"
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "abeaeac64e5c4545f64511e89a7d01a274ed5cb0f06996c5e9aeb47cb428e3d8",
+    "date": "2026-10-10",
+    "observations": "Right arm points forward at roughly shoulder height, then retracts and lowers completely. The left arm remains down; the output does not establish the optional prompt detail of briefly resting it on the hip. Endpoint and later hold have both arms down.",
+    "review_folder": ".tmp/motion-repair-2026-10-10/semantic/actual-stage",
+    "record": "docs/motion-review-evidence-2026-10-11/records/semantic-five-source-publication.json",
+    "captured_views_degrees": [
+      0,
+      90,
+      135
     ],
-    "notes_zh": "右臂快速伸直指向前方、上身前压并持续示意；首版屈肘举手已弃。动作提供指向喊话的全身姿态，无声音和表情，也不宣称独立食指造型。",
-    "metrics": {
-      "frames": 135,
-      "seam_root_aligned_max_joint_m": 1.093303304743529,
-      "root_speed_min_mps": 0.0031963663641363382,
-      "root_speed_max_mps": 0.5034533143043518,
-      "root_delta_m": [
-        -0.04784355312585831,
-        -0.0,
-        -0.04378924146294594
-      ],
-      "seam_global_rotation_matrix_max_abs": 1.5404678583145142,
-      "floor_min_joint_y_m": 0.001615762710571289,
-      "finite": true
+    "personally_inspected_all_activity_time_views_degrees": [
+      0,
+      135
+    ],
+    "activity_time_samples": 31,
+    "image_resolution": [
+      1024,
+      1024
+    ],
+    "personal_view_method": "Original-pixel 400x600 actor crops in 38 temporal pages; additional full 1024px critical side stills and front post-action hold",
+    "approx_sample_interval_seconds": 0.16555555555555568,
+    "post_action_hold_seconds": 0.5,
+    "full_speed_playback_viewed": false,
+    "native_stage_geometry_samples": 150,
+    "native_stage_metrics": {
+      "id": "point_shout",
+      "native_samples": 150,
+      "head_forearm_sphere_proxy_min": {
+        "gap_m": 0.15471475183209799,
+        "sample": 32,
+        "time": 1.06666666666667,
+        "segment": 8,
+        "side": "Right",
+        "nearest_fraction": 0.0
+      },
+      "head_forearm_sphere_proxy_max": {
+        "gap_m": 0.26291717147491883,
+        "sample": 14,
+        "time": 0.466666666666667,
+        "segment": 3,
+        "side": "Left",
+        "nearest_fraction": 0.0
+      },
+      "min_gap_at_capture_1_49s": {
+        "gap_m": 0.16444785752883828,
+        "sample": 44,
+        "time": 1.46666666666667,
+        "segment": 8,
+        "side": "Right",
+        "nearest_fraction": 0.0
+      },
+      "largest_adjacent_drawn_endpoint_step_m": 0.14467680080602896,
+      "largest_step_from_sample": 8,
+      "largest_step_endpoint_index": 17,
+      "drawn_first_last_max_endpoint_gap_m": 0.0
     },
-    "review_frame_convention": "review.png uses final delivered clip frame indices, beginning at 0.",
-    "batch_category": "event"
+    "version_inputs_sha256": {
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/adjust_clothes.json": "1424c0eddb3514df5aafaaa089b5faa4598a9a1f0868149aded4b1a71d82c31e",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hail_taxi.json": "0afd1117eafd5efbda302a92b4f2905eedb918e0890a1eeb8b3be05b3fa90a94",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hop.json": "2f678f12be81a4c58d3ee19c35c9254923a8c6f766afbd83628e57662c20cc86",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/peek_side.json": "c91ef19e968a8439833962fd23911bc16b7f201fc2862d8b0759ec27aa2584a4",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/point_shout.json": "30c971b97193c81d42f9d0b7bb965fc2fa0cdddd698d40b3fe1bae019a87d03e",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate_clip.gd": "0ab272876a6e0de731dac61956e430e2b3e792d4f4f36ae86149f80d2ef3e8b1",
+      "res://npc/clip-setup.json": "e1b8ce367a757da469a79713d8eebe1e575a864fa8298e4c5d24953ac162ae96",
+      "res://npc/clip_pose.gd": "e57205988edb80d125484dfee341e5520ea7c6685377855bec355a4f21b1b182",
+      "res://npc/contact_pose.gd": "2434e70425aee11488b32a46347e9c7e5c00f49eb3505b40abf5c59e7554604c",
+      "res://npc/interactions.json": "53ca88b05f82dbbe3dd4a815bcc90c0b5b013bc1618394ca60bcd42b9e0bcd04",
+      "res://npc/skeleton_mapping.gd": "0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc"
+    },
+    "limitations": "Seek-based static sampling, not complete intended-speed playback; native stage geometry describes measured positions and does not approve naturalness or continuous-time dynamics.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"raw_sha256\": \"abeaeac64e5c4545f64511e89a7d01a274ed5cb0f06996c5e9aeb47cb428e3d8\",\r\n    \"date\": \"2026-10-10\",\r\n    \"observations\": \"Right arm points forward at roughly shoulder height, then retracts and lowers completely. The left arm remains down; the output does not establish the optional prompt detail of briefly resting it on the hip. Endpoint and later hold have both arms down.\",\r\n    \"review_folder\": \".tmp/motion-repair-2026-10-10/semantic/actual-stage\",\r\n    \"record\": \".tmp/motion-repair-2026-10-10/semantic/semantic-repair-summary.json\",\r\n    \"captured_views_degrees\": [\r\n      0,\r\n      90,\r\n      135\r\n    ],\r\n    \"personally_inspected_all_activity_time_views_degrees\": [\r\n      0,\r\n      135\r\n    ],\r\n    \"activity_time_samples\": 31,\r\n    \"image_resolution\": [\r\n      1024,\r\n      1024\r\n    ],\r\n    \"personal_view_method\": \"Original-pixel 400x600 actor crops in 38 temporal pages; additional full 1024px critical side stills and front post-action hold\",\r\n    \"approx_sample_interval_seconds\": 0.16555555555555568,\r\n    \"post_action_hold_seconds\": 0.5,\r\n    \"full_speed_playback_viewed\": false,\r\n    \"native_stage_geometry_samples\": 150,\r\n    \"native_stage_metrics\": {\r\n      \"id\": \"point_shout\",\r\n      \"native_samples\": 150,\r\n      \"head_forearm_sphere_proxy_min\": {\r\n        \"gap_m\": 0.15471475183209799,\r\n        \"sample\": 32,\r\n        \"time\": 1.06666666666667,\r\n        \"segment\": 8,\r\n        \"side\": \"Right\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"head_forearm_sphere_proxy_max\": {\r\n        \"gap_m\": 0.26291717147491883,\r\n        \"sample\": 14,\r\n        \"time\": 0.466666666666667,\r\n        \"segment\": 3,\r\n        \"side\": \"Left\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"min_gap_at_capture_1_49s\": {\r\n        \"gap_m\": 0.16444785752883828,\r\n        \"sample\": 44,\r\n        \"time\": 1.46666666666667,\r\n        \"segment\": 8,\r\n        \"side\": \"Right\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"largest_adjacent_drawn_endpoint_step_m\": 0.14467680080602896,\r\n      \"largest_step_from_sample\": 8,\r\n      \"largest_step_endpoint_index\": 17,\r\n      \"drawn_first_last_max_endpoint_gap_m\": 0.0\r\n    },\r\n    \"version_inputs_sha256\": {\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/adjust_clothes.json\": \"1424c0eddb3514df5aafaaa089b5faa4598a9a1f0868149aded4b1a71d82c31e\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hail_taxi.json\": \"0afd1117eafd5efbda302a92b4f2905eedb918e0890a1eeb8b3be05b3fa90a94\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hop.json\": \"2f678f12be81a4c58d3ee19c35c9254923a8c6f766afbd83628e57662c20cc86\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/peek_side.json\": \"c91ef19e968a8439833962fd23911bc16b7f201fc2862d8b0759ec27aa2584a4\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/point_shout.json\": \"30c971b97193c81d42f9d0b7bb965fc2fa0cdddd698d40b3fe1bae019a87d03e\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate_clip.gd\": \"0ab272876a6e0de731dac61956e430e2b3e792d4f4f36ae86149f80d2ef3e8b1\",\r\n      \"res://npc/clip-setup.json\": \"e1b8ce367a757da469a79713d8eebe1e575a864fa8298e4c5d24953ac162ae96\",\r\n      \"res://npc/clip_pose.gd\": \"e57205988edb80d125484dfee341e5520ea7c6685377855bec355a4f21b1b182\",\r\n      \"res://npc/contact_pose.gd\": \"2434e70425aee11488b32a46347e9c7e5c00f49eb3505b40abf5c59e7554604c\",\r\n      \"res://npc/interactions.json\": \"53ca88b05f82dbbe3dd4a815bcc90c0b5b013bc1618394ca60bcd42b9e0bcd04\",\r\n      \"res://npc/skeleton_mapping.gd\": \"0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc\"\r\n    },\r\n    \"limitations\": \"Seek-based static sampling, not complete intended-speed playback; native stage geometry describes measured positions and does not approve naturalness or continuous-time dynamics.\"\r\n  }",
+      "original_record_sha256": "9646cfa0c35685b2c6902fc41d4bec1d7bca2e1dc20e7fae6bf3a0f3c72d719e",
+      "current_source_sha256_at_reconciliation": "abeaeac64e5c4545f64511e89a7d01a274ed5cb0f06996c5e9aeb47cb428e3d8",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "evidence_path_migrations": [
+      {
+        "field": "record",
+        "original_path": ".tmp/motion-repair-2026-10-10/semantic/semantic-repair-summary.json",
+        "durable_path": "docs/motion-review-evidence-2026-10-11/records/semantic-five-source-publication.json",
+        "sha256": "cee7c09f347dbc6b936323895946b3f31de7b6cb3ddde94d400428813ffa5348",
+        "content_changed": false
+      }
+    ],
+    "record_sha256": "cee7c09f347dbc6b936323895946b3f31de7b6cb3ddde94d400428813ffa5348"
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/point_shout/attempt_002/motion.npz",
+    "original_meta_sha256": "47475b53b3bb765d3678bf94076521188b549dd10a4ebd79cd36d64cca2c8577",
+    "original_meta_file": "generation-original-meta.json",
+    "raw_npz_unchanged": true
+  },
+  "delivery_source": "assets/animations/sources/abeaeac64e5c4545",
+  "repair": {
+    "date": "2026-10-10",
+    "reason": "Named activity had a wrong final state or wrong synchronous-hop meaning",
+    "replaced_source_sha256": "6ac6f2c87ae2b37f4bdb6410e0725967d922ca13f50f195c4f76ce309cd271f7",
+    "replaced_meta_sha256": "173c83b3ab80df8b268432b739113c67cd3176a0eab7d7231045a137faadf201",
+    "generated_source_npz_unchanged": true
+  },
+  "material_endpoints": {
+    "entry": "stand",
+    "exit": "stand",
+    "kind": "transition",
+    "source_sha256": "abeaeac64e5c4545f64511e89a7d01a274ed5cb0f06996c5e9aeb47cb428e3d8",
+    "boundary_edits": [],
+    "boundary_velocity_alignment": [],
+    "trim": null,
+    "method": "Unedited Kimodo sparse semantic full-body key generation; no authored joint path, seam fitting or FK boundary edit",
+    "entry_reference": {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d"
+    },
+    "exit_reference": {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d"
+    }
   }
 }

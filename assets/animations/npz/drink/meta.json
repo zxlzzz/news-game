@@ -1,95 +1,188 @@
 {
   "name": "drink",
-  "text": "A person lifts a cup to their mouth with their right hand, takes a sip, and lowers the cup.",
-  "duration": 3.5,
-  "seed": 42,
-  "endpoints": false,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
-  "fps": 30.0,
-  "diffusion_steps": 100,
-  "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "text": "Standing with a cup in the right hand at waist height. Slowly raise the cup to the lips, take one sip, then lower the cup back to waist height. The left arm hangs beside the body.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "Standing with a cup in the right hand at waist height. Slowly raise the cup to the lips, take one sip, then lower the cup back to waist height. The left arm hangs beside the body.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_coffee_cup",
+      "hand": "right",
+      "grip": "grip_sleeve",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person lifts a cup to their mouth with their right hand, takes a sip, and lowers the cup. Hold held_coffee_cup with right at its grip_sleeve marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": false,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/ada6183d03ba256e/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.005349281243979931,
+          0.0,
+          -0.007149019744247198
+        ]
+      },
+      {
+        "source": "assets/animations/sources/ada6183d03ba256e/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.005349281243979931,
+          0.0,
+          -0.007149019744247198
+        ]
+      }
+    ]
   },
-  "num_samples": 1,
+  "contacts": [],
+  "fullbody": [],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "cc281808350f7269a553c6e395cd96cb6397f411f89d4c49b1e5b6396c000ebd",
+  "low_memory": false,
+  "hand_edited": false,
   "review": {
-    "status": "selected",
-    "notes_zh": "右手由胸前抬至嘴前上方，伴随仰头，末段降回胸前；杯体及杯口接触未生成／验证。无首尾约束。",
-    "attempts": 1,
-    "views": [
-      "front",
-      "side",
-      "head"
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "notes": "Raw source preserved; current contact/clearance evidence is in docs/asset-contact-repair-2026-10-10.json. No real-time visual approval is claimed.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"notes\": \"Raw source preserved; current contact/clearance evidence is in docs/asset-contact-repair-2026-10-10.json. No real-time visual approval is claimed.\"\r\n  }",
+      "original_record_sha256": "9e7bd0dc28072869738b45446dd84e54bc31645e6db437ff7198412c492f60be",
+      "current_source_sha256_at_reconciliation": "cc281808350f7269a553c6e395cd96cb6397f411f89d4c49b1e5b6396c000ebd",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks."
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 0-3.967 s front and side overview plus enlarged sip: cup rises from waist, rim meets lower front of head, tilts for a sip and lowers. Physical cup lip contact replaces forehead placement.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 0-3.967 s front and side overview plus enlarged sip: cup rises from waist, rim meets lower front of head, tilts for a sip and lowers. Physical cup lip contact replaces forehead placement.\"\r\n  }",
+      "original_record_sha256": "d0b847cb9d81bd19bc791e71d08e2a4bfe6c472ae567a6ed4879986a36c92227",
+      "current_source_sha256_at_reconciliation": "cc281808350f7269a553c6e395cd96cb6397f411f89d4c49b1e5b6396c000ebd",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "runtime_scene": {
+    "text": "A person lifts a cup to their mouth with their right hand, takes a sip, and lowers the cup.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "grip": "grip_near",
+      "source_grasp": true,
+      "follow_hand": false,
+      "mouth_contact": {
+        "marker": "lip",
+        "head_offset": [
+          0,
+          -0.35,
+          0.98
+        ],
+        "window": [
+          0.4,
+          0.55,
+          0.85,
+          0.98
+        ],
+        "tilt_degrees": -22
+      },
+      "solid_grasp": true,
+      "orientation": "upright",
+      "keep_grip": true,
+      "type": "held_coffee_cup",
+      "hand": "right"
+    },
+    "description": "Start at level ground facing +Z. A person lifts a cup to their mouth with their right hand, takes a sip, and lowers the cup. Hold held_coffee_cup with right at its grip_sleeve marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/ada6183d03ba256e/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.005349281243979931,
+          0.0,
+          -0.007149019744247198
+        ]
+      },
+      {
+        "source": "assets/animations/sources/ada6183d03ba256e/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.005349281243979931,
+          0.0,
+          -0.007149019744247198
+        ]
+      }
     ],
-    "metrics": {
-      "frames": 105,
-      "finite": true,
-      "bone_length_range_mm": 0.931,
-      "max_joint_step_m": 0.059,
-      "root_horizontal_range_m": [
-        0.014999999664723873,
-        0.03099999949336052
-      ],
-      "LeftHand_head_distance_m": [
-        0.7770000100135803,
-        0.777999997138977,
-        0.7749999761581421,
-        0.7770000100135803,
-        0.7789999842643738,
-        0.777999997138977,
-        0.7760000228881836,
-        0.7739999890327454,
-        0.7820000052452087
-      ],
-      "RightHand_head_distance_m": [
-        0.38999998569488525,
-        0.2809999883174896,
-        0.22499999403953552,
-        0.21299999952316284,
-        0.20800000429153442,
-        0.20800000429153442,
-        0.21299999952316284,
-        0.2290000021457672,
-        0.40400001406669617
-      ],
-      "hand_separation_m": [
-        0.6269999742507935,
-        0.7580000162124634,
-        0.8370000123977661,
-        0.8889999985694885,
-        0.9089999794960022,
-        0.9129999876022339,
-        0.9169999957084656,
-        0.9010000228881836,
-        0.6600000262260437
-      ],
-      "head_yaw_range_deg": 13.46,
-      "head_pitch_range_deg": 35.79,
-      "head_yaw_samples_deg": [
-        0.0,
-        2.200000047683716,
-        6.099999904632568,
-        12.399999618530273,
-        13.300000190734863,
-        12.699999809265137,
-        12.199999809265137,
-        10.600000381469727,
-        8.899999618530273
-      ],
-      "head_pitch_samples_deg": [
-        0.0,
-        0.4000000059604645,
-        -10.199999809265137,
-        -24.799999237060547,
-        -32.099998474121094,
-        -34.900001525878906,
-        -35.0,
-        -26.299999237060547,
-        -13.199999809265137
-      ]
-    }
+    "grasp_pole": [
+      -0.6,
+      -1,
+      -0.2
+    ]
+  },
+  "runtime_interaction": {
+    "duration": 3.966666666666667,
+    "preserve_root": false,
+    "preserve_origin": false,
+    "preserve_heading": false,
+    "stationary": false,
+    "item": {
+      "grip": "grip_near",
+      "source_grasp": true,
+      "follow_hand": false,
+      "mouth_contact": {
+        "marker": "lip",
+        "head_offset": [
+          0,
+          -0.35,
+          0.98
+        ],
+        "window": [
+          0.4,
+          0.55,
+          0.85,
+          0.98
+        ],
+        "tilt_degrees": -22
+      },
+      "solid_grasp": true,
+      "orientation": "upright",
+      "keep_grip": true
+    },
+    "playback": "once",
+    "grasp_pole": [
+      -0.6,
+      -1,
+      -0.2
+    ]
   }
 }

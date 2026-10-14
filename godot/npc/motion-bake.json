@@ -1,0 +1,161 @@
+{
+  "_note": "Numbers of the export step (npc/motion_bake.gd, docs/动作重做方案.md §4.3). Metres at the adult body scale, seconds. ramp: a timed contact fades in over this long before its start and out after its end. maxCorrection: a contact that has to move a joint farther than this is reported as needing a new generation instead of being pulled (the bake still writes the clip so it can be looked at). itemGap: room left between a held thing and the torso stroke. Pushing strokes out of the post's object (_clear_objects): clearGap = room left between a stroke and the object; clearSmooth = a push is spread over this long before and after the frames that need it, so nothing jumps. An end (hips, a hand, a foot) whose deepest cut needs a push longer than clearMax, or whose joints would end up farther than clearMove from where they were, is left cutting into the object (the clip needs a new generation; bake_motion.gd lists it). jumpMin, jumpRatio: tools/bake_motion.gd lists a clip whose stored point moves in one frame farther than jumpMin and jumpRatio times the median of its steps in the three frames before and after. pose: the clips built on the figure from a pose declaration (npc/pose_build.gd; metres, degrees, seconds): reach = share of the arm a hand target may need before the torso leans toward it (at most leanMax, the lean covering its need leanSmooth before and after); legReach = share of the leg a standing or raised leg may stretch; gap = room between a resting stroke and what it rests on; restAbove/restBelow/restStep = where a hand looks for the top of what stands on a marker (target^); liftStep/liftMax = how a hand's way is lifted over what is in it (liftTries: how many more steps a way may get when the leaning figure's arm still comes near the object); lapAt/kneeAt = share of the thigh from the hips where a hand rests on the lap; seatOut = hand on the seat this far beside the hips; pocketDown = the trouser pocket below the hips; headParts = where on the head's edge a hand goes ([degrees down from straight ahead, toward the hand's side]); frontParts = hand places in front of the body ([forward, up along the torso, toward the hand's side] metres from the neck); headUpright = share of the way from the torso's lean back to upright the head keeps; lookShare/lookMax = how much of the eyes' turn the head follows; lifeSlow = the source sway is what is left after a Gaussian of this width; lifeEdge = life fades out over this at both ends (so a held pose chains); lifeScale = its strength; raised = a foot marker higher than this holds a raised foot; hipArc = a hip sitting down or standing up stays this much higher midway; downCost = a hand pushed out of a box goes out through a face pointing down only when that is this much nearer than any other; headAwayMax = how far a head may turn away from what the body rests on (pose rest); missMax = a hand or foot may end this short of its target (more is an error); poles = where an elbow points ([out, along the torso, forward]): for a hand on a marker the first of the list whose arm stays poleMargin clear of the object (else the one coming least deep), hanging at the side, on the body, at the head; checkDepth = the deepest a built figure's stroke may cut into its object, at every post and seat place the clip can be played (tools/bake_motion.gd fails otherwise).",
+  "ramp": 0.25,
+  "maxCorrection": 0.08,
+  "itemGap": 0.01,
+  "clearGap": 0.009,
+  "clearSmooth": 0.15,
+  "clearMax": 0.15,
+  "clearMove": 0.2,
+  "jumpMin": 0.05,
+  "jumpRatio": 3,
+  "pose": {
+    "reach": 0.95,
+    "leanMax": 55,
+    "leanSmooth": 0.12,
+    "legReach": 0.985,
+    "gap": 0.004,
+    "restAbove": 0.3,
+    "restBelow": 0.15,
+    "restStep": 0.002,
+    "liftStep": 0.01,
+    "liftMax": 0.4,
+    "lapAt": 0.65,
+    "kneeAt": 0.9,
+    "seatOut": 0.2,
+    "pocketDown": 0.05,
+    "headUpright": 0.7,
+    "lookShare": 0.4,
+    "lookMax": 35,
+    "lifeSlow": 0.4,
+    "lifeEdge": 0.3,
+    "lifeScale": 1.0,
+    "raised": 0.1,
+    "hipArc": 0.06,
+    "missMax": 0.01,
+    "poles": {
+      "marker": [
+        [
+          0.7,
+          -0.7,
+          0.0
+        ],
+        [
+          0.8,
+          0.4,
+          0.0
+        ],
+        [
+          0.3,
+          -0.8,
+          -0.5
+        ]
+      ],
+      "side": [
+        0.5,
+        0.0,
+        -0.5
+      ],
+      "body": [
+        0.8,
+        0.0,
+        -0.6
+      ],
+      "head": [
+        0.8,
+        -0.6,
+        0.0
+      ],
+      "fold": [
+        0.0,
+        -0.6,
+        0.8
+      ],
+      "fan": [
+        0.25,
+        -1.0,
+        0.3
+      ],
+      "chin": [
+        0.4,
+        -0.8,
+        0.45
+      ],
+      "chest": [
+        0.3,
+        -1.0,
+        0.0
+      ],
+      "belly": [
+        0.3,
+        -1.0,
+        0.0
+      ],
+      "inspect": [
+        0.3,
+        -1.0,
+        0.0
+      ]
+    },
+    "checkDepth": 0.005,
+    "downCost": 0.05,
+    "liftTries": 40,
+    "poleMargin": 0.015,
+    "headParts": {
+      "mouth": [
+        20,
+        30
+      ],
+      "chin": [
+        55,
+        10
+      ],
+      "ear": [
+        5,
+        80
+      ],
+      "cheek": [
+        30,
+        55
+      ]
+    },
+    "frontParts": {
+      "chest": [
+        0.43,
+        -0.13,
+        -0.02
+      ],
+      "front": [
+        0.42,
+        -0.1,
+        0.12
+      ],
+      "front_up": [
+        0.4,
+        0.15,
+        0.15
+      ],
+      "belly": [
+        0.4,
+        -0.37,
+        0.05
+      ],
+      "inspect": [
+        0.44,
+        -0.2,
+        0.0
+      ],
+      "hang": [
+        0.1,
+        -0.58,
+        0.0
+      ],
+      "fan": [
+        0.38,
+        -0.04,
+        0.0
+      ]
+    },
+    "headAwayMax": 60
+  }
+}

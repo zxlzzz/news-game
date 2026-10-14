@@ -1,46 +1,43 @@
-## One Kimodo clip as an in-place pose source, for NPCs whose position is moved by someone else
-## (a route, a leash plan) or who stay put (sitting, a stall). Output is the accepted mapping
-## (skeleton_mapping.gd) in figure units; draw it under a node scaled by the body type.
+## One clip as the game plays it: npc/baked/<id>.json, written by tools/bake_motion.gd (npc/motion_bake.gd)
+## from npc/motion/<id>.json. Poses are stick-figure points in figure units (draw them under a node scaled by
+## the body type), +Z forward. Nothing is mapped or corrected here (docs/动作重做方案.md §4.4).
 ##
-## pose(phase): looping clips wrap; other clips hold their last pose at phase >= 1.
-##  - the clip's steady forward progress is removed (the mapped hips minus a straight line from the
-##    loop's start to its end), so what is left is the in-place body motion, including its sway;
-##  - a travelling clip is turned so it travels along +Z; a clip that stays in place is turned so
-##    the body faces +Z at its first frame.
-## Moving the NPC by stride() * (change in phase) therefore reproduces the clip's own footfalls, so a
-## caller that advances phase by distance / stride() never makes planted feet slide, at any speed.
-## Clips that stay in place are played by time with phase = time / duration().
-## A last frame that repeats the first (clip_endpoints.json "duplicate_endpoint") is played once; it may be
-## shifted up or down as well as along the ground (stairs), and rise() is that shift per loop.
-## Every frame is mapped once when the clip is first used (ClipPose.of(id) shares one per clip);
-## pose() only interpolates between mapped frames.
+## pose(phase): a chaining clip wraps; any other clip holds its last frame at phase >= 1.
+##  - a travelling clip has its steady progress taken out: moving the NPC by stride() * (change in phase)
+##    reproduces its footfalls, so a caller that advances phase by distance / stride() never makes planted
+##    feet slide, at any speed;
+##  - an in-place clip is played by time, phase = time / duration().
+## A baked file whose inputs changed (source clip, mapping, parameters, declaration, bake code) is an error:
+## run tools/bake_motion.gd again.
 extends RefCounted
 
 const NpcData := preload("res://npc/npc_data.gd")
-const SkeletonMapper := preload("res://npc/skeleton_mapping.gd")
-const ContactPose := preload("res://npc/contact_pose.gd")
-## A last frame within this distance of the first (all joints, root-aligned) repeats it (metres).
-const REPEAT_TOLERANCE := 0.001
-## A loop whose hips travel less than this (figure units) stays in place.
-const IN_PLACE_TRAVEL := 0.05
+const Bake := preload("res://npc/motion_bake.gd")
+const ClipSetup := preload("res://npc/clip_setup.gd")
 
 static var _shared := {}
 
 var error := ""
+var id: String
 var P: Dictionary
 var fps: float
 var count: int        # native frame intervals from first to last (at least one)
-var travel: Vector3   # mapped hips, loop end minus loop start (figure units, before turning)
-var in_place := false
-var id: String
-## The last frame repeats the first (the clip loops without a jump); the pose keeps its height change
-## within a loop and drops it at the wrap, so a caller that climbs adds rise() per loop.
+var in_place := true
+## The last frame repeats the first: the clip loops seamlessly; it may climb rise() per loop (stairs).
 var chains := false
+## How far the figure reaches sideways from its hips (metres), for clips of a post kind with a seat span (crowd.gd
+## seats people along the span this far apart and from its ends); 0 otherwise.
+var half_width := 0.0
+## What moves with the hands (npc/pose_build.gd _extras): per frame the held thing's turn; carried object parts;
+## when the held thing is in the hand.
+var _item_turn: Array = []   # per frame: Quaternion
+var _parts := {}             # node name -> per frame: Vector3 (metres, post frame) or null
+var _item_show: Array = []   # [from, to] seconds
+var _stride := 0.0
 var _rise := 0.0
-var _mapper
-var _mapped: Array    # per source frame: {segs, head, neck, handLeft, handRight}, progress removed, turned
+var _poses: Array = []  # per frame: pose dictionary (segs, head, neck, handLeft, handRight, supportHands)
 
-## The shared ClipPose of a clip id (npc/motion/<id>.json). Check `error`.
+## The shared ClipPose of a clip id. Check `error`.
 static func of(clip: String):
 	if not _shared.has(clip):
 		_shared[clip] = new(clip)
@@ -52,108 +49,54 @@ func _init(clip: String) -> void:
 	error = NpcData.load_params(got)
 	if error != "":
 		return
-	P = got["value"]
-	error = NpcData.load_joint_names(got)
+	P = got.value
+	var path := "%s/%s.json" % [Bake.BAKED_DIR, clip]
+	error = NpcData.read_json(path, got)
 	if error != "":
+		error += " (run tools/bake_motion.gd)"
 		return
-	var names: Array = got["value"]
-	error = NpcData.load_clip(NpcData.REST_CLIP, names.size(), got)
-	if error != "":
+	var d = got.value
+	if not (d is Dictionary and d.get("points") is Array and not d.points.is_empty()):
+		error = path + ": not a baked clip"
 		return
-	var rest: Array = got["value"]["frames"][NpcData.REST_FRAME]
-	var mapper = SkeletonMapper.new(names, rest)
-	_mapper = mapper
-	if mapper.error != "":
-		error = mapper.error
+	var setup = ClipSetup.shared()
+	if setup.error != "":
+		error = setup.error
 		return
-	# Anatomical ankle-to-toe pitch is not the pitch of the sole. Calibrate it
-	# from the shared standing reference, preserving animated toe-off and swing.
-	var rest_pitch := []
-	for side in ["Left", "Right"]:
-		var ankle: Array = rest[mapper.J[side+"Foot"]]
-		var toe: Array = rest[mapper.J[side+"ToeEnd"]]
-		var delta := Vector3(toe[0]-ankle[0], toe[1]-ankle[1], toe[2]-ankle[2])
-		rest_pitch.append(atan2(delta.y, Vector2(delta.x,delta.z).length()))
-	error = NpcData.load_clip(clip, names.size(), got)
-	if error != "":
+	if d.get("inputs", "") != Bake.fingerprint(clip, setup):
+		error = path + ": stale (its source, mapping, parameters or declaration changed) — run tools/bake_motion.gd"
 		return
-	var frames: Array = got["value"]["frames"]
-	fps = got["value"]["fps"]
-	var hips: int = mapper.J["Hips"]
-	chains = frames.size() > 1 and _repeats(frames[0], frames[-1], hips)
-	count = maxi(1, frames.size() - 1)
-	var origin: Array = frames[0][hips]
-	var raw := []
-	for f in frames:
-		raw.append(mapper.mapFrame(f, P, origin))
-	var a: Array = raw[0]["H"]
-	var b: Array = raw[mini(count, frames.size() - 1)]["H"]
-	travel = Vector3(b[0] - a[0], 0, b[2] - a[2])
-	var interaction_data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://npc/interactions.json"))
-	var fixed: bool = interaction_data.clips.get(clip,{}).get("stationary",false)
-	var drift := travel
-	if chains:
-		_rise = b[1] - a[1]
-	var turn: Basis
-	if travel.length() >= IN_PLACE_TRAVEL and not fixed:
-		turn = Basis(Vector3.UP, -atan2(travel.x, travel.z))
-	else:
-		in_place = true
-		travel = Vector3.ZERO
-		var fw: Array = mapper.torsoFrame(frames[0])[2]
-		turn = Basis(Vector3.UP, -atan2(fw[0], fw[2]))
-	for i in raw.size():
-		var progress := (drift if fixed else travel) * (float(i) / count)
-		var local := func(q: Array) -> Vector3: return turn * (Vector3(q[0] - origin[0], q[1], q[2] - origin[2]) - progress)
-		var m: Dictionary = raw[i]
-		var segs := []
-		for sg in m["segs"]:
-			segs.append([local.call(sg[0]), local.call(sg[1]), sg[2]])
-		for side in 2:
-			var foot: Array = segs[6 if side == 0 else 11]
-			var delta: Vector3 = foot[1]-foot[0]
-			var horizontal := Vector3(delta.x,0,delta.z).normalized()
-			var pitch: float = atan2(delta.y,Vector2(delta.x,delta.z).length())-rest_pitch[side]
-			foot[1] = foot[0]+(horizontal*cos(pitch)+Vector3.UP*sin(pitch))*delta.length()
-		_mapped.append({"segs": segs, "head": local.call(m["head"]), "neck": local.call(m["N"]),
-			"handLeft": local.call(m["handLeft"]), "handRight": local.call(m["handRight"]),
-			"supportHands": m["supportHands"]})
-	# Source feet are thin, while the figure uses thick strokes. Keep travelling
-	# feet apart by the missing stroke clearance, preserving their height/pitch
-	# and the two leg lengths. Do not alter deliberate crossed seated poses.
-	if not in_place:
-		for i in _mapped.size():
-			var source_side: Array = mapper.torsoFrame(frames[i])[0]
-			var lateral := turn*Vector3(source_side[0],0,source_side[2])
-			separate_feet(_mapped[i], P.line, lateral.normalized())
-
-static func separate_feet(pose_: Dictionary, width: float, side: Vector3) -> void:
-	for attempt in 8:
-		var a: Array = pose_.segs[6]
-		var b: Array = pose_.segs[11]
-		var gap := minf(a[0].dot(side),a[1].dot(side))-maxf(b[0].dot(side),b[1].dot(side))
-		if gap >= width-0.000001:
+	fps = d.fps
+	count = maxi(1, int(d.frames) - 1)
+	chains = d.chains
+	in_place = d.in_place
+	_stride = d.stride
+	_rise = d.rise
+	half_width = d.get("half_width", 0.0)
+	for q in d.get("item_turn", []):
+		_item_turn.append(Quaternion(q[0], q[1], q[2], q[3]))
+	for part in d.get("parts", {}):
+		_parts[part] = d.parts[part].map(func(v): return null if v == null else Vector3(v[0], v[1], v[2]))
+	_item_show = d.get("item_show", [])
+	var support: Array = d.get("support", [])
+	for i in d.points.size():
+		var row: Array = d.points[i]
+		if row.size() != Bake.POINTS.size() * 3:
+			error = "%s: frame %d has %d numbers, not %d" % [path, i, row.size(), Bake.POINTS.size() * 3]
 			return
-		var correction := maxf(0.0,width-gap)*0.5
-		ContactPose.limb(pose_, "footLeft", a[0]+side*correction)
-		ContactPose.limb(pose_, "footRight", b[0]-side*correction)
-
-static func _repeats(f0: Array, f1: Array, hips: int) -> bool:
-	var shift := Vector3(f1[hips][0] - f0[hips][0], f1[hips][1] - f0[hips][1], f1[hips][2] - f0[hips][2])
-	for j in f0.size():
-		if Vector3(f1[j][0], f1[j][1], f1[j][2]).distance_to(Vector3(f0[j][0], f0[j][1], f0[j][2]) + shift) > REPEAT_TOLERANCE:
-			return false
-	return true
+		var q := []
+		for k in range(0, row.size(), 3):
+			q.append(Vector3(row[k], row[k + 1], row[k + 2]))
+		_poses.append(Bake.pose_from_points(q, P.torsoLine, support[i] if not support.is_empty() else [0.0, 0.0]))
 
 ## Figure units per loop along +Z (multiply by the body scale for metres); 0 for in-place clips.
 func stride() -> float:
-	return travel.length()
+	return _stride
 
 func duration() -> float:
 	return count / fps
 
-## Clip time expressed as a pose phase. Only a repeated endpoint can wrap seamlessly.
-## A caller may play any clip once (for example an interaction) with repeat = false.
+## Clip time as a pose phase. Only a chaining clip wraps; any clip can be played once with repeat = false.
 func phase_at(time: float, repeat: bool = true) -> float:
 	var phase := time / duration()
 	return fposmod(phase, 1.0) if repeat and chains else clampf(phase, 0.0, 1.0)
@@ -162,16 +105,43 @@ func phase_at(time: float, repeat: bool = true) -> float:
 func rise() -> float:
 	return _rise
 
-## {segs: [[a, b, widthMultiplier]...], head, neck, handLeft, handRight} as Vector3 in figure units.
+## {segs: [[a, b, widthMultiplier]...], head, neck, handLeft, handRight, supportHands} in figure units.
+## The dictionary is shared: duplicate(true) it before changing it.
 func pose(phase: float, repeat: bool = true) -> Dictionary:
 	var sample_phase := fposmod(phase, 1.0) if repeat and chains else clampf(phase, 0.0, 1.0)
 	var x := sample_phase * count
-	var i := mini(floori(x), _mapped.size() - 1)
-	var j := mini(i + 1, _mapped.size() - 1)
-	var result := blend(_mapped[i], _mapped[j], x - i)
-	return result
+	var i := mini(floori(x), _poses.size() - 1)
+	var j := mini(i + 1, _poses.size() - 1)
+	return blend(_poses[i], _poses[j], x - i)
 
-## Crossfade two poses of the same mapping (same segment list), w = 0 -> a, 1 -> b.
+## {turn: Quaternion of the held thing (relative to the person's frame), shown: bool, parts: {name: Vector3 metres in
+## the post frame}} at a phase (played like pose()).
+func extras(phase: float, repeat: bool = true) -> Dictionary:
+	var sample_phase := fposmod(phase, 1.0) if repeat and chains else clampf(phase, 0.0, 1.0)
+	var x := sample_phase * count
+	var i := mini(floori(x), maxi(0, _poses.size() - 1))
+	var j := mini(i + 1, _poses.size() - 1)
+	var w := x - i
+	var out := {"turn": Quaternion.IDENTITY, "shown": true, "parts": {}}
+	if not _item_turn.is_empty():
+		out.turn = (_item_turn[i] as Quaternion).slerp(_item_turn[j], w)
+	if not _item_show.is_empty():
+		var t := sample_phase * duration()
+		out.shown = t >= _item_show[0] and t <= _item_show[1]
+	for part in _parts:
+		var a = _parts[part][i]
+		var b = _parts[part][j]
+		if a != null and b != null:
+			out.parts[part] = (a as Vector3).lerp(b, w)
+		elif a != null:
+			out.parts[part] = a
+	return out
+
+func carries() -> Array:
+	return _parts.keys()
+
+## Crossfade two poses of the same figure, w = 0 -> a, 1 -> b. Directions are blended on the unit sphere and the
+## connected figure rebuilt from the hips, so bending limbs keep their length mid-way.
 static func blend(a: Dictionary, b: Dictionary, w: float) -> Dictionary:
 	if w <= 0.0:
 		return a
@@ -179,23 +149,20 @@ static func blend(a: Dictionary, b: Dictionary, w: float) -> Dictionary:
 		return b
 	var segs := []
 	for i in a.segs.size():
-		# Blend directions on the unit sphere, then rebuild the connected
-		# hierarchy. Lerp of endpoints shortens every bending limb mid-frame.
-		var da: Vector3 = a.segs[i][1]-a.segs[i][0]
-		var db: Vector3 = b.segs[i][1]-b.segs[i][0]
-		var delta := da.normalized().slerp(db.normalized(),w)*lerpf(da.length(),db.length(),w)
+		var da: Vector3 = a.segs[i][1] - a.segs[i][0]
+		var db: Vector3 = b.segs[i][1] - b.segs[i][0]
+		var delta := da.normalized().slerp(db.normalized(), w) * lerpf(da.length(), db.length(), w)
 		var start: Vector3
 		match i:
-			0: start = a.segs[0][0].lerp(b.segs[0][0],w)
-			1,2,7: start = segs[0][1]
-			4,9: start = segs[0][0]
-			_: start = segs[i-1][1]
-		segs.append([start,start+delta,a.segs[i][2]])
-	var ha: Vector3 = a.head-a.segs[1][0]
-	var hb: Vector3 = b.head-b.segs[1][0]
-	var head: Vector3 = segs[1][0]+ha.normalized().slerp(hb.normalized(),w)*lerpf(ha.length(),hb.length(),w)
-	return {"segs": segs, "head": head, "neck": segs[0][1],
-		"handLeft": segs[3][1], "handRight": segs[8][1],
+			0: start = a.segs[0][0].lerp(b.segs[0][0], w)
+			1, 2, 7: start = segs[0][1]
+			4, 9: start = segs[0][0]
+			_: start = segs[i - 1][1]
+		segs.append([start, start + delta, a.segs[i][2]])
+	var ha: Vector3 = a.head - a.segs[1][0]
+	var hb: Vector3 = b.head - b.segs[1][0]
+	var head: Vector3 = segs[1][0] + ha.normalized().slerp(hb.normalized(), w) * lerpf(ha.length(), hb.length(), w)
+	return {"segs": segs, "head": head, "neck": segs[0][1], "handLeft": segs[3][1], "handRight": segs[8][1],
 		"supportHands": [lerpf(a.supportHands[0], b.supportHands[0], w), lerpf(a.supportHands[1], b.supportHands[1], w)]}
 
 ## Ink drawing of a pose: line widths from skeleton-params (line x multiplier), head disc.

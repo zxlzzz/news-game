@@ -1,0 +1,34 @@
+{
+  "name": "walk_cane",
+  "text": "A person walks forward with a cane in the right hand. The right leg is healthy and the left leg needs support. The cane and left foot advance together, then stay planted while the right leg steps through. Repeat this slow steady walking rhythm, keep holding the cane, no turning or stopping.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person walks forward with a cane in the right hand. The right leg is healthy and the left leg needs support. The cane and left foot advance together, then stay planted while the right leg steps through. Repeat this slow steady walking rhythm, keep holding the cane, no turning or stopping.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_cane",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  right hand holds held_cane at the item grip marker.  A person walks forward with a cane in the right hand. The right leg is healthy and the left leg needs support. The cane and left foot advance together, then stay planted while the right leg steps through. Repeat this slow steady walking rhythm, keep holding the cane, no turning or stopping. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "40f7dc545a1bb5ea2134aa9370a6deb96b2fad85598d0342c253c98ef9e3701e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

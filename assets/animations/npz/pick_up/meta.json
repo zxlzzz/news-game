@@ -1,17 +1,254 @@
 {
   "name": "pick_up",
-  "text": "A person bends down, picks up a small object from the floor with their right hand, and stands back up.",
-  "duration": 4,
-  "seed": 42,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "text": "A person stands in front of a small fallen fruit, bends the knees into a deep squat and hinges forwards. The LEFT hand reaches all the way to the fruit on the ground in front of the toes, grasps it, then the person stands upright carrying the fruit in the left hand. The right hand rests on the right thigh while squatting and relaxes afterward. Do not walk or kneel.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A person stands in front of a small fallen fruit, bends the knees into a deep squat and hinges forwards. The LEFT hand reaches all the way to the fruit on the ground in front of the toes, grasps it, then the person stands upright carrying the fruit in the left hand. The right hand rests on the right thigh while squatting and relaxes afterward. Do not walk or kneel.",
+    "duration": 5,
+    "object": "fallen_fruit",
+    "post": "post_pickup",
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip",
+        "phases": [
+          0.25,
+          0.38
+        ],
+        "window": [
+          0.1,
+          0.25,
+          0.38,
+          0.6
+        ]
+      }
+    ],
+    "transfers": [
+      {
+        "type": "held_fruit",
+        "hand": "handLeft",
+        "grip": "grip",
+        "rest": "rest",
+        "initial": {
+          "marker": "grip"
+        },
+        "take": 0.35,
+        "source_part": "model"
+      }
+    ],
+    "idle_hand": "The left arm balances the bend, then relaxes at the side.",
+    "clearance": "Keep feet outside the fruit and bring the torso back upright without passing the body through the floor.",
+    "description": "Start at fallen_fruit.post_pickup facing the model standing marker direction. A person stands in front of a small fallen fruit, bends the knees into a deep squat and hinges forwards. The LEFT hand reaches all the way to the fruit on the ground in front of the toes, grasps it, then the person stands upright carrying the fruit in the left hand. The right hand rests on the right thigh while squatting and relaxes afterward. Do not walk or kneel. LeftHand touches the physical model marker grip at 1.25s, 1.90s. Grasp held_fruit at grip at 1.75s. The left arm balances the bend, then relaxes at the side. Keep feet outside the fruit and bring the torso back upright without passing the body through the floor.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/sources/902bf8acc28237fe/motion.npz",
+        "source_frame": 120,
+        "translation": [
+          -0.07038937509059906,
+          0,
+          0.08179279416799545
+        ],
+        "placement_basis": [
+          [
+            0.9545353119586409,
+            0,
+            0.29809786685587
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            -0.29809786685587,
+            0,
+            0.9545353119586409
+          ]
+        ],
+        "phase": 0.25
+      },
+      {
+        "source": "assets/animations/sources/902bf8acc28237fe/motion.npz",
+        "source_frame": 120,
+        "translation": [
+          -0.07038937509059906,
+          0,
+          0.08179279416799545
+        ],
+        "placement_basis": [
+          [
+            0.9545353119586409,
+            0,
+            0.29809786685587
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            -0.29809786685587,
+            0,
+            0.9545353119586409
+          ]
+        ],
+        "phase": 0.38
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 1
+      }
+    ],
+    "loop": false
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "fallen_fruit",
+      "marker": "grip",
+      "space": "world",
+      "episode": "grip",
+      "keys": [
+        {
+          "frame": 37,
+          "position": [
+            0.001328,
+            0.369475,
+            0.403257
+          ]
+        },
+        {
+          "frame": 57,
+          "position": [
+            0.001328,
+            0.369475,
+            0.403257
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/902bf8acc28237fe/motion.npz",
+      "source_frame": 120,
+      "translation": [
+        -0.07038937509059906,
+        0,
+        0.08179279416799545
+      ],
+      "placement_basis": [
+        [
+          0.9545353119586409,
+          0,
+          0.29809786685587
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.29809786685587,
+          0,
+          0.9545353119586409
+        ]
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "902bf8acc28237fec66ba2df842936685a11a2c7942a6f9b8e872d170582cd2d",
+        "hand_edited": false
+      },
+      "frame": 37
+    },
+    {
+      "source": "assets/animations/sources/902bf8acc28237fe/motion.npz",
+      "source_frame": 120,
+      "translation": [
+        -0.07038937509059906,
+        0,
+        0.08179279416799545
+      ],
+      "placement_basis": [
+        [
+          0.9545353119586409,
+          0,
+          0.29809786685587
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.29809786685587,
+          0,
+          0.9545353119586409
+        ]
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "902bf8acc28237fec66ba2df842936685a11a2c7942a6f9b8e872d170582cd2d",
+        "hand_edited": false
+      },
+      "frame": 57
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 149
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 4,
+  "raw_sha256": "460fd42b2970e7a0a1561134a4883f3e8cb7ffb284c0f9a54f5cc46bced65297",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_reviewed",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "460fd42b2970e7a0a1561134a4883f3e8cb7ffb284c0f9a54f5cc46bced65297",
+    "notes": "Actual empty-ground playback at 60 Hz: left hand reaches the fruit from a deep squat, lifts it and stands. No body/object or floor penetration outside the intentional fruit grasp. Three-view filmstrip inspected; pickup/release contact weights matched to this native source."
   },
-  "num_samples": 1
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Squats, reaches floor and rises; inspect floor reach. Squat, reach, object lifted, rise.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Squats, reaches floor and rises; inspect floor reach. Squat, reach, object lifted, rise.\"\r\n  }",
+      "original_record_sha256": "b60b20526e32129ae9d591402f03d6e3e0287427da993ddfc5885e8ad2307c04",
+      "current_source_sha256_at_reconciliation": "460fd42b2970e7a0a1561134a4883f3e8cb7ffb284c0f9a54f5cc46bced65297",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
 }

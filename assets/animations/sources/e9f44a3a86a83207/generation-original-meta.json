@@ -1,0 +1,36 @@
+{
+  "name": "fall_back",
+  "text": "A standing person loses balance backward and falls onto their back. The torso tips backward, both arms reach forward trying to regain balance, the bottom hits the ground, then the back and shoulders land on the floor. Finish lying on the back with bent knees.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A standing person loses balance backward and falls onto their back. The torso tips backward, both arms reach forward trying to regain balance, the bottom hits the ground, then the back and shoulders land on the floor. Finish lying on the back with bent knees.",
+    "duration": 4,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "assistant_visual_reviewed",
+    "accepted_by_hsinlung": false,
+    "method": "Chronological rendered frames from the actual scene; no tests or numerical gates. Side view entire 0-3.967 s at 30 fps; front three-quarter impact at 30 fps and whole-duration overview.",
+    "observation": "Now falls from standing through a backward loss of balance onto the back, then settles lying. The old source stopped in a seated pose. Realtime playback was unavailable."
+  },
+  "visual_review": {
+    "status": "repaired_visual_reviewed",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Now falls from standing through a backward loss of balance onto the back, then settles lying. The old source stopped in a seated pose. Realtime playback was unavailable."
+  }
+}

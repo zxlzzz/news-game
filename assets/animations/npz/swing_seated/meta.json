@@ -1,25 +1,291 @@
 {
   "name": "swing_seated",
   "text": "Seated on a playground swing, hands grasp both suspension ropes beside the shoulders. Gently swing forward and back twice, extend lower legs on the forward swing and tuck feet back on the return. Relaxed upright torso.",
-  "duration": 4,
-  "seed": 5310,
-  "model": "Kimodo-SOMA-RP-v1.1",
-  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 8,
+  "scene": {
+    "text": "Seated on a playground swing, hands grasp both suspension ropes beside the shoulders. Gently swing forward and back twice, extend lower legs on the forward swing and tuck feet back on the return. Relaxed upright torso.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "playground_swing",
+    "post": "post_swing",
+    "description": "Start at playground_swing.post_swing facing the model standing marker direction. Seated on a playground swing, hands grasp both suspension ropes beside the shoulders. Gently swing forward and back twice, extend lower legs on the forward swing and tuck feet back on the return. Relaxed upright torso. Hips touches the physical model marker hip_seat at 0.00s, 3.00s. LeftHand touches the physical model marker grip_left at 0.00s, 3.00s. RightHand touches the physical model marker grip_right at 0.00s, 3.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Keep hips on the seat and hands beside the ropes; legs stay clear of the seat front and A-frame.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep hips on the seat and hands beside the ropes; legs stay clear of the seat front and A-frame.",
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/a32abcbc2513a1f7/motion.npz",
+        "source_frame": 135,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/sources/a32abcbc2513a1f7/motion.npz",
+        "source_frame": 135,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_seat"
+      }
+    ],
+    "loop": true
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "playground_swing",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.6974,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.0,
+            0.6974,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            1.6315553975871712e-16
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "playground_swing",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.193473,
+            1.163959,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            -0.193473,
+            1.163959,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            1.6315553975871712e-16
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "playground_swing",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.195835,
+            1.163962,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.195835,
+            1.163962,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            1.6315553975871712e-16
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/a32abcbc2513a1f7/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.010797475464642048,
+        0.021405126953125242,
+        -0.0020473182667046785
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "a32abcbc2513a1f7cfe9cf4b5a571b19a58473bd7d2f9d62f0adf85adf13b017",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "placement_basis": [
+        [
+          0.9997824409609043,
+          0,
+          0.020858349557335475
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.020858349557335475,
+          0,
+          0.9997824409609043
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    },
+    {
+      "source": "assets/animations/sources/a32abcbc2513a1f7/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.010797475464642048,
+        0.021405126953125242,
+        -0.0020473182667046785
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "a32abcbc2513a1f7cfe9cf4b5a571b19a58473bd7d2f9d62f0adf85adf13b017",
+        "hand_edited": false
+      },
+      "frame": 89,
+      "placement_basis": [
+        [
+          0.9997824409609043,
+          0,
+          0.020858349557335475
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.020858349557335475,
+          0,
+          0.9997824409609043
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    }
+  ],
   "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
   "diffusion_steps": 100,
   "post_processing": true,
-  "cfg": {
-    "enabled": true,
-    "text_weight": 2.0,
-    "constraint_weight": 2.0
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "9b61de4720361358b6ba4490cfad56e87e7fb0c7327f46829dace8c55a6655ff",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "9b61de4720361358b6ba4490cfad56e87e7fb0c7327f46829dace8c55a6655ff",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
   },
-  "num_samples": 1,
-  "runtime": {
-    "source_export": "scripts/export-npc-motion.py",
-    "setup": "godot/npc/clip-setup.json",
-    "contacts": "godot/npc/interactions.json",
-    "base_clip": "stand_idle",
-    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion.",
-    "source_role": "Generated reference; runtime uses the specified base plus authored tracks."
-  }
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Seated body rigid while swing moves; inspect pumping/clearances. Small passive sway, relaxed hanging legs and rope grasp.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Seated body rigid while swing moves; inspect pumping/clearances. Small passive sway, relaxed hanging legs and rope grasp.\"\r\n  }",
+      "original_record_sha256": "558450a9974ddc76079219d5a6c94ed5882f13cfc2fb7c3a280d04abc9cb7912",
+      "current_source_sha256_at_reconciliation": "9b61de4720361358b6ba4490cfad56e87e7fb0c7327f46829dace8c55a6655ff",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
 }

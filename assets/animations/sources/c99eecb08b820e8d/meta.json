@@ -1,0 +1,34 @@
+{
+  "name": "hold_guitar",
+  "text": "A standing musician holds an acoustic guitar across the front of the waist without playing. The left arm reaches diagonally left to hold the guitar neck at chest height, left elbow bent; the right forearm rests across the rounded guitar body in front of the abdomen. Hands stay apart and maintain the asymmetric guitar-holding pose. Small natural weight shift, no strumming.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing musician holds an acoustic guitar across the front of the waist without playing. The left arm reaches diagonally left to hold the guitar neck at chest height, left elbow bent; the right forearm rests across the rounded guitar body in front of the abdomen. Hands stay apart and maintain the asymmetric guitar-holding pose. Small natural weight shift, no strumming.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_guitar",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  both hand holds held_guitar at the item grip marker.  A standing musician holds an acoustic guitar across the front of the waist without playing. The left arm reaches diagonally left to hold the guitar neck at chest height, left elbow bent; the right forearm rests across the rounded guitar body in front of the abdomen. Hands stay apart and maintain the asymmetric guitar-holding pose. Small natural weight shift, no strumming. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "c99eecb08b820e8d93b32cecb7c575d7c4991628ddefa9a4704be3826cf72f46",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}
