@@ -4,6 +4,7 @@ node_modules/
 /.claude/
 
 # Local/editor state and generated caches
+.tmp/
 .idea/
 .vscode/
 .cache/

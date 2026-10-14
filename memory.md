@@ -5,7 +5,30 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ---
 
-## Cache — next session (after 2026-09-29): real-place scene, SDU Weihai
+## Motion: "摆木偶" (2026-10-14)
+
+- Plan + runbook: `docs/动作重做方案.md` (replaced the 10-13 plan). Review page:
+  `docs/动作试做_2026-10-14_摆木偶/看片.html` (20 street clips). Not committed yet.
+- Why the 10-13 plan failed (six review rounds): it generated with Kimodo for a real body and patched
+  the stick figure afterwards (scene guidance, dense pins, export push-out), using checks as the work
+  loop; checks measured another seat than the videos; objects did not fit the figure. Hsinlung:
+  checks are only for 对答案 — compute the answer first.
+- Now: clips that touch nothing = Kimodo + mapping as before. Clips that touch things get a `pose`
+  in `godot/npc/clip-setup.json` (marker names + times only); `godot/npc/pose_build.gd` puts hips,
+  feet and hands on object markers and solves limbs with the figure's lengths (hip width folded into
+  the thighs like the shoulders into the arms); Kimodo only adds torso/head sway. The bake then checks
+  every post/seat place the clip is used; >5 mm into an object = BAKE_FAIL.
+- Objects sized to the figure: bench armrests at the ends, one `post_sit` with a `span` child (people
+  sit anywhere with room, `npc/crowd.gd`); bus-shelter seat = bench seat; chess stools 0.37, table
+  0.67, smaller foot plate, hands rest on table edge markers; cafe-table stance 4 cm back; stall
+  vendor hands on the counter.
+- Hsinlung accepted the trial for now (10-14 evening): "先这样吧". Open: chess pieces / fruit / cash
+  do not move with the hand; the other ~100 touching clips, doors, swings, two-person clips; two_streets
+  dog walker on a roof (~3.6 m) floods errors — behaviour check passes only without dog walkers.
+- Don't edit `godot/` files while `record_clip.py` runs (bake fingerprint goes stale).
+- Talk plainly; technical choices are mine, only ask him what he can judge.
+
+## Saved real-place context — SDU Weihai (2026-09-29)
 
 - **What it is**: an experiment toward a reusable pipeline — given a place (or an area he
   marks on a map), scripts fetch data and build a complete scene by themselves. He wants the
@@ -70,8 +93,7 @@ Detailed asset results belong in the linked inventories, not duplicated here.
     actions as glTF animations, 6 extreme test poses (sit, sphinx, side-lie, leg lift,
     sniff-turn, tail up/down) rendered; delivery in `delivery/models/animal_<name>/` with
     `convert_<name>.py` + `verify_<name>.py`; originals stay outside the repo in
-    `D:\Godot\assets\quaternius-*`. Husky first. `check_model.py` fails only on
-    `animal_ink` (expected; add an animal exception to the checker when accepting).
+    `D:\Godot\assets\quaternius-*`. `check_model.py` now accepts `animal_ink`.
   - My part: map my procedural points to its bones (Quaternius rig: hind BackLeg →
     BackUpperLeg → BackLowerLeg + paw, front FrontUpperLeg → FrontLowerLeg + paw, 5 spine,
     3 neck, 4-bone ears, 6 tail) and drive a Skeleton3D each frame, keeping foot planting,
@@ -106,9 +128,10 @@ Detailed asset results belong in the linked inventories, not duplicated here.
     ("look at others", pairs) is not done — wait until he has tuned the behaviour table.
   - The old `street_demo` crosswalks are rotated wrong; not fixed because I must not touch
     `street_demo` unless he asks.
-  - Batch-6 motions (stairs, push/pull door, stroller, cart, cane) are accepted but not
-    used yet; they wait for doors and steps in the scene. Not done at all: doors, walker
-    avoidance, driving vehicles.
+  - These are historical street-scene gaps, not current asset status. Stairs, doors and
+    object motions now have independent empty-ground playback. Their street-scene
+    behaviour integration, walker avoidance and driving must be checked in current code
+    before planning work; the existence of assets does not establish that integration.
 - He said my misses are hard for him to tell apart from deliberate omissions (the
   crosswalk case): in reports, list known gaps explicitly.
 - **Reviewing ChatGPT deliveries** (`delivery/`, rules in `delivery/README.md`; ChatGPT's
@@ -192,9 +215,10 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ## Kimodo motion assets — current production track
 
-- Scope: independent full-body, single-person NPZ assets; no old overlays, JSON
-  clip conversion, runtime registration or Pixi integration. Deliver
-  `assets/animations/npz/<simple_english_name>/motion.npz` plus accepted `meta.json`.
+- Full-body single-person NPZ assets are stored in
+  `assets/animations/npz/<simple_english_name>/motion.npz` plus `meta.json`.
+  Current object-motion work also exports native SOMA data for Godot playback.
+  Clips that touch things are now built on the figure (`docs/动作重做方案.md`), not from contact keys.
   No `v2`/`seed42` in names; use trailing `1`, `2` only for intentionally retained
   parallel motions. Selected assets are in Git. Attempts/parameters belong in
   metadata and Chinese inventories, not additional deliverable versions.
@@ -342,26 +366,17 @@ explicitly asks. Finishing a patch does not by itself authorize a memo edit.
   to question the object's coordinate system / ownership, not to tune
   the algorithm a third time. Hsinlung specified this reframing himself.
 
-## Running the game (explicit permission required)
+## Running the game — recorded task scope
 
-- **Superseded 2026-08-25: there is no standing exception.** The earlier
-  2026-08-11 permission to run tests freely applied only to that work context;
-  it must not be treated as permanent authorization. Unless Hsinlung explicitly
-  authorizes it in the current conversation, do not start the game, run any
-  simulation, or use any other
-  harness. A visual task by itself is not permission: ask first. Permission for
-  one inspection expires after that inspection and cannot be reused later.
-- **Godot (2026-09-23):** Hsinlung allowed running Godot (headless import, windowed
-  one-frame screenshots via `-- --shot`) for building the `godot/` foundation and the
-  style study, and Blender for re-running delivered build scripts. Since 2026-09-26 this
-  has covered reviewing deliveries and building / checking `two_streets` (the checks in
-  `CLAUDE.md`, screenshots, frame-rate runs). Treat it as scoped to that work; for a
-  clearly new kind of run, ask.
-- **Comparing against the old look**: Hsinlung suggested checking out a
-  pre-change commit locally, screenshotting, then returning. This worked
-  well and is worth reusing — a detached-HEAD `git checkout <old>` →
-  screenshot → `git checkout <branch>` costs almost nothing and settles
-  "is this regression or intended?" far faster than reasoning about it.
+- 2026-10-12 he allowed me to launch the game and take screenshots myself for the
+  motion investigation ("我允许你自己启动游戏自己截图看"), deleting what is not needed
+  afterwards. Motion production itself waits until he asks.
+- Earlier recorded Godot scopes were foundation/style imports and screenshots
+  (2026-09-23), followed by delivery and two-streets checks (2026-09-26), with
+  Blender rebuilds. These dated scopes do not grant permission for unrelated work.
+- Preserve unrelated work when comparing old versions. Use saved evidence or an
+  isolated read-only historical copy; do not switch the current dirty checkout.
+  Keep temporary capture windows/helpers out of his way and close them after use.
 
 ## Working style (from the 2026-08 O series, still valid)
 
@@ -398,7 +413,9 @@ explicitly asks. Finishing a patch does not by itself authorize a memo edit.
 - Models keep their source colours / semantic material names; grayscale, palettes and
   outlines are scene-level Looks, never baked into a model (a baked-gray batch lost hue
   and detail and was deleted). Removing a model's confirmed harmful content is allowed.
-- Buildings are complete assembled models, not modular pieces placed in the scene.
+- Buildings are complete assembled types: shell plus independent reusable door,
+  window, sign and furnishing parts. Review the complete type; retain real pivots and
+  contact surfaces on its parts. The shell GLB alone is not the finished building.
 - Real directional shadows are kept; they must come from geometry and light for
   environment, vehicles and NPCs alike, never fake foot circles. (NPC sticks currently
   cast no shadow, per the 2026-09-19 decision.)
@@ -463,9 +480,8 @@ Hsinlung: "你如果觉得没问题直接加些你会用的工具也行，以后
 harnesses etc. without asking.** Only flag it if something would be too
 large to commit. Describe any new tool briefly in plain language when it matters.
 
-This permission is permission to add tooling, not to execute the game,
-simulations, previews, or other harnesses. Execution is governed by the
-2026-08-25 rule above and requires explicit current authorization.
+Execution follows the recorded task scope above. Installing new software
+still requires permission and must use the D drive.
 
 `/.claude/` in the repo is gitignored (local only). Don't confuse it with `~/.claude/`, which is
 Hsinlung's personal Claude Code state (session logs, global settings, and
