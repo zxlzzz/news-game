@@ -1,0 +1,443 @@
+{
+  "window_065f595f3e": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_09fb6174a7": {
+    "mount_plane": 0.175,
+    "open_degrees": -45.0
+  },
+  "window_0f74504184": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_1a439d4c7e": {
+    "mount_plane": -0.200041,
+    "open_degrees": -45.0
+  },
+  "window_1c9a0bdfff": {
+    "mount_plane": 0.46,
+    "open_degrees": -45.0
+  },
+  "window_1dc903f502": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_1f5f0d8528": {
+    "mount_plane": 0.215,
+    "open_degrees": -70.0
+  },
+  "window_1f9cc229de": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_1fb2b55e26": {
+    "mount_plane": 0.175,
+    "open_degrees": -45.0
+  },
+  "window_20cd07ccae": {
+    "mount_plane": 0.175,
+    "open_degrees": -45.0
+  },
+  "window_20d36353ad": {
+    "mount_plane": 0.025,
+    "open_degrees": -70.0
+  },
+  "window_212eb3d27e": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_2136f466e7": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_27baa0567b": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_28200c5314": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_283dc536f1": {
+    "mount_plane": 0.46,
+    "open_degrees": -45.0
+  },
+  "window_29057ad660": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_2e42d8dbee": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_32be0d252b": {
+    "mount_plane": 0.175,
+    "open_degrees": -45.0
+  },
+  "window_340c876d4b": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_3b367c8e1f": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_3b57277fcd": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_3e111784ee": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_418697979b": {
+    "mount_plane": 0.005,
+    "open_degrees": -70.0
+  },
+  "window_4259ef24a8": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_44002286b6": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_485f508f5f": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_4a62fab8a9": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_4a91f89277": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_4fc1d21d74": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_4ffcdcc3b4": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_55fe06638a": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_5817f658b3": {
+    "mount_plane": 0.46,
+    "open_degrees": -45.0
+  },
+  "window_58a9729bf0": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_58ab05301c": {
+    "mount_plane": 1.18,
+    "open_degrees": -45.0,
+    "pane_top": 2.2
+  },
+  "window_5b2de5a825": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_6230dd3fb0": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_62bdb77dbf": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_6378b31924": {
+    "mount_plane": 1.38,
+    "open_degrees": -45.0
+  },
+  "window_64389aa052": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_6a6d5739f1": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_6c18eb840c": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_6c87f4fa89": {
+    "mount_plane": 0.005,
+    "open_degrees": -70.0,
+    "joint_limits": {
+      "SashHinge": 57.0,
+      "SashHinge_2": 57.0
+    }
+  },
+  "window_6d50681204": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_6ffbc30ddd": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0,
+    "pane_top": 2.56
+  },
+  "window_78b5bff385": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_79703fd8cd": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_79b1435984": {
+    "mount_plane": 0.215,
+    "open_degrees": -70.0
+  },
+  "window_7a5623744b": {
+    "mount_plane": 0.215,
+    "open_degrees": -45.0
+  },
+  "window_7a5d27cb5f": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_7dd5562fc2": {
+    "mount_plane": -0.200056,
+    "open_degrees": -45.0
+  },
+  "window_7f22dde2c6": {
+    "mount_plane": 0.45994,
+    "open_degrees": -70.0
+  },
+  "window_8126480141": {
+    "mount_plane": -0.200035,
+    "open_degrees": -45.0
+  },
+  "window_81955ddc2d": {
+    "mount_plane": 0.175,
+    "open_degrees": -45.0
+  },
+  "window_82e0e68965": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_836df47910": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_859722c016": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_87b0e0d20a": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_87f9df460e": {
+    "mount_plane": 1.98,
+    "open_degrees": -45.0
+  },
+  "window_88618ee1c0": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_893249593b": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_8bbf06c84e": {
+    "mount_plane": 0.175,
+    "open_degrees": -45.0
+  },
+  "window_8c75f3fd42": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_8fa1374c0b": {
+    "mount_plane": 0.459983,
+    "open_degrees": -70.0
+  },
+  "window_9140e8070a": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_91b0c8baae": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_9466da784e": {
+    "mount_plane": 0.025,
+    "open_degrees": -70.0
+  },
+  "window_95b189b660": {
+    "mount_plane": 0.025,
+    "open_degrees": -45.0
+  },
+  "window_9cd595b692": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_9e56e28400": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_a11fdf6f06": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_a5b7ca2ab5": {
+    "mount_plane": 1.23,
+    "open_degrees": -70.0,
+    "joint_limits": {
+      "SashHinge": 69.0,
+      "SashHinge_2": 69.0
+    }
+  },
+  "window_a74f42f833": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_a8596af6fb": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_aa099f024d": {
+    "mount_plane": 0.625,
+    "open_degrees": -70.0
+  },
+  "window_aa4af8f55c": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_abd72dfbb1": {
+    "mount_plane": 0.43,
+    "open_degrees": -70.0
+  },
+  "window_b053545e6e": {
+    "mount_plane": -0.200041,
+    "open_degrees": -45.0
+  },
+  "window_b3855bbcbd": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_b5b7b2952a": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_b916f6694a": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_bbc046b02c": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0,
+    "pane_bottom": 0.675,
+    "origin_lift": 0.595
+  },
+  "window_bfac90e2e8": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_c07cf542c3": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_c57e4d4747": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_c6296ab26b": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_c905b93db5": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_ca9b8abe6c": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_cd3af5e314": {
+    "mount_plane": 0.005,
+    "open_degrees": -70.0,
+    "joint_limits": {
+      "SashHinge": 57.0,
+      "SashHinge_2": 57.0
+    }
+  },
+  "window_d24e53d4e4": {
+    "mount_plane": 0.215,
+    "open_degrees": -70.0
+  },
+  "window_d8a9b12cb7": {
+    "mount_plane": 0.45994,
+    "open_degrees": -70.0
+  },
+  "window_d911318c98": {
+    "mount_plane": 0.005,
+    "open_degrees": -45.0,
+    "joint_limits": {
+      "SashHinge": 10.0
+    }
+  },
+  "window_d9a2b0f410": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_decf748291": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_e5add3e15e": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_e773d9ee95": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_ed52b9cfd0": {
+    "mount_plane": -0.200209,
+    "open_degrees": -45.0,
+    "pane_top": 2.2
+  },
+  "window_f0087ead07": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_f3d71cd33d": {
+    "mount_plane": 0.175,
+    "open_degrees": -70.0
+  },
+  "window_f8504e5b17": {
+    "mount_plane": 0.459984,
+    "open_degrees": -70.0
+  },
+  "window_f9e28a9594": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_fade952231": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_fdc7471aa9": {
+    "mount_plane": 0.46,
+    "open_degrees": -70.0
+  },
+  "window_ff1cb83912": {
+    "mount_plane": -0.200086,
+    "open_degrees": -45.0
+  },
+  "window_single": {
+    "mount_plane": 0.0,
+    "open_degrees": -70.0,
+    "frame_width": 0.065
+  }
+}

@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="PackedScene" path="res://models/fruit_stand.glb" id="1"]
+
+[ext_resource type="PackedScene" path="res://types/fruit_scale.tscn" id="assembled_item"]
 
 [node name="fruit_stand" type="Node3D" groups=["street_item"]]
 
@@ -13,3 +15,6 @@ rotation = Vector3(0, 3.141592653589793, 0)
 [node name="post_fruitweigh" type="Marker3D" parent="."]
 position = Vector3(0, 0, -0.72)
 rotation = Vector3(0, 0.0, 0)
+
+[node name="fruit_scale" parent="." instance=ExtResource("assembled_item")]
+position = Vector3(-0.48, 0.91, -0.3)

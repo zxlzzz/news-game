@@ -1,5 +1,8 @@
 """小货车。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'small_truck'
+WHEEL_ARCH_CLEARANCE = 0.05
+WHEEL_AXLE_RADIUS = 0.045
+WHEEL_AXLE_FIT_CLEARANCE = 0.004
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['cylinder', 'tire', 0.43, 0.18, (-0.95, 0.43, -1.65), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'hub', 0.2064, 0.2, (-0.95, 0.43, -1.65), 'metal', (1, 0, 0), None],
@@ -10,13 +13,13 @@ PARTS = [['cylinder', 'tire', 0.43, 0.18, (-0.95, 0.43, -1.65), 'metal_dark', (1
  ['cylinder', 'tire', 0.43, 0.18, (0.95, 0.43, 1.595), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'hub', 0.2064, 0.2, (0.95, 0.43, 1.595), 'metal', (1, 0, 0), None],
  ['box', 'chassis', (1.9, 0.25, 5.5), (0, 0.5, 0), 'metal_dark'],
- ['box', 'cab', (1.9, 1.6, 1.65), (0, 1.1, 1.9), 'metal'],
+ ['box', 'cab', (1.9, 1.275, 1.65), (0, 1.2625, 1.9), 'metal'],
  ['box', 'windshield', (1.52, 0.65, 0.04), (0, 1.54, 2.745), 'window'],
  ['box', 'bumper', (1.98, 0.18, 0.18), (0, 0.56, 2.79), 'metal_dark'],
  ['box', 'side_window', (0.04, 0.65, 0.9), (-0.96, 1.54, 1.99), 'window'],
  ['box', 'side_window', (0.04, 0.65, 0.9), (0.96, 1.54, 1.99), 'window'],
- ['box', 'headlight', (0.35, 0.2, 0.05), (-0.57, 0.8, 2.82), 'accent'],
- ['box', 'headlight', (0.35, 0.2, 0.05), (0.57, 0.8, 2.82), 'accent'],
+ ['box', 'headlight', (0.35, 0.2, 0.05), (-0.57, 0.8, 2.7499999999999996), 'accent'],
+ ['box', 'headlight', (0.35, 0.2, 0.05), (0.57, 0.8, 2.7499999999999996), 'accent'],
  ['box', 'cargo', (1.9, 1.7, 3.6), (0, 1.55, -0.95), 'metal']]
 GRIPS = {}
 
@@ -109,10 +112,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -246,8 +268,21 @@ def build():
         meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
         low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
         for o in bpy.context.scene.objects:
-            o.location.z -= low
+            if o.parent is None: o.location.z -= low
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from vehicle_geometry import finish_wheeled_vehicle
+    finish_wheeled_vehicle(bpy.context.scene.objects, WHEEL_ARCH_CLEARANCE, WHEEL_AXLE_RADIUS, WHEEL_AXLE_FIT_CLEARANCE)
     export(NAME)
 
 if __name__=='__main__':
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("small_truck")

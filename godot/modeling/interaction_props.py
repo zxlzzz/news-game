@@ -12,7 +12,24 @@ def build(name):
     definitions = json.loads((HERE / 'interaction-props.json').read_text())
     geometry.reset()
     for kind, *args in definitions[name]:
-        getattr(geometry, kind)(*args)
+        if kind == 'car_shell':
+            from movable_prop_geometry import build_interactive_car_shell
+            build_interactive_car_shell(*args)
+        elif kind == 'wheel_fit':
+            from vehicle_geometry import finish_wheeled_vehicle
+            finish_wheeled_vehicle(geometry.bpy.context.scene.objects,*args)
+        elif kind == 'cut_ellipsoid':
+            body_name,cut_name,size,center=args
+            body=geometry.bpy.data.objects[body_name]
+            geometry.subtract(body,geometry.ellipsoid(cut_name,size,center,None),cut_name)
+        elif kind == 'receiver_shell':
+            from receiver_geometry import receiver_shell
+            receiver_shell(*args)
+        else:
+            getattr(geometry, kind)(*args)
+    if name == 'car_interactive':
+        from movable_prop_geometry import finish_interactive_car_shell
+        finish_interactive_car_shell(definitions[name][0][1])
     geometry.export(name)
 
 

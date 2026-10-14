@@ -14,7 +14,9 @@ def build():
     reset()
     cylinder('base',P['base_r'],P['base_h'],(0,P['base_h']/2,0),'metal_dark')
     cylinder('post',P['post_r'],P['height']-P['head_h'],(0,(P['height']-P['head_h'])/2,0),'metal')
-    cylinder('lantern',P['head_r'],P['head_h'],(0,P['height']-P['head_h']/2,0),'metal')
+    lantern_h=P['head_h']-P['cap_h']
+    cylinder('lantern',P['head_r'],lantern_h,
+             (0,P['height']-P['cap_h']-lantern_h/2,0),'metal')
     cylinder('cap',P['head_r']*1.1,P['cap_h'],(0,P['height']-P['cap_h']/2,0),'metal_dark')
     export('park_lamp')
 

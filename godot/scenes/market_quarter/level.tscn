@@ -1,0 +1,2244 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://core/level.gd" id="level"]
+[ext_resource type="Resource" path="res://palettes/gray.tres" id="palette"]
+[ext_resource type="PackedScene" path="res://scenes/market_quarter/view.tscn" id="view"]
+[ext_resource type="Resource" path="res://scenes/market_quarter/population.tres" id="population"]
+[ext_resource type="Script" path="res://core/ground_strip.gd" id="ground"]
+[ext_resource type="Script" path="res://core/ground_band.gd" id="band"]
+[ext_resource type="PackedScene" path="res://types/air_conditioner.tscn" id="t1"]
+[ext_resource type="PackedScene" path="res://types/ambulance.tscn" id="t2"]
+[ext_resource type="PackedScene" path="res://types/atm_standalone.tscn" id="t3"]
+[ext_resource type="PackedScene" path="res://types/bench.tscn" id="t4"]
+[ext_resource type="PackedScene" path="res://types/bicycle.tscn" id="t5"]
+[ext_resource type="PackedScene" path="res://types/bike_rack.tscn" id="t6"]
+[ext_resource type="PackedScene" path="res://types/bike_shed.tscn" id="t7"]
+[ext_resource type="PackedScene" path="res://types/bollard.tscn" id="t8"]
+[ext_resource type="PackedScene" path="res://types/breakfast_cart.tscn" id="t9"]
+[ext_resource type="PackedScene" path="res://types/building_back_row_attic.tscn" id="t10"]
+[ext_resource type="PackedScene" path="res://types/building_back_row_slab.tscn" id="t11"]
+[ext_resource type="PackedScene" path="res://types/building_back_row_tower.tscn" id="t12"]
+[ext_resource type="PackedScene" path="res://types/building_bakery.tscn" id="t13"]
+[ext_resource type="PackedScene" path="res://types/building_bar.tscn" id="t14"]
+[ext_resource type="PackedScene" path="res://types/building_barber.tscn" id="t15"]
+[ext_resource type="PackedScene" path="res://types/building_bookstore.tscn" id="t16"]
+[ext_resource type="PackedScene" path="res://types/building_cafe.tscn" id="t17"]
+[ext_resource type="PackedScene" path="res://types/building_cinema.tscn" id="t18"]
+[ext_resource type="PackedScene" path="res://types/building_clothing.tscn" id="t19"]
+[ext_resource type="PackedScene" path="res://types/building_convenience.tscn" id="t20"]
+[ext_resource type="PackedScene" path="res://types/building_corner.tscn" id="t21"]
+[ext_resource type="PackedScene" path="res://types/building_hardware.tscn" id="t22"]
+[ext_resource type="PackedScene" path="res://types/building_laundry.tscn" id="t23"]
+[ext_resource type="PackedScene" path="res://types/building_modern.tscn" id="t24"]
+[ext_resource type="PackedScene" path="res://types/building_noodle_shop.tscn" id="t25"]
+[ext_resource type="PackedScene" path="res://types/building_office_tower.tscn" id="t26"]
+[ext_resource type="PackedScene" path="res://types/building_old_house.tscn" id="t27"]
+[ext_resource type="PackedScene" path="res://types/building_old_shop.tscn" id="t28"]
+[ext_resource type="PackedScene" path="res://types/building_parking_garage.tscn" id="t29"]
+[ext_resource type="PackedScene" path="res://types/building_pharmacy.tscn" id="t30"]
+[ext_resource type="PackedScene" path="res://types/building_residential.tscn" id="t31"]
+[ext_resource type="PackedScene" path="res://types/building_rowhouse.tscn" id="t32"]
+[ext_resource type="PackedScene" path="res://types/building_under_construction.tscn" id="t33"]
+[ext_resource type="PackedScene" path="res://types/building_walkup_a.tscn" id="t34"]
+[ext_resource type="PackedScene" path="res://types/building_walkup_b.tscn" id="t35"]
+[ext_resource type="PackedScene" path="res://types/building_walkup_c.tscn" id="t36"]
+[ext_resource type="PackedScene" path="res://types/bus.tscn" id="t37"]
+[ext_resource type="PackedScene" path="res://types/bus_shelter.tscn" id="t38"]
+[ext_resource type="PackedScene" path="res://types/bus_stop_sign.tscn" id="t39"]
+[ext_resource type="PackedScene" path="res://types/cafe_chair.tscn" id="t40"]
+[ext_resource type="PackedScene" path="res://types/cafe_table.tscn" id="t41"]
+[ext_resource type="PackedScene" path="res://types/cafe_umbrella.tscn" id="t42"]
+[ext_resource type="PackedScene" path="res://types/car.tscn" id="t43"]
+[ext_resource type="PackedScene" path="res://types/car_estate.tscn" id="t44"]
+[ext_resource type="PackedScene" path="res://types/car_hatchback.tscn" id="t45"]
+[ext_resource type="PackedScene" path="res://types/crosswalk.tscn" id="t46"]
+[ext_resource type="PackedScene" path="res://types/delivery_van.tscn" id="t47"]
+[ext_resource type="PackedScene" path="res://types/drinking_fountain.tscn" id="t48"]
+[ext_resource type="PackedScene" path="res://types/drying_rack_yard.tscn" id="t49"]
+[ext_resource type="PackedScene" path="res://types/fire_hydrant.tscn" id="t50"]
+[ext_resource type="PackedScene" path="res://types/flowerbed.tscn" id="t51"]
+[ext_resource type="PackedScene" path="res://types/flowering_tree.tscn" id="t52"]
+[ext_resource type="PackedScene" path="res://types/fruit_stand.tscn" id="t53"]
+[ext_resource type="PackedScene" path="res://types/garbage_station.tscn" id="t54"]
+[ext_resource type="PackedScene" path="res://types/lane_line_dashed.tscn" id="t55"]
+[ext_resource type="PackedScene" path="res://types/laundry_rail.tscn" id="t56"]
+[ext_resource type="PackedScene" path="res://types/mailbox.tscn" id="t57"]
+[ext_resource type="PackedScene" path="res://types/market_stall.tscn" id="t58"]
+[ext_resource type="PackedScene" path="res://types/news_box.tscn" id="t59"]
+[ext_resource type="PackedScene" path="res://types/news_rack.tscn" id="t60"]
+[ext_resource type="PackedScene" path="res://types/newspaper_kiosk.tscn" id="t61"]
+[ext_resource type="PackedScene" path="res://types/notice_board.tscn" id="t62"]
+[ext_resource type="PackedScene" path="res://types/outdoor_bookstall.tscn" id="t63"]
+[ext_resource type="PackedScene" path="res://types/parcel_lockers.tscn" id="t64"]
+[ext_resource type="PackedScene" path="res://types/park_chess_table.tscn" id="t65"]
+[ext_resource type="PackedScene" path="res://types/park_gazebo.tscn" id="t66"]
+[ext_resource type="PackedScene" path="res://types/park_pergola.tscn" id="t67"]
+[ext_resource type="PackedScene" path="res://types/park_tree_broad.tscn" id="t68"]
+[ext_resource type="PackedScene" path="res://types/park_tree_umbrella.tscn" id="t69"]
+[ext_resource type="PackedScene" path="res://types/phone_booth.tscn" id="t70"]
+[ext_resource type="PackedScene" path="res://types/playground_sandbox.tscn" id="t71"]
+[ext_resource type="PackedScene" path="res://types/playground_seesaw.tscn" id="t72"]
+[ext_resource type="PackedScene" path="res://types/recycling_bins.tscn" id="t73"]
+[ext_resource type="PackedScene" path="res://types/road_alley_entry.tscn" id="t74"]
+[ext_resource type="PackedScene" path="res://types/road_corner.tscn" id="t75"]
+[ext_resource type="PackedScene" path="res://types/road_driveway.tscn" id="t76"]
+[ext_resource type="PackedScene" path="res://types/road_straight.tscn" id="t77"]
+[ext_resource type="PackedScene" path="res://types/road_t.tscn" id="t78"]
+[ext_resource type="PackedScene" path="res://types/sandwich_board.tscn" id="t79"]
+[ext_resource type="PackedScene" path="res://types/shopping_cart.tscn" id="t80"]
+[ext_resource type="PackedScene" path="res://types/small_truck.tscn" id="t81"]
+[ext_resource type="PackedScene" path="res://types/street_lamp.tscn" id="t82"]
+[ext_resource type="PackedScene" path="res://types/street_tree.tscn" id="t83"]
+[ext_resource type="PackedScene" path="res://types/traffic_signal.tscn" id="t84"]
+[ext_resource type="PackedScene" path="res://types/trash_bin.tscn" id="t85"]
+
+[sub_resource type="Resource" id="g0"]
+script = ExtResource("band")
+width = 210.000000
+slot = &"concrete"
+
+[sub_resource type="Resource" id="g1"]
+script = ExtResource("band")
+width = 33.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g2"]
+script = ExtResource("band")
+width = 4.000000
+slot = &"road"
+
+[sub_resource type="Resource" id="g3"]
+script = ExtResource("band")
+width = 13.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g4"]
+script = ExtResource("band")
+width = 13.000000
+slot = &"road"
+
+[sub_resource type="Resource" id="g5"]
+script = ExtResource("band")
+width = 13.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g6"]
+script = ExtResource("band")
+width = 23.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g7"]
+script = ExtResource("band")
+width = 4.000000
+slot = &"road"
+
+[sub_resource type="Resource" id="g8"]
+script = ExtResource("band")
+width = 23.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g9"]
+script = ExtResource("band")
+width = 23.000000
+slot = &"road"
+
+[sub_resource type="Resource" id="g10"]
+script = ExtResource("band")
+width = 23.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g11"]
+script = ExtResource("band")
+width = 50.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g12"]
+script = ExtResource("band")
+width = 50.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g13"]
+script = ExtResource("band")
+width = 30.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g14"]
+script = ExtResource("band")
+width = 25.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g15"]
+script = ExtResource("band")
+width = 140.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g16"]
+script = ExtResource("band")
+width = 140.000000
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="g17"]
+script = ExtResource("band")
+width = 4.000000
+slot = &"grass"
+
+[sub_resource type="Resource" id="g18"]
+script = ExtResource("band")
+width = 6.000000
+slot = &"grass"
+
+[sub_resource type="Resource" id="g19"]
+script = ExtResource("band")
+width = 50.000000
+slot = &"concrete"
+
+[sub_resource type="Resource" id="g20"]
+script = ExtResource("band")
+width = 6.000000
+slot = &"concrete"
+
+[sub_resource type="Resource" id="g21"]
+script = ExtResource("band")
+width = 20.000000
+slot = &"concrete"
+
+[sub_resource type="Resource" id="g22"]
+script = ExtResource("band")
+width = 12.000000
+slot = &"concrete"
+
+[node name="MarketQuarter" type="Node3D"]
+script = ExtResource("level")
+palette = ExtResource("palette")
+view = ExtResource("view")
+population = ExtResource("population")
+spawn_population = false
+
+[node name="Backdrop" type="Node3D" parent="." groups=["backdrop"]]
+
+[node name="Base000" type="Node3D" parent="Backdrop"]
+position = Vector3(0.000000, 0.000000, -105.000000)
+script = ExtResource("ground")
+length = 302.000000
+bands = Array[ExtResource("band")]([SubResource("g0")])
+
+[node name="OldCourt001" type="Node3D" parent="."]
+position = Vector3(-85.000000, 0.150000, -60.000000)
+script = ExtResource("ground")
+length = 50.000000
+bands = Array[ExtResource("band")]([SubResource("g1")])
+
+[node name="OldCourtLane002" type="Node3D" parent="."]
+position = Vector3(-85.000000, 0.000000, -27.000000)
+script = ExtResource("ground")
+length = 50.000000
+bands = Array[ExtResource("band")]([SubResource("g2")])
+
+[node name="OldCourt003" type="Node3D" parent="."]
+position = Vector3(-98.500000, 0.150000, -23.000000)
+script = ExtResource("ground")
+length = 23.000000
+bands = Array[ExtResource("band")]([SubResource("g3")])
+
+[node name="OldCourtLane006" type="Node3D" parent="."]
+position = Vector3(-85.000000, 0.000000, -23.000000)
+script = ExtResource("ground")
+length = 4.000000
+bands = Array[ExtResource("band")]([SubResource("g4")])
+
+[node name="OldCourt009" type="Node3D" parent="."]
+position = Vector3(-71.500000, 0.150000, -23.000000)
+script = ExtResource("ground")
+length = 23.000000
+bands = Array[ExtResource("band")]([SubResource("g5")])
+
+[node name="MarketTerraces010" type="Node3D" parent="."]
+position = Vector3(35.000000, 0.150000, -60.000000)
+script = ExtResource("ground")
+length = 150.000000
+bands = Array[ExtResource("band")]([SubResource("g6")])
+
+[node name="MarketTerracesLane011" type="Node3D" parent="."]
+position = Vector3(35.000000, 0.000000, -37.000000)
+script = ExtResource("ground")
+length = 150.000000
+bands = Array[ExtResource("band")]([SubResource("g7")])
+
+[node name="MarketTerraces012" type="Node3D" parent="."]
+position = Vector3(-3.500000, 0.150000, -33.000000)
+script = ExtResource("ground")
+length = 73.000000
+bands = Array[ExtResource("band")]([SubResource("g8")])
+
+[node name="MarketTerracesLane015" type="Node3D" parent="."]
+position = Vector3(35.000000, 0.000000, -33.000000)
+script = ExtResource("ground")
+length = 4.000000
+bands = Array[ExtResource("band")]([SubResource("g9")])
+
+[node name="MarketTerraces018" type="Node3D" parent="."]
+position = Vector3(73.500000, 0.150000, -33.000000)
+script = ExtResource("ground")
+length = 73.000000
+bands = Array[ExtResource("band")]([SubResource("g10")])
+
+[node name="CinemaLanes019" type="Node3D" parent="."]
+position = Vector3(-30.000000, 0.150000, 10.000000)
+script = ExtResource("ground")
+length = 160.000000
+bands = Array[ExtResource("band")]([SubResource("g11")])
+
+[node name="WorkshopCourt020" type="Node3D" parent="."]
+position = Vector3(90.000000, 0.150000, 10.000000)
+script = ExtResource("ground")
+length = 40.000000
+bands = Array[ExtResource("band")]([SubResource("g12")])
+
+[node name="NorthNeighbours021" type="Node3D" parent="Backdrop"]
+position = Vector3(0.000000, 0.150000, -110.000000)
+script = ExtResource("ground")
+length = 262.000000
+bands = Array[ExtResource("band")]([SubResource("g13")])
+
+[node name="SouthNeighbours022" type="Node3D" parent="Backdrop"]
+position = Vector3(0.000000, 0.150000, 80.000000)
+script = ExtResource("ground")
+length = 262.000000
+bands = Array[ExtResource("band")]([SubResource("g14")])
+
+[node name="WestNeighbours023" type="Node3D" parent="Backdrop"]
+position = Vector3(-140.500000, 0.150000, -70.000000)
+script = ExtResource("ground")
+length = 21.000000
+bands = Array[ExtResource("band")]([SubResource("g15")])
+
+[node name="EastNeighbours024" type="Node3D" parent="Backdrop"]
+position = Vector3(140.500000, 0.150000, -70.000000)
+script = ExtResource("ground")
+length = 21.000000
+bands = Array[ExtResource("band")]([SubResource("g16")])
+
+[node name="CourtShadeWest025" type="Node3D" parent="."]
+position = Vector3(-93.000000, 0.150500, -40.500000)
+script = ExtResource("ground")
+length = 4.400000
+bands = Array[ExtResource("band")]([SubResource("g17")])
+
+[node name="CourtShadeEast026" type="Node3D" parent="."]
+position = Vector3(-74.000000, 0.150500, -42.000000)
+script = ExtResource("ground")
+length = 7.000000
+bands = Array[ExtResource("band")]([SubResource("g18")])
+
+[node name="CinemaPassage027" type="Node3D" parent="."]
+position = Vector3(-17.000000, 0.151000, 10.000000)
+script = ExtResource("ground")
+length = 6.000000
+bands = Array[ExtResource("band")]([SubResource("g19")])
+
+[node name="PedestrianShoppingLane028" type="Node3D" parent="."]
+position = Vector3(15.000000, 0.151000, 33.000000)
+script = ExtResource("ground")
+length = 70.000000
+bands = Array[ExtResource("band")]([SubResource("g20")])
+
+[node name="CivicCourt029" type="Node3D" parent="."]
+position = Vector3(-40.500000, 0.151000, 40.000000)
+script = ExtResource("ground")
+length = 39.000000
+bands = Array[ExtResource("band")]([SubResource("g21")])
+
+[node name="LoadingCourt030" type="Node3D" parent="."]
+position = Vector3(90.500000, 0.151000, 35.000000)
+script = ExtResource("ground")
+length = 39.000000
+bands = Array[ExtResource("band")]([SubResource("g22")])
+
+[node name="road_corner_0000" parent="." instance=ExtResource("t75")]
+position = Vector3(-120.000000, 0.000000, -70.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_corner_0001" parent="." instance=ExtResource("t75")]
+position = Vector3(120.000000, 0.000000, -70.000000)
+
+[node name="road_corner_0002" parent="." instance=ExtResource("t75")]
+position = Vector3(-120.000000, 0.000000, 70.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="road_corner_0003" parent="." instance=ExtResource("t75")]
+position = Vector3(120.000000, 0.000000, 70.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="road_t_0004" parent="." instance=ExtResource("t78")]
+position = Vector3(-120.000000, 0.000000, 0.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_t_0005" parent="." instance=ExtResource("t78")]
+position = Vector3(120.000000, 0.000000, 0.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="road_t_0006" parent="." instance=ExtResource("t78")]
+position = Vector3(-50.000000, 0.000000, -70.000000)
+
+[node name="road_t_0007" parent="." instance=ExtResource("t78")]
+position = Vector3(60.000000, 0.000000, 70.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="road_t_0008" parent="." instance=ExtResource("t78")]
+position = Vector3(-50.000000, 0.000000, 0.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="road_t_0009" parent="." instance=ExtResource("t78")]
+position = Vector3(60.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0010" parent="." instance=ExtResource("t77")]
+position = Vector3(-105.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0011" parent="." instance=ExtResource("t77")]
+position = Vector3(-95.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0012" parent="." instance=ExtResource("t77")]
+position = Vector3(-85.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0013" parent="." instance=ExtResource("t77")]
+position = Vector3(-75.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0014" parent="." instance=ExtResource("t77")]
+position = Vector3(-65.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0015" parent="." instance=ExtResource("t77")]
+position = Vector3(-35.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0016" parent="." instance=ExtResource("t77")]
+position = Vector3(-25.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0017" parent="." instance=ExtResource("t77")]
+position = Vector3(-15.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0018" parent="." instance=ExtResource("t77")]
+position = Vector3(-5.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0019" parent="." instance=ExtResource("t77")]
+position = Vector3(5.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0020" parent="." instance=ExtResource("t77")]
+position = Vector3(15.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0021" parent="." instance=ExtResource("t77")]
+position = Vector3(25.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0022" parent="." instance=ExtResource("t77")]
+position = Vector3(35.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0023" parent="." instance=ExtResource("t77")]
+position = Vector3(45.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0024" parent="." instance=ExtResource("t77")]
+position = Vector3(55.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0025" parent="." instance=ExtResource("t77")]
+position = Vector3(65.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0026" parent="." instance=ExtResource("t77")]
+position = Vector3(75.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0027" parent="." instance=ExtResource("t77")]
+position = Vector3(85.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0028" parent="." instance=ExtResource("t77")]
+position = Vector3(95.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0029" parent="." instance=ExtResource("t77")]
+position = Vector3(105.000000, 0.000000, -70.000000)
+
+[node name="road_straight_0030" parent="." instance=ExtResource("t77")]
+position = Vector3(-105.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0031" parent="." instance=ExtResource("t77")]
+position = Vector3(-95.000000, 0.000000, 0.000000)
+
+[node name="road_alley_entry_0032" parent="." instance=ExtResource("t74")]
+position = Vector3(-85.000000, 0.000000, 0.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="road_straight_0033" parent="." instance=ExtResource("t77")]
+position = Vector3(-75.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0034" parent="." instance=ExtResource("t77")]
+position = Vector3(-65.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0035" parent="." instance=ExtResource("t77")]
+position = Vector3(-35.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0036" parent="." instance=ExtResource("t77")]
+position = Vector3(-25.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0037" parent="." instance=ExtResource("t77")]
+position = Vector3(-15.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0038" parent="." instance=ExtResource("t77")]
+position = Vector3(-5.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0039" parent="." instance=ExtResource("t77")]
+position = Vector3(5.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0040" parent="." instance=ExtResource("t77")]
+position = Vector3(15.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0041" parent="." instance=ExtResource("t77")]
+position = Vector3(25.000000, 0.000000, 0.000000)
+
+[node name="road_alley_entry_0042" parent="." instance=ExtResource("t74")]
+position = Vector3(35.000000, 0.000000, 0.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="road_straight_0043" parent="." instance=ExtResource("t77")]
+position = Vector3(45.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0044" parent="." instance=ExtResource("t77")]
+position = Vector3(75.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0045" parent="." instance=ExtResource("t77")]
+position = Vector3(85.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0046" parent="." instance=ExtResource("t77")]
+position = Vector3(95.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0047" parent="." instance=ExtResource("t77")]
+position = Vector3(105.000000, 0.000000, 0.000000)
+
+[node name="road_straight_0048" parent="." instance=ExtResource("t77")]
+position = Vector3(-105.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0049" parent="." instance=ExtResource("t77")]
+position = Vector3(-95.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0050" parent="." instance=ExtResource("t77")]
+position = Vector3(-85.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0051" parent="." instance=ExtResource("t77")]
+position = Vector3(-75.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0052" parent="." instance=ExtResource("t77")]
+position = Vector3(-65.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0053" parent="." instance=ExtResource("t77")]
+position = Vector3(-55.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0054" parent="." instance=ExtResource("t77")]
+position = Vector3(-45.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0055" parent="." instance=ExtResource("t77")]
+position = Vector3(-35.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0056" parent="." instance=ExtResource("t77")]
+position = Vector3(-25.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0057" parent="." instance=ExtResource("t77")]
+position = Vector3(-15.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0058" parent="." instance=ExtResource("t77")]
+position = Vector3(-5.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0059" parent="." instance=ExtResource("t77")]
+position = Vector3(5.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0060" parent="." instance=ExtResource("t77")]
+position = Vector3(15.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0061" parent="." instance=ExtResource("t77")]
+position = Vector3(25.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0062" parent="." instance=ExtResource("t77")]
+position = Vector3(35.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0063" parent="." instance=ExtResource("t77")]
+position = Vector3(45.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0064" parent="." instance=ExtResource("t77")]
+position = Vector3(75.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0065" parent="." instance=ExtResource("t77")]
+position = Vector3(85.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0066" parent="." instance=ExtResource("t77")]
+position = Vector3(95.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0067" parent="." instance=ExtResource("t77")]
+position = Vector3(105.000000, 0.000000, 70.000000)
+
+[node name="road_straight_0068" parent="." instance=ExtResource("t77")]
+position = Vector3(-120.000000, 0.000000, -55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0069" parent="." instance=ExtResource("t77")]
+position = Vector3(-120.000000, 0.000000, -45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0070" parent="." instance=ExtResource("t77")]
+position = Vector3(-120.000000, 0.000000, -35.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_alley_entry_0071" parent="." instance=ExtResource("t74")]
+position = Vector3(-120.000000, 0.000000, -25.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0072" parent="." instance=ExtResource("t77")]
+position = Vector3(-120.000000, 0.000000, -15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0073" parent="." instance=ExtResource("t77")]
+position = Vector3(-120.000000, 0.000000, 15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0074" parent="." instance=ExtResource("t77")]
+position = Vector3(-120.000000, 0.000000, 25.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0075" parent="." instance=ExtResource("t77")]
+position = Vector3(-120.000000, 0.000000, 35.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0076" parent="." instance=ExtResource("t77")]
+position = Vector3(-120.000000, 0.000000, 45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0077" parent="." instance=ExtResource("t77")]
+position = Vector3(-120.000000, 0.000000, 55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0078" parent="." instance=ExtResource("t77")]
+position = Vector3(120.000000, 0.000000, -55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0079" parent="." instance=ExtResource("t77")]
+position = Vector3(120.000000, 0.000000, -45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_alley_entry_0080" parent="." instance=ExtResource("t74")]
+position = Vector3(120.000000, 0.000000, -35.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="road_straight_0081" parent="." instance=ExtResource("t77")]
+position = Vector3(120.000000, 0.000000, -25.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0082" parent="." instance=ExtResource("t77")]
+position = Vector3(120.000000, 0.000000, -15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0083" parent="." instance=ExtResource("t77")]
+position = Vector3(120.000000, 0.000000, 15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0084" parent="." instance=ExtResource("t77")]
+position = Vector3(120.000000, 0.000000, 25.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_driveway_0085" parent="." instance=ExtResource("t76")]
+position = Vector3(120.000000, 0.000000, 35.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="road_straight_0086" parent="." instance=ExtResource("t77")]
+position = Vector3(120.000000, 0.000000, 45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0087" parent="." instance=ExtResource("t77")]
+position = Vector3(120.000000, 0.000000, 55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0088" parent="." instance=ExtResource("t77")]
+position = Vector3(-50.000000, 0.000000, -55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0089" parent="." instance=ExtResource("t77")]
+position = Vector3(-50.000000, 0.000000, -45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_alley_entry_0090" parent="." instance=ExtResource("t74")]
+position = Vector3(-50.000000, 0.000000, -35.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_alley_entry_0091" parent="." instance=ExtResource("t74")]
+position = Vector3(-50.000000, 0.000000, -25.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="road_straight_0092" parent="." instance=ExtResource("t77")]
+position = Vector3(-50.000000, 0.000000, -15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0093" parent="." instance=ExtResource("t77")]
+position = Vector3(60.000000, 0.000000, 15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0094" parent="." instance=ExtResource("t77")]
+position = Vector3(60.000000, 0.000000, 25.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0095" parent="." instance=ExtResource("t77")]
+position = Vector3(60.000000, 0.000000, 35.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0096" parent="." instance=ExtResource("t77")]
+position = Vector3(60.000000, 0.000000, 45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="road_straight_0097" parent="." instance=ExtResource("t77")]
+position = Vector3(60.000000, 0.000000, 55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="OldCourtMainWest" type="Node3D" parent="."]
+
+[node name="building_bakery_0098" parent="OldCourtMainWest" instance=ExtResource("t13")]
+position = Vector3(-104.170000, 0.150000, -11.550000)
+
+[node name="building_bookstore_0099" parent="OldCourtMainWest" instance=ExtResource("t16")]
+position = Vector3(-94.330000, 0.150000, -11.000000)
+
+[node name="OldCourtMainEast" type="Node3D" parent="."]
+
+[node name="building_bar_0100" parent="OldCourtMainEast" instance=ExtResource("t14")]
+position = Vector3(-76.640000, 0.150000, -11.650000)
+
+[node name="building_pharmacy_0101" parent="OldCourtMainEast" instance=ExtResource("t30")]
+position = Vector3(-70.400000, 0.150000, -11.230000)
+
+[node name="building_cafe_0102" parent="OldCourtMainEast" instance=ExtResource("t17")]
+position = Vector3(-63.760000, 0.150000, -11.750000)
+
+[node name="OldCourtNorth" type="Node3D" parent="."]
+
+[node name="building_back_row_attic_0103" parent="OldCourtNorth" instance=ExtResource("t10")]
+position = Vector3(-97.810000, 0.150000, -59.070000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_residential_0104" parent="OldCourtNorth" instance=ExtResource("t31")]
+position = Vector3(-88.070000, 0.150000, -58.450000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_walkup_a_0105" parent="OldCourtNorth" instance=ExtResource("t34")]
+position = Vector3(-75.260000, 0.150000, -57.700000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="OldCourtWest" type="Node3D" parent="."]
+
+[node name="building_walkup_a_0106" parent="OldCourtWest" instance=ExtResource("t34")]
+position = Vector3(-107.700000, 0.150000, -39.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="OldCourtEast" type="Node3D" parent="."]
+
+[node name="building_cafe_0107" parent="OldCourtEast" instance=ExtResource("t17")]
+position = Vector3(-61.950000, 0.150000, -43.940000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_residential_0108" parent="OldCourtEast" instance=ExtResource("t31")]
+position = Vector3(-61.750000, 0.150000, -37.100000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_barber_0109" parent="OldCourtEast" instance=ExtResource("t15")]
+position = Vector3(-61.527000, 0.150000, -30.460000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="OldCourtDomestic" type="Node3D" parent="."]
+
+[node name="drying_rack_yard_0110" parent="OldCourtDomestic" instance=ExtResource("t49")]
+position = Vector3(-85.000000, 0.150000, -43.000000)
+
+[node name="notice_board_0111" parent="OldCourtDomestic" instance=ExtResource("t62")]
+position = Vector3(-89.100000, 0.150000, -43.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="mailbox_0112" parent="OldCourtDomestic" instance=ExtResource("t57")]
+position = Vector3(-81.000000, 0.150000, -43.000000)
+
+[node name="bench_0113" parent="OldCourtDomestic" instance=ExtResource("t4")]
+position = Vector3(-88.400000, 0.150000, -39.600000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="park_chess_table_0114" parent="OldCourtDomestic" instance=ExtResource("t65")]
+position = Vector3(-85.000000, 0.150000, -40.000000)
+
+[node name="flowerbed_0115" parent="OldCourtDomestic" instance=ExtResource("t51")]
+position = Vector3(-82.000000, 0.150000, -39.700000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="recycling_bins_0116" parent="OldCourtDomestic" instance=ExtResource("t73")]
+position = Vector3(-88.100000, 0.150000, -37.000000)
+
+[node name="laundry_rail_0117" parent="OldCourtDomestic" instance=ExtResource("t56")]
+position = Vector3(-85.000000, 0.150000, -36.400000)
+
+[node name="trash_bin_0118" parent="OldCourtDomestic" instance=ExtResource("t85")]
+position = Vector3(-81.500000, 0.150000, -36.800000)
+
+[node name="park_pergola_0119" parent="OldCourtDomestic" instance=ExtResource("t67")]
+position = Vector3(-92.000000, 0.150000, -44.000000)
+
+[node name="flowering_tree_0120" parent="OldCourtDomestic" instance=ExtResource("t52")]
+position = Vector3(-93.000000, 0.150000, -38.500000)
+
+[node name="park_tree_umbrella_0121" parent="OldCourtDomestic" instance=ExtResource("t69")]
+position = Vector3(-74.000000, 0.150000, -39.000000)
+
+[node name="bench_0122" parent="OldCourtDomestic" instance=ExtResource("t4")]
+position = Vector3(-73.000000, 0.150000, -44.500000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="flowerbed_0123" parent="OldCourtDomestic" instance=ExtResource("t51")]
+position = Vector3(-76.800000, 0.150000, -32.500000)
+
+[node name="OldCourtService" type="Node3D" parent="."]
+
+[node name="garbage_station_0124" parent="OldCourtService" instance=ExtResource("t54")]
+position = Vector3(-90.000000, 0.150000, -28.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="parcel_lockers_0125" parent="OldCourtService" instance=ExtResource("t64")]
+position = Vector3(-95.000000, 0.150000, -27.700000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="bike_rack_0126" parent="OldCourtService" instance=ExtResource("t6")]
+position = Vector3(-95.000000, 0.150000, -29.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="recycling_bins_0127" parent="OldCourtService" instance=ExtResource("t73")]
+position = Vector3(-90.000000, 0.150000, -31.200000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="bicycle_0128" parent="OldCourtService" instance=ExtResource("t5")]
+position = Vector3(-91.400000, 0.150000, -32.400000)
+rotation_degrees = Vector3(0, 270, 0)
+
+[node name="trash_bin_0129" parent="OldCourtService" instance=ExtResource("t85")]
+position = Vector3(-92.600000, 0.150000, -31.200000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="notice_board_0130" parent="OldCourtService" instance=ExtResource("t62")]
+position = Vector3(-94.900000, 0.150000, -32.600000)
+rotation_degrees = Vector3(0, 360, 0)
+
+[node name="air_conditioner_0131" parent="OldCourtService" instance=ExtResource("t1")]
+position = Vector3(-87.700000, 0.150000, -30.900000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="MarketMainWest" type="Node3D" parent="."]
+
+[node name="building_corner_0132" parent="MarketMainWest" instance=ExtResource("t21")]
+position = Vector3(-32.260001, 0.150000, -11.000000)
+
+[node name="building_noodle_shop_0133" parent="MarketMainWest" instance=ExtResource("t25")]
+position = Vector3(-23.370000, 0.150000, -11.700000)
+
+[node name="building_bookstore_0134" parent="MarketMainWest" instance=ExtResource("t16")]
+position = Vector3(-15.830000, 0.150000, -11.000000)
+
+[node name="building_laundry_0135" parent="MarketMainWest" instance=ExtResource("t23")]
+position = Vector3(-7.990000, 0.150000, -11.000000)
+
+[node name="MarketMainGateWest" type="Node3D" parent="."]
+
+[node name="building_bakery_0136" parent="MarketMainGateWest" instance=ExtResource("t13")]
+position = Vector3(10.260000, 0.150000, -11.550000)
+
+[node name="building_hardware_0137" parent="MarketMainGateWest" instance=ExtResource("t22")]
+position = Vector3(19.700000, 0.150000, -11.000000)
+
+[node name="building_barber_0138" parent="MarketMainGateWest" instance=ExtResource("t15")]
+position = Vector3(26.440000, 0.150000, -11.327000)
+
+[node name="MarketMainGateEast" type="Node3D" parent="."]
+
+[node name="building_clothing_0139" parent="MarketMainGateEast" instance=ExtResource("t19")]
+position = Vector3(45.360000, 0.150000, -10.930000)
+
+[node name="building_convenience_0140" parent="MarketMainGateEast" instance=ExtResource("t20")]
+position = Vector3(56.600000, 0.150000, -11.400000)
+
+[node name="building_pharmacy_0141" parent="MarketMainGateEast" instance=ExtResource("t30")]
+position = Vector3(67.240000, 0.150000, -11.230000)
+
+[node name="MarketMainEast" type="Node3D" parent="."]
+
+[node name="building_old_shop_0142" parent="MarketMainEast" instance=ExtResource("t28")]
+position = Vector3(85.090000, 0.150000, -11.450000)
+
+[node name="building_cafe_0143" parent="MarketMainEast" instance=ExtResource("t17")]
+position = Vector3(93.429999, 0.150000, -11.750000)
+
+[node name="building_bar_0144" parent="MarketMainEast" instance=ExtResource("t14")]
+position = Vector3(99.370000, 0.150000, -11.650000)
+
+[node name="building_barber_0145" parent="MarketMainEast" instance=ExtResource("t15")]
+position = Vector3(105.110000, 0.150000, -11.327000)
+
+[node name="MarketBackWest" type="Node3D" parent="."]
+
+[node name="building_pharmacy_0146" parent="MarketBackWest" instance=ExtResource("t30")]
+position = Vector3(-33.510000, 0.150000, -31.370000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_cafe_0147" parent="MarketBackWest" instance=ExtResource("t17")]
+position = Vector3(-26.870000, 0.150000, -30.850000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_old_shop_0148" parent="MarketBackWest" instance=ExtResource("t28")]
+position = Vector3(-18.530000, 0.150000, -31.150000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_bookstore_0149" parent="MarketBackWest" instance=ExtResource("t16")]
+position = Vector3(-9.190000, 0.150000, -31.600000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="MarketBackGate" type="Node3D" parent="."]
+
+[node name="building_laundry_0150" parent="MarketBackGate" instance=ExtResource("t23")]
+position = Vector3(9.660000, 0.150000, -31.600000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_bookstore_0151" parent="MarketBackGate" instance=ExtResource("t16")]
+position = Vector3(17.500000, 0.150000, -31.600000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_cafe_0152" parent="MarketBackGate" instance=ExtResource("t17")]
+position = Vector3(24.840000, 0.150000, -30.850000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="MarketBackEast" type="Node3D" parent="."]
+
+[node name="building_hardware_0153" parent="MarketBackEast" instance=ExtResource("t22")]
+position = Vector3(85.860000, 0.150000, -31.600000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_barber_0154" parent="MarketBackEast" instance=ExtResource("t15")]
+position = Vector3(92.600000, 0.150000, -31.273000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_old_shop_0155" parent="MarketBackEast" instance=ExtResource("t28")]
+position = Vector3(100.740000, 0.150000, -31.150000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="NorthTerraceWest" type="Node3D" parent="."]
+
+[node name="building_back_row_slab_0156" parent="NorthTerraceWest" instance=ExtResource("t11")]
+position = Vector3(-29.540000, 0.150000, -39.130000)
+
+[node name="building_back_row_attic_0157" parent="NorthTerraceWest" instance=ExtResource("t10")]
+position = Vector3(-14.299999, 0.150000, -39.130000)
+
+[node name="building_pharmacy_0158" parent="NorthTerraceWest" instance=ExtResource("t30")]
+position = Vector3(-4.759999, 0.150000, -39.430000)
+
+[node name="NorthTerraceMiddle" type="Node3D" parent="."]
+
+[node name="building_residential_0159" parent="NorthTerraceMiddle" instance=ExtResource("t31")]
+position = Vector3(10.160000, 0.150000, -39.750000)
+
+[node name="building_laundry_0160" parent="NorthTerraceMiddle" instance=ExtResource("t23")]
+position = Vector3(17.500000, 0.150000, -39.200000)
+
+[node name="building_bookstore_0161" parent="NorthTerraceMiddle" instance=ExtResource("t16")]
+position = Vector3(25.340000, 0.150000, -39.200000)
+
+[node name="NorthTerraceEast" type="Node3D" parent="."]
+
+[node name="building_back_row_tower_0162" parent="NorthTerraceEast" instance=ExtResource("t12")]
+position = Vector3(50.260000, 0.150000, -39.130000)
+
+[node name="building_back_row_attic_0163" parent="NorthTerraceEast" instance=ExtResource("t10")]
+position = Vector3(60.300000, 0.150000, -39.130000)
+
+[node name="building_residential_0164" parent="NorthTerraceEast" instance=ExtResource("t31")]
+position = Vector3(70.040000, 0.150000, -39.750000)
+
+[node name="NorthStreetWest" type="Node3D" parent="."]
+
+[node name="building_back_row_attic_0165" parent="NorthStreetWest" instance=ExtResource("t10")]
+position = Vector3(-31.340000, 0.150000, -59.070000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_residential_0166" parent="NorthStreetWest" instance=ExtResource("t31")]
+position = Vector3(-21.600000, 0.150000, -58.450000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_old_shop_0167" parent="NorthStreetWest" instance=ExtResource("t28")]
+position = Vector3(-12.760000, 0.150000, -58.550000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="NorthStreetMiddle" type="Node3D" parent="."]
+
+[node name="building_cafe_0168" parent="NorthStreetMiddle" instance=ExtResource("t17")]
+position = Vector3(5.359999, 0.150000, -58.250000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_back_row_slab_0169" parent="NorthStreetMiddle" instance=ExtResource("t11")]
+position = Vector3(17.700000, 0.150000, -59.070000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_pharmacy_0170" parent="NorthStreetMiddle" instance=ExtResource("t30")]
+position = Vector3(30.340001, 0.150000, -58.770000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="NorthStreetEast" type="Node3D" parent="."]
+
+[node name="building_back_row_attic_0171" parent="NorthStreetEast" instance=ExtResource("t10")]
+position = Vector3(52.160000, 0.150000, -59.070000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_residential_0172" parent="NorthStreetEast" instance=ExtResource("t31")]
+position = Vector3(61.900000, 0.150000, -58.450000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_bookstore_0173" parent="NorthStreetEast" instance=ExtResource("t16")]
+position = Vector3(69.740000, 0.150000, -59.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="NorthStreetEnd" type="Node3D" parent="."]
+
+[node name="building_old_shop_0174" parent="NorthStreetEnd" instance=ExtResource("t28")]
+position = Vector3(86.740000, 0.150000, -58.550000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_old_house_0175" parent="NorthStreetEnd" instance=ExtResource("t27")]
+position = Vector3(96.500000, 0.150000, -58.900000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_cafe_0176" parent="NorthStreetEnd" instance=ExtResource("t17")]
+position = Vector3(104.260000, 0.150000, -58.250000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="NorthTerraceEnd" type="Node3D" parent="."]
+
+[node name="building_walkup_a_0177" parent="NorthTerraceEnd" instance=ExtResource("t34")]
+position = Vector3(91.530000, 0.150000, -40.500000)
+
+[node name="building_barber_0178" parent="NorthTerraceEnd" instance=ExtResource("t15")]
+position = Vector3(103.640000, 0.150000, -39.527000)
+
+[node name="CoveredMarket" type="Node3D" parent="."]
+
+[node name="market_stall_0179" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(41.000000, 0.150000, -30.500000)
+
+[node name="fruit_stand_0180" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(41.000000, 0.150000, -28.700000)
+
+[node name="market_stall_0181" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(45.000000, 0.150000, -30.500000)
+
+[node name="fruit_stand_0182" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(45.000000, 0.150000, -28.700000)
+
+[node name="market_stall_0183" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(49.000000, 0.150000, -30.500000)
+
+[node name="outdoor_bookstall_0184" parent="CoveredMarket" instance=ExtResource("t63")]
+position = Vector3(49.000000, 0.150000, -28.700000)
+
+[node name="market_stall_0185" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(53.000000, 0.150000, -30.500000)
+
+[node name="fruit_stand_0186" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(53.000000, 0.150000, -28.700000)
+
+[node name="market_stall_0187" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(57.000000, 0.150000, -30.500000)
+
+[node name="fruit_stand_0188" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(57.000000, 0.150000, -28.700000)
+
+[node name="market_stall_0189" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(61.000000, 0.150000, -30.500000)
+
+[node name="fruit_stand_0190" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(61.000000, 0.150000, -28.700000)
+
+[node name="market_stall_0191" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(65.000000, 0.150000, -30.500000)
+
+[node name="outdoor_bookstall_0192" parent="CoveredMarket" instance=ExtResource("t63")]
+position = Vector3(65.000000, 0.150000, -28.700000)
+
+[node name="market_stall_0193" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(69.000000, 0.150000, -30.500000)
+
+[node name="fruit_stand_0194" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(69.000000, 0.150000, -28.700000)
+
+[node name="market_stall_0195" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(73.000000, 0.150000, -30.500000)
+
+[node name="fruit_stand_0196" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(73.000000, 0.150000, -28.700000)
+
+[node name="market_stall_0197" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(42.000000, 0.150000, -22.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="fruit_stand_0198" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(42.000000, 0.150000, -24.150000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="market_stall_0199" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(48.000000, 0.150000, -22.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="fruit_stand_0200" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(48.000000, 0.150000, -24.150000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="market_stall_0201" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(54.000000, 0.150000, -22.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="outdoor_bookstall_0202" parent="CoveredMarket" instance=ExtResource("t63")]
+position = Vector3(54.000000, 0.150000, -24.150000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="market_stall_0203" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(60.000000, 0.150000, -22.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="fruit_stand_0204" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(60.000000, 0.150000, -24.150000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="market_stall_0205" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(66.000000, 0.150000, -22.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="outdoor_bookstall_0206" parent="CoveredMarket" instance=ExtResource("t63")]
+position = Vector3(66.000000, 0.150000, -24.150000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="market_stall_0207" parent="CoveredMarket" instance=ExtResource("t58")]
+position = Vector3(72.000000, 0.150000, -22.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="fruit_stand_0208" parent="CoveredMarket" instance=ExtResource("t53")]
+position = Vector3(72.000000, 0.150000, -24.150000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="shopping_cart_0209" parent="CoveredMarket" instance=ExtResource("t80")]
+position = Vector3(76.000000, 0.150000, -27.500000)
+
+[node name="shopping_cart_0210" parent="CoveredMarket" instance=ExtResource("t80")]
+position = Vector3(76.000000, 0.150000, -25.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="breakfast_cart_0211" parent="CoveredMarket" instance=ExtResource("t9")]
+position = Vector3(39.000000, 0.150000, -26.200000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="trash_bin_0212" parent="CoveredMarket" instance=ExtResource("t85")]
+position = Vector3(76.000000, 0.150000, -30.500000)
+
+[node name="recycling_bins_0213" parent="CoveredMarket" instance=ExtResource("t73")]
+position = Vector3(39.100000, 0.150000, -31.500000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="TerraceAirwell" type="Node3D" parent="."]
+
+[node name="cafe_table_0214" parent="TerraceAirwell" instance=ExtResource("t41")]
+position = Vector3(34.200000, 0.150000, -49.000000)
+
+[node name="cafe_chair_0215" parent="TerraceAirwell" instance=ExtResource("t40")]
+position = Vector3(33.400000, 0.150000, -49.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="cafe_chair_0216" parent="TerraceAirwell" instance=ExtResource("t40")]
+position = Vector3(35.000000, 0.150000, -49.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="cafe_umbrella_0217" parent="TerraceAirwell" instance=ExtResource("t42")]
+position = Vector3(34.200000, 0.150000, -48.100000)
+
+[node name="cafe_table_0218" parent="TerraceAirwell" instance=ExtResource("t41")]
+position = Vector3(37.800000, 0.150000, -46.900000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="cafe_chair_0219" parent="TerraceAirwell" instance=ExtResource("t40")]
+position = Vector3(37.000000, 0.150000, -46.900000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="cafe_chair_0220" parent="TerraceAirwell" instance=ExtResource("t40")]
+position = Vector3(38.600000, 0.150000, -46.900000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="cafe_umbrella_0221" parent="TerraceAirwell" instance=ExtResource("t42")]
+position = Vector3(37.800000, 0.150000, -47.800000)
+
+[node name="flowerbed_0222" parent="TerraceAirwell" instance=ExtResource("t51")]
+position = Vector3(36.000000, 0.150000, -51.700000)
+
+[node name="bench_0223" parent="TerraceAirwell" instance=ExtResource("t4")]
+position = Vector3(36.000000, 0.150000, -44.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="trash_bin_0224" parent="TerraceAirwell" instance=ExtResource("t85")]
+position = Vector3(32.200000, 0.150000, -45.600000)
+
+[node name="parcel_lockers_0225" parent="TerraceAirwell" instance=ExtResource("t64")]
+position = Vector3(2.000000, 0.150000, -50.100000)
+
+[node name="drying_rack_yard_0226" parent="TerraceAirwell" instance=ExtResource("t49")]
+position = Vector3(-14.000000, 0.150000, -50.100000)
+
+[node name="GarageAnchor" type="Node3D" parent="."]
+
+[node name="building_parking_garage_0227" parent="GarageAnchor" instance=ExtResource("t29")]
+position = Vector3(-79.937500, 0.150000, 16.300000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="CinemaAnchor" type="Node3D" parent="."]
+
+[node name="building_cinema_0228" parent="CinemaAnchor" instance=ExtResource("t18")]
+position = Vector3(-36.000000, 0.150000, 14.800000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="SouthMainStreetWest" type="Node3D" parent="."]
+
+[node name="building_hardware_0229" parent="SouthMainStreetWest" instance=ExtResource("t22")]
+position = Vector3(-7.840000, 0.150000, 11.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_laundry_0230" parent="SouthMainStreetWest" instance=ExtResource("t23")]
+position = Vector3(-0.400000, 0.150000, 11.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_bookstore_0231" parent="SouthMainStreetWest" instance=ExtResource("t16")]
+position = Vector3(7.440000, 0.150000, 11.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="SouthMainStreetEast" type="Node3D" parent="."]
+
+[node name="building_old_shop_0232" parent="SouthMainStreetEast" instance=ExtResource("t28")]
+position = Vector3(27.660000, 0.150000, 11.450000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_pharmacy_0233" parent="SouthMainStreetEast" instance=ExtResource("t30")]
+position = Vector3(36.300000, 0.150000, 11.230000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_noodle_shop_0234" parent="SouthMainStreetEast" instance=ExtResource("t25")]
+position = Vector3(43.140000, 0.150000, 11.700000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="InnerLaneWest" type="Node3D" parent="."]
+
+[node name="building_cafe_0235" parent="InnerLaneWest" instance=ExtResource("t17")]
+position = Vector3(-7.140000, 0.150000, 30.850000)
+
+[node name="building_bookstore_0236" parent="InnerLaneWest" instance=ExtResource("t16")]
+position = Vector3(0.200000, 0.150000, 31.600000)
+
+[node name="building_pharmacy_0237" parent="InnerLaneWest" instance=ExtResource("t30")]
+position = Vector3(7.840000, 0.150000, 31.370000)
+
+[node name="InnerLaneEast" type="Node3D" parent="."]
+
+[node name="building_old_shop_0238" parent="InnerLaneEast" instance=ExtResource("t28")]
+position = Vector3(27.360000, 0.150000, 31.150000)
+
+[node name="building_laundry_0239" parent="InnerLaneEast" instance=ExtResource("t23")]
+position = Vector3(36.200000, 0.150000, 31.600000)
+
+[node name="building_barber_0240" parent="InnerLaneEast" instance=ExtResource("t15")]
+position = Vector3(42.840000, 0.150000, 31.273000)
+
+[node name="InnerLaneSouthWest" type="Node3D" parent="."]
+
+[node name="building_cafe_0241" parent="InnerLaneSouthWest" instance=ExtResource("t17")]
+position = Vector3(-6.260000, 0.150000, 41.450000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_old_house_0242" parent="InnerLaneSouthWest" instance=ExtResource("t27")]
+position = Vector3(1.500000, 0.150000, 40.800000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_old_shop_0243" parent="InnerLaneSouthWest" instance=ExtResource("t28")]
+position = Vector3(11.260000, 0.150000, 41.150000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="InnerLaneSouthEast" type="Node3D" parent="."]
+
+[node name="building_pharmacy_0244" parent="InnerLaneSouthEast" instance=ExtResource("t30")]
+position = Vector3(28.660000, 0.150000, 40.930000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_bookstore_0245" parent="InnerLaneSouthEast" instance=ExtResource("t16")]
+position = Vector3(36.300000, 0.150000, 40.700000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_cafe_0246" parent="InnerLaneSouthEast" instance=ExtResource("t17")]
+position = Vector3(43.640000, 0.150000, 41.450000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="SouthOuterStreet" type="Node3D" parent="."]
+
+[node name="building_old_shop_0247" parent="SouthOuterStreet" instance=ExtResource("t28")]
+position = Vector3(-1.570000, 0.150000, 58.550000)
+
+[node name="building_cafe_0248" parent="SouthOuterStreet" instance=ExtResource("t17")]
+position = Vector3(6.770000, 0.150000, 58.250000)
+
+[node name="building_old_house_0249" parent="SouthOuterStreet" instance=ExtResource("t27")]
+position = Vector3(14.530000, 0.150000, 58.900000)
+
+[node name="building_pharmacy_0250" parent="SouthOuterStreet" instance=ExtResource("t30")]
+position = Vector3(22.590000, 0.150000, 58.770000)
+
+[node name="building_bookstore_0251" parent="SouthOuterStreet" instance=ExtResource("t16")]
+position = Vector3(30.230000, 0.150000, 59.000000)
+
+[node name="building_old_shop_0252" parent="SouthOuterStreet" instance=ExtResource("t28")]
+position = Vector3(39.570000, 0.150000, 58.550000)
+
+[node name="CivicCourt" type="Node3D" parent="."]
+
+[node name="park_gazebo_0253" parent="CivicCourt" instance=ExtResource("t66")]
+position = Vector3(-46.000000, 0.150000, 49.000000)
+
+[node name="park_chess_table_0254" parent="CivicCourt" instance=ExtResource("t65")]
+position = Vector3(-33.000000, 0.150000, 53.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="playground_seesaw_0255" parent="CivicCourt" instance=ExtResource("t72")]
+position = Vector3(-35.000000, 0.150000, 44.000000)
+
+[node name="playground_sandbox_0256" parent="CivicCourt" instance=ExtResource("t71")]
+position = Vector3(-27.000000, 0.150000, 54.000000)
+
+[node name="park_tree_broad_0257" parent="CivicCourt" instance=ExtResource("t68")]
+position = Vector3(-57.000000, 0.150000, 52.000000)
+
+[node name="bench_0258" parent="CivicCourt" instance=ExtResource("t4")]
+position = Vector3(-39.000000, 0.150000, 58.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="bench_0259" parent="CivicCourt" instance=ExtResource("t4")]
+position = Vector3(-29.000000, 0.150000, 41.000000)
+
+[node name="drinking_fountain_0260" parent="CivicCourt" instance=ExtResource("t48")]
+position = Vector3(-23.000000, 0.150000, 46.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="flowering_tree_0271" parent="CivicCourt" instance=ExtResource("t52")]
+position = Vector3(-24.000000, 0.150000, 49.000000)
+
+[node name="flowerbed_0272" parent="CivicCourt" instance=ExtResource("t51")]
+position = Vector3(-24.000000, 0.150000, 57.500000)
+
+[node name="CinemaCourtMarket" type="Node3D" parent="."]
+
+[node name="market_stall_0261" parent="CinemaCourtMarket" instance=ExtResource("t58")]
+position = Vector3(-54.000000, 0.150000, 44.000000)
+
+[node name="fruit_stand_0262" parent="CinemaCourtMarket" instance=ExtResource("t53")]
+position = Vector3(-51.000000, 0.150000, 44.600000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="shopping_cart_0263" parent="CinemaCourtMarket" instance=ExtResource("t80")]
+position = Vector3(-56.600000, 0.150000, 43.300000)
+
+[node name="shopping_cart_0264" parent="CinemaCourtMarket" instance=ExtResource("t80")]
+position = Vector3(-56.600000, 0.150000, 44.700000)
+
+[node name="recycling_bins_0265" parent="CinemaCourtMarket" instance=ExtResource("t73")]
+position = Vector3(-50.800000, 0.150000, 42.000000)
+
+[node name="trash_bin_0266" parent="CinemaCourtMarket" instance=ExtResource("t85")]
+position = Vector3(-56.700000, 0.150000, 46.400000)
+
+[node name="bench_0267" parent="CinemaCourtMarket" instance=ExtResource("t4")]
+position = Vector3(-53.700000, 0.150000, 48.100000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="sandwich_board_0268" parent="CinemaCourtMarket" instance=ExtResource("t79")]
+position = Vector3(-51.100000, 0.150000, 46.900000)
+
+[node name="breakfast_cart_0269" parent="CinemaCourtMarket" instance=ExtResource("t9")]
+position = Vector3(-21.500000, 0.150000, 42.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="bench_0270" parent="CinemaCourtMarket" instance=ExtResource("t4")]
+position = Vector3(-23.000000, 0.150000, 52.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="ShoppingLaneCafe" type="Node3D" parent="."]
+
+[node name="cafe_table_0273" parent="ShoppingLaneCafe" instance=ExtResource("t41")]
+position = Vector3(-3.000000, 0.150000, 37.800000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="cafe_chair_0274" parent="ShoppingLaneCafe" instance=ExtResource("t40")]
+position = Vector3(-3.000000, 0.150000, 38.600000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="cafe_chair_0275" parent="ShoppingLaneCafe" instance=ExtResource("t40")]
+position = Vector3(-3.000000, 0.150000, 37.000000)
+
+[node name="cafe_umbrella_0276" parent="ShoppingLaneCafe" instance=ExtResource("t42")]
+position = Vector3(-2.100000, 0.150000, 37.800000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="cafe_table_0277" parent="ShoppingLaneCafe" instance=ExtResource("t41")]
+position = Vector3(-0.900000, 0.150000, 34.200000)
+rotation_degrees = Vector3(0, 270, 0)
+
+[node name="cafe_chair_0278" parent="ShoppingLaneCafe" instance=ExtResource("t40")]
+position = Vector3(-0.900000, 0.150000, 35.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="cafe_chair_0279" parent="ShoppingLaneCafe" instance=ExtResource("t40")]
+position = Vector3(-0.900000, 0.150000, 33.400000)
+
+[node name="cafe_umbrella_0280" parent="ShoppingLaneCafe" instance=ExtResource("t42")]
+position = Vector3(-1.800000, 0.150000, 34.200000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="flowerbed_0281" parent="ShoppingLaneCafe" instance=ExtResource("t51")]
+position = Vector3(-5.700000, 0.150000, 36.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="bench_0282" parent="ShoppingLaneCafe" instance=ExtResource("t4")]
+position = Vector3(1.500000, 0.150000, 36.000000)
+rotation_degrees = Vector3(0, 270, 0)
+
+[node name="trash_bin_0283" parent="ShoppingLaneCafe" instance=ExtResource("t85")]
+position = Vector3(0.400000, 0.150000, 39.800000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="ShoppingLaneBookshop" type="Node3D" parent="."]
+
+[node name="sandwich_board_0284" parent="ShoppingLaneBookshop" instance=ExtResource("t79")]
+position = Vector3(33.900000, 0.150000, 34.100000)
+
+[node name="news_box_0285" parent="ShoppingLaneBookshop" instance=ExtResource("t59")]
+position = Vector3(38.200000, 0.150000, 33.900000)
+
+[node name="flowerbed_0286" parent="ShoppingLaneBookshop" instance=ExtResource("t51")]
+position = Vector3(34.000000, 0.150000, 36.200000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="bench_0287" parent="ShoppingLaneBookshop" instance=ExtResource("t4")]
+position = Vector3(38.000000, 0.150000, 36.600000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="trash_bin_0288" parent="ShoppingLaneBookshop" instance=ExtResource("t85")]
+position = Vector3(38.600000, 0.150000, 35.000000)
+
+[node name="bollard_0289" parent="ShoppingLaneBookshop" instance=ExtResource("t8")]
+position = Vector3(35.150000, 0.150000, 37.900000)
+
+[node name="bollard_0290" parent="ShoppingLaneBookshop" instance=ExtResource("t8")]
+position = Vector3(36.850000, 0.150000, 37.900000)
+
+[node name="mailbox_0291" parent="ShoppingLaneBookshop" instance=ExtResource("t57")]
+position = Vector3(33.100000, 0.150000, 34.800000)
+
+[node name="ShoppingLaneKiosk" type="Node3D" parent="."]
+
+[node name="newspaper_kiosk_0292" parent="ShoppingLaneKiosk" instance=ExtResource("t61")]
+position = Vector3(21.500000, 0.150000, 35.900000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="GarageRear" type="Node3D" parent="."]
+
+[node name="bike_shed_0293" parent="GarageRear" instance=ExtResource("t7")]
+position = Vector3(-83.000000, 0.150000, 56.500000)
+
+[node name="recycling_bins_0294" parent="GarageRear" instance=ExtResource("t73")]
+position = Vector3(-67.000000, 0.150000, 57.000000)
+
+[node name="WorkshopMainFront" type="Node3D" parent="."]
+
+[node name="building_hardware_0295" parent="WorkshopMainFront" instance=ExtResource("t22")]
+position = Vector3(76.990000, 0.150000, 11.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_laundry_0296" parent="WorkshopMainFront" instance=ExtResource("t23")]
+position = Vector3(84.430000, 0.150000, 11.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_old_shop_0297" parent="WorkshopMainFront" instance=ExtResource("t28")]
+position = Vector3(93.270000, 0.150000, 11.450000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_bookstore_0298" parent="WorkshopMainFront" instance=ExtResource("t16")]
+position = Vector3(102.610000, 0.150000, 11.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="WorkshopRearFront" type="Node3D" parent="."]
+
+[node name="building_under_construction_0299" parent="WorkshopRearFront" instance=ExtResource("t33")]
+position = Vector3(77.147500, 0.152462, 32.555000)
+
+[node name="building_hardware_0300" parent="WorkshopRearFront" instance=ExtResource("t22")]
+position = Vector3(87.867500, 0.150000, 33.800000)
+
+[node name="WorkshopSouthHousing" type="Node3D" parent="."]
+
+[node name="building_back_row_attic_0301" parent="WorkshopSouthHousing" instance=ExtResource("t10")]
+position = Vector3(80.660000, 0.150000, 59.070000)
+
+[node name="building_residential_0302" parent="WorkshopSouthHousing" instance=ExtResource("t31")]
+position = Vector3(90.400000, 0.150000, 58.450000)
+
+[node name="building_old_shop_0303" parent="WorkshopSouthHousing" instance=ExtResource("t28")]
+position = Vector3(99.240000, 0.150000, 58.550000)
+
+[node name="WorkshopLoading" type="Node3D" parent="."]
+
+[node name="small_truck_0304" parent="WorkshopLoading" instance=ExtResource("t81")]
+position = Vector3(80.000000, 0.150000, 41.000000)
+
+[node name="parcel_lockers_0305" parent="WorkshopLoading" instance=ExtResource("t64")]
+position = Vector3(76.500000, 0.150000, 39.100000)
+
+[node name="bike_rack_0306" parent="WorkshopLoading" instance=ExtResource("t6")]
+position = Vector3(76.700000, 0.150000, 43.000000)
+
+[node name="notice_board_0307" parent="WorkshopLoading" instance=ExtResource("t62")]
+position = Vector3(76.500000, 0.150000, 41.150000)
+
+[node name="garbage_station_0308" parent="WorkshopLoading" instance=ExtResource("t54")]
+position = Vector3(84.300000, 0.150000, 39.700000)
+
+[node name="recycling_bins_0309" parent="WorkshopLoading" instance=ExtResource("t73")]
+position = Vector3(84.000000, 0.150000, 43.500000)
+
+[node name="shopping_cart_0310" parent="WorkshopLoading" instance=ExtResource("t80")]
+position = Vector3(82.300000, 0.150000, 41.800000)
+
+[node name="bollard_0311" parent="WorkshopLoading" instance=ExtResource("t8")]
+position = Vector3(78.500000, 0.150000, 45.000000)
+
+[node name="bollard_0312" parent="WorkshopLoading" instance=ExtResource("t8")]
+position = Vector3(81.500000, 0.150000, 45.000000)
+
+[node name="LoadingCourt" type="Node3D" parent="."]
+
+[node name="delivery_van_0313" parent="LoadingCourt" instance=ExtResource("t47")]
+position = Vector3(100.000000, 0.150000, 35.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="parcel_lockers_0314" parent="LoadingCourt" instance=ExtResource("t64")]
+position = Vector3(105.000000, 0.150000, 46.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="WorkshopDomestic" type="Node3D" parent="."]
+
+[node name="drying_rack_yard_0315" parent="WorkshopDomestic" instance=ExtResource("t49")]
+position = Vector3(98.000000, 0.150000, 48.000000)
+
+[node name="BackdropNorth" type="Node3D" parent="Backdrop"]
+
+[node name="building_walkup_c_0316" parent="Backdrop/BackdropNorth" instance=ExtResource("t36")]
+position = Vector3(-92.020000, 0.150000, -82.500000)
+
+[node name="building_back_row_attic_0317" parent="Backdrop/BackdropNorth" instance=ExtResource("t10")]
+position = Vector3(-73.310000, 0.150000, -81.130000)
+
+[node name="building_residential_0318" parent="Backdrop/BackdropNorth" instance=ExtResource("t31")]
+position = Vector3(-63.570000, 0.150000, -81.750000)
+
+[node name="building_rowhouse_0319" parent="Backdrop/BackdropNorth" instance=ExtResource("t32")]
+position = Vector3(-47.360000, 0.150000, -82.500000)
+
+[node name="building_old_shop_0320" parent="Backdrop/BackdropNorth" instance=ExtResource("t28")]
+position = Vector3(-29.650001, 0.150000, -81.650000)
+
+[node name="building_walkup_b_0321" parent="Backdrop/BackdropNorth" instance=ExtResource("t35")]
+position = Vector3(-13.340001, 0.150000, -82.800000)
+
+[node name="building_back_row_attic_0322" parent="Backdrop/BackdropNorth" instance=ExtResource("t10")]
+position = Vector3(3.869999, 0.150000, -81.130000)
+
+[node name="building_residential_0323" parent="Backdrop/BackdropNorth" instance=ExtResource("t31")]
+position = Vector3(13.609999, 0.150000, -81.750000)
+
+[node name="building_corner_0324" parent="Backdrop/BackdropNorth" instance=ExtResource("t21")]
+position = Vector3(22.699999, 0.150000, -81.200000)
+
+[node name="building_modern_0325" parent="Backdrop/BackdropNorth" instance=ExtResource("t24")]
+position = Vector3(37.390000, 0.150000, -81.130000)
+
+[node name="building_old_shop_0326" parent="Backdrop/BackdropNorth" instance=ExtResource("t28")]
+position = Vector3(51.730000, 0.150000, -81.650000)
+
+[node name="building_residential_0327" parent="Backdrop/BackdropNorth" instance=ExtResource("t31")]
+position = Vector3(60.570000, 0.150000, -81.750000)
+
+[node name="building_back_row_attic_0328" parent="Backdrop/BackdropNorth" instance=ExtResource("t10")]
+position = Vector3(70.310000, 0.150000, -81.130000)
+
+[node name="building_office_tower_0329" parent="Backdrop/BackdropNorth" instance=ExtResource("t26")]
+position = Vector3(90.520000, 0.150000, -81.000000)
+
+[node name="BackdropSouth" type="Node3D" parent="Backdrop"]
+
+[node name="building_back_row_attic_0330" parent="Backdrop/BackdropSouth" instance=ExtResource("t10")]
+position = Vector3(-89.220001, 0.150000, 81.130000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_walkup_b_0331" parent="Backdrop/BackdropSouth" instance=ExtResource("t35")]
+position = Vector3(-72.010001, 0.150000, 82.800000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_old_shop_0332" parent="Backdrop/BackdropSouth" instance=ExtResource("t28")]
+position = Vector3(-55.700001, 0.150000, 81.650000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_residential_0333" parent="Backdrop/BackdropSouth" instance=ExtResource("t31")]
+position = Vector3(-46.860001, 0.150000, 81.750000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_rowhouse_0334" parent="Backdrop/BackdropSouth" instance=ExtResource("t32")]
+position = Vector3(-30.650001, 0.150000, 82.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_modern_0335" parent="Backdrop/BackdropSouth" instance=ExtResource("t24")]
+position = Vector3(-8.940001, 0.150000, 81.130000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_old_shop_0336" parent="Backdrop/BackdropSouth" instance=ExtResource("t28")]
+position = Vector3(5.399999, 0.150000, 81.650000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_cafe_0337" parent="Backdrop/BackdropSouth" instance=ExtResource("t17")]
+position = Vector3(13.739999, 0.150000, 81.950000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_back_row_slab_0338" parent="Backdrop/BackdropSouth" instance=ExtResource("t11")]
+position = Vector3(26.080000, 0.150000, 81.130000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_residential_0339" parent="Backdrop/BackdropSouth" instance=ExtResource("t31")]
+position = Vector3(38.920001, 0.150000, 81.750000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_walkup_a_0340" parent="Backdrop/BackdropSouth" instance=ExtResource("t34")]
+position = Vector3(51.730001, 0.150000, 82.500000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_bakery_0341" parent="Backdrop/BackdropSouth" instance=ExtResource("t13")]
+position = Vector3(66.540001, 0.150000, 81.750000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_corner_0342" parent="Backdrop/BackdropSouth" instance=ExtResource("t21")]
+position = Vector3(77.730001, 0.150000, 81.200000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="building_back_row_attic_0343" parent="Backdrop/BackdropSouth" instance=ExtResource("t10")]
+position = Vector3(89.220001, 0.150000, 81.130000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="BackdropSouthRear" type="Node3D" parent="Backdrop"]
+
+[node name="building_old_shop_0344" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t28")]
+position = Vector3(-94.410001, 0.150000, 102.850000)
+
+[node name="building_cafe_0345" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t17")]
+position = Vector3(-86.070001, 0.150000, 102.550000)
+
+[node name="building_old_house_0346" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t27")]
+position = Vector3(-78.310001, 0.150000, 103.200000)
+
+[node name="building_pharmacy_0347" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t30")]
+position = Vector3(-70.250001, 0.150000, 103.070000)
+
+[node name="building_bookstore_0348" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t16")]
+position = Vector3(-62.610000, 0.150000, 103.300000)
+
+[node name="building_old_shop_0349" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t28")]
+position = Vector3(-53.270001, 0.150000, 102.850000)
+
+[node name="building_laundry_0350" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t23")]
+position = Vector3(-44.430001, 0.150000, 103.300000)
+
+[node name="building_cafe_0351" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t17")]
+position = Vector3(-37.590000, 0.150000, 102.550000)
+
+[node name="building_old_house_0352" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t27")]
+position = Vector3(-29.830000, 0.150000, 103.200000)
+
+[node name="building_old_shop_0353" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t28")]
+position = Vector3(-20.070001, 0.150000, 102.850000)
+
+[node name="building_bookstore_0354" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t16")]
+position = Vector3(-10.730001, 0.150000, 103.300000)
+
+[node name="building_pharmacy_0355" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t30")]
+position = Vector3(-3.090000, 0.150000, 103.070000)
+
+[node name="building_laundry_0356" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t23")]
+position = Vector3(4.050000, 0.150000, 103.300000)
+
+[node name="building_cafe_0357" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t17")]
+position = Vector3(10.890001, 0.150000, 102.550000)
+
+[node name="building_old_house_0358" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t27")]
+position = Vector3(18.650001, 0.150000, 103.200000)
+
+[node name="building_old_shop_0359" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t28")]
+position = Vector3(28.410000, 0.150000, 102.850000)
+
+[node name="building_bookstore_0360" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t16")]
+position = Vector3(37.750000, 0.150000, 103.300000)
+
+[node name="building_pharmacy_0361" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t30")]
+position = Vector3(45.390000, 0.150000, 103.070000)
+
+[node name="building_old_house_0362" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t27")]
+position = Vector3(53.450000, 0.150000, 103.200000)
+
+[node name="building_cafe_0363" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t17")]
+position = Vector3(61.210000, 0.150000, 102.550000)
+
+[node name="building_old_shop_0364" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t28")]
+position = Vector3(69.550000, 0.150000, 102.850000)
+
+[node name="building_laundry_0365" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t23")]
+position = Vector3(78.390000, 0.150000, 103.300000)
+
+[node name="building_bookstore_0366" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t16")]
+position = Vector3(86.230001, 0.150000, 103.300000)
+
+[node name="building_old_house_0367" parent="Backdrop/BackdropSouthRear" instance=ExtResource("t27")]
+position = Vector3(94.990001, 0.150000, 103.200000)
+
+[node name="BackdropWest" type="Node3D" parent="Backdrop"]
+
+[node name="building_walkup_a_0368" parent="Backdrop/BackdropWest" instance=ExtResource("t34")]
+position = Vector3(-132.500000, 0.150000, -52.099999)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_back_row_attic_0369" parent="Backdrop/BackdropWest" instance=ExtResource("t10")]
+position = Vector3(-131.130000, 0.150000, -36.889999)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_residential_0370" parent="Backdrop/BackdropWest" instance=ExtResource("t31")]
+position = Vector3(-131.750000, 0.150000, -27.149999)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_corner_0371" parent="Backdrop/BackdropWest" instance=ExtResource("t21")]
+position = Vector3(-131.200000, 0.150000, -17.959999)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_old_shop_0372" parent="Backdrop/BackdropWest" instance=ExtResource("t28")]
+position = Vector3(-131.650000, 0.150000, -7.370000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_walkup_b_0373" parent="Backdrop/BackdropWest" instance=ExtResource("t35")]
+position = Vector3(-132.800000, 0.150000, 8.940000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_old_shop_0374" parent="Backdrop/BackdropWest" instance=ExtResource("t28")]
+position = Vector3(-131.650000, 0.150000, 25.250000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_residential_0375" parent="Backdrop/BackdropWest" instance=ExtResource("t31")]
+position = Vector3(-131.750000, 0.150000, 34.090000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_bakery_0376" parent="Backdrop/BackdropWest" instance=ExtResource("t13")]
+position = Vector3(-131.750000, 0.150000, 43.430000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="building_back_row_attic_0377" parent="Backdrop/BackdropWest" instance=ExtResource("t10")]
+position = Vector3(-131.130000, 0.150000, 55.169999)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="BackdropEast" type="Node3D" parent="Backdrop"]
+
+[node name="building_old_shop_0378" parent="Backdrop/BackdropEast" instance=ExtResource("t28")]
+position = Vector3(131.650000, 0.150000, -56.100000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="building_walkup_b_0379" parent="Backdrop/BackdropEast" instance=ExtResource("t35")]
+position = Vector3(132.800000, 0.150000, -39.790000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="building_residential_0380" parent="Backdrop/BackdropEast" instance=ExtResource("t31")]
+position = Vector3(131.750000, 0.150000, -24.980000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="building_back_row_attic_0381" parent="Backdrop/BackdropEast" instance=ExtResource("t10")]
+position = Vector3(131.130000, 0.150000, -15.240000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="building_corner_0382" parent="Backdrop/BackdropEast" instance=ExtResource("t21")]
+position = Vector3(131.200000, 0.150000, -3.750001)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="building_bakery_0383" parent="Backdrop/BackdropEast" instance=ExtResource("t13")]
+position = Vector3(131.750000, 0.150000, 7.439999)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="building_back_row_slab_0384" parent="Backdrop/BackdropEast" instance=ExtResource("t11")]
+position = Vector3(131.130000, 0.150000, 22.280000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="building_old_shop_0385" parent="Backdrop/BackdropEast" instance=ExtResource("t28")]
+position = Vector3(131.650000, 0.150000, 36.620000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="building_residential_0386" parent="Backdrop/BackdropEast" instance=ExtResource("t31")]
+position = Vector3(131.750000, 0.150000, 45.460000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="building_back_row_attic_0387" parent="Backdrop/BackdropEast" instance=ExtResource("t10")]
+position = Vector3(131.130000, 0.150000, 55.200000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Crossings" type="Node3D" parent="."]
+
+[node name="crosswalk_0388" parent="Crossings" instance=ExtResource("t46")]
+position = Vector3(-65.000000, 0.000000, -2.250000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="crosswalk_0389" parent="Crossings" instance=ExtResource("t46")]
+position = Vector3(-65.000000, 0.000000, 2.250000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="crosswalk_0390" parent="Crossings" instance=ExtResource("t46")]
+position = Vector3(75.000000, 0.000000, -2.250000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="crosswalk_0391" parent="Crossings" instance=ExtResource("t46")]
+position = Vector3(75.000000, 0.000000, 2.250000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="crosswalk_0392" parent="Crossings" instance=ExtResource("t46")]
+position = Vector3(-52.250000, 0.000000, -15.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="crosswalk_0393" parent="Crossings" instance=ExtResource("t46")]
+position = Vector3(-47.750000, 0.000000, -15.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="crosswalk_0394" parent="Crossings" instance=ExtResource("t46")]
+position = Vector3(57.750000, 0.000000, 15.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="crosswalk_0395" parent="Crossings" instance=ExtResource("t46")]
+position = Vector3(62.250000, 0.000000, 15.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Signals" type="Node3D" parent="."]
+
+[node name="traffic_signal_0396" parent="Signals" instance=ExtResource("t84")]
+position = Vector3(-61.000000, 0.150000, -8.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="traffic_signal_0397" parent="Signals" instance=ExtResource("t84")]
+position = Vector3(-39.000000, 0.150000, 8.000000)
+
+[node name="traffic_signal_0398" parent="Signals" instance=ExtResource("t84")]
+position = Vector3(49.000000, 0.150000, -8.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="traffic_signal_0399" parent="Signals" instance=ExtResource("t84")]
+position = Vector3(71.000000, 0.150000, 8.000000)
+
+[node name="RoadMarkings" type="Node3D" parent="."]
+
+[node name="lane_line_dashed_0400" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-105.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0401" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-95.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0402" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-85.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0403" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-75.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0404" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-65.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0405" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-35.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0406" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-25.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0407" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-15.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0408" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-5.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0409" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(5.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0410" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(15.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0411" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(25.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0412" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(35.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0413" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(45.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0414" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(55.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0415" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(65.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0416" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(75.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0417" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(85.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0418" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(95.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0419" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(105.000000, 0.000000, -70.000000)
+
+[node name="lane_line_dashed_0420" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-105.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0421" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-95.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0422" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-75.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0423" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-65.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0424" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-35.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0425" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-25.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0426" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-15.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0427" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-5.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0428" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(5.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0429" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(15.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0430" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(25.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0431" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(45.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0432" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(75.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0433" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(85.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0434" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(95.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0435" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(105.000000, 0.000000, 0.000000)
+
+[node name="lane_line_dashed_0436" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-105.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0437" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-95.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0438" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-85.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0439" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-75.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0440" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-65.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0441" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-55.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0442" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-45.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0443" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-35.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0444" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-25.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0445" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-15.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0446" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-5.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0447" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(5.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0448" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(15.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0449" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(25.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0450" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(35.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0451" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(45.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0452" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(75.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0453" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(85.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0454" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(95.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0455" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(105.000000, 0.000000, 70.000000)
+
+[node name="lane_line_dashed_0456" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-120.000000, 0.000000, -55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0457" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-120.000000, 0.000000, -45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0458" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-120.000000, 0.000000, -35.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0459" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-120.000000, 0.000000, -15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0460" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-120.000000, 0.000000, 15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0461" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-120.000000, 0.000000, 25.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0462" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-120.000000, 0.000000, 35.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0463" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-120.000000, 0.000000, 45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0464" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-120.000000, 0.000000, 55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0465" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(120.000000, 0.000000, -55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0466" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(120.000000, 0.000000, -45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0467" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(120.000000, 0.000000, -25.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0468" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(120.000000, 0.000000, -15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0469" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(120.000000, 0.000000, 15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0470" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(120.000000, 0.000000, 25.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0471" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(120.000000, 0.000000, 45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0472" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(120.000000, 0.000000, 55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0473" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-50.000000, 0.000000, -55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0474" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-50.000000, 0.000000, -45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0475" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(-50.000000, 0.000000, -15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0476" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(60.000000, 0.000000, 15.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0477" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(60.000000, 0.000000, 25.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0478" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(60.000000, 0.000000, 35.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0479" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(60.000000, 0.000000, 45.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="lane_line_dashed_0480" parent="RoadMarkings" instance=ExtResource("t55")]
+position = Vector3(60.000000, 0.000000, 55.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Vehicles" type="Node3D" parent="."]
+
+[node name="bus_0481" parent="Vehicles" instance=ExtResource("t37")]
+position = Vector3(-8.000000, -0.000000, 3.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="car_hatchback_0482" parent="Vehicles" instance=ExtResource("t45")]
+position = Vector3(-29.000000, -0.000000, -3.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="car_estate_0483" parent="Vehicles" instance=ExtResource("t44")]
+position = Vector3(98.000000, -0.000000, 3.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="car_0484" parent="Vehicles" instance=ExtResource("t43")]
+position = Vector3(-90.000000, -0.000000, -3.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="delivery_van_0485" parent="Vehicles" instance=ExtResource("t47")]
+position = Vector3(-53.000000, -0.000000, -48.000000)
+
+[node name="small_truck_0486" parent="Vehicles" instance=ExtResource("t81")]
+position = Vector3(117.000000, -0.000000, 18.000000)
+
+[node name="ambulance_0487" parent="Vehicles" instance=ExtResource("t2")]
+position = Vector3(-93.000000, -0.000000, 73.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="BusStops" type="Node3D" parent="."]
+
+[node name="bus_shelter_0488" parent="BusStops" instance=ExtResource("t38")]
+position = Vector3(-12.000000, 0.150000, 8.000000)
+
+[node name="bus_stop_sign_0489" parent="BusStops" instance=ExtResource("t39")]
+position = Vector3(-8.000000, 0.150000, 8.000000)
+
+[node name="bus_shelter_0490" parent="BusStops" instance=ExtResource("t38")]
+position = Vector3(15.000000, 0.150000, -8.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="bus_stop_sign_0491" parent="BusStops" instance=ExtResource("t39")]
+position = Vector3(19.000000, 0.150000, -8.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="StreetFurniture" type="Node3D" parent="."]
+
+[node name="street_lamp_0492" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(-105.000000, 0.150000, -8.000000)
+
+[node name="street_lamp_0493" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(-58.000000, 0.150000, -55.000000)
+
+[node name="street_lamp_0494" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(-38.000000, 0.150000, -8.000000)
+
+[node name="street_lamp_0495" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(30.000000, 0.150000, -8.000000)
+
+[node name="street_lamp_0496" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(107.000000, 0.150000, -9.000000)
+
+[node name="street_lamp_0497" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(-108.000000, 0.150000, 8.000000)
+
+[node name="street_lamp_0498" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(-18.000000, 0.150000, 10.000000)
+
+[node name="street_lamp_0499" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(48.000000, 0.150000, 10.000000)
+
+[node name="street_lamp_0500" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(78.000000, 0.150000, 8.000000)
+
+[node name="street_lamp_0501" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(111.000000, 0.150000, 53.000000)
+
+[node name="street_lamp_0502" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(-109.000000, 0.150000, 59.000000)
+
+[node name="street_lamp_0503" parent="StreetFurniture" instance=ExtResource("t82")]
+position = Vector3(49.000000, 0.150000, 59.000000)
+
+[node name="phone_booth_0511" parent="StreetFurniture" instance=ExtResource("t70")]
+position = Vector3(-63.000000, 0.150000, -8.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="atm_standalone_0512" parent="StreetFurniture" instance=ExtResource("t3")]
+position = Vector3(82.000000, 0.150000, -8.000000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="news_rack_0513" parent="StreetFurniture" instance=ExtResource("t60")]
+position = Vector3(-17.000000, 0.150000, 8.000000)
+
+[node name="mailbox_0514" parent="StreetFurniture" instance=ExtResource("t57")]
+position = Vector3(74.000000, 0.150000, 8.000000)
+
+[node name="notice_board_0515" parent="StreetFurniture" instance=ExtResource("t62")]
+position = Vector3(-81.000000, 0.150000, -28.000000)
+
+[node name="fire_hydrant_0516" parent="StreetFurniture" instance=ExtResource("t50")]
+position = Vector3(106.000000, 0.150000, 8.000000)
+
+[node name="trash_bin_0517" parent="StreetFurniture" instance=ExtResource("t85")]
+position = Vector3(-15.000000, 0.150000, 8.000000)
+
+[node name="trash_bin_0518" parent="StreetFurniture" instance=ExtResource("t85")]
+position = Vector3(31.000000, 0.150000, -8.000000)
+
+[node name="StreetTrees" type="Node3D" parent="."]
+
+[node name="street_tree_0504" parent="StreetTrees" instance=ExtResource("t83")]
+position = Vector3(-106.000000, 0.150000, 8.000000)
+
+[node name="street_tree_0505" parent="StreetTrees" instance=ExtResource("t83")]
+position = Vector3(27.000000, 0.150000, 8.000000)
+
+[node name="street_tree_0506" parent="StreetTrees" instance=ExtResource("t83")]
+position = Vector3(87.000000, 0.150000, -8.000000)
+
+[node name="street_tree_0507" parent="StreetTrees" instance=ExtResource("t83")]
+position = Vector3(-10.000000, 0.150000, -61.000000)
+
+[node name="street_tree_0508" parent="StreetTrees" instance=ExtResource("t83")]
+position = Vector3(74.000000, 0.150000, 61.000000)
+
+[node name="street_tree_0509" parent="StreetTrees" instance=ExtResource("t83")]
+position = Vector3(112.000000, 0.150000, -17.000000)
+
+[node name="street_tree_0510" parent="StreetTrees" instance=ExtResource("t83")]
+position = Vector3(-111.000000, 0.150000, -46.000000)

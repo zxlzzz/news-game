@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://models/held_suitcase.glb" id="1"]
+
+[node name="RollingSuitcase" type="Node3D" groups=["street_item", "pushed"]]
+
+[node name="model" parent="." instance=ExtResource("1")]
+position = Vector3(0, 0.955, 0)
+
+[node name="post_pull" type="Marker3D" parent="."]
+position = Vector3(0.24, 0, 0.28)

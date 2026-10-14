@@ -1,5 +1,8 @@
 """消防车。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'fire_engine'
+WHEEL_ARCH_CLEARANCE = 0.05
+WHEEL_AXLE_RADIUS = 0.045
+WHEEL_AXLE_FIT_CLEARANCE = 0.004
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['cylinder', 'tire', 0.43, 0.18, (-1.2, 0.43, -2.34), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'hub', 0.2064, 0.2, (-1.2, 0.43, -2.34), 'metal', (1, 0, 0), None],
@@ -10,20 +13,20 @@ PARTS = [['cylinder', 'tire', 0.43, 0.18, (-1.2, 0.43, -2.34), 'metal_dark', (1,
  ['cylinder', 'tire', 0.43, 0.18, (1.2, 0.43, 2.262), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'hub', 0.2064, 0.2, (1.2, 0.43, 2.262), 'metal', (1, 0, 0), None],
  ['box', 'chassis', (2.4, 0.25, 7.8), (0, 0.5, 0), 'metal_dark'],
- ['box', 'cab', (2.4, 1.9, 1.65), (0, 1.25, 3.05), 'metal'],
+ ['box', 'cab', (2.4, 1.575, 1.65), (0, 1.4125, 3.05), 'metal'],
  ['box', 'windshield', (1.92, 0.65, 0.04), (0, 1.8399999999999999, 3.895), 'window'],
  ['box', 'bumper', (2.48, 0.18, 0.18), (0, 0.56, 3.94), 'metal_dark'],
  ['box', 'side_window', (0.04, 0.65, 0.9), (-1.21, 1.8399999999999999, 3.1399999999999997), 'window'],
  ['box', 'side_window', (0.04, 0.65, 0.9), (1.21, 1.8399999999999999, 3.1399999999999997), 'window'],
- ['box', 'headlight', (0.35, 0.2, 0.05), (-0.72, 0.8, 3.9699999999999998), 'accent'],
- ['box', 'headlight', (0.35, 0.2, 0.05), (0.72, 0.8, 3.9699999999999998), 'accent'],
+ ['box', 'headlight', (0.35, 0.2, 0.05), (-0.72, 0.8, 3.9), 'accent'],
+ ['box', 'headlight', (0.35, 0.2, 0.05), (0.72, 0.8, 3.9), 'accent'],
  ['box', 'equipment_box', (2.4, 1.6, 5.9), (0, 1.45, -0.9499999999999997), 'metal'],
- ['box', 'shutter', (0.03, 1.18, 0.9), (-1.2249999999999999, 1.43, -3.3), 'trim_dark'],
- ['box', 'shutter', (0.03, 1.18, 0.9), (-1.2249999999999999, 1.43, -2.2), 'trim_dark'],
- ['box', 'shutter', (0.03, 1.18, 0.9), (-1.2249999999999999, 1.43, -1.1), 'trim_dark'],
- ['box', 'shutter', (0.03, 1.18, 0.9), (1.2249999999999999, 1.43, -3.3), 'trim_dark'],
- ['box', 'shutter', (0.03, 1.18, 0.9), (1.2249999999999999, 1.43, -2.2), 'trim_dark'],
- ['box', 'shutter', (0.03, 1.18, 0.9), (1.2249999999999999, 1.43, -1.1), 'trim_dark'],
+ ['box', 'shutter', (0.03, 1.18, 0.9), (-1.2149999999999999, 1.43, -3.3), 'trim_dark'],
+ ['box', 'shutter', (0.03, 1.18, 0.9), (-1.2149999999999999, 1.43, -2.2), 'trim_dark'],
+ ['box', 'shutter', (0.03, 1.18, 0.9), (-1.2149999999999999, 1.43, -1.1), 'trim_dark'],
+ ['box', 'shutter', (0.03, 1.18, 0.9), (1.2149999999999999, 1.43, -3.3), 'trim_dark'],
+ ['box', 'shutter', (0.03, 1.18, 0.9), (1.2149999999999999, 1.43, -2.2), 'trim_dark'],
+ ['box', 'shutter', (0.03, 1.18, 0.9), (1.2149999999999999, 1.43, -1.1), 'trim_dark'],
  ['bar', 'ladder_rail', (-0.36, 2.47, -3.8), (-0.36, 2.47, 3.6), 0.055, 'metal_dark'],
  ['bar', 'ladder_rail', (0.36, 2.47, -3.8), (0.36, 2.47, 3.6), 0.055, 'metal_dark'],
  ['bar', 'ladder_rung', (-0.36, 2.47, -3.6), (0.36, 2.47, -3.6), 0.035, 'metal'],
@@ -32,18 +35,74 @@ PARTS = [['cylinder', 'tire', 0.43, 0.18, (-1.2, 0.43, -2.34), 'metal_dark', (1,
  ['bar', 'ladder_rung', (-0.36, 2.47, -2.4), (0.36, 2.47, -2.4), 0.035, 'metal'],
  ['bar', 'ladder_rung', (-0.36, 2.47, -2.0), (0.36, 2.47, -2.0), 0.035, 'metal'],
  ['bar', 'ladder_rung', (-0.36, 2.47, -1.6), (0.36, 2.47, -1.6), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.36, 2.47, -1.1999999999999997), (0.36, 2.47, -1.1999999999999997), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.36, 2.47, -0.7999999999999998), (0.36, 2.47, -0.7999999999999998), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.36, 2.47, -0.3999999999999999), (0.36, 2.47, -0.3999999999999999), 0.035, 'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.36, 2.47, -1.1999999999999997),
+  (0.36, 2.47, -1.1999999999999997),
+  0.035,
+  'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.36, 2.47, -0.7999999999999998),
+  (0.36, 2.47, -0.7999999999999998),
+  0.035,
+  'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.36, 2.47, -0.3999999999999999),
+  (0.36, 2.47, -0.3999999999999999),
+  0.035,
+  'metal'],
  ['bar', 'ladder_rung', (-0.36, 2.47, 0.0), (0.36, 2.47, 0.0), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.36, 2.47, 0.3999999999999999), (0.36, 2.47, 0.3999999999999999), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.36, 2.47, 0.8000000000000003), (0.36, 2.47, 0.8000000000000003), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.36, 2.47, 1.2000000000000006), (0.36, 2.47, 1.2000000000000006), 0.035, 'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.36, 2.47, 0.3999999999999999),
+  (0.36, 2.47, 0.3999999999999999),
+  0.035,
+  'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.36, 2.47, 0.8000000000000003),
+  (0.36, 2.47, 0.8000000000000003),
+  0.035,
+  'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.36, 2.47, 1.2000000000000006),
+  (0.36, 2.47, 1.2000000000000006),
+  0.035,
+  'metal'],
  ['bar', 'ladder_rung', (-0.36, 2.47, 1.6), (0.36, 2.47, 1.6), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.36, 2.47, 2.0000000000000004), (0.36, 2.47, 2.0000000000000004), 0.035, 'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.36, 2.47, 2.0000000000000004),
+  (0.36, 2.47, 2.0000000000000004),
+  0.035,
+  'metal'],
  ['bar', 'ladder_rung', (-0.36, 2.47, 2.4), (0.36, 2.47, 2.4), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.36, 2.47, 2.8000000000000003), (0.36, 2.47, 2.8000000000000003), 0.035, 'metal'],
- ['box', 'lightbar', (1.56, 0.15, 0.2), (0, 2.33, 3.05), 'accent']]
+ ['bar',
+  'ladder_rung',
+  (-0.36, 2.47, 2.8000000000000003),
+  (0.36, 2.47, 2.8000000000000003),
+  0.035,
+  'metal'],
+ ['box', 'lightbar', (1.56, 0.15, 0.2), (0, 2.33, 3.05), 'accent'],
+ ['box', 'lightbar_foot', (0.15, 0.054999999999999716, 0.15), (-0.52, 2.2275, 3.05), 'metal_dark'],
+ ['box', 'lightbar_foot', (0.15, 0.054999999999999716, 0.15), (0.52, 2.2275, 3.05), 'metal_dark'],
+ ['box',
+  'cargo_chassis_rail',
+  (0.18, 0.02499999999999991, 5.9),
+  (-0.7999999999999999, 0.6375, -0.9499999999999997),
+  'metal_dark'],
+ ['box',
+  'cargo_chassis_rail',
+  (0.18, 0.02499999999999991, 5.9),
+  (0.7999999999999999, 0.6375, -0.9499999999999997),
+  'metal_dark'],
+ ['box', 'ladder_mount', (0.13, 0.165, 0.14), (-0.36, 2.3325, -2.8), 'metal_dark'],
+ ['box', 'ladder_mount', (0.13, 0.165, 0.14), (-0.36, 2.3325, -0.3), 'metal_dark'],
+ ['box', 'ladder_mount', (0.13, 0.165, 0.14), (0.36, 2.3325, -2.8), 'metal_dark'],
+ ['box', 'ladder_mount', (0.13, 0.165, 0.14), (0.36, 2.3325, -0.3), 'metal_dark']]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -135,10 +194,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -272,8 +350,21 @@ def build():
         meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
         low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
         for o in bpy.context.scene.objects:
-            o.location.z -= low
+            if o.parent is None: o.location.z -= low
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from vehicle_geometry import finish_wheeled_vehicle
+    finish_wheeled_vehicle(bpy.context.scene.objects, WHEEL_ARCH_CLEARANCE, WHEEL_AXLE_RADIUS, WHEEL_AXLE_FIT_CLEARANCE)
     export(NAME)
 
 if __name__=='__main__':
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("fire_engine")

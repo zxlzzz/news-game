@@ -1,7 +1,1942 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=413 format=3]
 
 [ext_resource type="PackedScene" path="res://models/building_office_tower.glb" id="1"]
+
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part0"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part1"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part2"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part3"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part4"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part5"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part6"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part7"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part8"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part9"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part10"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part11"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part12"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part13"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part14"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part15"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part16"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part17"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part18"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part19"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part20"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part21"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part22"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part23"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part24"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part25"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part26"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part27"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part28"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part29"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part30"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part31"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part32"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part33"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part34"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part35"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part36"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part37"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part38"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part39"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part40"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part41"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part42"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part43"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part44"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part45"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part46"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part47"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part48"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part49"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part50"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part51"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part52"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part53"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part54"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part55"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part56"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part57"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part58"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part59"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part60"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part61"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part62"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part63"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part64"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part65"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part66"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part67"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part68"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part69"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part70"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part71"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part72"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part73"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part74"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part75"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part76"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part77"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part78"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part79"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part80"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part81"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part82"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part83"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part84"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part85"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part86"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part87"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part88"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part89"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part90"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part91"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part92"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part93"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part94"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part95"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part96"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part97"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part98"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part99"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part100"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part101"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part102"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part103"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part104"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part105"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part106"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part107"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part108"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part109"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part110"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part111"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part112"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part113"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part114"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part115"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part116"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part117"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part118"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part119"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part120"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part121"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part122"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part123"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part124"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part125"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part126"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part127"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part128"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part129"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part130"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part131"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part132"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part133"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part134"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part135"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part136"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part137"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part138"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part139"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part140"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part141"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part142"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part143"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part144"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part145"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part146"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part147"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part148"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part149"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part150"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part151"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part152"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part153"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part154"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part155"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part156"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part157"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part158"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part159"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part160"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part161"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part162"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part163"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part164"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part165"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part166"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part167"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part168"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part169"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part170"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part171"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part172"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part173"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part174"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part175"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part176"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part177"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part178"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part179"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part180"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part181"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part182"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part183"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part184"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part185"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part186"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part187"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part188"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part189"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part190"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part191"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part192"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part193"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part194"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part195"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part196"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part197"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part198"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part199"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part200"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part201"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part202"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part203"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part204"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part205"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part206"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part207"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part208"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part209"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part210"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part211"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part212"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part213"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part214"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part215"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part216"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part217"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part218"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part219"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part220"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part221"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part222"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part223"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part224"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part225"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part226"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part227"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part228"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part229"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part230"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part231"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part232"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part233"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part234"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part235"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part236"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part237"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part238"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part239"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part240"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part241"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part242"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part243"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part244"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part245"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part246"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part247"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part248"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part249"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part250"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part251"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part252"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part253"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part254"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part255"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part256"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part257"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part258"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part259"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part260"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part261"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part262"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part263"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part264"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part265"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part266"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part267"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part268"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part269"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part270"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part271"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part272"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part273"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part274"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part275"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part276"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part277"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part278"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part279"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part280"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part281"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part282"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part283"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part284"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part285"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part286"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part287"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part288"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part289"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part290"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part291"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part292"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part293"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part294"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part295"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part296"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part297"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part298"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part299"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part300"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part301"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part302"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part303"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part304"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part305"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part306"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part307"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part308"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part309"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part310"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part311"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part312"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part313"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part314"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part315"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part316"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part317"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part318"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part319"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part320"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part321"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part322"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part323"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part324"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part325"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part326"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part327"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part328"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part329"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part330"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part331"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part332"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part333"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part334"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part335"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part336"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part337"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part338"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part339"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part340"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part341"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part342"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part343"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part344"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part345"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part346"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part347"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part348"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part349"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part350"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part351"]
+[ext_resource type="PackedScene" path="res://types/window_4a91f89277.tscn" id="part352"]
+[ext_resource type="PackedScene" path="res://types/window_1a439d4c7e.tscn" id="part353"]
+[ext_resource type="PackedScene" path="res://types/window_b053545e6e.tscn" id="part354"]
+[ext_resource type="PackedScene" path="res://types/window_b053545e6e.tscn" id="part355"]
+[ext_resource type="PackedScene" path="res://types/window_1a439d4c7e.tscn" id="part356"]
+[ext_resource type="PackedScene" path="res://types/furnishing_aea889bfd8.tscn" id="part357"]
+[ext_resource type="PackedScene" path="res://types/furnishing_aea889bfd8.tscn" id="part358"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part359"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part360"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part361"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part362"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part363"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part364"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part365"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part366"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part367"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part368"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part369"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part370"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part371"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part372"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part373"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part374"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part375"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part376"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part377"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part378"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part379"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part380"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part381"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part382"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part383"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part384"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part385"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part386"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part387"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part388"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part389"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part390"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part391"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part392"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part393"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part394"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part395"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part396"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part397"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part398"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part399"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part400"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part401"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part402"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part403"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part404"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part405"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part406"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part407"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part408"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part409"]
+[ext_resource type="PackedScene" path="res://types/window_f9e28a9594.tscn" id="part410"]
 
 [node name="BuildingOfficeTower" type="Node3D" groups=["building"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+
+; BEGIN reusable components
+[node name="window_f9e28a9594_0" parent="." instance=ExtResource("part0")]
+position = Vector3(10.5, 0.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_1" parent="." instance=ExtResource("part1")]
+position = Vector3(7.0, 0.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_2" parent="." instance=ExtResource("part2")]
+position = Vector3(0.0, 4.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_3" parent="." instance=ExtResource("part3")]
+position = Vector3(3.5, 46.380001, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_4" parent="." instance=ExtResource("part4")]
+position = Vector3(0.0, 46.380001, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_5" parent="." instance=ExtResource("part5")]
+position = Vector3(-3.5, 46.380001, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_6" parent="." instance=ExtResource("part6")]
+position = Vector3(-7.0, 46.380001, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_7" parent="." instance=ExtResource("part7")]
+position = Vector3(-10.5, 46.380001, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_8" parent="." instance=ExtResource("part8")]
+position = Vector3(10.5, 49.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_9" parent="." instance=ExtResource("part9")]
+position = Vector3(7.0, 49.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_10" parent="." instance=ExtResource("part10")]
+position = Vector3(3.5, 49.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_11" parent="." instance=ExtResource("part11")]
+position = Vector3(0.0, 49.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_12" parent="." instance=ExtResource("part12")]
+position = Vector3(-3.5, 49.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_13" parent="." instance=ExtResource("part13")]
+position = Vector3(-3.5, 4.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_14" parent="." instance=ExtResource("part14")]
+position = Vector3(-7.0, 49.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_15" parent="." instance=ExtResource("part15")]
+position = Vector3(-10.5, 49.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_16" parent="." instance=ExtResource("part16")]
+position = Vector3(10.5, 52.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_17" parent="." instance=ExtResource("part17")]
+position = Vector3(7.0, 52.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_18" parent="." instance=ExtResource("part18")]
+position = Vector3(3.5, 52.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_19" parent="." instance=ExtResource("part19")]
+position = Vector3(0.0, 52.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_20" parent="." instance=ExtResource("part20")]
+position = Vector3(-3.5, 52.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_21" parent="." instance=ExtResource("part21")]
+position = Vector3(-7.0, 52.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_22" parent="." instance=ExtResource("part22")]
+position = Vector3(-10.5, 52.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_23" parent="." instance=ExtResource("part23")]
+position = Vector3(-7.0, 4.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_24" parent="." instance=ExtResource("part24")]
+position = Vector3(-10.5, 4.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_25" parent="." instance=ExtResource("part25")]
+position = Vector3(10.5, 7.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_26" parent="." instance=ExtResource("part26")]
+position = Vector3(7.0, 7.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_27" parent="." instance=ExtResource("part27")]
+position = Vector3(3.5, 7.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_28" parent="." instance=ExtResource("part28")]
+position = Vector3(0.0, 7.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_29" parent="." instance=ExtResource("part29")]
+position = Vector3(-3.5, 7.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_30" parent="." instance=ExtResource("part30")]
+position = Vector3(-7.0, 7.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_31" parent="." instance=ExtResource("part31")]
+position = Vector3(3.5, 0.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_32" parent="." instance=ExtResource("part32")]
+position = Vector3(-10.5, 7.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_33" parent="." instance=ExtResource("part33")]
+position = Vector3(10.5, 11.179999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_34" parent="." instance=ExtResource("part34")]
+position = Vector3(7.0, 11.179999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_35" parent="." instance=ExtResource("part35")]
+position = Vector3(3.5, 11.179999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_36" parent="." instance=ExtResource("part36")]
+position = Vector3(0.0, 11.179999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_37" parent="." instance=ExtResource("part37")]
+position = Vector3(-3.5, 11.179999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_38" parent="." instance=ExtResource("part38")]
+position = Vector3(-7.0, 11.179999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_39" parent="." instance=ExtResource("part39")]
+position = Vector3(-10.5, 11.179999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_40" parent="." instance=ExtResource("part40")]
+position = Vector3(10.5, 14.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_41" parent="." instance=ExtResource("part41")]
+position = Vector3(7.0, 14.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_42" parent="." instance=ExtResource("part42")]
+position = Vector3(0.0, 0.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_43" parent="." instance=ExtResource("part43")]
+position = Vector3(3.5, 14.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_44" parent="." instance=ExtResource("part44")]
+position = Vector3(0.0, 14.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_45" parent="." instance=ExtResource("part45")]
+position = Vector3(-3.5, 14.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_46" parent="." instance=ExtResource("part46")]
+position = Vector3(-7.0, 14.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_47" parent="." instance=ExtResource("part47")]
+position = Vector3(-10.5, 14.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_48" parent="." instance=ExtResource("part48")]
+position = Vector3(10.5, 17.58, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_49" parent="." instance=ExtResource("part49")]
+position = Vector3(7.0, 17.58, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_50" parent="." instance=ExtResource("part50")]
+position = Vector3(3.5, 17.58, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_51" parent="." instance=ExtResource("part51")]
+position = Vector3(0.0, 17.58, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_52" parent="." instance=ExtResource("part52")]
+position = Vector3(-3.5, 17.58, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_53" parent="." instance=ExtResource("part53")]
+position = Vector3(-3.5, 0.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_54" parent="." instance=ExtResource("part54")]
+position = Vector3(-7.0, 17.58, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_55" parent="." instance=ExtResource("part55")]
+position = Vector3(-10.5, 17.58, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_56" parent="." instance=ExtResource("part56")]
+position = Vector3(10.5, 20.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_57" parent="." instance=ExtResource("part57")]
+position = Vector3(7.0, 20.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_58" parent="." instance=ExtResource("part58")]
+position = Vector3(3.5, 20.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_59" parent="." instance=ExtResource("part59")]
+position = Vector3(0.0, 20.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_60" parent="." instance=ExtResource("part60")]
+position = Vector3(-3.5, 20.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_61" parent="." instance=ExtResource("part61")]
+position = Vector3(-7.0, 20.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_62" parent="." instance=ExtResource("part62")]
+position = Vector3(-10.5, 20.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_63" parent="." instance=ExtResource("part63")]
+position = Vector3(10.5, 23.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_64" parent="." instance=ExtResource("part64")]
+position = Vector3(-7.0, 0.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_65" parent="." instance=ExtResource("part65")]
+position = Vector3(7.0, 23.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_66" parent="." instance=ExtResource("part66")]
+position = Vector3(3.5, 23.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_67" parent="." instance=ExtResource("part67")]
+position = Vector3(0.0, 23.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_68" parent="." instance=ExtResource("part68")]
+position = Vector3(-3.5, 23.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_69" parent="." instance=ExtResource("part69")]
+position = Vector3(-7.0, 23.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_70" parent="." instance=ExtResource("part70")]
+position = Vector3(-10.5, 23.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_71" parent="." instance=ExtResource("part71")]
+position = Vector3(10.5, 27.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_72" parent="." instance=ExtResource("part72")]
+position = Vector3(7.0, 27.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_73" parent="." instance=ExtResource("part73")]
+position = Vector3(3.5, 27.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_74" parent="." instance=ExtResource("part74")]
+position = Vector3(0.0, 27.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_75" parent="." instance=ExtResource("part75")]
+position = Vector3(-10.5, 0.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_76" parent="." instance=ExtResource("part76")]
+position = Vector3(-3.5, 27.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_77" parent="." instance=ExtResource("part77")]
+position = Vector3(-7.0, 27.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_78" parent="." instance=ExtResource("part78")]
+position = Vector3(-10.5, 27.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_79" parent="." instance=ExtResource("part79")]
+position = Vector3(10.5, 30.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_80" parent="." instance=ExtResource("part80")]
+position = Vector3(7.0, 30.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_81" parent="." instance=ExtResource("part81")]
+position = Vector3(3.5, 30.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_82" parent="." instance=ExtResource("part82")]
+position = Vector3(0.0, 30.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_83" parent="." instance=ExtResource("part83")]
+position = Vector3(-3.5, 30.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_84" parent="." instance=ExtResource("part84")]
+position = Vector3(-7.0, 30.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_85" parent="." instance=ExtResource("part85")]
+position = Vector3(-10.5, 30.379999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_86" parent="." instance=ExtResource("part86")]
+position = Vector3(10.5, 4.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_87" parent="." instance=ExtResource("part87")]
+position = Vector3(10.5, 33.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_88" parent="." instance=ExtResource("part88")]
+position = Vector3(7.0, 33.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_89" parent="." instance=ExtResource("part89")]
+position = Vector3(3.5, 33.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_90" parent="." instance=ExtResource("part90")]
+position = Vector3(0.0, 33.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_91" parent="." instance=ExtResource("part91")]
+position = Vector3(-3.5, 33.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_92" parent="." instance=ExtResource("part92")]
+position = Vector3(-7.0, 33.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_93" parent="." instance=ExtResource("part93")]
+position = Vector3(-10.5, 33.579998, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_94" parent="." instance=ExtResource("part94")]
+position = Vector3(10.5, 36.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_95" parent="." instance=ExtResource("part95")]
+position = Vector3(7.0, 36.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_96" parent="." instance=ExtResource("part96")]
+position = Vector3(3.5, 36.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_97" parent="." instance=ExtResource("part97")]
+position = Vector3(7.0, 4.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_98" parent="." instance=ExtResource("part98")]
+position = Vector3(0.0, 36.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_99" parent="." instance=ExtResource("part99")]
+position = Vector3(-3.5, 36.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_100" parent="." instance=ExtResource("part100")]
+position = Vector3(-7.0, 36.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_101" parent="." instance=ExtResource("part101")]
+position = Vector3(-10.5, 36.779999, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_102" parent="." instance=ExtResource("part102")]
+position = Vector3(10.5, 39.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_103" parent="." instance=ExtResource("part103")]
+position = Vector3(7.0, 39.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_104" parent="." instance=ExtResource("part104")]
+position = Vector3(3.5, 39.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_105" parent="." instance=ExtResource("part105")]
+position = Vector3(0.0, 39.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_106" parent="." instance=ExtResource("part106")]
+position = Vector3(-3.5, 39.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_107" parent="." instance=ExtResource("part107")]
+position = Vector3(-7.0, 39.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_108" parent="." instance=ExtResource("part108")]
+position = Vector3(3.5, 4.78, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_109" parent="." instance=ExtResource("part109")]
+position = Vector3(-10.5, 39.98, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_110" parent="." instance=ExtResource("part110")]
+position = Vector3(10.5, 43.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_111" parent="." instance=ExtResource("part111")]
+position = Vector3(7.0, 43.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_112" parent="." instance=ExtResource("part112")]
+position = Vector3(3.5, 43.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_113" parent="." instance=ExtResource("part113")]
+position = Vector3(0.0, 43.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_114" parent="." instance=ExtResource("part114")]
+position = Vector3(-3.5, 43.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_115" parent="." instance=ExtResource("part115")]
+position = Vector3(-7.0, 43.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_116" parent="." instance=ExtResource("part116")]
+position = Vector3(-10.5, 43.18, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_117" parent="." instance=ExtResource("part117")]
+position = Vector3(10.5, 46.380001, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_118" parent="." instance=ExtResource("part118")]
+position = Vector3(7.0, 46.380001, -23.54)
+rotation = Vector3(0, 3.141592653589793, 0)
+
+[node name="window_f9e28a9594_119" parent="." instance=ExtResource("part119")]
+position = Vector3(-10.5, 4.78, -0.46)
+
+[node name="window_f9e28a9594_120" parent="." instance=ExtResource("part120")]
+position = Vector3(-7.0, 4.78, -0.46)
+
+[node name="window_f9e28a9594_121" parent="." instance=ExtResource("part121")]
+position = Vector3(7.0, 11.179999, -0.46)
+
+[node name="window_f9e28a9594_122" parent="." instance=ExtResource("part122")]
+position = Vector3(10.5, 11.179999, -0.46)
+
+[node name="window_f9e28a9594_123" parent="." instance=ExtResource("part123")]
+position = Vector3(-10.5, 14.379999, -0.46)
+
+[node name="window_f9e28a9594_124" parent="." instance=ExtResource("part124")]
+position = Vector3(-7.0, 14.379999, -0.46)
+
+[node name="window_f9e28a9594_125" parent="." instance=ExtResource("part125")]
+position = Vector3(7.0, 14.379999, -0.46)
+
+[node name="window_f9e28a9594_126" parent="." instance=ExtResource("part126")]
+position = Vector3(10.5, 14.379999, -0.46)
+
+[node name="window_f9e28a9594_127" parent="." instance=ExtResource("part127")]
+position = Vector3(-10.5, 17.58, -0.46)
+
+[node name="window_f9e28a9594_128" parent="." instance=ExtResource("part128")]
+position = Vector3(-7.0, 17.58, -0.46)
+
+[node name="window_f9e28a9594_129" parent="." instance=ExtResource("part129")]
+position = Vector3(7.0, 17.58, -0.46)
+
+[node name="window_f9e28a9594_130" parent="." instance=ExtResource("part130")]
+position = Vector3(10.5, 17.58, -0.46)
+
+[node name="window_f9e28a9594_131" parent="." instance=ExtResource("part131")]
+position = Vector3(7.0, 4.78, -0.46)
+
+[node name="window_f9e28a9594_132" parent="." instance=ExtResource("part132")]
+position = Vector3(-10.5, 20.779999, -0.46)
+
+[node name="window_f9e28a9594_133" parent="." instance=ExtResource("part133")]
+position = Vector3(-7.0, 20.779999, -0.46)
+
+[node name="window_f9e28a9594_134" parent="." instance=ExtResource("part134")]
+position = Vector3(7.0, 20.779999, -0.46)
+
+[node name="window_f9e28a9594_135" parent="." instance=ExtResource("part135")]
+position = Vector3(10.5, 20.779999, -0.46)
+
+[node name="window_f9e28a9594_136" parent="." instance=ExtResource("part136")]
+position = Vector3(-10.5, 23.98, -0.46)
+
+[node name="window_f9e28a9594_137" parent="." instance=ExtResource("part137")]
+position = Vector3(-7.0, 23.98, -0.46)
+
+[node name="window_f9e28a9594_138" parent="." instance=ExtResource("part138")]
+position = Vector3(7.0, 23.98, -0.46)
+
+[node name="window_f9e28a9594_139" parent="." instance=ExtResource("part139")]
+position = Vector3(10.5, 23.98, -0.46)
+
+[node name="window_f9e28a9594_140" parent="." instance=ExtResource("part140")]
+position = Vector3(-10.5, 27.18, -0.46)
+
+[node name="window_f9e28a9594_141" parent="." instance=ExtResource("part141")]
+position = Vector3(-7.0, 27.18, -0.46)
+
+[node name="window_f9e28a9594_142" parent="." instance=ExtResource("part142")]
+position = Vector3(10.5, 4.78, -0.46)
+
+[node name="window_f9e28a9594_143" parent="." instance=ExtResource("part143")]
+position = Vector3(7.0, 27.18, -0.46)
+
+[node name="window_f9e28a9594_144" parent="." instance=ExtResource("part144")]
+position = Vector3(10.5, 27.18, -0.46)
+
+[node name="window_f9e28a9594_145" parent="." instance=ExtResource("part145")]
+position = Vector3(-10.5, 30.379999, -0.46)
+
+[node name="window_f9e28a9594_146" parent="." instance=ExtResource("part146")]
+position = Vector3(-7.0, 30.379999, -0.46)
+
+[node name="window_f9e28a9594_147" parent="." instance=ExtResource("part147")]
+position = Vector3(7.0, 30.379999, -0.46)
+
+[node name="window_f9e28a9594_148" parent="." instance=ExtResource("part148")]
+position = Vector3(10.5, 30.379999, -0.46)
+
+[node name="window_f9e28a9594_149" parent="." instance=ExtResource("part149")]
+position = Vector3(-10.5, 33.579998, -0.46)
+
+[node name="window_f9e28a9594_150" parent="." instance=ExtResource("part150")]
+position = Vector3(-7.0, 33.579998, -0.46)
+
+[node name="window_f9e28a9594_151" parent="." instance=ExtResource("part151")]
+position = Vector3(7.0, 33.579998, -0.46)
+
+[node name="window_f9e28a9594_152" parent="." instance=ExtResource("part152")]
+position = Vector3(10.5, 33.579998, -0.46)
+
+[node name="window_f9e28a9594_153" parent="." instance=ExtResource("part153")]
+position = Vector3(-10.5, 7.98, -0.46)
+
+[node name="window_f9e28a9594_154" parent="." instance=ExtResource("part154")]
+position = Vector3(-10.5, 36.779999, -0.46)
+
+[node name="window_f9e28a9594_155" parent="." instance=ExtResource("part155")]
+position = Vector3(-7.0, 36.779999, -0.46)
+
+[node name="window_f9e28a9594_156" parent="." instance=ExtResource("part156")]
+position = Vector3(7.0, 36.779999, -0.46)
+
+[node name="window_f9e28a9594_157" parent="." instance=ExtResource("part157")]
+position = Vector3(10.5, 36.779999, -0.46)
+
+[node name="window_f9e28a9594_158" parent="." instance=ExtResource("part158")]
+position = Vector3(-10.5, 39.98, -0.46)
+
+[node name="window_f9e28a9594_159" parent="." instance=ExtResource("part159")]
+position = Vector3(-7.0, 39.98, -0.46)
+
+[node name="window_f9e28a9594_160" parent="." instance=ExtResource("part160")]
+position = Vector3(7.0, 39.98, -0.46)
+
+[node name="window_f9e28a9594_161" parent="." instance=ExtResource("part161")]
+position = Vector3(10.5, 39.98, -0.46)
+
+[node name="window_f9e28a9594_162" parent="." instance=ExtResource("part162")]
+position = Vector3(-10.5, 43.18, -0.46)
+
+[node name="window_f9e28a9594_163" parent="." instance=ExtResource("part163")]
+position = Vector3(-7.0, 43.18, -0.46)
+
+[node name="window_f9e28a9594_164" parent="." instance=ExtResource("part164")]
+position = Vector3(-7.0, 7.98, -0.46)
+
+[node name="window_f9e28a9594_165" parent="." instance=ExtResource("part165")]
+position = Vector3(7.0, 43.18, -0.46)
+
+[node name="window_f9e28a9594_166" parent="." instance=ExtResource("part166")]
+position = Vector3(10.5, 43.18, -0.46)
+
+[node name="window_f9e28a9594_167" parent="." instance=ExtResource("part167")]
+position = Vector3(-10.5, 46.380001, -0.46)
+
+[node name="window_f9e28a9594_168" parent="." instance=ExtResource("part168")]
+position = Vector3(-7.0, 46.380001, -0.46)
+
+[node name="window_f9e28a9594_169" parent="." instance=ExtResource("part169")]
+position = Vector3(7.0, 46.380001, -0.46)
+
+[node name="window_f9e28a9594_170" parent="." instance=ExtResource("part170")]
+position = Vector3(10.5, 46.380001, -0.46)
+
+[node name="window_f9e28a9594_171" parent="." instance=ExtResource("part171")]
+position = Vector3(-10.5, 49.579998, -0.46)
+
+[node name="window_f9e28a9594_172" parent="." instance=ExtResource("part172")]
+position = Vector3(-7.0, 49.579998, -0.46)
+
+[node name="window_f9e28a9594_173" parent="." instance=ExtResource("part173")]
+position = Vector3(7.0, 49.579998, -0.46)
+
+[node name="window_f9e28a9594_174" parent="." instance=ExtResource("part174")]
+position = Vector3(10.5, 49.579998, -0.46)
+
+[node name="window_f9e28a9594_175" parent="." instance=ExtResource("part175")]
+position = Vector3(7.0, 7.98, -0.46)
+
+[node name="window_f9e28a9594_176" parent="." instance=ExtResource("part176")]
+position = Vector3(-10.5, 52.779999, -0.46)
+
+[node name="window_f9e28a9594_177" parent="." instance=ExtResource("part177")]
+position = Vector3(-7.0, 52.779999, -0.46)
+
+[node name="window_f9e28a9594_178" parent="." instance=ExtResource("part178")]
+position = Vector3(7.0, 52.779999, -0.46)
+
+[node name="window_f9e28a9594_179" parent="." instance=ExtResource("part179")]
+position = Vector3(10.5, 52.779999, -0.46)
+
+[node name="window_f9e28a9594_180" parent="." instance=ExtResource("part180")]
+position = Vector3(10.5, 7.98, -0.46)
+
+[node name="window_f9e28a9594_181" parent="." instance=ExtResource("part181")]
+position = Vector3(-10.5, 11.179999, -0.46)
+
+[node name="window_f9e28a9594_182" parent="." instance=ExtResource("part182")]
+position = Vector3(-7.0, 11.179999, -0.46)
+
+[node name="window_4a91f89277_183" parent="." instance=ExtResource("part183")]
+position = Vector3(-13.54, 0.78, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_184" parent="." instance=ExtResource("part184")]
+position = Vector3(-13.54, 0.78, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_185" parent="." instance=ExtResource("part185")]
+position = Vector3(-13.54, 7.98, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_186" parent="." instance=ExtResource("part186")]
+position = Vector3(-13.54, 7.98, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_187" parent="." instance=ExtResource("part187")]
+position = Vector3(-13.54, 7.98, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_188" parent="." instance=ExtResource("part188")]
+position = Vector3(-13.54, 7.98, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_189" parent="." instance=ExtResource("part189")]
+position = Vector3(-13.54, 7.98, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_190" parent="." instance=ExtResource("part190")]
+position = Vector3(-13.54, 11.179999, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_191" parent="." instance=ExtResource("part191")]
+position = Vector3(-13.54, 11.179999, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_192" parent="." instance=ExtResource("part192")]
+position = Vector3(-13.54, 11.179999, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_193" parent="." instance=ExtResource("part193")]
+position = Vector3(-13.54, 11.179999, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_194" parent="." instance=ExtResource("part194")]
+position = Vector3(-13.54, 11.179999, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_195" parent="." instance=ExtResource("part195")]
+position = Vector3(-13.54, 0.78, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_196" parent="." instance=ExtResource("part196")]
+position = Vector3(-13.54, 14.379999, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_197" parent="." instance=ExtResource("part197")]
+position = Vector3(-13.54, 14.379999, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_198" parent="." instance=ExtResource("part198")]
+position = Vector3(-13.54, 14.379999, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_199" parent="." instance=ExtResource("part199")]
+position = Vector3(-13.54, 14.379999, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_200" parent="." instance=ExtResource("part200")]
+position = Vector3(-13.54, 14.379999, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_201" parent="." instance=ExtResource("part201")]
+position = Vector3(-13.54, 17.58, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_202" parent="." instance=ExtResource("part202")]
+position = Vector3(-13.54, 17.58, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_203" parent="." instance=ExtResource("part203")]
+position = Vector3(-13.54, 17.58, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_204" parent="." instance=ExtResource("part204")]
+position = Vector3(-13.54, 17.58, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_205" parent="." instance=ExtResource("part205")]
+position = Vector3(-13.54, 17.58, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_206" parent="." instance=ExtResource("part206")]
+position = Vector3(-13.54, 0.78, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_207" parent="." instance=ExtResource("part207")]
+position = Vector3(-13.54, 20.779999, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_208" parent="." instance=ExtResource("part208")]
+position = Vector3(-13.54, 20.779999, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_209" parent="." instance=ExtResource("part209")]
+position = Vector3(-13.54, 20.779999, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_210" parent="." instance=ExtResource("part210")]
+position = Vector3(-13.54, 20.779999, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_211" parent="." instance=ExtResource("part211")]
+position = Vector3(-13.54, 20.779999, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_212" parent="." instance=ExtResource("part212")]
+position = Vector3(-13.54, 23.98, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_213" parent="." instance=ExtResource("part213")]
+position = Vector3(-13.54, 23.98, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_214" parent="." instance=ExtResource("part214")]
+position = Vector3(-13.54, 23.98, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_215" parent="." instance=ExtResource("part215")]
+position = Vector3(-13.54, 23.98, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_216" parent="." instance=ExtResource("part216")]
+position = Vector3(-13.54, 23.98, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_217" parent="." instance=ExtResource("part217")]
+position = Vector3(-13.54, 0.78, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_218" parent="." instance=ExtResource("part218")]
+position = Vector3(-13.54, 27.18, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_219" parent="." instance=ExtResource("part219")]
+position = Vector3(-13.54, 27.18, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_220" parent="." instance=ExtResource("part220")]
+position = Vector3(-13.54, 27.18, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_221" parent="." instance=ExtResource("part221")]
+position = Vector3(-13.54, 27.18, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_222" parent="." instance=ExtResource("part222")]
+position = Vector3(-13.54, 27.18, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_223" parent="." instance=ExtResource("part223")]
+position = Vector3(-13.54, 30.379999, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_224" parent="." instance=ExtResource("part224")]
+position = Vector3(-13.54, 30.379999, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_225" parent="." instance=ExtResource("part225")]
+position = Vector3(-13.54, 30.379999, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_226" parent="." instance=ExtResource("part226")]
+position = Vector3(-13.54, 30.379999, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_227" parent="." instance=ExtResource("part227")]
+position = Vector3(-13.54, 30.379999, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_228" parent="." instance=ExtResource("part228")]
+position = Vector3(-13.54, 4.78, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_229" parent="." instance=ExtResource("part229")]
+position = Vector3(-13.54, 33.579998, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_230" parent="." instance=ExtResource("part230")]
+position = Vector3(-13.54, 33.579998, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_231" parent="." instance=ExtResource("part231")]
+position = Vector3(-13.54, 33.579998, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_232" parent="." instance=ExtResource("part232")]
+position = Vector3(-13.54, 33.579998, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_233" parent="." instance=ExtResource("part233")]
+position = Vector3(-13.54, 33.579998, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_234" parent="." instance=ExtResource("part234")]
+position = Vector3(-13.54, 36.779999, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_235" parent="." instance=ExtResource("part235")]
+position = Vector3(-13.54, 36.779999, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_236" parent="." instance=ExtResource("part236")]
+position = Vector3(-13.54, 36.779999, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_237" parent="." instance=ExtResource("part237")]
+position = Vector3(-13.54, 36.779999, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_238" parent="." instance=ExtResource("part238")]
+position = Vector3(-13.54, 36.779999, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_239" parent="." instance=ExtResource("part239")]
+position = Vector3(-13.54, 4.78, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_240" parent="." instance=ExtResource("part240")]
+position = Vector3(-13.54, 39.98, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_241" parent="." instance=ExtResource("part241")]
+position = Vector3(-13.54, 39.98, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_242" parent="." instance=ExtResource("part242")]
+position = Vector3(-13.54, 39.98, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_243" parent="." instance=ExtResource("part243")]
+position = Vector3(-13.54, 39.98, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_244" parent="." instance=ExtResource("part244")]
+position = Vector3(-13.54, 39.98, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_245" parent="." instance=ExtResource("part245")]
+position = Vector3(-13.54, 43.18, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_246" parent="." instance=ExtResource("part246")]
+position = Vector3(-13.54, 43.18, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_247" parent="." instance=ExtResource("part247")]
+position = Vector3(-13.54, 43.18, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_248" parent="." instance=ExtResource("part248")]
+position = Vector3(-13.54, 43.18, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_249" parent="." instance=ExtResource("part249")]
+position = Vector3(-13.54, 43.18, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_250" parent="." instance=ExtResource("part250")]
+position = Vector3(-13.54, 4.78, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_251" parent="." instance=ExtResource("part251")]
+position = Vector3(-13.54, 46.380001, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_252" parent="." instance=ExtResource("part252")]
+position = Vector3(-13.54, 46.380001, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_253" parent="." instance=ExtResource("part253")]
+position = Vector3(-13.54, 46.380001, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_254" parent="." instance=ExtResource("part254")]
+position = Vector3(-13.54, 46.380001, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_255" parent="." instance=ExtResource("part255")]
+position = Vector3(-13.54, 46.380001, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_256" parent="." instance=ExtResource("part256")]
+position = Vector3(-13.54, 49.579998, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_257" parent="." instance=ExtResource("part257")]
+position = Vector3(-13.54, 49.579998, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_258" parent="." instance=ExtResource("part258")]
+position = Vector3(-13.54, 49.579998, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_259" parent="." instance=ExtResource("part259")]
+position = Vector3(-13.54, 49.579998, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_260" parent="." instance=ExtResource("part260")]
+position = Vector3(-13.54, 49.579998, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_261" parent="." instance=ExtResource("part261")]
+position = Vector3(-13.54, 4.78, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_262" parent="." instance=ExtResource("part262")]
+position = Vector3(-13.54, 52.779999, -20.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_263" parent="." instance=ExtResource("part263")]
+position = Vector3(-13.54, 52.779999, -16.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_264" parent="." instance=ExtResource("part264")]
+position = Vector3(-13.54, 52.779999, -12.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_265" parent="." instance=ExtResource("part265")]
+position = Vector3(-13.54, 52.779999, -8.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_266" parent="." instance=ExtResource("part266")]
+position = Vector3(-13.54, 52.779999, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_267" parent="." instance=ExtResource("part267")]
+position = Vector3(-13.54, 4.78, -4.0)
+rotation = Vector3(0, 4.71238898038469, 0)
+
+[node name="window_4a91f89277_268" parent="." instance=ExtResource("part268")]
+position = Vector3(13.54, 0.78, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_269" parent="." instance=ExtResource("part269")]
+position = Vector3(13.54, 0.78, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_270" parent="." instance=ExtResource("part270")]
+position = Vector3(13.54, 7.98, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_271" parent="." instance=ExtResource("part271")]
+position = Vector3(13.54, 7.98, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_272" parent="." instance=ExtResource("part272")]
+position = Vector3(13.54, 7.98, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_273" parent="." instance=ExtResource("part273")]
+position = Vector3(13.54, 7.98, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_274" parent="." instance=ExtResource("part274")]
+position = Vector3(13.54, 7.98, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_275" parent="." instance=ExtResource("part275")]
+position = Vector3(13.54, 11.179999, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_276" parent="." instance=ExtResource("part276")]
+position = Vector3(13.54, 11.179999, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_277" parent="." instance=ExtResource("part277")]
+position = Vector3(13.54, 11.179999, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_278" parent="." instance=ExtResource("part278")]
+position = Vector3(13.54, 11.179999, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_279" parent="." instance=ExtResource("part279")]
+position = Vector3(13.54, 11.179999, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_280" parent="." instance=ExtResource("part280")]
+position = Vector3(13.54, 0.78, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_281" parent="." instance=ExtResource("part281")]
+position = Vector3(13.54, 14.379999, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_282" parent="." instance=ExtResource("part282")]
+position = Vector3(13.54, 14.379999, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_283" parent="." instance=ExtResource("part283")]
+position = Vector3(13.54, 14.379999, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_284" parent="." instance=ExtResource("part284")]
+position = Vector3(13.54, 14.379999, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_285" parent="." instance=ExtResource("part285")]
+position = Vector3(13.54, 14.379999, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_286" parent="." instance=ExtResource("part286")]
+position = Vector3(13.54, 17.58, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_287" parent="." instance=ExtResource("part287")]
+position = Vector3(13.54, 17.58, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_288" parent="." instance=ExtResource("part288")]
+position = Vector3(13.54, 17.58, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_289" parent="." instance=ExtResource("part289")]
+position = Vector3(13.54, 17.58, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_290" parent="." instance=ExtResource("part290")]
+position = Vector3(13.54, 17.58, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_291" parent="." instance=ExtResource("part291")]
+position = Vector3(13.54, 0.78, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_292" parent="." instance=ExtResource("part292")]
+position = Vector3(13.54, 20.779999, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_293" parent="." instance=ExtResource("part293")]
+position = Vector3(13.54, 20.779999, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_294" parent="." instance=ExtResource("part294")]
+position = Vector3(13.54, 20.779999, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_295" parent="." instance=ExtResource("part295")]
+position = Vector3(13.54, 20.779999, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_296" parent="." instance=ExtResource("part296")]
+position = Vector3(13.54, 20.779999, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_297" parent="." instance=ExtResource("part297")]
+position = Vector3(13.54, 23.98, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_298" parent="." instance=ExtResource("part298")]
+position = Vector3(13.54, 23.98, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_299" parent="." instance=ExtResource("part299")]
+position = Vector3(13.54, 23.98, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_300" parent="." instance=ExtResource("part300")]
+position = Vector3(13.54, 23.98, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_301" parent="." instance=ExtResource("part301")]
+position = Vector3(13.54, 23.98, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_302" parent="." instance=ExtResource("part302")]
+position = Vector3(13.54, 0.78, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_303" parent="." instance=ExtResource("part303")]
+position = Vector3(13.54, 27.18, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_304" parent="." instance=ExtResource("part304")]
+position = Vector3(13.54, 27.18, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_305" parent="." instance=ExtResource("part305")]
+position = Vector3(13.54, 27.18, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_306" parent="." instance=ExtResource("part306")]
+position = Vector3(13.54, 27.18, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_307" parent="." instance=ExtResource("part307")]
+position = Vector3(13.54, 27.18, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_308" parent="." instance=ExtResource("part308")]
+position = Vector3(13.54, 30.379999, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_309" parent="." instance=ExtResource("part309")]
+position = Vector3(13.54, 30.379999, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_310" parent="." instance=ExtResource("part310")]
+position = Vector3(13.54, 30.379999, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_311" parent="." instance=ExtResource("part311")]
+position = Vector3(13.54, 30.379999, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_312" parent="." instance=ExtResource("part312")]
+position = Vector3(13.54, 30.379999, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_313" parent="." instance=ExtResource("part313")]
+position = Vector3(13.54, 4.78, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_314" parent="." instance=ExtResource("part314")]
+position = Vector3(13.54, 33.579998, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_315" parent="." instance=ExtResource("part315")]
+position = Vector3(13.54, 33.579998, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_316" parent="." instance=ExtResource("part316")]
+position = Vector3(13.54, 33.579998, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_317" parent="." instance=ExtResource("part317")]
+position = Vector3(13.54, 33.579998, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_318" parent="." instance=ExtResource("part318")]
+position = Vector3(13.54, 33.579998, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_319" parent="." instance=ExtResource("part319")]
+position = Vector3(13.54, 36.779999, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_320" parent="." instance=ExtResource("part320")]
+position = Vector3(13.54, 36.779999, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_321" parent="." instance=ExtResource("part321")]
+position = Vector3(13.54, 36.779999, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_322" parent="." instance=ExtResource("part322")]
+position = Vector3(13.54, 36.779999, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_323" parent="." instance=ExtResource("part323")]
+position = Vector3(13.54, 36.779999, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_324" parent="." instance=ExtResource("part324")]
+position = Vector3(13.54, 4.78, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_325" parent="." instance=ExtResource("part325")]
+position = Vector3(13.54, 39.98, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_326" parent="." instance=ExtResource("part326")]
+position = Vector3(13.54, 39.98, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_327" parent="." instance=ExtResource("part327")]
+position = Vector3(13.54, 39.98, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_328" parent="." instance=ExtResource("part328")]
+position = Vector3(13.54, 39.98, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_329" parent="." instance=ExtResource("part329")]
+position = Vector3(13.54, 39.98, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_330" parent="." instance=ExtResource("part330")]
+position = Vector3(13.54, 43.18, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_331" parent="." instance=ExtResource("part331")]
+position = Vector3(13.54, 43.18, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_332" parent="." instance=ExtResource("part332")]
+position = Vector3(13.54, 43.18, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_333" parent="." instance=ExtResource("part333")]
+position = Vector3(13.54, 43.18, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_334" parent="." instance=ExtResource("part334")]
+position = Vector3(13.54, 43.18, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_335" parent="." instance=ExtResource("part335")]
+position = Vector3(13.54, 4.78, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_336" parent="." instance=ExtResource("part336")]
+position = Vector3(13.54, 46.380001, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_337" parent="." instance=ExtResource("part337")]
+position = Vector3(13.54, 46.380001, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_338" parent="." instance=ExtResource("part338")]
+position = Vector3(13.54, 46.380001, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_339" parent="." instance=ExtResource("part339")]
+position = Vector3(13.54, 46.380001, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_340" parent="." instance=ExtResource("part340")]
+position = Vector3(13.54, 46.380001, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_341" parent="." instance=ExtResource("part341")]
+position = Vector3(13.54, 49.579998, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_342" parent="." instance=ExtResource("part342")]
+position = Vector3(13.54, 49.579998, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_343" parent="." instance=ExtResource("part343")]
+position = Vector3(13.54, 49.579998, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_344" parent="." instance=ExtResource("part344")]
+position = Vector3(13.54, 49.579998, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_345" parent="." instance=ExtResource("part345")]
+position = Vector3(13.54, 49.579998, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_346" parent="." instance=ExtResource("part346")]
+position = Vector3(13.54, 4.78, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_347" parent="." instance=ExtResource("part347")]
+position = Vector3(13.54, 52.779999, -4.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_348" parent="." instance=ExtResource("part348")]
+position = Vector3(13.54, 52.779999, -8.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_349" parent="." instance=ExtResource("part349")]
+position = Vector3(13.54, 52.779999, -12.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_350" parent="." instance=ExtResource("part350")]
+position = Vector3(13.54, 52.779999, -16.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_351" parent="." instance=ExtResource("part351")]
+position = Vector3(13.54, 52.779999, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_4a91f89277_352" parent="." instance=ExtResource("part352")]
+position = Vector3(13.54, 4.78, -20.0)
+rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="window_1a439d4c7e_353" parent="." instance=ExtResource("part353")]
+position = Vector3(-4.275, 0.22, -2.18)
+
+[node name="window_b053545e6e_354" parent="." instance=ExtResource("part354")]
+position = Vector3(-1.5, 0.22, -2.18)
+
+[node name="window_b053545e6e_355" parent="." instance=ExtResource("part355")]
+position = Vector3(1.5, 0.22, -2.18)
+
+[node name="window_1a439d4c7e_356" parent="." instance=ExtResource("part356")]
+position = Vector3(4.275, 0.22, -2.18)
+
+[node name="furnishing_aea889bfd8_357" parent="." instance=ExtResource("part357")]
+position = Vector3(-10.0, 55.200001, -7.68)
+
+[node name="furnishing_aea889bfd8_358" parent="." instance=ExtResource("part358")]
+position = Vector3(10.0, 55.200001, -7.68)
+
+[node name="door_single_359" parent="." instance=ExtResource("part359")]
+position = Vector3(-3.0, 0.04, -2.16)
+
+[node name="door_single_360" parent="." instance=ExtResource("part360")]
+position = Vector3(0.0, 0.04, -2.16)
+
+[node name="door_single_361" parent="." instance=ExtResource("part361")]
+position = Vector3(3.0, 0.04, -2.16)
+
+[node name="door_single_362" parent="." instance=ExtResource("part362")]
+position = Vector3(0.0, 55.23, -6.04)
+
+[node name="window_f9e28a9594_363" parent="." instance=ExtResource("part363")]
+position = Vector3(-3.5, 4.78, -0.46)
+
+[node name="window_f9e28a9594_364" parent="." instance=ExtResource("part364")]
+position = Vector3(0, 4.78, -0.46)
+
+[node name="window_f9e28a9594_365" parent="." instance=ExtResource("part365")]
+position = Vector3(3.5, 4.78, -0.46)
+
+[node name="window_f9e28a9594_366" parent="." instance=ExtResource("part366")]
+position = Vector3(-3.5, 7.98, -0.46)
+
+[node name="window_f9e28a9594_367" parent="." instance=ExtResource("part367")]
+position = Vector3(0, 7.98, -0.46)
+
+[node name="window_f9e28a9594_368" parent="." instance=ExtResource("part368")]
+position = Vector3(3.5, 7.98, -0.46)
+
+[node name="window_f9e28a9594_369" parent="." instance=ExtResource("part369")]
+position = Vector3(-3.5, 11.179999, -0.46)
+
+[node name="window_f9e28a9594_370" parent="." instance=ExtResource("part370")]
+position = Vector3(0, 11.179999, -0.46)
+
+[node name="window_f9e28a9594_371" parent="." instance=ExtResource("part371")]
+position = Vector3(3.5, 11.179999, -0.46)
+
+[node name="window_f9e28a9594_372" parent="." instance=ExtResource("part372")]
+position = Vector3(-3.5, 14.379999, -0.46)
+
+[node name="window_f9e28a9594_373" parent="." instance=ExtResource("part373")]
+position = Vector3(0, 14.379999, -0.46)
+
+[node name="window_f9e28a9594_374" parent="." instance=ExtResource("part374")]
+position = Vector3(3.5, 14.379999, -0.46)
+
+[node name="window_f9e28a9594_375" parent="." instance=ExtResource("part375")]
+position = Vector3(-3.5, 17.58, -0.46)
+
+[node name="window_f9e28a9594_376" parent="." instance=ExtResource("part376")]
+position = Vector3(0, 17.58, -0.46)
+
+[node name="window_f9e28a9594_377" parent="." instance=ExtResource("part377")]
+position = Vector3(3.5, 17.58, -0.46)
+
+[node name="window_f9e28a9594_378" parent="." instance=ExtResource("part378")]
+position = Vector3(-3.5, 20.779999, -0.46)
+
+[node name="window_f9e28a9594_379" parent="." instance=ExtResource("part379")]
+position = Vector3(0, 20.779999, -0.46)
+
+[node name="window_f9e28a9594_380" parent="." instance=ExtResource("part380")]
+position = Vector3(3.5, 20.779999, -0.46)
+
+[node name="window_f9e28a9594_381" parent="." instance=ExtResource("part381")]
+position = Vector3(-3.5, 23.98, -0.46)
+
+[node name="window_f9e28a9594_382" parent="." instance=ExtResource("part382")]
+position = Vector3(0, 23.98, -0.46)
+
+[node name="window_f9e28a9594_383" parent="." instance=ExtResource("part383")]
+position = Vector3(3.5, 23.98, -0.46)
+
+[node name="window_f9e28a9594_384" parent="." instance=ExtResource("part384")]
+position = Vector3(-3.5, 27.18, -0.46)
+
+[node name="window_f9e28a9594_385" parent="." instance=ExtResource("part385")]
+position = Vector3(0, 27.18, -0.46)
+
+[node name="window_f9e28a9594_386" parent="." instance=ExtResource("part386")]
+position = Vector3(3.5, 27.18, -0.46)
+
+[node name="window_f9e28a9594_387" parent="." instance=ExtResource("part387")]
+position = Vector3(-3.5, 30.379999, -0.46)
+
+[node name="window_f9e28a9594_388" parent="." instance=ExtResource("part388")]
+position = Vector3(0, 30.379999, -0.46)
+
+[node name="window_f9e28a9594_389" parent="." instance=ExtResource("part389")]
+position = Vector3(3.5, 30.379999, -0.46)
+
+[node name="window_f9e28a9594_390" parent="." instance=ExtResource("part390")]
+position = Vector3(-3.5, 33.579998, -0.46)
+
+[node name="window_f9e28a9594_391" parent="." instance=ExtResource("part391")]
+position = Vector3(0, 33.579998, -0.46)
+
+[node name="window_f9e28a9594_392" parent="." instance=ExtResource("part392")]
+position = Vector3(3.5, 33.579998, -0.46)
+
+[node name="window_f9e28a9594_393" parent="." instance=ExtResource("part393")]
+position = Vector3(-3.5, 36.779999, -0.46)
+
+[node name="window_f9e28a9594_394" parent="." instance=ExtResource("part394")]
+position = Vector3(0, 36.779999, -0.46)
+
+[node name="window_f9e28a9594_395" parent="." instance=ExtResource("part395")]
+position = Vector3(3.5, 36.779999, -0.46)
+
+[node name="window_f9e28a9594_396" parent="." instance=ExtResource("part396")]
+position = Vector3(-3.5, 39.98, -0.46)
+
+[node name="window_f9e28a9594_397" parent="." instance=ExtResource("part397")]
+position = Vector3(0, 39.98, -0.46)
+
+[node name="window_f9e28a9594_398" parent="." instance=ExtResource("part398")]
+position = Vector3(3.5, 39.98, -0.46)
+
+[node name="window_f9e28a9594_399" parent="." instance=ExtResource("part399")]
+position = Vector3(-3.5, 43.18, -0.46)
+
+[node name="window_f9e28a9594_400" parent="." instance=ExtResource("part400")]
+position = Vector3(0, 43.18, -0.46)
+
+[node name="window_f9e28a9594_401" parent="." instance=ExtResource("part401")]
+position = Vector3(3.5, 43.18, -0.46)
+
+[node name="window_f9e28a9594_402" parent="." instance=ExtResource("part402")]
+position = Vector3(-3.5, 46.380001, -0.46)
+
+[node name="window_f9e28a9594_403" parent="." instance=ExtResource("part403")]
+position = Vector3(0, 46.380001, -0.46)
+
+[node name="window_f9e28a9594_404" parent="." instance=ExtResource("part404")]
+position = Vector3(3.5, 46.380001, -0.46)
+
+[node name="window_f9e28a9594_405" parent="." instance=ExtResource("part405")]
+position = Vector3(-3.5, 49.579998, -0.46)
+
+[node name="window_f9e28a9594_406" parent="." instance=ExtResource("part406")]
+position = Vector3(0, 49.579998, -0.46)
+
+[node name="window_f9e28a9594_407" parent="." instance=ExtResource("part407")]
+position = Vector3(3.5, 49.579998, -0.46)
+
+[node name="window_f9e28a9594_408" parent="." instance=ExtResource("part408")]
+position = Vector3(-3.5, 52.779999, -0.46)
+
+[node name="window_f9e28a9594_409" parent="." instance=ExtResource("part409")]
+position = Vector3(0, 52.779999, -0.46)
+
+[node name="window_f9e28a9594_410" parent="." instance=ExtResource("part410")]
+position = Vector3(3.5, 52.779999, -0.46)

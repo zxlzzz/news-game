@@ -1,7 +1,37 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="PackedScene" path="res://models/building_bar.glb" id="1"]
+
+[ext_resource type="PackedScene" path="res://types/window_485f508f5f.tscn" id="part0"]
+[ext_resource type="PackedScene" path="res://types/window_485f508f5f.tscn" id="part1"]
+[ext_resource type="PackedScene" path="res://types/window_065f595f3e.tscn" id="part2"]
+[ext_resource type="PackedScene" path="res://types/sign_ef9f818552.tscn" id="part3"]
+[ext_resource type="PackedScene" path="res://types/furnishing_0ba00b6df3.tscn" id="part4"]
+[ext_resource type="PackedScene" path="res://types/awning_a0dc85078f.tscn" id="part5"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part6"]
 
 [node name="BuildingBar" type="Node3D" groups=["building"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+
+; BEGIN reusable components
+[node name="window_485f508f5f_0" parent="." instance=ExtResource("part0")]
+position = Vector3(-1.3, 4.7, -0.175)
+
+[node name="window_485f508f5f_1" parent="." instance=ExtResource("part1")]
+position = Vector3(1.3, 4.7, -0.175)
+
+[node name="window_065f595f3e_2" parent="." instance=ExtResource("part2")]
+position = Vector3(-1.2, 0.3, -0.175)
+
+[node name="sign_ef9f818552_3" parent="." instance=ExtResource("part3")]
+position = Vector3(0.0, 2.88, 0.06)
+
+[node name="furnishing_0ba00b6df3_4" parent="." instance=ExtResource("part4")]
+position = Vector3(-2.0, 7.0, -3.0)
+
+[node name="awning_a0dc85078f_5" parent="." instance=ExtResource("part5")]
+position = Vector3(0.0, 2.65, 0.425)
+
+[node name="door_single_6" parent="." instance=ExtResource("part6")]
+position = Vector3(1.15, 0.0, -0.44)

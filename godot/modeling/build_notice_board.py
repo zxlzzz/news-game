@@ -1,16 +1,16 @@
 """公告栏。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'notice_board'
 # All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['box', 'post', (0.12, 2.2, 0.12), (-1.15, 1.1, 0), 'metal_dark'],
- ['box', 'post', (0.12, 2.2, 0.12), (1.15, 1.1, 0), 'metal_dark'],
- ['box', 'board', (2.4, 1.2, 0.12), (0, 1.45, 0), 'wood'],
+PARTS = [['box', 'post', (0.12, 2.2, 0.12), (-1.15, 1.1, -0.14), 'metal_dark'],
+ ['box', 'post', (0.12, 2.2, 0.12), (1.15, 1.1, -0.14), 'metal_dark'],
+ ['box', 'board', (2.34, 1.14, 0.12), (0, 1.45, 0), 'wood'],
  ['box', 'border', (2.52, 0.06, 0.16), (0, 0.85, 0), 'metal'],
  ['box', 'border', (2.52, 0.06, 0.16), (0, 2.05, 0), 'metal'],
- ['box', 'border', (0.06, 1.2, 0.16), (-1.2, 1.45, 0), 'metal'],
- ['box', 'border', (0.06, 1.2, 0.16), (1.2, 1.45, 0), 'metal'],
- ['box', 'paper', (0.5, 0.7, 0.02), (-0.7, 1.5, 0.08), 'trim'],
- ['box', 'paper', (0.6, 0.44, 0.02), (0, 1.65, 0.08), 'trim'],
- ['box', 'paper', (0.48, 0.65, 0.02), (0.72, 1.42, 0.08), 'trim']]
+ ['box', 'border', (0.06, 1.14, 0.16), (-1.2, 1.45, 0), 'metal'],
+ ['box', 'border', (0.06, 1.14, 0.16), (1.2, 1.45, 0), 'metal'],
+ ['box', 'paper', (0.5, 0.7, 0.02), (-0.7, 1.5, 0.07), 'trim'],
+ ['box', 'paper', (0.6, 0.44, 0.02), (0, 1.65, 0.07), 'trim'],
+ ['box', 'paper', (0.48, 0.65, 0.02), (0.72, 1.42, 0.07), 'trim']]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -102,10 +102,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -244,3 +263,12 @@ def build():
 
 if __name__=='__main__':
     build()
+
+
+# Physical contact nodes share the model build data.
+if __name__ == "__main__":
+    import sys as _contact_sys
+    from pathlib import Path as _ContactPath
+    _contact_sys.path.insert(0, str(_ContactPath(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(_ContactPath(__file__).resolve().parents[1] / "models" / "notice_board.glb")

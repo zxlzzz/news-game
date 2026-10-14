@@ -10,9 +10,11 @@ travel_per_crank_turn = 4.5
 [node name="model" parent="." instance=ExtResource("2")]
 
 [node name="post_bikepush" type="Marker3D" parent="."]
-position = Vector3(0.6, 0, -0.1)
+position = Vector3(0.6, 0, 0.19)
 rotation = Vector3(0, 0.0, 0)
 
 [node name="post_bikescan" type="Marker3D" parent="."]
 position = Vector3(0.6, 0, -0.1)
 rotation = Vector3(0, 0.0, 0)
+
+[node name="post_rider" type="Marker3D" parent="." groups=["pose_anchor"]]

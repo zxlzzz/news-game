@@ -1,14 +1,15 @@
 """展开报纸。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'held_newspaper_open'
 # All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['box', 'left_sheet', (0.29, 0.43, 0.02), (0.15, -0.015, 0), 'trim'],
- ['box', 'right_sheet', (0.29, 0.43, 0.02), (-0.15, -0.015, 0.012), 'fabric'],
- ['box', 'headline', (0.23, 0.035, 0.02), (-0.15, 0.115, 0.03), 'trim_dark'],
- ['box', 'headline', (0.23, 0.035, 0.02), (0.15, 0.115, 0.03), 'trim_dark'],
- ['box', 'article_block', (0.1, 0.12, 0.02), (-0.22, -0.045, 0.03), 'metal'],
- ['box', 'article_block', (0.1, 0.12, 0.02), (-0.08, -0.045, 0.03), 'metal'],
- ['box', 'article_block', (0.1, 0.12, 0.02), (0.08, -0.045, 0.03), 'metal'],
- ['box', 'article_block', (0.1, 0.12, 0.02), (0.22, -0.045, 0.03), 'metal']]
+PARTS = [['box', 'left_sheet', (0.29, 0.43, 0.002), (0.15, -0.015, 0), 'trim'],
+ ['box', 'right_sheet', (0.29, 0.43, 0.002), (-0.15, -0.015, 0.001), 'fabric'],
+ ['box', 'headline', (0.23, 0.035, 0.001), (-0.15, 0.115, 0.0025), 'trim_dark'],
+ ['box', 'headline', (0.23, 0.035, 0.001), (0.15, 0.115, 0.0015), 'trim_dark'],
+ ['box', 'article_block', (0.1, 0.12, 0.001), (-0.22, -0.045, 0.0025), 'metal'],
+ ['box', 'article_block', (0.1, 0.12, 0.001), (-0.08, -0.045, 0.0025), 'metal'],
+ ['box', 'article_block', (0.1, 0.12, 0.001), (0.08, -0.045, 0.0015), 'metal'],
+ ['box', 'article_block', (0.1, 0.12, 0.001), (0.22, -0.045, 0.0015), 'metal'],
+ ['box', 'centre_fold', (0.01, 0.43, 0.003), (0, -0.015, 0.0005), 'trim']]
 GRIPS = {'grip_left': [0.27, 0, 0], 'grip_right': [-0.27, 0, 0]}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -100,10 +101,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -242,3 +262,12 @@ def build():
 
 if __name__=='__main__':
     build()
+
+
+# Physical contact nodes share the model build data.
+if __name__ == "__main__":
+    import sys as _contact_sys
+    from pathlib import Path as _ContactPath
+    _contact_sys.path.insert(0, str(_ContactPath(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(_ContactPath(__file__).resolve().parents[1] / "models" / "held_newspaper_open.glb")

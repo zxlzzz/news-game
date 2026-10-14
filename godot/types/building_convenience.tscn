@@ -1,7 +1,45 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="PackedScene" path="res://models/building_convenience.glb" id="1"]
+
+[ext_resource type="PackedScene" path="res://types/window_b916f6694a.tscn" id="part0"]
+[ext_resource type="PackedScene" path="res://types/window_b916f6694a.tscn" id="part1"]
+[ext_resource type="PackedScene" path="res://types/window_b916f6694a.tscn" id="part2"]
+[ext_resource type="PackedScene" path="res://types/window_09fb6174a7.tscn" id="part3"]
+[ext_resource type="PackedScene" path="res://types/window_09fb6174a7.tscn" id="part4"]
+[ext_resource type="PackedScene" path="res://types/sign_a461e9631a.tscn" id="part5"]
+[ext_resource type="PackedScene" path="res://types/furnishing_0ba00b6df3.tscn" id="part6"]
+[ext_resource type="PackedScene" path="res://types/awning_720621aae5.tscn" id="part7"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part8"]
 
 [node name="BuildingConvenience" type="Node3D" groups=["building"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+
+; BEGIN reusable components
+[node name="window_b916f6694a_0" parent="." instance=ExtResource("part0")]
+position = Vector3(-5.0, 4.35, -0.175)
+
+[node name="window_b916f6694a_1" parent="." instance=ExtResource("part1")]
+position = Vector3(-1.0, 4.35, -0.175)
+
+[node name="window_b916f6694a_2" parent="." instance=ExtResource("part2")]
+position = Vector3(3.0, 4.35, -0.175)
+
+[node name="window_09fb6174a7_3" parent="." instance=ExtResource("part3")]
+position = Vector3(-4.5, 0.3, -0.175)
+
+[node name="window_09fb6174a7_4" parent="." instance=ExtResource("part4")]
+position = Vector3(-0.5, 0.3, -0.175)
+
+[node name="sign_a461e9631a_5" parent="." instance=ExtResource("part5")]
+position = Vector3(0.0, 2.9, 0.06)
+
+[node name="furnishing_0ba00b6df3_6" parent="." instance=ExtResource("part6")]
+position = Vector3(-2.0, 7.0, -3.0)
+
+[node name="awning_720621aae5_7" parent="." instance=ExtResource("part7")]
+position = Vector3(0.0, 2.65, 0.3)
+
+[node name="door_single_8" parent="." instance=ExtResource("part8")]
+position = Vector3(4.8, 0.0, -0.44)

@@ -27,3 +27,12 @@ def build():
 
 if __name__ == '__main__':
     build()
+
+
+# Physical contacts belong to this model, including moving-part parenting.
+if __name__ == "__main__":
+    import sys as _contact_sys
+    from pathlib import Path as _ContactPath
+    _contact_sys.path.insert(0, str(_ContactPath(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(_ContactPath(__file__).resolve().parents[1] / "models" / "cafe_chair.glb")

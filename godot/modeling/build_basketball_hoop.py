@@ -31,6 +31,16 @@ PARTS = [['box', 'foot', (1.4, 0.2, 1.2), (0, 0.1, -0.4), 'concrete'],
   (0.07000000000000002, 2.7, 0.22875644347017857),
   0.008,
   'metal']]
+# Structural connections and the target rectangle, all dimensions in metres.
+PARTS += [
+ ['bar','backboard_arm',(0,3.4,-.4),(0,3.4,-.035),.07,'metal'],
+ ['bar','backboard_brace',(0,2.85,-.4),(0,3.4,-.08),.05,'metal'],
+ ['box','rim_mount',(.16,.10,.13),(0,3.05,.09),'metal_dark'],
+ ['ring','net_hem',.14,.132,.016,(0,2.7,.35),'metal',(0,1,0)],
+ ['box','target_top',(.59,.035,.012),(0,3.48,.046),'metal_dark'],
+ ['box','target_bottom',(.59,.035,.012),(0,3.03,.046),'metal_dark'],
+ ['box','target_side',(.035,.45,.012),(-.2775,3.255,.046),'metal_dark'],
+ ['box','target_side',(.035,.45,.012),(.2775,3.255,.046),'metal_dark']]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -122,10 +132,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):

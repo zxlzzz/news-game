@@ -1,5 +1,8 @@
 """垃圾车。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'garbage_truck'
+WHEEL_ARCH_CLEARANCE = 0.05
+WHEEL_AXLE_RADIUS = 0.045
+WHEEL_AXLE_FIT_CLEARANCE = 0.004
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['cylinder', 'tire', 0.43, 0.18, (-1.125, 0.43, -2.16), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'hub', 0.2064, 0.2, (-1.125, 0.43, -2.16), 'metal', (1, 0, 0), None],
@@ -10,16 +13,22 @@ PARTS = [['cylinder', 'tire', 0.43, 0.18, (-1.125, 0.43, -2.16), 'metal_dark', (
  ['cylinder', 'tire', 0.43, 0.18, (1.125, 0.43, 2.088), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'hub', 0.2064, 0.2, (1.125, 0.43, 2.088), 'metal', (1, 0, 0), None],
  ['box', 'chassis', (2.25, 0.25, 7.2), (0, 0.5, 0), 'metal_dark'],
- ['box', 'cab', (2.25, 1.9, 1.65), (0, 1.25, 2.75), 'metal'],
+ ['box', 'cab', (2.25, 1.575, 1.65), (0, 1.4125, 2.75), 'metal'],
  ['box', 'windshield', (1.8, 0.65, 0.04), (0, 1.8399999999999999, 3.595), 'window'],
  ['box', 'bumper', (2.33, 0.18, 0.18), (0, 0.56, 3.64), 'metal_dark'],
  ['box', 'side_window', (0.04, 0.65, 0.9), (-1.135, 1.8399999999999999, 2.84), 'window'],
  ['box', 'side_window', (0.04, 0.65, 0.9), (1.135, 1.8399999999999999, 2.84), 'window'],
- ['box', 'headlight', (0.35, 0.2, 0.05), (-0.6749999999999999, 0.8, 3.67), 'accent'],
- ['box', 'headlight', (0.35, 0.2, 0.05), (0.6749999999999999, 0.8, 3.67), 'accent'],
+ ['box', 'headlight', (0.35, 0.2, 0.05), (-0.6749999999999999, 0.8, 3.6), 'accent'],
+ ['box', 'headlight', (0.35, 0.2, 0.05), (0.6749999999999999, 0.8, 3.6), 'accent'],
  ['box', 'compactor', (2.25, 1.7, 5.300000000000001), (0, 1.55, -0.9499999999999997), 'metal'],
- ['box', 'hopper', (2.4, 0.9, 0.65), (0, 0.98, -3.7), 'metal_dark'],
  ['box', 'top_compactor', (1.8, 0.4, 3.7100000000000004), (0, 2.55, -0.9499999999999997), 'metal_dark']]
+FORM = {'floor_profile': [(-4.0, 0.55), (-3.34, 0.86), (-3.34, 0.95), (-4.0, 0.64)],
+ 'floor_width': 2.2,
+ 'mouth_at': (0, 1.295, -3.45),
+ 'mouth_size': (2.0, 0.93, 0.6),
+ 'side_profile': [(-4.0, 0.55), (-3.34, 0.86), (-3.34, 1.85), (-4.0, 1.45)],
+ 'side_width': 0.1,
+ 'side_x': (-1.15, 1.15)}
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -111,10 +120,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -235,10 +263,24 @@ def canonicalize_triangle_order(path):
     path.write_bytes(data)
 
 
+def hopper_prism(name,profile,width,x,slot):
+    points=[(x+side,y,z) for side in (-width/2,width/2) for z,y in profile]
+    n=len(profile)
+    faces=[tuple(range(n-1,-1,-1)),tuple(range(n,2*n))]
+    faces += [(i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n)]
+    mesh(name,points,faces,slot)
+
+def add_functional_form():
+    blind_cut(bpy.data.objects['compactor'],'rear_loading_cavity',FORM['mouth_size'],FORM['mouth_at'])
+    hopper_prism('hopper_floor',FORM['floor_profile'],FORM['floor_width'],0,'metal_dark')
+    for x in FORM['side_x']:hopper_prism('hopper_side',FORM['side_profile'],FORM['side_width'],x,'metal_dark')
+
+
 def build():
     reset()
     for kind,*args in PARTS:
         globals()[kind](*args)
+    add_functional_form()
     for name,position in GRIPS.items():
         node=bpy.data.objects.new(name,None)
         bpy.context.collection.objects.link(node)
@@ -248,8 +290,21 @@ def build():
         meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
         low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
         for o in bpy.context.scene.objects:
-            o.location.z -= low
+            if o.parent is None: o.location.z -= low
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from vehicle_geometry import finish_wheeled_vehicle
+    finish_wheeled_vehicle(bpy.context.scene.objects, WHEEL_ARCH_CLEARANCE, WHEEL_AXLE_RADIUS, WHEEL_AXLE_FIT_CLEARANCE)
     export(NAME)
 
 if __name__=='__main__':
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("garbage_truck")

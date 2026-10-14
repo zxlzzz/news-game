@@ -4,6 +4,9 @@ Keep model_geometry.py (and building_geometry.py for buildings) beside this file
 """
 import sys
 from pathlib import Path
+WHEEL_ARCH_CLEARANCE = 0.055
+WHEEL_AXLE_RADIUS = 0.055
+WHEEL_AXLE_FIT_CLEARANCE = 0.004
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from model_geometry import *
 
@@ -59,10 +62,26 @@ def build():
             box('lamp',P['lamp_size'],(x,P['lamp_y'],z),'accent' if z>0 else 'trim_dark')
     for z in P['door_z']:
         box('right_side_door',(P['pane_t'],P['door_h'],P['door_l']),(-w/2-P['pane_t']/2,P['door_bottom']+P['door_h']/2,z),'door')
-        box('door_window',(P['pane_t'],P['window_h'],P['door_l']*.75),(-w/2-P['pane_t'],P['window_y'],z),'window')
+        pane_length=(P['door_l']*.75-P['door_bar'])/2
+        for sign in (-1,1):
+            box('door_window',(P['pane_t'],P['window_h'],pane_length),
+                (-w/2-P['pane_t'],P['window_y'],z+sign*(P['door_bar']+pane_length)/2),'window')
         box('door_split',(P['pane_t'],P['door_h'],P['door_bar']),(-w/2-P['pane_t']*1.5,P['door_bottom']+P['door_h']/2,z),'metal_dark')
     box('roof_equipment',P['roof_vent'],(0,P['height']+P['roof_vent'][1]/2,-.8),'metal')
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from vehicle_geometry import finish_wheeled_vehicle
+    finish_wheeled_vehicle(bpy.context.scene.objects, WHEEL_ARCH_CLEARANCE, WHEEL_AXLE_RADIUS, WHEEL_AXLE_FIT_CLEARANCE)
     export('bus')
 
 if __name__ == '__main__':
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("bus")

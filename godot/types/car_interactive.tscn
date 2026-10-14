@@ -10,3 +10,7 @@ rotation = Vector3(0, 1.5707963267948966, 0)
 [node name="post_carexit" type="Marker3D" parent="."]
 position = Vector3(-1.2, 0, 0.1)
 rotation = Vector3(0, 1.5707963267948966, 0)
+
+[node name="stance_car_exit" type="Marker3D" parent="." groups=["pose_anchor"]]
+position = Vector3(-1.25, 0, -0.25)
+

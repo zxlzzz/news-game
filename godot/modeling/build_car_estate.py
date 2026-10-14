@@ -1,5 +1,9 @@
 """长尾旅行车。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'car_estate'
+WHEEL_ARCH_CLEARANCE = 0.035
+WHEEL_AXLE_RADIUS = 0.035
+WHEEL_AXLE_FIT_CLEARANCE = 0.004
+GLASS_THICKNESS, GLASS_SURFACE_INSET = 0.020, 0.001
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['cylinder', 'tire', 0.31, 0.18, (-0.91, 0.31, -1.4549999999999998), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'hub', 0.1488, 0.2, (-0.91, 0.31, -1.4549999999999998), 'metal', (1, 0, 0), None],
@@ -108,8 +112,12 @@ PARTS = [['cylinder', 'tire', 0.31, 0.18, (-0.91, 0.31, -1.4549999999999998), 'm
   'metal_dark'],
  ['box', 'bumper', (1.6380000000000001, 0.16, 0.12), (0, 0.42, -2.425), 'metal_dark'],
  ['box', 'bumper', (1.6380000000000001, 0.16, 0.12), (0, 0.42, 2.425), 'metal_dark'],
- ['box', 'lamp', (0.28, 0.18, 0.04), (-0.5824, 0.72, 2.4549999999999996), 'accent'],
- ['box', 'lamp', (0.28, 0.18, 0.04), (0.5824, 0.72, 2.4549999999999996), 'accent']]
+ ['box', 'lamp', (0.28, 0.18, 0.04), (-0.5824, 0.72, 2.445), 'accent'],
+ ['box', 'lamp', (0.28, 0.18, 0.04), (0.5824, 0.72, 2.445), 'accent'],
+ ['box', 'roof_rail_foot', (0.09, 0.055, 0.12), (-0.5824, 1.5775, -1.734), 'metal_dark'],
+ ['box', 'roof_rail_foot', (0.09, 0.055, 0.12), (-0.5824, 1.5775, 0.48249999999999993), 'metal_dark'],
+ ['box', 'roof_rail_foot', (0.09, 0.055, 0.12), (0.5824, 1.5775, -1.734), 'metal_dark'],
+ ['box', 'roof_rail_foot', (0.09, 0.055, 0.12), (0.5824, 1.5775, 0.48249999999999993), 'metal_dark']]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -201,10 +209,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -285,10 +312,19 @@ def export(name):
         bm.to_mesh(obj.data)
         bm.free()
     bpy.ops.object.select_all(action='SELECT')
-    bpy.ops.export_scene.gltf(filepath=str(output), export_format='GLB', export_yup=True,
-        export_normals=True, export_texcoords=False, export_animations=False,
-        export_cameras=False, export_lights=False, export_extras=False)
-    canonicalize_triangle_order(output)
+    # Finish the complete export before replacing an asset the editor may read.
+    import os
+    import tempfile
+    with tempfile.NamedTemporaryFile(dir=output.parent,suffix='.glb',delete=False) as pending:
+        temporary=Path(pending.name)
+    try:
+        bpy.ops.export_scene.gltf(filepath=str(temporary), export_format='GLB', export_yup=True,
+            export_normals=True, export_texcoords=False, export_animations=False,
+            export_cameras=False, export_lights=False, export_extras=False)
+        canonicalize_triangle_order(temporary)
+        os.replace(temporary,output)
+    finally:
+        temporary.unlink(missing_ok=True)
     print('MODEL_WRITTEN', output)
 
 
@@ -327,8 +363,20 @@ def canonicalize_triangle_order(path):
 
 def build():
     reset()
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from vehicle_geometry import fitted_glazing
     for kind,*args in PARTS:
-        globals()[kind](*args)
+        name=args[0]
+        if kind=='mesh' and name in ('front_glass','rear_glass','side_glass'):
+            axis=0 if name=='side_glass' else 2
+            sign=1 if sum(v[axis] for v in args[1][:4])>0 else -1
+            projection=[i for i in range(3) if i!=axis]
+            outline=[tuple(v[i] for i in projection) for v in args[1][:4]]
+            fitted_glazing(name,outline,bpy.data.objects['cabin'],axis,sign,
+                          GLASS_THICKNESS,GLASS_SURFACE_INSET)
+        else:
+            globals()[kind](*args)
     for name,position in GRIPS.items():
         node=bpy.data.objects.new(name,None)
         bpy.context.collection.objects.link(node)
@@ -338,8 +386,21 @@ def build():
         meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
         low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
         for o in bpy.context.scene.objects:
-            o.location.z -= low
+            if o.parent is None: o.location.z -= low
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from vehicle_geometry import finish_wheeled_vehicle
+    finish_wheeled_vehicle(bpy.context.scene.objects, WHEEL_ARCH_CLEARANCE, WHEEL_AXLE_RADIUS, WHEEL_AXLE_FIT_CLEARANCE)
     export(NAME)
 
 if __name__=='__main__':
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("car_estate")

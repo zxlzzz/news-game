@@ -85,12 +85,43 @@ def bar(name, start, end, radius, slot):
     a, b = Vector(start), Vector(end)
     return cylinder(name, radius, (b-a).length, (a+b)/2, slot, b-a)
 
+def conical_shell(name, radius, height, thickness, center, slot):
+    """Closed thin fabric canopy, rather than a solid filled cone."""
+    x,y,z=center;n=CIRCLE_SEGMENTS;vertices=[]
+    for drop in (0,thickness):
+        vertices.append((x,y+height/2-drop,z))
+        vertices.extend((x+radius*cos(i*2*pi/n),y-height/2-drop,z+radius*sin(i*2*pi/n)) for i in range(n))
+    faces=[]
+    for i in range(n):
+        a,b=1+i,1+(i+1)%n
+        faces.extend([(0,a,b),(n+1,b+n+1,a+n+1),(a,a+n+1,b+n+1,b)])
+    return mesh(name,vertices,faces,slot)
+
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -123,6 +154,68 @@ def roof_panel(name, width, depth, low_y, rise, thickness, center_z, slot):
         [(-width/2,low_y+yoff,depth/2),(width/2,low_y+yoff,depth/2),
          (width/2,low_y+rise+yoff,-depth/2),(-width/2,low_y+rise+yoff,-depth/2)]]
     return mesh(name, vertices, [(0,3,2,1),(4,5,6,7),(0,1,5,4),(1,2,6,5),(2,3,7,6),(3,0,4,7)], slot)
+
+
+def panel_frame(panel_name, border, slot):
+    """Frame a thin axis-aligned pane using its actual dimensions, without covering it."""
+    assert border > 0, 'Pane border must be positive'
+    pane = bpy.data.objects[panel_name]
+    bpy.context.view_layer.update()
+    points = [pane.matrix_world @ Vector(v) for v in pane.bound_box]
+    low = (min(v.x for v in points), min(v.z for v in points), -max(v.y for v in points))
+    high = (max(v.x for v in points), max(v.z for v in points), -min(v.y for v in points))
+    spans = [high[index]-low[index] for index in range(3)]
+    center = [(low[index]+high[index])/2 for index in range(3)]
+    normal = min(range(3), key=lambda index:spans[index])
+    long, cross = [index for index in range(3) if index != normal]
+    for index,(edge,other,full) in enumerate([(cross,long,True),(long,cross,False)]):
+        for side,sign in enumerate((-1,1)):
+            size = spans.copy(); at = center.copy()
+            size[edge] = border
+            size[other] += 2*border if full else 0
+            at[edge] += sign*(spans[edge]+border)/2
+            box(f'{panel_name}_frame_{index*2+side}',size,at,slot)
+
+
+def floor_clearance(model_name, body_name, moving_name, pivot_name, gap):
+    """Relieve a sill under the complete articulated panel envelope, from source data."""
+    import json
+    from math import atan2, ceil, floor, radians
+    from mathutils import Quaternion
+    assert gap > 0, 'Floor clearance must be positive'
+    here = Path(__file__).resolve().parent
+    contacts = json.loads((here/'model-contacts.json').read_text(encoding='utf-8'))
+    motions = json.loads((here/'model-part-motions.json').read_text(encoding='utf-8'))
+    pivot = xyz(contacts['assemblies'][model_name][pivot_name]['at'])
+    motion = motions['profiles'][motions['models'][model_name][pivot_name]]
+    axis = xyz(motion['axis']).normalized()
+    assert abs(axis.z) > 0.999999, 'Sill relief requires a vertical door hinge'
+    lower_angle, upper_angle = sorted(radians(value) for value in motion['degrees'])
+    body, moving = bpy.data.objects[body_name], bpy.data.objects[moving_name]
+    bpy.context.view_layer.update()
+    corners = [moving.matrix_world @ Vector(v) for v in moving.bound_box]
+    sweep = []
+    for point in corners:
+        delta = point-pivot
+        axial = axis*axis.dot(delta)
+        cosine, sine = delta-axial, axis.cross(delta)
+        angles = {lower_angle, upper_angle}
+        # Coordinate extrema are analytic; don't miss a corner between samples.
+        for index in range(3):
+            critical = atan2(sine[index], cosine[index])
+            for turn in range(floor((lower_angle-critical)/pi), ceil((upper_angle-critical)/pi)+1):
+                angle = critical+turn*pi
+                if lower_angle <= angle <= upper_angle: angles.add(angle)
+        sweep.extend(pivot+Quaternion(axis,angle)@delta for angle in sorted(angles))
+    floor_points = [body.matrix_world @ Vector(v) for v in body.bound_box]
+    low = [min(v[i] for v in sweep) for i in range(3)]
+    high = [max(v[i] for v in sweep) for i in range(3)]
+    bottom = low[2]-gap
+    top = max(v.z for v in floor_points)+gap
+    assert top > bottom, (body_name,moving_name,'No sill overlap to relieve')
+    size = (high[0]-low[0]+2*gap, top-bottom, high[1]-low[1]+2*gap)
+    center = ((low[0]+high[0])/2, (bottom+top)/2, -(low[1]+high[1])/2)
+    blind_cut(body, moving_name+'_sill_relief', size, center)
 
 
 def blind_cut(body, name, size, center):
@@ -171,10 +264,19 @@ def export(name):
         bm.to_mesh(obj.data)
         bm.free()
     bpy.ops.object.select_all(action='SELECT')
-    bpy.ops.export_scene.gltf(filepath=str(output), export_format='GLB', export_yup=True,
-        export_normals=True, export_texcoords=False, export_animations=False,
-        export_cameras=False, export_lights=False, export_extras=False)
-    canonicalize_triangle_order(output)
+    # Finish the complete export before replacing an asset the editor may read.
+    import os
+    import tempfile
+    with tempfile.NamedTemporaryFile(dir=output.parent,suffix='.glb',delete=False) as pending:
+        temporary=Path(pending.name)
+    try:
+        bpy.ops.export_scene.gltf(filepath=str(temporary), export_format='GLB', export_yup=True,
+            export_normals=True, export_texcoords=False, export_animations=False,
+            export_cameras=False, export_lights=False, export_extras=False)
+        canonicalize_triangle_order(temporary)
+        os.replace(temporary,output)
+    finally:
+        temporary.unlink(missing_ok=True)
     print('MODEL_WRITTEN', output)
 
 

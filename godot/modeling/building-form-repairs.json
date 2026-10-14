@@ -1,0 +1,140 @@
+{
+  "building_a": {
+    "coping": {
+      "part": "roof_coping",
+      "bounds": [
+        [
+          -6.22,
+          6.22
+        ],
+        [
+          10.85,
+          11.07
+        ],
+        [
+          -8.02,
+          0.22
+        ]
+      ],
+      "ring_width": 0.66,
+      "slot": "trim"
+    }
+  },
+  "building_b": {
+    "coping": {
+      "part": "roof_cap",
+      "bounds": [
+        [
+          -6.62,
+          6.62
+        ],
+        [
+          13.4,
+          13.56
+        ],
+        [
+          -9.22,
+          -0.68
+        ]
+      ],
+      "ring_width": 0.44,
+      "slot": "trim",
+      "deck_slot": "concrete",
+      "deck_finish_thickness": 0.04,
+      "deck_finish_top": 13.42
+    }
+  },
+  "building_back_row_residential_a": {
+    "chimney_bottoms": {
+      "roof_chimney_-3": 11.0786666667,
+      "roof_chimney_3": 11.0786666667
+    }
+  },
+  "building_clothing": {
+    "coats": {
+      "parts": {"hanging_coat": -0.1, "hanging_coat.001": 1.0, "hanging_coat.002": 2.1},
+      "width": 0.55,
+      "height": 1.25,
+      "bottom": 0.935,
+      "depth": 0.045,
+      "centre_z": -0.5,
+      "slot": "fabric",
+      "profile": [[-0.28,0],[0.28,0],[0.25,0.56],[0.27,0.78],[0.43,0.51],[0.5,0.56],[0.42,0.94],[0.12,1],[0.10,0.94],[0,0.92],[-0.10,0.94],[-0.12,1],[-0.42,0.94],[-0.5,0.56],[-0.43,0.51],[-0.27,0.78],[-0.25,0.56]],
+      "hanger_half_width": 0.175,
+      "hanger_top": 2.173,
+      "hanger_bottom": 2.11,
+      "hanger_rod_width": 0.012,
+      "hanger_slot": "metal"
+    }
+  },
+  "building_parking_garage": {
+    "ramp_supports": {
+      "slot": "concrete",
+      "column_width": 0.45,
+      "beam_width": 0.4,
+      "beam_depth": 0.45,
+      "landing_column_x": [
+        10.45,
+        19.9,
+        24.55
+      ],
+      "landing_column_z": [
+        -34.95,
+        4.95
+      ],
+      "landing_column_top": 9.6,
+      "landing_levels": [
+        3.2,
+        6.4,
+        9.6
+      ],
+      "landing_bounds_x": [
+        10,
+        25
+      ],
+      "landing_z": [
+        [
+          -35.5,
+          -30
+        ],
+        [
+          0,
+          5.5
+        ]
+      ],
+      "ramp_column_z": [
+        -25,
+        -15,
+        -5
+      ],
+      "ramp_column_x": [
+        19.9,
+        24.9
+      ],
+      "ramp_pairs": [
+        {
+          "part": "car_ramp_0",
+          "edges": [
+            15.2,
+            19.8
+          ],
+          "beam_z_min": -25.78125
+        },
+        {
+          "part": "car_ramp_1",
+          "edges": [
+            20.2,
+            24.8
+          ]
+        },
+        {
+          "part": "car_ramp_2",
+          "edges": [
+            15.2,
+            19.8
+          ]
+        }
+      ]
+    }
+  }
+}

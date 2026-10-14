@@ -1,20 +1,30 @@
 """轮椅。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'wheelchair'
+FRONT_FORK_CENTER_Y = 0.22
+FRONT_FORK_OFFSET, FRONT_FORK_RADIUS = 0.06, 0.012
+FRONT_AXLE_RADIUS, FRONT_WHEEL_BORE = 0.01, 0.014
+REAR_HUB_BORE, SPOKE_INNER_RADIUS = 0.028, 0.035
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['ring', 'rear_wheel', 0.31, 0.275, 0.05, (-0.34, 0.31, -0.2), 'metal_dark', (1, 0, 0)],
  ['ring', 'rear_wheel', 0.31, 0.275, 0.05, (0.34, 0.31, -0.2), 'metal_dark', (1, 0, 0)],
- ['cylinder', 'wheel', 0.09, 0.07, (-0.275, 0.09, 0.36), 'metal_dark', (1, 0, 0), None],
- ['cylinder', 'wheel', 0.09, 0.07, (0.275, 0.09, 0.36), 'metal_dark', (1, 0, 0), None],
+ ['ring', 'wheel', 0.09, FRONT_WHEEL_BORE, 0.07, (-0.275, 0.09, 0.36), 'metal_dark', (1, 0, 0)],
+ ['ring', 'wheel', 0.09, FRONT_WHEEL_BORE, 0.07, (0.275, 0.09, 0.36), 'metal_dark', (1, 0, 0)],
  ['box', 'seat', (0.48, 0.08, 0.48), (0, 0.49, 0), 'fabric'],
  ['box', 'back', (0.48, 0.48, 0.08), (0, 0.77, -0.23), 'fabric'],
- ['bar', 'frame', (-0.25, 0.1, 0.36), (-0.25, 0.51, -0.23), 0.03, 'metal'],
- ['bar', 'frame', (0.25, 0.1, 0.36), (0.25, 0.51, -0.23), 0.03, 'metal'],
- ['bar', 'pushbar', (-0.25, 0.5, -0.25), (-0.25, 1.04, -0.33), 0.03, 'metal'],
- ['bar', 'pushbar', (0.25, 0.5, -0.25), (0.25, 1.04, -0.33), 0.03, 'metal'],
+ ['bar', 'frame', (-0.275, FRONT_FORK_CENTER_Y, 0.36), (-0.28, 0.425, -0.23), 0.024, 'metal'],
+ ['bar', 'frame', (0.275, FRONT_FORK_CENTER_Y, 0.36), (0.28, 0.425, -0.23), 0.024, 'metal'],
+ ['box', 'seat_crossbar', (0.60, 0.05, 0.045), (0, 0.425, -0.23), 'metal'],
+ ['box', 'seat_crossbar', (0.60, 0.05, 0.045), (0, 0.425, 0.20), 'metal'],
+ ['bar', 'pushbar', (-0.28, 0.425, -0.23), (-0.28, 1.04, -0.33), 0.024, 'metal'],
+ ['bar', 'pushbar', (0.28, 0.425, -0.23), (0.28, 1.04, -0.33), 0.024, 'metal'],
+ ['bar', 'handle_mount', (-0.28, 1.04, -0.33), (-0.25, 1.04, -0.33), 0.024, 'metal'],
+ ['bar', 'handle_mount', (0.28, 1.04, -0.33), (0.25, 1.04, -0.33), 0.024, 'metal'],
  ['bar', 'grip', (-0.25, 1.04, -0.33), (-0.25, 1.04, -0.5), 0.03, 'metal_dark'],
  ['bar', 'grip', (0.25, 1.04, -0.33), (0.25, 1.04, -0.5), 0.03, 'metal_dark'],
  ['box', 'footrest', (0.18, 0.04, 0.23), (-0.14, 0.15, 0.46), 'metal'],
  ['box', 'footrest', (0.18, 0.04, 0.23), (0.14, 0.15, 0.46), 'metal'],
+ ['bar', 'footrest_support', (-0.22, 0.425, 0.20), (-0.22, 0.17, 0.35), 0.018, 'metal'],
+ ['bar', 'footrest_support', (0.22, 0.425, 0.20), (0.22, 0.17, 0.35), 0.018, 'metal'],
  ['bar', 'axle', (-0.36, 0.31, -0.2), (0.36, 0.31, -0.2), 0.025, 'metal'],
  ['bar', 'spoke', (-0.34, 0.31, -0.2), (-0.34, 0.5900000000000001, -0.2), 0.014, 'metal'],
  ['bar', 'spoke', (-0.34, 0.31, -0.2), (-0.34, 0.31, 0.08000000000000002), 0.014, 'metal'],
@@ -24,6 +34,30 @@ PARTS = [['ring', 'rear_wheel', 0.31, 0.275, 0.05, (-0.34, 0.31, -0.2), 'metal_d
  ['bar', 'spoke', (0.34, 0.31, -0.2), (0.34, 0.31, 0.08000000000000002), 0.014, 'metal'],
  ['bar', 'spoke', (0.34, 0.31, -0.2), (0.34, 0.02999999999999997, -0.19999999999999998), 0.014, 'metal'],
  ['bar', 'spoke', (0.34, 0.31, -0.2), (0.34, 0.30999999999999994, -0.48000000000000004), 0.014, 'metal']]
+WHEEL_CENTERS = {'wheel_rear_left': (0.34, 0.31, -0.2),
+ 'wheel_rear_right': (-0.34, 0.31, -0.2),
+ 'wheel_front_left': (0.275, 0.09, 0.36),
+ 'wheel_front_right': (-0.275, 0.09, 0.36)}
+PARTS += [['bar', 'axle_hanger', (-0.28, 0.31, -0.2), (-0.28, 0.425, -0.23), 0.024, 'metal'],
+ ['bar', 'axle_hanger', (0.28, 0.31, -0.2), (0.28, 0.425, -0.23), 0.024, 'metal'],
+ ['ring', 'rear_hub', 0.04, REAR_HUB_BORE, 0.06, (-0.34, 0.31, -0.2), 'metal', (1, 0, 0)],
+ ['ring', 'rear_hub', 0.04, REAR_HUB_BORE, 0.06, (0.34, 0.31, -0.2), 'metal', (1, 0, 0)]]
+# Fork arms straddle each front tire. The fixed axle passes through its bore.
+for center_x, center_y, center_z in (WHEEL_CENTERS['wheel_front_left'], WHEEL_CENTERS['wheel_front_right']):
+    fork_x = (center_x - FRONT_FORK_OFFSET, center_x + FRONT_FORK_OFFSET)
+    PARTS.append(['bar', 'caster_bridge', (fork_x[0], FRONT_FORK_CENTER_Y, center_z),
+                  (fork_x[1], FRONT_FORK_CENTER_Y, center_z), FRONT_FORK_RADIUS, 'metal'])
+    for x in fork_x:
+        PARTS.append(['bar', 'caster_fork', (x, FRONT_FORK_CENTER_Y, center_z),
+                      (x, center_y, center_z), FRONT_FORK_RADIUS, 'metal'])
+    PARTS.append(['bar', 'front_axle', (fork_x[0], center_y, center_z),
+                  (fork_x[1], center_y, center_z), FRONT_AXLE_RADIUS, 'metal'])
+# Spokes attach to the hub annulus and leave the stationary rear axle clear.
+for part in PARTS:
+    if part[1] == 'spoke':
+        start, end = part[2:4]
+        length = sum((b-a)**2 for a,b in zip(start,end))**0.5
+        part[2] = tuple(a + (b-a) * SPOKE_INNER_RADIUS / length for a,b in zip(start,end))
 GRIPS = {'grip_left': [0.25, 1.04, -0.43], 'grip_right': [-0.25, 1.04, -0.43]}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -115,10 +149,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -241,8 +294,23 @@ def canonicalize_triangle_order(path):
 
 def build():
     reset()
+    wheel_parts = {name: [] for name in WHEEL_CENTERS}
     for kind,*args in PARTS:
-        globals()[kind](*args)
+        obj = globals()[kind](*args)
+        if args[0] in ('rear_wheel', 'spoke', 'rear_hub', 'wheel'):
+            point = args[4] if args[0] in ('rear_wheel', 'rear_hub', 'wheel') else args[1]
+            name = ('wheel_front_' if args[0] == 'wheel' else 'wheel_rear_') + ('left' if point[0] > 0 else 'right')
+            wheel_parts[name].append(obj)
+    bpy.context.view_layer.update()
+    for name, center in WHEEL_CENTERS.items():
+        node = bpy.data.objects.new(name, None)
+        bpy.context.collection.objects.link(node)
+        node.location = xyz(center)
+        bpy.context.view_layer.update()
+        for obj in wheel_parts[name]:
+            world = obj.matrix_world.copy()
+            obj.parent = node
+            obj.matrix_world = world
     for name,position in GRIPS.items():
         node=bpy.data.objects.new(name,None)
         bpy.context.collection.objects.link(node)
@@ -252,8 +320,17 @@ def build():
         meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
         low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
         for o in bpy.context.scene.objects:
-            o.location.z -= low
+            if o.parent is None: o.location.z -= low
     export(NAME)
 
 if __name__=='__main__':
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("wheelchair")

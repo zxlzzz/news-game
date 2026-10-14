@@ -1,7 +1,61 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://models/building_bakery.glb" id="1"]
+
+[ext_resource type="PackedScene" path="res://types/window_d9a2b0f410.tscn" id="part0"]
+[ext_resource type="PackedScene" path="res://types/window_d9a2b0f410.tscn" id="part1"]
+[ext_resource type="PackedScene" path="res://types/window_d9a2b0f410.tscn" id="part2"]
+[ext_resource type="PackedScene" path="res://types/window_d9a2b0f410.tscn" id="part3"]
+[ext_resource type="PackedScene" path="res://types/window_d9a2b0f410.tscn" id="part4"]
+[ext_resource type="PackedScene" path="res://types/window_d9a2b0f410.tscn" id="part5"]
+[ext_resource type="PackedScene" path="res://types/window_20cd07ccae.tscn" id="part6"]
+[ext_resource type="PackedScene" path="res://types/window_32be0d252b.tscn" id="part7"]
+[ext_resource type="PackedScene" path="res://types/sign_fdcaaddc95.tscn" id="part8"]
+[ext_resource type="PackedScene" path="res://types/furnishing_aa147d862f.tscn" id="part9"]
+[ext_resource type="PackedScene" path="res://types/furnishing_0ba00b6df3.tscn" id="part10"]
+[ext_resource type="PackedScene" path="res://types/awning_99683576ca.tscn" id="part11"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part12"]
 
 [node name="BuildingBakery" type="Node3D" groups=["building"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+
+; BEGIN reusable components
+[node name="window_d9a2b0f410_0" parent="." instance=ExtResource("part0")]
+position = Vector3(-3.7, 4.35, -0.175)
+
+[node name="window_d9a2b0f410_1" parent="." instance=ExtResource("part1")]
+position = Vector3(0.0, 4.35, -0.175)
+
+[node name="window_d9a2b0f410_2" parent="." instance=ExtResource("part2")]
+position = Vector3(3.7, 4.35, -0.175)
+
+[node name="window_d9a2b0f410_3" parent="." instance=ExtResource("part3")]
+position = Vector3(-3.7, 7.55, -0.175)
+
+[node name="window_d9a2b0f410_4" parent="." instance=ExtResource("part4")]
+position = Vector3(0.0, 7.55, -0.175)
+
+[node name="window_d9a2b0f410_5" parent="." instance=ExtResource("part5")]
+position = Vector3(3.7, 7.55, -0.175)
+
+[node name="window_20cd07ccae_6" parent="." instance=ExtResource("part6")]
+position = Vector3(-3.5, 0.3, -0.175)
+
+[node name="window_32be0d252b_7" parent="." instance=ExtResource("part7")]
+position = Vector3(2.7, 0.3, -0.175)
+
+[node name="sign_fdcaaddc95_8" parent="." instance=ExtResource("part8")]
+position = Vector3(2.0, 2.88, 0.06)
+
+[node name="furnishing_aa147d862f_9" parent="." instance=ExtResource("part9")]
+position = Vector3(-3.0, 11.2, -5.5)
+
+[node name="furnishing_0ba00b6df3_10" parent="." instance=ExtResource("part10")]
+position = Vector3(-2.0, 10.2, -3.0)
+
+[node name="awning_99683576ca_11" parent="." instance=ExtResource("part11")]
+position = Vector3(0.0, 2.65, 0.375)
+
+[node name="door_single_12" parent="." instance=ExtResource("part12")]
+position = Vector3(-0.9, 0.0, -0.44)

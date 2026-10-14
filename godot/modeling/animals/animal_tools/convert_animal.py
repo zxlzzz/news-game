@@ -61,6 +61,10 @@ def run(profile_path):
  (args.out/'conversion_report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
  bpy.ops.object.select_all(action='DESELECT');obj.select_set(True);rig.select_set(True);bpy.context.view_layer.objects.active=rig
  path=args.out/(p['name']+'.glb');bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_yup=True,export_skins=True,export_extras=True,export_animations=True,export_animation_mode='ACTIONS',export_force_sampling=True,export_frame_step=1,export_optimize_animation_size=False,export_nla_strips=False,export_all_influences=False,export_texcoords=False,export_normals=True,export_cameras=False,export_lights=False);core.canonicalize_unit_scales(path)
+ if p.get('repair_internal_flaps',False):
+  sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
+  from repair_glb_topology import repair_internal_flaps
+  print('INTERNAL_FACES_REMOVED',repair_internal_flaps(path),flush=True)
  if args.preview:
   scene=core.render_setup()
   for name,az,el in [('rest_side',90,0),('rest_top',0,90),('rest_game',35,38)]:camera(scene,core.vertices(obj),az,el);core.render(args.out/(name+'.png'))

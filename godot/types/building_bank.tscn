@@ -1,25 +1,77 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="PackedScene" path="res://models/building_bank.glb" id="1"]
 
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part0"]
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part1"]
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part2"]
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part3"]
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part4"]
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part5"]
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part6"]
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part7"]
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part8"]
+[ext_resource type="PackedScene" path="res://types/window_79b1435984.tscn" id="part9"]
+[ext_resource type="PackedScene" path="res://types/window_aa099f024d.tscn" id="part10"]
+[ext_resource type="PackedScene" path="res://types/window_aa099f024d.tscn" id="part11"]
+[ext_resource type="PackedScene" path="res://types/sign_c7cba4b9f1.tscn" id="part12"]
+[ext_resource type="PackedScene" path="res://types/furnishing_0ba00b6df3.tscn" id="part13"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part14"]
+
 [node name="BuildingBank" type="Node3D" groups=["building"]]
+metadata/walking_surfaces = PackedStringArray("model/step_1", "model/step_2", "model/step_3")
 
 [node name="model" parent="." instance=ExtResource("1")]
 
 [node name="post_step" type="Marker3D" parent="."]
 transform = Transform3D(0.9951, 0, 0.0988, 0, 1, 0, -0.0988, 0, 0.9951, 0, 0, 0.45)
 
-[node name="touch_sit_step_Hips" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0.45)
+[node name="stance_step_ground" type="Marker3D" parent="." groups=["pose_anchor"]]
+position = Vector3(0.0, -0.00901984609663486, 1.11696934700012)
+rotation = Vector3(0, 0.09896217088767159, 0)
 
-[node name="touch_sit_step_LeftFoot" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, 0.08, 1.05)
+; BEGIN reusable components
+[node name="window_79b1435984_0" parent="." instance=ExtResource("part0")]
+position = Vector3(-5.3, 4.02, -0.175)
 
-[node name="touch_sit_step_RightFoot" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17, 0.08, 1.05)
+[node name="window_79b1435984_1" parent="." instance=ExtResource("part1")]
+position = Vector3(-3.5, 4.02, -0.175)
 
-[node name="touch_sit_step_LeftHand" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.53, 0.7)
+[node name="window_79b1435984_2" parent="." instance=ExtResource("part2")]
+position = Vector3(0.0, 4.02, -0.175)
 
-[node name="touch_sit_step_RightHand" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.53, 0.7)
+[node name="window_79b1435984_3" parent="." instance=ExtResource("part3")]
+position = Vector3(3.5, 4.02, -0.175)
+
+[node name="window_79b1435984_4" parent="." instance=ExtResource("part4")]
+position = Vector3(5.3, 4.02, -0.175)
+
+[node name="window_79b1435984_5" parent="." instance=ExtResource("part5")]
+position = Vector3(-5.3, 7.22, -0.175)
+
+[node name="window_79b1435984_6" parent="." instance=ExtResource("part6")]
+position = Vector3(-3.5, 7.22, -0.175)
+
+[node name="window_79b1435984_7" parent="." instance=ExtResource("part7")]
+position = Vector3(0.0, 7.22, -0.175)
+
+[node name="window_79b1435984_8" parent="." instance=ExtResource("part8")]
+position = Vector3(3.5, 7.22, -0.175)
+
+[node name="window_79b1435984_9" parent="." instance=ExtResource("part9")]
+position = Vector3(5.3, 7.22, -0.175)
+
+[node name="window_aa099f024d_10" parent="." instance=ExtResource("part10")]
+position = Vector3(-4.0, 0.3, -0.175)
+
+[node name="window_aa099f024d_11" parent="." instance=ExtResource("part11")]
+position = Vector3(4.0, 0.3, -0.175)
+
+[node name="sign_c7cba4b9f1_12" parent="." instance=ExtResource("part12")]
+position = Vector3(0.0, 3.01, 0.06)
+
+[node name="furnishing_0ba00b6df3_13" parent="." instance=ExtResource("part13")]
+position = Vector3(-2.0, 10.2, -3.0)
+
+[node name="door_single_14" parent="." instance=ExtResource("part14")]
+position = Vector3(0.0, 0.45, -0.44)

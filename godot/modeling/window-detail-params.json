@@ -1,0 +1,23 @@
+{
+  "frame_ratio": 0.045,
+  "frame_min": 0.025,
+  "frame_max": 0.05,
+  "frame_depth": 0.055,
+  "frame_lift": 0.012,
+  "sash_ratio": 0.03,
+  "sash_min": 0.018,
+  "sash_max": 0.032,
+  "sash_clearance": 0.006,
+  "sash_depth": 0.058,
+  "sash_lift": 0.016,
+  "pane_back_clearance": 0.003,
+  "handle_width": 0.022,
+  "handle_height": 0.1,
+  "handle_depth": 0.035,
+  "mullion_width": 0.05,
+  "mullion_max": 0.055,
+  "casement_degrees": 70.0,
+  "awning_degrees": 45.0,
+  "geometry_epsilon": 1e-06,
+  "geometry_area_epsilon": 1e-09
+}

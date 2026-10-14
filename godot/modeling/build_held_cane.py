@@ -101,3 +101,7 @@ def build():
 
 if __name__ == '__main__':
     build()
+
+if __name__ == "__main__":
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(Path(__file__).resolve().parents[1]/"models/held_cane.glb")

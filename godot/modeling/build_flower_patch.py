@@ -1,27 +1,25 @@
 """成片花丛。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'flower_patch'
 # All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['ellipsoid', 'low_foliage', (0.6, 0.4, 0.6), (-0.75, 0.2, -0.35), 'foliage'],
- ['ellipsoid', 'low_foliage', (0.6, 0.4, 0.6), (-0.75, 0.2, 0.35), 'foliage'],
- ['ellipsoid', 'low_foliage', (0.6, 0.4, 0.6), (0, 0.2, -0.35), 'foliage'],
- ['ellipsoid', 'low_foliage', (0.6, 0.4, 0.6), (0, 0.2, 0.35), 'foliage'],
- ['ellipsoid', 'low_foliage', (0.6, 0.4, 0.6), (0.75, 0.2, -0.35), 'foliage'],
- ['ellipsoid', 'low_foliage', (0.6, 0.4, 0.6), (0.75, 0.2, 0.35), 'foliage'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (-0.9, 0.44, -0.4), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (-0.9, 0.44, 0), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (-0.9, 0.44, 0.4), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (-0.45, 0.44, -0.4), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (-0.45, 0.44, 0), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (-0.45, 0.44, 0.4), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (0, 0.44, -0.4), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (0, 0.44, 0), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (0, 0.44, 0.4), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (0.45, 0.44, -0.4), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (0.45, 0.44, 0), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (0.45, 0.44, 0.4), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (0.9, 0.44, -0.4), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (0.9, 0.44, 0), 'fabric'],
- ['ellipsoid', 'flower', (0.2, 0.13, 0.2), (0.9, 0.44, 0.4), 'fabric']]
+FOLIAGE_SIZE = (0.8, 0.4, 0.8)
+FOLIAGE_X = (-0.65, 0, 0.65)
+FOLIAGE_Z = (-0.25, 0.25)
+FLOWER_SIZE = (0.2, 0.13, 0.2)
+FLOWER_X = (-0.9, -0.45, 0, 0.45, 0.9)
+FLOWER_Z = (-0.4, 0, 0.4)
+FLOWER_Y = 0.44
+STEM_BOTTOM = 0.07
+STEM_TOP = 0.425
+STEM_RADIUS = 0.012
+# Overlapping leaf masses keep the existing 2.1 x 1.3 m footprint.
+PARTS = [['ellipsoid', 'low_foliage', FOLIAGE_SIZE, (x, 0.2, z), 'foliage']
+         for x in FOLIAGE_X for z in FOLIAGE_Z]
+for x in FLOWER_X:
+    for z in FLOWER_Z:
+        PARTS += [
+            ['bar', 'stem', (x, STEM_BOTTOM, z), (x, STEM_TOP, z),
+             STEM_RADIUS, 'foliage'],
+            ['ellipsoid', 'flower', FLOWER_SIZE, (x, FLOWER_Y, z), 'fabric']]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -113,10 +111,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):

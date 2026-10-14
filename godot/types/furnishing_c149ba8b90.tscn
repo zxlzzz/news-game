@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://models/furnishing_c149ba8b90.glb" id="1"]
+
+[node name="furnishing_c149ba8b90" type="Node3D" groups=["facade_item"]]
+
+[node name="model" parent="." instance=ExtResource("1")]

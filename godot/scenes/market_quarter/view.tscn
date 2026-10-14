@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/orbit_camera.gd" id="1"]
+
+[node name="View" type="Node3D"]
+
+[node name="Camera" type="Camera3D" parent="."]
+position = Vector3(-76.94620863813352, 268.1155550916423, 203.40792255471627)
+rotation_degrees = Vector3(-50, -20, 0)
+projection = 1
+current = true
+size = 170.0
+near = 0.5
+far = 650.0
+script = ExtResource("1")
+params = "res://scenes/market_quarter/camera-params.json"
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-40, -28, 0)
+shadow_enabled = true
+shadow_bias = 0.1
+shadow_normal_bias = 1.0
+directional_shadow_max_distance = 500.0

@@ -5,6 +5,8 @@ RAIL_HEIGHT = 1.0
 POST_SPACING = 0.15
 POST_RADIUS = 0.014
 HANDRAIL_RADIUS = 0.025
+LOWER_RAIL_HEIGHT = 0.135
+LOWER_RAIL_RADIUS = 0.020
 BASE_SIZE = (0.10,0.035,0.10)
 BASE_EVERY = 4
 from pathlib import Path
@@ -90,10 +92,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -241,9 +262,12 @@ def build():
     count=round(RAIL_LENGTH/POST_SPACING)
     for i in range(count+1):
         x=-RAIL_LENGTH/2+i*POST_SPACING
-        bar('slim_upright',(x,BASE_SIZE[1],0),(x,RAIL_HEIGHT,0),POST_RADIUS,'metal_dark')
+        foot_y=BASE_SIZE[1] if i%BASE_EVERY==0 else LOWER_RAIL_HEIGHT
+        bar('slim_upright',(x,foot_y,0),(x,RAIL_HEIGHT,0),POST_RADIUS,'metal_dark')
         if i%BASE_EVERY==0:box('roof_fixing_plate',BASE_SIZE,(x,BASE_SIZE[1]/2,0),'metal')
     bar('single_top_handrail',(-RAIL_LENGTH/2,RAIL_HEIGHT,0),(RAIL_LENGTH/2,RAIL_HEIGHT,0),HANDRAIL_RADIUS,'metal_dark')
+    bar('infill_lower_rail',(-RAIL_LENGTH/2,LOWER_RAIL_HEIGHT,0),
+        (RAIL_LENGTH/2,LOWER_RAIL_HEIGHT,0),LOWER_RAIL_RADIUS,'metal_dark')
     ground_all()
     export(NAME)
 

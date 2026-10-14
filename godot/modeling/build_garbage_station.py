@@ -147,7 +147,11 @@ class Model:
         blob = struct.pack('<4sII', b'glTF', 2, 28+len(header)+len(binary))
         blob += struct.pack('<I4s', len(header), b'JSON') + header
         blob += struct.pack('<I4s', len(binary), b'BIN\0') + binary
-        Path(path).write_bytes(blob)
+        import os, tempfile
+        path=Path(path)
+        with tempfile.NamedTemporaryFile(dir=path.parent,suffix='.tmp',delete=False) as pending:
+            pending.write(blob);temporary=pending.name
+        os.replace(temporary,path)
 
 
 """Batch-six architecture. Copied into each standalone builder by assemble.py.
@@ -387,7 +391,17 @@ def site_piece(m,p):
     elif kind in ['shed','garbage']:
         w,d,h=p['width'],p['depth'],p['height']
         for i,x in enumerate(p['post_x']):
-            for s in [-1,1]:m.box(f'post_{i}_{s}',(p['post_width'],h,p['post_width']),(x,h/2,s*(d/2-p['post_width']/2)),'metal_dark')
+            for s in [-1,1]:
+                # Match the complete top face to the actual canopy slope,
+                # including the high front row, rather than centre contact.
+                half=p['post_width']/2
+                z=s*(d/2-half)
+                u0,u1=-z-half,-z+half
+                underside=lambda u:h+p['roof_rise']*(0.5-u/d)
+                name=f'post_{i}_{s}'
+                m.prism(name,[(u0,0),(u1,0),(u1,underside(u1)),(u0,underside(u0))],p['post_width'],(0,0,0),'metal_dark')
+                m.parts[name]={slot:[tuple((v[2]+x,v[1],-v[0]) for v in tri) for tri in tris]
+                               for slot,tris in m.parts[name].items()}
         # Sloping canopy is a solid quadrilateral prism, with visible thickness.
         t=D['roof_slab'];r=p['roof_rise']
         m.prism('shed_roof',[(-d/2,h+r),(d/2,h),(d/2,h+t),(-d/2,h+r+t)],w,(0,0,0),'concrete')
@@ -398,7 +412,7 @@ def site_piece(m,p):
                     m.tube(f'rack_leg_{i}_{dz}',(x,p['rack_radius'],dz),(x,p['rack_height'],dz),p['rack_radius'],D['round_segments'])
                 m.tube(f'rack_top_{i}',(x,p['rack_height'],-p['rack_gap']/2),(x,p['rack_height'],p['rack_gap']/2),p['rack_radius'],D['round_segments'])
         else:
-            m.box('back_screen',(w,p['screen_height'],p['screen_thickness']),(0,p['screen_height']/2,-d/2+p['screen_thickness']/2),'wall_brick')
+            m.box('back_screen',(p['post_x'][1]-p['post_x'][0]-p['post_width'],p['screen_height'],p['screen_thickness']),(0,p['screen_height']/2,-d/2+p['screen_thickness']/2),'wall_brick')
             for i,x in enumerate(p['bin_x']):
                 bw,bh,bd=p['bin_size'];m.box(f'bin_{i}',p['bin_size'],(x,bh/2,p['bin_z']),'metal_dark' if i%2 else 'metal')
                 m.box(f'bin_lid_{i}',(bw+p['lid_extra'],p['lid_height'],bd+p['lid_extra']),(x,bh+p['lid_height']/2,p['bin_z']),'trim_dark')

@@ -1,11 +1,18 @@
 """原创程序模型；尺寸单位米；Blender 后台重建，无外部依赖。"""
 NAME = 'car_hatchback'
+WHEEL_ARCH_CLEARANCE = 0.035
+WHEEL_AXLE_RADIUS = 0.035
+WHEEL_AXLE_FIT_CLEARANCE = 0.004
 CAR_WIDTH = 1.62
 CAR_LENGTH = 3.65
 WHEEL_RADIUS = 0.30
 WHEEL_THICKNESS = 0.18
 AXLES = [-1.12,1.12]
 BODY_BOTTOM = 0.34
+# Short fixed supports bridge the real axle/body gap inboard of the wheel wells.
+AXLE_MOUNT_RADIUS = .025
+AXLE_MOUNT_BODY_EMBED = .04
+AXLE_MOUNT_INBOARD = .12
 BELT_HEIGHT = 0.89
 CABIN_WIDTH = 1.48
 BODY_PROFILE = [(-1.825,0.34),(1.825,0.34),(1.825,0.76),(1.50,0.89),(-1.825,0.89)]
@@ -13,8 +20,9 @@ CABIN_PROFILE = [(-1.825,0.88),(-1.48,1.38),(-1.10,1.5),(0.38,1.5),(0.94,0.89)]
 SIDE_WINDOWS = [[(-1.63,0.97),(-1.38,1.32),(-1.02,1.4),(-0.48,1.4),(-0.48,0.97)],[(-0.38,0.97),(-0.38,1.4),(0.33,1.4),(0.78,0.97)]]
 PANE_THICKNESS = 0.012
 GLASS_WIDTH = 1.19
-FRONT_GLASS = [(0.43,1.44),(0.86,0.96)]
-REAR_GLASS = [(-1.47,1.34),(-1.72,0.97)]
+FRONT_GLASS_FRACTIONS = (0.10, 0.88)
+REAR_GLASS_FRACTIONS = (0.16, 0.91)
+GLASS_SURFACE_INSET = 0.001
 LAMP_SIZE = (0.25,0.16,0.04)
 BUMPER_SIZE = (1.48,0.12,0.08)
 from pathlib import Path
@@ -100,10 +108,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -184,10 +211,19 @@ def export(name):
         bm.to_mesh(obj.data)
         bm.free()
     bpy.ops.object.select_all(action='SELECT')
-    bpy.ops.export_scene.gltf(filepath=str(output), export_format='GLB', export_yup=True,
-        export_normals=True, export_texcoords=False, export_animations=False,
-        export_cameras=False, export_lights=False, export_extras=False)
-    canonicalize_triangle_order(output)
+    # Finish the complete export before replacing an asset the editor may read.
+    import os
+    import tempfile
+    with tempfile.NamedTemporaryFile(dir=output.parent,suffix='.glb',delete=False) as pending:
+        temporary=Path(pending.name)
+    try:
+        bpy.ops.export_scene.gltf(filepath=str(temporary), export_format='GLB', export_yup=True,
+            export_normals=True, export_texcoords=False, export_animations=False,
+            export_cameras=False, export_lights=False, export_extras=False)
+        canonicalize_triangle_order(temporary)
+        os.replace(temporary,output)
+    finally:
+        temporary.unlink(missing_ok=True)
     print('MODEL_WRITTEN', output)
 
 
@@ -262,16 +298,44 @@ def build():
         for polygon in SIDE_WINDOWS:
             obj=profile('side_glass',polygon,PANE_THICKNESS,'window')
             obj.location.x=sign*(CABIN_WIDTH/2+PANE_THICKNESS/3)
-    for label,points in [('windshield',FRONT_GLASS),('rear_hatch_glass',REAR_GLASS)]:
+    def slope_glass(slope, fractions):
+        (za,ya),(zb,yb) = slope
+        return [(za+(zb-za)*fraction,ya+(yb-ya)*fraction)
+                for fraction in fractions]
+    for label,points in [('windshield',slope_glass(CABIN_PROFILE[-2:],FRONT_GLASS_FRACTIONS)),
+                         ('rear_hatch_glass',slope_glass(CABIN_PROFILE[:2],REAR_GLASS_FRACTIONS))]:
         (z0,y0),(z1,y1)=points
-        direction=1 if label=='windshield' else -1
-        verts=[(x,y,z+direction*o) for o in (0,PANE_THICKNESS) for x,y,z in [(-GLASS_WIDTH/2,y0,z0),(GLASS_WIDTH/2,y0,z0),(GLASS_WIDTH/2,y1,z1),(-GLASS_WIDTH/2,y1,z1)]]
+        normal=Vector((0,z1-z0,y0-y1)).normalized()
+        # A thin inset makes the opaque glazing a fitted surface layer. Its
+        # whole outer face lies outside the actual shell, without an air gap.
+        verts=[Vector((x,y,z))+normal*offset
+               for offset in (-GLASS_SURFACE_INSET,PANE_THICKNESS-GLASS_SURFACE_INSET)
+               for x,y,z in [(-GLASS_WIDTH/2,y0,z0),(GLASS_WIDTH/2,y0,z0),(GLASS_WIDTH/2,y1,z1),(-GLASS_WIDTH/2,y1,z1)]]
         mesh(label,verts,[(0,3,2,1),(4,5,6,7),(0,1,5,4),(1,2,6,5),(2,3,7,6),(3,0,4,7)],'window')
     for sign in (-1,1):
         box('bumper',BUMPER_SIZE,(0,BODY_BOTTOM+BUMPER_SIZE[1],sign*CAR_LENGTH/2),'metal_dark')
         for x in (-CAR_WIDTH/3,CAR_WIDTH/3):box('lamp',LAMP_SIZE,(x,BELT_HEIGHT-LAMP_SIZE[1],sign*CAR_LENGTH/2),'accent' if sign>0 else 'trim_dark')
     ground_all()
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from vehicle_geometry import finish_wheeled_vehicle
+    finish_wheeled_vehicle(bpy.context.scene.objects, WHEEL_ARCH_CLEARANCE, WHEEL_AXLE_RADIUS, WHEEL_AXLE_FIT_CLEARANCE)
+    mount_x = CAR_WIDTH / 2 - WHEEL_THICKNESS / 2 - WHEEL_ARCH_CLEARANCE - AXLE_MOUNT_INBOARD
+    for z in AXLES:
+        for sign in (-1, 1):
+            bar('axle_mount', (sign * mount_x, WHEEL_RADIUS, z),
+                (sign * mount_x, BODY_BOTTOM + AXLE_MOUNT_BODY_EMBED, z),
+                AXLE_MOUNT_RADIUS, 'metal_dark')
     export(NAME)
 
 if __name__ == "__main__":
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("car_hatchback")

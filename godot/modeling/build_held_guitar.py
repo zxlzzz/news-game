@@ -1,242 +1,54 @@
-"""吉他。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
-NAME = 'held_guitar'
-# All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['ellipsoid', 'lower_body', (0.35, 0.4, 0.085), (0, -0.295, 0), 'wood'],
- ['ellipsoid', 'upper_body', (0.29, 0.3, 0.08), (0, -0.065, 0), 'wood'],
- ['box', 'neck', (0.065, 0.5, 0.045), (0, 0.305, 0), 'wood'],
- ['box', 'head', (0.09, 0.14, 0.05), (0, 0.625, 0), 'wood'],
- ['cylinder', 'soundhole', 0.07, 0.018, (0, -0.11, 0.05), 'trim_dark', (0, 0, 1), None],
- ['box', 'bridge', (0.14, 0.035, 0.025), (0, -0.345, 0.055), 'trim_dark']]
-GRIPS = {'grip_left': [0, 0.275, 0], 'grip_right': [0, -0.275, 0]}
-
-"""Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
-
-Build scripts own dimensions/design; this module only constructs and exports geometry.
-Run any build script with Blender --background --factory-startup --python <script>.
-No third-party meshes, textures, randomness or downloaded assets.
+"""Deterministic original prop; metres, Y up and +Z front.
+Shape parameters are declared below; runtime supplies grayscale/outline style.
 """
+import sys
 from pathlib import Path
-from math import sin, cos, pi
-import bpy
-import bmesh
-from mathutils import Vector
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from model_geometry import *
+from model_contacts import apply
 
-CIRCLE_SEGMENTS = 32
-TUBE_SEGMENTS = 16
-DECAL_Y = 0.003
-
-
-def xyz(p):
-    return Vector((p[0], -p[2], p[1]))
-
-
-def reset():
-    bpy.ops.object.select_all(action='SELECT')
-    bpy.ops.object.delete(use_global=False)
-    for collection in (bpy.data.meshes, bpy.data.materials):
-        for item in list(collection):
-            if item.users == 0:
-                collection.remove(item)
-
-
-def material(slot):
-    m = bpy.data.materials.get(slot)
-    if m is None:
-        m = bpy.data.materials.new(slot)
-        m.use_nodes = True
-        shader = m.node_tree.nodes.get('Principled BSDF')
-        shader.inputs['Base Color'].default_value = (1, 1, 1, 1)
-        shader.inputs['Roughness'].default_value = 1
-    return m
-
-
-def finish(obj, name, slot):
-    obj.name = name
-    obj.data.name = name
-    if slot:
-        obj.data.materials.append(material(slot))
-    bpy.context.view_layer.objects.active = obj
-    obj.select_set(True)
-    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-    obj.select_set(False)
-    return obj
-
-
-def box(name, size, center, slot):
-    bpy.ops.mesh.primitive_cube_add(size=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
-
-
-def mesh(name, vertices, faces, slot):
-    data = bpy.data.meshes.new(name)
-    data.from_pydata([xyz(v) for v in vertices], [], faces)
-    data.update()
-    bm = bmesh.new()
-    bm.from_mesh(data)
-    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
-    bm.to_mesh(data)
-    bm.free()
-    obj = bpy.data.objects.new(name, data)
-    bpy.context.collection.objects.link(obj)
-    return finish(obj, name, slot)
-
-
-def cylinder(name, radius, height, center, slot, axis=(0, 1, 0), radius_top=None):
-    bpy.ops.mesh.primitive_cone_add(vertices=CIRCLE_SEGMENTS, radius1=radius,
-        radius2=radius if radius_top is None else radius_top, depth=height, location=xyz(center))
-    obj = bpy.context.object
-    obj.rotation_mode = 'QUATERNION'
-    obj.rotation_quaternion = Vector((0, 0, 1)).rotation_difference(xyz(axis).normalized())
-    return finish(obj, name, slot)
-
-
-def bar(name, start, end, radius, slot):
-    a, b = Vector(start), Vector(end)
-    return cylinder(name, radius, (b-a).length, (a+b)/2, slot, b-a)
-
-
-def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
-
-
-def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
-    """Closed annular solid; no coincident cylinder caps or open edges."""
-    verts = []
-    for y, r in [(-height/2, outer), (-height/2, inner), (height/2, outer), (height/2, inner)]:
-        verts.extend([(r*cos(i*2*pi/CIRCLE_SEGMENTS), y, r*sin(i*2*pi/CIRCLE_SEGMENTS)) for i in range(CIRCLE_SEGMENTS)])
-    faces = []
-    n = CIRCLE_SEGMENTS
-    for i in range(n):
-        j = (i+1) % n
-        faces.extend([(i,j,n+j,n+i), (2*n+i,3*n+i,3*n+j,2*n+j),
-                      (i,2*n+i,2*n+j,j), (n+i,n+j,3*n+j,3*n+i)])
-    q = Vector((0,1,0)).rotation_difference(Vector(axis).normalized())
-    return mesh(name, [q @ Vector(v) + Vector(center) for v in verts], faces, slot)
-
-
-def prism(name, outline, depth, center, slot):
-    """Extrude a convex XY profile along Z; closed caps. Center is XYZ."""
-    verts = [(x+center[0], y+center[1], z+center[2]) for z in (-depth/2,depth/2) for x,y in outline]
-    n = len(outline)
-    faces = [tuple(range(n-1,-1,-1)), tuple(range(n,2*n))]
-    faces += [(i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n)]
-    return mesh(name, verts, faces, slot)
-
-
-def roof_panel(name, width, depth, low_y, rise, thickness, center_z, slot):
-    # Single sloped slab, all four edges closed; low edge faces +Z.
-    vertices = [(x,y,z+center_z) for yoff in (0,thickness) for x,y,z in
-        [(-width/2,low_y+yoff,depth/2),(width/2,low_y+yoff,depth/2),
-         (width/2,low_y+rise+yoff,-depth/2),(-width/2,low_y+rise+yoff,-depth/2)]]
-    return mesh(name, vertices, [(0,3,2,1),(4,5,6,7),(0,1,5,4),(1,2,6,5),(2,3,7,6),(3,0,4,7)], slot)
-
-
-def blind_cut(body, name, size, center):
-    cutter = box(name+'_cutter', size, center, None)
-    subtract(body, cutter, name)
-
-
-def subtract(body, cutter, name):
-    bpy.context.view_layer.objects.active = body
-    mod = body.modifiers.new(name, 'BOOLEAN')
-    mod.operation, mod.solver, mod.object = 'DIFFERENCE', 'EXACT', cutter
-    bpy.ops.object.modifier_apply(modifier=mod.name)
-    bpy.data.objects.remove(cutter, do_unlink=True)
-
-
-def rotate(obj, degrees, axis='Y'):
-    direction = {'X':Vector((1,0,0)), 'Y':Vector((0,0,1)), 'Z':Vector((0,-1,0))}[axis]
-    from mathutils import Quaternion
-    obj.rotation_mode = 'QUATERNION'
-    obj.rotation_quaternion = Quaternion(direction, degrees*pi/180) @ obj.rotation_quaternion
-    return obj
-
-
-def export(name):
-    output = Path(__file__).resolve().parents[1] / 'models' / (name+'.glb')
-    output.parent.mkdir(parents=True, exist_ok=True)
-    collisions = [p.name for p in output.parent.iterdir()
-                  if p.name.casefold() == output.name.casefold() and p.name != output.name]
-    if collisions:
-        raise FileExistsError('Case-insensitive model name collision: '+str(collisions))
-    # Boolean recesses may leave sub-micron slivers. Weld only well below the renderer's
-    # 0.5 mm weld tolerance, triangulate explicitly, then recalculate actual face normals.
-    for obj in bpy.context.scene.objects:
-        if obj.type != 'MESH':
-            continue
-        bm = bmesh.new()
-        bm.from_mesh(obj.data)
-        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.000001)
-        bmesh.ops.dissolve_degenerate(bm, edges=bm.edges, dist=0.0000001)
-        bmesh.ops.triangulate(bm, faces=bm.faces)
-        bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
-        # A single open horizontal decal has no enclosed volume to orient against.
-        # Force its visible side upward after recalc (Blender Z == game Y).
-        if bm.verts and max(v.co.z for v in bm.verts)-min(v.co.z for v in bm.verts)<0.0000001:
-            bmesh.ops.reverse_faces(bm, faces=[f for f in bm.faces if f.normal.z < 0])
-        bm.to_mesh(obj.data)
-        bm.free()
-    bpy.ops.object.select_all(action='SELECT')
-    bpy.ops.export_scene.gltf(filepath=str(output), export_format='GLB', export_yup=True,
-        export_normals=True, export_texcoords=False, export_animations=False,
-        export_cameras=False, export_lights=False, export_extras=False)
-    canonicalize_triangle_order(output)
-    print('MODEL_WRITTEN', output)
-
-
-def canonicalize_triangle_order(path):
-    """Blender's UV-sphere cleanup may enumerate identical triangles in a different order.
-    Canonicalize only the index stream, preserving winding, vertices and exact geometry.
-    No mesh compression or glTF extensions are added.
-    """
-    import json
-    import struct
-    data=bytearray(path.read_bytes())
-    json_length=struct.unpack_from('<I',data,12)[0]
-    gltf=json.loads(data[20:20+json_length])
-    binary_start=20+json_length+8
-    seen=set()
-    for m in gltf['meshes']:
-        for primitive in m['primitives']:
-            index=primitive['indices']
-            if index in seen:
-                continue
-            seen.add(index)
-            accessor=gltf['accessors'][index]
-            view=gltf['bufferViews'][accessor['bufferView']]
-            fmt={5121:'B',5123:'H',5125:'I'}[accessor['componentType']]
-            count=accessor['count']
-            offset=binary_start+view.get('byteOffset',0)+accessor.get('byteOffset',0)
-            values=struct.unpack_from('<'+fmt*count,data,offset)
-            triangles=[]
-            for i in range(0,count,3):
-                t=values[i:i+3]
-                triangles.append(min(t,t[1:]+t[:1],t[2:]+t[:2]))
-            triangles.sort()
-            struct.pack_into('<'+fmt*count,data,offset,*(v for t in triangles for v in t))
-    path.write_bytes(data)
-
+NAME='held_guitar'
+P=dict(lower_size=(.35,.4,.085),lower_at=(0,-.295,0),upper_size=(.29,.3,.08),upper_at=(0,-.065,0),
+       neck_size=(.065,.5,.045),neck_at=(0,.305,0),head_size=(.09,.14,.05),head_at=(0,.625,0),
+       hole_radius=.065,hole_y=-.11,hole_cut_depth=.06,hole_cut_z=.035,hole_back_z=.006,
+       bridge_size=(.14,.035,.017),bridge_at=(0,-.345,.044),string_radius=.0009,string_spacing=.009,
+       string_start_y=-.345,string_end_y=.66,string_z=.054,nut_y=.555,nut_size=(.072,.012,.012),
+       fingerboard_size=(.065,.5,.028),fingerboard_at=(0,.305,.0355),
+       fret_y=(.12,.20,.28,.36,.44,.50),fret_size=(.066,.003,.004),fret_z=.0515,
+       tuning_y=(.585,.625,.665),peg_radius=.008,peg_length=.038,peg_x=.055,
+       tuner_post_x=.026,tuner_post_y=.038,tuner_post_depth=.03,
+       grips={'grip_left':(0,.275,0),'grip_right':(0,-.275,0)})
 
 def build():
     reset()
-    for kind,*args in PARTS:
-        globals()[kind](*args)
-    for name,position in GRIPS.items():
-        node=bpy.data.objects.new(name,None)
-        bpy.context.collection.objects.link(node)
-        node.location=xyz(position)
-    if not NAME.startswith('held_'):
-        bpy.context.view_layer.update()
-        meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
-        low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
-        for o in bpy.context.scene.objects:
-            o.location.z -= low
+    bodies=[ellipsoid('lower_body',P['lower_size'],P['lower_at'],'wood'),
+            ellipsoid('upper_body',P['upper_size'],P['upper_at'],'wood')]
+    for body in bodies:
+        cutter=cylinder('hole_cut',P['hole_radius'],P['hole_cut_depth'],(0,P['hole_y'],P['hole_cut_z']),None,axis=(0,0,1))
+        subtract(body,cutter,'soundhole')
+    cylinder('soundhole_back',P['hole_radius'],P['hole_back_z'],(0,P['hole_y'],P['hole_back_z']/2),'metal_dark',axis=(0,0,1))
+    box('neck',P['neck_size'],P['neck_at'],'wood')
+    box('fingerboard',P['fingerboard_size'],P['fingerboard_at'],'trim_dark')
+    box('head',P['head_size'],P['head_at'],'wood')
+    box('bridge',P['bridge_size'],P['bridge_at'],'trim_dark')
+    box('nut',P['nut_size'],(0,P['nut_y'],P['string_z']),'trim')
+    for y in P['fret_y']:box('fret',P['fret_size'],(0,y,P['fret_z']),'metal')
+    for i in range(6):
+        x=(i-2.5)*P['string_spacing']
+        bar('string',(x,P['string_start_y'],P['string_z']),(x,P['nut_y'],P['string_z']),P['string_radius'],'metal')
+        side=-1 if i<3 else 1
+        end=(side*P['tuner_post_x'],P['tuning_y'][i%3],P['tuner_post_y']+P['tuner_post_depth']/2)
+        bar('head_string',(x,P['nut_y'],P['string_z']),end,P['string_radius'],'metal')
+        cylinder('tuner_post',P['peg_radius'],P['tuner_post_depth'],
+            (end[0],end[1],P['tuner_post_y']),'metal',axis=(0,0,1))
+    for side in (-1,1):
+        for y in P['tuning_y']:
+            cylinder('tuning_peg',P['peg_radius'],P['peg_length'],(side*P['peg_x'],y,0),'metal',axis=(1,0,0))
+    for name,position in P['grips'].items():
+        node=bpy.data.objects.new(name,None);bpy.context.collection.objects.link(node);node.location=xyz(position)
     export(NAME)
+
 
 if __name__=='__main__':
     build()
+    apply(Path(__file__).resolve().parents[1]/'models'/f'{NAME}.glb')

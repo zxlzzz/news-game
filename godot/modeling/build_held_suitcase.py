@@ -1,5 +1,10 @@
 """拉杆行李箱。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'held_suitcase'
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+# Static wheels retain their original centres and model interfaces.
+WHEEL_SUPPORT = {'body_name': 'case', 'side_x': 0.15, 'axis_y': -0.9, 'axis_z': 0.12, 'radius': 0.055, 'thickness': 0.045, 'side_clearance': 0.006, 'fork_radius': 0.008, 'support_top_y': -0.858, 'axle_radius': 0.006, 'bearing_clearance': 0.002, 'axle_end_extension': 0.008}
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['box', 'case', (0.38, 0.53, 0.24), (0, -0.62, 0.06), 'fabric'],
  ['bar', 'handle_rail', (-0.09, -0.4, 0), (-0.09, 0, 0), 0.018, 'metal'],
@@ -7,6 +12,13 @@ PARTS = [['box', 'case', (0.38, 0.53, 0.24), (0, -0.62, 0.06), 'fabric'],
  ['bar', 'grip', (-0.12, 0, 0), (0.12, 0, 0), 0.023, 'metal_dark'],
  ['cylinder', 'wheel', 0.055, 0.045, (-0.15, -0.9, 0.12), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'wheel', 0.055, 0.045, (0.15, -0.9, 0.12), 'metal_dark', (1, 0, 0), None]]
+# Fixed front feet support the upright two-wheel case. Tilting toward the
+# wheeled side lifts them; they do not masquerade as rolling caster wheels.
+FRONT_FOOT_RADIUS, FRONT_FOOT_HEIGHT, FRONT_FOOT_Y, FRONT_FOOT_Z = .025, .075, -.9175, -.035
+FRONT_FOOT_X = (-.15,.15)
+for x in FRONT_FOOT_X:
+    PARTS.append(['cylinder','standing_foot',FRONT_FOOT_RADIUS,FRONT_FOOT_HEIGHT,
+                  (x,FRONT_FOOT_Y,FRONT_FOOT_Z),'metal_dark',(0,1,0),None])
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -98,10 +110,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -226,6 +257,8 @@ def build():
     reset()
     for kind,*args in PARTS:
         globals()[kind](*args)
+    from static_wheel_geometry import support_side_wheels
+    support_side_wheels(**WHEEL_SUPPORT)
     for name,position in GRIPS.items():
         node=bpy.data.objects.new(name,None)
         bpy.context.collection.objects.link(node)
@@ -240,3 +273,9 @@ def build():
 
 if __name__=='__main__':
     build()
+
+if __name__ == "__main__":
+    import sys
+    sys.path.insert(0,str(Path(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(Path(__file__).resolve().parents[1]/"models/held_suitcase.glb")

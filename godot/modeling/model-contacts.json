@@ -1,0 +1,2896 @@
+{
+  "models": {
+    "vending_machine": {
+      "button_press": {
+        "at": [
+          0.378,
+          1.13,
+          0.42
+        ],
+        "purpose": "Front surface of the controls; press with the right hand"
+      },
+      "pickup": {
+        "at": [
+          0,
+          0.37,
+          0.45
+        ],
+        "purpose": "Bottle grip in the low pickup tray"
+      }
+    },
+    "laundry_rail": {
+      "hang_left": {
+        "at": [
+          -0.17,
+          1.8,
+          0.0
+        ],
+        "purpose": "Left garment corner on the upper rail"
+      },
+      "hang_right": {
+        "at": [
+          0.17,
+          1.8,
+          0.0
+        ],
+        "purpose": "Right garment corner on the upper rail"
+      },
+      "laundry_rest": {
+        "at": [
+          0,
+          1.8,
+          0.0
+        ],
+        "purpose": "Garment after release, draped over the rail"
+      }
+    },
+    "held_laundry_shirt": {
+      "grip_left": {
+        "at": [
+          0.17,
+          0,
+          0
+        ],
+        "purpose": "Left upper garment corner"
+      },
+      "grip_right": {
+        "at": [
+          -0.17,
+          0,
+          0
+        ],
+        "purpose": "Right upper garment corner"
+      },
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "rest": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Top seam rests over the laundry rail"
+      }
+    },
+    "held_banknote": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Pinched banknote center"
+      },
+      "grip_pull": {
+        "at": [
+          0,
+          -0.0375,
+          0
+        ],
+        "purpose": "Actual short lower edge; becomes the exposed front edge when the note lies flat in the cash slot"
+      },
+      "rest": {
+        "at": [
+          0.0,
+          -0.0375,
+          0.0
+        ],
+        "purpose": "Lowest supporting surface when placed upright"
+      }
+    },
+    "door_single": {},
+    "bench": {
+      "hip_seat": {
+        "at": [
+          0,
+          0.37,
+          0
+        ],
+        "purpose": "Seat surface under the hips"
+      },
+      "foot_left": {
+        "at": [
+          0.11,
+          0,
+          0.38
+        ],
+        "purpose": "Planted sole of the seated posture; the same place as the standing stance at the approach, so sitting down moves no foot"
+      },
+      "foot_right": {
+        "at": [
+          -0.11,
+          0,
+          0.38
+        ],
+        "purpose": "Planted sole of the seated posture; the same place as the standing stance at the approach, so sitting down moves no foot"
+      },
+      "stretch_heel": {
+        "at": [
+          -0.15,
+          0.37,
+          0.1
+        ],
+        "purpose": "Heel of the raised left leg on the bench"
+      },
+      "back_grip": {
+        "at": [
+          0.35,
+          0.87,
+          -0.185
+        ],
+        "purpose": "Top of the backrest"
+      },
+      "hip_seat_front": {
+        "at": [
+          0,
+          0.37,
+          0.17
+        ],
+        "purpose": "Seat point of a slouching body: the hips slid to the front edge, so the thighs pass over the edge"
+      },
+      "foot_side_left": {
+        "at": [
+          0.32856406460551013,
+          0,
+          0.24908965343808673
+        ],
+        "rotation": [
+          0,
+          0.25881904510252074,
+          0,
+          0.9659258262890683
+        ],
+        "purpose": "Sole support for diagonal seated posture"
+      },
+      "foot_side_right": {
+        "at": [
+          0.05143593539448979,
+          0,
+          0.4090896534380867
+        ],
+        "rotation": [
+          0,
+          0.25881904510252074,
+          0,
+          0.9659258262890683
+        ],
+        "purpose": "Sole support for diagonal seated posture"
+      },
+      "foot_far_left": {
+        "at": [
+          0.12,
+          0,
+          0.66
+        ],
+        "purpose": "Planted sole with the legs stretched out (slouching)"
+      },
+      "foot_far_right": {
+        "at": [
+          -0.12,
+          0,
+          0.66
+        ],
+        "purpose": "Planted sole with the legs stretched out (slouching)"
+      },
+      "back_rest": {
+        "at": [
+          0,
+          0.87,
+          -0.185
+        ],
+        "purpose": "Top front edge of the backrest, where a seated torso rests"
+      }
+    },
+    "park_chess_table": {
+      "hip_seat": {
+        "at": [
+          0,
+          0.37,
+          -0.6
+        ],
+        "purpose": "Supported sitting point on the front portion of the near stool."
+      },
+      "foot_left": {
+        "at": [
+          0.13,
+          0,
+          -0.37
+        ],
+        "purpose": "Ground under the seated knees, toes clear of the table's foot plate",
+        "rotation": [
+          0,
+          0.3826834323650898,
+          0,
+          0.9238795325112867
+        ]
+      },
+      "foot_right": {
+        "at": [
+          -0.13,
+          0,
+          -0.37
+        ],
+        "purpose": "Ground under the seated knees, toes clear of the table's foot plate",
+        "rotation": [
+          0,
+          -0.3826834323650898,
+          0,
+          0.9238795325112867
+        ]
+      },
+      "piece_pickup": {
+        "at": [
+          0.11624999999999999,
+          0.672,
+          -0.27125
+        ],
+        "purpose": "Board supporting the selected piece at chess_move pickup"
+      },
+      "piece_landing": {
+        "at": [
+          0.11624999999999999,
+          0.672,
+          -0.19375
+        ],
+        "purpose": "Board receiving the piece at chess_move landing"
+      },
+      "hip_seat_a": {
+        "at": [
+          0,
+          0.37,
+          -0.6
+        ],
+        "purpose": "Supported sitting point on the front portion of the near stool."
+      },
+      "hip_seat_b": {
+        "at": [
+          0,
+          0.37,
+          0.6
+        ],
+        "purpose": "Supported sitting point on the front portion of the far stool."
+      },
+      "chess_move_diagonal_pickup": {
+        "at": [
+          0.19375,
+          0.672,
+          -0.19375
+        ],
+        "purpose": "Board supporting the selected piece at chess_move_diagonal pickup"
+      },
+      "chess_move_diagonal_landing": {
+        "at": [
+          0.11625,
+          0.672,
+          -0.11625
+        ],
+        "purpose": "Board receiving the piece at chess_move_diagonal landing"
+      },
+      "chess_move_side_pickup": {
+        "at": [
+          0.27125,
+          0.672,
+          -0.11625
+        ],
+        "purpose": "Board supporting the selected piece at chess_move_side pickup"
+      },
+      "chess_move_side_landing": {
+        "at": [
+          0.11625,
+          0.672,
+          -0.11625
+        ],
+        "purpose": "Board receiving the piece at chess_move_side landing"
+      },
+      "chess_move_far_pickup": {
+        "at": [
+          0.03875,
+          0.672,
+          -0.11624999999999999
+        ],
+        "purpose": "Board supporting the selected piece at chess_move_far pickup"
+      },
+      "chess_move_far_landing": {
+        "at": [
+          0.03875,
+          0.672,
+          0.03875
+        ],
+        "purpose": "Board receiving the piece at chess_move_far landing"
+      },
+      "chess_capture_pickup": {
+        "at": [
+          -0.03875,
+          0.672,
+          -0.19375
+        ],
+        "purpose": "Board supporting the selected piece at chess_capture pickup"
+      },
+      "chess_capture_landing": {
+        "at": [
+          0.03875,
+          0.672,
+          -0.03875
+        ],
+        "purpose": "Board receiving the piece at chess_capture landing"
+      },
+      "capture_removed": {
+        "at": [
+          0.38,
+          0.67,
+          -0.22
+        ],
+        "purpose": "Captured piece placed safely outside the board"
+      },
+      "piece_pickup_a": {
+        "at": [
+          0.11624999999999999,
+          0.672,
+          -0.27125
+        ],
+        "purpose": "Board supporting the selected piece at chess_move pickup"
+      },
+      "piece_pickup_b": {
+        "at": [
+          -0.11624999999999999,
+          0.672,
+          0.27125
+        ],
+        "purpose": "Board supporting the selected piece at chess_move pickup",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "piece_landing_a": {
+        "at": [
+          0.11624999999999999,
+          0.672,
+          -0.19375
+        ],
+        "purpose": "Board receiving the piece at chess_move landing"
+      },
+      "piece_landing_b": {
+        "at": [
+          -0.11624999999999999,
+          0.672,
+          0.19375
+        ],
+        "purpose": "Board receiving the piece at chess_move landing",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "chess_move_diagonal_pickup_a": {
+        "at": [
+          0.19375,
+          0.672,
+          -0.19375
+        ],
+        "purpose": "Board supporting the selected piece at chess_move_diagonal pickup"
+      },
+      "chess_move_diagonal_pickup_b": {
+        "at": [
+          -0.19375,
+          0.672,
+          0.19375
+        ],
+        "purpose": "Board supporting the selected piece at chess_move_diagonal pickup",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "chess_move_diagonal_landing_a": {
+        "at": [
+          0.11625,
+          0.672,
+          -0.11625
+        ],
+        "purpose": "Board receiving the piece at chess_move_diagonal landing"
+      },
+      "chess_move_diagonal_landing_b": {
+        "at": [
+          -0.11625,
+          0.672,
+          0.11625
+        ],
+        "purpose": "Board receiving the piece at chess_move_diagonal landing",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "chess_move_side_pickup_a": {
+        "at": [
+          0.27125,
+          0.672,
+          -0.11625
+        ],
+        "purpose": "Board supporting the selected piece at chess_move_side pickup"
+      },
+      "chess_move_side_pickup_b": {
+        "at": [
+          -0.27125,
+          0.672,
+          0.11625
+        ],
+        "purpose": "Board supporting the selected piece at chess_move_side pickup",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "chess_move_side_landing_a": {
+        "at": [
+          0.11625,
+          0.672,
+          -0.11625
+        ],
+        "purpose": "Board receiving the piece at chess_move_side landing"
+      },
+      "chess_move_side_landing_b": {
+        "at": [
+          -0.11625,
+          0.672,
+          0.11625
+        ],
+        "purpose": "Board receiving the piece at chess_move_side landing",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "chess_move_far_pickup_a": {
+        "at": [
+          0.03875,
+          0.672,
+          -0.11624999999999999
+        ],
+        "purpose": "Board supporting the selected piece at chess_move_far pickup"
+      },
+      "chess_move_far_pickup_b": {
+        "at": [
+          -0.03875,
+          0.672,
+          0.11624999999999999
+        ],
+        "purpose": "Board supporting the selected piece at chess_move_far pickup",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "chess_move_far_landing_a": {
+        "at": [
+          0.03875,
+          0.672,
+          0.03875
+        ],
+        "purpose": "Board receiving the piece at chess_move_far landing"
+      },
+      "chess_move_far_landing_b": {
+        "at": [
+          -0.03875,
+          0.672,
+          -0.03875
+        ],
+        "purpose": "Board receiving the piece at chess_move_far landing",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "chess_capture_pickup_a": {
+        "at": [
+          -0.03875,
+          0.672,
+          -0.19375
+        ],
+        "purpose": "Board supporting the selected piece at chess_capture pickup"
+      },
+      "chess_capture_pickup_b": {
+        "at": [
+          0.03875,
+          0.672,
+          0.19375
+        ],
+        "purpose": "Board supporting the selected piece at chess_capture pickup",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "chess_capture_landing_a": {
+        "at": [
+          0.03875,
+          0.672,
+          -0.03875
+        ],
+        "purpose": "Board receiving the piece at chess_capture landing"
+      },
+      "chess_capture_landing_b": {
+        "at": [
+          -0.03875,
+          0.672,
+          0.03875
+        ],
+        "purpose": "Board receiving the piece at chess_capture landing",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "capture_removed_a": {
+        "at": [
+          0.38,
+          0.67,
+          -0.22
+        ],
+        "purpose": "Captured piece placed safely outside the board"
+      },
+      "capture_removed_b": {
+        "at": [
+          -0.38,
+          0.67,
+          0.22
+        ],
+        "purpose": "Captured piece placed safely outside the board",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "foot_left_a": {
+        "at": [
+          0.13,
+          0,
+          -0.37
+        ],
+        "purpose": "Ground under the seated knees, toes clear of the table's foot plate",
+        "rotation": [
+          0,
+          0.3826834323650898,
+          0,
+          0.9238795325112867
+        ]
+      },
+      "foot_left_b": {
+        "at": [
+          -0.13,
+          0,
+          0.37
+        ],
+        "purpose": "Ground under the seated knees, toes clear of the table's foot plate",
+        "rotation": [
+          0,
+          0.9238795325112867,
+          0,
+          -0.3826834323650897
+        ]
+      },
+      "foot_right_a": {
+        "at": [
+          -0.13,
+          0,
+          -0.37
+        ],
+        "purpose": "Ground under the seated knees, toes clear of the table's foot plate",
+        "rotation": [
+          0,
+          -0.3826834323650898,
+          0,
+          0.9238795325112867
+        ]
+      },
+      "foot_right_b": {
+        "at": [
+          0.13,
+          0,
+          0.37
+        ],
+        "purpose": "Ground under the seated knees, toes clear of the table's foot plate",
+        "rotation": [
+          0,
+          0.9238795325112867,
+          0,
+          0.38268343236508984
+        ]
+      },
+      "rest_left_a": {
+        "at": [
+          0.37,
+          0.67,
+          -0.22
+        ],
+        "purpose": "Table beside the board (the forearm rests with the elbow by the body, not behind it) where player a's left hand rests"
+      },
+      "rest_right_a": {
+        "at": [
+          -0.37,
+          0.67,
+          -0.22
+        ],
+        "purpose": "Table beside the board (the forearm rests with the elbow by the body, not behind it) where player a's right hand rests"
+      },
+      "rest_left_b": {
+        "at": [
+          -0.37,
+          0.67,
+          0.22
+        ],
+        "purpose": "Table beside the board (the forearm rests with the elbow by the body, not behind it) where player b's left hand rests",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "rest_right_b": {
+        "at": [
+          0.37,
+          0.67,
+          0.22
+        ],
+        "purpose": "Table beside the board (the forearm rests with the elbow by the body, not behind it) where player b's right hand rests",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "capture_removed_right_a": {
+        "at": [
+          -0.38,
+          0.67,
+          -0.22
+        ],
+        "purpose": "Captured piece put off the board at player a's right-hand edge"
+      },
+      "capture_removed_right_b": {
+        "at": [
+          0.38,
+          0.67,
+          0.22
+        ],
+        "purpose": "Captured piece put off the board at player b's right-hand edge",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      }
+    },
+    "cafe_table": {
+      "table_press": {
+        "at": [
+          -0.2,
+          0.75,
+          0.0
+        ],
+        "purpose": "Top of table for a palm slap",
+        "rotation": [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ]
+      },
+      "cup_landing": {
+        "at": [
+          -0.16,
+          0.75,
+          -0.16
+        ],
+        "purpose": "Table surface receiving the cup"
+      }
+    },
+    "market_stall": {
+      "goods_left": {
+        "at": [
+          -0.55,
+          1.08,
+          0.45
+        ],
+        "purpose": "Upper edge of the left crate"
+      },
+      "goods_right": {
+        "at": [
+          0.55,
+          1.08,
+          0.45
+        ],
+        "purpose": "Upper edge of the right crate"
+      },
+      "cash_landing": {
+        "at": [
+          0.12,
+          0.9,
+          0.925
+        ],
+        "purpose": "Clear front counter patch for cash"
+      },
+      "apples_a": {
+        "at": [
+          -0.06,
+          0.99,
+          0.7
+        ],
+        "purpose": "Apples in the middle crate, near the customer"
+      },
+      "apples_b": {
+        "at": [
+          0.08,
+          0.99,
+          0.64
+        ],
+        "purpose": "Apples in the middle crate, middle"
+      },
+      "apples_c": {
+        "at": [
+          -0.08,
+          0.99,
+          0.57
+        ],
+        "purpose": "Apples in the middle crate, near the vendor"
+      },
+      "apples_d": {
+        "at": [
+          0.06,
+          0.99,
+          0.62
+        ],
+        "purpose": "Apples in the middle crate, middle"
+      },
+      "apples_e": {
+        "at": [
+          -0.02,
+          0.99,
+          0.54
+        ],
+        "purpose": "Apples in the middle crate, near the vendor"
+      },
+      "counter_rest": {
+        "at": [
+          0.4,
+          0.9,
+          0.365
+        ],
+        "purpose": "Counter top between the middle and the left-hand crate (seen by the vendor), at the vendor's edge: the vendor's resting left hand"
+      },
+      "counter_rest_right": {
+        "at": [
+          -0.4,
+          0.9,
+          0.365
+        ],
+        "purpose": "Counter top between the middle and the right-hand crate (seen by the vendor), at the vendor's edge: the vendor's resting right hand"
+      }
+    },
+    "atm_standalone": {
+      "keypad_press": {
+        "at": [
+          0.12,
+          1.24,
+          0.44
+        ],
+        "purpose": "Top of keypad"
+      },
+      "cash_pickup": {
+        "at": [
+          0,
+          0.98,
+          0.458
+        ],
+        "rotation": [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        "purpose": "Exposed front short edge of a flat banknote: slot mouth Z .383 plus actual note height .075"
+      }
+    },
+    "mailbox": {
+      "letter_insert": {
+        "at": [
+          0,
+          1.05,
+          0.222
+        ],
+        "purpose": "Mouth of the letter slot"
+      },
+      "letter_landing": {
+        "at": [
+          0,
+          1.05,
+          0.13
+        ],
+        "purpose": "Letter after release inside the slot",
+        "rotation": [
+          0.7071067812,
+          0,
+          0,
+          0.7071067812
+        ]
+      }
+    },
+    "parcel_lockers": {
+      "screen_press": {
+        "at": [
+          0,
+          1.25,
+          0.355
+        ],
+        "purpose": "Front of terminal touchscreen"
+      },
+      "parcel_pickup": {
+        "at": [
+          0.4,
+          0.515,
+          0.2
+        ],
+        "purpose": "Parcel bottom support on the real middle compartment shelf; align held_parcel/rest here"
+      }
+    },
+    "newspaper_kiosk": {
+      "paper_pickup": {
+        "at": [
+          0.05,
+          1.1436959417451682,
+          0.8901732472693048
+        ],
+        "purpose": "Exposed true back grip of the removable flat paper placed from paper_rest_flat; derived from its grip/rest_flat offset"
+      },
+      "paper_rest_flat": {
+        "at": [
+          0.05,
+          1.14,
+          0.89
+        ],
+        "rotation": [
+          0.5115719857211168,
+          -0.48815377026645346,
+          -0.5115719857211168,
+          0.48815377026645346
+        ],
+        "purpose": "Middle bundle top supports the existing held type flat, back face upward, wholly within the bundle; frame compensates the type model yaw"
+      },
+      "paper_pickup_surface": {
+        "at": [
+          0.05,
+          1.1436959417451682,
+          0.8901732472693048
+        ],
+        "rotation": [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        "purpose": "Physical upward approach of the flat paper back-face grasp on the middle bundle"
+      }
+    },
+    "notice_board": {
+      "notice_left": {
+        "at": [
+          -0.25,
+          1.7,
+          0.06
+        ],
+        "purpose": "Upper left corner of the new notice"
+      },
+      "notice_right": {
+        "at": [
+          0.25,
+          1.7,
+          0.06
+        ],
+        "purpose": "Upper right corner of the new notice"
+      },
+      "notice_landing": {
+        "at": [
+          0,
+          1.7,
+          0.07
+        ],
+        "purpose": "Top center of attached notice"
+      }
+    },
+    "fruit_stand": {
+      "fruit_pickup": {
+        "at": [
+          0.12,
+          1.19,
+          0.24
+        ],
+        "purpose": "Upper side of the near fruit"
+      },
+      "scale_landing": {
+        "at": [
+          -0.48,
+          1.09,
+          -0.3
+        ],
+        "purpose": "Scale pan supporting fruit"
+      },
+      "fruit_pickup_back": {
+        "at": [
+          0.12,
+          1.19,
+          -0.29
+        ],
+        "purpose": "Top of rear-row fruit, reachable from the weighing side"
+      },
+      "fruit_rest_back": {
+        "at": [
+          0.12,
+          1.09,
+          -0.2
+        ],
+        "purpose": "Crate top supporting the selected fruit before weighing"
+      },
+      "fruit_rest_front": {
+        "at": [
+          0.12,
+          1.09,
+          0.15
+        ],
+        "purpose": "Crate supporting the front fruit before and after inspection",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      }
+    },
+    "drinking_fountain": {
+      "rim_left": {
+        "at": [
+          -0.3,
+          0.96,
+          0.05
+        ],
+        "purpose": "Left basin side rim, halfway back: a person bent over the spout rests the hands here with the elbows by the body"
+      },
+      "rim_right": {
+        "at": [
+          0.3,
+          0.96,
+          0.05
+        ],
+        "purpose": "Right basin side rim, halfway back: a person bent over the spout rests the hands here with the elbows by the body"
+      },
+      "spout_drink": {
+        "at": [
+          0,
+          1.1,
+          -0.02
+        ],
+        "purpose": "Water outlet"
+      }
+    },
+    "phone_booth": {
+      "receiver_rest": {
+        "at": [
+          -0.1,
+          1.3,
+          -0.29
+        ],
+        "purpose": "Removable receiver grasp frame above the actual cradle shelf, speaker faces toward +Z"
+      },
+      "cord_socket": {
+        "at": [
+          0,
+          1.2,
+          -0.36
+        ],
+        "purpose": "Telephone cord connection"
+      }
+    },
+    "fitness_pullup": {
+      "grip_left": {
+        "at": [
+          0.28,
+          2.35,
+          0
+        ],
+        "purpose": "Left hand under the bar"
+      },
+      "grip_right": {
+        "at": [
+          -0.28,
+          2.35,
+          0
+        ],
+        "purpose": "Right hand under the bar"
+      },
+      "hip_hang_low": {
+        "at": [
+          0,
+          1.15,
+          0
+        ],
+        "purpose": "Hips below the bar at the start of a hanging pull-up"
+      },
+      "hip_hang_high": {
+        "at": [
+          0,
+          1.7,
+          0
+        ],
+        "purpose": "Hips below the bar with chin at crossbar height"
+      },
+      "hip_pullup_low": {
+        "at": [
+          0,
+          1.330575,
+          -0.2725
+        ],
+        "purpose": "Pull-up body reference behind bar: head-radius clearance, actual arm length and grip spread."
+      },
+      "hip_pullup_high": {
+        "at": [
+          0,
+          1.7,
+          -0.2725
+        ],
+        "purpose": "Pull-up body reference behind bar: head-radius clearance, actual arm length and grip spread."
+      }
+    },
+    "fitness_twister": {
+      "grip_left": {
+        "at": [
+          -0.28,
+          1.15,
+          -0.465
+        ],
+        "purpose": "Left hand on rail"
+      },
+      "grip_right": {
+        "at": [
+          0.28,
+          1.15,
+          -0.465
+        ],
+        "purpose": "Right hand on rail"
+      },
+      "foot_left": {
+        "at": [
+          0.1,
+          0.040000000000000036,
+          0.0
+        ],
+        "purpose": "Disc under left sole",
+        "parent": "disc"
+      },
+      "foot_right": {
+        "at": [
+          -0.1,
+          0.040000000000000036,
+          0.0
+        ],
+        "purpose": "Disc under right sole",
+        "parent": "disc"
+      }
+    },
+    "fitness_air_walker": {
+      "grip_left": {
+        "at": [
+          -0.2,
+          1.4,
+          -0.35
+        ],
+        "purpose": "Left hand on fixed bar"
+      },
+      "grip_right": {
+        "at": [
+          0.2,
+          1.4,
+          -0.35
+        ],
+        "purpose": "Right hand on fixed bar"
+      },
+      "foot_left": {
+        "at": [
+          0,
+          0.035,
+          0.075
+        ],
+        "purpose": "Top of left pedal",
+        "parent": "footplate",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "foot_right": {
+        "at": [
+          0,
+          0.035,
+          0.075
+        ],
+        "purpose": "Top of right pedal",
+        "parent": "footplate.001",
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ]
+      }
+    },
+    "playground_swing": {
+      "hip_seat": {
+        "at": [
+          0.0,
+          -2.0751285,
+          0
+        ],
+        "purpose": "Left swing seat surface",
+        "parent": "SwingLeft"
+      },
+      "grip_left": {
+        "at": [
+          -0.2300000000000001,
+          -1.5251285,
+          0
+        ],
+        "purpose": "Left suspension next to the rider",
+        "parent": "SwingLeft"
+      },
+      "grip_right": {
+        "at": [
+          0.22999999999999998,
+          -1.5251285,
+          0
+        ],
+        "purpose": "Right suspension next to the rider",
+        "parent": "SwingLeft"
+      }
+    },
+    "playground_slide": {
+      "hip_start": {
+        "at": [
+          0,
+          1.56,
+          -0.6
+        ],
+        "purpose": "Upper slide surface under the hips"
+      },
+      "hip_finish": {
+        "at": [
+          0,
+          0.15,
+          1.25
+        ],
+        "purpose": "Slide exit under the hips"
+      },
+      "push_left": {
+        "at": [
+          0.25,
+          1.6,
+          -0.6
+        ],
+        "purpose": "Left upper slide rail"
+      },
+      "push_right": {
+        "at": [
+          -0.25,
+          1.6,
+          -0.6
+        ],
+        "purpose": "Right upper slide rail"
+      },
+      "foot_start_left": {
+        "at": [
+          0.12,
+          1.18,
+          -0.1
+        ],
+        "purpose": "Sole on the upper chute ahead of the seated hips"
+      },
+      "foot_finish_left": {
+        "at": [
+          0.12,
+          0,
+          1.8
+        ],
+        "purpose": "Sole on the ground ahead of the slide exit"
+      },
+      "foot_start_right": {
+        "at": [
+          -0.12,
+          1.18,
+          -0.1
+        ],
+        "purpose": "Sole on the upper chute ahead of the seated hips"
+      },
+      "foot_finish_right": {
+        "at": [
+          -0.12,
+          0,
+          1.8
+        ],
+        "purpose": "Sole on the ground ahead of the slide exit"
+      }
+    },
+    "sidewalk_guardrail": {
+      "grip_left": {
+        "at": [
+          -0.2,
+          1.095,
+          0
+        ],
+        "purpose": "Top bar under left palm"
+      },
+      "grip_right": {
+        "at": [
+          0.2,
+          1.095,
+          0
+        ],
+        "purpose": "Top bar under right palm"
+      }
+    },
+    "bus_stop_sign": {
+      "lean_grip": {
+        "at": [
+          -0.045,
+          0.98,
+          -0.085
+        ],
+        "purpose": "Actual left exterior of the pole at supporting hand height"
+      }
+    },
+    "car_interactive": {
+      "hip_seat": {
+        "at": [
+          -0.39,
+          0.61,
+          -0.25
+        ],
+        "purpose": "Driver seat surface"
+      },
+      "foot_left": {
+        "at": [
+          -0.25,
+          0.42,
+          0.35
+        ],
+        "purpose": "Driver left sole at +X relative to the seat facing +Z; heel in the usable forward footwell, outside hood and cowl"
+      },
+      "foot_right": {
+        "at": [
+          -0.5,
+          0.42,
+          0.35
+        ],
+        "purpose": "Driver right sole at -X relative to the seat facing +Z; heel in the usable forward footwell, outside hood and cowl"
+      },
+      "door_grip": {
+        "at": [
+          -0.022,
+          0.22999999999999998,
+          -0.8700000000000001
+        ],
+        "purpose": "Actual outward edge of the unchanged driver handle; exterior contact, not the buried bar axis",
+        "parent": "DriverDoor"
+      },
+      "door_support": {
+        "at": [
+          0.055,
+          0.46999999999999986,
+          -0.23000000000000004
+        ],
+        "purpose": "Driver door edge for support",
+        "parent": "DriverDoor"
+      },
+      "foot_exit_left": {
+        "at": [
+          -1.25,
+          0,
+          -0.4
+        ],
+        "purpose": "Left sole at -Z while facing +X outside the driver opening"
+      },
+      "foot_exit_right": {
+        "at": [
+          -1.25,
+          0,
+          -0.1
+        ],
+        "purpose": "Right sole at +Z while facing +X outside the driver opening"
+      },
+      "door_grip_surface": {
+        "at": [
+          -0.022,
+          0.22999999999999998,
+          -0.8700000000000001
+        ],
+        "rotation": [
+          0,
+          -0.7071067811865476,
+          0,
+          0.7071067811865476
+        ],
+        "parent": "DriverDoor",
+        "purpose": "Driver handle actual -X outward contact bisector on +Z, attached to its moving door assembly"
+      }
+    },
+    "outdoor_bookstall": {
+      "book_rest": {
+        "at": [
+          0,
+          0.9,
+          0.18
+        ],
+        "purpose": "Book landing on the counter"
+      }
+    },
+    "held_mop": {
+      "shaft_joint": {
+        "at": [
+          0,
+          -0.74,
+          0
+        ],
+        "purpose": "Spherical shaft endpoint and articulated head pivot"
+      },
+      "pad_support": {
+        "at": [
+          0,
+          -0.135,
+          0
+        ],
+        "parent": "MopHead",
+        "purpose": "Centre of the real flat cloth underside; local +Y is its floor normal"
+      },
+      "grip_high": {
+        "at": [
+          0,
+          0.4,
+          0
+        ],
+        "purpose": "Upper stabilizing grip"
+      },
+      "grip_low": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Lower working grip"
+      },
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_broom": {
+      "grip_high": {
+        "at": [
+          0,
+          0.38,
+          0
+        ],
+        "purpose": "Upper stabilizing grip"
+      },
+      "grip_low": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Lower working grip"
+      },
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "grip_sweep_low": {
+        "at": [
+          0,
+          -0.3,
+          0
+        ],
+        "purpose": "Lower sweeping grip, hands below the shoulders"
+      },
+      "grip_sweep_high": {
+        "at": [
+          0,
+          0.08,
+          0
+        ],
+        "purpose": "Upper sweeping grip, hands below the shoulders"
+      }
+    },
+    "held_telephone_receiver": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Receiver handle"
+      },
+      "grip_outer": {
+        "at": [
+          0,
+          0,
+          -0.025
+        ],
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "purpose": "Middle of the real handle back face; marker +Z points outward from the receiver, away from the speaker faces"
+      },
+      "grip_lower_back": {
+        "at": [
+          0,
+          -0.075,
+          -0.015
+        ],
+        "rotation": [
+          0.9819563867314218,
+          0,
+          0,
+          0.18910752115495133
+        ],
+        "purpose": "Middle of the lower real back facet; +Z follows its actual outward normal (0,-0.37139,-0.92848)"
+      },
+      "grip_bottom": {
+        "at": [
+          0,
+          -0.151,
+          0.012
+        ],
+        "rotation": [
+          0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        "purpose": "True underside of the lower cup, derived from end centre minus its radius; +Z points down, clear of the speaker contact faces"
+      },
+      "cord_end": {
+        "at": [
+          -0.058,
+          -0.11,
+          0.012
+        ],
+        "purpose": "Physical cable-plug outer end; local +Z follows the true plug axis (-X)",
+        "rotation": [
+          0,
+          -0.7071067811865476,
+          0,
+          0.7071067811865476
+        ]
+      },
+      "upper_speaker": {
+        "at": [
+          0,
+          0.11,
+          0.035
+        ],
+        "purpose": "Outer face center of the upper real earpiece, facing local +Z toward the ear"
+      },
+      "lower_speaker": {
+        "at": [
+          0,
+          -0.11,
+          0.035
+        ],
+        "purpose": "Outer face center of the lower real mouthpiece, facing local +Z"
+      }
+    },
+    "held_backpack": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "back_mount": {
+        "at": [
+          0,
+          0,
+          0.1
+        ],
+        "purpose": "Upper strap contact on the upper back"
+      }
+    },
+    "held_badminton_racket": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_basketball": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_book": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_book_open": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "rest": {
+        "at": [
+          0.0,
+          -0.005,
+          -0.0055
+        ],
+        "purpose": "Lowest supporting surface when placed upright"
+      },
+      "page_edge": {
+        "at": [
+          0.16,
+          0.19,
+          0.038
+        ],
+        "purpose": "Outer edge of the right-hand page, for a page-turn pinch"
+      }
+    },
+    "held_briefcase": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_bucket": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Midpoint of the two real handle-pivot front faces; held-object origin."
+      },
+      "grip_left": {
+        "at": [
+          0.1775,
+          0,
+          0
+        ],
+        "purpose": "Existing handle pivot front face after whole-model origin recentering."
+      },
+      "grip_left_surface": {
+        "at": [
+          0.1775,
+          0,
+          0
+        ],
+        "rotation": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "purpose": "Actual pivot front face, outward local -Z."
+      },
+      "grip_right": {
+        "at": [
+          -0.1775,
+          0,
+          0
+        ],
+        "purpose": "Existing handle pivot front face after whole-model origin recentering."
+      },
+      "grip_right_surface": {
+        "at": [
+          -0.1775,
+          0,
+          0
+        ],
+        "rotation": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "purpose": "Actual pivot front face, outward local -Z."
+      }
+    },
+    "held_camera": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_cardboard_box": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_chess_piece": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "rest": {
+        "at": [
+          0.0,
+          -0.04,
+          0.0
+        ],
+        "purpose": "Lowest supporting surface when placed upright"
+      },
+      "grip_top": {
+        "at": [
+          0,
+          0.057,
+          0
+        ],
+        "purpose": "Top of the pawn head, approached from above by the thick drawn palm."
+      }
+    },
+    "held_cigarette": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_coffee_cup": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "rest": {
+        "at": [
+          0.0,
+          -0.065,
+          0.0
+        ],
+        "purpose": "Lowest supporting surface when placed upright"
+      },
+      "grip_sleeve": {
+        "at": [
+          -0.049,
+          -0.015,
+          0
+        ],
+        "purpose": "Physical cup sleeve grasp"
+      },
+      "lip": {
+        "at": [
+          0,
+          0.0885,
+          -0.057
+        ],
+        "purpose": "Cup lip"
+      },
+      "grip_near": {
+        "at": [
+          0,
+          -0.015,
+          -0.049
+        ],
+        "rotation": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "purpose": "Sleeve contact on the actor-facing side; +Z is the true outward sleeve normal -Z"
+      }
+    },
+    "held_envelope": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "rest": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Envelope center when inserted flat in slot"
+      }
+    },
+    "held_fan": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_flyer": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_flyer_stack": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_football": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_fruit": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "rest": {
+        "at": [
+          0,
+          -0.1,
+          0
+        ],
+        "purpose": "Lowest supporting surface when placed upright"
+      },
+      "grip_front": {
+        "at": [
+          0,
+          0,
+          -0.09
+        ],
+        "purpose": "Physical near-side surface of the fruit"
+      }
+    },
+    "held_guitar": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_meal_bag": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_microphone": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_newspaper_folded": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          -0.0015
+        ],
+        "purpose": "Real back face of the folded sheet at y=0; exterior palm contact, not the buried sheet midplane"
+      },
+      "rest": {
+        "at": [
+          0.0,
+          -0.24,
+          0.01125
+        ],
+        "purpose": "Lowest supporting surface when placed upright"
+      },
+      "grip_back_surface": {
+        "at": [
+          0,
+          0,
+          -0.0015
+        ],
+        "rotation": [
+          0.9997257559875703,
+          0,
+          0,
+          0.023418215454663445
+        ],
+        "purpose": "Back face outward grasp normal on +Z; follows the actual sloping sheet plane"
+      },
+      "rest_flat": {
+        "at": [
+          0,
+          0,
+          0.0022
+        ],
+        "purpose": "Real front headline outer face supporting the sheet flat with its back face upward; align to newspaper_kiosk.paper_rest_flat"
+      }
+    },
+    "held_newspaper_open": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_parcel": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "rest": {
+        "at": [
+          0.0,
+          -0.09,
+          0.0
+        ],
+        "purpose": "Lowest supporting surface when placed upright"
+      },
+      "grip_front": {
+        "at": [
+          0,
+          0,
+          0.09
+        ],
+        "purpose": "Physical front face grasp exposed through the open locker; original center grip is retained"
+      }
+    },
+    "held_phone": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_rolled_carpet": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "shoulder_grip": {
+        "at": [
+          0.04,
+          -0.069282,
+          0.45
+        ],
+        "purpose": "Palm supporting the lower outer surface toward the front end"
+      },
+      "shoulder_rest": {
+        "at": [
+          0,
+          -0.08,
+          0
+        ],
+        "purpose": "Underside of the roll resting on the carrying shoulder"
+      }
+    },
+    "held_shopping_bag": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_shopping_bags": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_shoulder_bag": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "back_mount": {
+        "at": [
+          0,
+          0,
+          0.1
+        ],
+        "purpose": "Shoulder strap contact on upper back"
+      },
+      "strap_mount": {
+        "at": [
+          0,
+          0.48,
+          0
+        ],
+        "purpose": "Actual top of the strap, supported on the right shoulder"
+      },
+      "strap_front": {
+        "at": [
+          -0.046666666667,
+          0.32,
+          0
+        ],
+        "purpose": "Front strap at upper chest below the right shoulder"
+      }
+    },
+    "held_snack_bag": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "grip_side": {
+        "at": [
+          -0.09,
+          0,
+          0
+        ],
+        "purpose": "Outside edge of the held snack bag"
+      },
+      "grip_top": {
+        "at": [
+          0,
+          0.1175,
+          0
+        ],
+        "purpose": "Top seal pinched from above, supporting the hanging bag"
+      }
+    },
+    "held_snack_piece": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_table_tennis_ball": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_turning_page": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_umbrella_closed": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      }
+    },
+    "held_umbrella_open": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0.027
+        ],
+        "purpose": "Actual front (+Z) face of the existing handle, at its declared radius; complete palm approaches outside the handle."
+      },
+      "grip_surface": {
+        "at": [
+          0,
+          0,
+          0.027
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "purpose": "Existing handle front surface; outward local +Z. Geometry and source hand rotations are unchanged."
+      }
+    },
+    "held_wallet": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "grip_fold": {
+        "at": [
+          -0.081,
+          0,
+          0
+        ],
+        "purpose": "Closed outer side of the real folded spine; does not place the grasp inside the narrow wallet opening"
+      }
+    },
+    "held_watering_can": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "spout_tip": {
+        "at": [
+          -0.51,
+          0.08,
+          0
+        ],
+        "purpose": "Outlet at the end of the rose"
+      }
+    },
+    "cafe_chair": {
+      "hip_seat": {
+        "at": [
+          0,
+          0.45,
+          0
+        ],
+        "purpose": "Chair seat surface under the hips"
+      }
+    },
+    "trash_bin": {
+      "rim_left": {
+        "at": [
+          0.2,
+          0.92,
+          0
+        ],
+        "purpose": "Left hand supporting on the near top rim"
+      },
+      "search_right": {
+        "at": [
+          -0.1,
+          0.65,
+          0
+        ],
+        "purpose": "Right hand reaching inside the open mouth"
+      },
+      "cup_landing": {
+        "at": [
+          0,
+          0.15,
+          0
+        ],
+        "purpose": "Cup rests inside the bin after release"
+      },
+      "drop_release": {
+        "at": [
+          0,
+          0.63,
+          0.2
+        ],
+        "purpose": "Rest point of a small cup passing through the real front inlet before falling inside"
+      },
+      "drop_hand": {
+        "at": [
+          0.0044,
+          0.7,
+          0.3033
+        ],
+        "purpose": "Hand letting go of litter just in front of the bin's opening (the wrapper falls in at drop_release)"
+      }
+    },
+    "bicycle": {
+      "grip_push": {
+        "at": [
+          0.21,
+          0.98,
+          0.4
+        ],
+        "purpose": "Near handlebar grip while walking beside the bicycle"
+      },
+      "hip_seat": {
+        "at": [
+          0,
+          0.78,
+          -0.17
+        ],
+        "purpose": "Rider hips on the saddle"
+      },
+      "grip_left": {
+        "at": [
+          0.21,
+          0.98,
+          0.4
+        ],
+        "purpose": "Left handlebar grip"
+      },
+      "grip_right": {
+        "at": [
+          -0.21,
+          0.98,
+          0.4
+        ],
+        "purpose": "Right handlebar grip"
+      },
+      "foot_left": {
+        "at": [
+          0,
+          0.025,
+          0
+        ],
+        "parent": "pedal_left",
+        "purpose": "Left sole on pedal"
+      },
+      "foot_right": {
+        "at": [
+          0,
+          0.025,
+          0
+        ],
+        "parent": "pedal_right",
+        "purpose": "Right sole on pedal"
+      }
+    },
+    "compound_wall_solid": {
+      "back_support": {
+        "at": [
+          0,
+          1.1,
+          0.16
+        ],
+        "purpose": "Wall surface supporting the upper back"
+      }
+    },
+    "building_bank": {
+      "hip_step": {
+        "at": [
+          0,
+          0.3,
+          0.55
+        ],
+        "purpose": "Centre of the lowest entrance step"
+      }
+    },
+    "scooter": {
+      "hip_seat": {
+        "at": [
+          0,
+          0.7,
+          -0.2
+        ],
+        "purpose": "Hip on driver saddle"
+      },
+      "grip_left": {
+        "at": [
+          0.26,
+          1.16,
+          0.52
+        ],
+        "purpose": "Left handlebar grasp"
+      },
+      "grip_right": {
+        "at": [
+          -0.26,
+          1.16,
+          0.52
+        ],
+        "purpose": "Right handlebar grasp"
+      },
+      "foot_left": {
+        "at": [
+          0.1,
+          0.325,
+          0.14
+        ],
+        "purpose": "Left sole on footrest"
+      },
+      "foot_right": {
+        "at": [
+          -0.1,
+          0.325,
+          0.14
+        ],
+        "purpose": "Right sole on footrest"
+      }
+    },
+    "held_cane": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Actual hand grasp at the declared held-item origin",
+        "geometry_origin": true
+      }
+    },
+    "held_suitcase": {
+      "wheel_axis": {
+        "at": [
+          0,
+          -0.9,
+          0.12
+        ],
+        "purpose": "Actual two-wheel axle centre; local +X is the rotation axis"
+      },
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Actual hand grasp at the declared held-item origin",
+        "geometry_origin": true
+      }
+    },
+    "held_notice": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Top edge center of held notice"
+      },
+      "grip_left": {
+        "at": [
+          0.25,
+          0,
+          0
+        ],
+        "purpose": "Left hand grasp on top left corner"
+      },
+      "grip_right": {
+        "at": [
+          -0.25,
+          0,
+          0
+        ],
+        "purpose": "Right hand grasp on top right corner"
+      },
+      "rest": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Top edge center of attached notice"
+      }
+    },
+    "outdoor_steps_8": {
+      "stance_step_1": {
+        "at": [
+          0,
+          0.15,
+          1.05
+        ],
+        "purpose": "Standing surface of tread 1"
+      },
+      "tread_1_left": {
+        "at": [
+          0.13,
+          0.15,
+          1.05
+        ],
+        "purpose": "left sole on tread 1"
+      },
+      "tread_1_right": {
+        "at": [
+          -0.13,
+          0.15,
+          1.05
+        ],
+        "purpose": "right sole on tread 1"
+      },
+      "stance_step_2": {
+        "at": [
+          0,
+          0.3,
+          0.75
+        ],
+        "purpose": "Standing surface of tread 2"
+      },
+      "tread_2_left": {
+        "at": [
+          0.13,
+          0.3,
+          0.75
+        ],
+        "purpose": "left sole on tread 2"
+      },
+      "tread_2_right": {
+        "at": [
+          -0.13,
+          0.3,
+          0.75
+        ],
+        "purpose": "right sole on tread 2"
+      },
+      "stance_step_3": {
+        "at": [
+          0,
+          0.44999999999999996,
+          0.44999999999999996
+        ],
+        "purpose": "Standing surface of tread 3"
+      },
+      "tread_3_left": {
+        "at": [
+          0.13,
+          0.44999999999999996,
+          0.44999999999999996
+        ],
+        "purpose": "left sole on tread 3"
+      },
+      "tread_3_right": {
+        "at": [
+          -0.13,
+          0.44999999999999996,
+          0.44999999999999996
+        ],
+        "purpose": "right sole on tread 3"
+      },
+      "stance_step_4": {
+        "at": [
+          0,
+          0.6,
+          0.1499999999999999
+        ],
+        "purpose": "Standing surface of tread 4"
+      },
+      "tread_4_left": {
+        "at": [
+          0.13,
+          0.6,
+          0.1499999999999999
+        ],
+        "purpose": "left sole on tread 4"
+      },
+      "tread_4_right": {
+        "at": [
+          -0.13,
+          0.6,
+          0.1499999999999999
+        ],
+        "purpose": "right sole on tread 4"
+      },
+      "stance_step_5": {
+        "at": [
+          0,
+          0.75,
+          -0.1499999999999999
+        ],
+        "purpose": "Standing surface of tread 5"
+      },
+      "tread_5_left": {
+        "at": [
+          0.13,
+          0.75,
+          -0.1499999999999999
+        ],
+        "purpose": "left sole on tread 5"
+      },
+      "tread_5_right": {
+        "at": [
+          -0.13,
+          0.75,
+          -0.1499999999999999
+        ],
+        "purpose": "right sole on tread 5"
+      },
+      "stance_step_6": {
+        "at": [
+          0,
+          0.8999999999999999,
+          -0.44999999999999996
+        ],
+        "purpose": "Standing surface of tread 6"
+      },
+      "tread_6_left": {
+        "at": [
+          0.13,
+          0.8999999999999999,
+          -0.44999999999999996
+        ],
+        "purpose": "left sole on tread 6"
+      },
+      "tread_6_right": {
+        "at": [
+          -0.13,
+          0.8999999999999999,
+          -0.44999999999999996
+        ],
+        "purpose": "right sole on tread 6"
+      },
+      "stance_step_7": {
+        "at": [
+          0,
+          1.05,
+          -0.75
+        ],
+        "purpose": "Standing surface of tread 7"
+      },
+      "tread_7_left": {
+        "at": [
+          0.13,
+          1.05,
+          -0.75
+        ],
+        "purpose": "left sole on tread 7"
+      },
+      "tread_7_right": {
+        "at": [
+          -0.13,
+          1.05,
+          -0.75
+        ],
+        "purpose": "right sole on tread 7"
+      },
+      "stance_step_8": {
+        "at": [
+          0,
+          1.2,
+          -1.05
+        ],
+        "purpose": "Standing surface of tread 8"
+      },
+      "tread_8_left": {
+        "at": [
+          0.13,
+          1.2,
+          -1.05
+        ],
+        "purpose": "left sole on tread 8"
+      },
+      "tread_8_right": {
+        "at": [
+          -0.13,
+          1.2,
+          -1.05
+        ],
+        "purpose": "right sole on tread 8"
+      },
+      "landing_bottom": {
+        "at": [
+          0,
+          0,
+          1.5
+        ],
+        "purpose": "Standing surface before the bottom stair"
+      },
+      "landing_top": {
+        "at": [
+          0,
+          1.2,
+          -1.05
+        ],
+        "purpose": "Standing surface on the top tread"
+      },
+      "bottom_left": {
+        "at": [
+          0.13,
+          0,
+          1.5
+        ],
+        "purpose": "left sole at the bottom landing"
+      },
+      "top_left": {
+        "at": [
+          0.13,
+          1.2,
+          -1.05
+        ],
+        "purpose": "left sole at the top landing"
+      },
+      "bottom_right": {
+        "at": [
+          -0.13,
+          0,
+          1.5
+        ],
+        "purpose": "right sole at the bottom landing"
+      },
+      "top_right": {
+        "at": [
+          -0.13,
+          1.2,
+          -1.05
+        ],
+        "purpose": "right sole at the top landing"
+      }
+    },
+    "window_planter": {
+      "soil_target": {
+        "at": [
+          0.25,
+          0.32,
+          0
+        ],
+        "purpose": "Top surface of the planter between the foliage"
+      }
+    },
+    "bus_shelter": {
+      "hip_seat": {
+        "at": [
+          0,
+          0.37,
+          -0.5
+        ],
+        "purpose": "Seat surface under the hips (seat centre line, as on the park bench)"
+      },
+      "hip_seat_front": {
+        "at": [
+          0,
+          0.37,
+          -0.33
+        ],
+        "purpose": "Seat point of a slouching body: the hips slid to the front edge, so the thighs pass over the edge"
+      },
+      "back_grip": {
+        "at": [
+          0.35,
+          0.87,
+          -0.675
+        ],
+        "purpose": "Physical seat or backrest contact"
+      },
+      "foot_left": {
+        "at": [
+          0.11,
+          0,
+          -0.12
+        ],
+        "purpose": "Planted sole of the seated posture, as on the park bench"
+      },
+      "foot_right": {
+        "at": [
+          -0.11,
+          0,
+          -0.12
+        ],
+        "purpose": "Planted sole of the seated posture, as on the park bench"
+      },
+      "foot_side_left": {
+        "at": [
+          0.32856406460551013,
+          0,
+          -0.25091034656191324
+        ],
+        "rotation": [
+          0,
+          0.25881904510252074,
+          0,
+          0.9659258262890683
+        ],
+        "purpose": "Physical sole or heel support on the bus shelter seat "
+      },
+      "foot_side_right": {
+        "at": [
+          0.05143593539448979,
+          0,
+          -0.09091034656191332
+        ],
+        "rotation": [
+          0,
+          0.25881904510252074,
+          0,
+          0.9659258262890683
+        ],
+        "purpose": "Physical sole or heel support on the bus shelter seat "
+      },
+      "stretch_heel": {
+        "at": [
+          -0.15,
+          0.37,
+          -0.4
+        ],
+        "purpose": "Physical sole or heel support on the bus shelter seat "
+      },
+      "foot_far_left": {
+        "at": [
+          0.12,
+          0,
+          0.16
+        ],
+        "purpose": "Planted sole with the legs stretched out (slouching)"
+      },
+      "foot_far_right": {
+        "at": [
+          -0.12,
+          0,
+          0.16
+        ],
+        "purpose": "Planted sole with the legs stretched out (slouching)"
+      },
+      "back_rest": {
+        "at": [
+          0,
+          0.87,
+          -0.685
+        ],
+        "purpose": "Top front edge of the backrest, where a seated torso rests"
+      }
+    },
+    "held_chess_piece_dark": {
+      "grip": {
+        "at": [
+          0,
+          0,
+          0
+        ],
+        "purpose": "Declared handheld origin/grasp point"
+      },
+      "rest": {
+        "at": [
+          0.0,
+          -0.04,
+          0.0
+        ],
+        "purpose": "Lowest supporting surface when placed upright"
+      },
+      "grip_top": {
+        "at": [
+          0,
+          0.057,
+          0
+        ],
+        "purpose": "Top of the pawn head, approached from above by the thick drawn palm."
+      }
+    }
+  },
+  "assemblies": {
+    "fitness_air_walker": {
+      "PedalLeft": {
+        "at": [
+          -0.54,
+          1.4,
+          0
+        ],
+        "parts": [
+          "swing_arm",
+          "footplate",
+          "cantilever_left",
+          "rim_left",
+          "rim_left.001",
+          "heel_stop_left",
+          "swing_axis_ring"
+        ]
+      },
+      "PedalRight": {
+        "at": [
+          0.54,
+          1.4,
+          0
+        ],
+        "parts": [
+          "swing_arm.001",
+          "footplate.001",
+          "cantilever_right",
+          "rim_right",
+          "rim_right.001",
+          "heel_stop_right",
+          "swing_axis_ring.001"
+        ]
+      }
+    },
+    "playground_swing": {
+      "SwingLeft": {
+        "at": [
+          -0.8,
+          2.6251285,
+          0
+        ],
+        "parts": [
+          "seat",
+          "hanger",
+          "hanger.001",
+          "suspension_eye",
+          "suspension_eye.001"
+        ]
+      },
+      "SwingRight": {
+        "at": [
+          0.8,
+          2.6251285,
+          0
+        ],
+        "parts": [
+          "seat.001",
+          "hanger.002",
+          "hanger.003",
+          "suspension_eye.002",
+          "suspension_eye.003"
+        ]
+      }
+    },
+    "car_interactive": {
+      "DriverDoor": {
+        "at": [
+          -0.835,
+          0.68,
+          0.55
+        ],
+        "parts": [
+          "driver_panel",
+          "driver_window",
+          "driver_handle",
+          "driver_window_frame_0",
+          "driver_window_frame_1",
+          "driver_window_frame_2",
+          "driver_window_frame_3"
+        ]
+      }
+    }
+  }
+}

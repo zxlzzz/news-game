@@ -4,6 +4,9 @@ Keep model_geometry.py (and building_geometry.py for buildings) beside this file
 """
 import sys
 from pathlib import Path
+WHEEL_ARCH_CLEARANCE = 0.035
+WHEEL_AXLE_RADIUS = 0.035
+WHEEL_AXLE_FIT_CLEARANCE = 0.004
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from model_geometry import *
 
@@ -26,7 +29,8 @@ P = {'width': 1.76,
                   [(0, 1.0), (0, 1.29), (0.62, 1.29), (1.12, 1.0)]],
  'glass_inset_fractions': (0.15, 0.85),
  'glass_width': 1.1,
- 'glass_lift': 0.004,
+ 'glass_lift': -0.022,
+ 'glass_surface_inset': 0.022,
  'bumper_h': 0.12,
  'bumper_t': 0.05,
  'bumper_y': 0.5,
@@ -40,7 +44,20 @@ def build():
     reset()
     from vehicle_geometry import build_car
     build_car(P)
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from vehicle_geometry import finish_wheeled_vehicle
+    finish_wheeled_vehicle(bpy.context.scene.objects, WHEEL_ARCH_CLEARANCE, WHEEL_AXLE_RADIUS, WHEEL_AXLE_FIT_CLEARANCE)
     export('taxi')
 
 if __name__ == '__main__':
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("taxi")

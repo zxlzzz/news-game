@@ -10,15 +10,17 @@ from model_geometry import *
 # All design dimensions/placements are collected here (metres unless named otherwise).
 P = {'width': 1.8,
  'seat_d': 0.44,
- 'seat_h': 0.45,
+ 'seat_h': 0.37,
  'seat_t': 0.075,
  'leg_w': 0.075,
- 'leg_span': 0.65,
+ 'leg_span': 0.81,
  'back_h': 0.38,
- 'back_y': 0.76,
+ 'back_y': 0.68,
  'back_t': 0.07,
- 'arm_h': 0.65,
+ 'arm_h': 0.57,
  'arm_r': 0.028}
+# The armrests close the seat at both ends (2026-10-14: they stood 0.25 m in from the ends, 0.1 m beside the end
+# seats, so nobody could sit there); the frame under them sits at the ends too.
 
 def build():
     reset()
@@ -27,9 +29,25 @@ def build():
     for x in (-P['leg_span'],P['leg_span']):
         for z in (-P['seat_d']*.36,P['seat_d']*.36):
             box('leg',(P['leg_w'],P['seat_h']-P['seat_t'],P['leg_w']),(x,(P['seat_h']-P['seat_t'])/2,z),'metal_dark')
-        box('back_support',(P['leg_w'],P['back_y'],P['leg_w']),(x,P['back_y']/2,-P['seat_d']/2),'metal_dark')
-        bar('arm',(x,P['arm_h'],-P['seat_d']/2),(x,P['arm_h'],P['seat_d']/2),P['arm_r'],'metal_dark')
+        support_z=-P['seat_d']/2-P['back_t']/2-P['leg_w']/2
+        box('back_support',(P['leg_w'],P['back_y'],P['leg_w']),(x,P['back_y']/2,support_z),'metal_dark')
+        box('seat_tie',(P['leg_w'],P['leg_w'],abs(support_z)+P['seat_d']*.36),
+            (x,P['seat_h']-P['seat_t']-P['leg_w']/2,(support_z+P['seat_d']*.36)/2),'metal_dark')
+    for x in (-(P['width']/2-P['arm_r']),P['width']/2-P['arm_r']):
+        bar('arm',(x,P['arm_h'],-P['seat_d']/2+P['back_t']/2),
+            (x,P['arm_h'],P['seat_d']/2),P['arm_r'],'metal_dark')
+        bar('arm_support',(x,P['seat_h'],P['seat_d']*.36),
+            (x,P['arm_h'],P['seat_d']*.36),P['arm_r'],'metal_dark')
     export('bench')
 
 if __name__ == '__main__':
     build()
+
+
+# Physical contact nodes share the model build data.
+if __name__ == "__main__":
+    import sys as _contact_sys
+    from pathlib import Path as _ContactPath
+    _contact_sys.path.insert(0, str(_ContactPath(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(_ContactPath(__file__).resolve().parents[1] / "models" / "bench.glb")

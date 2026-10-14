@@ -1,37 +1,22 @@
 """倒地自行车；原创程序模型，内嵌项目基础几何。"""
 NAME = 'fallen_bicycle'
 KIND = 'fallen'
-P = {'crank_radius': 0.15,
- 'crank_w': 0.36,
- 'crank_y': 0.4,
- 'frame_r': 0.025,
- 'frame_segments': [((0, 0.34, -0.56), (0, 0.4, 0)),
-                    ((0, 0.4, 0), (0, 0.8, -0.22)),
-                    ((0, 0.8, -0.22), (0, 0.34, -0.56)),
-                    ((0, 0.8, -0.22), (0, 0.87, 0.38)),
-                    ((0, 0.87, 0.38), (0, 0.4, 0)),
-                    ((0, 0.87, 0.38), (0, 0.34, 0.56)),
-                    ((0, 0.87, 0.38), (0, 1.1, 0.28)),
-                    ((0, 0.4, 0), (0, 0.85, -0.24))],
- 'handle_r': 0.025,
- 'handle_w': 0.54,
- 'handle_y': 1.1,
- 'handle_z': 0.28,
- 'hub_r': 0.07,
- 'motor': False,
- 'pedal_size': (0.11, 0.05, 0.17),
- 'seat_center': (0, 0.86, -0.24),
- 'seat_size': (0.22, 0.075, 0.3),
- 'spoke_r': 0.012,
- 'tire_t': 0.055,
- 'tire_wall': 0.045,
- 'wheel_r': 0.34,
- 'wheelbase': 1.12}
+# Reuse the current complete compact city bicycle and its adult saddle height.
+# Fallen/parked variants change only the rigid placement and their fixed racks.
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_bicycle import P as BICYCLE_PARAMETERS
+P = dict(BICYCLE_PARAMETERS)
+
 TRACK = 0.96
 OFFSETS = [-1.125, -0.375, 0.375, 1.125]
-# Whole-bicycle roll at which both tyres and the near crank share the ground.
-# Hsinlung approved changing this angle while preserving every component.
-FALL_ANGLE = 66.07 * 3.141592653589793 / 180
+# A rigid roll puts both tyres and the near pedal underside on the ground.
+# Derive the resting angle from the actual slimmer bicycle, not an old angle.
+from math import atan
+PEDAL_BOTTOM = P['crank_y'] + P['crank_radius'] + P['pedal_size'][1]/2 - P['pedal_deck_t']
+PEDAL_OUTER_X = P['crank_w']/2 + P['pedal_offset'] + P['pedal_size'][0]/2
+FALL_ANGLE = atan(PEDAL_BOTTOM / (PEDAL_OUTER_X - P['tire_t']/2))
 EXTRAS = []
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 
@@ -122,10 +107,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -307,50 +311,10 @@ def build_car(p):
         box('taxi_roof_sign',p['taxi_sign'],(0,p['height']+p['taxi_sign'][1]/2,p['taxi_sign_z']),'accent')
 
 
-def build_two_wheeler(p):
-    def group(name, center, objects):
-        node=bpy.data.objects.new(name,None)
-        bpy.context.collection.objects.link(node)
-        node.location=xyz(center)
-        bpy.context.view_layer.update()
-        for obj in sorted(objects, key=lambda item: item.name):
-            world=obj.matrix_world.copy()
-            obj.parent=node
-            obj.matrix_world=world
-        return node
-    for z in (-p['wheelbase']/2,p['wheelbase']/2):
-        before=set(bpy.context.scene.objects)
-        ring('tire',p['wheel_r'],p['wheel_r']-p['tire_wall'],p['tire_t'],(0,p['wheel_r'],z),'metal_dark',axis=(1,0,0))
-        cylinder('hub',p['hub_r'],p['tire_t'],(0,p['wheel_r'],z),'metal',axis=(1,0,0))
-        from math import sin,cos,pi
-        for angle in (0,pi/3,2*pi/3):
-            a=(0,p['wheel_r']+cos(angle)*(p['wheel_r']-p['tire_wall']),z+sin(angle)*(p['wheel_r']-p['tire_wall']))
-            b=(0,p['wheel_r']-cos(angle)*(p['wheel_r']-p['tire_wall']),z-sin(angle)*(p['wheel_r']-p['tire_wall']))
-            bar('wheel_spoke',a,b,p['spoke_r'],'metal')
-        group('wheel_front' if z>0 else 'wheel_rear',(0,p['wheel_r'],z),set(bpy.context.scene.objects)-before)
-    for a,b in p['frame_segments']:
-        bar('frame',a,b,p['frame_r'],'metal')
-    box('saddle',p['seat_size'],p['seat_center'],'metal_dark')
-    bar('handlebar',(-p['handle_w']/2,p['handle_y'],p['handle_z']),
-        (p['handle_w']/2,p['handle_y'],p['handle_z']),p['handle_r'],'metal_dark')
-    if p['motor']:
-        box('battery_body',p['body_size'],p['body_center'],'metal')
-        box('front_fairing',p['fairing_size'],p['fairing_center'],'metal')
-        cylinder('headlamp',p['headlamp_r'],p['headlamp_t'],p['headlamp_center'],'accent',axis=(0,0,1))
-        # Steering stem reaches the revised grip position; feet have real supports.
-        bar('handle_stem',(0,p['frame_segments'][-2][1][1],p['frame_segments'][-2][1][2]),
-            (0,p['handle_y'],p['handle_z']),p['frame_r'],'metal')
-        for sign in (-1,1):
-            box('footrest_left' if sign>0 else 'footrest_right',p['footrest_size'],
-                (sign*p['footrest_x'],p['footrest_y'],p['footrest_z']),'metal_dark')
-    else:
-        parts=[bar('crank_axle',(-p['crank_w']/2,p['crank_y'],0),(p['crank_w']/2,p['crank_y'],0),p['frame_r'],'metal_dark')]
-        for sign in (-1,1):
-            center=(sign*p['crank_w']/2,p['crank_y']+sign*p['crank_radius'],0)
-            parts.append(bar('crank_arm',(center[0],p['crank_y'],0),center,p['frame_r'],'metal_dark'))
-            pedal=box('pedal',p['pedal_size'],center,'metal_dark')
-            parts.append(group('pedal_left' if sign>0 else 'pedal_right',center,[pedal]))
-        group('crank_set',(0,p['crank_y'],0),parts)
+# Use the same mechanical recipe for upright, fallen and parked bicycles.
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from vehicle_geometry import build_two_wheeler
 
 
 def build():

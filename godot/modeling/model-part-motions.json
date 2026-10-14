@@ -1,0 +1,194 @@
+{
+  "_note": "Independent model parts. Axes are in each imported pivot local coordinates. Swing, twist and seesaw ranges retain their existing object ranges; callers supply only part and ratio. Bicycle crank_set is deliberately absent until its pedals can retain level orientation under a coupled driver.",
+  "profiles": {
+    "wheel_spin": {
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "degrees": [
+        0,
+        360
+      ]
+    },
+    "swing": {
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "degrees": [
+        -13,
+        13
+      ]
+    },
+    "twist": {
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "degrees": [
+        -22,
+        22
+      ]
+    },
+    "seesaw": {
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "degrees": [
+        -8,
+        8
+      ]
+    },
+    "air_walk": {
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "degrees": [
+        -16,
+        16
+      ]
+    },
+    "driver_door": {
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "degrees": [
+        0,
+        55
+      ]
+    }
+  },
+  "models": {
+    "ambulance": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "bus": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "car": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "car_estate": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "car_hatchback": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "delivery_van": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "fire_engine": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "garbage_truck": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "police_car": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "small_truck": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "taxi": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "taxi_compact": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "water_truck": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "wheelchair": {
+      "wheel_front_left": "wheel_spin",
+      "wheel_front_right": "wheel_spin",
+      "wheel_rear_left": "wheel_spin",
+      "wheel_rear_right": "wheel_spin"
+    },
+    "playground_swing": {
+      "SwingLeft": "swing",
+      "SwingRight": "swing"
+    },
+    "fitness_twister": {
+      "disc": "twist"
+    },
+    "playground_seesaw": {
+      "BeamRig": "seesaw"
+    },
+    "bicycle": {
+      "wheel_front": "wheel_spin",
+      "wheel_rear": "wheel_spin"
+    },
+    "scooter": {
+      "wheel_front": "wheel_spin",
+      "wheel_rear": "wheel_spin"
+    },
+    "fitness_air_walker": {
+      "PedalLeft": "air_walk",
+      "PedalRight": "air_walk"
+    },
+    "car_interactive": {
+      "DriverDoor": "driver_door"
+    },
+    "cargo_tricycle": {
+      "wheel_front": "wheel_spin",
+      "wheel_rear": "wheel_spin"
+    },
+    "delivery_ebike": {
+      "wheel_front": "wheel_spin",
+      "wheel_rear": "wheel_spin"
+    },
+    "parked_motorcycle": {
+      "wheel_front": "wheel_spin",
+      "wheel_rear": "wheel_spin"
+    }
+  }
+}

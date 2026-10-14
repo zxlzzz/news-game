@@ -1,14 +1,14 @@
 """无字门牌。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'address_plaque'
 # All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['box', 'board', (0.42, 0.25, 0.04), (0, 0.155, 0), 'trim'],
+PARTS = [['box', 'board', (0.36, 0.19, 0.04), (0, 0.155, 0), 'trim'],
  ['box', 'border', (0.54, 0.06, 0.08), (0, 0.03, 0), 'metal'],
  ['box', 'border', (0.54, 0.06, 0.08), (0, 0.28, 0), 'metal'],
- ['box', 'border', (0.06, 0.25, 0.08), (-0.21, 0.155, 0), 'metal'],
- ['box', 'border', (0.06, 0.25, 0.08), (0.21, 0.155, 0), 'metal'],
- ['box', 'number_mark', (0.05, 0.1, 0.02), (-0.1, 0.155, 0.04), 'trim_dark'],
- ['box', 'number_mark', (0.05, 0.1, 0.02), (0, 0.155, 0.04), 'trim_dark'],
- ['box', 'number_mark', (0.05, 0.1, 0.02), (0.1, 0.155, 0.04), 'trim_dark']]
+ ['box', 'border', (0.06, 0.19, 0.08), (-0.21, 0.155, 0), 'metal'],
+ ['box', 'border', (0.06, 0.19, 0.08), (0.21, 0.155, 0), 'metal'],
+ ['box', 'number_mark', (0.05, 0.1, 0.02), (-0.1, 0.155, 0.03), 'trim_dark'],
+ ['box', 'number_mark', (0.05, 0.1, 0.02), (0, 0.155, 0.03), 'trim_dark'],
+ ['box', 'number_mark', (0.05, 0.1, 0.02), (0.1, 0.155, 0.03), 'trim_dark']]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -100,10 +100,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):

@@ -1,8 +1,8 @@
 """快递三轮车；原创程序模型，内嵌项目基础几何。"""
 NAME = 'cargo_tricycle'
 KIND = 'cargo'
-P = {'body_center': (0, 0.46, -0.31),
- 'body_size': (0.4, 0.42, 0.58),
+P = {'body_center': (0, 0.46, -0.27),
+ 'body_size': (0.4, 0.42, 0.5),
  'fairing_center': (0, 0.75, 0.43),
  'fairing_size': (0.4, 0.55, 0.14),
  'footrest_size': (0.2, 0.05, 0.32),
@@ -10,7 +10,7 @@ P = {'body_center': (0, 0.46, -0.31),
  'footrest_y': 0.3,
  'footrest_z': 0.14,
  'frame_r': 0.04,
- 'frame_segments': [((0, 0.25, -0.675), (0, 0.45, -0.2)),
+ 'frame_segments': [((0, 0.25, -1.05), (0, 0.45, -0.2)),
                     ((0, 0.45, -0.2), (0, 0.42, 0.32)),
                     ((0, 0.42, 0.32), (0, 1.02, 0.45)),
                     ((0, 1.02, 0.45), (0, 0.25, 0.675))],
@@ -18,7 +18,7 @@ P = {'body_center': (0, 0.46, -0.31),
  'handle_w': 0.58,
  'handle_y': 1.16,
  'handle_z': 0.52,
- 'headlamp_center': (0, 1.03, 0.53),
+ 'headlamp_center': (0, 1.03, 0.52),
  'headlamp_r': 0.09,
  'headlamp_t': 0.04,
  'hub_r': 0.07,
@@ -26,16 +26,25 @@ P = {'body_center': (0, 0.46, -0.31),
  'seat_center': (0, 0.79, -0.27),
  'seat_size': (0.4, 0.13, 0.4),
  'spoke_r': 0.025,
+ 'fork_clearance': 0.006,
  'tire_t': 0.12,
  'tire_wall': 0.075,
  'wheel_r': 0.25,
- 'wheelbase': 1.35}
+ 'wheelbase': 1.35,
+ 'seat_mount_width': 0.32,
+ 'seat_mount_depth': 0.4,
+ 'floor_rail_x': 0.14,
+ 'floor_rail_r': 0.025,
+ 'rear_axle_z': -1.05}
 TRACK = 0.96
 OFFSETS = [-1.125, -0.375, 0.375, 1.125]
 FALL_ANGLE = 1.5707963267948966
-EXTRAS = [['bar', 'rear_axle', (-0.48, 0.25, -0.675), (0.48, 0.25, -0.675), 0.055, 'metal_dark'],
- ['box', 'cargo_box', (1.05, 0.8, 1.05), (0, 0.86, -1.05), 'metal'],
- ['box', 'cargo_lid', (1.1, 0.08, 1.1), (0, 1.3, -1.05), 'metal_dark']]
+EXTRAS = [['bar', 'rear_axle', (-0.48, 0.25, -1.05), (0.48, 0.25, -1.05), 0.055, 'metal_dark'],
+ ['box', 'cargo_deck', (0.8, 0.08, 1.05), (0, 0.54, -1.1), 'metal_dark'],
+ ['box', 'cargo_axle_support', (0.1, 0.25, 0.16), (-0.28, 0.375, -1.05), 'metal_dark'],
+ ['box', 'cargo_axle_support', (0.1, 0.25, 0.16), (0.28, 0.375, -1.05), 'metal_dark'],
+ ['box', 'cargo_box', (1.05, 0.8, 1.05), (0, 0.98, -1.1), 'metal'],
+ ['box', 'cargo_lid', (1.1, 0.08, 1.1), (0, 1.42, -1.1), 'metal_dark']]
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 
 Build scripts own dimensions/design; this module only constructs and exports geometry.
@@ -125,10 +134,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -356,6 +384,11 @@ def build_two_wheeler(p):
         group('crank_set',(0,p['crank_y'],0),parts)
 
 
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from vehicle_geometry import build_two_wheeler
+
+
 def build():
     reset()
     if KIND == 'row':
@@ -366,7 +399,10 @@ def build():
             for o in set(bpy.context.scene.objects)-before:
                 if o.parent is None: o.location.x += x
     else:
-        build_two_wheeler(P)
+        parameters=dict(P)
+        if KIND == 'cargo':
+            parameters['rear_wheel_axle_r']=next(part[4] for part in EXTRAS if part[:2]==['bar','rear_axle'])
+        build_two_wheeler(parameters)
         if KIND == 'cargo':
             rear=bpy.data.objects['wheel_rear']
             parts=list(rear.children)
@@ -379,10 +415,26 @@ def build():
             transform=Matrix.Rotation(FALL_ANGLE,4,'Y')
             for o in bpy.context.scene.objects:
                 if o.parent is None:o.matrix_world=transform @ o.matrix_world
-    for kind,*args in EXTRAS:globals()[kind](*args)
+    for kind,*args in EXTRAS:
+        if KIND == 'cargo' and kind == 'bar' and args[0] == 'rear_axle':
+            # The fixed shaft ends inside the two blind hub seats, ahead of
+            # their rotating central web and spokes.
+            start,end=Vector(args[1]),Vector(args[2])
+            inset=P['spoke_r']+P['fork_clearance']
+            start.x+=inset;end.x-=inset
+            args[1],args[2]=start,end
+        globals()[kind](*args)
     bpy.context.view_layer.update()
     low=min((o.matrix_world @ Vector(v)).z for o in bpy.context.scene.objects if o.type=='MESH' for v in o.bound_box)
     for o in bpy.context.scene.objects:
         if o.parent is None:o.location.z -= low
     export(NAME)
 if __name__=='__main__':build()
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("cargo_tricycle")

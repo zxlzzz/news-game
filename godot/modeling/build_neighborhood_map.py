@@ -1,19 +1,19 @@
 """街区地图牌。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'neighborhood_map'
 # All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['box', 'stand', (0.14, 2.1, 0.14), (-0.65, 1.05, 0), 'metal_dark'],
- ['box', 'stand', (0.14, 2.1, 0.14), (0.65, 1.05, 0), 'metal_dark'],
- ['box', 'board', (1.5, 1.4, 0.1), (0, 1.4, 0), 'trim'],
+PARTS = [['box', 'stand', (0.14, 2.1, 0.14), (-0.65, 1.05, -0.14), 'metal_dark'],
+ ['box', 'stand', (0.14, 2.1, 0.14), (0.65, 1.05, -0.14), 'metal_dark'],
+ ['box', 'board', (1.44, 1.34, 0.1), (0, 1.4, 0), 'trim'],
  ['box', 'border', (1.62, 0.06, 0.14), (0, 0.7, 0), 'metal'],
  ['box', 'border', (1.62, 0.06, 0.14), (0, 2.0999999999999996, 0), 'metal'],
- ['box', 'border', (0.06, 1.4, 0.14), (-0.75, 1.4, 0), 'metal'],
- ['box', 'border', (0.06, 1.4, 0.14), (0.75, 1.4, 0), 'metal'],
- ['box', 'map_road', (0.08, 1.05, 0.025), (-0.35, 1.4, 0.075), 'metal_dark'],
- ['box', 'map_road', (0.08, 1.05, 0.025), (0.2, 1.4, 0.075), 'metal_dark'],
- ['box', 'map_cross', (1.1, 0.07, 0.025), (0, 1, 0.08), 'metal_dark'],
- ['box', 'map_cross', (1.1, 0.07, 0.025), (0, 1.5, 0.08), 'metal_dark'],
- ['box', 'map_cross', (1.1, 0.07, 0.025), (0, 1.9, 0.08), 'metal_dark'],
- ['cylinder', 'you_are_here', 0.08, 0.025, (0.2, 1.5, 0.105), 'accent', (0, 0, 1), None]]
+ ['box', 'border', (0.06, 1.34, 0.14), (-0.75, 1.4, 0), 'metal'],
+ ['box', 'border', (0.06, 1.34, 0.14), (0.75, 1.4, 0), 'metal'],
+ ['box', 'map_road', (0.08, 1.05, 0.025), (-0.35, 1.4, 0.0625), 'metal_dark'],
+ ['box', 'map_road', (0.08, 1.05, 0.025), (0.2, 1.4, 0.0625), 'metal_dark'],
+ ['box', 'map_cross', (1.1, 0.07, 0.025), (0, 1, 0.0625), 'metal_dark'],
+ ['box', 'map_cross', (1.1, 0.07, 0.025), (0, 1.5, 0.0625), 'metal_dark'],
+ ['box', 'map_cross', (1.1, 0.07, 0.025), (0, 1.9, 0.0625), 'metal_dark'],
+ ['cylinder', 'you_are_here', 0.08, 0.025, (0.2, 1.5, 0.0875), 'accent', (0, 0, 1), None]]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -105,10 +105,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):

@@ -15,6 +15,7 @@ P = {'radius': 1.35,
  'rim_lift': 0.09,
  'rib_count': 8,
  'rib_r': 0.025,
+ 'rib_clearance': 0.006,
  'post_r': 0.035,
  'base_r': 0.27,
  'base_h': 0.1}
@@ -22,7 +23,8 @@ P = {'radius': 1.35,
 def build():
     reset()
     cylinder('base',P['base_r'],P['base_h'],(0,P['base_h']/2,0),'concrete')
-    cylinder('post',P['post_r'],P['height'],(0,P['height']/2,0),'metal')
+    post_h=P['height']-P['canopy_t']-P['post_r']*P['canopy_h']/P['radius']-P['rib_clearance']
+    cylinder('post',P['post_r'],post_h,(0,post_h/2,0),'metal')
     # Thin, closed conical shell. Bottom is another cone, not a solid filled cone.
     from math import pi,cos,sin
     n=CIRCLE_SEGMENTS
@@ -35,11 +37,12 @@ def build():
         a,b=1+i,1+(i+1)%n
         faces.extend([(0,a,b),(n+1,b+n+1,a+n+1),(a,a+n+1,b+n+1,b)])
     mesh('canopy_shell',verts,faces,'fabric')
-    # Eight visible radial seams/ribs and a scalloped hem make the canopy legible from above.
+    # Structural ribs sit below the cloth, including their full radius.
+    rib_drop=P['canopy_t']+P['rib_r']*(1+(P['canopy_h']/P['radius'])**2)**.5+P['rib_clearance']
     for i in range(P['rib_count']):
         angle=i*2*pi/P['rib_count']
-        bar('canopy_rib',(0,P['height'],0),
-            (P['radius']*cos(angle),P['height']-P['canopy_h'],P['radius']*sin(angle)),P['rib_r'],'metal')
+        bar('canopy_rib',(0,P['height']-rib_drop,0),
+            (P['radius']*cos(angle),P['height']-P['canopy_h']-rib_drop,P['radius']*sin(angle)),P['rib_r'],'metal')
     export('cafe_umbrella')
 
 if __name__ == '__main__':

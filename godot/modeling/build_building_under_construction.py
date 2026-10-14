@@ -17,6 +17,9 @@ SIDE_INNER_X = 5.25
 SIDE_OUTER_X = 6.0
 DECK_THICKNESS = 0.08
 NET_THICKNESS = 0.025
+NET_TIE_RADIUS = 0.012
+WALL_TIE_RADIUS = 0.018
+WALL_TIE_Y = [3.5,6.7,9.9,13.1]
 NET_GAP = 0.42
 NET_TOP_Y = 7.8
 NET_VERTICAL_GAP = 0.36
@@ -125,10 +128,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -295,11 +317,23 @@ def build():
         for a,b in zip(FRONT_X,FRONT_X[1:]):
             if y <= NET_TOP_Y:
                 box('front_safety_net',(b-a-NET_GAP,NET_LEVEL_HEIGHT-NET_VERTICAL_GAP,NET_THICKNESS),((a+b)/2,y-NET_LEVEL_HEIGHT/2,FRONT_OUTER_Z-NET_INSET),'fabric')
-            bar('front_diagonal',(a,y-NET_LEVEL_HEIGHT,FRONT_OUTER_Z),(b,y,FRONT_OUTER_Z),BRACE_RADIUS,'metal_dark')
+            if y <= NET_TOP_Y:
+                for x,target_x in ((a+NET_GAP/2,a),(b-NET_GAP/2,b)):
+                    for corner_y,target_y in ((y-NET_LEVEL_HEIGHT+NET_VERTICAL_GAP/2,y-NET_LEVEL_HEIGHT),(y-NET_VERTICAL_GAP/2,y)):
+                        bar('net_tie',(x,corner_y,FRONT_OUTER_Z-NET_INSET),(target_x,max(target_y,NET_TIE_RADIUS),FRONT_OUTER_Z),NET_TIE_RADIUS,'metal_dark')
+            bar('front_diagonal',(a,max(y-NET_LEVEL_HEIGHT,BRACE_RADIUS),FRONT_OUTER_Z),(b,y,FRONT_OUTER_Z),BRACE_RADIUS,'metal_dark')
         for a,b in zip(SIDE_Z,SIDE_Z[1:]):
             if y <= NET_TOP_Y:
                 box('side_safety_net',(NET_THICKNESS,NET_LEVEL_HEIGHT-NET_VERTICAL_GAP,a-b-NET_GAP),(SIDE_OUTER_X-NET_INSET,y-NET_LEVEL_HEIGHT/2,(a+b)/2),'fabric')
-            bar('side_diagonal',(SIDE_OUTER_X,y-NET_LEVEL_HEIGHT,a),(SIDE_OUTER_X,y,b),BRACE_RADIUS,'metal_dark')
+            if y <= NET_TOP_Y:
+                for z,target_z in ((a-NET_GAP/2,a),(b+NET_GAP/2,b)):
+                    for corner_y,target_y in ((y-NET_LEVEL_HEIGHT+NET_VERTICAL_GAP/2,y-NET_LEVEL_HEIGHT),(y-NET_VERTICAL_GAP/2,y)):
+                        bar('net_tie',(SIDE_OUTER_X-NET_INSET,corner_y,z),(SIDE_OUTER_X,max(target_y,NET_TIE_RADIUS),target_z),NET_TIE_RADIUS,'metal_dark')
+            bar('side_diagonal',(SIDE_OUTER_X,max(y-NET_LEVEL_HEIGHT,BRACE_RADIUS),a),(SIDE_OUTER_X,y,b),BRACE_RADIUS,'metal_dark')
+    for y in WALL_TIE_Y:
+        for x in COLUMN_X:
+            nearest=min(FRONT_X,key=lambda anchor:abs(anchor-x))
+            bar('scaffold_wall_tie',(x,y,COLUMN_WIDTH/2),(nearest,y,FRONT_INNER_Z),WALL_TIE_RADIUS,'metal_dark')
     for a,b in zip(FRONT_X,FRONT_X[1:]):
         box('continuous_street_fence',(b-a,FENCE_HEIGHT,FENCE_THICKNESS),((a+b)/2,FENCE_HEIGHT/2,FENCE_Z),'metal_dark')
         bar('fence_post',(a,0,FENCE_Z),(a,FENCE_HEIGHT,FENCE_Z),TUBE_RADIUS,'metal')
@@ -322,3 +356,12 @@ def build():
 
 if __name__ == "__main__":
     build()
+
+
+# Facade parts are independent, reusable types.
+if __name__ == "__main__":
+    import sys as _mod_sys
+    from pathlib import Path as _ModPath
+    _mod_sys.path.insert(0, str(_ModPath(__file__).resolve().parent))
+    from modular_buildings import modularize as _modularize
+    _modularize(_ModPath(__file__).resolve().parents[1] / "models" / "building_under_construction.glb")

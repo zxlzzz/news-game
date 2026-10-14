@@ -7,6 +7,7 @@ signal opened
 signal closed
 
 const CONFIG_PATH := "res://modeling/door_single.json"
+var externally_driven := false
 var open_ratio := 0.0
 var target_open := false
 var config: Dictionary
@@ -46,6 +47,7 @@ func toggle() -> void:
 	set_open(not target_open)
 
 func _physics_process(delta: float) -> void:
+	if externally_driven: return
 	var target := 1.0 if target_open else 0.0
 	if open_ratio == target:
 		return
@@ -62,3 +64,19 @@ func _apply_pose() -> void:
 
 func grip_position(front: bool = true) -> Vector3:
 	return (hinge.find_child("grip_front" if front else "grip_back", true, false) as Node3D).global_position
+
+func set_interaction_angle(degrees: float) -> void:
+	externally_driven=true
+	hinge.rotation.y=deg_to_rad(degrees)
+	var amount:=clampf(absf(degrees/float(config.open_degrees)),0,1)
+	var low:=0.0
+	var high:=1.0
+	for iteration in 24:
+		var middle:=(low+high)/2
+		if smoothstep(0,1,middle)<amount: low=middle
+		else: high=middle
+	open_ratio=(low+high)/2
+	target_open=open_ratio>=0.5
+
+func release_interaction() -> void:
+	externally_driven=false

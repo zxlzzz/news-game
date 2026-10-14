@@ -1,8 +1,52 @@
 """快递柜。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'parcel_lockers'
-# All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['box', 'door', (0.7, 0.46, 0.04), (-1.2, 0.27, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (-1.2, 0.77, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (-1.2, 1.27, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (-1.2, 1.77, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (-0.4, 0.27, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (-0.4, 0.77, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (-0.4, 1.27, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (-0.4, 1.77, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (0.4, 0.27, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (0.4, 0.77, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (0.4, 1.27, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (0.4, 1.77, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (1.2, 0.27, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (1.2, 0.77, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (1.2, 1.27, 0.35), 'metal'], ['box', 'door', (0.7, 0.46, 0.04), (1.2, 1.77, 0.35), 'metal'], ['box', 'terminal', (0.2, 0.32, 0.06), (0, 1.25, 0.4), 'window'], ['box', 'back', [3.2, 2, 0.04], [0, 1, -0.305], 'metal_dark'], ['box', 'top', [3.2, 0.04, 0.65], [0, 1.98, 0], 'metal_dark'], ['box', 'bottom', [3.2, 0.04, 0.65], [0, 0.02, 0], 'metal_dark'], ['box', 'divider', [0.04, 2, 0.65], [-1.58, 1, 0], 'metal_dark'], ['box', 'divider', [0.04, 2, 0.65], [-0.8, 1, 0], 'metal_dark'], ['box', 'divider', [0.04, 2, 0.65], [0, 1, 0], 'metal_dark'], ['box', 'divider', [0.04, 2, 0.65], [0.8, 1, 0], 'metal_dark'], ['box', 'divider', [0.04, 2, 0.65], [1.58, 1, 0], 'metal_dark'], ['box', 'shelf', [3.2, 0.03, 0.65], [0, 0.5, 0], 'metal_dark'], ['box', 'shelf', [3.2, 0.03, 0.65], [0, 1, 0], 'metal_dark'], ['box', 'shelf', [3.2, 0.03, 0.65], [0, 1.5, 0], 'metal_dark']]
+import sys
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+# All dimensions and layout in metres, Y up; front +Z.
+CABINET_WIDTH, CABINET_HEIGHT, CABINET_DEPTH = 3.2, 2.0, 0.65
+SHELL_THICKNESS, SHELF_THICKNESS = 0.04, 0.03
+ROW_COUNT, ROW_PITCH, FIRST_ROW_CENTER = 4, 0.5, 0.27
+OUTER_DOOR_WIDTH, INNER_DOOR_WIDTH = 0.7, 0.58
+OUTER_COLUMN_CENTERS, INNER_COLUMN_CENTERS = (-1.2, 1.2), (-0.46, 0.46)
+DOOR_HEIGHT, DOOR_THICKNESS, DOOR_CENTER_Z = 0.46, 0.04, 0.35
+OUTER_DIVIDER_X = (-1.58, -0.8, 0.8, 1.58)
+CONTROL_SPINE_WIDTH = 0.28
+TERMINAL_SIZE, TERMINAL_CENTER = (0.2, 0.32, 0.03), (0, 1.25, 0.34)
+# Interleaved fixed lugs and rotating bearings use the unchanged door axes.
+HINGE_PIN_RADIUS, HINGE_RADIAL_CLEARANCE = 0.006, 0.002
+HINGE_BEARING_RADIUS, HINGE_BEARING_HEIGHT = 0.016, 0.054
+HINGE_BEARING_OFFSETS_Y = (-0.145, 0.145)
+HINGE_PIN_HEIGHT = 0.40
+HINGE_FIXED_LUG_RADIUS, HINGE_FIXED_LUG_HEIGHT = 0.016, 0.024
+HINGE_FIXED_OFFSETS_Y = (-0.185, 0.185)
+HINGE_MOUNT_RADIUS, HINGE_MOUNT_EMBED = 0.010, 0.014
+HINGE_FIXED_RELIEF_RADIUS, HINGE_FIXED_RELIEF_HEIGHT = 0.035, 0.042
+PARTS = []
+# The two inner compartments leave a continuous fixed central control spine.
+for x in (OUTER_COLUMN_CENTERS[0], INNER_COLUMN_CENTERS[0], INNER_COLUMN_CENTERS[1], OUTER_COLUMN_CENTERS[1]):
+    width = INNER_DOOR_WIDTH if x in INNER_COLUMN_CENTERS else OUTER_DOOR_WIDTH
+    for row in range(ROW_COUNT):
+        PARTS.append(['box', 'door', (width, DOOR_HEIGHT, DOOR_THICKNESS),
+                      (x, FIRST_ROW_CENTER + row * ROW_PITCH, DOOR_CENTER_Z), 'metal'])
+PARTS += [['box', 'terminal', TERMINAL_SIZE, TERMINAL_CENTER, 'glass_dark'],
+ ['box', 'back', (CABINET_WIDTH, CABINET_HEIGHT, SHELL_THICKNESS),
+  (0, CABINET_HEIGHT/2, -(CABINET_DEPTH-SHELL_THICKNESS)/2), 'metal_dark'],
+ ['box', 'top', (CABINET_WIDTH, SHELL_THICKNESS, CABINET_DEPTH),
+  (0, CABINET_HEIGHT-SHELL_THICKNESS/2, 0), 'metal_dark'],
+ ['box', 'bottom', (CABINET_WIDTH, SHELL_THICKNESS, CABINET_DEPTH),
+  (0, SHELL_THICKNESS/2, 0), 'metal_dark'],
+ ['box', 'control_spine', (CONTROL_SPINE_WIDTH, CABINET_HEIGHT, CABINET_DEPTH),
+  (0, CABINET_HEIGHT/2, 0), 'metal_dark']]
+for x in OUTER_DIVIDER_X:
+    PARTS.append(['box', 'divider', (SHELL_THICKNESS, CABINET_HEIGHT, CABINET_DEPTH),
+                  (x, CABINET_HEIGHT/2, 0), 'metal_dark'])
+for row in range(1, ROW_COUNT):
+    PARTS.append(['box', 'shelf', (CABINET_WIDTH, SHELF_THICKNESS, CABINET_DEPTH),
+                  (0, row * ROW_PITCH, 0), 'metal_dark'])
 GRIPS = {}
+MOVING = {f'LockerDoor{i:02d}':dict(parts=['door'+('.%03d'%i if i else '')], pivot='left_front',axis=[0,1,0],degrees=[0,-100]) for i in range(16)}
+
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 
@@ -93,10 +137,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -217,6 +280,57 @@ def canonicalize_triangle_order(path):
     path.write_bytes(data)
 
 
+def build_hinge_supports():
+    """Support each existing left-front axis without occupying its door sweep."""
+    column_specs = (
+        (OUTER_COLUMN_CENTERS[0], OUTER_DOOR_WIDTH,
+         OUTER_DIVIDER_X[0] + SHELL_THICKNESS / 2),
+        (INNER_COLUMN_CENTERS[0], INNER_DOOR_WIDTH,
+         OUTER_DIVIDER_X[1] + SHELL_THICKNESS / 2),
+        (INNER_COLUMN_CENTERS[1], INNER_DOOR_WIDTH,
+         CONTROL_SPINE_WIDTH / 2),
+        (OUTER_COLUMN_CENTERS[1], OUTER_DOOR_WIDTH,
+         OUTER_DIVIDER_X[2] + SHELL_THICKNESS / 2),
+    )
+    bore_radius = HINGE_PIN_RADIUS + HINGE_RADIAL_CLEARANCE
+    for column, (center_x, width, fixed_face_x) in enumerate(column_specs):
+        for row in range(ROW_COUNT):
+            index = column * ROW_COUNT + row
+            door_name = 'door' + ('.%03d' % index if index else '')
+            door = bpy.data.objects[door_name]
+            pivot = (center_x - width / 2,
+                     FIRST_ROW_CENTER + row * ROW_PITCH,
+                     DOOR_CENTER_Z + DOOR_THICKNESS / 2)
+            # The pin needs a real bore in the corner of the moving leaf.
+            cutter = cylinder('locker_pin_bore', bore_radius,
+                              HINGE_PIN_HEIGHT + HINGE_RADIAL_CLEARANCE * 2,
+                              pivot, None)
+            subtract(door, cutter, 'hinge_pin_bore')
+            cylinder('locker_pin_%02d' % index, HINGE_PIN_RADIUS,
+                     HINGE_PIN_HEIGHT, pivot, 'metal_dark')
+            for bearing, offset in enumerate(HINGE_BEARING_OFFSETS_Y):
+                at = (pivot[0], pivot[1] + offset, pivot[2])
+                name = 'locker_bearing_%02d_%d' % (index, bearing)
+                ring(name, HINGE_BEARING_RADIUS, bore_radius,
+                     HINGE_BEARING_HEIGHT, at, 'metal')
+                MOVING['LockerDoor%02d' % index]['parts'].append(name)
+            for lug, offset in enumerate(HINGE_FIXED_OFFSETS_Y):
+                at = (pivot[0], pivot[1] + offset, pivot[2])
+                # The fixed lugs are separate in height from rotating bearings.
+                # Relieve the leaf around the entire lug/bracket envelope.
+                cutter = cylinder('locker_mount_relief',
+                                  HINGE_FIXED_RELIEF_RADIUS,
+                                  HINGE_FIXED_RELIEF_HEIGHT, at, None)
+                subtract(door, cutter, 'hinge_fixed_lug_relief')
+                cylinder('locker_fixed_lug_%02d_%d' % (index, lug),
+                         HINGE_FIXED_LUG_RADIUS, HINGE_FIXED_LUG_HEIGHT,
+                         at, 'metal_dark')
+                mount_start = (fixed_face_x - HINGE_MOUNT_EMBED, at[1],
+                               CABINET_DEPTH / 2 - HINGE_MOUNT_EMBED)
+                bar('locker_mount_%02d_%d' % (index, lug), mount_start,
+                    at, HINGE_MOUNT_RADIUS, 'metal_dark')
+
+
 def build():
     reset()
     for kind,*args in PARTS:
@@ -231,7 +345,19 @@ def build():
         low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
         for o in bpy.context.scene.objects:
             o.location.z -= low
-    export(NAME)
+    build_hinge_supports()
+    from movable_prop_geometry import prepare_motion_groups, export_movable
+    prepare_motion_groups(MOVING)
+    export_movable(NAME,MOVING)
 
 if __name__=='__main__':
     build()
+
+
+# Physical contact nodes share the model build data.
+if __name__ == "__main__":
+    import sys as _contact_sys
+    from pathlib import Path as _ContactPath
+    _contact_sys.path.insert(0, str(_ContactPath(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(_ContactPath(__file__).resolve().parents[1] / "models" / "parcel_lockers.glb")

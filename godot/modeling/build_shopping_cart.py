@@ -1,5 +1,8 @@
 """购物车。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'shopping_cart'
+STAND_X, STAND_BASE_Y, STAND_BASE_Z = 0.26, 0.245, -0.34
+STAND_TOP_Y, STAND_TOP_Z = 1.02, -0.50
+WHEEL_X, WHEEL_Y, WHEEL_THICKNESS = 0.30, 0.10, 0.07
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['cylinder', 'wheel', 0.1, 0.07, (-0.3, 0.1, -0.4), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'wheel', 0.1, 0.07, (-0.3, 0.1, 0.4), 'metal_dark', (1, 0, 0), None],
@@ -18,10 +21,34 @@ PARTS = [['cylinder', 'wheel', 0.1, 0.07, (-0.3, 0.1, -0.4), 'metal_dark', (1, 0
  ['bar', 'wire', (-0.2, 0.64, 0.37), (-0.2, 0.95, 0.37), 0.012, 'metal'],
  ['bar', 'wire', (0, 0.64, 0.37), (0, 0.95, 0.37), 0.012, 'metal'],
  ['bar', 'wire', (0.2, 0.64, 0.37), (0.2, 0.95, 0.37), 0.012, 'metal'],
- ['bar', 'stand', (-0.26, 0.1, -0.4), (-0.26, 1.02, -0.5), 0.03, 'metal'],
- ['bar', 'stand', (0.26, 0.1, -0.4), (0.26, 1.02, -0.5), 0.03, 'metal'],
+ ['bar', 'stand', (-STAND_X, STAND_BASE_Y, STAND_BASE_Z), (-STAND_X, STAND_TOP_Y, STAND_TOP_Z), 0.03, 'metal'],
+ ['bar', 'stand', (STAND_X, STAND_BASE_Y, STAND_BASE_Z), (STAND_X, STAND_TOP_Y, STAND_TOP_Z), 0.03, 'metal'],
  ['bar', 'handle', (-0.31, 1.02, -0.5), (0.31, 1.02, -0.5), 0.035, 'metal_dark']]
+# Sparse complete basket boundaries, with the same rod scale as the front.
+BASKET_SIDE_X = (-0.29, 0.29)
+BASKET_SIDE_Z = (-0.24, 0.0, 0.24)
+BASKET_BACK_X = (-0.20, 0.0, 0.20)
+BASKET_BOTTOM_Y, BASKET_TOP_Y, BASKET_MIDDLE_Y = 0.64, 0.95, 0.795
+BASKET_END_Z, BASKET_WIRE_R = 0.37, 0.012
+for x in BASKET_SIDE_X:
+    for z in BASKET_SIDE_Z:
+        PARTS.append(['bar', 'side_wire', (x, BASKET_BOTTOM_Y, z), (x, BASKET_TOP_Y, z), BASKET_WIRE_R, 'metal'])
+    PARTS.append(['bar', 'side_middle', (x, BASKET_MIDDLE_Y, -BASKET_END_Z), (x, BASKET_MIDDLE_Y, BASKET_END_Z), BASKET_WIRE_R, 'metal'])
+for x in BASKET_BACK_X:
+    PARTS.append(['bar', 'back_wire', (x, BASKET_BOTTOM_Y, -BASKET_END_Z), (x, BASKET_TOP_Y, -BASKET_END_Z), BASKET_WIRE_R, 'metal'])
+for z in (-BASKET_END_Z, BASKET_END_Z):
+    PARTS.append(['bar', 'end_middle', (BASKET_SIDE_X[0], BASKET_MIDDLE_Y, z), (BASKET_SIDE_X[1], BASKET_MIDDLE_Y, z), BASKET_WIRE_R, 'metal'])
 GRIPS = {'grip_left': [0.24, 1.02, -0.5], 'grip_right': [-0.24, 1.02, -0.5]}
+# Load path: basket floor -> diagonal cradle / rear posts -> chassis -> forks.
+# The cradle and short rear brackets stop below the storage floor.
+BASKET_SUPPORT_X = (-0.23, 0.23)
+BASKET_SUPPORT_R = 0.025
+BASKET_SUPPORT_BASE_YZ = (0.255, 0.20)
+BASKET_SUPPORT_TOP_YZ = (0.595, -0.28)
+BASKET_REAR_CONNECT_YZ = (0.62, -0.375)
+FORK_INNER_X, FORK_RADIUS, FORK_TOP_Y = 0.236, 0.016, 0.245
+AXLE_RADIUS, BEARING_CLEARANCE, AXLE_END_X = 0.016, 0.004, 0.318
+FRAME_WHEEL_CLEARANCE = 0.006
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 
@@ -112,10 +139,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -196,10 +242,19 @@ def export(name):
         bm.to_mesh(obj.data)
         bm.free()
     bpy.ops.object.select_all(action='SELECT')
-    bpy.ops.export_scene.gltf(filepath=str(output), export_format='GLB', export_yup=True,
-        export_normals=True, export_texcoords=False, export_animations=False,
-        export_cameras=False, export_lights=False, export_extras=False)
-    canonicalize_triangle_order(output)
+    # Finish the complete export before replacing an asset the editor may read.
+    import os
+    import tempfile
+    with tempfile.NamedTemporaryFile(dir=output.parent,suffix='.glb',delete=False) as pending:
+        temporary=Path(pending.name)
+    try:
+        bpy.ops.export_scene.gltf(filepath=str(temporary), export_format='GLB', export_yup=True,
+            export_normals=True, export_texcoords=False, export_animations=False,
+            export_cameras=False, export_lights=False, export_extras=False)
+        canonicalize_triangle_order(temporary)
+        os.replace(temporary,output)
+    finally:
+        temporary.unlink(missing_ok=True)
     print('MODEL_WRITTEN', output)
 
 
@@ -240,6 +295,36 @@ def build():
     reset()
     for kind,*args in PARTS:
         globals()[kind](*args)
+    for x in BASKET_SUPPORT_X:
+        bar('basket_cradle', (x, *BASKET_SUPPORT_BASE_YZ),
+            (x, *BASKET_SUPPORT_TOP_YZ), BASKET_SUPPORT_R, 'metal')
+    for sign in (-1, 1):
+        y,z = BASKET_REAR_CONNECT_YZ
+        # Same affine centreline as the handle upright, not a guessed endpoint.
+        stand_z = STAND_BASE_Z + (y-STAND_BASE_Y)/(STAND_TOP_Y-STAND_BASE_Y)*(STAND_TOP_Z-STAND_BASE_Z)
+        bar('basket_rear_bracket', (sign*STAND_X,y,stand_z),
+            (sign*STAND_X,y,z), BASKET_SUPPORT_R, 'metal')
+    wheels = [o for o in bpy.context.scene.objects
+              if o.type == 'MESH' and o.name.split('.')[0] == 'wheel']
+    chassis = bpy.data.objects['lower_frame']
+    for wheel in wheels:
+        center = (wheel.location.x, wheel.location.z, -wheel.location.y)
+        sign = 1 if center[0] > 0 else -1
+        # The chassis must not rest directly on the rotating tire's crown.
+        cutter = cylinder('wheel_crown_cut', WHEEL_Y+FRAME_WHEEL_CLEARANCE,
+                          WHEEL_THICKNESS+2*FRAME_WHEEL_CLEARANCE, center, None, axis=(1,0,0))
+        subtract(chassis,cutter,'wheel_clearance')
+        # A blind bearing retains the visible outer cap of each wheel.
+        inner = WHEEL_X-WHEEL_THICKNESS/2-FRAME_WHEEL_CLEARANCE
+        outer = AXLE_END_X+BEARING_CLEARANCE
+        cutter = cylinder('bearing_cut', AXLE_RADIUS+BEARING_CLEARANCE,
+                          outer-inner, (sign*(inner+outer)/2,WHEEL_Y,center[2]),
+                          None, axis=(1,0,0))
+        subtract(wheel,cutter,'wheel_bearing')
+        bar('wheel_fork', (sign*FORK_INNER_X,WHEEL_Y,center[2]),
+            (sign*FORK_INNER_X,FORK_TOP_Y,center[2]), FORK_RADIUS,'metal')
+        bar('wheel_spindle', (sign*FORK_INNER_X,WHEEL_Y,center[2]),
+            (sign*AXLE_END_X,WHEEL_Y,center[2]), AXLE_RADIUS,'metal')
     for name,position in GRIPS.items():
         node=bpy.data.objects.new(name,None)
         bpy.context.collection.objects.link(node)

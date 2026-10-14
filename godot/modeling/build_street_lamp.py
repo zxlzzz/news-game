@@ -20,7 +20,9 @@ def build():
     reset()
     cylinder('foot',P['base_r'],P['base_h'],(0,P['base_h']/2,0),'metal_dark')
     cylinder('post',P['post_r'],P['height']-P['lamp'][1],(0,(P['height']-P['lamp'][1])/2,0),'metal')
-    bar('forward_arm',(0,P['height']-P['lamp'][1],0),(0,P['height']-P['lamp'][1],P['arm']),P['arm_r'],'metal')
+    arm_y=P['height']-P['lamp'][1]/2
+    bar('arm_mount',(0,P['height']-P['lamp'][1],0),(0,arm_y,0),P['arm_r'],'metal')
+    bar('forward_arm',(0,arm_y,0),(0,arm_y,P['arm']),P['arm_r'],'metal')
     box('lamp_head',P['lamp'],(0,P['height']-P['lamp'][1]/2,P['arm']),'metal_dark')
     box('light_face',(P['lamp'][0]*.75,P['lamp'][1]*.15,P['lamp'][2]*.8),(0,P['height']-P['lamp'][1],P['arm']),'accent')
     export('street_lamp')

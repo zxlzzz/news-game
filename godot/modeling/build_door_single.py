@@ -66,16 +66,18 @@ def build():
     for side, name in [(-1, 'FrameLeft'), (1, 'FrameRight')]:
         box(name, [f,h+f,d], [side*(w+f)/2,(h+f)/2,-d/2], 1)
     box('FrameTop', [w,f,d], [0,h+f/2,-d/2], 1)
-    hinge = node('Hinge', position=[-w/2-o,0,t/2])
+    # The outside leaf face is the swing axis. A centred axis puts the rear
+    # half of a thick leaf through a recessed doorway's hinge jamb.
+    hinge = node('Hinge', position=[-w/2-o,0,t])
     lw, lh = w+2*o, h+o
-    box('Leaf', [lw,lh,t], [lw/2,lh/2,0], 0, hinge)
+    box('Leaf', [lw,lh,t], [lw/2,lh/2,-t/2], 0, hinge)
     inset, relief = p['panel_inset'], p['panel_relief']
     for side, name in [(1,'Front'),(-1,'Back')]:
-        box('Panel'+name, [lw-2*inset,lh-2*inset,relief], [lw/2,lh/2,side*(t+relief)/2], 1, hinge)
+        box('Panel'+name, [lw-2*inset,lh-2*inset,relief], [lw/2,lh/2,side*(t+relief)/2-t/2], 1, hinge)
         hx, hy = lw-p['handle_edge_offset'], p['handle_height']
-        hz = side*(t/2+p['handle_projection'])
+        hz = side*(t/2+p['handle_projection'])-t/2
         bar = p['handle_bar']
-        box('HandleMount'+name, [bar,bar,p['handle_projection']], [hx,hy,side*(t+p['handle_projection'])/2], 2, hinge)
+        box('HandleMount'+name, [bar,bar,p['handle_projection']], [hx,hy,side*(t+p['handle_projection'])/2-t/2], 2, hinge)
         box('Handle'+name, [p['handle_length'],bar,bar], [hx-p['handle_length']/2,hy,hz], 2, hinge)
         node('grip_'+name.lower(), hinge, [hx-p['handle_length']/2,hy,hz])
     node('opening_bottom', position=[0,0,0])
@@ -89,3 +91,12 @@ def build():
 
 if __name__ == '__main__':
     build()
+
+
+# Physical contact nodes share the model build data.
+if __name__ == "__main__":
+    import sys as _contact_sys
+    from pathlib import Path as _ContactPath
+    _contact_sys.path.insert(0, str(_ContactPath(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(_ContactPath(__file__).resolve().parents[1] / "models" / "door_single.glb")

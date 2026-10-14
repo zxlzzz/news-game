@@ -377,3 +377,7 @@ def main(folder,profile,glb):
  (args.out/'motion_report.json').write_text(json.dumps({'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'new_clip_count':len(clips),'source_clip_count':len(PROFILE['actions']),'clips':report},ensure_ascii=False,indent=2),encoding='utf-8')
  np.savez_compressed(args.out/'contact_plan.npz',**contact_data)
  append_clips(g,clips,args.glb)
+ if PROFILE.get('repair_internal_flaps',False):
+  sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
+  from repair_glb_topology import repair_internal_flaps
+  print('INTERNAL_FACES_REMOVED',repair_internal_flaps(args.glb),flush=True)

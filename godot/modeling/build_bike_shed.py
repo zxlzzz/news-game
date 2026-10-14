@@ -141,7 +141,13 @@ class Model:
         blob = struct.pack('<4sII', b'glTF', 2, 28+len(header)+len(binary))
         blob += struct.pack('<I4s', len(header), b'JSON') + header
         blob += struct.pack('<I4s', len(binary), b'BIN\0') + binary
-        Path(path).write_bytes(blob)
+        import os
+        import tempfile
+        path=Path(path)
+        with tempfile.NamedTemporaryFile(dir=path.parent,delete=False) as pending:
+            pending.write(blob)
+            temporary=pending.name
+        os.replace(temporary,path)
 
 
 """Batch-six architecture. Copied into each standalone builder by assemble.py.
@@ -381,7 +387,17 @@ def site_piece(m,p):
     elif kind in ['shed','garbage']:
         w,d,h=p['width'],p['depth'],p['height']
         for i,x in enumerate(p['post_x']):
-            for s in [-1,1]:m.box(f'post_{i}_{s}',(p['post_width'],h,p['post_width']),(x,h/2,s*(d/2-p['post_width']/2)),'metal_dark')
+            for s in [-1,1]:
+                # The roof rotates its profile coordinate into -Z. Match
+                # both edges of every column top to that same sloping plane.
+                half=p['post_width']/2
+                z=s*(d/2-half)
+                u0,u1=-z-half,-z+half
+                underside=lambda u:h+p['roof_rise']*(0.5-u/d)
+                name=f'post_{i}_{s}'
+                m.prism(name,[(u0,0),(u1,0),(u1,underside(u1)),(u0,underside(u0))],p['post_width'],(0,0,0),'metal_dark')
+                m.parts[name]={slot:[tuple((v[2]+x,v[1],-v[0]) for v in tri) for tri in tris]
+                               for slot,tris in m.parts[name].items()}
         # Sloping canopy is a solid quadrilateral prism, with visible thickness.
         t=D['roof_slab'];r=p['roof_rise']
         m.prism('shed_roof',[(-d/2,h+r),(d/2,h),(d/2,h+t),(-d/2,h+r+t)],w,(0,0,0),'concrete')
@@ -389,7 +405,7 @@ def site_piece(m,p):
         if kind=='shed':
             for i,x in enumerate(p['rack_x']):
                 for dz in [-p['rack_gap']/2,p['rack_gap']/2]:
-                    m.tube(f'rack_leg_{i}_{dz}',(x,p['rack_radius'],dz),(x,p['rack_height'],dz),p['rack_radius'],D['round_segments'])
+                    m.tube(f'rack_leg_{i}_{dz}',(x,0,dz),(x,p['rack_height'],dz),p['rack_radius'],D['round_segments'])
                 m.tube(f'rack_top_{i}',(x,p['rack_height'],-p['rack_gap']/2),(x,p['rack_height'],p['rack_gap']/2),p['rack_radius'],D['round_segments'])
         else:
             m.box('back_screen',(w,p['screen_height'],p['screen_thickness']),(0,p['screen_height']/2,-d/2+p['screen_thickness']/2),'wall_brick')

@@ -1,7 +1,85 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="PackedScene" path="res://models/building_laundry.glb" id="1"]
+
+[ext_resource type="PackedScene" path="res://types/window_1fb2b55e26.tscn" id="part0"]
+[ext_resource type="PackedScene" path="res://types/window_1fb2b55e26.tscn" id="part1"]
+[ext_resource type="PackedScene" path="res://types/window_1fb2b55e26.tscn" id="part2"]
+[ext_resource type="PackedScene" path="res://types/window_1fb2b55e26.tscn" id="part3"]
+[ext_resource type="PackedScene" path="res://types/sign_1757903299.tscn" id="part4"]
+[ext_resource type="PackedScene" path="res://types/furnishing_0ba00b6df3.tscn" id="part5"]
+[ext_resource type="PackedScene" path="res://types/furnishing_c149ba8b90.tscn" id="part6"]
+[ext_resource type="PackedScene" path="res://types/furnishing_c149ba8b90.tscn" id="part7"]
+[ext_resource type="PackedScene" path="res://types/furnishing_c149ba8b90.tscn" id="part8"]
+[ext_resource type="PackedScene" path="res://types/furnishing_c149ba8b90.tscn" id="part9"]
+[ext_resource type="PackedScene" path="res://types/furnishing_b03e4ba36c.tscn" id="part10"]
+[ext_resource type="PackedScene" path="res://types/furnishing_b03e4ba36c.tscn" id="part11"]
+[ext_resource type="PackedScene" path="res://types/furnishing_b03e4ba36c.tscn" id="part12"]
+[ext_resource type="PackedScene" path="res://types/furnishing_b03e4ba36c.tscn" id="part13"]
+[ext_resource type="PackedScene" path="res://types/furnishing_df431b134f.tscn" id="part14"]
+[ext_resource type="PackedScene" path="res://types/furnishing_df431b134f.tscn" id="part15"]
+[ext_resource type="PackedScene" path="res://types/furnishing_df431b134f.tscn" id="part16"]
+[ext_resource type="PackedScene" path="res://types/furnishing_df431b134f.tscn" id="part17"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part18"]
 
 [node name="BuildingLaundry" type="Node3D" groups=["building"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+
+; BEGIN reusable components
+[node name="window_1fb2b55e26_0" parent="." instance=ExtResource("part0")]
+position = Vector3(-1.7, 4.6, -0.175)
+
+[node name="window_1fb2b55e26_1" parent="." instance=ExtResource("part1")]
+position = Vector3(1.7, 4.6, -0.175)
+
+[node name="window_1fb2b55e26_2" parent="." instance=ExtResource("part2")]
+position = Vector3(-1.7, 7.8, -0.175)
+
+[node name="window_1fb2b55e26_3" parent="." instance=ExtResource("part3")]
+position = Vector3(1.7, 7.8, -0.175)
+
+[node name="sign_1757903299_4" parent="." instance=ExtResource("part4")]
+position = Vector3(0.0, 2.88, 0.06)
+
+[node name="furnishing_0ba00b6df3_5" parent="." instance=ExtResource("part5")]
+position = Vector3(-2.0, 10.2, -3.0)
+
+[node name="furnishing_c149ba8b90_6" parent="." instance=ExtResource("part6")]
+position = Vector3(-0.8, 0.16, -0.59)
+
+[node name="furnishing_c149ba8b90_7" parent="." instance=ExtResource("part7")]
+position = Vector3(0.15, 0.16, -0.59)
+
+[node name="furnishing_c149ba8b90_8" parent="." instance=ExtResource("part8")]
+position = Vector3(1.1, 0.16, -0.59)
+
+[node name="furnishing_c149ba8b90_9" parent="." instance=ExtResource("part9")]
+position = Vector3(2.05, 0.16, -0.59)
+
+[node name="furnishing_b03e4ba36c_10" parent="." instance=ExtResource("part10")]
+position = Vector3(-0.8, 0.91, -0.24)
+
+[node name="furnishing_b03e4ba36c_11" parent="." instance=ExtResource("part11")]
+position = Vector3(0.15, 0.91, -0.24)
+
+[node name="furnishing_b03e4ba36c_12" parent="." instance=ExtResource("part12")]
+position = Vector3(1.1, 0.91, -0.24)
+
+[node name="furnishing_b03e4ba36c_13" parent="." instance=ExtResource("part13")]
+position = Vector3(2.05, 0.91, -0.24)
+
+[node name="furnishing_df431b134f_14" parent="." instance=ExtResource("part14")]
+position = Vector3(-0.8, 0.39, -0.24)
+
+[node name="furnishing_df431b134f_15" parent="." instance=ExtResource("part15")]
+position = Vector3(0.15, 0.39, -0.24)
+
+[node name="furnishing_df431b134f_16" parent="." instance=ExtResource("part16")]
+position = Vector3(1.1, 0.39, -0.24)
+
+[node name="furnishing_df431b134f_17" parent="." instance=ExtResource("part17")]
+position = Vector3(2.05, 0.39, -0.24)
+
+[node name="door_single_18" parent="." instance=ExtResource("part18")]
+position = Vector3(-2.65, 0.0, -0.44)

@@ -157,3 +157,9 @@ def build_access():
 
 if __name__ == '__main__':
     build_access().export(Path(__file__).resolve().parents[1] / 'models' / (NAME+'.glb'))
+
+if __name__ == "__main__":
+    import sys
+    sys.path.insert(0,str(Path(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(Path(__file__).resolve().parents[1]/"models"/(NAME+".glb"))

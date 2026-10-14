@@ -5,3 +5,4 @@
 [node name="HeldShoulderBag" type="Node3D" groups=["held"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)

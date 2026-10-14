@@ -1,12 +1,12 @@
 """减速带。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'speed_bump'
 # All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['prism', 'bump', [(-1.8, 0), (1.8, 0), (1.8, 0.08), (-1.8, 0.08)], 0.4, (0, 0, 0), 'metal_dark'],
- ['box', 'stripe', (0.35, 0.025, 0.4), (-1.4, 0.0925, 0), 'paint'],
- ['box', 'stripe', (0.35, 0.025, 0.4), (-0.7, 0.0925, 0), 'paint'],
- ['box', 'stripe', (0.35, 0.025, 0.4), (0, 0.0925, 0), 'paint'],
- ['box', 'stripe', (0.35, 0.025, 0.4), (0.7, 0.0925, 0), 'paint'],
- ['box', 'stripe', (0.35, 0.025, 0.4), (1.4, 0.0925, 0), 'paint']]
+BUMP_LENGTH = 3.6
+BUMP_DEPTH = 0.4
+BUMP_HEIGHT = 0.08
+CREST_DEPTH = 0.13
+STRIPE_WIDTH = 0.35
+STRIPE_CENTERS = [-1.4, -0.7, 0.0, 0.7, 1.4]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -98,10 +98,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -222,20 +241,24 @@ def canonicalize_triangle_order(path):
     path.write_bytes(data)
 
 
+def speed_bump_shell():
+    # Rubber has one continuous driving profile; paint is a thin conforming sheet.
+    profile=[(-BUMP_DEPTH/2,0),(-CREST_DEPTH/2,BUMP_HEIGHT),
+             (CREST_DEPTH/2,BUMP_HEIGHT),(BUMP_DEPTH/2,0)]
+    verts=[(x,y,z) for x in (-BUMP_LENGTH/2,BUMP_LENGTH/2) for z,y in profile]
+    faces=[(3,2,1,0),(4,5,6,7)]
+    faces.extend((j,(j+1)%4,(j+1)%4+4,j+4) for j in range(4))
+    mesh('continuous_speed_bump',verts,faces,'metal_dark')
+    for i,center in enumerate(STRIPE_CENTERS):
+        paint=[(x,y+DECAL_Y,z) for x in (center-STRIPE_WIDTH/2,center+STRIPE_WIDTH/2)
+               for z,y in profile]
+        mesh('conforming_paint_'+str(i),paint,
+             [(j,j+1,j+5,j+4) for j in range(3)],'paint')
+
+
 def build():
     reset()
-    for kind,*args in PARTS:
-        globals()[kind](*args)
-    for name,position in GRIPS.items():
-        node=bpy.data.objects.new(name,None)
-        bpy.context.collection.objects.link(node)
-        node.location=xyz(position)
-    if not NAME.startswith('held_'):
-        bpy.context.view_layer.update()
-        meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
-        low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
-        for o in bpy.context.scene.objects:
-            o.location.z -= low
+    speed_bump_shell()
     export(NAME)
 
 if __name__=='__main__':

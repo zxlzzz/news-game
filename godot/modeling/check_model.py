@@ -18,7 +18,7 @@ import json, math, os, re, struct, sys
 # when this script sits in the repo (godot/modeling/) it checks that and fails if they differ.
 SLOTS = {
     "accent", "bark", "bike_lane", "concrete", "door", "fabric", "foliage", "grass", "ground", "hidden", "metal",
-    "metal_dark", "paint", "road", "sidewalk", "trim", "trim_dark", "wall", "wall_plaster", "wall_brick", "wall_stone", "water", "window", "wood",
+    "metal_dark", "paint", "road", "sidewalk", "trim", "trim_dark", "wall", "wall_plaster", "wall_brick", "wall_stone", "water", "window", "glass_dark", "wood",
 }
 # Slots that may carry a texture, used only for its alpha (cut-out decals).
 ALPHA_SLOTS = {"paint"}

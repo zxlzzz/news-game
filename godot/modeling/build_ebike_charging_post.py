@@ -4,8 +4,23 @@ NAME = 'ebike_charging_post'
 PARTS = [['box', 'base', (0.55, 0.12, 0.45), (0, 0.06, 0), 'concrete'],
  ['box', 'post', (0.25, 1.1, 0.2), (0, 0.67, 0), 'metal_dark'],
  ['box', 'head', (0.42, 0.4, 0.3), (0, 1.4, 0), 'metal'],
- ['box', 'panel', (0.24, 0.16, 0.025), (0, 1.43, 0.17), 'window'],
- ['ring', 'cable_loop', 0.28, 0.245, 0.04, (0.32, 0.75, 0), 'metal_dark', (0, 0, 1)]]
+ ['box', 'panel', (0.24, 0.16, 0.025), (0, 1.43, 0.1625), 'glass_dark'],
+ ['box', 'plug_dock_mount', (0.065, 0.16, 0.07), (0.23, 1.31, -0.025), 'metal'],
+ ['box', 'plug_dock_tray', (0.1, 0.028, 0.085), (0.25, 1.215, -0.025), 'metal_dark'],
+ ['box', 'charging_plug_handle', (0.055, 0.17, 0.055), (0.277, 1.305, -0.025), 'metal_dark'],
+ ['box', 'charging_plug_tip', (0.032, 0.042, 0.032), (0.277, 1.400, -0.025), 'metal']]
+SOCKET_CENTER = (-0.105, 1.272, 0.15)
+SOCKET_OUTER_RADIUS = 0.050
+SOCKET_INNER_RADIUS = 0.036
+SOCKET_SURROUND_DEPTH = 0.024
+SOCKET_RECESS_DEPTH = 0.025
+SOCKET_BACKING_DEPTH = 0.006
+CABLE_RADIUS = 0.012
+CABLE_SIDES = 12
+CABLE_SAMPLES_PER_SPAN = 8
+CABLE_CONTROL_POINTS = [(0.200, 1.240, -0.025), (0.27, 1.19, -0.025),
+ (0.38, 1.02, -0.025), (0.415, 0.75, -0.025), (0.38, 0.53, -0.025),
+ (0.30, 0.55, -0.025), (0.26, 0.76, -0.025), (0.277, 1.225, -0.025)]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -97,10 +112,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -221,10 +255,50 @@ def canonicalize_triangle_order(path):
     path.write_bytes(data)
 
 
+def charging_cable():
+    # One closed flexible tube; no rigid full ring or overlapping capped segments.
+    controls = [Vector(p) for p in CABLE_CONTROL_POINTS]
+    points = []
+    for i in range(len(controls)-1):
+        p0, p1 = controls[max(0,i-1)], controls[i]
+        p2, p3 = controls[i+1], controls[min(len(controls)-1,i+2)]
+        for j in range(CABLE_SAMPLES_PER_SPAN):
+            t = j/CABLE_SAMPLES_PER_SPAN
+            points.append((2*p1+(-p0+p2)*t+(2*p0-5*p1+4*p2-p3)*t*t+
+                           (-p0+3*p1-3*p2+p3)*t*t*t)/2)
+    points.append(controls[-1])
+    verts=[]
+    for i,p in enumerate(points):
+        tangent=(points[min(i+1,len(points)-1)]-points[max(0,i-1)]).normalized()
+        across=Vector((0,0,1))
+        radial=tangent.cross(across).normalized()
+        verts.extend(p+CABLE_RADIUS*(across*cos(j*2*pi/CABLE_SIDES)+radial*sin(j*2*pi/CABLE_SIDES))
+                     for j in range(CABLE_SIDES))
+    faces=[tuple(range(CABLE_SIDES-1,-1,-1))]
+    for i in range(len(points)-1):
+        for j in range(CABLE_SIDES):
+            a=i*CABLE_SIDES+j;b=i*CABLE_SIDES+(j+1)%CABLE_SIDES
+            faces.append((a,b,b+CABLE_SIDES,a+CABLE_SIDES))
+    faces.append(tuple((len(points)-1)*CABLE_SIDES+j for j in range(CABLE_SIDES)))
+    mesh('connected_charging_cable',verts,faces,'metal_dark')
+
+
 def build():
     reset()
+    head=None
     for kind,*args in PARTS:
-        globals()[kind](*args)
+        obj=globals()[kind](*args)
+        if args[0]=='head': head=obj
+    x,y,z=SOCKET_CENTER
+    cutter=cylinder('socket_cutter',SOCKET_INNER_RADIUS,
+                    SOCKET_RECESS_DEPTH+SOCKET_SURROUND_DEPTH,(x,y,z),None,axis=(0,0,1))
+    subtract(head,cutter,'physical_socket_aperture')
+    ring('socket_surround',SOCKET_OUTER_RADIUS,SOCKET_INNER_RADIUS,
+         SOCKET_SURROUND_DEPTH,(x,y,z+SOCKET_SURROUND_DEPTH/2),'metal_dark',axis=(0,0,1))
+    cylinder('socket_dark_backing',SOCKET_INNER_RADIUS,SOCKET_BACKING_DEPTH,
+             (x,y,z-(SOCKET_RECESS_DEPTH+SOCKET_SURROUND_DEPTH)/2+SOCKET_BACKING_DEPTH/2),
+             'glass_dark',axis=(0,0,1))
+    charging_cable()
     for name,position in GRIPS.items():
         node=bpy.data.objects.new(name,None)
         bpy.context.collection.objects.link(node)

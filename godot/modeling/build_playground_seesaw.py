@@ -1,13 +1,32 @@
 """跷跷板。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'playground_seesaw'
+FULCRUM_HALF_WIDTH, FULCRUM_TIP_Y, FULCRUM_TOP_Y = 0.45, 0.65, 0.55
+FULCRUM_TOP_HALF_WIDTH = FULCRUM_HALF_WIDTH * (1 - FULCRUM_TOP_Y / FULCRUM_TIP_Y)
+PIVOT_PIN_RADIUS, PIVOT_BORE_RADIUS, PIVOT_PIN_LENGTH = 0.025, 0.03, 0.57
+PIVOT_BEARING_RADIUS, PIVOT_BEARING_LENGTH, PIVOT_BEARING_Z = 0.075, 0.10, 0.215
+BEARING_SUPPORT_SIZE = (0.10, 0.13, 0.10)
 # All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['prism', 'fulcrum', [(-0.45, 0), (0.45, 0), (0, 0.65)], 0.6, (0, 0, 0), 'metal_dark'],
+PARTS = [['prism', 'fulcrum', [(-FULCRUM_HALF_WIDTH, 0), (FULCRUM_HALF_WIDTH, 0), (FULCRUM_TOP_HALF_WIDTH, FULCRUM_TOP_Y), (-FULCRUM_TOP_HALF_WIDTH, FULCRUM_TOP_Y)], 0.6, (0, 0, 0), 'metal_dark'],
  ['box', 'beam', (3.6, 0.12, 0.25), (0, 0.68, 0), 'wood'],
  ['box', 'seat', (0.5, 0.1, 0.45), (-1.5, 0.79, 0), 'fabric'],
  ['box', 'seat', (0.5, 0.1, 0.45), (1.5, 0.79, 0), 'fabric'],
  ['bar', 'handhold', (-1.1, 0.74, 0), (-1.1, 1.13, 0), 0.03, 'metal'],
- ['bar', 'handhold', (1.1, 0.74, 0), (1.1, 1.13, 0), 0.03, 'metal']]
-GRIPS = {}
+ ['bar', 'handhold', (1.1, 0.74, 0), (1.1, 1.13, 0), 0.03, 'metal'],
+ ['bar', 'handhold_bar', (-1.1, 1.1, -0.19), (-1.1, 1.1, 0.19), 0.03, 'metal'],
+ ['bar', 'handhold_bar', (1.1, 1.1, -0.19), (1.1, 1.1, 0.19), 0.03, 'metal']]
+BEAM_PIVOT = (0, 0.68, 0)
+PARTS += [['cylinder', 'pivot_pin', PIVOT_PIN_RADIUS, PIVOT_PIN_LENGTH, BEAM_PIVOT, 'metal', (0, 0, 1), None]]
+for sign in (-1, 1):
+    PARTS += [['cylinder', 'pivot_bearing', PIVOT_BEARING_RADIUS, PIVOT_BEARING_LENGTH,
+               (0, BEAM_PIVOT[1], sign * PIVOT_BEARING_Z), 'metal_dark', (0, 0, 1), None],
+              ['box', 'bearing_support', BEARING_SUPPORT_SIZE,
+               (0, FULCRUM_TOP_Y + BEARING_SUPPORT_SIZE[1] / 2, sign * PIVOT_BEARING_Z), 'metal_dark']]
+GRIPS = {
+ 'hip_left': (-1.5, 0.84, 0), 'hip_right': (1.5, 0.84, 0),
+ 'grip_left_left': (-1.1, 1.13, -0.1), 'grip_left_right': (-1.1, 1.13, 0.1),
+ 'grip_right_left': (1.1, 1.13, 0.1), 'grip_right_right': (1.1, 1.13, -0.1),
+}
+CONTACT_YAW = {'hip_left': 90, 'hip_right': -90}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 
@@ -98,10 +117,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -226,17 +264,41 @@ def build():
     reset()
     for kind,*args in PARTS:
         globals()[kind](*args)
+    beam = bpy.data.objects.get('beam')
+    cutter = cylinder('beam_axis_cut', PIVOT_BORE_RADIUS, PIVOT_PIN_LENGTH, BEAM_PIVOT, None, axis=(0, 0, 1))
+    subtract(beam, cutter, 'beam_bearing_bore')
     for name,position in GRIPS.items():
         node=bpy.data.objects.new(name,None)
         bpy.context.collection.objects.link(node)
         node.location=xyz(position)
+        if name in CONTACT_YAW: rotate(node, CONTACT_YAW[name])
+    # One physical mechanism owns all moving meshes and contacts. Animation
+    # rotates this assembly; human tracks never duplicate its geometry.
+    rig=bpy.data.objects.new('BeamRig',None)
+    bpy.context.collection.objects.link(rig)
+    rig.location=xyz(BEAM_PIVOT)
+    bpy.context.view_layer.update()
+    for obj in list(bpy.context.scene.objects):
+        if obj == rig or obj.name.split('.')[0] in ('fulcrum', 'pivot_pin', 'pivot_bearing', 'bearing_support'): continue
+        world=obj.matrix_world.copy()
+        obj.parent=rig
+        obj.matrix_world=world
     if not NAME.startswith('held_'):
         bpy.context.view_layer.update()
         meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
         low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
         for o in bpy.context.scene.objects:
-            o.location.z -= low
+            if o.parent is None: o.location.z -= low
     export(NAME)
 
 if __name__=='__main__':
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("playground_seesaw")

@@ -1,8 +1,9 @@
 """竖向灯箱招牌。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'vertical_lightbox'
 # All geometry dimensions and placements in metres, Y up; front +Z.
+FACE_Z = 0.1645
 PARTS = [['box', 'cabinet', (0.6, 2, 0.3), (0, 1, 0), 'metal_dark'],
- ['box', 'face', (0.48, 1.82, 0.03), (0, 1, 0.17), 'fabric'],
+ ['box', 'face', (0.48, 1.82, 0.03), (0, 1, FACE_Z), 'fabric'],
  ['box', 'mount', (0.3, 0.1, 0.5), (0, 0.3, -0.2), 'metal'],
  ['box', 'mount', (0.3, 0.1, 0.5), (0, 1.7, -0.2), 'metal']]
 GRIPS = {}
@@ -96,10 +97,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):

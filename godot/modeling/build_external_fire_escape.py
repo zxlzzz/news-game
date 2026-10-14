@@ -15,26 +15,72 @@ PARTS = [['bar', 'upright', (-0.7, 0, 0), (-0.7, 6.4, 0), 0.055, 'metal_dark'],
  ['bar', 'guard', (-0.7, 5.4, 0), (-0.7, 6.4, 0), 0.04, 'metal_dark'],
  ['bar', 'guard', (0.7, 5.4, 0), (0.7, 6.4, 0), 0.04, 'metal_dark'],
  ['bar', 'guard_top', (-0.7, 6.4, 0), (0.7, 6.4, 0), 0.04, 'metal_dark'],
- ['bar', 'ladder_rung', (-0.38, 0.15, 0.45), (0.38, 0.15, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 0.44999999999999996, 0.45), (0.38, 0.44999999999999996, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 0.75, 0.45), (0.38, 0.75, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 1.0499999999999998, 0.45), (0.38, 1.0499999999999998, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 1.3499999999999999, 0.45), (0.38, 1.3499999999999999, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 1.65, 0.45), (0.38, 1.65, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 1.9499999999999997, 0.45), (0.38, 1.9499999999999997, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 2.25, 0.45), (0.38, 2.25, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 2.55, 0.45), (0.38, 2.55, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 2.8499999999999996, 0.45), (0.38, 2.8499999999999996, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 3.15, 0.45), (0.38, 3.15, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 3.4499999999999997, 0.45), (0.38, 3.4499999999999997, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 3.7499999999999996, 0.45), (0.38, 3.7499999999999996, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 4.05, 0.45), (0.38, 4.05, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 4.3500000000000005, 0.45), (0.38, 4.3500000000000005, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 4.65, 0.45), (0.38, 4.65, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 4.95, 0.45), (0.38, 4.95, 0.45), 0.035, 'metal'],
- ['bar', 'ladder_rung', (-0.38, 5.25, 0.45), (0.38, 5.25, 0.45), 0.035, 'metal'],
+ ['bar', 'ladder_rung', (-0.44, 0.15, 0.45), (0.44, 0.15, 0.45), 0.035, 'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.44, 0.44999999999999996, 0.45),
+  (0.44, 0.44999999999999996, 0.45),
+  0.035,
+  'metal'],
+ ['bar', 'ladder_rung', (-0.44, 0.75, 0.45), (0.44, 0.75, 0.45), 0.035, 'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.44, 1.0499999999999998, 0.45),
+  (0.44, 1.0499999999999998, 0.45),
+  0.035,
+  'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.44, 1.3499999999999999, 0.45),
+  (0.44, 1.3499999999999999, 0.45),
+  0.035,
+  'metal'],
+ ['bar', 'ladder_rung', (-0.44, 1.65, 0.45), (0.44, 1.65, 0.45), 0.035, 'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.44, 1.9499999999999997, 0.45),
+  (0.44, 1.9499999999999997, 0.45),
+  0.035,
+  'metal'],
+ ['bar', 'ladder_rung', (-0.44, 2.25, 0.45), (0.44, 2.25, 0.45), 0.035, 'metal'],
+ ['bar', 'ladder_rung', (-0.44, 2.55, 0.45), (0.44, 2.55, 0.45), 0.035, 'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.44, 2.8499999999999996, 0.45),
+  (0.44, 2.8499999999999996, 0.45),
+  0.035,
+  'metal'],
+ ['bar', 'ladder_rung', (-0.44, 3.15, 0.45), (0.44, 3.15, 0.45), 0.035, 'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.44, 3.4499999999999997, 0.45),
+  (0.44, 3.4499999999999997, 0.45),
+  0.035,
+  'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.44, 3.7499999999999996, 0.45),
+  (0.44, 3.7499999999999996, 0.45),
+  0.035,
+  'metal'],
+ ['bar', 'ladder_rung', (-0.44, 4.05, 0.45), (0.44, 4.05, 0.45), 0.035, 'metal'],
+ ['bar',
+  'ladder_rung',
+  (-0.44, 4.3500000000000005, 0.45),
+  (0.44, 4.3500000000000005, 0.45),
+  0.035,
+  'metal'],
+ ['bar', 'ladder_rung', (-0.44, 4.65, 0.45), (0.44, 4.65, 0.45), 0.035, 'metal'],
+ ['bar', 'ladder_rung', (-0.44, 4.95, 0.45), (0.44, 4.95, 0.45), 0.035, 'metal'],
+ ['bar', 'ladder_rung', (-0.44, 5.25, 0.45), (0.44, 5.25, 0.45), 0.035, 'metal'],
  ['bar', 'ladder_side', (-0.44, 0, 0.45), (-0.44, 5.6, 0.45), 0.05, 'metal'],
- ['bar', 'ladder_side', (0.44, 0, 0.45), (0.44, 5.6, 0.45), 0.05, 'metal']]
+ ['bar', 'ladder_side', (0.44, 0, 0.45), (0.44, 5.6, 0.45), 0.05, 'metal'],
+ ['bar', 'landing_ladder_bracket', (-0.44, 1.8, 0.1), (-0.44, 1.8, 0.45), 0.025, 'metal_dark'],
+ ['bar', 'landing_ladder_bracket', (-0.44, 3.6, 0.1), (-0.44, 3.6, 0.45), 0.025, 'metal_dark'],
+ ['bar', 'landing_ladder_bracket', (-0.44, 5.4, 0.1), (-0.44, 5.4, 0.45), 0.025, 'metal_dark'],
+ ['bar', 'landing_ladder_bracket', (0.44, 1.8, 0.1), (0.44, 1.8, 0.45), 0.025, 'metal_dark'],
+ ['bar', 'landing_ladder_bracket', (0.44, 3.6, 0.1), (0.44, 3.6, 0.45), 0.025, 'metal_dark'],
+ ['bar', 'landing_ladder_bracket', (0.44, 5.4, 0.1), (0.44, 5.4, 0.45), 0.025, 'metal_dark']]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -126,10 +172,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):

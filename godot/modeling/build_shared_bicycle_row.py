@@ -1,41 +1,31 @@
 """四辆共享单车与车架；原创程序模型，内嵌项目基础几何。"""
 NAME = 'shared_bicycle_row'
 KIND = 'row'
-P = {'crank_radius': 0.15,
- 'crank_w': 0.36,
- 'crank_y': 0.4,
- 'frame_r': 0.030,
- 'frame_segments': [((0, 0.34, -0.56), (0, 0.4, 0)),
-                    ((0, 0.4, 0), (0, 0.8, -0.22)),
-                    ((0, 0.8, -0.22), (0, 0.34, -0.56)),
-                    ((0, 0.8, -0.22), (0, 0.87, 0.38)),
-                    ((0, 0.87, 0.38), (0, 0.4, 0)),
-                    ((0, 0.87, 0.38), (0, 0.34, 0.56)),
-                    ((0, 0.87, 0.38), (0, 1.1, 0.28)),
-                    ((0, 0.4, 0), (0, 0.85, -0.24))],
- 'handle_r': 0.025,
- 'handle_w': 0.54,
- 'handle_y': 1.1,
- 'handle_z': 0.28,
- 'hub_r': 0.07,
- 'motor': False,
- 'pedal_size': (0.11, 0.05, 0.17),
- 'seat_center': (0, 0.86, -0.24),
- 'seat_size': (0.22, 0.075, 0.3),
- 'spoke_r': 0.012,
- 'tire_t': 0.055,
- 'tire_wall': 0.045,
- 'wheel_r': 0.34,
- 'wheelbase': 1.12}
-SADDLE_NOSE_RATIO = 0.32
-SADDLE_SHOULDER_FRACTION = 0.40
+# Reuse the current complete compact city bicycle and its adult saddle height.
+# Fallen/parked variants change only the rigid placement and their fixed racks.
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_bicycle import P as BICYCLE_PARAMETERS
+P = dict(BICYCLE_PARAMETERS)
+
 TRACK = 0.96
 OFFSETS = [-1.125, -0.375, 0.375, 1.125]
 FALL_ANGLE = 1.5707963267948966
-EXTRAS = [['box', 'rack_foot', (0.13, 0.1, 0.7), (-1.125, 0.05, -0.6), 'metal_dark'],
- ['box', 'rack_foot', (0.13, 0.1, 0.7), (-0.375, 0.05, -0.6), 'metal_dark'],
- ['box', 'rack_foot', (0.13, 0.1, 0.7), (0.375, 0.05, -0.6), 'metal_dark'],
- ['box', 'rack_foot', (0.13, 0.1, 0.7), (1.125, 0.05, -0.6), 'metal_dark']]
+# Low parking channels flank the rear tyres; a solid block below a wheel would
+# cut into it. The rear cross rail joins the channels behind the tyre envelope.
+RACK_RAIL_R = 0.012
+RACK_HALF_GAP = P['tire_t']/2 + 0.0005 + RACK_RAIL_R
+RACK_REAR_Z = -P['wheelbase']/2 - P['wheel_r'] - RACK_RAIL_R - 0.008
+RACK_FRONT_Z = -0.23
+EXTRAS = [['bar', 'rack_rear_rail',
+           (OFFSETS[0]-RACK_HALF_GAP,RACK_RAIL_R,RACK_REAR_Z),
+           (OFFSETS[-1]+RACK_HALF_GAP,RACK_RAIL_R,RACK_REAR_Z),RACK_RAIL_R,'metal_dark']]
+for x in OFFSETS:
+    for sign in (-1,1):
+        rail_x=x+sign*RACK_HALF_GAP
+        EXTRAS.append(['bar','rack_channel',(rail_x,RACK_RAIL_R,RACK_REAR_Z),
+                       (rail_x,RACK_RAIL_R,RACK_FRONT_Z),RACK_RAIL_R,'metal_dark'])
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 
 Build scripts own dimensions/design; this module only constructs and exports geometry.
@@ -125,10 +115,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -310,56 +319,10 @@ def build_car(p):
         box('taxi_roof_sign',p['taxi_sign'],(0,p['height']+p['taxi_sign'][1]/2,p['taxi_sign_z']),'accent')
 
 
-def build_two_wheeler(p):
-    def group(name, center, objects):
-        node=bpy.data.objects.new(name,None)
-        bpy.context.collection.objects.link(node)
-        node.location=xyz(center)
-        bpy.context.view_layer.update()
-        for obj in sorted(objects, key=lambda item: item.name):
-            world=obj.matrix_world.copy()
-            obj.parent=node
-            obj.matrix_world=world
-        return node
-    for z in (-p['wheelbase']/2,p['wheelbase']/2):
-        before=set(bpy.context.scene.objects)
-        ring('tire',p['wheel_r'],p['wheel_r']-p['tire_wall'],p['tire_t'],(0,p['wheel_r'],z),'metal_dark',axis=(1,0,0))
-        cylinder('hub',p['hub_r'],p['tire_t'],(0,p['wheel_r'],z),'metal',axis=(1,0,0))
-        from math import sin,cos,pi
-        for angle in (0,pi/3,2*pi/3):
-            a=(0,p['wheel_r']+cos(angle)*(p['wheel_r']-p['tire_wall']),z+sin(angle)*(p['wheel_r']-p['tire_wall']))
-            b=(0,p['wheel_r']-cos(angle)*(p['wheel_r']-p['tire_wall']),z-sin(angle)*(p['wheel_r']-p['tire_wall']))
-            bar('wheel_spoke',a,b,p['spoke_r'],'metal')
-        group('wheel_front' if z>0 else 'wheel_rear',(0,p['wheel_r'],z),set(bpy.context.scene.objects)-before)
-    for a,b in p['frame_segments']:
-        bar('frame',a,b,p['frame_r'],'metal')
-    width,height,length=p['seat_size']
-    center=Vector(p['seat_center'])
-    outline=[(-width/2,-length/2),(width/2,-length/2),(width/2,-length*SADDLE_SHOULDER_FRACTION),(width*SADDLE_NOSE_RATIO/2,length/2),(-width*SADDLE_NOSE_RATIO/2,length/2),(-width/2,-length*SADDLE_SHOULDER_FRACTION)]
-    vertices=[center+Vector((x,y,z)) for y in (-height/2,height/2) for x,z in outline]
-    n=len(outline)
-    faces=[tuple(range(n-1,-1,-1)),tuple(range(n,2*n))]+[(i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n)]
-    mesh('saddle',vertices,faces,'metal_dark')
-    bar('handlebar',(-p['handle_w']/2,p['handle_y'],p['handle_z']),
-        (p['handle_w']/2,p['handle_y'],p['handle_z']),p['handle_r'],'metal_dark')
-    if p['motor']:
-        box('battery_body',p['body_size'],p['body_center'],'metal')
-        box('front_fairing',p['fairing_size'],p['fairing_center'],'metal')
-        cylinder('headlamp',p['headlamp_r'],p['headlamp_t'],p['headlamp_center'],'accent',axis=(0,0,1))
-        # Steering stem reaches the revised grip position; feet have real supports.
-        bar('handle_stem',(0,p['frame_segments'][-2][1][1],p['frame_segments'][-2][1][2]),
-            (0,p['handle_y'],p['handle_z']),p['frame_r'],'metal')
-        for sign in (-1,1):
-            box('footrest_left' if sign>0 else 'footrest_right',p['footrest_size'],
-                (sign*p['footrest_x'],p['footrest_y'],p['footrest_z']),'metal_dark')
-    else:
-        parts=[bar('crank_axle',(-p['crank_w']/2,p['crank_y'],0),(p['crank_w']/2,p['crank_y'],0),p['frame_r'],'metal_dark')]
-        for sign in (-1,1):
-            center=(sign*p['crank_w']/2,p['crank_y']+sign*p['crank_radius'],0)
-            parts.append(bar('crank_arm',(center[0],p['crank_y'],0),center,p['frame_r'],'metal_dark'))
-            pedal=box('pedal',p['pedal_size'],center,'metal_dark')
-            parts.append(group('pedal_left' if sign>0 else 'pedal_right',center,[pedal]))
-        group('crank_set',(0,p['crank_y'],0),parts)
+# Use the same mechanical recipe for upright, fallen and parked bicycles.
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from vehicle_geometry import build_two_wheeler
 
 
 def build():

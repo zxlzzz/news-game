@@ -4,6 +4,7 @@ NAME = 'compound_gate'
 D = {'round_segments': 24,
  'recess': 0.48,
  'panel_thickness': 0.04,
+ 'panel_embed': 0.002,
  'floor_height': 3.2,
  'parapet_thickness': 0.22,
  'parapet_height': 0.7,
@@ -212,12 +213,16 @@ class Architecture(Model):
                 ring=list(shapely.orient_polygons(poly).exterior.coords)[:-1]
                 depth=o.get('depth',D['recess'])
                 for a,b in zip(ring,ring[1:]+ring[:1]):
-                    self.quad(name,slot,xf(*a,0),xf(*a,depth),xf(*b,depth),xf(*b,0))
+                    # Reveal normals face the opening, not the masonry interior.
+                    self.quad(name,slot,xf(*b,0),xf(*b,depth),xf(*a,depth),xf(*a,0))
                 self.quad(name,slot,*[xf(*p,depth) for p in ring])
                 panel=o.get('slot','window')
                 if panel:
-                    t=D['panel_thickness'];mid=xf(o['u'],o['y']+o['h']/2,depth-t/2)
-                    size=(o['w'],o['h'],t) if side in ['front','back'] else (t,o['h'],o['w'])
+                    # Bury panel edges/back slightly in masonry; the visible face
+                    # stays at the same depth without coplanar panel/reveal faces.
+                    t=D['panel_thickness'];embed=D['panel_embed']
+                    mid=xf(o['u'],o['y']+o['h']/2,depth-t/2+embed/2)
+                    size=(o['w']+2*embed,o['h']+2*embed,t+embed) if side in ['front','back'] else (t+embed,o['h']+2*embed,o['w']+2*embed)
                     self.box(f'{name}_{side}_pane_{i}',size,mid,panel)
                 self.openings.append(dict(body=name,side=side,width=o['w'],height=o['h'],recess=depth,slot=panel,center=xf(o['u'],o['y']+o['h']/2,depth),facade_area=span*h))
         self.quad(name,slot,(cx-w/2,base,cz-d/2),(cx+w/2,base,cz-d/2),(cx+w/2,base,cz+d/2),(cx-w/2,base,cz+d/2))

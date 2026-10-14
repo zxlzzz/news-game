@@ -18,24 +18,32 @@ P = {'body_center': (0, 0.46, -0.31),
  'handle_w': 0.58,
  'handle_y': 1.16,
  'handle_z': 0.52,
- 'headlamp_center': (0, 1.03, 0.53),
+ 'headlamp_center': (0, 1.03, 0.52),
  'headlamp_r': 0.09,
  'headlamp_t': 0.04,
  'hub_r': 0.07,
  'motor': True,
- 'seat_center': (0, 0.79, -0.27),
- 'seat_size': (0.4, 0.13, 0.67),
+ 'seat_center': (0, 0.79, -0.3),
+ 'seat_size': (0.4, 0.13, 0.48),
  'spoke_r': 0.025,
+ 'fork_clearance': 0.006,
  'tire_t': 0.12,
  'tire_wall': 0.075,
  'wheel_r': 0.25,
- 'wheelbase': 1.35}
+ 'wheelbase': 1.35,
+ 'seat_mount_width': 0.32,
+ 'seat_mount_depth': 0.4,
+ 'floor_rail_x': 0.14,
+ 'floor_rail_r': 0.025}
 TRACK = 0.96
 OFFSETS = [-1.125, -0.375, 0.375, 1.125]
 FALL_ANGLE = 1.5707963267948966
-EXTRAS = [['ellipsoid', 'tank', (0.46, 0.3, 0.53), (0, 0.83, 0.06), 'metal'],
+EXTRAS = [['ellipsoid', 'tank', (0.44, 0.26, 0.39), (0, 0.855, 0.145), 'metal'],
+ ['bar', 'tank_spine', (0, 0.6, -0.15), (0, 0.76, 0.18), 0.05, 'metal_dark'],
  ['cylinder', 'engine', 0.18, 0.42, (0, 0.49, -0.02), 'metal_dark', (1, 0, 0)],
- ['bar', 'exhaust', (0.26, 0.32, -0.72), (0.26, 0.32, 0.1), 0.055, 'metal']]
+ ['bar', 'exhaust', (0.26, 0.32, -0.72), (0.26, 0.32, 0.1), 0.055, 'metal'],
+ ['bar', 'exhaust_bracket', (0.2, 0.33, -0.4), (0.26, 0.32, -0.4), 0.015, 'metal_dark'],
+ ['bar', 'exhaust_bracket', (0.2, 0.33, -0.08), (0.26, 0.32, -0.08), 0.015, 'metal_dark']]
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 
 Build scripts own dimensions/design; this module only constructs and exports geometry.
@@ -125,10 +133,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -356,6 +383,11 @@ def build_two_wheeler(p):
         group('crank_set',(0,p['crank_y'],0),parts)
 
 
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from vehicle_geometry import build_two_wheeler
+
+
 def build():
     reset()
     if KIND == 'row':
@@ -386,3 +418,11 @@ def build():
         if o.parent is None:o.location.z -= low
     export(NAME)
 if __name__=='__main__':build()
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("parked_motorcycle")

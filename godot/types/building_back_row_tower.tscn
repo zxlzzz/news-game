@@ -1,0 +1,129 @@
+[gd_scene load_steps=32 format=3]
+
+[ext_resource type="PackedScene" path="res://models/building_back_row_tower.glb" id="1"]
+
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part0"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part1"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part2"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part3"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part4"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part5"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part6"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part7"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part8"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part9"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part10"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part11"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part12"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part13"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part14"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part15"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part16"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part17"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part18"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part19"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part20"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part21"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part22"]
+[ext_resource type="PackedScene" path="res://types/window_d24e53d4e4.tscn" id="part23"]
+[ext_resource type="PackedScene" path="res://types/window_f3d71cd33d.tscn" id="part24"]
+[ext_resource type="PackedScene" path="res://types/window_f3d71cd33d.tscn" id="part25"]
+[ext_resource type="PackedScene" path="res://types/sign_4199e3e910.tscn" id="part26"]
+[ext_resource type="PackedScene" path="res://types/furnishing_aa147d862f.tscn" id="part27"]
+[ext_resource type="PackedScene" path="res://types/furnishing_0ba00b6df3.tscn" id="part28"]
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part29"]
+
+[node name="building_back_row_tower" type="Node3D" groups=["building"]]
+
+[node name="model" parent="." instance=ExtResource("1")]
+
+; BEGIN reusable components
+[node name="window_d24e53d4e4_0" parent="." instance=ExtResource("part0")]
+position = Vector3(-2.4, 4.1, -0.175)
+
+[node name="window_d24e53d4e4_1" parent="." instance=ExtResource("part1")]
+position = Vector3(0.0, 4.1, -0.175)
+
+[node name="window_d24e53d4e4_2" parent="." instance=ExtResource("part2")]
+position = Vector3(2.4, 4.1, -0.175)
+
+[node name="window_d24e53d4e4_3" parent="." instance=ExtResource("part3")]
+position = Vector3(-2.4, 7.3, -0.175)
+
+[node name="window_d24e53d4e4_4" parent="." instance=ExtResource("part4")]
+position = Vector3(0.0, 7.3, -0.175)
+
+[node name="window_d24e53d4e4_5" parent="." instance=ExtResource("part5")]
+position = Vector3(2.4, 7.3, -0.175)
+
+[node name="window_d24e53d4e4_6" parent="." instance=ExtResource("part6")]
+position = Vector3(-2.4, 10.5, -0.175)
+
+[node name="window_d24e53d4e4_7" parent="." instance=ExtResource("part7")]
+position = Vector3(0.0, 10.5, -0.175)
+
+[node name="window_d24e53d4e4_8" parent="." instance=ExtResource("part8")]
+position = Vector3(2.4, 10.5, -0.175)
+
+[node name="window_d24e53d4e4_9" parent="." instance=ExtResource("part9")]
+position = Vector3(-2.4, 13.7, -0.175)
+
+[node name="window_d24e53d4e4_10" parent="." instance=ExtResource("part10")]
+position = Vector3(0.0, 13.7, -0.175)
+
+[node name="window_d24e53d4e4_11" parent="." instance=ExtResource("part11")]
+position = Vector3(2.4, 13.7, -0.175)
+
+[node name="window_d24e53d4e4_12" parent="." instance=ExtResource("part12")]
+position = Vector3(-2.4, 16.900001, -0.175)
+
+[node name="window_d24e53d4e4_13" parent="." instance=ExtResource("part13")]
+position = Vector3(0.0, 16.900001, -0.175)
+
+[node name="window_d24e53d4e4_14" parent="." instance=ExtResource("part14")]
+position = Vector3(2.4, 16.900001, -0.175)
+
+[node name="window_d24e53d4e4_15" parent="." instance=ExtResource("part15")]
+position = Vector3(-2.4, 20.1, -0.175)
+
+[node name="window_d24e53d4e4_16" parent="." instance=ExtResource("part16")]
+position = Vector3(0.0, 20.1, -0.175)
+
+[node name="window_d24e53d4e4_17" parent="." instance=ExtResource("part17")]
+position = Vector3(2.4, 20.1, -0.175)
+
+[node name="window_d24e53d4e4_18" parent="." instance=ExtResource("part18")]
+position = Vector3(-2.4, 23.3, -0.175)
+
+[node name="window_d24e53d4e4_19" parent="." instance=ExtResource("part19")]
+position = Vector3(0.0, 23.3, -0.175)
+
+[node name="window_d24e53d4e4_20" parent="." instance=ExtResource("part20")]
+position = Vector3(2.4, 23.3, -0.175)
+
+[node name="window_d24e53d4e4_21" parent="." instance=ExtResource("part21")]
+position = Vector3(-2.4, 26.499999, -0.175)
+
+[node name="window_d24e53d4e4_22" parent="." instance=ExtResource("part22")]
+position = Vector3(0.0, 26.499999, -0.175)
+
+[node name="window_d24e53d4e4_23" parent="." instance=ExtResource("part23")]
+position = Vector3(2.4, 26.499999, -0.175)
+
+[node name="window_f3d71cd33d_24" parent="." instance=ExtResource("part24")]
+position = Vector3(-2.052, 0.3, -0.175)
+
+[node name="window_f3d71cd33d_25" parent="." instance=ExtResource("part25")]
+position = Vector3(2.052, 0.3, -0.175)
+
+[node name="sign_4199e3e910_26" parent="." instance=ExtResource("part26")]
+position = Vector3(0.0, 2.88, 0.06)
+
+[node name="furnishing_aa147d862f_27" parent="." instance=ExtResource("part27")]
+position = Vector3(0.0, 31.100001, -6.24)
+
+[node name="furnishing_0ba00b6df3_28" parent="." instance=ExtResource("part28")]
+position = Vector3(-2.0, 29.400001, -3.0)
+
+[node name="door_single_29" parent="." instance=ExtResource("part29")]
+position = Vector3(0.0, 0.0, -0.44)

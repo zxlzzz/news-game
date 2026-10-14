@@ -14,7 +14,7 @@ P = {'width': 0.72,
  'plinth_h': 0.12,
  'window': (0.53, 0.55, 0.035),
  'window_y': 0.72,
- 'header_h': 0.2,
+ 'header_h': 0.18,
  'handle': (0.22, 0.055, 0.09)}
 
 def build():

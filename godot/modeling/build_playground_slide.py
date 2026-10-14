@@ -24,7 +24,19 @@ PARTS = [['box', 'deck', (1, 0.12, 1), (0, 1.5, -1), 'metal'],
  ['bar', 'rung', (-0.35, 0.45, -1.79), (0.35, 0.45, -1.79), 0.035, 'metal'],
  ['bar', 'rung', (-0.35, 0.7, -1.6733333333333333), (0.35, 0.7, -1.6733333333333333), 0.035, 'metal'],
  ['bar', 'rung', (-0.35, 0.95, -1.5566666666666666), (0.35, 0.95, -1.5566666666666666), 0.035, 'metal'],
- ['bar', 'rung', (-0.35, 1.2, -1.44), (0.35, 1.2, -1.44), 0.035, 'metal']]
+ ['bar', 'rung', (-0.35, 1.2, -1.44), (0.35, 1.2, -1.44), 0.035, 'metal'],
+ ['bar', 'guard_post', (-0.45, 1.56, -1.43), (-0.45, 2.3, -1.43), 0.028, 'metal_dark'],
+ ['bar', 'guard_post', (-0.45, 1.56, -0.57), (-0.45, 2.3, -0.57), 0.028, 'metal_dark'],
+ ['bar', 'deck_guard', (-0.45, 1.83, -1.43), (-0.45, 1.83, -0.57), 0.026, 'metal_dark'],
+ ['bar', 'deck_guard', (-0.45, 2.3, -1.43), (-0.45, 2.3, -0.57), 0.026, 'metal_dark'],
+ ['bar', 'guard_infill', (-0.45, 1.56, -1.23), (-0.45, 2.3, -1.23), 0.018, 'metal_dark'],
+ ['bar', 'guard_infill', (-0.45, 1.56, -0.77), (-0.45, 2.3, -0.77), 0.018, 'metal_dark'],
+ ['bar', 'guard_post', (0.45, 1.56, -1.43), (0.45, 2.3, -1.43), 0.028, 'metal_dark'],
+ ['bar', 'guard_post', (0.45, 1.56, -0.57), (0.45, 2.3, -0.57), 0.028, 'metal_dark'],
+ ['bar', 'deck_guard', (0.45, 1.83, -1.43), (0.45, 1.83, -0.57), 0.026, 'metal_dark'],
+ ['bar', 'deck_guard', (0.45, 2.3, -1.43), (0.45, 2.3, -0.57), 0.026, 'metal_dark'],
+ ['bar', 'guard_infill', (0.45, 1.56, -1.23), (0.45, 2.3, -1.23), 0.018, 'metal_dark'],
+ ['bar', 'guard_infill', (0.45, 1.56, -0.77), (0.45, 2.3, -0.77), 0.018, 'metal_dark']]
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -116,10 +128,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -258,3 +289,12 @@ def build():
 
 if __name__=='__main__':
     build()
+
+
+# Physical contact nodes share the model build data.
+if __name__ == "__main__":
+    import sys as _contact_sys
+    from pathlib import Path as _ContactPath
+    _contact_sys.path.insert(0, str(_ContactPath(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(_ContactPath(__file__).resolve().parents[1] / "models" / "playground_slide.glb")

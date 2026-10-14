@@ -1,25 +1,34 @@
 """婴儿车。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'baby_stroller'
+WHEEL_SIDE_X, WHEEL_THICKNESS = .31, .07
+WHEEL_AXLE_RADIUS, WHEEL_BEARING_CLEARANCE = .015, .003
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['cylinder', 'wheel', 0.12, 0.07, (-0.31, 0.12, -0.35), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'wheel', 0.12, 0.07, (-0.31, 0.12, 0.35), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'wheel', 0.12, 0.07, (0.31, 0.12, -0.35), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'wheel', 0.12, 0.07, (0.31, 0.12, 0.35), 'metal_dark', (1, 0, 0), None],
  ['box', 'bassinet_floor', (0.52, 0.07, 0.72), (0, 0.43, 0), 'fabric'],
- ['box', 'mattress', (0.42, 0.04, 0.61), (0, 0.485, 0), 'trim'],
- ['box', 'side', (0.05, 0.25, 0.72), (-0.235, 0.56, 0), 'fabric'],
- ['box', 'side', (0.05, 0.25, 0.72), (0.235, 0.56, 0), 'fabric'],
- ['box', 'end', (0.52, 0.25, 0.05), (0, 0.56, -0.335), 'fabric'],
- ['box', 'end', (0.52, 0.25, 0.05), (0, 0.56, 0.335), 'fabric'],
- ['box', 'hood_back', (0.55, 0.3, 0.04), (0, 0.78, -0.35), 'fabric'],
+ ['box', 'mattress', (0.40, 0.04, 0.60), (0, 0.485, 0), 'trim'],
+ ['box', 'side', (0.05, 0.22, 0.72), (-0.235, 0.575, 0), 'fabric'],
+ ['box', 'side', (0.05, 0.22, 0.72), (0.235, 0.575, 0), 'fabric'],
+ ['box', 'end', (0.42, 0.22, 0.05), (0, 0.575, -0.335), 'fabric'],
+ ['box', 'end', (0.42, 0.22, 0.05), (0, 0.575, 0.335), 'fabric'],
+ ['box', 'hood_back', (0.55, 0.225, 0.04), (0, 0.7975, -0.35), 'fabric'],
  ['box', 'hood_roof', (0.55, 0.04, 0.35), (0, 0.93, -0.195), 'fabric'],
- ['bar', 'frame', (-0.25, 0.12, -0.35), (-0.25, 0.56, 0.35), 0.028, 'metal'],
- ['bar', 'frame', (-0.25, 0.12, 0.35), (-0.25, 0.56, -0.35), 0.028, 'metal'],
- ['bar', 'frame', (0.25, 0.12, -0.35), (0.25, 0.56, 0.35), 0.028, 'metal'],
- ['bar', 'frame', (0.25, 0.12, 0.35), (0.25, 0.56, -0.35), 0.028, 'metal'],
- ['bar', 'handle_stem', (-0.25, 0.55, -0.25), (-0.25, 1, -0.55), 0.03, 'metal'],
- ['bar', 'handle_stem', (0.25, 0.55, -0.25), (0.25, 1, -0.55), 0.03, 'metal'],
- ['bar', 'grip', (-0.28, 1, -0.55), (0.28, 1, -0.55), 0.035, 'metal_dark']]
+ ['box', 'cradle', (0.52, 0.055, 0.64), (0, 0.3675, 0), 'metal'],
+ ['bar', 'frame', (-0.245, 0.12, -0.35), (-0.245, 0.36, 0.30), 0.022, 'metal'],
+ ['bar', 'frame', (-0.19, 0.12, 0.35), (-0.19, 0.36, -0.30), 0.022, 'metal'],
+ ['bar', 'frame', (0.245, 0.12, -0.35), (0.245, 0.36, 0.30), 0.022, 'metal'],
+ ['bar', 'frame', (0.19, 0.12, 0.35), (0.19, 0.36, -0.30), 0.022, 'metal'],
+ ['bar', 'pivot', (-0.255, 0.24923, 0), (-0.18, 0.24923, 0), 0.035, 'metal_dark'],
+ ['bar', 'pivot', (0.18, 0.24923, 0), (0.255, 0.24923, 0), 0.035, 'metal_dark'],
+ ['bar', 'wheel_axle', (-0.31, 0.12, -0.35), (0.31, 0.12, -0.35), 0.015, 'metal'],
+ ['bar', 'wheel_axle', (-0.31, 0.12, 0.35), (0.31, 0.12, 0.35), 0.015, 'metal'],
+ ['bar', 'handle_mount', (-0.245, 0.35, -0.31), (-0.29, 0.35, -0.31), 0.02, 'metal'],
+ ['bar', 'handle_mount', (0.245, 0.35, -0.31), (0.29, 0.35, -0.31), 0.02, 'metal'],
+ ['bar', 'handle_stem', (-0.29, 0.35, -0.31), (-0.29, 1, -0.55), 0.025, 'metal'],
+ ['bar', 'handle_stem', (0.29, 0.35, -0.31), (0.29, 1, -0.55), 0.025, 'metal'],
+ ['bar', 'grip', (-0.32, 1, -0.55), (0.32, 1, -0.55), 0.035, 'metal_dark']]
 GRIPS = {'grip_left': [0.22, 1, -0.55], 'grip_right': [-0.22, 1, -0.55]}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -111,10 +120,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -239,6 +267,18 @@ def build():
     reset()
     for kind,*args in PARTS:
         globals()[kind](*args)
+    # Existing fixed cross axles fit inward blind bores, with outer caps retained.
+    wheels = [o for o in bpy.context.scene.objects
+              if o.type == 'MESH' and o.name.split('.')[0] == 'wheel']
+    for wheel in wheels:
+        center = (wheel.location.x, wheel.location.z, -wheel.location.y)
+        sign = 1 if center[0] > 0 else -1
+        inner = WHEEL_SIDE_X - WHEEL_THICKNESS / 2 - WHEEL_BEARING_CLEARANCE
+        outer = WHEEL_SIDE_X + WHEEL_BEARING_CLEARANCE
+        cutter = cylinder('bearing_cut', WHEEL_AXLE_RADIUS + WHEEL_BEARING_CLEARANCE,
+                          outer - inner, (sign * (inner + outer) / 2, center[1], center[2]),
+                          None, axis=(1, 0, 0))
+        subtract(wheel, cutter, 'wheel_bearing')
     for name,position in GRIPS.items():
         node=bpy.data.objects.new(name,None)
         bpy.context.collection.objects.link(node)

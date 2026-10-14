@@ -1,0 +1,18 @@
+{
+  "width": 1.8,
+  "height": 1.65,
+  "depth": 0.08,
+  "frame": 0.06,
+  "pane_depth": 0.04,
+  "sash_frame_width": 0.035,
+  "sash_depth": 0.055,
+  "glass_depth": 0.016,
+  "latch_plate_depth": 0.008,
+  "latch_width": 0.04,
+  "latch_height": 0.12,
+  "latch_depth": 0.03,
+  "latch_inset": 0.08,
+  "open_degrees": -70,
+  "travel_seconds": 1.2,
+  "pane_clearance": 0.004
+}

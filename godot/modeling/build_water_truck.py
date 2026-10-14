@@ -1,5 +1,8 @@
 """洒水车。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'water_truck'
+WHEEL_ARCH_CLEARANCE = 0.05
+WHEEL_AXLE_RADIUS = 0.045
+WHEEL_AXLE_FIT_CLEARANCE = 0.004
 # All geometry dimensions and placements in metres, Y up; front +Z.
 PARTS = [['cylinder', 'tire', 0.43, 0.18, (-1.15, 0.43, -2.28), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'hub', 0.2064, 0.2, (-1.15, 0.43, -2.28), 'metal', (1, 0, 0), None],
@@ -10,17 +13,37 @@ PARTS = [['cylinder', 'tire', 0.43, 0.18, (-1.15, 0.43, -2.28), 'metal_dark', (1
  ['cylinder', 'tire', 0.43, 0.18, (1.15, 0.43, 2.2039999999999997), 'metal_dark', (1, 0, 0), None],
  ['cylinder', 'hub', 0.2064, 0.2, (1.15, 0.43, 2.2039999999999997), 'metal', (1, 0, 0), None],
  ['box', 'chassis', (2.3, 0.25, 7.6), (0, 0.5, 0), 'metal_dark'],
- ['box', 'cab', (2.3, 1.85, 1.65), (0, 1.225, 2.9499999999999997), 'metal'],
+ ['box', 'cab', (2.3, 1.525, 1.65), (0, 1.3875, 2.9499999999999997), 'metal'],
  ['box', 'windshield', (1.8399999999999999, 0.65, 0.04), (0, 1.79, 3.795), 'window'],
  ['box', 'bumper', (2.38, 0.18, 0.18), (0, 0.56, 3.84), 'metal_dark'],
  ['box', 'side_window', (0.04, 0.65, 0.9), (-1.16, 1.79, 3.04), 'window'],
  ['box', 'side_window', (0.04, 0.65, 0.9), (1.16, 1.79, 3.04), 'window'],
- ['box', 'headlight', (0.35, 0.2, 0.05), (-0.69, 0.8, 3.8699999999999997), 'accent'],
- ['box', 'headlight', (0.35, 0.2, 0.05), (0.69, 0.8, 3.8699999999999997), 'accent'],
- ['cylinder', 'water_tank', 1.081, 5.699999999999999, (0, 1.45, -0.9500000000000002), 'metal', (0, 0, 1), None],
- ['ring', 'tank_band', 1.1039999999999999, 1.0695, 0.12, (0, 1.45, -3.3), 'metal_dark', (0, 0, 1)],
- ['ring', 'tank_band', 1.1039999999999999, 1.0695, 0.12, (0, 1.45, 1.3999999999999995), 'metal_dark', (0, 0, 1)],
+ ['box', 'headlight', (0.35, 0.2, 0.05), (-0.69, 0.8, 3.7999999999999994), 'accent'],
+ ['box', 'headlight', (0.35, 0.2, 0.05), (0.69, 0.8, 3.7999999999999994), 'accent'],
+ ['cylinder',
+  'water_tank',
+  1.081,
+  5.699999999999999,
+  (0, 1.729, -0.9500000000000002),
+  'metal',
+  (0, 0, 1),
+  None],
+ ['ring', 'tank_band', 1.1039999999999999, 1.081, 0.12, (0, 1.729, -3.3), 'metal_dark', (0, 0, 1)],
+ ['ring',
+  'tank_band',
+  1.1039999999999999,
+  1.081,
+  0.12,
+  (0, 1.729, 1.3999999999999995),
+  'metal_dark',
+  (0, 0, 1)],
  ['bar', 'spray_bar', (-1.38, 0.45, -3.8), (1.38, 0.45, -3.8), 0.055, 'metal_dark']]
+FORM = {'cutter_depth': 0.4,
+ 'saddle_size': (1.7, 0.4, 0.34),
+ 'saddle_y': 0.78,
+ 'saddle_z': (-3.3, 1.4),
+ 'tank_at': (0, 1.729, -0.95),
+ 'tank_radius': 1.08}
 GRIPS = {}
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
@@ -112,10 +135,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -236,10 +278,19 @@ def canonicalize_triangle_order(path):
     path.write_bytes(data)
 
 
+def add_functional_form():
+    for z in FORM['saddle_z']:
+        saddle=box('tank_saddle',FORM['saddle_size'],(0,FORM['saddle_y'],z),'metal_dark')
+        cutter=cylinder('saddle_cut',FORM['tank_radius'],FORM['cutter_depth'],
+            (FORM['tank_at'][0],FORM['tank_at'][1],z),None,axis=(0,0,1))
+        subtract(saddle,cutter,'tank_cradle')
+
+
 def build():
     reset()
     for kind,*args in PARTS:
         globals()[kind](*args)
+    add_functional_form()
     for name,position in GRIPS.items():
         node=bpy.data.objects.new(name,None)
         bpy.context.collection.objects.link(node)
@@ -249,8 +300,21 @@ def build():
         meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
         low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
         for o in bpy.context.scene.objects:
-            o.location.z -= low
+            if o.parent is None: o.location.z -= low
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from vehicle_geometry import finish_wheeled_vehicle
+    finish_wheeled_vehicle(bpy.context.scene.objects, WHEEL_ARCH_CLEARANCE, WHEEL_AXLE_RADIUS, WHEEL_AXLE_FIT_CLEARANCE)
     export(NAME)
 
 if __name__=='__main__':
     build()
+
+
+# Independent model articulation is declared alongside the model build data.
+if __name__ == "__main__":
+    import sys as _motion_sys
+    from pathlib import Path as _MotionPath
+    _motion_sys.path.insert(0, str(_MotionPath(__file__).resolve().parent))
+    from movable_prop_geometry import annotate_model_motion as _annotate_model_motion
+    _annotate_model_motion("water_truck")

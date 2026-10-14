@@ -1,7 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="PackedScene" path="res://models/building_parking_garage.glb" id="1"]
+
+[ext_resource type="PackedScene" path="res://types/door_single.tscn" id="part0"]
 
 [node name="BuildingParkingGarage" type="Node3D" groups=["building"]]
 
 [node name="model" parent="." instance=ExtResource("1")]
+
+; BEGIN reusable components
+[node name="door_single_0" parent="." instance=ExtResource("part0")]
+position = Vector3(-10.0, 13.049999, -21.039999)

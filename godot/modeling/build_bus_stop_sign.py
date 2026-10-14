@@ -10,19 +10,28 @@ from model_geometry import *
 # All design dimensions/placements are collected here (metres unless named otherwise).
 P = {'post_h': 2.7,
  'post_r': 0.045,
- 'foot_r': 0.15,
- 'foot_h': 0.08,
+ 'foot_r': 0.08,
+ 'foot_h': 0.03,
  'panel': (0.55, 0.85, 0.08),
  'panel_y': 2.22,
  'inset': (0.39, 0.57, 0.025)}
 
 def build():
     reset()
-    cylinder('foot',P['foot_r'],P['foot_h'],(0,P['foot_h']/2,0),'metal_dark')
-    cylinder('pole',P['post_r'],P['post_h'],(0,P['post_h']/2,0),'metal')
+    cylinder('foot',P['foot_r'],P['foot_h'],(0,P['foot_h']/2,-P['panel'][2]/2-P['post_r']),'metal_dark')  # a flange under the pole: a person leaning on it stands close
+    cylinder('pole',P['post_r'],P['post_h'],(0,P['post_h']/2,-P['panel'][2]/2-P['post_r']),'metal')
     box('sign',P['panel'],(0,P['panel_y'],0),'metal')
     box('blank_timetable',P['inset'],(0,P['panel_y'],P['panel'][2]/2),'concrete')
     export('bus_stop_sign')
 
 if __name__ == '__main__':
     build()
+
+
+# Physical contact nodes share the model build data.
+if __name__ == "__main__":
+    import sys as _contact_sys
+    from pathlib import Path as _ContactPath
+    _contact_sys.path.insert(0, str(_ContactPath(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(_ContactPath(__file__).resolve().parents[1] / "models" / "bus_stop_sign.glb")

@@ -17,6 +17,12 @@ def build():
         box('foot',(P['leg'],P['leg'],P['foot_d']),(x,P['leg']/2,0),'metal')
         box('upright',(P['leg'],P['base_h']+P['height'],P['leg']),(x,(P['base_h']+P['height'])/2,-P['thickness']),'metal')
         bar('brace',(x,P['leg'],-P['foot_d']/2),(x,P['base_h']+P['height']/2,-P['thickness']),P['leg']/2,'metal')
+    gap=P['thickness']/2-P['leg']/2
+    assert gap>0
+    for x in (-P['width']/3,P['width']/3):
+        for y in (P['base_h']+P['leg'],P['base_h']+P['height']-P['leg']):
+            box('sign_mount',(P['leg'],P['leg'],gap),
+                (x,y,-P['thickness']/2-gap/2),'metal')
     export('roof_billboard')
 
 if __name__ == '__main__':

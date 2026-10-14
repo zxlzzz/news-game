@@ -1,10 +1,36 @@
 """双手水桶。原创程序模型；Blender 后台运行；输出在脚本旁。无外部脚本依赖。"""
 NAME = 'held_bucket'
 # All geometry dimensions and placements in metres, Y up; front +Z.
-PARTS = [['ring', 'bucket_wall', 0.18, 0.15, 0.28, (0, -0.18, 0), 'metal', (0, 1, 0)],
+BUCKET_OUTER_RADIUS = 0.18
+BUCKET_INNER_RADIUS = 0.15
+BUCKET_HEIGHT = 0.28
+BUCKET_CENTER_Y = -0.18
+HANDLE_OUTER_RADIUS = 0.19
+HANDLE_INNER_RADIUS = 0.165
+HANDLE_DEPTH = 0.025
+HANDLE_SIDE_X = (HANDLE_OUTER_RADIUS + HANDLE_INNER_RADIUS) / 2
+HANDLE_PIVOT_Y = -0.025
+PIVOT_RADIUS = 0.0125
+PIVOT_DEPTH = 0.04
+EAR_SIZE = (0.024, 0.068, 0.04)
+PARTS = [['ring', 'bucket_wall', BUCKET_OUTER_RADIUS, BUCKET_INNER_RADIUS,
+          BUCKET_HEIGHT, (0, BUCKET_CENTER_Y, 0), 'metal', (0, 1, 0)],
  ['cylinder', 'bottom', 0.15, 0.03, (0, -0.335, 0), 'metal', (0, 1, 0), None],
- ['ring', 'handle', 0.19, 0.165, 0.025, (0, 0, 0), 'metal_dark', (0, 0, 1)]]
-GRIPS = {'grip_left': [0.18, 0, 0], 'grip_right': [-0.18, 0, 0]}
+ ['handle_arc', 'handle', HANDLE_OUTER_RADIUS, HANDLE_INNER_RADIUS,
+  HANDLE_DEPTH, 'metal_dark']]
+for side in (-1, 1):
+    PARTS += [
+        ['box', 'handle_ear', EAR_SIZE, (side * HANDLE_SIDE_X, -0.034, 0), 'metal'],
+        ['cylinder', 'handle_pivot', PIVOT_RADIUS, PIVOT_DEPTH,
+         (side * HANDLE_SIDE_X, HANDLE_PIVOT_Y, 0), 'metal_dark', (0, 0, 1)],
+        ['bar', 'handle_end', (side * HANDLE_SIDE_X, 0, 0),
+         (side * HANDLE_SIDE_X, HANDLE_PIVOT_Y, 0),
+         (HANDLE_OUTER_RADIUS - HANDLE_INNER_RADIUS) / 2, 'metal_dark']]
+# Front faces of the two existing pivot disks; no solid is moved relative to another.
+GRIPS = {'grip_left': [HANDLE_SIDE_X, HANDLE_PIVOT_Y, -PIVOT_DEPTH / 2],
+         'grip_right': [-HANDLE_SIDE_X, HANDLE_PIVOT_Y, -PIVOT_DEPTH / 2]}
+GRIP_MIDPOINT = tuple(sum(point[axis] for point in GRIPS.values()) / len(GRIPS)
+                      for axis in range(3))
 
 """Shared, deterministic Blender primitives. All public coordinates are metres, Y up.
 
@@ -95,10 +121,29 @@ def bar(name, start, end, radius, slot):
 
 
 def ellipsoid(name, size, center, slot):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, radius=1, location=xyz(center))
-    obj = bpy.context.object
-    obj.dimensions = (size[0], size[2], size[1])
-    return finish(obj, name, slot)
+    # Explicit UV-sphere triangles keep symmetric quad diagonal choices out of Blender.
+    around, bands = 20, 12
+    rx, ry, rz = (v / 2 for v in size)
+    vertices = [(0, -ry, 0)]
+    for j in range(1, bands):
+        theta = j * pi / bands
+        vertices.extend((rx*sin(theta)*cos(i*2*pi/around), -ry*cos(theta),
+                         rz*sin(theta)*sin(i*2*pi/around)) for i in range(around))
+    top = len(vertices)
+    vertices.append((0, ry, 0))
+    faces = []
+    for i in range(around):
+        nxt = (i + 1) % around
+        faces.append((0, 1+i, 1+nxt))
+        for j in range(bands-2):
+            a, b = 1+j*around+i, 1+j*around+nxt
+            c, d = a+around, b+around
+            faces.extend(((a,c,d), (a,d,b)))
+        last = 1+(bands-2)*around
+        faces.append((top, last+nxt, last+i))
+    obj = mesh(name, vertices, faces, slot)
+    obj.location = xyz(center)
+    return obj
 
 
 def ring(name, outer, inner, height, center, slot, axis=(0, 1, 0)):
@@ -123,6 +168,25 @@ def prism(name, outline, depth, center, slot):
     faces = [tuple(range(n-1,-1,-1)), tuple(range(n,2*n))]
     faces += [(i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n)]
     return mesh(name, verts, faces, slot)
+
+
+def handle_arc(name, outer, inner, depth, slot):
+    """Closed upper half-annulus, ending at the two real bucket pivots."""
+    segments = CIRCLE_SEGMENTS // 2
+    n = segments + 1
+    vertices = [(r*cos(i*pi/segments), r*sin(i*pi/segments), z)
+                for z in (-depth/2, depth/2) for r in (outer, inner)
+                for i in range(n)]
+    faces = []
+    for i in range(segments):
+        j = i + 1
+        faces += [(i, j, n+j, n+i),
+                  (2*n+i, 3*n+i, 3*n+j, 2*n+j),
+                  (i, 2*n+i, 2*n+j, j),
+                  (n+i, n+j, 3*n+j, 3*n+i)]
+    faces += [(0, n, 3*n, 2*n),
+              (segments, 2*n+segments, 3*n+segments, n+segments)]
+    return mesh(name, vertices, faces, slot)
 
 
 def roof_panel(name, width, depth, low_y, rise, thickness, center_z, slot):
@@ -233,7 +297,19 @@ def build():
         low=min((o.matrix_world @ Vector(v)).z for o in meshes for v in o.bound_box)
         for o in bpy.context.scene.objects:
             o.location.z -= low
+    # Held-object origin belongs at the midpoint of its two real contacts.
+    for obj in bpy.context.scene.objects:
+        obj.location -= xyz(GRIP_MIDPOINT)
     export(NAME)
 
 if __name__=='__main__':
     build()
+
+
+# Physical contact nodes share the model build data.
+if __name__ == "__main__":
+    import sys as _contact_sys
+    from pathlib import Path as _ContactPath
+    _contact_sys.path.insert(0, str(_ContactPath(__file__).resolve().parent))
+    from model_contacts import apply as _apply_contacts
+    _apply_contacts(_ContactPath(__file__).resolve().parents[1] / "models" / "held_bucket.glb")
