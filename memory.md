@@ -7,8 +7,11 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ## Motion: "摆木偶" (2026-10-14)
 
-- Plan + runbook: `docs/动作重做方案.md` (replaced the 10-13 plan). Review page:
-  `docs/动作试做_2026-10-14_摆木偶/看片.html` (20 street clips). Not committed yet.
+- **Main task from 2026-10-15: make more good NPC motions** (the real-place scene is parked).
+
+- Plan + runbook + per-round notes: `docs/动作重做方案.md` (replaced the 10-13 plan). No review
+  page any more: he looks at the empty ground's "改好的" list (`godot/scenes/empty_ground/`, now the
+  project's main scene). Committed 2026-10-14 (4bece5d2..281febbe), **not pushed** (branch ahead 4).
 - Why the 10-13 plan failed (six review rounds): it generated with Kimodo for a real body and patched
   the stick figure afterwards (scene guidance, dense pins, export push-out), using checks as the work
   loop; checks measured another seat than the videos; objects did not fit the figure. Hsinlung:
@@ -22,10 +25,30 @@ Detailed asset results belong in the linked inventories, not duplicated here.
   sit anywhere with room, `npc/crowd.gd`); bus-shelter seat = bench seat; chess stools 0.37, table
   0.67, smaller foot plate, hands rest on table edge markers; cafe-table stance 4 cm back; stall
   vendor hands on the counter.
-- Hsinlung accepted the trial for now (10-14 evening): "先这样吧". Open: chess pieces / fruit / cash
-  do not move with the hand; the other ~100 touching clips, doors, swings, two-person clips; two_streets
-  dog walker on a roof (~3.6 m) floods errors — behaviour check passes only without dog walkers.
+- Status (10-14 night): ~40 clips built this way (20 street clips + a second batch of in-front-of-
+  object and hand-held clips; 悔棋 went back to the old way). Held things now turn with the forearm,
+  things on objects (chess pieces, pomelo) follow the hand between pick-up and put-down, held things
+  can appear/disappear (letter into the box, cash into the pocket). Bus-stop sign base is now a small
+  flange under the pole; lean_rail stands 25 cm further back; chess-table resting hands beside the
+  board; fountain hands on the side rims.
+- Elbow rule (his wording: one sentence, no new check): put hands where the figure's elbow hangs
+  naturally in front — about 0.35–0.45 m in front of the neck — and pole directions never point
+  backwards. Brief elbow-back moments (mid-reach, pocket) are fine. chess_think's hand-under-chin
+  still has the elbow ~10 cm back (arm lengths allow no better).
+- Open: cash vanishes on the counter instead of staying; trash and notice paper not shown in the
+  hand; placed chess pieces jump back when the clip restarts; selfie phone direction only rough;
+  weigh_fruit (arm brushes the stall) and hang_laundry (hand must go round the pole) not done;
+  held things vs. the head not checked at bake; the other ~100 touching clips, doors, swings,
+  two-person clips; two_streets dog walker on a roof (~3.6 m) floods errors — behaviour check
+  passes only without dog walkers. Kimodo-side `scene_guidance.py` etc. stay until the remaining
+  clips are redone, then go together.
+- Lessons from his 10-14 feedback: before building a pose, think how a real person does it (fan:
+  hand at the chest, elbow down, only the wrist flicks); when reviewing, watch the whole clip and
+  whole figure (upper arm, held object, "does it read as that action"), not a thumbnail of the
+  hand position; when an object doesn't fit the figure, change the model directly instead of
+  reporting the numbers to him.
 - Don't edit `godot/` files while `record_clip.py` runs (bake fingerprint goes stale).
+- `assets/animations/sources/` (119 MB, Kimodo source files) is committed: the inventories cite it.
 - Talk plainly; technical choices are mine, only ask him what he can judge.
 
 ## Saved real-place context — SDU Weihai (2026-09-29)
@@ -39,8 +62,12 @@ Detailed asset results belong in the linked inventories, not duplicated here.
   `godot/README.md` "山大威海校区".
 - **Stage 1 (地基) accepted 2026-09-29** and committed as 11bff52 on
   `claude/velocity-unification-v1-946h9l` (with the earlier shared-code changes:
-  `core/terrain.gd`, ground slot, level.gd). **Not pushed yet** — I asked, no answer.
-- **Heights now by design rules (2026-09-29, uncommitted, waiting for him to look)**: after the
+  `core/terrain.gd`, ground slot, level.gd); pushed since.
+- **Parked 2026-10-15.** He looked at the rule-based terrain: still not close to reality; real
+  height data has to come from some other source. Don't work on this scene until he brings it
+  back; the main task is more good NPC motions.
+- **Heights now by design rules (2026-09-29, committed in 38f3d0f2 on 10-05; judged not close
+  enough 10-15)**: after the
   round-2 trial he said "直接开始做吧，我看看咋样". `real_place/terrain_rules.py` (called by
   `build_ground.py`, numbers and code clauses in `ground.json` `rules`) replaced the old
   flatten + 2 m smoothing: flat pitches/plazas/pads/platforms/lakes, floor +0.15 m, roads <= 8 %
@@ -59,7 +86,7 @@ Detailed asset results belong in the linked inventories, not duplicated here.
   published per-building height dataset (CMAB / 3D-GloBFP / CNBH-10m) and cross-checking with
   roof shift and shadows; **waiting for his OK to download**.
 - **Terrain trials (2026-09-29)**, tasks written by the Claude client and pasted by him, in
-  `research/sdu_weihai/terrain_trials/` (not committed; `raw/` dirs git-ignored, ~1.3 GB).
+  `research/sdu_weihai/terrain_trials/` (committed in 38f3d0f2; `raw/` dirs git-ignored, ~1.3 GB).
   Round 1 (`报告.md`): the satellite image can't measure campus terraces (sun due west, they run
   east-west); 天地图 needs a key and blocks this machine (Singapore egress via his proxy); forward-
   flying drone clips fail in COLMAP (untried: 全景航拍 110.5–113.7 s, a lateral truck). Round 2
