@@ -1,0 +1,2443 @@
+{
+  "ground": {
+    "length": 36,
+    "width": 40
+  },
+  "camera": {
+    "position": [
+      0,
+      35,
+      36
+    ],
+    "look": [
+      0,
+      0,
+      15
+    ],
+    "size": 40
+  },
+  "posts": {
+    "seat_a": {
+      "kind": "sit",
+      "pos": [
+        -8,
+        0,
+        5
+      ]
+    },
+    "seat_b": {
+      "kind": "sit",
+      "pos": [
+        0,
+        0,
+        5
+      ]
+    },
+    "seat_c": {
+      "kind": "sit",
+      "pos": [
+        8,
+        0,
+        5
+      ]
+    },
+    "notice": {
+      "kind": "notice",
+      "pos": [
+        -8,
+        0,
+        11
+      ]
+    },
+    "fountain": {
+      "kind": "fountain",
+      "pos": [
+        8,
+        0,
+        11
+      ]
+    },
+    "walk_a": {
+      "kind": "waypoint",
+      "pos": [
+        -9,
+        0,
+        16
+      ],
+      "exclusive": false
+    },
+    "walk_b": {
+      "kind": "waypoint",
+      "pos": [
+        0,
+        0,
+        16
+      ],
+      "exclusive": false
+    },
+    "walk_c": {
+      "kind": "waypoint",
+      "pos": [
+        9,
+        0,
+        16
+      ],
+      "exclusive": false
+    },
+    "exit_left": {
+      "kind": "exit",
+      "pos": [
+        -12,
+        0,
+        9
+      ],
+      "exclusive": false
+    },
+    "exit_right": {
+      "kind": "exit",
+      "pos": [
+        12,
+        0,
+        9
+      ],
+      "exclusive": false
+    },
+    "child_goal": {
+      "kind": "destination",
+      "pos": [
+        -15,
+        0,
+        24
+      ],
+      "exclusive": false
+    },
+    "dog_goal": {
+      "kind": "destination",
+      "pos": [
+        14,
+        0,
+        26
+      ],
+      "exclusive": false
+    },
+    "ground_rest": {
+      "kind": "ground",
+      "pos": [
+        8,
+        0,
+        27
+      ]
+    },
+    "exercise_space": {
+      "kind": "exercise",
+      "pos": [
+        2,
+        0,
+        25
+      ]
+    },
+    "cleaning_area": {
+      "kind": "work",
+      "pos": [
+        7,
+        0,
+        21
+      ]
+    },
+    "Cart_goal": {
+      "kind": "support_goal",
+      "pos": [
+        -18,
+        0,
+        26
+      ],
+      "exclusive": false
+    },
+    "Stroller_goal": {
+      "kind": "support_goal",
+      "pos": [
+        -16,
+        0,
+        30
+      ],
+      "exclusive": false
+    },
+    "Case_goal": {
+      "kind": "support_goal",
+      "pos": [
+        -12,
+        0,
+        30
+      ],
+      "exclusive": false
+    },
+    "Bicycle_goal": {
+      "kind": "support_goal",
+      "pos": [
+        18,
+        0,
+        26
+      ],
+      "exclusive": false
+    },
+    "Scooter_goal": {
+      "kind": "support_goal",
+      "pos": [
+        16,
+        0,
+        30
+      ],
+      "exclusive": false
+    },
+    "Car_goal": {
+      "kind": "support_goal",
+      "pos": [
+        10,
+        0,
+        32
+      ],
+      "exclusive": false
+    },
+    "taxi_pickup": {
+      "kind": "pickup",
+      "pos": [
+        -18,
+        0,
+        32
+      ],
+      "exclusive": false
+    },
+    "Taxi_goal": {
+      "kind": "support_goal",
+      "pos": [
+        -10,
+        0,
+        32
+      ],
+      "exclusive": false
+    },
+    "Assistance_goal": {
+      "kind": "support_goal",
+      "pos": [
+        0,
+        0,
+        33
+      ],
+      "exclusive": false
+    },
+    "door_goal": {
+      "kind": "waypoint",
+      "pos": [
+        2,
+        0,
+        33
+      ],
+      "exclusive": false
+    },
+    "news_purchase": {
+      "kind": "newsbuy",
+      "pos": [
+        0,
+        0,
+        1
+      ]
+    },
+    "vend_purchase": {
+      "kind": "vendcollect",
+      "pos": [
+        5,
+        0,
+        1
+      ]
+    },
+    "current_meeting": {
+      "kind": "waypoint",
+      "pos": [
+        12,
+        0,
+        2
+      ],
+      "exclusive": false
+    }
+  },
+  "surfaces": {
+    "table": {
+      "pos": [
+        0,
+        0,
+        5
+      ],
+      "items": [],
+      "capacity": 2
+    },
+    "counter": {
+      "pos": [
+        1,
+        0,
+        10.6
+      ],
+      "capacity": 8,
+      "items": [
+        "apple_1",
+        "apple_2",
+        "gift_fruit"
+      ]
+    },
+    "paper_stock": {
+      "pos": [
+        0,
+        0,
+        1
+      ],
+      "capacity": 2,
+      "items": [
+        "finite_paper"
+      ],
+      "accept_put": false,
+      "accept_take": false
+    },
+    "paper_output": {
+      "pos": [
+        0,
+        0,
+        1
+      ],
+      "capacity": 1,
+      "items": [],
+      "accept_put": false
+    },
+    "vend_stock": {
+      "pos": [
+        5,
+        0,
+        1
+      ],
+      "capacity": 2,
+      "items": [
+        "finite_snack"
+      ],
+      "accept_put": false,
+      "accept_take": false
+    },
+    "vend_output": {
+      "pos": [
+        5,
+        0,
+        1
+      ],
+      "capacity": 1,
+      "items": [],
+      "accept_put": false
+    }
+  },
+  "people": [
+    {
+      "id": "A",
+      "pos": [
+        -8,
+        0,
+        5
+      ],
+      "support": "seat_a",
+      "held": "phone",
+      "storage": [
+        "book"
+      ],
+      "tags": {
+        "seller": 0,
+        "shopper": 0,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "B",
+      "pos": [
+        0,
+        0,
+        5
+      ],
+      "support": "seat_b",
+      "held": "parcel",
+      "storage": [
+        "phone",
+        "book"
+      ],
+      "tags": {
+        "seller": 0,
+        "shopper": 0,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "C",
+      "pos": [
+        8,
+        0,
+        5
+      ],
+      "support": "seat_c",
+      "storage": [
+        "phone",
+        "book"
+      ],
+      "tags": {
+        "seller": 0,
+        "shopper": 0,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "D",
+      "pos": [
+        -5,
+        0,
+        9
+      ],
+      "storage": [
+        "book"
+      ],
+      "tags": {
+        "seller": 0,
+        "shopper": 0,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "E",
+      "pos": [
+        5,
+        0,
+        9
+      ],
+      "storage": [
+        "phone"
+      ],
+      "tags": {
+        "seller": 0,
+        "shopper": 0,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "F",
+      "pos": [
+        -5,
+        0,
+        14
+      ],
+      "held": "book",
+      "storage": [
+        "phone"
+      ],
+      "tags": {
+        "seller": 0,
+        "shopper": 0,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "Seller",
+      "pos": [
+        1,
+        0,
+        10.12
+      ],
+      "storage": [],
+      "tags": {
+        "seller": 4,
+        "shopper": 0,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "Buyer_A",
+      "pos": [
+        -1,
+        0,
+        14
+      ],
+      "storage": [
+        "wallet",
+        "phone"
+      ],
+      "tags": {
+        "seller": 0,
+        "shopper": 3,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "Buyer_B",
+      "pos": [
+        1,
+        0,
+        14
+      ],
+      "storage": [
+        "wallet",
+        "phone"
+      ],
+      "tags": {
+        "seller": 0,
+        "shopper": 3,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "Buyer_C",
+      "pos": [
+        3,
+        0,
+        14
+      ],
+      "storage": [
+        "wallet",
+        "phone"
+      ],
+      "tags": {
+        "seller": 0,
+        "shopper": 3,
+        "social": 0,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "Handshake_A",
+      "pos": [
+        -4,
+        0,
+        3
+      ],
+      "storage": [],
+      "tags": {
+        "seller": 0,
+        "shopper": 0,
+        "social": 4,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "Handshake_B",
+      "pos": [
+        -5,
+        0,
+        3
+      ],
+      "storage": [],
+      "tags": {
+        "seller": 0,
+        "shopper": 0,
+        "social": 4,
+        "chess": 0,
+        "watch": 0,
+        "care": 0,
+        "talk": 0,
+        "carry": 0,
+        "wait": 0,
+        "read": 0,
+        "react": 0,
+        "record": 0,
+        "facility": 0,
+        "fidget": 0,
+        "exercise": 0,
+        "perform": 0,
+        "sit": 0,
+        "move": 0,
+        "phone": 0,
+        "clean": 0
+      }
+    },
+    {
+      "id": "Talk_A",
+      "pos": [
+        -15,
+        0,
+        5
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 3,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Talk_B",
+      "pos": [
+        -15,
+        0,
+        6
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 3,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Reporter",
+      "pos": [
+        -14,
+        0,
+        9
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 3,
+        "wait": 0,
+        "watch": 0
+      },
+      "held": "microphone"
+    },
+    {
+      "id": "Respondent",
+      "pos": [
+        -14,
+        0,
+        10
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 3,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Chess_A",
+      "pos": [
+        14,
+        0,
+        6.28
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 3,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Chess_B",
+      "pos": [
+        14,
+        0,
+        7.72
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 3,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Chess_Watcher",
+      "pos": [
+        16,
+        0,
+        7
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 3
+      }
+    },
+    {
+      "id": "Adult",
+      "pos": [
+        -15,
+        0,
+        13
+      ],
+      "storage": [],
+      "tags": {
+        "care": 3,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Child",
+      "pos": [
+        -14.4,
+        0,
+        13
+      ],
+      "storage": [],
+      "tags": {
+        "care": 3,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Dog_Walker",
+      "pos": [
+        14,
+        0,
+        15
+      ],
+      "storage": [],
+      "tags": {
+        "care": 3,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      },
+      "held": "leash"
+    },
+    {
+      "id": "Fallen",
+      "pos": [
+        -6,
+        0,
+        25
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 2,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Witness",
+      "pos": [
+        -4,
+        0,
+        25
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 2,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 1
+      }
+    },
+    {
+      "id": "Cart_User",
+      "pos": [
+        -18,
+        0,
+        18.2
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 3,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Stroller_User",
+      "pos": [
+        -16,
+        0,
+        21.35
+      ],
+      "storage": [],
+      "tags": {
+        "care": 3,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Case_User",
+      "pos": [
+        -11.65,
+        0,
+        23.5
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 3,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Cyclist",
+      "pos": [
+        18.6,
+        0,
+        18
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 3,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Scooter_Rider",
+      "pos": [
+        16.6,
+        0,
+        20
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 3,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Passenger",
+      "pos": [
+        18.9,
+        0,
+        30
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 3,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Taxi_Passenger",
+      "pos": [
+        -17.1,
+        0,
+        32
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 3,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Swing_User",
+      "pos": [
+        -10,
+        0,
+        21
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 3,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Slide_User",
+      "pos": [
+        -10,
+        0,
+        25
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 3,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Seesaw_A",
+      "pos": [
+        6,
+        0,
+        29
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 3,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Seesaw_B",
+      "pos": [
+        6,
+        0,
+        32
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 3,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Bar_User",
+      "pos": [
+        11,
+        0,
+        20
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 3,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Handstand_User",
+      "pos": [
+        11,
+        0,
+        23
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 3,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Helper",
+      "pos": [
+        -4,
+        0,
+        30
+      ],
+      "storage": [],
+      "tags": {
+        "care": 3,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Assisted",
+      "pos": [
+        -4.443,
+        0,
+        29.913
+      ],
+      "storage": [],
+      "tags": {
+        "care": 3,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Ground_Helper",
+      "pos": [
+        -5.4,
+        0,
+        25
+      ],
+      "storage": [],
+      "tags": {
+        "care": 3,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Door_Holder",
+      "pos": [
+        3,
+        0,
+        28.7
+      ],
+      "storage": [],
+      "tags": {
+        "care": 3,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Door_Walker",
+      "pos": [
+        2,
+        0,
+        27
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 3,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Caller",
+      "pos": [
+        9,
+        0,
+        31
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 3,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      },
+      "held": "phone"
+    },
+    {
+      "id": "Dog_Petter",
+      "pos": [
+        -12,
+        0,
+        0.3
+      ],
+      "storage": [],
+      "tags": {
+        "care": 8,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Current_Waiter",
+      "pos": [
+        12,
+        0,
+        3
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 8,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Current_Arriver",
+      "pos": [
+        17,
+        0,
+        2
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Paper_Buyer",
+      "pos": [
+        0,
+        0,
+        2
+      ],
+      "storage": [
+        "phone"
+      ],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 8,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Vending_Buyer",
+      "pos": [
+        5,
+        0,
+        2
+      ],
+      "storage": [
+        "phone"
+      ],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 8,
+        "sit": 0,
+        "social": 0,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      }
+    },
+    {
+      "id": "Flyer_Giver",
+      "pos": [
+        -17,
+        0,
+        1
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 8,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      },
+      "hands": {
+        "right": "finite_stack"
+      },
+      "bag_accepts": [
+        "phone",
+        "book",
+        "wallet",
+        "paper_stack",
+        "paper"
+      ],
+      "bag_capacity": 4
+    },
+    {
+      "id": "Flyer_Receiver",
+      "pos": [
+        -17.28,
+        0,
+        1.94
+      ],
+      "storage": [],
+      "tags": {
+        "care": 0,
+        "carry": 0,
+        "chess": 0,
+        "clean": 0,
+        "exercise": 0,
+        "facility": 0,
+        "fidget": 0,
+        "move": 0,
+        "perform": 0,
+        "phone": 0,
+        "react": 0,
+        "read": 0,
+        "record": 0,
+        "seller": 0,
+        "shopper": 0,
+        "sit": 0,
+        "social": 8,
+        "talk": 0,
+        "wait": 0,
+        "watch": 0
+      },
+      "bag_accepts": [
+        "phone",
+        "book",
+        "wallet",
+        "paper"
+      ]
+    }
+  ],
+  "view": {
+    "person_height": 1.7,
+    "label_height": 2.1,
+    "head_radius": 0.14,
+    "line_radius": 0.035,
+    "font_size": 18,
+    "panel_width": 144,
+    "label_offset": 5,
+    "title_size": 20,
+    "window": [
+      1280,
+      900
+    ],
+    "body_color": "23384b",
+    "floor_color": "e0e4e0",
+    "post_color": "bdc7c8",
+    "text_color": "172532",
+    "box_color": "fffffff0",
+    "seat_height": 0.45,
+    "seat_width": 1.6,
+    "seat_depth": 0.5,
+    "marker_height": 0.04,
+    "marker_width": 0.7,
+    "surface_size": [
+      1.5,
+      0.8,
+      0.7
+    ]
+  },
+  "items": {
+    "apple_1": {
+      "kind": "goods"
+    },
+    "apple_2": {
+      "kind": "goods"
+    },
+    "gift_fruit": {
+      "kind": "goods"
+    },
+    "finite_paper": {
+      "kind": "newspaper"
+    },
+    "finite_snack": {
+      "kind": "cup"
+    },
+    "finite_stack": {
+      "kind": "paper_stack",
+      "contents": [
+        "finite_sheet_a",
+        "finite_sheet_b"
+      ],
+      "accepts": [
+        "paper"
+      ],
+      "capacity": 2
+    },
+    "finite_sheet_a": {
+      "kind": "paper"
+    },
+    "finite_sheet_b": {
+      "kind": "paper"
+    }
+  },
+  "stalls": {
+    "fruit_stall": {
+      "service": "fruit",
+      "origin": [
+        1,
+        0,
+        10
+      ],
+      "queue": [
+        1,
+        0,
+        14
+      ],
+      "queue_radius": 2.5,
+      "exit": [
+        4,
+        0,
+        14
+      ],
+      "surface": "counter",
+      "products": [
+        {
+          "item": "apple_1",
+          "weigh": true,
+          "pack": false
+        },
+        {
+          "item": "apple_2",
+          "weigh": true,
+          "pack": false
+        },
+        {
+          "item": "gift_fruit",
+          "weigh": false,
+          "pack": true
+        }
+      ],
+      "posts": {
+        "vendor": "res://types/market_stall.tscn",
+        "customer": "res://types/market_stall.tscn",
+        "fruitweigh": "res://types/fruit_stand.tscn"
+      }
+    }
+  },
+  "objects": {
+    "chess_table": {
+      "activity": "chess",
+      "provider": "res://types/park_chess_table.tscn",
+      "origin": [
+        14,
+        0,
+        7
+      ],
+      "markers": {
+        "play": [
+          "post_chess_a",
+          "post_chess_b"
+        ],
+        "watch": [
+          "post_watch_0",
+          "post_watch_1"
+        ]
+      }
+    }
+  },
+  "animals": {
+    "Dog": {
+      "pos": [
+        14.8,
+        0,
+        15
+      ],
+      "willing": true,
+      "moving": false
+    },
+    "Contact_Dog": {
+      "pos": [
+        -13,
+        0,
+        1
+      ],
+      "willing": true,
+      "moving": false,
+      "approach_allowed": true,
+      "contact_allowed": true
+    }
+  },
+  "journeys": {
+    "family_walk": {
+      "activity": "child",
+      "roles": {
+        "Adult": "adult",
+        "Child": "child"
+      },
+      "destination": "child_goal"
+    },
+    "dog_walk": {
+      "activity": "dog",
+      "roles": {
+        "Dog_Walker": "walker",
+        "Dog": "dog"
+      },
+      "destination": "dog_goal"
+    }
+  },
+  "scheduled_events": [
+    {
+      "at": 3,
+      "kind": "fall",
+      "subject": "Fallen",
+      "options": {
+        "life": 24,
+        "salient": true,
+        "can_rise": false
+      }
+    },
+    {
+      "at": 28,
+      "kind": "imbalance",
+      "subject": "Witness"
+    },
+    {
+      "at": 42,
+      "kind": "threat",
+      "pos": [
+        -5,
+        0,
+        25
+      ],
+      "options": {
+        "life": 8
+      }
+    }
+  ],
+  "manual_event": {
+    "kind": "fall",
+    "subject": "Fallen",
+    "options": {
+      "life": 24,
+      "salient": true,
+      "can_rise": false
+    }
+  },
+  "devices": {
+    "Cart": {
+      "profile": "cart",
+      "pos": [
+        -18,
+        0,
+        19
+      ],
+      "options": {
+        "actors": {
+          "user": "Cart_User"
+        },
+        "destination": "Cart_goal"
+      }
+    },
+    "Stroller": {
+      "profile": "stroller",
+      "pos": [
+        -16,
+        0,
+        22
+      ],
+      "options": {
+        "actors": {
+          "user": "Stroller_User"
+        },
+        "destination": "Stroller_goal"
+      }
+    },
+    "Case": {
+      "profile": "suitcase",
+      "pos": [
+        -12,
+        0,
+        23
+      ],
+      "options": {
+        "actors": {
+          "user": "Case_User"
+        },
+        "destination": "Case_goal"
+      }
+    },
+    "Bicycle": {
+      "profile": "bicycle",
+      "pos": [
+        18,
+        0,
+        18
+      ],
+      "options": {
+        "actors": {
+          "rider": "Cyclist"
+        },
+        "destination": "Bicycle_goal"
+      }
+    },
+    "Scooter": {
+      "profile": "scooter",
+      "pos": [
+        16,
+        0,
+        20
+      ],
+      "options": {
+        "actors": {
+          "rider": "Scooter_Rider"
+        },
+        "destination": "Scooter_goal"
+      }
+    },
+    "Car": {
+      "profile": "car",
+      "pos": [
+        18,
+        0,
+        30
+      ],
+      "options": {
+        "actors": {
+          "passenger": "Passenger"
+        },
+        "rider": "Passenger",
+        "destination": "Car_goal"
+      }
+    },
+    "Taxi": {
+      "profile": "taxi",
+      "pos": [
+        -18,
+        0,
+        29
+      ],
+      "options": {
+        "actors": {
+          "passenger": "Taxi_Passenger"
+        },
+        "rider": "Taxi_Passenger",
+        "pickup": "taxi_pickup",
+        "destination": "Taxi_goal"
+      }
+    },
+    "Swing": {
+      "profile": "swing",
+      "pos": [
+        -10,
+        0,
+        21
+      ],
+      "options": {
+        "actors": {
+          "user": "Swing_User"
+        }
+      }
+    },
+    "Slide": {
+      "profile": "slide",
+      "pos": [
+        -10,
+        0,
+        26
+      ],
+      "options": {
+        "actors": {
+          "user": "Slide_User"
+        }
+      }
+    },
+    "Seesaw": {
+      "profile": "seesaw",
+      "pos": [
+        6,
+        0,
+        29
+      ],
+      "options": {
+        "actors": {
+          "a": "Seesaw_A",
+          "b": "Seesaw_B"
+        }
+      }
+    },
+    "Bar": {
+      "profile": "bar",
+      "pos": [
+        11,
+        0,
+        20
+      ],
+      "options": {
+        "actors": {
+          "user": "Bar_User"
+        }
+      }
+    },
+    "Palm_Space": {
+      "profile": "palms",
+      "pos": [
+        11,
+        0,
+        23
+      ],
+      "options": {
+        "actors": {
+          "user": "Handstand_User"
+        }
+      }
+    },
+    "Assistance": {
+      "profile": "assistance",
+      "pos": [
+        -4,
+        0,
+        30
+      ],
+      "options": {
+        "actors": {
+          "helper": "Helper",
+          "receiver": "Assisted"
+        },
+        "destination": "Assistance_goal"
+      }
+    },
+    "Ground_Lift": {
+      "profile": "lift",
+      "pos": [
+        -6,
+        0,
+        25
+      ],
+      "options": {
+        "actors": {
+          "helper": "Ground_Helper",
+          "receiver": "Fallen"
+        },
+        "willing": {
+          "receiver": true
+        }
+      }
+    },
+    "Door": {
+      "profile": "door",
+      "pos": [
+        2,
+        0,
+        29
+      ],
+      "options": {
+        "actors": {
+          "holder": "Door_Holder"
+        }
+      }
+    }
+  },
+  "calls": {
+    "scene_call": {
+      "actor": "Caller",
+      "endpoint": "remote_text_endpoint"
+    },
+    "queue_call": {
+      "actor": "Buyer_B",
+      "endpoint": "remote_queue_endpoint"
+    }
+  },
+  "call_endings": [
+    {
+      "at": 22,
+      "id": "scene_call",
+      "reason": "remote_end"
+    },
+    {
+      "at": 40,
+      "id": "queue_call",
+      "reason": "remote_end"
+    }
+  ],
+  "current_tasks": {
+    "scene_pet": {
+      "profile": "animal_contact",
+      "actor": "Dog_Petter",
+      "subject": "Contact_Dog"
+    },
+    "scene_wait": {
+      "profile": "await_person",
+      "actor": "Current_Waiter",
+      "subject": "Current_Arriver",
+      "post": "current_meeting"
+    }
+  },
+  "checkouts": {
+    "scene_paper": {
+      "process": "newspaper_checkout",
+      "post": "news_purchase",
+      "stock": "paper_stock",
+      "output": "paper_output",
+      "credits": {
+        "Paper_Buyer": 1
+      },
+      "price": 1
+    },
+    "scene_vend": {
+      "process": "vending_checkout",
+      "post": "vend_purchase",
+      "stock": "vend_stock",
+      "output": "vend_output",
+      "credits": {
+        "Vending_Buyer": 1
+      },
+      "price": 1
+    }
+  },
+  "transfer_intents": {
+    "scene_sheet": {
+      "sender": "Flyer_Giver",
+      "receiver": "Flyer_Receiver",
+      "item": "finite_sheet_a",
+      "pair": "finite_supply",
+      "container": "finite_stack"
+    }
+  },
+  "required_demonstrations": [
+    "pet_dog",
+    "wait_person",
+    "buy_newspaper",
+    "use_vending",
+    "distribute_flyer",
+    "receive_flyer"
+  ],
+  "required_task_results": [
+    "scene_pet",
+    "scene_wait"
+  ],
+  "required_transfer_results": [
+    "scene_sheet"
+  ],
+  "required_checkout_results": [
+    "scene_paper",
+    "scene_vend"
+  ]
+}
