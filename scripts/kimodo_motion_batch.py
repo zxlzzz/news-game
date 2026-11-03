@@ -2,21 +2,37 @@
 
 Run inside the existing Kimodo environment after freeing the demo's GPU memory:
   python -u kimodo_motion_batch.py --output /tmp/kimodo_review
-Request: {"name":"wipe_sweat","text":"A person ...","duration":3,"seed":42}
+Request: {"name":"wipe_sweat","segments":[{"text":"A person ...","duration":3}],"seed":42,"samples":16,
+"text_weight":2,"score_text":"A person ...","method":"..."} ("text" + "duration" instead of "segments" is one segment).
+Segments (2026-10-15): more than one segment goes through Kimodo's own multi-prompt generation (multi_prompt=True:
+each segment is generated after the previous one, its start conditioned on the previous segment's end, in one call),
+never generated apart and joined. The clip is as long as the segments together; keys and "endpoints" count frames over
+the whole clip (stand_idle at its first and last frame).
 End-effector keys ("effectors": [{"joints": ["RightHand"], "keyframes": [{"frame", "source", "source_frame",
 "targets": {"RightHand": [x, y, z]}} or "offset": [x, y, z]]}]) bend the source pose's limb to the target,
 rotations included; a position change without matching rotations is undone by Kimodo's correction.
 Use {"name":"wipe_sweat","inspect":true} to refresh review output, or 'quit'.
+Candidates (2026-10-15, second round): every request is generated with "samples" seeds (seed..seed+samples-1) at
+the request's text guidance weight (the constraint weight stays CONSTRAINT_WEIGHT). Each candidate is scored with
+Kimodo's text-motion model TMR (SCORER; score = (cosine of the text and motion embeddings + 1) / 2, the TMR/t2m_sim of
+kimodo/metrics/tmr.py) against "score_text" (the same sentence for every way of giving the text, so scores compare).
+The score only screens: nothing is picked. Every candidate is a complete take in <name>/candidates/s<seed>/
+(motion.npz + meta.json, review sheet next to it); <name>/meta.json "candidates" lists each one's seed, way of giving
+the text ("method"), segment texts and durations, weights and score.
 Only selected <name>/ directories are deliverables. Sheets and metrics are temporary.
-This tool never approves a motion, mutates joints, or generates the next job itself.
+This tool never mutates joints or generates the next job itself.
 """
 import argparse
 import json
 import pathlib
+import shutil
 import traceback
 
 import numpy as np
 from PIL import Image, ImageDraw
+
+CONSTRAINT_WEIGHT = 2.0
+SCORER = 'TMR-SOMA-RP-v1'
 
 
 # Limb chains of SOMA30 for end-effector keys: (upper joint, middle joint, end joint).
@@ -174,6 +190,9 @@ def main():
     parents = SOMASkeleton77.bone_order_names_with_parents
     names = [n for n, _ in parents]
     model = load_model('Kimodo-SOMA-RP-v1.1', device='cuda:0')
+    # The scorer brings its own text-encoder client (TEXT_ENCODER_URL, the same encoder service); passing Kimodo's
+    # encoder would replace TMR's own text head, which load_model stores under the same attribute name.
+    scorer = load_model(SCORER, device='cuda:0', default_family='TMR')
     endpoint_pose = dict(np.load(args.endpoint_pose)) if args.endpoint_pose else None
     print('READY', flush=True)
     while True:
@@ -187,12 +206,21 @@ def main():
                 raise ValueError('Use a simple lowercase action directory name')
             folder = args.output / name
             if not cfg.get('inspect'):
-                duration = float(cfg['duration'])
+                if 'segments' in cfg and ('text' in cfg or 'duration' in cfg):
+                    raise ValueError('Give either segments or text + duration')
+                segments = cfg['segments'] if 'segments' in cfg else [{'text': cfg['text'], 'duration': cfg['duration']}]
+                for segment in segments:
+                    if not segment['text'].startswith('A person') or not 0.5 <= float(segment['duration']) <= 10:
+                        raise ValueError('Each segment: text starting "A person", 0.5-10 s')
+                    segment['frames'] = round(float(segment['duration']) * model.fps)
+                frames = sum(segment['frames'] for segment in segments)
+                duration = frames / model.fps
                 # Kimodo is trained on 2-10 s; shorter takes are only for short, fully keyed gestures.
                 if not 1 <= duration <= 10:
                     raise ValueError('Duration must be between 1 and 10 seconds')
-                seed_everything(cfg['seed'])
-                frames = round(duration * model.fps)
+                for key in ('seed', 'samples', 'text_weight', 'score_text', 'method'):
+                    if key not in cfg:
+                        raise ValueError(f'Request needs {key}')
                 constraints = []
                 constraint_targets = []
                 if cfg.get('root_path'):
@@ -309,8 +337,9 @@ def main():
                         correction_masks=[effector_classes[joint].name] if joint in effector_classes else [],
                         skeleton='SOMA30', positions=np.stack(positions).tolist(), rotations=np.stack(rotations).tolist()))
                 # Scene guidance (the fork's kimodo/scene_guidance.py): keep the stick figure out of object boxes.
-                model.scene_guidance = None
-                if cfg.get('scene'):
+                def scene_guidance():
+                    if not cfg.get('scene'):
+                        return None
                     from kimodo.scene_guidance import SceneGuidance
                     scene = dict(cfg['scene'])
                     for key in ('boxes', 'item_boxes'):
@@ -319,39 +348,77 @@ def main():
                     if scene.get('item_boxes'):
                         scene['item'] = {'boxes': scene.pop('item_boxes'), 'hand': scene.pop('item_hand', 'both')}
                     scene['rest_names'] = names
-                    model.scene_guidance = SceneGuidance(scene, model)
-                output = model([cfg['text']], [frames],
-                               num_denoising_steps=100, num_samples=1, multi_prompt=True,
-                               constraint_lst=constraints,
-                               num_transition_frames=5, post_processing=cfg.get('post_processing', True), return_numpy=True,
-                               cfg_type='separated', cfg_weight=[2., 2.], progress_bar=lambda values: values)
-                output = {k: v[0] if hasattr(v, 'shape') and v.ndim > 0 and v.shape[0] == 1 else v for k, v in output.items()}
+                    return SceneGuidance(scene, model)
+                with torch.inference_mode():
+                    text_embedding = scorer.encode_raw_text([cfg['score_text']], unit_vector=True).flatten()
+                if (folder / 'candidates').exists():
+                    shutil.rmtree(folder / 'candidates')
                 folder.mkdir(exist_ok=True)
-                save_kimodo_npz(str(folder / 'motion.npz'), output)
-                cfg.update(model='Kimodo-SOMA-RP-v1.1', text_encoder='matbee/kimodo-llm2vec-nf4',
-                           fps=float(model.fps), diffusion_steps=100, post_processing=cfg.get('post_processing', True),
-                           cfg={'enabled': True, 'text_weight': 2., 'constraint_weight': 2.}, num_samples=1)
-                if cfg.get('endpoints'):
-                    error = np.linalg.norm(output['posed_joints'][[0,-1]] - endpoint_pose['posed_joints'][0], axis=-1)
-                    cfg.update(endpoint_target='stand_idle/motion.npz frame 0', constraint_frames=[0,frames-1],
-                               endpoint_mean_error_m=error.mean(axis=1).tolist())
-                if constraint_targets:
-                    cfg['constraint_targets'] = constraint_targets
-                    errors = []
-                    for target in constraint_targets:
-                        if target['type'] == 'root2d':
-                            continue
-                        selected = [model.skeleton.bone_index[n] for n in target['joints']] if target['type']=='end-effector' else list(range(len(subset)))
-                        error = np.linalg.norm(output['posed_joints'][target['frames']][:,subset][:,selected]
-                                               - np.asarray(target['positions'])[:,selected], axis=-1)
-                        errors.append(dict(type=target['type'], frames=target['frames'], mean_error_m=error.mean(axis=1).tolist()))
-                    cfg['keyframe_errors'] = errors
-                if model.scene_guidance is not None:
-                    log = model.scene_guidance.log
-                    cfg['scene_guidance'] = dict(steps=len(log), first_penetration=log[0][1] if log else None,
-                                                 last=[round(v, 6) for v in log[-1][1:]] if log else None)
-                    model.scene_guidance = None
-                (folder / 'meta.json').write_text(json.dumps(cfg, indent=2))
+                texts = [segment['text'] for segment in segments]
+                lengths = [segment['frames'] for segment in segments]
+                common = dict(model='Kimodo-SOMA-RP-v1.1', text_encoder='matbee/kimodo-llm2vec-nf4', fps=float(model.fps),
+                              diffusion_steps=100, post_processing=cfg.get('post_processing', True), num_samples=1,
+                              multi_prompt=True, num_transition_frames=5,
+                              cfg={'enabled': True, 'text_weight': float(cfg['text_weight']), 'constraint_weight': CONSTRAINT_WEIGHT},
+                              scorer=dict(model=SCORER, score='(cosine(score_text, motion) + 1) / 2, TMR/t2m_sim',
+                                          score_text=cfg['score_text']))
+                segment_info = [dict(text=sg['text'], duration=sg['duration'], frames=sg['frames']) for sg in segments]
+                candidates = []
+                for k in range(int(cfg['samples'])):
+                    seed = cfg['seed'] + k
+                    seed_everything(seed)
+                    model.scene_guidance = scene_guidance()
+                    output = model(texts, lengths,
+                                   num_denoising_steps=100, num_samples=1, multi_prompt=True,
+                                   constraint_lst=constraints,
+                                   num_transition_frames=5, post_processing=cfg.get('post_processing', True), return_numpy=True,
+                                   cfg_type='separated', cfg_weight=[float(cfg['text_weight']), CONSTRAINT_WEIGHT],
+                                   progress_bar=lambda values: values)
+                    output = {k2: v[0] if hasattr(v, 'shape') and v.ndim > 0 and v.shape[0] == 1 else v for k2, v in output.items()}
+                    if len(output['posed_joints']) != frames:
+                        raise ValueError(f"Kimodo returned {len(output['posed_joints'])} frames, not {frames}")
+                    with torch.inference_mode():
+                        motion_embedding = scorer.encode_motion(
+                            torch.from_numpy(np.asarray(output['posed_joints'])).float().to(model.device), unit_vector=True).flatten()
+                    score = float(torch.dot(motion_embedding, text_embedding)) / 2 + 0.5
+                    candidate = dict(id=f's{seed}', seed=seed, method=cfg['method'], segments=segment_info,
+                                     text_weight=float(cfg['text_weight']), constraint_weight=CONSTRAINT_WEIGHT, score=round(score, 5))
+                    take = folder / 'candidates' / candidate['id']
+                    take.mkdir(parents=True)
+                    save_kimodo_npz(str(take / 'motion.npz'), output)
+                    tm = {k2: v for k2, v in cfg.items() if k2 not in ('segments', 'text', 'duration', 'samples')}
+                    tm.update(common, name=name, text=' '.join(texts), duration=duration, seed=seed, request_seed=cfg['seed'],
+                              segments=segment_info, score=candidate['score'], candidates_meta='../../meta.json')
+                    if cfg.get('endpoints'):
+                        error = np.linalg.norm(output['posed_joints'][[0,-1]] - endpoint_pose['posed_joints'][0], axis=-1)
+                        tm.update(endpoint_target='stand_idle/motion.npz frame 0', constraint_frames=[0,frames-1],
+                                  endpoint_mean_error_m=error.mean(axis=1).tolist())
+                    if constraint_targets:
+                        tm['constraint_targets'] = constraint_targets
+                        errors = []
+                        for target in constraint_targets:
+                            if target['type'] == 'root2d':
+                                continue
+                            selected = [model.skeleton.bone_index[n] for n in target['joints']] if target['type']=='end-effector' else list(range(len(subset)))
+                            error = np.linalg.norm(output['posed_joints'][target['frames']][:,subset][:,selected]
+                                                   - np.asarray(target['positions'])[:,selected], axis=-1)
+                            errors.append(dict(type=target['type'], frames=target['frames'], mean_error_m=error.mean(axis=1).tolist()))
+                        tm['keyframe_errors'] = errors
+                    if model.scene_guidance is not None:
+                        log = model.scene_guidance.log
+                        tm['scene_guidance'] = dict(steps=len(log), first_penetration=log[0][1] if log else None,
+                                                    last=[round(v, 6) for v in log[-1][1:]] if log else None)
+                    (take / 'meta.json').write_text(json.dumps(tm, indent=2))
+                    inspect_motion(take, names, parents)
+                    candidates.append(candidate)
+                    print(f"CANDIDATE {name} {candidate['id']} score {score:.5f}", flush=True)
+                model.scene_guidance = None
+                meta = {k2: v for k2, v in cfg.items() if k2 not in ('segments', 'text', 'duration')}
+                meta.update(common, name=name, segments=segment_info, duration=duration,
+                            seeds=[c['seed'] for c in candidates], candidates=candidates)
+                (folder / 'meta.json').write_text(json.dumps(meta, indent=2))
+                print('DONE ' + name, flush=True)
+                continue
             metrics = inspect_motion(folder, names, parents)
             print('DONE ' + name + ' ' + json.dumps(metrics), flush=True)
         except EOFError:
