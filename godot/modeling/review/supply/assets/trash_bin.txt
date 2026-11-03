@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\trash_bin.glb
+   size  x 0.580  y 0.920  z 0.535 m
+   box   min (-0.290, 0.000, -0.260)  max (0.290, 0.920, 0.275)
+   triangles 36: metal 12, metal_dark 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 65f8f8ee6f3ebbe2cd15d236cdccadc242559828be273602eed013213e701c53
+   REBUILD IDENTICAL

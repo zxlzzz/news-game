@@ -1,0 +1,9 @@
+{
+  "panel_overlap": 0.02,
+  "roof_door_setback": 0.04,
+  "backing_thickness": 0.18,
+  "floor_roof_thickness": 0.18,
+  "weld_tolerance": 0.00001,
+  "default_recess": 0.48,
+  "body_names": ["sealed_masonry", "sealed_lower_block", "setback_floor", "masonry", "rounded_corner_tower"]
+}

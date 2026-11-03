@@ -1,0 +1,27 @@
+{
+  "name": "turn_left_quarter",
+  "text": "A person stands still, then turns their whole body ninety degrees to the left using two small pivoting steps, and finishes standing still facing left. No walking away.",
+  "duration": 4,
+  "seed": 814,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "loop": false,
+  "root_average_speed_m_s": 0.08399532735347748,
+  "mapped_average_speed_m_s": 0.06624237172987182,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "turn_left_quarter",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

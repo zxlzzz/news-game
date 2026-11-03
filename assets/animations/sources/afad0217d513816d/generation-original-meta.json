@@ -1,0 +1,59 @@
+{
+  "name": "adjust_clothes_right_reference",
+  "text": "A standing person tidies their shirt collar using ONLY THEIR RIGHT HAND. Raise the RIGHT hand across the upper chest to grip the LEFT collar corner just below the neck, pinch it and pull the collar down clearly once. The RIGHT elbow bends naturally while the RIGHT hand grips at collar level. Then release the collar and lower the right hand beside the right thigh. The left arm stays down beside the left thigh throughout. Do not touch the face. Feet remain planted.",
+  "duration": 3.0,
+  "seed": 20261010,
+  "attempt": 1,
+  "scene": {
+    "activity": "adjust_clothes_right_reference",
+    "body_only": true,
+    "description": "Unedited right-hand collar tug reference for one real semantic contact frame."
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 89,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "afad0217d513816d157ce31de30a9ce94dd816585e9011683e1cdb388290e5e0",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

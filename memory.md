@@ -1,0 +1,547 @@
+# Project Memory
+
+Local project memo, updated only on Hsinlung's request ("更新memo").
+Detailed asset results belong in the linked inventories, not duplicated here.
+
+---
+
+## Motion: "摆木偶" (2026-10-14)
+
+- **Main task from 2026-10-15: make more good NPC motions** (the real-place scene is parked).
+
+- Plan + runbook + per-round notes: `docs/asset-production/motions/动作重做方案.md` (replaced the 10-13 plan). No review
+  page any more: he looks at the empty ground's "改好的" list (`godot/scenes/empty_ground/`, now the
+  project's main scene). Committed 2026-10-14 (4bece5d2..281febbe) and pushed (branch up to date with
+  origin as of 10-15).
+- Why the 10-13 plan failed (six review rounds): it generated with Kimodo for a real body and patched
+  the stick figure afterwards (scene guidance, dense pins, export push-out), using checks as the work
+  loop; checks measured another seat than the videos; objects did not fit the figure. Hsinlung:
+  checks are only for 对答案 — compute the answer first.
+- Now: clips that touch nothing = Kimodo + mapping as before. Clips that touch things get a `pose`
+  in `godot/npc/clip-setup.json` (marker names + times only); `godot/npc/pose_build.gd` puts hips,
+  feet and hands on object markers and solves limbs with the figure's lengths (hip width folded into
+  the thighs like the shoulders into the arms); Kimodo only adds torso/head sway. The bake then checks
+  every post/seat place the clip is used; >5 mm into an object = BAKE_FAIL.
+- Objects sized to the figure: bench armrests at the ends, one `post_sit` with a `span` child (people
+  sit anywhere with room, `npc/crowd.gd`); bus-shelter seat = bench seat; chess stools 0.37, table
+  0.67, smaller foot plate, hands rest on table edge markers; cafe-table stance 4 cm back; stall
+  vendor hands on the counter.
+- Status (10-14 night): ~40 clips built this way (20 street clips + a second batch of in-front-of-
+  object and hand-held clips; 悔棋 went back to the old way). Held things now turn with the forearm,
+  things on objects (chess pieces, pomelo) follow the hand between pick-up and put-down, held things
+  can appear/disappear (letter into the box, cash into the pocket). Bus-stop sign base is now a small
+  flange under the pole; lean_rail stands 25 cm further back; chess-table resting hands beside the
+  board; fountain hands on the side rims.
+- Elbow rule (his wording: one sentence, no new check): put hands where the figure's elbow hangs
+  naturally in front — about 0.35–0.45 m in front of the neck — and pole directions never point
+  backwards. Brief elbow-back moments (mid-reach, pocket) are fine. chess_think's hand-under-chin
+  still has the elbow ~10 cm back (arm lengths allow no better).
+- Open: cash vanishes on the counter instead of staying; trash and notice paper not shown in the
+  hand; placed chess pieces jump back when the clip restarts; selfie phone direction only rough;
+  weigh_fruit (arm brushes the stall) and hang_laundry (hand must go round the pole) not done;
+  held things vs. the head not checked at bake; the other ~100 touching clips, doors, swings,
+  two-person clips; two_streets dog walker on a roof (~3.6 m) floods errors — behaviour check
+  passes only without dog walkers. Kimodo-side `scene_guidance.py` etc. stay until the remaining
+  clips are redone, then go together.
+- Lessons from his 10-14 feedback: before building a pose, think how a real person does it (fan:
+  hand at the chest, elbow down, only the wrist flicks); when reviewing, watch the whole clip and
+  whole figure (upper arm, held object, "does it read as that action"), not a thumbnail of the
+  hand position; when an object doesn't fit the figure, change the model directly instead of
+  reporting the numbers to him.
+- **"follow" trial (10-15, uncommitted, in the working tree)**: a pose may say `"follow": true`;
+  positions still come from markers, but when the hands stop and the clip's length come from the
+  Kimodo source (`stopSpeed`/`stopMin` in `npc/motion-bake.json`). Tried on throw_trash, drink,
+  atm_take_cash; notes and open points in `docs/asset-production/motions/动作重做方案.md` §7. Not reviewed by him yet.
+- **"Motion first, objects fit the motion" trial (10-15), failed and reverted.** Rule he set for
+  it: Kimodo generates each clip alone (text, length, stand_idle endpoints only), no frame changed
+  afterwards; objects moved/rebuilt to fit the hands. Done on throw_trash, drink, atm_take_cash
+  (several rounds: fixed lengths, SEED-derived lengths, 8 seeds each, then a mapping change); every
+  round looked worse than the 摆木偶 versions, he had it all reverted. What it showed:
+  - The Kimodo human itself is mostly right in the data (cup at the mouth, cash held at the chest);
+    the stick-figure mapping distorts it. Direction mapping lifts raised hands (mouth -> forehead,
+    chest -> face) because the figure's arms are longer and grow from the neck and its head is ~2x
+    a real head. Placing hands by their position from the neck instead (tried, scaled so a hanging
+    arm stays straight) fixes the height but splays the arms outward (the figure has no shoulders)
+    and sticks the upper arm out sideways — worse. Neither works as is.
+  - Hands touching the figure's own body (mouth, face, pocket) are a gap "objects fit the motion"
+    cannot cover: those points are on the figure and can't be moved.
+  - Kimodo adds its own steps to vague text (lifts the cash to look at it on every seed of 8) and
+    varies a lot per seed; it also spreads an action over whatever duration it is given, so it
+    cannot report an action's natural length.
+  - Next idea, not done: render the raw Kimodo skeleton beside the stick figure, to separate
+    Kimodo faults from mapping faults by picture.
+- **Durations**: don't estimate them. From Hugging Face `nvidia/SEED-Timeline-Annotations`
+  (`timelines.jsonl`, annotations only): in each motion of the same (or nearest) kind, add up the
+  consecutive segments that match what our clip does, from leaving standing to standing again;
+  take the median of those sums. One SEED segment is only one atomic part (raise / drink / lower),
+  so single-segment medians are too short. 10-15 results: throw_trash 2.35 s (6 sums), drink
+  4.40 s (41), atm_take_cash 4.77 s (2, from ticket_validation — no ATM motions exist).
+- My failure in that trial, his words "你tm自己不会看的是吗": each round I changed one thing and
+  handed it over after a few numbers or zoomed frames. Before showing anything, watch every clip
+  whole, whole figure, and say up front what the method cannot fix.
+- Don't edit `godot/` files while `record_clip.py` runs (bake fingerprint goes stale).
+- `assets/animations/sources/` (119 MB, Kimodo source files) is committed: the inventories cite it.
+- Talk plainly; technical choices are mine, only ask him what he can judge.
+
+## Saved real-place context — SDU Weihai (2026-09-29)
+
+- **What it is**: an experiment toward a reusable pipeline — given a place (or an area he
+  marks on a map), scripts fetch data and build a complete scene by themselves. He wants the
+  automated route: do not ask him for site facts he knows personally. Method (three strict
+  stages): `docs/scenes/scene_reconstruction_workflow.md`. Record of what each step needed:
+  `research/sdu_weihai/复刻记录.md`; sources and licences: `research/sdu_weihai/来源.md`.
+  Scene `godot/scenes/sdu_weihai/`, scripts `godot/real_place/`, rebuild steps:
+  `godot/README.md` "山大威海校区".
+- **Stage 1 (地基) accepted 2026-09-29** and committed as 11bff52 on
+  `claude/velocity-unification-v1-946h9l` (with the earlier shared-code changes:
+  `core/terrain.gd`, ground slot, level.gd); pushed since.
+- **Parked 2026-10-15.** He looked at the rule-based terrain: still not close to reality; real
+  height data has to come from some other source. Don't work on this scene until he brings it
+  back; the main task is more good NPC motions.
+- **Heights now by design rules (2026-09-29, committed in 38f3d0f2 on 10-05; judged not close
+  enough 10-15)**: after the
+  round-2 trial he said "直接开始做吧，我看看咋样". `real_place/terrain_rules.py` (called by
+  `build_ground.py`, numbers and code clauses in `ground.json` `rules`) replaced the old
+  flatten + 2 m smoothing: flat pitches/plazas/pads/platforms/lakes, floor +0.15 m, roads <= 8 %
+  (DEM's own grade kept where it is steeper over 100 m — ~2.1 km on the north hill), grass banks
+  20 %..0.67, steps or walls half way across gaps that are too narrow, part of a drop above 3 m as
+  a wall; equal to FABDEM over 60 m (mean 0.08 m, max 2.4 m inside the stadium), open ground kept
+  within the DEM's 60 m min/max, no final smoothing. Writes `drops.bin/json` + `drops_m.bin`
+  (grass bank / steps / wall per cell, for stage 3). Scene terrain.bin is identical to the trial.
+  Headless import run; he has not seen it in the game. Known weak spots: one flat pad per
+  building gives 6–15 m walls on hillsides; ~10 km of low (median 0.25 m) walls where pieces touch
+  (really curbs); the rules put drops only on OSM/hand-traced edges, so against surveyed points it
+  is no closer than the old terrain (RMS 0.96 m both).
+- **Next agreed step: stage 2 (画线), library (主楼) and surroundings only first.** Start with
+  building footprints (OSM, fixed against the imagery). Building heights: OSM has levels on only
+  2 of 540 buildings. He asked "is the shadow the only way?" — I proposed downloading a
+  published per-building height dataset (CMAB / 3D-GloBFP / CNBH-10m) and cross-checking with
+  roof shift and shadows; **waiting for his OK to download**.
+- **Terrain trials (2026-09-29)**, tasks written by the Claude client and pasted by him, in
+  `research/sdu_weihai/terrain_trials/` (committed in 38f3d0f2; `raw/` dirs git-ignored, ~1.3 GB).
+  Round 1 (`报告.md`): the satellite image can't measure campus terraces (sun due west, they run
+  east-west); 天地图 needs a key and blocks this machine (Singapore egress via his proxy); forward-
+  flying drone clips fail in COLMAP (untried: 全景航拍 110.5–113.7 s, a lateral truck). Round 2
+  (`round2/报告.md`): **ggzyjy.weihai.cn attachments download without login** — the 2019 research-
+  building drawings include a site plan over a surveyed topo map (1985 datum, 威海97 grid; aligned
+  to the scene, ~1–2 m) giving 1881 spot heights in the south half of campus (z 213–760) plus
+  design levels and manhole covers (`round2/points.csv`); FABDEM–survey constant offset ~0. Area A
+  really drops in two tiers (9.7 → 7.9 → 6.0). SDUcraft Minecraft save: no public download. The
+  survey is for checking only, never for tuning rules.
+- **Installed 2026-09-29 with his OK**: COLMAP 4.2.0 CUDA (`D:\colmap`), yt-dlp (`D:\yt-dlp`),
+  LibreDWG portable (`D:\tools\libredwg`, dwg2dxf), ezdxf in `D:\anaconda` (the default python).
+- **Tool note**: the auto-mode safety classifier sometimes gives no verdict; retrying once
+  usually works. Keep CRLF files CRLF (README.md, slots.tres, gray.tres).
+
+## Earlier cache (2026-09-27/28)
+
+- The clip-setup / empty-ground work and the real-model dogs and cat were committed in
+  8da01ce. How to use the empty ground: `godot/README.md` "空地". Open questions I left him:
+  which other two-person clips to declare (whisper, walk_talk, walk_child_hand_down…);
+  give/receive reach at different frames (80 vs 29).
+- **Animals are going to real models (decided 2026-09-27; done in 8da01ce).** He found the procedural dog
+  ugly (every drawn variant, above all the legs) and ChatGPT's own dog_labrador (Skin
+  modifier build) too. Chosen source: **Quaternius Ultimate Animated Animal Pack (CC0)** —
+  he likes `Husky.blend` as is (black). Street use: Husky, ShibaInu; plus `Cat.blend` from
+  Animal Pack Vol.2 if rigged (his `animals.zip` download is truncated). Pigeon stays
+  procedural. His local copies: `%TEMP%\dog_library\`.
+  - Plan: ChatGPT converts them (brief I wrote, given 2026-09-27): real size (shoulder:
+    husky 0.55, shiba 0.39, cat 0.25 m), +Z forward, origin on the ground under the front
+    shoulder joints, one material `animal_ink`, keep original bone names, delete IK / pole
+    bones (merge their weights into the leg chains, bake actions first), keep the original
+    actions as glTF animations, 6 extreme test poses (sit, sphinx, side-lie, leg lift,
+    sniff-turn, tail up/down) rendered; delivery in `delivery/models/animal_<name>/` with
+    `convert_<name>.py` + `verify_<name>.py`; originals stay outside the repo in
+    `D:\Godot\assets\quaternius-*`. `check_model.py` now accepts `animal_ink`.
+  - My part: map my procedural points to its bones (Quaternius rig: hind BackLeg →
+    BackUpperLeg → BackLowerLeg + paw, front FrontUpperLeg → FrontLowerLeg + paw, 5 spine,
+    3 neck, 4-bone ears, 6 tail) and drive a Skeleton3D each frame, keeping foot planting,
+    curbs, leash and the in-place actions; its baked actions (Eating, Idle…) can be played
+    directly. Read leg lengths / heights from the skeleton instead of dog-params.json.
+    Check sit / lie deformation first (the source has no such actions).
+  - `delivery/models/dog_labrador/` (ChatGPT's own build) is superseded: rig was right,
+    shape was not; delete it once the Quaternius Husky is in.
+  - **How he will come back to this**: either "do the animal motion" (I integrate straight
+    away: convert if needed, drive the bones, show the empty ground) or "ChatGPT has
+    delivered, review it" (review per the brief above, then integrate).
+
+- **Committed 2026-09-27** on `claude/velocity-unification-v1-946h9l` (he keeps using this
+  branch): batches 5 and 6 as accepted, animals (cat, pigeon, dog in-place actions), the
+  behaviour table, the orbit camera, the walk-grid cache and the two-streets scene.
+- **Main scene now: `godot/scenes/two_streets/`** (two 200 m streets, back-to-back
+  residential block between them, commercial side, park side, 100 m backdrop ring; ~60 fps
+  with 100 walkers). Requirements: `docs/scenes/two-streets.md`; implementation notes:
+  `godot/README.md` "两条街". The layout is generated by `godot/tools/two_streets_layout.py`
+  (rerunning overwrites editor edits). Camera: orthographic, rotate + pitch + zoom
+  (`core/orbit_camera.gd`, numbers in `core/camera-params.json`); he wants to keep ortho for
+  now but may switch to perspective any time — it is one setting (`projection`).
+- **Behaviour**: implemented per the scored-candidate design he asked for (one global table
+  `npc/behaviour-table.json` for weights, `npc/behaviour-people.json` for per-person
+  multipliers — deliberately only one person kind, he will rewrite it). Status and what is
+  missing are at the top of `docs/behavior-system/design_route_npc_behavior.md`.
+- **Open / next** (reported to him 2026-09-27, waiting for his look at the scene):
+  - `commercial_plaza` still to come from ChatGPT (top at y = 0.45 m, two 0.15 m steps down
+    to the sidewalk); `delivery/进度.md` tells ChatGPT what is left.
+  - Backdrop blocks around the scene are empty (no buildings).
+  - Walkers sometimes change their mind mid-walk; the "people nearby" candidate source
+    ("look at others", pairs) is not done — wait until he has tuned the behaviour table.
+  - The old `street_demo` crosswalks are rotated wrong; not fixed because I must not touch
+    `street_demo` unless he asks.
+  - These are historical street-scene gaps, not current asset status. Stairs, doors and
+    object motions now have independent empty-ground playback. Their street-scene
+    behaviour integration, walker avoidance and driving must be checked in current code
+    before planning work; the existence of assets does not establish that integration.
+- He said my misses are hard for him to tell apart from deliberate omissions (the
+  crosswalk case): in reports, list known gaps explicitly.
+- **Reviewing ChatGPT deliveries** (`delivery/`, rules in `delivery/README.md`; ChatGPT's
+  brief and my answers to its questions: the last section of `AGENTS.md`, git-ignored). He
+  lets me decide accept / send back on my own; things to redo stay in `delivery/`.
+  Batch-6 extra rules (road modules without thickness, open joint ends, disable mesh
+  compression on import; building origin at the front wall foot) are at the end of
+  `delivery/进度.md`.
+- **How to review each kind** (report plainly; he judges by pictures):
+  - Models (`delivery/models/<name>/`): run `godot/modeling/check_model.py`; rerun the
+    `build_<name>.py` (Blender or Python) and confirm the GLB is byte-identical; check the
+    说明 (sizes, slots, origin, interaction points); look at it in Godot
+    (`godot/modeling/review_models.tscn`, or a screenshot) against 模型制作说明 §5 / §10.
+    Hand-held things are named `held_*` (§12): origin = grip point, `grip_left/right`,
+    `strap_top`; the checker switches rules on that prefix. Accepted: GLB → `godot/models/`,
+    build script → `godot/modeling/`; a `types/<name>.tscn` (with post markers etc.) is
+    made when the model is first used in a level.
+  - Human motions (`delivery/motions/<name>/`): check against the execution rules in
+    `docs/asset-production/motions/动作生成任务清单.md` (review notes in `meta.json`, 77-joint data, hand close-ups
+    for contact, front/side sheets). Loops must have first frame = last frame up to root
+    travel; measure it (root-aligned max joint gap). Accepted: move to
+    `assets/animations/npz/<name>/`, add loops to `assets/animations/clip_endpoints.json`
+    (`loop: true`), rerun `scripts/export-npc-motion.py` (it closes seams ≤15 cm, stops on
+    bigger ones), tick the queue and add a row to `docs/asset-production/motions/动作素材清单.md`.
+  - Animals: code goes straight into `godot/npc/` + `godot/tools/` (only the files listed
+    in `delivery/README.md` may change); `delivery/animals/` holds notes and previews.
+    Check `check_locomotion.gd` still says LOCOMOTION_OK, `dog_walker.gd`'s interface is
+    unchanged, `crowd.gd` / `core/` / `scenes/` / `types/` untouched (`git diff`), numbers
+    in JSON, and look at the preview scene. Street-scene integration is mine, later.
+- `godot/scenes/street_demo/` is the older one-street demo; do not modify it on my own.
+
+## Visual direction — open, as of 2026-09-24
+
+- Chants of Sennaar is still the preferred direction (10 reference shots in
+  `docs/visual-reference/`), but **the palette must stay black/white/gray**; a coloured
+  result that pleases does not count. Either make palettes work for any hue under stated
+  relations, or optimise gray only.
+- Hsinlung's palette rule: the "paper" (background and the dominant large surfaces) is
+  **the lightest gray in the picture, and not white**. My 0.62 mid-gray paper test was
+  "too dark".
+- His current judgement: the palette is not the key problem — **scene density** is; a
+  somewhat denser street should look more natural. Hence the expanded model list.
+- Findings from the style study (`godot/studies/style_steps/`, renders in `out/`), not yet
+  applied to the game: light should hit the street-facing fronts (current `view.tscn`
+  light puts every front in the hatched grazing band); 4x MSAA visibly cleans lines;
+  window/door recesses need ~0.5 m depth to read; roofs must not be one bright lid (both
+  delivered buildings cap the roof with a full `trim` slab); the brightest slots must stay
+  on small areas; the global `window` slot is `flat`, which hides shadows inside recesses.
+  Sennaar's fitted colours converted to equal-luminance grays gave walls ~0.91, dark
+  multiplier ~0.40 and line colour ~0.39 gray (ours: 0.68 / 0.58 / 0.12).
+- He cannot yet say what he wants; show pictures rather than ask abstract questions, and
+  do not stack follow-up proposals at the end of a report.
+- **Scale (2026-09-25): sizes stay as they are.** Everything is at real size (adult 1.74 m,
+  door 2.2 m, buildings 8–11 m); NPCs look small because the default view is 42 m tall
+  (person ≈ 35 px). He decided it is a zoom question and dropped my proposal to shrink the
+  architecture; zoom now exists in `two_streets` (view height 8–150 m). Screenshots at other
+  zooms: `godot --path . -- --size <metres>` (14 m gives a ~120 px person).
+
+## NPC mapping — accepted 2026-09-20
+
+- 规则与参数唯一文档入口：`docs/asset-production/motions/npc-skeleton-mapping.md`。源数据保留 Kimodo SOMA77 `posed_joints`（米、Y 向上），映射用其中 16 个源关节；不是直接抽 11 点，也不把映射结果写回资源。
+- 造型：实心圆头；无肩/胯横线、胸口折点、手指或脸；四肢从颈根/胯发散。等宽圆头线，躯干/脖子线宽乘 1.15；头与线段按深度排序，不画影子。
+- 下半身和根位移随腿长同比缩放，两骨 IK 解膝；头部在躯干局部坐标系扣除站姿固有前倾；肩向量分配给两段手臂，举臂最小张角 70°，平滑向侧方展开并同步旋转前臂。
+- 参数由 Hsinlung 定下，约 0.58m / 4.9 头身是有意的画风，不按成人真实比例纠正。具体数值只维护在 `docs/asset-production/motions/npc-skeleton-mapping.md`，不沿用旧预览默认值。
+- 已接受取舍：cheer 头顶合手会被分开；cross_arms 正面像十字；photo_overhead 前举手臂会遮脸。不要再次作为待修缺陷。
+- 后续落实要求：共用纯映射函数 + 独立参数 JSON，供调参、出图、运行时消费；之后支持单动作微调。参考 HTML 当前仍用全局参数/内嵌默认值，尚未完成共用模块化；规则已定不等于集成已完成。
+- 简检：参考 HTML 内置 6 条/660 帧，默认参数下无无效坐标，骨段长度和缩放后踝目标误差仅浮点精度。63 条总览是图像证据，不等于全部动作逐帧验证；未证明通用防穿模或精确手掌接触。
+
+## Motion playback contract — accepted 2026-09-19
+
+- `docs/behavior-system/design_route_npc_behavior.md` / `docs/asset-production/motions/design_route_npc_motion_supply.md` §5：防止的是
+  NPC 位置瞬移，不要求统一首尾姿势。行为可在任意帧切换，不保证播完。
+- 位置接续归未来播放端：下一片段接在 NPC 当前位置，消费相对根位移，不直接
+  套用素材绝对坐标；与导航协调速度、方向和避障，不能重复累加位移。
+- 一次性/持续/移动由行为侧使用方式决定，不强制素材分类字段或文件夹。
+  首尾约束、循环加工、进入/保持/退出分段均可选；需要分段可标在同一素材上。
+  （2026-09-25 起：凡是要循环播放的素材——走路类等——必须首尾同姿势，见 `docs/asset-production/motions/动作生成任务清单.md` 执行约定。）
+  相同端点不保证自然循环，同脚两次落地也不保证全身/朝向接缝连续。
+- 当前设计允许立即换动作，不强制先播退出。蹲姿切行走等姿势跳变，实际看到
+  不能接受时再补过渡，不提前扩成素材返工要求。生成 worker 已按需开启约束。
+
+## Kimodo motion assets — current production track
+
+- Full-body single-person NPZ assets are stored in
+  `assets/animations/npz/<simple_english_name>/motion.npz` plus `meta.json`.
+  Current object-motion work also exports native SOMA data for Godot playback.
+  Clips that touch things are now built on the figure (`docs/asset-production/motions/动作重做方案.md`), not from contact keys.
+  No `v2`/`seed42` in names; use trailing `1`, `2` only for intentionally retained
+  parallel motions. Selected assets are in Git. Attempts/parameters belong in
+  metadata and Chinese inventories, not additional deliverable versions.
+- Queue authority is `docs/asset-production/motions/动作生成任务清单.md` (batches 5 and 6 accepted by 2026-09-27;
+  its 执行约定 now also rules: full-body constraints only on a few key frames, no frozen
+  frames, contact and sizes judged on the in-game stick figure). ChatGPT generates,
+  delivering to `delivery/motions/`. G/H stay inventory only. Do not
+  automatically retry deferred motions, especially head nod/shake or unsupported finger
+  gestures.
+- Loop recipe (walk, jog, walk_dog, eat_walk, phone_walk): take one clean gait cycle of a
+  free "pilot" take, constrain the new take with full-body keyframes of that cycle
+  (repeated with the stride as translation, plus the neighbours of both ends), so the last
+  frame repeats the first. Kimodo wobbles between keyframes in the first cycle of a
+  multi-cycle take (seen on every seed for `eat_walk`); taking the later clean cycles is
+  accepted and recorded in `meta.json` `trim`. Contact labels can differ on identical
+  poses, so the export's foot check only runs when there is a seam to spread.
+- Prompt engineering is our responsibility: describe visible limb motion, side,
+  sequence, hold and release; duration per action from SEED timelines (see Motion above). Generation success or a
+  matching prompt is not quality evidence. After repeated semantic failures,
+  reassess and record why the motion is deferred instead of endlessly changing seeds.
+- Review front/side samples and motion data; inspect consecutive frames around
+  suspicious peaks. Use all 77 joints and hand close-ups for contact/hand gestures:
+  **nearby wrists do not establish palm contact**. Simplified skeleton sheets hid
+  crossed palms/fingers in `clap`/`palms_together`, so those were rejected. Moving
+  clips need a camera following the root plus separate world-displacement checks.
+- SOMA-RP predicts 30 joints; exported finger joints use fixed relaxed local poses.
+  Text cannot independently shape thumbs-up or fist/palm salutes. Do not mistake
+  plausible arm placement for correct hand articulation. Record actual limitations
+  (fast movement, incomplete release, minor ground/contact issues) per asset; no
+  promise of skin collision checks, precise prop grasping or seamless loops.
+- Reusable worker: `scripts/kimodo_motion_batch.py`, one JSON request per stdin line,
+  e.g. `{"name":"smoke","text":"A person ...","duration":4,"seed":42}`; `quit`
+  releases the model. It writes candidates and review sheets/metrics, never selects
+  a result or schedules the next motion. Standard settings: 30 fps, 100 steps,
+  text/constraint CFG 2/2, `num_samples=1`, official post-processing enabled.
+- Detailed review: `scripts/kimodo_review_detail.py <folder> [<folder> ...] --hands`;
+  `--frames` accepts exactly seven indices for focused continuity checks. Run in
+  Kimodo's Python environment. Prior temporary batch sheets were cleaned; they can
+  be regenerated from retained NPZs. Experiment evidence below remains available.
+- Environment: fork source `C:\kimodo-trial\kimodo` mounted at `/workspace`;
+  `compose.win.yaml` in that directory. Containers: `kimodo-nf4-text-encoder-1` and
+  `kimodo-nf4-demo-1`; preview `http://localhost:7860/`. Model
+  `Kimodo-SOMA-RP-v1.1`, encoder `matbee/kimodo-llm2vec-nf4`. RTX 4060 has 8 GB VRAM.
+  Docker Desktop may need starting first. Stop only the demo, keep the encoder, copy the
+  worker into the mounted folder and run it with
+  `MSYS_NO_PATHCONV=1 docker compose -f compose.win.yaml run --rm -T --no-deps -e TEXT_ENCODER_URL=http://text-encoder:9550/ demo python -u /workspace/<tmp>/kimodo_motion_batch.py --output /workspace/<tmp>/out < requests`
+  (worked 2026-09-25); afterwards delete the temp folder and `start demo` again.
+- Endpoint and contact evidence: `assets/animation_checks/endpoint_constraints/` (deleted
+  2026-09-28, in git history e55fd50) and `scripts/kimodo_constraint_probe.py`.
+  Six contact columns are LeftFoot, LeftToeBase, LeftToeEnd, RightFoot, RightToeBase,
+  RightToeEnd (77-joint indices 69/70/71/74/75/76). ToeEnd duplicates ToeBase in the
+  four-to-six-column export; these are thresholded model labels, not zero-height tests.
+- Fork supports `FullBodyConstraintSet` through `constraint_lst`, using model 30-joint
+  positions and global rotations mapped from SOMA77. `cross_arms` and `hands_on_hips`
+  trials constrain both endpoints to `stand_idle` frame 0: both enter/hold/release,
+  but most action occurs in the first half. Mean endpoint error across 77 joints is
+  about 0.000442 m **including official post-processing**, not raw diffusion accuracy.
+  These trials did not replace the original holding-pose assets. Worker support:
+  `--endpoint-pose <stand_idle motion.npz>` plus request `"endpoints":true`.
+  Choose constraints per motion; do not force a common start/end onto walking/turning.
+
+## Third-party model libraries (removed from the repo 2026-09-25)
+
+- The game uses none of them now; new models come from ChatGPT. Exception from 2026-09-27:
+  the animals (Quaternius Ultimate Animated Animal Pack, CC0), see the cache above. The repo copies were deleted:
+  `assets/fromgodot/quaternius-*` (Downtown City / Stylized Nature MegaKit, ~2.2 GB, never
+  tracked) and `assets/fromgodot/street-selected/` (19 CC0 props, history in git, with its
+  `SOURCES.md`; the chess table survives as `godot/models/Chess_Table.glb`).
+- If needed again: original downloads in `D:\Godot\assets\Downtown City MegaKit[Standard]` and
+  `...\Stylized Nature MegaKit[Standard]` (or quaternius.com). The deleted repo copy had three
+  buildings' `MI_FakeInterior_*` materials blackened (script
+  `sth/asset-import-spike/tools/blacken_fake_interiors.py`, in git history); the D: originals
+  do not. `godot/core/material_maps/quaternius.tres` still maps their material names.
+- Blender `D:\steam\steamapps\common\Blender`, Godot `D:\Godot`.
+
+---
+
+## Meta: how "更新memo" works
+
+When Hsinlung asks to "update memo", it means two things, not just one:
+
+1. **Add** new content (facts learned, decisions made, plans agreed on).
+2. **Remove** stale content — this is the part that's easy to skip and
+   shouldn't be. Prune regularly, don't just accumulate.
+   - Forward-looking plans / roadmap items → keep.
+   - Ideas that turned out wrong, abandoned approaches, resolved
+     one-off issues → delete outright, don't hoard them "just in case".
+   - Unsure whether something is still relevant → ask Hsinlung instead
+     of guessing either way (keep-by-default or delete-by-default are
+     both wrong defaults here).
+
+There is no automatic second trigger: maintain this file only when Hsinlung
+explicitly asks. Finishing a patch does not by itself authorize a memo edit.
+
+## Git 与临时交接文件（2026-09-20）
+
+- 不自动提交；等 Hsinlung 明确要求再 commit。旧的“每个 patch 自动提交”约定已被此次指示替代。
+
+---
+
+## Collaboration workflow with Hsinlung
+
+- Treat Hsinlung as technically fluent and as the project's final decision-maker.
+  This is a **collaborative, co-designed** process — not "Hsinlung specs it,
+  Claude executes it".
+- Investigate discoverable facts independently. Ask only when uncertainty is
+  genuine and different answers would materially change the work. Running the
+  game/harness is a separate permission boundary described below.
+- Standard shape of a task, start to finish:
+  1. Hsinlung proposes a need.
+  2. **Jointly analyze the need together.** This step is mandatory —
+     do not jump straight to a plan/report the moment Hsinlung finishes
+     describing something. Discuss first.
+  3. Draft an initial design.
+  4. Iterate and refine the design together.
+  5. Write the finalized result into `tasks.md`.
+  6. Execute strictly in `tasks.md`'s stated order and requirements.
+- Once a task is already fully spec'd in `tasks.md` (steps 1-5 already
+  happened, possibly in an earlier session), step 6 doesn't need a fresh
+  round of discussion before starting — that discussion already happened
+  when it was written down. Low-level implementation gaps the spec
+  doesn't cover (a rendering architecture detail, which of several
+  reasonable approximations to use) are Claude's call: pick a reasonable
+  default, document the reasoning in code comments/roadmap, and flag it
+  in the report back — don't stall progress asking about every one.
+  Confirmed 2026-08-11 during O-2 (Hsinlung: "没实际问题就一直工作就行
+  ... 发现问题再修改即可").
+- If a reported bug survives two genuine fix attempts, offering to just
+  remove the feature is a legitimate next move, not a cop-out — don't
+  keep re-diagnosing the same spot for a third narrower patch on your own
+  initiative. Case: a camera-follow-viewfinder feature got two rounds of
+  fixes (real root causes each time) and Hsinlung was still unhappy with
+  the feel; he asked to delete it outright rather than a third attempt.
+  Comply directly — don't argue for one more fix first.
+  **How that one actually ended (2026-08-11)**: deleting it broke the
+  feature (with the viewfinder still in world coordinates, killing the
+  follow logic meant you could drag it to the screen edge and never
+  reach the rest of the world), so Hsinlung reverted the deletion. What
+  finally worked was neither another parameter tweak nor deletion, but
+  **reframing what the thing is**: the viewfinder stopped being a patch
+  of world ground and became a screen-space UI rectangle floating on
+  the top layer, independent of camera pan/zoom — at which point the
+  camera had no reason to follow anything and the logic was deleted for
+  free. Lesson: after two failed fixes, the productive move is usually
+  to question the object's coordinate system / ownership, not to tune
+  the algorithm a third time. Hsinlung specified this reframing himself.
+
+## Running the game — recorded task scope
+
+- 2026-10-12 he allowed me to launch the game and take screenshots myself for the
+  motion investigation ("我允许你自己启动游戏自己截图看"), deleting what is not needed
+  afterwards. Motion production itself waits until he asks.
+- Earlier recorded Godot scopes were foundation/style imports and screenshots
+  (2026-09-23), followed by delivery and two-streets checks (2026-09-26), with
+  Blender rebuilds. These dated scopes do not grant permission for unrelated work.
+- Preserve unrelated work when comparing old versions. Use saved evidence or an
+  isolated read-only historical copy; do not switch the current dirty checkout.
+  Keep temporary capture windows/helpers out of his way and close them after use.
+
+## Working style (from the 2026-08 O series, still valid)
+
+- Once a batch is spec'd, run straight through it and only stop for things that
+  genuinely need his decision. Don't check in after every sub-step. (Committing
+  still waits for his explicit request, see above.)
+- He reviews by looking at the picture, not the code: "我毕竟看不到实物"
+  / "我发现问题再修改即可". So the useful report back is *what changed
+  visually* and *what he should look at*, not a code walkthrough.
+- He spots real bugs from the rendering. When he says something looks off,
+  take it literally and go measure.
+
+## Product purpose and visual identity
+
+- Long-term structure: build a reusable simulated society first, then close the
+  game loop in which the player photographs street events, writes/publishes news,
+  and the report visibly changes beliefs and eventually society parameters.
+  (The old js design docs for this — witness memory, belief layer, news pipeline — were
+  deleted 2026-09-25; they are in git history if ever wanted.)
+- The thematic anchor is the Loftus misinformation effect: witnesses are altered
+  by post-event information and leading questions; framing does not merely describe
+  the simulated world, it participates in constructing it.
+- Stick figures are a deliberate product choice, not temporary programmer art. The
+  shared skeleton keeps animation/accessory production reusable, while the absence of
+  facial expressions preserves ambiguity about what an observed action means. The
+  overall palette is no longer assumed to be permanently grayscale: grayscale or other
+  colour treatments may be scene-level Looks, but must not be baked destructively into
+  reusable models. Visual improvement should strengthen spatial credibility and
+  readability without accidentally removing that ambiguity.
+- Innovation and portfolio quality take priority over speed; there is no deadline.
+
+## 3D asset principles (from the 2026-09-03 pipeline; Pixi-render parts dropped 2026-09-24)
+
+- Models keep their source colours / semantic material names; grayscale, palettes and
+  outlines are scene-level Looks, never baked into a model (a baked-gray batch lost hue
+  and detail and was deleted). Removing a model's confirmed harmful content is allowed.
+- Buildings are complete assembled types: shell plus independent reusable door,
+  window, sign and furnishing parts. Review the complete type; retain real pivots and
+  contact surfaces on its parts. The shell GLB alone is not the finished building.
+- Real directional shadows are kept; they must come from geometry and light for
+  environment, vehicles and NPCs alike, never fake foot circles. (NPC sticks currently
+  cast no shadow, per the 2026-09-19 decision.)
+
+## Motion framework background — separate from current NPZ production
+
+- **Breadth first:** many distinct-meaning actions across scenes; within-action
+  individuality is secondary and cannot create new meanings. The assistant does
+  the generation/review work; Hsinlung reacts and spot-checks. Avoid demanding a
+  large classification exercise from him before producing useful assets.
+- “动作系统重构” also includes the runtime NPC behavior framework. Producing NPZs
+  does not mature that framework, prove skeleton sufficiency or authorize runtime
+  migration. Registering, composing and scheduling new actions remain separate work.
+- The former "still design/not implemented" motion-supply status and compression
+  survey next step are superseded by the current Kimodo batch and its two inventories
+  above. No new Mixamo mapping, pose-cache format or overlay refactor is implied.
+
+## Priority and quality target clarified 2026-08-25
+
+- Building a reusable society-simulation foundation first, then making the news
+  game on it, is both Hsinlung's personal development approach and the project's
+  formal long-term direction; he is the sole developer, so these are not separate
+  tracks.
+- Current strict priority is: continue improving the picture first → refactor the
+  action system (both behavior maturity and action supply/reuse) → only then add
+  new content.
+- Visual acceptance is not “good enough for the style.” The deliberate stick-figure
+  style remains while the final palette is open, but everything outside that choice
+  should aim for an ideal result: scale, spatial credibility, composition,
+  hierarchy, readability, motion presentation, and the feeling of a coherent real
+  street. The current post-O-series result is still unsatisfactory.
+- One authorized live inspection on 2026-08-25 found that individual anchors such
+  as the human, car, and bench are broadly plausible in isolation, but the whole
+  scene is not. Empty sky/road/park occupy too much of the frame; buildings read as
+  thin backdrop slabs rather than the dominant built mass; repeated large trees
+  overpower people and props; at the particular inspected zoom, pedestrians and
+  their social actions were too small to read; and the oblique ground does not yet
+  form a convincing common volume with mostly frontal vertical objects. Building
+  floor proportions and thin top/side faces are especially weak. The single
+  inspected zoom does **not** prove that the camera system lacks an action-readable
+  scale, because its zoom range was not evaluated; do not generalize that symptom
+  into a fixed-camera requirement.
+- **Corrected visual root-cause hypothesis (2026-08-25):** do not demand one fixed
+  “canonical frame,” an exact street range, or one ideal on-screen person size. The
+  player already has zoom, pan, and adjustable capture framing, so there is no single
+  truthful number. The useful requirement is functional and multi-scale: the player
+  must be able to move into an action-readable view where pose, gesture, participants,
+  and what they are doing can actually be understood; wider views can serve discovery
+  and context. The visual system must remain coherent across that zoom range. Start
+  assessment from a representative action at an action-readable zoom, then check that
+  the same street still holds together when widened. Camera framing, street-band
+  proportions, building mass, and projection should support this range. Prop-by-prop
+  polish should come after this functional readability is established.
+- **Further correction from Hsinlung:** action-readable zoom is an engineering acceptance
+  condition, not the starting point of the visual rebuild. The main design problem remains the assembled
+  world's spatial coherence: ground plane, building mass, vertical objects, proportions,
+  depth cues, and scene hierarchy must read as one street across views.
+## Standing permission: add tooling freely (2026-08-12)
+
+Hsinlung: "你如果觉得没问题直接加些你会用的工具也行，以后想加就直接加不用和我
+特意说（除非大到进不了 github）". So: **add skills, check scripts, dev
+harnesses etc. without asking.** Only flag it if something would be too
+large to commit. Describe any new tool briefly in plain language when it matters.
+
+Execution follows the recorded task scope above. Installing new software
+still requires permission and must use the D drive.
+
+`/.claude/` in the repo is gitignored (local only). Don't confuse it with `~/.claude/`, which is
+Hsinlung's personal Claude Code state (session logs, global settings, and
+the separate auto-memory directory) and has nothing to do with the project.

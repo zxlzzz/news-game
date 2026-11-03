@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_corner.glb
+   size  x 10.660  y 16.600  z 10.730 m
+   box   min (-5.280, 0.000, -10.530)  max (5.380, 16.600, 0.200)
+   triangles 1616: concrete 68, door 12, metal 12, metal_dark 492, trim 276, trim_dark 12, wall 468, window 276
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 8ed215b6eae0b1a75d5627bcad40776fcf62d9afca718f278253614e37926b8c
+   REBUILD IDENTICAL

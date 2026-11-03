@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://models/lane_line_dashed.glb" id="1"]
+
+[node name="LaneLineDashed" type="Node3D" groups=["marking"]]
+
+[node name="model" parent="." instance=ExtResource("1")]

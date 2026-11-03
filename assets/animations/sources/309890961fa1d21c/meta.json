@@ -1,0 +1,72 @@
+{
+  "name": "lean_sign",
+  "text": "A person stands beside a bus-stop pole, lightly supports the left hand against the pole at waist height, leans the left shoulder toward the pole, then remains relaxed with gentle breathing. Right arm hangs freely. Keep the torso to the side of the pole.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person stands beside a bus-stop pole, lightly supports the left hand against the pole at waist height, leans the left shoulder toward the pole, then remains relaxed with gentle breathing. Right arm hangs freely. Keep the torso to the side of the pole.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "lean_grip",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bus_stop_sign",
+    "post": "post_pole",
+    "description": "The person starts at bus_stop_sign.post_pole and faces the model standing marker direction. LeftHand touches lean_grip at 0.00s,5.00s.  A person stands beside a bus-stop pole, lightly supports the left hand against the pole at waist height, leans the left shoulder toward the pole, then remains relaxed with gentle breathing. Right arm hangs freely. Keep the torso to the side of the pole. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "bus_stop_sign",
+      "marker": "lean_grip",
+      "space": "world",
+      "episode": "lean_grip",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.225325,
+            1.164878,
+            0.126182
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.225325,
+            1.164878,
+            0.126182
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "309890961fa1d21cb0644c253c2434ad7faccb9a823791f6a1f918f6f9419219",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

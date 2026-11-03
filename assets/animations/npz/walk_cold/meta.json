@@ -1,0 +1,80 @@
+{
+  "name": "walk_cold",
+  "text": "A person walks forward feeling very cold, shoulders hunched up, neck tucked down, both arms tightly folded across the chest, elbows pressed inward. Brisk short continuous steps.",
+  "duration": 2.033333333333333,
+  "seed": 905,
+  "loop": true,
+  "keyframes": [
+    {
+      "source": "/batch/assets/animations/generation_inputs/eb0b943927182fea4ee76be35d41bba2a3ac2f9189344268f079bfa775b9df41.npz",
+      "source_frame": 0,
+      "frame": 0
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/eb0b943927182fea4ee76be35d41bba2a3ac2f9189344268f079bfa775b9df41.npz",
+      "source_frame": 15,
+      "frame": 15
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/eb0b943927182fea4ee76be35d41bba2a3ac2f9189344268f079bfa775b9df41.npz",
+      "source_frame": 30,
+      "frame": 30
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/eb0b943927182fea4ee76be35d41bba2a3ac2f9189344268f079bfa775b9df41.npz",
+      "source_frame": 45,
+      "frame": 45
+    },
+    {
+      "source": "/batch/assets/animations/generation_inputs/eb0b943927182fea4ee76be35d41bba2a3ac2f9189344268f079bfa775b9df41.npz",
+      "source_frame": 60,
+      "frame": 60
+    }
+  ],
+  "review_source": {
+    "pilot": "walk_cold_pilot",
+    "frames": [
+      42,
+      67
+    ],
+    "mapped_hand_targets": {}
+  },
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "root_average_speed_m_s": 1.7994914054870605,
+  "mapped_average_speed_m_s": 1.4191572598478395,
+  "endpoint_cleanup": {
+    "maximum_source_error_m": 2.3844768293201923e-07,
+    "method": "Repeat first frame at final root travel; only floating point endpoint correction."
+  },
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "walk_cold",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  },
+  "single_unit": {
+    "clip": "walk_cold",
+    "source_sha256": "5bc5f75239ae75f4418687f5c9137b3ec0cad35082a89111c74a8d5912841f76",
+    "original_frames": 61,
+    "take_frames": [
+      30,
+      60
+    ],
+    "original_units": 2,
+    "frames": 31,
+    "duration": 1.0,
+    "source": "assets/animations/generation_inputs/5bc5f75239ae75f4418687f5c9137b3ec0cad35082a89111c74a8d5912841f76.npz",
+    "reason": "Keep the last complete authored whole-body cycle, with its original timing and root travel."
+  }
+}

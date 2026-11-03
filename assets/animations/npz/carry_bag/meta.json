@@ -1,0 +1,73 @@
+{
+  "name": "carry_bag",
+  "text": "A person stands relaxed with arms hanging loosely by their sides, feet planted. Remain completely still with only subtle breathing.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 8,
+  "scene": {
+    "text": "A person stands relaxed with arms hanging loosely by their sides, feet planted. Remain completely still with only subtle breathing.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_shopping_bag",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands relaxed with arms hanging loosely by their sides, feet planted. Remain completely still with only subtle breathing. Hold held_shopping_bag with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 1
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "bf03272873fd2a7c47cca0ec309eef2ff169e5a7801a5ff48b8ea30e0d9d980f",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "bf03272873fd2a7c47cca0ec309eef2ff169e5a7801a5ff48b8ea30e0d9d980f",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  }
+}

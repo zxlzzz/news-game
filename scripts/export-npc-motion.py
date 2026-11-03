@@ -1,0 +1,151 @@
+"""Export every Kimodo npz clip for the Godot game project (godot/); never edit NPZs.
+
+python scripts/export-npc-motion.py --skeleton-definition C:/kimodo-trial/kimodo/kimodo/skeleton/definitions.py \
+    --out godot/npc/motion
+Requires numpy; the Kimodo model is not loaded.
+
+Writes <out>/index.json (joint names, SOMA77 indices and parents, clip list) and <out>/<clip>.json
+({fps, frames}; frames[f][j] = [x, y, z] of index.json names[j], metres, Y up, original SOMA coordinates).
+Joints: the 16 source joints sth/motion-study/skeleton-mapping.mjs reads, then those mapping step 11 (hand contact) reads.
+A meta.json "source_frame": "fixed" (the clip was generated with its stance, e.g. an object's post marker, at the
+origin facing +Z) is copied into the clip; godot/tools/bake_motion.gd then keeps those coordinates.
+Root: in every clip posed_joints[:, Hips] equals root_positions exactly (checked below; the export stops
+otherwise), so the Hips column already carries the root displacement and no separate root array is written.
+Loops (design_route_npc_motion_supply.md §5 item 4): clips with "loop": true in
+assets/animations/clip_endpoints.json get their seam closed here. The difference between the last and the first
+frame (every joint, after taking out the root's three-dimensional travel) is spread linearly over the clip, so the last
+frame repeats the first and the root's three-dimensional path is untouched. The export stops instead when that
+difference exceeds SEAM_MAX_M or when a different set of feet is on the ground at the two ends (checked only
+when there is a seam to close: a clip whose last frame already repeats the first is left as is).
+Smoothing: a meta.json "smooth_frames": s (written by scripts/motion_install.py --smooth) blurs the joint paths over
+time (Gaussian, s frames) before anything else. Kimodo's post-processing pulls each pinned frame onto its pin on its
+own, so a held still pose (slouching on a bench) twitches at its pins; only for such clips.
+"""
+import argparse
+import ast
+import json
+import os
+import tempfile
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+ENDPOINTS = ROOT / 'assets/animations/clip_endpoints.json'
+# Largest seam the linear spread may close (metres, any joint).
+SEAM_MAX_M = 0.15
+# A seam this small is already closed: left as is (same tolerance as godot/npc/clip_pose.gd REPEAT_TOLERANCE).
+SEAM_NONE_M = 0.001
+# Same joints, same order as the required-joint check at the top of sth/motion-study/skeleton-mapping.mjs.
+MAPPING_JOINTS = ['Hips', 'Neck1', 'Head', 'HeadEnd'] + [side + part for side in ('Left', 'Right')
+                  for part in ('Arm', 'ForeArm', 'Hand', 'Shin', 'Foot', 'ToeEnd')]
+# Read only by mapping step 11, hand contact (godot/npc/hand-contact.json): the person's own body points and palms.
+MAPPING_JOINTS += ['Spine1', 'Spine2', 'Chest', 'Jaw', 'LeftEye', 'RightEye', 'LeftLeg', 'RightLeg',
+                   'LeftHandMiddle2', 'RightHandMiddle2']
+
+def write_json(path, value, **options):
+    """Publish complete JSON atomically, including when Godot watches this folder."""
+    with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', newline='\n', dir=path.parent, suffix='.tmp', delete=False) as out:
+        temporary=Path(out.name)
+        json.dump(value,out,**options)
+    try:
+        os.replace(temporary,path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def smooth(joints, sigma):
+    """joints (frames, J, 3) blurred along the frames (Gaussian, sigma frames, ends held)."""
+    r = max(1, int(np.ceil(3 * sigma)))
+    k = np.exp(-0.5 * (np.arange(-r, r + 1) / sigma) ** 2)
+    k /= k.sum()
+    padded = np.concatenate([np.repeat(joints[:1], r, 0), joints, np.repeat(joints[-1:], r, 0)])
+    return sum(k[i] * padded[i:i + len(joints)] for i in range(2 * r + 1))
+
+
+def close_seam(name, joints, contacts):
+    """joints (frames, 16, 3) with Hips first; contacts (frames, 6): left foot columns 0-2, right 3-5.
+    Returns the corrected joints and the seam that was closed (metres)."""
+    travel = joints[-1, 0] - joints[0, 0]
+    diff = joints[-1] - travel - joints[0]
+    seam = float(np.linalg.norm(diff, axis=1).max())
+    if seam <= SEAM_NONE_M:
+        return joints, seam  # already closed (a repeated end frame); contact labels can differ on equal poses
+    feet = lambda c: (bool(c[:3].any()), bool(c[3:].any()))
+    if feet(contacts[0]) != feet(contacts[-1]):
+        raise SystemExit(f'{name}: loop ends with different feet on the ground '
+                         f'(left, right: first {feet(contacts[0])}, last {feet(contacts[-1])}); not fixable by spreading')
+    if seam > SEAM_MAX_M:
+        raise SystemExit(f'{name}: loop seam {seam * 100:.1f} cm is over {SEAM_MAX_M * 100:.0f} cm; not fixable by spreading')
+    weight = np.linspace(0.0, 1.0, len(joints))[:, None, None]
+    return joints - weight * diff[None], seam
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('--skeleton-definition', type=Path, required=True)
+    parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--source-dir', type=Path, default=ROOT / 'assets/animations/npz')
+    parser.add_argument('--only', nargs='+', help='Export selected clips, preserving other index entries')
+    args = parser.parse_args()
+    tree = ast.parse(args.skeleton_definition.read_text(encoding='utf-8'))
+    cls = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'SOMASkeleton77')
+    assignment = next(n for n in cls.body if isinstance(n, ast.Assign)
+                      and any(isinstance(t, ast.Name) and t.id == 'bone_order_names_with_parents' for t in n.targets))
+    hierarchy = ast.literal_eval(assignment.value)
+    names = [name for name, _ in hierarchy]
+    parents = dict(hierarchy)
+    indices = [names.index(n) for n in MAPPING_JOINTS]
+    hips = names.index('Hips')
+    loops = {k for k, v in json.loads(ENDPOINTS.read_text(encoding='utf-8'))['clips'].items() if v['loop']}
+    folders = sorted(p for p in args.source_dir.iterdir() if p.is_dir() and (p / 'motion.npz').exists())
+    if args.only:
+        missing = set(args.only) - {p.name for p in folders}
+        assert not missing, f'Missing requested clips: {missing}'
+        folders = [p for p in folders if p.name in args.only]
+    elif args.source_dir.resolve() == (ROOT / 'assets/animations/npz').resolve():
+        assert loops <= {p.name for p in folders}, f'{ENDPOINTS.name}: loops without a clip {loops - {p.name for p in folders}}'
+    args.out.mkdir(parents=True, exist_ok=True)
+    clips = []
+    if args.only and (args.out / 'index.json').exists():
+        clips = [c for c in json.loads((args.out / 'index.json').read_text())['clips'] if c['id'] not in args.only]
+    for folder in folders:
+        meta = json.loads((folder / 'meta.json').read_text(encoding='utf-8-sig'))
+        with np.load(folder / 'motion.npz', allow_pickle=False) as source:
+            posed = source['posed_joints']
+            assert posed.shape[1:] == (len(names), 3), f'{folder.name}: posed_joints {posed.shape}'
+            assert np.array_equal(posed[:, hips], source['root_positions']), \
+                f'{folder.name}: posed_joints Hips differs from root_positions; root data must be exported separately'
+            joints = posed[:, indices]
+            contacts = source['foot_contacts']
+        assert np.isfinite(joints).all() and len(joints) > 0, folder.name
+        if meta.get('smooth_frames'):
+            joints = smooth(joints.astype(float), float(meta['smooth_frames']))
+        seam = None
+        if meta.get('loop', folder.name in loops):
+            joints, seam = close_seam(folder.name, joints.astype(float), contacts)
+        fps = float(meta['fps'])
+        assert fps > 0, f'{folder.name}: fps {fps}'
+        clip = {'fps': fps, 'frames': np.round(joints.astype(float), 5).tolist()}
+        if meta.get('source_frame') is not None:
+            # "fixed": generated with the stance at the origin facing +Z (an object's post); the bake keeps it.
+            assert meta['source_frame'] == 'fixed', f'{folder.name}: unknown source_frame {meta["source_frame"]}'
+            clip['source_frame'] = meta['source_frame']
+            scene = meta.get('scene', {})
+            if scene.get('object') and scene.get('post'):
+                # the object type and post marker the clip was made at; the bake reads contact markers there
+                clip['made_at'] = {'object': scene['object'], 'post': scene['post']}
+        write_json(args.out / f'{folder.name}.json',clip,separators=(',', ':'))
+        clips.append({'id': folder.name, 'fps': fps, 'frames': len(joints)})
+        if seam is not None:
+            clips[-1].update(loop=True, seam_closed_m=round(seam, 5))
+    index = {'names': MAPPING_JOINTS, 'soma77_index': indices,
+             'soma77_parent_index': [names.index(parents[n]) if parents[n] else -1 for n in MAPPING_JOINTS],
+             'units': 'metres; Y up; original SOMA coordinates; rounded to 5 decimals',
+             'root': 'Hips column (identical to motion.npz root_positions)', 'clips': clips}
+    write_json(args.out / 'index.json',index,ensure_ascii=False,indent=1)
+    print(f'{len(clips)} clips, {len(MAPPING_JOINTS)} joints -> {args.out}')
+
+
+if __name__ == '__main__':
+    main()

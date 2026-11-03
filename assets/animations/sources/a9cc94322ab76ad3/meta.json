@@ -1,0 +1,73 @@
+{
+  "name": "pull_suitcase",
+  "text": "A person walks forward pulling a wheeled suitcase behind their right side. The right hand holds the low handle near the thigh, right elbow down and arm nearly straight, left arm swings naturally. Keep the wheels rolling on the floor.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks forward pulling a wheeled suitcase behind their right side. The right hand holds the low handle near the thigh, right elbow down and arm nearly straight, left arm swings naturally. Keep the wheels rolling on the floor.",
+    "duration": 4,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "grip",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "description": "Start at rolling_suitcase.post_pull facing the model standing marker direction. A person walks forward pulling a wheeled suitcase behind their right side. The right hand holds the low handle near the thigh, right elbow down and arm nearly straight, left arm swings naturally. Keep the wheels rolling on the floor. RightHand touches the physical model marker grip at 0.00s, 4.00s. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "object": "rolling_suitcase",
+    "post": "post_pull",
+    "travel_with_actor": true
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "rolling_suitcase",
+      "marker": "grip",
+      "space": "carried",
+      "episode": "grip",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.168147,
+            1.143612,
+            -0.256853
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            -0.168147,
+            1.143612,
+            -0.256853
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "a9cc94322ab76ad3239a7ce907ff433fc11dc8c3284b3a979c8f0ca277d1557f",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

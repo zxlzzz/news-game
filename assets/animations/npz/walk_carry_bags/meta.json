@@ -1,0 +1,95 @@
+{
+  "name": "walk_carry_bags",
+  "text": "A person walks forward carrying a heavy grocery bag in each hand, both arms hanging straight down beside the thighs with the hands steady, no arm swinging, small balanced steps forward.",
+  "duration": 1.3333333333333333,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "A person walks forward carrying a heavy grocery bag in each hand, both arms hanging straight down beside the thighs with the hands steady, no arm swinging, small balanced steps forward.",
+    "duration": 1.3333333333333333,
+    "contacts": [],
+    "item": {
+      "type": "held_shopping_bags",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. A person walks forward carrying a heavy grocery bag in each hand, both arms hanging straight down beside the thighs with the hands steady, no arm swinging, small balanced steps forward. Hold held_shopping_bags with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/4673b2e77e488b30/motion.npz",
+        "source_frame": 36,
+        "phase": 0,
+        "translation": [
+          0.06913933902978897,
+          0.0,
+          -1.1201022863388062
+        ]
+      },
+      {
+        "source": "assets/animations/sources/4673b2e77e488b30/motion.npz",
+        "source_frame": 36,
+        "phase": 1,
+        "translation": [
+          -0.05327576398849487,
+          0.0,
+          0.15460562705993652
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/4673b2e77e488b30/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.06913933902978897,
+        0.0,
+        -1.1201022863388062
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "4673b2e77e488b307787a294d58d3fcf6ac5fb54c7f6ec994fc65d08bf0611fb",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/4673b2e77e488b30/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        -0.05327576398849487,
+        0.0,
+        0.15460562705993652
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "4673b2e77e488b307787a294d58d3fcf6ac5fb54c7f6ec994fc65d08bf0611fb",
+        "hand_edited": false
+      },
+      "frame": 39
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "ebb9f2597f85f0bd827fda9d46e895de090bac9e171914700e6f8c9593c51593",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "ebb9f2597f85f0bd827fda9d46e895de090bac9e171914700e6f8c9593c51593",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  }
+}

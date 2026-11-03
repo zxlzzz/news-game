@@ -1,0 +1,40 @@
+{
+  "name": "inspect_item",
+  "text": "A shopper inspects a small rectangular product held in the left palm, tilting it slowly in front of the chest, then lowering it. The free right arm hangs beside the right thigh. Feet stay planted.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A shopper inspects a small rectangular product held in the left palm, tilting it slowly in front of the chest, then lowering it. The free right arm hangs beside the right thigh. Feet stay planted.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_phone",
+      "hand": "left",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A shopper inspects a small rectangular product held in the left palm, tilting it slowly in front of the chest, then lowering it. The free right arm hangs beside the right thigh. Feet stay planted. Hold held_phone with left at its grip marker. The right hand stays relaxed beside the right thigh. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand stays relaxed beside the right thigh.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "24b78b75ec589e9715ba594c511abf48a525f4e827e9bc3819a3bfdedd3e39d7",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "24b78b75ec589e9715ba594c511abf48a525f4e827e9bc3819a3bfdedd3e39d7",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  }
+}

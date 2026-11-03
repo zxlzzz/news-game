@@ -1,0 +1,46 @@
+{
+  "name": "eat_snack",
+  "text": "Holding a snack bag low in their right hand, a standing person picks a snack with their left hand and brings it to their mouth to eat, then lowers the left hand.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "Holding a snack bag low in their right hand, a standing person picks a snack with their left hand and brings it to their mouth to eat, then lowers the left hand.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_snack_bag",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright"
+    },
+    "description": "Start at level ground facing +Z. Holding a snack bag low in their right hand, a standing person picks a snack with their left hand and brings it to their mouth to eat, then lowers the left hand. Hold held_snack_bag with right at its grip marker. The right hand steadies the snack bag near the right thigh; the left hand eats the small snack. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand steadies the snack bag near the right thigh; the left hand eats the small snack.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "props": [
+      {
+        "type": "held_snack_piece",
+        "space": "handLeft",
+        "grip": "grip",
+        "visible": [
+          0,
+          1
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "7e59b94258e871e3f82a9ec8cbc6781a670a7cb9c3e549a3910bca2a44f5dffc",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

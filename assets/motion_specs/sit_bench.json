@@ -1,0 +1,44 @@
+{
+  "clip": "sit_bench",
+  "text": "A person sits quietly upright on a bench, thighs forward, lower legs vertical, soles flat on the floor, both hands resting on the thighs. Subtle breathing, the head turns slowly to look around.",
+  "duration": 3.0,
+  "seeds": [
+    7,
+    61007
+  ],
+  "base": "seat_bench",
+  "object": {
+    "type": "bench",
+    "post": "post_sit_1"
+  },
+  "keys": [
+    {
+      "t": [
+        0.04,
+        2.93
+      ],
+      "Left": {
+        "thigh": "Left",
+        "along": 0.7,
+        "offset": [
+          0,
+          0.1,
+          0
+        ]
+      },
+      "Right": {
+        "thigh": "Right",
+        "along": 0.7,
+        "offset": [
+          0,
+          0.1,
+          0
+        ]
+      },
+      "Hips": "keep",
+      "LeftFoot": "keep",
+      "RightFoot": "keep"
+    }
+  ],
+  "ends": "first_key"
+}

@@ -1,0 +1,111 @@
+{
+  "clip": "vendor_tidy",
+  "text": "A stall vendor stands behind the counter and tidies the apples in the crate in front: leans over a little, the right hand reaches into the crate and pushes a few apples into neat rows, then straightens up. The left hand rests on the counter beside the crate.",
+  "duration": 3.0,
+  "seeds": [
+    7,
+    61007
+  ],
+  "base": "vendor",
+  "object": {
+    "type": "market_stall",
+    "post": "post_vendor"
+  },
+  "keys": [
+    {
+      "t": 0.4,
+      "Right": {
+        "at": [
+          -0.1,
+          1.28,
+          0.38
+        ]
+      },
+      "Left": {
+        "at": [
+          0.42,
+          0.96,
+          0.27
+        ]
+      }
+    },
+    {
+      "t": 0.7,
+      "Right": {
+        "at": [
+          -0.1,
+          1.12,
+          0.45
+        ]
+      },
+      "Left": {
+        "at": [
+          0.42,
+          0.96,
+          0.27
+        ]
+      }
+    },
+    {
+      "t": 1.1,
+      "Right": {
+        "at": [
+          0.05,
+          1.12,
+          0.55
+        ]
+      },
+      "Left": {
+        "at": [
+          0.42,
+          0.96,
+          0.27
+        ]
+      }
+    },
+    {
+      "t": 1.5,
+      "Right": {
+        "at": [
+          -0.08,
+          1.12,
+          0.4
+        ]
+      },
+      "Left": {
+        "at": [
+          0.42,
+          0.96,
+          0.27
+        ]
+      }
+    },
+    {
+      "t": 1.9,
+      "Right": {
+        "at": [
+          0.08,
+          1.12,
+          0.45
+        ]
+      },
+      "Left": {
+        "at": [
+          0.42,
+          0.96,
+          0.27
+        ]
+      }
+    },
+    {
+      "t": 2.3,
+      "Right": {
+        "at": [
+          -0.08,
+          1.28,
+          0.36
+        ]
+      }
+    }
+  ]
+}

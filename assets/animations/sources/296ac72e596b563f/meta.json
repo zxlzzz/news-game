@@ -1,0 +1,72 @@
+{
+  "name": "leg_stretch",
+  "text": "Standing on the right leg, left heel already resting on a low bench in front, left leg stretched straight forward. Lean forward over the left leg and hold the stretch. Hands reach toward the left knee.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "Standing on the right leg, left heel already resting on a low bench in front, left leg stretched straight forward. Lean forward over the left leg and hold the stretch. Hands reach toward the left knee.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftFoot",
+        "marker": "stretch_heel",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bench",
+    "post": "post_stretch",
+    "description": "Start at bench.post_stretch facing the model standing marker direction. Standing on the right leg, left heel already resting on a low bench in front, left leg stretched straight forward. Lean forward over the left leg and hold the stretch. Hands reach toward the left knee. LeftFoot touches the physical model marker stretch_heel at 0.00s, 5.00s. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep the raised heel on the seat, torso in front of the bench, free standing foot on the floor and body clear of the backrest.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep the raised heel on the seat, torso in front of the bench, free standing foot on the floor and body clear of the backrest."
+  },
+  "contacts": [
+    {
+      "joint": "LeftFoot",
+      "model": "bench",
+      "marker": "stretch_heel",
+      "space": "world",
+      "episode": "stretch_heel",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.274393,
+            0.640793,
+            0.844079
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.274393,
+            0.640793,
+            0.844079
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "296ac72e596b563fe301db55f4e104042f6cdc302a8e7ba8eab9a349c3e8bcf1",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

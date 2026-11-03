@@ -1,0 +1,87 @@
+{
+  "repair_id": "shared_department_store_window_recesses_v1",
+  "model": "building_department_store",
+  "blender": "D:/steam/steamapps/common/Blender/blender.exe",
+  "weld_decimals": 9,
+  "weld_tolerance": 1e-05,
+  "targets": [
+    {
+      "part": "rounded_corner_tower",
+      "recesses": [
+        {
+          "front_origin": [
+            14,
+            0,
+            0
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "width": 1.65,
+          "height": 1.8,
+          "depth": 0.48,
+          "outward_extension": 2,
+          "bottoms": [
+            4.800000190734863,
+            8.0,
+            11.199999809265137,
+            14.399999619
+          ]
+        }
+      ]
+    },
+    {
+      "part": "masonry",
+      "recesses": [
+        {
+          "front_origin": [
+            19.509549140930176,
+            0,
+            -3.2488887310028076
+          ],
+          "normal": [
+            0.8660248388192665,
+            0.0,
+            -0.5000009785471059
+          ],
+          "width": 0.85,
+          "height": 1.6,
+          "depth": 0.48,
+          "outward_extension": 1,
+          "bottoms": [
+            0.8500000238418579,
+            4.849999904632568,
+            8.050000190734863,
+            11.25,
+            14.449999809265137
+          ]
+        },
+        {
+          "front_origin": [
+            19.509549140930176,
+            0,
+            -0.35111126210540533
+          ],
+          "normal": [
+            0.8660248218362699,
+            0.0,
+            0.500001007962441
+          ],
+          "width": 0.85,
+          "height": 1.6,
+          "depth": 0.48,
+          "outward_extension": 1,
+          "bottoms": [
+            0.8500000238418579,
+            4.849999904632568,
+            8.050000190734863,
+            11.25,
+            14.449999809265137
+          ]
+        }
+      ]
+    }
+  ]
+}

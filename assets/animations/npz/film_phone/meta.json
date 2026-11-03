@@ -1,0 +1,84 @@
+{
+  "name": "film_phone",
+  "text": "Standing upright, filming with a smartphone held horizontally in both hands at chest level. The elbows hang down near the ribs. A quiet relaxed filming posture with subtle movement.",
+  "duration": 3,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Standing upright, filming with a smartphone held horizontally in both hands at chest level. The elbows hang down near the ribs. A quiet relaxed filming posture with subtle movement.",
+    "duration": 3,
+    "contacts": [],
+    "item": {
+      "type": "held_phone",
+      "hand": "both",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A standing person films steadily with a smartphone held in both hands in front of the upper chest. Slow small camera adjustments, feet planted, body upright. Hold held_phone with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/carry_box.json",
+      "frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "4303d61cc10ac5d764f5906b0f01e5e233eb661cf3a04d1397a116dc0646dd09",
+        "hand_edited": false
+      },
+      "translation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "source": "assets/animations/poses/carry_box.json",
+      "frame": 89,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "4303d61cc10ac5d764f5906b0f01e5e233eb661cf3a04d1397a116dc0646dd09",
+        "hand_edited": false
+      },
+      "translation": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "loop": true,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "f213c3ce757cf78ef99f6c453cb583899066fad4122f23b6a5f20dc459e6dea1",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 2.967 s front/side overview: upright standing instead of deep crouch, phone held steadily at chest level. Quiet filming hold.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 2.967 s front/side overview: upright standing instead of deep crouch, phone held steadily at chest level. Quiet filming hold.\"\r\n  }",
+      "original_record_sha256": "f32dd7a67b1b0b97fdb353b7c81adfa8397e32a12a81e38e9312cd081ab0103b",
+      "current_source_sha256_at_reconciliation": "f213c3ce757cf78ef99f6c453cb583899066fad4122f23b6a5f20dc459e6dea1",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

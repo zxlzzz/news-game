@@ -1,0 +1,195 @@
+{
+  "name": "walk_umbrella",
+  "text": "A person walks forward while holding a phone beside the ear. The free arm swings naturally. Two continuous walking steps.",
+  "duration": 1.4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks forward while holding a phone beside the ear. The free arm swings naturally. Two continuous walking steps.",
+    "duration": 1.4,
+    "contacts": [],
+    "item": {
+      "type": "held_phone",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person walks steadily forward while holding a mobile phone firmly against the right ear with the right hand, right elbow bent and raised. The left arm swings naturally. The phone hand stays beside the ear throughout. Hold held_phone with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/6fdd6a95c15ad453/motion.npz",
+        "source_frame": 18,
+        "phase": 0,
+        "translation": [
+          -0.05834607779979706,
+          0.0,
+          -0.9015102982521057
+        ]
+      },
+      {
+        "source": "assets/animations/sources/6fdd6a95c15ad453/motion.npz",
+        "source_frame": 18,
+        "phase": 1,
+        "translation": [
+          0.02716366946697235,
+          0.0,
+          0.839941680431366
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/walk_phone_call.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "61455ecac792ab7e832c4ca6a489f56c82325dc3a12444c00fdf3bf5d92bc03b",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/walk_phone_call.json",
+      "frame": 41,
+      "translation": [
+        0,
+        0,
+        1.0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "61455ecac792ab7e832c4ca6a489f56c82325dc3a12444c00fdf3bf5d92bc03b",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": true,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "02442d59edc8281c989e23fe3add9727d0dea661c23afa7ad5e3af46f332448e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "02442d59edc8281c989e23fe3add9727d0dea661c23afa7ad5e3af46f332448e",
+    "observations": {
+      "entry": "Begins the genuine walking posture with the same right-hand umbrella.",
+      "activity": "The complete side-view sequence alternates steps, keeping the umbrella upright above the head; selected front/back pages show consistent support.",
+      "release_end": "At duration +0.4 seconds the loop continues walking with the same umbrella; this is a locomotion loop, not an empty idle."
+    },
+    "viewed_images_sha256": {
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v0_p0.png": "59bef056b2caefffb8a5c6681b4b3c7658e14984bad661d6eb85278e19ec1b6f",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v0_p2.png": "f9078245395cc71d97cb02d3c4e49318685f85abed7cc8915ff5aa7082ac9dbc",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v0_p4.png": "d24923ede0bea0ec390e6b1ec5117055c7a598dc09fc424f640881b623fe5200",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p0.png": "521d1558e8eaa33c3062a9f6ea70806fa9464b8529dee43c2757c6e101adace4",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p1.png": "8e68b69182fe77485f26e4790ba95fea4342da585da058f0c09c7ce3e23f36b1",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p2.png": "e72a73a4ab9d52b37fa6c9086de1254bdb35f12d55d1fa0cdbe9f6d761eca93b",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p3.png": "2dbcbf1b883f23ffb231c5ef5099ae6eaa4cc6be4cd4759a927e1e32ff8c193b",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p4.png": "2048d895a2121d809ffb8894036795dd5326cf1bcf6b41ce78cec56a4bdd0704",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v2_p0.png": "3819dbaf3a05ee7621f06661d721c6c39f80589d9dff6e78216fb12d10aa2f0d",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v2_p2.png": "32fdf58ed2b313781167787dd39afe0dc076da0cd8b3a9fb06ed37f0d4d986e7",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v2_p4.png": "347956f93926c280dba10c493d4e7d6387a2d623890e44e9e9174119d83fb7a9",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella-post_v0_p0.png": "f89de2ecd599e20bd40beb9ec7556b15630c67b587376bb21dcb54c51ca7acb9",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella-post_v1_p0.png": "5239354772fc7b5804c61224f540f9a9447e983a1863ef3b9f29c446e49cf7cd",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/walk_umbrella-post_v2_p0.png": "fa38a03ce0c83f22508179e35a654f27ae7c6fe3178cf04d14ba2a67dcae4324"
+    },
+    "full_speed_observed": false,
+    "scope": "Recorded assistant observations of the named source; sampled images do not establish intended-speed playback or user acceptance.",
+    "physical_check": ".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-native.json",
+    "self_check": ".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-self.json",
+    "boundary_check": ".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-boundaries.json",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "existing_viewed_evidence_persistent_path_migration",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"raw_sha256\": \"02442d59edc8281c989e23fe3add9727d0dea661c23afa7ad5e3af46f332448e\",\r\n    \"observations\": {\r\n      \"entry\": \"Begins the genuine walking posture with the same right-hand umbrella.\",\r\n      \"activity\": \"The complete side-view sequence alternates steps, keeping the umbrella upright above the head; selected front/back pages show consistent support.\",\r\n      \"release_end\": \"At duration +0.4 seconds the loop continues walking with the same umbrella; this is a locomotion loop, not an empty idle.\"\r\n    },\r\n    \"viewed_images_sha256\": {\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v0_p0.png\": \"59bef056b2caefffb8a5c6681b4b3c7658e14984bad661d6eb85278e19ec1b6f\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v0_p2.png\": \"f9078245395cc71d97cb02d3c4e49318685f85abed7cc8915ff5aa7082ac9dbc\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v0_p4.png\": \"d24923ede0bea0ec390e6b1ec5117055c7a598dc09fc424f640881b623fe5200\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p0.png\": \"521d1558e8eaa33c3062a9f6ea70806fa9464b8529dee43c2757c6e101adace4\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p1.png\": \"8e68b69182fe77485f26e4790ba95fea4342da585da058f0c09c7ce3e23f36b1\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p2.png\": \"e72a73a4ab9d52b37fa6c9086de1254bdb35f12d55d1fa0cdbe9f6d761eca93b\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p3.png\": \"2dbcbf1b883f23ffb231c5ef5099ae6eaa4cc6be4cd4759a927e1e32ff8c193b\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v1_p4.png\": \"2048d895a2121d809ffb8894036795dd5326cf1bcf6b41ce78cec56a4bdd0704\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v2_p0.png\": \"3819dbaf3a05ee7621f06661d721c6c39f80589d9dff6e78216fb12d10aa2f0d\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v2_p2.png\": \"32fdf58ed2b313781167787dd39afe0dc076da0cd8b3a9fb06ed37f0d4d986e7\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella_v2_p4.png\": \"347956f93926c280dba10c493d4e7d6387a2d623890e44e9e9174119d83fb7a9\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella-post_v0_p0.png\": \"f89de2ecd599e20bd40beb9ec7556b15630c67b587376bb21dcb54c51ca7acb9\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella-post_v1_p0.png\": \"5239354772fc7b5804c61224f540f9a9447e983a1863ef3b9f29c446e49cf7cd\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/walk_umbrella-post_v2_p0.png\": \"fa38a03ce0c83f22508179e35a654f27ae7c6fe3178cf04d14ba2a67dcae4324\"\r\n    },\r\n    \"full_speed_observed\": false,\r\n    \"scope\": \"Recorded assistant observations of the named source; sampled images do not establish intended-speed playback or user acceptance.\",\r\n    \"physical_check\": \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-native.json\",\r\n    \"self_check\": \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-self.json\",\r\n    \"boundary_check\": \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-boundaries.json\"\r\n  }",
+      "original_record_sha256": "c55eaf2edea7611d3d97ad99fe2692df427cb598bfc3c8fb0aeb77216f71597d",
+      "current_source_sha256_at_reconciliation": "02442d59edc8281c989e23fe3add9727d0dea661c23afa7ad5e3af46f332448e",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 1,
+    "evidence_format": "phased_observations",
+    "viewed_evidence_archive": {
+      "file": "docs/motion-review-evidence-2026-10-11/viewed-images.json",
+      "sha256": "293dcd81a1ab6c3fcbe8adc9093fa2d9d180f21980611f7e468e5aa29324ddfa"
+    }
+  },
+  "reuse": {
+    "source_clip": "walk_phone_call",
+    "source_raw_sha256": "02442d59edc8281c989e23fe3add9727d0dea661c23afa7ad5e3af46f332448e",
+    "reason": "Same unchanged one-hand-up walking source, retargeted to upright umbrella grip."
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 1.367 s two-view overview: upright canopy clears head, holding elbow bent down, free arm swings during alternating steps. Unchanged native phone-walk source reused with umbrella context.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 1.367 s two-view overview: upright canopy clears head, holding elbow bent down, free arm swings during alternating steps. Unchanged native phone-walk source reused with umbrella context.\"\r\n  }",
+      "original_record_sha256": "bad960edfbd4bd7d4ccf8e0d2c340168839e35593771752ddd66532484a29cbc",
+      "current_source_sha256_at_reconciliation": "02442d59edc8281c989e23fe3add9727d0dea661c23afa7ad5e3af46f332448e",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "runtime_scene": {
+    "text": "A person walks forward while holding a phone beside the ear. The free arm swings naturally. Two continuous walking steps.",
+    "duration": 1.3666666666666667,
+    "contacts": [],
+    "item": {
+      "type": "held_umbrella_open",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true,
+      "follow_hand": true,
+      "solid_grasp": true,
+      "keep_grip": true,
+      "grip_surface": "grip_surface"
+    },
+    "description": "Start at level ground facing +Z. A person walks steadily forward while holding a mobile phone firmly against the right ear with the right hand, right elbow bent and raised. The left arm swings naturally. The phone hand stays beside the ear throughout. Hold held_phone with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/6fdd6a95c15ad453/motion.npz",
+        "source_frame": 18,
+        "phase": 0,
+        "translation": [
+          -0.05834607779979706,
+          0.0,
+          -0.9015102982521057
+        ]
+      },
+      {
+        "source": "assets/animations/sources/6fdd6a95c15ad453/motion.npz",
+        "source_frame": 18,
+        "phase": 1,
+        "translation": [
+          0.02716366946697235,
+          0.0,
+          0.839941680431366
+        ]
+      }
+    ]
+  }
+}

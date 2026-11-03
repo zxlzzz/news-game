@@ -1,0 +1,95 @@
+{
+  "name": "smoke_walk",
+  "text": "A person walking slowly straight forward while smoking a cigarette held in the right hand. Start with the right hand low beside the hip, raise the fingertips to the lips, pause to take a puff, then lower the right hand back down beside the hip. Left arm swings gently with continuous alternating steps. Perform one complete smoking puff during the walk, no stopping.",
+  "duration": 1.2666666666666666,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walking slowly straight forward while smoking a cigarette held in the right hand. Start with the right hand low beside the hip, raise the fingertips to the lips, pause to take a puff, then lower the right hand back down beside the hip. Left arm swings gently with continuous alternating steps. Perform one complete smoking puff during the walk, no stopping.",
+    "duration": 1.2666666666666666,
+    "contacts": [],
+    "item": {
+      "type": "held_cigarette",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. A person walking slowly straight forward while smoking a cigarette held in the right hand. Start with the right hand low beside the hip, raise the fingertips to the lips, pause to take a puff, then lower the right hand back down beside the hip. Left arm swings gently with continuous alternating steps. Perform one complete smoking puff during the walk, no stopping. Hold held_cigarette with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/0e8f82e0f2f0fb86/motion.npz",
+        "source_frame": 39,
+        "phase": 0,
+        "translation": [
+          0.0894002765417099,
+          0.0,
+          -1.003812551498413
+        ]
+      },
+      {
+        "source": "assets/animations/sources/0e8f82e0f2f0fb86/motion.npz",
+        "source_frame": 39,
+        "phase": 1,
+        "translation": [
+          0.008867725729942322,
+          0.0,
+          0.43268656730651855
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/0e8f82e0f2f0fb86/motion.npz",
+      "source_frame": 39,
+      "translation": [
+        0.0894002765417099,
+        0.0,
+        -1.003812551498413
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "0e8f82e0f2f0fb86c5ba97a621ba2091ff07261ddd2ee9e54cb3eed0076dc5ad",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/0e8f82e0f2f0fb86/motion.npz",
+      "source_frame": 39,
+      "translation": [
+        0.008867725729942322,
+        0.0,
+        0.43268656730651855
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "0e8f82e0f2f0fb86c5ba97a621ba2091ff07261ddd2ee9e54cb3eed0076dc5ad",
+        "hand_edited": false
+      },
+      "frame": 37
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "83ee5e4f57262f6069028c9016c73123625d34cc8d9686aed3a90b20e985314c",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "83ee5e4f57262f6069028c9016c73123625d34cc8d9686aed3a90b20e985314c",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  }
+}

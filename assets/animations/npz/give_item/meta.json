@@ -1,0 +1,67 @@
+{
+  "name": "give_item",
+  "text": "A person standing still offers a small object to someone in front of them. The right hand lifts from the waist and extends forward at waist height, pauses with the palm facing upward to offer the object, then returns to their side. The left arm stays relaxed.",
+  "duration": 3.5,
+  "seed": 42,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    104
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "date": "2026-09-24",
+    "notes_zh": "右手抬起后向前递出并收回，左臂自然下垂、双脚稳定。完整手部及柜台参照已检查；末段手掌略向下，适用于普通递物，不承诺掌心始终向上或精细抓握。首尾站姿一致。",
+    "attempts": 1,
+    "views": [
+      "source side",
+      "source full hands",
+      "accepted mapping x3 front/side",
+      "prop reference where applicable"
+    ],
+    "metrics": {
+      "frames": 105,
+      "fps": 30.0,
+      "source_root_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mapped_hip_y_minmax": [
+        0.7923991898256897,
+        0.7946306034593551
+      ],
+      "mapped_toe_y_minmax": [
+        0.003819424841382542,
+        0.010783857815100446
+      ],
+      "mapped_left_hand_y_minmax": [
+        0.751923454210749,
+        0.7769331806084572
+      ],
+      "mapped_right_hand_y_minmax": [
+        0.7505693885548872,
+        1.0501543971436527
+      ],
+      "endpoint_root_aligned_max_joint_m": 0.0,
+      "endpoint_root_aligned_mean_joint_m": 0.0
+    },
+    "sha256": "b05c90bd96b3b9b1a7e557d3a7c518ac6ed93cb9c0c24fefc30d9116f6d7e24f"
+  }
+}

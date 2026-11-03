@@ -1,0 +1,5 @@
+# videos, frames, COLMAP databases, point clouds: local only
+raw/
+__pycache__/
+# crops of the Esri imagery: kept out like the imagery itself (see ../来源.md)
+trial1/*.png

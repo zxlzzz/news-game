@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bike_rack.glb
+   size  x 2.400  y 0.729  z 0.670 m
+   box   min (-1.200, -0.000, -0.335)  max (1.200, 0.729, 0.335)
+   triangles 1240: metal 1240
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 8e24893001c546e7c220c710b3625becf82157e098c30d42fae0e57a9ead0866
+   REBUILD IDENTICAL

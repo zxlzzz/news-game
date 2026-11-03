@@ -1,0 +1,12 @@
+{
+  "clip": "hesitate_reach",
+  "text": "A shopper stands at a fruit stall, reaches the right hand toward the apples, stops just short of touching them, then pulls the hand back toward the chest uncertainly. One clear aborted reach; the left arm relaxed.",
+  "duration": 3.0,
+  "seeds": [7, 61007],
+  "base": "customer",
+  "object": {"type": "market_stall", "post": "post_customer"},
+  "keys": [
+    {"t": [1.0, 1.2], "Right": {"at": [-0.06, 1.22, 0.46]}},
+    {"t": 1.9, "Right": {"at": [-0.1, 1.08, 0.16]}}
+  ]
+}

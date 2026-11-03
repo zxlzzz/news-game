@@ -1,0 +1,36 @@
+{
+  "name": "sweep_ground",
+  "text": "A person sweeps the floor with a long broom. The right hand holds the upper handle close to chest height, and the left hand holds the lower handle beside the left hip. Both elbows point down. Keep the bristles on the ground while making short sideways strokes beside the left foot, feet planted.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person sweeps the floor with a long broom. The right hand holds the upper handle close to chest height, and the left hand holds the lower handle beside the left hip. Both elbows point down. Keep the bristles on the ground while making short sideways strokes beside the left foot, feet planted.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_broom",
+      "hand": "left",
+      "grip": "grip_low",
+      "support_grip": "grip_high",
+      "support_hand": "right"
+    },
+    "description": "Start at level ground facing +Z. A person sweeps the floor with a long broom. The right hand holds the upper handle close to chest height, and the left hand holds the lower handle beside the left hip. Both elbows point down. Keep the bristles on the ground while making short sideways strokes beside the left foot, feet planted. Hold held_broom with left at its grip_low marker. The right hand supports its grip_high marker throughout the grasp. Both hands continuously grasp their marked positions on the handle. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands continuously grasp their marked positions on the handle.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "873de503ebfc689cabe3345d5617732a915411bd08a880354543bd69bd90c804",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

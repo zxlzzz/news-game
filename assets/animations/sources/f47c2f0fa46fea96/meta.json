@@ -1,0 +1,67 @@
+{
+  "name": "point_shout",
+  "text": "An angry standing person leans forward, thrusts their RIGHT arm straight out horizontally at shoulder height, and jabs the extended arm forward twice while shouting at someone in the distance. The left hand briefly rests on the hip. Then stop pointing, relax and lower the right arm completely, lower the left arm from the hip, and straighten up. Finish standing still with both arms hanging relaxed beside the thighs. Feet remain planted.",
+  "duration": 5.0,
+  "seed": 20261010,
+  "attempt": 1,
+  "scene": {
+    "activity": "point_shout",
+    "body_only": true,
+    "description": "An angry standing person leans forward, thrusts their RIGHT arm straight out horizontally at shoulder height, and jabs the extended arm forward twice while shouting at someone in the distance. The left hand briefly rests on the hip. Then stop pointing, relax and lower the right arm completely, lower the left arm from the hip, and straighten up. Finish standing still with both arms hanging relaxed beside the thighs. Feet remain planted.",
+    "complete_activity": true,
+    "generation_stage": "complete_activity"
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 149,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "f47c2f0fa46fea967fcf9967a3fb47c7292c8877e0df0a0d16f9991addc04c91",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/point_shout/attempt_001/motion.npz",
+    "original_meta_sha256": "d1ac4a5091b8531c687561b855aff499740ef9ec3d3876d123cfff5b4b51d2ae",
+    "original_meta_file": "generation-original-meta.json",
+    "raw_npz_unchanged": true
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "name": "throw_trash",
+  "duration": 3,
+  "attempt": 1,
+  "text": "Standing beside a waist-high trash bin, move the right hand slightly forward and down, release a small wrapper into the bin, then lower the empty hand beside the thigh. One small relaxed downward dropping gesture. Feet stay in place.",
+  "seed": 61007,
+  "scene": {
+    "text": "Standing beside a waist-high trash bin, move the right hand slightly forward and down, release a small wrapper into the bin, then lower the empty hand beside the thigh. One small relaxed downward dropping gesture. Feet stay in place.",
+    "duration": 3,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 89,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "c11d265dbad892c289adc9edb0cbcc6ecfcc1ccb10ca6e6b3ec75bf4617d5181",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Full 2.967 s two-view overview and enlarged release frame: hand guides cup into front bin opening, releases there and lowers; no late cup lift.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Full 2.967 s two-view overview and enlarged release frame: hand guides cup into front bin opening, releases there and lowers; no late cup lift.\"\r\n  }",
+      "original_record_sha256": "5bd046bc56c2a23cf549d321e142c91f7299af299f5dfdd2e11fb2421341dbf8",
+      "current_source_sha256_at_reconciliation": "c11d265dbad892c289adc9edb0cbcc6ecfcc1ccb10ca6e6b3ec75bf4617d5181",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
+}

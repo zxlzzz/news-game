@@ -1,0 +1,114 @@
+{
+  "name": "vending_collect",
+  "text": "A standing person bends at hips and knees to retrieve a lidded paper coffee cup from a low vending machine hatch directly in front, right hand reaches down to knee height then lifts it, returns upright.",
+  "duration": 2.3,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing person bends at hips and knees to retrieve a lidded paper coffee cup from a low vending machine hatch directly in front, right hand reaches down to knee height then lifts it, returns upright.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "pickup",
+        "phases": [
+          0.35,
+          0.48
+        ],
+        "window": [
+          0.31499999999999995,
+          0.35,
+          0.48,
+          0.515
+        ]
+      }
+    ],
+    "object": "vending_machine",
+    "post": "post_vendcollect",
+    "description": "The person starts at vending_machine.post_vendcollect and faces the model standing marker direction. RightHand touches pickup at 1.75s,2.40s. Grasp held_coffee_cup at grip at 2.40s. A standing person bends at hips and knees to retrieve a lidded paper coffee cup from a low vending machine hatch directly in front, right hand reaches down to knee height then lifts it, returns upright. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep torso and elbows outside the cabinet; reach into only the button surface or open delivery hatch.",
+    "transfers": [
+      {
+        "type": "held_coffee_cup",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.48,
+        "initial": {
+          "space": "object",
+          "marker": "pickup"
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep torso and elbows outside the cabinet; reach into only the button surface or open delivery hatch."
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "vending_machine",
+      "marker": "pickup",
+      "space": "world",
+      "episode": "pickup",
+      "keys": [
+        {
+          "frame": 52,
+          "position": [
+            0.001147,
+            0.648429,
+            0.615009
+          ]
+        },
+        {
+          "frame": 72,
+          "position": [
+            0.001147,
+            0.648429,
+            0.615009
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "c8b040505dd1fe1ac4f57f45083f3a30e5a4248042d0674f4234365469b7fb84",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_failed",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "d93ef9c20fb33f57247f6f8802d9f654074ebb4d419cbb60bd350d08e159cad4",
+    "notes": "Full final-scene review found unreachable physical contacts. Existing source retained pending repair; this clip is not visually approved."
+  },
+  "loop": false,
+  "trim": {
+    "source": "assets/animations/sources/player_review_vending_collect",
+    "frames_inclusive": [
+      0,
+      69
+    ],
+    "reason": "Independent pickup ends before the subsequent drink/read action; no coordinate edits."
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 2.3 s two-view overview: bends to outlet, takes cup, straightens with cup before the source drinking tail. Frames 0-69 preserved unchanged; pickup aligned to visible low reach.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 2.3 s two-view overview: bends to outlet, takes cup, straightens with cup before the source drinking tail. Frames 0-69 preserved unchanged; pickup aligned to visible low reach.\"\r\n  }",
+      "original_record_sha256": "d9e7ba14a792fefb839c745ee527780add5c4bbfa515960da20d9fbd91d3757c",
+      "current_source_sha256_at_reconciliation": "c8b040505dd1fe1ac4f57f45083f3a30e5a4248042d0674f4234365469b7fb84",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
+}

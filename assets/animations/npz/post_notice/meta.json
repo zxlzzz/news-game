@@ -1,0 +1,131 @@
+{
+  "name": "post_notice",
+  "text": "A standing person faces a notice board, raises both hands forward to shoulder height, presses the upper corners of a paper notice flat against the board, smooths it with both hands, lowers arms.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A standing person faces a notice board, raises both hands forward to shoulder height, presses the upper corners of a paper notice flat against the board, smooths it with both hands, lowers arms.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "notice_left",
+        "phases": [
+          0.4,
+          0.7
+        ],
+        "window": [
+          0.365,
+          0.4,
+          0.7,
+          0.735
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "notice_right",
+        "phases": [
+          0.4,
+          0.7
+        ],
+        "window": [
+          0.365,
+          0.4,
+          0.7,
+          0.735
+        ]
+      }
+    ],
+    "object": "notice_board",
+    "post": "post_postnotice",
+    "description": "Start at notice_board.post_postnotice facing the model standing marker direction. A standing person faces a notice board, raises both hands forward to shoulder height, presses the upper corners of a paper notice flat against the board, smooths it with both hands, lowers arms. LeftHand touches the physical model marker notice_left at 2.00s, 3.50s. RightHand touches the physical model marker notice_right at 2.00s, 3.50s. Grasp held_notice at grip at 0.00s. Release at 3.50s onto notice_landing using the item rest marker. Both hands are occupied at their corresponding contact points; the description defines their release. Keep torso and elbows in front of the panel; hands may touch only its front face.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep torso and elbows in front of the panel; hands may touch only its front face.",
+    "transfers": [
+      {
+        "type": "held_notice",
+        "hand": "both",
+        "grip": "grip",
+        "rest": "rest",
+        "take": 0,
+        "release": 0.7,
+        "landing": {
+          "marker": "notice_landing"
+        },
+        "source_part": "paper_001"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "notice_board",
+      "marker": "notice_left",
+      "space": "world",
+      "episode": "notice_left",
+      "keys": [
+        {
+          "frame": 60,
+          "position": [
+            0.21269,
+            1.774123,
+            0.369398
+          ]
+        },
+        {
+          "frame": 104,
+          "position": [
+            0.21269,
+            1.774123,
+            0.369398
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "notice_board",
+      "marker": "notice_right",
+      "space": "world",
+      "episode": "notice_right",
+      "keys": [
+        {
+          "frame": 60,
+          "position": [
+            -0.21047,
+            1.774231,
+            0.369534
+          ]
+        },
+        {
+          "frame": 104,
+          "position": [
+            -0.21047,
+            1.774231,
+            0.369534
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "4f942136fffd3cbd9b12ebaba867dd835d608e25b3bd17922f72bc41b76ddb40",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "4f942136fffd3cbd9b12ebaba867dd835d608e25b3bd17922f72bc41b76ddb40",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "source_frame": "fixed"
+}

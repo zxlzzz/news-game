@@ -1,0 +1,142 @@
+{
+  "name": "lean_sign",
+  "text": "A person stands beside a bus-stop pole, lightly supports the left hand against the pole at waist height, leans the left shoulder toward the pole, then remains relaxed with gentle breathing. Right arm hangs freely. Keep the torso to the side of the pole.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person stands beside a bus-stop pole, lightly supports the left hand against the pole at waist height, leans the left shoulder toward the pole, then remains relaxed with gentle breathing. Right arm hangs freely. Keep the torso to the side of the pole.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "lean_grip",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bus_stop_sign",
+    "post": "post_pole",
+    "description": "Start at bus_stop_sign.post_pole facing the model standing marker direction. A person stands beside a bus-stop pole, lightly supports the left hand against the pole at waist height, leans the left shoulder toward the pole, then remains relaxed with gentle breathing. Right arm hangs freely. Keep the torso to the side of the pole. LeftHand touches the physical model marker lean_grip at 0.00s, 3.00s. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/309890961fa1d21c/motion.npz",
+        "source_frame": 135,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "source": "assets/animations/sources/309890961fa1d21c/motion.npz",
+        "source_frame": 135,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "bus_stop_sign",
+      "marker": "lean_grip",
+      "space": "world",
+      "episode": "lean_grip",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.225325,
+            1.164878,
+            0.126182
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.225325,
+            1.164878,
+            0.126182
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/309890961fa1d21c/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "309890961fa1d21cb0644c253c2434ad7faccb9a823791f6a1f918f6f9419219",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/309890961fa1d21c/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "309890961fa1d21cb0644c253c2434ad7faccb9a823791f6a1f918f6f9419219",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "09e5bc4a3bfc3f902dd411dfc08c7a799b89f8d767fe7d92404d1c7d54c568bb",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "09e5bc4a3bfc3f902dd411dfc08c7a799b89f8d767fe7d92404d1c7d54c568bb",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"09e5bc4a3bfc3f902dd411dfc08c7a799b89f8d767fe7d92404d1c7d54c568bb\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "b6ab0ba758ef846bad2ed49c5f06793ee21faddbe227535dc9d34e6e43236e3a",
+      "current_source_sha256_at_reconciliation": "09e5bc4a3bfc3f902dd411dfc08c7a799b89f8d767fe7d92404d1c7d54c568bb",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

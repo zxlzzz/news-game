@@ -1,0 +1,29 @@
+{
+  "name": "reach_low_reference",
+  "text": "A person stands with both feet planted shoulder width apart. Bend the knees into a deep squat and hinge the torso forwards, reaching the RIGHT hand all the way down to the ground just in front of the toes to pick up a small fruit. Keep the left hand on the left thigh for balance. Hold the deep low reaching posture for the middle three seconds, then stand upright. Do not walk or kneel.",
+  "duration": 5,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "A person stands with both feet planted shoulder width apart. Bend the knees into a deep squat and hinge the torso forwards, reaching the RIGHT hand all the way down to the ground just in front of the toes to pick up a small fruit. Keep the left hand on the left thigh for balance. Hold the deep low reaching posture for the middle three seconds, then stand upright. Do not walk or kneel.",
+    "duration": 5,
+    "contacts": [],
+    "idle_hand": "Follow the stated task.",
+    "clearance": "Keep the planted feet and a natural whole-body reach.",
+    "generation_stage": "text_only_pilot"
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "902bf8acc28237fec66ba2df842936685a11a2c7942a6f9b8e872d170582cd2d",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

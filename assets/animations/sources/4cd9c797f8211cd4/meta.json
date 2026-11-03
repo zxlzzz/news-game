@@ -1,0 +1,81 @@
+{
+  "name": "loop_suitcase",
+  "text": "Stand still upright beside a wheeled suitcase on the right. The right hand holds its low handle near the thigh, right elbow down and arm nearly straight. Left arm hangs relaxed. Both feet remain planted and the suitcase stays on its wheels.",
+  "duration": 3.0,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "Stand still upright beside a wheeled suitcase on the right. The right hand holds its low handle near the thigh, right elbow down and arm nearly straight. Left arm hangs relaxed. Both feet remain planted and the suitcase stays on its wheels.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "grip",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "description": "Start at rolling_suitcase.post_pull facing the model standing marker direction. Stand still upright beside a wheeled suitcase on the right. The right hand holds its low handle near the thigh, right elbow down and arm nearly straight. Left arm hangs relaxed. Both feet remain planted and the suitcase stays on its wheels. RightHand touches the physical model marker grip at 0.00s, 3.00s. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "object": "rolling_suitcase",
+    "post": "post_pull",
+    "loop": false
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "rolling_suitcase",
+      "marker": "grip",
+      "space": "world",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.16796605777926743,
+            1.1436124242206063,
+            -0.2568412758409977
+          ],
+          "root_xz": [
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            -0.16796605777926743,
+            1.1436124242206063,
+            -0.2568412758409977
+          ],
+          "root_xz": [
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "4cd9c797f8211cd4e85f977b3c8b201ee3950f4d927f2c7e941f6166aadca4fa",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bicycle_marking.glb
+   size  x 0.690  y 0.000  z 1.630 m
+   box   min (-0.375, 0.003, -0.815)  max (0.315, 0.003, 0.815)
+   triangles 144: paint 144
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 c61b749e58ad155028803c8ec246f28559648c3cb679e2150f57e76a8650d3b4
+   REBUILD IDENTICAL

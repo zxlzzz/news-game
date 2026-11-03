@@ -1,0 +1,22 @@
+{
+  "_note": "Stage 2 (画线) material, not read by anything yet. Surfaces traced from the 2025 imagery on 5 m grids (real_place/view_area.py) on 2026-09-28, taken out of stage 1 when stage 1 was cut back to land, water and roads. Shapes as in ground.json platforms; slot = colour slot of the surface.",
+  "surfaces": [
+    { "name": "axis sculpture plaza", "slot": "sidewalk",
+      "octagon": { "centre": [22, 346.5], "size": [30, 29], "cut": 7 },
+      "union": [{ "rect": [-14, 341, 52, 348] }, { "rect": [18.5, 303, 25.5, 334] }] },
+    { "name": "axis south path", "slot": "sidewalk", "rect": [20, 360, 24.5, 481] },
+    { "name": "axis south octagon", "slot": "sidewalk",
+      "octagon": { "centre": [23, 428], "size": [24, 24], "cut": 6 }, "union": [{ "rect": [0, 424, 50, 432] }] },
+    { "name": "axis sign bed", "slot": "grass", "rect": [16, 484, 31, 491] },
+    { "name": "axis lawn (inside the loop road)", "slot": "grass",
+      "rect": [-7, 330, 55, 470], "union": [{ "circle": [23.5, 468, 31] }, { "circle": [23.5, 335, 30] }] },
+    { "name": "compass plaza", "slot": "sidewalk",
+      "polygon": [[-12, 236], [58, 236], [52, 250], [50, 290], [56, 301], [-6, 301], [0, 290], [-8, 250]] },
+    { "name": "library plaza", "slot": "sidewalk",
+      "circle": [20, 186, 57], "union": [{ "rect": [-30, 186, 68, 240] }], "minus": [{ "rect": [-60, 60, 100, 128] }] }
+  ],
+  "notes": [
+    "Library: the grand stair (about x 7..33, z 125..150) rises about 6 m from the plaza to an entrance deck over a ground floor; it belongs to the library model (stage 3), photo research/sdu_weihai/photos/spring_2024_16.jpg.",
+    "Stadium OSM way 110498057 is the running track, soccer pitch 970258572 inside it."
+  ]
+}

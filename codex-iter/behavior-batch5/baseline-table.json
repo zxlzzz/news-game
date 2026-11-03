@@ -1,0 +1,3126 @@
+{
+  "item_kinds": [
+    "phone",
+    "book",
+    "parcel",
+    "wallet",
+    "goods",
+    "snack",
+    "cup",
+    "cigarette",
+    "newspaper",
+    "camera",
+    "microphone",
+    "envelope",
+    "paper",
+    "trash",
+    "broom",
+    "mop",
+    "watering_can",
+    "cloth",
+    "clothes",
+    "guitar",
+    "box",
+    "bag",
+    "umbrella",
+    "leash",
+    "cash",
+    "open_umbrella",
+    "closed_book"
+  ],
+  "defaults": {
+    "half": 20,
+    "sight": 40,
+    "jitter": 1.5,
+    "rethink": 0.5,
+    "again": 90,
+    "hold_demo": 4,
+    "once_demo": 2,
+    "speed": 1.3,
+    "arrival": 0.05,
+    "reach": 1.5,
+    "seed": 173,
+    "invite_wait": 8,
+    "invite_range": 3,
+    "activity_demo": 18,
+    "activity_wait": 24,
+    "event_life": 12,
+    "event_radius": 8,
+    "support_speed": 1.2,
+    "support_span": 10,
+    "support_wait": 24,
+    "door_seconds": 1,
+    "support_turn_speed": 1.0
+  },
+  "actions": {
+    "stand_idle": {
+      "label": "发呆",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": null
+    },
+    "adjust_clothes": {
+      "label": "整理衣服",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "adjust_clothes"
+    },
+    "scratch_head": {
+      "label": "挠头",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "scratch_head"
+    },
+    "rub_eye": {
+      "label": "揉眼睛",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "rub_eye"
+    },
+    "check_watch": {
+      "label": "看表",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "check_watch"
+    },
+    "stretch": {
+      "label": "伸懒腰",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "stretch"
+    },
+    "pat_dust": {
+      "label": "拍掉灰尘",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "pat_dust"
+    },
+    "look_up": {
+      "label": "抬头看",
+      "mode": "once",
+      "posture": "standing",
+      "clip": null
+    },
+    "yawn": {
+      "label": "打哈欠",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "yawn"
+    },
+    "walk": {
+      "label": "走路",
+      "mode": "move",
+      "posture": "standing",
+      "clip": null
+    },
+    "leave": {
+      "label": "走向出口",
+      "mode": "move",
+      "posture": "standing",
+      "effect": "leave",
+      "clip": null
+    },
+    "sit_bench": {
+      "label": "正坐",
+      "mode": "hold",
+      "posture": "seated",
+      "post": "sit",
+      "clip": "sit_bench",
+      "empty": true
+    },
+    "slouch_bench": {
+      "label": "瘫坐",
+      "mode": "hold",
+      "posture": "seated",
+      "post": "sit",
+      "clip": "slouch_bench",
+      "empty": true
+    },
+    "phone_browse": {
+      "label": "看手机",
+      "mode": "hold",
+      "posture": "standing",
+      "tool": "phone",
+      "clip": null
+    },
+    "read_book": {
+      "label": "看书",
+      "mode": "hold",
+      "posture": "standing",
+      "tool": "book",
+      "clip": "read_book"
+    },
+    "read_notice": {
+      "label": "看公告",
+      "mode": "hold",
+      "posture": "standing",
+      "post": "notice",
+      "clip": null
+    },
+    "fountain_drink": {
+      "label": "喝水",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "post": "fountain",
+      "clip": "fountain_drink"
+    },
+    "stow_item": {
+      "label": "收起手中物",
+      "mode": "once",
+      "posture": "all",
+      "effect": "stow",
+      "clip": null
+    },
+    "put_down": {
+      "label": "放下手中物",
+      "mode": "once",
+      "posture": "all",
+      "effect": "put",
+      "clip": null
+    },
+    "take_tool": {
+      "label": "取出工具",
+      "mode": "once",
+      "posture": "all",
+      "effect": "take",
+      "clip": null
+    },
+    "stand_up": {
+      "label": "从座位起身",
+      "mode": "once",
+      "posture": "seated",
+      "effect": "stand",
+      "clip": null
+    },
+    "sit_down": {
+      "label": "坐下",
+      "mode": "once",
+      "posture": "standing",
+      "effect": "sit",
+      "clip": null
+    },
+    "handshake_wait": {
+      "label": "等对方回应",
+      "mode": "hold",
+      "posture": "standing",
+      "empty": true,
+      "clip": null
+    },
+    "pair_wait": {
+      "label": "等对方准备",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": null
+    },
+    "handshake_offer": {
+      "label": "伸手握手",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "handshake_offer"
+    },
+    "handshake_reply": {
+      "label": "回应握手",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "handshake_reply"
+    },
+    "choose_item": {
+      "label": "挑选商品",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "choose_item",
+      "post": "customer"
+    },
+    "fruit_weigh": {
+      "label": "称重",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "fruit_weigh",
+      "post": "fruitweigh"
+    },
+    "vendor_call": {
+      "label": "吆喝",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "vendor_call",
+      "post": "vendor"
+    },
+    "vendor_tidy": {
+      "label": "整理货品",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "vendor_tidy",
+      "post": "vendor"
+    },
+    "prepare_payment_tool": {
+      "label": "准备支付工具",
+      "mode": "hold",
+      "posture": "standing",
+      "tool": "wallet",
+      "clip": null
+    },
+    "present_payment_tool": {
+      "label": "展示支付工具",
+      "mode": "once",
+      "posture": "standing",
+      "tool": "wallet",
+      "clip": null
+    },
+    "confirm_checkout": {
+      "label": "确认结账",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": null
+    },
+    "give_item": {
+      "label": "递出商品",
+      "mode": "once",
+      "posture": "standing",
+      "tool": "goods",
+      "clip": "give_item"
+    },
+    "receive_item": {
+      "label": "接过商品",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": "receive_item"
+    },
+    "take_item": {
+      "label": "从台面拿起物品",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "effect": "take_surface",
+      "clip": null
+    },
+    "pack_goods": {
+      "label": "包装商品",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": null
+    },
+    "queue_wait": {
+      "label": "排队等候",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": null
+    },
+    "service_wait": {
+      "label": "等候服务",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": null
+    },
+    "run": {
+      "label": "跑",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "run",
+      "empty": true,
+      "speed": 3.2
+    },
+    "jog": {
+      "label": "慢跑",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "jog",
+      "empty": true,
+      "speed": 2.4
+    },
+    "sit_sideways": {
+      "label": "侧身坐",
+      "mode": "hold",
+      "posture": "seated",
+      "clip": null,
+      "empty": true,
+      "post": "sit"
+    },
+    "sit_step": {
+      "label": "坐在台阶上",
+      "mode": "hold",
+      "posture": "seated",
+      "clip": "sit_step",
+      "empty": true,
+      "post": "step"
+    },
+    "sit_ground": {
+      "label": "从站立坐到地上",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "sit_ground",
+      "empty": true,
+      "effect": "ground_seated"
+    },
+    "lie_down": {
+      "label": "躺到地上",
+      "mode": "once",
+      "posture": "standing",
+      "clip": null,
+      "empty": true,
+      "effect": "lying"
+    },
+    "get_up_ground": {
+      "label": "从普通坐地／躺地状态起身",
+      "mode": "once",
+      "posture": "ground",
+      "clip": null,
+      "empty": true,
+      "effect": "rise"
+    },
+    "sit_ground_hold": {
+      "label": "普通坐地保持",
+      "mode": "hold",
+      "posture": "ground_seated",
+      "clip": null,
+      "empty": true
+    },
+    "sit_knees_up": {
+      "label": "坐地抱膝",
+      "mode": "hold",
+      "posture": "ground_seated",
+      "clip": "sit_knees_up",
+      "empty": true
+    },
+    "lie_ground_hold": {
+      "label": "躺在地上",
+      "mode": "hold",
+      "posture": "lying",
+      "clip": "lie_ground_hold",
+      "empty": true
+    },
+    "lean_wall": {
+      "label": "靠墙站",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "lean_wall",
+      "empty": true,
+      "post": "wall"
+    },
+    "lean_sign": {
+      "label": "靠站牌站",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "lean_sign",
+      "empty": true,
+      "post": "pole"
+    },
+    "lean_railing": {
+      "label": "扶栏杆前倾",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "lean_railing",
+      "empty": true,
+      "post": "rail"
+    },
+    "wait_standing": {
+      "label": "站着等待",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": null
+    },
+    "atm_keypad": {
+      "label": "操作 ATM 键盘",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "atm_keypad",
+      "empty": true,
+      "post": "atm"
+    },
+    "atm_take_cash": {
+      "label": "取出设备中本次现金",
+      "mode": "once",
+      "posture": "standing",
+      "clip": null,
+      "empty": true,
+      "post": "atm",
+      "effect": "collect"
+    },
+    "parcel_terminal": {
+      "label": "操作取件柜并取出包裹",
+      "mode": "once",
+      "posture": "standing",
+      "clip": null,
+      "empty": true,
+      "post": "parcel",
+      "effect": "collect"
+    },
+    "post_letter": {
+      "label": "投信",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "post_letter",
+      "tool": "envelope",
+      "post": "mail",
+      "effect": "deposit"
+    },
+    "post_notice": {
+      "label": "张贴纸张",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "post_notice",
+      "tool": "paper",
+      "post": "postnotice",
+      "effect": "deposit"
+    },
+    "throw_trash": {
+      "label": "向垃圾桶投垃圾",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "throw_trash",
+      "tool": "trash",
+      "post": "trash",
+      "effect": "deposit"
+    },
+    "pick_up": {
+      "label": "从地面捡物后站起",
+      "mode": "once",
+      "posture": "standing",
+      "clip": null,
+      "empty": true,
+      "post": "pickup",
+      "effect": "collect"
+    },
+    "rummage_bin": {
+      "label": "翻找垃圾桶",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "rummage_bin",
+      "empty": true,
+      "post": "rummage"
+    },
+    "sweep_ground": {
+      "label": "扫地",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "sweep_ground",
+      "tool": "broom",
+      "post": "work"
+    },
+    "mop_ground": {
+      "label": "拖地",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "mop_ground",
+      "tool": "mop",
+      "post": "work"
+    },
+    "water_planter_hold": {
+      "label": "持水壶浇花",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "water_planter_hold",
+      "tool": "watering_can",
+      "post": "water"
+    },
+    "hang_laundry": {
+      "label": "晾挂衣物",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "hang_laundry",
+      "tool": "clothes",
+      "post": "hanglaundry",
+      "effect": "deposit"
+    },
+    "wipe_table": {
+      "label": "擦桌子",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": null,
+      "tool": "cloth",
+      "post": "table"
+    },
+    "cafe_sit_drink": {
+      "label": "坐着拿杯喝一口并放回桌面",
+      "mode": "once",
+      "posture": "seated",
+      "clip": "cafe_sit_drink",
+      "empty": true,
+      "post": "cafesit"
+    },
+    "phone_booth_call": {
+      "label": "拿起公用电话、通话并放回",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "phone_booth_call",
+      "empty": true,
+      "post": "payphone"
+    },
+    "eat_snack": {
+      "label": "站着吃东西",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "eat_snack",
+      "tool": "snack"
+    },
+    "drink": {
+      "label": "站着喝水",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "drink",
+      "tool": "cup"
+    },
+    "smoke": {
+      "label": "原地抽烟",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "smoke",
+      "tool": "cigarette"
+    },
+    "read_newspaper": {
+      "label": "原地看报",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "read_newspaper",
+      "tool": "newspaper"
+    },
+    "selfie": {
+      "label": "自拍",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "selfie",
+      "tool": "phone"
+    },
+    "take_photo": {
+      "label": "拍照",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "take_photo",
+      "tool": "camera"
+    },
+    "film_phone": {
+      "label": "举手机录像",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "film_phone",
+      "tool": "phone"
+    },
+    "wave": {
+      "label": "挥手",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "wave",
+      "empty": true
+    },
+    "walk_carry_box": {
+      "label": "抱箱走",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "walk_carry_box",
+      "tool": "box"
+    },
+    "walk_carry_bag": {
+      "label": "提袋走",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "walk_carry_bag",
+      "tool": "bag"
+    },
+    "walk_hold_front": {
+      "label": "双手在身前持物走",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "walk_hold_front",
+      "tool": "closed_book"
+    },
+    "walk_closed_umbrella": {
+      "label": "拿着收起的伞走",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "walk_closed_umbrella",
+      "tool": "umbrella"
+    },
+    "walk_umbrella": {
+      "label": "撑伞走",
+      "mode": "move",
+      "posture": "standing",
+      "clip": null,
+      "tool": "open_umbrella"
+    },
+    "play_guitar": {
+      "label": "弹吉他",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": null,
+      "tool": "guitar"
+    },
+    "exercise": {
+      "label": "原地做开合跳",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "exercise",
+      "empty": true,
+      "post": "exercise"
+    },
+    "tai_chi": {
+      "label": "打太极",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "tai_chi",
+      "empty": true,
+      "post": "exercise"
+    },
+    "handstand": {
+      "label": "双手倒立",
+      "mode": "hold",
+      "posture": "inverted",
+      "clip": "handstand",
+      "empty": true
+    },
+    "leg_stretch": {
+      "label": "脚搭高处压腿",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "leg_stretch",
+      "empty": true,
+      "post": "stretch"
+    },
+    "air_walker": {
+      "label": "使用漫步机",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "air_walker",
+      "empty": true,
+      "post": "airwalk"
+    },
+    "waist_twister": {
+      "label": "使用扭腰器",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "waist_twister",
+      "empty": true,
+      "post": "twister"
+    },
+    "talk_gesture": {
+      "label": "配合手势说话",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "talk_gesture",
+      "empty": true
+    },
+    "whisper": {
+      "label": "凑近低声说话",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "whisper",
+      "empty": true
+    },
+    "talk_accuse": {
+      "label": "指责对方",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "talk_accuse",
+      "empty": true
+    },
+    "interview_answer": {
+      "label": "简短回答",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "interview_answer",
+      "empty": true
+    },
+    "listen": {
+      "label": "面向对方听他说话",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": null,
+      "empty": true
+    },
+    "interview_question": {
+      "label": "提问",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "interview_question",
+      "tool": "microphone"
+    },
+    "interview_listen": {
+      "label": "听对方描述",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": null,
+      "tool": "microphone"
+    },
+    "chess_think": {
+      "label": "看棋盘思考",
+      "mode": "once",
+      "posture": "seated",
+      "clip": "chess_think",
+      "empty": true,
+      "post": "chess"
+    },
+    "chess_move": {
+      "label": "移动棋子",
+      "mode": "once",
+      "posture": "seated",
+      "clip": "chess_move",
+      "empty": true,
+      "post": "chess"
+    },
+    "chess_watch": {
+      "label": "看棋并向棋盘示意",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "chess_watch",
+      "empty": true,
+      "post": "watch"
+    },
+    "walk_child_hand_down": {
+      "label": "牵着较矮同伴走，成人一方",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "walk_child_hand_down",
+      "empty": true
+    },
+    "child_hold_hand_walk": {
+      "label": "牵着成人的手走",
+      "mode": "move",
+      "posture": "standing",
+      "clip": null,
+      "empty": true
+    },
+    "walk_dog": {
+      "label": "人握牵引绳走",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "walk_dog",
+      "tool": "leash"
+    },
+    "startle": {
+      "label": "受惊一缩",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "startle",
+      "empty": true
+    },
+    "recoil": {
+      "label": "畏缩躲闪",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "recoil",
+      "empty": true
+    },
+    "stumble": {
+      "label": "踉跄失衡",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "stumble",
+      "empty": true,
+      "effect": "balance"
+    },
+    "sit_ground_dazed_hold": {
+      "label": "坐地不适、扶着身体",
+      "mode": "hold",
+      "posture": "ground_seated",
+      "clip": "sit_ground_dazed_hold",
+      "empty": true
+    },
+    "stand_watch": {
+      "label": "站着观看",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "stand_watch",
+      "empty": true
+    },
+    "give_held": {
+      "label": "递出指定物件",
+      "mode": "once",
+      "posture": "standing",
+      "holding": true,
+      "clip": null
+    },
+    "seat_lower": {
+      "label": "在当前座位坐下",
+      "mode": "once",
+      "posture": "standing",
+      "effect": "sit",
+      "clip": null
+    },
+    "seat_rise": {
+      "label": "从当前座位起身",
+      "mode": "once",
+      "posture": "seated",
+      "effect": "stand",
+      "clip": null
+    },
+    "walk_open_book": {
+      "label": "持打开的书走",
+      "mode": "move",
+      "posture": "standing",
+      "tool": "book",
+      "clip": null
+    },
+    "support_latch": {
+      "label": "接入支撑／接好扶手",
+      "mode": "hold",
+      "posture": "all",
+      "clip": null,
+      "empty": true
+    },
+    "support_release": {
+      "label": "停稳并卸载支撑",
+      "mode": "hold",
+      "posture": "all",
+      "clip": null
+    },
+    "support_wait": {
+      "label": "等待支撑方就绪",
+      "mode": "hold",
+      "posture": "all",
+      "clip": null
+    },
+    "push_cart": {
+      "label": "推购物车",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "push_cart",
+      "empty": true,
+      "post": "push"
+    },
+    "push_stroller": {
+      "label": "推婴儿车",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "push_stroller",
+      "empty": true,
+      "post": "push"
+    },
+    "pull_suitcase": {
+      "label": "拉行李箱",
+      "mode": "move",
+      "posture": "standing",
+      "clip": null,
+      "empty": true,
+      "post": "pull"
+    },
+    "ride_bicycle": {
+      "label": "骑自行车",
+      "mode": "hold",
+      "posture": "supported_seated",
+      "clip": "ride_bicycle",
+      "empty": true,
+      "post": "rider"
+    },
+    "ride_scooter": {
+      "label": "骑踏板摩托车",
+      "mode": "hold",
+      "posture": "supported_seated",
+      "clip": "ride_scooter",
+      "empty": true,
+      "post": "rider"
+    },
+    "swing_seated": {
+      "label": "荡秋千",
+      "mode": "hold",
+      "posture": "supported_seated",
+      "clip": "swing_seated",
+      "empty": true,
+      "post": "swing"
+    },
+    "slide_seated": {
+      "label": "沿滑道滑下",
+      "mode": "hold",
+      "posture": "supported_seated",
+      "clip": "slide_seated",
+      "empty": true,
+      "post": "slide"
+    },
+    "seesaw_seated": {
+      "label": "坐跷跷板",
+      "mode": "hold",
+      "posture": "supported_seated",
+      "clip": "seesaw_seated",
+      "empty": true,
+      "post": "seesaw"
+    },
+    "seesaw_partner": {
+      "label": "坐跷跷板另一侧",
+      "mode": "hold",
+      "posture": "supported_seated",
+      "clip": "seesaw_partner",
+      "empty": true,
+      "post": "seesaw"
+    },
+    "pullup_raise": {
+      "label": "悬挂做引体向上",
+      "mode": "once",
+      "posture": "hanging",
+      "clip": "pullup_raise",
+      "empty": true,
+      "post": "pullup"
+    },
+    "hold_door": {
+      "label": "扶门让人通过",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "hold_door",
+      "empty": true,
+      "post": "doorhold"
+    },
+    "hail_taxi": {
+      "label": "招呼出租车",
+      "mode": "once",
+      "posture": "standing",
+      "clip": "hail_taxi",
+      "empty": true
+    },
+    "car_ride": {
+      "label": "坐在车辆座位中",
+      "mode": "hold",
+      "posture": "supported_seated",
+      "clip": null,
+      "empty": true
+    },
+    "assist_elder_walk": {
+      "label": "搀扶行走",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "assist_elder_walk",
+      "empty": true
+    },
+    "elder_assisted_walk": {
+      "label": "在搀扶下行走",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "elder_assisted_walk",
+      "empty": true
+    },
+    "help_up": {
+      "label": "扶起倒地的人",
+      "mode": "once",
+      "posture": "standing",
+      "clip": null,
+      "empty": true
+    },
+    "helped_up": {
+      "label": "接受帮助起身",
+      "mode": "once",
+      "posture": "lying",
+      "clip": null,
+      "empty": true
+    },
+    "phone_call": {
+      "label": "打电话",
+      "mode": "hold",
+      "posture": "standing",
+      "clip": "phone_call",
+      "tool": "phone"
+    },
+    "walk_phone_call": {
+      "label": "边走边打电话",
+      "mode": "move",
+      "posture": "standing",
+      "clip": "walk_phone_call",
+      "tool": "phone"
+    },
+    "support_prepare": {
+      "label": "准备接入支撑",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": null
+    },
+    "open_fixture": {
+      "label": "开门",
+      "mode": "once",
+      "posture": "standing",
+      "empty": true,
+      "clip": null
+    },
+    "helped_up_ground_seated": {
+      "label": "坐地接受帮助起身",
+      "mode": "once",
+      "posture": "ground_seated",
+      "empty": true,
+      "clip": null
+    }
+  },
+  "rows": {
+    "idle": {
+      "base": 1.2,
+      "action": "stand_idle"
+    },
+    "adjust_clothes": {
+      "enabled": false,
+      "note": "需具体原因才启用（behaviors.md §9）",
+      "base": 1.2,
+      "action": "adjust_clothes"
+    },
+    "fidget": {
+      "base": 1.2,
+      "label": "原地活动一下",
+      "actions": [
+        "scratch_head",
+        "rub_eye",
+        "pat_dust",
+        "stretch",
+        "check_watch",
+        "look_up",
+        "yawn"
+      ]
+    },
+    "stroll": {
+      "base": 2,
+      "action": "walk",
+      "target": "post:waypoint",
+      "label": "闲逛"
+    },
+    "leave": {
+      "base": 1.2,
+      "action": "leave",
+      "target": "post:exit",
+      "label": "离开这里"
+    },
+    "sit_bench": {
+      "base": 3,
+      "use": "go_use",
+      "target": "post:sit",
+      "action": "sit_bench",
+      "label": "正坐休息"
+    },
+    "slouch_bench": {
+      "base": 3,
+      "use": "go_use",
+      "target": "post:sit",
+      "action": "slouch_bench",
+      "label": "瘫坐休息"
+    },
+    "phone_browse": {
+      "base": 2,
+      "use": "use_tool",
+      "tool": "phone",
+      "action": "phone_browse",
+      "label": "看手机"
+    },
+    "read_book": {
+      "base": 2,
+      "use": "use_tool",
+      "tool": "book",
+      "action": "read_book",
+      "label": "看书"
+    },
+    "read_notice": {
+      "base": 2.5,
+      "use": "go_use",
+      "target": "post:notice",
+      "action": "read_notice",
+      "label": "看公告"
+    },
+    "use_fountain": {
+      "base": 4,
+      "use": "go_use",
+      "target": "post:fountain",
+      "action": "fountain_drink",
+      "label": "到饮水处喝水"
+    },
+    "pet_dog": {
+      "enabled": false,
+      "note": "TODO: Needs animal approach/contact permission and departure interface.",
+      "label": "摸狗"
+    },
+    "handshake": {
+      "base": {
+        "else": 2,
+        "invited": 6
+      },
+      "label": "握手",
+      "use": "pair_once",
+      "target": "person",
+      "pair": "handshake",
+      "tags": [
+        "social"
+      ]
+    },
+    "tend_stall": {
+      "base": 5,
+      "label": "看摊",
+      "use": "service_vendor",
+      "service": "fruit",
+      "tags": [
+        "seller"
+      ]
+    },
+    "buy_stuff": {
+      "base": {
+        "else": 4,
+        "calling": 5,
+        "paid": 7
+      },
+      "label": "买东西",
+      "use": "service_customer",
+      "service": "fruit",
+      "tags": [
+        "shopper"
+      ]
+    },
+    "run": {
+      "base": 2,
+      "label": "跑步",
+      "action": "run",
+      "use": "go_use",
+      "target": "post:waypoint",
+      "tags": [
+        "move"
+      ]
+    },
+    "jog": {
+      "base": 2,
+      "label": "慢跑",
+      "action": "jog",
+      "use": "go_use",
+      "target": "post:waypoint",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "sit_sideways": {
+      "base": 3,
+      "label": "侧坐休息",
+      "action": "sit_sideways",
+      "use": "go_use",
+      "target": "post:sit",
+      "tags": [
+        "sit"
+      ]
+    },
+    "sit_step": {
+      "base": 3,
+      "label": "坐台阶休息",
+      "action": "sit_step",
+      "use": "go_use",
+      "target": "post:step",
+      "tags": [
+        "sit"
+      ]
+    },
+    "sit_on_ground": {
+      "base": 2,
+      "label": "坐地休息",
+      "action": "sit_ground_hold",
+      "use": "go_use",
+      "target": "post:ground",
+      "tags": [
+        "sit"
+      ]
+    },
+    "sit_knees_up": {
+      "base": 2,
+      "label": "抱膝坐着",
+      "action": "sit_knees_up",
+      "use": "go_use",
+      "target": "post:ground",
+      "tags": [
+        "sit"
+      ]
+    },
+    "lie_ground_hold": {
+      "base": 2,
+      "label": "躺下休息",
+      "action": "lie_ground_hold",
+      "use": "go_use",
+      "target": "post:ground",
+      "tags": [
+        "sit"
+      ]
+    },
+    "lean_wall": {
+      "base": 3,
+      "label": "靠墙休息",
+      "action": "lean_wall",
+      "use": "go_use",
+      "target": "post:wall",
+      "tags": [
+        "sit"
+      ]
+    },
+    "lean_sign": {
+      "base": 3,
+      "label": "靠站牌休息",
+      "action": "lean_sign",
+      "use": "go_use",
+      "target": "post:pole",
+      "tags": [
+        "sit"
+      ]
+    },
+    "lean_railing": {
+      "base": 3,
+      "label": "扶栏杆歇一会儿",
+      "action": "lean_railing",
+      "use": "go_use",
+      "target": "post:rail",
+      "tags": [
+        "sit"
+      ]
+    },
+    "wait_bus": {
+      "base": 2.5,
+      "label": "等公交",
+      "action": "wait_standing",
+      "use": "go_use",
+      "target": "post:buswait",
+      "tags": [
+        "wait"
+      ]
+    },
+    "wait_person": {
+      "enabled": false,
+      "note": "TODO: Needs a scene-provided current waiting person/place; no schedules or remembered appointments.",
+      "label": "等人"
+    },
+    "browse_stall": {
+      "base": 2.5,
+      "label": "看看摊上的东西",
+      "action": "choose_item",
+      "use": "go_use",
+      "target": "post:customer",
+      "tags": [
+        "shopper"
+      ]
+    },
+    "buy_newspaper": {
+      "enabled": false,
+      "note": "TODO: Needs configured checkout and one-time collection; taking a paper is not a purchase.",
+      "label": "买报纸"
+    },
+    "use_vending": {
+      "enabled": false,
+      "note": "TODO: Machine selection/payment/output facts are undefined; a timer must not create stock.",
+      "label": "从机器买东西"
+    },
+    "hold_door": {
+      "label": "给后面的人扶门",
+      "base": 5,
+      "use": "support_use",
+      "activity": "door",
+      "role": "holder",
+      "tags": [
+        "care"
+      ]
+    },
+    "push_cart": {
+      "label": "推车过去",
+      "base": 3,
+      "use": "support_use",
+      "activity": "cart",
+      "role": "user",
+      "tags": [
+        "carry"
+      ]
+    },
+    "push_stroller": {
+      "label": "推婴儿车散步",
+      "base": 3,
+      "use": "support_use",
+      "activity": "stroller",
+      "role": "user",
+      "tags": [
+        "care"
+      ]
+    },
+    "pull_suitcase": {
+      "label": "拉行李出行",
+      "base": 3,
+      "use": "support_use",
+      "activity": "suitcase",
+      "role": "user",
+      "tags": [
+        "carry"
+      ]
+    },
+    "ride_bicycle": {
+      "label": "骑自行车出行",
+      "base": 3,
+      "use": "support_use",
+      "activity": "bicycle",
+      "role": "rider",
+      "tags": [
+        "move"
+      ]
+    },
+    "ride_scooter": {
+      "label": "骑车出行",
+      "base": 3,
+      "use": "support_use",
+      "activity": "scooter",
+      "role": "rider",
+      "tags": [
+        "move"
+      ]
+    },
+    "hail_taxi": {
+      "label": "打车并上车",
+      "base": 3,
+      "use": "support_use",
+      "activity": "taxi",
+      "role": "passenger",
+      "tags": [
+        "move"
+      ],
+      "operation": "summon"
+    },
+    "enter_car": {
+      "label": "上车",
+      "base": 4,
+      "use": "support_use",
+      "activity": "car",
+      "role": "passenger",
+      "tags": [
+        "move"
+      ],
+      "operation": "board"
+    },
+    "exit_car": {
+      "label": "下车",
+      "base": 4,
+      "use": "support_use",
+      "activity": "car",
+      "role": "passenger",
+      "tags": [
+        "move"
+      ],
+      "operation": "exit"
+    },
+    "assist_person": {
+      "label": "搀扶行走",
+      "base": 6,
+      "use": "support_use",
+      "activity": "assistance",
+      "role": "helper",
+      "tags": [
+        "care"
+      ]
+    },
+    "accept_assistance": {
+      "label": "接受搀扶",
+      "base": 6,
+      "use": "support_use",
+      "activity": "assistance",
+      "role": "receiver",
+      "tags": [
+        "care"
+      ]
+    },
+    "help_fallen": {
+      "label": "扶起倒地的人",
+      "base": 6,
+      "use": "support_use",
+      "activity": "lift",
+      "role": "helper",
+      "tags": [
+        "care"
+      ]
+    },
+    "play_seesaw": {
+      "label": "玩跷跷板",
+      "base": 3,
+      "use": "support_use",
+      "activity": "seesaw",
+      "role": "*",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "slide_seated": {
+      "label": "玩滑梯",
+      "base": 3,
+      "use": "support_use",
+      "activity": "slide",
+      "role": "user",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "swing_seated": {
+      "label": "荡秋千",
+      "base": 3,
+      "use": "support_use",
+      "activity": "swing",
+      "role": "user",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "do_pullups": {
+      "label": "做引体向上",
+      "base": 3,
+      "use": "support_use",
+      "activity": "bar",
+      "role": "user",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "give_object": {
+      "base": {
+        "else": 5,
+        "invited": 7
+      },
+      "label": "把东西交给对方",
+      "use": "pair_once",
+      "target": "person",
+      "pair": "gift",
+      "role": "offer",
+      "tags": [
+        "social"
+      ]
+    },
+    "receive_object": {
+      "base": {
+        "else": 5,
+        "invited": 7
+      },
+      "label": "接对方给的东西",
+      "use": "pair_once",
+      "target": "person",
+      "pair": "gift",
+      "role": "reply",
+      "tags": [
+        "social"
+      ]
+    },
+    "distribute_flyer": {
+      "enabled": false,
+      "note": "TODO: Needs finite sheets and left-hand stack/right-hand transfer; single held slot cannot express both.",
+      "label": "发传单"
+    },
+    "receive_flyer": {
+      "enabled": false,
+      "note": "TODO: The supplying process and two-hand sheet representation are undefined.",
+      "label": "接传单"
+    },
+    "withdraw_cash": {
+      "base": 4,
+      "label": "取钱",
+      "use": "sequence",
+      "process": "withdraw_cash",
+      "target": "post:atm",
+      "tags": [
+        "facility"
+      ]
+    },
+    "collect_parcel": {
+      "base": 4,
+      "label": "取快递",
+      "use": "sequence",
+      "process": "collect_parcel",
+      "target": "post:parcel",
+      "tags": [
+        "facility"
+      ]
+    },
+    "post_letter": {
+      "base": 4,
+      "label": "寄信",
+      "use": "sequence",
+      "process": "post_letter",
+      "target": "post:mail",
+      "tags": [
+        "facility"
+      ]
+    },
+    "post_notice": {
+      "base": 4,
+      "label": "贴告示",
+      "use": "sequence",
+      "process": "post_notice",
+      "target": "post:postnotice",
+      "tags": [
+        "facility"
+      ]
+    },
+    "throw_trash": {
+      "base": 6,
+      "label": "扔垃圾",
+      "use": "sequence",
+      "process": "throw_trash",
+      "target": "post:trash",
+      "tags": [
+        "facility"
+      ]
+    },
+    "pick_up_object": {
+      "base": 4,
+      "label": "捡起地上的东西",
+      "use": "sequence",
+      "process": "pick_up_object",
+      "target": "post:pickup",
+      "tags": [
+        "facility"
+      ]
+    },
+    "rummage_bin": {
+      "base": 3,
+      "label": "翻找垃圾桶",
+      "action": "rummage_bin",
+      "use": "go_use",
+      "target": "post:rummage",
+      "tags": [
+        "facility"
+      ]
+    },
+    "sweep_area": {
+      "base": 4,
+      "label": "扫地",
+      "action": "sweep_ground",
+      "use": "go_use",
+      "target": "post:work",
+      "tool": "broom",
+      "tags": [
+        "clean"
+      ]
+    },
+    "mop_area": {
+      "base": 4,
+      "label": "拖地",
+      "action": "mop_ground",
+      "use": "go_use",
+      "target": "post:work",
+      "tool": "mop",
+      "tags": [
+        "clean"
+      ]
+    },
+    "water_plants": {
+      "base": 4,
+      "label": "浇花",
+      "action": "water_planter_hold",
+      "use": "go_use",
+      "target": "post:water",
+      "tool": "watering_can",
+      "tags": [
+        "clean"
+      ]
+    },
+    "hang_laundry": {
+      "base": 4,
+      "label": "晾衣服",
+      "use": "sequence",
+      "process": "hang_laundry",
+      "target": "post:hanglaundry",
+      "tags": [
+        "clean"
+      ]
+    },
+    "wipe_table": {
+      "base": 4,
+      "label": "擦桌子",
+      "action": "wipe_table",
+      "use": "go_use",
+      "target": "post:table",
+      "tool": "cloth",
+      "tags": [
+        "clean"
+      ]
+    },
+    "cafe_drink": {
+      "base": 4,
+      "label": "坐下喝点东西",
+      "use": "sequence",
+      "process": "cafe_drink",
+      "target": "post:cafesit",
+      "tags": [
+        "sit"
+      ]
+    },
+    "use_payphone": {
+      "base": 4,
+      "label": "用公用电话",
+      "use": "sequence",
+      "process": "use_payphone",
+      "target": "post:payphone",
+      "tags": [
+        "phone"
+      ]
+    },
+    "eat_snack": {
+      "base": 2,
+      "label": "吃东西",
+      "action": "eat_snack",
+      "tool": "snack",
+      "use": "use_tool",
+      "tags": [
+        "fidget"
+      ]
+    },
+    "drink": {
+      "base": 2,
+      "label": "喝水",
+      "action": "drink",
+      "tool": "cup",
+      "use": "use_tool",
+      "tags": [
+        "fidget"
+      ]
+    },
+    "smoke": {
+      "base": 2,
+      "label": "抽烟",
+      "action": "smoke",
+      "tool": "cigarette",
+      "use": "use_tool",
+      "tags": [
+        "fidget"
+      ]
+    },
+    "read_newspaper": {
+      "base": 2,
+      "label": "看报",
+      "action": "read_newspaper",
+      "tool": "newspaper",
+      "use": "use_tool",
+      "tags": [
+        "read"
+      ]
+    },
+    "selfie": {
+      "base": 2,
+      "label": "自拍",
+      "action": "selfie",
+      "tool": "phone",
+      "use": "use_tool",
+      "tags": [
+        "record"
+      ]
+    },
+    "phone_call": {
+      "label": "打电话",
+      "base": 3,
+      "use": "connection",
+      "process": "phone",
+      "tags": [
+        "phone"
+      ]
+    },
+    "greet": {
+      "base": 4,
+      "label": "打招呼",
+      "use": "observe",
+      "action": "wave",
+      "target": "person",
+      "tags": [
+        "social"
+      ]
+    },
+    "take_photo": {
+      "base": 3,
+      "label": "拍照",
+      "use": "observe",
+      "action": "take_photo",
+      "target": "focus",
+      "tags": [
+        "record"
+      ]
+    },
+    "film_phone": {
+      "base": 3,
+      "label": "录像",
+      "use": "observe",
+      "action": "film_phone",
+      "target": "focus",
+      "tags": [
+        "record"
+      ]
+    },
+    "carry_to_place": {
+      "base": 3,
+      "label": "把东西带过去",
+      "use": "transport",
+      "process": "carried",
+      "target": "post:destination",
+      "tags": [
+        "carry"
+      ]
+    },
+    "walk_with_umbrella": {
+      "base": 3,
+      "label": "撑伞出行",
+      "use": "transport",
+      "process": "umbrella",
+      "target": "post:destination",
+      "tags": [
+        "carry"
+      ]
+    },
+    "perform_guitar": {
+      "base": 3,
+      "label": "弹吉他",
+      "action": "play_guitar",
+      "use": "go_use",
+      "target": "post:performance",
+      "tool": "guitar",
+      "tags": [
+        "perform"
+      ]
+    },
+    "exercise": {
+      "base": 3,
+      "label": "活动身体",
+      "action": "exercise",
+      "use": "go_use",
+      "target": "post:exercise",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "tai_chi": {
+      "base": 3,
+      "label": "打太极",
+      "action": "tai_chi",
+      "use": "go_use",
+      "target": "post:exercise",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "handstand": {
+      "label": "倒立",
+      "base": 3,
+      "use": "support_use",
+      "activity": "palms",
+      "role": "user",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "leg_stretch": {
+      "base": 3,
+      "label": "压腿",
+      "action": "leg_stretch",
+      "use": "go_use",
+      "target": "post:stretch",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "use_air_walker": {
+      "base": 3,
+      "label": "玩漫步机",
+      "action": "air_walker",
+      "use": "go_use",
+      "target": "post:airwalk",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "use_waist_twister": {
+      "base": 3,
+      "label": "用扭腰器",
+      "action": "waist_twister",
+      "use": "go_use",
+      "target": "post:twister",
+      "tags": [
+        "exercise"
+      ]
+    },
+    "chat": {
+      "base": {
+        "else": 4,
+        "invited": 6
+      },
+      "label": "聊天",
+      "use": "conversation",
+      "activity": "chat",
+      "role": "peer",
+      "tags": [
+        "talk"
+      ]
+    },
+    "whisper": {
+      "base": {
+        "else": 4,
+        "invited": 6
+      },
+      "label": "低声说话",
+      "use": "conversation",
+      "activity": "whisper",
+      "role": "peer",
+      "tags": [
+        "talk"
+      ]
+    },
+    "argue": {
+      "base": {
+        "else": 6,
+        "invited": 8
+      },
+      "label": "争论",
+      "use": "conversation",
+      "activity": "argue",
+      "role": "peer",
+      "tags": [
+        "talk"
+      ]
+    },
+    "interview": {
+      "base": {
+        "else": 5,
+        "invited": 7
+      },
+      "label": "询问经过",
+      "use": "conversation",
+      "activity": "interview",
+      "role": "reporter",
+      "tags": [
+        "talk"
+      ]
+    },
+    "answer_interview": {
+      "base": {
+        "else": 5,
+        "invited": 7
+      },
+      "label": "回答询问",
+      "use": "conversation",
+      "activity": "interview",
+      "role": "respondent",
+      "tags": [
+        "talk"
+      ]
+    },
+    "play_chess": {
+      "base": 5,
+      "label": "下棋",
+      "use": "object_activity",
+      "activity": "chess",
+      "role": "play",
+      "tags": [
+        "chess"
+      ]
+    },
+    "watch_chess": {
+      "base": 4.5,
+      "label": "看人下棋",
+      "use": "object_activity",
+      "activity": "chess",
+      "role": "watch",
+      "tags": [
+        "watch"
+      ]
+    },
+    "walk_with_child": {
+      "base": {
+        "else": 4,
+        "invited": 6
+      },
+      "label": "牵孩子走",
+      "use": "move_together",
+      "activity": "child",
+      "role": "adult",
+      "tags": [
+        "care"
+      ]
+    },
+    "follow_adult": {
+      "base": {
+        "else": 4,
+        "invited": 6
+      },
+      "label": "牵着成人的手走",
+      "use": "move_together",
+      "activity": "child",
+      "role": "child",
+      "tags": [
+        "care"
+      ]
+    },
+    "walk_dog": {
+      "base": {
+        "else": 4,
+        "invited": 6
+      },
+      "label": "遛狗",
+      "use": "move_together",
+      "activity": "dog",
+      "role": "walker",
+      "tags": [
+        "care"
+      ]
+    },
+    "react_startle": {
+      "base": 8,
+      "label": "受惊",
+      "use": "event_response",
+      "response": "startle",
+      "tags": [
+        "react"
+      ]
+    },
+    "protect_self": {
+      "base": 9,
+      "label": "躲避保护自己",
+      "use": "event_response",
+      "response": "protect",
+      "tags": [
+        "react"
+      ]
+    },
+    "recover_balance": {
+      "base": 8,
+      "label": "失衡后稳住自己",
+      "use": "event_response",
+      "response": "balance",
+      "tags": [
+        "react"
+      ]
+    },
+    "rest_after_fall": {
+      "base": 5,
+      "label": "倒地后缓一缓",
+      "use": "event_response",
+      "response": "rest",
+      "tags": [
+        "react"
+      ]
+    },
+    "watch_event": {
+      "base": {
+        "else": 3,
+        "salient": 7
+      },
+      "label": "围观",
+      "use": "event_response",
+      "response": "watch",
+      "tags": [
+        "watch"
+      ]
+    }
+  },
+  "pairs": {
+    "handshake": {
+      "offer": "handshake_offer",
+      "reply": "handshake_reply",
+      "wait": "handshake_wait",
+      "layout": "handshake_offer"
+    },
+    "gift": {
+      "offer": "give_held",
+      "reply": "receive_item",
+      "wait": "pair_wait",
+      "layout": "give_item",
+      "effect": "transfer"
+    }
+  },
+  "services": {
+    "fruit": {
+      "label": "水果摊",
+      "payment_tool": "wallet",
+      "choose": "choose_item",
+      "weigh": "fruit_weigh",
+      "packing": {
+        "TODO": "包装流程尚未设计"
+      },
+      "idle": [
+        "vendor_call",
+        "vendor_tidy"
+      ],
+      "checkout": [
+        "present_payment_tool",
+        "confirm_checkout"
+      ],
+      "delivery": [
+        "receive_item",
+        "give_item"
+      ],
+      "delivery_layout": "give_item",
+      "queue_connection": "phone"
+    }
+  },
+  "bindings": {
+    "stand_idle": {
+      "empty": "stand_idle",
+      "held": null
+    },
+    "walk": {
+      "empty": "walk",
+      "held": null
+    },
+    "leave": {
+      "empty": "walk",
+      "held": null
+    },
+    "pair_wait": {
+      "empty": "stand_idle",
+      "held": null
+    },
+    "queue_wait": {
+      "empty": "stand_idle",
+      "held": null
+    },
+    "service_wait": {
+      "empty": "stand_idle",
+      "held": null
+    },
+    "wait_standing": {
+      "empty": "stand_idle",
+      "held": null
+    },
+    "look_up": {
+      "empty": "look_up",
+      "held": null
+    },
+    "read_notice": {
+      "empty": "read_notice",
+      "held": null
+    },
+    "stand_up": {
+      "empty": "stand_up",
+      "held": null
+    },
+    "sit_down": {
+      "empty": "sit_down",
+      "held": null
+    }
+  },
+  "ground_poses": {
+    "ground_seated": {
+      "enter": "sit_ground"
+    },
+    "lying": {
+      "enter": "lie_down"
+    }
+  },
+  "processes": {
+    "withdraw_cash": {
+      "steps": [
+        {
+          "action": "atm_keypad"
+        },
+        {
+          "action": "atm_take_cash"
+        }
+      ],
+      "input": {
+        "kind": "cash",
+        "owned": true
+      }
+    },
+    "collect_parcel": {
+      "steps": [
+        {
+          "action": "parcel_terminal"
+        }
+      ],
+      "input": {
+        "kind": "parcel",
+        "owned": true
+      }
+    },
+    "post_letter": {
+      "steps": [
+        {
+          "action": "post_letter"
+        }
+      ]
+    },
+    "post_notice": {
+      "steps": [
+        {
+          "action": "post_notice"
+        }
+      ]
+    },
+    "throw_trash": {
+      "steps": [
+        {
+          "action": "throw_trash"
+        }
+      ]
+    },
+    "pick_up_object": {
+      "steps": [
+        {
+          "action": "pick_up"
+        }
+      ],
+      "input": {}
+    },
+    "cafe_drink": {
+      "steps": [
+        {
+          "action": "cafe_sit_drink"
+        }
+      ],
+      "input": {
+        "kind": "cup"
+      }
+    },
+    "use_payphone": {
+      "steps": [
+        {
+          "action": "phone_booth_call"
+        }
+      ]
+    },
+    "hang_laundry": {
+      "steps": [
+        {
+          "action": "hang_laundry"
+        }
+      ]
+    }
+  },
+  "transports": {
+    "carried": {
+      "box": "walk_carry_box",
+      "bag": "walk_carry_bag",
+      "book": "walk_open_book",
+      "umbrella": "walk_closed_umbrella",
+      "closed_book": "walk_hold_front"
+    },
+    "umbrella": {
+      "open_umbrella": "walk_umbrella"
+    }
+  },
+  "conversations": {
+    "chat": {
+      "roles": {
+        "peer": {
+          "speak": "talk_gesture",
+          "listen": "listen",
+          "partners": [
+            "peer"
+          ]
+        }
+      },
+      "offsets": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.9,
+          180
+        ],
+        [
+          0.8,
+          0.45,
+          -90
+        ]
+      ],
+      "open_group": true,
+      "range": 3
+    },
+    "whisper": {
+      "roles": {
+        "peer": {
+          "speak": "whisper",
+          "listen": "listen",
+          "partners": [
+            "peer"
+          ]
+        }
+      },
+      "offsets": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.65,
+          180
+        ],
+        [
+          0.8,
+          0.45,
+          -90
+        ]
+      ],
+      "open_group": true,
+      "range": 1.5
+    },
+    "argue": {
+      "roles": {
+        "peer": {
+          "speak": "talk_accuse",
+          "listen": "listen",
+          "partners": [
+            "peer"
+          ]
+        }
+      },
+      "offsets": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0.9,
+          180
+        ],
+        [
+          0.8,
+          0.45,
+          -90
+        ]
+      ],
+      "open_group": true,
+      "range": 3,
+      "requires_event": true
+    },
+    "interview": {
+      "roles": {
+        "reporter": {
+          "speak": "interview_question",
+          "listen": "interview_listen",
+          "partners": [
+            "respondent"
+          ]
+        },
+        "respondent": {
+          "speak": "interview_answer",
+          "listen": "listen",
+          "partners": [
+            "reporter"
+          ],
+          "reply_only": true
+        }
+      },
+      "offsets": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          -0.18,
+          0.9,
+          180
+        ]
+      ],
+      "open_group": false,
+      "range": 3,
+      "layout": "interview_question"
+    }
+  },
+  "object_activities": {
+    "chess": {
+      "turn_role": "play",
+      "roles": {
+        "play": {
+          "minimum": 2,
+          "action": "chess_move",
+          "wait": "chess_think"
+        },
+        "watch": {
+          "minimum": 1,
+          "action": "chess_watch",
+          "wait": "chess_watch",
+          "requires": "play"
+        }
+      }
+    }
+  },
+  "journeys": {
+    "child": {
+      "roles": {
+        "adult": {
+          "action": "walk_child_hand_down"
+        },
+        "child": {
+          "action": "child_hold_hand_walk"
+        }
+      },
+      "separation": 1.2,
+      "leader": "adult"
+    },
+    "dog": {
+      "roles": {
+        "walker": {
+          "action": "walk_dog"
+        },
+        "dog": {
+          "animal": true
+        }
+      },
+      "separation": 2.5,
+      "leader": "walker"
+    }
+  },
+  "responses": {
+    "startle": {
+      "events": [
+        "fall",
+        "noise",
+        "threat"
+      ],
+      "actions": {
+        "standing": "startle"
+      }
+    },
+    "protect": {
+      "events": [
+        "threat"
+      ],
+      "actions": {
+        "standing": "recoil"
+      }
+    },
+    "balance": {
+      "events": [
+        "imbalance"
+      ],
+      "subject": true,
+      "unstable": true,
+      "actions": {
+        "standing": "stumble"
+      }
+    },
+    "rest": {
+      "events": [
+        "fall"
+      ],
+      "subject": true,
+      "rise_after": true,
+      "actions": {
+        "lying": "lie_ground_hold",
+        "ground_seated": "sit_ground_dazed_hold"
+      }
+    },
+    "watch": {
+      "events": [
+        "fall",
+        "dispute",
+        "noise",
+        "threat"
+      ],
+      "actions": {
+        "standing": "stand_watch"
+      }
+    }
+  },
+  "seats": {
+    "sit": {
+      "enter": "sit_down",
+      "leave": "stand_up"
+    },
+    "chess": {
+      "enter": "seat_lower",
+      "leave": "seat_rise"
+    },
+    "step": {
+      "enter": "seat_lower",
+      "leave": "seat_rise"
+    },
+    "cafesit": {
+      "enter": "seat_lower",
+      "leave": "seat_rise"
+    }
+  },
+  "external_facts": {
+    "fall": {
+      "lying": "fall_back",
+      "ground_seated": null
+    }
+  },
+  "supports": {
+    "cart": {
+      "roles": {
+        "user": {
+          "action": "push_cart",
+          "pose": "standing",
+          "ground": [
+            0,
+            0,
+            -0.8
+          ],
+          "anchor": [
+            0,
+            0,
+            -0.8
+          ],
+          "release": [
+            0,
+            0,
+            -0.8
+          ],
+          "contact": true
+        }
+      },
+      "motion": "route",
+      "minimum": 1,
+      "speed": 0.9,
+      "driver": "user"
+    },
+    "stroller": {
+      "roles": {
+        "user": {
+          "action": "push_stroller",
+          "pose": "standing",
+          "ground": [
+            0,
+            0,
+            -0.65
+          ],
+          "anchor": [
+            0,
+            0,
+            -0.65
+          ],
+          "release": [
+            0,
+            0,
+            -0.65
+          ],
+          "contact": true
+        }
+      },
+      "motion": "route",
+      "minimum": 1,
+      "speed": 0.8,
+      "driver": "user"
+    },
+    "suitcase": {
+      "roles": {
+        "user": {
+          "action": "pull_suitcase",
+          "pose": "standing",
+          "ground": [
+            0.35,
+            0,
+            0.5
+          ],
+          "anchor": [
+            0.35,
+            0,
+            0.5
+          ],
+          "release": [
+            0.35,
+            0,
+            0.5
+          ],
+          "contact": true
+        }
+      },
+      "motion": "route",
+      "minimum": 1,
+      "speed": 1,
+      "driver": "user"
+    },
+    "bicycle": {
+      "roles": {
+        "rider": {
+          "action": "ride_bicycle",
+          "pose": "supported_seated",
+          "ground": [
+            0.6,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0.45,
+            0
+          ],
+          "release": [
+            0.6,
+            0,
+            0
+          ]
+        }
+      },
+      "motion": "route",
+      "minimum": 1,
+      "speed": 1.2,
+      "driver": "rider"
+    },
+    "scooter": {
+      "roles": {
+        "rider": {
+          "action": "ride_scooter",
+          "pose": "supported_seated",
+          "ground": [
+            0.6,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0.35,
+            0
+          ],
+          "release": [
+            0.6,
+            0,
+            0
+          ]
+        }
+      },
+      "motion": "route",
+      "minimum": 1,
+      "speed": 1.2,
+      "driver": "rider"
+    },
+    "car": {
+      "roles": {
+        "passenger": {
+          "action": "car_ride",
+          "pose": "supported_seated",
+          "ground": [
+            0.9,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0.25,
+            0
+          ],
+          "release": [
+            0.9,
+            0,
+            0
+          ]
+        }
+      },
+      "motion": "route",
+      "minimum": 1,
+      "speed": 1.5,
+      "retain": true,
+      "compatible": [
+        "taxi"
+      ],
+      "driver": "external"
+    },
+    "taxi": {
+      "roles": {
+        "passenger": {
+          "action": "car_ride",
+          "pose": "supported_seated",
+          "ground": [
+            0.9,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0.25,
+            0
+          ],
+          "release": [
+            0.9,
+            0,
+            0
+          ]
+        }
+      },
+      "motion": "route",
+      "minimum": 1,
+      "speed": 1.5,
+      "retain": true,
+      "response": true,
+      "driver": "external",
+      "signal": "hail_taxi"
+    },
+    "swing": {
+      "roles": {
+        "user": {
+          "action": "swing_seated",
+          "pose": "supported_seated",
+          "ground": [
+            0,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0.35,
+            0
+          ],
+          "release": [
+            0,
+            0,
+            0
+          ],
+          "track": [
+            [
+              0,
+              0.35,
+              0
+            ],
+            [
+              0,
+              0.65,
+              1
+            ],
+            [
+              0,
+              0.35,
+              0
+            ],
+            [
+              0,
+              0.65,
+              -1
+            ],
+            [
+              0,
+              0.35,
+              0
+            ],
+            [
+              0,
+              0.65,
+              1
+            ],
+            [
+              0,
+              0.35,
+              0
+            ],
+            [
+              0,
+              0.65,
+              -1
+            ],
+            [
+              0,
+              0.35,
+              0
+            ]
+          ]
+        }
+      },
+      "motion": "track",
+      "minimum": 1,
+      "speed": 0.7,
+      "span": 14,
+      "driver": "external"
+    },
+    "slide": {
+      "roles": {
+        "user": {
+          "action": "slide_seated",
+          "pose": "supported_seated",
+          "ground": [
+            0,
+            0,
+            -1
+          ],
+          "anchor": [
+            0,
+            1.5,
+            0
+          ],
+          "release": [
+            0,
+            0,
+            2.5
+          ],
+          "track": [
+            [
+              0,
+              1.5,
+              0
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0.3,
+              2
+            ],
+            [
+              0,
+              0,
+              2.5
+            ]
+          ]
+        }
+      },
+      "motion": "track",
+      "minimum": 1,
+      "speed": 0.7,
+      "finish_track": true,
+      "driver": "external"
+    },
+    "seesaw": {
+      "roles": {
+        "a": {
+          "action": "seesaw_seated",
+          "pose": "supported_seated",
+          "ground": [
+            0,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0.25,
+            0
+          ],
+          "release": [
+            0,
+            0,
+            0
+          ],
+          "track": [
+            [
+              0,
+              0.25,
+              0
+            ],
+            [
+              0,
+              0.5,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0.25,
+              0
+            ]
+          ]
+        },
+        "b": {
+          "action": "seesaw_partner",
+          "pose": "supported_seated",
+          "ground": [
+            0,
+            0,
+            3
+          ],
+          "anchor": [
+            0,
+            0.25,
+            3
+          ],
+          "release": [
+            0,
+            0,
+            3
+          ],
+          "track": [
+            [
+              0,
+              0.25,
+              3
+            ],
+            [
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0.5,
+              3
+            ],
+            [
+              0,
+              0.25,
+              3
+            ]
+          ],
+          "passive": false,
+          "yaw": 3.141592653589793
+        }
+      },
+      "motion": "track",
+      "minimum": 2,
+      "speed": 0.15,
+      "span": 7,
+      "driver": "external"
+    },
+    "bar": {
+      "roles": {
+        "user": {
+          "action": "pullup_raise",
+          "pose": "hanging",
+          "ground": [
+            0,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0.3,
+            0
+          ],
+          "release": [
+            0,
+            0,
+            0
+          ],
+          "track": [
+            [
+              0,
+              0.3,
+              0
+            ],
+            [
+              0,
+              0.65,
+              0
+            ],
+            [
+              0,
+              0.3,
+              0
+            ]
+          ]
+        }
+      },
+      "motion": "track",
+      "minimum": 1,
+      "speed": 0.15,
+      "span": 6,
+      "driver": "external"
+    },
+    "palms": {
+      "roles": {
+        "user": {
+          "action": "handstand",
+          "pose": "inverted",
+          "ground": [
+            0,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0,
+            0
+          ],
+          "release": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "motion": "fixed",
+      "minimum": 1,
+      "driver": "external"
+    },
+    "assistance": {
+      "roles": {
+        "helper": {
+          "action": "assist_elder_walk",
+          "pose": "standing",
+          "ground": [
+            0,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0,
+            0
+          ],
+          "release": [
+            0,
+            0,
+            0
+          ],
+          "contact": true
+        },
+        "receiver": {
+          "action": "elder_assisted_walk",
+          "pose": "standing",
+          "ground": [
+            -0.443,
+            0,
+            -0.087
+          ],
+          "anchor": [
+            -0.443,
+            0,
+            -0.087
+          ],
+          "release": [
+            -0.443,
+            0,
+            -0.087
+          ],
+          "contact": true,
+          "load_from": "helper"
+        }
+      },
+      "motion": "route",
+      "minimum": 2,
+      "speed": 0.45,
+      "anchor_role": "helper",
+      "driver": "helper"
+    },
+    "lift": {
+      "roles": {
+        "helper": {
+          "action": "help_up",
+          "pose": "standing",
+          "ground": [
+            0.6,
+            0,
+            0
+          ],
+          "anchor": [
+            0.6,
+            0,
+            0
+          ],
+          "release": [
+            0.6,
+            0,
+            0
+          ],
+          "contact": true
+        },
+        "receiver": {
+          "action": "helped_up",
+          "pose": "lying",
+          "ground": [
+            0,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0,
+            0
+          ],
+          "release": [
+            0,
+            0,
+            0
+          ],
+          "passive": true,
+          "from": "lying",
+          "to": "standing",
+          "load_from": "helper"
+        }
+      },
+      "motion": "fixed",
+      "minimum": 2,
+      "requires_event": "fall",
+      "span": 4,
+      "anchor_role": "receiver",
+      "driver": "external",
+      "compatible": [
+        "lift_ground_seated"
+      ]
+    },
+    "door": {
+      "roles": {
+        "holder": {
+          "action": "hold_door",
+          "pose": "standing",
+          "ground": [
+            1,
+            0,
+            -0.3
+          ],
+          "anchor": [
+            1,
+            0,
+            -0.3
+          ],
+          "release": [
+            1,
+            0,
+            -0.3
+          ],
+          "contact": true
+        }
+      },
+      "motion": "fixed",
+      "minimum": 1,
+      "portal": {
+        "width": 0.6,
+        "depth": 0.5,
+        "action": "open_fixture"
+      },
+      "span": 18,
+      "driver": "external"
+    },
+    "lift_ground_seated": {
+      "roles": {
+        "helper": {
+          "action": "help_up",
+          "pose": "standing",
+          "ground": [
+            0.6,
+            0,
+            0
+          ],
+          "anchor": [
+            0.6,
+            0,
+            0
+          ],
+          "release": [
+            0.6,
+            0,
+            0
+          ],
+          "contact": true
+        },
+        "receiver": {
+          "action": "helped_up_ground_seated",
+          "pose": "ground_seated",
+          "ground": [
+            0,
+            0,
+            0
+          ],
+          "anchor": [
+            0,
+            0,
+            0
+          ],
+          "release": [
+            0,
+            0,
+            0
+          ],
+          "passive": true,
+          "from": "ground_seated",
+          "to": "standing",
+          "load_from": "helper"
+        }
+      },
+      "motion": "fixed",
+      "minimum": 2,
+      "requires_event": "fall",
+      "span": 4,
+      "anchor_role": "receiver",
+      "driver": "external"
+    }
+  },
+  "connections": {
+    "phone": {
+      "action": "phone_call",
+      "moving": "walk_phone_call",
+      "tool": "phone"
+    }
+  }
+}

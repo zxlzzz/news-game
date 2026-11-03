@@ -1,0 +1,86 @@
+{
+  "name": "carry_shoulder",
+  "text": "Stand upright with a long rolled mat resting on the right shoulder. The right hand steadies the mat immediately beside the right shoulder, the right elbow bent down at the side. The empty left arm hangs at the left side. Maintain this carrying posture.",
+  "duration": 3,
+  "seed": 61007,
+  "attempt": 12,
+  "scene": {
+    "text": "Stand upright with a long rolled mat resting on the right shoulder. The right hand steadies the mat immediately beside the right shoulder, the right elbow bent down at the side. The empty left arm hangs at the left side. Maintain this carrying posture.",
+    "duration": 3,
+    "contacts": [],
+    "item": {
+      "type": "held_rolled_carpet",
+      "hand": "right",
+      "grip": "shoulder_grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. Stand upright with a long rolled mat resting on the right shoulder. The right hand steadies the mat immediately beside the right shoulder, the right elbow bent down at the side. The empty left arm hangs at the left side. Maintain this carrying posture. Hold held_rolled_carpet with right at its shoulder_grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/68e72121a44de168/motion.npz",
+        "source_frame": 87,
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/sources/68e72121a44de168/motion.npz",
+        "source_frame": 87,
+        "phase": 1
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/68e72121a44de168/motion.npz",
+      "source_frame": 87,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "68e72121a44de168ca488aa537794dfbd8ee50f032456b14c71fb792ae8ba119",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/68e72121a44de168/motion.npz",
+      "source_frame": 87,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "68e72121a44de168ca488aa537794dfbd8ee50f032456b14c71fb792ae8ba119",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "aa41ab62ec29282982890b5076d68f06008d8a6a66a32f6fdad038a5d0e9e234",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "aa41ab62ec29282982890b5076d68f06008d8a6a66a32f6fdad038a5d0e9e234",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"aa41ab62ec29282982890b5076d68f06008d8a6a66a32f6fdad038a5d0e9e234\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "f11cfa48dd32b80a30fc4ef6598ae8f78da339fae5a4b113de01a3c867de9b90",
+      "current_source_sha256_at_reconciliation": "aa41ab62ec29282982890b5076d68f06008d8a6a66a32f6fdad038a5d0e9e234",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

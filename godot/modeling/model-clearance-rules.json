@@ -1,0 +1,538 @@
+[
+  {
+    "models": [
+      "baby_stroller"
+    ],
+    "a": [
+      "frame*",
+      "handle_stem*"
+    ],
+    "b": [
+      "bassinet_floor",
+      "side*",
+      "end*",
+      "hood*",
+      "mattress"
+    ],
+    "reason": "Stroller frame and handles stay outside the basket and canopy."
+  },
+  {
+    "models": [
+      "wheelchair"
+    ],
+    "a": [
+      "frame*",
+      "pushbar*",
+      "axle_hanger*",
+      "seat_crossbar*"
+    ],
+    "b": [
+      "seat",
+      "back"
+    ],
+    "reason": "Wheelchair support bars stay outside upholstery."
+  },
+  {
+    "models": [
+      "bench"
+    ],
+    "a": [
+      "back_support*",
+      "arm*"
+    ],
+    "b": [
+      "seat",
+      "backrest"
+    ],
+    "reason": "Bench supports meet wood surfaces without cutting through boards."
+  },
+  {
+    "models": [
+      "cafe_umbrella"
+    ],
+    "a": [
+      "canopy_rib*",
+      "post"
+    ],
+    "b": [
+      "canopy_shell"
+    ],
+    "reason": "Umbrella structure clears the complete fabric shell."
+  },
+  {
+    "models": [
+      "held_umbrella_open"
+    ],
+    "a": [
+      "rib*",
+      "shaft"
+    ],
+    "b": [
+      "canopy_shell"
+    ],
+    "reason": "Held umbrella ribs and shaft stay below the fabric."
+  },
+  {
+    "models": [
+      "ice_cream_cart"
+    ],
+    "a": [
+      "parasol_pole"
+    ],
+    "b": [
+      "freezer",
+      "lid",
+      "parasol"
+    ],
+    "reason": "Parasol pole clears the freezer and canopy."
+  },
+  {
+    "models": [
+      "notice_board",
+      "construction_notice",
+      "neighborhood_map",
+      "address_plaque"
+    ],
+    "a": [
+      "post*",
+      "stand*",
+      "leg*",
+      "border*"
+    ],
+    "b": [
+      "board"
+    ],
+    "reason": "Display panel fits inside its frame and in front of its supports."
+  },
+  {
+    "models": [
+      "bus_stop_sign"
+    ],
+    "a": [
+      "pole"
+    ],
+    "b": [
+      "sign",
+      "blank_timetable"
+    ],
+    "reason": "Sign pole mounts behind the display."
+  },
+  {
+    "models": [
+      "street_name_sign"
+    ],
+    "a": [
+      "pole"
+    ],
+    "b": [
+      "sign"
+    ],
+    "reason": "Pole clears the face of the direction sign."
+  },
+  {
+    "models": [
+      "bus_shelter"
+    ],
+    "a": [
+      "post*"
+    ],
+    "b": [
+      "roof",
+      "back_windbreak"
+    ],
+    "reason": "Shelter glazing fits between posts; posts stop below the roof."
+  },
+  {
+    "models": [
+      "phone_booth"
+    ],
+    "a": [
+      "corner_post*"
+    ],
+    "b": [
+      "roof",
+      "back_panel",
+      "side_panel*"
+    ],
+    "reason": "Booth glazing fits between corner posts."
+  },
+  {
+    "models": [
+      "garbage_station"
+    ],
+    "a": [
+      "post_*"
+    ],
+    "b": [
+      "back_screen"
+    ],
+    "reason": "Screen fits between the shed's rear posts."
+  },
+  {
+    "models": [
+      "news_rack"
+    ],
+    "a": [
+      "side_post*"
+    ],
+    "b": [
+      "blank_header"
+    ],
+    "reason": "Header fits between the rack uprights."
+  },
+  {
+    "models": [
+      "news_box"
+    ],
+    "a": [
+      "blank_masthead"
+    ],
+    "b": [
+      "display"
+    ],
+    "reason": "Masthead clears the display panel."
+  },
+  {
+    "models": [
+      "vending_machine"
+    ],
+    "a": [
+      "display_shelf*"
+    ],
+    "b": [
+      "drink_pack*"
+    ],
+    "reason": "Products rest on shelves without intersecting them."
+  },
+  {
+    "models": [
+      "atm_standalone",
+      "atm_wall"
+    ],
+    "a": [
+      "key*"
+    ],
+    "b": [
+      "key*"
+    ],
+    "reason": "Individual keypad buttons remain separated."
+  },
+  {
+    "models": [
+      "air_conditioner"
+    ],
+    "a": [
+      "housing"
+    ],
+    "b": [
+      "wall_bracket*"
+    ],
+    "reason": "Housing rests above its feet."
+  },
+  {
+    "models": [
+      "air_conditioner"
+    ],
+    "a": [
+      "fan_face"
+    ],
+    "b": [
+      "fan_guard*"
+    ],
+    "reason": "Fan guard stands clear of the fan face."
+  },
+  {
+    "models": [
+      "street_lamp"
+    ],
+    "a": [
+      "forward_arm"
+    ],
+    "b": [
+      "light_face"
+    ],
+    "reason": "Support arm clears the underside light panel."
+  },
+  {
+    "models": [
+      "small_truck",
+      "ambulance",
+      "fire_engine",
+      "garbage_truck",
+      "water_truck"
+    ],
+    "a": [
+      "cab"
+    ],
+    "b": [
+      "chassis"
+    ],
+    "reason": "Cab rests above the chassis instead of sharing competing side faces."
+  },
+  {
+    "models": [
+      "water_truck"
+    ],
+    "a": [
+      "water_tank",
+      "tank_band*"
+    ],
+    "b": [
+      "chassis"
+    ],
+    "reason": "Tank and retaining bands rest above the chassis."
+  },
+  {
+    "models": [
+      "bicycle",
+      "fallen_bicycle",
+      "shared_bicycle_row",
+      "cargo_tricycle",
+      "delivery_ebike",
+      "parked_motorcycle",
+      "scooter"
+    ],
+    "a": [
+      "frame*",
+      "static_frame*"
+    ],
+    "b": [
+      "tire*",
+      "static_tire*"
+    ],
+    "reason": "Forks and stays straddle the tires."
+  },
+  {
+    "models": [
+      "fitness_air_walker"
+    ],
+    "a": [
+      "swing_arm*",
+      "cantilever*"
+    ],
+    "b": [
+      "upright*"
+    ],
+    "reason": "Pendulums and pedal supports clear the fixed uprights."
+  },
+  {
+    "models": [
+      "fitness_air_walker"
+    ],
+    "a": [
+      "cantilever*"
+    ],
+    "b": [
+      "footplate*"
+    ],
+    "reason": "Pedal supports meet the underside of the foot platforms."
+  },
+  {
+    "models": [
+      "delivery_ebike"
+    ],
+    "a": [
+      "saddle"
+    ],
+    "b": [
+      "rear_rack",
+      "delivery_box",
+      "box_lid"
+    ],
+    "reason": "Delivery rack and box clear the saddle"
+  },
+  {
+    "models": [
+      "cargo_tricycle"
+    ],
+    "a": [
+      "cargo_box",
+      "cargo_deck",
+      "cargo_lid"
+    ],
+    "b": [
+      "tire*"
+    ],
+    "reason": "Cargo floor and load clear the rear tires"
+  },
+  {
+    "models": [
+      "parked_motorcycle"
+    ],
+    "a": [
+      "tank"
+    ],
+    "b": [
+      "saddle",
+      "front_fairing",
+      "frame*",
+      "floor_upright*"
+    ],
+    "reason": "Tank clears rider saddle and steering frame"
+  },
+  {
+    "models": [
+      "roof_garden"
+    ],
+    "a": [
+      "roof_carrier*"
+    ],
+    "b": [
+      "roof_slat*"
+    ],
+    "reason": "Roof slats rest on top of carriers"
+  },
+  {
+    "models": [
+      "car_interactive"
+    ],
+    "a": [
+      "dashboard"
+    ],
+    "b": [
+      "windshield",
+      "pillar*"
+    ],
+    "reason": "Dashboard clears the glazing and pillars"
+  },
+  {
+    "models": [
+      "bus",
+      "car",
+      "taxi",
+      "car_hatchback",
+      "car_estate",
+      "taxi_compact",
+      "police_car",
+      "small_truck",
+      "ambulance",
+      "fire_engine",
+      "garbage_truck",
+      "water_truck",
+      "delivery_van"
+    ],
+    "a": [
+      "tire*",
+      "hub*"
+    ],
+    "b": [
+      "body",
+      "lower_body",
+      "cabin",
+      "coach_body",
+      "chassis",
+      "cab",
+      "cargo",
+      "equipment_box",
+      "compactor",
+      "top_compactor",
+      "hopper",
+      "roof",
+      "water_tank",
+      "tank_band*",
+      "sliding_door"
+    ],
+    "reason": "Vehicle wheel wells keep tires and hubs clear of fixed body shells."
+  },
+  {
+    "models": [
+      "wheelchair"
+    ],
+    "a": [
+      "wheel*",
+      "rear_wheel*",
+      "spoke*",
+      "rear_hub*"
+    ],
+    "b": [
+      "frame*",
+      "caster_bridge*",
+      "caster_fork*",
+      "front_axle*",
+      "axle",
+      "axle_hanger*",
+      "footrest*",
+      "seat_crossbar*",
+      "pushbar*"
+    ],
+    "reason": "Wheelchair wheels turn freely within separate forks and around stationary axles."
+  },
+  {
+    "models": [
+      "bus",
+      "car",
+      "taxi",
+      "car_hatchback",
+      "car_estate",
+      "taxi_compact",
+      "police_car",
+      "delivery_van",
+      "small_truck",
+      "ambulance",
+      "fire_engine",
+      "garbage_truck",
+      "water_truck"
+    ],
+    "a": [
+      "tire*",
+      "hub*"
+    ],
+    "b": [
+      "wheel_axle*"
+    ],
+    "reason": "Rotating vehicle wheels clear the stationary shafts inside blind bearing seats."
+  },
+  {
+    "models": [
+      "playground_swing"
+    ],
+    "a": [
+      "seat*",
+      "hanger*",
+      "suspension_eye*"
+    ],
+    "b": [
+      "top",
+      "leg*"
+    ],
+    "reason": "Swing eyes turn around the top beam, with suspension rods outside the fixed frame."
+  },
+  {
+    "models": [
+      "playground_seesaw"
+    ],
+    "a": [
+      "beam",
+      "seat*",
+      "handhold*"
+    ],
+    "b": [
+      "fulcrum",
+      "pivot_pin",
+      "pivot_bearing*",
+      "bearing_support*"
+    ],
+    "reason": "The seesaw beam rotates around its bore and clears fixed pin, side bearings and base."
+  },
+  {
+    "models": [
+      "fitness_air_walker"
+    ],
+    "a": [
+      "swing_axis_ring*",
+      "swing_arm*",
+      "footplate*",
+      "cantilever*",
+      "rim*",
+      "heel_stop*"
+    ],
+    "b": [
+      "upright*",
+      "base*",
+      "pivot_bearing*",
+      "handle_support*",
+      "crossbar"
+    ],
+    "reason": "Air walker pendulums and axis rings clear all fixed structure."
+  }
+]

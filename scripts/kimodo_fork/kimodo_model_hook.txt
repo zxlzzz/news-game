@@ -1,0 +1,10 @@
+In C:\kimodo-trial\kimodo\kimodo\model\kimodo_model.py, method denoising_step, insert between the clean
+prediction and the sampler call:
+
+        # news-game: optional scene guidance on the clean prediction (kimodo/scene_guidance.py)
+        guidance = getattr(self, "scene_guidance", None)
+        if guidance is not None:
+            pred_clean = guidance(self, pred_clean, int(t[0]), int(num_denoising_steps))
+
+        # sampler computes next step noisy motion
+        x_tm1 = self.sampler(use_timesteps, motion, pred_clean, t)

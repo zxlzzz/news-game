@@ -1,0 +1,31 @@
+{
+  "name": "lean_wall",
+  "text": "A person stands with the upper back resting against a wall behind, feet a little forward from the wall, relaxed arms down. Shift weight slightly while remaining supported by the wall, no walking.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person stands with the upper back resting against a wall behind, feet a little forward from the wall, relaxed arms down. Shift weight slightly while remaining supported by the wall, no walking.",
+    "duration": 5,
+    "contacts": [],
+    "object": "compound_wall_solid",
+    "post": "post_wall",
+    "description": "The person starts at compound_wall_solid.post_wall and faces the model standing marker direction.   A person stands with the upper back resting against a wall behind, feet a little forward from the wall, relaxed arms down. Shift weight slightly while remaining supported by the wall, no walking. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "4c44db9b694fd2668429baa9328760865e410103861e8785e19635afd53188d1",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

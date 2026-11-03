@@ -1,0 +1,196 @@
+{
+  "name": "hold_umbrella",
+  "text": "Standing comfortably under an umbrella held with the right hand beside the cheek, elbow down. The left arm hangs straight and relaxed beside the thigh.",
+  "duration": 3,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Standing comfortably under an umbrella held with the right hand beside the cheek, elbow down. The left arm hangs straight and relaxed beside the thigh.",
+    "duration": 3,
+    "contacts": [],
+    "item": {
+      "type": "held_umbrella_open",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands still holding the shaft of an open umbrella upright in their right hand just in front of the right shoulder at chest height. The right elbow points down beside the body, forearm upright. Left arm hangs relaxed. Maintain the umbrella-holding pose steadily, with only a small natural shift of weight between the feet. Hold held_umbrella_open with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": false,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.0039873309433460236,
+          0.0,
+          0.006256722845137119
+        ]
+      },
+      {
+        "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.0039873309433460236,
+          0.0,
+          0.006256722845137119
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/phone_call.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "963e64205592da3ba48bc6f5958c56accfdceb0a58dc291d4ece7b8d4a330f5f",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/phone_call.json",
+      "frame": 89,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "963e64205592da3ba48bc6f5958c56accfdceb0a58dc291d4ece7b8d4a330f5f",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "03237ae6fbdb69eaa91ac5b31700c49c8a50bdb860a359eb1b0ab1cdc196a134",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "03237ae6fbdb69eaa91ac5b31700c49c8a50bdb860a359eb1b0ab1cdc196a134",
+    "observations": {
+      "entry": "Already standing with the right palm outside the real handle face and the open canopy above the head.",
+      "activity": "The complete side-view sequence holds the same umbrella while the body gently settles; front/back pages show the handle in the same right hand.",
+      "release_end": "At duration +0.4 seconds, the open umbrella remains supported above the head; no item disappearance."
+    },
+    "viewed_images_sha256": {
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v0_p0.png": "4a9207fd0715b8f27d1d9d099858685311fd4b79ae0b74f226cf1cc9034eae55",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v0_p5.png": "b84de4b78eaee00659a5a49d1df07810be00f51dbf455bf72206916ac04e6da7",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v0_p9.png": "39df4c84bf624d6d656984cc1d575bba365e87c9f65b255beaae889b3420b9d0",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p0.png": "bd12f35a3bd9891d916b25c472247b012f7b0f72f8897f9fbadc778e9d7a7f46",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p1.png": "e389a3715d367c97879b9ef93c5d60cee26c2d9ae5d0de8b07f59f01f3d7508b",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p2.png": "199b81344ce4eb4b09232363f3acc9ae1daaf988bf565379f0cf33f2cb125974",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p3.png": "7d39fdc5d2e220f61af644952518183bb4c151ed7aa312adfc85f1361dc479ca",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p4.png": "dae33714d74ce418d9bacee27ec4f10372ba530b10acd57fb0607157ce5ce5d3",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p5.png": "13bd69fdcf718ae9afbbd3a7879c795b1d688be66db8b45fdeb323d6d222c6c2",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p6.png": "2510efcdd91e80362b88187a4378633375775c1c8c27d5ede90e3443208508b4",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p7.png": "a3f4fec35175a629a05bffd54ed57a76a3a099c23ece4382248e583c97bc27bb",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p8.png": "fa8a7671d6af2db3b13deefac2f7ac60c2b606c3e1b9fa8dd6164b81abaa08b6",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p9.png": "936fb5415e57d0d15f000e3bcfc90fdc22bd7e527ba0d60240bbc884faf2f0f8",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v2_p0.png": "9558b69e6033324ab194571d75c28abf8178fbfac81ab5e587e51669e760718a",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v2_p5.png": "4f3d2f99c7dd13c1481376b46089ad763aa360742343c33bdbb62b2f7dd611f6",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v2_p9.png": "537d3a4d58cef24da80b19f5a43e954bdbc60b9955e4a54c9bd7a529976d54ec",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella-post_v0_p0.png": "e2348a2663a94dc812bbf794ccab439466f3b75b5ad952fabda7d418aff39fb1",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella-post_v1_p0.png": "97eb21d1eca91e57575f91a209fae38adf0734f5f2bfe3f95b1bc8bf1784b180",
+      "docs/motion-review-evidence-2026-10-11/viewed/umbrella-true-grip/common-original-pixel-pages/hold_umbrella-post_v2_p0.png": "d698f9180530908ef65726ddfde8c7bdeb9fad8fe88ef205c325f2d6ab8d8a43"
+    },
+    "full_speed_observed": false,
+    "scope": "Recorded assistant observations of the named source; sampled images do not establish intended-speed playback or user acceptance.",
+    "physical_check": ".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-native.json",
+    "self_check": ".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-self.json",
+    "boundary_check": ".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-boundaries.json",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "existing_viewed_evidence_persistent_path_migration",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"raw_sha256\": \"03237ae6fbdb69eaa91ac5b31700c49c8a50bdb860a359eb1b0ab1cdc196a134\",\r\n    \"observations\": {\r\n      \"entry\": \"Already standing with the right palm outside the real handle face and the open canopy above the head.\",\r\n      \"activity\": \"The complete side-view sequence holds the same umbrella while the body gently settles; front/back pages show the handle in the same right hand.\",\r\n      \"release_end\": \"At duration +0.4 seconds, the open umbrella remains supported above the head; no item disappearance.\"\r\n    },\r\n    \"viewed_images_sha256\": {\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v0_p0.png\": \"4a9207fd0715b8f27d1d9d099858685311fd4b79ae0b74f226cf1cc9034eae55\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v0_p5.png\": \"b84de4b78eaee00659a5a49d1df07810be00f51dbf455bf72206916ac04e6da7\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v0_p9.png\": \"39df4c84bf624d6d656984cc1d575bba365e87c9f65b255beaae889b3420b9d0\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p0.png\": \"bd12f35a3bd9891d916b25c472247b012f7b0f72f8897f9fbadc778e9d7a7f46\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p1.png\": \"e389a3715d367c97879b9ef93c5d60cee26c2d9ae5d0de8b07f59f01f3d7508b\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p2.png\": \"199b81344ce4eb4b09232363f3acc9ae1daaf988bf565379f0cf33f2cb125974\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p3.png\": \"7d39fdc5d2e220f61af644952518183bb4c151ed7aa312adfc85f1361dc479ca\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p4.png\": \"dae33714d74ce418d9bacee27ec4f10372ba530b10acd57fb0607157ce5ce5d3\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p5.png\": \"13bd69fdcf718ae9afbbd3a7879c795b1d688be66db8b45fdeb323d6d222c6c2\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p6.png\": \"2510efcdd91e80362b88187a4378633375775c1c8c27d5ede90e3443208508b4\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p7.png\": \"a3f4fec35175a629a05bffd54ed57a76a3a099c23ece4382248e583c97bc27bb\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p8.png\": \"fa8a7671d6af2db3b13deefac2f7ac60c2b606c3e1b9fa8dd6164b81abaa08b6\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v1_p9.png\": \"936fb5415e57d0d15f000e3bcfc90fdc22bd7e527ba0d60240bbc884faf2f0f8\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v2_p0.png\": \"9558b69e6033324ab194571d75c28abf8178fbfac81ab5e587e51669e760718a\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v2_p5.png\": \"4f3d2f99c7dd13c1481376b46089ad763aa360742343c33bdbb62b2f7dd611f6\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella_v2_p9.png\": \"537d3a4d58cef24da80b19f5a43e954bdbc60b9955e4a54c9bd7a529976d54ec\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella-post_v0_p0.png\": \"e2348a2663a94dc812bbf794ccab439466f3b75b5ad952fabda7d418aff39fb1\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella-post_v1_p0.png\": \"97eb21d1eca91e57575f91a209fae38adf0734f5f2bfe3f95b1bc8bf1784b180\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-original-pixel-pages/hold_umbrella-post_v2_p0.png\": \"d698f9180530908ef65726ddfde8c7bdeb9fad8fe88ef205c325f2d6ab8d8a43\"\r\n    },\r\n    \"full_speed_observed\": false,\r\n    \"scope\": \"Recorded assistant observations of the named source; sampled images do not establish intended-speed playback or user acceptance.\",\r\n    \"physical_check\": \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-native.json\",\r\n    \"self_check\": \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-self.json\",\r\n    \"boundary_check\": \".tmp/motion-repair-2026-10-10/object-source/umbrella-true-grip/common-heading-boundaries.json\"\r\n  }",
+      "original_record_sha256": "18ff4ee5a2e777240d42d42b90a6f259c047b820f2e1d34e7fcb2d9270f2e943",
+      "current_source_sha256_at_reconciliation": "03237ae6fbdb69eaa91ac5b31700c49c8a50bdb860a359eb1b0ab1cdc196a134",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 1,
+    "evidence_format": "phased_observations",
+    "viewed_evidence_archive": {
+      "file": "docs/motion-review-evidence-2026-10-11/viewed-images.json",
+      "sha256": "293dcd81a1ab6c3fcbe8adc9093fa2d9d180f21980611f7e468e5aa29324ddfa"
+    }
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 0-2.967 s front and side overview: upright stable umbrella, lowered holding elbow, free arm remains down beside body.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 0-2.967 s front and side overview: upright stable umbrella, lowered holding elbow, free arm remains down beside body.\"\r\n  }",
+      "original_record_sha256": "010c62c30b5532ed430795c90412714f22bf362b7725ae2509276cfbf339f7c1",
+      "current_source_sha256_at_reconciliation": "03237ae6fbdb69eaa91ac5b31700c49c8a50bdb860a359eb1b0ab1cdc196a134",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "runtime_scene": {
+    "text": "Standing comfortably under an umbrella held with the right hand beside the cheek, elbow down. The left arm hangs straight and relaxed beside the thigh.",
+    "duration": 2.966666666666667,
+    "contacts": [],
+    "item": {
+      "type": "held_umbrella_open",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true,
+      "follow_hand": true,
+      "solid_grasp": true,
+      "keep_grip": true,
+      "grip_surface": "grip_surface"
+    },
+    "description": "Start at level ground facing +Z. A person stands still holding the shaft of an open umbrella upright in their right hand just in front of the right shoulder at chest height. The right elbow points down beside the body, forearm upright. Left arm hangs relaxed. Maintain the umbrella-holding pose steadily, with only a small natural shift of weight between the feet. Hold held_umbrella_open with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": false,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.0039873309433460236,
+          0.0,
+          0.006256722845137119
+        ]
+      },
+      {
+        "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.0039873309433460236,
+          0.0,
+          0.006256722845137119
+        ]
+      }
+    ]
+  }
+}

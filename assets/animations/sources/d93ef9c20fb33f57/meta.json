@@ -1,0 +1,93 @@
+{
+  "name": "vending_collect",
+  "text": "A standing person bends at hips and knees to retrieve a lidded paper coffee cup from a low vending machine hatch directly in front, right hand reaches down to knee height then lifts it, returns upright.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing person bends at hips and knees to retrieve a lidded paper coffee cup from a low vending machine hatch directly in front, right hand reaches down to knee height then lifts it, returns upright.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "pickup",
+        "phases": [
+          0.35,
+          0.48
+        ],
+        "window": [
+          0.31499999999999995,
+          0.35,
+          0.48,
+          0.515
+        ]
+      }
+    ],
+    "object": "vending_machine",
+    "post": "post_vendcollect",
+    "description": "The person starts at vending_machine.post_vendcollect and faces the model standing marker direction. RightHand touches pickup at 1.75s,2.40s. Grasp held_coffee_cup at grip at 2.40s. A standing person bends at hips and knees to retrieve a lidded paper coffee cup from a low vending machine hatch directly in front, right hand reaches down to knee height then lifts it, returns upright. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep torso and elbows outside the cabinet; reach into only the button surface or open delivery hatch.",
+    "transfers": [
+      {
+        "type": "held_coffee_cup",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.48,
+        "initial": {
+          "space": "object",
+          "marker": "pickup"
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep torso and elbows outside the cabinet; reach into only the button surface or open delivery hatch."
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "vending_machine",
+      "marker": "pickup",
+      "space": "world",
+      "episode": "pickup",
+      "keys": [
+        {
+          "frame": 52,
+          "position": [
+            0.001147,
+            0.648429,
+            0.615009
+          ]
+        },
+        {
+          "frame": 72,
+          "position": [
+            0.001147,
+            0.648429,
+            0.615009
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "d93ef9c20fb33f57247f6f8802d9f654074ebb4d419cbb60bd350d08e159cad4",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_failed",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "d93ef9c20fb33f57247f6f8802d9f654074ebb4d419cbb60bd350d08e159cad4",
+    "notes": "Full final-scene review found unreachable physical contacts. Existing source retained pending repair; this clip is not visually approved."
+  },
+  "source_archive": {
+    "source_npz": "assets/animations/sources/player_review_vending_collect/motion.npz",
+    "original_meta_sha256": "589839a15590fe9b280ea320cbf07648bae54eee2c380cbbd7533ebb9feafe36",
+    "original_meta_file": "generation-original-meta-589839a15590.json",
+    "raw_npz_unchanged": true
+  }
+}

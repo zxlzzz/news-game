@@ -1,0 +1,96 @@
+{
+  "name": "read_book",
+  "text": "Standing still, reading an open book held with both hands at the chest, elbows low and relaxed, head inclined toward the book.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 6,
+  "scene": {
+    "text": "Standing still, reading an open book held with both hands at the chest, elbows low and relaxed, head inclined toward the book.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_book_open",
+      "hand": "both",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. Standing still, reading an open book held with both hands at the chest, elbows low and relaxed, head inclined toward the book. Hold held_book_open with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/a525901fc9aab4fa/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.000758450711145997,
+          0.0,
+          -0.0007880507037043571
+        ]
+      },
+      {
+        "source": "assets/animations/sources/a525901fc9aab4fa/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.000758450711145997,
+          0.0,
+          -0.0007880507037043571
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/a525901fc9aab4fa/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.000758450711145997,
+        0.0,
+        -0.0007880507037043571
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "a525901fc9aab4fa77843afba5c82632df5de91d7aee7bdd19b1c8a8de9b1522",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/a525901fc9aab4fa/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.000758450711145997,
+        0.0,
+        -0.0007880507037043571
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "a525901fc9aab4fa77843afba5c82632df5de91d7aee7bdd19b1c8a8de9b1522",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "a6f6223d770627a00b04cec3292ae2af2f0b54ccaab062f77bde2f504ae91307",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "a6f6223d770627a00b04cec3292ae2af2f0b54ccaab062f77bde2f504ae91307",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  }
+}

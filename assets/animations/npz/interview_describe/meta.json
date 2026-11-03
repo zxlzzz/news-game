@@ -1,0 +1,27 @@
+{
+  "name": "interview_describe",
+  "text": "A standing person describes an event to a reporter in front, both hands gesture widely at chest level, palms open, illustrating size and direction while speaking. Feet stay planted.",
+  "duration": 5,
+  "seed": 1204,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "loop": false,
+  "root_average_speed_m_s": 0.026588737964630127,
+  "mapped_average_speed_m_s": 0.020969036249708303,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "interview_describe",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

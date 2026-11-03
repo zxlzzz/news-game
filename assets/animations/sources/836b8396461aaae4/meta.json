@@ -1,0 +1,235 @@
+{
+  "name": "sit_sideways",
+  "text": "A person sits sideways on a park bench, turning the hips and legs to the left while the torso turns gently back toward the front. The left arm rests along the top of the bench backrest behind the body, right hand on the thigh. Remain comfortably seated on a 45cm-high seat, feet on the ground.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 6,
+  "scene": {
+    "text": "A person sits sideways on a park bench, turning the hips and legs to the left while the torso turns gently back toward the front. The left arm rests along the top of the bench backrest behind the body, right hand on the thigh. Remain comfortably seated on a 45cm-high seat, feet on the ground.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "back_grip",
+        "phases": [
+          0.25,
+          0.85
+        ],
+        "window": [
+          0.215,
+          0.25,
+          0.85,
+          0.885
+        ]
+      }
+    ],
+    "object": "bench",
+    "post": "post_sit_1",
+    "description": "Start at bench.post_sit_1 facing the model standing marker direction. A person sits sideways on a park bench, turning the hips and legs to the left while the torso turns gently back toward the front. The left arm rests along the top of the bench backrest behind the body, right hand on the thigh. Remain comfortably seated on a 45cm-high seat, feet on the ground. Hips touches the physical model marker hip_seat at 0.00s, 3.00s. LeftHand touches the physical model marker back_grip at 0.75s, 2.55s. The right hand performs the task described above; otherwise it hangs or swings naturally. Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/a44a5d2857376e73/motion.npz",
+        "source_frame": 135,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/sources/a44a5d2857376e73/motion.npz",
+        "source_frame": 135,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_seat"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bench",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "bench",
+      "marker": "back_grip",
+      "space": "world",
+      "episode": "back_grip",
+      "keys": [
+        {
+          "frame": 22,
+          "position": [
+            0.297308,
+            0.99485,
+            -0.176384
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 76,
+          "position": [
+            0.297308,
+            0.99485,
+            -0.176384
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/a44a5d2857376e73/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.022120576351881027,
+        0.008962896442413326,
+        -0.053515151143074036
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "a44a5d2857376e73e9323e93a796b88016b4921f736569f42c743251d4bb5210",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "placement_basis": [
+        [
+          -0.9362158021737814,
+          0,
+          -0.35142562763706187
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.35142562763706187,
+          0,
+          -0.9362158021737814
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    },
+    {
+      "source": "assets/animations/sources/a44a5d2857376e73/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.022120576351881027,
+        0.008962896442413326,
+        -0.053515151143074036
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "a44a5d2857376e73e9323e93a796b88016b4921f736569f42c743251d4bb5210",
+        "hand_edited": false
+      },
+      "frame": 89,
+      "placement_basis": [
+        [
+          -0.9362158021737814,
+          0,
+          -0.35142562763706187
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.35142562763706187,
+          0,
+          -0.9362158021737814
+        ]
+      ],
+      "placement_marker": "hip_seat"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "836b8396461aaae40769183868806d58ab790a59023f6f257d7e755ca7e3a945",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "836b8396461aaae40769183868806d58ab790a59023f6f257d7e755ca7e3a945",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"836b8396461aaae40769183868806d58ab790a59023f6f257d7e755ca7e3a945\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "bf307d2f93b69315be7d79b7fd9bfeb0fce28278f76c59707935c248d566535d",
+      "current_source_sha256_at_reconciliation": "836b8396461aaae40769183868806d58ab790a59023f6f257d7e755ca7e3a945",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

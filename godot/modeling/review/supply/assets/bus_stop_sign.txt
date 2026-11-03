@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bus_stop_sign.glb
+   size  x 0.550  y 2.700  z 0.300 m
+   box   min (-0.275, 0.000, -0.150)  max (0.275, 2.700, 0.150)
+   triangles 272: concrete 12, metal 136, metal_dark 124
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 872d35caedbf489844378cfad59941cc726313d89da1bd825299305940f34a18
+   REBUILD IDENTICAL

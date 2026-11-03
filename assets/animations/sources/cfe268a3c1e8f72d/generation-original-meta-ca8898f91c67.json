@@ -1,0 +1,88 @@
+{
+  "name": "atm_take_cash",
+  "text": "A standing person leans slightly forward, reaches the right hand into the cash slot of an ATM at waist height, withdraws banknotes and brings the hand back toward the abdomen.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing person leans slightly forward, reaches the right hand into the cash slot of an ATM at waist height, withdraws banknotes and brings the hand back toward the abdomen.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "cash_pickup",
+        "phases": [
+          0.2,
+          0.32
+        ],
+        "window": [
+          0.165,
+          0.2,
+          0.32,
+          0.355
+        ]
+      }
+    ],
+    "object": "atm_standalone",
+    "post": "post_atm",
+    "description": "The person starts at atm_standalone.post_atm and faces the model standing marker direction. RightHand touches cash_pickup at 1.00s,1.60s. Grasp held_banknote at grip at 1.60s. A standing person leans slightly forward, reaches the right hand into the cash slot of an ATM at waist height, withdraws banknotes and brings the hand back toward the abdomen. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "transfers": [
+      {
+        "type": "held_banknote",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.32,
+        "initial": {
+          "space": "object",
+          "marker": "cash_pickup"
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "atm_standalone",
+      "marker": "cash_pickup",
+      "space": "world",
+      "episode": "cash_pickup",
+      "keys": [
+        {
+          "frame": 30,
+          "position": [
+            0.001147,
+            1.164774,
+            0.502429
+          ]
+        },
+        {
+          "frame": 48,
+          "position": [
+            0.001147,
+            1.164774,
+            0.502429
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "cfe268a3c1e8f72ded1219dda39b77dcf505f1737a2959588dac44f98d5f2918",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "visual_pass",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "cfe268a3c1e8f72ded1219dda39b77dcf505f1737a2959588dac44f98d5f2918",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8"
+  }
+}

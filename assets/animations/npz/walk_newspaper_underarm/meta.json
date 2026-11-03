@@ -1,0 +1,95 @@
+{
+  "name": "walk_newspaper_underarm",
+  "text": "Walking forward, the left upper arm presses a folded newspaper against the left ribs, left forearm across the waist. The right arm swings freely.",
+  "duration": 1.2666666666666666,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Walking forward, the left upper arm presses a folded newspaper against the left ribs, left forearm across the waist. The right arm swings freely.",
+    "duration": 1.2666666666666666,
+    "contacts": [],
+    "item": {
+      "type": "held_newspaper_folded",
+      "hand": "left",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. Walking forward, the left upper arm presses a folded newspaper against the left ribs, left forearm across the waist. The right arm swings freely. Hold held_newspaper_folded with left at its grip marker. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/8cb6bdaafe30a5f0/motion.npz",
+        "source_frame": 36,
+        "phase": 0,
+        "translation": [
+          0.07910026609897614,
+          0.0,
+          -1.2929388284683228
+        ]
+      },
+      {
+        "source": "assets/animations/sources/8cb6bdaafe30a5f0/motion.npz",
+        "source_frame": 36,
+        "phase": 1,
+        "translation": [
+          0.01158231496810913,
+          0.0,
+          0.08395576477050781
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/8cb6bdaafe30a5f0/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.07910026609897614,
+        0.0,
+        -1.2929388284683228
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "8cb6bdaafe30a5f035c53d53eff4af97e4f57534d113502978ea2126da250800",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/8cb6bdaafe30a5f0/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.01158231496810913,
+        0.0,
+        0.08395576477050781
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "8cb6bdaafe30a5f035c53d53eff4af97e4f57534d113502978ea2126da250800",
+        "hand_edited": false
+      },
+      "frame": 37
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "5f76e9ac24794e9cfa472de5e78b3cca8ae25da22cfc91cb83f2ed93ba924cd4",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "5f76e9ac24794e9cfa472de5e78b3cca8ae25da22cfc91cb83f2ed93ba924cd4",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  }
+}

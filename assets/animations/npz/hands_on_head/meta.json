@@ -1,0 +1,60 @@
+{
+  "name": "hands_on_head",
+  "text": "A standing person reacts in dismay by raising both arms out to the sides and placing both palms firmly on the top and back of their head. Fingers rest on the crown, wrists above the ears, elbows spread widely sideways at shoulder height. The face remains completely uncovered. The person bows their head slightly while holding the crown with both hands, elbows staying wide. Hold this hands-on-top-of-head pose, then lower both arms back to the sides.",
+  "duration": 4,
+  "seed": 2612,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "loop": false,
+  "review": {
+    "status": "implemented_pending_visual_acceptance",
+    "date": "2026-10-01",
+    "attempts": 1,
+    "notes_zh": "重新生成抬手、抱住头顶、放手的动作；原素材的额头前侧手位不再沿用。只在抱住头的接触时段，经interactions.json将双手贴在大头比例的头顶后侧，保留源动作进出与身体微动。",
+    "runtime_contact": "Head-relative targets, eased in/out only over the hold. No change to shared mapping or character proportions.",
+    "metrics": {
+      "name": "hands_on_head",
+      "fps": 30.0,
+      "frames": 120,
+      "generation_frames": 120,
+      "fullbody_constraint_frames": 0,
+      "fullbody_constraint_ratio": 0.0,
+      "fullbody_min_spacing_frames": null,
+      "frozen_frames": 0,
+      "fullbody_max_in_one_second": 0,
+      "root_mean_horizontal_speed_mps": 0.041516467928886414,
+      "root_speed_min_mps": 0.0031125005334615707,
+      "root_speed_max_mps": 0.12038713693618774,
+      "root_delta_m": [
+        0.03951842710375786,
+        0.0008345842361450195,
+        -0.02771720103919506
+      ],
+      "loop_translation_axes": "xz",
+      "floor_min_joint_y_m": 0.0026343464851379395,
+      "seam_root_aligned_max_joint_m": 0.049008534255486305,
+      "seam_global_rotation_matrix_max_abs": 0.25697657465934753,
+      "finite": true,
+      "loop": false,
+      "npz_sha256": "e1a4fa3fa323341d45639fcc2569c43b0599b9f1e4e70450b5231f3659be2c3f",
+      "rework_required": false
+    },
+    "validation": [
+      "MAPPING_OK",
+      "INTERACTIONS_OK (83 clips, 61 phases)",
+      "FOOT_GROUND_OK (239 clips)",
+      "LOCOMOTION_OK",
+      "EMPTY_GROUND_OK (289 entries, no missing resources)"
+    ],
+    "visual_review": "Front and side runtime sequences reviewed, including entry/hold/release and two sweep cycles."
+  }
+}

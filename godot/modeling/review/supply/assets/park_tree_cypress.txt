@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\park_tree_cypress.glb
+   size  x 2.000  y 8.000  z 2.000 m
+   box   min (-1.000, 0.000, -1.000)  max (1.000, 8.000, 1.000)
+   triangles 1252: bark 372, foliage 880
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 85cfcedfbb4832f6f092c6c7d8d63b9c3d77d1a0d96d193555a9b5c7e1fc58fe
+   REBUILD IDENTICAL

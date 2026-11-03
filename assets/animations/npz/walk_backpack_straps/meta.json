@@ -1,0 +1,112 @@
+{
+  "name": "walk_backpack_straps",
+  "text": "Walking forward with both hands holding the shoulder straps of a backpack at chest height, elbows pointing down.",
+  "duration": 1.3333333333333333,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Walking forward with both hands holding the shoulder straps of a backpack at chest height, elbows pointing down.",
+    "duration": 1.3333333333333333,
+    "contacts": [],
+    "item": {
+      "type": "held_backpack",
+      "hand": "back",
+      "grip": "back_mount"
+    },
+    "description": "Start at level ground facing +Z. Walking forward with both hands holding the shoulder straps of a backpack at chest height, elbows pointing down. Hold held_backpack with back at its back_mount marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/4cd2a6c70721915d/motion.npz",
+        "source_frame": 36,
+        "phase": 0,
+        "translation": [
+          0.043603770434856415,
+          0.0,
+          -1.2326833009719849
+        ]
+      },
+      {
+        "source": "assets/animations/sources/4cd2a6c70721915d/motion.npz",
+        "source_frame": 36,
+        "phase": 1,
+        "translation": [
+          -0.0478333979845047,
+          0.0,
+          0.21228408813476562
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/4cd2a6c70721915d/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.043603770434856415,
+        0.0,
+        -1.2326833009719849
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "4cd2a6c70721915d422620c829198258cff8fd24ac33f5fa3ac04eaebe8b8b25",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/4cd2a6c70721915d/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        -0.0478333979845047,
+        0.0,
+        0.21228408813476562
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "4cd2a6c70721915d422620c829198258cff8fd24ac33f5fa3ac04eaebe8b8b25",
+        "hand_edited": false
+      },
+      "frame": 39
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "b31dd1dc2d536d328a2f4dba38a726918271a43570435454862995a17050eff9",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "b31dd1dc2d536d328a2f4dba38a726918271a43570435454862995a17050eff9",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Readable walk; pack/body hide strap contact. Bent elbows by ribs, hands near straps, coherent walk.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Readable walk; pack/body hide strap contact. Bent elbows by ribs, hands near straps, coherent walk.\"\r\n  }",
+      "original_record_sha256": "04b626f079383241e7ee0cad1f2db6a80032cab3928aefeaff64a317f4d3022a",
+      "current_source_sha256_at_reconciliation": "b31dd1dc2d536d328a2f4dba38a726918271a43570435454862995a17050eff9",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "hop_reference",
+  "text": "A person makes three small vertical hops in place with BOTH FEET CLOSE TOGETHER throughout. Bend both knees together, push off from both feet simultaneously, briefly leave the ground, and land softly on both feet simultaneously. Keep the feet next to each other, never spread them sideways. Arms make a small natural swing for balance, never raise overhead. No alternating steps, no jumping jacks, no forward travel. Begin and finish grounded in a narrow relaxed stance.",
+  "duration": 4.0,
+  "seed": 20261010,
+  "attempt": 1,
+  "scene": {
+    "activity": "hop_reference",
+    "body_only": true,
+    "description": "A person makes three small vertical hops in place with BOTH FEET CLOSE TOGETHER throughout. Bend both knees together, push off from both feet simultaneously, briefly leave the ground, and land softly on both feet simultaneously. Keep the feet next to each other, never spread them sideways. Arms make a small natural swing for balance, never raise overhead. No alternating steps, no jumping jacks, no forward travel. Begin and finish grounded in a narrow relaxed stance.",
+    "complete_activity": true,
+    "generation_stage": "text_only_semantic_reference"
+  },
+  "contacts": [],
+  "fullbody": [],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "43cf4cf4fcba41ea1beb793f3fe0a26dcd3d0c997fdbdbfb0a8f26e056fa8524",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "name": "startle",
+  "text": "A person suddenly recoils in surprise, jerking their upper body backward and throwing both hands up defensively, then relaxes.",
+  "duration": 3,
+  "seed": 123,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    89
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "notes_zh": "双手快速抬到头前，上身和头后缩，随后放手恢复。脚基本留在原位。首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head",
+      "consecutive_peak_frames"
+    ],
+    "metrics": {
+      "frames": 90,
+      "finite": true,
+      "bone_length_range_mm": 0.822,
+      "max_joint_step_m": 0.241,
+      "root_horizontal_range_m": [
+        0.03099999949336052,
+        0.11599999666213989
+      ],
+      "LeftHand_head_distance_m": [
+        0.7799999713897705,
+        0.3610000014305115,
+        0.24699999392032623,
+        0.23199999332427979,
+        0.21899999678134918,
+        0.23499999940395355,
+        0.5059999823570251,
+        0.765999972820282,
+        0.7799999713897705
+      ],
+      "RightHand_head_distance_m": [
+        0.7609999775886536,
+        0.32199999690055847,
+        0.2549999952316284,
+        0.25,
+        0.2329999953508377,
+        0.24400000274181366,
+        0.44699999690055847,
+        0.6970000267028809,
+        0.7609999775886536
+      ],
+      "hand_separation_m": [
+        0.5379999876022339,
+        0.21299999952316284,
+        0.23999999463558197,
+        0.2150000035762787,
+        0.20900000631809235,
+        0.22599999606609344,
+        0.35499998927116394,
+        0.5550000071525574,
+        0.5379999876022339
+      ],
+      "head_yaw_range_deg": 9.94,
+      "head_pitch_range_deg": 76.08,
+      "head_yaw_samples_deg": [
+        0.0,
+        -5.5,
+        -8.899999618530273,
+        -6.0,
+        -8.300000190734863,
+        -8.5,
+        -5.900000095367432,
+        -3.200000047683716,
+        -0.0
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        37.599998474121094,
+        -30.299999237060547,
+        -27.299999237060547,
+        -10.699999809265137,
+        8.0,
+        1.2000000476837158,
+        -1.100000023841858,
+        0.0
+      ]
+    }
+  }
+}

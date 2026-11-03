@@ -1,0 +1,422 @@
+{
+  "ambulance": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "cab",
+        "b": "headlight*",
+        "axis": 2
+      }
+    ]
+  },
+  "atm_standalone": {
+    "groups": 1
+  },
+  "breakfast_cart": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "counter",
+        "b": "steamer",
+        "axis": 1
+      }
+    ]
+  },
+  "building_barber": {
+    "groups": 1
+  },
+  "building_pharmacy": {
+    "groups": 1
+  },
+  "building_restaurant": {
+    "groups": 1
+  },
+  "building_under_construction": {
+    "groups": 2,
+    "grounded_groups": true
+  },
+  "bus_shelter": {
+    "groups": 2,
+    "grounded_groups": true
+  },
+  "car": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "width_ratio",
+        "a": "bumper*",
+        "b": "body",
+        "axis": 0,
+        "ratio": 0.88
+      }
+    ]
+  },
+  "car_estate": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "body",
+        "b": "lamp",
+        "axis": 2
+      },
+      {
+        "kind": "face_contact",
+        "a": "cabin",
+        "b": "roof_rail_foot*",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "roof_rail_foot*",
+        "b": [
+          "roof_rail",
+          "roof_rail.001"
+        ],
+        "axis": 1
+      }
+    ]
+  },
+  "car_interactive": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "gap_at_least",
+        "a": "dashboard",
+        "b": "windshield",
+        "axis": 1,
+        "min": 0
+      }
+    ]
+  },
+  "cargo_tricycle": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "battery_body",
+        "b": "seat_mount",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "seat_mount",
+        "b": "saddle",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "floor_rail*",
+        "b": "footrest_*",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "cargo_deck",
+        "b": "cargo_box",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "cargo_box",
+        "b": "cargo_lid",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "cargo_axle_support*",
+        "b": "cargo_deck",
+        "axis": 1
+      },
+      {
+        "kind": "gap_at_least",
+        "a": "tire*",
+        "b": "cargo_box",
+        "axis": 1,
+        "min": 0.06
+      },
+      {
+        "kind": "center_align",
+        "a": "rear_axle",
+        "b": "cargo_box",
+        "axis": 2,
+        "tolerance": 0.08
+      }
+    ]
+  },
+  "delivery_ebike": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "battery_body",
+        "b": "seat_mount",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "seat_mount",
+        "b": "saddle",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "floor_rail*",
+        "b": "footrest_*",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "rear_rack",
+        "b": "delivery_box",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "delivery_box",
+        "b": "box_lid",
+        "axis": 1
+      },
+      {
+        "kind": "center_align",
+        "a": "rear_rack",
+        "b": "delivery_box",
+        "axis": 2
+      },
+      {
+        "kind": "center_align",
+        "a": "rear_rack",
+        "b": "delivery_box",
+        "axis": 0
+      },
+      {
+        "kind": "gap_at_least",
+        "a": "delivery_box",
+        "b": "saddle",
+        "axis": 2,
+        "min": 0.02
+      }
+    ]
+  },
+  "delivery_van": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "body",
+        "b": "roof",
+        "axis": 1
+      }
+    ]
+  },
+  "ebike_charging_post": {
+    "groups": 1
+  },
+  "external_fire_escape": {
+    "groups": 1
+  },
+  "fire_engine": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "cab",
+        "b": "headlight*",
+        "axis": 2
+      }
+    ]
+  },
+  "first_aid_case": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "case",
+        "b": "cross_*",
+        "axis": 2
+      }
+    ]
+  },
+  "flower_shop_rack": {
+    "groups": 3,
+    "grounded_groups": true
+  },
+  "garbage_truck": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "cab",
+        "b": "headlight*",
+        "axis": 2
+      }
+    ]
+  },
+  "held_newspaper_open": {
+    "groups": 1
+  },
+  "neighborhood_map": {
+    "groups": 1
+  },
+  "newspaper_kiosk": {
+    "groups": 1
+  },
+  "park_pergola": {
+    "groups": 1
+  },
+  "parked_motorcycle": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "battery_body",
+        "b": "seat_mount",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "seat_mount",
+        "b": "saddle",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "floor_rail*",
+        "b": "footrest_*",
+        "axis": 1
+      },
+      {
+        "kind": "gap_at_least",
+        "a": "saddle",
+        "b": "tank",
+        "axis": 2,
+        "min": 0.008
+      },
+      {
+        "kind": "gap_at_least",
+        "a": "tank",
+        "b": "front_fairing",
+        "axis": 2,
+        "min": 0.015
+      }
+    ]
+  },
+  "police_car": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "body",
+        "b": "lamp",
+        "axis": 2
+      }
+    ]
+  },
+  "public_toilet": {
+    "groups": 1
+  },
+  "recycling_bins": {
+    "groups": 3,
+    "grounded_groups": true
+  },
+  "roof_billboard": {
+    "groups": 1
+  },
+  "roof_garden": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "post*",
+        "b": "roof_carrier*",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "roof_carrier*",
+        "b": "roof_slat*",
+        "axis": 1
+      }
+    ]
+  },
+  "scooter": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "battery_body",
+        "b": "seat_mount",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "seat_mount",
+        "b": "saddle",
+        "axis": 1
+      },
+      {
+        "kind": "face_contact",
+        "a": "floor_rail*",
+        "b": "footrest_*",
+        "axis": 1
+      }
+    ]
+  },
+  "security_camera": {
+    "groups": 1
+  },
+  "small_truck": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "cab",
+        "b": "headlight*",
+        "axis": 2
+      }
+    ]
+  },
+  "taxi": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "width_ratio",
+        "a": "bumper*",
+        "b": "body",
+        "axis": 0,
+        "ratio": 0.88
+      }
+    ]
+  },
+  "taxi_compact": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "body",
+        "b": "lamp",
+        "axis": 2
+      }
+    ]
+  },
+  "traffic_signal": {
+    "groups": 1
+  },
+  "water_truck": {
+    "groups": 1,
+    "conditions": [
+      {
+        "kind": "face_contact",
+        "a": "cab",
+        "b": "headlight*",
+        "axis": 2
+      }
+    ]
+  },
+  "bike_shed": {
+    "groups": 8,
+    "grounded_groups": true
+  }
+}

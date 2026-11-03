@@ -1,0 +1,7 @@
+{
+  "_note": "Kinds of people for npc/behaviour.gd: tag coefficients (multipliers of the rows in behaviour-table.json that carry the tag; every tag a row uses must be here, 0 = never) and the walk clips used on the way to a post or out of the scene. People are not classes: only the coefficients differ.",
+  "passerby": {
+    "tags": { "stroll": 1, "leave": 1, "fidget": 1, "sit": 1, "wait": 1, "seller": 0.6, "shopper": 1, "chess": 0.8, "watch": 1 },
+    "walk": { "walk": 3, "walk_slow": 1 }
+  }
+}

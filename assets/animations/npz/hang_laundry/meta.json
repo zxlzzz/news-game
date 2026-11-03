@@ -1,0 +1,130 @@
+{
+  "name": "hang_laundry",
+  "text": "A person stands facing a clothes rail. Start holding the two upper corners of a shirt at chest height, hands thirty-four centimeters apart. Smoothly raise both hands forward above the head, drape the shirt over a horizontal rail, release both corners after a short pause, then lower both empty arms naturally. Keep feet planted and stay in front of the rail. No crossing the wrists. One clear hanging action.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "object": "laundry_rail",
+    "post": "post_hanglaundry",
+    "description": "Start at laundry_rail.post_hanglaundry facing the model standing marker direction. A person stands facing a clothes rail. Start holding the two upper corners of a shirt at chest height, hands thirty-four centimeters apart. Smoothly raise both hands forward above the head, drape the shirt over a horizontal rail, release both corners after a short pause, then lower both empty arms naturally. Keep feet planted and stay in front of the rail. No crossing the wrists. One clear hanging action. LeftHand touches the physical model marker hang_left at 2.25s, 2.90s. RightHand touches the physical model marker hang_right at 2.25s, 2.90s. Grasp held_laundry_shirt at grip at 0.00s. Release at 2.90s onto laundry_rest using the item rest marker. Both hands hold the two upper corners of the shirt; there is no idle hand during the grasp. Keep the chest behind the laundry rail while lifting the shirt ahead of the torso; after release lower both arms freely.",
+    "duration": 5,
+    "text": "A person stands facing a clothes rail. Start holding the two upper corners of a shirt at chest height, hands thirty-four centimeters apart. Smoothly raise both hands forward above the head, drape the shirt over a horizontal rail, release both corners after a short pause, then lower both empty arms naturally. Keep feet planted and stay in front of the rail. No crossing the wrists. One clear hanging action.",
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "hang_left",
+        "phases": [
+          0.45,
+          0.58
+        ],
+        "window": [
+          0.42,
+          0.45,
+          0.58,
+          0.62
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "hang_right",
+        "phases": [
+          0.45,
+          0.58
+        ],
+        "window": [
+          0.42,
+          0.45,
+          0.58,
+          0.62
+        ]
+      }
+    ],
+    "transfers": [
+      {
+        "type": "held_laundry_shirt",
+        "grip": "grip",
+        "hand": "both",
+        "release": 0.58,
+        "landing": {
+          "space": "object",
+          "marker": "laundry_rest"
+        },
+        "rest": "rest"
+      }
+    ],
+    "idle_hand": "Both hands hold the two upper corners of the shirt; there is no idle hand during the grasp.",
+    "clearance": "Keep the chest behind the laundry rail while lifting the shirt ahead of the torso; after release lower both arms freely."
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "laundry_rail",
+      "marker": "hang_left",
+      "space": "world",
+      "episode": "hang_left",
+      "keys": [
+        {
+          "frame": 67,
+          "position": [
+            0.144996,
+            1.85874,
+            0.242472
+          ]
+        },
+        {
+          "frame": 86,
+          "position": [
+            0.144996,
+            1.85874,
+            0.242472
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "laundry_rail",
+      "marker": "hang_right",
+      "space": "world",
+      "episode": "hang_right",
+      "keys": [
+        {
+          "frame": 67,
+          "position": [
+            -0.142753,
+            1.858878,
+            0.242564
+          ]
+        },
+        {
+          "frame": 86,
+          "position": [
+            -0.142753,
+            1.858878,
+            0.242564
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "918ffaf70b1bb0aaf21cbadc27cb2083edb86f1ee809fdd280ce2f1dcecb8afe",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "918ffaf70b1bb0aaf21cbadc27cb2083edb86f1ee809fdd280ce2f1dcecb8afe",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "source_frame": "fixed"
+}

@@ -1,0 +1,168 @@
+{
+  "name": "stand_up",
+  "text": "A person starts seated upright on a bench, leans forward over the planted feet, presses through both legs and stands up smoothly. Both hands remain free, then relax beside the thighs. Finish standing still in front of the bench.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "object": "bench",
+    "post": "post_sit_1",
+    "duration": 4,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          0.15
+        ],
+        "window": [
+          0,
+          0,
+          0.15,
+          0.18
+        ]
+      }
+    ],
+    "text": "A person starts seated upright on a bench, leans forward over the planted feet, presses through both legs and stands up smoothly. Both hands remain free, then relax beside the thighs. Finish standing still in front of the bench.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 0,
+        "align_hip": "hip_seat"
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 1,
+        "align_stand": "post_sitdown"
+      }
+    ],
+    "idle_hand": "Both hands follow the stated task; a hand without a task rests beside its thigh.",
+    "clearance": "Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "description": "Start at bench.post_sit_1 facing the model standing marker direction. A person starts seated upright on a bench, leans forward over the planted feet, presses through both legs and stands up smoothly. Both hands remain free, then relax beside the thighs. Finish standing still in front of the bench. Hips touches the physical model marker hip_seat at 0.00s, 0.60s. Both hands follow the stated task; a hand without a task rests beside its thigh. Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "seat_surface": {
+      "node": "seat",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "runtime_contacts": [
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          0.15
+        ],
+        "window": [
+          0,
+          0,
+          0.15,
+          0.18
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          0.15
+        ],
+        "window": [
+          0,
+          0,
+          0.15,
+          0.18
+        ]
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bench",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        },
+        {
+          "frame": 18,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        0.0,
+        0.018900004005432125,
+        0.0
+      ]
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 119,
+      "translation": [
+        0.0,
+        0.0,
+        0.60864
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "84f877d466707a58b913932c76100413995b483489752e35114746f6e57878ad",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "visual_pass",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "84f877d466707a58b913932c76100413995b483489752e35114746f6e57878ad",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8"
+  },
+  "runtime_review": {
+    "source_sha256": "84f877d466707a58b913932c76100413995b483489752e35114746f6e57878ad",
+    "renderer_sha256": "6cda2d277eda884c3c62e89a8da30e8dcea0c8165734b9770fecca2cd6e48bc7",
+    "accepted_by_hsinlung": false,
+    "notes": "Reviewed the exact final empty-ground poses from front and side, after the hip-depth correction. 121 phases tested against actual seat and backrest solids; fully seated hips retain their model marker XZ. Contact seams stay below 1 mm; source arrays are unedited."
+  },
+  "visual_review": {
+    "status": "visual_reviewed_keep",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "0-4 s. Leans forward then pushes up, arms lower at end. No obvious body reversal."
+  }
+}

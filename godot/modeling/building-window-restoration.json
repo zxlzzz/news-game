@@ -1,0 +1,11 @@
+{
+  "recess_depth": 0.48,
+  "opening_bottom_offset": 0.02,
+  "geometry_tolerance": 0.0000001,
+  "vertex_snap_tolerance": 0.00001,
+  "buildings": {
+    "building_department_store": {"columns": [-2, 2], "template_column": -6, "width": 1.65, "height": 1.8, "levels": 4},
+    "building_hotel": {"columns": [-4.1, 0, 4.1], "template_column": -8.3, "width": 1.7, "height": 1.9, "levels": 9},
+    "building_office_tower": {"columns": [-3.5, 0, 3.5], "template_column": -7, "width": 1.45, "height": 2.0, "levels": 16}
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "name": "walk_umbrella",
+  "text": "A person walks forward while holding a phone beside the ear. The free arm swings naturally. Two continuous walking steps.",
+  "duration": 1.4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks forward while holding a phone beside the ear. The free arm swings naturally. Two continuous walking steps.",
+    "duration": 1.4,
+    "contacts": [],
+    "item": {
+      "type": "held_phone",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person walks steadily forward while holding a mobile phone firmly against the right ear with the right hand, right elbow bent and raised. The left arm swings naturally. The phone hand stays beside the ear throughout. Hold held_phone with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/6fdd6a95c15ad453/motion.npz",
+        "source_frame": 18,
+        "phase": 0,
+        "translation": [
+          -0.05834607779979706,
+          0.0,
+          -0.9015102982521057
+        ]
+      },
+      {
+        "source": "assets/animations/sources/6fdd6a95c15ad453/motion.npz",
+        "source_frame": 18,
+        "phase": 1,
+        "translation": [
+          0.02716366946697235,
+          0.0,
+          0.839941680431366
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/walk_phone_call.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "61455ecac792ab7e832c4ca6a489f56c82325dc3a12444c00fdf3bf5d92bc03b",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/walk_phone_call.json",
+      "frame": 41,
+      "translation": [
+        0,
+        0,
+        1.0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "61455ecac792ab7e832c4ca6a489f56c82325dc3a12444c00fdf3bf5d92bc03b",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": true,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "02442d59edc8281c989e23fe3add9727d0dea661c23afa7ad5e3af46f332448e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "reuse": {
+    "source_clip": "walk_phone_call",
+    "source_raw_sha256": "02442d59edc8281c989e23fe3add9727d0dea661c23afa7ad5e3af46f332448e",
+    "reason": "Same unchanged one-hand-up walking source, retargeted to upright umbrella grip."
+  },
+  "visual_review": {
+    "status": "repaired_visual_reviewed",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 1.367 s two-view overview: upright canopy clears head, holding elbow bent down, free arm swings during alternating steps. Unchanged native phone-walk source reused with umbrella context."
+  }
+}

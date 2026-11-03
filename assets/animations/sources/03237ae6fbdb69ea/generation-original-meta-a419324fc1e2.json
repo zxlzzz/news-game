@@ -1,0 +1,96 @@
+{
+  "name": "hold_umbrella",
+  "text": "Standing comfortably under an umbrella held with the right hand beside the cheek, elbow down. The left arm hangs straight and relaxed beside the thigh.",
+  "duration": 3,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Standing comfortably under an umbrella held with the right hand beside the cheek, elbow down. The left arm hangs straight and relaxed beside the thigh.",
+    "duration": 3,
+    "contacts": [],
+    "item": {
+      "type": "held_umbrella_open",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands still holding the shaft of an open umbrella upright in their right hand just in front of the right shoulder at chest height. The right elbow points down beside the body, forearm upright. Left arm hangs relaxed. Maintain the umbrella-holding pose steadily, with only a small natural shift of weight between the feet. Hold held_umbrella_open with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": false,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.0039873309433460236,
+          0.0,
+          0.006256722845137119
+        ]
+      },
+      {
+        "source": "assets/animations/sources/59b23f213129d310/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.0039873309433460236,
+          0.0,
+          0.006256722845137119
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/phone_call.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "963e64205592da3ba48bc6f5958c56accfdceb0a58dc291d4ece7b8d4a330f5f",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/phone_call.json",
+      "frame": 89,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "963e64205592da3ba48bc6f5958c56accfdceb0a58dc291d4ece7b8d4a330f5f",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "03237ae6fbdb69eaa91ac5b31700c49c8a50bdb860a359eb1b0ab1cdc196a134",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "repaired_visual_reviewed",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 0-2.967 s front and side overview: upright stable umbrella, lowered holding elbow, free arm remains down beside body."
+  }
+}

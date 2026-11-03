@@ -1,0 +1,261 @@
+{
+  "name": "lean_wall",
+  "duration": 3.0,
+  "seed": 20261011,
+  "attempt": 1,
+  "text": "A person rests their lower back and hips against the vertical wall behind them in a relaxed slightly bent-knee standing posture. Feet are planted slightly in front of the hips. The upper back, neck and head stay gently inclined forward away from the wall. Both arms hang quietly down, shoulders relaxed. Hold this comfortable supported posture with slight breathing only. Do not sit, fall, gesture, reach, straighten the neck backward or move the feet.",
+  "scene": {
+    "activity": "lean_wall",
+    "object": "compound_wall_solid",
+    "description": "A person rests their lower back and hips against the vertical wall behind them in a relaxed slightly bent-knee standing posture. Feet are planted slightly in front of the hips. The upper back, neck and head stay gently inclined forward away from the wall. Both arms hang quietly down, shoulders relaxed. Hold this comfortable supported posture with slight breathing only. Do not sit, fall, gesture, reach, straighten the neck backward or move the feet.",
+    "candidate_post_position": [
+      -0.03,
+      0,
+      0.220375
+    ],
+    "body_reference": {
+      "source": "C:/Users/Hsinlung/Desktop/news-game/assets/animations/npz/fall_back/motion.npz",
+      "source_sha256": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+      "source_frame": 10,
+      "placement_basis": [
+        [
+          0.9997338652610779,
+          0.0,
+          0.023069145157933235
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.023069145157933235,
+          0.0,
+          0.9997338652610779
+        ]
+      ],
+      "whole_translation": [
+        0.03149400278925896,
+        0.0,
+        0.10289184749126434
+      ],
+      "intended_support": "Actual lower-back capsule touching the real wall front; complete genuine slightly bent-knee body posture, not upper-back centre forcibly set to a surface marker.",
+      "physical_static_evidence": "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-reference-screen/whole-pose-solid.json",
+      "source_whole_front_and_side_images_seen": true
+    },
+    "whole_translation_activity": "Stand 0.27 source metres farther from the shared rest stance; step backward/forward while retaining the real whole-body bow before approaching/after leaving the wall."
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/sources/e9f44a3a86a83207/motion.npz",
+      "source_frame": 10,
+      "placement_basis": [
+        [
+          0.9997338652610779,
+          0.0,
+          0.023069145157933235
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.023069145157933235,
+          0.0,
+          0.9997338652610779
+        ]
+      ],
+      "translation": [
+        0.03149400278925896,
+        0.0,
+        0.10289184749126434
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 44,
+      "source": "assets/animations/sources/e9f44a3a86a83207/motion.npz",
+      "source_frame": 10,
+      "placement_basis": [
+        [
+          0.9997338652610779,
+          0.0,
+          0.023069145157933235
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.023069145157933235,
+          0.0,
+          0.9997338652610779
+        ]
+      ],
+      "translation": [
+        0.03149400278925896,
+        0.0,
+        0.10289184749126434
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 89,
+      "source": "assets/animations/sources/e9f44a3a86a83207/motion.npz",
+      "source_frame": 10,
+      "placement_basis": [
+        [
+          0.9997338652610779,
+          0.0,
+          0.023069145157933235
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.023069145157933235,
+          0.0,
+          0.9997338652610779
+        ]
+      ],
+      "translation": [
+        0.03149400278925896,
+        0.0,
+        0.10289184749126434
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": true,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 3,
+  "raw_sha256": "c3cde8cd037f254c24f1691b09dfeeeac1354ddf669ac96942d0373ebb0c3439",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "c3cde8cd037f254c24f1691b09dfeeeac1354ddf669ac96942d0373ebb0c3439",
+    "observations": "A mildly bent-knee whole body rests its lower back near the actual wall face; head and upper back stay forward, both arms remain low, feet stay planted, with small breathing motion. Lower-back margin is 4.5 mm at the reference and at least .976 mm over the generated loop.",
+    "record": "docs/motion-review-evidence-2026-10-11/records/wall-source-publication.json",
+    "captured_views_degrees": [
+      0,
+      90,
+      135
+    ],
+    "personally_inspected_all_native_views_degrees": [
+      0,
+      90
+    ],
+    "native_activity_time_samples": 90,
+    "image_resolution": [
+      1024,
+      1024
+    ],
+    "personal_view_method": "All native frame original-pixel 410x610 body crops in 28 chronological pages across the three wall activities. 135 degree views are wall-occluded and were not used as body review evidence.",
+    "full_speed_playback_viewed": false,
+    "entity_metrics": {
+      "sample_count": 179,
+      "native_frames": 90,
+      "subdivisions": 2.0,
+      "minimum_core_gap_m": 0.000976061531359615,
+      "max_final_body_step_m": 0.00139035924803466,
+      "failures": 0,
+      "faults": 0,
+      "correction_step_candidates": 0
+    },
+    "version_inputs_sha256": {
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/candidate-motion/enter_lean_wall.json": "fd63e4d521e068f24051fde588d101bfc2a239b5d15f376eac1b2bdfdb55e4e8",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/candidate-motion/exit_lean_wall.json": "36059e06a26a54e1248201338f860895448dfa5de23871e9d161854d56c87bc4",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/candidate-motion/lean_wall.json": "8bc65b582a6b4ec7c9e5a43b6af48b0515a7a6b95c25b3170e09e3ba3dda51e8",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/candidate_clip.gd": "ef3065b7664b0a3bbf7140a0a3bb5d16ecd7067a570fa6883caa4955349df9bb",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/capture_candidate_stage.gd": "82d77faccb111ca9108876f7322c2b80d08db33d2bc32c1865d5dd7067907ec2",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/request.json": "082d0cd4ecb1e1c05f1f9261f23b20a0cc103e7093d52b4997eabd4af2a8ef0c",
+      "res://models/compound_wall_solid.glb": "c2b8d371917d8b54ed9846b82ed6b06cd50f5b288ba61949d4f8e85ad5edd311",
+      "res://npc/clip-setup.json": "0d039a55bbf511f2b3cb6b7c116681c6a876918903e084fce30d2762705fad62",
+      "res://npc/clip_pose.gd": "00dafe67ac8c35a3314dbd16e903ac262e48b0ae5a80560bd0a8505b664046ca",
+      "res://npc/contact_pose.gd": "8034f6b0bad367810412aa1f43c2537978e3053582f2185adaa5ee1b25d285aa",
+      "res://npc/contact_surface.gd": "f9968e058a87fbb84910ba70fb6e7074a7f8cd2893d354691292d901a5d878ca",
+      "res://npc/interaction_player.gd": "e5b9fd60bd1dc8b5138845b2b23798d052306b40a02a2974c49dcf36b3e53f64",
+      "res://npc/interactions.json": "b09515643f2719f9e3f3ca0cca5964bba8c1958110d409e8ae04617b3002de20",
+      "res://npc/motion-playback.json": "27b678443cdbd41d71bbfd4504761737573b258148190e1c6c9abce925cc3fbb",
+      "res://npc/prop_grasp.gd": "ea91d8af94557cf3b5e6c64e06cdc4475548c8647d38f8539d6bd3a86027d372",
+      "res://npc/skeleton_mapping.gd": "0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc",
+      "res://scenes/empty_ground/stage.gd": "7e4e3311e0abfbadfd60ae1d5eccfd53e0895088fbfb455739aa4b4596b68a24",
+      "res://types/compound_wall_solid.tscn": "9ce435c7d94f010d6ca3206d996011ee4927d6b6e2f96b79494f72abd934f97c"
+    },
+    "limitations": "Seek-based chronology, not real-time continuous playback. Full native/half-time solid checks establish sampled clearance only; entering/leaving use a small low-foot shuffle. Candidate data injection bypassed canonical configuration validation; formal loader validation is a separate required integration check.",
+    "canonical_configuration_validated": false,
+    "candidate_validation_omission": ".tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/canonical-validation-omission.json",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"date\": \"2026-10-11\",\r\n    \"raw_sha256\": \"c3cde8cd037f254c24f1691b09dfeeeac1354ddf669ac96942d0373ebb0c3439\",\r\n    \"observations\": \"A mildly bent-knee whole body rests its lower back near the actual wall face; head and upper back stay forward, both arms remain low, feet stay planted, with small breathing motion. Lower-back margin is 4.5 mm at the reference and at least .976 mm over the generated loop.\",\r\n    \"record\": \".tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/publication-summary.json\",\r\n    \"captured_views_degrees\": [\r\n      0,\r\n      90,\r\n      135\r\n    ],\r\n    \"personally_inspected_all_native_views_degrees\": [\r\n      0,\r\n      90\r\n    ],\r\n    \"native_activity_time_samples\": 90,\r\n    \"image_resolution\": [\r\n      1024,\r\n      1024\r\n    ],\r\n    \"personal_view_method\": \"All native frame original-pixel 410x610 body crops in 28 chronological pages across the three wall activities. 135 degree views are wall-occluded and were not used as body review evidence.\",\r\n    \"full_speed_playback_viewed\": false,\r\n    \"entity_metrics\": {\r\n      \"sample_count\": 179,\r\n      \"native_frames\": 90,\r\n      \"subdivisions\": 2.0,\r\n      \"minimum_core_gap_m\": 0.000976061531359615,\r\n      \"max_final_body_step_m\": 0.00139035924803466,\r\n      \"failures\": 0,\r\n      \"faults\": 0,\r\n      \"correction_step_candidates\": 0\r\n    },\r\n    \"version_inputs_sha256\": {\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/candidate-motion/enter_lean_wall.json\": \"fd63e4d521e068f24051fde588d101bfc2a239b5d15f376eac1b2bdfdb55e4e8\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/candidate-motion/exit_lean_wall.json\": \"36059e06a26a54e1248201338f860895448dfa5de23871e9d161854d56c87bc4\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/candidate-motion/lean_wall.json\": \"8bc65b582a6b4ec7c9e5a43b6af48b0515a7a6b95c25b3170e09e3ba3dda51e8\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/candidate_clip.gd\": \"ef3065b7664b0a3bbf7140a0a3bb5d16ecd7067a570fa6883caa4955349df9bb\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/capture_candidate_stage.gd\": \"82d77faccb111ca9108876f7322c2b80d08db33d2bc32c1865d5dd7067907ec2\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/request.json\": \"082d0cd4ecb1e1c05f1f9261f23b20a0cc103e7093d52b4997eabd4af2a8ef0c\",\r\n      \"res://models/compound_wall_solid.glb\": \"c2b8d371917d8b54ed9846b82ed6b06cd50f5b288ba61949d4f8e85ad5edd311\",\r\n      \"res://npc/clip-setup.json\": \"0d039a55bbf511f2b3cb6b7c116681c6a876918903e084fce30d2762705fad62\",\r\n      \"res://npc/clip_pose.gd\": \"00dafe67ac8c35a3314dbd16e903ac262e48b0ae5a80560bd0a8505b664046ca\",\r\n      \"res://npc/contact_pose.gd\": \"8034f6b0bad367810412aa1f43c2537978e3053582f2185adaa5ee1b25d285aa\",\r\n      \"res://npc/contact_surface.gd\": \"f9968e058a87fbb84910ba70fb6e7074a7f8cd2893d354691292d901a5d878ca\",\r\n      \"res://npc/interaction_player.gd\": \"e5b9fd60bd1dc8b5138845b2b23798d052306b40a02a2974c49dcf36b3e53f64\",\r\n      \"res://npc/interactions.json\": \"b09515643f2719f9e3f3ca0cca5964bba8c1958110d409e8ae04617b3002de20\",\r\n      \"res://npc/motion-playback.json\": \"27b678443cdbd41d71bbfd4504761737573b258148190e1c6c9abce925cc3fbb\",\r\n      \"res://npc/prop_grasp.gd\": \"ea91d8af94557cf3b5e6c64e06cdc4475548c8647d38f8539d6bd3a86027d372\",\r\n      \"res://npc/skeleton_mapping.gd\": \"0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc\",\r\n      \"res://scenes/empty_ground/stage.gd\": \"7e4e3311e0abfbadfd60ae1d5eccfd53e0895088fbfb455739aa4b4596b68a24\",\r\n      \"res://types/compound_wall_solid.tscn\": \"9ce435c7d94f010d6ca3206d996011ee4927d6b6e2f96b79494f72abd934f97c\"\r\n    },\r\n    \"limitations\": \"Seek-based chronology, not real-time continuous playback. Full native/half-time solid checks establish sampled clearance only; entering/leaving use a small low-foot shuffle. Candidate data injection bypassed canonical configuration validation; formal loader validation is a separate required integration check.\",\r\n    \"canonical_configuration_validated\": false,\r\n    \"candidate_validation_omission\": \".tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/canonical-validation-omission.json\"\r\n  }",
+      "original_record_sha256": "9d40cede22ed72387047ee72394347793fba4cbe8eda0affd683531ee92413d2",
+      "current_source_sha256_at_reconciliation": "c3cde8cd037f254c24f1691b09dfeeeac1354ddf669ac96942d0373ebb0c3439",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "evidence_path_migrations": [
+      {
+        "field": "record",
+        "original_path": ".tmp/motion-repair-2026-10-10/semantic/wall-stage-v2/publication-summary.json",
+        "durable_path": "docs/motion-review-evidence-2026-10-11/records/wall-source-publication.json",
+        "sha256": "fa768e73ca659d9ed1310b44fe0439bfcf37503e4030aff301cc10e52918e756",
+        "content_changed": false
+      }
+    ],
+    "record_sha256": "fa768e73ca659d9ed1310b44fe0439bfcf37503e4030aff301cc10e52918e756"
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/lean_wall/attempt_001/motion.npz",
+    "original_meta_file": "generation-original-meta.json",
+    "original_meta_sha256": "2098694cc84cc4ee92cf65027a30746acc4c2b4b66b1afdfa2b90b012aa9ac71",
+    "raw_npz_unchanged": true
+  },
+  "delivery_source": "assets/animations/sources/c3cde8cd037f254c",
+  "repair": {
+    "date": "2026-10-11",
+    "reason": "Old loop had no actual wall support; transitions swept head/body into the wall. New whole-body source bends forward before approaching and rises after leaving.",
+    "replaced_source_sha256": "f5e643fae7876d6972a16177df76f53bb990afb0bf4433f4dd26b9c167b420ea",
+    "generated_source_npz_unchanged": true
+  },
+  "material_endpoints": {
+    "entry": "wall_lower_back",
+    "exit": "wall_lower_back",
+    "kind": "loop",
+    "source_sha256": "c3cde8cd037f254c24f1691b09dfeeeac1354ddf669ac96942d0373ebb0c3439",
+    "boundary_edits": [],
+    "boundary_velocity_alignment": [],
+    "trim": null,
+    "method": "Unchanged Kimodo output with three genuine complete semantic poses; uniform rigid pose placement only. No authored body or hand path."
+  },
+  "source_frame": "fixed"
+}

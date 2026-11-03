@@ -1,0 +1,292 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://core/level.gd" id="1"]
+[ext_resource type="Resource" path="res://palettes/gray.tres" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/walk_grid_test/view.tscn" id="3"]
+[ext_resource type="Resource" path="res://scenes/walk_grid_test/population.tres" id="4"]
+[ext_resource type="Script" path="res://core/ground_strip.gd" id="5"]
+[ext_resource type="Script" path="res://core/ground_band.gd" id="6"]
+
+[sub_resource type="Resource" id="band_0"]
+script = ExtResource("6")
+width = 20.0
+slot = &"sidewalk"
+
+[sub_resource type="Resource" id="band_1"]
+script = ExtResource("6")
+width = 3.0
+slot = &"bike_lane"
+
+[sub_resource type="StandardMaterial3D" id="mat_bike_lane"]
+resource_name = "bike_lane"
+
+[sub_resource type="StandardMaterial3D" id="mat_concrete"]
+resource_name = "concrete"
+
+[sub_resource type="StandardMaterial3D" id="mat_metal"]
+resource_name = "metal"
+
+[sub_resource type="StandardMaterial3D" id="mat_sidewalk"]
+resource_name = "sidewalk"
+
+[sub_resource type="StandardMaterial3D" id="mat_wood"]
+resource_name = "wood"
+
+[sub_resource type="BoxMesh" id="box_0"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 0.3, 4)
+
+[sub_resource type="BoxMesh" id="box_1"]
+material = SubResource("mat_metal")
+size = Vector3(0.1, 1.0, 4)
+
+[sub_resource type="BoxMesh" id="box_2"]
+material = SubResource("mat_metal")
+size = Vector3(0.1, 1.0, 4)
+
+[sub_resource type="BoxMesh" id="box_3"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 2.85, 0.3)
+
+[sub_resource type="BoxMesh" id="box_4"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 2.7, 0.3)
+
+[sub_resource type="BoxMesh" id="box_5"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 2.55, 0.3)
+
+[sub_resource type="BoxMesh" id="box_6"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 2.4, 0.3)
+
+[sub_resource type="BoxMesh" id="box_7"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 2.25, 0.3)
+
+[sub_resource type="BoxMesh" id="box_8"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 2.1, 0.3)
+
+[sub_resource type="BoxMesh" id="box_9"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 1.95, 0.3)
+
+[sub_resource type="BoxMesh" id="box_10"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 1.8, 0.3)
+
+[sub_resource type="BoxMesh" id="box_11"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 1.65, 0.3)
+
+[sub_resource type="BoxMesh" id="box_12"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 1.5, 0.3)
+
+[sub_resource type="BoxMesh" id="box_13"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 1.35, 0.3)
+
+[sub_resource type="BoxMesh" id="box_14"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 1.2, 0.3)
+
+[sub_resource type="BoxMesh" id="box_15"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 1.05, 0.3)
+
+[sub_resource type="BoxMesh" id="box_16"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 0.9, 0.3)
+
+[sub_resource type="BoxMesh" id="box_17"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 0.75, 0.3)
+
+[sub_resource type="BoxMesh" id="box_18"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 0.6, 0.3)
+
+[sub_resource type="BoxMesh" id="box_19"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 0.45, 0.3)
+
+[sub_resource type="BoxMesh" id="box_20"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 0.3, 0.3)
+
+[sub_resource type="BoxMesh" id="box_21"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 0.15, 0.3)
+
+[sub_resource type="BoxMesh" id="box_22"]
+material = SubResource("mat_sidewalk")
+size = Vector3(7, 0.15, 6)
+
+[sub_resource type="BoxMesh" id="box_23"]
+material = SubResource("mat_concrete")
+size = Vector3(2, 0.5, 2)
+
+[sub_resource type="BoxMesh" id="box_24"]
+material = SubResource("mat_metal")
+size = Vector3(6, 1.0, 0.08)
+
+[sub_resource type="BoxMesh" id="box_25"]
+material = SubResource("mat_wood")
+size = Vector3(2, 0.05, 0.5)
+
+[sub_resource type="BoxMesh" id="box_26"]
+material = SubResource("mat_metal")
+size = Vector3(0.05, 0.4, 0.5)
+
+[sub_resource type="BoxMesh" id="box_27"]
+material = SubResource("mat_metal")
+size = Vector3(0.05, 0.4, 0.5)
+
+[sub_resource type="BoxMesh" id="box_28"]
+material = SubResource("mat_concrete")
+size = Vector3(4, 0.02, 4)
+
+[sub_resource type="BoxMesh" id="box_29"]
+material = SubResource("mat_bike_lane")
+size = Vector3(4, 0.15, 3)
+
+[sub_resource type="BoxMesh" id="box_30"]
+material = SubResource("mat_bike_lane")
+size = Vector3(4, 0.04, 3)
+
+[node name="WalkGridTest" type="Node3D"]
+script = ExtResource("1")
+palette = ExtResource("2")
+view = ExtResource("3")
+population = ExtResource("4")
+
+[node name="Ground" type="Node3D" parent="."]
+script = ExtResource("5")
+length = 30.0
+bands = Array[ExtResource("6")]([SubResource("band_0"), SubResource("band_1")])
+
+[node name="BridgeDeck" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 2.85, 6.0)
+mesh = SubResource("box_0")
+
+[node name="BridgeRailL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.95, 3.5, 6.0)
+mesh = SubResource("box_1")
+
+[node name="BridgeRailR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 3.5, 6.0)
+mesh = SubResource("box_2")
+
+[node name="Step00" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 1.425, 8.15)
+mesh = SubResource("box_3")
+
+[node name="Step01" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 1.35, 8.45)
+mesh = SubResource("box_4")
+
+[node name="Step02" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 1.275, 8.75)
+mesh = SubResource("box_5")
+
+[node name="Step03" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 1.2, 9.05)
+mesh = SubResource("box_6")
+
+[node name="Step04" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 1.125, 9.35)
+mesh = SubResource("box_7")
+
+[node name="Step05" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 1.05, 9.65)
+mesh = SubResource("box_8")
+
+[node name="Step06" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.975, 9.95)
+mesh = SubResource("box_9")
+
+[node name="Step07" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.9, 10.25)
+mesh = SubResource("box_10")
+
+[node name="Step08" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.825, 10.55)
+mesh = SubResource("box_11")
+
+[node name="Step09" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.75, 10.85)
+mesh = SubResource("box_12")
+
+[node name="Step10" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.675, 11.15)
+mesh = SubResource("box_13")
+
+[node name="Step11" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.6, 11.45)
+mesh = SubResource("box_14")
+
+[node name="Step12" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.525, 11.75)
+mesh = SubResource("box_15")
+
+[node name="Step13" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.45, 12.05)
+mesh = SubResource("box_16")
+
+[node name="Step14" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.375, 12.35)
+mesh = SubResource("box_17")
+
+[node name="Step15" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.3, 12.65)
+mesh = SubResource("box_18")
+
+[node name="Step16" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.225, 12.95)
+mesh = SubResource("box_19")
+
+[node name="Step17" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.15, 13.25)
+mesh = SubResource("box_20")
+
+[node name="Step18" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.075, 13.55)
+mesh = SubResource("box_21")
+
+[node name="Curb" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.075, 15.0)
+mesh = SubResource("box_22")
+
+[node name="Planter" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0, 0.25, 13.0)
+mesh = SubResource("box_23")
+
+[node name="Railing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.0, 0.5, 16.0)
+mesh = SubResource("box_24")
+
+[node name="BenchSeat" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0, 0.425, 2.25)
+mesh = SubResource("box_25")
+
+[node name="BenchLegL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.025, 0.2, 2.25)
+mesh = SubResource("box_26")
+
+[node name="BenchLegR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.975, 0.2, 2.25)
+mesh = SubResource("box_27")
+
+[node name="Plaza" type="MeshInstance3D" parent="." groups=["paving"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0, 0.01, 4.0)
+mesh = SubResource("box_28")
+
+[node name="LanePlatform" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 0.075, 21.5)
+mesh = SubResource("box_29")
+
+[node name="LaneBump" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 0.02, 21.5)
+mesh = SubResource("box_30")

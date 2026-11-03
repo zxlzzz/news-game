@@ -1,0 +1,130 @@
+{
+  "name": "take_back_piece",
+  "text": "A person sits at a table 75cm high, reaches the right hand forward, picks up one chess piece from the near half of the board and brings the hand back toward the chest, reconsidering a move. Left hand on the thigh. Keep seated.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person sits at a table 75cm high, reaches the right hand forward, picks up one chess piece from the near half of the board and brings the hand back toward the chest, reconsidering a move. Left hand on the thigh. Keep seated.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "piece_pickup",
+        "phases": [
+          0.32,
+          0.45
+        ],
+        "window": [
+          0.28500000000000003,
+          0.32,
+          0.45,
+          0.485
+        ]
+      }
+    ],
+    "object": "park_chess_table",
+    "post": "post_chess_a",
+    "description": "The person starts at park_chess_table.post_chess_a and faces the model standing marker direction. Hips touches hip_seat at 0.00s,5.00s. RightHand touches piece_pickup at 1.60s,2.25s. Grasp held_chess_piece at grip at 2.25s. A person sits at a table 75cm high, reaches the right hand forward, picks up one chess piece from the near half of the board and brings the hand back toward the chest, reconsidering a move. Left hand on the thigh. Keep seated. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep hips on the bench, knees beneath the table edge and reaching forearm above the board.",
+    "transfers": [
+      {
+        "type": "held_chess_piece",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.45,
+        "initial": {
+          "space": "object",
+          "marker": "piece_pickup"
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep hips on the bench, knees beneath the table edge and reaching forearm above the board."
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "park_chess_table",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "park_chess_table",
+      "marker": "piece_pickup",
+      "space": "world",
+      "episode": "piece_pickup",
+      "keys": [
+        {
+          "frame": 48,
+          "position": [
+            -0.097255,
+            0.861097,
+            0.461587
+          ]
+        },
+        {
+          "frame": 67,
+          "position": [
+            -0.097255,
+            0.861097,
+            0.461587
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "697de667417fbad57dcc456232c137557e483e86be29a7dad58970f249d2285c",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "697de667417fbad57dcc456232c137557e483e86be29a7dad58970f249d2285c",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "source_frame": "fixed"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "carry_bags",
+  "text": "Standing still carrying a shopping bag in each hand at thigh height. Both elbows stay straight and relaxed, both arms hang down.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Standing still carrying a shopping bag in each hand at thigh height. Both elbows stay straight and relaxed, both arms hang down.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_shopping_bags",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. Standing still carrying a shopping bag in each hand at thigh height. Both elbows stay straight and relaxed, both arms hang down. Hold held_shopping_bags with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "5a04325671de60dad7295825aa949c1f4be0e5078c6c2fa9ad97b58d47bf2dd9",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

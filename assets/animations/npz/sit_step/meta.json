@@ -1,0 +1,197 @@
+{
+  "name": "sit_step",
+  "text": "A person sits resting on a low 30cm-high entrance step, knees bent up, both feet planted on the pavement in front of the steps. Lean the torso slightly forward with forearms resting loosely over the thighs. Remain seated, do not stand.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person sits resting on a low 30cm-high entrance step, knees bent up, both feet planted on the pavement in front of the steps. Lean the torso slightly forward with forearms resting loosely over the thighs. Remain seated, do not stand.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_step",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "building_bank",
+    "post": "post_step",
+    "description": "Start at building_bank.post_step facing the model standing marker direction. A person sits resting on a low 30cm-high entrance step, knees bent up, both feet planted on the pavement in front of the steps. Lean the torso slightly forward with forearms resting loosely over the thighs. Remain seated, do not stand. Hips touches the physical model marker hip_step at 0.00s, 3.00s. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/65df534a7fe76d58/motion.npz",
+        "source_frame": 135,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_step"
+      },
+      {
+        "source": "assets/animations/sources/65df534a7fe76d58/motion.npz",
+        "source_frame": 135,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_step"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "building_bank",
+      "marker": "hip_step",
+      "space": "world",
+      "episode": "hip_step",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.012528,
+            0.3804,
+            0.126181
+          ],
+          "root_xz": [
+            0.012528022282724208,
+            0.1261805159265068
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.012528,
+            0.3804,
+            0.126181
+          ],
+          "root_xz": [
+            0.012528022282724208,
+            0.1261805159265068
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/65df534a7fe76d58/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.03637983044326765,
+        -0.17688650093078617,
+        0.049877257388260654
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "65df534a7fe76d58660b11249553bfd35d095e23378a0ff12f4689442d9d3d6e",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "placement_basis": [
+        [
+          0.9999770630967976,
+          0,
+          0.006772981640557331
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.006772981640557331,
+          0,
+          0.9999770630967976
+        ]
+      ],
+      "placement_marker": "hip_step"
+    },
+    {
+      "source": "assets/animations/sources/65df534a7fe76d58/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.03637983044326765,
+        -0.17688650093078617,
+        0.049877257388260654
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "65df534a7fe76d58660b11249553bfd35d095e23378a0ff12f4689442d9d3d6e",
+        "hand_edited": false
+      },
+      "frame": 89,
+      "placement_basis": [
+        [
+          0.9999770630967976,
+          0,
+          0.006772981640557331
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.006772981640557331,
+          0,
+          0.9999770630967976
+        ]
+      ],
+      "placement_marker": "hip_step"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "6bc6f2e270265c30977b0da34238fb990fdfbc6c1b4f376abcea876d784ebe92",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "6bc6f2e270265c30977b0da34238fb990fdfbc6c1b4f376abcea876d784ebe92",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "225 entirely wall-occluded; 70 shows knees lifted and feet close together on steps. Need front view before judgment. Seated on step, feet forward; quiet hold.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"225 entirely wall-occluded; 70 shows knees lifted and feet close together on steps. Need front view before judgment. Seated on step, feet forward; quiet hold.\"\r\n  }",
+      "original_record_sha256": "ffa4f4890daabcf6205fbea4ca91c48f12b2ab287e5083bc24427a423e14ca75",
+      "current_source_sha256_at_reconciliation": "6bc6f2e270265c30977b0da34238fb990fdfbc6c1b4f376abcea876d784ebe92",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
+}

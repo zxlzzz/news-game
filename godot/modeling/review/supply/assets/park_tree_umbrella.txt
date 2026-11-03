@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\park_tree_umbrella.glb
+   size  x 6.400  y 6.900  z 5.500 m
+   box   min (-3.200, 0.000, -2.750)  max (3.200, 6.900, 2.750)
+   triangles 1252: bark 372, foliage 880
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 aed8ebdd0461e552b57770c339ce229c7f74d7364deb556b1edbe22709c68e16
+   REBUILD IDENTICAL

@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\flowerbed.glb
+   size  x 2.400  y 0.910  z 0.850 m
+   box   min (-1.200, 0.000, -0.425)  max (1.200, 0.910, 0.425)
+   triangles 1380: concrete 60, foliage 1320
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 9401a526fa971559513d10cea56ea9e654475f4dfe33f19e19b73a138099cfef
+   REBUILD IDENTICAL

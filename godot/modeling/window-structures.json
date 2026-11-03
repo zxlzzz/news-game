@@ -1,0 +1,838 @@
+{
+  "window_065f595f3e": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_09fb6174a7": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_0f74504184": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_1a439d4c7e": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_1c9a0bdfff": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_1dc903f502": {
+    "family": "fanlight",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_1f5f0d8528": {
+    "family": "mixed_transom",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_horizontal"
+    }
+  },
+  "window_1f9cc229de": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_1fb2b55e26": {
+    "family": "awning",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_horizontal"
+    }
+  },
+  "window_20cd07ccae": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_20d36353ad": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    }
+  },
+  "window_212eb3d27e": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_2136f466e7": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_27baa0567b": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_28200c5314": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_283dc536f1": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_29057ad660": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_2e42d8dbee": {
+    "family": "mixed_transom",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_horizontal"
+    }
+  },
+  "window_32be0d252b": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_340c876d4b": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_3b367c8e1f": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_3b57277fcd": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_3e111784ee": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_418697979b": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_4259ef24a8": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    }
+  },
+  "window_44002286b6": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_485f508f5f": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    }
+  },
+  "window_4a62fab8a9": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical",
+      "Part3": "mullion_vertical"
+    }
+  },
+  "window_4a91f89277": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_4fc1d21d74": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_4ffcdcc3b4": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_horizontal"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_55fe06638a": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical",
+      "Part3": "mullion_vertical"
+    }
+  },
+  "window_5817f658b3": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_58a9729bf0": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_58ab05301c": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_5b2de5a825": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_6230dd3fb0": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_62bdb77dbf": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_6378b31924": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_64389aa052": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_6a6d5739f1": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_6c18eb840c": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_6c87f4fa89": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_side",
+      "Part2": "structural_frame_side",
+      "Part3": "mullion_vertical",
+      "Part4": "window_sill"
+    }
+  },
+  "window_6d50681204": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_6ffbc30ddd": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_78b5bff385": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_79703fd8cd": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_79b1435984": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    }
+  },
+  "window_7a5623744b": {
+    "family": "awning",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_horizontal"
+    }
+  },
+  "window_7a5d27cb5f": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_7dd5562fc2": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_7f22dde2c6": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_8126480141": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_81955ddc2d": {
+    "family": "awning",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_horizontal"
+    }
+  },
+  "window_82e0e68965": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_836df47910": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_859722c016": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_87b0e0d20a": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_87f9df460e": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_88618ee1c0": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_893249593b": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_8bbf06c84e": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_8c75f3fd42": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_8fa1374c0b": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_9140e8070a": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_91b0c8baae": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_9466da784e": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_header",
+      "Part2": "structural_frame_side",
+      "Part3": "structural_frame_side",
+      "Part4": "mullion_vertical",
+      "Part5": "window_sill"
+    }
+  },
+  "window_95b189b660": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_header",
+      "Part2": "structural_frame_side",
+      "Part3": "structural_frame_side",
+      "Part4": "window_sill"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_9cd595b692": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_9e56e28400": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_a11fdf6f06": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_a5b7ca2ab5": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_a74f42f833": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_a8596af6fb": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_aa099f024d": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_aa4af8f55c": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_abd72dfbb1": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_b053545e6e": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_b3855bbcbd": {
+    "family": "fanlight",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical",
+      "Part3": "mullion_horizontal"
+    }
+  },
+  "window_b5b7b2952a": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical",
+      "Part3": "mullion_horizontal"
+    }
+  },
+  "window_b916f6694a": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    }
+  },
+  "window_bbc046b02c": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_bfac90e2e8": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_c07cf542c3": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical",
+      "Part3": "mullion_horizontal"
+    }
+  },
+  "window_c57e4d4747": {
+    "family": "fanlight",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_c6296ab26b": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    }
+  },
+  "window_c905b93db5": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_ca9b8abe6c": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_cd3af5e314": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_side",
+      "Part2": "structural_frame_side",
+      "Part3": "mullion_vertical",
+      "Part4": "window_sill"
+    }
+  },
+  "window_d24e53d4e4": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    }
+  },
+  "window_d8a9b12cb7": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_d911318c98": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_side",
+      "Part2": "structural_frame_side",
+      "Part3": "window_sill"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_d9a2b0f410": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_horizontal"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_decf748291": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_e5add3e15e": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_e773d9ee95": {
+    "family": "centre_pair",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "structural_frame_surround",
+      "Part2": "window_sill"
+    },
+    "vertical_fractions": [
+      0.5
+    ]
+  },
+  "window_ed52b9cfd0": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  },
+  "window_f0087ead07": {
+    "family": "fanlight",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_f3d71cd33d": {
+    "family": "casements",
+    "parts": {
+      "Sash": "glass",
+      "Part1": "window_sill",
+      "Part2": "mullion_vertical"
+    }
+  },
+  "window_f8504e5b17": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_f9e28a9594": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_fade952231": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_fdc7471aa9": {
+    "family": "single",
+    "parts": {
+      "Sash": "glass"
+    }
+  },
+  "window_ff1cb83912": {
+    "family": "display_vent",
+    "parts": {
+      "Sash": "glass"
+    },
+    "vent_fraction": 0.76
+  }
+}

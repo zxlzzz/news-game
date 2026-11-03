@@ -1,0 +1,34 @@
+{
+  "name": "phone_urgent",
+  "text": "A person paces back and forth while talking urgently on the phone held at the right ear. Walk a few steps, turn around, walk back, then turn again. The right hand keeps the phone at the ear.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person paces back and forth while talking urgently on the phone held at the right ear. Walk a few steps, turn around, walk back, then turn again. The right hand keeps the phone at the ear.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_phone",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  right hand holds held_phone at the item grip marker.  A person paces back and forth while talking urgently on the phone held at the right ear. Walk a few steps, turn around, walk back, then turn again. The right hand keeps the phone at the ear. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "6dda5f21dd34188d9c7e9c858694a41d2592a1cb764c5f0b366c4921554583e4",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

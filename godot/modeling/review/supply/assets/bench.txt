@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bench.glb
+   size  x 1.800  y 0.950  z 0.478 m
+   box   min (-0.900, 0.000, -0.258)  max (0.900, 0.950, 0.220)
+   triangles 344: metal_dark 320, wood 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 f5522501be7305303e4e500c85c8e7271af15d33568ca8c4773091258591795f
+   REBUILD IDENTICAL

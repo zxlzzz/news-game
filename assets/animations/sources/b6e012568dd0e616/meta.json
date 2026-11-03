@@ -1,0 +1,36 @@
+{
+  "name": "loop_newspaper_underarm",
+  "text": "Stand still upright, the left upper arm gently pressing a folded newspaper against the left ribs and the left forearm across the waist. Right arm hangs relaxed. Feet stay planted apart, with subtle breathing and weight shifts.",
+  "duration": 3.0,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "Stand still upright, the left upper arm gently pressing a folded newspaper against the left ribs and the left forearm across the waist. Right arm hangs relaxed. Feet stay planted apart, with subtle breathing and weight shifts.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_newspaper_folded",
+      "hand": "left",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. Stand still upright, the left upper arm gently pressing a folded newspaper against the left ribs and the left forearm across the waist. Right arm hangs relaxed. Feet stay planted apart, with subtle breathing and weight shifts. Hold held_newspaper_folded with left at its grip marker. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": false
+  },
+  "contacts": [],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "b6e012568dd0e616bf0e061c9debe804bec70111dc2bb62da0e38028cb201041",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "name": "press_button",
+  "duration": 3,
+  "attempt": 1,
+  "text": "Standing upright, reach the right hand forward at chest height, press a button once with the fingertip, then lower the hand beside the thigh. The feet remain still.",
+  "seed": 61007,
+  "scene": {
+    "text": "Standing upright, reach the right hand forward at chest height, press a button once with the fingertip, then lower the hand beside the thigh. The feet remain still.",
+    "duration": 3,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 89,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "633698a2518cb0b8fc87cec8f4251420bb6fb44c3843cdf1e73811e28c9112fc",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Full 2.967 s two-view overview: one forward reach, button contact, then hand lowers; adjusted contact timing removes second jab.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Full 2.967 s two-view overview: one forward reach, button contact, then hand lowers; adjusted contact timing removes second jab.\"\r\n  }",
+      "original_record_sha256": "3ab9c4b42835a5a6059fbba6fc7ada03ff9fe6e15b652e6fa1af5278714a2e2b",
+      "current_source_sha256_at_reconciliation": "633698a2518cb0b8fc87cec8f4251420bb6fb44c3843cdf1e73811e28c9112fc",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
+}

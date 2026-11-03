@@ -1,0 +1,127 @@
+{
+  "name": "loop_push_handle",
+  "text": "Stand still behind a shopping cart, both hands resting on the handle in front of the abdomen. Elbows relaxed and bent down, forearms forward. Both feet stay planted apart, torso upright, with subtle breathing. Do not push or walk.",
+  "duration": 3.0,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "Stand still behind a shopping cart, both hands resting on the handle in front of the abdomen. Elbows relaxed and bent down, forearms forward. Both feet stay planted apart, torso upright, with subtle breathing. Do not push or walk.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "shopping_cart",
+    "post": "post_push",
+    "description": "Start at shopping_cart.post_push facing the model standing marker direction. Stand still behind a shopping cart, both hands resting on the handle in front of the abdomen. Elbows relaxed and bent down, forearms forward. Both feet stay planted apart, torso upright, with subtle breathing. Do not push or walk. LeftHand touches the physical model marker grip_left at 0.00s, 3.00s. RightHand touches the physical model marker grip_right at 0.00s, 3.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": false
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "shopping_cart",
+      "marker": "grip_left",
+      "space": "world",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.2077938601859291,
+            1.198724934923348,
+            0.23656031760573393
+          ],
+          "root_xz": [
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.2077938601859291,
+            1.198724934923348,
+            0.23656031760573393
+          ],
+          "root_xz": [
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "shopping_cart",
+      "marker": "grip_right",
+      "space": "world",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.19843889807755577,
+            1.1986328223683245,
+            0.23664951696991926
+          ],
+          "root_xz": [
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            -0.19843889807755577,
+            1.1986328223683245,
+            0.23664951696991926
+          ],
+          "root_xz": [
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "073dba28e148d0514da72441a16ba0eaf124d14241f79457a27fbb8f4130c915",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

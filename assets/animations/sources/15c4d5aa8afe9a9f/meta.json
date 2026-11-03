@@ -1,0 +1,73 @@
+{
+  "name": "push_bicycle",
+  "text": "A person walks forward on the right side of a bicycle, holding the near handlebar with the left hand. The left forearm reaches across toward the bicycle without crossing the torso. Right arm swings gently. Guide the bicycle upright, feet and knees stay beside the frame and rear wheel.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A person walks forward on the right side of a bicycle, holding the near handlebar with the left hand. The left forearm reaches across toward the bicycle without crossing the torso. Right arm swings gently. Guide the bicycle upright, feet and knees stay beside the frame and rear wheel.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_push",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bicycle",
+    "post": "post_bikepush",
+    "description": "The person starts at bicycle.post_bikepush and faces the model standing marker direction. LeftHand touches grip_push at 0.00s,5.00s.  A person walks forward on the right side of a bicycle, holding the near handlebar with the left hand. The left forearm reaches across toward the bicycle without crossing the torso. Right arm swings gently. Guide the bicycle upright, feet and knees stay beside the frame and rear wheel. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "travel_with_actor": true
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "bicycle",
+      "marker": "grip_push",
+      "space": "carried",
+      "episode": "grip_push",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.303475,
+            1.266419,
+            0.301704
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.303475,
+            1.266419,
+            0.301704
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "15c4d5aa8afe9a9f1f33c8681f84d591155e5720a5d994dc5c73a850e062f6fe",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

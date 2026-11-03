@@ -1,0 +1,105 @@
+{
+  "name": "phone_call",
+  "text": "A person stands talking on a phone held to their right ear.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person stands talking on a phone held to their right ear.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_phone",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands talking on a phone held to their right ear. Hold held_phone with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/1e4465fa9a9d4d41/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.010010624304413795,
+          0.0,
+          -0.012883293442428112
+        ]
+      },
+      {
+        "source": "assets/animations/sources/1e4465fa9a9d4d41/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.010010624304413795,
+          0.0,
+          -0.012883293442428112
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/1e4465fa9a9d4d41/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.010010624304413795,
+        0.0,
+        -0.012883293442428112
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "1e4465fa9a9d4d41acbff016fe2edd4c709b3f575cf0ca1b67b77f7b9b5cfec5",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/1e4465fa9a9d4d41/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.010010624304413795,
+        0.0,
+        -0.012883293442428112
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "1e4465fa9a9d4d41acbff016fe2edd4c709b3f575cf0ca1b67b77f7b9b5cfec5",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "2796288643cc28afe6eac5940578e01400a823d31cd6ce5f8ac1d80a88dbd2e1",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "2796288643cc28afe6eac5940578e01400a823d31cd6ce5f8ac1d80a88dbd2e1",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"2796288643cc28afe6eac5940578e01400a823d31cd6ce5f8ac1d80a88dbd2e1\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "dfaba5cb29d1e04fcefd6f1bc4a61cdb0da260b1ad10aa100644c9716621c50a",
+      "current_source_sha256_at_reconciliation": "2796288643cc28afe6eac5940578e01400a823d31cd6ce5f8ac1d80a88dbd2e1",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

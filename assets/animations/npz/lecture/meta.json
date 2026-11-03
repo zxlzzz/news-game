@@ -1,0 +1,104 @@
+{
+  "name": "lecture",
+  "text": "A person lectures sternly, raising and lowering both hands in front of their chest to emphasize their words.",
+  "duration": 4,
+  "seed": 123,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    119
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "notes_zh": "双手抬至胸肩高度，多次小幅抬落强调后放下，动作较对称。首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head"
+    ],
+    "metrics": {
+      "frames": 120,
+      "finite": true,
+      "bone_length_range_mm": 0.917,
+      "max_joint_step_m": 0.174,
+      "root_horizontal_range_m": [
+        0.014999999664723873,
+        0.07199999690055847
+      ],
+      "LeftHand_head_distance_m": [
+        0.7799999713897705,
+        0.2800000011920929,
+        0.29100000858306885,
+        0.3479999899864197,
+        0.4480000138282776,
+        0.6470000147819519,
+        0.46799999475479126,
+        0.671999990940094,
+        0.7799999713897705
+      ],
+      "RightHand_head_distance_m": [
+        0.7609999775886536,
+        0.3310000002384186,
+        0.3190000057220459,
+        0.33899998664855957,
+        0.3959999978542328,
+        0.5139999985694885,
+        0.44999998807907104,
+        0.6299999952316284,
+        0.7609999775886536
+      ],
+      "hand_separation_m": [
+        0.5379999876022339,
+        0.40700000524520874,
+        0.29600000381469727,
+        0.28700000047683716,
+        0.4740000069141388,
+        0.6190000176429749,
+        0.46000000834465027,
+        0.6420000195503235,
+        0.5379999876022339
+      ],
+      "head_yaw_range_deg": 7.13,
+      "head_pitch_range_deg": 27.42,
+      "head_yaw_samples_deg": [
+        0.0,
+        -1.7000000476837158,
+        -0.30000001192092896,
+        -3.4000000953674316,
+        -4.599999904632568,
+        -4.0,
+        -5.599999904632568,
+        0.5,
+        0.0
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        3.200000047683716,
+        -3.5,
+        3.799999952316284,
+        15.399999618530273,
+        2.5999999046325684,
+        5.800000190734863,
+        4.099999904632568,
+        0.0
+      ]
+    }
+  }
+}

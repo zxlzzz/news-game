@@ -1,0 +1,104 @@
+{
+  "name": "sigh",
+  "text": "A person takes a deep breath and sighs, dropping their shoulders and lowering their head in disappointment.",
+  "duration": 3.5,
+  "seed": 123,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    104
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "notes_zh": "前段轻抬胸，约1.5秒后头肩下沉再缓慢恢复；动作克制，无摊手。呼吸声与表情不包含在NPZ中。首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head"
+    ],
+    "metrics": {
+      "frames": 105,
+      "finite": true,
+      "bone_length_range_mm": 0.86,
+      "max_joint_step_m": 0.018,
+      "root_horizontal_range_m": [
+        0.009999999776482582,
+        0.02800000086426735
+      ],
+      "LeftHand_head_distance_m": [
+        0.7799999713897705,
+        0.7710000276565552,
+        0.7639999985694885,
+        0.7639999985694885,
+        0.7480000257492065,
+        0.7559999823570251,
+        0.7760000228881836,
+        0.7749999761581421,
+        0.7799999713897705
+      ],
+      "RightHand_head_distance_m": [
+        0.7609999775886536,
+        0.753000020980835,
+        0.7509999871253967,
+        0.7540000081062317,
+        0.7369999885559082,
+        0.7350000143051147,
+        0.734000027179718,
+        0.7440000176429749,
+        0.7609999775886536
+      ],
+      "hand_separation_m": [
+        0.5379999876022339,
+        0.531000018119812,
+        0.5339999794960022,
+        0.5239999890327454,
+        0.503000020980835,
+        0.527999997138977,
+        0.5339999794960022,
+        0.5289999842643738,
+        0.5379999876022339
+      ],
+      "head_yaw_range_deg": 15.76,
+      "head_pitch_range_deg": 57.39,
+      "head_yaw_samples_deg": [
+        0.0,
+        -0.8999999761581421,
+        -1.2999999523162842,
+        -3.0999999046325684,
+        -9.399999618530273,
+        0.0,
+        5.900000095367432,
+        2.5999999046325684,
+        -0.0
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        -4.599999904632568,
+        -13.899999618530273,
+        -5.199999809265137,
+        40.70000076293945,
+        39.099998474121094,
+        33.29999923706055,
+        24.299999237060547,
+        0.0
+      ]
+    }
+  }
+}

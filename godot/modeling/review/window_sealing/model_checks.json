@@ -1,0 +1,389 @@
+{
+  "building_a": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 12.440  y 11.070  z 8.870 m",
+      "box   min (-6.220, 0.000, -8.020)  max (6.220, 11.070, 0.850)",
+      "triangles 1178: concrete 12, door 12, metal_dark 12, trim 552, trim_dark 108, wall 314, window 168"
+    ]
+  },
+  "building_apartment_tall": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 9.260  y 29.800  z 11.580 m",
+      "box   min (-4.630, 0.000, -10.830)  max (4.630, 29.800, 0.750)",
+      "triangles 2524: concrete 1080, door 12, metal 388, metal_dark 276, trim_dark 12, wall 480, window 276"
+    ]
+  },
+  "building_b": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 14.460  y 13.560  z 10.120 m",
+      "box   min (-7.220, 0.000, -9.220)  max (7.240, 13.560, 0.900)",
+      "triangles 1174: concrete 72, door 12, metal_dark 384, trim 216, wall 310, window 180"
+    ]
+  },
+  "building_back_row_attic": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 11.860  y 15.750  z 8.960 m",
+      "box   min (-5.930, 0.000, -8.830)  max (5.930, 15.750, 0.130)",
+      "triangles 4998: concrete 2492, door 12, metal 12, metal_dark 24, trim_dark 12, wall_brick 1306, window 1140"
+    ]
+  },
+  "building_back_row_residential_a": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 15.000  y 13.000  z 11.000 m",
+      "box   min (-7.500, 0.000, -9.500)  max (7.500, 13.000, 1.500)",
+      "triangles 1100: concrete 44, door 12, wall_brick 24, wall_plaster 600, window 420"
+    ]
+  },
+  "building_back_row_residential_b": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 19.000  y 25.380  z 13.300 m",
+      "box   min (-9.500, 0.000, -11.500)  max (9.500, 25.380, 1.800)",
+      "triangles 3364: concrete 104, door 24, metal_dark 12, wall 48, wall_stone 1844, window 1332"
+    ]
+  },
+  "building_back_row_slab": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 18.060  y 21.620  z 8.660 m",
+      "box   min (-9.030, 0.000, -8.530)  max (9.030, 21.620, 0.130)",
+      "triangles 2404: concrete 384, door 12, metal 12, metal_dark 1124, trim_dark 12, wall 536, window 324"
+    ]
+  },
+  "building_back_row_terrace": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 15.460  y 9.470  z 10.160 m",
+      "box   min (-7.730, 0.000, -10.030)  max (7.730, 9.470, 0.130)",
+      "triangles 716: concrete 132, door 12, metal 12, metal_dark 24, trim_dark 12, wall_plaster 228, window 104, wood 192"
+    ]
+  },
+  "building_back_row_tower": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 7.660  y 32.300  z 9.760 m",
+      "box   min (-3.830, 0.000, -9.630)  max (3.830, 32.300, 0.130)",
+      "triangles 2152: concrete 360, door 12, metal 136, metal_dark 24, trim_dark 12, wall_plaster 768, wall_stone 528, window 312"
+    ]
+  },
+  "building_bakery": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 11.060  y 12.400  z 8.780 m",
+      "box   min (-5.530, 0.000, -8.030)  max (5.530, 12.400, 0.750)",
+      "triangles 878: concrete 72, door 12, fabric 12, metal 172, metal_dark 72, trim 96, trim_dark 12, wall_plaster 286, window 144"
+    ]
+  },
+  "building_bank": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 15.660  y 11.620  z 11.330 m",
+      "box   min (-7.830, 0.000, -10.430)  max (7.830, 11.620, 0.900)",
+      "triangles 1126: concrete 428, door 12, metal 12, metal_dark 24, trim 144, trim_dark 12, wall_stone 350, window 144"
+    ]
+  },
+  "building_bar": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 5.260  y 9.070  z 9.880 m",
+      "box   min (-2.630, 0.000, -9.030)  max (2.630, 9.070, 0.850)",
+      "triangles 490: concrete 72, door 12, metal 12, metal_dark 24, trim 36, trim_dark 36, wall_brick 150, window 36, wood 112"
+    ]
+  },
+  "building_barber": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 5.660  y 12.470  z 9.157 m",
+      "box   min (-2.830, 0.000, -8.630)  max (2.830, 12.470, 0.527)",
+      "triangles 1434: concrete 72, door 12, metal 12, metal_dark 736, trim 232, trim_dark 12, wall 250, window 108"
+    ]
+  },
+  "building_bookstore": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 8.060  y 15.770  z 8.030 m",
+      "box   min (-4.030, 0.000, -7.830)  max (4.030, 15.770, 0.200)",
+      "triangles 1036: concrete 72, door 12, metal 12, metal_dark 24, trim 240, trim_dark 12, wall_brick 424, window 240"
+    ]
+  },
+  "building_cafe": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 6.060  y 8.950  z 7.780 m",
+      "box   min (-3.030, 0.000, -6.830)  max (3.030, 8.950, 0.950)",
+      "triangles 696: concrete 68, door 12, fabric 12, metal_dark 12, trim 36, trim_dark 12, wall_stone 328, window 216"
+    ]
+  },
+  "building_cinema": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 30.000  y 13.580  z 27.000 m",
+      "box   min (-15.000, 0.000, -23.000)  max (15.000, 13.580, 4.000)",
+      "triangles 1444: concrete 120, door 48, metal_dark 36, trim_dark 12, wall 724, window 504"
+    ]
+  },
+  "building_clinic": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 12.060  y 11.470  z 10.130 m",
+      "box   min (-6.030, 0.000, -9.030)  max (6.030, 11.470, 1.100)",
+      "triangles 708: concrete 180, door 12, metal 12, metal_dark 108, trim_dark 12, wall_plaster 264, window 120"
+    ]
+  },
+  "building_clothing": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 7.860  y 8.220  z 8.960 m",
+      "box   min (-3.930, 0.000, -8.830)  max (3.930, 8.220, 0.130)",
+      "triangles 686: concrete 96, door 12, fabric 36, metal 136, metal_dark 144, trim_dark 12, wall_plaster 190, window 60"
+    ]
+  },
+  "building_convenience": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 14.060  y 8.120  z 9.130 m",
+      "box   min (-7.030, 0.000, -8.530)  max (7.030, 8.120, 0.600)",
+      "triangles 412: concrete 120, door 12, metal 12, metal_dark 12, trim_dark 12, wall 184, window 60"
+    ]
+  },
+  "building_corner": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 10.660  y 16.600  z 10.730 m",
+      "box   min (-5.280, 0.000, -10.530)  max (5.380, 16.600, 0.200)",
+      "triangles 1628: concrete 68, door 12, metal 12, metal_dark 492, trim 276, trim_dark 12, wall 480, window 276"
+    ]
+  },
+  "building_department_store": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 39.250  y 19.980  z 23.450 m",
+      "box   min (-19.000, 0.000, -22.000)  max (20.250, 19.980, 1.450)",
+      "triangles 4284: concrete 204, door 36, metal_dark 36, trim_dark 12, wall 48, wall_stone 2304, window 1644"
+    ]
+  },
+  "building_hardware": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 7.260  y 12.500  z 9.630 m",
+      "box   min (-3.630, 0.000, -9.430)  max (3.630, 12.500, 0.200)",
+      "triangles 1314: concrete 60, door 12, metal 232, metal_dark 132, trim 120, trim_dark 12, wall_brick 282, window 120, wood 344"
+    ]
+  },
+  "building_hotel": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 32.000  y 35.980  z 29.000 m",
+      "box   min (-16.000, 0.000, -21.000)  max (16.000, 35.980, 8.000)",
+      "triangles 5540: concrete 84, door 36, metal_dark 36, wall 48, wall_brick 3044, wall_stone 24, window 2268"
+    ]
+  },
+  "building_laundry": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 7.060  y 11.420  z 8.230 m",
+      "box   min (-3.530, 0.000, -8.030)  max (3.530, 11.420, 0.200)",
+      "triangles 1152: concrete 72, door 12, metal 188, metal_dark 48, trim 48, trim_dark 60, wall_plaster 180, window 544"
+    ]
+  },
+  "building_mall": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 44.000  y 16.980  z 26.180 m",
+      "box   min (-22.000, 0.000, -26.000)  max (22.000, 16.980, 0.180)",
+      "triangles 2072: concrete 108, door 60, metal_dark 36, trim_dark 12, wall 48, wall_plaster 1028, window 780"
+    ]
+  },
+  "building_modern": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 18.060  y 18.670  z 10.160 m",
+      "box   min (-9.030, 0.000, -10.030)  max (9.030, 18.670, 0.130)",
+      "triangles 1390: concrete 288, door 12, metal 24, metal_dark 420, trim_dark 12, wall_stone 406, window 228"
+    ]
+  },
+  "building_newspaper": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 16.060  y 20.050  z 10.160 m",
+      "box   min (-8.030, 0.000, -10.030)  max (8.030, 20.050, 0.130)",
+      "triangles 2092: concrete 228, door 12, metal 12, metal_dark 1316, trim_dark 24, wall 332, window 168"
+    ]
+  },
+  "building_noodle_shop": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 6.460  y 9.100  z 9.130 m",
+      "box   min (-3.230, 0.000, -8.230)  max (3.230, 9.100, 0.900)",
+      "triangles 1336: concrete 68, door 12, metal 12, metal_dark 24, trim 36, trim_dark 12, wall_brick 376, window 260, wood 536"
+    ]
+  },
+  "building_office_tower": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 28.000  y 58.780  z 24.000 m",
+      "box   min (-14.000, 0.000, -24.000)  max (14.000, 58.780, 0.000)",
+      "triangles 10180: concrete 60, door 48, metal_dark 24, wall 5764, window 4284"
+    ]
+  },
+  "building_old_house": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 8.900  y 5.300  z 8.000 m",
+      "box   min (-4.450, 0.000, -7.700)  max (4.450, 5.300, 0.300)",
+      "triangles 358: concrete 92, door 12, metal 12, metal_dark 24, trim_dark 12, wall_plaster 134, window 24, wood 48"
+    ]
+  },
+  "building_old_shop": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 10.060  y 12.450  z 8.180 m",
+      "box   min (-5.030, 0.000, -7.530)  max (5.030, 12.450, 0.650)",
+      "triangles 1364: concrete 68, door 12, metal 12, metal_dark 108, trim 96, trim_dark 12, wall_brick 600, window 456"
+    ]
+  },
+  "building_parking_garage": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 40.000  y 15.820  z 41.000 m",
+      "box   min (-15.000, 0.000, -35.500)  max (25.000, 15.820, 5.500)",
+      "triangles 1744: concrete 696, door 12, wall 76, wall_stone 960"
+    ]
+  },
+  "building_pharmacy": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 6.660  y 14.720  z 7.660 m",
+      "box   min (-3.330, 0.000, -7.230)  max (3.330, 14.720, 0.430)",
+      "triangles 780: accent 24, concrete 144, door 12, metal 12, metal_dark 84, trim 192, trim_dark 12, wall_plaster 216, window 84"
+    ]
+  },
+  "building_post_office": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 13.060  y 9.200  z 12.005 m",
+      "box   min (-6.530, 0.000, -11.230)  max (6.530, 9.200, 0.775)",
+      "triangles 1890: concrete 80, door 12, metal 12, metal_dark 72, trim 688, trim_dark 12, wall_stone 582, window 432"
+    ]
+  },
+  "building_residential": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 7.060  y 22.200  z 8.980 m",
+      "box   min (-3.530, 0.000, -8.230)  max (3.530, 22.200, 0.750)",
+      "triangles 1420: concrete 312, door 12, metal 316, metal_dark 180, trim_dark 12, wall_plaster 384, window 204"
+    ]
+  },
+  "building_residential_corner": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 16.000  y 15.780  z 13.800 m",
+      "box   min (-8.000, 0.000, -12.000)  max (8.000, 15.780, 1.800)",
+      "triangles 2084: concrete 176, door 24, metal_dark 228, wall 48, wall_brick 948, window 660"
+    ]
+  },
+  "building_restaurant": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 13.660  y 13.000  z 10.330 m",
+      "box   min (-6.830, 0.000, -9.230)  max (6.830, 13.000, 1.100)",
+      "triangles 2712: concrete 144, door 12, metal 260, metal_dark 304, trim_dark 12, wall_plaster 600, window 456, wood 924"
+    ]
+  },
+  "building_rowhouse": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 24.800  y 12.580  z 10.500 m",
+      "box   min (-12.400, 0.000, -9.000)  max (12.400, 12.580, 1.500)",
+      "triangles 2792: concrete 280, door 72, wall 96, wall_brick 872, wall_plaster 560, window 912"
+    ]
+  },
+  "building_supermarket": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 34.000  y 7.980  z 31.000 m",
+      "box   min (-17.000, 0.000, -25.000)  max (17.000, 7.980, 6.000)",
+      "triangles 1296: concrete 84, door 60, metal_dark 612, wall 48, wall_plaster 276, window 216"
+    ]
+  },
+  "building_under_construction": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 12.455  y 17.338  z 9.990 m",
+      "box   min (-5.645, 0.000, -8.545)  max (6.810, 17.338, 1.445)",
+      "triangles 12728: concrete 168, fabric 324, metal 6088, metal_dark 5788, wood 360"
+    ]
+  },
+  "building_walkup_a": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 18.000  y 18.980  z 11.500 m",
+      "box   min (-9.000, 0.000, -10.000)  max (9.000, 18.980, 1.500)",
+      "triangles 2792: concrete 276, door 36, metal_dark 444, wall 48, wall_plaster 1172, window 816"
+    ]
+  },
+  "building_walkup_b": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 22.000  y 23.600  z 12.800 m",
+      "box   min (-11.000, 0.000, -11.000)  max (11.000, 23.600, 1.800)",
+      "triangles 2880: concrete 172, door 12, wall_brick 1568, window 1128"
+    ]
+  },
+  "building_walkup_c": {
+    "failures": [],
+    "warnings": [],
+    "info": [
+      "size  x 25.000  y 18.980  z 12.000 m",
+      "box   min (-12.500, 0.000, -10.500)  max (12.500, 18.980, 1.500)",
+      "triangles 3436: concrete 312, door 48, metal_dark 12, wall 48, wall_stone 1828, window 1188"
+    ]
+  }
+}

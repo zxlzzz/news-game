@@ -1,0 +1,133 @@
+{
+  "name": "exit_carry_box",
+  "text": "A person smoothly changes from standing holding a box with both hands in front of the body to standing upright relaxed, both arms hanging down. One natural continuous transition.",
+  "duration": 2.0,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "A person smoothly changes from standing holding a box with both hands in front of the body to standing upright relaxed, both arms hanging down. One natural continuous transition.",
+    "duration": 2.0,
+    "contacts": [],
+    "item": {
+      "type": "held_cardboard_box",
+      "hand": "both",
+      "grip": "grip",
+      "source_grasp": true,
+      "grasp_window": [
+        0,
+        0,
+        0.85,
+        1
+      ]
+    },
+    "description": "A person smoothly changes from standing holding a box with both hands in front of the body to standing upright relaxed, both arms hanging down. One natural continuous transition. Use the same physical item and object as the adjoining production clip.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "runtime_contacts": [],
+    "item_visible": [
+      0,
+      0
+    ]
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/6a9c0b7a51fbc67e/motion.npz",
+      "source_frame": -1,
+      "frame": 0,
+      "translation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "6a9c0b7a51fbc67ec5c4230d988b0cb175d7874c5000c2e8d51833ecd4fe3c4c",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "frame": 59,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "69ab5b949d6773e98bb4f3fd098e08afca87199d4692814cf569c7824770f65e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "69ab5b949d6773e98bb4f3fd098e08afca87199d4692814cf569c7824770f65e",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "transition_boundaries": {
+    "entry": {
+      "clip": "carry_box",
+      "frame": -1,
+      "sha256": "6a9c0b7a51fbc67ec5c4230d988b0cb175d7874c5000c2e8d51833ecd4fe3c4c"
+    },
+    "exit": {
+      "clip": "stand_idle",
+      "frame": 0,
+      "sha256": "f291b80ea815f082fe8ec246a9abbabe6a9789e14b768a0b2c629ce464e5898d"
+    }
+  },
+  "generation_pose_ids": {
+    "entry": "carry_box",
+    "exit": "stand"
+  },
+  "endpoint_review": {
+    "source_tolerance_m": 0.005,
+    "boundaries": {
+      "entry": {
+        "max_position_gap_m": 0.00019461043120827526,
+        "pelvis_feet_hands_velocity_gap_m_s": [
+          0.047707609832286835,
+          0.04080388322472572,
+          0.05237894877791405,
+          0.07149193435907364,
+          0.06150117516517639
+        ],
+        "max_velocity_gap_m_s": 0.13495223224163055
+      },
+      "exit": {
+        "max_position_gap_m": 0.0006857193075120449,
+        "pelvis_feet_hands_velocity_gap_m_s": [
+          0.02544574625790119,
+          0.05940765514969826,
+          0.056815922260284424,
+          0.35443997383117676,
+          0.2239135354757309
+        ],
+        "max_velocity_gap_m_s": 0.4266854226589203
+      }
+    }
+  },
+  "generation_statistics": {
+    "fullbody_frames": 2,
+    "fullbody_fraction": 0.03333333333333333,
+    "frozen_frames": 0,
+    "mean_root_horizontal_speed_m_s": 0.04249991849064827
+  }
+}

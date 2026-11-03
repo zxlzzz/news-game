@@ -1,0 +1,32 @@
+{
+  "name": "carry_box_low_rest_reference",
+  "duration": 3.0,
+  "seed": 20261011,
+  "attempt": 1,
+  "text": "Stand still already holding a cardboard box with BOTH hands at waist height. Keep the torso upright and both shoulders relaxed. Both elbows stay low beside the waist, forearms extend comfortably forward, and the two hands support the rear side edges of the same box at a similar low height. The LEFT hand grips the left rear side edge and the RIGHT hand grips the right rear side edge. Hold the box steadily just in front of the lower abdomen, outside the torso and away from the legs. Feet remain planted, with slight natural breathing only. Already holding and visibly supporting the box in the first moment, and continue holding it in the same supported posture at the end. Do not pick up, set down, raise to the chest, gesture, separate the hands, walk, drop or release the box.",
+  "scene": {
+    "activity": "carry_box_low_rest_reference",
+    "object": "held_cardboard_box",
+    "description": "Stand still already holding a cardboard box with BOTH hands at waist height. Keep the torso upright and both shoulders relaxed. Both elbows stay low beside the waist, forearms extend comfortably forward, and the two hands support the rear side edges of the same box at a similar low height. The LEFT hand grips the left rear side edge and the RIGHT hand grips the right rear side edge. Hold the box steadily just in front of the lower abdomen, outside the torso and away from the legs. Feet remain planted, with slight natural breathing only. Already holding and visibly supporting the box in the first moment, and continue holding it in the same supported posture at the end. Do not pick up, set down, raise to the chest, gesture, separate the hands, walk, drop or release the box.",
+    "generation_stage": "free_genuine_whole_body_physical_reference",
+    "purpose": "Find an unchanged whole performance whose true body posture and physical grasp can fit the current complete model before deriving a sparse formal source recipe.",
+    "constraints": "No positional limb constraints, dense hand paths, imposed root travel or generic empty-hand endpoint.",
+    "qualification": "Free pilot only. Generated files do not establish physical support, complete activity semantics or final production approval."
+  },
+  "contacts": [],
+  "fullbody": [],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "49b7d2715e69759332f331116299c817f2d21a2336a9adbcd68bc961afd085b4",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

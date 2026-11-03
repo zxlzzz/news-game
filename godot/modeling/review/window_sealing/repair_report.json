@@ -1,0 +1,355 @@
+[
+  {
+    "model": "building_a",
+    "reversed_triangles": 0,
+    "panels": 14,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_apartment_tall",
+    "reversed_triangles": 0,
+    "panels": 23,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_b",
+    "reversed_triangles": 0,
+    "panels": 15,
+    "cavities": [
+      "sealed_lower_block",
+      "setback_floor"
+    ]
+  },
+  {
+    "model": "building_back_row_attic",
+    "reversed_triangles": 0,
+    "panels": 11,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_back_row_residential_a",
+    "reversed_triangles": 288,
+    "panels": 35,
+    "cavities": [
+      "masonry"
+    ]
+  },
+  {
+    "model": "building_back_row_residential_b",
+    "reversed_triangles": 904,
+    "panels": 112,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room"
+    ]
+  },
+  {
+    "model": "building_back_row_slab",
+    "reversed_triangles": 0,
+    "panels": 27,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_back_row_terrace",
+    "reversed_triangles": 0,
+    "panels": 6,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_back_row_tower",
+    "reversed_triangles": 0,
+    "panels": 26,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_bakery",
+    "reversed_triangles": 0,
+    "panels": 8,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_bank",
+    "reversed_triangles": 0,
+    "panels": 12,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_bar",
+    "reversed_triangles": 0,
+    "panels": 3,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_barber",
+    "reversed_triangles": 0,
+    "panels": 9,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_bookstore",
+    "reversed_triangles": 0,
+    "panels": 20,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_cafe",
+    "reversed_triangles": 0,
+    "panels": 3,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_cinema",
+    "reversed_triangles": 320,
+    "panels": 43,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room"
+    ]
+  },
+  {
+    "model": "building_clinic",
+    "reversed_triangles": 0,
+    "panels": 10,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_clothing",
+    "reversed_triangles": 0,
+    "panels": 3,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_convenience",
+    "reversed_triangles": 0,
+    "panels": 5,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_corner",
+    "reversed_triangles": 0,
+    "panels": 23,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_department_store",
+    "reversed_triangles": 1088,
+    "panels": 138,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room",
+      "rounded_corner_tower"
+    ]
+  },
+  {
+    "model": "building_hardware",
+    "reversed_triangles": 0,
+    "panels": 10,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_hotel",
+    "reversed_triangles": 1504,
+    "panels": 190,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room"
+    ]
+  },
+  {
+    "model": "building_laundry",
+    "reversed_triangles": 0,
+    "panels": 4,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_mall",
+    "reversed_triangles": 496,
+    "panels": 66,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room"
+    ]
+  },
+  {
+    "model": "building_modern",
+    "reversed_triangles": 0,
+    "panels": 19,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_newspaper",
+    "reversed_triangles": 0,
+    "panels": 14,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_noodle_shop",
+    "reversed_triangles": 0,
+    "panels": 3,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_office_tower",
+    "reversed_triangles": 2840,
+    "panels": 358,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room"
+    ]
+  },
+  {
+    "model": "building_old_house",
+    "reversed_triangles": 0,
+    "panels": 2,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_old_shop",
+    "reversed_triangles": 0,
+    "panels": 8,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_parking_garage",
+    "reversed_triangles": 8,
+    "panels": 1,
+    "cavities": [
+      "roof_stair_room"
+    ]
+  },
+  {
+    "model": "building_pharmacy",
+    "reversed_triangles": 0,
+    "panels": 7,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_post_office",
+    "reversed_triangles": 0,
+    "panels": 6,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_residential",
+    "reversed_triangles": 0,
+    "panels": 17,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_residential_corner",
+    "reversed_triangles": 456,
+    "panels": 56,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room"
+    ]
+  },
+  {
+    "model": "building_restaurant",
+    "reversed_triangles": 0,
+    "panels": 8,
+    "cavities": [
+      "sealed_masonry"
+    ]
+  },
+  {
+    "model": "building_rowhouse",
+    "reversed_triangles": 656,
+    "panels": 78,
+    "cavities": [
+      "house_0_masonry",
+      "house_1_masonry",
+      "house_1_roof_equipment_room",
+      "house_2_masonry",
+      "house_3_masonry",
+      "house_3_roof_equipment_room"
+    ]
+  },
+  {
+    "model": "building_supermarket",
+    "reversed_triangles": 120,
+    "panels": 19,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room"
+    ]
+  },
+  {
+    "model": "building_walkup_a",
+    "reversed_triangles": 568,
+    "panels": 69,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room"
+    ]
+  },
+  {
+    "model": "building_walkup_b",
+    "reversed_triangles": 760,
+    "panels": 94,
+    "cavities": [
+      "masonry"
+    ]
+  },
+  {
+    "model": "building_walkup_c",
+    "reversed_triangles": 824,
+    "panels": 100,
+    "cavities": [
+      "masonry",
+      "roof_equipment_room"
+    ]
+  }
+]

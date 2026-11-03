@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Population" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/population.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+pedestrians = 100
+joggers = 3
+dog_walkers = 3
+cyclists = 4
+scooter_riders = 2
+behaviour = true

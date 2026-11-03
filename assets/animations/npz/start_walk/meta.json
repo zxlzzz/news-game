@@ -1,0 +1,27 @@
+{
+  "name": "start_walk",
+  "text": "A person begins standing still with arms relaxed, then shifts weight forward and starts walking straight ahead, smoothly taking three natural steps and continuing forward.",
+  "duration": 4,
+  "seed": 812,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "loop": false,
+  "root_average_speed_m_s": 1.659504771232605,
+  "mapped_average_speed_m_s": 1.3087577060194044,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "start_walk",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

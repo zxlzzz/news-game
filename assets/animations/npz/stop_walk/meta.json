@@ -1,0 +1,27 @@
+{
+  "name": "stop_walk",
+  "text": "A person is walking forward, then smoothly slows down over two steps, brings their feet to a balanced standing position and stands relaxed without moving away.",
+  "duration": 4,
+  "seed": 813,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "loop": false,
+  "root_average_speed_m_s": 0.5440672636032104,
+  "mapped_average_speed_m_s": 0.4290751290246139,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "stop_walk",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

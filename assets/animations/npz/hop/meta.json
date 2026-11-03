@@ -1,0 +1,187 @@
+{
+  "name": "hop",
+  "text": "A person repeatedly makes small vertical hops in place with BOTH FEET CLOSE TOGETHER. Bend both knees together, push off from both feet simultaneously, rise briefly, and land softly on both feet simultaneously. Keep the feet beside each other throughout, never spread the legs sideways and never alternate them. Make three small hops in this short looping sequence. Arms remain down with a small natural swing for balance, no arms overhead and no jumping jacks. Stay in the same place. Start and finish grounded in the same narrow relaxed stance.",
+  "duration": 3.0,
+  "seed": 20261010,
+  "attempt": 1,
+  "scene": {
+    "activity": "hop",
+    "body_only": true,
+    "description": "Three small synchronous two-foot vertical hops; closed grounded phase from verified unedited hop reference.",
+    "reference_visual_check": "Native-frame front/side 1024px stills at 0,27,54,90,119 were inspected; both feet airborne together in four reference intervals. Not realtime viewing."
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/43cf4cf4fcba41ea/motion.npz",
+      "source_frame": 0,
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "43cf4cf4fcba41ea1beb793f3fe0a26dcd3d0c997fdbdbfb0a8f26e056fa8524",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/43cf4cf4fcba41ea/motion.npz",
+      "source_frame": 0,
+      "frame": 89,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "43cf4cf4fcba41ea1beb793f3fe0a26dcd3d0c997fdbdbfb0a8f26e056fa8524",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": true,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "cca740d6a21f9e04c33797438deaed98fe7f22354e9f5dc9b84663abc77a0240",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "cca740d6a21f9e04c33797438deaed98fe7f22354e9f5dc9b84663abc77a0240",
+    "date": "2026-10-10",
+    "observations": "Both knees bend together and both feet rise and land in a narrow stance; arms remain down. The sampled activity no longer opens the legs and arms as jumping jacks. Source foot spacing is 0.231 to 0.315m; the grounded seam is a new unedited hop reference pose.",
+    "review_folder": ".tmp/motion-repair-2026-10-10/semantic/actual-stage",
+    "record": "docs/motion-review-evidence-2026-10-11/records/semantic-five-source-publication.json",
+    "captured_views_degrees": [
+      0,
+      90,
+      135
+    ],
+    "personally_inspected_all_activity_time_views_degrees": [
+      0,
+      135
+    ],
+    "activity_time_samples": 19,
+    "image_resolution": [
+      1024,
+      1024
+    ],
+    "personal_view_method": "Original-pixel 400x600 actor crops in 38 temporal pages; additional full 1024px critical side stills and front post-action hold",
+    "approx_sample_interval_seconds": 0.164814814814815,
+    "post_action_hold_seconds": 0.5,
+    "full_speed_playback_viewed": false,
+    "native_stage_geometry_samples": 90,
+    "native_stage_metrics": {
+      "id": "hop",
+      "native_samples": 90,
+      "head_forearm_sphere_proxy_min": {
+        "gap_m": 0.2434900998583005,
+        "sample": 29,
+        "time": 0.966666666666667,
+        "segment": 8,
+        "side": "Right",
+        "nearest_fraction": 0.0
+      },
+      "head_forearm_sphere_proxy_max": {
+        "gap_m": 0.2611928643695663,
+        "sample": 87,
+        "time": 2.9,
+        "segment": 3,
+        "side": "Left",
+        "nearest_fraction": 0.0
+      },
+      "min_gap_at_capture_1_49s": {
+        "gap_m": 0.25270255540376035,
+        "sample": 45,
+        "time": 1.5,
+        "segment": 8,
+        "side": "Right",
+        "nearest_fraction": 0.0
+      },
+      "largest_adjacent_drawn_endpoint_step_m": 0.06497906339074062,
+      "largest_step_from_sample": 46,
+      "largest_step_endpoint_index": 7,
+      "drawn_first_last_max_endpoint_gap_m": 0.0
+    },
+    "version_inputs_sha256": {
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/adjust_clothes.json": "1424c0eddb3514df5aafaaa089b5faa4598a9a1f0868149aded4b1a71d82c31e",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hail_taxi.json": "0afd1117eafd5efbda302a92b4f2905eedb918e0890a1eeb8b3be05b3fa90a94",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hop.json": "2f678f12be81a4c58d3ee19c35c9254923a8c6f766afbd83628e57662c20cc86",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/peek_side.json": "c91ef19e968a8439833962fd23911bc16b7f201fc2862d8b0759ec27aa2584a4",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/point_shout.json": "30c971b97193c81d42f9d0b7bb965fc2fa0cdddd698d40b3fe1bae019a87d03e",
+      "C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate_clip.gd": "0ab272876a6e0de731dac61956e430e2b3e792d4f4f36ae86149f80d2ef3e8b1",
+      "res://npc/clip-setup.json": "e1b8ce367a757da469a79713d8eebe1e575a864fa8298e4c5d24953ac162ae96",
+      "res://npc/clip_pose.gd": "e57205988edb80d125484dfee341e5520ea7c6685377855bec355a4f21b1b182",
+      "res://npc/contact_pose.gd": "2434e70425aee11488b32a46347e9c7e5c00f49eb3505b40abf5c59e7554604c",
+      "res://npc/interactions.json": "53ca88b05f82dbbe3dd4a815bcc90c0b5b013bc1618394ca60bcd42b9e0bcd04",
+      "res://npc/skeleton_mapping.gd": "0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc"
+    },
+    "limitations": "Seek-based static sampling, not complete intended-speed playback; native stage geometry describes measured positions and does not approve naturalness or continuous-time dynamics.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"raw_sha256\": \"cca740d6a21f9e04c33797438deaed98fe7f22354e9f5dc9b84663abc77a0240\",\r\n    \"date\": \"2026-10-10\",\r\n    \"observations\": \"Both knees bend together and both feet rise and land in a narrow stance; arms remain down. The sampled activity no longer opens the legs and arms as jumping jacks. Source foot spacing is 0.231 to 0.315m; the grounded seam is a new unedited hop reference pose.\",\r\n    \"review_folder\": \".tmp/motion-repair-2026-10-10/semantic/actual-stage\",\r\n    \"record\": \".tmp/motion-repair-2026-10-10/semantic/semantic-repair-summary.json\",\r\n    \"captured_views_degrees\": [\r\n      0,\r\n      90,\r\n      135\r\n    ],\r\n    \"personally_inspected_all_activity_time_views_degrees\": [\r\n      0,\r\n      135\r\n    ],\r\n    \"activity_time_samples\": 19,\r\n    \"image_resolution\": [\r\n      1024,\r\n      1024\r\n    ],\r\n    \"personal_view_method\": \"Original-pixel 400x600 actor crops in 38 temporal pages; additional full 1024px critical side stills and front post-action hold\",\r\n    \"approx_sample_interval_seconds\": 0.164814814814815,\r\n    \"post_action_hold_seconds\": 0.5,\r\n    \"full_speed_playback_viewed\": false,\r\n    \"native_stage_geometry_samples\": 90,\r\n    \"native_stage_metrics\": {\r\n      \"id\": \"hop\",\r\n      \"native_samples\": 90,\r\n      \"head_forearm_sphere_proxy_min\": {\r\n        \"gap_m\": 0.2434900998583005,\r\n        \"sample\": 29,\r\n        \"time\": 0.966666666666667,\r\n        \"segment\": 8,\r\n        \"side\": \"Right\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"head_forearm_sphere_proxy_max\": {\r\n        \"gap_m\": 0.2611928643695663,\r\n        \"sample\": 87,\r\n        \"time\": 2.9,\r\n        \"segment\": 3,\r\n        \"side\": \"Left\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"min_gap_at_capture_1_49s\": {\r\n        \"gap_m\": 0.25270255540376035,\r\n        \"sample\": 45,\r\n        \"time\": 1.5,\r\n        \"segment\": 8,\r\n        \"side\": \"Right\",\r\n        \"nearest_fraction\": 0.0\r\n      },\r\n      \"largest_adjacent_drawn_endpoint_step_m\": 0.06497906339074062,\r\n      \"largest_step_from_sample\": 46,\r\n      \"largest_step_endpoint_index\": 7,\r\n      \"drawn_first_last_max_endpoint_gap_m\": 0.0\r\n    },\r\n    \"version_inputs_sha256\": {\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/adjust_clothes.json\": \"1424c0eddb3514df5aafaaa089b5faa4598a9a1f0868149aded4b1a71d82c31e\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hail_taxi.json\": \"0afd1117eafd5efbda302a92b4f2905eedb918e0890a1eeb8b3be05b3fa90a94\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/hop.json\": \"2f678f12be81a4c58d3ee19c35c9254923a8c6f766afbd83628e57662c20cc86\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/peek_side.json\": \"c91ef19e968a8439833962fd23911bc16b7f201fc2862d8b0759ec27aa2584a4\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate-motion/point_shout.json\": \"30c971b97193c81d42f9d0b7bb965fc2fa0cdddd698d40b3fe1bae019a87d03e\",\r\n      \"C:/Users/Hsinlung/Desktop/news-game/.tmp/motion-repair-2026-10-10/semantic/candidate_clip.gd\": \"0ab272876a6e0de731dac61956e430e2b3e792d4f4f36ae86149f80d2ef3e8b1\",\r\n      \"res://npc/clip-setup.json\": \"e1b8ce367a757da469a79713d8eebe1e575a864fa8298e4c5d24953ac162ae96\",\r\n      \"res://npc/clip_pose.gd\": \"e57205988edb80d125484dfee341e5520ea7c6685377855bec355a4f21b1b182\",\r\n      \"res://npc/contact_pose.gd\": \"2434e70425aee11488b32a46347e9c7e5c00f49eb3505b40abf5c59e7554604c\",\r\n      \"res://npc/interactions.json\": \"53ca88b05f82dbbe3dd4a815bcc90c0b5b013bc1618394ca60bcd42b9e0bcd04\",\r\n      \"res://npc/skeleton_mapping.gd\": \"0ed56588b2782d2bb2ed1ecec2d2cfe63cd26e62e05ef001a5ead044a814accc\"\r\n    },\r\n    \"limitations\": \"Seek-based static sampling, not complete intended-speed playback; native stage geometry describes measured positions and does not approve naturalness or continuous-time dynamics.\"\r\n  }",
+      "original_record_sha256": "bc56492ca1a6a3c55ba4a49bed6cd7c21ad954ecb8aa3413e800ada29df97d92",
+      "current_source_sha256_at_reconciliation": "cca740d6a21f9e04c33797438deaed98fe7f22354e9f5dc9b84663abc77a0240",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "evidence_path_migrations": [
+      {
+        "field": "record",
+        "original_path": ".tmp/motion-repair-2026-10-10/semantic/semantic-repair-summary.json",
+        "durable_path": "docs/motion-review-evidence-2026-10-11/records/semantic-five-source-publication.json",
+        "sha256": "cee7c09f347dbc6b936323895946b3f31de7b6cb3ddde94d400428813ffa5348",
+        "content_changed": false
+      }
+    ],
+    "record_sha256": "cee7c09f347dbc6b936323895946b3f31de7b6cb3ddde94d400428813ffa5348"
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/semantic/generated/hop/attempt_001/motion.npz",
+    "original_meta_sha256": "de1ea4af06e2f9044edd9a08f51d262bf3bfeedcb84213556e544f6668e63494",
+    "original_meta_file": "generation-original-meta.json",
+    "raw_npz_unchanged": true
+  },
+  "delivery_source": "assets/animations/sources/cca740d6a21f9e04",
+  "repair": {
+    "date": "2026-10-10",
+    "reason": "Named activity had a wrong final state or wrong synchronous-hop meaning",
+    "replaced_source_sha256": "a6e2609bcaffb5252b04ffe17e6371863e4d3cc8bc275a15793ef799c2a7eb53",
+    "replaced_meta_sha256": "8312d2985bc6cb8940b46357b116c354d59cd2e085c2a876f42c0a14c1f11531",
+    "generated_source_npz_unchanged": true
+  },
+  "material_endpoints": {
+    "entry": "hop_grounded",
+    "exit": "hop_grounded",
+    "kind": "loop",
+    "source_sha256": "cca740d6a21f9e04c33797438deaed98fe7f22354e9f5dc9b84663abc77a0240",
+    "boundary_edits": [],
+    "boundary_velocity_alignment": [],
+    "trim": null,
+    "method": "Unedited Kimodo sparse semantic full-body key generation; no authored joint path, seam fitting or FK boundary edit",
+    "entry_reference": {
+      "source": "assets/animations/sources/43cf4cf4fcba41ea/motion.npz",
+      "source_frame": 0,
+      "sha256": "43cf4cf4fcba41ea1beb793f3fe0a26dcd3d0c997fdbdbfb0a8f26e056fa8524"
+    },
+    "exit_reference": {
+      "source": "assets/animations/sources/43cf4cf4fcba41ea/motion.npz",
+      "source_frame": 0,
+      "sha256": "43cf4cf4fcba41ea1beb793f3fe0a26dcd3d0c997fdbdbfb0a8f26e056fa8524"
+    }
+  }
+}

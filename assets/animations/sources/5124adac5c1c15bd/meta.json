@@ -1,0 +1,107 @@
+{
+  "name": "mop_ground",
+  "text": "A person mops the floor with a long mop held in both hands, left hand at chest height and right hand low beside the right hip. Both elbows point down. Keep the mop head on the floor and make short forward and backward strokes, feet planted.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person mops the floor with a long mop held in both hands, left hand at chest height and right hand low beside the right hip. Both elbows point down. Keep the mop head on the floor and make short forward and backward strokes, feet planted.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_mop",
+      "hand": "right",
+      "grip": "grip_low",
+      "support_grip": "grip_high",
+      "support_hand": "left",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person mops the floor with a long mop held in both hands, left hand at chest height and right hand low beside the right hip. Both elbows point down. Keep the mop head on the floor and make short forward and backward strokes, feet planted. Hold held_mop with right at its grip_low marker. The left hand supports its grip_high marker throughout the grasp. Both hands continuously grasp their marked positions on the handle. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands continuously grasp their marked positions on the handle.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/cf5e66cb8d906426/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.011066021397709846,
+          0.0,
+          0.01584681309759617
+        ]
+      },
+      {
+        "source": "assets/animations/sources/cf5e66cb8d906426/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.011066021397709846,
+          0.0,
+          0.01584681309759617
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/cf5e66cb8d906426/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.011066021397709846,
+        0.0,
+        0.01584681309759617
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "cf5e66cb8d906426c57476d64aeef5e232a70b33064e93d32000970c968e4f26",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/cf5e66cb8d906426/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.011066021397709846,
+        0.0,
+        0.01584681309759617
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "cf5e66cb8d906426c57476d64aeef5e232a70b33064e93d32000970c968e4f26",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "5124adac5c1c15bdbee68ea4f638da4ddaced48d4d5a4a7f74749fc62a576496",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "5124adac5c1c15bdbee68ea4f638da4ddaced48d4d5a4a7f74749fc62a576496",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"5124adac5c1c15bdbee68ea4f638da4ddaced48d4d5a4a7f74749fc62a576496\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "81fc4a513a2cdc73c1705a763f32401cea029780cb8d4666649e61d31b0d2fff",
+      "current_source_sha256_at_reconciliation": "5124adac5c1c15bdbee68ea4f638da4ddaced48d4d5a4a7f74749fc62a576496",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

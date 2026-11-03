@@ -1,0 +1,17 @@
+{
+  "name": "stretch",
+  "text": "A person standing in place stretches both arms above their head, then relaxes and lowers their arms to their sides.",
+  "duration": 4,
+  "seed": 42,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1
+}

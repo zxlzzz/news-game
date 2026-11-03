@@ -1,0 +1,61 @@
+{
+  "name": "car_exit",
+  "text": "Sitting in a low car driver seat, open the door with the left hand. Turn the body sideways, place the left foot outside on the ground, bring the right leg out, lean forward and stand up beside the car. Finish upright with both feet on the ground.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "Sitting in a low car driver seat, open the door with the left hand. Turn the body sideways, place the left foot outside on the ground, bring the right leg out, lean forward and stand up beside the car. Finish upright with both feet on the ground.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          0.1
+        ],
+        "window": [
+          0,
+          0,
+          0.1,
+          0.135
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "door_grip",
+        "phases": [
+          0.12,
+          0.28
+        ],
+        "window": [
+          0.08499999999999999,
+          0.12,
+          0.28,
+          0.31500000000000006
+        ]
+      }
+    ],
+    "object": "car_interactive",
+    "post": "post_carexit",
+    "description": "Start at car_interactive.post_carexit facing the model standing marker direction. Sitting in a low car driver seat, open the door with the left hand. Turn the body sideways, place the left foot outside on the ground, bring the right leg out, lean forward and stand up beside the car. Finish upright with both feet on the ground. Hips touches the physical model marker hip_seat at 0.00s, 0.50s. LeftHand touches the physical model marker door_grip at 0.60s, 1.40s. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep head below the roof while passing the opening; lift feet over the sill and avoid the moving door leaf.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep head below the roof while passing the opening; lift feet over the sill and avoid the moving door leaf.",
+    "generation_stage": "text_only_pilot"
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "972c6405bc8e76064dc00a120a43e653aeed850fe5e14d3ec5aec524ba70678e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

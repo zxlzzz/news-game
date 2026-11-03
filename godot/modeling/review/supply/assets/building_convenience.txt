@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_convenience.glb
+   size  x 14.060  y 8.120  z 9.130 m
+   box   min (-7.030, 0.000, -8.530)  max (7.030, 8.120, 0.600)
+   triangles 400: concrete 120, door 12, metal 12, metal_dark 12, trim_dark 12, wall 172, window 60
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 b8a277ae4cbf4458a4520761c7f96af42ec781aed8a1f3c1f1fbd2dfc4a43fd9
+   REBUILD IDENTICAL

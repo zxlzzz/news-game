@@ -1,0 +1,29 @@
+{
+  "name": "book_reading_reference",
+  "text": "A person stands upright reading an open book held steady in both hands at mid-chest height. Both elbows bend down beside the lower ribs. Hands remain together in front of the chest, comfortably below the chin, palms upward supporting the bottom of the open book. The head looks down slightly. Keep this reading posture throughout without raising the book toward the face or lowering either arm.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A person stands upright reading an open book held steady in both hands at mid-chest height. Both elbows bend down beside the lower ribs. Hands remain together in front of the chest, comfortably below the chin, palms upward supporting the bottom of the open book. The head looks down slightly. Keep this reading posture throughout without raising the book toward the face or lowering either arm.",
+    "duration": 4,
+    "contacts": [],
+    "idle_hand": "Both hands support the book steadily.",
+    "clearance": "Keep space between the chest and hands; the book stays below the head.",
+    "description": "Start at level ground facing +Z. A person stands upright reading an open book held steady in both hands at mid-chest height. Both elbows bend down beside the lower ribs. Hands remain together in front of the chest, comfortably below the chin, palms upward supporting the bottom of the open book. The head looks down slightly. Keep this reading posture throughout without raising the book toward the face or lowering either arm. Both hands support the book steadily. Keep space between the chest and hands; the book stays below the head."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "3d4de7487457d3fe934281044c04e8332a9b9ba6419baa70826146c7433c4a89",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

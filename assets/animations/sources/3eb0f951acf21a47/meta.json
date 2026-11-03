@@ -1,0 +1,105 @@
+{
+  "name": "smoke",
+  "text": "A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_cigarette",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place. Hold held_cigarette with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/7846798ef9675409/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.004453457426279783,
+          0.0,
+          -0.004437695723026991
+        ]
+      },
+      {
+        "source": "assets/animations/sources/7846798ef9675409/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.004453457426279783,
+          0.0,
+          -0.004437695723026991
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/7846798ef9675409/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.004453457426279783,
+        0.0,
+        -0.004437695723026991
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "7846798ef9675409b5fb6e01c9b7fc6fc450ee06cb7786fcb24549944cb374e9",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/7846798ef9675409/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.004453457426279783,
+        0.0,
+        -0.004437695723026991
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "7846798ef9675409b5fb6e01c9b7fc6fc450ee06cb7786fcb24549944cb374e9",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "3eb0f951acf21a47b086f8acfa12c9b76aa96dfb906fc999a57e9bab0e188b15",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "3eb0f951acf21a47b086f8acfa12c9b76aa96dfb906fc999a57e9bab0e188b15",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"3eb0f951acf21a47b086f8acfa12c9b76aa96dfb906fc999a57e9bab0e188b15\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "b9a4fc34d6c148692d1174f463a447443cbfb051f618eff55ce19938e9f3b785",
+      "current_source_sha256_at_reconciliation": "3eb0f951acf21a47b086f8acfa12c9b76aa96dfb906fc999a57e9bab0e188b15",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

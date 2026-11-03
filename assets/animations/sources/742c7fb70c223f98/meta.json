@@ -1,0 +1,30 @@
+{
+  "name": "floor_seat_reference",
+  "text": "A person sits on the floor with both legs stretched straight out in front, heels on the floor, back upright, both hands resting on the floor beside the hips. Hold this seated posture throughout.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A person sits on the floor with both legs stretched straight out in front, heels on the floor, back upright, both hands resting on the floor beside the hips. Hold this seated posture throughout.",
+    "duration": 4,
+    "contacts": [],
+    "idle_hand": "Both hands follow the specified pose.",
+    "clearance": "The entire body stays on clear level ground; no object is present in this pose reference.",
+    "description": "Start at level ground facing +Z. A person sits on the floor with both legs stretched straight out in front, heels on the floor, back upright, both hands resting on the floor beside the hips. Hold this seated posture throughout. Both hands follow the specified pose. The entire body stays on clear level ground; no object is present in this pose reference.",
+    "generation_stage": "text_only_pilot"
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "742c7fb70c223f98a433b2bdcfbccf01cc04f3609e1c8d7b7032fbb03d971631",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

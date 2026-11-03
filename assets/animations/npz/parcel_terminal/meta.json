@@ -1,0 +1,127 @@
+{
+  "name": "parcel_terminal",
+  "text": "A person stands facing a parcel locker. Raise the right hand to tap a touchscreen at chest height, withdraw it, bend slightly and reach into an opened compartment at waist height, retrieve a small parcel and bring it to the abdomen. Left hand stays by the left thigh. Keep torso clear of the locker.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A person stands facing a parcel locker. Raise the right hand to tap a touchscreen at chest height, withdraw it, bend slightly and reach into an opened compartment at waist height, retrieve a small parcel and bring it to the abdomen. Left hand stays by the left thigh. Keep torso clear of the locker.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "screen_press",
+        "phases": [
+          0.18,
+          0.3
+        ],
+        "window": [
+          0.145,
+          0.18,
+          0.3,
+          0.33499999999999996
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "parcel_pickup",
+        "phases": [
+          0.53,
+          0.63
+        ],
+        "window": [
+          0.495,
+          0.53,
+          0.63,
+          0.665
+        ]
+      }
+    ],
+    "object": "parcel_lockers",
+    "post": "post_parcel",
+    "description": "The person starts at parcel_lockers.post_parcel and faces the model standing marker direction. RightHand touches screen_press at 0.90s,1.50s. RightHand touches parcel_pickup at 2.65s,3.15s. Grasp held_parcel at grip at 3.15s. A person stands facing a parcel locker. Raise the right hand to tap a touchscreen at chest height, withdraw it, bend slightly and reach into an opened compartment at waist height, retrieve a small parcel and bring it to the abdomen. Left hand stays by the left thigh. Keep torso clear of the locker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "transfers": [
+      {
+        "type": "held_parcel",
+        "grip": "grip",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.63,
+        "initial": {
+          "space": "object",
+          "marker": "parcel_pickup"
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "parcel_lockers",
+      "marker": "screen_press",
+      "space": "world",
+      "episode": "screen_press",
+      "keys": [
+        {
+          "frame": 27,
+          "position": [
+            0.001147,
+            1.39332,
+            0.362762
+          ]
+        },
+        {
+          "frame": 45,
+          "position": [
+            0.001147,
+            1.39332,
+            0.362762
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "parcel_lockers",
+      "marker": "parcel_pickup",
+      "space": "world",
+      "episode": "parcel_pickup",
+      "keys": [
+        {
+          "frame": 79,
+          "position": [
+            -0.33744,
+            0.961622,
+            0.55745
+          ]
+        },
+        {
+          "frame": 94,
+          "position": [
+            -0.33744,
+            0.961622,
+            0.55745
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "136557705b4b6dce2ec33ee6cc90473f4ae3d98f653e699519bf42ff349bb81b",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_failed",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "136557705b4b6dce2ec33ee6cc90473f4ae3d98f653e699519bf42ff349bb81b",
+    "notes": "Full final-scene review found unreachable physical contacts. Existing source retained pending repair; this clip is not visually approved."
+  },
+  "source_frame": "fixed"
+}

@@ -1,0 +1,104 @@
+{
+  "name": "present",
+  "text": "A person presents something to their left with both hands, extending both arms to the side in an inviting gesture.",
+  "duration": 3.5,
+  "seed": 123,
+  "endpoints": true,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "endpoint_target": "stand_idle/motion.npz frame 0",
+  "constraint_frames": [
+    0,
+    104
+  ],
+  "endpoint_mean_error_m": [
+    0.0002863147237803787,
+    0.0002863147237803787
+  ],
+  "review": {
+    "status": "selected",
+    "notes_zh": "左臂向侧面伸展，右手在较低位置向同侧引导后收回；左右不等高。首尾约束。",
+    "attempts": 1,
+    "views": [
+      "front",
+      "side",
+      "head"
+    ],
+    "metrics": {
+      "frames": 105,
+      "finite": true,
+      "bone_length_range_mm": 0.883,
+      "max_joint_step_m": 0.09,
+      "root_horizontal_range_m": [
+        0.00800000037997961,
+        0.03200000151991844
+      ],
+      "LeftHand_head_distance_m": [
+        0.7799999713897705,
+        0.7099999785423279,
+        0.7200000286102295,
+        0.7210000157356262,
+        0.7200000286102295,
+        0.7210000157356262,
+        0.7429999709129333,
+        0.7850000262260437,
+        0.7799999713897705
+      ],
+      "RightHand_head_distance_m": [
+        0.7609999775886536,
+        0.6380000114440918,
+        0.550000011920929,
+        0.5189999938011169,
+        0.5180000066757202,
+        0.5239999890327454,
+        0.5509999990463257,
+        0.6579999923706055,
+        0.7609999775886536
+      ],
+      "hand_separation_m": [
+        0.5379999876022339,
+        0.6880000233650208,
+        0.8090000152587891,
+        0.7960000038146973,
+        0.7900000214576721,
+        0.7870000004768372,
+        0.7689999938011169,
+        0.640999972820282,
+        0.5379999876022339
+      ],
+      "head_yaw_range_deg": 6.19,
+      "head_pitch_range_deg": 6.72,
+      "head_yaw_samples_deg": [
+        0.0,
+        0.20000000298023224,
+        -0.5,
+        -0.8999999761581421,
+        -1.600000023841858,
+        -0.699999988079071,
+        -2.700000047683716,
+        -4.400000095367432,
+        0.0
+      ],
+      "head_pitch_samples_deg": [
+        0.0,
+        4.699999809265137,
+        0.30000001192092896,
+        2.700000047683716,
+        5.0,
+        3.5999999046325684,
+        0.4000000059604645,
+        -0.8999999761581421,
+        0.0
+      ]
+    }
+  }
+}

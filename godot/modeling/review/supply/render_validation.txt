@@ -1,0 +1,65 @@
+Godot 4.7.2 Forward+ / model supply review
+60 assets have screenshots; 12 revised assets re-rendered on 2026-09-24, plus building_lineup.
+No model or script errors in revision renders.
+Sandbox diagnostics: root certificate store and user log/editor-settings writes unavailable; screenshots and imports completed.
+
+building_residential : REVIEW_READY / SHOT / PNG 74326 bytes
+building_old_shop : REVIEW_READY / SHOT / PNG 76508 bytes
+building_modern : REVIEW_READY / SHOT / PNG 76556 bytes
+building_convenience : REVIEW_READY / SHOT / PNG 72653 bytes
+building_bookstore : REVIEW_READY / SHOT / PNG 73539 bytes
+building_clinic : REVIEW_READY / SHOT / PNG 70110 bytes
+building_cafe : REVIEW_READY / SHOT / PNG 69002 bytes
+building_bakery : REVIEW_READY / SHOT / PNG 76382 bytes
+building_corner : REVIEW_READY / SHOT / PNG 95356 bytes
+roof_water_tank : REVIEW_READY / SHOT / PNG 44960 bytes
+roof_solar_panel : REVIEW_READY / SHOT / PNG 57519 bytes
+roof_billboard : REVIEW_READY / SHOT / PNG 45706 bytes
+shop_sign_panel : REVIEW_READY / SHOT / PNG 37595 bytes
+shop_sign_box : REVIEW_READY / SHOT / PNG 40925 bytes
+shop_sign_arch : REVIEW_READY / SHOT / PNG 43746 bytes
+shop_sign_blade : REVIEW_READY / SHOT / PNG 59554 bytes
+air_conditioner : REVIEW_READY / SHOT / PNG 50869 bytes
+awning : REVIEW_READY / SHOT / PNG 48747 bytes
+street_tree : REVIEW_READY / SHOT / PNG 43572 bytes
+street_lamp : REVIEW_READY / SHOT / PNG 32768 bytes
+trash_bin : REVIEW_READY / SHOT / PNG 45909 bytes
+fire_hydrant : REVIEW_READY / SHOT / PNG 52334 bytes
+mailbox : REVIEW_READY / SHOT / PNG 40306 bytes
+news_box : REVIEW_READY / SHOT / PNG 48288 bytes
+news_rack : REVIEW_READY / SHOT / PNG 78727 bytes
+vending_machine : REVIEW_READY / SHOT / PNG 41797 bytes
+phone_booth : REVIEW_READY / SHOT / PNG 52703 bytes
+bus_shelter : REVIEW_READY / SHOT / PNG 63487 bytes
+bus_stop_sign : REVIEW_READY / SHOT / PNG 36467 bytes
+bollard : REVIEW_READY / SHOT / PNG 41971 bytes
+bike_rack : REVIEW_READY / SHOT / PNG 110096 bytes
+sandwich_board : REVIEW_READY / SHOT / PNG 72663 bytes
+cafe_table : REVIEW_READY / SHOT / PNG 44954 bytes
+cafe_chair : REVIEW_READY / SHOT / PNG 48128 bytes
+cafe_umbrella : REVIEW_READY / SHOT / PNG 63891 bytes
+park_tree_broad : REVIEW_READY / SHOT / PNG 45659 bytes
+park_tree_cypress : REVIEW_READY / SHOT / PNG 39831 bytes
+park_tree_umbrella : REVIEW_READY / SHOT / PNG 39599 bytes
+shrub : REVIEW_READY / SHOT / PNG 46887 bytes
+hedge : REVIEW_READY / SHOT / PNG 37856 bytes
+park_lamp : REVIEW_READY / SHOT / PNG 34554 bytes
+bench : REVIEW_READY / SHOT / PNG 66191 bytes
+park_chess_table : REVIEW_READY / SHOT / PNG 59973 bytes
+fountain : REVIEW_READY / SHOT / PNG 65668 bytes
+market_stall : REVIEW_READY / SHOT / PNG 56110 bytes
+flowerbed : REVIEW_READY / SHOT / PNG 66495 bytes
+plaza_oval : REVIEW_READY / SHOT / PNG 37565 bytes
+plaza_round : REVIEW_READY / SHOT / PNG 32890 bytes
+path_straight : REVIEW_READY / SHOT / PNG 47413 bytes
+path_curve : REVIEW_READY / SHOT / PNG 41249 bytes
+car : REVIEW_READY / SHOT / PNG 75005 bytes
+taxi : REVIEW_READY / SHOT / PNG 75537 bytes
+bus : REVIEW_READY / SHOT / PNG 66076 bytes
+bicycle : REVIEW_READY / SHOT / PNG 117821 bytes
+scooter : REVIEW_READY / SHOT / PNG 72904 bytes
+lane_line_solid : REVIEW_READY / SHOT / PNG 23940 bytes
+lane_line_dashed : REVIEW_READY / SHOT / PNG 22331 bytes
+bicycle_marking : REVIEW_READY / SHOT / PNG 34706 bytes
+manhole : REVIEW_READY / SHOT / PNG 55308 bytes
+drain : REVIEW_READY / SHOT / PNG 72586 bytes

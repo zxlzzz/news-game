@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="PackedScene" path="res://models/held_turning_page.glb" id="1"]
+[node name="TurningPage" type="Node3D" groups=["held"]]
+[node name="model" parent="." instance=ExtResource("1")]

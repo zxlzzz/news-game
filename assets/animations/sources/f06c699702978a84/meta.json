@@ -1,0 +1,112 @@
+{
+  "name": "push_cart",
+  "text": "A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "shopping_cart",
+    "post": "post_push",
+    "description": "The person starts at shopping_cart.post_push and faces the model standing marker direction. LeftHand touches grip_left at 0.00s,5.00s. RightHand touches grip_right at 0.00s,5.00s.  A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing. Both hands are occupied at their corresponding contact points; the description defines their release. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "travel_with_actor": true
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "shopping_cart",
+      "marker": "grip_left",
+      "space": "carried",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.207613,
+            1.198725,
+            0.236549
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.207613,
+            1.198725,
+            0.236549
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "shopping_cart",
+      "marker": "grip_right",
+      "space": "carried",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.198619,
+            1.198633,
+            0.236638
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.198619,
+            1.198633,
+            0.236638
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "f06c699702978a845b00a87453aa97b686d33429d815e5c049964142d6006b6b",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

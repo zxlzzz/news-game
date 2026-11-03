@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\roof_solar_panel.glb
+   size  x 2.880  y 1.060  z 1.780 m
+   box   min (-1.440, 0.000, -0.890)  max (1.440, 1.060, 0.890)
+   triangles 308: metal 296, metal_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 adc4c4dd82246f9901c5bc598c8c32eac0bc766dd6691859656f9f0a0ad882c8
+   REBUILD IDENTICAL

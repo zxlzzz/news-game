@@ -1,0 +1,163 @@
+{
+  "name": "slouch_bench",
+  "text": "A person starts sitting upright on a bench and slowly leans their torso slightly backward into a relaxed seated pose. Both hands remain resting loosely on the upper thighs in the lap. Both feet stay on the floor in front of the bench. Stay seated and relaxed, with subtle breathing.",
+  "duration": 5,
+  "seed": 61008,
+  "attempt": 3,
+  "scene": {
+    "text": "A person starts sitting upright on a bench and slowly leans their torso slightly backward into a relaxed seated pose. Both hands remain resting loosely on the upper thighs in the lap. Both feet stay on the floor in front of the bench. Stay seated and relaxed, with subtle breathing.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat_front",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bench",
+    "post": "post_sit_1",
+    "description": "Start at bench.post_sit_1 facing the model standing marker direction. A person starts sitting upright on a bench and slowly leans their torso slightly backward into a relaxed seated pose. Both hands remain resting loosely on the upper thighs in the lap. Both feet stay on the floor in front of the bench. Stay seated and relaxed, with subtle breathing. Hips touches the physical model marker hip_seat_front at 0.00s, 5.00s. LeftFoot touches the physical model marker foot_left at 0.00s, 5.00s. RightFoot touches the physical model marker foot_right at 0.00s, 5.00s. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "loop": false,
+    "seat_surface": {
+      "node": "seat",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bench",
+      "marker": "hip_seat_front",
+      "space": "world",
+      "keys": [
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            0.5706,
+            0.15216
+          ],
+          "root_xz": [
+            0.0,
+            0.15216
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftFoot",
+      "model": "bench",
+      "marker": "foot_left",
+      "space": "world",
+      "keys": [
+        {
+          "frame": 149,
+          "position": [
+            0.20288,
+            0.07019340991973877,
+            0.48184
+          ],
+          "root_xz": [
+            0.20288,
+            0.48184
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightFoot",
+      "model": "bench",
+      "marker": "foot_right",
+      "space": "world",
+      "keys": [
+        {
+          "frame": 149,
+          "position": [
+            -0.20288,
+            0.0702822208404541,
+            0.48184
+          ],
+          "root_xz": [
+            -0.20288,
+            0.48184
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": false,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/d0486684db995e06/motion.npz",
+      "source_frame": 0,
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "d0486684db995e06454aea2ca8ad86837f57ad724d8c6b8ee7b1f8fe542fa63e",
+        "hand_edited": false
+      }
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 1,
+  "raw_sha256": "bb1c46d8f7ea6679deca0681d79c5b1e7171f8e3907095d650cd716fe02d07b3",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

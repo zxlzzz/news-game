@@ -1,0 +1,75 @@
+{
+  "name": "pull_door",
+  "attempt": 1,
+  "duration": 3,
+  "seed": 61007,
+  "text": "Standing facing a door, reach the right hand forward to grasp its handle at waist height, pull the door toward the body while leaning back slightly, release and lower the hand. Remain standing in place.",
+  "scene": {
+    "text": "Standing facing a door, reach the right hand forward to grasp its handle at waist height, pull the door toward the body while leaning back slightly, release and lower the hand. Remain standing in place.",
+    "duration": 3,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 89,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "fc881b87a0513daf42126100b49b25047390acc70cd8d5f92ff4135b1f513319",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 2.967 s overview from two elevated opposite sides, plus prior front/side views: reaches and opens door while body stays outside the moving slab, releases and lowers arm. Independent opening action; no walking through.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 2.967 s overview from two elevated opposite sides, plus prior front/side views: reaches and opens door while body stays outside the moving slab, releases and lowers arm. Independent opening action; no walking through.\"\r\n  }",
+      "original_record_sha256": "8d65182c6fb69989d29fac0298e99adb9a6b368704af9f9e23a3cf55a258393f",
+      "current_source_sha256_at_reconciliation": "fc881b87a0513daf42126100b49b25047390acc70cd8d5f92ff4135b1f513319",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
+}

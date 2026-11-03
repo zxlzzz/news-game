@@ -1,0 +1,104 @@
+{
+  "name": "walk_backpack_straps",
+  "text": "Walking forward with both hands holding the shoulder straps of a backpack at chest height, elbows pointing down.",
+  "duration": 1.3333333333333333,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Walking forward with both hands holding the shoulder straps of a backpack at chest height, elbows pointing down.",
+    "duration": 1.3333333333333333,
+    "contacts": [],
+    "item": {
+      "type": "held_backpack",
+      "hand": "back",
+      "grip": "back_mount"
+    },
+    "description": "Start at level ground facing +Z. Walking forward with both hands holding the shoulder straps of a backpack at chest height, elbows pointing down. Hold held_backpack with back at its back_mount marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/4cd2a6c70721915d/motion.npz",
+        "source_frame": 36,
+        "phase": 0,
+        "translation": [
+          0.043603770434856415,
+          0.0,
+          -1.2326833009719849
+        ]
+      },
+      {
+        "source": "assets/animations/sources/4cd2a6c70721915d/motion.npz",
+        "source_frame": 36,
+        "phase": 1,
+        "translation": [
+          -0.0478333979845047,
+          0.0,
+          0.21228408813476562
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/4cd2a6c70721915d/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.043603770434856415,
+        0.0,
+        -1.2326833009719849
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "4cd2a6c70721915d422620c829198258cff8fd24ac33f5fa3ac04eaebe8b8b25",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/4cd2a6c70721915d/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        -0.0478333979845047,
+        0.0,
+        0.21228408813476562
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "4cd2a6c70721915d422620c829198258cff8fd24ac33f5fa3ac04eaebe8b8b25",
+        "hand_edited": false
+      },
+      "frame": 39
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "b31dd1dc2d536d328a2f4dba38a726918271a43570435454862995a17050eff9",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "b31dd1dc2d536d328a2f4dba38a726918271a43570435454862995a17050eff9",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"b31dd1dc2d536d328a2f4dba38a726918271a43570435454862995a17050eff9\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "1dfe9e13793343bee16eaa3f7d15b3abdb2f9e517ef10de900b334365875a7c3",
+      "current_source_sha256_at_reconciliation": "b31dd1dc2d536d328a2f4dba38a726918271a43570435454862995a17050eff9",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

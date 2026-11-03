@@ -1,0 +1,265 @@
+{
+  "name": "pullup_hold",
+  "text": "Maintain an upright standing-like body posture below a high horizontal bar, torso vertical, head above the hips, elbows bent down beside the ribs and feet below the hips. Hold the body completely still with only subtle breathing; the hands maintain the same grip above the shoulders throughout.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 7,
+  "scene": {
+    "text": "Maintain an upright standing-like body posture below a high horizontal bar, torso vertical, head above the hips, elbows bent down beside the ribs and feet below the hips. Hold the body completely still with only subtle breathing; the hands maintain the same grip above the shoulders throughout.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_hang_high",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "runtime": true
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "fitness_pullup",
+    "post": "post_pullup",
+    "description": "Start at fitness_pullup.post_pullup facing the model standing marker direction. Maintain an upright standing-like body posture below a high horizontal bar, torso vertical, head above the hips, elbows bent down beside the ribs and feet below the hips. Hold the body completely still with only subtle breathing; the hands maintain the same grip above the shoulders throughout. Hips touches the physical model marker hip_hang_high at 0.00s, 5.00s. LeftHand touches the physical model marker grip_left at 0.00s, 5.00s. RightHand touches the physical model marker grip_right at 0.00s, 5.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Suspend the body below the crossbar and between the uprights, with feet clear of the ground.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Suspend the body below the crossbar and between the uprights, with feet clear of the ground.",
+    "fullbody": [
+      {
+        "source": "assets/animations/npz/pullup_raise/motion.npz",
+        "source_frame": 75,
+        "phase": 0,
+        "align_hip": "hip_hang_high"
+      },
+      {
+        "source": "assets/animations/npz/pullup_raise/motion.npz",
+        "source_frame": 75,
+        "phase": 1,
+        "align_hip": "hip_hang_high"
+      }
+    ],
+    "loop": true
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "fitness_pullup",
+      "marker": "hip_hang_high",
+      "space": "world",
+      "episode": "hip_hang_high",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            2.1556,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            2.1556,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "fitness_pullup",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.238076,
+            2.706776,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.238076,
+            2.706776,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "fitness_pullup",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.235864,
+            2.706809,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.235864,
+            2.706809,
+            -0.019842
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/npz/pullup_raise/motion.npz",
+      "source_frame": 75,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "095b04bdd34a326bb79d66200df0a265110ec8a7c9d9b50825dfb22e5c42c63e",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        -0.0018634162843227386,
+        0.005126882171630598,
+        0.0016161203384399414
+      ],
+      "placement_basis": [
+        [
+          0.9999932138573063,
+          0,
+          -0.003684052026723644
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.003684052026723644,
+          0,
+          0.9999932138573063
+        ]
+      ],
+      "placement_marker": "hip_hang_high"
+    },
+    {
+      "source": "assets/animations/npz/pullup_raise/motion.npz",
+      "source_frame": 75,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "095b04bdd34a326bb79d66200df0a265110ec8a7c9d9b50825dfb22e5c42c63e",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        -0.0018634162843227386,
+        0.005126882171630598,
+        0.0016161203384399414
+      ],
+      "placement_basis": [
+        [
+          0.9999932138573063,
+          0,
+          -0.003684052026723644
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.003684052026723644,
+          0,
+          0.9999932138573063
+        ]
+      ],
+      "placement_marker": "hip_hang_high"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "89564ad5c247a482ee27e87d3d4de1eccdb0e9755601e59e745ca15d569fab08",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "89564ad5c247a482ee27e87d3d4de1eccdb0e9755601e59e745ca15d569fab08",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "source_frame": "fixed"
+}

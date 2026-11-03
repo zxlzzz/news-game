@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MaterialMap" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/material_map.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+pack = "Quaternius Downtown City + Stylized Nature (Standard)"
+map = Dictionary[String, StringName]({
+"Bark_*": &"bark",
+"Leaves_*": &"foliage",
+"MI_Asphalt": &"road",
+"MI_Concrete": &"concrete",
+"MI_FakeInterior*": &"hidden",
+"MI_Glass": &"window",
+"MI_Interior*": &"hidden",
+"MI_RedBrick*": &"wall",
+"MI_StreetDecals": &"paint",
+"MI_Trim": &"trim",
+"MI_Trim_Dark": &"trim_dark",
+"MI_Trim_Green": &"trim",
+"MI_Trim_MetalConcrete": &"trim"
+})

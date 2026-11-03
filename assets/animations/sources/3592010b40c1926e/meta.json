@@ -1,0 +1,182 @@
+{
+  "name": "push_cart",
+  "text": "A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+  "duration": 1.5333333333333334,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+    "duration": 1.5333333333333334,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "shopping_cart",
+    "post": "post_push",
+    "description": "Start at shopping_cart.post_push facing the model standing marker direction. A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing. LeftHand touches the physical model marker grip_left at 0.00s, 1.53s. RightHand touches the physical model marker grip_right at 0.00s, 1.53s. Both hands are occupied at their corresponding contact points; the description defines their release. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "travel_with_actor": true,
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/f06c699702978a84/motion.npz",
+        "source_frame": 27,
+        "phase": 0,
+        "translation": [
+          -0.062402352690696716,
+          0.0,
+          -0.1972193866968155
+        ]
+      },
+      {
+        "source": "assets/animations/sources/f06c699702978a84/motion.npz",
+        "source_frame": 27,
+        "phase": 1,
+        "translation": [
+          -0.10314247012138367,
+          0.0,
+          1.0273467302322388
+        ]
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "shopping_cart",
+      "marker": "grip_left",
+      "space": "carried",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.207613,
+            1.198725,
+            0.236549
+          ]
+        },
+        {
+          "frame": 45,
+          "position": [
+            0.207613,
+            1.198725,
+            0.236549
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "shopping_cart",
+      "marker": "grip_right",
+      "space": "carried",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.198619,
+            1.198633,
+            0.236638
+          ]
+        },
+        {
+          "frame": 45,
+          "position": [
+            -0.198619,
+            1.198633,
+            0.236638
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/f06c699702978a84/motion.npz",
+      "source_frame": 27,
+      "translation": [
+        -0.062402352690696716,
+        0.0,
+        -0.1972193866968155
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f06c699702978a845b00a87453aa97b686d33429d815e5c049964142d6006b6b",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/f06c699702978a84/motion.npz",
+      "source_frame": 27,
+      "translation": [
+        -0.10314247012138367,
+        0.0,
+        1.0273467302322388
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f06c699702978a845b00a87453aa97b686d33429d815e5c049964142d6006b6b",
+        "hand_edited": false
+      },
+      "frame": 45
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "3592010b40c1926e4728691380d85286a06f9d3161b254738988b57f15ac25a5",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "3592010b40c1926e4728691380d85286a06f9d3161b254738988b57f15ac25a5",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"3592010b40c1926e4728691380d85286a06f9d3161b254738988b57f15ac25a5\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "c8140386198f2160dcbf3cf08e0f178bfef2df8d2b68f0edb91e839802664b41",
+      "current_source_sha256_at_reconciliation": "3592010b40c1926e4728691380d85286a06f9d3161b254738988b57f15ac25a5",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

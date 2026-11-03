@@ -1,0 +1,34 @@
+{
+  "name": "drink",
+  "text": "A person lifts a cup to their mouth with their right hand, takes a sip, and lowers the cup.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person lifts a cup to their mouth with their right hand, takes a sip, and lowers the cup.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_coffee_cup",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  right hand holds held_coffee_cup at the item grip marker.  A person lifts a cup to their mouth with their right hand, takes a sip, and lowers the cup. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "ada6183d03ba256e8fa58c31a9419849b3be117576ecee9b5198dd796c5927cc",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

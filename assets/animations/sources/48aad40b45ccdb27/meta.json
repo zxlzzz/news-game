@@ -1,0 +1,44 @@
+{
+  "name": "carry_shoulder_bag",
+  "text": "Walking straight forward while gripping a shoulder bag strap at the right collarbone with the right hand. Right elbow bent down by the body. Left arm swings naturally down by the left thigh. Keep right hand at the strap and keep walking.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "Walking straight forward while gripping a shoulder bag strap at the right collarbone with the right hand. Right elbow bent down by the body. Left arm swings naturally down by the left thigh. Keep right hand at the strap and keep walking.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_shoulder_bag",
+      "hand": "back",
+      "grip": "strap_mount",
+      "hand_contact": {
+        "joint": "handRight",
+        "marker": "strap_top",
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    },
+    "description": "Start at level ground facing +Z. Walking straight forward while gripping a shoulder bag strap at the right collarbone with the right hand. Right elbow bent down by the body. Left arm swings naturally down by the left thigh. Keep right hand at the strap and keep walking. Hold held_shoulder_bag with back at its strap_mount marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "48aad40b45ccdb27f8066cdea73bf414219b37f5e2c521d11bc6c378637c80cc",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

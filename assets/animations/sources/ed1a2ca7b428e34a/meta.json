@@ -1,0 +1,103 @@
+{
+  "name": "ride_bicycle",
+  "text": "A person sits on a bicycle saddle, leans slightly forward, keeps both hands on the handlebars, and pedals slowly with alternating circular leg movements. Keep knees on either side of the frame and torso steady. One full pedal revolution.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "object": "bicycle",
+    "post": "post_rider",
+    "duration": 4,
+    "text": "A person sits on a bicycle saddle, leans slightly forward, keeps both hands on the handlebars, and pedals slowly with alternating circular leg movements. Keep knees on either side of the frame and torso steady. One full pedal revolution.",
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "idle_hand": "Both hands follow the stated task; a hand without a task rests beside its thigh.",
+    "clearance": "Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "description": "Start at bicycle.post_rider facing the model standing marker direction. A person sits on a bicycle saddle, leans slightly forward, keeps both hands on the handlebars, and pedals slowly with alternating circular leg movements. Keep knees on either side of the frame and torso steady. One full pedal revolution. Hips touches the physical model marker hip_seat at 0.00s, 4.00s. LeftHand touches the physical model marker grip_left at 0.00s, 4.00s. RightHand touches the physical model marker grip_right at 0.00s, 4.00s. LeftFoot touches the physical model marker foot_left at 0.00s, 4.00s. RightFoot touches the physical model marker foot_right at 0.00s, 4.00s. Both hands follow the stated task; a hand without a task rests beside its thigh. Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "generation_stage": "text_only_pilot"
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "ed1a2ca7b428e34aee654bb5a0f7ce9846db17764ef225dfcb23eafcd294632c",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

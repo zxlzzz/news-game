@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\lane_line_dashed.glb
+   size  x 0.120  y 0.000  z 6.000 m
+   box   min (-0.060, 0.003, -3.000)  max (0.060, 0.003, 3.000)
+   triangles 6: paint 6
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 06a785d522b37168dc3b92f234f768ac1347aa37ae6fe2f4e3e9849007405150
+   REBUILD IDENTICAL

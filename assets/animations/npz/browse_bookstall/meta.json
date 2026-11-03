@@ -1,0 +1,99 @@
+{
+  "name": "browse_bookstall",
+  "text": "Standing at a bookstall, reading an open book with both hands low in front of the chest, elbows bent down beside the ribs.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "Standing at a bookstall, reading an open book with both hands low in front of the chest, elbows bent down beside the ribs.",
+    "duration": 3.0,
+    "contacts": [],
+    "object": "outdoor_bookstall",
+    "post": "post_browsebook",
+    "item": {
+      "type": "held_book_open",
+      "hand": "both",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at outdoor_bookstall.post_browsebook facing the model standing marker direction. Standing at a bookstall, reading an open book with both hands low in front of the chest, elbows bent down beside the ribs. Hold held_book_open with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep torso outside the counter and hands above the open book, with the book clear of the front edge.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep torso outside the counter and hands above the open book, with the book clear of the front edge.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/2394f8345a208e4b/motion.npz",
+        "source_frame": 135,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "source": "assets/animations/sources/2394f8345a208e4b/motion.npz",
+        "source_frame": 135,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/2394f8345a208e4b/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "2394f8345a208e4b81723b08b8cc0edaeaa74f4661a39012ff79f6405f0d5ddf",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/2394f8345a208e4b/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "2394f8345a208e4b81723b08b8cc0edaeaa74f4661a39012ff79f6405f0d5ddf",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "335b4f38d9f1ad9c38d646985c6484f37b37adf9ad5c32b35f454712fb989ece",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "335b4f38d9f1ad9c38d646985c6484f37b37adf9ad5c32b35f454712fb989ece",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "source_frame": "fixed"
+}

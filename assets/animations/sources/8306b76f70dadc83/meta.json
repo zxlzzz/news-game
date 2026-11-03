@@ -1,0 +1,54 @@
+{
+  "name": "wallet_takeout",
+  "text": "Standing casually, reach the right hand down to the right hip pocket, take out a wallet, bring it in front of the waist, open it with the left hand, then return it to the right pocket. Elbows relaxed close to the ribs.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Standing casually, reach the right hand down to the right hip pocket, take out a wallet, bring it in front of the waist, open it with the left hand, then return it to the right pocket. Elbows relaxed close to the ribs.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_wallet",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  right hand holds held_wallet at the item grip marker.  Standing casually, reach the right hand down to the right hip pocket, take out a wallet, bring it in front of the waist, open it with the left hand, then return it to the right pocket. Elbows relaxed close to the ribs. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "8306b76f70dadc8301c7c17e1145d707384f62257ac3b55800f40366d63819a5",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "8306b76f70dadc8301c7c17e1145d707384f62257ac3b55800f40366d63819a5",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"8306b76f70dadc8301c7c17e1145d707384f62257ac3b55800f40366d63819a5\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "544b970763f896bdf404bcd61dd4159348b6c6f2574ccc258a1692644b277e11",
+      "current_source_sha256_at_reconciliation": "8306b76f70dadc8301c7c17e1145d707384f62257ac3b55800f40366d63819a5",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  },
+  "source_archive": {
+    "source_npz": "assets/animations/npz/wallet_takeout/motion.npz",
+    "original_meta_sha256": "d162f9e57a4c64ec2c5308f03f9f253f207a75f0ebe471d146b3798779d600f7",
+    "original_meta_file": "generation-original-meta-d162f9e57a4c.json",
+    "raw_npz_unchanged": true
+  }
+}

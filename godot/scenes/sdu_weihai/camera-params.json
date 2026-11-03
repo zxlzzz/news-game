@@ -1,0 +1,13 @@
+{
+  "_note": "core/orbit_camera.gd for the campus: same feel as core/camera-params.json, but zooms out to the whole site (height up to 2500 m of ground on screen).",
+  "projection": "perspective",
+  "fov": 35.0,
+  "distance": 120.0,
+  "pitch": [15.0, 89.0],
+  "height": [6.0, 2500.0],
+  "keySpeed": 0.6,
+  "dragStart": 5.0,
+  "turnPerPixel": 0.3,
+  "tiltPerPixel": 0.2,
+  "zoomStep": 1.15
+}

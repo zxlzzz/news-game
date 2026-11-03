@@ -1,0 +1,142 @@
+// Accepted NPC mapping: metres, Y up; no DOM, playback state or resource writes.
+// names: source joint names; restFrame: stand_idle frame 0.
+// mapFrame(sourceFrame, params, clipOrigin) -> {H,N,neckEnd,head,segs}.
+// segs: [start, end, lineWidthMultiplier]. Projection is the renderer's job.
+export function createSkeletonMapper(names, restFrame) {
+  const J=Object.fromEntries(names.map((name,i)=>[name,i]));
+  for (const name of ['Hips','Neck1','Head','HeadEnd', ...['Left','Right'].flatMap(s=>['Arm','ForeArm','Hand','Shin','Foot','ToeEnd','Leg'].map(n=>s+n))]) {
+    if (!(name in J)) throw new Error(`Missing source joint: ${name}`);
+  }
+
+const add=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]],sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],mul=(a,s)=>[a[0]*s,a[1]*s,a[2]*s];
+const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],len=a=>Math.hypot(a[0],a[1],a[2]),unit=a=>mul(a,1/Math.max(len(a),1e-9));
+const mix=(a,b,t)=>add(mul(a,1-t),mul(b,t));
+const sourceLegLength=["Left","Right"].reduce((sum,sd)=>sum+(len(sub(restFrame[J[sd+"Shin"]],restFrame[J[sd+"Leg"]]))+len(sub(restFrame[J[sd+"Foot"]],restFrame[J[sd+"Shin"]])))*.5,0);
+function ik(root,l1,l2,target,kneeHint){ // two-bone, cosine rule; bend side from source knee
+  const aim=sub(target,root),d=Math.min(Math.max(len(aim),Math.abs(l1-l2)+1e-6),l1+l2-1e-6),ax=unit(aim);
+  let b=sub(kneeHint,mul(ax,dot(kneeHint,ax)));
+  if(len(b)<1e-6)b=sub([0,0,1],mul(ax,ax[2]));
+  const x=(l1*l1-l2*l2+d*d)/(2*d),h=Math.sqrt(Math.max(0,l1*l1-x*x));
+  return {knee:add(root,add(mul(ax,x),mul(unit(b),h))),end:add(root,mul(ax,d))};
+}
+// Head direction: source Neck1 -> head centre, expressed in the torso's own frame, with the rest-pose
+// forward lean removed (at rest the source neck leans ~17deg forward, which reads as a hunch on a stick figure).
+function torsoFrame(s){const g=n=>s[J[n]],up=unit(sub(g('Neck1'),g('Hips')));
+  let lat=sub(g('LeftArm'),g('RightArm'));lat=unit(sub(lat,mul(up,dot(lat,up))));
+  const fw=[lat[1]*up[2]-lat[2]*up[1],lat[2]*up[0]-lat[0]*up[2],lat[0]*up[1]-lat[1]*up[0]];return [lat,up,fw];}
+const headVec=s=>sub(mix(s[J.Head],s[J.HeadEnd],.5),s[J.Neck1]);
+const toLocal=(v,F)=>F.map(a=>dot(v,a)),toWorld=(l,F)=>add(add(mul(F[0],l[0]),mul(F[1],l[1])),mul(F[2],l[2]));
+const REST=unit(toLocal(headVec(restFrame),torsoFrame(restFrame)));
+function rotTo(a,b,v){ // rotate v by the rotation taking unit a onto unit b (Rodrigues)
+  const k=[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],sn=len(k),cs=dot(a,b);if(sn<1e-9)return v;
+  const u=mul(k,1/sn),th=Math.atan2(sn,cs),kv=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];
+  return add(add(mul(v,Math.cos(th)),mul(kv,Math.sin(th))),mul(u,dot(u,v)*(1-Math.cos(th))));}
+const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+function rotAxis(v,u,th){const kv=cross(u,v);return add(add(mul(v,Math.cos(th)),mul(kv,Math.sin(th))),mul(u,dot(u,v)*(1-Math.cos(th))));}
+function headDir(s,P){const F=torsoFrame(s),l=unit(toLocal(headVec(s),F));
+  return unit(toWorld(rotTo(REST,[0,1,0],l),F));}
+const smoothstep=(e0,e1,x)=>{const t=Math.max(0,Math.min(1,(x-e0)/(e1-e0)));return t*t*(3-2*t);};
+// Arms by segment direction: elbow and hand relative to N, per side.
+function armsByDirection(s,P,hdir,side){const g=n=>s[J[n]],out={};
+  for(const sd of['Left','Right']){
+    // No drawn shoulder: the source clavicle (Neck1->Arm) is split between upper arm (clavSplit) and forearm (1-clavSplit).
+    const c=sub(g(sd+'Arm'),g('Neck1')),u=sub(g(sd+'ForeArm'),g(sd+'Arm')),fa=sub(g(sd+'Hand'),g(sd+'ForeArm'));
+    const w=P.clavSplit;
+    let ud=unit(add(u,mul(c,w))),fd=unit(add(fa,mul(c,1-w)));
+    // Keep raised arms out of the head: the upper arm may not come closer than minSpread to the head axis.
+    // Angles below minSpread+20deg are eased outward (smooth); the push is sideways, forearm rotates with the upper arm.
+    if(P.minSpread>0){
+      const th=P.minSpread*Math.PI/180,th2=th+20*Math.PI/180,a=Math.acos(Math.max(-1,Math.min(1,dot(ud,hdir))));
+      if(a<th2){
+        const q=a/th2,h=(2*q**3-3*q*q+1)*th+(-2*q**3+3*q*q)*th2+(q**3-q*q)*th2;
+        // push sideways only: keep the arm's forward/back component, grow its outward component
+        const out=unit(sub(mul(side,sd==='Left'?1:-1),mul(hdir,dot(side,hdir)*(sd==='Left'?1:-1)))),fwd=cross(hdir,out);
+        const cf=dot(ud,fwd),lat=Math.sqrt(Math.max(0,Math.sin(h)**2-cf*cf));
+        let nu=unit(add(add(mul(hdir,Math.cos(h)),mul(fwd,cf)),mul(out,lat)));
+        // An inward arm cannot switch to the outward azimuth at a=th2: that
+        // reflects it even when h-a is almost zero. Turn its azimuth through
+        // the same transition band, on the cone (never through the head).
+        // Fully raised arms retain the accepted minSpread direction exactly.
+        if(a>th&&dot(ud,out)<0){
+          const from=unit(sub(ud,mul(hdir,dot(ud,hdir)))),to=unit(sub(nu,mul(hdir,dot(nu,hdir))));
+          const az=Math.atan2(dot(hdir,cross(from,to)),dot(from,to));
+          const around=rotAxis(from,hdir,az*smoothstep(th2,th,a));
+          nu=add(mul(hdir,Math.cos(h)),mul(around,Math.sin(h)));
+        }
+        const k=cross(ud,nu),sn=len(k);
+        if(sn>1e-9){const ang=Math.atan2(sn,dot(ud,nu));fd=rotAxis(fd,mul(k,1/sn),ang);}
+        ud=nu;
+      }
+    }
+    const el=mul(ud,P.upperArm);
+    out[sd]={el,hand:add(el,mul(fd,P.foreArm))};
+  }
+  return out;}
+function mapFrame(s,P,origin){ // s: source frame indexed by names -> drawn figure
+  const g=n=>s[J[n]];
+  const hs=g('Hips');
+  const r=(P.thigh+P.shin)/sourceLegLength,o=origin;
+  const S=p=>[o[0]+(p[0]-o[0])*r,p[1]*r,o[2]+(p[2]-o[2])*r]; // whole walk scaled with leg length
+  let H=S(hs);
+  const F=torsoFrame(s),legs={}; let floorDelta=-Infinity;
+  for(const sd of ['Left','Right']) {
+    const upper=mul(unit(sub(g(sd+'Shin'),g(sd+'Leg'))),P.thigh);
+    const lower=mul(unit(sub(g(sd+'Foot'),g(sd+'Shin'))),P.shin);
+    const end=add(upper,lower),spacing=mul(F[0],dot(sub(g(sd+'Leg'),hs),F[0])*r);
+    const from=unit(end),to=unit(add(end,spacing));
+    legs[sd]={knee:rotTo(from,to,upper),end:rotTo(from,to,end)};
+    floorDelta=Math.max(floorDelta,S(g(sd+'Foot'))[1]-H[1]-legs[sd].end[1]);
+  }
+  H[1]+=floorDelta;
+  const supportHands=[],supportTargets={};
+  let N=add(H,mul(F[1],P.torso)),lift=0;
+  for(const sd of['Left','Right']){
+    const hand=g(sd+'Hand'),fore=sub(hand,g(sd+'ForeArm'));
+    const palm=add(hand,mul(unit(fore),P.palm));
+    // Inverted, floor-reaching palms support the body. This is source
+    // geometry, not a clip name or a temporal filter. Upright poses are 0.
+    const support=smoothstep(P.headFar,P.headTouch,palm[1])*smoothstep(0,-1,F[1][1]);
+    supportHands.push(support);
+    const target=S(hand);target[1]=P.line/2;supportTargets[sd]=target;
+    const upper=sub(g(sd+'ForeArm'),g(sd+'Arm'));
+    const extension=len(add(upper,fore))/Math.max(len(upper)+len(fore),1e-9);
+    const reach=(P.upperArm+P.foreArm)*extension;
+    const delta=sub(target,N),horizontal=delta[0]**2+delta[2]**2;
+    lift=Math.max(lift,target[1]+Math.sqrt(Math.max(0,reach*reach-horizontal))-N[1]);
+  }
+  // Preserve the source's arm extension and let the palms carry the body;
+  // merely clamping wrists would leave an inverted head on the floor.
+  lift*=Math.min(...supportHands);
+  H=add(H,[0,lift,0]);N=add(N,[0,lift,0]);
+  const hd=headDir(s,P),hdir=hd,side=F[0];
+  const neckEnd=add(N,mul(hd,P.neck)),head=add(neckEnd,mul(hd,P.headR));
+  const f={H,N,neckEnd,head,segs:[],supportHands};
+  f.segs.push([H,N,P.torsoLine],[N,neckEnd,P.torsoLine]);
+  const arms=armsByDirection(s,P,hdir,side);
+  const srcHead=mix(g('Head'),g('HeadEnd'),.5),R=P.headR+P.line/2;
+  for(const sd of['Left','Right']){
+    const a=arms[sd],hand=g(sd+'Hand'),support=supportHands[sd==='Left'?0:1];
+    // Steps 6-7 decide the arm (shoulder merged into both segments). One correction only: the hand END may not
+    // sit inside the head disc. If it does it goes to the disc's edge, on the side where the source palm lies
+    // from the source head. The elbow keeps the side steps 6-7 gave it; the forearm may overlap the disc.
+    let el=add(N,a.el),hd=add(N,a.hand);
+    const palm=add(hand,mul(unit(sub(hand,g(sd+'ForeArm'))),P.palm));
+    const inside=smoothstep(R+P.headR*.25,R-P.headR*.25,len(sub(hd,head)));
+    if(inside>0||support>0){
+      // turn the hand's direction from the head centre toward the source's, and bring its distance out to the edge
+      const to=rotTo(unit(headVec(s)),hdir,unit(sub(palm,srcHead))),from=unit(sub(hd,head)),k=cross(from,to),sn=len(k);
+      const dir=sn<1e-9?to:rotAxis(from,mul(k,1/sn),Math.atan2(sn,dot(from,to))*inside);
+      const out=add(head,mul(dir,len(sub(hd,head))*(1-inside)+R*inside));
+      const arm=ik(N,P.upperArm,P.foreArm,mix(out,supportTargets[sd],support),a.el);
+      el=arm.knee;hd=arm.end;
+    }
+    const knee=add(H,legs[sd].knee),end=add(H,legs[sd].end);
+    const toe=add(end,mul(unit(sub(g(sd+'ToeEnd'),g(sd+'Foot'))),P.foot));
+    f.segs.push([N,el,1],[el,hd,1],[H,knee,1],[knee,end,1]);
+    if(P.foot>0)f.segs.push([end,toe,1]);
+  }
+  return f;
+}
+
+  return mapFrame;
+}

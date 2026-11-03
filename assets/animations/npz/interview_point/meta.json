@@ -1,0 +1,27 @@
+{
+  "name": "interview_point",
+  "text": "A standing person speaking to a reporter points decisively to the right side with the left arm, holds the gesture, then turns back to the listener. Feet planted.",
+  "duration": 5,
+  "seed": 1205,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "text_encoder": "matbee/kimodo-llm2vec-nf4",
+  "fps": 30.0,
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "cfg": {
+    "enabled": true,
+    "text_weight": 2.0,
+    "constraint_weight": 2.0
+  },
+  "num_samples": 1,
+  "loop": false,
+  "root_average_speed_m_s": 0.029586439952254295,
+  "mapped_average_speed_m_s": 0.023333154536478152,
+  "runtime": {
+    "source_export": "scripts/export-npc-motion.py",
+    "setup": "godot/npc/clip-setup.json",
+    "contacts": null,
+    "base_clip": "interview_point",
+    "note": "Runtime pose and object tracks are the final interaction. Source NPZ alone does not encode those contacts or object motion."
+  }
+}

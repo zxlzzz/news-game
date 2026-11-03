@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\shop_sign_panel.glb
+   size  x 3.400  y 0.650  z 0.180 m
+   box   min (-1.700, 0.000, -0.080)  max (1.700, 0.650, 0.100)
+   triangles 24: metal 12, trim_dark 12
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 06f1ab85b941da241a26cad3675246253c8011da504fa023e0fa5c291f7b8170
+   REBUILD IDENTICAL

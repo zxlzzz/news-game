@@ -1,0 +1,161 @@
+{
+  "name": "sit_sideways",
+  "text": "A seated person relaxes on a park bench, leaning back comfortably. Both hands rest loosely on the lap in front of the body. Feet on the floor. Small natural movements.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A seated person relaxes on a park bench, leaning back comfortably. Both hands rest loosely on the lap in front of the body. Feet on the floor. Small natural movements.",
+    "duration": 4,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bench",
+    "post": "post_sit_1",
+    "description": "Start at bench.post_sit_1 facing the model standing marker direction. A person rests on a park bench with their torso gently reclined backward. Both hands rest loosely on the upper thighs in the lap, forearms in front of the torso. Both feet stay on the floor in front of the seat. Stay in this comfortable relaxed seated pose with subtle breathing and small natural balance adjustments. Hips touches the physical model marker hip_seat_front at 0.00s, 3.00s. LeftFoot touches the physical model marker foot_left at 0.00s, 3.00s. RightFoot touches the physical model marker foot_right at 0.00s, 3.00s. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "loop": false,
+    "seat_surface": {
+      "node": "seat",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/bb1c46d8f7ea6679/motion.npz",
+        "source_frame": 112,
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "phase": 0.0
+      },
+      {
+        "source": "assets/animations/sources/bb1c46d8f7ea6679/motion.npz",
+        "source_frame": 112,
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "phase": 1.0
+      }
+    ],
+    "runtime_contacts": [
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "frame": 119,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "c51c24acc606ba166516247ae6d75b1852d384edd9e302bb1997d2800c73ff78",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "reuse": {
+    "source_clip": "slouch_bench",
+    "source_raw_sha256": "c51c24acc606ba166516247ae6d75b1852d384edd9e302bb1997d2800c73ff78",
+    "operation": "Exact native arrays reused; runtime object contact and whole-body placement only."
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 3.967 s two-view overview and low grid view: relaxed seated body and legs face diagonally across bench, hands on lap, feet supported. Unedited relaxed sitting reused with whole-body heading.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 3.967 s two-view overview and low grid view: relaxed seated body and legs face diagonally across bench, hands on lap, feet supported. Unedited relaxed sitting reused with whole-body heading.\"\r\n  }",
+      "original_record_sha256": "48ea3e966c370e11a8f25e9f3235f1f0d518bc61fc5c8ddcda5a6dcb563d7e51",
+      "current_source_sha256_at_reconciliation": "c51c24acc606ba166516247ae6d75b1852d384edd9e302bb1997d2800c73ff78",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

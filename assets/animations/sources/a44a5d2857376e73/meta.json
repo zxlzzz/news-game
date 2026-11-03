@@ -1,0 +1,111 @@
+{
+  "name": "sit_sideways",
+  "text": "A person sits sideways on a park bench, turning the hips and legs to the left while the torso turns gently back toward the front. The left arm rests along the top of the bench backrest behind the body, right hand on the thigh. Remain comfortably seated on a 45cm-high seat, feet on the ground.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person sits sideways on a park bench, turning the hips and legs to the left while the torso turns gently back toward the front. The left arm rests along the top of the bench backrest behind the body, right hand on the thigh. Remain comfortably seated on a 45cm-high seat, feet on the ground.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "back_grip",
+        "phases": [
+          0.25,
+          0.85
+        ],
+        "window": [
+          0.215,
+          0.25,
+          0.85,
+          0.885
+        ]
+      }
+    ],
+    "object": "bench",
+    "post": "post_sit_1",
+    "description": "Start at bench.post_sit_1 facing the model standing marker direction. A person sits sideways on a park bench, turning the hips and legs to the left while the torso turns gently back toward the front. The left arm rests along the top of the bench backrest behind the body, right hand on the thigh. Remain comfortably seated on a 45cm-high seat, feet on the ground. Hips touches the physical model marker hip_seat at 0.00s, 5.00s. LeftHand touches the physical model marker back_grip at 1.25s, 4.25s. The right hand performs the task described above; otherwise it hangs or swings naturally. Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs."
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bench",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "bench",
+      "marker": "back_grip",
+      "space": "world",
+      "episode": "back_grip",
+      "keys": [
+        {
+          "frame": 37,
+          "position": [
+            0.297308,
+            0.99485,
+            -0.176384
+          ]
+        },
+        {
+          "frame": 127,
+          "position": [
+            0.297308,
+            0.99485,
+            -0.176384
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "a44a5d2857376e73e9323e93a796b88016b4921f736569f42c743251d4bb5210",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

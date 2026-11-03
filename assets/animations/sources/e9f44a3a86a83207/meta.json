@@ -1,0 +1,64 @@
+{
+  "name": "fall_back",
+  "text": "A standing person loses balance backward and falls onto their back. The torso tips backward, both arms reach forward trying to regain balance, the bottom hits the ground, then the back and shoulders land on the floor. Finish lying on the back with bent knees.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A standing person loses balance backward and falls onto their back. The torso tips backward, both arms reach forward trying to regain balance, the bottom hits the ground, then the back and shoulders land on the floor. Finish lying on the back with bent knees.",
+    "duration": 4,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "method": "Chronological rendered frames from the actual scene; no tests or numerical gates. Side view entire 0-3.967 s at 30 fps; front three-quarter impact at 30 fps and whole-duration overview.",
+    "observation": "Now falls from standing through a backward loss of balance onto the back, then settles lying. The old source stopped in a seated pose. Realtime playback was unavailable.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"assistant_visual_reviewed\",\n    \"accepted_by_hsinlung\": false,\n    \"method\": \"Chronological rendered frames from the actual scene; no tests or numerical gates. Side view entire 0-3.967 s at 30 fps; front three-quarter impact at 30 fps and whole-duration overview.\",\n    \"observation\": \"Now falls from standing through a backward loss of balance onto the back, then settles lying. The old source stopped in a seated pose. Realtime playback was unavailable.\"\n  }",
+      "original_record_sha256": "709e237d891e291cd2795c71994b14902eef1988e1bf73763871a405ae6bb7bc",
+      "current_source_sha256_at_reconciliation": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  },
+  "visual_review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Now falls from standing through a backward loss of balance onto the back, then settles lying. The old source stopped in a seated pose. Realtime playback was unavailable.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"repaired_visual_reviewed\",\n    \"accepted_by_hsinlung\": false,\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\n    \"observation\": \"Now falls from standing through a backward loss of balance onto the back, then settles lying. The old source stopped in a seated pose. Realtime playback was unavailable.\"\n  }",
+      "original_record_sha256": "3350a56fa94f23ff72a4683bd5e54ada23fb48be9a9babb32e880fcb2ba56ec6",
+      "current_source_sha256_at_reconciliation": "e9f44a3a86a83207b4c3e49f831388aac7c84b7d4cbadfbd5ddcd20ac3be446c",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  },
+  "source_archive": {
+    "source_npz": "assets/animations/npz/fall_back/motion.npz",
+    "original_meta_file": "generation-original-meta.json",
+    "original_meta_sha256": "bc0b5a77e3b249c293c21845b8e563903b1221baae7dbb2e93951fe0fb12930d",
+    "raw_npz_unchanged": true
+  }
+}

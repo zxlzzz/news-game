@@ -1,0 +1,61 @@
+{
+  "name": "adjust_clothes",
+  "text": "A person stands relaxed, then tidies their shirt collar. The left hand lifts to the opposite collar corner below the neck, grips it and gives a clear downward tug, releases and lowers. Then the right hand lifts to the other collar corner, grips it and gives a clear downward tug. After tidying, release the collar and lower both arms completely to hang relaxed beside the thighs. Finish standing upright and still with both hands down. Feet stay planted. Do not touch the face.",
+  "duration": 6.0,
+  "seed": 20261010,
+  "attempt": 1,
+  "scene": {
+    "activity": "adjust_clothes",
+    "body_only": true,
+    "description": "A person stands relaxed, then tidies their shirt collar. The left hand lifts to the opposite collar corner below the neck, grips it and gives a clear downward tug, releases and lowers. Then the right hand lifts to the other collar corner, grips it and gives a clear downward tug. After tidying, release the collar and lower both arms completely to hang relaxed beside the thighs. Finish standing upright and still with both hands down. Feet stay planted. Do not touch the face.",
+    "complete_activity": true,
+    "generation_stage": "complete_activity"
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 179,
+      "source": "assets/animations/poses/stand.json",
+      "source_frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "6b30c566acdf7d1d7f39fbc1379302eada8b5ef57a9be4d23de003c0c5e478d7",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

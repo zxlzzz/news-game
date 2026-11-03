@@ -1,0 +1,113 @@
+{
+  "name": "read_newspaper",
+  "text": "A person stands reading a large unfolded newspaper. Hold it wide open with both hands far apart at the left and right edges, about sixty centimeters apart, arms bent in front of the chest. The head tilts downward to read the center of the newspaper. Keep the wide newspaper reading pose steadily with small natural weight shifts.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person stands reading a large unfolded newspaper. Hold it wide open with both hands far apart at the left and right edges, about sixty centimeters apart, arms bent in front of the chest. The head tilts downward to read the center of the newspaper. Keep the wide newspaper reading pose steadily with small natural weight shifts.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_newspaper_open",
+      "hand": "both",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands reading a large unfolded newspaper. Hold it wide open with both hands far apart at the left and right edges, about sixty centimeters apart, arms bent in front of the chest. The head tilts downward to read the center of the newspaper. Keep the wide newspaper reading pose steadily with small natural weight shifts. Hold held_newspaper_open with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/388ec6a3c3e21a27/motion.npz",
+        "source_frame": 105,
+        "phase": 0,
+        "translation": [
+          -0.000873575103469193,
+          0.0,
+          -0.0006339201936498284
+        ]
+      },
+      {
+        "source": "assets/animations/sources/388ec6a3c3e21a27/motion.npz",
+        "source_frame": 105,
+        "phase": 1,
+        "translation": [
+          -0.000873575103469193,
+          0.0,
+          -0.0006339201936498284
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/388ec6a3c3e21a27/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.000873575103469193,
+        0.0,
+        -0.0006339201936498284
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "388ec6a3c3e21a272969b6b788b57c7817fd2217526f76ace0811a518fa1be75",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/388ec6a3c3e21a27/motion.npz",
+      "source_frame": 105,
+      "translation": [
+        -0.000873575103469193,
+        0.0,
+        -0.0006339201936498284
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "388ec6a3c3e21a272969b6b788b57c7817fd2217526f76ace0811a518fa1be75",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "4e9f72735427248c6ad7dddef83dfedaa2cc308bafe24db9716797adaa35be5f",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "4e9f72735427248c6ad7dddef83dfedaa2cc308bafe24db9716797adaa35be5f",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "0-3 s. Two-handed paper held facing head, readable activity. Stiff upper arms but no obvious object inversion.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"0-3 s. Two-handed paper held facing head, readable activity. Stiff upper arms but no obvious object inversion.\"\r\n  }",
+      "original_record_sha256": "817efa29fc01b127257906708c4e068da8f2d2db14e762bef14e7d0a34590832",
+      "current_source_sha256_at_reconciliation": "4e9f72735427248c6ad7dddef83dfedaa2cc308bafe24db9716797adaa35be5f",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

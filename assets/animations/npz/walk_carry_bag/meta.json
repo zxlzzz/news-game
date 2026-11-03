@@ -1,0 +1,84 @@
+{
+  "name": "walk_carry_bag",
+  "text": "A person walks forward carrying a heavy shopping bag in the right hand down beside the right thigh. The right arm stays straight and steady pointing down, while the left arm swings freely. Continuous natural walking.",
+  "duration": 1.4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person walks forward carrying a heavy shopping bag in the right hand down beside the right thigh. The right arm stays straight and steady pointing down, while the left arm swings freely. Continuous natural walking.",
+    "duration": 1.4,
+    "contacts": [],
+    "item": {
+      "type": "held_shopping_bag",
+      "hand": "right",
+      "grip": "grip",
+      "orientation": "upright"
+    },
+    "description": "Start at level ground facing +Z. A person walks forward carrying a heavy shopping bag in the right hand down beside the right thigh. The right arm stays straight and steady pointing down, while the left arm swings freely. Continuous natural walking. Hold held_shopping_bag with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/walk_carry_bag.json",
+      "frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "3720e7a9e831b9e7ff99f87d82eb679c48d0088ca58354fcffee5ecfc9962b96",
+        "hand_edited": false
+      },
+      "translation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "source": "assets/animations/poses/walk_carry_bag.json",
+      "frame": 41,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "3720e7a9e831b9e7ff99f87d82eb679c48d0088ca58354fcffee5ecfc9962b96",
+        "hand_edited": false
+      },
+      "translation": [
+        0,
+        0,
+        0.95
+      ]
+    }
+  ],
+  "loop": true,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "128f3f93f75779c6c56d630332ac52c3e89c98072379596acaf2d563ba1f2ac3",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 1.367 s at 30 fps in side view, full-duration front overview: bag stays down beside the thigh, alternating steps and free-arm swing remain continuous.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 1.367 s at 30 fps in side view, full-duration front overview: bag stays down beside the thigh, alternating steps and free-arm swing remain continuous.\"\r\n  }",
+      "original_record_sha256": "d7d8631e75ef271fc776fee59fb83e807557fab6ae9fe65fd26ebcf6c6041e39",
+      "current_source_sha256_at_reconciliation": "128f3f93f75779c6c56d630332ac52c3e89c98072379596acaf2d563ba1f2ac3",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

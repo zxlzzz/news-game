@@ -1,0 +1,173 @@
+{
+  "name": "lean_railing",
+  "text": "A person stands behind a waist-high railing, places both hands on the top bar and leans forward slightly to look beyond it. Both feet remain planted, elbows slightly bent, hips behind the rail. Keep both hands on the railing throughout.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 5,
+  "scene": {
+    "text": "A person stands behind a waist-high railing, places both hands on the top bar and leans forward slightly to look beyond it. Both feet remain planted, elbows slightly bent, hips behind the rail. Keep both hands on the railing throughout.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "sidewalk_guardrail",
+    "post": "post_rail",
+    "description": "Start at sidewalk_guardrail.post_rail facing the model standing marker direction. A person stands behind a waist-high railing, places both hands on the top bar and leans forward slightly to look beyond it. Both feet remain planted, elbows slightly bent, hips behind the rail. Keep both hands on the railing throughout. LeftHand touches the physical model marker grip_left at 0.00s, 3.00s. RightHand touches the physical model marker grip_right at 0.00s, 3.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/3f3afdb6d56d4756/motion.npz",
+        "source_frame": 135,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "source": "assets/animations/sources/3f3afdb6d56d4756/motion.npz",
+        "source_frame": 135,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "sidewalk_guardrail",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.190515,
+            1.262188,
+            0.35642
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            -0.190515,
+            1.262188,
+            0.35642
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "sidewalk_guardrail",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.147604,
+            1.262118,
+            0.372734
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.147604,
+            1.262118,
+            0.372734
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/3f3afdb6d56d4756/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "3f3afdb6d56d47562c4d3d6c342901a9877900dadc5366289a274266f8ddd6d2",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/3f3afdb6d56d4756/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "3f3afdb6d56d47562c4d3d6c342901a9877900dadc5366289a274266f8ddd6d2",
+        "hand_edited": false
+      },
+      "frame": 89
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "54ae829c306fd68d8bd543aca260979c26e0619f009641f511c2ef5f2cd4825b",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "54ae829c306fd68d8bd543aca260979c26e0619f009641f511c2ef5f2cd4825b",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "source_frame": "fixed"
+}

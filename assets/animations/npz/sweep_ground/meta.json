@@ -1,0 +1,45 @@
+{
+  "name": "sweep_ground",
+  "attempt": 3,
+  "duration": 4,
+  "seed": 61007,
+  "text": "A janitor pushes a floor broom away and pulls it back with both hands. Hands remain low in front of the waist, one hand near the belt and the other near the thigh. The broom handle slopes diagonally forward and down. Feet stay shoulder width apart; the body leans forward slightly. Make one slow, broad forward-and-back sweep across the floor in front of the feet.",
+  "scene": {
+    "text": "A janitor pushes a floor broom away and pulls it back with both hands. Hands remain low in front of the waist, one hand near the belt and the other near the thigh. The broom handle slopes diagonally forward and down. Feet stay shoulder width apart; the body leans forward slightly. Make one slow, broad forward-and-back sweep across the floor in front of the feet.",
+    "duration": 4,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "5e0ba9f8f2e0fd8915b56698c54e897c963a749e4ba35424dd15093117fccc63",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 3.967 s side sequence at 30 fps, full front overview with floor grid: body leans into repeated forward-and-back strokes; both hands use lower physical shaft grips and elbows remain down. Original native arrays unchanged; grounded broom follows the generated hand span.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 3.967 s side sequence at 30 fps, full front overview with floor grid: body leans into repeated forward-and-back strokes; both hands use lower physical shaft grips and elbows remain down. Original native arrays unchanged; grounded broom follows the generated hand span.\"\r\n  }",
+      "original_record_sha256": "3d6080dc0689c13076310daa1fbbed0792dc03a9720819cac849cc74ab84727d",
+      "current_source_sha256_at_reconciliation": "5e0ba9f8f2e0fd8915b56698c54e897c963a749e4ba35424dd15093117fccc63",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

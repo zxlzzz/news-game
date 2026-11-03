@@ -1,0 +1,66 @@
+{
+  "name": "animal_husky",
+  "source": "D:/Godot/assets/quaternius-ultimate-animals/Blends/Husky.blend",
+  "shoulder_height": 0.55,
+  "source_rotation_z_deg": 0,
+  "front_roots": [
+    "FrontShoulder.L",
+    "FrontShoulder.R"
+  ],
+  "hind_roots": [
+    "BackShoulder.L",
+    "BackShoulder.R"
+  ],
+  "paws": [
+    "FF.L",
+    "FF.R",
+    "FFB.L",
+    "FFB.R"
+  ],
+  "remapping": {
+    "IKFrontLeg.L": "FF.L",
+    "IKFrontLeg.R": "FF.R",
+    "IKBackLeg.L": "FFB.L",
+    "IKBackLeg.R": "FFB.R"
+  },
+  "reparent": {
+    "FF.L": "FrontLowerLeg.L",
+    "FF.R": "FrontLowerLeg.R",
+    "FFB.L": "BackLowerLeg.L",
+    "FFB.R": "BackLowerLeg.R"
+  },
+  "bone_count": 41,
+  "actions": {
+    "Attack": 37,
+    "Death": 33,
+    "Eating": 81,
+    "Gallop": 18,
+    "Gallop_Jump": 29,
+    "Idle": 101,
+    "Idle_2": 101,
+    "Idle_2_HeadLow": 121,
+    "Idle_HitReact_Left": 21,
+    "Idle_HitReact_Right": 21,
+    "Jump_ToIdle": 41,
+    "Walk": 33
+  },
+  "fps": 30,
+  "species": "husky",
+  "aliases": {},
+  "body_support_bones": [
+    "Body",
+    "Back",
+    "Torso",
+    "Torso2",
+    "Torso3",
+    "FrontShoulder.L",
+    "FrontShoulder.R",
+    "FrontUpperLeg.L",
+    "FrontUpperLeg.R",
+    "BackShoulder.L",
+    "BackShoulder.R",
+    "BackLeg.L",
+    "BackLeg.R"
+  ],
+  "body_support_min_height_m": 0.275
+}

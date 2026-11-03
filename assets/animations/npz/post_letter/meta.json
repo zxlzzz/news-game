@@ -1,0 +1,92 @@
+{
+  "name": "post_letter",
+  "text": "A standing person in front of a mailbox raises the right hand to chest height and slowly pushes a letter into a slot directly in front, then retracts the hand. Feet planted.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing person in front of a mailbox raises the right hand to chest height and slowly pushes a letter into a slot directly in front, then retracts the hand. Feet planted.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "letter_insert",
+        "phases": [
+          0.42,
+          0.55
+        ],
+        "window": [
+          0.385,
+          0.42,
+          0.55,
+          0.5850000000000001
+        ]
+      }
+    ],
+    "object": "mailbox",
+    "post": "post_mail",
+    "description": "Start at mailbox.post_mail facing the model standing marker direction. A standing person in front of a mailbox raises the right hand to chest height and slowly pushes a letter into a slot directly in front, then retracts the hand. Feet planted. RightHand touches the physical model marker letter_insert at 2.10s, 2.75s. Grasp held_envelope at grip at 0.00s. Release at 2.75s onto letter_landing using the item rest marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "transfers": [
+      {
+        "type": "held_envelope",
+        "hand": "handRight",
+        "grip": "grip",
+        "rest": "rest",
+        "take": 0,
+        "release": 0.55,
+        "landing": {
+          "marker": "letter_landing"
+        },
+        "orientation": "landing"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "mailbox",
+      "marker": "letter_insert",
+      "space": "world",
+      "episode": "letter_insert",
+      "keys": [
+        {
+          "frame": 63,
+          "position": [
+            0.001147,
+            1.224027,
+            0.359376
+          ]
+        },
+        {
+          "frame": 82,
+          "position": [
+            0.001147,
+            1.224027,
+            0.359376
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "f8acf65a4f70d801fe2de99a41a3ca1653f05bbf3b0c59faa4d73f2bd0d61426",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "f8acf65a4f70d801fe2de99a41a3ca1653f05bbf3b0c59faa4d73f2bd0d61426",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "source_frame": "fixed"
+}

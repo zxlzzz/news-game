@@ -1,0 +1,218 @@
+[
+  {
+    "model": "building_a",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_apartment_tall",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_b",
+    "hollow_bodies": 2,
+    "warnings": []
+  },
+  {
+    "model": "building_back_row_attic",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_back_row_residential_a",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_back_row_residential_b",
+    "hollow_bodies": 2,
+    "warnings": []
+  },
+  {
+    "model": "building_back_row_slab",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_back_row_terrace",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_back_row_tower",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_bakery",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_bank",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_bar",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_barber",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_bookstore",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_cafe",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_cinema",
+    "hollow_bodies": 2,
+    "warnings": []
+  },
+  {
+    "model": "building_clinic",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_clothing",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_convenience",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_corner",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_department_store",
+    "hollow_bodies": 3,
+    "warnings": []
+  },
+  {
+    "model": "building_hardware",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_hotel",
+    "hollow_bodies": 2,
+    "warnings": []
+  },
+  {
+    "model": "building_laundry",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_mall",
+    "hollow_bodies": 2,
+    "warnings": []
+  },
+  {
+    "model": "building_modern",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_newspaper",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_noodle_shop",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_office_tower",
+    "hollow_bodies": 2,
+    "warnings": []
+  },
+  {
+    "model": "building_old_house",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_old_shop",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_parking_garage",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_pharmacy",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_post_office",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_residential",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_residential_corner",
+    "hollow_bodies": 2,
+    "warnings": []
+  },
+  {
+    "model": "building_restaurant",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_rowhouse",
+    "hollow_bodies": 6,
+    "warnings": []
+  },
+  {
+    "model": "building_supermarket",
+    "hollow_bodies": 2,
+    "warnings": []
+  },
+  {
+    "model": "building_under_construction",
+    "hollow_bodies": 0,
+    "warnings": []
+  },
+  {
+    "model": "building_walkup_a",
+    "hollow_bodies": 2,
+    "warnings": []
+  },
+  {
+    "model": "building_walkup_b",
+    "hollow_bodies": 1,
+    "warnings": []
+  },
+  {
+    "model": "building_walkup_c",
+    "hollow_bodies": 2,
+    "warnings": []
+  }
+]
+BUILDING_SHELLS_OK 43 models; 59 hollow bodies

@@ -1,0 +1,396 @@
+{
+  "clip": "slouch_bench",
+  "text": "A person slouches on a bench, hips slid forward to the front of the seat, upper back leaning back against the backrest, head upright looking ahead, legs stretched out in front, hands resting on the seat beside the hips. Calm, only subtle breathing.",
+  "duration": 4.0,
+  "seeds": [
+    7,
+    61007,
+    123
+  ],
+  "base": "seat_bench",
+  "ends": "first_key",
+  "object": {
+    "type": "bench",
+    "post": "post_sit_1"
+  },
+  "keys": [
+    {
+      "Hips": {
+        "marker": "hip_seat_front",
+        "on": "top",
+        "offset": [
+          0,
+          0.045,
+          0
+        ]
+      },
+      "tilt": -11,
+      "LeftFoot": {
+        "at": [
+          0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "RightFoot": {
+        "at": [
+          -0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "Left": {
+        "at": [
+          0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "whole": true,
+      "t": 0.4
+    },
+    {
+      "Hips": {
+        "marker": "hip_seat_front",
+        "on": "top",
+        "offset": [
+          0,
+          0.045,
+          0
+        ]
+      },
+      "tilt": -11,
+      "LeftFoot": {
+        "at": [
+          0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "RightFoot": {
+        "at": [
+          -0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "Left": {
+        "at": [
+          0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "whole": true,
+      "t": 0.8
+    },
+    {
+      "Hips": {
+        "marker": "hip_seat_front",
+        "on": "top",
+        "offset": [
+          0,
+          0.045,
+          0
+        ]
+      },
+      "tilt": -11,
+      "LeftFoot": {
+        "at": [
+          0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "RightFoot": {
+        "at": [
+          -0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "Left": {
+        "at": [
+          0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "whole": true,
+      "t": 1.2
+    },
+    {
+      "Hips": {
+        "marker": "hip_seat_front",
+        "on": "top",
+        "offset": [
+          0,
+          0.045,
+          0
+        ]
+      },
+      "tilt": -11,
+      "LeftFoot": {
+        "at": [
+          0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "RightFoot": {
+        "at": [
+          -0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "Left": {
+        "at": [
+          0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "whole": true,
+      "t": 1.6
+    },
+    {
+      "Hips": {
+        "marker": "hip_seat_front",
+        "on": "top",
+        "offset": [
+          0,
+          0.045,
+          0
+        ]
+      },
+      "tilt": -11,
+      "LeftFoot": {
+        "at": [
+          0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "RightFoot": {
+        "at": [
+          -0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "Left": {
+        "at": [
+          0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "whole": true,
+      "t": 2.0
+    },
+    {
+      "Hips": {
+        "marker": "hip_seat_front",
+        "on": "top",
+        "offset": [
+          0,
+          0.045,
+          0
+        ]
+      },
+      "tilt": -11,
+      "LeftFoot": {
+        "at": [
+          0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "RightFoot": {
+        "at": [
+          -0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "Left": {
+        "at": [
+          0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "whole": true,
+      "t": 2.4
+    },
+    {
+      "Hips": {
+        "marker": "hip_seat_front",
+        "on": "top",
+        "offset": [
+          0,
+          0.045,
+          0
+        ]
+      },
+      "tilt": -11,
+      "LeftFoot": {
+        "at": [
+          0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "RightFoot": {
+        "at": [
+          -0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "Left": {
+        "at": [
+          0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "whole": true,
+      "t": 2.8
+    },
+    {
+      "Hips": {
+        "marker": "hip_seat_front",
+        "on": "top",
+        "offset": [
+          0,
+          0.045,
+          0
+        ]
+      },
+      "tilt": -11,
+      "LeftFoot": {
+        "at": [
+          0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "RightFoot": {
+        "at": [
+          -0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "Left": {
+        "at": [
+          0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "whole": true,
+      "t": 3.2
+    },
+    {
+      "Hips": {
+        "marker": "hip_seat_front",
+        "on": "top",
+        "offset": [
+          0,
+          0.045,
+          0
+        ]
+      },
+      "tilt": -11,
+      "LeftFoot": {
+        "at": [
+          0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "RightFoot": {
+        "at": [
+          -0.14,
+          0.07,
+          0.62
+        ]
+      },
+      "Left": {
+        "at": [
+          0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.24,
+          0.47,
+          0.21
+        ]
+      },
+      "whole": true,
+      "t": 3.6
+    }
+  ]
+}

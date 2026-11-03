@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\sandwich_board.glb
+   size  x 0.710  y 0.988  z 0.670 m
+   box   min (-0.355, 0.000, -0.335)  max (0.355, 0.988, 0.335)
+   triangles 568: trim_dark 24, wood 544
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 aed4a22252b355db4eac42d086a9479fb5f8d04c79620064e033373122cb31d7
+   REBUILD IDENTICAL

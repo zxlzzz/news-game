@@ -1,0 +1,36 @@
+{
+  "name": "loop_backpack_straps",
+  "text": "Stand still upright wearing a backpack. Both hands gently hold its shoulder straps at chest height, elbows pointing down. Feet stay planted comfortably apart. Subtle breathing and weight shifts, without walking or releasing the straps.",
+  "duration": 3.0,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "Stand still upright wearing a backpack. Both hands gently hold its shoulder straps at chest height, elbows pointing down. Feet stay planted comfortably apart. Subtle breathing and weight shifts, without walking or releasing the straps.",
+    "duration": 3.0,
+    "contacts": [],
+    "item": {
+      "type": "held_backpack",
+      "hand": "back",
+      "grip": "back_mount"
+    },
+    "description": "Start at level ground facing +Z. Stand still upright wearing a backpack. Both hands gently hold its shoulder straps at chest height, elbows pointing down. Feet stay planted comfortably apart. Subtle breathing and weight shifts, without walking or releasing the straps. Hold held_backpack with back at its back_mount marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": false
+  },
+  "contacts": [],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "b9d7098e69bc38393851eb5850e23f36b2520e76f4d2cfff813d3e89ea281bc6",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\bus.glb
+   size  x 2.687  y 3.120  z 11.980 m
+   box   min (-1.343, -0.000, -5.990)  max (1.343, 3.120, 5.990)
+   triangles 1340: accent 24, door 24, metal 544, metal_dark 544, trim_dark 24, window 180
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 3fc695f8567976d04724063f903c7bf883f39d7aa46d6d80d8b498290b305171
+   REBUILD IDENTICAL

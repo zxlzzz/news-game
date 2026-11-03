@@ -1,0 +1,31 @@
+{
+  "name": "chess_watch",
+  "text": "A standing person watches a chessboard on a low table in front. They bend their upper body forward and look down, extend the right arm diagonally down to indicate a square on the table, pause, and straighten back up with arms relaxed. Both feet stay planted.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing person watches a chessboard on a low table in front. They bend their upper body forward and look down, extend the right arm diagonally down to indicate a square on the table, pause, and straighten back up with arms relaxed. Both feet stay planted.",
+    "duration": 5,
+    "contacts": [],
+    "object": "park_chess_table",
+    "post": "post_watch_0",
+    "description": "The person starts at park_chess_table.post_watch_0 and faces the model standing marker direction.   A standing person watches a chessboard on a low table in front. They bend their upper body forward and look down, extend the right arm diagonally down to indicate a square on the table, pause, and straighten back up with arms relaxed. Both feet stay planted. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Keep hips on the bench, knees beneath the table edge and reaching forearm above the board.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Keep hips on the bench, knees beneath the table edge and reaching forearm above the board."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "a8e495f8e2e89f35547b883392a12135b4cf3e5a1b43e094c5ce2dd7bc8bdf1d",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

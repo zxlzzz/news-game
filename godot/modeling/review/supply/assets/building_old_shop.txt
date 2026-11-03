@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\building_old_shop.glb
+   size  x 10.060  y 12.450  z 8.180 m
+   box   min (-5.030, 0.000, -7.530)  max (5.030, 12.450, 0.650)
+   triangles 1352: concrete 68, door 12, metal 12, metal_dark 108, trim 96, trim_dark 12, wall_brick 588, window 456
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 32f7acbd5a8ff558d5356303c1f43e4cac869dd908472c8ec56dc5a2025f5d45
+   REBUILD IDENTICAL

@@ -1,0 +1,178 @@
+{
+  "name": "walk_drink",
+  "duration": 4,
+  "text": "A person keeps walking forward at a relaxed ordinary pace while carrying the same small lidded coffee cup upright in the RIGHT hand at low chest height. In the middle of the walk, raise this same cup once to the lips and tilt it slightly for one clear sip. Then lower it back to the original comfortable upright chest carry while continuing to walk. The right elbow stays comfortably down and the cup stays on the right side. The left arm swings naturally. Keep a steady gait throughout, without standing still, crossing the arms, exchanging hands, crouching, hiding or releasing the cup. The loop starts and ends in the identical full walking carry pose, shifted forward by its genuine gait travel.",
+  "seed": 61137,
+  "attempt": 1,
+  "contacts": [],
+  "fullbody": [
+    {
+      "frame": 0,
+      "source": "assets/animations/sources/edd568eea1340b28/motion.npz",
+      "source_frame": 60,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "edd568eea1340b286fb051f445430e580776c3011f2204e50a70d1947907bd39",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 64,
+      "source": "assets/animations/sources/edd568eea1340b28/motion.npz",
+      "source_frame": 115,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "edd568eea1340b286fb051f445430e580776c3011f2204e50a70d1947907bd39",
+        "hand_edited": false
+      }
+    },
+    {
+      "frame": 119,
+      "source": "assets/animations/sources/edd568eea1340b28/motion.npz",
+      "source_frame": 60,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "edd568eea1340b286fb051f445430e580776c3011f2204e50a70d1947907bd39",
+        "hand_edited": false
+      },
+      "translation": [
+        -0.2620301842689514,
+        0.0,
+        4.684783935546875
+      ]
+    }
+  ],
+  "post_processing": true,
+  "loop": true,
+  "scene": {
+    "description": "A person keeps walking forward at a relaxed ordinary pace while carrying the same small lidded coffee cup upright in the RIGHT hand at low chest height. In the middle of the walk, raise this same cup once to the lips and tilt it slightly for one clear sip. Then lower it back to the original comfortable upright chest carry while continuing to walk. The right elbow stays comfortably down and the cup stays on the right side. The left arm swings naturally. Keep a steady gait throughout, without standing still, crossing the arms, exchanging hands, crouching, hiding or releasing the cup. The loop starts and ends in the identical full walking carry pose, shifted forward by its genuine gait travel.",
+    "item": {
+      "type": "held_coffee_cup",
+      "hand": "right",
+      "grip": "grip_sleeve"
+    },
+    "fullbody": [
+      {
+        "frame": 0,
+        "source": "assets/animations/sources/edd568eea1340b28/motion.npz",
+        "source_frame": 60,
+        "provenance": {
+          "kind": "kimodo_raw",
+          "sha256": "edd568eea1340b286fb051f445430e580776c3011f2204e50a70d1947907bd39",
+          "hand_edited": false
+        }
+      },
+      {
+        "frame": 64,
+        "source": "assets/animations/sources/edd568eea1340b28/motion.npz",
+        "source_frame": 115,
+        "provenance": {
+          "kind": "kimodo_raw",
+          "sha256": "edd568eea1340b286fb051f445430e580776c3011f2204e50a70d1947907bd39",
+          "hand_edited": false
+        }
+      },
+      {
+        "frame": 119,
+        "source": "assets/animations/sources/edd568eea1340b28/motion.npz",
+        "source_frame": 60,
+        "provenance": {
+          "kind": "kimodo_raw",
+          "sha256": "edd568eea1340b286fb051f445430e580776c3011f2204e50a70d1947907bd39",
+          "hand_edited": false
+        },
+        "translation": [
+          -0.2620301842689514,
+          0.0,
+          4.684783935546875
+        ]
+      }
+    ],
+    "reference_qualification": {
+      "source_raw_sha256": "edd568eea1340b286fb051f445430e580776c3011f2204e50a70d1947907bd39",
+      "complete_77_unedited": true,
+      "source_frames": [
+        60,
+        115
+      ],
+      "finite_solids": ".tmp\\motion-repair-2026-10-10\\semantic\\context-corpus-current\\walk-sip-reference\\side-sleeve-mouth-native-half-solids.json",
+      "finite_solids_sha256": "c58be5b4082370b5e3769a25a321a4bba1077e16d8e59de8920be093412b829f",
+      "finite_self": ".tmp\\motion-repair-2026-10-10\\semantic\\context-corpus-current\\walk-sip-reference\\side-sleeve-mouth-native-half-self.json",
+      "finite_self_sha256": "083770db59a7e4c4e89327c3854f685a5b4da2a8d6fec958cb2f6a5195538e10",
+      "actual_refs_manifest": ".tmp\\motion-repair-2026-10-10\\semantic\\context-corpus-current\\walk-sip-reference\\actual-qualified-whole-refs\\manifest.json",
+      "actual_refs_manifest_sha256": "2b6def11ccf5efb32f219a72ab353ed0dd91e82f9a51bd2b453764cbfa254449",
+      "actual_originals_personally_seen": [
+        {
+          "file": "C:\\Users\\Hsinlung\\Desktop\\news-game\\.tmp\\motion-repair-2026-10-10\\semantic\\context-corpus-current\\walk-sip-reference\\actual-qualified-whole-refs\\carry_source60_v0_f000.png",
+          "sha256": "0aeba5aab83cd0b174c5b77a3b5fdf9156e28a097634463ec1273834f0d9503f",
+          "time": 2.0,
+          "view": 90.0,
+          "personally_seen_by": "root",
+          "detail": "original 1024 pixels, complete actor and cup"
+        },
+        {
+          "file": "C:\\Users\\Hsinlung\\Desktop\\news-game\\.tmp\\motion-repair-2026-10-10\\semantic\\context-corpus-current\\walk-sip-reference\\actual-qualified-whole-refs\\carry_source60_v1_f000.png",
+          "sha256": "37503be2104709fc8322e2aa083b8a37b1f36a0b3f545de2a2567331decdff04",
+          "time": 2.0,
+          "view": 135.0,
+          "personally_seen_by": "root",
+          "detail": "original 1024 pixels, complete actor and cup"
+        },
+        {
+          "file": "C:\\Users\\Hsinlung\\Desktop\\news-game\\.tmp\\motion-repair-2026-10-10\\semantic\\context-corpus-current\\walk-sip-reference\\actual-qualified-whole-refs\\carry_source60_v2_f000.png",
+          "sha256": "177519b5c364d6a9c1751e5e1760bf685697cc25d51e2b2c7499c856efc625f6",
+          "time": 2.0,
+          "view": 225.0,
+          "personally_seen_by": "root",
+          "detail": "original 1024 pixels, complete actor and cup"
+        },
+        {
+          "file": "C:\\Users\\Hsinlung\\Desktop\\news-game\\.tmp\\motion-repair-2026-10-10\\semantic\\context-corpus-current\\walk-sip-reference\\actual-qualified-whole-refs\\sip_source115_v0_f000.png",
+          "sha256": "a9d78debf314b2fd5ce043929c056d06c82960674e9b08509e9edf6ca63eb179",
+          "time": 3.83333333333333,
+          "view": 90.0,
+          "personally_seen_by": "root",
+          "detail": "original 1024 pixels, complete actor and cup"
+        },
+        {
+          "file": "C:\\Users\\Hsinlung\\Desktop\\news-game\\.tmp\\motion-repair-2026-10-10\\semantic\\context-corpus-current\\walk-sip-reference\\actual-qualified-whole-refs\\sip_source115_v1_f000.png",
+          "sha256": "2baff68aaebccb1ecda9b027c1a2ab942ecd747bc989946d2f5b38e9a23fbb59",
+          "time": 3.83333333333333,
+          "view": 135.0,
+          "personally_seen_by": "root",
+          "detail": "original 1024 pixels, complete actor and cup"
+        },
+        {
+          "file": "C:\\Users\\Hsinlung\\Desktop\\news-game\\.tmp\\motion-repair-2026-10-10\\semantic\\context-corpus-current\\walk-sip-reference\\actual-qualified-whole-refs\\sip_source115_v2_f000.png",
+          "sha256": "47fec40362f2f6617f82bf6edd4101390c65094024741e68af1ac8d0823d37e3",
+          "time": 3.83333333333333,
+          "view": 225.0,
+          "personally_seen_by": "root",
+          "detail": "original 1024 pixels, complete actor and cup"
+        }
+      ],
+      "scope": "Only two genuine whole reference postures under the actual side sleeve and lip relation are qualified. Newly generated intervals and actual loop remain unqualified."
+    },
+    "whole_endpoint_translation": "Twice the original complete-source horizontal hip displacement from frame60 to115; all77 positions translate together, all original rotations remain unchanged."
+  },
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "position_only": true,
+  "fullbody_constraint_frames": 3,
+  "raw_sha256": "ed86c01f2b93360d0e1803de39bad13d0d9823d3afd5fa0037a21d154e0b4761",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "source_and_final_sampled_checks_complete",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "ed86c01f2b93360d0e1803de39bad13d0d9823d3afd5fa0037a21d154e0b4761",
+    "record": "docs/motion-walk-drink-repair-2026-10-11.json",
+    "reason": "The intact generated loop and genuine sparse whole-body references are published. Official export exactly matches the reviewed candidate. Formal native/quarter and micro/reverse/random checks match the personally viewed private body and objects exactly. Both saved endpoint holds match final preview. This is finite/sampled verification, not full-speed or whole-library approval.",
+    "full_speed_observed": false,
+    "library_verified": false,
+    "formal_source_and_finite_verified": true,
+    "record_sha256": "15859d397095998e18fdf59502d3d53a7e0ad92b2c2c0dfea68adc3080f5eccc"
+  }
+}

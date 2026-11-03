@@ -1,0 +1,135 @@
+{
+  "name": "walk_carry_box",
+  "text": "A person walks carefully forward carrying a cardboard box in both hands in front of the abdomen. The hands support its two side faces, elbows bent close to the ribs. Keep the box level and clear of the thighs while taking steady alternating steps. Do not release either hand.",
+  "duration": 1.6,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks carefully forward carrying a cardboard box in both hands in front of the abdomen. The hands support its two side faces, elbows bent close to the ribs. Keep the box level and clear of the thighs while taking steady alternating steps. Do not release either hand.",
+    "duration": 1.6,
+    "contacts": [],
+    "item": {
+      "type": "held_cardboard_box",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. A person walks carefully forward carrying a cardboard box in both hands in front of the abdomen. The hands support its two side faces, elbows bent close to the ribs. Keep the box level and clear of the thighs while taking steady alternating steps. Do not release either hand. Hold held_cardboard_box with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/f34a80d410f00725/motion.npz",
+        "source_frame": 21,
+        "phase": 0,
+        "translation": [
+          -0.0574847050011158,
+          0.0,
+          -0.12906131148338318
+        ]
+      },
+      {
+        "source": "assets/animations/sources/f34a80d410f00725/motion.npz",
+        "source_frame": 21,
+        "phase": 1,
+        "translation": [
+          -0.14473500847816467,
+          0.0,
+          1.122780203819275
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/f34a80d410f00725/motion.npz",
+      "source_frame": 21,
+      "translation": [
+        -0.0574847050011158,
+        0.0,
+        -0.12906131148338318
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f34a80d410f0072524886f335961d0a1efee6d6a31f72deae5df46ca608d9a55",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/f34a80d410f00725/motion.npz",
+      "source_frame": 21,
+      "translation": [
+        -0.14473500847816467,
+        0.0,
+        1.122780203819275
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "f34a80d410f0072524886f335961d0a1efee6d6a31f72deae5df46ca608d9a55",
+        "hand_edited": false
+      },
+      "frame": 47
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237",
+    "observations": {
+      "entry": "Starts already carrying the carton with one foot in the gait phase.",
+      "activity": "All eighteen original-pixel side crops show alternating steps while the carton stays retained in front; this is the same genuine travel heading used by its transitions.",
+      "release_end": "The exact gait endpoint retains the carton and original gait pose; numerical wrap and same-family boundaries are checked separately."
+    },
+    "viewed_images_sha256": {
+      "docs/motion-review-evidence-2026-10-11/viewed/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p00.png": "255fd6ff091f2e1647757d372c3cf2cf8863fa3278f31084d3ff21633ac74a86",
+      "docs/motion-review-evidence-2026-10-11/viewed/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p01.png": "0d7e03c2182c0bc561e9cac7c675c46a32927669566cc89d6abdd7db3ba7af15",
+      "docs/motion-review-evidence-2026-10-11/viewed/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p02.png": "1d957fd79549c29eccf23249d09c08a30eb4735957b4b403f5f08a1babbcfa65"
+    },
+    "full_speed_observed": false,
+    "scope": "Recorded assistant observations of the named source; sampled images do not establish intended-speed playback or user acceptance.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "existing_viewed_evidence_persistent_path_migration",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"raw_sha256\": \"a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237\",\r\n    \"observations\": {\r\n      \"entry\": \"Starts already carrying the carton with one foot in the gait phase.\",\r\n      \"activity\": \"All eighteen original-pixel side crops show alternating steps while the carton stays retained in front; this is the same genuine travel heading used by its transitions.\",\r\n      \"release_end\": \"The exact gait endpoint retains the carton and original gait pose; numerical wrap and same-family boundaries are checked separately.\"\r\n    },\r\n    \"viewed_images_sha256\": {\r\n      \".tmp/motion-repair-2026-10-10/object-source/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p00.png\": \"255fd6ff091f2e1647757d372c3cf2cf8863fa3278f31084d3ff21633ac74a86\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p01.png\": \"0d7e03c2182c0bc561e9cac7c675c46a32927669566cc89d6abdd7db3ba7af15\",\r\n      \".tmp/motion-repair-2026-10-10/object-source/box-retained-transitions/formal-original-pixel-pages/walk_carry_box_v1_p02.png\": \"1d957fd79549c29eccf23249d09c08a30eb4735957b4b403f5f08a1babbcfa65\"\r\n    },\r\n    \"full_speed_observed\": false,\r\n    \"scope\": \"Recorded assistant observations of the named source; sampled images do not establish intended-speed playback or user acceptance.\"\r\n  }",
+      "original_record_sha256": "c60f70c36e90da2117f11c791c57928270f93e17e4e8d5f799ca1b36be9d2226",
+      "current_source_sha256_at_reconciliation": "a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 1,
+    "evidence_format": "phased_observations",
+    "viewed_evidence_archive": {
+      "file": "docs/motion-review-evidence-2026-10-11/viewed-images.json",
+      "sha256": "293dcd81a1ab6c3fcbe8adc9093fa2d9d180f21980611f7e468e5aa29324ddfa"
+    }
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Alternating steps with stable box; no obvious fold.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Alternating steps with stable box; no obvious fold.\"\r\n  }",
+      "original_record_sha256": "34a572f81ff9bea44e55a475a578e558e0dd99b8836b3cc035b82b63b3810ae8",
+      "current_source_sha256_at_reconciliation": "a117c413516ef0200ba4e2f9a2c3c0c583efcfe8239d91ee33832cd127154237",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

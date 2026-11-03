@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\mailbox.glb
+   size  x 0.520  y 1.250  z 0.432 m
+   box   min (-0.260, 0.000, -0.210)  max (0.260, 1.250, 0.222)
+   triangles 36: metal 12, metal_dark 24
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 af2eaf2de3106cf309c2b8cfa5e9216ea4ceffdefbbf5cb65bb88138fbd99f4e
+   REBUILD IDENTICAL

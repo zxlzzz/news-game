@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\path_straight.glb
+   size  x 2.000  y 0.070  z 4.000 m
+   box   min (-1.000, 0.000, -2.000)  max (1.000, 0.070, 2.000)
+   triangles 36: concrete 36
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 565e76c64985390663780cecab6945dbf5d39483b6b522bc9f7c92a635083d1a
+   REBUILD IDENTICAL

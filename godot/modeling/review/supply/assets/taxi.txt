@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\taxi.glb
+   size  x 1.960  y 1.640  z 4.555 m
+   box   min (-0.980, -0.000, -2.277)  max (0.980, 1.640, 2.277)
+   triangles 1252: accent 36, metal 600, metal_dark 520, trim_dark 24, window 72
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 fe485387ac2602e62df2f58a8cea0410ff044154821f1dfb9e3991abba6b0be6
+   REBUILD IDENTICAL

@@ -1,0 +1,56 @@
+{
+  "name": "take_photo",
+  "text": "A standing person steadily holds a camera with both hands just below eye level, looks at the camera viewfinder and takes a photograph. Slight breathing, feet planted, body upright.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A standing person steadily holds a camera with both hands just below eye level, looks at the camera viewfinder and takes a photograph. Slight breathing, feet planted, body upright.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_camera",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  both hand holds held_camera at the item grip marker.  A standing person steadily holds a camera with both hands just below eye level, looks at the camera viewfinder and takes a photograph. Slight breathing, feet planted, body upright. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "94e6be3b9213a1ffc3175feeaf4e0af0bf8214f06cef975bb226d5e39c80a910",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "94e6be3b9213a1ffc3175feeaf4e0af0bf8214f06cef975bb226d5e39c80a910",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Raises camera and holds at face; check lens/eye height. Camera lifted from waist to face.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Raises camera and holds at face; check lens/eye height. Camera lifted from waist to face.\"\r\n  }",
+      "original_record_sha256": "76a8f00bb68e49920addd08f404bb5ef3dc5f1bb61c8fbb5ccf25c76a221ec90",
+      "current_source_sha256_at_reconciliation": "94e6be3b9213a1ffc3175feeaf4e0af0bf8214f06cef975bb226d5e39c80a910",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

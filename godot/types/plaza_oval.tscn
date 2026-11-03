@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://models/plaza_oval.glb" id="1"]
+
+[node name="PlazaOval" type="Node3D" groups=["paving"]]
+
+[node name="model" parent="." instance=ExtResource("1")]

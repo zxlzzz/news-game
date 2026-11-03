@@ -1,0 +1,12 @@
+{
+  "clip": "pay",
+  "text": "A customer at a fruit stall takes money out of the right trouser pocket with the right hand, reaches over the counter and puts it down on the counter top, pauses, then withdraws the hand. The left arm hangs naturally.",
+  "duration": 3.5,
+  "seeds": [7, 61007],
+  "base": "customer",
+  "object": {"type": "market_stall", "post": "post_customer"},
+  "keys": [
+    {"t": 0.7, "Right": {"at": [-0.17, 0.74, 0.04]}},
+    {"t": [1.7, 2.0], "Right": {"marker": "cash_landing", "offset": [0, 0.055, 0]}}
+  ]
+}

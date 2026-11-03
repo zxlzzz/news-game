@@ -1,0 +1,197 @@
+{
+  "name": "slouch_bench",
+  "text": "A person stays slouched back on a bench, their torso reclined backward, legs stretched forward with heels resting on the floor, and arms hanging loosely at their sides. Their hips remain on the seat. They stay in this relaxed pose with only subtle breathing.",
+  "duration": 3.0,
+  "seed": 61007,
+  "attempt": 6,
+  "scene": {
+    "text": "A person stays slouched back on a bench, their torso reclined backward, legs stretched forward with heels resting on the floor, and arms hanging loosely at their sides. Their hips remain on the seat. They stay in this relaxed pose with only subtle breathing.",
+    "duration": 3.0,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat_front",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bench",
+    "post": "post_sit_1",
+    "description": "Start at bench.post_sit_1 facing the model standing marker direction. A person stays slouched back on a bench, their torso reclined backward, legs stretched forward with heels resting on the floor, and arms hanging loosely at their sides. Their hips remain on the seat. They stay in this relaxed pose with only subtle breathing. Hips touches the physical model marker hip_seat_front at 0.00s, 3.00s. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/fccd846a0f6cd08a/motion.npz",
+        "source_frame": 135,
+        "phase": 0,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_seat_front"
+      },
+      {
+        "source": "assets/animations/sources/fccd846a0f6cd08a/motion.npz",
+        "source_frame": 135,
+        "phase": 1,
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "align_hip": "hip_seat_front"
+      }
+    ],
+    "loop": true,
+    "seat_surface": {
+      "node": "seat",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bench",
+      "marker": "hip_seat_front",
+      "space": "world",
+      "episode": "hip_seat_front",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.5706,
+            0.15216
+          ],
+          "root_xz": [
+            0.0,
+            0.15216
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.0,
+            0.5706,
+            0.15216
+          ],
+          "root_xz": [
+            0.0,
+            0.15216
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/fccd846a0f6cd08a/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.00352487713098526,
+        0.0036822229385375937,
+        0.1401494470795989
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "fccd846a0f6cd08a17c188a97034afcfb423576733dabe21e798abe08837523e",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "placement_basis": [
+        [
+          0.9782957454839682,
+          0,
+          -0.20721349948294118
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.20721349948294118,
+          0,
+          0.9782957454839682
+        ]
+      ],
+      "placement_marker": "hip_seat_front"
+    },
+    {
+      "source": "assets/animations/sources/fccd846a0f6cd08a/motion.npz",
+      "source_frame": 135,
+      "translation": [
+        0.00352487713098526,
+        0.0036822229385375937,
+        0.1401494470795989
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "fccd846a0f6cd08a17c188a97034afcfb423576733dabe21e798abe08837523e",
+        "hand_edited": false
+      },
+      "frame": 89,
+      "placement_basis": [
+        [
+          0.9782957454839682,
+          0,
+          -0.20721349948294118
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.20721349948294118,
+          0,
+          0.9782957454839682
+        ]
+      ],
+      "placement_marker": "hip_seat_front"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "4a59345f522ad354a04f47ca61c43d58de171518c29145a8aff48e58bc72f9d2",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "4a59345f522ad354a04f47ca61c43d58de171518c29145a8aff48e58bc72f9d2",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"4a59345f522ad354a04f47ca61c43d58de171518c29145a8aff48e58bc72f9d2\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "a5bf656b0845249c73e01896a4ce9e88ce164dcc33432210b87d733aede0664a",
+      "current_source_sha256_at_reconciliation": "4a59345f522ad354a04f47ca61c43d58de171518c29145a8aff48e58bc72f9d2",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "name": "phone_call",
+  "text": "A relaxed upright person talks on a phone held in the right hand against the right ear. The right elbow points downward beside the chest. The left arm hangs comfortably beside the body. Small natural head nods during the phone call.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A relaxed upright person talks on a phone held in the right hand against the right ear. The right elbow points downward beside the chest. The left arm hangs comfortably beside the body. Small natural head nods during the phone call.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_phone",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. A person stands talking on a phone held to their right ear. Hold held_phone with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "f5008f0ca024b36ada624db277c9e619f6fa1488d00e6de8f87dde572c745afb",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 0-3.967 s two-view overview and enlarged front frame: upright relaxed call, phone screen against right ear and elbow down; free arm stays low.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 0-3.967 s two-view overview and enlarged front frame: upright relaxed call, phone screen against right ear and elbow down; free arm stays low.\"\r\n  }",
+      "original_record_sha256": "07fafc2b720d4149869a77ce5f5540e5642e964bf2c9af8e566307f890219654",
+      "current_source_sha256_at_reconciliation": "f5008f0ca024b36ada624db277c9e619f6fa1488d00e6de8f87dde572c745afb",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

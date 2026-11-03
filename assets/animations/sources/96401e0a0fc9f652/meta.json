@@ -1,0 +1,34 @@
+{
+  "name": "walk_newspaper",
+  "text": "A person walks slowly forward reading a wide open newspaper held in both hands. Both bent elbows keep the hands shoulder-width apart in front of the lower chest, looking down toward the newspaper, with small steady steps.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person walks slowly forward reading a wide open newspaper held in both hands. Both bent elbows keep the hands shoulder-width apart in front of the lower chest, looking down toward the newspaper, with small steady steps.",
+    "duration": 4,
+    "contacts": [],
+    "item": {
+      "type": "held_newspaper_open",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "The person starts at a clear patch of level ground and faces +Z.  both hand holds held_newspaper_open at the item grip marker.  A person walks slowly forward reading a wide open newspaper held in both hands. Both bent elbows keep the hands shoulder-width apart in front of the lower chest, looking down toward the newspaper, with small steady steps. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "96401e0a0fc9f652be513db83ffbd3538add8714dfd33dfc40098c457c7004bf",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

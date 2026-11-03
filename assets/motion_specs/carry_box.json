@@ -1,0 +1,47 @@
+{
+  "clip": "carry_box",
+  "text": "A person stands still holding a cardboard box in front of the belly with both hands on its sides, elbows bent and out to the sides, breathing gently and shifting the weight a little.",
+  "duration": 3.0,
+  "seeds": [
+    7,
+    61007
+  ],
+  "base": "stand",
+  "ends": "first_key",
+  "item": {
+    "type": "held_cardboard_box",
+    "hand": "both"
+  },
+  "keys": [
+    {
+      "t": [
+        0.2,
+        2.8
+      ],
+      "Left": {
+        "at": [
+          0.245,
+          0.97,
+          0.3
+        ],
+        "elbow": [
+          0.45,
+          1.2,
+          0.0
+        ]
+      },
+      "Right": {
+        "at": [
+          -0.245,
+          0.97,
+          0.3
+        ],
+        "elbow": [
+          -0.45,
+          1.2,
+          0.0
+        ]
+      }
+    }
+  ]
+}

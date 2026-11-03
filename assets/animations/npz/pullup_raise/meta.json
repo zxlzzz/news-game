@@ -1,0 +1,396 @@
+{
+  "name": "pullup_raise",
+  "text": "Hang with both hands holding a fixed horizontal pull-up bar. Pull the body up once, keep the face and chest behind the bar, hold the raised position calmly for the middle half, then lower back to the original hang. No swinging forward under or through the bar.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Hang with both hands holding a fixed horizontal pull-up bar. Pull the body up once, keep the face and chest behind the bar, hold the raised position calmly for the middle half, then lower back to the original hang. No swinging forward under or through the bar.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_pullup_low",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "runtime": false
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "fitness_pullup",
+    "post": "post_pullup",
+    "description": "Start at fitness_pullup.post_pullup facing the model standing marker direction. Hang with both hands holding a fixed horizontal pull-up bar. Pull the body up once, keep the face and chest behind the bar, hold the raised position calmly for the middle half, then lower back to the original hang. No swinging forward under or through the bar. Hips touches the physical model marker hip_pullup_low at 0.00s, 5.00s. LeftHand touches the physical model marker grip_left at 0.00s, 5.00s. RightHand touches the physical model marker grip_right at 0.00s, 5.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Suspend the body below the crossbar and between the uprights, with feet clear of the ground.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Suspend the body below the crossbar and between the uprights, with feet clear of the ground.",
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/459f4e34d4807aa8/motion.npz",
+        "source_frame": 30,
+        "phase": 0,
+        "align_hip": "hip_pullup_low"
+      },
+      {
+        "source": "assets/animations/sources/a3a79892990f6196/motion.npz",
+        "source_frame": 90,
+        "phase": 0.25,
+        "align_hip": "hip_pullup_high"
+      },
+      {
+        "source": "assets/animations/sources/a3a79892990f6196/motion.npz",
+        "source_frame": 90,
+        "phase": 0.5,
+        "align_hip": "hip_pullup_high"
+      },
+      {
+        "source": "assets/animations/sources/a3a79892990f6196/motion.npz",
+        "source_frame": 90,
+        "phase": 0.75,
+        "align_hip": "hip_pullup_high"
+      },
+      {
+        "source": "assets/animations/sources/459f4e34d4807aa8/motion.npz",
+        "source_frame": 30,
+        "phase": 1,
+        "align_hip": "hip_pullup_low"
+      }
+    ],
+    "loop": true
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "fitness_pullup",
+      "marker": "hip_pullup_low",
+      "space": "world",
+      "episode": "hip_pullup_low",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            1.687169,
+            -0.34553
+          ],
+          "root_xz": [
+            0.0,
+            -0.34553
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            1.687169,
+            -0.34553
+          ],
+          "root_xz": [
+            0.0,
+            -0.34553
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "fitness_pullup",
+      "marker": "grip_left",
+      "space": "world",
+      "episode": "grip_left",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.238256,
+            2.550943,
+            -0.134778
+          ],
+          "root_xz": [
+            0.0,
+            -0.34553
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.238256,
+            2.550943,
+            -0.134778
+          ],
+          "root_xz": [
+            0.0,
+            -0.34553
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "fitness_pullup",
+      "marker": "grip_right",
+      "space": "world",
+      "episode": "grip_right",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.235683,
+            2.551084,
+            -0.134698
+          ],
+          "root_xz": [
+            0.0,
+            -0.34553
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.235683,
+            2.551084,
+            -0.134698
+          ],
+          "root_xz": [
+            0.0,
+            -0.34553
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/459f4e34d4807aa8/motion.npz",
+      "source_frame": 30,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "459f4e34d4807aa829f2186445b654c1f48f476135338216e4552fbeadc5b2e9",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        0.0016728986520320177,
+        0.6849744569793701,
+        -0.35018403171256185
+      ],
+      "placement_basis": [
+        [
+          0.9999734353205922,
+          0,
+          0.007288940467128563
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.007288940467128563,
+          0,
+          0.9999734353205922
+        ]
+      ],
+      "placement_marker": "hip_pullup_low"
+    },
+    {
+      "source": "assets/animations/sources/a3a79892990f6196/motion.npz",
+      "source_frame": 90,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "a3a79892990f619694572478cef0ae2cac40443daec12c6f3794312e989ac891",
+        "hand_edited": false
+      },
+      "frame": 37,
+      "translation": [
+        -0.006535076070576906,
+        1.1653666978836057,
+        -0.34630805091859773
+      ],
+      "placement_basis": [
+        [
+          0.9994807586878457,
+          0,
+          -0.03222131302055184
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.03222131302055184,
+          0,
+          0.9994807586878457
+        ]
+      ],
+      "placement_marker": "hip_pullup_high"
+    },
+    {
+      "source": "assets/animations/sources/a3a79892990f6196/motion.npz",
+      "source_frame": 90,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "a3a79892990f619694572478cef0ae2cac40443daec12c6f3794312e989ac891",
+        "hand_edited": false
+      },
+      "frame": 74,
+      "translation": [
+        -0.006535076070576906,
+        1.1653666978836057,
+        -0.34630805091859773
+      ],
+      "placement_basis": [
+        [
+          0.9994807586878457,
+          0,
+          -0.03222131302055184
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.03222131302055184,
+          0,
+          0.9994807586878457
+        ]
+      ],
+      "placement_marker": "hip_pullup_high"
+    },
+    {
+      "source": "assets/animations/sources/a3a79892990f6196/motion.npz",
+      "source_frame": 90,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "a3a79892990f619694572478cef0ae2cac40443daec12c6f3794312e989ac891",
+        "hand_edited": false
+      },
+      "frame": 112,
+      "translation": [
+        -0.006535076070576906,
+        1.1653666978836057,
+        -0.34630805091859773
+      ],
+      "placement_basis": [
+        [
+          0.9994807586878457,
+          0,
+          -0.03222131302055184
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0.03222131302055184,
+          0,
+          0.9994807586878457
+        ]
+      ],
+      "placement_marker": "hip_pullup_high"
+    },
+    {
+      "source": "assets/animations/sources/459f4e34d4807aa8/motion.npz",
+      "source_frame": 30,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "459f4e34d4807aa829f2186445b654c1f48f476135338216e4552fbeadc5b2e9",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        0.0016728986520320177,
+        0.6849744569793701,
+        -0.35018403171256185
+      ],
+      "placement_basis": [
+        [
+          0.9999734353205922,
+          0,
+          0.007288940467128563
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.007288940467128563,
+          0,
+          0.9999734353205922
+        ]
+      ],
+      "placement_marker": "hip_pullup_low"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 5,
+  "raw_sha256": "5280d7c15a4062dd2c8fbe63fda445bc91869a672d717d34c1a02154da16f5bc",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_geometry_and_multiview_pass",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "5280d7c15a4062dd2c8fbe63fda445bc91869a672d717d34c1a02154da16f5bc",
+    "notes": "301 phases at 60 Hz: all contacts reachable; only intended hand/bar contact candidates. Head clears crossbar throughout. Three-angle 13-phase visual review. Native arrays unchanged."
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole-duration chronological 5 fps overview, two views. Raises and lowers coherently; posts obscure side view. Raise, hold, lower; earlier overview complete, close head partly cropped.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"visual_reviewed_keep\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole-duration chronological 5 fps overview, two views. Raises and lowers coherently; posts obscure side view. Raise, hold, lower; earlier overview complete, close head partly cropped.\"\r\n  }",
+      "original_record_sha256": "2355c9e4fd415ee5bf9398df8294b3ab969733efbcc0e4fa9d698e0fab4e40e7",
+      "current_source_sha256_at_reconciliation": "5280d7c15a4062dd2c8fbe63fda445bc91869a672d717d34c1a02154da16f5bc",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  },
+  "source_frame": "fixed"
+}

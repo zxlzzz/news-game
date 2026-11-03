@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\street_tree.glb
+   size  x 3.300  y 5.600  z 3.000 m
+   box   min (-1.650, 0.000, -1.500)  max (1.650, 5.600, 1.500)
+   triangles 860: bark 372, concrete 48, foliage 440
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 1402cf552c74a66e877b4eb1c8b5da1822b0498276ea1657ff13205eb8a279aa
+   REBUILD IDENTICAL

@@ -1,0 +1,88 @@
+{
+  "name": "block_way",
+  "attempt": 2,
+  "duration": 3,
+  "seed": 61007,
+  "text": "A person steps into the way and raises both arms wide sideways to block passage, palms outward. Keep the arms spread across the path with a firm upright stance. Small natural balance shift.",
+  "scene": {
+    "text": "A person steps into the way and raises both arms wide sideways to block passage, palms outward. Keep the arms spread across the path with a firm upright stance. Small natural balance shift.",
+    "duration": 3,
+    "loop": false
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "frame": 0,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/block_way.json",
+      "frame": 35,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "fc45a21ea455f4299b79d038f068a2bea1fbff18024a28913f61e0a9da0e024c",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/poses/block_way.json",
+      "frame": 89,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "fc45a21ea455f4299b79d038f068a2bea1fbff18024a28913f61e0a9da0e024c",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 3,
+  "raw_sha256": "e948136fbc673d14b16c01fca4a5febe881a72f960b29cdfd6a83418d914254e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Full 2.967 s two-view overview: standing with arms down enters wide blocking posture, then holds. This is an entry-to-block clip, not a repeated arm cycle.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Full 2.967 s two-view overview: standing with arms down enters wide blocking posture, then holds. This is an entry-to-block clip, not a repeated arm cycle.\"\r\n  }",
+      "original_record_sha256": "19d9bfdcaf632e7fae21d23c43b7d340c617d207f79e8b6e54c5bebe83a2dead",
+      "current_source_sha256_at_reconciliation": "e948136fbc673d14b16c01fca4a5febe881a72f960b29cdfd6a83418d914254e",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

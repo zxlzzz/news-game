@@ -1,0 +1,110 @@
+{
+  "name": "push_cart",
+  "text": "A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+  "duration": 1.5,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+    "duration": 1.5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "grip_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "grip_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "shopping_cart",
+    "post": "post_push",
+    "description": "Start at shopping_cart.post_push facing the model standing marker direction. A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing. LeftHand touches the physical model marker grip_left at 0.00s, 1.53s. RightHand touches the physical model marker grip_right at 0.00s, 1.53s. Both hands are occupied at their corresponding contact points; the description defines their release. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "travel_with_actor": true,
+    "loop": true
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/push_cart.json",
+      "frame": 0,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "18ae53ad33a93338c10d06c05543290c6aa059418cb4f840a417b9a988de2112",
+        "hand_edited": false
+      },
+      "translation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "source": "assets/animations/poses/push_cart.json",
+      "frame": 44,
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "18ae53ad33a93338c10d06c05543290c6aa059418cb4f840a417b9a988de2112",
+        "hand_edited": false
+      },
+      "translation": [
+        0,
+        0,
+        1.0
+      ]
+    }
+  ],
+  "loop": true,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "53ad20919165bcb3b3accecbc4190ee5d14562a6fb55cabca4067fb52efdce16",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "visual_review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "method": "Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.",
+    "observation": "Whole 1.467 s side sequence at 30 fps and front overview: elbows remain lowered, both hands stay on handle through the two steps.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "withdrawn_assistant_verdict",
+      "original_record_json": "{\r\n    \"status\": \"repaired_visual_reviewed\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"method\": \"Visual review only. Initial whole-duration chronological overview at 5 fps, followed by full 30 fps sequences and close-ups where needed. No numerical quality gates or tests. Real-time viewing unavailable; do not claim live playback.\",\r\n    \"observation\": \"Whole 1.467 s side sequence at 30 fps and front overview: elbows remain lowered, both hands stay on handle through the two steps.\"\r\n  }",
+      "original_record_sha256": "cd84df5f0c0d4acee162661a51bd30a99028ad9d5ff6e893affcb14f0ed04b96",
+      "current_source_sha256_at_reconciliation": "53ad20919165bcb3b3accecbc4190ee5d14562a6fb55cabca4067fb52efdce16",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "The old assistant approval was withdrawn after missed activity and contact failures. Retained observations describe their historical scope and do not approve the current version."
+  }
+}

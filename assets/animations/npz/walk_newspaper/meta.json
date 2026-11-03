@@ -1,0 +1,95 @@
+{
+  "name": "walk_newspaper",
+  "text": "A person walks slowly forward reading a wide open newspaper held in both hands. Both bent elbows keep the hands shoulder-width apart in front of the lower chest, looking down toward the newspaper, with small steady steps.",
+  "duration": 1.5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks slowly forward reading a wide open newspaper held in both hands. Both bent elbows keep the hands shoulder-width apart in front of the lower chest, looking down toward the newspaper, with small steady steps.",
+    "duration": 1.5,
+    "contacts": [],
+    "item": {
+      "type": "held_newspaper_open",
+      "hand": "both",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. A person walks slowly forward reading a wide open newspaper held in both hands. Both bent elbows keep the hands shoulder-width apart in front of the lower chest, looking down toward the newspaper, with small steady steps. Hold held_newspaper_open with both at its grip marker. Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/96401e0a0fc9f652/motion.npz",
+        "source_frame": 27,
+        "phase": 0,
+        "translation": [
+          -0.07877905666828156,
+          0.0,
+          -0.20927898585796356
+        ]
+      },
+      {
+        "source": "assets/animations/sources/96401e0a0fc9f652/motion.npz",
+        "source_frame": 27,
+        "phase": 1,
+        "translation": [
+          -0.11106258630752563,
+          0.0,
+          1.1546238660812378
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/96401e0a0fc9f652/motion.npz",
+      "source_frame": 27,
+      "translation": [
+        -0.07877905666828156,
+        0.0,
+        -0.20927898585796356
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "96401e0a0fc9f652be513db83ffbd3538add8714dfd33dfc40098c457c7004bf",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/96401e0a0fc9f652/motion.npz",
+      "source_frame": 27,
+      "translation": [
+        -0.11106258630752563,
+        0.0,
+        1.1546238660812378
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "96401e0a0fc9f652be513db83ffbd3538add8714dfd33dfc40098c457c7004bf",
+        "hand_edited": false
+      },
+      "frame": 44
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "7b9132dbcdf85a0e1e6ffbb2ea2fd17e3894e5f83d00cff8ffd6332979a6a96a",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "7b9132dbcdf85a0e1e6ffbb2ea2fd17e3894e5f83d00cff8ffd6332979a6a96a",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "山东大学威海校区",
+  "utm_zone": 51,
+  "origin_utm": [416500, 4154300],
+  "extent_m": { "x": [-1228.8, 1228.8], "z": [-1228.8, 1228.8] },
+  "imagery": {
+    "service": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export",
+    "metres_per_px": 0.3,
+    "tile_px": 1024,
+    "dir": "research/sdu_weihai/imagery"
+  },
+  "dem": "research/sdu_weihai/data/FABDEM_N37E122.tif",
+  "osm": "research/sdu_weihai/data/osm_campus_area.osm"
+}

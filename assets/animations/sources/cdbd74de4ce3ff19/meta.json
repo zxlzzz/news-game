@@ -1,0 +1,104 @@
+{
+  "name": "phone_walk",
+  "text": "A person walks slowly forward at a steady pace while looking down at a phone held in their right hand in front of their chest. Their left arm swings a little and their feet take regular alternating steps. They keep walking without stopping.",
+  "duration": 1.3666666666666667,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person walks slowly forward at a steady pace while looking down at a phone held in their right hand in front of their chest. Their left arm swings a little and their feet take regular alternating steps. They keep walking without stopping.",
+    "duration": 1.3666666666666667,
+    "contacts": [],
+    "item": {
+      "type": "held_phone",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. A person walks slowly forward at a steady pace while looking down at a phone held in their right hand in front of their chest. Their left arm swings a little and their feet take regular alternating steps. They keep walking without stopping. Hold held_phone with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/b2dedbd5a6cd0bcc/motion.npz",
+        "source_frame": 36,
+        "phase": 0,
+        "translation": [
+          0.0604725256562233,
+          0.0,
+          -1.1199429035186768
+        ]
+      },
+      {
+        "source": "assets/animations/sources/b2dedbd5a6cd0bcc/motion.npz",
+        "source_frame": 36,
+        "phase": 1,
+        "translation": [
+          -0.0040447041392326355,
+          0.0,
+          0.22821974754333496
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/b2dedbd5a6cd0bcc/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.0604725256562233,
+        0.0,
+        -1.1199429035186768
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "b2dedbd5a6cd0bcccd142fc8561511431f5e3ad38d71389888c8a3b7c47ab0b2",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/b2dedbd5a6cd0bcc/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        -0.0040447041392326355,
+        0.0,
+        0.22821974754333496
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "b2dedbd5a6cd0bcccd142fc8561511431f5e3ad38d71389888c8a3b7c47ab0b2",
+        "hand_edited": false
+      },
+      "frame": 40
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "cdbd74de4ce3ff1970dce8be457be17f97cdd42802cc773cf31e38d8031cef0b",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "cdbd74de4ce3ff1970dce8be457be17f97cdd42802cc773cf31e38d8031cef0b",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"cdbd74de4ce3ff1970dce8be457be17f97cdd42802cc773cf31e38d8031cef0b\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "1073d9c11e67b8da4af645675ff7d375618bc8378741555edbdce6532cad79b3",
+      "current_source_sha256_at_reconciliation": "cdbd74de4ce3ff1970dce8be457be17f97cdd42802cc773cf31e38d8031cef0b",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

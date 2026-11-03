@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://models/held_newspaper_open.glb" id="1"]
+
+[node name="HeldNewspaperOpen" type="Node3D" groups=["held"]]
+
+[node name="model" parent="." instance=ExtResource("1")]

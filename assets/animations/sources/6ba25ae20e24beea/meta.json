@@ -1,0 +1,137 @@
+{
+  "name": "sit_down",
+  "text": "A person stands with the bench directly behind their knees, bends both knees, leans the torso slightly forward and lowers the hips gently onto the bench. Both hands remain free beside the thighs, feet stay flat and apart. Finish seated upright with hands on the lap.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "object": "bench",
+    "post": "post_sit_1",
+    "duration": 4,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0.85,
+          1
+        ],
+        "window": [
+          0.82,
+          0.85,
+          1,
+          1
+        ]
+      }
+    ],
+    "text": "A person stands with the bench directly behind their knees, bends both knees, leans the torso slightly forward and lowers the hips gently onto the bench. Both hands remain free beside the thighs, feet stay flat and apart. Finish seated upright with hands on the lap.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0,
+        "align_stand": "post_sitdown"
+      },
+      {
+        "source": "assets/animations/poses/sit_chair.json",
+        "phase": 1,
+        "align_hip": "hip_seat"
+      }
+    ],
+    "idle_hand": "Both hands follow the stated task; a hand without a task rests beside its thigh.",
+    "clearance": "Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "description": "Start at bench.post_sit_1 facing the model standing marker direction. A person stands with the bench directly behind their knees, bends both knees, leans the torso slightly forward and lowers the hips gently onto the bench. Both hands remain free beside the thighs, feet stay flat and apart. Finish seated upright with hands on the lap. Hips touches the physical model marker hip_seat at 3.40s, 4.00s. Both hands follow the stated task; a hand without a task rests beside its thigh. Keep the torso, head and limbs outside solid model surfaces throughout.",
+    "seat_surface": {
+      "node": "seat",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bench",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 101,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.0,
+            0.5706,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        0.0,
+        0.0,
+        0.60864
+      ]
+    },
+    {
+      "source": "assets/animations/poses/sit_chair.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "0c3251afbd3914f88324dc6fa335e48e2f39076fff087012868d6585af106bb3",
+        "hand_edited": false
+      },
+      "frame": 119,
+      "translation": [
+        0.0,
+        0.018900004005432125,
+        0.0
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "6ba25ae20e24beea8345cbfc95127169caca8a1b78dc384d13b62621669d2d85",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "archived_observations_unverified",
+    "accepted_by_hsinlung": false,
+    "notes": "Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.",
+    "raw_sha256": "6ba25ae20e24beea8345cbfc95127169caca8a1b78dc384d13b62621669d2d85",
+    "renderer_sha256": "7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "archived_assistant_verdict_context",
+      "original_record_json": "{\n    \"status\": \"visual_pass\",\n    \"accepted_by_hsinlung\": false,\n    \"notes\": \"Arms perform the stated task naturally; the body clears the real object in front and side continuous renders.\",\n    \"raw_sha256\": \"6ba25ae20e24beea8345cbfc95127169caca8a1b78dc384d13b62621669d2d85\",\n    \"renderer_sha256\": \"7241d80a46351f38b671181a6d6292ee514e12385d166d816adb7f8b7c896bd8\"\n  }",
+      "original_record_sha256": "d3278b31bfea02488f228dedeefeb85e3d59f09de1e8bc99903dd569e4ab19cf",
+      "current_source_sha256_at_reconciliation": "6ba25ae20e24beea8345cbfc95127169caca8a1b78dc384d13b62621669d2d85",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "current_approval": false,
+    "scope": "Historical source-archive observations only; this archive is not a selected current runtime asset or current visual approval."
+  }
+}

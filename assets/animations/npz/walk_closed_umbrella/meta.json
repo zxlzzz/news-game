@@ -1,0 +1,95 @@
+{
+  "name": "walk_closed_umbrella",
+  "text": "A person walks forward carrying a closed umbrella by its handle in the right hand beside the right thigh. Right elbow nearly straight and relaxed; the umbrella tip points down near the ground without scraping it. Left arm swings naturally. Keep moving steadily.",
+  "duration": 1.3333333333333333,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "A person walks forward carrying a closed umbrella by its handle in the right hand beside the right thigh. Right elbow nearly straight and relaxed; the umbrella tip points down near the ground without scraping it. Left arm swings naturally. Keep moving steadily.",
+    "duration": 1.3333333333333333,
+    "contacts": [],
+    "item": {
+      "type": "held_umbrella_closed",
+      "hand": "right",
+      "grip": "grip"
+    },
+    "description": "Start at level ground facing +Z. A person walks forward carrying a closed umbrella by its handle in the right hand beside the right thigh. Right elbow nearly straight and relaxed; the umbrella tip points down near the ground without scraping it. Left arm swings naturally. Keep moving steadily. Hold held_umbrella_closed with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "loop": true,
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/c86ff86f2276464b/motion.npz",
+        "source_frame": 36,
+        "phase": 0,
+        "translation": [
+          0.07514549791812897,
+          0.0,
+          -1.2323801517486572
+        ]
+      },
+      {
+        "source": "assets/animations/sources/c86ff86f2276464b/motion.npz",
+        "source_frame": 36,
+        "phase": 1,
+        "translation": [
+          -0.028627708554267883,
+          0.0,
+          0.20041728019714355
+        ]
+      }
+    ]
+  },
+  "contacts": [],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/c86ff86f2276464b/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        0.07514549791812897,
+        0.0,
+        -1.2323801517486572
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "c86ff86f2276464b3226342676036f6ff90c132b1dfebbb0ce25ca729647bac5",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/c86ff86f2276464b/motion.npz",
+      "source_frame": 36,
+      "translation": [
+        -0.028627708554267883,
+        0.0,
+        0.20041728019714355
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "c86ff86f2276464b3226342676036f6ff90c132b1dfebbb0ce25ca729647bac5",
+        "hand_edited": false
+      },
+      "frame": 39
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "5e9cd9ed3fb2dce0776ec63b72ec445996c4a81ebfc9a3fa9905be218956acd6",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "5e9cd9ed3fb2dce0776ec63b72ec445996c4a81ebfc9a3fa9905be218956acd6",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  }
+}

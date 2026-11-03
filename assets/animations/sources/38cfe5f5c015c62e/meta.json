@@ -1,0 +1,286 @@
+{
+  "name": "sit_sideways",
+  "text": "A person sits diagonally to the left on a low park bench. The knees and feet point diagonally left while the torso turns gently toward the front. The left hand rests on the top of the backrest behind the body. The right hand rests low on the thigh. Stay comfortably seated and breathe naturally, no waving, no standing, no change of seat. A seamless idle loop.",
+  "duration": 3,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "A person sits diagonally to the left on a low park bench. The knees and feet point diagonally left while the torso turns gently toward the front. The left hand rests on the top of the backrest behind the body. The right hand rests low on the thigh. Stay comfortably seated and breathe naturally, no waving, no standing, no change of seat. A seamless idle loop.",
+    "duration": 3,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "LeftHand",
+        "marker": "back_grip",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "surface_node": "backrest"
+      }
+    ],
+    "object": "bench",
+    "post": "post_sit_1",
+    "description": "Start at bench.post_sit_1 facing the model standing marker direction. A person sits diagonally to the left on a low park bench. The knees and feet point diagonally left while the torso turns gently toward the front. The left hand rests on the top of the backrest behind the body. The right hand rests low on the thigh. Stay comfortably seated and breathe naturally, no waving, no standing, no change of seat. A seamless idle loop. Hips touches the physical model marker hip_seat at 0.00s, 3.00s. LeftHand touches the physical model marker back_grip at 0.00s, 3.00s. The right hand performs the task described above; otherwise it hangs or swings naturally. Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "seat_surface": {
+      "node": "seat",
+      "window": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "back_node": "backrest"
+    },
+    "loop": true,
+    "runtime_contacts": [
+      {
+        "joint": "LeftFoot",
+        "marker": "foot_side_left",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "joint": "RightFoot",
+        "marker": "foot_side_right",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/68a123c366a065d3/motion.npz",
+        "source_frame": 75,
+        "phase": 0,
+        "align_hip": "hip_seat",
+        "placement_basis": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "source": "assets/animations/sources/68a123c366a065d3/motion.npz",
+        "source_frame": 75,
+        "phase": 1,
+        "align_hip": "hip_seat",
+        "placement_basis": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ]
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bench",
+      "marker": "hip_seat",
+      "space": "world",
+      "episode": "hip_seat",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.46916,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.0,
+            0.46916,
+            0.0
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "LeftHand",
+      "model": "bench",
+      "marker": "back_grip",
+      "space": "world",
+      "episode": "back_grip",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.297488,
+            0.89341,
+            -0.176372
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "frame": 89,
+          "position": [
+            0.297488,
+            0.89341,
+            -0.176372
+          ],
+          "root_xz": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "loop": true,
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/68a123c366a065d3/motion.npz",
+      "source_frame": 75,
+      "placement_basis": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "68a123c366a065d3722c2da14d18dc5b5cb5cba201077468a51754c562e87f15",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        -0.010236591100692749,
+        -0.09566899188995365,
+        -0.015564819797873497
+      ],
+      "placement_marker": "hip_seat"
+    },
+    {
+      "source": "assets/animations/sources/68a123c366a065d3/motion.npz",
+      "source_frame": 75,
+      "placement_basis": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "68a123c366a065d3722c2da14d18dc5b5cb5cba201077468a51754c562e87f15",
+        "hand_edited": false
+      },
+      "frame": 89,
+      "translation": [
+        -0.010236591100692749,
+        -0.09566899188995365,
+        -0.015564819797873497
+      ],
+      "placement_marker": "hip_seat"
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "38cfe5f5c015c62eb8823b4313192207b5996abcac1a7d28ef9e16ce366cacda",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

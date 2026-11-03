@@ -1,0 +1,8 @@
+== C:\Users\Hsinlung\Desktop\news-game\godot\models\cafe_umbrella.glb
+   size  x 2.727  y 2.921  z 2.727 m
+   box   min (-1.363, 0.000, -1.363)  max (1.363, 2.921, 1.363)
+   triangles 1368: concrete 124, fabric 128, metal 1116
+   PASS
+   EXTRA: outward volume and normal/winding consistency PASS
+   SHA256 9a8f55e26bea0a910f01cb50822d0b1d214c98f1cb2d126450af4c86740e3c22
+   REBUILD IDENTICAL

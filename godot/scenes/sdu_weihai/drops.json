@@ -1,0 +1,14 @@
+{
+ "x0": -751.0,
+ "z0": -884.0,
+ "cell": 1.0,
+ "width": 1346,
+ "height": 1720,
+ "classes": {
+  "none": 0,
+  "grass_bank": 1,
+  "steps": 2,
+  "wall": 3
+ },
+ "note": "drops.bin uint8 class per cell, drops_m.bin float32 height of the step or wall there; rows along +Z"
+}

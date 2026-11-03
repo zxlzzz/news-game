@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StyleParams" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/style_params.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+band_ndl = 0.5
+hatch_period_px = 5.0
+cover_grazing = 0.15
+cover_shade = 0.4
+cover_dark = 0.4
+light_scale = 1.0
+line_width_px = 1.5
+line_depth_bias = 0.03
+crease_deg = 35.0

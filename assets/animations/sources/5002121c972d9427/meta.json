@@ -1,0 +1,125 @@
+{
+  "name": "wallet_takeout",
+  "text": "Stand relaxed with both arms down. Reach the RIGHT hand to the right hip pocket, take out a wallet and bring it only to waist height in front of the abdomen. Use the LEFT hand briefly to open and check the wallet while looking down. Close it, move it back to the right hip pocket with the RIGHT hand, tuck it away, release it and lower both empty arms beside the thighs. Finish standing relaxed. Keep elbows low; never raise the wallet near the face.",
+  "duration": 6,
+  "seed": 61007,
+  "attempt": 2,
+  "scene": {
+    "text": "Stand relaxed with both arms down. Reach the RIGHT hand to the right hip pocket, take out a wallet and bring it only to waist height in front of the abdomen. Use the LEFT hand briefly to open and check the wallet while looking down. Close it, move it back to the right hip pocket with the RIGHT hand, tuck it away, release it and lower both empty arms beside the thighs. Finish standing relaxed. Keep elbows low; never raise the wallet near the face.",
+    "duration": 6,
+    "contacts": [],
+    "item": {
+      "type": "held_wallet",
+      "hand": "right",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. Stand relaxed with both arms down. Reach the RIGHT hand to the right hip pocket, take out a wallet and bring it only to waist height in front of the abdomen. Use the LEFT hand briefly to open and check the wallet while looking down. Close it, move it back to the right hip pocket with the RIGHT hand, tuck it away, release it and lower both empty arms beside the thighs. Finish standing relaxed. Keep elbows low; never raise the wallet near the face. Hold held_wallet with right at its grip marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/poses/stand.json",
+        "phase": 1
+      },
+      {
+        "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+        "source_frame": 18,
+        "translation": [
+          -0.00032386055681854486,
+          0,
+          0.012036845088005066
+        ],
+        "phase": 0.35
+      },
+      {
+        "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+        "source_frame": 18,
+        "translation": [
+          -0.00032386055681854486,
+          0,
+          0.012036845088005066
+        ],
+        "phase": 0.55
+      }
+    ],
+    "item_visible": [
+      0.16,
+      0.86
+    ]
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/poses/stand.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "6972514fa938b356f9dc8539da34d4b32608fadf18b04164a823279b1e87108d",
+        "hand_edited": false
+      },
+      "frame": 179
+    },
+    {
+      "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+      "source_frame": 18,
+      "translation": [
+        -0.00032386055681854486,
+        0,
+        0.012036845088005066
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "3d4de7487457d3fe934281044c04e8332a9b9ba6419baa70826146c7433c4a89",
+        "hand_edited": false
+      },
+      "frame": 63
+    },
+    {
+      "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+      "source_frame": 18,
+      "translation": [
+        -0.00032386055681854486,
+        0,
+        0.012036845088005066
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "3d4de7487457d3fe934281044c04e8332a9b9ba6419baa70826146c7433c4a89",
+        "hand_edited": false
+      },
+      "frame": 98
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 4,
+  "raw_sha256": "5002121c972d9427db6c03b9b5fe9b3f9ad1d500d50d33e5e115f2df3408bdcb",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  },
+  "source_archive": {
+    "source_npz": ".tmp/motion-repair-2026-10-10/object-source/generated/wallet_takeout/attempt_002/motion.npz",
+    "original_meta_sha256": "c979321ee4dc55832e378ebd8b1e720a2c635672da361f23503c185d6a21bf9e",
+    "original_meta_file": "generation-original-meta-c979321ee4dc.json",
+    "raw_npz_unchanged": true
+  }
+}

@@ -1,0 +1,403 @@
+{
+  "name": "fruit_weigh",
+  "text": "A fruit seller makes one continuous right-arm transfer across a counter. Lift a grapefruit from the counter with the right hand, keep it raised above the counter while moving it sideways to the weighing tray on the right, then lower it onto the tray and release it. Keep the right hand high between picking up and setting down. The left arm hangs relaxed. Do not switch hands or rest between pickup and placement.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 4,
+  "scene": {
+    "text": "A fruit seller makes one continuous right-arm transfer across a counter. Lift a grapefruit from the counter with the right hand, keep it raised above the counter while moving it sideways to the weighing tray on the right, then lower it onto the tray and release it. Keep the right hand high between picking up and setting down. The left arm hangs relaxed. Do not switch hands or rest between pickup and placement.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "fruit_rest_back",
+        "grip_item": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "phases": [
+          0.28
+        ],
+        "window": [
+          0.2,
+          0.25,
+          0.28,
+          0.32
+        ],
+        "episode": "fruit_transfer"
+      },
+      {
+        "joint": "RightHand",
+        "marker": "fruit_rest",
+        "grip_item": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "phases": [
+          0.76
+        ],
+        "window": [
+          0.68,
+          0.73,
+          0.76,
+          0.8
+        ],
+        "episode": "fruit_transfer"
+      }
+    ],
+    "object": "fruit_stand",
+    "post": "post_fruitweigh",
+    "description": "Start at fruit_stand.post_fruitweigh facing the model standing marker direction. A fruit seller makes one continuous right-arm transfer across a counter. Lift a grapefruit from the counter with the right hand, keep it raised above the counter while moving it sideways to the weighing tray on the right, then lower it onto the tray and release it. Keep the right hand high between picking up and setting down. The left arm hangs relaxed. Do not switch hands or rest between pickup and placement. RightHand touches the physical model marker fruit_rest_back at 1.40s. RightHand touches the physical model marker fruit_rest at 3.80s. Grasp held_fruit at grip_front at 1.40s. Release at 3.80s onto fruit_rest using the item rest marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep torso outside the counter, the held fruit clear of the baskets and the hand above the scale tray.",
+    "transfers": [
+      {
+        "type": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.28,
+        "release": 0.76,
+        "initial": {
+          "space": "object",
+          "marker": "fruit_rest_back"
+        },
+        "landing": {
+          "space": "object",
+          "marker": "fruit_rest"
+        },
+        "source_part": "fruit_002",
+        "initial_anchor": "rest",
+        "orientation": "upright",
+        "solid_grasp": true,
+        "support_surface": {
+          "node": "crate",
+          "marker": "fruit_rest_back",
+          "maximum_lift_m": 0.08
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep torso outside the counter, the held fruit clear of the baskets and the hand above the scale tray.",
+    "fullbody": [
+      {
+        "source": "assets/animations/references/fruit_transfer/motion.npz",
+        "source_frame": 49,
+        "phase": 0.28,
+        "align_stand": "post_fruitweigh",
+        "placement_basis": [
+          [
+            0.9504830963068389,
+            0,
+            0.31077625976731943
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            -0.31077625976731943,
+            0,
+            0.9504830963068389
+          ]
+        ]
+      },
+      {
+        "source": "assets/animations/references/fruit_transfer/motion.npz",
+        "source_frame": 70,
+        "phase": 0.48,
+        "align_stand": "post_fruitweigh"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "fruit_stand",
+      "marker": "fruit_rest_back",
+      "space": "world",
+      "episode": "fruit_transfer",
+      "keys": [
+        {
+          "frame": 42,
+          "position": [
+            0.102904,
+            1.342532,
+            0.344151
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "fruit_stand",
+      "marker": "fruit_rest",
+      "space": "world",
+      "episode": "fruit_transfer",
+      "keys": [
+        {
+          "frame": 113,
+          "position": [
+            -0.404977,
+            1.397553,
+            0.259504
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/references/fruit_transfer/motion.npz",
+      "source_frame": 49,
+      "placement_basis": [
+        [
+          0.9504830963068389,
+          0,
+          0.31077625976731943
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          -0.31077625976731943,
+          0,
+          0.9504830963068389
+        ]
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e8055c932e46a424bbd09b0cafd4158c58a51642715e17a949855a348b5de01c",
+        "hand_edited": false
+      },
+      "frame": 42,
+      "translation": [
+        -0.008627984672784805,
+        0.0,
+        0.0067199175246059895
+      ]
+    },
+    {
+      "source": "assets/animations/references/fruit_transfer/motion.npz",
+      "source_frame": 70,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "e8055c932e46a424bbd09b0cafd4158c58a51642715e17a949855a348b5de01c",
+        "hand_edited": false
+      },
+      "frame": 72,
+      "translation": [
+        -0.002324457745999098,
+        0.0,
+        0.002215074375271797
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "01312ab8ebf9e1ccfdffac494d570dd27fcc9b095c4e1d6fb61e4f587d7660b6",
+  "low_memory": true,
+  "hand_edited": false,
+  "review": {
+    "status": "repair_candidate",
+    "accepted_by_hsinlung": false,
+    "notes": "Raw source preserved; current contact/clearance evidence is in docs/asset-contact-repair-2026-10-10.json. No real-time visual approval is claimed.",
+    "metadata_reconciliation": {
+      "date": "2026-10-11",
+      "kind": "legacy_review_format_annotation",
+      "original_record_json": "{\r\n    \"status\": \"repair_candidate\",\r\n    \"accepted_by_hsinlung\": false,\r\n    \"notes\": \"Raw source preserved; current contact/clearance evidence is in docs/asset-contact-repair-2026-10-10.json. No real-time visual approval is claimed.\"\r\n  }",
+      "original_record_sha256": "9e7bd0dc28072869738b45446dd84e54bc31645e6db437ff7198412c492f60be",
+      "current_source_sha256_at_reconciliation": "01312ab8ebf9e1ccfdffac494d570dd27fcc9b095c4e1d6fb61e4f587d7660b6",
+      "recorded_observations_changed": false,
+      "new_visual_observations_made": false
+    },
+    "schema_version": 0,
+    "evidence_format": "legacy_unverified",
+    "evidence_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks.",
+    "legacy_scope": "Original legacy record retained exactly. This format lacks a complete phased-observation/image-fingerprint/current-source record; no missing observations or viewed images were invented. Separate dated repair records may establish only their stated finite checks."
+  },
+  "runtime_scene": {
+    "text": "A fruit seller makes one continuous right-arm transfer across a counter. Lift a grapefruit from the counter with the right hand, keep it raised above the counter while moving it sideways to the weighing tray on the right, then lower it onto the tray and release it. Keep the right hand high between picking up and setting down. The left arm hangs relaxed. Do not switch hands or rest between pickup and placement.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "fruit_rest_back",
+        "grip_item": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "phases": [
+          0.28
+        ],
+        "window": [
+          0.2,
+          0.25,
+          0.28,
+          0.32
+        ],
+        "episode": "fruit_transfer",
+        "surface_node": "crate"
+      },
+      {
+        "joint": "RightHand",
+        "marker": "fruit_rest",
+        "grip_item": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "phases": [
+          0.76
+        ],
+        "window": [
+          0.68,
+          0.73,
+          0.76,
+          0.8
+        ],
+        "episode": "fruit_transfer",
+        "surface_node": "crate"
+      }
+    ],
+    "object": "fruit_stand",
+    "post": "post_fruitweigh",
+    "description": "Start at fruit_stand.post_fruitweigh facing the model standing marker direction. A fruit seller stands beside a waist high stall counter. Reach the right hand to one fruit, grasp it, lift it clear of the counter, move it sideways to a weighing scale, lower it gently onto the tray and release it. Withdraw the empty right hand and look down at the scale. The left arm remains relaxed beside the body. Keep the torso outside the counter. RightHand touches the physical model marker fruit_pickup at 1.25s. RightHand touches the physical model marker fruit_rest at 3.75s. Grasp held_fruit at grip at 1.25s. Release at 3.75s onto fruit_rest using the item rest marker. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep torso outside the counter, the held fruit clear of the baskets and the hand above the scale tray.",
+    "transfers": [
+      {
+        "type": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.28,
+        "release": 0.76,
+        "initial": {
+          "space": "object",
+          "marker": "fruit_rest_back"
+        },
+        "landing": {
+          "space": "object",
+          "marker": "fruit_rest"
+        },
+        "source_part": "fruit_002",
+        "initial_anchor": "rest",
+        "orientation": "upright",
+        "solid_grasp": true,
+        "support_surface": {
+          "node": "crate",
+          "marker": "fruit_rest_back",
+          "maximum_lift_m": 0.08
+        }
+      }
+    ],
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep torso outside the counter, the held fruit clear of the baskets and the hand above the scale tray.",
+    "fullbody": [
+      {
+        "source": "assets/animations/references/fruit_transfer/motion.npz",
+        "source_frame": 49,
+        "phase": 0.28,
+        "align_stand": "post_fruitweigh",
+        "placement_basis": [
+          [
+            0.9504830963068389,
+            0,
+            0.31077625976731943
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            -0.31077625976731943,
+            0,
+            0.9504830963068389
+          ]
+        ]
+      },
+      {
+        "source": "assets/animations/references/fruit_transfer/motion.npz",
+        "source_frame": 70,
+        "phase": 0.48,
+        "align_stand": "post_fruitweigh"
+      }
+    ],
+    "reach_torso": true
+  },
+  "runtime_interaction": {
+    "duration": 5,
+    "preserve_root": true,
+    "preserve_origin": true,
+    "preserve_heading": true,
+    "stationary": true,
+    "playback": "once",
+    "object": "fruit_stand",
+    "post_marker": "post_fruitweigh",
+    "contacts": [
+      {
+        "joint": "handRight",
+        "target": {
+          "space": "object",
+          "marker": "fruit_rest_back",
+          "grip_item": "held_fruit",
+          "grip": "grip_front",
+          "rest": "rest",
+          "surface_node": "crate"
+        },
+        "window": [
+          0.2,
+          0.25,
+          0.28,
+          0.32
+        ]
+      },
+      {
+        "joint": "handRight",
+        "target": {
+          "space": "object",
+          "marker": "fruit_rest",
+          "grip_item": "held_fruit",
+          "grip": "grip_front",
+          "rest": "rest",
+          "surface_node": "crate"
+        },
+        "window": [
+          0.68,
+          0.73,
+          0.76,
+          0.8
+        ]
+      }
+    ],
+    "transfers": [
+      {
+        "type": "held_fruit",
+        "grip": "grip_front",
+        "rest": "rest",
+        "hand": "handRight",
+        "take": 0.28,
+        "release": 0.76,
+        "initial": {
+          "space": "object",
+          "marker": "fruit_rest_back"
+        },
+        "landing": {
+          "space": "object",
+          "marker": "fruit_rest"
+        },
+        "source_part": "fruit_002",
+        "initial_anchor": "rest",
+        "orientation": "upright",
+        "solid_grasp": true,
+        "support_surface": {
+          "node": "crate",
+          "marker": "fruit_rest_back",
+          "maximum_lift_m": 0.08
+        }
+      }
+    ],
+    "reach_torso": true
+  },
+  "source_frame": "fixed"
+}

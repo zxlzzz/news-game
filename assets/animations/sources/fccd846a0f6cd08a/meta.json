@@ -1,0 +1,114 @@
+{
+  "name": "slouch_bench",
+  "text": "A person stays slouched back on a bench, their torso reclined backward, legs stretched forward with heels resting on the floor, and arms hanging loosely at their sides. Their hips remain on the seat. They stay in this relaxed pose with only subtle breathing.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A person stays slouched back on a bench, their torso reclined backward, legs stretched forward with heels resting on the floor, and arms hanging loosely at their sides. Their hips remain on the seat. They stay in this relaxed pose with only subtle breathing.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "Hips",
+        "marker": "hip_seat_front",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "bench",
+    "post": "post_sit_1",
+    "description": "Start at bench.post_sit_1 facing the model standing marker direction. A person stays slouched back on a bench, their torso reclined backward, legs stretched forward with heels resting on the floor, and arms hanging loosely at their sides. Their hips remain on the seat. They stay in this relaxed pose with only subtle breathing. Hips touches the physical model marker hip_seat_front at 0.00s, 5.00s. Both hands follow the described pose or natural arm swing; hands with no task remain relaxed. Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "idle_hand": "Both hands follow the described pose or natural arm swing; hands with no task remain relaxed.",
+    "clearance": "Rest hips on the seat surface; keep the back in front of the backrest and feet clear of the legs.",
+    "fullbody": [
+      {
+        "source": "assets/animations/poses/slouch.json",
+        "phase": 0,
+        "align_hip": "hip_seat_front"
+      },
+      {
+        "source": "assets/animations/poses/slouch.json",
+        "phase": 1,
+        "align_hip": "hip_seat_front"
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "Hips",
+      "model": "bench",
+      "marker": "hip_seat_front",
+      "space": "world",
+      "episode": "hip_seat_front",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            0.0,
+            0.5706,
+            0.15216
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            0.0,
+            0.5706,
+            0.15216
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/slouch.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "63a404d4a79f552fc27dd2d4803cc162ab564b68165ad80829107a2eb62ee5da",
+        "hand_edited": false
+      },
+      "frame": 0,
+      "translation": [
+        0.0,
+        -0.0016346305847168008,
+        0.15216
+      ]
+    },
+    {
+      "source": "assets/animations/poses/slouch.json",
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "63a404d4a79f552fc27dd2d4803cc162ab564b68165ad80829107a2eb62ee5da",
+        "hand_edited": false
+      },
+      "frame": 149,
+      "translation": [
+        0.0,
+        -0.0016346305847168008,
+        0.15216
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "fccd846a0f6cd08a17c188a97034afcfb423576733dabe21e798abe08837523e",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

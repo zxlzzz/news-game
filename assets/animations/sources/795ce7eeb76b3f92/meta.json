@@ -1,0 +1,111 @@
+{
+  "name": "fountain_drink",
+  "text": "Bending deeply forward from the waist to drink directly from a drinking fountain. Both hands rest on the basin edges, elbows bend downward, mouth near the spout. Then slowly straighten.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "Bending deeply forward from the waist to drink directly from a drinking fountain. Both hands rest on the basin edges, elbows bend downward, mouth near the spout. Then slowly straighten.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "LeftHand",
+        "marker": "rim_left",
+        "phases": [
+          0.2,
+          0.8
+        ],
+        "window": [
+          0.165,
+          0.2,
+          0.8,
+          0.8350000000000001
+        ]
+      },
+      {
+        "joint": "RightHand",
+        "marker": "rim_right",
+        "phases": [
+          0.2,
+          0.8
+        ],
+        "window": [
+          0.165,
+          0.2,
+          0.8,
+          0.8350000000000001
+        ]
+      }
+    ],
+    "object": "drinking_fountain",
+    "post": "post_fountain",
+    "description": "Start at drinking_fountain.post_fountain facing the model standing marker direction. Bending deeply forward from the waist to drink directly from a drinking fountain. Both hands rest on the basin edges, elbows bend downward, mouth near the spout. Then slowly straighten. LeftHand touches the physical model marker rim_left at 1.00s, 4.00s. RightHand touches the physical model marker rim_right at 1.00s, 4.00s. Both hands are occupied at their corresponding contact points; the description defines their release. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "Both hands are occupied at their corresponding contact points; the description defines their release.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side."
+  },
+  "contacts": [
+    {
+      "joint": "LeftHand",
+      "model": "drinking_fountain",
+      "marker": "rim_left",
+      "space": "world",
+      "episode": "rim_left",
+      "keys": [
+        {
+          "frame": 30,
+          "position": [
+            0.178843,
+            1.147955,
+            0.318628
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            0.178843,
+            1.147955,
+            0.318628
+          ]
+        }
+      ]
+    },
+    {
+      "joint": "RightHand",
+      "model": "drinking_fountain",
+      "marker": "rim_right",
+      "space": "world",
+      "episode": "rim_right",
+      "keys": [
+        {
+          "frame": 30,
+          "position": [
+            -0.176611,
+            1.147845,
+            0.318746
+          ]
+        },
+        {
+          "frame": 119,
+          "position": [
+            -0.176611,
+            1.147845,
+            0.318746
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "795ce7eeb76b3f925e76390beed0a8264fcc64c05bf3a8103ce5816a06abef23",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

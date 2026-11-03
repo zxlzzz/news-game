@@ -1,0 +1,72 @@
+{
+  "name": "hold_door",
+  "text": "A standing person is next to an already open hinged door. The right hand grasps its handle at waist height, right elbow bends comfortably down. Hold the door open with gentle natural body sway. Keep the left arm hanging free and the torso beside the door leaf, outside the doorway.",
+  "duration": 5,
+  "seed": 61007,
+  "attempt": 3,
+  "scene": {
+    "text": "A standing person is next to an already open hinged door. The right hand grasps its handle at waist height, right elbow bends comfortably down. Hold the door open with gentle natural body sway. Keep the left arm hanging free and the torso beside the door leaf, outside the doorway.",
+    "duration": 5,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "grip_front",
+        "phases": [
+          0,
+          1
+        ],
+        "window": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "object": "door_single",
+    "post": "post_doorhold",
+    "description": "Start at door_single.post_doorhold facing the model standing marker direction. A standing person is next to an already open hinged door. The right hand grasps its handle at waist height, right elbow bends comfortably down. Hold the door open with gentle natural body sway. Keep the left arm hanging free and the torso beside the door leaf, outside the doorway. RightHand touches the physical model marker grip_front at 0.00s, 5.00s. The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task. Keep head, shoulders, elbows and knees out of the door leaf sweep and clear of both jambs.",
+    "idle_hand": "The left hand stays relaxed by the left thigh unless the description explicitly gives it a supporting task.",
+    "clearance": "Keep head, shoulders, elbows and knees out of the door leaf sweep and clear of both jambs."
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "door_single",
+      "marker": "grip_front",
+      "space": "world",
+      "episode": "grip_front",
+      "keys": [
+        {
+          "frame": 0,
+          "position": [
+            -0.240096,
+            1.224027,
+            0.157917
+          ]
+        },
+        {
+          "frame": 149,
+          "position": [
+            -0.240096,
+            1.224027,
+            0.157917
+          ]
+        }
+      ]
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": false,
+  "position_only": true,
+  "fullbody_constraint_frames": 0,
+  "raw_sha256": "3cb028226f6cf068a84e8b9e3ea5931856255cd0a7b13b26ca10c56e7565276f",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "awaiting_object_render",
+    "accepted_by_hsinlung": false
+  }
+}

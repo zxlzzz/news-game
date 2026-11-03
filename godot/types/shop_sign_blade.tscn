@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://models/shop_sign_blade.glb" id="1"]
+
+[node name="ShopSignBlade" type="Node3D" groups=["facade_item"]]
+
+[node name="model" parent="." instance=ExtResource("1")]

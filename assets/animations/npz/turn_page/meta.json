@@ -1,0 +1,125 @@
+{
+  "name": "turn_page",
+  "text": "Stand still with an open book already supported at mid-chest height in both hands, below the chin. Keep the left hand and forearm steady under the left half of the book throughout. With the right hand, briefly pinch the right page edge, turn one page to the left, then return the right hand to support the lower edge. Do not lower either arm to the side, do not raise the book toward the face. Keep the legs comfortably straight.",
+  "duration": 4,
+  "seed": 61007,
+  "attempt": 1,
+  "scene": {
+    "text": "Stand still with an open book already supported at mid-chest height in both hands, below the chin. Keep the left hand and forearm steady under the left half of the book throughout. With the right hand, briefly pinch the right page edge, turn one page to the left, then return the right hand to support the lower edge. Do not lower either arm to the side, do not raise the book toward the face. Keep the legs comfortably straight.",
+    "duration": 4,
+    "contacts": [
+      {
+        "joint": "RightHand",
+        "marker": "page_edge",
+        "space": "item",
+        "phases": [
+          0.35,
+          0.55
+        ],
+        "window": [
+          0.25,
+          0.35,
+          0.55,
+          0.7
+        ],
+        "reference": {
+          "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+          "frame": 60
+        }
+      }
+    ],
+    "item": {
+      "type": "held_book_open",
+      "hand": "left",
+      "grip": "grip",
+      "source_grasp": true
+    },
+    "description": "Start at level ground facing +Z. Stand still with an open book already supported at mid-chest height in both hands, below the chin. Keep the left hand and forearm steady under the left half of the book throughout. With the right hand, briefly pinch the right page edge, turn one page to the left, then return the right hand to support the lower edge. Do not lower either arm to the side, do not raise the book toward the face. Keep the legs comfortably straight. RightHand touches the physical model marker page_edge at 1.40s, 2.20s. Hold held_book_open with left at its grip marker. The right hand performs the task described above; otherwise it hangs or swings naturally. Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "idle_hand": "The right hand performs the task described above; otherwise it hangs or swings naturally.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "fullbody": [
+      {
+        "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+        "source_frame": 60,
+        "phase": 0
+      },
+      {
+        "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+        "source_frame": 60,
+        "phase": 1
+      }
+    ]
+  },
+  "contacts": [
+    {
+      "joint": "RightHand",
+      "model": "held_book_open",
+      "marker": "page_edge",
+      "space": "world",
+      "episode": "page_edge",
+      "keys": [
+        {
+          "frame": 42,
+          "position": [
+            0.199025,
+            1.326786,
+            0.085786
+          ],
+          "root_xz": [
+            0.0016039999900385737,
+            -0.0029899999499320984
+          ]
+        },
+        {
+          "frame": 65,
+          "position": [
+            0.199025,
+            1.326786,
+            0.085786
+          ],
+          "root_xz": [
+            0.0016039999900385737,
+            -0.0029899999499320984
+          ]
+        }
+      ]
+    }
+  ],
+  "fullbody": [
+    {
+      "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+      "source_frame": 60,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "3d4de7487457d3fe934281044c04e8332a9b9ba6419baa70826146c7433c4a89",
+        "hand_edited": false
+      },
+      "frame": 0
+    },
+    {
+      "source": "assets/animations/sources/3d4de7487457d3fe/motion.npz",
+      "source_frame": 60,
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "3d4de7487457d3fe934281044c04e8332a9b9ba6419baa70826146c7433c4a89",
+        "hand_edited": false
+      },
+      "frame": 119
+    }
+  ],
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "ac97b20b669e0250df3a05c89430124f2054ed90f686d37c3b20923bb1317035",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "actual_stage_reviewed",
+    "accepted_by_hsinlung": false,
+    "raw_sha256": "ac97b20b669e0250df3a05c89430124f2054ed90f686d37c3b20923bb1317035",
+    "notes": "Reviewed 13 phases from three views in the actual empty-ground stage, with 60 Hz geometry/contact and continuity checks. Both hands remain near the book; previous large release snap removed. Only intentional forearm/grip overlap remains in mesh candidate checks. Page mesh itself is static."
+  }
+}

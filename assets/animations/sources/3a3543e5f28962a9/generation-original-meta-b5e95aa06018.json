@@ -1,0 +1,134 @@
+{
+  "name": "enter_carry_bucket",
+  "text": "A person smoothly changes from walking forward naturally with alternating steps and arm swings to walking forward carrying a bucket in the right hand with the arm extended down and forward. One natural continuous transition.",
+  "duration": 2.0,
+  "seed": 61008,
+  "attempt": 1,
+  "scene": {
+    "text": "A person smoothly changes from walking forward naturally with alternating steps and arm swings to walking forward carrying a bucket in the right hand with the arm extended down and forward. One natural continuous transition.",
+    "duration": 2.0,
+    "contacts": [],
+    "item": {
+      "type": "held_bucket",
+      "hand": "both",
+      "grip": "grip",
+      "orientation": "upright",
+      "source_grasp": true,
+      "grasp_window": [
+        0,
+        0.15,
+        1,
+        1
+      ]
+    },
+    "description": "A person smoothly changes from walking forward naturally with alternating steps and arm swings to walking forward carrying a bucket in the right hand with the arm extended down and forward. One natural continuous transition. Use the same physical item and object as the adjoining production clip.",
+    "idle_hand": "Both hands follow the holding or strap behavior described above; neither hand is assigned an invented path.",
+    "clearance": "Keep the held object outside the torso and legs, and keep fingers and forearms on the intended grasp side.",
+    "runtime_contacts": [],
+    "item_visible": [
+      1,
+      1
+    ]
+  },
+  "contacts": [],
+  "fullbody": [
+    {
+      "source": "assets/animations/poses/walk.json",
+      "source_frame": 0,
+      "frame": 0,
+      "translation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "provenance": {
+        "kind": "unified_static",
+        "sha256": "69ef4dd8186492f83f1c8cb95a9b45d5a814e3a272ce3b7fcdcaac2e07175e09",
+        "hand_edited": false
+      }
+    },
+    {
+      "source": "assets/animations/sources/32516952191631ae/motion.npz",
+      "source_frame": 0,
+      "frame": 59,
+      "translation": [
+        -4.0498916860087775e-06,
+        0.0,
+        2.18029522895813
+      ],
+      "provenance": {
+        "kind": "kimodo_raw",
+        "sha256": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e",
+        "hand_edited": false
+      }
+    }
+  ],
+  "loop": false,
+  "fps": 30.0,
+  "model": "Kimodo-SOMA-RP-v1.1",
+  "diffusion_steps": 100,
+  "post_processing": true,
+  "position_only": true,
+  "fullbody_constraint_frames": 2,
+  "raw_sha256": "3a3543e5f28962a927a0463959812bc5d1844f764168a23e5263a3c4c508cfcf",
+  "low_memory": false,
+  "hand_edited": false,
+  "review": {
+    "status": "withdrawn_pending_recheck",
+    "accepted_by_hsinlung": false,
+    "date": "2026-10-11",
+    "raw_sha256": "3a3543e5f28962a927a0463959812bc5d1844f764168a23e5263a3c4c508cfcf",
+    "reason": "The old assistant visual verdict lacks current per-activity final-runtime review evidence. Image existence and the generic batch note do not establish movement quality. This withdrawal does not assert that the motion is faulty.",
+    "previous_status": "visual_pass",
+    "previous_review_record": "docs/motion-review-withdrawal-2026-10-11.json"
+  },
+  "transition_boundaries": {
+    "entry": {
+      "clip": "walk",
+      "frame": -1,
+      "sha256": "531762f9b171a964a283242d007897e2f193379376132599f1875205635e0bdb"
+    },
+    "exit": {
+      "clip": "carry_bucket",
+      "frame": 0,
+      "sha256": "32516952191631aef4f809520262350174c93611e3b3dcfae1543401f2a1592e"
+    }
+  },
+  "generation_pose_ids": {
+    "entry": "walk",
+    "exit": "carry_bucket"
+  },
+  "endpoint_review": {
+    "source_tolerance_m": 0.005,
+    "boundaries": {
+      "entry": {
+        "max_position_gap_m": 0.0013706651516258717,
+        "pelvis_feet_hands_velocity_gap_m_s": [
+          0.8100411295890808,
+          0.09955466538667679,
+          1.843335509300232,
+          1.3643875122070312,
+          0.3045094609260559
+        ],
+        "max_velocity_gap_m_s": 2.00372052192688
+      },
+      "exit": {
+        "max_position_gap_m": 0.0002490338229108602,
+        "pelvis_feet_hands_velocity_gap_m_s": [
+          0.4323321282863617,
+          0.24341429769992828,
+          0.5994007587432861,
+          0.2509152591228485,
+          0.4678041934967041
+        ],
+        "max_velocity_gap_m_s": 0.8775373697280884
+      }
+    }
+  },
+  "generation_statistics": {
+    "fullbody_frames": 2,
+    "fullbody_fraction": 0.03333333333333333,
+    "frozen_frames": 0,
+    "mean_root_horizontal_speed_m_s": 1.112189531326294
+  }
+}
