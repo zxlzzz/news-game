@@ -1,4 +1,4 @@
-"""Record human clips of the empty ground as review videos (docs/动作重做方案.md §4.7): for each clip one MP4,
+"""Record human clips of the empty ground as review videos (docs/asset-production/motions/动作重做方案.md §3.4): for each clip one MP4,
 two views side by side (the game's high angle on the left, the side on the right), at normal speed, 30 frames/s,
 the whole clip once plus half a second of its last pose. Objects, held things and the partner are in the picture
 because the empty ground places them (npc/clip-setup.json).

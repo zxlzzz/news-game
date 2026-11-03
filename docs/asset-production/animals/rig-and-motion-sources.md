@@ -1,6 +1,8 @@
 # 动物动作与骨架供给路线（2026-09-21）
 
-配套文档：`design_route_npc_motion_supply.md`（人的动作供给）。本文只讲动物，人的部分不重复。
+> Earlier source research. For the subsequent animal route, see [动物动作路线](design_route_animal_motion.md); retained rig measurements are in [assets/rigs](../../../assets/rigs/README.md).
+
+配套文档：`docs/asset-production/motions/design_route_npc_motion_supply.md`（人的动作供给）。本文只讲动物，人的部分不重复。
 
 ---
 

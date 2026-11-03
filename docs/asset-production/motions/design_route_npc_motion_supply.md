@@ -1,4 +1,4 @@
-> **当前状态（2026-09-22）**：Kimodo 已在本机生成单人 NPZ；Hsinlung 已确定火柴人映射与比例，规格见 [NPC 映射规格](design-plans/npc-skeleton-mapping.md)。共用映射模块和独立参数 JSON 已在 `sth/motion-study/` 落实，六条样例已接入预览。Godot 最小通路已接入（phone_walk 按映射规格播放，映射对拍通过），代码现在在 `godot/npc/`（当时的通路报告已删，在 git 历史 e55fd50）。素材首尾规则 2026-09-22 已改，见 §5。
+> **当前状态（2026-09-22）**：Kimodo 已在本机生成单人 NPZ；Hsinlung 已确定火柴人映射与比例，规格见 [NPC 映射规格](npc-skeleton-mapping.md)。共用映射模块和独立参数 JSON 已在 `sth/motion-study/` 落实，六条样例已接入预览。Godot 最小通路已接入（phone_walk 按映射规格播放，映射对拍通过），代码现在在 `godot/npc/`（当时的通路报告已删，在 git 历史 e55fd50）。素材首尾规则 2026-09-22 已改，见 §5。
 
 # NPC 动作素材供给 — 设计路线
 
@@ -7,7 +7,7 @@
 当前交付是 `assets/animations/npz/<name>/motion.npz` 与 `meta.json`。素材保留源关节，显示造型在绘制时映射；不预先烘焙成最终火柴人坐标。
 
 关联：
-- `design_route_npc_behavior.md` — 行为系统，决定播哪个 json
+- `docs/behavior-system/design_route_npc_behavior.md` — 行为系统，决定播哪个 json
 - 09-06 路线结论 — 三渲二为什么否、关节为什么升三维、文字生成怎么进来的
 
 ---
@@ -24,7 +24,7 @@
 
 ## 1. 前提（09-06 定下的方向）
 
-- NPZ 保留 77 个源关节每帧的**三维坐标**；映射使用其中 16 个源关节，输出点和连线以 `docs/design-plans/npc-skeleton-mapping.md` 为准。
+- NPZ 保留 77 个源关节每帧的**三维坐标**；映射使用其中 16 个源关节，输出点和连线以 `docs/asset-production/motions/npc-skeleton-mapping.md` 为准。
 - 朝向不做成资产：绘制时绕竖轴转到当前朝向，再投影。一条 json 覆盖所有朝向。
 - 当前造型已定为实心圆头、等宽圆头线的简洁火柴人，不画肩/胯横线和影子。
 
@@ -41,7 +41,7 @@
   → 朝向/相机投影与深度排序绘制
 ```
 
-- 映射不是直接挑点：下半身及位移按腿长缩放，IK 重建膝盖；肩向量分配进两段手臂，头部去除站姿前倾，举臂平滑外展。具体规则与参数见 `docs/design-plans/npc-skeleton-mapping.md`。
+- 映射不是直接挑点：下半身及位移按腿长缩放，IK 重建膝盖；肩向量分配进两段手臂，头部去除站姿前倾，举臂平滑外展。具体规则与参数见 `docs/asset-production/motions/npc-skeleton-mapping.md`。
 - 共用纯映射函数与独立参数 JSON 是已定实现要求；源资源不写回映射坐标。仓库预览已提取共用模块，游戏集成仍未完成。
 - 每条描述生成上限 10 秒，对一个动作 json 够用。更长的拆成几段，Kimodo 自带多段衔接。
 
@@ -70,7 +70,7 @@
 
 ## 5. 和行为系统的接口
 
-**素材里的世界坐标不直接当作 NPC 的位置。** 位置接续由播放端负责，见 `design_route_npc_behavior.md` §5：切换时以 NPC 当前所在位置接续下一条片段，消费片段内根节点的相对位移，不直接套用素材的绝对坐标。移动片段与导航的协调属于播放/移动实现。
+**素材里的世界坐标不直接当作 NPC 的位置。** 位置接续由播放端负责，见 `docs/behavior-system/design_route_npc_behavior.md` §5：切换时以 NPC 当前所在位置接续下一条片段，消费片段内根节点的相对位移，不直接套用素材的绝对坐标。移动片段与导航的协调属于播放/移动实现。
 
 行为可在任意帧被替换，不保证播完。
 
@@ -91,10 +91,10 @@
 
 | | 去处 |
 |---|---|
-| NPC 外观与映射 | 已由 Hsinlung 定下，见 `docs/design-plans/npc-skeleton-mapping.md`；不再是线条/体积待选项 |
+| NPC 外观与映射 | 已由 Hsinlung 定下，见 `docs/asset-production/motions/npc-skeleton-mapping.md`；不再是线条/体积待选项 |
 | 引擎、影子、环境素材 | 09-06 路线结论 |
 | 现有 67 条手画 clip 升三维 | 09-06 §3.1，和本文并行 |
-| 播哪个 json | `design_route_npc_behavior.md` |
+| 播哪个 json | `docs/behavior-system/design_route_npc_behavior.md` |
 
 ---
 

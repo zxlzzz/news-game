@@ -1,4 +1,4 @@
-"""Writes godot/scenes/two_streets/level.tscn from the layout below (docs/design-plans/two-streets.md §2).
+"""Writes godot/scenes/two_streets/level.tscn from the layout below (docs/scenes/two-streets.md §2).
 python godot/tools/two_streets_layout.py
 The level file is the scene; this only places things by rule (buildings packed along a frontage with
 what sticks out in front ending at the sidewalk, furniture every few metres, crossings, parked cars,

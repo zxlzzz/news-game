@@ -93,7 +93,7 @@ AStar3D
 • 走不到就报错（unreachable_areas 和 crowd.gd 里的检查）：只查地面带和 paving 组物件的面。其他物件顶上的面（屋顶、花坛顶）走不到不报错。桥、台阶这类给人走的模型要放进 paving 组。
 • 写死地面高度 0 的地方改成用路径点或网格给的高度。已知的有 npc/crowd.gd 出口点的 0.0、npc/procedural_dog.gd 落脚的 foot.point.y = 0、npc/leash.gd 的 groundClearance 以 0 为地面；其余自己 grep 找全。狗的脚要落在它当前所站的面上，网格要能回答"这个位置、这个高度附近的面有多高"。
 • tools/walk_grid_image.gd 要还能跑；一格有多个面时，按从下往上第几个面分别出图。
-• 文档：walk_grid.gd 开头注释、docs/scene_spec.md §3 可走区域那一行、godot/README.md 里讲可走区域的地方，和代码同一个 commit 改。
+• 文档：walk_grid.gd 开头注释、docs/scenes/scene_spec.md §3 可走区域那一行、godot/README.md 里讲可走区域的地方，和代码同一个 commit 改。
 这次不做
 • 往下跳的连接、桥上跳河：跳河是人想跳，属于行为那边；网格只保证"桥边、下面是水"推得出来。
 • 台阶上的脚步动画：人的身体会顺着路径点的高度上下，脚不对齐台阶。

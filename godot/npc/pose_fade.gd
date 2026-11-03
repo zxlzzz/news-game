@@ -1,4 +1,4 @@
-## Crossfade at a clip switch (docs/动作重做方案.md §4.4): the pose last drawn before the switch blends into
+## Crossfade at a clip switch (docs/asset-production/motions/素材生成方法.md §0): the pose last drawn before the switch blends into
 ## the new clip over a few tenths of a second (crowd-params.json fade). Both poses are put in the same frame
 ## first, so a switch that also moves or turns the figure (arriving at a seat) is smoothed as well. A jump
 ## farther than fade.jump metres (someone coming back in at another end of the ground) is not faded.

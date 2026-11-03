@@ -1,0 +1,12 @@
+# Repeated mistakes in asset work
+
+Updated 2026-10-26. These are confirmed failures, not claims that the assets are fixed.
+
+- **Procedure replaced the goal.** Exports, contact checks and matching endpoints passed while the activity still looked wrong. Judge the complete action and assembled objects at the intended viewing scale and speed; report checks only for what they establish.
+- **Production repeated without locating the cause.** Similar failures triggered more prompts and seeds without comparing the same source, mapped pose and final picture. Find where the information is lost before choosing another experiment; distinguish generation, mapping and what the character can visibly express.
+- **Codex accepted local gains with visible regressions.** Fixing knees narrowed the stance; restoring foot width lowered seated hips. A better measurement does not justify a worse whole pose. Preserve the previously correct relationships and reject unexplained regressions.
+- **A handoff contradicted an accepted decision.** Claude instructed per-footprint tread fitting in RUN-R02.md; Codex implemented it without reconciling the existing regular-terrain exception. Check consequential conflicts against the actual agreement before implementing them.
+- **Review focused on isolated parts instead of complete activities.** Hands reached targets while arms, support, props, endings or adjoining phases failed. Inspect the whole person, mechanical assembly and movement; names, bounds and contact markers do not prove the actual geometry works.
+- **Evidence and authority were confused.** Self-selection or Claude's review became Hsinlung's acceptance; finite tests became general conclusions. Attribute decisions accurately. Later changes to endpoint, cup or stair requirements are not earlier execution errors; the recent stair timing gap was investigated at the start.
+- **Work expanded before its purpose and premises were validated.** Convenient references and phase splits drove production; an incorrect duration population caused avoidable regeneration. Establish the game use, reference meaning and method on a small relevant case before expanding.
+- **Records obscured useful lessons.** Private experiments were reported as integrated fixes, summaries went stale, and cleanup left a required link broken. Keep the current conclusion and necessary evidence discoverable. This document should retain common causes, not batch histories or a new rule for every failed action.

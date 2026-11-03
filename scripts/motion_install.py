@@ -1,4 +1,4 @@
-"""Put one generated Kimodo take into the motion library and export it for Godot (docs/动作重做方案.md).
+"""Put one generated Kimodo take into the motion library and export it for Godot (docs/asset-production/motions/动作重做方案.md).
 
 python scripts/motion_install.py <take folder> <clip> [--object <type> --post <marker>] [--note "..."] [--smooth <frames>]
   <take folder>: what scripts/kimodo_motion_batch.py wrote (motion.npz + meta.json).

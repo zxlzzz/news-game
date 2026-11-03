@@ -1,4 +1,4 @@
-## When a person changes to what (docs/design_route_npc_behavior.md). Candidates come from the
+## When a person changes to what (docs/behavior-system/design_route_npc_behavior.md). Candidates come from the
 ## person (self rows) and from free posts in the objects (post:<kind> rows); each is
 ##   base x (the person's coefficients of the row's tags) x half / (half + metres to the target).
 ## When the person has nothing to do, a little jitter is added to every candidate and the highest

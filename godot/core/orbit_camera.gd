@@ -1,5 +1,5 @@
 ## Camera of a view.tscn that can be turned: it circles a look-at point on the ground
-## (docs/design-plans/two-streets.md §1). The pose set in view.tscn is the starting view.
+## (docs/scenes/two-streets.md §1). The pose set in view.tscn is the starting view.
 ##   WASD / arrow keys, or drag with the left button: move over the ground.
 ##   Drag with the middle button: turn (left-right, all the way round) and tilt (up-down, within limits).
 ##   Wheel: zoom about the ground point under the mouse.

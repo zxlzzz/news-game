@@ -47,7 +47,7 @@
 
 ## 4. 这次不做
 
-拍照、写报道等玩法；NPC 打分行为系统（`docs/design_route_npc_behavior.md`）；进出楼的门；车辆行驶；昼夜。新动作（推门、上下台阶、推车、拄拐）等场景里有门、台阶再接。
+拍照、写报道等玩法；NPC 打分行为系统（`docs/behavior-system/design_route_npc_behavior.md`）；进出楼的门；车辆行驶；昼夜。新动作（推门、上下台阶、推车、拄拐）等场景里有门、台阶再接。
 
 ## 附：正交和透视
 

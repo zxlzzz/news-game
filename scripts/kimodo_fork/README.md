@@ -13,4 +13,4 @@ The fork lives outside this repository; these copies keep our changes versioned.
 Boxes come from `godot/tools/export_scene_boxes.gd` (object type + post marker, stance frame).
 A held thing (`"item_boxes"`, `"item_hand"` in the request's scene) is kept off the torso, head, thighs and the arms
 up to just before the hands. Requests are normally written by `scripts/motion_request.py` from
-`assets/motion_specs/<clip>.json` (docs/动作重做方案.md §11), not by hand.
+`assets/motion_specs/<clip>.json`. This is a legacy helper; the retired constrained-generation route is identified in `docs/asset-production/motions/素材生成方法.md` §10.

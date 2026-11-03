@@ -2,7 +2,7 @@
 
 At late denoising steps the clean-motion prediction is nudged (a few gradient steps on the features) so that the
 stick figure's thick strokes and big head do not cut into the given boxes; the next steps make the rest of the body
-agree. No retraining. The figure follows news-game docs/design-plans/npc-skeleton-mapping.md closely enough for
+agree. No retraining. The figure follows news-game docs/asset-production/motions/npc-skeleton-mapping.md closely enough for
 collision (game metres, adult scale 3); positions are in the stance frame (the post at the origin facing +Z).
 
 scene = {

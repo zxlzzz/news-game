@@ -7,18 +7,19 @@
 
 | 文件 | 内容 |
 |---|---|
-| `godot/README.md` | **入口**：怎么运行、截图、跑检查；目录说明；街道 demo 现状 |
-| `docs/scene_spec.md` | 场景规格：一个场景 = 一个文件夹，文件只记推不出来的 |
-| `docs/建模规范与参数.md`、`godot/modeling/模型制作说明.md`、`godot/素材清单.md` | 模型要求和要做的模型（模型由 ChatGPT 做，这边只审） |
-| `docs/design_route_npc_behavior.md`、`docs/design_route_npc_motion_supply.md`、`docs/design_route_animal_motion.md`、`docs/anim.md` | NPC 行为、人和动物动作的设计路线 |
-| `docs/design-plans/npc-skeleton-mapping.md` | 火柴人映射规则和参数（唯一来源） |
-| `docs/design-plans/two-streets.md` | 两条街大场景的要求：镜头操作、布局、先做的技术项（场景在 `godot/scenes/two_streets/`） |
-| `godot/npc/clip-setup.json`、`godot/scenes/empty_ground/` | 动作要什么（位置、配件、另一人）；空地：一条条看动作、拖着调相对位置（说明在 `godot/README.md`"空地"） |
-| `assets/动作生成任务清单.md`、`assets/动作素材清单.md` | Kimodo 动作素材的任务队列和已交付情况 |
-| `docs/scene_reconstruction_workflow.md`、`research/sdu_weihai/复刻记录.md` | 照真实地点做场景的三步流程；山大威海校区的做法和每步所需信息（场景 `godot/scenes/sdu_weihai/`，脚本 `godot/real_place/`） |
-| `memory.md` | 跨会话备忘（英文），只在 Hsinlung 说"更新memo"时改 |
+| `docs/README.md` | 按主题找文档：动作与模型制作、NPC 行为、场景与寻路、画风参考 |
+| `godot/README.md` | 运行、查看动作／模型、截图、跑检查和工程目录 |
+| `docs/asset-production/README.md` | 制作区入口：规范、方法、素材清单、反思；模型由 ChatGPT 制作、Claude 审查 |
+| `docs/asset-production/models/建模规范与参数.md`、`docs/asset-production/models/模型制作说明.md`、`docs/asset-production/素材清单.md` | 模型要求、制作步骤和素材需求 |
+| `docs/asset-production/motions/npc-skeleton-mapping.md` | 已确认的火柴人映射基线规则和参数的唯一来源 |
+| `docs/asset-production/motions/动作生成任务清单.md`、`docs/asset-production/motions/动作素材清单.md` | 人体动作生成任务与已有素材；制作方法见制作区入口 |
+| `docs/behavior-system/README.md` | NPC 行为设计、动作语义、独立文字原型和实现报告 |
+| `docs/scenes/scene_spec.md`、`docs/scenes/two-streets.md`、`docs/scenes/walk-grid-layers.md` | 场景规格、两条街的布局与镜头、分层可走网格 |
+| `godot/npc/clip-setup.json`、`godot/scenes/empty_ground/` | 动作需要的位置、配件和另一人；在空地逐条看动作、拖动调整相对位置，用法见 `godot/README.md`“空地” |
+| `docs/scenes/scene_reconstruction_workflow.md`、`research/sdu_weihai/复刻记录.md` | 真实地点制作的三步流程；山大威海校区每步的资料、做法和缺口 |
+| `memory.md` | 跨会话备忘，只在 Hsinlung 要求“更新memo”时修改 |
 
-其他：`docs/巴别塔圣歌-游戏实拍/` 是画风参考截图（图不进 git，按 `来源.txt` 重新下载）；`assets/`、`scripts/`、`sth/` 是做动作素材和研究用的，游戏运行时不读。`delivery/` 是 ChatGPT 交货的暂存处（放法见 `delivery/README.md`）：检查通过的搬到正式位置并从这里删掉。
+其他：`docs/visual-reference/` 是画风参考截图（图不进 git，按 `来源.txt` 重新下载）；`assets/`、`scripts/`、`sth/` 是做动作素材和研究用的，游戏运行时不读。`delivery/` 是 ChatGPT 交货的暂存处（放法见 `delivery/README.md`）：检查通过的搬到正式位置并从这里删掉。
 
 ## 规矩
 

@@ -1,4 +1,4 @@
-"""Where the source (Kimodo) arm must be so the drawn stick-figure hand lands on a target (docs/动作重做方案.md).
+"""Where the source (Kimodo) arm must be so the drawn stick-figure hand lands on a target (docs/asset-production/motions/动作重做方案.md).
 
 The figure's arm grows from the neck: upper arm along unit(source upper arm + 0.8 * shoulder vector), forearm along
 unit(source forearm + 0.2 * shoulder vector) (npc-skeleton-mapping.md step 6). So a figure hand target can be turned

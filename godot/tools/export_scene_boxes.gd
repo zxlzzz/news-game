@@ -1,4 +1,4 @@
-## Collision boxes of an object type for motion generation (docs/动作重做方案.md): every visible mesh of the type
+## Collision boxes of an object type for motion generation (docs/asset-production/motions/动作重做方案.md): every visible mesh of the type
 ## as an oriented box, in the frame of one of its post markers (the person's stance: origin on the floor, +Z the
 ## way the person faces), metres. scripts/kimodo_motion_batch.py "scene" keeps the generated stick figure out of them.
 ##   godot --headless --path . -s res://tools/export_scene_boxes.gd -- <type> <post marker> <out.json> [min size m]

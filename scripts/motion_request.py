@@ -1,4 +1,4 @@
-"""Turn one clip's motion spec into Kimodo requests (docs/动作重做方案.md §10, the runbook).
+"""Turn one clip's motion spec into Kimodo requests (legacy helper; current method: docs/asset-production/motions/素材生成方法.md §3).
 
 python scripts/motion_request.py <spec.json> [<spec.json> ...] [--out C:/kimodo-trial/kimodo/tmp_pilot/requests.jsonl]
 

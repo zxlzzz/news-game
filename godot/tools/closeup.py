@@ -1,5 +1,5 @@
 """Close-up frames of a clip on the empty ground, for checking where hands, hips and feet meet the object
-(docs/动作重做方案.md §4.7): four views (front, left side, right side, from above) around one point, the clip's
+(docs/asset-production/motions/动作重做方案.md §3.4): four views (front, left side, right side, from above) around one point, the clip's
 frames every 1/5 s in a grid, one PNG.
 
 python godot/tools/closeup.py <out.png> <clip> <x> <y> <z> [--size 1.2] [--every 0.2] [--cut 0.7]

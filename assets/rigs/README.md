@@ -1,7 +1,7 @@
 # 源 rig（动物）
 
-`anim.md` §6 里的**第 1 个 rig**——MoCapAnything 的 reference asset，以及 BVH 输出所依据的骨头树。
-**不是**我们自己的动物骨架（那是第 2 个，`anim.md` §6 说等人的最终骨架一起定，现在不该做）。
+`docs/asset-production/animals/rig-and-motion-sources.md` §6 里的**第 1 个 rig**——MoCapAnything 的 reference asset，以及 BVH 输出所依据的骨头树。
+**不是**我们自己的动物骨架（那是第 2 个，`docs/asset-production/animals/rig-and-motion-sources.md` §6 说等人的最终骨架一起定，现在不该做）。
 
 这里的文件只用来读骨头树和关节坐标，mesh / 蒙皮 / 贴图全部不消费。
 
@@ -29,7 +29,7 @@
 | bovid | Bull / Cow | 42（无耳骨） |
 | cervid | Alpaca / Deer(46) / Stag(38) | — |
 
-→ `anim.md` §2「猫和狗在关节层面是同一套东西，区别落在比例上」**成立**。
+→ `docs/asset-production/animals/rig-and-motion-sources.md` §2「猫和狗在关节层面是同一套东西，区别落在比例上」**成立**。
 Fox 与 Wolf 关节名集合完全相同，Shiba 只少几节尾骨。
 
 **关节构成**（ShibaInu 46 个为例）：解剖骨 34 + **IK 控制骨 12**
@@ -40,7 +40,7 @@ IK 控制骨在 `skins[0].joints` 里，直接取"全部 joint 世界坐标"会�
 它们是 `IKFrontLeg/IKBackLeg` 的子骨，而 `IK*` 在 Walk 里**有 K 帧**，所以脚的世界位置可完整还原。
 注意地面不在 y=0 而在 y≈0.069。
 
-**腿链结构（与 `anim.md` §2 假设不符）**：
+**腿链结构（与 `docs/asset-production/animals/rig-and-motion-sources.md` §2 假设不符）**：
 
 ```
 前腿  FrontShoulder → FrontUpperLeg → FrontLowerLeg →(1.036 无骨)→ FF     两骨 + 末端断档
@@ -79,7 +79,7 @@ IK 控制骨在 `skins[0].joints` 里，直接取"全部 joint 世界坐标"会�
 按仓库 L-2 `groundTravel` 的自动推导口径（相对偏差 >20% 即判 clip 缺陷），这条会被判缺陷。
 Body 的 z 恒为 0.001，是原地循环、无根位移。
 
-→ 自带 12 条动画**不能直接当动作素材用**。但这不影响本目录的用途：按 `anim.md`，
+→ 自带 12 条动画**不能直接当动作素材用**。但这不影响本目录的用途：按 `docs/asset-production/animals/rig-and-motion-sources.md`，
 动作来自视频 + MoCapAnything，这些文件只当 rig。
 另注：四足需要**四脚一致性检查**，仓库现有的左右对称检查（Rule 16）覆盖不到前后差异。
 
@@ -112,7 +112,7 @@ Idle_2_HeadLow, Idle_HitReact_Left/Right, Jump_ToIdle, Walk。通道只有 rotat
 尾     DEF-t_feather.L/R
 ```
 
-翼是**三骨链**，不是 `anim.md` §5 里 Truebones Pigeon 那种两骨链；腿也远比"只有一根"丰富。
+翼是**三骨链**，不是 `docs/asset-production/animals/rig-and-motion-sources.md` §5 里 Truebones Pigeon 那种两骨链；腿也远比"只有一根"丰富。
 这套 rig 比 Truebones 的 9 关节鸽子精细得多，**需要降维**才能进火柴人。
 
 **5 条动画**（+1 条 `Pigeon Proportions` 是比例调节，不是动作）：

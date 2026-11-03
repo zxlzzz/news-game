@@ -1,10 +1,12 @@
 > **status: finalized** — 部分实现（2026-09-27）
 
+> **2026-10-18 follow-up:** [Behavior system with text NPCs](README.md) now includes a [low-level action catalog](actions.md) and [high-level behavior draft](behaviors.md): selected activities correspond to behavior weights, while concrete actions correspond to future motion assets. The finalized status above applies to this earlier design only; it does not finalize the new activity/action representation or new scores. Subsequent independent text-prototype implementation is recorded in [report 1](impl-report-1.md) and [report 2](impl-report-2.md).
+
 > 实现（`godot/npc/behaviour.gd`，由 `npc/crowd.gd` 驱动，场景在 `population.tres` 里打开 `behaviour`）：一张全局表 `npc/behaviour-table.json`，人的标签系数 `npc/behaviour-people.json`（现在只有一种人）。已做：候选来源"自身"（逛、离开、原地小动作）和"物件"（各类型里的 `post_<种类>` 位置：长椅、公交站、摊位、棋桌）；距离衰减、抖动只用来挑挑战者、和当前比一次；资格条件 `taken:<种类>`（摊主在才有顾客、有人下棋才有人围观）。**没做**："周围的人"这一类来源、双人请求、活动记账里的吆喝抬分。实现时补了一条规则：一行做完后，同一个人 `again` 秒内不再挑它（不是当前分数随时间下降；没有它，人刚从长椅站起，长椅仍是身边最高分，马上又坐回去）。另一处落实：抖动只在人没事做、挑新行为时加，挑中的行为带着这份抖动当自己的分数；进行中别的候选不加抖动，要比它高才换（每次重想都重抽抖动会让分数相近的来回换；比较时丢掉抖动又会让刚挑的远处目标半秒后就被换掉）。统计检查 `godot/tools/check_behaviour.gd`（打印每 10 秒各行为人数、各行为开始次数、半路放弃的去向；有行的位置种类都要有人用过，场景里有、表里没行的种类只打印）。动作要什么（位置、配件、另一人）记在 `npc/clip-setup.json`，见 §5.1。
 
 # NPC 行为系统 — 设计路线
 
-> 素材接口说明（2026-09-20）：本文的“动作 json”表示待播放的动作片段，不规定最终存储格式。当前素材是源 NPZ + meta.json，绘制时按 [NPC 映射规格](design-plans/npc-skeleton-mapping.md) 映射；不要求另存映射后的坐标。行为选择规则与位置接续约定不变。
+> 素材接口说明（2026-09-20）：本文的“动作 json”表示待播放的动作片段，不规定最终存储格式。当前素材是源 NPZ + meta.json，绘制时按 [NPC 映射规格](../asset-production/motions/npc-skeleton-mapping.md) 映射；不要求另存映射后的坐标。行为选择规则与位置接续约定不变。
 
 2026-09-15 讨论结论。本文只描述系统本身，不含实现细节；实现情况见开头。
 

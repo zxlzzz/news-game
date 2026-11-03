@@ -1,11 +1,13 @@
 # godot/ — 游戏工程（Godot 4.7.2，Forward+）
 
-场景规格见仓库 `docs/scene_spec.md`，模型要求见 `modeling/模型制作说明.md`（依据 `docs/建模规范与参数.md`），要做的素材见 `素材清单.md`。
+Project documentation is grouped in [docs/README.md](../docs/README.md). The independent [text-NPC behavior prototype](../docs/behavior-system/README.md) has implementation reports; it does not yet supply animated street-NPC integration.
+
+场景规格见仓库 `docs/scenes/scene_spec.md`，模型要求见 `docs/asset-production/models/模型制作说明.md`（依据 `docs/asset-production/models/建模规范与参数.md`），要做的素材见 `docs/asset-production/素材清单.md`。
 2026-09-23 起取代 `sth/godot-npc/`（已删除，历史在 git 里）。
 
-**当前入口：默认进入 `scenes/empty_ground/level.tscn`，在“动作／模型”页签查看正式素材。动作现在的问题和接下来的做法见 [动作方案](../docs/动作重做方案.md)。**
+**当前入口：默认进入 `scenes/empty_ground/level.tscn`，在“动作／模型”页签查看正式素材。动作制作入口见[动作与模型制作](../docs/asset-production/README.md)，现有实现说明见[摆木偶方案](../docs/asset-production/motions/动作重做方案.md)。**
 
-做模型前读 `modeling/模型制作说明.md`（第 9 节是踩过的坑）；做动作前读 [动作方案](../docs/动作重做方案.md)。
+做模型前读[模型制作说明](../docs/asset-production/models/模型制作说明.md)；做动作前读[素材生成方法](../docs/asset-production/motions/素材生成方法.md)。
 
 ## 运行
 
@@ -24,8 +26,8 @@
 | 打印各物件类型尺寸 | `godot --headless --path . -s res://tools/print_bounds.gd` |
 | 模型接触设置检查 | 在仓库根目录运行 `python godot/modeling/check_contact_metadata.py` → `CONTACT_METADATA_OK`（拒绝未知设置和错误数值，拒绝时不改模型文件） |
 | 检查一个模型是否合规 | `python modeling/check_model.py <glb>` → `PASS` / `FAIL` |
-| 导出动作（换成火柴人，游戏只读导出结果） | `godot --headless --path . -s res://tools/bake_motion.gd` → `BAKE_OK`；只导几条：`-- walk sit_bench`；只查有没有过期：`-- --check` → `BAKE_OK` / `BAKE_STALE`。改了源动作（`npc/motion/`）、映射、比例参数、`clip-setup.json` 里的位置或 stationary 后要重跑，否则游戏报错退出；已有的动作画面变了会列在 “changed” 后面，要重新看；“cuts into objects” 是还插进物件的（带 “left alone” 的插得太深、没推，要重新生成）；“jumps” 是一帧一跳的点（没标 “(the source jumps too)” 的是导出带的，要改导出）。`clip-setup.json` 里写了 `pose` 的动作（碰东西的，"摆木偶"）由 `npc/pose_build.gd` 按物件标记直接摆出来，导出时在这种位置的每一处对答案，插进物件超过 5 mm 就 `BAKE_FAIL` 并说明哪里。做法见 `../docs/动作重做方案.md` |
-| 看动作近景 / 录看片视频 | `python tools/closeup.py <out.png> <动作> x y z --size 1.6 --every 0.5`：对准接触点的正面、左、右、俯视四视图，按时间排成一张图（镜头前 0.7 m 以内的东西切掉，`--cut` 可调）；`python tools/record_clip.py <目录> <动作> ... [--sheet] [--game-yaw 210]`：两视角 MP4（侧面切掉人前方 0.5 m 以外的东西；`--game-yaw` 从另一侧拍，给被物件挡住的人）。录像时别改 `godot/` 里的文件（导出会过期）。做或修动作的步骤见 `../docs/动作重做方案.md` 第 4 节 |
+| 导出动作（换成火柴人，游戏只读导出结果） | `godot --headless --path . -s res://tools/bake_motion.gd` → `BAKE_OK`；只导几条：`-- walk sit_bench`；只查有没有过期：`-- --check` → `BAKE_OK` / `BAKE_STALE`。改了源动作（`npc/motion/`）、映射、比例参数、`clip-setup.json` 里的位置或 stationary 后要重跑，否则游戏报错退出；已有的动作画面变了会列在 “changed” 后面，要重新看；“cuts into objects” 是还插进物件的（带 “left alone” 的插得太深、没推，要重新生成）；“jumps” 是一帧一跳的点（没标 “(the source jumps too)” 的是导出带的，要改导出）。`clip-setup.json` 里写了 `pose` 的动作（碰东西的，"摆木偶"）由 `npc/pose_build.gd` 按物件标记直接摆出来，导出时在这种位置的每一处对答案，插进物件超过 5 mm 就 `BAKE_FAIL` 并说明哪里。做法见 `docs/asset-production/motions/动作重做方案.md` |
+| 看动作近景 / 录看片视频 | `python tools/closeup.py <out.png> <动作> x y z --size 1.6 --every 0.5`：对准接触点的正面、左、右、俯视四视图，按时间排成一张图（镜头前 0.7 m 以内的东西切掉，`--cut` 可调）；`python tools/record_clip.py <目录> <动作> ... [--sheet] [--game-yaw 210]`：两视角 MP4（侧面切掉人前方 0.5 m 以外的东西；`--game-yaw` 从另一侧拍，给被物件挡住的人）。录像时别改 `godot/` 里的文件（导出会过期）。做或修动作的步骤见 `docs/asset-production/motions/动作重做方案.md` 第 4 节 |
 | 火柴人映射对拍 | `godot --headless --path . -s res://tools/check_mapping.gd` → `MAPPING_OK` / `MAPPING_FAIL` |
 | 脚底穿地检查（全部人体动作、插值、坡面和人物比例） | `godot --headless --path . -s res://tools/check_foot_ground.gd` → `FOOT_GROUND_OK` |
 | 动作播放检查（单次保持末姿、拖动、一个动作单元） | `godot --headless --path . -s res://tools/check_motion_playback.gd` → `MOTION_PLAYBACK_OK` |
@@ -61,7 +63,7 @@
 | `core/two_wheeler.gd` | 可骑的车（`types/bicycle.tscn`、`scooter.tscn`）：按节点名从模型读车座/车把/脚踏，转轮子和曲柄 | §2、§3 |
 | `style/` | 画风 shader 和抽线代码（从 sth/godot-npc 原样搬来，只改了颜色输入格式） | |
 | `npc/` | 火柴人：映射移植、播放、动作数据（`npc/motion/`，由 `../scripts/export-npc-motion.py` 从 `../assets/animations/npz/` 导出）、对拍参考值；狗和猫（真模型）、程序生成的鸽子、骑车的人、牵狗的人（见下） | |
-| `npc/motion_bake.gd` + `tools/bake_motion.gd` → `npc/baked/` | 导出：把 `npc/motion/<动作>.json`（源关节）按映射规格换成火柴人，存成 `npc/baked/<动作>.json`；游戏只读这些文件（`npc/clip_pose.gd`），运行时不映射、不算接触（`docs/动作重做方案.md`）。每个文件记着输入的指纹，输入变了游戏报错要求重导出。源动作 `meta.json` 写了 `"source_frame": "fixed"` 的（按物件站位生成的），保留原坐标。写了 `pose` 的动作由 `npc/pose_build.gd` 在火柴人上直接摆（见上）；其余的导出时做接触修正（`clip-setup.json` 的 `contacts`：手对标记、胯对座面、手对拿着的东西的握点），把插进物件的笔画推出来（推的量随时间平滑，插得太深的手脚不推），并报告穿模最深处。球类、打斗、舞蹈、表演类动作 2026-10-06 已删并冻结，见 `../assets/动作生成任务清单.md`"冻结"一节。 |
+| `npc/motion_bake.gd` + `tools/bake_motion.gd` → `npc/baked/` | 导出：把 `npc/motion/<动作>.json`（源关节）按映射规格换成火柴人，存成 `npc/baked/<动作>.json`；游戏只读这些文件（`npc/clip_pose.gd`），运行时不映射、不算接触（`docs/asset-production/motions/动作重做方案.md`）。每个文件记着输入的指纹，输入变了游戏报错要求重导出。源动作 `meta.json` 写了 `"source_frame": "fixed"` 的（按物件站位生成的），保留原坐标。写了 `pose` 的动作由 `npc/pose_build.gd` 在火柴人上直接摆（见上）；其余的导出时做接触修正（`clip-setup.json` 的 `contacts`：手对标记、胯对座面、手对拿着的东西的握点），把插进物件的笔画推出来（推的量随时间平滑，插得太深的手脚不推），并报告穿模最深处。球类、打斗、舞蹈、表演类动作 2026-10-06 已删并冻结，见 `docs/asset-production/motions/动作生成任务清单.md`"冻结"一节。 |
 | `npc/pose_fade.gd` | 换动作时的渐变：从换之前最后画出的姿势，在 `crowd-params.json` 的 `fade.seconds`（0.25 秒）内渐变到新动作；位置一起平滑，跳得比 `fade.jump` 远（从另一头重新进场）不渐变。坐下、起身是动作（`crowd-params.json` `seating.transitions`），在座位的站位上播一遍。 |
 | `npc/clip-setup.json` | 动作要什么：哪种位置（`post`）、拿什么配件用哪只手（`item`）、两人动作的另一人（`partner`）；读它的是 `npc/clip_setup.gd`。见下面"空地"一节 | |
 | `types/held_*.tscn` | 配件类型：继承 `models/held_*.glb`，子节点 `model` 的位置 = 配件在手里的偏移 | §2 |
@@ -120,19 +122,19 @@
 
 **可走网格缓存**：已做（2026-09-27），见下面"两条街"一节。斑马线也已能切道路模块。
 
-**道路模块合并描线**（2026-09-26 已做，`core/level.gd` 的 `_merge_road_modules`）。道路模块不带厚度、拼接面上不封口（见 `素材清单.md` 第六批"一、道路模块"），单独描线的话每块两端的开口边都会画成横线。摆好后把所有道路模块合成一个网格再建描线，拼接处焊在一起，这些边就成了共面边，不再画线。
+**道路模块合并描线**（2026-09-26 已做，`core/level.gd` 的 `_merge_road_modules`）。道路模块不带厚度、拼接面上不封口（见 `docs/asset-production/素材清单.md` 第六批"一、道路模块"），单独描线的话每块两端的开口边都会画成横线。摆好后把所有道路模块合成一个网格再建描线，拼接处焊在一起，这些边就成了共面边，不再画线。
 - 道路 glb 导入时要关网格压缩（`.import` 里 `meshes/force_disable_compression=true`），否则 Godot 内部压缩会把顶点挪零点几毫米，焊不上。
 
 简化了的地方（够 demo 用，以后要再改）：人和人之间不避让；进出只在地面两端，还没有门；车停着不开；公交站有人坐、没人上车。
 
 ## 两条街（`scenes/two_streets/`，2026-09-27）
 
-布局和镜头的要求见 `docs/design-plans/two-streets.md`。布局由 `tools/two_streets_layout.py` 按规则生成 `level.tscn`（重跑会覆盖在编辑器里的手改）。两条 200 米的街（道路模块拼成），中间 60 米的街区两排楼背靠背、各朝自己那条街，中间院子；街区东头一条横路，中间两条小巷；一侧商业楼，一侧公园，公园两头是影院和超市。镜头 `core/orbit_camera.gd`（平移、转、俯仰、缩放）。
+布局和镜头的要求见 `docs/scenes/two-streets.md`。布局由 `tools/two_streets_layout.py` 按规则生成 `level.tscn`（重跑会覆盖在编辑器里的手改）。两条 200 米的街（道路模块拼成），中间 60 米的街区两排楼背靠背、各朝自己那条街，中间院子；街区东头一条横路，中间两条小巷；一侧商业楼，一侧公园，公园两头是影院和超市。镜头 `core/orbit_camera.gd`（平移、转、俯仰、缩放）。
 
 - **地面**：街区、商业区的地面带放在 y = 0.15，和人行道齐平（楼和院子都立在上面）；公园在 y = 0。一个场景可以有几条地面带（只能平移）。
 - **斑马线**铺在道路模块上：模型的条纹沿它的 Z 方向（顺着车流），人沿它的 X 方向过街；在两条街上转 90° 摆，三块拼满 13 米的车道加非机动车道。`walk_grid.gd` 从路沿到路沿切开车道（`_cut_crossing_faces`）。旧街道 demo 里的斑马线摆反了（条纹顺着过街方向），没改。
 - **骑车的**在路口借机动车道（`walk_costs.json` ride 里 road 代价 3），平时走非机动车道。
-- **人**：`population.tres` 里 `behaviour = true`，路人由行为表驱动（`npc/behaviour.gd`、`npc/behaviour-table.json`、`npc/behaviour-people.json`，说明在 `docs/design_route_npc_behavior.md` 开头）。长椅、公交站、摊位、棋桌的位置由路人自己去占，不再按概率摆人。
+- **人**：`population.tres` 里 `behaviour = true`，路人由行为表驱动（`npc/behaviour.gd`、`npc/behaviour-table.json`、`npc/behaviour-people.json`，说明在 `docs/behavior-system/design_route_npc_behavior.md` 开头）。长椅、公交站、摊位、棋桌的位置由路人自己去占，不再按概率摆人。
 - **可走网格缓存**已做：`walk_grid.gd` 的 `_fingerprint` / `_load` / `save()`，存在 `user://walk_grid/<场景名>.bin`。这个场景建一次约 11 秒，读缓存约 1 秒；改了场景、类型、模型、导入设置、代价表或网格代码都会自动重建。
 - **背景**（`Backdrop` 节点，分组 `backdrop`）：四周各延伸 100 米的地面和两条街、行道树，只画不走：可走网格不读它，镜头的注视点也不越过场景本身。
 - **街面**：路边停车（不开），每处斑马线两头有红绿灯和行人信号灯。院子的地面用人行道的颜色，小巷是水泥色，看得出巷子。
@@ -160,7 +162,7 @@
 
 **加东西的做法**：
 - 加一种位置：在物件类型 `.tscn` 里加 `Marker3D`，名字 `post_<种类>`（种类一个词、不带下划线，同类型有几个就 `post_<种类>_<n>`），位置是人站的地方、+Z 是人面朝的方向；再在 `clip-setup.json` 给用它的动作写 `"post": "<种类>"`。行为表里要用，就加一行 `"from": "post:<种类>"`；声明了位置种类的动作只能出现在同种类的行里（`behaviour.gd`、`crowd.gd` 查，违反就报错退出）。非行为场景（street_demo）里出现的位置种类都要在 `crowd-params.json` 的 `posts` 里有一项。
-- 加一种配件：模型 `models/held_<名>.glb`（`modeling/模型制作说明.md` 第 12 节），再建 `types/held_<名>.tscn`（照现有的抄，分组 `held`，`model` 不带变换）；`clip-setup.json` 写 `"item": { "type": "held_<名>", "hand": "left|right|both|back" }`。
+- 加一种配件：模型 `models/held_<名>.glb`（`docs/asset-production/models/模型制作说明.md` 第 12 节），再建 `types/held_<名>.tscn`（照现有的抄，分组 `held`，`model` 不带变换）；`clip-setup.json` 写 `"item": { "type": "held_<名>", "hand": "left|right|both|back" }`。
 - 加一个两人动作：在开位置的那条写 `"partner": { "clip": "<另一人的动作>", "at": [x, z], "yaw": <度> }`（相对第一个人：+Z 是他面朝的方向），距离先给个大概，在空地里拖另一人调。
 - 手要碰的点：物件类型上的 `touch_<动作>_<关节>` 标记（物件坐标），从原 `support.json` 转来，现在只存不用，等以后做 IK。推车的握点在模型里（`grip_left` / `grip_right`），不另存。
 
@@ -168,7 +170,7 @@
 
 ## 山大威海校区（`scenes/sdu_weihai/`，2026-09-28）
 
-照真实地点做的场景：给一个地点，脚本自己取资料、搭场景。流程分三步：地基、画线（静态布局）、建模，见 `docs/scene_reconstruction_workflow.md`。每一步用了什么信息、从哪来，记在 `../research/sdu_weihai/复刻记录.md`，资料出处和许可在同目录的 `来源.md`。现在只做完第一步（地基）：地形、水、路网。
+照真实地点做的场景：给一个地点，脚本自己取资料、搭场景。流程分三步：地基、画线（静态布局）、建模，见 `docs/scenes/scene_reconstruction_workflow.md`。每一步用了什么信息、从哪来，记在 `../research/sdu_weihai/复刻记录.md`，资料出处和许可在同目录的 `来源.md`。现在只做完第一步（地基）：地形、水、路网。
 
 - **坐标**：`site.json` 定 UTM 分区和原点。X 朝东、Z 朝南、Y 朝上，单位米，高度不夸张。
 - **地面**：`ground.glb` 只有三种材质：`road`（路网）、`ground`（其余地面）、`water`，加上湖边的石岸 `wall_stone`。校外的海和陆地在 `backdrop.glb`（分组 `backdrop`，不可走）。地面节点分组 `ground`，`level.gd` 不把它按块合并（合并后块的接缝会描出线）。
@@ -181,7 +183,7 @@
 ## 现在还没做
 
 - 从整栋楼里进出与导航：独立交互门已有开合和手部联动，尚不代表每栋建筑都已有室内通路。
-- 候选来源"周围的人"：双人请求、活动记账、吆喝抬分（`docs/design_route_npc_behavior.md` §3）；结伴走。
+- 候选来源"周围的人"：双人请求、活动记账、吆喝抬分（`docs/behavior-system/design_route_npc_behavior.md` §3）；结伴走。
 - 看向哪：在任意动作上叠加头朝目标转。
 - 多种人：`npc/behaviour-people.json` 只有 `passerby`，`npc/body-types.json` 只有 `adult`，缺小孩体型。
 - 避让：人、骑车的、狗之间都不避让；狗的位置不查可走网格。

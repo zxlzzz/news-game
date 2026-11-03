@@ -1,0 +1,4773 @@
+{
+  "scope": "Source/declaration audit, not visual acceptance",
+  "counts": {
+    "inventory": 98,
+    "rows": 97,
+    "enabled": 90,
+    "actions": 135
+  },
+  "authoring_comparison": {
+    "previous_enabled": 72,
+    "previous_enabled_unchanged": 72,
+    "changed_rows": [
+      "hold_door",
+      "push_cart",
+      "push_stroller",
+      "pull_suitcase",
+      "ride_bicycle",
+      "ride_scooter",
+      "hail_taxi",
+      "enter_car",
+      "exit_car",
+      "assist_person",
+      "accept_assistance",
+      "help_fallen",
+      "play_seesaw",
+      "slide_seated",
+      "swing_seated",
+      "do_pullups",
+      "phone_call",
+      "handstand"
+    ],
+    "changed_existing_actions": [
+      "handstand"
+    ],
+    "new_actions": [
+      "support_latch",
+      "support_release",
+      "support_wait",
+      "push_cart",
+      "push_stroller",
+      "pull_suitcase",
+      "ride_bicycle",
+      "ride_scooter",
+      "swing_seated",
+      "slide_seated",
+      "seesaw_seated",
+      "seesaw_partner",
+      "pullup_raise",
+      "hold_door",
+      "hail_taxi",
+      "car_ride",
+      "assist_elder_walk",
+      "elder_assisted_walk",
+      "help_up",
+      "helped_up",
+      "phone_call",
+      "walk_phone_call",
+      "support_prepare",
+      "open_fixture",
+      "helped_up_ground_seated"
+    ]
+  },
+  "external_facts": [
+    {
+      "posture": "lying",
+      "clip": "fall_back",
+      "meta": "assets/animations/npz/fall_back/meta.json",
+      "text": "A standing person loses balance backward and falls onto their back. The torso tips backward, both arms reach forward trying to regain balance, the bottom hits the ground, then the back and shoulders land on the floor. Finish lying on the back with bent knees."
+    }
+  ],
+  "rejected_bindings": {
+    "pull_suitcase": [
+      {
+        "clip": "pull_suitcase",
+        "setup": {
+          "post": "pull"
+        },
+        "source": "A person walks forward carrying a heavy shopping bag in the right hand down beside the right thigh. The right arm stays straight and steady pointing down, while the left arm swings freely. Continuous natural walking.",
+        "reason": "Unbound: the same-name source describes carrying a shopping bag, not pulling a wheeled case."
+      }
+    ],
+    "car_ride": [
+      {
+        "clip": "car_enter",
+        "setup": {
+          "post": "carenter"
+        },
+        "source": "Standing next to the driver door of a car, use the left hand to pull the door open. Turn sideways, bend knees and duck the head, move hips sideways into the low driver seat first, then lift the outside leg over the sill and bring both feet forward into the footwell. Finish seated upright.",
+        "reason": "Unbound passenger seat hold. car_enter/car_exit describe a driver seat and do not cover passenger boarding/exit or this seated hold."
+      },
+      {
+        "clip": "car_exit",
+        "setup": {
+          "post": "carexit"
+        },
+        "source": "Sitting in a low car driver seat, open the door with the left hand. Turn the body sideways, place the left foot outside on the ground, bring the right leg out, lean forward and stand up beside the car. Finish upright with both feet on the ground.",
+        "reason": "Unbound passenger seat hold. car_enter/car_exit describe a driver seat and do not cover passenger boarding/exit or this seated hold."
+      }
+    ]
+  },
+  "actions": [
+    {
+      "id": "stand_idle",
+      "at": "godot/npc/text_behavior/table.json:56",
+      "declaration": {
+        "label": "发呆",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "stand_idle",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "stand_idle",
+          "meta": "assets/animations/npz/stand_idle/meta.json",
+          "text": "A person stands relaxed with their arms hanging by their sides.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "adjust_clothes",
+      "at": "godot/npc/text_behavior/table.json:62",
+      "declaration": {
+        "label": "整理衣服",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "adjust_clothes"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "adjust_clothes"
+      },
+      "sources": [
+        {
+          "clip": "adjust_clothes",
+          "meta": "assets/animations/npz/adjust_clothes/meta.json",
+          "text": "A person stands relaxed, then tidies their shirt collar. The left hand lifts to the opposite collar corner below the neck, grips it and gives a clear downward tug, releases and lowers. Then the right hand lifts to the other collar corner, grips it and gives a clear downward tug. After tidying, release the collar and lower both arms completely to hang relaxed beside the thighs. Finish standing upright and still with both hands down. Feet stay planted. Do not touch the face.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "scratch_head",
+      "at": "godot/npc/text_behavior/table.json:69",
+      "declaration": {
+        "label": "挠头",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "scratch_head"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "scratch_head"
+      },
+      "sources": [
+        {
+          "clip": "scratch_head",
+          "meta": "assets/animations/npz/scratch_head/meta.json",
+          "text": "A person standing still briefly scratches the side of their head with their right hand, then lowers the hand back to their side.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "rub_eye",
+      "at": "godot/npc/text_behavior/table.json:76",
+      "declaration": {
+        "label": "揉眼睛",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "rub_eye"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "rub_eye"
+      },
+      "sources": [
+        {
+          "clip": "rub_eye",
+          "meta": "assets/animations/npz/rub_eye/meta.json",
+          "text": "A person standing still raises the right hand to the right eye and rubs the eye with the knuckles for a moment, head slightly lowered, then lowers the hand back to the side.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "check_watch",
+      "at": "godot/npc/text_behavior/table.json:83",
+      "declaration": {
+        "label": "看表",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "check_watch"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "check_watch"
+      },
+      "sources": [
+        {
+          "clip": "check_watch",
+          "meta": "assets/animations/npz/check_watch/meta.json",
+          "text": "A person lifts their left wrist in front of their chest, looks down at their wristwatch, then lowers their arm.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "stretch",
+      "at": "godot/npc/text_behavior/table.json:90",
+      "declaration": {
+        "label": "伸懒腰",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "stretch"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "stretch"
+      },
+      "sources": [
+        {
+          "clip": "stretch",
+          "meta": "assets/animations/npz/stretch/meta.json",
+          "text": "A person standing in place stretches both arms above their head, then relaxes and lowers their arms to their sides.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "pat_dust",
+      "at": "godot/npc/text_behavior/table.json:97",
+      "declaration": {
+        "label": "拍掉灰尘",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "pat_dust"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "pat_dust"
+      },
+      "sources": [
+        {
+          "clip": "pat_dust",
+          "meta": "assets/animations/npz/pat_dust/meta.json",
+          "text": "A person pats dust off the front of their trousers with both hands.",
+          "setup": {
+            "stationary": true
+          },
+          "setup_at": "godot/npc/clip-setup.json:2766"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "look_up",
+      "at": "godot/npc/text_behavior/table.json:104",
+      "declaration": {
+        "label": "抬头看",
+        "mode": "once",
+        "posture": "standing",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "look_up",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "look_up",
+          "meta": "assets/animations/npz/look_up/meta.json",
+          "text": "A person tilts their head back to look up at the sky while standing still.",
+          "setup": {
+            "stationary": true
+          },
+          "setup_at": "godot/npc/clip-setup.json:2763"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "yawn",
+      "at": "godot/npc/text_behavior/table.json:110",
+      "declaration": {
+        "label": "打哈欠",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "yawn"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "yawn"
+      },
+      "sources": [
+        {
+          "clip": "yawn",
+          "meta": "assets/animations/npz/yawn/meta.json",
+          "text": "A tired person standing still yawns into their right hand, tilting their head back slightly, then lowers their hand.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "walk",
+      "at": "godot/npc/text_behavior/table.json:117",
+      "declaration": {
+        "label": "走路",
+        "mode": "move",
+        "posture": "standing",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "walk",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "walk",
+          "meta": "assets/animations/npz/walk/meta.json",
+          "text": "A person walks forward in a straight line at a steady comfortable pace. Their feet alternate in regular heel-to-toe steps, with natural opposite arm swing. They keep walking without stopping.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "leave",
+      "at": "godot/npc/text_behavior/table.json:123",
+      "declaration": {
+        "label": "走向出口",
+        "mode": "move",
+        "posture": "standing",
+        "effect": "leave",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "walk",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "walk",
+          "meta": "assets/animations/npz/walk/meta.json",
+          "text": "A person walks forward in a straight line at a steady comfortable pace. Their feet alternate in regular heel-to-toe steps, with natural opposite arm swing. They keep walking without stopping.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "sit_bench",
+      "at": "godot/npc/text_behavior/table.json:130",
+      "declaration": {
+        "label": "正坐",
+        "mode": "hold",
+        "posture": "seated",
+        "post": "sit",
+        "clip": "sit_bench",
+        "empty": true
+      },
+      "posture": "seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "sit_bench"
+      },
+      "sources": [
+        {
+          "clip": "sit_bench",
+          "meta": "assets/animations/npz/sit_bench/meta.json",
+          "text": "A person sits quietly upright on a bench, thighs forward, lower legs vertical, soles flat on the floor, both hands resting on the thighs. Subtle breathing, the head turns slowly to look around.",
+          "setup": {
+            "post": "sit",
+            "pose": {
+              "seconds": 4,
+              "seat": "hip_seat",
+              "back": "back_rest",
+              "feet": [
+                "foot_left",
+                "foot_right"
+              ],
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "lap"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "lap"
+                  ]
+                ]
+              }
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:498"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "slouch_bench",
+      "at": "godot/npc/text_behavior/table.json:138",
+      "declaration": {
+        "label": "瘫坐",
+        "mode": "hold",
+        "posture": "seated",
+        "post": "sit",
+        "clip": "slouch_bench",
+        "empty": true
+      },
+      "posture": "seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "slouch_bench"
+      },
+      "sources": [
+        {
+          "clip": "slouch_bench",
+          "meta": "assets/animations/npz/slouch_bench/meta.json",
+          "text": "A person slouches on a bench, hips slid forward to the front of the seat, upper back leaning back against the backrest, head upright looking ahead, legs stretched out in front, hands resting on the seat beside the hips. Calm, only subtle breathing.",
+          "setup": {
+            "post": "sit",
+            "pose": {
+              "seconds": 4,
+              "seat": "hip_seat_front",
+              "back": "back_rest",
+              "feet": [
+                "foot_far_left",
+                "foot_far_right"
+              ],
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "lap"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "lap"
+                  ]
+                ]
+              }
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:524"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "phone_browse",
+      "at": "godot/npc/text_behavior/table.json:146",
+      "declaration": {
+        "label": "看手机",
+        "mode": "hold",
+        "posture": "standing",
+        "tool": "phone",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "phone",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "read_book",
+      "at": "godot/npc/text_behavior/table.json:153",
+      "declaration": {
+        "label": "看书",
+        "mode": "hold",
+        "posture": "standing",
+        "tool": "book",
+        "clip": "read_book"
+      },
+      "posture": "standing",
+      "hand": "book",
+      "bindings": {
+        "declared": "read_book"
+      },
+      "sources": [
+        {
+          "clip": "read_book",
+          "meta": "assets/animations/npz/read_book/meta.json",
+          "text": "Standing still, reading an open book held with both hands at the chest, elbows low and relaxed, head inclined toward the book.",
+          "setup": {
+            "item": {
+              "type": "held_book_open",
+              "hand": "both"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1755"
+        }
+      ],
+      "review": "Standing source only. Seated use removed; shared seat rise now runs before reading."
+    },
+    {
+      "id": "read_notice",
+      "at": "godot/npc/text_behavior/table.json:160",
+      "declaration": {
+        "label": "看公告",
+        "mode": "hold",
+        "posture": "standing",
+        "post": "notice",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "read_notice",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "read_notice",
+          "meta": "assets/animations/npz/read_notice/meta.json",
+          "text": "Standing still facing a noticeboard and reading the notices. Both arms remain down, hands relaxed beside the thighs.",
+          "setup": {
+            "post": "notice",
+            "pose": {
+              "seconds": 4,
+              "lean": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0.8,
+                  6
+                ],
+                [
+                  3.2,
+                  6
+                ],
+                [
+                  4,
+                  0
+                ]
+              ],
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ],
+                [
+                  0.6,
+                  "notice_left"
+                ],
+                [
+                  2.0,
+                  "notice_right"
+                ],
+                [
+                  3.4,
+                  "notice_landing"
+                ],
+                [
+                  4,
+                  "ahead"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1146"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "fountain_drink",
+      "at": "godot/npc/text_behavior/table.json:167",
+      "declaration": {
+        "label": "喝水",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "post": "fountain",
+        "clip": "fountain_drink"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "fountain_drink"
+      },
+      "sources": [
+        {
+          "clip": "fountain_drink",
+          "meta": "assets/animations/npz/fountain_drink/meta.json",
+          "text": "Bending deeply forward from the waist to drink directly from a drinking fountain. Both hands rest on the basin edges, elbows bend downward, mouth near the spout. Then slowly straighten.",
+          "setup": {
+            "post": "fountain",
+            "pose": {
+              "seconds": 3.5,
+              "lean": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0.6,
+                  0
+                ],
+                [
+                  1.4,
+                  30
+                ],
+                [
+                  2.4,
+                  30
+                ],
+                [
+                  3.1,
+                  0
+                ]
+              ],
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.5,
+                    "side"
+                  ],
+                  [
+                    1.2,
+                    "rim_left"
+                  ],
+                  [
+                    2.5,
+                    "rim_left"
+                  ],
+                  [
+                    3.1,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.5,
+                    "side"
+                  ],
+                  [
+                    1.2,
+                    "rim_right"
+                  ],
+                  [
+                    2.5,
+                    "rim_right"
+                  ],
+                  [
+                    3.1,
+                    "side"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "spout_drink"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1931"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "stow_item",
+      "at": "godot/npc/text_behavior/table.json:175",
+      "declaration": {
+        "label": "收起手中物",
+        "mode": "once",
+        "posture": "all",
+        "effect": "stow",
+        "clip": null
+      },
+      "posture": "all",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound finite real-item preparation; standing/seated/ground use is explicit text semantics."
+    },
+    {
+      "id": "put_down",
+      "at": "godot/npc/text_behavior/table.json:182",
+      "declaration": {
+        "label": "放下手中物",
+        "mode": "once",
+        "posture": "all",
+        "effect": "put",
+        "clip": null
+      },
+      "posture": "all",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound finite real-item preparation; requires an actual reachable surface and capacity."
+    },
+    {
+      "id": "take_tool",
+      "at": "godot/npc/text_behavior/table.json:189",
+      "declaration": {
+        "label": "取出工具",
+        "mode": "once",
+        "posture": "all",
+        "effect": "take",
+        "clip": null
+      },
+      "posture": "all",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound finite real-item preparation; standing/seated/ground use is explicit text semantics."
+    },
+    {
+      "id": "stand_up",
+      "at": "godot/npc/text_behavior/table.json:196",
+      "declaration": {
+        "label": "从座位起身",
+        "mode": "once",
+        "posture": "seated",
+        "effect": "stand",
+        "clip": null
+      },
+      "posture": "seated",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "stand_up",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "stand_up",
+          "meta": "assets/animations/npz/stand_up/meta.json",
+          "text": "A person sitting on a bench stands up, pushing the hips up and forward over the feet with the back upright and the head up, and ends standing still in front of the bench with the arms relaxed.",
+          "setup": {
+            "post": "sit",
+            "pose": {
+              "seconds": 2,
+              "seat": "hip_seat",
+              "back": "back_rest",
+              "feet": [
+                "foot_left",
+                "foot_right"
+              ],
+              "hip": [
+                [
+                  0,
+                  "seat"
+                ],
+                [
+                  0.35,
+                  "seat"
+                ],
+                [
+                  1.6,
+                  "stand"
+                ]
+              ],
+              "lean": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0.3,
+                  0
+                ],
+                [
+                  0.85,
+                  35
+                ],
+                [
+                  1.6,
+                  0
+                ]
+              ],
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "lap"
+                  ],
+                  [
+                    0.4,
+                    "lap"
+                  ],
+                  [
+                    1.3,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "lap"
+                  ],
+                  [
+                    0.4,
+                    "lap"
+                  ],
+                  [
+                    1.3,
+                    "side"
+                  ]
+                ]
+              },
+              "life": false
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:2190"
+        }
+      ],
+      "review": "Conditional bench transition only. Other seat kinds reference seat_rise; held-object variants are unbound."
+    },
+    {
+      "id": "sit_down",
+      "at": "godot/npc/text_behavior/table.json:203",
+      "declaration": {
+        "label": "坐下",
+        "mode": "once",
+        "posture": "standing",
+        "effect": "sit",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "sit_down",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "sit_down",
+          "meta": "assets/animations/npz/sit_down/meta.json",
+          "text": "A person stands with a bench right behind the legs, bends the knees and lowers the hips straight back onto the bench, back upright, head up. The hands come to rest on the thighs.",
+          "setup": {
+            "post": "sit",
+            "pose": {
+              "seconds": 2,
+              "seat": "hip_seat",
+              "back": "back_rest",
+              "feet": [
+                "foot_left",
+                "foot_right"
+              ],
+              "hip": [
+                [
+                  0,
+                  "stand"
+                ],
+                [
+                  0.25,
+                  "stand"
+                ],
+                [
+                  1.55,
+                  "seat"
+                ]
+              ],
+              "lean": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0.25,
+                  0
+                ],
+                [
+                  0.85,
+                  32
+                ],
+                [
+                  1.55,
+                  0
+                ]
+              ],
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.7,
+                    "side"
+                  ],
+                  [
+                    1.6,
+                    "lap"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.7,
+                    "side"
+                  ],
+                  [
+                    1.6,
+                    "lap"
+                  ]
+                ]
+              },
+              "life": false
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:2115"
+        }
+      ],
+      "review": "Conditional bench transition only. Other seat kinds reference seat_lower; held-object variants are unbound."
+    },
+    {
+      "id": "handshake_wait",
+      "at": "godot/npc/text_behavior/table.json:210",
+      "declaration": {
+        "label": "等对方回应",
+        "mode": "hold",
+        "posture": "standing",
+        "empty": true,
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "pair_wait",
+      "at": "godot/npc/text_behavior/table.json:217",
+      "declaration": {
+        "label": "等对方准备",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "stand_idle",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "stand_idle",
+          "meta": "assets/animations/npz/stand_idle/meta.json",
+          "text": "A person stands relaxed with their arms hanging by their sides.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "handshake_offer",
+      "at": "godot/npc/text_behavior/table.json:223",
+      "declaration": {
+        "label": "伸手握手",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "handshake_offer"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "handshake_offer"
+      },
+      "sources": [
+        {
+          "clip": "handshake_offer",
+          "meta": "assets/animations/npz/handshake_offer/meta.json",
+          "text": "A standing person reaches the right hand forward at waist height, gives a firm handshake with two small up and down movements, then releases and lowers the hand. Feet planted.",
+          "setup": {
+            "partner": {
+              "clip": "handshake_reply",
+              "at": [
+                -0.3,
+                0.72
+              ],
+              "yaw": 180
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:40"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "handshake_reply",
+      "at": "godot/npc/text_behavior/table.json:230",
+      "declaration": {
+        "label": "回应握手",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "handshake_reply"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "handshake_reply"
+      },
+      "sources": [
+        {
+          "clip": "handshake_reply",
+          "meta": "assets/animations/npz/handshake_reply/meta.json",
+          "text": "A standing person extends the right hand forward at waist height to meet another person in front, performs two gentle up and down handshake movements, then lowers the hand. Feet planted.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "choose_item",
+      "at": "godot/npc/text_behavior/table.json:237",
+      "declaration": {
+        "label": "挑选商品",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "choose_item",
+        "post": "customer"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "choose_item"
+      },
+      "sources": [
+        {
+          "clip": "choose_item",
+          "meta": "assets/animations/npz/choose_item/meta.json",
+          "text": "A customer stands at a fruit stall, leans over the counter a little and reaches into the crate of apples with the right hand, feels a couple of apples one after another, then straightens up.",
+          "setup": {
+            "post": "customer",
+            "pose": {
+              "seconds": 3,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.4,
+                    "side"
+                  ],
+                  [
+                    1.0,
+                    "apples_a^"
+                  ],
+                  [
+                    1.4,
+                    "apples_a^"
+                  ],
+                  [
+                    1.8,
+                    "apples_b^"
+                  ],
+                  [
+                    2.0,
+                    "apples_b^"
+                  ],
+                  [
+                    2.6,
+                    "side"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ],
+                [
+                  0.4,
+                  "apples_a"
+                ],
+                [
+                  2.1,
+                  "apples_b"
+                ],
+                [
+                  2.8,
+                  "ahead"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:861"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "fruit_weigh",
+      "at": "godot/npc/text_behavior/table.json:245",
+      "declaration": {
+        "label": "称重",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "fruit_weigh",
+        "post": "fruitweigh"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "fruit_weigh"
+      },
+      "sources": [
+        {
+          "clip": "fruit_weigh",
+          "meta": "assets/animations/npz/fruit_weigh/meta.json",
+          "text": "A fruit seller makes one continuous right-arm transfer across a counter. Lift a grapefruit from the counter with the right hand, keep it raised above the counter while moving it sideways to the weighing tray on the right, then lower it onto the tray and release it. Keep the right hand high between picking up and setting down. The left arm hangs relaxed. Do not switch hands or rest between pickup and placement.",
+          "setup": {
+            "post": "fruitweigh"
+          },
+          "setup_at": "godot/npc/clip-setup.json:207"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "vendor_call",
+      "at": "godot/npc/text_behavior/table.json:253",
+      "declaration": {
+        "label": "吆喝",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "vendor_call",
+        "post": "vendor"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "vendor_call"
+      },
+      "sources": [
+        {
+          "clip": "vendor_call",
+          "meta": "assets/animations/npz/vendor_call/meta.json",
+          "text": "A stall vendor standing behind the counter brings the right hand beside the mouth like a megaphone and calls loudly to people passing in front, then lowers the hand. The left arm stays relaxed.",
+          "setup": {
+            "post": "vendor",
+            "pose": {
+              "seconds": 3.5,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "counter_rest"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "counter_rest_right"
+                  ],
+                  [
+                    0.4,
+                    "counter_rest_right"
+                  ],
+                  [
+                    0.9,
+                    "mouth"
+                  ],
+                  [
+                    2.6,
+                    "mouth"
+                  ],
+                  [
+                    3.1,
+                    "counter_rest_right"
+                  ]
+                ]
+              }
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:763"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "vendor_tidy",
+      "at": "godot/npc/text_behavior/table.json:261",
+      "declaration": {
+        "label": "整理货品",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "vendor_tidy",
+        "post": "vendor"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "vendor_tidy"
+      },
+      "sources": [
+        {
+          "clip": "vendor_tidy",
+          "meta": "assets/animations/npz/vendor_tidy/meta.json",
+          "text": "A stall vendor stands behind the counter and tidies the apples in the crate in front: leans over a little, the right hand reaches into the crate and pushes a few apples into neat rows, then straightens up. The left hand rests on the counter beside the crate.",
+          "setup": {
+            "post": "vendor",
+            "pose": {
+              "seconds": 3,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "counter_rest"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "counter_rest_right"
+                  ],
+                  [
+                    0.4,
+                    "counter_rest_right"
+                  ],
+                  [
+                    0.9,
+                    "apples_c^"
+                  ],
+                  [
+                    1.3,
+                    "apples_d^"
+                  ],
+                  [
+                    1.7,
+                    "apples_e^"
+                  ],
+                  [
+                    2.0,
+                    "apples_e^"
+                  ],
+                  [
+                    2.6,
+                    "counter_rest_right"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ],
+                [
+                  0.4,
+                  "apples_c"
+                ],
+                [
+                  2.2,
+                  "apples_e"
+                ],
+                [
+                  3,
+                  "ahead"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:799"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "prepare_payment_tool",
+      "at": "godot/npc/text_behavior/table.json:269",
+      "declaration": {
+        "label": "准备支付工具",
+        "mode": "hold",
+        "posture": "standing",
+        "tool": "wallet",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "wallet",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "present_payment_tool",
+      "at": "godot/npc/text_behavior/table.json:276",
+      "declaration": {
+        "label": "展示支付工具",
+        "mode": "once",
+        "posture": "standing",
+        "tool": "wallet",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "wallet",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "confirm_checkout",
+      "at": "godot/npc/text_behavior/table.json:283",
+      "declaration": {
+        "label": "确认结账",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "give_item",
+      "at": "godot/npc/text_behavior/table.json:290",
+      "declaration": {
+        "label": "递出商品",
+        "mode": "once",
+        "posture": "standing",
+        "tool": "goods",
+        "clip": "give_item"
+      },
+      "posture": "standing",
+      "hand": "goods",
+      "bindings": {
+        "declared": "give_item"
+      },
+      "sources": [
+        {
+          "clip": "give_item",
+          "meta": "assets/animations/npz/give_item/meta.json",
+          "text": "A person standing still offers a small object to someone in front of them. The right hand lifts from the waist and extends forward at waist height, pauses with the palm facing upward to offer the object, then returns to their side. The left arm stays relaxed.",
+          "setup": {
+            "partner": {
+              "clip": "receive_item",
+              "at": [
+                -0.28,
+                0.94
+              ],
+              "yaw": 180
+            },
+            "stationary": true
+          },
+          "setup_at": "godot/npc/clip-setup.json:1830"
+        }
+      ],
+      "review": "Small-object source identified; existing cross-counter contact and handoff-frame gaps from report 2 remain."
+    },
+    {
+      "id": "receive_item",
+      "at": "godot/npc/text_behavior/table.json:297",
+      "declaration": {
+        "label": "接过商品",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": "receive_item"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "receive_item"
+      },
+      "sources": [
+        {
+          "clip": "receive_item",
+          "meta": "assets/animations/npz/receive_item/meta.json",
+          "text": "A person standing still reaches their right hand forward at waist height to accept a small object from someone in front. They pause with the hand extended, then bend the elbow and draw the right hand back toward their abdomen, holding the received object close. The left arm stays relaxed and the feet stay planted.",
+          "setup": {
+            "stationary": true
+          },
+          "setup_at": "godot/npc/clip-setup.json:2769"
+        }
+      ],
+      "review": "Empty receiving hand at entry; ownership changes only through the shared joint commit."
+    },
+    {
+      "id": "take_item",
+      "at": "godot/npc/text_behavior/table.json:304",
+      "declaration": {
+        "label": "从台面拿起物品",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "effect": "take_surface",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "pack_goods",
+      "at": "godot/npc/text_behavior/table.json:312",
+      "declaration": {
+        "label": "包装商品",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "queue_wait",
+      "at": "godot/npc/text_behavior/table.json:319",
+      "declaration": {
+        "label": "排队等候",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "stand_idle",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "stand_idle",
+          "meta": "assets/animations/npz/stand_idle/meta.json",
+          "text": "A person stands relaxed with their arms hanging by their sides.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "service_wait",
+      "at": "godot/npc/text_behavior/table.json:325",
+      "declaration": {
+        "label": "等候服务",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "stand_idle",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "stand_idle",
+          "meta": "assets/animations/npz/stand_idle/meta.json",
+          "text": "A person stands relaxed with their arms hanging by their sides.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "run",
+      "at": "godot/npc/text_behavior/table.json:331",
+      "declaration": {
+        "label": "跑",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "run",
+        "empty": true,
+        "speed": 3.2
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "run"
+      },
+      "sources": [
+        {
+          "clip": "run",
+          "meta": "assets/animations/npz/run/meta.json",
+          "text": "A person runs forward at a fast steady pace in a straight line, alternating long strides with a clear airborne phase between footfalls. Elbows bent and arms pumping opposite the legs, torso leaning slightly forward. Continue running for the whole clip without slowing, stopping or turning.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "jog",
+      "at": "godot/npc/text_behavior/table.json:339",
+      "declaration": {
+        "label": "慢跑",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "jog",
+        "empty": true,
+        "speed": 2.4
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "jog"
+      },
+      "sources": [
+        {
+          "clip": "jog",
+          "meta": "assets/animations/npz/jog/meta.json",
+          "text": "A person jogs continuously forward with springy alternating running strides, brief flight phases, and elbows bent, arms pumping naturally opposite to their legs. They maintain a steady easy jogging pace without slowing down.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "sit_sideways",
+      "at": "godot/npc/text_behavior/table.json:347",
+      "declaration": {
+        "label": "侧身坐",
+        "mode": "hold",
+        "posture": "seated",
+        "clip": null,
+        "empty": true,
+        "post": "sit"
+      },
+      "posture": "seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound: same-name meta describes reclining, not sideways sitting."
+    },
+    {
+      "id": "sit_step",
+      "at": "godot/npc/text_behavior/table.json:355",
+      "declaration": {
+        "label": "坐在台阶上",
+        "mode": "hold",
+        "posture": "seated",
+        "clip": "sit_step",
+        "empty": true,
+        "post": "step"
+      },
+      "posture": "seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "sit_step"
+      },
+      "sources": [
+        {
+          "clip": "sit_step",
+          "meta": "assets/animations/npz/sit_step/meta.json",
+          "text": "A person sits resting on a low 30cm-high entrance step, knees bent up, both feet planted on the pavement in front of the steps. Lean the torso slightly forward with forearms resting loosely over the thighs. Remain seated, do not stand.",
+          "setup": {
+            "post": "step"
+          },
+          "setup_at": "godot/npc/clip-setup.json:1192"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "sit_ground",
+      "at": "godot/npc/text_behavior/table.json:363",
+      "declaration": {
+        "label": "从站立坐到地上",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "sit_ground",
+        "empty": true,
+        "effect": "ground_seated"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "sit_ground"
+      },
+      "sources": [
+        {
+          "clip": "sit_ground",
+          "meta": "assets/animations/npz/sit_ground/meta.json",
+          "text": "A person sits down on the ground from standing. Bend the knees into a squat, lower the hips onto the floor, and extend both legs comfortably forward with knees slightly bent. Place hands beside the hips for balance. End seated on the ground with upright torso, not lying down.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "lie_down",
+      "at": "godot/npc/text_behavior/table.json:371",
+      "declaration": {
+        "label": "躺到地上",
+        "mode": "once",
+        "posture": "standing",
+        "clip": null,
+        "empty": true,
+        "effect": "lying"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Missing standing-to-lying transition; lying hold is a different action."
+    },
+    {
+      "id": "get_up_ground",
+      "at": "godot/npc/text_behavior/table.json:379",
+      "declaration": {
+        "label": "从普通坐地／躺地状态起身",
+        "mode": "once",
+        "posture": "ground",
+        "clip": null,
+        "empty": true,
+        "effect": "rise"
+      },
+      "posture": "ground",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Missing ground-to-standing clip; ground posture and can_rise required, never a chair rise."
+    },
+    {
+      "id": "sit_ground_hold",
+      "at": "godot/npc/text_behavior/table.json:387",
+      "declaration": {
+        "label": "普通坐地保持",
+        "mode": "hold",
+        "posture": "ground_seated",
+        "clip": null,
+        "empty": true
+      },
+      "posture": "ground_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Missing plain ground-seated hold; sit_ground is the transition."
+    },
+    {
+      "id": "sit_knees_up",
+      "at": "godot/npc/text_behavior/table.json:394",
+      "declaration": {
+        "label": "坐地抱膝",
+        "mode": "hold",
+        "posture": "ground_seated",
+        "clip": "sit_knees_up",
+        "empty": true
+      },
+      "posture": "ground_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "sit_knees_up"
+      },
+      "sources": [
+        {
+          "clip": "sit_knees_up",
+          "meta": "assets/animations/npz/sit_knees_up/meta.json",
+          "text": "A person sits on the ground hugging both knees toward the chest. Both knees are raised, feet rest on the floor in front, torso curls slightly forward. Wrap both forearms around the shins below the knees and hold this compact seated pose throughout. Remain seated, no standing up.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "lie_ground_hold",
+      "at": "godot/npc/text_behavior/table.json:401",
+      "declaration": {
+        "label": "躺在地上",
+        "mode": "hold",
+        "posture": "lying",
+        "clip": "lie_ground_hold",
+        "empty": true
+      },
+      "posture": "lying",
+      "hand": "empty",
+      "bindings": {
+        "declared": "lie_ground_hold"
+      },
+      "sources": [
+        {
+          "clip": "lie_ground_hold",
+          "meta": "assets/animations/npz/lie_ground_hold/meta.json",
+          "text": "Lying supine on the flat ground with arms resting relaxed on the floor beside the torso, legs extended. Maintain the pose with gentle breathing.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "lean_wall",
+      "at": "godot/npc/text_behavior/table.json:408",
+      "declaration": {
+        "label": "靠墙站",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "lean_wall",
+        "empty": true,
+        "post": "wall"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "lean_wall"
+      },
+      "sources": [
+        {
+          "clip": "lean_wall",
+          "meta": "assets/animations/npz/lean_wall/meta.json",
+          "text": "A person rests their lower back and hips against the vertical wall behind them in a relaxed slightly bent-knee standing posture. Feet are planted slightly in front of the hips. The upper back, neck and head stay gently inclined forward away from the wall. Both arms hang quietly down, shoulders relaxed. Hold this comfortable supported posture with slight breathing only. Do not sit, fall, gesture, reach, straighten the neck backward or move the feet.",
+          "setup": {
+            "post": "wall"
+          },
+          "setup_at": "godot/npc/clip-setup.json:1089"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "lean_sign",
+      "at": "godot/npc/text_behavior/table.json:416",
+      "declaration": {
+        "label": "靠站牌站",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "lean_sign",
+        "empty": true,
+        "post": "pole"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "lean_sign"
+      },
+      "sources": [
+        {
+          "clip": "lean_sign",
+          "meta": "assets/animations/npz/lean_sign/meta.json",
+          "text": "A person stands beside a bus-stop pole, lightly supports the left hand against the pole at waist height, leans the left shoulder toward the pole, then remains relaxed with gentle breathing. Right arm hangs freely. Keep the torso to the side of the pole.",
+          "setup": {
+            "post": "pole",
+            "pose": {
+              "seconds": 3,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "hang"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "pocket"
+                  ]
+                ]
+              },
+              "rest": "lean_grip",
+              "life": false
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1067"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "lean_railing",
+      "at": "godot/npc/text_behavior/table.json:424",
+      "declaration": {
+        "label": "扶栏杆前倾",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "lean_railing",
+        "empty": true,
+        "post": "rail"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "lean_railing"
+      },
+      "sources": [
+        {
+          "clip": "lean_railing",
+          "meta": "assets/animations/npz/lean_railing/meta.json",
+          "text": "A person stands behind a waist-high railing, places both hands on the top bar and leans forward slightly to look beyond it. Both feet remain planted, elbows slightly bent, hips behind the rail. Keep both hands on the railing throughout.",
+          "setup": {
+            "post": "rail",
+            "pose": {
+              "seconds": 4,
+              "lean": [
+                [
+                  0,
+                  12
+                ]
+              ],
+              "hands": {
+                "right": [
+                  [
+                    0,
+                    "grip_left"
+                  ]
+                ],
+                "left": [
+                  [
+                    0,
+                    "grip_right"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1035"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "wait_standing",
+      "at": "godot/npc/text_behavior/table.json:432",
+      "declaration": {
+        "label": "站着等待",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null,
+        "empty": "stand_idle",
+        "held": null
+      },
+      "sources": [
+        {
+          "clip": "stand_idle",
+          "meta": "assets/animations/npz/stand_idle/meta.json",
+          "text": "A person stands relaxed with their arms hanging by their sides.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "atm_keypad",
+      "at": "godot/npc/text_behavior/table.json:438",
+      "declaration": {
+        "label": "操作 ATM 键盘",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "atm_keypad",
+        "empty": true,
+        "post": "atm"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "atm_keypad"
+      },
+      "sources": [
+        {
+          "clip": "atm_keypad",
+          "meta": "assets/animations/npz/atm_keypad/meta.json",
+          "text": "Stand relaxed in front of the ATM. Reach the RIGHT hand forward and slightly upward onto the real keypad, press several keys with short fingertip taps, withdraw that same hand and lower it beside the right thigh. Keep the LEFT arm hanging relaxed beside the left thigh throughout. Finish fully upright with both arms relaxed down. Feet stay planted.",
+          "setup": {
+            "post": "atm",
+            "pose": {
+              "seconds": 3,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.3,
+                    "side"
+                  ],
+                  [
+                    0.9,
+                    "keypad_press@3"
+                  ],
+                  [
+                    1.1,
+                    "keypad_press"
+                  ],
+                  [
+                    1.3,
+                    "keypad_press@3"
+                  ],
+                  [
+                    1.5,
+                    "keypad_press"
+                  ],
+                  [
+                    1.7,
+                    "keypad_press@3"
+                  ],
+                  [
+                    1.9,
+                    "keypad_press"
+                  ],
+                  [
+                    2.0,
+                    "keypad_press"
+                  ],
+                  [
+                    2.6,
+                    "side"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "keypad_press"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:382"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "atm_take_cash",
+      "at": "godot/npc/text_behavior/table.json:446",
+      "declaration": {
+        "label": "取出设备中本次现金",
+        "mode": "once",
+        "posture": "standing",
+        "clip": null,
+        "empty": true,
+        "post": "atm",
+        "effect": "collect"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound: available clip puts cash into a pocket; text process collects a finite item to the hand. Needs matching output/fragment."
+    },
+    {
+      "id": "parcel_terminal",
+      "at": "godot/npc/text_behavior/table.json:455",
+      "declaration": {
+        "label": "操作取件柜并取出包裹",
+        "mode": "once",
+        "posture": "standing",
+        "clip": null,
+        "empty": true,
+        "post": "parcel",
+        "effect": "collect"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound: current clip-setup pose defines screen touches, without the retrieval described in the source. Text collect remains explicit."
+    },
+    {
+      "id": "post_letter",
+      "at": "godot/npc/text_behavior/table.json:464",
+      "declaration": {
+        "label": "投信",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "post_letter",
+        "tool": "envelope",
+        "post": "mail",
+        "effect": "deposit"
+      },
+      "posture": "standing",
+      "hand": "envelope",
+      "bindings": {
+        "declared": "post_letter"
+      },
+      "sources": [
+        {
+          "clip": "post_letter",
+          "meta": "assets/animations/npz/post_letter/meta.json",
+          "text": "A standing person in front of a mailbox raises the right hand to chest height and slowly pushes a letter into a slot directly in front, then retracts the hand. Feet planted.",
+          "setup": {
+            "post": "mail",
+            "pose": {
+              "seconds": 3,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.4,
+                    "side"
+                  ],
+                  [
+                    1.0,
+                    "letter_insert"
+                  ],
+                  [
+                    1.6,
+                    "letter_insert"
+                  ],
+                  [
+                    2.3,
+                    "side"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "letter_insert"
+                ]
+              ],
+              "show": [
+                0,
+                1.5
+              ]
+            },
+            "item": {
+              "type": "held_envelope",
+              "hand": "right"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:332"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "post_notice",
+      "at": "godot/npc/text_behavior/table.json:473",
+      "declaration": {
+        "label": "张贴纸张",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "post_notice",
+        "tool": "paper",
+        "post": "postnotice",
+        "effect": "deposit"
+      },
+      "posture": "standing",
+      "hand": "paper",
+      "bindings": {
+        "declared": "post_notice"
+      },
+      "sources": [
+        {
+          "clip": "post_notice",
+          "meta": "assets/animations/npz/post_notice/meta.json",
+          "text": "A standing person faces a notice board, raises both hands forward to shoulder height, presses the upper corners of a paper notice flat against the board, smooths it with both hands, lowers arms.",
+          "setup": {
+            "post": "postnotice",
+            "pose": {
+              "seconds": 3,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.4,
+                    "side"
+                  ],
+                  [
+                    1.0,
+                    "notice_left"
+                  ],
+                  [
+                    2.0,
+                    "notice_left"
+                  ],
+                  [
+                    2.6,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.4,
+                    "side"
+                  ],
+                  [
+                    1.0,
+                    "notice_right"
+                  ],
+                  [
+                    2.0,
+                    "notice_right"
+                  ],
+                  [
+                    2.6,
+                    "side"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "notice_landing"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:210"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "throw_trash",
+      "at": "godot/npc/text_behavior/table.json:482",
+      "declaration": {
+        "label": "向垃圾桶投垃圾",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "throw_trash",
+        "tool": "trash",
+        "post": "trash",
+        "effect": "deposit"
+      },
+      "posture": "standing",
+      "hand": "trash",
+      "bindings": {
+        "declared": "throw_trash"
+      },
+      "sources": [
+        {
+          "clip": "throw_trash",
+          "meta": "assets/animations/npz/throw_trash/meta.json",
+          "text": "Standing beside a waist-high trash bin, move the right hand slightly forward and down, release a small wrapper into the bin, then lower the empty hand beside the thigh. One small relaxed downward dropping gesture. Feet stay in place.",
+          "setup": {
+            "post": "trash",
+            "pose": {
+              "seconds": 3,
+              "follow": true,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.4,
+                    "side"
+                  ],
+                  [
+                    1.0,
+                    "drop_hand"
+                  ],
+                  [
+                    1.3,
+                    "drop_hand"
+                  ],
+                  [
+                    1.9,
+                    "side"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ],
+                [
+                  0.7,
+                  "drop_release"
+                ],
+                [
+                  1.6,
+                  "drop_release"
+                ],
+                [
+                  2.4,
+                  "ahead"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1260"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "pick_up",
+      "at": "godot/npc/text_behavior/table.json:491",
+      "declaration": {
+        "label": "从地面捡物后站起",
+        "mode": "once",
+        "posture": "standing",
+        "clip": null,
+        "empty": true,
+        "post": "pickup",
+        "effect": "collect"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound generic collection: existing source picks up one small fruit; arbitrary object shapes are not covered."
+    },
+    {
+      "id": "rummage_bin",
+      "at": "godot/npc/text_behavior/table.json:500",
+      "declaration": {
+        "label": "翻找垃圾桶",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "rummage_bin",
+        "empty": true,
+        "post": "rummage"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "rummage_bin"
+      },
+      "sources": [
+        {
+          "clip": "rummage_bin",
+          "meta": "assets/animations/npz/rummage_bin/meta.json",
+          "text": "A standing person searches a waist-high bin. Keep both feet planted, hips near standing height and knees only slightly bent. Start upright. Lean forward from the hips, rest the left hand on the rim and search down inside with the right hand. Only the right forearm enters the bin; head and shoulders stay above and outside the mouth. Withdraw the right hand, lift the left hand off the rim, and finish fully standing upright with both hands by the thighs. Do not squat or kneel.",
+          "setup": {
+            "post": "rummage"
+          },
+          "setup_at": "godot/npc/clip-setup.json:2086"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "sweep_ground",
+      "at": "godot/npc/text_behavior/table.json:508",
+      "declaration": {
+        "label": "扫地",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "sweep_ground",
+        "tool": "broom",
+        "post": "work"
+      },
+      "posture": "standing",
+      "hand": "broom",
+      "bindings": {
+        "declared": "sweep_ground"
+      },
+      "sources": [
+        {
+          "clip": "sweep_ground",
+          "meta": "assets/animations/npz/sweep_ground/meta.json",
+          "text": "A janitor pushes a floor broom away and pulls it back with both hands. Hands remain low in front of the waist, one hand near the belt and the other near the thigh. The broom handle slopes diagonally forward and down. Feet stay shoulder width apart; the body leans forward slightly. Make one slow, broad forward-and-back sweep across the floor in front of the feet.",
+          "setup": {
+            "item": {
+              "type": "held_broom",
+              "hand": "right"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:278"
+        }
+      ],
+      "review": "Source uses both hands on one broom. Setup attaches the broom to the right hand; two-hand contact is not established by this audit."
+    },
+    {
+      "id": "mop_ground",
+      "at": "godot/npc/text_behavior/table.json:516",
+      "declaration": {
+        "label": "拖地",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "mop_ground",
+        "tool": "mop",
+        "post": "work"
+      },
+      "posture": "standing",
+      "hand": "mop",
+      "bindings": {
+        "declared": "mop_ground"
+      },
+      "sources": [
+        {
+          "clip": "mop_ground",
+          "meta": "assets/animations/npz/mop_ground/meta.json",
+          "text": "A person mops the floor with a long mop held in both hands, left hand at chest height and right hand low beside the right hip. Both elbows point down. Keep the mop head on the floor and make short forward and backward strokes, feet planted.",
+          "setup": {
+            "item": {
+              "type": "held_mop",
+              "hand": "right"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:284"
+        }
+      ],
+      "review": "Source uses both hands on one mop. Setup attaches the mop to the right hand; two-hand contact is not established by this audit."
+    },
+    {
+      "id": "water_planter_hold",
+      "at": "godot/npc/text_behavior/table.json:524",
+      "declaration": {
+        "label": "持水壶浇花",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "water_planter_hold",
+        "tool": "watering_can",
+        "post": "water"
+      },
+      "posture": "standing",
+      "hand": "watering_can",
+      "bindings": {
+        "declared": "water_planter_hold"
+      },
+      "sources": [
+        {
+          "clip": "water_planter_hold",
+          "meta": "assets/animations/npz/water_planter_hold/meta.json",
+          "text": "Stand upright facing a low flower planter and maintain a gentle watering posture. The right hand holds a watering can steady in front of the waist, its spout over the soil. Hold this pouring position throughout with small natural breathing movements; the left arm hangs at the side.",
+          "setup": {
+            "post": "water",
+            "item": {
+              "type": "held_watering_can",
+              "hand": "right"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1914"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "hang_laundry",
+      "at": "godot/npc/text_behavior/table.json:532",
+      "declaration": {
+        "label": "晾挂衣物",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "hang_laundry",
+        "tool": "clothes",
+        "post": "hanglaundry",
+        "effect": "deposit"
+      },
+      "posture": "standing",
+      "hand": "clothes",
+      "bindings": {
+        "declared": "hang_laundry"
+      },
+      "sources": [
+        {
+          "clip": "hang_laundry",
+          "meta": "assets/animations/npz/hang_laundry/meta.json",
+          "text": "A person stands facing a clothes rail. Start holding the two upper corners of a shirt at chest height, hands thirty-four centimeters apart. Smoothly raise both hands forward above the head, drape the shirt over a horizontal rail, release both corners after a short pause, then lower both empty arms naturally. Keep feet planted and stay in front of the rail. No crossing the wrists. One clear hanging action.",
+          "setup": {
+            "post": "hanglaundry"
+          },
+          "setup_at": "godot/npc/clip-setup.json:275"
+        }
+      ],
+      "review": "One garment starts held and ends on the rail surface; a once deposit, not an infinite held-clothes loop."
+    },
+    {
+      "id": "wipe_table",
+      "at": "godot/npc/text_behavior/table.json:541",
+      "declaration": {
+        "label": "擦桌子",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": null,
+        "tool": "cloth",
+        "post": "table"
+      },
+      "posture": "standing",
+      "hand": "cloth",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "cafe_sit_drink",
+      "at": "godot/npc/text_behavior/table.json:549",
+      "declaration": {
+        "label": "坐着拿杯喝一口并放回桌面",
+        "mode": "once",
+        "posture": "seated",
+        "clip": "cafe_sit_drink",
+        "empty": true,
+        "post": "cafesit"
+      },
+      "posture": "seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "cafe_sit_drink"
+      },
+      "sources": [
+        {
+          "clip": "cafe_sit_drink",
+          "meta": "assets/animations/npz/cafe_sit_drink/meta.json",
+          "text": "A seated person reaches with the right hand for a cup on a table, raises the cup to the lips, takes one sip, lowers the cup back to the table, then rests the right hand on the lap. Left hand stays on lap.",
+          "setup": {
+            "post": "cafesit"
+          },
+          "setup_at": "godot/npc/clip-setup.json:2061"
+        }
+      ],
+      "review": "Requires an actual cup on the target surface and a cafe seat. Cup returns to the same surface; no tool is invented."
+    },
+    {
+      "id": "phone_booth_call",
+      "at": "godot/npc/text_behavior/table.json:557",
+      "declaration": {
+        "label": "拿起公用电话、通话并放回",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "phone_booth_call",
+        "empty": true,
+        "post": "payphone"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "phone_booth_call"
+      },
+      "sources": [
+        {
+          "clip": "phone_booth_call",
+          "meta": "assets/animations/npz/phone_booth_call/meta.json",
+          "text": "Standing facing a payphone at chest height, reach the right hand forward to pick up the receiver, bring it to the right ear, listen with elbow pointing down, then replace the receiver forward at chest height.",
+          "setup": {
+            "post": "payphone"
+          },
+          "setup_at": "godot/npc/clip-setup.json:2058"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "eat_snack",
+      "at": "godot/npc/text_behavior/table.json:565",
+      "declaration": {
+        "label": "站着吃东西",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "eat_snack",
+        "tool": "snack"
+      },
+      "posture": "standing",
+      "hand": "snack",
+      "bindings": {
+        "declared": "eat_snack"
+      },
+      "sources": [
+        {
+          "clip": "eat_snack",
+          "meta": "assets/animations/npz/eat_snack/meta.json",
+          "text": "Standing with a snack bag held down by the left hip. Lift a biscuit with the right hand from waist height to the mouth, take one bite, then lower the right hand back to the waist. Keep the left hand down.",
+          "setup": {
+            "item": {
+              "type": "held_snack_bag",
+              "hand": "left"
+            },
+            "pose": {
+              "seconds": 3,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "belly"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "chest"
+                  ],
+                  [
+                    0.4,
+                    "chest"
+                  ],
+                  [
+                    1.0,
+                    "mouth"
+                  ],
+                  [
+                    1.5,
+                    "mouth"
+                  ],
+                  [
+                    2.2,
+                    "chest"
+                  ]
+                ]
+              }
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1457"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "drink",
+      "at": "godot/npc/text_behavior/table.json:572",
+      "declaration": {
+        "label": "站着喝水",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "drink",
+        "tool": "cup"
+      },
+      "posture": "standing",
+      "hand": "cup",
+      "bindings": {
+        "declared": "drink"
+      },
+      "sources": [
+        {
+          "clip": "drink",
+          "meta": "assets/animations/npz/drink/meta.json",
+          "text": "Standing with a cup in the right hand at waist height. Slowly raise the cup to the lips, take one sip, then lower the cup back to waist height. The left arm hangs beside the body.",
+          "setup": {
+            "item": {
+              "type": "held_coffee_cup",
+              "hand": "right"
+            },
+            "pose": {
+              "seconds": 3,
+              "follow": true,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "chest"
+                  ],
+                  [
+                    0.5,
+                    "chest"
+                  ],
+                  [
+                    1.1,
+                    "mouth"
+                  ],
+                  [
+                    1.7,
+                    "mouth"
+                  ],
+                  [
+                    2.4,
+                    "chest"
+                  ]
+                ]
+              }
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1411"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "smoke",
+      "at": "godot/npc/text_behavior/table.json:579",
+      "declaration": {
+        "label": "原地抽烟",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "smoke",
+        "tool": "cigarette"
+      },
+      "posture": "standing",
+      "hand": "cigarette",
+      "bindings": {
+        "declared": "smoke"
+      },
+      "sources": [
+        {
+          "clip": "smoke",
+          "meta": "assets/animations/npz/smoke/meta.json",
+          "text": "A person stands casually smoking a cigarette in the right hand. Raise the right fingertips to the lips, pause for a puff, then lower the right hand to waist level and exhale. The left arm hangs relaxed. Perform one clear hand-to-mouth puff and lower the hand again while standing in place.",
+          "setup": {
+            "item": {
+              "type": "held_cigarette",
+              "hand": "right"
+            },
+            "pose": {
+              "seconds": 4,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "chest"
+                  ],
+                  [
+                    0.6,
+                    "chest"
+                  ],
+                  [
+                    1.2,
+                    "mouth"
+                  ],
+                  [
+                    1.8,
+                    "mouth"
+                  ],
+                  [
+                    2.5,
+                    "chest"
+                  ]
+                ]
+              }
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1779"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "read_newspaper",
+      "at": "godot/npc/text_behavior/table.json:586",
+      "declaration": {
+        "label": "原地看报",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "read_newspaper",
+        "tool": "newspaper"
+      },
+      "posture": "standing",
+      "hand": "newspaper",
+      "bindings": {
+        "declared": "read_newspaper"
+      },
+      "sources": [
+        {
+          "clip": "read_newspaper",
+          "meta": "assets/animations/npz/read_newspaper/meta.json",
+          "text": "A person stands reading a large unfolded newspaper. Hold it wide open with both hands far apart at the left and right edges, about sixty centimeters apart, arms bent in front of the chest. The head tilts downward to read the center of the newspaper. Keep the wide newspaper reading pose steadily with small natural weight shifts.",
+          "setup": {
+            "item": {
+              "type": "held_newspaper_open",
+              "hand": "both"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1767"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "selfie",
+      "at": "godot/npc/text_behavior/table.json:593",
+      "declaration": {
+        "label": "自拍",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "selfie",
+        "tool": "phone"
+      },
+      "posture": "standing",
+      "hand": "phone",
+      "bindings": {
+        "declared": "selfie"
+      },
+      "sources": [
+        {
+          "clip": "selfie",
+          "meta": "assets/animations/npz/selfie/meta.json",
+          "text": "A person extends their right arm forward and slightly upward holding a smartphone, tilts their head toward the phone and poses for a selfie.",
+          "setup": {
+            "item": {
+              "type": "held_phone",
+              "hand": "right"
+            },
+            "pose": {
+              "seconds": 3,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.5,
+                    "side"
+                  ],
+                  [
+                    1.2,
+                    "front_up"
+                  ],
+                  [
+                    2.2,
+                    "front_up"
+                  ],
+                  [
+                    2.7,
+                    "side"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1591"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "take_photo",
+      "at": "godot/npc/text_behavior/table.json:600",
+      "declaration": {
+        "label": "拍照",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "take_photo",
+        "tool": "camera"
+      },
+      "posture": "standing",
+      "hand": "camera",
+      "bindings": {
+        "declared": "take_photo"
+      },
+      "sources": [
+        {
+          "clip": "take_photo",
+          "meta": "assets/animations/npz/take_photo/meta.json",
+          "text": "A standing person steadily holds a camera with both hands just below eye level, looks at the camera viewfinder and takes a photograph. Slight breathing, feet planted, body upright.",
+          "setup": {
+            "item": {
+              "type": "held_camera",
+              "hand": "both"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1728"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "film_phone",
+      "at": "godot/npc/text_behavior/table.json:607",
+      "declaration": {
+        "label": "举手机录像",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "film_phone",
+        "tool": "phone"
+      },
+      "posture": "standing",
+      "hand": "phone",
+      "bindings": {
+        "declared": "film_phone"
+      },
+      "sources": [
+        {
+          "clip": "film_phone",
+          "meta": "assets/animations/npz/film_phone/meta.json",
+          "text": "Standing upright, filming with a smartphone held horizontally in both hands at chest level. The elbows hang down near the ribs. A quiet relaxed filming posture with subtle movement.",
+          "setup": {
+            "item": {
+              "type": "held_phone",
+              "hand": "both"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1579"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "wave",
+      "at": "godot/npc/text_behavior/table.json:614",
+      "declaration": {
+        "label": "挥手",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "wave",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "wave"
+      },
+      "sources": [
+        {
+          "clip": "wave",
+          "meta": "assets/animations/npz/wave/meta.json",
+          "text": "Standing upright, raise the right arm well above the head and wave the whole forearm from side to side broadly three times to greet a distant friend, then lower the arm. The left arm hangs relaxed.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "walk_carry_box",
+      "at": "godot/npc/text_behavior/table.json:621",
+      "declaration": {
+        "label": "抱箱走",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "walk_carry_box",
+        "tool": "box"
+      },
+      "posture": "standing",
+      "hand": "box",
+      "bindings": {
+        "declared": "walk_carry_box"
+      },
+      "sources": [
+        {
+          "clip": "walk_carry_box",
+          "meta": "assets/animations/npz/walk_carry_box/meta.json",
+          "text": "A person walks carefully forward carrying a cardboard box in both hands in front of the abdomen. The hands support its two side faces, elbows bent close to the ribs. Keep the box level and clear of the thighs while taking steady alternating steps. Do not release either hand.",
+          "setup": {
+            "item": {
+              "type": "held_cardboard_box",
+              "hand": "both"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1393"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "walk_carry_bag",
+      "at": "godot/npc/text_behavior/table.json:628",
+      "declaration": {
+        "label": "提袋走",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "walk_carry_bag",
+        "tool": "bag"
+      },
+      "posture": "standing",
+      "hand": "bag",
+      "bindings": {
+        "declared": "walk_carry_bag"
+      },
+      "sources": [
+        {
+          "clip": "walk_carry_bag",
+          "meta": "assets/animations/npz/walk_carry_bag/meta.json",
+          "text": "A person walks forward carrying a heavy shopping bag in the right hand down beside the right thigh. The right arm stays straight and steady pointing down, while the left arm swings freely. Continuous natural walking.",
+          "setup": {
+            "item": {
+              "type": "held_shopping_bag",
+              "hand": "right"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1359"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "walk_hold_front",
+      "at": "godot/npc/text_behavior/table.json:635",
+      "declaration": {
+        "label": "双手在身前持物走",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "walk_hold_front",
+        "tool": "closed_book"
+      },
+      "posture": "standing",
+      "hand": "closed_book",
+      "bindings": {
+        "declared": "walk_hold_front"
+      },
+      "sources": [
+        {
+          "clip": "walk_hold_front",
+          "meta": "assets/animations/npz/walk_hold_front/meta.json",
+          "text": "A person walks forward while carefully carrying a small closed book horizontally in both hands at waist level in front of their stomach. Elbows bent, hands held close together and steady, regular careful steps.",
+          "setup": {
+            "item": {
+              "type": "held_book",
+              "hand": "both"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:4"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "walk_closed_umbrella",
+      "at": "godot/npc/text_behavior/table.json:642",
+      "declaration": {
+        "label": "拿着收起的伞走",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "walk_closed_umbrella",
+        "tool": "umbrella"
+      },
+      "posture": "standing",
+      "hand": "umbrella",
+      "bindings": {
+        "declared": "walk_closed_umbrella"
+      },
+      "sources": [
+        {
+          "clip": "walk_closed_umbrella",
+          "meta": "assets/animations/npz/walk_closed_umbrella/meta.json",
+          "text": "A person walks forward carrying a closed umbrella by its handle in the right hand beside the right thigh. Right elbow nearly straight and relaxed; the umbrella tip points down near the ground without scraping it. Left arm swings naturally. Keep moving steadily.",
+          "setup": {
+            "item": {
+              "type": "held_umbrella_closed",
+              "hand": "right"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:22"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "walk_umbrella",
+      "at": "godot/npc/text_behavior/table.json:649",
+      "declaration": {
+        "label": "撑伞走",
+        "mode": "move",
+        "posture": "standing",
+        "clip": null,
+        "tool": "open_umbrella"
+      },
+      "posture": "standing",
+      "hand": "open_umbrella",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound: same-name meta describes a phone beside the ear, despite the umbrella prop in clip-setup."
+    },
+    {
+      "id": "play_guitar",
+      "at": "godot/npc/text_behavior/table.json:656",
+      "declaration": {
+        "label": "弹吉他",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": null,
+        "tool": "guitar"
+      },
+      "posture": "standing",
+      "hand": "guitar",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "exercise",
+      "at": "godot/npc/text_behavior/table.json:663",
+      "declaration": {
+        "label": "原地做开合跳",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "exercise",
+        "empty": true,
+        "post": "exercise"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "exercise"
+      },
+      "sources": [
+        {
+          "clip": "exercise",
+          "meta": "assets/animations/npz/exercise/meta.json",
+          "text": "A person performs three jumping jacks as a simple exercise routine. Jump both feet apart while swinging both arms out sideways and up overhead, then jump the feet together while bringing both arms down to the sides. Repeat the full opening and closing motion rhythmically, facing forward in the same spot.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "tai_chi",
+      "at": "godot/npc/text_behavior/table.json:671",
+      "declaration": {
+        "label": "打太极",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "tai_chi",
+        "empty": true,
+        "post": "exercise"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "tai_chi"
+      },
+      "sources": [
+        {
+          "clip": "tai_chi",
+          "meta": "assets/animations/npz/tai_chi/meta.json",
+          "text": "A person practices a short slow tai chi cloud-hands sequence. Stand in a wide bent-knee stance, shift weight smoothly left then right while both open hands trace alternating circular arcs across the front of the torso. One hand rises to chest height as the other lowers near the waist, then exchange. Calm continuous rounded movement with a gentle torso turn, no punches.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "handstand",
+      "at": "godot/npc/text_behavior/table.json:679",
+      "declaration": {
+        "label": "双手倒立",
+        "mode": "hold",
+        "posture": "inverted",
+        "clip": "handstand",
+        "empty": true
+      },
+      "posture": "inverted",
+      "hand": "empty",
+      "bindings": {
+        "declared": "handstand"
+      },
+      "sources": [
+        {
+          "clip": "handstand",
+          "meta": "assets/animations/npz/handstand/meta.json",
+          "text": "Hold a stationary handstand on both palms flat on the floor, arms extended, legs together pointing vertically upward. Small balance adjustments without walking the hands.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Inverted palm support only; empty hands. Existing hold source is identified. Entry and interrupted lowering are unbound support transitions, never standing material."
+    },
+    {
+      "id": "leg_stretch",
+      "at": "godot/npc/text_behavior/table.json:686",
+      "declaration": {
+        "label": "脚搭高处压腿",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "leg_stretch",
+        "empty": true,
+        "post": "stretch"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "leg_stretch"
+      },
+      "sources": [
+        {
+          "clip": "leg_stretch",
+          "meta": "assets/animations/npz/leg_stretch/meta.json",
+          "text": "Standing on the right leg, left heel already resting on a low bench in front, left leg stretched straight forward. Lean forward over the left leg and hold the stretch. Hands reach toward the left knee.",
+          "setup": {
+            "post": "stretch",
+            "pose": {
+              "seconds": 3,
+              "feet": [
+                "stretch_heel",
+                "stance"
+              ],
+              "lean": [
+                [
+                  0,
+                  10
+                ],
+                [
+                  0.8,
+                  32
+                ],
+                [
+                  2.4,
+                  32
+                ],
+                [
+                  3,
+                  10
+                ]
+              ],
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "knee"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "knee:left"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:553"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "air_walker",
+      "at": "godot/npc/text_behavior/table.json:694",
+      "declaration": {
+        "label": "使用漫步机",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "air_walker",
+        "empty": true,
+        "post": "airwalk"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "air_walker"
+      },
+      "sources": [
+        {
+          "clip": "air_walker",
+          "meta": "assets/animations/npz/air_walker/meta.json",
+          "text": "Standing upright on an outdoor air walker holding its front rail. Keep torso steady, elbows down. Legs alternately swing gently forward and backward on the two pedals.",
+          "setup": {
+            "post": "airwalk"
+          },
+          "setup_at": "godot/npc/clip-setup.json:2089"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "waist_twister",
+      "at": "godot/npc/text_behavior/table.json:702",
+      "declaration": {
+        "label": "使用扭腰器",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "waist_twister",
+        "empty": true,
+        "post": "twister"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "waist_twister"
+      },
+      "sources": [
+        {
+          "clip": "waist_twister",
+          "meta": "assets/animations/npz/waist_twister/meta.json",
+          "text": "A person stands on a park waist twisting exercise disc, feet together, both hands holding a bar in front at waist height, twists hips and feet left and right while shoulders face forward.",
+          "setup": {
+            "post": "twister"
+          },
+          "setup_at": "godot/npc/clip-setup.json:37"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "talk_gesture",
+      "at": "godot/npc/text_behavior/table.json:710",
+      "declaration": {
+        "label": "配合手势说话",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "talk_gesture",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "talk_gesture"
+      },
+      "sources": [
+        {
+          "clip": "talk_gesture",
+          "meta": "assets/animations/npz/talk_gesture/meta.json",
+          "text": "A person explains something, gesturing with one hand as they speak.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "whisper",
+      "at": "godot/npc/text_behavior/table.json:717",
+      "declaration": {
+        "label": "凑近低声说话",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "whisper",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "whisper"
+      },
+      "sources": [
+        {
+          "clip": "whisper",
+          "meta": "assets/animations/npz/whisper/meta.json",
+          "text": "A person leans forward and cups their right hand beside their mouth to whisper to someone.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "talk_accuse",
+      "at": "godot/npc/text_behavior/table.json:724",
+      "declaration": {
+        "label": "指责对方",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "talk_accuse",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "talk_accuse"
+      },
+      "sources": [
+        {
+          "clip": "talk_accuse",
+          "meta": "assets/animations/npz/talk_accuse/meta.json",
+          "text": "A person angrily points and jabs their right arm forward while arguing.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "interview_answer",
+      "at": "godot/npc/text_behavior/table.json:731",
+      "declaration": {
+        "label": "简短回答",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "interview_answer",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "interview_answer"
+      },
+      "sources": [
+        {
+          "clip": "interview_answer",
+          "meta": "assets/animations/npz/interview_answer/meta.json",
+          "text": "A standing person answers a reporter in front, speaks with small head nods, arms relaxed near the waist, feet planted. Calm conversational body language.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "listen",
+      "at": "godot/npc/text_behavior/table.json:738",
+      "declaration": {
+        "label": "面向对方听他说话",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": null,
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicitly unbound semantic action; do not substitute a similarly named clip."
+    },
+    {
+      "id": "interview_question",
+      "at": "godot/npc/text_behavior/table.json:745",
+      "declaration": {
+        "label": "提问",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "interview_question",
+        "tool": "microphone"
+      },
+      "posture": "standing",
+      "hand": "microphone",
+      "bindings": {
+        "declared": "interview_question"
+      },
+      "sources": [
+        {
+          "clip": "interview_question",
+          "meta": "assets/animations/npz/interview_question/meta.json",
+          "text": "A standing street reporter holds a microphone steadily forward in the right hand at upper chest height, asking a question. The left hand makes a small open explanatory gesture. Feet stay planted, facing forward.",
+          "setup": {
+            "item": {
+              "type": "held_microphone",
+              "hand": "right"
+            },
+            "partner": {
+              "clip": "interview_answer",
+              "at": [
+                -0.18,
+                0.9
+              ],
+              "yaw": 180
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:290"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "interview_listen",
+      "at": "godot/npc/text_behavior/table.json:752",
+      "declaration": {
+        "label": "听对方描述",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": null,
+        "tool": "microphone"
+      },
+      "posture": "standing",
+      "hand": "microphone",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound at the short-answer encounter layout: its existing partner is interview_describe at 1.2 m, versus question/answer at 0.9 m."
+    },
+    {
+      "id": "chess_think",
+      "at": "godot/npc/text_behavior/table.json:759",
+      "declaration": {
+        "label": "看棋盘思考",
+        "mode": "once",
+        "posture": "seated",
+        "clip": "chess_think",
+        "empty": true,
+        "post": "chess"
+      },
+      "posture": "seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "chess_think"
+      },
+      "sources": [
+        {
+          "clip": "chess_think",
+          "meta": "assets/animations/npz/chess_think/meta.json",
+          "text": "A seated chess player studies the board, leans forward looking across the pieces, rests the left hand briefly near the chin to think, then points towards a square and returns the hand to the lap. Hips stay on the stool and feet planted.",
+          "setup": {
+            "post": "chess",
+            "pose": {
+              "seconds": 3.5,
+              "seat": "hip_seat_a",
+              "feet": [
+                "foot_left_a",
+                "foot_right_a"
+              ],
+              "lean": [
+                [
+                  0,
+                  6
+                ],
+                [
+                  0.6,
+                  18
+                ],
+                [
+                  2.8,
+                  18
+                ],
+                [
+                  3.5,
+                  6
+                ]
+              ],
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "rest_left_a"
+                  ],
+                  [
+                    0.5,
+                    "rest_left_a"
+                  ],
+                  [
+                    1.0,
+                    "chin"
+                  ],
+                  [
+                    2.0,
+                    "chin"
+                  ],
+                  [
+                    2.5,
+                    "rest_left_a"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "rest_right_a"
+                  ],
+                  [
+                    2.0,
+                    "rest_right_a"
+                  ],
+                  [
+                    2.5,
+                    "chess_move_far_landing_a@15"
+                  ],
+                  [
+                    2.9,
+                    "chess_move_far_landing_a@15"
+                  ],
+                  [
+                    3.4,
+                    "rest_right_a"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ],
+                [
+                  0.5,
+                  "chess_move_far_pickup_a"
+                ],
+                [
+                  3.0,
+                  "chess_move_far_landing_a"
+                ],
+                [
+                  3.5,
+                  "ahead"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:2670"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "chess_move",
+      "at": "godot/npc/text_behavior/table.json:767",
+      "declaration": {
+        "label": "移动棋子",
+        "mode": "once",
+        "posture": "seated",
+        "clip": "chess_move",
+        "empty": true,
+        "post": "chess"
+      },
+      "posture": "seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "chess_move"
+      },
+      "sources": [
+        {
+          "clip": "chess_move",
+          "meta": "assets/animations/npz/chess_move/meta.json",
+          "text": "A person sits on the front portion of a stool facing a chessboard, both feet planted. Move a pawn one square forward near the left side of the board. Pick it up, lift it clear of adjacent pieces, set it down and return the hand to the lap. Keep hips supported on the stool, bend at the waist only as needed, and keep the inactive hand low on the thigh.",
+          "setup": {
+            "post": "chess",
+            "pose": {
+              "seconds": 3,
+              "seat": "hip_seat_a",
+              "feet": [
+                "foot_left_a",
+                "foot_right_a"
+              ],
+              "lean": [
+                [
+                  0,
+                  6
+                ]
+              ],
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "rest_left_a"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "rest_right_a"
+                  ],
+                  [
+                    0.5,
+                    "rest_right_a"
+                  ],
+                  [
+                    1.1,
+                    "piece_pickup_a^@3"
+                  ],
+                  [
+                    1.35,
+                    "piece_pickup_a^@3"
+                  ],
+                  [
+                    1.95,
+                    "piece_landing_a@13"
+                  ],
+                  [
+                    2.15,
+                    "piece_landing_a@13"
+                  ],
+                  [
+                    2.8,
+                    "rest_right_a"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ],
+                [
+                  0.4,
+                  "piece_pickup_a"
+                ],
+                [
+                  1.5,
+                  "piece_landing_a"
+                ],
+                [
+                  2.4,
+                  "piece_landing_a"
+                ],
+                [
+                  3,
+                  "ahead"
+                ]
+              ],
+              "carry": [
+                {
+                  "part": "piece_chess_move",
+                  "hand": "right",
+                  "time": [
+                    1.25,
+                    2.05
+                  ]
+                }
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:601"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "chess_watch",
+      "at": "godot/npc/text_behavior/table.json:775",
+      "declaration": {
+        "label": "看棋并向棋盘示意",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "chess_watch",
+        "empty": true,
+        "post": "watch"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "chess_watch"
+      },
+      "sources": [
+        {
+          "clip": "chess_watch",
+          "meta": "assets/animations/npz/chess_watch/meta.json",
+          "text": "A standing person watches a chessboard on a low table in front. They bend their upper body forward and look down, extend the right arm diagonally down to indicate a square on the table, pause, and straighten back up with arms relaxed. Both feet stay planted.",
+          "setup": {
+            "post": "watch",
+            "pose": {
+              "seconds": 3,
+              "lean": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0.6,
+                  25
+                ],
+                [
+                  2.3,
+                  25
+                ],
+                [
+                  3,
+                  0
+                ]
+              ],
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "side"
+                  ],
+                  [
+                    0.8,
+                    "side"
+                  ],
+                  [
+                    1.3,
+                    "chess_move_side_pickup_a@20"
+                  ],
+                  [
+                    2.0,
+                    "chess_move_side_pickup_a@20"
+                  ],
+                  [
+                    2.6,
+                    "side"
+                  ]
+                ]
+              },
+              "look": [
+                [
+                  0,
+                  "ahead"
+                ],
+                [
+                  0.5,
+                  "chess_move_side_pickup_a"
+                ],
+                [
+                  2.4,
+                  "chess_move_side_pickup_a"
+                ],
+                [
+                  3,
+                  "ahead"
+                ]
+              ]
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:691"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "walk_child_hand_down",
+      "at": "godot/npc/text_behavior/table.json:783",
+      "declaration": {
+        "label": "牵着较矮同伴走，成人一方",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "walk_child_hand_down",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "walk_child_hand_down"
+      },
+      "sources": [
+        {
+          "clip": "walk_child_hand_down",
+          "meta": "assets/animations/npz/walk_child_hand_down/meta.json",
+          "text": "A person walking straight forward. Right arm extends diagonally down and outward to their right side and remains steady, gently holding the hand of an unseen toddler. Left arm is relaxed down at the side and swings naturally back and forth at thigh level with the gait. Neither hand is raised to the chest. Continue walking with normal alternating steps.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "child_hold_hand_walk",
+      "at": "godot/npc/text_behavior/table.json:790",
+      "declaration": {
+        "label": "牵着成人的手走",
+        "mode": "move",
+        "posture": "standing",
+        "clip": null,
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Missing child-side clip. Adult clip is not reused or scaled for the child."
+    },
+    {
+      "id": "walk_dog",
+      "at": "godot/npc/text_behavior/table.json:797",
+      "declaration": {
+        "label": "人握牵引绳走",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "walk_dog",
+        "tool": "leash"
+      },
+      "posture": "standing",
+      "hand": "leash",
+      "bindings": {
+        "declared": "walk_dog"
+      },
+      "sources": [
+        {
+          "clip": "walk_dog",
+          "meta": "assets/animations/npz/walk_dog/meta.json",
+          "text": "A person walks forward continuously while holding a dog leash in their right hand. Their right hand remains extended steadily in front and slightly to the side at waist height. Their left arm swings naturally and their feet take regular alternating steps. They keep walking without stopping or pulling.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Human gait source identified; actual dog and leash coupling/playback remain separate from the text animal adapter."
+    },
+    {
+      "id": "startle",
+      "at": "godot/npc/text_behavior/table.json:804",
+      "declaration": {
+        "label": "受惊一缩",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "startle",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "startle"
+      },
+      "sources": [
+        {
+          "clip": "startle",
+          "meta": "assets/animations/npz/startle/meta.json",
+          "text": "A person suddenly recoils in surprise, jerking their upper body backward and throwing both hands up defensively, then relaxes.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "recoil",
+      "at": "godot/npc/text_behavior/table.json:811",
+      "declaration": {
+        "label": "畏缩躲闪",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "recoil",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "recoil"
+      },
+      "sources": [
+        {
+          "clip": "recoil",
+          "meta": "assets/animations/npz/recoil/meta.json",
+          "text": "A standing person suddenly recoils in shock from something directly in front. Pull the head and upper body sharply backward, throw both hands up protectively in front of the chest, and take two quick stumbling steps backward to regain balance. End with weight back and hands still raised defensively.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "stumble",
+      "at": "godot/npc/text_behavior/table.json:818",
+      "declaration": {
+        "label": "踉跄失衡",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "stumble",
+        "empty": true,
+        "effect": "balance"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "stumble"
+      },
+      "sources": [
+        {
+          "clip": "stumble",
+          "meta": "assets/animations/npz/stumble/meta.json",
+          "text": "A person suddenly loses balance backward, takes three quick uneven backward recovery steps with the arms flung outward, wobbles, then regains balance standing. The torso rocks backward then forward as the feet scramble. Do not fall to the floor.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "sit_ground_dazed_hold",
+      "at": "godot/npc/text_behavior/table.json:826",
+      "declaration": {
+        "label": "坐地不适、扶着身体",
+        "mode": "hold",
+        "posture": "ground_seated",
+        "clip": "sit_ground_dazed_hold",
+        "empty": true
+      },
+      "posture": "ground_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "sit_ground_dazed_hold"
+      },
+      "sources": [
+        {
+          "clip": "sit_ground_dazed_hold",
+          "meta": "assets/animations/npz/sit_ground_dazed_hold/meta.json",
+          "text": "Remain seated on the ground with bent knees, torso slumped forward and one hand resting on a sore knee, the other supporting at the side. Subtle breathing and tiny hand motion only, stay seated.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "stand_watch",
+      "at": "godot/npc/text_behavior/table.json:833",
+      "declaration": {
+        "label": "站着观看",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "stand_watch",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "stand_watch"
+      },
+      "sources": [
+        {
+          "clip": "stand_watch",
+          "meta": "assets/animations/npz/stand_watch/meta.json",
+          "text": "A person stands watching something with interest, leaning their upper body slightly forward with their arms hanging at their sides.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "give_held",
+      "at": "godot/npc/text_behavior/table.json:840",
+      "declaration": {
+        "label": "递出指定物件",
+        "mode": "once",
+        "posture": "standing",
+        "holding": true,
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "held item",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Generic specified-object giving is unbound; existing give_item supports only its small-object contact contract."
+    },
+    {
+      "id": "seat_lower",
+      "at": "godot/npc/text_behavior/table.json:847",
+      "declaration": {
+        "label": "在当前座位坐下",
+        "mode": "once",
+        "posture": "standing",
+        "effect": "sit",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicit missing transition for step/chess/cafe seat markers; never binds bench sit_down."
+    },
+    {
+      "id": "seat_rise",
+      "at": "godot/npc/text_behavior/table.json:854",
+      "declaration": {
+        "label": "从当前座位起身",
+        "mode": "once",
+        "posture": "seated",
+        "effect": "stand",
+        "clip": null
+      },
+      "posture": "seated",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Explicit missing transition for step/chess/cafe seat markers; never binds bench stand_up."
+    },
+    {
+      "id": "walk_open_book",
+      "at": "godot/npc/text_behavior/table.json:861",
+      "declaration": {
+        "label": "持打开的书走",
+        "mode": "move",
+        "posture": "standing",
+        "tool": "book",
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "book",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Missing open-book carrying gait; the available walk_hold_front carries a closed book."
+    },
+    {
+      "id": "support_latch",
+      "at": "godot/npc/text_behavior/table.json:868",
+      "declaration": {
+        "label": "接入支撑／接好扶手",
+        "mode": "hold",
+        "posture": "all",
+        "clip": null,
+        "empty": true
+      },
+      "posture": "all",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound controlled entry/contact transition across declared poses; follows the profile entry path, not an unrestricted animation."
+    },
+    {
+      "id": "support_release",
+      "at": "godot/npc/text_behavior/table.json:875",
+      "declaration": {
+        "label": "停稳并卸载支撑",
+        "mode": "hold",
+        "posture": "all",
+        "clip": null
+      },
+      "posture": "all",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound bounded safe stop/unload. Includes cycling dismount, slide bottom exit, suspension/palm lowering and shared-load release; source hold clips do not cover these transitions."
+    },
+    {
+      "id": "support_wait",
+      "at": "godot/npc/text_behavior/table.json:881",
+      "declaration": {
+        "label": "等待支撑方就绪",
+        "mode": "hold",
+        "posture": "all",
+        "clip": null
+      },
+      "posture": "all",
+      "hand": "declared text states; conditional source only",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound waiting at actual posture; not an empty-hand standing clip at arbitrary support."
+    },
+    {
+      "id": "push_cart",
+      "at": "godot/npc/text_behavior/table.json:887",
+      "declaration": {
+        "label": "推购物车",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "push_cart",
+        "empty": true,
+        "post": "push"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "push_cart"
+      },
+      "sources": [
+        {
+          "clip": "push_cart",
+          "meta": "assets/animations/npz/push_cart/meta.json",
+          "text": "A person steadily walks straight forward pushing a shopping cart, with both hands continuously on the cart handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+          "setup": {
+            "post": "push"
+          },
+          "setup_at": "godot/npc/clip-setup.json:1315"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "push_stroller",
+      "at": "godot/npc/text_behavior/table.json:895",
+      "declaration": {
+        "label": "推婴儿车",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "push_stroller",
+        "empty": true,
+        "post": "push"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "push_stroller"
+      },
+      "sources": [
+        {
+          "clip": "push_stroller",
+          "meta": "assets/animations/npz/push_stroller/meta.json",
+          "text": "A person steadily walks straight forward pushing a baby stroller, with both hands continuously on the stroller handle in front of the abdomen. Elbows relaxed and bent, forearms extending forward. Regular alternating walking steps, upright torso, maintain both grips, no turning or releasing.",
+          "setup": {
+            "post": "push"
+          },
+          "setup_at": "godot/npc/clip-setup.json:1318"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "pull_suitcase",
+      "at": "godot/npc/text_behavior/table.json:903",
+      "declaration": {
+        "label": "拉行李箱",
+        "mode": "move",
+        "posture": "standing",
+        "clip": null,
+        "empty": true,
+        "post": "pull"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound: the same-name source describes carrying a shopping bag, not pulling a wheeled case."
+    },
+    {
+      "id": "ride_bicycle",
+      "at": "godot/npc/text_behavior/table.json:911",
+      "declaration": {
+        "label": "骑自行车",
+        "mode": "hold",
+        "posture": "supported_seated",
+        "clip": "ride_bicycle",
+        "empty": true,
+        "post": "rider"
+      },
+      "posture": "supported_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "ride_bicycle"
+      },
+      "sources": [
+        {
+          "clip": "ride_bicycle",
+          "meta": "assets/animations/npz/ride_bicycle/meta.json",
+          "text": "A person sits on a bicycle saddle, leans slightly forward, keeps both hands on the handlebars, and pedals slowly with alternating circular leg movements. Keep knees on either side of the frame and torso steady. One full pedal revolution.",
+          "setup": {
+            "post": "rider"
+          },
+          "setup_at": "godot/npc/clip-setup.json:2265"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "ride_scooter",
+      "at": "godot/npc/text_behavior/table.json:919",
+      "declaration": {
+        "label": "骑踏板摩托车",
+        "mode": "hold",
+        "posture": "supported_seated",
+        "clip": "ride_scooter",
+        "empty": true,
+        "post": "rider"
+      },
+      "posture": "supported_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "ride_scooter"
+      },
+      "sources": [
+        {
+          "clip": "ride_scooter",
+          "meta": "assets/animations/npz/ride_scooter/meta.json",
+          "text": "A person sits upright on a motor scooter seat, both hands continuously on the handlebars, both feet flat on the footrests, knees parallel and pointing forward. Remain in this riding posture with gentle body sway.",
+          "setup": {
+            "post": "rider"
+          },
+          "setup_at": "godot/npc/clip-setup.json:2271"
+        }
+      ],
+      "review": "Seated motor scooter source only, both hands on handlebars. Does not cover a standing kick scooter."
+    },
+    {
+      "id": "swing_seated",
+      "at": "godot/npc/text_behavior/table.json:927",
+      "declaration": {
+        "label": "荡秋千",
+        "mode": "hold",
+        "posture": "supported_seated",
+        "clip": "swing_seated",
+        "empty": true,
+        "post": "swing"
+      },
+      "posture": "supported_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "swing_seated"
+      },
+      "sources": [
+        {
+          "clip": "swing_seated",
+          "meta": "assets/animations/npz/swing_seated/meta.json",
+          "text": "Seated on a playground swing, hands grasp both suspension ropes beside the shoulders. Gently swing forward and back twice, extend lower legs on the forward swing and tuck feet back on the return. Relaxed upright torso.",
+          "setup": {
+            "post": "swing"
+          },
+          "setup_at": "godot/npc/clip-setup.json:2092"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "slide_seated",
+      "at": "godot/npc/text_behavior/table.json:935",
+      "declaration": {
+        "label": "沿滑道滑下",
+        "mode": "hold",
+        "posture": "supported_seated",
+        "clip": "slide_seated",
+        "empty": true,
+        "post": "slide"
+      },
+      "posture": "supported_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "slide_seated"
+      },
+      "sources": [
+        {
+          "clip": "slide_seated",
+          "meta": "assets/animations/npz/slide_seated/meta.json",
+          "text": "Remain seated on the chute throughout a playground slide ride, both knees bent upwards and both feet in front of the hips on the chute. Push off gently with the palms, then glide down smoothly while keeping the torso upright and knees ahead of the torso. End seated at the bottom with both feet resting on the ground.",
+          "setup": {
+            "post": "slide"
+          },
+          "setup_at": "godot/npc/clip-setup.json:2106"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "seesaw_seated",
+      "at": "godot/npc/text_behavior/table.json:943",
+      "declaration": {
+        "label": "坐跷跷板",
+        "mode": "hold",
+        "posture": "supported_seated",
+        "clip": "seesaw_seated",
+        "empty": true,
+        "post": "seesaw"
+      },
+      "posture": "supported_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "seesaw_seated"
+      },
+      "sources": [
+        {
+          "clip": "seesaw_seated",
+          "meta": "assets/animations/npz/seesaw_seated/meta.json",
+          "text": "Sitting astride a seesaw seat, holding the low handle in both hands with elbows pointing down. The knees bend as the seat lowers and the legs extend as the seat rises. Gentle seated rocking.",
+          "setup": {
+            "post": "seesaw",
+            "partner": {
+              "clip": "seesaw_partner",
+              "at": [
+                0,
+                3
+              ],
+              "yaw": 180
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:2095"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "seesaw_partner",
+      "at": "godot/npc/text_behavior/table.json:951",
+      "declaration": {
+        "label": "坐跷跷板另一侧",
+        "mode": "hold",
+        "posture": "supported_seated",
+        "clip": "seesaw_partner",
+        "empty": true,
+        "post": "seesaw"
+      },
+      "posture": "supported_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": "seesaw_partner"
+      },
+      "sources": [
+        {
+          "clip": "seesaw_partner",
+          "meta": "assets/animations/npz/seesaw_partner/meta.json",
+          "text": "Sitting astride a seesaw seat, holding the low handle in both hands with elbows pointing down. The knees bend as the seat lowers and the legs extend as the seat rises. Gentle seated rocking.",
+          "setup": {
+            "post": "seesaw"
+          },
+          "setup_at": "godot/npc/clip-setup.json:2277"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "pullup_raise",
+      "at": "godot/npc/text_behavior/table.json:959",
+      "declaration": {
+        "label": "悬挂做引体向上",
+        "mode": "once",
+        "posture": "hanging",
+        "clip": "pullup_raise",
+        "empty": true,
+        "post": "pullup"
+      },
+      "posture": "hanging",
+      "hand": "empty",
+      "bindings": {
+        "declared": "pullup_raise"
+      },
+      "sources": [
+        {
+          "clip": "pullup_raise",
+          "meta": "assets/animations/npz/pullup_raise/meta.json",
+          "text": "Hang with both hands holding a fixed horizontal pull-up bar. Pull the body up once, keep the face and chest behind the bar, hold the raised position calmly for the middle half, then lower back to the original hang. No swinging forward under or through the bar.",
+          "setup": {
+            "post": "pullup"
+          },
+          "setup_at": "godot/npc/clip-setup.json:34"
+        }
+      ],
+      "review": "Hanging source only. Ground-to-bar attachment and lowering are separately unbound; pullup_hold alone does not prove safe entry/exit."
+    },
+    {
+      "id": "hold_door",
+      "at": "godot/npc/text_behavior/table.json:967",
+      "declaration": {
+        "label": "扶门让人通过",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "hold_door",
+        "empty": true,
+        "post": "doorhold"
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "hold_door"
+      },
+      "sources": [
+        {
+          "clip": "hold_door",
+          "meta": "assets/animations/npz/hold_door/meta.json",
+          "text": "A standing person is next to an already open hinged door. The right hand grasps its handle at waist height, right elbow bends comfortably down. Hold the door open with gentle natural body sway. Keep the left arm hanging free and the torso beside the door leaf, outside the doorway.",
+          "setup": {
+            "post": "doorhold"
+          },
+          "setup_at": "godot/npc/clip-setup.json:1327"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "hail_taxi",
+      "at": "godot/npc/text_behavior/table.json:975",
+      "declaration": {
+        "label": "招呼出租车",
+        "mode": "once",
+        "posture": "standing",
+        "clip": "hail_taxi",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "hail_taxi"
+      },
+      "sources": [
+        {
+          "clip": "hail_taxi",
+          "meta": "assets/animations/npz/hail_taxi/meta.json",
+          "text": "A standing person near a street lifts the RIGHT arm high and waves broadly twice to hail a taxi, leaning forward slightly. Then finish the wave, lower the right arm fully to hang relaxed by the right thigh and straighten the torso. The left arm hangs naturally beside the left thigh. Finish upright and still with both arms down. Feet stay planted.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "car_ride",
+      "at": "godot/npc/text_behavior/table.json:982",
+      "declaration": {
+        "label": "坐在车辆座位中",
+        "mode": "hold",
+        "posture": "supported_seated",
+        "clip": null,
+        "empty": true
+      },
+      "posture": "supported_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound passenger seat hold. car_enter/car_exit describe a driver seat and do not cover passenger boarding/exit or this seated hold."
+    },
+    {
+      "id": "assist_elder_walk",
+      "at": "godot/npc/text_behavior/table.json:989",
+      "declaration": {
+        "label": "搀扶行走",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "assist_elder_walk",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "assist_elder_walk"
+      },
+      "sources": [
+        {
+          "clip": "assist_elder_walk",
+          "meta": "assets/animations/npz/assist_elder_walk/meta.json",
+          "text": "An upright adult walks very slowly forward, supporting an elderly companion on the right. Right hand gently grips the companions left forearm at waist level, left arm naturally relaxed. Careful short synchronized steps.",
+          "setup": {
+            "partner": {
+              "clip": "elder_assisted_walk",
+              "at": [
+                -0.443,
+                -0.087
+              ],
+              "yaw": 0
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1921"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "elder_assisted_walk",
+      "at": "godot/npc/text_behavior/table.json:996",
+      "declaration": {
+        "label": "在搀扶下行走",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "elder_assisted_walk",
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": "elder_assisted_walk"
+      },
+      "sources": [
+        {
+          "clip": "elder_assisted_walk",
+          "meta": "assets/animations/npz/elder_assisted_walk/meta.json",
+          "text": "An elderly person walks slowly forward with short careful shuffling steps and a stooped back. Their left forearm is held steadily at waist height toward a helper on the left. The right arm hangs relaxed.",
+          "setup": {},
+          "setup_at": null
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "help_up",
+      "at": "godot/npc/text_behavior/table.json:1003",
+      "declaration": {
+        "label": "扶起倒地的人",
+        "mode": "once",
+        "posture": "standing",
+        "clip": null,
+        "empty": true
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound helper-side shared weight transfer; no help_up source/export exists."
+    },
+    {
+      "id": "helped_up",
+      "at": "godot/npc/text_behavior/table.json:1010",
+      "declaration": {
+        "label": "接受帮助起身",
+        "mode": "once",
+        "posture": "lying",
+        "clip": null,
+        "empty": true
+      },
+      "posture": "lying",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound lying recipient-side weight transfer; no helped_up source/export exists. Ground-seated input has its own unbound action/profile, under the same scored row."
+    },
+    {
+      "id": "phone_call",
+      "at": "godot/npc/text_behavior/table.json:1017",
+      "declaration": {
+        "label": "打电话",
+        "mode": "hold",
+        "posture": "standing",
+        "clip": "phone_call",
+        "tool": "phone"
+      },
+      "posture": "standing",
+      "hand": "phone",
+      "bindings": {
+        "declared": "phone_call"
+      },
+      "sources": [
+        {
+          "clip": "phone_call",
+          "meta": "assets/animations/npz/phone_call/meta.json",
+          "text": "A relaxed upright person talks on a phone held in the right hand against the right ear. The right elbow points downward beside the chest. The left arm hangs comfortably beside the body. Small natural head nods during the phone call.",
+          "setup": {
+            "item": {
+              "type": "held_phone",
+              "hand": "right"
+            },
+            "pose": {
+              "seconds": 4,
+              "hands": {
+                "left": [
+                  [
+                    0,
+                    "side"
+                  ]
+                ],
+                "right": [
+                  [
+                    0,
+                    "ear"
+                  ]
+                ]
+              }
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1636"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "walk_phone_call",
+      "at": "godot/npc/text_behavior/table.json:1024",
+      "declaration": {
+        "label": "边走边打电话",
+        "mode": "move",
+        "posture": "standing",
+        "clip": "walk_phone_call",
+        "tool": "phone"
+      },
+      "posture": "standing",
+      "hand": "phone",
+      "bindings": {
+        "declared": "walk_phone_call"
+      },
+      "sources": [
+        {
+          "clip": "walk_phone_call",
+          "meta": "assets/animations/npz/walk_phone_call/meta.json",
+          "text": "A person walks forward while holding a phone beside the ear. The free arm swings naturally. Two continuous walking steps.",
+          "setup": {
+            "item": {
+              "type": "held_phone",
+              "hand": "right"
+            }
+          },
+          "setup_at": "godot/npc/clip-setup.json:1671"
+        }
+      ],
+      "review": "Identified source matches the declared posture, prop/empty-hand and facility role; contact/playback remains unverified."
+    },
+    {
+      "id": "support_prepare",
+      "at": "godot/npc/text_behavior/table.json:1031",
+      "declaration": {
+        "label": "准备接入支撑",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound standing, empty-hand preparation. Uses shared rise/stow/approach before a support claim; not a mounting animation."
+    },
+    {
+      "id": "open_fixture",
+      "at": "godot/npc/text_behavior/table.json:1038",
+      "declaration": {
+        "label": "开门",
+        "mode": "once",
+        "posture": "standing",
+        "empty": true,
+        "clip": null
+      },
+      "posture": "standing",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound standing empty-hand manual route operation. Existing push_door/pull_door require their own provider/side/contact markers; neither is bound at an arbitrary text obstruction. Presence alone never opens this manual door."
+    },
+    {
+      "id": "helped_up_ground_seated",
+      "at": "godot/npc/text_behavior/table.json:1045",
+      "declaration": {
+        "label": "坐地接受帮助起身",
+        "mode": "once",
+        "posture": "ground_seated",
+        "empty": true,
+        "clip": null
+      },
+      "posture": "ground_seated",
+      "hand": "empty",
+      "bindings": {
+        "declared": null
+      },
+      "sources": [],
+      "review": "Unbound ground-seated recipient-side weight transfer. Same controller as lying transfer, separate actual pose declaration. No source/export exists."
+    }
+  ]
+}

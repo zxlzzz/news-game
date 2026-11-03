@@ -2,7 +2,7 @@
 
 入口：`http://127.0.0.1:8096/sth/motion-study/`（仓库根目录启动 HTTP 服务）。
 
-已接入 Hsinlung 定下的 [映射规格](../../docs/design-plans/npc-skeleton-mapping.md)，默认双手挥动；提供正面与自由视角、播放/暂停、逐帧、调参和恢复默认。
+已接入 Hsinlung 定下的 [映射规格](../../docs/asset-production/motions/npc-skeleton-mapping.md)，默认双手挥动；提供正面与自由视角、播放/暂停、逐帧、调参和恢复默认。
 
 - `skeleton-mapping.mjs`：共用映射算法，不依赖浏览器。`createSkeletonMapper(names, standIdleFrame0)` 返回纯函数 `mapFrame(sourceFrame, params, clipOrigin)`；输入位置单位米、Y 向上，`clipOrigin` 是片段第一帧 Hips。返回 H、N、neckEnd、head 和线段列表 `segs`，每段为 `[起点, 终点, 线宽倍数]`。不修改输入，投影由绘制端负责。
 - `skeleton-params.json`：已定的 12 项比例/画法参数；相机参数留在预览端。
