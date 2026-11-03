@@ -1,0 +1,37 @@
+{
+  "lengths": {
+    "torso": 0.54,
+    "neck": 0.045,
+    "head_radius": 0.18,
+    "upper_arm": 0.288,
+    "forearm": 0.372,
+    "thigh": 0.36,
+    "shin": 0.39,
+    "foot": 0.15
+  },
+  "line_radius": 0.0525,
+  "width_share": 0.8,
+  "head_pitch": 0.6,
+  "torso_lean": 0.75,
+  "max_length_adjustment": 0.03,
+  "weights": {
+    "direction": 1.0,
+    "joint_relation": 12.0,
+    "length": 2.0,
+    "head_contact": 80.0,
+    "body_contact": 12.0,
+    "pair_contact": 18.0,
+    "ground": 60.0,
+    "support": 16.0,
+    "ankle_support": 200.0,
+    "root": 2.0,
+    "torso": 30.0,
+    "temporal_velocity": 1.5,
+    "temporal_acceleration": 100.0,
+    "collision": 60.0,
+    "nonpenetration": 2000.0
+  },
+  "iterations": 6000,
+  "learning_rate": 0.012,
+  "torso_line_factor": 1.15
+}
