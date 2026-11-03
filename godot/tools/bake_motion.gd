@@ -1,12 +1,12 @@
-## The export step (docs/动作重做方案.md §4.3): bake clips of npc/motion into npc/baked (npc/motion_bake.gd).
+## The export step (docs/asset-production/motions/动作重做方案.md §3.3): bake clips of npc/motion into npc/baked (npc/motion_bake.gd).
 ##   godot --headless --path . -s res://tools/bake_motion.gd                 bake every clip -> BAKE_OK
 ##   godot --headless --path . -s res://tools/bake_motion.gd -- walk sit_bench   only these clips
 ##   godot --headless --path . -s res://tools/bake_motion.gd -- --check      write nothing; BAKE_OK or BAKE_STALE
 ## Baking every clip also removes baked files whose clip is gone. When a baked clip already existed, the
 ## largest move of any stored point is printed (metres at the adult body scale): every clip listed under
-## "changed" looks different now and has to be looked at again (docs/动作重做方案.md §4.7).
+## "changed" looks different now and has to be looked at again (docs/asset-production/motions/素材生成方法.md §9).
 ## For a clip with contacts (npc/clip-setup.json) it prints how far each contact moved its joint (metres); a contact
-## beyond motion-bake.json maxCorrection is listed under "generate again" (§4.3 step 3).
+## beyond motion-bake.json maxCorrection is listed under "generate again" (motion-bake.json maxCorrection).
 ## "cuts into objects": the figure still cuts into its post's object or held thing by more than 1 cm; "left alone" names
 ## the ends the export did not push out (too deep, motion-bake.json clearMax / clearMove): generate the clip again.
 ## "jumps": a stored point moves in one frame farther than motion-bake.json jumpMin and jumpRatio times its steps in

@@ -8,6 +8,7 @@
 ##   --time <s>  --speed <x>
 ##   --shot <abs png>      one still (core/shot.gd), paused at --time
 ##   --capture <abs dir> --frames <n> --every <k>   n PNGs, k steps of movers.json dt apart; prints EMPTY_GROUND_CAPTURED
+##   --contact-points      start with the figure's contact points shown (mapping step 11, npc/hand-contact.json)
 ##   --look <x> <z>  --yaw <deg>  --pitch <deg>  --size <m>   the camera (core/orbit_camera.gd); otherwise the
 ##                         view frames the entry, and follows movers and animals
 ## Mouse: drag a thing with the left button (with the vertical key of params.json: up and down), right-click
@@ -198,7 +199,7 @@ func _build_ui(still: bool) -> void:
 	ui.tabs = TabBar.new()
 	ui.tabs.add_tab("动作")
 	ui.tabs.add_tab("模型")
-	ui.tabs.add_tab("改好的")  # clips built on the figure (clip-setup.json "pose", docs/动作重做方案.md)
+	ui.tabs.add_tab("改好的")  # clips built on the figure (clip-setup.json "pose", docs/asset-production/motions/动作重做方案.md)
 	ui.tabs.tab_changed.connect(func(index):
 		_models = index == 1
 		_fill_list()
@@ -247,6 +248,16 @@ func _build_ui(still: bool) -> void:
 	ui.follow.toggled.connect(func(on): follow = on)
 	box.add_child(ui.follow)
 	ui.motion_controls.append(ui.follow)
+	# mapping step 11: the figure's points a resting hand is put on (npc/hand-contact.json; change it, then bake again)
+	ui.contact = CheckBox.new()
+	ui.contact.text = "画手贴身的点"
+	ui.contact.button_pressed = _args.has("--contact-points")
+	stage.show_contact = ui.contact.button_pressed
+	ui.contact.toggled.connect(func(on):
+		stage.show_contact = on
+		stage.seek(stage.t))
+	box.add_child(ui.contact)
+	ui.motion_controls.append(ui.contact)
 	var add := Button.new()
 	add.text = "加一个人（播当前动作）"
 	add.pressed.connect(func(): _status(stage.add_person(_manual_spot())))

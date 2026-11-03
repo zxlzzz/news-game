@@ -6,7 +6,7 @@ Requires numpy; the Kimodo model is not loaded.
 
 Writes <out>/index.json (joint names, SOMA77 indices and parents, clip list) and <out>/<clip>.json
 ({fps, frames}; frames[f][j] = [x, y, z] of index.json names[j], metres, Y up, original SOMA coordinates).
-Joints: only the 16 source joints sth/motion-study/skeleton-mapping.mjs reads.
+Joints: the 16 source joints sth/motion-study/skeleton-mapping.mjs reads, then those mapping step 11 (hand contact) reads.
 A meta.json "source_frame": "fixed" (the clip was generated with its stance, e.g. an object's post marker, at the
 origin facing +Z) is copied into the clip; godot/tools/bake_motion.gd then keeps those coordinates.
 Root: in every clip posed_joints[:, Hips] equals root_positions exactly (checked below; the export stops
@@ -39,6 +39,9 @@ SEAM_NONE_M = 0.001
 # Same joints, same order as the required-joint check at the top of sth/motion-study/skeleton-mapping.mjs.
 MAPPING_JOINTS = ['Hips', 'Neck1', 'Head', 'HeadEnd'] + [side + part for side in ('Left', 'Right')
                   for part in ('Arm', 'ForeArm', 'Hand', 'Shin', 'Foot', 'ToeEnd')]
+# Read only by mapping step 11, hand contact (godot/npc/hand-contact.json): the person's own body points and palms.
+MAPPING_JOINTS += ['Spine1', 'Spine2', 'Chest', 'Jaw', 'LeftEye', 'RightEye', 'LeftLeg', 'RightLeg',
+                   'LeftHandMiddle2', 'RightHandMiddle2']
 
 def write_json(path, value, **options):
     """Publish complete JSON atomically, including when Godot watches this folder."""

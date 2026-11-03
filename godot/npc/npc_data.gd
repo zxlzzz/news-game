@@ -41,6 +41,90 @@ static func load_params(out: Dictionary) -> String:
 	out["value"] = p
 	return ""
 
+## Hand contact (mapping step 11): every key required, nothing defaulted.
+const CONTACT_PATH := "res://npc/hand-contact.json"
+const CONTACT_KEYS := ["palm", "smoothSeconds", "elbowFront", "headClear", "upperArmClear", "elbowSamples", "pushMax", "nearShare", "stillSpeed", "speedSeconds", "holdSeconds", "held", "pair", "points"]
+
+static func load_contact(out: Dictionary) -> String:
+	var got := {}
+	var err := read_json(CONTACT_PATH, got)
+	if err != "":
+		return err
+	var c = got["value"]
+	var at := func(where: String, w) -> String:
+		if not (w is Dictionary) or w.is_empty():
+			return "%s: %s must be a non-empty {joint: weight}" % [CONTACT_PATH, where]
+		for j in w:
+			if not is_number(w[j]):
+				return "%s: %s weight of %s is not a number" % [CONTACT_PATH, where, j]
+		return ""
+	var vec := func(v) -> bool: return v is Array and v.size() == 3 and v.all(func(x): return is_number(x))
+	var near := func(where: String, d) -> String:
+		for k in ["near", "band"]:
+			if not d.has(k) or not is_number(d[k]):
+				return "%s: %s needs a number %s" % [CONTACT_PATH, where, k]
+		if d.band <= 0:
+			return "%s: %s band must be above 0" % [CONTACT_PATH, where]
+		return ""
+	if not (c is Dictionary):
+		return CONTACT_PATH + ": not a JSON object"
+	for k in CONTACT_KEYS:
+		if not c.has(k):
+			return "%s: missing %s" % [CONTACT_PATH, k]
+	for k in ["smoothSeconds", "elbowFront", "headClear", "upperArmClear", "elbowSamples", "pushMax", "nearShare", "stillSpeed", "speedSeconds", "holdSeconds"]:
+		if not is_number(c[k]):
+			return "%s: %s is not a number" % [CONTACT_PATH, k]
+	err = at.call("palm", c.palm)
+	if err != "":
+		return err
+	if not (c.held is Dictionary):
+		return CONTACT_PATH + ": held must be {held type: tip marker}"
+	for t in c.held:
+		if not (c.held[t] is String) or c.held[t] == "":
+			return "%s: held.%s must name the type's tip marker" % [CONTACT_PATH, t]
+	if not (c.pair is Dictionary):
+		return CONTACT_PATH + ": pair must be an object"
+	err = near.call("pair", c.pair)
+	if err != "":
+		return err
+	if not (c.points is Dictionary) or c.points.is_empty():
+		return CONTACT_PATH + ": points must be a non-empty object"
+	for name in c.points:
+		var d = c.points[name]
+		var where := "points.%s" % name
+		if not (d is Dictionary):
+			return "%s: %s is not an object" % [CONTACT_PATH, where]
+		for k in ["part", "source", "figure", "near", "band"]:
+			if not d.has(k):
+				return "%s: %s missing %s" % [CONTACT_PATH, where, k]
+		if not d.part in ["head", "torso"]:
+			return "%s: %s part must be head or torso" % [CONTACT_PATH, where]
+		err = near.call(where, d)
+		if err != "":
+			return err
+		if not (d.source is Dictionary) or not d.source.has("at") or not d.source.has("offset"):
+			return "%s: %s source needs at and offset" % [CONTACT_PATH, where]
+		err = at.call(where + ".source.at", d.source.at)
+		if err != "":
+			return err
+		if not vec.call(d.source.offset):
+			return "%s: %s source.offset must be [side, up, forward]" % [CONTACT_PATH, where]
+		var f = d.figure
+		if not (f is Dictionary):
+			return "%s: %s figure is not an object" % [CONTACT_PATH, where]
+		if d.part == "head":
+			if not f.has("dir") or not vec.call(f.dir) or not f.has("dist") or not is_number(f.dist):
+				return "%s: %s figure needs dir [side, up, forward] and dist" % [CONTACT_PATH, where]
+		elif f.has("arm"):
+			if not f.arm in ["Left", "Right"] or not f.has("at") or not is_number(f.at):
+				return "%s: %s figure needs arm Left or Right and a number at" % [CONTACT_PATH, where]
+		else:
+			for k in ["along", "side", "forward"]:
+				if not f.has(k) or not is_number(f[k]):
+					return "%s: %s figure needs along, side, forward (or arm and at)" % [CONTACT_PATH, where]
+	out["value"] = c
+	return ""
+
 ## Source joint names, in the order the clip frames store them.
 static func load_joint_names(out: Dictionary) -> String:
 	var path := MOTION_DIR + "/index.json"

@@ -15,7 +15,17 @@
   "RightHand",
   "RightShin",
   "RightFoot",
-  "RightToeEnd"
+  "RightToeEnd",
+  "Spine1",
+  "Spine2",
+  "Chest",
+  "Jaw",
+  "LeftEye",
+  "RightEye",
+  "LeftLeg",
+  "RightLeg",
+  "LeftHandMiddle2",
+  "RightHandMiddle2"
  ],
  "soma77_index": [
   0,
@@ -33,7 +43,17 @@
   42,
   73,
   74,
-  76
+  76,
+  1,
+  2,
+  3,
+  8,
+  9,
+  10,
+  67,
+  72,
+  25,
+  53
  ],
  "soma77_parent_index": [
   -1,
@@ -51,7 +71,17 @@
   41,
   72,
   73,
-  75
+  75,
+  0,
+  1,
+  2,
+  6,
+  6,
+  6,
+  0,
+  0,
+  24,
+  52
  ],
  "units": "metres; Y up; original SOMA coordinates; rounded to 5 decimals",
  "root": "Hips column (identical to motion.npz root_positions)",
@@ -167,6 +197,13 @@
    "seam_closed_m": 0.0
   },
   {
+   "id": "carry_box",
+   "fps": 30.0,
+   "frames": 90,
+   "loop": true,
+   "seam_closed_m": 0.0
+  },
+  {
    "id": "carry_bucket",
    "fps": 30.0,
    "frames": 90,
@@ -198,11 +235,46 @@
    "frames": 105
   },
   {
+   "id": "chess_capture",
+   "fps": 30.0,
+   "frames": 120
+  },
+  {
+   "id": "chess_move",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "chess_move_diagonal",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "chess_move_far",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "chess_move_side",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
+   "id": "chess_think",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
    "id": "chess_watch",
    "fps": 30.0,
    "frames": 90,
    "loop": true,
    "seam_closed_m": 0.0
+  },
+  {
+   "id": "choose_item",
+   "fps": 30.0,
+   "frames": 90
   },
   {
    "id": "coast_bicycle",
@@ -404,6 +476,11 @@
    "frames": 150
   },
   {
+   "id": "hesitate_reach",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
    "id": "hold_door",
    "fps": 30.0,
    "frames": 90,
@@ -578,6 +655,11 @@
    "id": "pat_dust",
    "fps": 30.0,
    "frames": 90
+  },
+  {
+   "id": "pay",
+   "fps": 30.0,
+   "frames": 105
   },
   {
    "id": "peek_side",
@@ -758,6 +840,11 @@
    "seam_closed_m": 0.0
   },
   {
+   "id": "rub_eye",
+   "fps": 30.0,
+   "frames": 90
+  },
+  {
    "id": "rub_hands",
    "fps": 30.0,
    "frames": 90
@@ -833,6 +920,18 @@
    "frames": 105
   },
   {
+   "id": "sit_bench",
+   "fps": 30.0,
+   "frames": 90,
+   "loop": true,
+   "seam_closed_m": 0.0
+  },
+  {
+   "id": "sit_down",
+   "fps": 30.0,
+   "frames": 75
+  },
+  {
    "id": "sit_ground",
    "fps": 30.0,
    "frames": 150
@@ -876,9 +975,19 @@
    "seam_closed_m": 0.0
   },
   {
+   "id": "slap_table",
+   "fps": 30.0,
+   "frames": 36
+  },
+  {
    "id": "slide_seated",
    "fps": 30.0,
    "frames": 150
+  },
+  {
+   "id": "slouch_bench",
+   "fps": 30.0,
+   "frames": 120
   },
   {
    "id": "smoke",
@@ -933,7 +1042,12 @@
    "fps": 30.0,
    "frames": 120,
    "loop": true,
-   "seam_closed_m": 0.10713
+   "seam_closed_m": 0.11831
+  },
+  {
+   "id": "stand_up",
+   "fps": 30.0,
+   "frames": 75
   },
   {
    "id": "stand_up_support_back",
@@ -1066,6 +1180,18 @@
    "id": "vending_collect",
    "fps": 30.0,
    "frames": 70
+  },
+  {
+   "id": "vendor_call",
+   "fps": 30.0,
+   "frames": 105
+  },
+  {
+   "id": "vendor_tidy",
+   "fps": 30.0,
+   "frames": 90,
+   "loop": true,
+   "seam_closed_m": 0.0
   },
   {
    "id": "waist_twister",
@@ -1352,102 +1478,6 @@
    "id": "yawn",
    "fps": 30.0,
    "frames": 105
-  },
-  {
-   "id": "sit_down",
-   "fps": 30.0,
-   "frames": 75
-  },
-  {
-   "id": "stand_up",
-   "fps": 30.0,
-   "frames": 75
-  },
-  {
-   "id": "rub_eye",
-   "fps": 30.0,
-   "frames": 90
-  },
-  {
-   "id": "carry_box",
-   "fps": 30.0,
-   "frames": 90,
-   "loop": true,
-   "seam_closed_m": 0.0
-  },
-  {
-   "id": "sit_bench",
-   "fps": 30.0,
-   "frames": 90,
-   "loop": true,
-   "seam_closed_m": 0.0
-  },
-  {
-   "id": "pay",
-   "fps": 30.0,
-   "frames": 105
-  },
-  {
-   "id": "choose_item",
-   "fps": 30.0,
-   "frames": 90
-  },
-  {
-   "id": "vendor_tidy",
-   "fps": 30.0,
-   "frames": 90,
-   "loop": true,
-   "seam_closed_m": 0.0
-  },
-  {
-   "id": "vendor_call",
-   "fps": 30.0,
-   "frames": 105
-  },
-  {
-   "id": "hesitate_reach",
-   "fps": 30.0,
-   "frames": 90
-  },
-  {
-   "id": "chess_move",
-   "fps": 30.0,
-   "frames": 90
-  },
-  {
-   "id": "chess_move_diagonal",
-   "fps": 30.0,
-   "frames": 90
-  },
-  {
-   "id": "chess_move_side",
-   "fps": 30.0,
-   "frames": 90
-  },
-  {
-   "id": "chess_capture",
-   "fps": 30.0,
-   "frames": 120
-  },
-  {
-   "id": "chess_think",
-   "fps": 30.0,
-   "frames": 105
-  },
-  {
-   "id": "slouch_bench",
-   "fps": 30.0,
-   "frames": 120
-  },
-  {
-   "id": "chess_move_far",
-   "fps": 30.0,
-   "frames": 90
-  },
-  {
-   "id": "slap_table",
-   "fps": 30.0,
-   "frames": 36
   }
  ]
 }

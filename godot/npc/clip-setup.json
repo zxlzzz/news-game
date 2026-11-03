@@ -1,5 +1,5 @@
 {
-  "_note": "What a clip needs around it (npc/clip_setup.gd; docs/design_route_npc_behavior.md 'clip-setup'). Only clips that need something are listed: a clip for one person that touches nothing and holds nothing is not here. A clip names things, never geometry. post: the kind of place it is played at; where a person stands on an object is only in the object type's Marker3D post_<kind>[_n] (types/*.tscn), and the clip may appear only in post:<kind> rows of the behaviour table (and in crowd-params posts of that kind). item: {type: a types/held_<name>.tscn, hand: left | right | both (the midpoint of the hands) | back (the neck point)}; how it sits in the hand is the offset of that type's model node. Pushed things (carts, strollers) are ordinary objects with a post, in group pushed: they follow the person's root, not a hand. partner: a second person the clip opens a place for: clip (played in step with this one), at [x, z] metres and yaw degrees in this person's frame (+Z = the way this person faces). Missing things (no type offers the post kind, no such held type, no such partner clip) are the one exception to stopping: the clip shows greyed in scenes/empty_ground with what is missing, and the game never picks it.",
+  "_note": "What a clip needs around it (npc/clip_setup.gd; docs/behavior-system/design_route_npc_behavior.md 'clip-setup'). Only clips that need something are listed: a clip for one person that touches nothing and holds nothing is not here. A clip names things, never geometry. post: the kind of place it is played at; where a person stands on an object is only in the object type's Marker3D post_<kind>[_n] (types/*.tscn), and the clip may appear only in post:<kind> rows of the behaviour table (and in crowd-params posts of that kind). item: {type: a types/held_<name>.tscn, hand: left | right | both (the midpoint of the hands) | back (the neck point)}; how it sits in the hand is the offset of that type's model node. Pushed things (carts, strollers) are ordinary objects with a post, in group pushed: they follow the person's root, not a hand. partner: a second person the clip opens a place for: clip (played in step with this one), at [x, z] metres and yaw degrees in this person's frame (+Z = the way this person faces). Missing things (no type offers the post kind, no such held type, no such partner clip) are the one exception to stopping: the clip shows greyed in scenes/empty_ground with what is missing, and the game never picks it.",
   "clips": {
     "walk_hold_front": {
       "item": {
@@ -1261,6 +1261,7 @@
       "post": "trash",
       "pose": {
         "seconds": 3,
+        "follow": true,
         "hands": {
           "left": [
             [
@@ -1297,7 +1298,7 @@
             "ahead"
           ],
           [
-            0.4,
+            0.7,
             "drop_release"
           ],
           [
@@ -1414,6 +1415,7 @@
       },
       "pose": {
         "seconds": 3,
+        "follow": true,
         "hands": {
           "left": [
             [
@@ -1843,6 +1845,7 @@
       "post": "atm",
       "pose": {
         "seconds": 3,
+        "follow": true,
         "hands": {
           "left": [
             [
@@ -1906,7 +1909,8 @@
       }
     },
     "vending_collect": {
-      "post": "vendcollect"
+      "post": "vendcollect",
+      "item": {"type": "held_coffee_cup", "hand": "right"}
     },
     "water_planter_hold": {
       "post": "water",
@@ -2767,7 +2771,8 @@
       "stationary": true
     },
     "receive_flyer": {
-      "stationary": true
+      "stationary": true,
+      "item": {"type": "held_flyer", "hand": "right"}
     }
   }
 }

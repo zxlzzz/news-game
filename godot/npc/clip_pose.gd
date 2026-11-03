@@ -1,6 +1,6 @@
 ## One clip as the game plays it: npc/baked/<id>.json, written by tools/bake_motion.gd (npc/motion_bake.gd)
 ## from npc/motion/<id>.json. Poses are stick-figure points in figure units (draw them under a node scaled by
-## the body type), +Z forward. Nothing is mapped or corrected here (docs/动作重做方案.md §4.4).
+## the body type), +Z forward. Nothing is mapped or corrected here (docs/asset-production/motions/素材生成方法.md §0).
 ##
 ## pose(phase): a chaining clip wraps; any other clip holds its last frame at phase >= 1.
 ##  - a travelling clip has its steady progress taken out: moving the NPC by stride() * (change in phase)
@@ -33,6 +33,7 @@ var half_width := 0.0
 var _item_turn: Array = []   # per frame: Quaternion
 var _parts := {}             # node name -> per frame: Vector3 (metres, post frame) or null
 var _item_show: Array = []   # [from, to] seconds
+var _axes: Array = []        # per frame: [torso side, head side] (mapping step 11), only to draw the contact points
 var _stride := 0.0
 var _rise := 0.0
 var _poses: Array = []  # per frame: pose dictionary (segs, head, neck, handLeft, handRight, supportHands)
@@ -78,6 +79,8 @@ func _init(clip: String) -> void:
 	for part in d.get("parts", {}):
 		_parts[part] = d.parts[part].map(func(v): return null if v == null else Vector3(v[0], v[1], v[2]))
 	_item_show = d.get("item_show", [])
+	for a in d.get("axes", []):
+		_axes.append([Vector3(a[0], a[1], a[2]), Vector3(a[3], a[4], a[5])])
 	var support: Array = d.get("support", [])
 	for i in d.points.size():
 		var row: Array = d.points[i]
@@ -136,6 +139,17 @@ func extras(phase: float, repeat: bool = true) -> Dictionary:
 		elif a != null:
 			out.parts[part] = a
 	return out
+
+## [torso side, head side] at a phase (played like pose()), for drawing the figure's contact points of mapping step 11;
+## [] for a clip baked without them (a built clip, npc/pose_build.gd).
+func axes(phase: float, repeat: bool = true) -> Array:
+	if _axes.is_empty():
+		return []
+	var sample_phase := fposmod(phase, 1.0) if repeat and chains else clampf(phase, 0.0, 1.0)
+	var x := sample_phase * count
+	var i := mini(floori(x), _axes.size() - 1)
+	var j := mini(i + 1, _axes.size() - 1)
+	return [(_axes[i][0] as Vector3).lerp(_axes[j][0], x - i).normalized(), (_axes[i][1] as Vector3).lerp(_axes[j][1], x - i).normalized()]
 
 func carries() -> Array:
 	return _parts.keys()

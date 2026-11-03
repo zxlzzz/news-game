@@ -1,6 +1,6 @@
-## The export step of docs/动作重做方案.md §4.3: one source clip -> the stick figure the game plays.
+## The export step of docs/asset-production/motions/动作重做方案.md §3.3: one source clip -> the stick figure the game plays.
 ## In: npc/motion/<id>.json (Kimodo joints, written by scripts/export-npc-motion.py), the mapping
-## (skeleton_mapping.gd + skeleton-params.json, docs/design-plans/npc-skeleton-mapping.md), the clip's
+## (skeleton_mapping.gd + skeleton-params.json, docs/asset-production/motions/npc-skeleton-mapping.md), the clip's
 ## declaration in npc/clip-setup.json and, for its contacts, the object and held types it names.
 ## Out: npc/baked/<id>.json, which npc/clip_pose.gd reads. tools/bake_motion.gd runs this; the game itself
 ## never maps or corrects a pose.
@@ -29,7 +29,7 @@
 ## over its release (default: the ramp) (a quick touch, like a slap the source already lands on time, wants a short
 ## ramp, and a longer release so the hand does not snap off the table in one frame); without
 ## time it holds for the whole clip. How far each contact had to move its joint is reported; more than
-## maxCorrection means the source should be generated again (docs/动作重做方案.md §4.3 step 3); miss_m is the mean
+## maxCorrection means the source should be generated again (motion-bake.json maxCorrection); miss_m is the mean
 ## distance still to go while the contact holds, in the clip frame, for adjusting the next generation's key.
 extends RefCounted
 
@@ -82,7 +82,7 @@ static func geometry_files(id: String, setup) -> Array:
 ## the files it finds, so a clip whose inputs changed is never played stale.
 static func fingerprint(id: String, setup) -> String:
 	if _common == "":
-		var paths: Array = CODE + [NpcData.PARAMS_PATH, "%s/%s.json" % [NpcData.MOTION_DIR, NpcData.REST_CLIP]]
+		var paths: Array = CODE + [NpcData.PARAMS_PATH, NpcData.CONTACT_PATH, "%s/%s.json" % [NpcData.MOTION_DIR, NpcData.REST_CLIP]]
 		_common = _hash_files(paths, "")
 	var files: Array = ["%s/%s.json" % [NpcData.MOTION_DIR, id]] + geometry_files(id, setup)
 	return _hash_files(files, _common + JSON.stringify(declared(id, setup)))
@@ -154,8 +154,26 @@ static func bake(id: String) -> Dictionary:
 	var count := maxi(1, frames.size() - 1)
 	var origin: Array = [0.0, 0.0, 0.0] if fixed else frames[0][hips]
 	var raw := []
-	for f in frames:
-		raw.append(mapper.mapFrame(f, P, origin))
+	var held := {}
+	if decl.pose.is_empty():
+		# steps 1-11; step 11 (hand contact) smooths over the clip, so the whole clip is mapped at once
+		e = NpcData.load_contact(got)
+		if e != "":
+			return {"error": e}
+		var C: Dictionary = got.value
+		e = mapper.contactError(C)
+		if e != "":
+			return {"error": e}
+		var hr := held_tip(id, setup, decl, C, frames, mapper, fixed, stationary, P, scale)
+		if hr.has("error"):
+			return {"error": hr.error}
+		held = hr.held
+		raw = mapper.mapClip(frames, P, origin, C, float(source.fps), chains, held)
+	else:
+		# A built clip (npc/pose_build.gd) reads its life (and a follow clip its hand stops and elbows) from the
+		# mapped source: it keeps steps 1-10, as it was built and checked with them.
+		for f in frames:
+			raw.append(mapper.mapFrame(f, P, origin))
 	var a: Array = raw[0].H
 	var b: Array = raw[mini(count, frames.size() - 1)].H
 	var net := Vector3(b[0] - a[0], 0, b[2] - a[2])
@@ -176,6 +194,8 @@ static func bake(id: String) -> Dictionary:
 			turn = Basis(Vector3.UP, -atan2(fw[0], fw[2]))
 			if stationary:
 				removed = net
+	if not held.is_empty() and not turn.is_equal_approx(held.turn):
+		return {"error": id + ": the held tip was turned another way than the clip (motion_bake.gd facing())"}
 	var o := Vector3(origin[0], 0, origin[2])
 	var poses := []
 	for i in raw.size():
@@ -193,6 +213,8 @@ static func bake(id: String) -> Dictionary:
 			foot[1] = foot[0] + (horizontal * cos(pitch) + Vector3.UP * sin(pitch)) * delta.length()
 		poses.append({"segs": segs, "head": to_local.call(m.head), "neck": to_local.call(m.N),
 			"handLeft": to_local.call(m.handLeft), "handRight": to_local.call(m.handRight), "supportHands": m.supportHands})
+		if m.has("side"):
+			poses[-1].axes = [turn * Vector3(m.side[0], m.side[1], m.side[2]), turn * Vector3(m.headSide[0], m.headSide[1], m.headSide[2])]
 	if not decl.pose.is_empty():
 		return _bake_built(id, setup, decl, poses, mapper, rest, P, B, scale, float(source.fps))
 	var report := {}
@@ -235,6 +257,11 @@ static func bake(id: String) -> Dictionary:
 		"stride": snappedf(stride.length(), 0.00001), "inputs": fingerprint(id, setup), "points": points}
 	if any_support:
 		data.support = support
+	if poses[0].has("axes"):
+		# per frame the torso's and the head frame's side (mapping step 11): only for drawing the figure's contact
+		# points in the empty ground; nothing plays from them
+		data.axes = poses.map(func(p): return [snappedf(p.axes[0].x, 0.0001), snappedf(p.axes[0].y, 0.0001),
+			snappedf(p.axes[0].z, 0.0001), snappedf(p.axes[1].x, 0.0001), snappedf(p.axes[1].y, 0.0001), snappedf(p.axes[1].z, 0.0001)])
 	if not report.is_empty():
 		data.contacts = report
 	if not collision.is_empty():
@@ -246,6 +273,44 @@ static func bake(id: String) -> Dictionary:
 	if width > 0.0:
 		data.half_width = width
 	return {"error": "", "data": data, "report": report, "collision": collision}
+
+## The way the clip will face once baked (the turn bake() works out after mapping), from the source alone: travelling
+## clips along their hips' travel, the others along the first frame's torso. Mapping step 11 needs it before mapping, to
+## hang a held thing the way the game hangs it.
+static func facing(frames: Array, mapper, fixed: bool, stationary: bool, P: Dictionary) -> Basis:
+	if fixed:
+		return Basis.IDENTITY
+	var hips: int = mapper.J["Hips"]
+	var r: float = (P.thigh + P.shin) / (SkeletonMapper.SRC.thigh + SkeletonMapper.SRC.shin)
+	var a: Array = frames[0][hips]
+	var b: Array = frames[mini(maxi(1, frames.size() - 1), frames.size() - 1)][hips]
+	var net := Vector3(b[0] - a[0], 0, b[2] - a[2]) * r
+	if net.length() >= IN_PLACE_TRAVEL and not stationary:
+		return Basis(Vector3.UP, -atan2(net.x, net.z))
+	var fw: Array = mapper.torsoFrame(frames[0])[2]
+	return Basis(Vector3.UP, -atan2(fw[0], fw[2]))
+
+## Mapping step 11's held thing: {held: {}} when the clip holds nothing listed in hand-contact.json "held", otherwise
+## {held: {side, tip, tipFigure, turn}}: the tip marker of the held type (from where the game hangs the thing, the hand)
+## turned into the source's frame (tip, metres) and in figure units (tipFigure); turn: the clip's facing. A thing held in
+## both hands gives {held: {}}. {error} when the type lacks the marker.
+static func held_tip(id: String, setup, decl: Dictionary, C: Dictionary, frames: Array, mapper, fixed: bool,
+		stationary: bool, P: Dictionary, scale: float) -> Dictionary:
+	# held in both hands (filming with a phone) or carried on the back: the hands count for themselves
+	if decl.item.is_empty() or not C.held.has(decl.item.type) or not decl.item.hand in ["left", "right"]:
+		return {"held": {}}
+	var marker: String = C.held[decl.item.type]
+	var root: Node3D = load(setup.type_path(decl.item.type)).instantiate()
+	var node := root.find_child(marker, true, false) as Node3D
+	if node == null:
+		root.free()
+		return {"error": "%s: %s has no %s marker (npc/hand-contact.json held)" % [id, decl.item.type, marker]}
+	var tip := _to_root(node, root).origin
+	root.free()
+	var turn := facing(frames, mapper, fixed, stationary, P)
+	var t := turn.inverse() * tip
+	return {"held": {"side": String(decl.item.hand).capitalize(), "tip": [t.x, t.y, t.z],
+		"tipFigure": [t.x / scale, t.y / scale, t.z / scale], "turn": turn}}
 
 ## A clip with a pose declaration (npc/pose_build.gd): built on the figure at its post from the object's markers; the
 ## mapped source poses only lend their sway. Then confirmed: at every post of its kind in every type offering it (and

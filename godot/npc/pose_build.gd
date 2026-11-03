@@ -1,4 +1,4 @@
-## Builds the clips npc/clip-setup.json gives a "pose" (docs/动作重做方案.md "摆木偶"): the stick figure is put on its
+## Builds the clips npc/clip-setup.json gives a "pose" (docs/asset-production/motions/动作重做方案.md "摆木偶"): the stick figure is put on its
 ## object directly — hips on the seat marker, soles on the foot markers, hands on markers or on its own body at the
 ## times the declaration names — and its arms and legs are solved with the figure's own lengths. Nothing of the
 ## Kimodo source decides where anything is; the source only lends the small sway of its torso and head ("life": what
@@ -32,6 +32,15 @@
 ##     thing is in the hand only then; wrist: [[t, deg] ...]: the held thing turned at the wrist about the figure's
 ##     left-right axis, its top forward (+) (a fan waved, more than the forearm alone turns it) (_extras).
 ##   life: false leaves the source out.
+##   follow: true (a standing figure only; trial 2026-10-15): the source decides how the figure moves, the markers still
+##     where (_read_follow). The hips move as the source's hips move from the middle of its feet (scaled with the leg;
+##     the feet stay where they stand), the torso and head turn as the source's turn, the whole way, not only the quick
+##     sway; the elbows point as the source's do (relative to the torso), unless that arm comes into the object, where
+##     the usual choice (Q.poles) stands. The clip is as long as the source. A hand with more than one place holds each
+##     declared place in turn while the source's hand stops (moves slower than Q.stopSpeed for Q.stopMin, or at either
+##     end of the source; a source whose hand still moves at an end gets there just at that end): the declared times only order things and are mapped onto the source's (look, lean, show
+##     and the rest follow the same map). The source's change from its first frame is taken less the straight share of
+##     its first-to-last change, so the clip ends as it begins. Stops that do not match the held places are an error.
 extends RefCounted
 
 const PARTS := ["side", "lap", "knee", "seat", "pocket", "mouth", "chin", "ear", "cheek", "chest", "front", "front_up", "belly", "inspect", "fan", "hang"]
@@ -55,6 +64,11 @@ var seat_y := 0.0
 var life_t: Array = []   # per source frame: Quaternion (torso sway)
 var life_h: Array = []   # per source frame: Quaternion (head sway)
 var life_back := 0.0     # radians: the farthest the torso sway leans back (a seated torso rests on the backrest there)
+var follow := false      # d.follow: the source moves the figure (_read_follow)
+var src_hip: Array = []  # follow, per source frame: Vector3 the hips' move from the middle of the feet
+var src_torso: Array = []  # follow, per source frame: Quaternion the torso's turn
+var src_head: Array = []   # follow, per source frame: Quaternion the head's turn
+var src_poles: Array = [[], []]  # follow, per side and source frame: the elbow's way out of the neck-hand line (out, up, forward)
 var _rest_cache := {}
 var _lift := {}          # "side:key index" -> lift of the segment ending at that key
 
@@ -138,7 +152,10 @@ func _build(decl: Dictionary, geo_: Dictionary, source: Array, fps_: float, rest
 	_read_rest(rest)
 	if d.has("seat"):
 		seat_y = _marker(d.seat).y
-	if d.get("life", true):
+	follow = d.get("follow", false)
+	if follow:
+		_read_follow(source)
+	elif d.get("life", true):
 		_read_life(source)
 	if error != "":
 		return []
@@ -156,7 +173,10 @@ func _build(decl: Dictionary, geo_: Dictionary, source: Array, fps_: float, rest
 		need.append(_reach_lean(f, t))
 		if error != "":
 			return []
-	var lean := _smooth_widest(need, maxi(1, roundi(Q.leanSmooth * fps)))
+	# follow: a clip whose hands end where they begin loops, and its lean is smoothed round the seam (the source's
+	# hand may leave its first place within a frame or two, its hold being the end of the last loop)
+	var loops: bool = follow and d.get("hands", {}).values().all(func(keys): return keys[0][1] == keys[-1][1])
+	var lean := _smooth_widest(need, maxi(1, roundi(Q.leanSmooth * fps)), n - 1 if loops else 0)
 	# the lifts of the hands' ways and the elbows' directions are found again on the leaning figure
 	_lift.clear()
 	for key in _rest_cache.keys():
@@ -229,6 +249,154 @@ func _read_life(source: Array) -> void:
 		var up: Vector3 = life_t[i] * Vector3.UP
 		life_back = maxf(life_back, atan2(-up.z, up.y) * Q.lifeScale)
 
+## follow: the declaration retimed onto the source (d is replaced by a copy) and the source's moves read per frame.
+func _read_follow(source: Array) -> void:
+	if d.has("seat") or d.has("rest") or d.has("hip"):
+		error = "follow is for a standing figure only (no seat, rest or hip)"
+		return
+	if not d.get("life", true):
+		error = "follow takes the motion from the source; it cannot go with life: false"
+		return
+	var n := source.size()
+	if n < 2:
+		error = "follow: the source has %d frame" % n
+		return
+	var length := (n - 1) / fps
+	var seconds := float(d.seconds)
+	var anchors := [[0.0, 0.0], [seconds, length]]  # [declared time, source time]
+	var hands := {}
+	for side in d.get("hands", {}):
+		var keys: Array = d.hands[side]
+		var holds := _holds(side, keys, seconds)
+		if error != "":
+			return
+		if holds.size() < 2:
+			hands[side] = keys.duplicate(true)  # one place: nothing to time
+			continue
+		var stops := _source_stops(source, side, length)
+		# a source whose hand moves at its start or end (cut from a longer motion): the hand is at its first or last
+		# place just at that end
+		if stops.is_empty() or stops[0][0] > 0.0:
+			stops.push_front([0.0, 0.0])
+		if stops[-1][1] < length:
+			stops.append([length, length])
+		var names := ", ".join(holds.map(func(h): return h[0]))
+		var found := ", ".join(stops.map(func(s): return "%.2f-%.2f s" % s))
+		if stops.size() != holds.size():
+			error = "follow: the source's %s hand stops %d times (%s), the declaration holds %d places (%s)" % [side, stops.size(), found, holds.size(), names]
+			return
+		var timed := []
+		for j in holds.size():
+			timed.append([stops[j][0], holds[j][0]])
+			if j < holds.size() - 1:
+				timed.append([stops[j][1], holds[j][0]])
+			anchors.append([holds[j][1], stops[j][0]])
+			anchors.append([holds[j][2], stops[j][1]])
+		hands[side] = timed
+	anchors.sort_custom(func(a, b): return a[0] < b[0] or (a[0] == b[0] and a[1] < b[1]))
+	for j in range(1, anchors.size()):
+		if anchors[j][1] < anchors[j - 1][1] or (anchors[j][0] == anchors[j - 1][0] and anchors[j][1] != anchors[j - 1][1]):
+			error = "follow: the source's stops (%.2f s, %.2f s) come in another order than the declared times %.2f s, %.2f s" % [anchors[j - 1][1], anchors[j][1], anchors[j - 1][0], anchors[j][0]]
+			return
+	var warp := func(t: float) -> float:
+		for j in range(1, anchors.size()):
+			if t <= anchors[j][0]:
+				var a: Array = anchors[j - 1]
+				var b: Array = anchors[j]
+				return a[1] if b[0] - a[0] < 1e-9 else lerpf(a[1], b[1], (t - a[0]) / (b[0] - a[0]))
+		return length
+	var nd := d.duplicate(true)
+	nd.seconds = length
+	if not hands.is_empty():
+		nd.hands = hands
+	for k in ["lean", "tilt", "look", "wrist"]:
+		if nd.has(k):
+			nd[k] = nd[k].map(func(key): return [warp.call(float(key[0])), key[1]])
+	if nd.has("show"):
+		nd.show = [warp.call(float(nd.show[0])), warp.call(float(nd.show[1]))]
+	for c in nd.get("carry", []):
+		c.time = [warp.call(float(c.time[0])), warp.call(float(c.time[1]))]
+	d = nd
+	# the source's moves from its first frame, less the straight share of its first-to-last change
+	var rel := func(p: Dictionary) -> Vector3: return p.segs[0][0] - (p.segs[5][1] + p.segs[10][1]) * 0.5
+	var torso := func(p: Dictionary) -> Vector3: return (p.segs[0][1] - p.segs[0][0]).normalized()
+	var head := func(p: Dictionary) -> Vector3: return (p.head - p.segs[0][1]).normalized()
+	var turns := func(dir: Callable) -> Array:
+		var first: Vector3 = dir.call(source[0])
+		var last := Quaternion(first, dir.call(source[-1]))
+		var out := []
+		for i in n:
+			out.append((Quaternion.IDENTITY.slerp(last, i / float(n - 1)).inverse() * Quaternion(first, dir.call(source[i]))).normalized())
+		return out
+	src_torso = turns.call(torso)
+	src_head = turns.call(head)
+	var h0: Vector3 = rel.call(source[0])
+	var h1: Vector3 = rel.call(source[-1])
+	for i in n:
+		src_hip.append(rel.call(source[i]) - h0 - (h1 - h0) * (i / float(n - 1)))
+	for k in 2:
+		var sgn := 1.0 if k == 0 else -1.0
+		var raw := []
+		for p in source:
+			var neck: Vector3 = p.segs[2 + 5 * k][0]
+			var elbow: Vector3 = p.segs[2 + 5 * k][1]
+			var axis: Vector3 = (p.segs[3 + 5 * k][1] - neck).normalized()
+			var out: Vector3 = (elbow - neck) - axis * (elbow - neck).dot(axis)
+			var up: Vector3 = torso.call(p)
+			var fwd := (Vector3.BACK - up * up.z).normalized()
+			var lat := up.cross(fwd).normalized()
+			raw.append(Vector3(out.dot(lat) * sgn, out.dot(up), out.dot(fwd)))
+		for i in n:
+			src_poles[k].append(raw[i] - (raw[-1] - raw[0]) * (i / float(n - 1)))
+
+## follow: [[target, declared from, declared to]...]: the places a hand holds in turn (the same target in keys next to
+## each other; the first held from the clip's start, the last to its end). A target passed through is an error.
+func _holds(side: String, keys: Array, seconds: float) -> Array:
+	var out := []
+	for i in keys.size():
+		if keys[i].size() > 2:
+			error = "follow: the %s hand's key %s: a hit is not timed from the source" % [side, keys[i]]
+			return []
+		if out.is_empty() or out[-1][0] != keys[i][1]:
+			if not out.is_empty() and out[-1][3] == 1 and out.size() > 1:
+				error = "follow: the %s hand passes through %s; every place is held (the same target twice)" % [side, out[-1][0]]
+				return []
+			out.append([keys[i][1], 0.0 if out.is_empty() else float(keys[i][0]), float(keys[i][0]), 1])
+		else:
+			out[-1][2] = float(keys[i][0])
+			out[-1][3] += 1
+	out[-1][2] = seconds
+	return out.map(func(h): return [h[0], h[1], h[2]])
+
+## follow: [[from, to] seconds...] where the source's hand (relative to the neck) moves slower than Q.stopSpeed, for at
+## least Q.stopMin or up to either end of the source.
+func _source_stops(source: Array, side: String, length: float) -> Array:
+	var key := "handLeft" if side == "left" else "handRight"
+	var n := source.size()
+	var slow := []
+	for i in n:
+		var a: Dictionary = source[maxi(i - 1, 0)]
+		var b: Dictionary = source[mini(i + 1, n - 1)]
+		var step: float = ((b[key] - b.neck) - (a[key] - a.neck)).length() / (mini(i + 1, n - 1) - maxi(i - 1, 0))
+		slow.append(step * fps * unit < Q.stopSpeed)
+	var out := []
+	var i := 0
+	while i < n:
+		if not slow[i]:
+			i += 1
+			continue
+		var j := i
+		while j + 1 < n and slow[j + 1]:
+			j += 1
+		if i == 0 or j == n - 1 or (j - i) / fps >= Q.stopMin:
+			out.append([i / fps, length if j == n - 1 else j / fps])
+		i = j + 1
+	return out
+
+## follow: frame of the source at t.
+func _src_frame(t: float) -> int:
+	return clampi(roundi(t * fps), 0, src_hip.size() - 1)
+
 static func _gauss(dirs: Array, sigma: float) -> Array:
 	var out := []
 	var reach := ceili(sigma * 3.0)
@@ -275,8 +443,13 @@ func _frame(t: float, feet: Dictionary, lean: Vector3, final: bool) -> Dictionar
 		T = leaning[1]
 	T = Basis(Vector3.RIGHT, deg_to_rad(_keyed(d.get("lean", []), t))) * T
 	T = Basis(Vector3.BACK, -deg_to_rad(_keyed(d.get("tilt", []), t))) * T
+	var own := T  # follow: the torso without the source's turn (the head turns as the source's head on top of it)
+	if follow:
+		f.H += src_hip[_src_frame(t)]
+		T = (src_torso[_src_frame(t)] * T).normalized()
 	if lean.length() > 1e-9:
 		T = Basis(lean.normalized(), lean.length()) * T
+		own = Basis(lean.normalized(), lean.length()) * own
 	var life := _life(t) if final else [Quaternion.IDENTITY, Quaternion.IDENTITY]
 	T = (life[0] * T).normalized()
 	f.T = T
@@ -295,7 +468,7 @@ func _frame(t: float, feet: Dictionary, lean: Vector3, final: bool) -> Dictionar
 		f.toes.append(feet.ankles[k] + feet.toe_dirs[k] * P.foot)
 	# head: kept nearer upright than the torso (Q.headUpright), then tilted by a share of how far the eyes turn from
 	# looking straight ahead to what they look at
-	var base := T.slerp(Vector3.UP, Q.headUpright)
+	var base := (own if follow else T).slerp(Vector3.UP, Q.headUpright)
 	f.D = base
 	f.neckEnd = f.N + f.D * P.neck
 	f.head = f.neckEnd + f.D * P.headR
@@ -307,6 +480,8 @@ func _frame(t: float, feet: Dictionary, lean: Vector3, final: bool) -> Dictionar
 		turn = Quaternion(turn.get_axis().normalized(), minf(turn.get_angle() * Q.lookShare, deg_to_rad(Q.lookMax)))
 		f.D = (turn * base).normalized()
 	f.D = (life[1] * f.D).normalized()
+	if follow:
+		f.D = (src_head[_src_frame(t)] * f.D).normalized()
 	if d.has("rest"):
 		f.D = _head_clear(f.N, f.D)
 	f.neckEnd = f.N + f.D * P.neck
@@ -321,6 +496,10 @@ func _frame(t: float, feet: Dictionary, lean: Vector3, final: bool) -> Dictionar
 			return f
 		f.targets.append(at[0])
 		var pole: Vector3 = f.lat * (1.0 if k == 0 else -1.0) * at[1].x + T * at[1].y + f.fwd * at[1].z
+		if follow:
+			var src: Vector3 = src_poles[k][_src_frame(t)]
+			if geo.boxes.is_empty() or _arm_clear(f, SIDES[k], at[0], src):
+				pole = f.lat * (1.0 if k == 0 else -1.0) * src.x + T * src.y + f.fwd * src.z
 		var arm := _two_bone(f.N, at[0], P.upperArm, P.foreArm, pole)
 		if final and arm[2] * unit > Q.missMax:
 			error = "t %.2f: the %s hand is %.3f m short of its target %s" % [t, SIDES[k], arm[2] * unit, _key_name(SIDES[k], t)]
@@ -705,7 +884,9 @@ func _segment_lift(side: String, i: int, keys: Array, f: Dictionary) -> Array:
 			for j in range(1, 40):
 				var u := j / 40.0
 				var p := _along(a, b, u, shape, lift) if speeds.is_empty() else _hermite(a, b, speeds[0], speeds[1], u, lift)
-				if not _arm_clear(f, side, p, ta[1].lerp(tb[1], u)):
+				# follow: the arm clears with the source's elbow direction there, or with the usual one it falls back to
+				var by_source: bool = follow and _arm_clear(f, side, p, src_poles[SIDES.find(side)][_src_frame(lerpf(keys[i][0], keys[i + 1][0], u))])
+				if not by_source and not _arm_clear(f, side, p, ta[1].lerp(tb[1], u)):
 					clear = false
 					break
 			if clear:
@@ -914,14 +1095,18 @@ static func _keyed(keys: Array, t: float) -> float:
 	return lerpf(float(keys[i][1]), float(keys[i + 1][1]), u * u * u * (10.0 - 15.0 * u + 6.0 * u * u))
 
 ## Per frame a vector that covers each frame's need and changes smoothly: per axis the largest need within `window`
-## frames, then averaged over the same span (triangle weights).
-static func _smooth_widest(need: Array, window: int) -> Array:
+## frames, then averaged over the same span (triangle weights). period > 0: the frames repeat with that period (a
+## looping clip, its last frame its first), the span wraps round.
+static func _smooth_widest(need: Array, window: int, period := 0) -> Array:
 	var n := need.size()
+	var lo := func(i: int) -> int: return i - window if period > 0 else maxi(0, i - window)
+	var hi := func(i: int) -> int: return i + window + 1 if period > 0 else mini(n, i + window + 1)
+	var at := func(list: Array, j: int): return list[posmod(j, period)] if period > 0 else list[j]
 	var widest := []
 	for i in n:
 		var best := Vector3.ZERO
-		for j in range(maxi(0, i - window), mini(n, i + window + 1)):
-			var v: Vector3 = need[j]
+		for j in range(lo.call(i), hi.call(i)):
+			var v: Vector3 = at.call(need, j)
 			for a in 3:
 				if absf(v[a]) > absf(best[a]):
 					best[a] = v[a]
@@ -930,9 +1115,9 @@ static func _smooth_widest(need: Array, window: int) -> Array:
 	for i in n:
 		var acc := Vector3.ZERO
 		var total := 0.0
-		for j in range(maxi(0, i - window), mini(n, i + window + 1)):
+		for j in range(lo.call(i), hi.call(i)):
 			var w := 1.0 - absf(j - i) / float(window + 1)
-			acc += widest[j] * w
+			acc += at.call(widest, j) * w
 			total += w
 		out.append(acc / total)
 	return out

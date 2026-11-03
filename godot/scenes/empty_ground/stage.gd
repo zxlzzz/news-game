@@ -32,6 +32,13 @@ const AnimalModel := preload("res://npc/animal_model.gd")
 const AnimalBody := preload("res://npc/animal_body.gd")
 const AnimalClip := preload("res://tools/animal_clip_preview.gd")
 const Bounds := preload("res://core/bounds.gd")
+const NpcData := preload("res://npc/npc_data.gd")
+const SkeletonMapper := preload("res://npc/skeleton_mapping.gd")
+## The figure's contact points (mapping step 11, npc/hand-contact.json) when the panel's switch is on: dot colour,
+## dot radius in figure units, and how far the dots are pulled toward the camera (metres) to show over the strokes.
+const CONTACT_DOT := Color(0.95, 0.5, 0.05)
+const CONTACT_DOT_R := 0.012
+const CONTACT_DOT_BIAS := 0.6
 const ModelParts := preload("res://props/model_parts.gd")
 const PARAMS := "res://scenes/empty_ground/params.json"
 const MOVERS := "res://scenes/empty_ground/movers.json"
@@ -66,6 +73,8 @@ var _stale := {}          # type files written this session: loaded fresh next t
 var model_parts: Array[Node3D] = []
 var model_joints: Array[Node3D] = []
 var model_sweep := AABB()
+var show_contact := false  # the panel's "手贴身的点" switch
+var _contact := {}         # {mapper, C} once the switch was first turned on
 
 ## Reads and checks everything; "" or the error.
 func setup_stage(level_) -> String:
@@ -300,6 +309,8 @@ func _clear() -> void:
 func _free_person(person: Dictionary) -> void:
 	people.erase(person)
 	person.fig.queue_free()
+	if person.get("dots") != null:
+		person.dots.queue_free()
 	if person.item != null:
 		person.item.node.queue_free()
 
@@ -434,6 +445,50 @@ func _start(person: Dictionary) -> Transform3D:
 
 ## [root transform, phase] of a person at `time`: an in-place clip stays at its start, a travelling one moves
 ## along +Z by its stride over the unit. People added by hand repeat a chaining clip on their own clock.
+func rp_phase(person: Dictionary) -> float:
+	return _root(person, clock - person.started if person.manual else t)[1]
+
+## The figure's contact points of mapping step 11 on a person (switch on), from the same figurePoints the export uses.
+## A built clip (npc/pose_build.gd) was not mapped with step 11 and has none.
+func _draw_contact(person: Dictionary, phase: float) -> void:
+	if person.get("dots") == null:
+		person.dots = _figure(CONTACT_DOT, CONTACT_DOT_BIAS)
+	var dots: Array = []
+	var axes: Array = person.clip.axes(phase, false) if show_contact else []
+	if not axes.is_empty():
+		if _contact.is_empty():
+			var got := {}
+			var e := NpcData.load_contact(got)
+			if e != "":
+				_fail(e)
+				return
+			var C: Dictionary = got.value
+			e = NpcData.load_joint_names(got)
+			if e == "":
+				var names: Array = got.value
+				e = NpcData.load_clip(NpcData.REST_CLIP, names.size(), got)
+				if e == "":
+					_contact = {"mapper": SkeletonMapper.new(names, got.value.frames[NpcData.REST_FRAME]), "C": C}
+			if e != "":
+				_fail(e)
+				return
+		var mp = _contact.mapper
+		var a := func(v: Vector3) -> Array: return [v.x, v.y, v.z]
+		var sg: Array = person.pose.segs
+		var H: Array = a.call(sg[0][0])
+		var N: Array = a.call(sg[0][1])
+		var head: Array = a.call(person.pose.head)
+		var hdir: Array = mp.unit(mp.sub(head, a.call(sg[1][1])))
+		var hl: Array = mp.unit(mp.orth(a.call(axes[1]), hdir))
+		var side: Array = a.call(axes[0])
+		var up: Array = mp.unit(mp.sub(N, H))
+		var pts: Dictionary = mp.figurePoints(H, N, head, [hl, hdir, mp.cross(hl, hdir)], [side, up, mp.cross(side, up)],
+			{"Left": a.call(sg[2][1]), "Right": a.call(sg[7][1])}, person.clip.P, _contact.C)
+		for k in pts:
+			dots.append([Vector3(pts[k][0], pts[k][1], pts[k][2]), CONTACT_DOT_R])
+	person.dots.transform = person.fig.transform
+	person.dots.draw([], dots, [])
+
 func _root(person: Dictionary, time: float) -> Array:
 	var c = person.clip
 	var phase: float = time / c.duration()
@@ -500,6 +555,7 @@ func _pose_people() -> void:
 			return
 		var d: Dictionary = person.clip.drawing(person.pose)
 		person.fig.draw(d.segments, d.discs, d.triangles)
+		_draw_contact(person, rp_phase(person))
 
 # ------------------------------------------------------------------ time
 

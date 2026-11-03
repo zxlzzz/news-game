@@ -17,7 +17,7 @@ const HANDS := ["left", "right", "both", "back"]
 const PUSHED := "pushed"
 const KEYS := ["post", "item", "partner", "stationary", "contacts", "pose"]
 ## Keys of a "pose" (npc/pose_build.gd builds the clip on the figure from it).
-const POSE_KEYS := ["seconds", "seat", "back", "feet", "hip", "lean", "tilt", "hands", "look", "life", "carry", "show", "rest", "wrist"]
+const POSE_KEYS := ["seconds", "seat", "back", "feet", "hip", "lean", "tilt", "hands", "look", "life", "carry", "show", "rest", "wrist", "follow"]
 ## Joints a contact may move at export (npc/motion_bake.gd).
 const CONTACT_JOINTS := ["hip", "handLeft", "handRight"]
 
@@ -154,6 +154,8 @@ static func _pose_error(p) -> String:
 		return "feet must be [left marker, right marker]"
 	if p.has("life") and not p.life is bool:
 		return "life must be true or false"
+	if p.has("follow") and not p.follow is bool:
+		return "follow must be true or false"
 	if p.has("show") and not (p.show is Array and p.show.size() == 2 and _is_number(p.show[0]) and _is_number(p.show[1]) and p.show[0] <= p.show[1]):
 		return "show must be [from, to] seconds"
 	if p.has("rest") and not (p.rest is String and p.rest != ""):
