@@ -9,9 +9,10 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 - **Main task from 2026-10-15: make more good NPC motions** (the real-place scene is parked).
 
-- Plan + runbook + per-round notes: `docs/动作重做方案.md` (replaced the 10-13 plan). No review
+- Plan + runbook + per-round notes: `docs/asset-production/motions/动作重做方案.md` (replaced the 10-13 plan). No review
   page any more: he looks at the empty ground's "改好的" list (`godot/scenes/empty_ground/`, now the
-  project's main scene). Committed 2026-10-14 (4bece5d2..281febbe), **not pushed** (branch ahead 4).
+  project's main scene). Committed 2026-10-14 (4bece5d2..281febbe) and pushed (branch up to date with
+  origin as of 10-15).
 - Why the 10-13 plan failed (six review rounds): it generated with Kimodo for a real body and patched
   the stick figure afterwards (scene guidance, dense pins, export push-out), using checks as the work
   loop; checks measured another seat than the videos; objects did not fit the figure. Hsinlung:
@@ -47,6 +48,37 @@ Detailed asset results belong in the linked inventories, not duplicated here.
   whole figure (upper arm, held object, "does it read as that action"), not a thumbnail of the
   hand position; when an object doesn't fit the figure, change the model directly instead of
   reporting the numbers to him.
+- **"follow" trial (10-15, uncommitted, in the working tree)**: a pose may say `"follow": true`;
+  positions still come from markers, but when the hands stop and the clip's length come from the
+  Kimodo source (`stopSpeed`/`stopMin` in `npc/motion-bake.json`). Tried on throw_trash, drink,
+  atm_take_cash; notes and open points in `docs/asset-production/motions/动作重做方案.md` §7. Not reviewed by him yet.
+- **"Motion first, objects fit the motion" trial (10-15), failed and reverted.** Rule he set for
+  it: Kimodo generates each clip alone (text, length, stand_idle endpoints only), no frame changed
+  afterwards; objects moved/rebuilt to fit the hands. Done on throw_trash, drink, atm_take_cash
+  (several rounds: fixed lengths, SEED-derived lengths, 8 seeds each, then a mapping change); every
+  round looked worse than the 摆木偶 versions, he had it all reverted. What it showed:
+  - The Kimodo human itself is mostly right in the data (cup at the mouth, cash held at the chest);
+    the stick-figure mapping distorts it. Direction mapping lifts raised hands (mouth -> forehead,
+    chest -> face) because the figure's arms are longer and grow from the neck and its head is ~2x
+    a real head. Placing hands by their position from the neck instead (tried, scaled so a hanging
+    arm stays straight) fixes the height but splays the arms outward (the figure has no shoulders)
+    and sticks the upper arm out sideways — worse. Neither works as is.
+  - Hands touching the figure's own body (mouth, face, pocket) are a gap "objects fit the motion"
+    cannot cover: those points are on the figure and can't be moved.
+  - Kimodo adds its own steps to vague text (lifts the cash to look at it on every seed of 8) and
+    varies a lot per seed; it also spreads an action over whatever duration it is given, so it
+    cannot report an action's natural length.
+  - Next idea, not done: render the raw Kimodo skeleton beside the stick figure, to separate
+    Kimodo faults from mapping faults by picture.
+- **Durations**: don't estimate them. From Hugging Face `nvidia/SEED-Timeline-Annotations`
+  (`timelines.jsonl`, annotations only): in each motion of the same (or nearest) kind, add up the
+  consecutive segments that match what our clip does, from leaving standing to standing again;
+  take the median of those sums. One SEED segment is only one atomic part (raise / drink / lower),
+  so single-segment medians are too short. 10-15 results: throw_trash 2.35 s (6 sums), drink
+  4.40 s (41), atm_take_cash 4.77 s (2, from ticket_validation — no ATM motions exist).
+- My failure in that trial, his words "你tm自己不会看的是吗": each round I changed one thing and
+  handed it over after a few numbers or zoomed frames. Before showing anything, watch every clip
+  whole, whole figure, and say up front what the method cannot fix.
 - Don't edit `godot/` files while `record_clip.py` runs (bake fingerprint goes stale).
 - `assets/animations/sources/` (119 MB, Kimodo source files) is committed: the inventories cite it.
 - Talk plainly; technical choices are mine, only ask him what he can judge.
@@ -56,7 +88,7 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 - **What it is**: an experiment toward a reusable pipeline — given a place (or an area he
   marks on a map), scripts fetch data and build a complete scene by themselves. He wants the
   automated route: do not ask him for site facts he knows personally. Method (three strict
-  stages): `docs/scene_reconstruction_workflow.md`. Record of what each step needed:
+  stages): `docs/scenes/scene_reconstruction_workflow.md`. Record of what each step needed:
   `research/sdu_weihai/复刻记录.md`; sources and licences: `research/sdu_weihai/来源.md`.
   Scene `godot/scenes/sdu_weihai/`, scripts `godot/real_place/`, rebuild steps:
   `godot/README.md` "山大威海校区".
@@ -138,7 +170,7 @@ Detailed asset results belong in the linked inventories, not duplicated here.
   behaviour table, the orbit camera, the walk-grid cache and the two-streets scene.
 - **Main scene now: `godot/scenes/two_streets/`** (two 200 m streets, back-to-back
   residential block between them, commercial side, park side, 100 m backdrop ring; ~60 fps
-  with 100 walkers). Requirements: `docs/design-plans/two-streets.md`; implementation notes:
+  with 100 walkers). Requirements: `docs/scenes/two-streets.md`; implementation notes:
   `godot/README.md` "两条街". The layout is generated by `godot/tools/two_streets_layout.py`
   (rerunning overwrites editor edits). Camera: orthographic, rotate + pitch + zoom
   (`core/orbit_camera.gd`, numbers in `core/camera-params.json`); he wants to keep ortho for
@@ -146,7 +178,7 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 - **Behaviour**: implemented per the scored-candidate design he asked for (one global table
   `npc/behaviour-table.json` for weights, `npc/behaviour-people.json` for per-person
   multipliers — deliberately only one person kind, he will rewrite it). Status and what is
-  missing are at the top of `docs/design_route_npc_behavior.md`.
+  missing are at the top of `docs/behavior-system/design_route_npc_behavior.md`.
 - **Open / next** (reported to him 2026-09-27, waiting for his look at the scene):
   - `commercial_plaza` still to come from ChatGPT (top at y = 0.45 m, two 0.15 m steps down
     to the sidewalk); `delivery/进度.md` tells ChatGPT what is left.
@@ -177,12 +209,12 @@ Detailed asset results belong in the linked inventories, not duplicated here.
     build script → `godot/modeling/`; a `types/<name>.tscn` (with post markers etc.) is
     made when the model is first used in a level.
   - Human motions (`delivery/motions/<name>/`): check against the execution rules in
-    `assets/动作生成任务清单.md` (review notes in `meta.json`, 77-joint data, hand close-ups
+    `docs/asset-production/motions/动作生成任务清单.md` (review notes in `meta.json`, 77-joint data, hand close-ups
     for contact, front/side sheets). Loops must have first frame = last frame up to root
     travel; measure it (root-aligned max joint gap). Accepted: move to
     `assets/animations/npz/<name>/`, add loops to `assets/animations/clip_endpoints.json`
     (`loop: true`), rerun `scripts/export-npc-motion.py` (it closes seams ≤15 cm, stops on
-    bigger ones), tick the queue and add a row to `assets/动作素材清单.md`.
+    bigger ones), tick the queue and add a row to `docs/asset-production/motions/动作素材清单.md`.
   - Animals: code goes straight into `godot/npc/` + `godot/tools/` (only the files listed
     in `delivery/README.md` may change); `delivery/animals/` holds notes and previews.
     Check `check_locomotion.gd` still says LOCOMOTION_OK, `dog_walker.gd`'s interface is
@@ -193,7 +225,7 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 ## Visual direction — open, as of 2026-09-24
 
 - Chants of Sennaar is still the preferred direction (10 reference shots in
-  `docs/巴别塔圣歌-游戏实拍/`), but **the palette must stay black/white/gray**; a coloured
+  `docs/visual-reference/`), but **the palette must stay black/white/gray**; a coloured
   result that pleases does not count. Either make palettes work for any hue under stated
   relations, or optimise gray only.
 - Hsinlung's palette rule: the "paper" (background and the dominant large surfaces) is
@@ -219,23 +251,23 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 
 ## NPC mapping — accepted 2026-09-20
 
-- 规则与参数唯一文档入口：`docs/design-plans/npc-skeleton-mapping.md`。源数据保留 Kimodo SOMA77 `posed_joints`（米、Y 向上），映射用其中 16 个源关节；不是直接抽 11 点，也不把映射结果写回资源。
+- 规则与参数唯一文档入口：`docs/asset-production/motions/npc-skeleton-mapping.md`。源数据保留 Kimodo SOMA77 `posed_joints`（米、Y 向上），映射用其中 16 个源关节；不是直接抽 11 点，也不把映射结果写回资源。
 - 造型：实心圆头；无肩/胯横线、胸口折点、手指或脸；四肢从颈根/胯发散。等宽圆头线，躯干/脖子线宽乘 1.15；头与线段按深度排序，不画影子。
 - 下半身和根位移随腿长同比缩放，两骨 IK 解膝；头部在躯干局部坐标系扣除站姿固有前倾；肩向量分配给两段手臂，举臂最小张角 70°，平滑向侧方展开并同步旋转前臂。
-- 参数由 Hsinlung 定下，约 0.58m / 4.9 头身是有意的画风，不按成人真实比例纠正。具体数值只维护在 `docs/design-plans/npc-skeleton-mapping.md`，不沿用旧预览默认值。
+- 参数由 Hsinlung 定下，约 0.58m / 4.9 头身是有意的画风，不按成人真实比例纠正。具体数值只维护在 `docs/asset-production/motions/npc-skeleton-mapping.md`，不沿用旧预览默认值。
 - 已接受取舍：cheer 头顶合手会被分开；cross_arms 正面像十字；photo_overhead 前举手臂会遮脸。不要再次作为待修缺陷。
 - 后续落实要求：共用纯映射函数 + 独立参数 JSON，供调参、出图、运行时消费；之后支持单动作微调。参考 HTML 当前仍用全局参数/内嵌默认值，尚未完成共用模块化；规则已定不等于集成已完成。
 - 简检：参考 HTML 内置 6 条/660 帧，默认参数下无无效坐标，骨段长度和缩放后踝目标误差仅浮点精度。63 条总览是图像证据，不等于全部动作逐帧验证；未证明通用防穿模或精确手掌接触。
 
 ## Motion playback contract — accepted 2026-09-19
 
-- `docs/design_route_npc_behavior.md` / `docs/design_route_npc_motion_supply.md` §5：防止的是
+- `docs/behavior-system/design_route_npc_behavior.md` / `docs/asset-production/motions/design_route_npc_motion_supply.md` §5：防止的是
   NPC 位置瞬移，不要求统一首尾姿势。行为可在任意帧切换，不保证播完。
 - 位置接续归未来播放端：下一片段接在 NPC 当前位置，消费相对根位移，不直接
   套用素材绝对坐标；与导航协调速度、方向和避障，不能重复累加位移。
 - 一次性/持续/移动由行为侧使用方式决定，不强制素材分类字段或文件夹。
   首尾约束、循环加工、进入/保持/退出分段均可选；需要分段可标在同一素材上。
-  （2026-09-25 起：凡是要循环播放的素材——走路类等——必须首尾同姿势，见 `assets/动作生成任务清单.md` 执行约定。）
+  （2026-09-25 起：凡是要循环播放的素材——走路类等——必须首尾同姿势，见 `docs/asset-production/motions/动作生成任务清单.md` 执行约定。）
   相同端点不保证自然循环，同脚两次落地也不保证全身/朝向接缝连续。
 - 当前设计允许立即换动作，不强制先播退出。蹲姿切行走等姿势跳变，实际看到
   不能接受时再补过渡，不提前扩成素材返工要求。生成 worker 已按需开启约束。
@@ -245,11 +277,11 @@ Detailed asset results belong in the linked inventories, not duplicated here.
 - Full-body single-person NPZ assets are stored in
   `assets/animations/npz/<simple_english_name>/motion.npz` plus `meta.json`.
   Current object-motion work also exports native SOMA data for Godot playback.
-  Clips that touch things are now built on the figure (`docs/动作重做方案.md`), not from contact keys.
+  Clips that touch things are now built on the figure (`docs/asset-production/motions/动作重做方案.md`), not from contact keys.
   No `v2`/`seed42` in names; use trailing `1`, `2` only for intentionally retained
   parallel motions. Selected assets are in Git. Attempts/parameters belong in
   metadata and Chinese inventories, not additional deliverable versions.
-- Queue authority is `assets/动作生成任务清单.md` (batches 5 and 6 accepted by 2026-09-27;
+- Queue authority is `docs/asset-production/motions/动作生成任务清单.md` (batches 5 and 6 accepted by 2026-09-27;
   its 执行约定 now also rules: full-body constraints only on a few key frames, no frozen
   frames, contact and sizes judged on the in-game stick figure). ChatGPT generates,
   delivering to `delivery/motions/`. G/H stay inventory only. Do not
@@ -263,7 +295,7 @@ Detailed asset results belong in the linked inventories, not duplicated here.
   accepted and recorded in `meta.json` `trim`. Contact labels can differ on identical
   poses, so the export's foot check only runs when there is a seam to spread.
 - Prompt engineering is our responsibility: describe visible limb motion, side,
-  sequence, hold and release; choose duration per action. Generation success or a
+  sequence, hold and release; duration per action from SEED timelines (see Motion above). Generation success or a
   matching prompt is not quality evidence. After repeated semantic failures,
   reassess and record why the motion is deferred instead of endlessly changing seeds.
 - Review front/side samples and motion data; inspect consecutive frames around
